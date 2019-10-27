@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_preset_chooser"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:paddingStart="12dp"
+    android:paddingEnd="12dp">
+    <androidx.appcompat.widget.AppCompatTextView
+        android:text="@string/preset"
+        style="@style/Item.Text.Secondary.AudioFx" />
+
+    <androidx.appcompat.widget.AppCompatSpinner
+        android:layout_marginStart="12dp"
+        android:id="@+id/sp_presets"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:background="?attr/selectableItemBackground"
+        android:tint="?attr/iconNormalTint"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:padding="16dp"
+        android:src="@drawable/ic_save"
+        android:id="@+id/btn_save_preset"/>
+</LinearLayout>

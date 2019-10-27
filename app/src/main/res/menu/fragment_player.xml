@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_share"
+        android:icon="@drawable/ic_share"
+        android:title="@string/share"
+        android:name="@string/share"
+        app:showAsAction="never"/>
+
+    <!--<item-->
+        <!--android:id="@+id/action_view_lyrics"-->
+        <!--android:title="@string/view_lyrics"-->
+        <!--android:name="@string/view_lyrics"-->
+        <!--android:visible="false"-->
+        <!--app:showAsAction="never"/>-->
+
+    <item
+        android:id="@+id/action_create_poster"
+        android:icon="@drawable/ic_photo"
+        android:title="@string/create_poster"
+        android:name="@string/create_poster"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_edit_song_tags"
+        android:icon="@drawable/ic_edit"
+        android:title="@string/edit_song_tags"
+        android:name="@string/edit_song_tags"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_edit_album_cover"
+        android:icon="@drawable/ic_edit"
+        android:title="@string/edit_album_cover"
+        android:name="@string/edit_album_cover"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_view_album"
+        android:title="@string/view_album"
+        android:name="@string/view_album"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_view_artist"
+        android:title="@string/view_artist"
+        android:name="@string/view_artist"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_cut_ringtone"
+        android:icon="@drawable/ic_cutter"
+        android:title="@string/cut_ringtone"
+        android:name="@string/cut_ringtone"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_delete"
+        android:icon="@drawable/ic_trash"
+        android:title="@string/delete"
+        android:name="@string/delete"
+        app:showAsAction="never"/>
+</menu>

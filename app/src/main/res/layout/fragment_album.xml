@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    style="@style/Layout.Backdrop.Back">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="360dp"
+        style="@style/Base.AppBarLayout.Transparent">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:id="@+id/ctl_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:toolbarId="@id/tb_actions"
+            app:contentScrim="?attr/backdropBackLayer"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:expandedTitleMarginStart="48dp"
+            app:expandedTitleMarginEnd="64dp"
+            app:expandedTitleMarginBottom="92dp"
+            app:expandedTitleTextAppearance="@style/Toolbar.TitleAppearance.Light.Expanded"
+            app:collapsedTitleTextAppearance="@style/Toolbar.TitleAppearance.Light.Collapsed"
+            app:title="@string/placeholder_unknown">
+
+            <FrameLayout
+                app:layout_collapseMode="parallax"
+                app:layout_collapseParallaxMultiplier="0.7"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:adjustViewBounds="true"
+                    android:id="@+id/imv_album_art"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop" />
+                <View
+                    android:background="?attr/colorPrimaryDark"
+                    android:alpha="0.30"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </FrameLayout>
+
+            <androidx.appcompat.widget.Toolbar
+                app:layout_collapseMode="pin"
+                android:id="@+id/tb_actions"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                style="@style/Base.Toolbar.Transparent"/>
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:behavior_overlapTop="72dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        style="@style/CardView.Backdrop.Front">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tv_title"
+                    style="@style/Text.Header.Subtitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginStart="@dimen/backdrop_padding"
+                    android:layout_marginEnd="@dimen/backdrop_padding"
+                    tools:text="Album"/>
+
+                <include
+                    android:id="@+id/view_divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/vertical_divider_height"
+                    android:layout_marginStart="@dimen/horizontal_padding"
+                    android:layout_marginEnd="@dimen/horizontal_padding"
+                    layout="@layout/include_divider"/>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <com.frolo.muse.views.spring.SpringFastScrollRecyclerView
+                        style="@style/Base.RecyclerView"
+                        android:id="@+id/rv_list"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+
+                    <include
+                        layout="@layout/include_placeholder"
+                        android:layout_gravity="center"
+                        android:id="@+id/layout_list_placeholder"
+                        android:text="@string/nothing_to_show"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </FrameLayout>
+            </LinearLayout>
+
+            <include
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                android:id="@+id/pb_loading"
+                layout="@layout/include_loading"/>
+        </FrameLayout>
+    </com.google.android.material.card.MaterialCardView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

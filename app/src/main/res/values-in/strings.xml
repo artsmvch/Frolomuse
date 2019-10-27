@@ -1,0 +1,244 @@
+<resources>
+    <string name="ok">beres</string>
+    <string name="loading">Memuat…</string>
+    <string name="done">Selesai!</string>
+    <string name="cancel">Membatalkan</string>
+    <string name="save">Menyimpan</string>
+    <string name="saved">Disimpan</string>
+    <string name="checkout_this_track">Lihat %s dengan Pemutar Musik Frolomuse baru!</string>
+    <string name="share_track">Bagikan lagu</string>
+    <string name="share_tracks">Bagikan koleksi audio</string>
+    <string name="sorry_exception">Maaf, ada yang salah</string>
+    <string name="app_prefs">Preferensi aplikasi</string>
+    <string name="about">Tentang</string>
+    <string name="empty">Kosong</string>
+    <string name="current_playlist_is_empty">Tidak ada lagu di daftar putar saat ini. \n
+         Silakan pilih yang lain</string>
+    <string name="pick_image">Pilih Gambar</string>
+    <string name="file">Mengajukan</string>
+    <string name="created">Dibuat</string>
+    <string name="added_to_queue">Ditambahkan ke antrian</string>
+    <string name="deleted">Dihapus</string>
+    <string name="type_at_least_two_letters">Ketikkan setidaknya dua huruf</string>
+    <string name="will_be_played_next">Akan dimainkan selanjutnya</string>
+
+    <!--Errors-->
+    <string name="failed_to_delete_s">Gagal menghapus %s</string>
+
+    <!--Sort orders-->
+    <string name="sort">Menyortir</string>
+    <string name="ascending">Naik</string>
+    <string name="sort_by_name">Berdasarkan nama</string>
+    <string name="sort_by_artist">Berdasarkan artis</string>
+    <string name="sort_by_album">Berdasarkan album</string>
+    <string name="sort_by_number_of_songs">Berdasarkan jumlah lagu</string>
+    <string name="sort_by_number_of_tracks">Berdasarkan jumlah trek</string>
+    <string name="sort_by_number_of_albums">Berdasarkan jumlah album</string>
+    <string name="sort_by_date_added">Berdasarkan tanggal ditambahkan</string>
+    <string name="sort_by_date_modified">Berdasarkan tanggal dimodifikasi</string>
+    <string name="sort_by_filename">Berdasarkan nama file</string>
+    <string name="sort_by_play_order">Berdasarkan urutan main</string>
+
+    <!--Rating-->
+    <string name="would_you_rate">Apakah Anda memberi nilai aplikasi ini untuk 5 bintang?</string>
+    <string name="no">Tidak</string>
+    <string name="remind_me_later">Tanyakan saya nanti</string>
+    <string name="rate">Ya saya suka!</string>
+
+    <string name="choose_playlist">Pilih daftar putar</string>
+    <string name="current_playing">Bermain saat ini</string>
+    <string name="track">Lagu</string>
+    <string name="album">Album</string>
+    <string name="artist">Artis</string>
+    <string name="genre">Aliran</string>
+
+    <plurals name="s_songs">
+        <item quantity="other">%d lagu</item>
+    </plurals>
+
+    <string name="select_all">Pilih Semua</string>
+
+    <!--placeholders-->
+    <string name="placeholder_unknown">Tidak dikenal</string>
+    <string name="placeholder_zero_duration">0:00</string>
+    <string name="placeholder_unknown_genre">Aliran</string>
+    <string name="placeholder_no_tracks">Tidak ada lagu</string>
+    <string name="placeholder_unknown_date">19.91.2018</string>
+    <string name="placeholder_freq_range">0.00 hz</string>
+    <string name="placeholder_header_title">Header</string>
+    <string name="placeholder_lib_name">Perpustakaan</string>
+    <string name="placeholder_lib_version">1.0</string>
+    <string name="placeholder_lib_copyright">Hak cipta</string>
+    <string name="placeholder_lib_description">Perpustakaan</string>
+
+    <!--options menu-->
+    <string name="play">Mainkan</string>
+    <string name="edit">Sunting</string>
+    <string name="delete">Menghapus</string>
+    <string name="add_to_playlist">Tambahkan ke Daftar Putar</string>
+    <string name="share">Bagikan</string>
+    <string name="playlist">Daftar putart</string>
+    <string name="add_to_queue">Tambahkan ke antrian</string>
+    <string name="create_playlist">Buat daftar putar</string>
+    <string name="edit_song_tags">Edit tag lagu</string>
+    <string name="edit_album_cover">Edit sampul album</string>
+    <string name="view_album">Lihat album</string>
+    <string name="view_artist">Lihat artis</string>
+    <string name="create_poster">Buat poster</string>
+    <string name="save_playlist">Simpan daftar putar</string>
+    <string name="play_next">Mainkan selanjutnya</string>
+    <string name="cut_ringtone">Potong nada dering</string>
+    <!--<string name="view_lyrics">View lyrics</string>-->
+
+    <!--deletion confirmation-->
+    <string name="confirmation">Konfirmasi</string>
+    <string name="sure_to_delete_item">Anda yakin ingin menghapus item ini?</string>
+    <string name="sure_to_delete_items">Anda yakin ingin menghapus item ini?</string>
+
+    <!--titles for main view pager-->
+    <string name="all_songs">Semua musik</string>
+    <string name="songs">Lagu</string>
+    <string name="artists">Artis</string>
+    <string name="genres">Genre</string>
+    <string name="albums">Album</string>
+    <string name="playlists">Daftar putar</string>
+    <string name="folders">Folder</string>
+    <string name="recently_added">Baru-baru ini ditambahkan</string>
+
+    <!--counting tracks, albums, genres and etc.-->
+    <string name="number_of_albums">%s album</string>
+    <string name="one_album">1 album</string>
+    <string name="no_albums">Tidak ada album</string>
+    <string name="no_tracks">Tidak ada trek</string>
+    <string name="one_track">Tidak ada lagu</string>
+    <string name="number_of_tracks">%s lagu</string>
+
+    <!--recently added-->
+    <string name="added">Ditambahkan</string>
+    <string name="recent_period">Periode terakhir</string>
+    <string name="for_last_hour">Selama satu jam terakhir</string>
+    <string name="for_last_day">Untuk hari terakhir</string>
+    <string name="for_last_week">Untuk minggu lalu</string>
+    <string name="for_last_month">Untuk bulan lalu</string>
+    <string name="for_last_year">Untuk tahun lalu</string>
+
+    <!--navigation drawer menu-->
+    <string name="nav_library">Perpustakaan</string>
+    <string name="nav_player">Pemain</string>
+    <string name="nav_equalizer">Equalizer</string>
+    <string name="nav_settings">Pengaturan</string>
+    <string name="nav_search">Cari</string>
+    <string name="nav_favourite">Favorit</string>
+
+    <!--app preferences-->
+    <string name="theme">Tema</string>
+    <string name="version">Versi aplikasi</string>
+    <string name="licenses">Lisensi</string>
+    <string name="choose_theme">Pilih Tema</string>
+    <string name="light_theme">Tema ringan</string>
+    <string name="dark_blue_theme">Tema biru gelap</string>
+    <string name="dark_especial_theme">Tema utama gelap</string>
+    <string name="dark_purple_theme">Tema ungu gelap</string>
+    <string name="pause_playback">Jeda pemutaran</string>
+    <string name="resume_playback">Lanjutkan pemutaran</string>
+    <string name="pause_on_unplugged">Jeda pemutaran setelah earphone dicabut</string>
+    <string name="resume_on_plugged_in">Lanjutkan pemutaran setelah earphone terpasang</string>
+    <string name="sleep_timer">Timer tidur</string>
+    <string name="sleep_time_description">Atur timer untuk berhenti bermain</string>
+    <string name="you_have_already_set_up_sleep_timer">Anda sudah mengatur penghitung waktu.\n
+        Apakah Anda ingin mengatur ulang timer saat ini atau mengatur yang baru?</string>
+    <string name="reset_sleep_timer">Setel ulang</string>
+    <string name="new_sleep_timer">Atur Timer baru</string>
+    <string name="rate_this_app">Nilai aplikasi ini</string>
+    <string name="rate_this_app_if_you_want">Jika Anda menyukai aplikasi ini, Anda bisa menilainya di Play Market</string>
+    <string name="share_this_app">Bagikan aplikasi ini</string>
+    <string name="share_this_app_if_you_want">Anda dapat membantu aplikasi ini tumbuh jika Anda membaginya dengan teman-teman</string>
+    <string name="checkout_out">Lihat pemutar musik baru Frolomuse!</string>
+    <string name="help_with_translations">Bantuan terjemahan</string>
+    <string name="help_with_translations_desc">Ketuk di sini jika Anda ingin membantu dengan terjemahan</string>
+    <string name="library_sections">Bagian perpustakaan</string>
+    <string name="library_sections_desc">Bagian perpustakaan yang ingin Anda lihat dan urutannya</string>
+    <string name="show_notification">Tunjukkan notifikasi</string>
+    <string name="show_notification_desc">Tampilkan notifikasi lagu yang sedang diputar</string>
+    <string name="shown">Tampil</string>
+    <string name="sleep_timer_is_set">Sleep Timer diatur</string>
+    <string name="sleep_timer_is_off">Sleep Timer tidak aktif</string>
+    <string name="rescan_media_library_desc">Memindai perpustakaan media membantu aplikasi menemukan file audio baru</string>
+
+
+    <!--create and edit playlist-->
+    <string name="type_name_for_playlist">Silakan ketik nama untuk daftar putar</string>
+    <string name="name_is_empty">Nama harus kosong</string>
+    <string name="such_name_already_exists">Nama seperti itu sudah ada</string>
+    <string name="edit_name_of_playlist">Edit nama daftar putar</string>
+
+    <!--create preset-->
+    <string name="type_name_for_preset">Silakan ketik nama untuk prasetel</string>
+
+    <!--equalizer-->
+    <string name="freq_range">%s hz</string>
+    <string name="nothing_to_show">Tidak ada yang ditampilkan</string>
+    <string name="bass">Bas</string>
+    <string name="virtualizer">Virtualizer</string>
+    <string name="headset_not_plugged">Untuk menggunakan efek ini, colokkan headset</string>
+    <string name="show_visualizer">Perlihatkan visualizer</string>
+    <string name="audio_fx_hint">Silakan aktifkan equalizer terlebih dahulu</string>
+    <!--playback params-->
+    <string name="playback_params">Pemutaran params</string>
+    <string name="speed">Kecepatan</string>
+    <string name="pitch">Nada</string>
+    <string name="reset">Setel ulang</string>
+    <string name="normalize">Normalisasi</string>
+
+    <!--media file editor-->
+    <string name="song_name_layout">Nama</string>
+    <string name="album_name_layout">Album</string>
+    <string name="genre_name_layout">Aliran</string>
+    <string name="artist_name_layout">Artis</string>
+    <string name="filepath">Jalur File %s</string>
+    <string name="duration">Durasi %s</string>
+
+    <string name="app_theme">Tema Aplikasi</string>
+    <string name="third_part_libs">Perpustakaan pihak ketiga</string>
+    <string name="album_grid">Kisi album</string>
+    <string name="show_album_grid">Gunakan kisi untuk menampilkan album</string>
+
+    <!--Preset-->
+    <string name="preset">Preset</string>
+    <string name="preset_none">Tidak ada</string>
+    <string name="preset_normal">Normal</string>
+    <string name="preset_rock">Rock</string>
+    <string name="preset_heavy_metal">Logam berat</string>
+    <string name="preset_classical">Klasik</string>
+    <string name="preset_folk">Rakyat</string>
+    <string name="preset_flat">Datar</string>
+    <string name="preset_dance">Menari</string>
+    <string name="preset_hip_hop">Hip Hop</string>
+    <string name="preset_jazz">Jazz</string>
+    <string name="preset_pop">Pop</string>
+
+    <!--Preset reverb-->
+    <string name="preset_reverb">Gema</string>
+    <string name="preset_reverb_none">Tidak ada</string>
+    <string name="preset_reverb_large_hall">Aula besar</string>
+    <string name="preset_reverb_large_room">Ruangan besar</string>
+    <string name="preset_reverb_medium_hall">Aula sedang</string>
+    <string name="preset_reverb_medium_room">Ruang sedang</string>
+    <string name="preset_reverb_plate">Dataran tinggi</string>
+    <string name="preset_reverb_small_rooom">Ruangan kecil</string>
+
+    <!--Playback notification-->
+    <string name="playback_channel_name">Pemutaran</string>
+    <string name="playback_channel_desc">Memberitahu tentang status pemutaran saat ini</string>
+
+    <!--Media scanner notification-->
+    <string name="media_scanner_channel_name">Pemindai media</string>
+    <string name="media_scanner_channel_desc">Memberitahu tentang pemindaian pustaka media pada perangkat</string>
+    <!--Media scanner-->
+    <string name="scanning_media_storage">Pustaka media sedang dipindai. Mohon tunggu…</string>
+    <string name="preparing_files_to_scan">Mempersiapkan file untuk pemindaian. Mohon tunggu…</string>
+    <string name="scanning_started">Pemindaian dimulai</string>
+    <string name="scanning_completed">Pemindaian selesai</string>
+    <string name="rescan_media_library">Pindai ulang perpustakaan media</string>
+    <string name="do_you_want_to_rescan_media_library">Apakah Anda ingin memindai ulang pustaka media Anda?</string>
+</resources>

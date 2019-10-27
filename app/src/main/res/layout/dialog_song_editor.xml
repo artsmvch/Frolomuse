@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fillViewport="true"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:overScrollMode="never">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/Layout.Dialog.Content">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:scaleType="centerCrop"
+                android:id="@+id/imv_album_art"
+                android:layout_width="45dp"
+                android:layout_height="45dp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                app:layout_constraintStart_toEndOf="@id/imv_album_art"
+                app:layout_constraintTop_toTopOf="@id/imv_album_art"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="8dp"
+                android:maxLines="1"
+                android:text="@string/filepath"
+                android:id="@+id/tv_filepath"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                style="@style/Item.Text.Primary"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                app:layout_constraintStart_toStartOf="@id/tv_filepath"
+                app:layout_constraintTop_toBottomOf="@id/tv_filepath"
+                app:layout_constraintEnd_toEndOf="@id/tv_filepath"
+                android:maxLines="1"
+                android:text="@string/duration"
+                android:id="@+id/tv_duration"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                style="@style/Item.Text.Secondary"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_duration"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="24dp"
+                android:id="@+id/til_song_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/song_name_layout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:inputType="textNoSuggestions"
+                    android:textColor="?attr/android:textColorPrimary"
+                    android:id="@+id/edt_song_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/til_song_name"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="16dp"
+                android:id="@+id/til_artist_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/artist_name_layout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:inputType="textNoSuggestions"
+                    android:textColor="?attr/android:textColorPrimary"
+                    android:id="@+id/edt_artist_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/til_artist_name"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="16dp"
+                android:id="@+id/til_album_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/album_name_layout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:inputType="textNoSuggestions"
+                    android:textColor="?attr/android:textColorPrimary"
+                    android:id="@+id/edt_album_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/til_album_name"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="16dp"
+                android:id="@+id/til_genre_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/genre_name_layout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:inputType="textNoSuggestions"
+                    android:textColor="?attr/android:textColorPrimary"
+                    android:id="@+id/edt_genre_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                app:layout_constraintTop_toBottomOf="@id/til_genre_name"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="28dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/save"
+                android:id="@+id/btn_save"
+                style="?attr/buttonAction" />
+
+            <com.google.android.material.button.MaterialButton
+                app:layout_constraintTop_toTopOf="@id/btn_save"
+                app:layout_constraintEnd_toStartOf="@id/btn_save"
+                app:layout_constraintBottom_toBottomOf="@id/btn_save"
+                android:layout_marginEnd="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cancel"
+                android:id="@+id/btn_cancel"
+                style="?attr/buttonCancel" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <include
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:id="@+id/inc_progress_overlay"
+            android:visibility="invisible"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            layout="@layout/include_progress_overlay" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

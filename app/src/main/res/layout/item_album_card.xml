@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/CardView.Item.Media.Album">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintDimensionRatio="1"
+            android:id="@+id/imv_album_art"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop" />
+
+        <include
+            app:layout_constraintEnd_toEndOf="@id/imv_album_art"
+            app:layout_constraintTop_toTopOf="@id/imv_album_art"
+            layout="@layout/include_check"
+            android:layout_margin="8dp"
+            android:layout_width="@dimen/list_item_check_size"
+            android:layout_height="@dimen/list_item_check_size" />
+
+        <ImageView
+            app:layout_constraintTop_toBottomOf="@id/imv_album_art"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:paddingTop="7dp"
+            android:paddingBottom="7dp"
+            android:paddingStart="5dp"
+            android:paddingEnd="10dp"
+            android:id="@+id/view_options_menu"
+            android:layout_width="30dp"
+            android:layout_height="60dp"
+            android:src="@drawable/ic_options_menu"
+            android:tint="?attr/iconNormalTint" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imv_album_art"
+            app:layout_constraintEnd_toStartOf="@id/view_options_menu"
+            android:layout_width="0dp"
+            style="@style/Item.Text.Primary"
+            android:textSize="16sp"
+            android:text="@string/placeholder_unknown"
+            android:gravity="start"
+            android:id="@+id/tv_album_name"
+            android:layout_marginTop="3dp" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            app:layout_constraintStart_toStartOf="@id/tv_album_name"
+            app:layout_constraintTop_toBottomOf="@id/tv_album_name"
+            app:layout_constraintEnd_toStartOf="@id/view_options_menu"
+            android:layout_width="0dp"
+            style="@style/Item.Text.Secondary"
+            android:id="@+id/tv_artist_name"
+            android:text="@string/placeholder_unknown"
+            android:gravity="start" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/selector_player_panel">
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="7dp"
+        android:layout_marginEnd="7dp"
+        android:padding="7.5dp"
+        app:tint="?attr/iconNormalTint"
+        android:src="@drawable/ic_simple_playlist"
+        android:id="@+id/btn_view_playlist"/>
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="7dp"
+        android:layout_marginEnd="7dp"
+        android:padding="7.5dp"
+        app:tint="?attr/iconNormalTint"
+        android:src="@drawable/ic_heart"
+        android:id="@+id/btn_like"/>
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="7dp"
+        android:layout_marginEnd="7dp"
+        android:padding="7.5dp"
+        app:tint="?attr/iconNormalTint"
+        android:src="@drawable/ic_volume"
+        android:id="@+id/btn_volume"/>
+</LinearLayout>

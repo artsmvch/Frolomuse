@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical|top">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/Item.Text.Primary"
+            android:id="@+id/tv_song_name"
+            android:textSize="19sp"
+            android:padding="10dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:background="?attr/selectableItemBackground"
+            android:id="@+id/imv_close"
+            android:tint="?attr/iconNormalTint"
+            android:src="@drawable/ic_cross"
+            android:padding="15dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp" />
+    </LinearLayout>
+
+    <include
+        layout="@layout/include_divider"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/vertical_divider_height"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <ScrollView
+            android:overScrollMode="never"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                style="@style/Text.Lyrics"
+                android:id="@+id/tv_lyrics"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </ScrollView>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_error"
+            style="@style/Item.Text.Primary"
+            android:maxLines="10"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <com.frolo.muse.views.progress.IBar
+            android:layout_gravity="center"
+            android:id="@+id/pb_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </FrameLayout>
+
+    <include
+        layout="@layout/include_divider"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/vertical_divider_height"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_save"
+        style="?attr/buttonAction"
+        android:text="@string/save"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</LinearLayout>

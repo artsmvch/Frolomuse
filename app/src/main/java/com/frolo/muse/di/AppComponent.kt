@@ -1,0 +1,86 @@
+package com.frolo.muse.di
+
+import com.frolo.muse.App
+import com.frolo.muse.di.modules.*
+import com.frolo.muse.engine.service.PlayerService
+import com.frolo.muse.interactor.media.AddMediaToPlaylistUseCase
+import com.frolo.muse.interactor.media.AddSongToPlaylistUseCase
+import com.frolo.muse.interactor.media.get.*
+import com.frolo.muse.logger.EventLogger
+import com.frolo.muse.repository.Preferences
+import com.frolo.muse.ui.base.BaseActivity
+import com.frolo.muse.ui.main.audiofx.params.PlaybackParamsDialog
+import com.frolo.muse.ui.main.audiofx.preset.SavePresetVMFactory
+import com.frolo.muse.ui.main.editor.album.AlbumEditorVMFactory
+import com.frolo.muse.ui.main.editor.playlist.PlaylistEditorVMFactory
+import com.frolo.muse.ui.main.editor.song.SongEditorVMFactory
+import com.frolo.muse.ui.main.library.albums.album.AlbumVMFactory
+import com.frolo.muse.ui.main.library.artists.artist.albums.AlbumsOfArtistVMFactory
+import com.frolo.muse.ui.main.library.artists.artist.songs.SongsOfArtistVMFactory
+import com.frolo.muse.ui.main.library.genres.genre.GenreVMFactory
+import com.frolo.muse.ui.main.library.playlists.addmedia.AddMediaTiPlaylistVMFactory
+import com.frolo.muse.ui.main.library.playlists.create.CreatePlaylistVMFactory
+import com.frolo.muse.ui.main.library.playlists.playlist.PlaylistVMFactory
+import com.frolo.muse.ui.main.library.playlists.playlist.addsong.AddSongToPlaylistVMFactory
+import com.frolo.muse.ui.main.player.lyrics.LyricsVMFactory
+import com.frolo.muse.ui.main.player.poster.PosterVMFactory
+import dagger.Component
+import javax.inject.Singleton
+
+
+@Singleton
+@Component(
+        modules = [
+            AppModule::class,
+            PlayerModule::class,
+            ViewModelModule::class,
+            LocalDataModule::class,
+            RemoteDataModule::class,
+            NavigationModule::class,
+            EventLoggerModule::class,
+            NetworkModule::class,
+            MiscModule::class,
+            UseCaseModule::class,
+            SongQueueFactoryModule::class,
+            UseCaseModule::class
+        ]
+)
+interface AppComponent {
+
+    fun providePreferences(): Preferences
+    fun provideVMFactory(): ViewModelModule.ViewModelFactory
+    fun provideEventLogger(): EventLogger
+
+    fun inject(application: App)
+
+    fun inject(service: PlayerService)
+
+    fun inject(activity: BaseActivity)
+
+    fun inject(fragment: PlaybackParamsDialog)
+
+    // vm factories
+    fun inject(vmf: AlbumVMFactory)
+    fun inject(vmf: SongsOfArtistVMFactory)
+    fun inject(vmf: AlbumsOfArtistVMFactory)
+    fun inject(vmf: PlaylistVMFactory)
+    fun inject(vmf: GenreVMFactory)
+    fun inject(vmf: SongEditorVMFactory)
+    fun inject(vmf: AlbumEditorVMFactory)
+    fun inject(vmf: PlaylistEditorVMFactory)
+    fun inject(vmf: PosterVMFactory)
+    fun inject(vmf: AddMediaTiPlaylistVMFactory)
+    fun inject(vmf: AddSongToPlaylistVMFactory)
+    fun inject(vmf: SavePresetVMFactory)
+    fun inject(vmf: LyricsVMFactory)
+    fun inject(vmf: CreatePlaylistVMFactory)
+
+    // use case factories
+    fun provideGetAlbumSongsUseCaseFactory(): GetAlbumSongsUseCase.Factory
+    fun provideGetAlbumsOfArtistUseCaseFactory(): GetAlbumsOfArtistUseCase.Factory
+    fun provideGetSongsOfArtistUseCaseFactory(): GetSongsOfArtistUseCase.Factory
+    fun provideGetGenreSongsUseCaseFactory(): GetGenreSongsUseCase.Factory
+    fun provideGetPlaylistSongsUseCaseFactory(): GetPlaylistUseCase.Factory
+    fun provideAddMediaToPlaylistUseCaseFactory(): AddMediaToPlaylistUseCase.Factory
+    fun provideAddSongToPlaylistUseCaseFactory(): AddSongToPlaylistUseCase.Factory
+}

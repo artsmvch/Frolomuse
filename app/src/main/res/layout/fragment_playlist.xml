@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    style="@style/Layout.Backdrop.Back">
+
+    <com.google.android.material.appbar.AppBarLayout
+        style="@style/Base.AppBarLayout.Transparent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            app:layout_scrollFlags="scroll|enterAlways|snap"
+            android:id="@+id/tb_actions"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            style="@style/Base.Toolbar.Transparent"
+            tools:title="Toolbar"
+            tools:subtitle="Subtitle"/>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <include
+        layout="@layout/include_backdrop_front_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:src="@drawable/ic_plus"
+        android:layout_margin="24dp"
+        android:layout_gravity="bottom|end"
+        android:id="@+id/fab_add_song"
+        app:fabSize="normal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

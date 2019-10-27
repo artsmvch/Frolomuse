@@ -1,0 +1,245 @@
+<resources>
+    <string name="ok">OK</string>
+    <string name="loading">Loading…</string>
+    <string name="done">Done!</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="saved">Saved</string>
+    <string name="checkout_this_track">Check out %s with the new Frolomuse Music Player!</string>
+    <string name="share_track">Share track</string>
+    <string name="share_tracks">Share audio collection</string>
+    <string name="sorry_exception">Sorry, something went wrong</string>
+    <string name="app_prefs">App preferences</string>
+    <string name="about">About</string>
+    <string name="empty">Empty</string>
+    <string name="current_playlist_is_empty">There are no songs in the current playlist.\n
+        Please choose another</string>
+    <string name="pick_image">Pick Image</string>
+    <string name="file">File</string>
+    <string name="created">Created</string>
+    <string name="added_to_queue">Added to queue</string>
+    <string name="deleted">Deleted</string>
+    <string name="type_at_least_two_letters">Type at least two letters</string>
+    <string name="will_be_played_next">Will be played next</string>
+
+    <!--Errors-->
+    <string name="failed_to_delete_s">Failed to delete %s</string>
+
+    <!--Sort orders-->
+    <string name="sort">Sort</string>
+    <string name="ascending">Ascending</string>
+    <string name="sort_by_name">By name</string>
+    <string name="sort_by_artist">By artist</string>
+    <string name="sort_by_album">By album</string>
+    <string name="sort_by_number_of_songs">By number of songs</string>
+    <string name="sort_by_number_of_tracks">By number of tracks</string>
+    <string name="sort_by_number_of_albums">By number of albums</string>
+    <string name="sort_by_date_added">By date added</string>
+    <string name="sort_by_date_modified">By date modified</string>
+    <string name="sort_by_filename">By filename</string>
+    <string name="sort_by_play_order">By play order</string>
+
+    <!--Rating-->
+    <string name="would_you_rate">Would you rate this app for 5 stars?</string>
+    <string name="no">No</string>
+    <string name="remind_me_later">Ask me later</string>
+    <string name="rate">Yes, I like it!</string>
+
+    <string name="choose_playlist">Choose playlist</string>
+    <string name="current_playing">Current playing</string>
+    <string name="track">Track</string>
+    <string name="album">Album</string>
+    <string name="artist">Artist</string>
+    <string name="genre">Genre</string>
+
+    <plurals name="s_songs">
+        <item quantity="one">%d song</item>
+        <item quantity="other">%d songs</item>
+    </plurals>
+
+    <string name="select_all">Select all</string>
+
+    <!--placeholders-->
+    <string name="placeholder_unknown">Unknown</string>
+    <string name="placeholder_zero_duration">0:00</string>
+    <string name="placeholder_unknown_genre">Genre</string>
+    <string name="placeholder_no_tracks">No tracks</string>
+    <string name="placeholder_unknown_date">19.91.2018</string>
+    <string name="placeholder_freq_range">0.00 hz</string>
+    <string name="placeholder_header_title">Header</string>
+    <string name="placeholder_lib_name">Lib</string>
+    <string name="placeholder_lib_version">1.0</string>
+    <string name="placeholder_lib_copyright">Copyright</string>
+    <string name="placeholder_lib_description">Library</string>
+
+    <!--options menu-->
+    <string name="play">Play</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="add_to_playlist">Add to playlist</string>
+    <string name="share">Share</string>
+    <string name="playlist">Playlist</string>
+    <string name="add_to_queue">Add to queue</string>
+    <string name="create_playlist">Create playlist</string>
+    <string name="edit_song_tags">Edit song tags</string>
+    <string name="edit_album_cover">Edit album cover</string>
+    <string name="view_album">View album</string>
+    <string name="view_artist">View artist</string>
+    <string name="create_poster">Create poster</string>
+    <string name="save_playlist">Save playlist</string>
+    <string name="play_next">Play next</string>
+    <string name="cut_ringtone">Cut ringtone</string>
+
+    <!--deletion confirmation-->
+    <string name="confirmation">Confirmation</string>
+    <string name="sure_to_delete_item">Are you sure you want to delete this item?</string>
+    <string name="sure_to_delete_items">Are you sure you want to delete these items?</string>
+
+    <!--titles for main view pager-->
+    <string name="all_songs">All music</string>
+    <string name="songs">Songs</string>
+    <string name="artists">Artists</string>
+    <string name="genres">Genres</string>
+    <string name="albums">Albums</string>
+    <string name="playlists">Playlists</string>
+    <string name="folders">Folders</string>
+    <string name="recently_added">Recently added</string>
+
+    <!--counting tracks, albums, genres and etc.-->
+    <string name="number_of_albums">%s albums</string>
+    <string name="one_album">1 album</string>
+    <string name="no_albums">No albums</string>
+    <string name="no_tracks">No tracks</string>
+    <string name="one_track">1 track</string>
+    <string name="number_of_tracks">%s tracks</string>
+
+    <!--recently added-->
+    <string name="added">Added</string>
+    <string name="recent_period">Recent period</string>
+    <string name="for_last_hour">For last hour</string>
+    <string name="for_last_day">For last day</string>
+    <string name="for_last_week">For last week</string>
+    <string name="for_last_month">For last month</string>
+    <string name="for_last_year">For last year</string>
+
+    <!--navigation drawer menu-->
+    <string name="nav_library">Library</string>
+    <string name="nav_player">Player</string>
+    <string name="nav_equalizer">Equalizer</string>
+    <string name="nav_settings">Settings</string>
+    <string name="nav_search">Search</string>
+    <string name="nav_favourite">Favourite</string>
+
+    <!--app preferences-->
+    <string name="theme">Theme</string>
+    <string name="version">Application version</string>
+    <string name="licenses">Licenses</string>
+    <string name="choose_theme">Choose Theme</string>
+    <string name="light_theme">Light theme</string>
+    <string name="dark_blue_theme">Dark blue theme</string>
+    <string name="dark_especial_theme">Dark especial theme</string>
+    <string name="dark_purple_theme">Dark purple theme</string>
+    <string name="pause_playback">Pause playback</string>
+    <string name="resume_playback">Resume playback</string>
+    <string name="pause_on_unplugged">Pause playback after earphones unplugged</string>
+    <string name="resume_on_plugged_in">Resume playback after earphones plugged in</string>
+    <string name="sleep_timer">Sleep timer</string>
+    <string name="sleep_time_description">Set a timer to stop playing</string>
+    <string name="you_have_already_set_up_sleep_timer">You have already set up a timer.
+        \nDo You want to reset the current timer or set up a new one?</string>
+    <string name="reset_sleep_timer">Reset</string>
+    <string name="new_sleep_timer">Set a new Timer</string>
+    <string name="rate_this_app">Rate this app</string>
+    <string name="rate_this_app_if_you_want">If you like this app you can rate it on Play Market</string>
+    <string name="share_this_app">Share this app</string>
+    <string name="share_this_app_if_you_want">You can help this app grow if you share it with friends</string>
+    <string name="checkout_out">Check out the new music player Frolomuse!</string>
+    <string name="hint_zero_time" translatable="false">00</string>
+    <string name="help_with_translations">Help with translations</string>
+    <string name="help_with_translations_desc">Tap here if You want to help with translations</string>
+    <string name="library_sections">Library sections</string>
+    <string name="library_sections_desc">Library sections you want to see and their order</string>
+    <string name="show_notification">Show notification</string>
+    <string name="show_notification_desc">Show notification of the currently playing song</string>
+    <string name="shown">Shown</string>
+    <string name="sleep_timer_is_set">Sleep Timer is set</string>
+    <string name="sleep_timer_is_off">Sleep Timer is off</string>
+    <string name="rescan_media_library_desc">Scanning media library helps the app find new audio files</string>
+
+
+    <!--create playlist-->
+    <string name="type_name_for_playlist">Please type name for playlist</string>
+    <string name="name_is_empty">The name must be non-empty</string>
+    <string name="such_name_already_exists">Such name already exists</string>
+    <string name="edit_name_of_playlist">Edit name of playlist</string>
+
+    <!--create preset-->
+    <string name="type_name_for_preset">Please type name for preset</string>
+
+    <!--equalizer-->
+    <string name="freq_range">%s hz</string>
+    <string name="nothing_to_show">Nothing to show</string>
+    <string name="bass">Bass</string>
+    <string name="virtualizer">Virtualizer</string>
+    <string name="headset_not_plugged">To use this effect, plug in the headset</string>
+    <string name="show_visualizer">Show visualizer</string>
+    <string name="audio_fx_hint">Please turn on the equalizer first</string>
+    <!--playback params-->
+    <string name="playback_params">Playback Params</string>
+    <string name="speed">Speed</string>
+    <string name="pitch">Pitch</string>
+    <string name="reset">Reset</string>
+    <string name="normalize">Normalize</string>
+
+    <!--media file editor-->
+    <string name="song_name_layout">Name</string>
+    <string name="album_name_layout">Album</string>
+    <string name="genre_name_layout">Genre</string>
+    <string name="artist_name_layout">Artist</string>
+    <string name="filepath">Filepath %s</string>
+    <string name="duration">Duration %s</string>
+
+    <string name="app_theme">App Theme</string>
+    <string name="third_part_libs">Third-party libs</string>
+    <string name="album_grid">Album grid</string>
+    <string name="show_album_grid">Use the grid to display albums</string>
+
+    <!--Preset-->
+    <string name="preset">Preset</string>
+    <string name="preset_none">Nothing</string>
+    <string name="preset_normal">Normal</string>
+    <string name="preset_rock">Rock</string>
+    <string name="preset_heavy_metal">Heavy Metal</string>
+    <string name="preset_classical">Classical</string>
+    <string name="preset_folk">Folk</string>
+    <string name="preset_flat">Flat</string>
+    <string name="preset_dance">Dance</string>
+    <string name="preset_hip_hop">Hip Hop</string>
+    <string name="preset_jazz">Jazz</string>
+    <string name="preset_pop">Pop</string>
+
+    <!--Preset reverb-->
+    <string name="preset_reverb">Reverberation</string>
+    <string name="preset_reverb_none">Nothing</string>
+    <string name="preset_reverb_large_hall">Large hall</string>
+    <string name="preset_reverb_large_room">Large room</string>
+    <string name="preset_reverb_medium_hall">Medium hall</string>
+    <string name="preset_reverb_medium_room">Medium room</string>
+    <string name="preset_reverb_plate">Plate</string>
+    <string name="preset_reverb_small_rooom">Small room</string>
+
+    <!--Playback notification-->
+    <string name="playback_channel_name">Playback</string>
+    <string name="playback_channel_desc">Notifies about current playback status</string>
+
+    <!--Media scanner notification-->
+    <string name="media_scanner_channel_name">Media scanner</string>
+    <string name="media_scanner_channel_desc">Notifies about scanning media library on the device</string>
+    <!--Media scanner-->
+    <string name="scanning_media_storage">Media library is being scanned. Please wait…</string>
+    <string name="preparing_files_to_scan">Preparing files for scanning. Please wait…</string>
+    <string name="scanning_started">Scanning started</string>
+    <string name="scanning_completed">Scanning completed</string>
+    <string name="rescan_media_library">Rescan media library</string>
+    <string name="do_you_want_to_rescan_media_library">Do you want to rescan your media library?</string>
+</resources>

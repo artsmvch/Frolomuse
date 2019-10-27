@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:orderInCategory="0"
+        android:title="@string/sort"
+        android:id="@+id/title"/>
+
+    <group
+        android:orderInCategory="1"
+        android:id="@+id/orders"
+        android:menuCategory="container"
+        android:checkableBehavior="single">
+    </group>
+
+    <item
+        android:orderInCategory="100"
+        android:checkable="true"
+        android:title="@string/ascending"
+        android:id="@+id/ascending"/>
+</menu>

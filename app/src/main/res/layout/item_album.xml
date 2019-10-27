@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    style="@style/Layout.Item.Media.Album">
+
+    <com.frolo.muse.views.RoundedCornerImageView
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1"
+        app:imageCornerRadius="@dimen/album_art_rounded_corner_radius"
+        android:layout_margin="5dp"
+        android:id="@+id/imv_album_art"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop" />
+
+    <include
+        app:layout_constraintEnd_toEndOf="@id/imv_album_art"
+        app:layout_constraintBottom_toBottomOf="@id/imv_album_art"
+        layout="@layout/include_check"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="8dp"
+        android:layout_width="@dimen/list_item_check_size"
+        android:layout_height="@dimen/list_item_check_size" />
+
+    <include
+        android:id="@+id/view_options_menu"
+        android:layout_width="@dimen/options_menu_width"
+        android:layout_height="60dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        layout="@layout/include_options_menu" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        app:layout_constraintStart_toEndOf="@id/imv_album_art"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/view_options_menu"
+        style="@style/Item.Text.Primary"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="6dp"
+        android:layout_width="0dp"
+        android:gravity="start"
+        android:text="@string/placeholder_unknown"
+        android:id="@+id/tv_album_name"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        app:layout_constraintStart_toStartOf="@id/tv_album_name"
+        app:layout_constraintTop_toBottomOf="@id/tv_album_name"
+        app:layout_constraintEnd_toEndOf="@id/tv_album_name"
+        style="@style/Item.Text.Secondary"
+        android:layout_width="0dp"
+        android:gravity="start"
+        android:id="@+id/tv_artist_name"
+        android:text="@string/placeholder_unknown" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        app:layout_constraintStart_toStartOf="@id/tv_artist_name"
+        app:layout_constraintTop_toBottomOf="@id/tv_artist_name"
+        app:layout_constraintEnd_toEndOf="@id/tv_artist_name"
+        style="@style/Item.Text.Secondary"
+        android:layout_width="0dp"
+        android:gravity="start"
+        android:id="@+id/tv_number_of_tracks"
+        android:text="@string/placeholder_no_tracks" />
+</androidx.constraintlayout.widget.ConstraintLayout>

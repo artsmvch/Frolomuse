@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        style="@style/Layout.Dialog.Content.AlbumEditor">
+
+        <ImageView
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1"
+            android:layout_marginStart="12dp"
+            android:scaleType="centerCrop"
+            android:id="@+id/imv_album_art"
+            android:layout_width="0dp"
+            android:layout_height="0dp" />
+
+        <ImageView
+            app:layout_constraintStart_toStartOf="@id/imv_album_art"
+            app:layout_constraintBottom_toBottomOf="@id/imv_album_art"
+            android:layout_margin="6dp"
+            android:background="@drawable/bg_delete_art"
+            android:id="@+id/btn_delete_art"
+            android:padding="12dp"
+            android:layout_gravity="bottom|start"
+            android:tint="?attr/iconNormalTint"
+            android:src="@drawable/ic_trash"
+            android:layout_width="40dp"
+            android:layout_height="40dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="6dp"
+            app:layout_constraintStart_toEndOf="@id/imv_album_art"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:id="@+id/btn_cancel"
+            android:text="@string/cancel"
+            style="?attr/buttonCancel"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="6dp"
+            app:layout_constraintStart_toEndOf="@id/btn_cancel"
+            app:layout_constraintTop_toTopOf="@id/btn_cancel"
+            app:layout_constraintBottom_toBottomOf="@id/btn_cancel"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:id="@+id/btn_save"
+            android:text="@string/save"
+            style="?attr/buttonAction"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <include
+        android:visibility="gone"
+        layout="@layout/include_progress_overlay"
+        android:id="@+id/inc_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</FrameLayout>

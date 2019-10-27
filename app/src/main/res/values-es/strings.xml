@@ -1,0 +1,243 @@
+<resources>
+    <string name="ok">OK</string>
+    <string name="loading">Cargando…</string>
+    <string name="done">¡Hecho!</string>
+    <string name="cancel">Cancelar</string>
+    <string name="save">Salvar</string>
+    <string name="saved">Salvado</string>
+    <string name="checkout_this_track">¡Mira %s con el nuevo reproductor de música Frolomuse!</string>
+    <string name="share_track">Compartir pista</string>
+    <string name="share_tracks">Compartir colección de audio</string>
+    <string name="sorry_exception">Perdón, algo salió mal</string>
+    <string name="app_prefs">Preferencias de la aplicación</string>
+    <string name="about">Acerca de</string>
+    <string name="empty">Vacío</string>
+    <string name="current_playlist_is_empty">No hay canciones en la lista de reproducción actual.\norte
+         Por favor, elija otro</string>
+    <string name="pick_image">Seleccionar imagen</string>
+    <string name="file">Expediente</string>
+    <string name="created">Creado</string>
+    <string name="added_to_queue">Añadido a la cola</string>
+    <string name="deleted">Eliminado</string>
+    <string name="type_at_least_two_letters">Escriba al menos dos letras</string>
+    <string name="will_be_played_next">Se jugará el próximo</string>
+
+    <!--Errors-->
+    <string name="failed_to_delete_s">Error al eliminar %s</string>
+
+    <!--Sort orders-->
+    <string name="sort">Ordenar</string>
+    <string name="ascending">Ascendente</string>
+    <string name="sort_by_name">Por nombre</string>
+    <string name="sort_by_artist">Por artista</string>
+    <string name="sort_by_album">Por álbum</string>
+    <string name="sort_by_number_of_songs">Por numero de canciones</string>
+    <string name="sort_by_number_of_tracks">Por numero de pistas</string>
+    <string name="sort_by_number_of_albums">Por número de álbumes</string>
+    <string name="sort_by_date_added">Por fecha añadida</string>
+    <string name="sort_by_date_modified">Por fecha de modificación</string>
+    <string name="sort_by_filename">Por nombre de archivo</string>
+    <string name="sort_by_play_order">Por orden de juego</string>
+
+    <!--Rating-->
+    <string name="would_you_rate">¿Valorarías esta aplicación por 5 estrellas?</string>
+    <string name="no">No</string>
+    <string name="remind_me_later">Pregúntame Luego</string>
+    <string name="rate">¡Sí me gusta!</string>
+
+    <string name="choose_playlist">Elige la lista de reproducción</string>
+    <string name="current_playing">Juego actual</string>
+    <string name="track">Pista</string>
+    <string name="album">Álbum</string>
+    <string name="artist">Artista</string>
+    <string name="genre">Género</string>
+
+    <plurals name="s_songs">
+        <item quantity="one">%d canción</item>
+        <item quantity="other">%d canciones</item>
+    </plurals>
+
+    <string name="select_all">Seleccionar todo</string>
+
+    <!--placeholders-->
+    <string name="placeholder_unknown">Desconocido</string>
+    <string name="placeholder_zero_duration">0:00</string>
+    <string name="placeholder_unknown_genre">Desconocido</string>
+    <string name="placeholder_no_tracks">Sin pistas</string>
+    <string name="placeholder_unknown_date">19.91.2018</string>
+    <string name="placeholder_freq_range">0.00 hz</string>
+    <string name="placeholder_header_title">Encabezamiento</string>
+    <string name="placeholder_lib_name">Biblioteca</string>
+    <string name="placeholder_lib_version">1.0</string>
+    <string name="placeholder_lib_copyright">Derechos de autor</string>
+    <string name="placeholder_lib_description">Biblioteca</string>
+
+    <!--options menu-->
+    <string name="play">Jugar</string>
+    <string name="edit">Editar</string>
+    <string name="delete">Borrar</string>
+    <string name="add_to_playlist">Agregar a la lista de reproducción</string>
+    <string name="share">Compartir</string>
+    <string name="playlist">Lista de reproducción</string>
+    <string name="add_to_queue">Añadir a la cola</string>
+    <string name="create_playlist">Crear lista de reproducción</string>
+    <string name="edit_song_tags">Editar etiquetas de canciones</string>
+    <string name="edit_album_cover">Editar portada del álbum</string>
+    <string name="view_album">Ver álbum</string>
+    <string name="view_artist">Ver artista</string>
+    <string name="create_poster">Crear cartel</string>
+    <string name="save_playlist">Guardar lista de reproducción</string>
+    <string name="play_next">Jugar siguiente</string>
+    <string name="cut_ringtone">Cortar tono de llamada</string>
+
+    <!--deletion confirmation-->
+    <string name="confirmation">Confirmación</string>
+    <string name="sure_to_delete_item">¿Estás seguro de que quieres eliminar este elemento?</string>
+    <string name="sure_to_delete_items">¿Estás seguro de que deseas eliminar estos elementos?</string>
+
+    <!--titles for main view pager-->
+    <string name="all_songs">Toda la música</string>
+    <string name="songs">Canciones</string>
+    <string name="artists">Artistas</string>
+    <string name="genres">Géneros</string>
+    <string name="albums">Álbumes</string>
+    <string name="playlists">Listas de reproducción</string>
+    <string name="folders">Carpetas</string>
+    <string name="recently_added">Recientemente añadido</string>
+
+    <!--counting tracks, albums, genres and etc.-->
+    <string name="number_of_albums">%s álbumes</string>
+    <string name="one_album">1 álbum</string>
+    <string name="no_albums">Sin álbumes</string>
+    <string name="no_tracks">Sin pistas</string>
+    <string name="one_track">1 pista</string>
+    <string name="number_of_tracks">%s pistas</string>
+
+    <!--recently added-->
+    <string name="added">Añadido</string>
+    <string name="recent_period">Período reciente</string>
+    <string name="for_last_hour">Para la última hora</string>
+    <string name="for_last_day">Para el último día</string>
+    <string name="for_last_week">Para la semana pasada</string>
+    <string name="for_last_month">Para el mes pasado</string>
+    <string name="for_last_year">Para el año pasado</string>
+
+    <!--navigation drawer menu-->
+    <string name="nav_library">Biblioteca</string>
+    <string name="nav_player">Jugador</string>
+    <string name="nav_equalizer">Igualada</string>
+    <string name="nav_settings">Configuraciones</string>
+    <string name="nav_search">Buscar</string>
+    <string name="nav_favourite">Favorito</string>
+
+    <!--app preferences-->
+    <string name="theme">Tema</string>
+    <string name="version">Versión de la aplicación</string>
+    <string name="licenses">Licencias</string>
+    <string name="choose_theme">Escoge un tema</string>
+    <string name="light_theme">Tema ligero</string>
+    <string name="dark_blue_theme">Tema azul oscuro</string>
+    <string name="dark_especial_theme">Tema especial oscuro</string>
+    <string name="dark_purple_theme">Tema morado oscuro</string>
+    <string name="pause_playback">Pausa la reproducción</string>
+    <string name="resume_playback">Reanudar la reproducción</string>
+    <string name="pause_on_unplugged">Pausa la reproducción después de desconectar los auriculares</string>
+    <string name="resume_on_plugged_in">Reanudar la reproducción después de que los auriculares estén enchufados</string>
+    <string name="sleep_timer">Tiempo de dormir</string>
+    <string name="sleep_time_description">Establecer un temporizador para detener la reproducción</string>
+    <string name="you_have_already_set_up_sleep_timer">Ya has configurado un temporizador.
+        \n¿Desea restablecer el temporizador actual o configurar uno nuevo?</string>
+    <string name="reset_sleep_timer">Reiniciar</string>
+    <string name="new_sleep_timer">Establecer un nuevo temporizador</string>
+    <string name="rate_this_app">Califica esta aplicación</string>
+    <string name="rate_this_app_if_you_want">Si te gusta esta aplicación, puedes puntuar en Play Market</string>
+    <string name="share_this_app">Comparte esta aplicación</string>
+    <string name="share_this_app_if_you_want">Puedes ayudar a que esta aplicación crezca si la compartes con amigos</string>
+    <string name="checkout_out">¡Mira el nuevo reproductor de música Frolomuse!</string>
+    <string name="help_with_translations">Ayuda con las traducciones</string>
+    <string name="help_with_translations_desc">Pulsa aquí si quieres ayudar con las traducciones</string>
+    <string name="library_sections">Secciones de la biblioteca</string>
+    <string name="library_sections_desc">Secciones de la biblioteca que desea ver y su orden</string>
+    <string name="show_notification">Muestra la notificación</string>
+    <string name="show_notification_desc">Mostrar notificación de la canción que se está reproduciendo actualmente</string>
+    <string name="shown">Mostrado</string>
+    <string name="sleep_timer_is_set">El temporizador de apagado está configurado</string>
+    <string name="sleep_timer_is_off">El temporizador de apagado esta apagado</string>
+    <string name="rescan_media_library_desc">El escaneo de la biblioteca de medios ayuda a la aplicación a encontrar nuevos archivos de audio</string>
+
+    <!--create playlist-->
+    <string name="type_name_for_playlist">Escribe el nombre para la lista de reproducción</string>
+    <string name="name_is_empty">El nombre debe ser no vacío</string>
+    <string name="such_name_already_exists">Tal nombre ya existe</string>
+    <string name="edit_name_of_playlist">Editar nombre de lista de reproducción</string>
+
+    <!--create preset-->
+    <string name="type_name_for_preset">Por favor escriba el nombre del preset</string>
+
+    <!--equalizer-->
+    <string name="freq_range">%s hz</string>
+    <string name="nothing_to_show">Nada que mostrar</string>
+    <string name="bass">Bajo</string>
+    <string name="virtualizer">Virtualizador</string>
+    <string name="headset_not_plugged">Para usar este efecto, conecte el auricular</string>
+    <string name="show_visualizer">Mostrar visualizador</string>
+    <string name="audio_fx_hint">Por favor, encienda el ecualizador primero</string>
+    <!--playback params-->
+    <string name="playback_params">Parámetros de reproducción</string>
+    <string name="speed">Velocidad</string>
+    <string name="pitch">Tono</string>
+    <string name="reset">Reiniciar</string>
+    <string name="normalize">Normalizar</string>
+
+    <!--media file editor-->
+    <string name="song_name_layout">Nombre</string>
+    <string name="album_name_layout">Álbum</string>
+    <string name="genre_name_layout">Género</string>
+    <string name="artist_name_layout">Artista</string>
+    <string name="filepath">Ruta de archivo %s</string>
+    <string name="duration">Duración %s</string>
+
+    <string name="app_theme">Tema de la aplicación</string>
+    <string name="third_part_libs">Bibliotecas de terceros</string>
+    <string name="album_grid">Parrilla de álbum</string>
+    <string name="show_album_grid">Usa la grilla para mostrar los álbumes</string>
+
+    <!--Preset-->
+    <string name="preset">Preestablecida</string>
+    <string name="preset_none">Nada</string>
+    <string name="preset_normal">Normal</string>
+    <string name="preset_rock">Rock</string>
+    <string name="preset_heavy_metal">Metal pesado</string>
+    <string name="preset_classical">Clásico</string>
+    <string name="preset_folk">Gente</string>
+    <string name="preset_flat">Plano</string>
+    <string name="preset_dance">Danza</string>
+    <string name="preset_hip_hop">Hip hop</string>
+    <string name="preset_jazz">Jazz</string>
+    <string name="preset_pop">Popular</string>
+
+    <!--Preset reverb-->
+    <string name="preset_reverb">Reverberación</string>
+    <string name="preset_reverb_none">Nada</string>
+    <string name="preset_reverb_large_hall">Sala grande</string>
+    <string name="preset_reverb_large_room">Habitación grande</string>
+    <string name="preset_reverb_medium_hall">Sala mediana</string>
+    <string name="preset_reverb_medium_room">Habitacion mediana</string>
+    <string name="preset_reverb_plate">Plato</string>
+    <string name="preset_reverb_small_rooom">Habitación pequeña</string>
+
+    <!--Playback notification-->
+    <string name="playback_channel_name">Reproducción</string>
+    <string name="playback_channel_desc">Notifica sobre el estado de reproducción actual</string>
+
+    <!--Media scanner notification-->
+    <string name="media_scanner_channel_name">Escáner de medios</string>
+    <string name="media_scanner_channel_desc">Notifica sobre el escaneo de la biblioteca de medios en el dispositivo</string>
+    <!--Media scanner-->
+    <string name="scanning_media_storage">La biblioteca de medios está siendo escaneada. Por favor espera…</string>
+    <string name="preparing_files_to_scan">Preparando archivos para escanear. Por favor espera…</string>
+    <string name="scanning_started">Escaneo iniciado</string>
+    <string name="scanning_completed">Escaneo completado</string>
+    <string name="rescan_media_library">Volver a escanear la biblioteca de medios</string>
+    <string name="do_you_want_to_rescan_media_library">¿Quieres volver a escanear tu biblioteca de medios?</string>
+</resources>

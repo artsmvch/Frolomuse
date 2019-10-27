@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingTop="16dp"
+    android:gravity="start">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Text.MediaMenu"
+        android:textSize="19sp"
+        android:id="@+id/tv_media_name"
+        tools:text="Media Name"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Text.MediaMenu"
+        android:textSize="15sp"
+        android:id="@+id/tv_media_type"
+        tools:text="Media Type"/>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_delete"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            android:layout_marginTop="8dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:tint="?attr/iconNormalTint"
+            style="@style/Icon.MediaMenu"
+            android:src="@drawable/ic_share"
+            android:id="@+id/btn_share"/>
+
+        <ImageView
+            app:layout_constraintStart_toEndOf="@id/btn_share"
+            app:layout_constraintTop_toTopOf="@id/btn_share"
+            app:layout_constraintEnd_toStartOf="@id/btn_like"
+            app:layout_constraintBottom_toBottomOf="@id/btn_share"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:tint="?attr/iconNormalTint"
+            style="@style/Icon.MediaMenu"
+            android:src="@drawable/ic_trash"
+            android:id="@+id/btn_delete"/>
+
+        <ImageView
+            app:layout_constraintStart_toEndOf="@id/btn_delete"
+            app:layout_constraintTop_toTopOf="@id/btn_share"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/btn_share"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            style="@style/Icon.MediaMenu"
+            android:src="@drawable/ic_heart"
+            android:id="@+id/btn_like"
+            android:background="@color/transparent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <include
+        layout="@layout/include_divider"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/vertical_divider_height"/>
+
+    <androidx.core.widget.NestedScrollView
+        android:overScrollMode="never"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_action_play"
+                android:id="@+id/btn_play"
+                style="@style/Button.MediaMenu"
+                android:text="@string/play" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_action_play_next"
+                android:id="@+id/btn_play_next"
+                style="@style/Button.MediaMenu"
+                android:text="@string/play_next" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_action_add_to_queue"
+                android:id="@+id/btn_add_to_queue"
+                style="@style/Button.MediaMenu"
+                android:text="@string/add_to_queue" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/btn_view_album"
+                style="@style/Button.MediaMenu"
+                android:text="@string/view_album" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/btn_view_artist"
+                style="@style/Button.MediaMenu"
+                android:text="@string/view_artist" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_action_edit"
+                android:id="@+id/btn_edit"
+                style="@style/Button.MediaMenu"
+                android:text="@string/edit" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_action_add_to_playlist"
+                android:id="@+id/btn_add_to_playlist"
+                style="@style/Button.MediaMenu"
+                android:text="@string/add_to_playlist" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>

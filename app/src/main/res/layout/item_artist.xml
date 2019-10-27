@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    style="@style/Layout.Item.Media">
+
+    <include
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        layout="@layout/include_options_menu"
+        android:layout_height="40dp"
+        android:layout_width="@dimen/options_menu_width"
+        android:id="@+id/view_options_menu"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        app:layout_constraintTop_toTopOf="@id/view_options_menu"
+        app:layout_constraintEnd_toStartOf="@id/view_options_menu"
+        app:layout_constraintBottom_toBottomOf="@id/view_options_menu"
+        android:id="@+id/tv_number_of_tracks"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/placeholder_no_tracks"
+        style="@style/Item.Text.Secondary"/>
+
+    <ImageView
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/imv_artist_art"
+        android:layout_centerVertical="true"
+        android:src="@drawable/ic_music_folder_placeholder"
+        android:layout_margin="@dimen/list_item_img_art_padding"
+        android:layout_width="@dimen/list_item_img_art_size"
+        android:layout_height="@dimen/list_item_img_art_size" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        app:layout_constraintStart_toEndOf="@id/imv_artist_art"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/tv_number_of_tracks"
+        app:layout_constraintBottom_toTopOf="@id/tv_number_of_albums"
+        app:layout_constraintVertical_chainStyle="packed"
+        android:layout_width="0dp"
+        android:layout_marginStart="8dp"
+        style="@style/Item.Text.Primary"
+        android:text="@string/placeholder_unknown"
+        android:id="@+id/tv_artist_name"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        app:layout_constraintStart_toStartOf="@id/tv_artist_name"
+        app:layout_constraintTop_toBottomOf="@id/tv_artist_name"
+        app:layout_constraintEnd_toEndOf="@id/tv_artist_name"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="0dp"
+        style="@style/Item.Text.Secondary"
+        android:text="@string/placeholder_unknown"
+        android:id="@+id/tv_number_of_albums"/>
+
+    <include
+        app:layout_constraintEnd_toEndOf="@id/imv_artist_art"
+        app:layout_constraintBottom_toBottomOf="@id/imv_artist_art"
+        layout="@layout/include_check"
+        android:layout_width="@dimen/list_item_check_size"
+        android:layout_height="@dimen/list_item_check_size" />
+</androidx.constraintlayout.widget.ConstraintLayout>

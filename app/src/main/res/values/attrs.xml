@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="backdropBackLayer" format="color|reference"/>
+    <attr name="backdropFrontLayer" format="color|reference"/>
+
+    <attr name="colorContextual" format="color|reference"/>
+    <attr name="colorOnContextual" format="color|reference"/>
+
+    <attr name="iconSongPlaceholder" format="reference"/>
+    <attr name="iconAlbumPlaceholder" format="reference"/>
+    <attr name="iconAlbumArtLargePlaceholder" format="reference"/>
+    <attr name="iconMusicFolderPlaceholder" format="reference"/>
+    <attr name="iconFolderPlaceholder" format="reference"/>
+    <attr name="iconRootFolderPlaceholder" format="reference"/>
+    <attr name="iconFilePlaceholder" format="reference"/>
+    <attr name="itemIconForegroundTint" format="color"/>
+    <attr name="itemIconBackgroundTint" format="color"/>
+    <attr name="playerToolbarStyle" format="reference"/>
+    <attr name="modeOffTint" format="color"/>
+    <attr name="modeOnTint" format="color"/>
+    <attr name="overlayTint" format="color"/>
+    <attr name="iconNormalTint" format="color"/>
+    <attr name="visualizerColor" format="color"/>
+    <attr name="highlightColor" format="color"/>
+    <attr name="searchHeader" format="color|reference"/>
+    <attr name="buttonAction" format="reference"/>
+    <attr name="buttonCancel" format="reference"/>
+
+    <attr format="reference" name="iBarStyle"/>
+
+    <declare-styleable name="MiniVisualizer">
+        <attr name="blockNumber" format="integer" />
+        <attr name="blockSpacing" format="dimension" />
+        <attr name="backgroundColor" format="color" />
+    </declare-styleable>
+
+    <declare-styleable name="FroloBar">
+        <attr name="activeColor"/>
+        <attr name="inactiveColor"/>
+        <attr name="periodDuration"/>
+        <attr name="pointCount"/>
+    </declare-styleable>
+
+    <declare-styleable name="IBar">
+        <attr name="activeColor" format="color"/>
+        <attr name="inactiveColor" format="color"/>
+    </declare-styleable>
+
+    <declare-styleable name="ControllerView">
+        <attr name="label" format="string"/>
+    </declare-styleable>
+
+    <declare-styleable name="RoundedCornerImageView">
+        <attr name="imageCornerRadius" format="dimension"/>
+    </declare-styleable>
+    
+    <declare-styleable name="CheckableImageView">
+        <attr name="checkMarkShape" format="enum">
+            <enum name="circle" value="0"/>
+            <enum name="square" value="1"/>
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="CheckView">
+        <attr name="strokeWidth" format="dimension|reference"/>
+        <attr name="strokeColor" format="color|reference"/>
+        <attr name="circleColor" format="color|reference"/>
+    </declare-styleable>
+</resources>

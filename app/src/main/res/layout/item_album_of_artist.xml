@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="152dp"
+    android:layout_height="152dp"
+    style="@style/CardView.Item.Media.AlbumOfArtist">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/imv_album_art"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop" />
+
+        <LinearLayout
+            android:layout_gravity="bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:paddingStart="18dp"
+            android:paddingEnd="18dp"
+            android:background="@color/transparent_black">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="@string/placeholder_unknown"
+                android:id="@+id/tv_album_name"
+                style="@style/Item.Text.Primary.AlbumOfArtist"/>
+
+            <ImageView
+                android:paddingTop="6dp"
+                android:paddingBottom="6dp"
+                android:paddingStart="6dp"
+                android:paddingEnd="8dp"
+                android:id="@+id/view_options_menu"
+                android:layout_width="28dp"
+                android:layout_height="42dp"
+                android:src="@drawable/ic_options_menu"
+                android:tint="@color/white" />
+        </LinearLayout>
+
+        <include
+            layout="@layout/include_check"
+            android:layout_gravity="top|end"
+            android:layout_width="@dimen/list_item_check_size"
+            android:layout_height="@dimen/list_item_check_size"
+            android:layout_margin="12dp"/>
+    </FrameLayout>
+</com.google.android.material.card.MaterialCardView>

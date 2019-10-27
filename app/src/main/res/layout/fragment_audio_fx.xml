@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include layout="@layout/include_toolbar"/>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <include
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                layout="@layout/include_audio_fx_content"/>
+
+            <include
+                android:visibility="invisible"
+                android:layout_margin="10dp"
+                android:layout_gravity="top|end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                layout="@layout/include_audio_fx_hint"
+                android:id="@+id/layout_audio_fx_hint"/>
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <include
+        android:id="@+id/layout_player_placeholder"
+        layout="@layout/include_message"
+        android:visibility="gone"/>
+</FrameLayout>

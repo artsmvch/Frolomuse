@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/**
+ * Copyright (c) 2008, Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); 
+ * you may not use this file except in compliance with the License. 
+ * You may obtain a copy of the License at 
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0 
+ *
+ * Unless required by applicable law or agreed to in writing, software 
+ * distributed under the License is distributed on an "AS IS" BASIS, 
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. 
+ * See the License for the specific language governing permissions and 
+ * limitations under the License.
+ */
+-->
+
+<resources>
+
+    <!--
+     Main / media select activity
+     -->
+
+    <!--
+     Edit activity
+     -->
+
+    <!-- Labels next to the start and end time edit boxes -->
+    <string name="start_label">Start:</string>
+    <string name="end_label">Eind:</string>
+
+    <string name="edit_intent">Bewerken</string>
+
+    <string name="time_seconds">seconden</string>
+
+    <!-- After you save a notification or ringtone and have more options
+	 for what to do with them -->
+    <string name="what_to_do_with_ringtone">Opgeslagen. Instellen als standaardbeltoon of toewijzen aan een contact?</string>
+    <string name="set_default_notification">Opgeslagen. Instellen als standaardmelding?</string>
+
+    <string name="make_default_ringtone_button">Instellen als standaard</string>
+    <string name="choose_contact_ringtone_button">Toewijzen aan contact</string>
+    <string name="do_nothing_with_ringtone_button">Sluiten</string>
+
+    <!-- Progress dialog text for loading, recording, or saving... -->
+    <string name="progress_dialog_loading">Laden…</string>
+    <string name="progress_dialog_recording">Recording…</string>
+    <string name="progress_dialog_saving">Opslaan…</string>
+    <string name="progress_dialog_cancel">Cancel</string>
+    <string name="progress_dialog_stop">Stop</string>
+
+    <!--
+     Menu items
+     -->
+
+    <string name="menu_save">Opslaan</string>
+    <string name="menu_reset">Opnieuw instellen</string>
+    <string name="menu_about">Over</string>
+
+    <!--
+     Context menu items
+     -->
+
+    <!--
+     File Save dialog
+     -->
+
+    <string name="file_save_title">Opslaan als:</string>
+    <string name="file_save_button_save">Opslaan</string>
+    <string name="file_save_button_cancel">Annuleren</string>
+
+    <string name="ringtone_type_label">Type:</string>
+
+    <string name="type_music">Muziek</string>
+    <string name="type_alarm">Alarm</string>
+    <string name="type_notification">Melding</string>
+    <string name="type_ringtone">Beltoon</string>
+
+    <string name="ringtone_name_label">Naam:</string>
+
+    <string name="artist_name">Ringdroid</string>
+
+    <!--
+     Delete confirmation dialog
+     -->
+
+    <!--
+     Success and error messages
+     -->
+
+    <string name="alert_title_success">Succes</string>
+    <string name="alert_title_failure">Fout</string>
+    <string name="alert_ok_button">OK</string>
+    <string name="alert_yes_button">Ja, graag.</string>
+    <string name="alert_no_button">Nee, bedankt.</string>
+
+    <string name="save_success_message">Opgeslagen.</string>
+    <string name="default_ringtone_success_message">Standaardbeltoon gewijzigd</string>
+    <string name="play_error">Kan dit mediabestand niet afspelen</string>
+    <string name="no_unique_filename">Kan unieke bestandsnaam niet vinden</string>
+    <string name="record_error">Error recording audio</string>
+    <string name="too_small_error">Kan een bestand dat zo kort is, niet opslaan. Maak het langer.</string>
+    <string name="write_error">Fout bij schrijven van bestand</string>
+    <string name="read_error">Fout bij lezen van bestand</string>
+
+    <string name="no_space_error">De SD-kaart is vol. Onvoldoende ruimte om dit bestand op te slaan.</string>
+
+    <string name="bad_extension_error">Ringdroid kan bestanden van dit type niet bewerken</string>
+    <string name="no_extension_error">Ringdroid kan een bestand niet bewerken als het geen extensie zoals .mp3 of .wav heeft</string>
+
+    <!--
+     Choose Contact Activity
+     -->
+
+    <!--
+     About
+     -->
+
+    <string name="about_title">Over Ringdroid</string>
+    <string name="about_text"><![CDATA[Met Ringdroid kunt u MP3-, OGG-, WAV-, AAC- en AMR-audiobestanden bewerken en beltonen, alarmen en meldingen van deze bestanden maken.\n\nTip: kopieer audiobestanden naar uw SD-kaart met een USB-kabel.\n\nTip: druk lang op een audiobestand in het hoofdscherm om het te verwijderen. Meer hieronder…\n\nTip: tik ergens op de golfvorm om het afspelen te starten vanaf die positie.\n\nTip: tik tijdens het afspelen op het woord Start of Eind om snel de start- en eindmarkeringen in te stellen op de huidige afspeeltijd.\n\nTip: gebruik de draaiknop voor nauwkeurigere aanpassingen.\n\nVersie %s\n\nOntwikkelaar: Dominic Mazzoni, Nicolas Faralli\nGraphics: Joseph Wain\nOndersteuning en evangelisatie: Eugene Koh\n\nRingdroid is gratis software, gedistribueerd onder de Apache 2.0-licentie. Broncode is beschikbaar op github.com/google/ringdroid\n]]></string>
+
+</resources>

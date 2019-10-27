@@ -1,0 +1,146 @@
+package com.frolo.muse.ui.base
+
+import android.Manifest
+import android.app.Dialog
+import android.content.Context
+import android.os.Bundle
+import android.view.ViewGroup
+import android.widget.Toast
+import androidx.annotation.StringRes
+import androidx.appcompat.app.AppCompatDialogFragment
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProviders
+import com.frolo.muse.App
+import com.frolo.muse.R
+import com.frolo.muse.Trace
+import com.frolo.muse.di.modules.ViewModelModule
+import com.frolo.muse.repository.Preferences
+import com.tbruyelle.rxpermissions2.RxPermissions
+import io.reactivex.disposables.Disposable
+
+
+abstract class BaseDialogFragment : AppCompatDialogFragment() {
+
+    // Rx permissions
+    private lateinit var rxPermissions: RxPermissions
+    private var rxPermissionDisposable: Disposable? = null
+
+    // Single toast
+    private var errorToast: Toast? = null
+
+    // The following members are supposed to be injected
+    private var prefs: Preferences? = null
+    private var vmFactory: ViewModelModule.ViewModelFactory? = null
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        rxPermissions = RxPermissions(this)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        dialog?.window?.also { window ->
+            window.attributes.windowAnimations = R.style.DialogAnimation
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        rxPermissionDisposable?.dispose()
+    }
+
+    //<editor-fold desc="Injectors">
+    internal fun prefs(): Lazy<Preferences> = lazy {
+        if (prefs == null) {
+            prefs = requireApp().appComponent.providePreferences()
+        }
+
+        prefs ?:
+        throw IllegalStateException("Failed to inject preferences")
+    }
+
+    internal inline fun <reified T : ViewModel> viewModel(): Lazy<T> = lazy {
+        if (vmFactory == null) {
+            vmFactory = requireApp().appComponent.provideVMFactory()
+        }
+
+        val factory = vmFactory ?:
+        throw IllegalStateException("Failed to viewModel vm factory")
+
+        ViewModelProviders.of(this, factory)
+                .get(T::class.java)
+    }
+    //</editor-fold>
+
+    protected fun setupDialogSize(dialog: Dialog) {
+        val metrics = resources.displayMetrics
+        val width = metrics.widthPixels
+        val height = metrics.heightPixels
+        setupDialogSize(dialog, 6 * width / 7, ViewGroup.LayoutParams.WRAP_CONTENT)
+    }
+
+    protected fun setupDialogSize(dialog: Dialog, width: Int, height: Int) {
+        dialog.window?.also { window ->
+            window.setLayout(width, height)
+        }
+    }
+
+    fun requireApp() = requireActivity().application as App
+
+    fun isPermissionGranted(permission: String): Boolean {
+        return rxPermissions.isGranted(permission)
+    }
+
+    fun requestRxPermissions(vararg permissions: String, consumer: (granted: Boolean) -> Unit) {
+        rxPermissionDisposable?.dispose()
+        rxPermissionDisposable = rxPermissions.request(*permissions)?.subscribe(consumer, {
+            Trace.e(it)
+        })
+    }
+
+    fun checkReadPermissionFor(action: () -> Unit) {
+        val permissions = arrayOf(
+                Manifest.permission.READ_EXTERNAL_STORAGE
+        )
+        requestRxPermissions(*permissions) { granted ->
+            if (granted) action()
+        }
+    }
+
+    fun checkWritePermissionFor(action: () -> Unit) {
+        val permissions = arrayOf(
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+        )
+        requestRxPermissions(*permissions) { granted ->
+            if (granted) action()
+        }
+    }
+
+    fun checkReadWritePermissionsFor(action: () -> Unit) {
+        val permissions = arrayOf(
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+        )
+        requestRxPermissions(*permissions) { granted ->
+            if (granted) action()
+        }
+    }
+
+    fun postLongMessage(message: String) {
+        val context = context ?: return
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+    }
+
+    fun postLongMessage(@StringRes stringId: Int) {
+        val context = context ?: return
+        Toast.makeText(context, stringId, Toast.LENGTH_LONG).show()
+    }
+
+    fun postError(error: Throwable?) {
+        errorToast?.cancel()
+        val msg = error?.message.let { msg ->
+            if (msg.isNullOrBlank()) getString(R.string.sorry_exception) else msg
+        }
+        errorToast = Toast.makeText(context, msg, Toast.LENGTH_LONG).apply { show() }
+    }
+}

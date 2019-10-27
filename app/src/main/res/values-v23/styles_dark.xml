@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Spinner.Dark.Purple" parent="Widget.AppCompat.Spinner.Underlined">
+        <item name="android:background">@drawable/bg_spinner_dark_purple</item>
+    </style>
+
+    <style name="Spinner.Dark.Blue" parent="Widget.AppCompat.Spinner.Underlined">
+        <item name="android:background">@drawable/bg_spinner_dark_blue</item>
+    </style>
+</resources>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/Item.Text.Primary"
+            android:id="@+id/textLicences"
+            android:textSize="19sp"
+            android:padding="10dp"
+            android:text="@string/licenses"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+        <ImageView
+            android:background="?attr/selectableItemBackground"
+            android:id="@+id/imv_close"
+            android:tint="?attr/iconNormalTint"
+            android:src="@drawable/ic_cross"
+            android:padding="15dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp" />
+    </LinearLayout>
+
+    <include
+        layout="@layout/include_divider"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/vertical_divider_height"/>
+
+    <com.frolo.muse.views.spring.SpringRecyclerView
+        android:id="@+id/rv_libs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</LinearLayout>

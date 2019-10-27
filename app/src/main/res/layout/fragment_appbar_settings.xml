@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.appbar.AppBarLayout
+        style="@style/Base.AppBarLayout.Lifted"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <include
+            app:layout_scrollFlags="scroll|enterAlways|snap"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tb_actions"
+            layout="@layout/include_toolbar"/>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <fragment
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        class="com.frolo.muse.ui.main.settings.SettingsFragment"
+        android:tag="settings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

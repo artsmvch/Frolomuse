@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/*
+ * Ringdroid/AndroidManifest.xml
+ *
+ * Copyright (C) 2008 Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+-->
+
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.ringdroid"
+    android:versionName="2.7.4"
+    android:versionCode="20704">
+
+    <!--<uses-sdk android:minSdkVersion="16"-->
+        <!--android:targetSdkVersion="25"/>-->
+
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <!--<uses-permission android:name="android.permission.RECORD_AUDIO"/>-->
+
+    <supports-screens android:anyDensity="true" />
+
+    <!--android:label="@string/ringdroid_app_name"
+        android:icon="@drawable/ringdroidlogo"
+        android:theme="@android:style/Theme.Holo"-->
+
+    <application
+        android:largeHeap="true"
+        android:allowBackup="true">
+
+        <!-- Activity for actually editing a particular audio file.
+                 Controls viewing the waveform, setting the start and end
+                 positions, playback, and triggering saving of the output
+                 file. -->
+        <activity android:name="com.alexfrolov.ringdroid.RingdroidEditActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:windowSoftInputMode="adjustResize"
+            android:hardwareAccelerated="true">
+            <intent-filter android:label="@string/edit_intent">
+                <action android:name="android.intent.action.EDIT" />
+                <data android:mimeType="audio/*" />
+            </intent-filter>
+        </activity>
+
+    </application>
+
+</manifest>

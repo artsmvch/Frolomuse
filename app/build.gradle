@@ -1,0 +1,204 @@
+buildscript {
+    repositories {
+        google()
+        jcenter()
+        mavenCentral()
+        maven { url 'https://maven.fabric.io/public' }
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.4.2'
+        classpath 'io.fabric.tools:gradle:1.31.0'
+    }
+}
+
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'io.fabric'
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+    mavenCentral()
+    google()
+}
+
+// returns properties loaded from the giving filepath
+ext.loadProperties = { filepath ->
+    def propertiesFile = new File(filepath)
+    def properties = new Properties()
+    properties.load(new FileInputStream(propertiesFile))
+    return properties
+}
+
+android {
+    signingConfigs {
+        release {
+            def releaseConfigs = loadProperties("$rootDir/app/config/release/config.properties")
+
+            storeFile file(releaseConfigs['storeFile'])
+            storePassword releaseConfigs['storePassword']
+            keyAlias releaseConfigs['keyAlias']
+            keyPassword releaseConfigs['keyPassword']
+        }
+    }
+    compileSdkVersion 29
+    buildToolsVersion "28.0.3"
+    defaultConfig {
+        applicationId "com.frolo.musp"
+        minSdkVersion 21
+        targetSdkVersion 29
+        versionCode 72
+        versionName "4.02.01"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        setProperty("archivesBaseName", applicationId + "-v" + versionCode + "(" + versionName + ")")
+        multiDexEnabled true
+
+        resValue "string", "app_name", "Frolomuse"
+
+        buildConfigField "String", "GET_LYRICS_API_KEY", "\"ECsJ0RFHA0yHj1JME1lTHUniLV97ON7qMD57grtuqmIUylJNvz7LlFR4NcgdinnI\""
+        buildConfigField "String", "FLURRY_KEY", "\"P5FNPGFXNB6WGXP8RWND\""
+        buildConfigField "String", "DEVELOPER_EMAIL", "\"alexei.artsimovich@gmail.com\""
+
+        vectorDrawables.useSupportLibrary = true
+
+        resConfigs "de", "en", "es", "fr", "hi", "in", "ja", "pt", "ru", "tr", "zh"
+
+        manifestPlaceholders = [ fabricApiKey:"f2eef1e1cae51612a4a816a63743782d34cfa83d" ]
+    }
+    buildTypes {
+        debug {
+            applicationIdSuffix ".dev"
+            debuggable true
+        }
+        stage {
+            initWith(debug) // sign with debug configs
+            applicationIdSuffix ".dev"
+            shrinkResources false
+            minifyEnabled false
+            resValue "string", "app_name", "Stage Frolomuse"
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            versionNameSuffix "-S"
+        }
+        release {
+            shrinkResources true
+            minifyEnabled true
+            resValue "string", "app_name", "Frolomuse"
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            versionNameSuffix "-R"
+            signingConfig signingConfigs.release
+        }
+    }
+    productFlavors {
+    }
+
+    lintOptions {
+        //checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        //abortOnError false
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+
+    // Unit tests
+    testImplementation 'junit:junit:4.12'
+
+    // Mockito
+    testImplementation 'org.mockito:mockito-core:2.23.0'
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0"
+    testImplementation "androidx.arch.core:core-testing:2.1.0"
+
+    // Flurry analytics
+    implementation('com.flurry.android:ads:8.1.0') {
+        transitive = true
+    }
+
+    // multi dex
+    implementation 'androidx.multidex:multidex:2.0.1'
+
+    // architecture
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.1.0'
+    kapt "android.arch.lifecycle:compiler:1.1.1"
+
+    // support
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    // Do not use v1.1.1 for preferences: it messes with image tinting
+    implementation 'androidx.preference:preference:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.1.0-rc01'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'com.google.android.material:material:1.1.0-beta01'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'androidx.dynamicanimation:dynamicanimation:1.0.0'
+
+    // rx
+    implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
+
+    // image loader
+    implementation 'com.github.bumptech.glide:glide:4.10.0'
+
+    // equalizer bars
+    implementation 'com.h6ah4i.android.widget.verticalseekbar:verticalseekbar:0.7.2'
+
+    // navigation bottom bar that controls fragments stacks
+    implementation 'com.ncapdevi:frag-nav:3.2.0'
+
+    // glide transformations
+    implementation 'jp.wasabeef:glide-transformations:3.1.0'
+
+    // Sticky headers recycler view
+    implementation 'com.timehop.stickyheadersrecyclerview:library:0.4.3@aar'
+
+    // alphabet index fast scroller
+    implementation 'com.l4digital.fastscroll:fastscroll:2.0.1'
+
+    // Ringtone cutter
+    implementation project(':ringdroid')
+
+    // For runtime permissions
+    implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
+
+    // circle image view
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
+
+    // music play button
+    implementation project(':mediabutton')
+
+    // Fabric
+    implementation 'com.google.firebase:firebase-core:16.0.9'
+    implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    // DI
+    implementation "com.google.dagger:dagger:2.23.2"
+    kapt "com.google.dagger:dagger-compiler:2.23.2"
+
+    // Assisted injection
+    compileOnly 'com.squareup.inject:assisted-inject-annotations-dagger2:0.5.0'
+    kapt 'com.squareup.inject:assisted-inject-processor-dagger2:0.5.0'
+
+    // MP3 tags editor
+    implementation project(path: ':MyID3_for_Android')
+
+//    def media2_version = "1.0.0"
+//    implementation "androidx.media2:media2-player:$media2_version"
+}
+
+apply plugin: 'com.google.gms.google-services'
+
+if (project.hasProperty('kapt')) {
+    // Reference for 'kapt' DSL: https://kotlinlang.org/docs/reference/kapt.html#java-compiler-options
+    kapt {
+        // we expect this closure to run over a org.jetbrains.kotlin.gradle.plugin.KaptExtension
+        javacOptions {
+            option("-source", "8")
+            option("-target", "8")
+        }
+    }
+}

@@ -1,0 +1,242 @@
+<resources>
+    <string name="ok">ठीक</string>
+    <string name="loading">लोड हो रहा है…</string>
+    <string name="done">किया हुआ!</string>
+    <string name="cancel">रद्द करना</string>
+    <string name="save">बचाना</string>
+    <string name="saved">बचाया</string>
+    <string name="checkout_this_track">नए फ्रोलोम्यूज म्यूजिक प्लेयर के साथ %s देखें!</string>
+    <string name="share_track">ट्रैक ट्रैक करें</string>
+    <string name="share_tracks">ऑडियो संग्रह साझा करें</string>
+    <string name="sorry_exception">क्षमा करें, कुछ गलत हो गया</string>
+    <string name="app_prefs">ऐप प्राथमिकताएं</string>
+    <string name="about">के बारे में</string>
+    <string name="empty">खाली</string>
+    <string name="current_playlist_is_empty">वर्तमान प्लेलिस्ट में कोई गाना नहीं है।\n
+         कृपया दूसरा चुनें</string>
+    <string name="pick_image">छवि चुनें</string>
+    <string name="file">फ़ाइल</string>
+    <string name="created">बनाया था</string>
+    <string name="added_to_queue">कतार में जोड़ा गया</string>
+    <string name="deleted">हटाए गए</string>
+    <string name="type_at_least_two_letters">कम से कम दो अक्षर टाइप करें</string>
+    <string name="will_be_played_next">आगे खेला जाएगा</string>
+
+    <!--Errors-->
+    <string name="failed_to_delete_s">%s को हटाने में विफल</string>
+
+    <!--Sort orders-->
+    <string name="sort">तरह</string>
+    <string name="ascending">आरोही</string>
+    <string name="sort_by_name">नाम से</string>
+    <string name="sort_by_artist">कलाकार द्वारा</string>
+    <string name="sort_by_album">एल्बम द्वारा</string>
+    <string name="sort_by_number_of_songs">गाने की संख्या से</string>
+    <string name="sort_by_number_of_tracks">पटरियों की संख्या से</string>
+    <string name="sort_by_number_of_albums">एल्बमों की संख्या से</string>
+    <string name="sort_by_date_added">तिथि तक जोड़ा गया</string>
+    <string name="sort_by_date_modified">तिथि संशोधित करके</string>
+    <string name="sort_by_filename">फ़ाइल नाम से</string>
+    <string name="sort_by_play_order">खेलने के आदेश से</string>
+
+    <!--Rating-->
+    <string name="would_you_rate">क्या आप इस ऐप को 5 सितारों के लिए रेट करेंगे?</string>
+    <string name="no">नहीं</string>
+    <string name="remind_me_later">मुझसे बाद में पूछना</string>
+    <string name="rate">हाँ मुझे यह पसंद है!</string>
+
+    <string name="choose_playlist">प्लेलिस्ट चुनें</string>
+    <string name="current_playing">वर्तमान खेल</string>
+    <string name="track">धावन पथ</string>
+    <string name="album">एल्बम</string>
+    <string name="artist">कलाकार</string>
+    <string name="genre">शैली</string>
+
+    <plurals name="s_songs">
+        <item quantity="one">%d गीत</item>
+        <item quantity="other">%d गाने</item>
+    </plurals>
+
+    <string name="select_all">सभी का चयन करे</string>
+
+    <!--placeholders-->
+    <string name="placeholder_unknown">अनजान</string>
+    <string name="placeholder_zero_duration">0:00</string>
+    <string name="placeholder_unknown_genre">शैली</string>
+    <string name="placeholder_no_tracks">कोई ट्रैक नहीं</string>
+    <string name="placeholder_unknown_date">19.91.2018</string>
+    <string name="placeholder_freq_range">0.00 हर्ट्ज</string>
+    <string name="placeholder_header_title">हैडर</string>
+    <string name="placeholder_lib_name">लिब</string>
+    <string name="placeholder_lib_version">1.0</string>
+    <string name="placeholder_lib_copyright">कॉपीराइट</string>
+    <string name="placeholder_lib_description">पुस्तकालय</string>
+
+    <!--options menu-->
+    <string name="play">प्ले</string>
+    <string name="edit">संपादित करें</string>
+    <string name="delete">हटाना</string>
+    <string name="add_to_playlist">प्लेलिस्ट में जोड़ें</string>
+    <string name="share">शेयर</string>
+    <string name="playlist">प्लेलिस्ट</string>
+    <string name="add_to_queue">क़तार में जोड़ें</string>
+    <string name="create_playlist">प्लेलिस्ट बनायें</string>
+    <string name="edit_song_tags">गीत टैग संपादित करें</string>
+    <string name="edit_album_cover">एल्बम कवर संपादित करें</string>
+    <string name="view_album">एल्बम देखें</string>
+    <string name="view_artist">कलाकार देखें</string>
+    <string name="create_poster">पोस्टर बनाएं</string>
+    <string name="save_playlist">प्लेलिस्ट सहेजें</string>
+    <string name="play_next">आगे खेलें</string>
+    <string name="cut_ringtone">रिंगटोन को काटें</string>
+
+    <!--deletion confirmation-->
+    <string name="confirmation">पुष्टीकरण</string>
+    <string name="sure_to_delete_item">क्या आप सुनिश्चित रूप से इस आइटम को मिटाना चाहते हैं?</string>
+    <string name="sure_to_delete_items">क्या आप वाकई इन वस्तुओं को हटाना चाहते हैं?</string>
+
+    <!--titles for main view pager-->
+    <string name="all_songs">पूरा संगीत</string>
+    <string name="songs">गीत</string>
+    <string name="artists">कलाकारs</string>
+    <string name="genres">शैलियां</string>
+    <string name="albums">एल्बम</string>
+    <string name="playlists">प्लेलिस्ट</string>
+    <string name="folders">फ़ोल्डर</string>
+    <string name="recently_added">हाल ही में जोड़ा</string>
+
+    <!--counting tracks, albums, genres and etc.-->
+    <string name="number_of_albums">%s डी एल्बम</string>
+    <string name="one_album">1 एल्बम</string>
+    <string name="no_albums">कोई एल्बम नहीं</string>
+    <string name="no_tracks">कोई ट्रैक नहीं</string>
+    <string name="one_track">1 ट्रैक</string>
+    <string name="number_of_tracks">%s ट्रैक</string>
+
+    <!--recently added-->
+    <string name="added">जोड़ा गया</string>
+    <string name="recent_period">हाल की अवधि</string>
+    <string name="for_last_hour">आखिरी घंटे के लिए</string>
+    <string name="for_last_day">अंतिम दिन के लिए</string>
+    <string name="for_last_week">पिछले हफ्ते के लिए</string>
+    <string name="for_last_month">पिछले महीने के लिए</string>
+    <string name="for_last_year">पिछले साल के लिए</string>
+
+    <!--navigation drawer menu-->
+    <string name="nav_library">पुस्तकालय</string>
+    <string name="nav_player">खिलाड़ी</string>
+    <string name="nav_equalizer">तुल्यकारक</string>
+    <string name="nav_settings">सेटिंग्स</string>
+    <string name="nav_search">खोज</string>
+    <string name="nav_favourite">पसंदीदा</string>
+
+    <!--app preferences-->
+    <string name="theme">विषय</string>
+    <string name="version">एप्लिकेशन वर्जन</string>
+    <string name="licenses">लाइसेंस</string>
+    <string name="choose_theme">थीम चुनें</string>
+    <string name="light_theme">लाइट थीम</string>
+    <string name="dark_blue_theme">डार्क ब्लू थीम</string>
+    <string name="dark_especial_theme">डार्क विशिष्ट विषय</string>
+    <string name="dark_purple_theme">डार्क पर्पल थीम</string>
+    <string name="pause_playback">प्लेबैक रोकें</string>
+    <string name="resume_playback">प्लेबैक वापस चालू करें</string>
+    <string name="pause_on_unplugged">इयरफ़ोन अनप्लग होने के बाद प्लेबैक रोकें</string>
+    <string name="resume_on_plugged_in">इयरफ़ोन प्लग इन करने के बाद प्लेबैक फिर से शुरू करें</string>
+    <string name="sleep_timer">सोने का टाइमर</string>
+    <string name="sleep_time_description">प्लेबैक रोकने के लिए टाइमर सेट करें</string>
+    <string name="you_have_already_set_up_sleep_timer">आप पहले से ही टाइमर सेट कर चुके हैं। क्या आप वर्तमान टाइमर को रीसेट करना चाहते हैं या एक नया सेट अप करना चाहते हैं?</string>
+    <string name="reset_sleep_timer">रीसेट</string>
+    <string name="new_sleep_timer">एक नया टाइमर सेट करें</string>
+    <string name="rate_this_app">इस ऐप्लिकेशन को रेट करे</string>
+    <string name="rate_this_app_if_you_want">यदि आपको यह ऐप पसंद है तो आप प्ले मार्केट पर रेट कर सकते हैं</string>
+    <string name="share_this_app">इस एप को शेयर कीजिए</string>
+    <string name="share_this_app_if_you_want">यदि आप इसे दोस्तों के साथ साझा करते हैं तो आप इस ऐप को बढ़ने में मदद कर सकते हैं</string>
+    <string name="checkout_out">नए संगीत खिलाड़ी Frolomuse देखें!</string>
+    <string name="help_with_translations">अनुवाद के साथ मदद करें</string>
+    <string name="help_with_translations_desc">यदि आप अनुवाद में मदद करना चाहते हैं तो यहां टैप करें</string>
+    <string name="library_sections">पुस्तकालय अनुभाग</string>
+    <string name="library_sections_desc">लाइब्रेरी अनुभाग जिन्हें आप देखना चाहते हैं और उनका क्रम</string>
+    <string name="show_notification">अधिसूचना दिखाएं</string>
+    <string name="show_notification_desc">वर्तमान में चल रहे गाने की सूचना दिखाएं</string>
+    <string name="shown">दिखाया गया है</string>
+    <string name="sleep_timer_is_set">स्लीप टाइमर सेट है</string>
+    <string name="sleep_timer_is_off">स्लीप टाइमर बंद है</string>
+    <string name="rescan_media_library_desc">मीडिया लाइब्रेरी को स्कैन करने से ऐप को नई ऑडियो फ़ाइलों को खोजने में मदद मिलती है</string>
+
+    <!--create playlist-->
+    <string name="type_name_for_playlist">कृपया प्लेलिस्ट के लिए नाम टाइप करें</string>
+    <string name="name_is_empty">नाम खाली नहीं होना चाहिए</string>
+    <string name="such_name_already_exists">ऐसा नाम पहले से मौजूद है</string>
+    <string name="edit_name_of_playlist">प्लेलिस्ट का नाम संपादित करें</string>
+
+    <!--create preset-->
+    <string name="type_name_for_preset">कृपया प्रीसेट के लिए नाम टाइप करें</string>
+
+    <!--equalizer-->
+    <string name="freq_range">%s हर्ट्ज</string>
+    <string name="nothing_to_show">दिखाने के लिए कुछ नहीं</string>
+    <string name="bass">बास</string>
+    <string name="virtualizer">वर्चुअलाइज़र</string>
+    <string name="headset_not_plugged">इस प्रभाव का उपयोग करने के लिए, हेडसेट में प्लग करें</string>
+    <string name="show_visualizer">विज़ुअलाइज़र दिखाएँ</string>
+    <string name="audio_fx_hint">कृपया पहले तुल्यकारक चालू करें</string>
+    <!--playback params-->
+    <string name="playback_params">प्लेबैक पैराम्स</string>
+    <string name="speed">गति</string>
+    <string name="pitch">पिच</string>
+    <string name="reset">रीसेट</string>
+    <string name="normalize">सामान्य</string>
+
+    <!--media file editor-->
+    <string name="song_name_layout">नाम</string>
+    <string name="album_name_layout">एल्बम</string>
+    <string name="genre_name_layout">शैली</string>
+    <string name="artist_name_layout">कलाकार</string>
+    <string name="filepath">फ़ाइल पथ %s</string>
+    <string name="duration">अवधि %s</string>
+
+    <string name="app_theme">ऐप थीम</string>
+    <string name="third_part_libs">तीसरे पक्ष के पुस्तकालयों</string>
+    <string name="album_grid">एल्बम ग्रिड</string>
+    <string name="show_album_grid">एल्बम प्रदर्शित करने के लिए ग्रिड का प्रयोग करें</string>
+
+    <!--Preset-->
+    <string name="preset">प्रीसेट</string>
+    <string name="preset_none">कुछ भी तो नहीं</string>
+    <string name="preset_normal">साधारण</string>
+    <string name="preset_rock">चट्टान</string>
+    <string name="preset_heavy_metal">भारी धातु</string>
+    <string name="preset_classical">क्लासिक</string>
+    <string name="preset_folk">लोक</string>
+    <string name="preset_flat">समतल</string>
+    <string name="preset_dance">नृत्य</string>
+    <string name="preset_hip_hop">हिप हॉप</string>
+    <string name="preset_jazz">जाज</string>
+    <string name="preset_pop">लोकप्रिय</string>
+
+    <!--Preset reverb-->
+    <string name="preset_reverb">प्रतिध्वनि</string>
+    <string name="preset_reverb_none">कुछ भी तो नहीं</string>
+    <string name="preset_reverb_large_hall">बड़ा हॉल</string>
+    <string name="preset_reverb_large_room">बड़ा कमरा</string>
+    <string name="preset_reverb_medium_hall">मीडियम हॉल</string>
+    <string name="preset_reverb_medium_room">मध्यम कमरा</string>
+    <string name="preset_reverb_plate">प्लेट</string>
+    <string name="preset_reverb_small_rooom">छोटा कमरा</string>
+
+    <!--Playback notification-->
+    <string name="playback_channel_name">प्लेबैक</string>
+    <string name="playback_channel_desc">वर्तमान प्लेबैक स्थिति के बारे में सूचित करता है</string>
+
+    <!--Media scanner notification-->
+    <string name="media_scanner_channel_name">मीडिया स्कैनर</string>
+    <string name="media_scanner_channel_desc">डिवाइस पर मीडिया लाइब्रेरी को स्कैन करने के बारे में सूचित करता है</string>
+    <!--Media scanner-->
+    <string name="scanning_media_storage">मीडिया लाइब्रेरी को स्कैन किया जा रहा है। कृपया प्रतीक्षा करें…</string>
+    <string name="preparing_files_to_scan">स्कैनिंग के लिए फाइल तैयार करना। कृपया प्रतीक्षा करें…</string>
+    <string name="scanning_started">स्कैनिंग शुरू हुई</string>
+    <string name="scanning_completed">स्कैनिंग पूरी हुई</string>
+    <string name="rescan_media_library">रेसकान मीडिया लाइब्रेरी</string>
+    <string name="do_you_want_to_rescan_media_library">क्या आप अपनी मीडिया लाइब्रेरी को फिर से बनाना चाहते हैं?</string>
+</resources>

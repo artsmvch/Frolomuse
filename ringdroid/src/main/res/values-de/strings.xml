@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- /**  * Copyright (c) 2008, Google Inc.  *  * Licensed under the Apache License, Version 2.0 (the "License");   * you may not use this file except in compliance with the License.   * You may obtain a copy of the License at   *  *     http://www.apache.org/licenses/LICENSE-2.0   *  * Unless required by applicable law or agreed to in writing, software   * distributed under the License is distributed on an "AS IS" BASIS,   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.   * See the License for the specific language governing permissions and   * limitations under the License.  */ -->
+
+<resources>
+
+    <!--      Main / media select activity      -->
+
+    <!--      Edit activity      -->
+
+    <!-- Labels next to the start and end time edit boxes -->
+    <string name="start_label">Start:</string>
+    <string name="end_label">Ende:</string>
+
+    <string name="edit_intent">Bearbeiten</string>
+
+    <string name="time_seconds">Sekunden</string>
+
+    <!-- After you save a notification or ringtone and have more options 	 for what to do with them -->
+    <string name="what_to_do_with_ringtone">Gespeichert!  Dieses Rufzeichen zum Standardrufzeichen machen oder einem Kontakt zuweisen?</string>
+    <string name="set_default_notification">Gespeichert!  Diese Benachrichtigung zur Standardbenachrichtigung machen?</string>
+
+    <string name="make_default_ringtone_button">Zum Standard machen</string>
+    <string name="choose_contact_ringtone_button">Einem Kontakt zuweisen</string>
+    <string name="do_nothing_with_ringtone_button">Schließen</string>
+
+    <!-- Progress dialog text for loading, recording, or saving... -->
+    <string name="progress_dialog_loading">Laden…</string>
+    <string name="progress_dialog_recording">Recording…</string>
+    <string name="progress_dialog_saving">Wird gespeichert…</string>
+    <string name="progress_dialog_cancel">Cancel</string>
+    <string name="progress_dialog_stop">Stop</string>
+
+    <!--      Menu items      -->
+
+    <string name="menu_save">Speichern</string>
+    <string name="menu_reset">Zurücksetzen</string>
+    <string name="menu_about">Info</string>
+
+    <!--      Context menu items      -->
+
+    <!--      File Save dialog      -->
+
+    <string name="file_save_title">Speichern unter:</string>
+    <string name="file_save_button_save">Speichern</string>
+    <string name="file_save_button_cancel">Abbrechen</string>
+
+    <string name="ringtone_type_label">Typ:</string>
+
+    <string name="type_music">Musik</string>
+    <string name="type_alarm">Wecker</string>
+    <string name="type_notification">Benachrichtigung</string>
+    <string name="type_ringtone">Rufzeichen</string>
+
+    <string name="ringtone_name_label">Name:</string>
+
+    <string name="artist_name">Ringdroid</string>
+
+    <!--      Delete confirmation dialog      -->
+
+    <!--      Success and error messages      -->
+
+    <string name="alert_title_success">Erfolg</string>
+    <string name="alert_title_failure">Fehler</string>
+    <string name="alert_ok_button">OK</string>
+    <string name="alert_yes_button">Ja, bitte!</string>
+    <string name="alert_no_button">Nein, vielen Dank.</string>
+
+    <string name="save_success_message">Gespeichert!</string>
+    <string name="default_ringtone_success_message">Standardrufzeichen geändert</string>
+    <string name="play_error">Mediendatei kann nicht wiedergegeben werden</string>
+    <string name="no_unique_filename">Eindeutiger Dateiname nicht gefunden</string>
+    <string name="record_error">Error recording audio</string>
+    <string name="too_small_error">Eine so kleine Datei kann nicht gespeichert werden.</string>
+    <string name="write_error">Fehler beim Schreiben der Datei</string>
+    <string name="read_error">Fehler beim Lesen der Datei</string>
+
+    <string name="no_space_error">Ihre SD-Karte ist voll. Nicht genügend Platz zum Speichern der Datei.</string>
+
+    <string name="bad_extension_error">Ringdroid kann noch keine Dateien dieses Typs bearbeiten</string>
+    <string name="no_extension_error">Ringdroid kann nur Dateien mit einer Erweiterung wie .mp3 oder .wav bearbeiten</string>
+
+    <!--      Choose Contact Activity      -->
+
+    <!--      About      -->
+
+    <string name="about_title">Info über Ringdroid</string>
+    <string name="about_text"><![CDATA[Verwenden Sie Ringdroid zum Bearbeiten von MP3-, OGG-, WAV-, AAC- und AMR-Audiodateien und zum Erstellen von Rufzeichen, Weckern und Benachrichtigungen.\n\nTipp: Kopieren Sie Audiodateien mithilfe eines USB-Kabels auf Ihre SD-Karte.\n\nTipp: Drücken Sie auf dem Hauptbildschirm lange auf eine Audiodatei, um sie zu löschen.  Mehr Infos unten…\n\nTipp: Tippen Sie auf eine beliebige Stelle der Funktion, um die Wiedergabe an dieser Position zu starten.\n\nTipp: Tippen Sie während der Wiedergabe auf \"Start\" oder \"Ende\", um an der aktuellen Wiedergabezeit Start- und Ende-Markierungen zu setzen.\n\nTipp: Präzisere Einstellungen nehmen Sie mit dem Scrollrad vor.\n\nVersion %s\n\Entwickler: Dominic Mazzoni, Nicolas Faralli\nGrafik: Joseph Wain\nSupport und Evangelisten-Marketing: Eugene Koh\n\nRingdroid ist kostenlose Software, vertrieben unter der Lizenz Apache 2.0.  Den Quellcode finden Sie unter github.com/google/ringdroid\n]]></string>
+
+</resources>

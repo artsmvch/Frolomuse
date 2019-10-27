@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/Item.Text.Primary"
+            android:textSize="19sp"
+            android:padding="10dp"
+            android:text="@string/nav_library"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:background="?attr/selectableItemBackground"
+            android:id="@+id/imv_close"
+            android:tint="?attr/iconNormalTint"
+            android:src="@drawable/ic_cross"
+            android:padding="15dp"
+            android:layout_width="45dp"
+            android:layout_height="45dp" />
+    </LinearLayout>
+
+    <include
+        layout="@layout/include_divider"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/vertical_divider_height"/>
+
+    <!--setting min height to be sure it's not like that gone-->
+    <androidx.recyclerview.widget.RecyclerView
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:clipToPadding="false"
+        android:overScrollMode="never"
+        android:id="@+id/rv_sections"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="200dp"
+        android:fillViewport="true"/>
+</LinearLayout>

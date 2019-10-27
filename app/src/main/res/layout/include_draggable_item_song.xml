@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_item_media">
+
+    <include
+        android:id="@+id/view_options_menu"
+        android:layout_width="@dimen/options_menu_width"
+        android:layout_height="60dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        layout="@layout/include_options_menu" />
+
+    <com.frolo.muse.views.MiniVisualizer
+        android:id="@+id/mini_visualizer"
+        android:layout_width="25dp"
+        android:layout_height="19.1dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="5dp"
+        android:layout_toStartOf="@+id/view_options_menu"
+        android:layout_marginEnd="5.5dp" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:textColor="?attr/android:textColorSecondary"
+        android:layout_margin="5.5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/placeholder_zero_duration"
+        android:id="@+id/tv_duration"
+        android:textSize="13sp"
+        android:layout_toStartOf="@id/view_options_menu"
+        android:layout_centerVertical="true"/>
+
+    <ImageView
+        android:tint="?attr/iconNormalTint"
+        android:src="@drawable/ic_burger"
+        android:padding="18dp"
+        android:id="@+id/view_drag_and_drop"
+        android:cropToPadding="true"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true"
+        android:layout_width="@dimen/list_item_img_art_size"
+        android:layout_height="@dimen/list_item_img_art_size"/>
+
+    <include
+        layout="@layout/include_check"
+        android:layout_marginBottom="5dp"
+        android:layout_alignParentBottom="true"
+        android:layout_width="@dimen/list_item_check_size"
+        android:layout_height="@dimen/list_item_check_size"
+        android:layout_alignEnd="@id/view_drag_and_drop"/>
+
+    <LinearLayout
+        android:layout_margin="3dp"
+        android:gravity="center_vertical|start"
+        android:layout_centerVertical="true"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/view_drag_and_drop"
+        android:layout_toStartOf="@id/tv_duration">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/Item.Text.Primary"
+            android:id="@+id/tv_song_name"
+            android:text="@string/placeholder_unknown"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            style="@style/Item.Text.Secondary"
+            android:id="@+id/tv_album_name"
+            android:text="@string/placeholder_unknown" />
+    </LinearLayout>
+</RelativeLayout>

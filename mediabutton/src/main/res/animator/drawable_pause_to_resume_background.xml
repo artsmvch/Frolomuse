@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<objectAnimator xmlns:android="http://schemas.android.com/apk/res/android"
+    android:duration="@integer/animDuration"
+    android:propertyName="fillColor"
+    android:valueFrom="?attr/play_button_pause_background"
+    android:valueTo="?attr/play_button_resume_background" />

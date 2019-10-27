@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/transparent_black">
+
+    <com.google.android.material.circularreveal.cardview.CircularRevealCardView
+        android:layout_centerInParent="true"
+        app:cardBackgroundColor="@color/white"
+        app:cardElevation="4dp"
+        app:cardCornerRadius="8dp"
+        android:layout_margin="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_centerInParent="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:src="@drawable/ic_note_rounded_placeholder"
+                android:id="@+id/imv_album_art"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+            <com.frolo.mediabutton.PlayButton
+                app:layout_constraintTop_toTopOf="@id/imv_album_art"
+                app:layout_constraintBottom_toBottomOf="@id/imv_album_art"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:id="@+id/btn_play"
+                android:padding="5dp"
+                android:layout_width="45dp"
+                android:layout_height="45dp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_margin="10dp"
+                android:gravity="start"
+                android:textSize="17.1sp"
+                android:padding="5dp"
+                android:id="@+id/tv_title"
+                android:text="@string/placeholder_unknown"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:ellipsize="end"
+                app:layout_constraintTop_toTopOf="@id/imv_album_art"
+                app:layout_constraintStart_toEndOf="@id/imv_album_art"
+                app:layout_constraintEnd_toStartOf="@id/btn_play"/>
+
+            <include
+                android:layout_marginTop="15dp"
+                layout="@layout/include_playback_progress"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                app:layout_constraintTop_toBottomOf="@id/imv_album_art"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.circularreveal.cardview.CircularRevealCardView>
+</RelativeLayout>

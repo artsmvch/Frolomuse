@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/widget_4_layout_width"
+    android:layout_height="@dimen/widget_4_layout_height"
+    android:padding="@dimen/widget_margin">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/bg_widget"/>
+
+    <LinearLayout
+        android:id="@+id/ll_root"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/imv_album_art"
+            android:layout_margin="5dp"
+            android:layout_width="@dimen/widget_art_size"
+            android:layout_height="@dimen/widget_art_size" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tsw_song_name"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:ellipsize="end"
+                android:gravity="bottom"
+                android:maxLines="1"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:text="@string/placeholder_unknown"
+                android:textColor="@color/white"
+                android:textSize="15.5sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+                <ImageView
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/widget_item_size"
+                    android:padding="@dimen/widget_repeat_item_padding"
+                    android:src="@drawable/ic_repeat_disabled"
+                    android:adjustViewBounds="true"
+                    android:id="@+id/btn_repeat_mode"/>
+                <ImageView
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/widget_item_size"
+                    android:padding="@dimen/widget_item_padding"
+                    android:src="@drawable/ic_previous"
+                    android:adjustViewBounds="true"
+                    android:id="@+id/btn_skip_to_previous"/>
+                <ImageView
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/widget_item_size"
+                    android:padding="@dimen/widget_item_padding"
+                    android:src="@drawable/ic_play"
+                    android:id="@+id/btn_play"
+                    android:adjustViewBounds="true"/>
+                <ImageView
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/widget_item_size"
+                    android:padding="@dimen/widget_item_padding"
+                    android:src="@drawable/ic_next"
+                    android:adjustViewBounds="true"
+                    android:id="@+id/btn_skip_to_next"/>
+                <ImageView
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/widget_item_size"
+                    android:padding="@dimen/widget_shuffle_item_padding"
+                    android:src="@drawable/ic_shuffle_disabled"
+                    android:adjustViewBounds="true"
+                    android:id="@+id/btn_shuffle_mode"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</FrameLayout>

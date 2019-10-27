@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_marginTop="16dp"
+    android:id="@+id/ll_virtualizer"
+    android:gravity="center"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="12dp"
+    android:paddingEnd="4dp">
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/Item.Text.Secondary.AudioFx"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:text="@string/virtualizer"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content" />
+    <androidx.appcompat.widget.AppCompatSeekBar
+        android:id="@+id/sb_virtualizer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>

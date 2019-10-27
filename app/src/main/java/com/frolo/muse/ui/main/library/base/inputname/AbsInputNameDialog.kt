@@ -1,0 +1,78 @@
+package com.frolo.muse.ui.main.library.base.inputname
+
+import android.app.Dialog
+import android.os.Bundle
+import android.view.Window
+import android.view.WindowManager
+import android.widget.Toast
+import com.frolo.muse.R
+import com.frolo.muse.ui.base.BaseDialogFragment
+import com.frolo.muse.views.Anim
+import com.frolo.muse.views.getNonNullText
+import kotlinx.android.synthetic.main.dialog_input_name.*
+
+
+abstract class AbsInputNameDialog : BaseDialogFragment() {
+
+    final override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        return super.onCreateDialog(savedInstanceState).apply {
+            requestWindowFeature(Window.FEATURE_NO_TITLE)
+            setContentView(R.layout.dialog_input_name)
+            setupDialogSize(this)
+            initUI(this)
+
+            window?.apply {
+                setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
+                edt_name.requestFocus()
+                setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE) // simulate click on edit text
+            }
+        }
+    }
+
+    private fun initUI(dialog: Dialog) {
+        with(dialog) {
+            tv_title.text = onGetTitle()
+
+            edt_name.setText(onGetInitialText())
+
+            inc_progress_overlay.setOnClickListener { } // intercept any click through this overlay
+
+            btn_cancel.setOnClickListener { dismiss() }
+
+            btn_add.setOnClickListener {
+                val name = edt_name.getNonNullText()
+                onSaveButtonClick(name)
+            }
+        }
+    }
+
+    protected fun displayError(err: Throwable) {
+        Toast.makeText(
+                context,
+                err.message,
+                Toast.LENGTH_SHORT)
+                .show()
+    }
+
+    protected fun displayInputError(err: Throwable) {
+        dialog?.apply {
+            til_name.error = err.message
+        }
+    }
+
+    protected fun setIsLoading(isLoading: Boolean) {
+        dialog?.apply {
+            if (isLoading) {
+                Anim.fadeIn(inc_progress_overlay)
+            } else {
+                Anim.fadeOut(inc_progress_overlay)
+            }
+        }
+    }
+
+    protected abstract fun onGetTitle(): String
+
+    protected open fun onGetInitialText(): String? = null
+
+    protected abstract fun onSaveButtonClick(name: String)
+}

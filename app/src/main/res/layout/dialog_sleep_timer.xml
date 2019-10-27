@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/Item.Text.Primary"
+        android:textSize="20sp"
+        android:text="@string/sleep_timer"
+        android:layout_marginBottom="12dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+        <androidx.appcompat.widget.AppCompatEditText
+            android:gravity="center"
+            android:inputType="number"
+            android:textIsSelectable="false"
+            android:imeOptions="actionNext"
+            android:id="@+id/edt_hours"
+            android:layout_margin="5dp"
+            android:padding="15dp"
+            android:hint="@string/hint_zero_time"
+            android:textSize="27sp"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_dot_divider"
+            android:tint="?attr/iconNormalTint"
+            android:layout_width="10dp"
+            android:layout_height="10dp"/>
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:gravity="center"
+            android:inputType="number"
+            android:textIsSelectable="false"
+            android:imeOptions="actionNext"
+            android:id="@+id/edt_minutes"
+            android:layout_margin="5dp"
+            android:padding="15dp"
+            android:hint="@string/hint_zero_time"
+            android:textSize="27sp"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_dot_divider"
+            android:tint="?attr/iconNormalTint"
+            android:layout_width="10dp"
+            android:layout_height="10dp"/>
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:gravity="center"
+            android:inputType="number"
+            android:textIsSelectable="false"
+            android:imeOptions="actionDone"
+            android:id="@+id/edt_seconds"
+            android:layout_margin="5dp"
+            android:padding="15dp"
+            android:hint="@string/hint_zero_time"
+            android:textSize="27sp"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="26dp"
+        android:gravity="center_vertical|end"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/cancel"
+            android:id="@+id/btn_cancel"
+            style="?attr/buttonCancel" />
+
+        <View
+            android:layout_width="20dp"
+            android:layout_height="1px"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:drawableStart="@drawable/ic_check_mark_white"
+            android:text="@string/done"
+            android:id="@+id/btn_done"
+            style="?attr/buttonAction" />
+    </LinearLayout>
+</LinearLayout>

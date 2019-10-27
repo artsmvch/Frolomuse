@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:gravity="bottom"
+    android:paddingBottom="16dp"
+    android:id="@+id/content"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        layout="@layout/include_player_controller" />
+
+    <include
+        android:layout_marginTop="4dp"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        layout="@layout/include_playback_progress"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:textColor="?attr/android:textColorSecondary"
+        android:layout_gravity="center_horizontal"
+        android:visibility="visible"
+        android:textStyle="bold"
+        android:paddingTop="0dp"
+        android:paddingBottom="0dp"
+        android:paddingLeft="6dp"
+        android:paddingRight="6dp"
+        android:gravity="center"
+        android:layout_height="36dp"
+        android:layout_width="wrap_content"
+        android:textSize="17sp"
+        android:text="@string/ab"
+        android:id="@+id/btn_ab"/>
+</LinearLayout>

@@ -1,0 +1,245 @@
+<resources>
+    <string name="ok">tamam</string>
+    <string name="loading">Yükleniyor…</string>
+    <string name="done">Bitti!</string>
+    <string name="cancel">İptal etmek</string>
+    <string name="save">Kayıt etmek</string>
+    <string name="saved">Kaydedilmiş</string>
+    <string name="checkout_this_track">Yeni Frolomuse Müzik Çalar ile %s göz atın!</string>
+    <string name="share_track">Şarkıyı paylaş</string>
+    <string name="share_tracks">Ses koleksiyonunu paylaş</string>
+    <string name="sorry_exception">Üzgünüm, bir şeyler ters gitti</string>
+    <string name="app_prefs">Uygulama tercihleri</string>
+    <string name="about">Hakkında</string>
+    <string name="empty">Boş</string>
+    <string name="current_playlist_is_empty">Geçerli çalma listesinde hiç şarkı yok. \nLütfen diğerini seçin</string>
+    <string name="pick_image">Resim Seç</string>
+    <string name="file">Dosya</string>
+    <string name="created">Düzenlendi</string>
+    <string name="added_to_queue">Sıraya eklendi</string>
+    <string name="deleted">Silindi</string>
+    <string name="type_at_least_two_letters">En az iki harf yazın</string>
+    <string name="will_be_played_next">Bu sonraki oynanacak</string>
+
+    <!--Errors-->
+    <string name="failed_to_delete_s">%s silinemedi</string>
+
+    <!--Sort orders-->
+    <string name="sort">Çeşit</string>
+    <string name="ascending">Yükselen</string>
+    <string name="sort_by_name">İsimle</string>
+    <string name="sort_by_artist">Sanatçının</string>
+    <string name="sort_by_album">Albüme göre</string>
+    <string name="sort_by_number_of_songs">Şarkı sayısına göre</string>
+    <string name="sort_by_number_of_tracks">Şarkı sayısına göre</string>
+    <string name="sort_by_number_of_albums">Albüm sayısına göre</string>
+    <string name="sort_by_date_added">Eklenme tarihine göre</string>
+    <string name="sort_by_date_modified">Değişiklik tarihine göre</string>
+    <string name="sort_by_filename">Dosya adına göre</string>
+    <string name="sort_by_play_order">Oynatma sırasına göre</string>
+
+    <!--Rating-->
+    <string name="would_you_rate">Bu uygulamayı 5 yıldız için değerlendirir misiniz?</string>
+    <string name="no">Hayır</string>
+    <string name="remind_me_later">Daha sonra sor</string>
+    <string name="rate">Evet beğendim!</string>
+
+    <string name="choose_playlist">Oynatma listesi seç</string>
+    <string name="current_playing">Geçerli çalma listesi</string>
+    <string name="track">Şarkı</string>
+    <string name="album">Albüm</string>
+    <string name="artist">Sanatçı</string>
+    <string name="genre">Tür</string>
+
+    <plurals name="s_songs">
+        <item quantity="one">%d şarkı</item>
+        <item quantity="other">%d şarkı</item>
+    </plurals>
+
+    <string name="select_all">Hepsini seç</string>
+
+    <!--placeholders-->
+    <string name="placeholder_unknown">Bilinmeyen</string>
+    <string name="placeholder_zero_duration">0:00</string>
+    <string name="placeholder_unknown_genre">Tür</string>
+    <string name="placeholder_no_tracks">Şarkı yok</string>
+    <string name="placeholder_unknown_date">19.91.2018</string>
+    <string name="placeholder_freq_range">0.00 hz</string>
+    <string name="placeholder_header_title">Başlık</string>
+    <string name="placeholder_lib_name">Kütüphane</string>
+    <string name="placeholder_lib_version">1.0</string>
+    <string name="placeholder_lib_copyright">Telif hakkı</string>
+    <string name="placeholder_lib_description">Kütüphane</string>
+
+    <!--options menu-->
+    <string name="play">Oyna</string>
+    <string name="edit">Düzenle</string>
+    <string name="delete">Silmek</string>
+    <string name="add_to_playlist">Oynatma listesine ekle</string>
+    <string name="share">Paylaş</string>
+    <string name="playlist">Oynatma Listesi</string>
+    <string name="add_to_queue">Sıraya ekle</string>
+    <string name="create_playlist">Oynatma listesi yarat</string>
+    <string name="edit_song_tags">Şarkı etiketlerini düzenleme</string>
+    <string name="edit_album_cover">Albüm kapağını düzenle</string>
+    <string name="view_album">Albümü görüntüle</string>
+    <string name="view_artist">Sanatçıyı görüntüle</string>
+    <string name="create_poster">Poster oluştur</string>
+    <string name="save_playlist">Oynatma listesini kaydet</string>
+    <string name="play_next">Sonrakini çal</string>
+    <string name="cut_ringtone">Zil sesini kes</string>
+    <!--<string name="view_lyrics">View lyrics</string>-->
+
+    <!--deletion confirmation-->
+    <string name="confirmation">Onayla</string>
+    <string name="sure_to_delete_item">Bu öğeyi silmek istediğinize emin misiniz?</string>
+    <string name="sure_to_delete_items">Bu öğeleri silmek istediğinize emin misiniz?</string>
+
+    <!--titles for main view pager-->
+    <string name="all_songs">Bütün müzikler</string>
+    <string name="songs">Şarkılar</string>
+    <string name="artists">Sanatçılar</string>
+    <string name="genres">Türler</string>
+    <string name="albums">Albümler</string>
+    <string name="playlists">Çalma listeleri</string>
+    <string name="folders">Klasörler</string>
+    <string name="recently_added">Son eklenenler</string>
+
+    <!--counting tracks, albums, genres and etc.-->
+    <string name="number_of_albums">%s albüm</string>
+    <string name="one_album">1 albüm</string>
+    <string name="no_albums">Albüm yok</string>
+    <string name="no_tracks">Şarkı yok</string>
+    <string name="one_track">1 şarkı</string>
+    <string name="number_of_tracks">%s şarkı</string>
+
+    <!--recently added-->
+    <string name="added">Eklendi</string>
+    <string name="recent_period">Son dönem</string>
+    <string name="for_last_hour">Son bir saat</string>
+    <string name="for_last_day">Son gün için</string>
+    <string name="for_last_week">Geçen hafta için</string>
+    <string name="for_last_month">Geçen ay için</string>
+    <string name="for_last_year">Geçen yıl için</string>
+
+    <!--navigation drawer menu-->
+    <string name="nav_library">Kütüphane</string>
+    <string name="nav_player">Oyuncu</string>
+    <string name="nav_equalizer">Ekolayzer</string>
+    <string name="nav_settings">Ayarlar</string>
+    <string name="nav_search">Ara</string>
+    <string name="nav_favourite">Favori</string>
+
+    <!--app preferences-->
+    <string name="theme">Tema</string>
+    <string name="version">Uygulama sürümü</string>
+    <string name="licenses">Lisanslar</string>
+    <string name="choose_theme">Temayı Seç</string>
+    <string name="light_theme">Işık tema</string>
+    <string name="dark_blue_theme">Koyu mavi tema</string>
+    <string name="dark_especial_theme">Karanlık özel tema</string>
+    <string name="dark_purple_theme">Koyu mor tema</string>
+    <string name="pause_playback">Oynatmayı duraklat</string>
+    <string name="resume_playback">Çalmaya devam et</string>
+    <string name="pause_on_unplugged">Kulaklık takılı kaldıktan sonra çalmayı duraklat</string>
+    <string name="resume_on_plugged_in">Kulaklık takılı olduktan sonra oynatmaya devam et</string>
+    <string name="sleep_timer">Uyku zamanlayıcısı</string>
+    <string name="sleep_time_description">Çalmayı durdurmak için bir zamanlayıcı ayarlayın</string>
+    <string name="you_have_already_set_up_sleep_timer">Zaten bir zamanlayıcı ayarladınız.
+        \nMevcut zamanlayıcıyı sıfırlamak mı yoksa yeni bir tane mi kurmak istiyorsunuz?</string>
+    <string name="reset_sleep_timer">Sıfırla</string>
+    <string name="new_sleep_timer">Yeni bir Zamanlayıcı ayarla</string>
+    <string name="rate_this_app">Bu uygulamayı oyla</string>
+    <string name="rate_this_app_if_you_want">Bu uygulamayı beğendiyseniz Play Market\'te oylayabilir</string>
+    <string name="share_this_app">Bu uygulamayı paylaş</string>
+    <string name="share_this_app_if_you_want">Arkadaşlarınızla paylaşırsanız, bu uygulamanın büyümesine yardımcı olabilirsiniz</string>
+    <string name="checkout_out">Yeni müzik çalar Frolomuse\'ye göz atın!</string>
+    <string name="hint_zero_time" translatable="false">00</string>
+    <string name="help_with_translations">Çevirilerde Yardım</string>
+    <string name="help_with_translations_desc">Çevirilerde yardımcı olmak istiyorsanız buraya dokunun</string>
+    <string name="library_sections">Kütüphane bölümleri</string>
+    <string name="library_sections_desc">Görmek istediğiniz kütüphane bölümleri ve sırası</string>
+    <string name="show_notification">Bildirimleri göster</string>
+    <string name="show_notification_desc">Çalmakta olan şarkının bildirimini göster</string>
+    <string name="shown">Gösterilen</string>
+    <string name="sleep_timer_is_set">Uyku Zamanlayıcısı ayarlandı</string>
+    <string name="sleep_timer_is_off">Uyku Zamanlayıcısı kapalı</string>
+    <string name="rescan_media_library_desc">Medya kitaplığını taramak, uygulamanın yeni ses dosyaları bulmasına yardımcı olur</string>
+
+
+    <!--create and edit playlist-->
+    <string name="type_name_for_playlist">Lütfen oynatma listesi için ad yazın</string>
+    <string name="name_is_empty">İsim boş olmamalıdır</string>
+    <string name="such_name_already_exists">Böyle bir isim zaten var</string>
+    <string name="edit_name_of_playlist">Oynatma listesinin adını düzenle</string>
+
+    <!--create preset-->
+    <string name="type_name_for_preset">Lütfen ön ayar için ad yazın</string>
+
+    <!--equalizer-->
+    <string name="freq_range">%s hz</string>
+    <string name="nothing_to_show">Gösterecek bir şey yok</string>
+    <string name="bass">Bas</string>
+    <string name="virtualizer">Sanallaştırıcı</string>
+    <string name="headset_not_plugged">Bu efekti kullanmak için kulaklığı takın</string>
+    <string name="show_visualizer">Görselleştiriciyi göster</string>
+    <string name="audio_fx_hint">Lütfen önce ekolayzer açın</string>
+    <!--playback params-->
+    <string name="playback_params">Oynatma Paramları</string>
+    <string name="speed">Hız</string>
+    <string name="pitch">Saha</string>
+    <string name="reset">Sıfırla</string>
+    <string name="normalize">Normalleştirmek</string>
+
+    <!--media file editor-->
+    <string name="song_name_layout">Isim</string>
+    <string name="album_name_layout">Albüm</string>
+    <string name="genre_name_layout">Tür</string>
+    <string name="artist_name_layout">Sanatçı</string>
+    <string name="filepath">Dosya yolu %s</string>
+    <string name="duration">Süre %s</string>
+
+    <string name="app_theme">Uygulama Teması</string>
+    <string name="third_part_libs">Üçüncü parti kütüphaneleri</string>
+    <string name="album_grid">Albüm ızgarası</string>
+    <string name="show_album_grid">Albümleri görüntülemek için ızgarayı kullanın</string>
+
+    <!--Preset-->
+    <string name="preset">Ön ayar</string>
+    <string name="preset_none">Hiçbir şey değil</string>
+    <string name="preset_normal">Normal</string>
+    <string name="preset_rock">Rock</string>
+    <string name="preset_heavy_metal">Ağır metal</string>
+    <string name="preset_classical">Klasik</string>
+    <string name="preset_folk">Halk</string>
+    <string name="preset_flat">Düz</string>
+    <string name="preset_dance">Dans</string>
+    <string name="preset_hip_hop">Hip Hop</string>
+    <string name="preset_jazz">Caz</string>
+    <string name="preset_pop">Pop</string>
+
+    <!--Preset reverb-->
+    <string name="preset_reverb">Yankılanma</string>
+    <string name="preset_reverb_none">Hiçbir şey değil</string>
+    <string name="preset_reverb_large_hall">Büyük salon</string>
+    <string name="preset_reverb_large_room">Geniş oda</string>
+    <string name="preset_reverb_medium_hall">Orta salon</string>
+    <string name="preset_reverb_medium_room">Orta oda</string>
+    <string name="preset_reverb_plate">Büyük alan</string>
+    <string name="preset_reverb_small_rooom">Küçük oda</string>
+
+    <!--Playback notification-->
+    <string name="playback_channel_name">Geri çalma</string>
+    <string name="playback_channel_desc">Geçerli oynatma durumu hakkında uyarır</string>
+
+    <!--Media scanner notification-->
+    <string name="media_scanner_channel_name">Medya tarayıcı</string>
+    <string name="media_scanner_channel_desc">Cihazdaki medya kitaplığının taranması hakkında bilgi verir</string>
+    <!--Media scanner-->
+    <string name="scanning_media_storage">Medya kütüphanesi taranıyor. Lütfen bekle…</string>
+    <string name="preparing_files_to_scan">Dosyaları taramaya hazırlama Lütfen bekle…</string>
+    <string name="scanning_started">Tarama başladı</string>
+    <string name="scanning_completed">Tarama tamamlandı</string>
+    <string name="rescan_media_library">Medya kitaplığını yeniden tara</string>
+    <string name="do_you_want_to_rescan_media_library">Medya kitaplığınızı taramak ister misiniz?</string>
+</resources>

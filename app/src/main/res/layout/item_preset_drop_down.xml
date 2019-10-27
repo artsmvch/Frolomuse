@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    style="?attr/spinnerDropDownItemStyle"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="40dp">
+
+    <ImageView
+        android:layout_gravity="center"
+        android:src="@drawable/png_normal"
+        android:padding="8dp"
+        android:adjustViewBounds="true"
+        android:id="@+id/imv_preset_icon"
+        android:layout_width="36dp"
+        android:layout_height="36dp" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_preset_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="start|center_vertical"
+        android:paddingStart="4dp"
+        android:paddingEnd="8dp"
+        android:text="@string/placeholder_unknown"
+        android:textColor="?attr/android:textColor"
+        android:textSize="16sp" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:background="?attr/selectableItemBackground"
+        android:id="@+id/btn_remove"
+        android:padding="14dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:tint="?attr/iconNormalTint"
+        android:src="@drawable/ic_cross"/>
+
+</LinearLayout>

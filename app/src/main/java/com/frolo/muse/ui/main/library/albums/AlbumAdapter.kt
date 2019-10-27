@@ -1,0 +1,135 @@
+package com.frolo.muse.ui.main.library.albums
+
+import android.content.ContentUris
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import com.bumptech.glide.RequestManager
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.frolo.muse.GlideManager
+import com.frolo.muse.R
+import com.frolo.muse.model.media.Album
+import com.frolo.muse.ui.getNumberOfTracksString
+import com.frolo.muse.ui.main.library.base.BaseAdapter
+import com.frolo.muse.util.CharSequences
+import com.frolo.muse.views.checkable.CheckView
+import com.google.android.material.card.MaterialCardView
+import com.l4digital.fastscroll.FastScroller
+
+
+class AlbumAdapter constructor(
+        private val requestManager: RequestManager
+): BaseAdapter<Album, BaseAdapter.BaseViewHolder>(AlbumItemCallback), FastScroller.SectionIndexer {
+
+    companion object {
+        const val VIEW_TYPE_BIG_ITEM = 0
+        const val VIEW_TYPE_SMALL_ITEM = 1
+    }
+
+    var itemViewType = VIEW_TYPE_SMALL_ITEM
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
+
+    override fun getItemViewType(position: Int) = itemViewType
+
+    override fun getItemId(position: Int) = getItemAt(position).id
+
+    override fun getSectionText(position: Int): CharSequence {
+        if (position >= itemCount) return CharSequences.empty()
+        return getItemAt(position).name.let { name ->
+            CharSequences.firstCharOrEmpty(name)
+        }
+    }
+
+    override fun onCreateBaseViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        return when (viewType) {
+            VIEW_TYPE_SMALL_ITEM -> SmallItemViewHolder(
+                    inflater.inflate(R.layout.item_album_card, parent, false))
+            VIEW_TYPE_BIG_ITEM -> BigItemViewHolder(
+                    inflater.inflate(R.layout.item_album, parent, false))
+            else -> throw IllegalArgumentException("Unknown item view type: $itemViewType")
+        }
+    }
+
+    override fun onBindViewHolder(
+            holder: BaseViewHolder,
+            position: Int,
+            item: Album,
+            selected: Boolean,
+            selectionChanged: Boolean) {
+
+        if (holder is SmallItemViewHolder) {
+            with(holder) {
+                val albumId = item.id
+                val options = GlideManager.get().requestOptions(albumId)
+                requestManager.load(ContentUris.withAppendedId(GlideManager.albumArtUri(), albumId))
+                        .apply(options)
+                        .placeholder(R.drawable.vector_note_square)
+                        .error(R.drawable.vector_note_square)
+                        .transition(DrawableTransitionOptions.withCrossFade())
+                        .into(imageAlbumArt)
+                textAlbumName.text = item.name
+                textArtistName.text = item.artist
+
+                imageCheck.setChecked(selected, selectionChanged)
+            }
+        } else if (holder is BigItemViewHolder) {
+            with(holder) {
+                val albumId = item.id
+                val options = GlideManager.get().requestOptions(albumId)
+                requestManager
+                        .load(ContentUris.withAppendedId(GlideManager.albumArtUri(), albumId))
+                        .apply(options)
+                        .placeholder(R.drawable.vector_note_square)
+                        .error(R.drawable.vector_note_square)
+                        .transition(DrawableTransitionOptions.withCrossFade())
+                        .into(imageAlbumArt)
+
+                textAlbumName.text = item.name
+                textArtistName.text = item.artist
+                textNumberOfTracks.text = item.getNumberOfTracksString(itemView.resources)
+
+                imageCheck.setChecked(selected, selectionChanged)
+
+                itemView.isSelected = selected
+            }
+        } else {
+            throw IllegalArgumentException("Unknown holder: $holder")
+        }
+    }
+
+    class SmallItemViewHolder(itemView: View): BaseAdapter.BaseViewHolder(itemView) {
+        val cardView: MaterialCardView = itemView as MaterialCardView
+        val textAlbumName: TextView = itemView.findViewById(R.id.tv_album_name)
+        val textArtistName: TextView = itemView.findViewById(R.id.tv_artist_name)
+        val imageAlbumArt: ImageView = itemView.findViewById(R.id.imv_album_art)
+        val imageCheck: CheckView = itemView.findViewById(R.id.imv_check)
+        override val viewOptionsMenu: View = itemView.findViewById(R.id.view_options_menu)
+    }
+
+    class BigItemViewHolder(itemView: View): BaseAdapter.BaseViewHolder(itemView) {
+        val textAlbumName: TextView = itemView.findViewById(R.id.tv_album_name)
+        val textArtistName: TextView = itemView.findViewById(R.id.tv_artist_name)
+        val textNumberOfTracks: TextView = itemView.findViewById(R.id.tv_number_of_tracks)
+        val imageAlbumArt: ImageView = itemView.findViewById(R.id.imv_album_art)
+        val imageCheck: CheckView = itemView.findViewById(R.id.imv_check)
+        override val viewOptionsMenu: View = itemView.findViewById(R.id.view_options_menu)
+    }
+
+    object AlbumItemCallback: DiffUtil.ItemCallback<Album>() {
+        override fun areItemsTheSame(oldItem: Album, newItem: Album): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: Album, newItem: Album): Boolean {
+            return oldItem == newItem
+        }
+
+    }
+}

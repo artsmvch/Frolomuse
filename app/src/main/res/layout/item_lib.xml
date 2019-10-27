@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="start"
+    android:padding="8dp">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/Item.Text.Primary"
+        android:text="@string/placeholder_lib_name"
+        android:textColor="?attr/colorAccent"
+        android:maxLines="2"
+        android:id="@+id/tv_lib_name" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/Item.Text.Secondary"
+        android:text="@string/placeholder_lib_version"
+        android:id="@+id/tv_lib_version" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:text="@string/placeholder_lib_copyright"
+        android:maxLines="3"
+        style="@style/Item.Text.Secondary"
+        android:id="@+id/tv_lib_copyright" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        style="@style/Item.Text.Secondary"
+        android:text="@string/placeholder_lib_description"
+        android:maxLines="5"
+        android:id="@+id/tv_lib_license" />
+</LinearLayout>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:background="@color/custom_black">
+
+    <LinearLayout
+        android:id="@+id/ll_root"
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="@color/custom_black">
+
+        <ImageView
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"
+            android:id="@+id/imv_album_art"
+            android:layout_width="70dp"
+            android:layout_height="70dp"/>
+
+        <LinearLayout
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:padding="5dp">
+            <TextView
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textColor="@color/white_smoke"
+                android:id="@+id/tv_song_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:text="@string/placeholder_unknown"/>
+            <TextView
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:textColor="@color/white_smoke"
+                android:id="@+id/tv_artist_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:text="@string/placeholder_unknown"/>
+        </LinearLayout>
+        <ImageView
+            android:tint="@color/light_gray"
+            android:id="@+id/btn_skip_to_previous"
+            android:src="@drawable/ic_previous"
+            android:padding="13dp"
+            android:layout_width="@dimen/notify_controller_size"
+            android:layout_height="@dimen/notify_controller_size" />
+
+        <ImageView
+            android:tint="@color/light_gray"
+            android:id="@+id/btn_play"
+            android:src="@drawable/ic_play"
+            android:padding="13dp"
+            android:layout_width="@dimen/notify_controller_size"
+            android:layout_height="@dimen/notify_controller_size" />
+
+        <ImageView
+            android:tint="@color/light_gray"
+            android:id="@+id/btn_skip_to_next"
+            android:src="@drawable/ic_next"
+            android:padding="13dp"
+            android:layout_width="@dimen/notify_controller_size"
+            android:layout_height="@dimen/notify_controller_size" />
+
+
+        <ImageView
+            android:tint="@color/light_gray"
+            android:id="@+id/btn_close"
+            android:src="@drawable/ic_cross"
+            android:padding="14dp"
+            android:layout_width="@dimen/notify_controller_size"
+            android:layout_height="@dimen/notify_controller_size"/>
+    </LinearLayout>
+</FrameLayout>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ImageView xmlns:tools="http://schemas.android.com/tools"
+    android:paddingTop="7dp"
+    android:paddingBottom="7dp"
+    android:paddingLeft="11dp"
+    android:paddingRight="23dp"
+    android:id="@+id/view_options_menu"
+    android:layout_width="@dimen/options_menu_width"
+    android:layout_height="60dp"
+    android:src="@drawable/ic_options_menu"
+    android:tint="?attr/iconNormalTint"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    tools:ignore="RtlHardcoded" />

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="32dp">
+
+    <ImageView
+        android:layout_gravity="center"
+        android:src="@drawable/png_normal"
+        android:padding="6dp"
+        android:adjustViewBounds="true"
+        android:id="@+id/imv_preset_icon"
+        android:layout_width="32dp"
+        android:layout_height="32dp" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_preset_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start|center_vertical"
+        android:paddingStart="4dp"
+        android:paddingEnd="8dp"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:text="@string/placeholder_unknown"
+        android:textColor="?attr/android:textColor"
+        android:textSize="16sp" />
+
+</LinearLayout>

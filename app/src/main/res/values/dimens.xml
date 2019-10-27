@@ -1,0 +1,76 @@
+<resources>
+
+    <dimen name="horizontal_padding">12dp</dimen>
+
+    <!--media item (list)-->
+    <dimen name="options_menu_width">48dp</dimen>
+    <dimen name="preferred_item_height">68dp</dimen>
+    <dimen name="list_item_img_art_size">50dp</dimen>
+    <dimen name="list_item_img_art_padding">6dp</dimen>
+
+    <dimen name="list_item_shape_radius">16dp</dimen>
+
+    <dimen name="list_item_divider_height">2dp</dimen>
+
+    <dimen name="list_item_check_size">24dp</dimen>
+
+    <dimen name="root_file_img_padding">8dp</dimen>
+
+    <dimen name="notify_controller_size">40dp</dimen>
+
+    <dimen name="widget_margin">6dp</dimen>
+
+    <dimen name="toolbar_title">18sp</dimen>
+    <dimen name="toolbar_title_expanded">32sp</dimen>
+    <dimen name="toolbar_subtitle">14sp</dimen>
+
+    <dimen name="preference_icon_size">20dp</dimen>
+
+    <!--player widget-->
+    <!--Cell formula??? (cells * 70) - 30-->
+
+    <!--3 cells-->
+    <dimen name="widget_3_layout_width">230dp</dimen>
+    <dimen name="widget_3_layout_height">80dp</dimen>
+
+    <dimen name="widget_3_width">180dp</dimen>
+    <dimen name="widget_3_height">40dp</dimen>
+
+    <!--4 cells-->
+    <dimen name="widget_4_layout_width">310dp</dimen>
+    <dimen name="widget_4_layout_height">80dp</dimen>
+
+    <dimen name="widget_4_width">250dp</dimen>
+    <dimen name="widget_4_height">40dp</dimen>
+
+    <!--widget controller songs-->
+    <dimen name="widget_art_size">50dp</dimen>
+    <dimen name="widget_item_size">40dp</dimen>
+    <dimen name="widget_item_padding">12dp</dimen>
+    <dimen name="widget_repeat_item_padding">11.5dp</dimen>
+    <dimen name="widget_shuffle_item_padding">13.5dp</dimen>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+
+    <dimen name="preferred_action_bar_height">60dp</dimen>
+
+    <dimen name="toolbar_item_icon_size">18sp</dimen>
+    
+    <dimen name="album_art_rounded_corner_radius">12dp</dimen>
+
+    <dimen name="vertical_divider_height">1dp</dimen>
+
+    <dimen name="button_corner_radius">8dp</dimen>
+
+    <dimen name="dialog_corner_radius">16dp</dimen>
+    <dimen name="dialog_content_padding">16dp</dimen>
+    <dimen name="dialog_padding_start">16dp</dimen>
+    <dimen name="dialog_padding_top">16dp</dimen>
+    <dimen name="dialog_padding_end">16dp</dimen>
+    <dimen name="dialog_padding_bottom">6dp</dimen>
+    <dimen name="bottom_sheet_corner_radius">24dp</dimen>
+
+    <!--backdrop-->
+    <dimen name="backdrop_radius">36dp</dimen>
+    <dimen name="backdrop_padding">@dimen/backdrop_radius</dimen>
+</resources>
+

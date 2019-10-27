@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/title"
+        android:title="@string/added"/>
+
+    <group
+        android:id="@+id/group_periods"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/action_for_last_hour"
+            android:title="@string/for_last_hour"/>
+
+        <item
+            android:id="@+id/action_for_last_day"
+            android:title="@string/for_last_day"/>
+
+        <item
+            android:id="@+id/action_for_last_week"
+            android:title="@string/for_last_week"/>
+
+        <item
+            android:id="@+id/action_for_last_month"
+            android:title="@string/for_last_month"/>
+
+        <item
+            android:id="@+id/action_for_last_year"
+            android:title="@string/for_last_year"/>
+    </group>
+</menu>

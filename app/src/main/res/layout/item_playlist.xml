@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    style="@style/Layout.Item.Media">
+
+    <ImageView
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:src="@drawable/ic_music_folder_placeholder"
+        android:layout_margin="@dimen/list_item_img_art_padding"
+        android:scaleType="centerCrop"
+        android:id="@+id/imv_playlist_art"
+        android:layout_width="@dimen/list_item_img_art_size"
+        android:layout_height="@dimen/list_item_img_art_size"/>
+
+    <include
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        layout="@layout/include_options_menu"
+        android:id="@+id/view_options_menu"
+        android:layout_width="@dimen/options_menu_width"
+        android:layout_height="60dp" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        app:layout_constraintStart_toEndOf="@id/imv_playlist_art"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/view_options_menu"
+        app:layout_constraintBottom_toTopOf="@id/tv_playlist_date_modified"
+        app:layout_constraintVertical_chainStyle="packed"
+        android:layout_width="0dp"
+        android:layout_marginStart="8dp"
+        style="@style/Item.Text.Primary"
+        android:text="@string/placeholder_unknown"
+        android:id="@+id/tv_playlist_name"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        app:layout_constraintStart_toStartOf="@id/tv_playlist_name"
+        app:layout_constraintTop_toBottomOf="@id/tv_playlist_name"
+        app:layout_constraintEnd_toEndOf="@id/tv_playlist_name"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="0dp"
+        style="@style/Item.Text.Secondary"
+        android:text="@string/placeholder_unknown_date"
+        android:id="@+id/tv_playlist_date_modified" />
+
+    <include
+        app:layout_constraintEnd_toEndOf="@id/imv_playlist_art"
+        app:layout_constraintBottom_toBottomOf="@id/imv_playlist_art"
+        layout="@layout/include_check"
+        android:layout_width="@dimen/list_item_check_size"
+        android:layout_height="@dimen/list_item_check_size" />
+</androidx.constraintlayout.widget.ConstraintLayout>
