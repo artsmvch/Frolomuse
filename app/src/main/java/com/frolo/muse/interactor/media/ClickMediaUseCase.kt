@@ -19,7 +19,7 @@ class ClickMediaUseCase <E: Media> constructor(
         private val songQueueFactory: SongQueueFactory
 ) {
 
-    private fun processPlay(target: Media, songs: List<Song>, toggleIfSameSong: Boolean) {
+    private fun processPlay(target: Song, songs: List<Song>, toggleIfSameSong: Boolean) {
         val currentSong = player.getCurrent()
         if (toggleIfSameSong && currentSong == target) {
             // if we've chosen the same song that is currently being played then toggle the playback
@@ -27,25 +27,17 @@ class ClickMediaUseCase <E: Media> constructor(
         } else {
             // otherwise, create new song queue and start playing it
             val songQueue = songQueueFactory.create(listOf(target), songs)
-            if (target is Song) {
-                player.prepare(songQueue, target, true)
-            } else {
-                songs.firstOrNull()?.let { safeFirst ->
-                    player.prepare(songQueue, safeFirst, true)
-                }
-            }
+            player.prepare(songQueue, target, true)
         }
     }
 
     fun click(item: E, fromCollection: Collection<E>): Completable {
         return when(item.kind) {
             Media.SONG -> {
-                return Single.fromCallable {
-                    fromCollection.filterIsInstance<Song>()
-                }
+                return Single.fromCallable { fromCollection.filterIsInstance<Song>() }
                         .subscribeOn(schedulerProvider.worker())
                         .doOnSuccess { songs ->
-                            processPlay(item, songs, true)
+                            processPlay(item as Song, songs, true)
                         }
                         .ignoreElement()
             }
@@ -76,14 +68,10 @@ class ClickMediaUseCase <E: Media> constructor(
             Media.MY_FILE -> {
                 val myFile = item as MyFile
                 when {
-                    myFile.isDirectory -> repository.collectSongs(myFile)
-                            .subscribeOn(schedulerProvider.worker())
-                            .doOnSuccess { songs ->
-                                songs.firstOrNull()?.let { safeFirst ->
-                                    processPlay(safeFirst, songs, true)
-                                }
+                    myFile.isDirectory -> Completable.complete()
+                            .doOnComplete {
+                                navigator.openMyFile(item as MyFile)
                             }
-                            .ignoreElement()
 
                     myFile.isSongFile -> repository.collectSongs(myFile)
                             .subscribeOn(schedulerProvider.worker())
