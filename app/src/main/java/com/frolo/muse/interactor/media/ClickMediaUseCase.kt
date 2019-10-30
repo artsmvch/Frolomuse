@@ -8,6 +8,7 @@ import com.frolo.muse.repository.GenericMediaRepository
 import com.frolo.muse.rx.SchedulerProvider
 import io.reactivex.Completable
 import io.reactivex.Single
+import io.reactivex.functions.Function
 
 
 class ClickMediaUseCase <E: Media> constructor(
@@ -74,8 +75,8 @@ class ClickMediaUseCase <E: Media> constructor(
             }
             Media.MY_FILE -> {
                 val myFile = item as MyFile
-                if (myFile.isDirectory) {
-                    repository.collectSongs(myFile)
+                when {
+                    myFile.isDirectory -> repository.collectSongs(myFile)
                             .subscribeOn(schedulerProvider.worker())
                             .doOnSuccess { songs ->
                                 songs.firstOrNull()?.let { safeFirst ->
@@ -83,14 +84,23 @@ class ClickMediaUseCase <E: Media> constructor(
                                 }
                             }
                             .ignoreElement()
-                } else if (myFile.isSongFile) {
-                    repository.collectSongs(myFile)
+
+                    myFile.isSongFile -> repository.collectSongs(myFile)
                             .subscribeOn(schedulerProvider.worker())
                             // as the item is song file itself then we must get a collection of just 1 item
                             .map { songs -> songs.first() }
                             .flatMap { targetSong ->
-                                Single.fromCallable { myFile.parent }
-                                        .flatMap { parent -> repository.collectSongs(parent) }
+                                val sources = fromCollection.filter { it is MyFile && it.isSongFile }
+                                        .map { myFile ->
+                                            repository.collectSongs(myFile).onErrorReturnItem(emptyList())
+                                        }
+
+                                Single.zip(
+                                        sources,
+                                        Function<Array<*>, List<Song>> { arr ->
+                                            arr.filter { it is List<*> && it.size == 1 }
+                                                    .map { (it as List<*>).first() as Song }
+                                        })
                                         .onErrorResumeNext(Single.just(listOf(targetSong)))
                                         .map { songs -> targetSong to songs }
                             }
@@ -98,11 +108,8 @@ class ClickMediaUseCase <E: Media> constructor(
                                 processPlay(pair.first, pair.second, true)
                             }
                             .ignoreElement()
-                } else {
-                    Completable.complete()
-                            .doOnComplete {
-                                player
-                            }
+
+                    else -> Completable.complete()
                 }
             }
             else -> Completable.error(
