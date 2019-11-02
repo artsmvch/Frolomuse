@@ -17,6 +17,7 @@ import com.frolo.muse.model.media.Song;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -206,9 +207,11 @@ final class SongQuery {
             final ContentResolver resolver
     ) {
         final Uri favUri = AppMediaStore.Favourites.getContentUri();
+        final Uri songsUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+        final List<Uri> uris = Arrays.asList(favUri, songsUri);
         return Query.createFlowable(
                 resolver,
-                favUri,
+                uris,
                 new Callable<List<Song>>() {
                     @Override
                     public List<Song> call() throws Exception {

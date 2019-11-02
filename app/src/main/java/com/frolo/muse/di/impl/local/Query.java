@@ -75,6 +75,52 @@ final class Query {
         }, BackpressureStrategy.LATEST);
     }
 
+    /*package*/ static Flowable<Object> createFlowable(
+            final ContentResolver contentResolver,
+            final List<Uri> uris
+    ) {
+        return Flowable.create(new FlowableOnSubscribe<Object>() {
+            @Override
+            public void subscribe(final FlowableEmitter<Object> emitter) {
+                if (!emitter.isCancelled()) {
+                    final boolean notifyForDescendants = true;
+                    final List<ContentObserver> triggers = new ArrayList<>(uris.size());
+
+                    for (Uri uri : uris) {
+                        final ContentObserver trigger = new ContentObserver(HANDLER) {
+                            @Override
+                            public void onChange(boolean selfChange, Uri uri) {
+                                if (!emitter.isCancelled()) {
+                                    emitter.onNext(NOTHING);
+                                }
+                            }
+                        };
+
+                        contentResolver.registerContentObserver(
+                                uri,
+                                notifyForDescendants,
+                                trigger);
+
+                        triggers.add(trigger);
+                    }
+
+                    emitter.setDisposable(Disposables.fromAction(new Action() {
+                        @Override
+                        public void run() {
+                            for (ContentObserver trigger : triggers) {
+                                contentResolver.unregisterContentObserver(trigger);
+                            }
+                        }
+                    }));
+                }
+
+                if (!emitter.isCancelled()) {
+                    emitter.onNext(NOTHING);
+                }
+            }
+        }, BackpressureStrategy.LATEST);
+    }
+
     /*package*/ static <T> Flowable<T> createFlowable(
             final ContentResolver contentResolver,
             final Uri uri,
@@ -83,6 +129,22 @@ final class Query {
         final Maybe<T> maybe = Maybe.fromCallable(callable);
 
         return createFlowable(contentResolver, uri)
+                .flatMapMaybe(new Function<Object, MaybeSource<? extends T>>() {
+                    @Override
+                    public MaybeSource<? extends T> apply(Object o) {
+                        return maybe;
+                    }
+                });
+    }
+
+    /*package*/ static <T> Flowable<T> createFlowable(
+            final ContentResolver contentResolver,
+            final List<Uri> uris,
+            Callable<T> callable
+    ) {
+        final Maybe<T> maybe = Maybe.fromCallable(callable);
+
+        return createFlowable(contentResolver, uris)
                 .flatMapMaybe(new Function<Object, MaybeSource<? extends T>>() {
                     @Override
                     public MaybeSource<? extends T> apply(Object o) {
