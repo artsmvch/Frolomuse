@@ -103,6 +103,10 @@ fun MyFile.getNameAsRootString(): String {
     return "..." + (javaFile?.name ?: "")
 }
 
+fun Song.getDurationString(): String {
+    return duration.asDurationInMs()
+}
+
 fun Int.asDurationInMs(): String {
     val totalSeconds = this / 1000
     val totalMinutes = totalSeconds / 60
@@ -110,10 +114,6 @@ fun Int.asDurationInMs(): String {
     //int totalHours = totalMinutes / 60;
     val format = if (seconds < 10) "%d:0%d" else "%d:%d"
     return String.format(format, totalMinutes, seconds)
-}
-
-fun Int.asNonZeroDurationInMs(): String {
-    return if (this == 0) "0:01" else asDurationInMs()
 }
 
 fun Media.getName(): String {

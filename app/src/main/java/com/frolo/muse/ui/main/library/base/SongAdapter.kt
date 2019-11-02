@@ -7,8 +7,8 @@ import com.bumptech.glide.RequestManager
 import com.frolo.muse.GlideManager
 import com.frolo.muse.R
 import com.frolo.muse.model.media.Song
-import com.frolo.muse.ui.asNonZeroDurationInMs
 import com.frolo.muse.ui.getArtistString
+import com.frolo.muse.ui.getDurationString
 import com.frolo.muse.ui.getNameString
 import com.frolo.muse.util.CharSequences
 import com.l4digital.fastscroll.FastScroller
@@ -92,7 +92,7 @@ open class SongAdapter constructor(
             val res = resources
             tv_song_name.text = item.getNameString(res)
             tv_artist_name.text = item.getArtistString(res)
-            tv_duration.text = item.duration.asNonZeroDurationInMs()
+            tv_duration.text = item.getDurationString()
 
             val options = GlideManager.get()
                     .requestOptions(item.albumId)

@@ -7,8 +7,8 @@ import androidx.core.content.ContextCompat
 import com.bumptech.glide.RequestManager
 import com.frolo.muse.R
 import com.frolo.muse.model.media.Song
-import com.frolo.muse.ui.asNonZeroDurationInMs
 import com.frolo.muse.ui.getAlbumString
+import com.frolo.muse.ui.getDurationString
 import com.frolo.muse.ui.getNameString
 import com.frolo.muse.ui.main.library.base.SongAdapter
 import kotlinx.android.synthetic.main.item_select_song.view.*
@@ -39,7 +39,7 @@ class SongSelectorAdapter constructor(
             val res = resources
             tv_song_name.text = item.getNameString(res)
             tv_album_name.text = item.getAlbumString(res)
-            tv_duration.text = item.duration.asNonZeroDurationInMs()
+            tv_duration.text = item.getDurationString()
 
             if (position != playingPosition) {
                 mini_visualizer.visibility = View.GONE

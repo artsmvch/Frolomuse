@@ -11,10 +11,10 @@ import com.frolo.muse.GlideManager
 import com.frolo.muse.R
 import com.frolo.muse.arch.observe
 import com.frolo.muse.model.media.Song
-import com.frolo.muse.ui.asNonZeroDurationInMs
 import com.frolo.muse.ui.base.BaseDialogFragment
 import com.frolo.muse.ui.base.serializableArg
 import com.frolo.muse.ui.base.withArg
+import com.frolo.muse.ui.getDurationString
 import com.frolo.muse.views.Anim
 import com.frolo.muse.views.getNonNullText
 import kotlinx.android.synthetic.main.dialog_song_editor.*
@@ -76,7 +76,7 @@ class SongEditorFragment: BaseDialogFragment() {
             edt_artist_name.setText(song.artist)
             edt_genre_name.setText(song.genre)
 
-            tv_duration.text = getString(R.string.duration, song.duration.asNonZeroDurationInMs())
+            tv_duration.text = getString(R.string.duration, song.getDurationString())
             tv_filepath.text = song.source
 
             val options = GlideManager.get().requestOptions(song.albumId)
