@@ -23,7 +23,8 @@ public class PlaylistChunkRepositoryImpl
             SongQuery.Sort.BY_PLAY_ORDER,
             SongQuery.Sort.BY_TITLE,
             SongQuery.Sort.BY_ALBUM,
-            SongQuery.Sort.BY_ARTIST
+            SongQuery.Sort.BY_ARTIST,
+            SongQuery.Sort.BY_DURATION
     };
 
     // Returns sort order candidate if valid or default
@@ -38,7 +39,7 @@ public class PlaylistChunkRepositoryImpl
 
     public PlaylistChunkRepositoryImpl(Context context) {
         super(context);
-        mSortOrders = new LinkedHashMap<String, String>(4, 1f) {{
+        mSortOrders = new LinkedHashMap<String, String>(5, 1f) {{
             put(SongQuery.Sort.BY_PLAY_ORDER,
                     getContext().getString(R.string.sort_by_play_order));
 
@@ -50,6 +51,9 @@ public class PlaylistChunkRepositoryImpl
 
             put(SongQuery.Sort.BY_ARTIST,
                     getContext().getString(R.string.sort_by_artist));
+
+            put(SongQuery.Sort.BY_DURATION,
+                    getContext().getString(R.string.sort_by_duration));
         }};
     }
 

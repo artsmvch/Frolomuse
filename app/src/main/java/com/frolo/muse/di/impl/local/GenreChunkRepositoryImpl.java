@@ -19,7 +19,8 @@ public class GenreChunkRepositoryImpl
             SongQuery.Sort.BY_DEFAULT,
             SongQuery.Sort.BY_TITLE,
             SongQuery.Sort.BY_ALBUM,
-            SongQuery.Sort.BY_ARTIST
+            SongQuery.Sort.BY_ARTIST,
+            SongQuery.Sort.BY_DURATION
     };
 
     // Returns sort order candidate if valid or default
@@ -34,7 +35,7 @@ public class GenreChunkRepositoryImpl
 
     public GenreChunkRepositoryImpl(final Context context) {
         super(context);
-        mSortOrders = new LinkedHashMap<String, String>(4, 1f) {{
+        mSortOrders = new LinkedHashMap<String, String>(5, 1f) {{
             put(SongQuery.Sort.BY_DEFAULT,
                     context.getString(R.string.sort_by_default));
 
@@ -46,6 +47,9 @@ public class GenreChunkRepositoryImpl
 
             put(SongQuery.Sort.BY_ARTIST,
                     context.getString(R.string.sort_by_artist));
+
+            put(SongQuery.Sort.BY_DURATION,
+                    context.getString(R.string.sort_by_duration));
         }};
     }
 

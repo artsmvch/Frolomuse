@@ -43,6 +43,12 @@ public class PlaylistChunkRepositoryImplTest {
             String validated = PlaylistChunkRepositoryImpl.validateSortOrder(sortOrder);
             assertEquals(sortOrder, validated);
         }
+
+        {
+            String sortOrder = SongQuery.Sort.BY_DURATION;
+            String validated = PlaylistChunkRepositoryImpl.validateSortOrder(sortOrder);
+            assertEquals(sortOrder, validated);
+        }
     }
 
     @Test

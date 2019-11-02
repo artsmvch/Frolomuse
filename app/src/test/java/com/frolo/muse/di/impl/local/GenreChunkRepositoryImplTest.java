@@ -43,6 +43,12 @@ public class GenreChunkRepositoryImplTest {
             assertNotEquals(sortOrder, validated);
             assertEquals(SongQuery.Sort.BY_DEFAULT, validated);
         }
+
+        {
+            String sortOrder = SongQuery.Sort.BY_DURATION;
+            String validated = GenreChunkRepositoryImpl.validateSortOrder(sortOrder);
+            assertEquals(sortOrder, validated);
+        }
     }
 
     @Test

@@ -43,6 +43,12 @@ public class SongRepositoryImplTest {
             assertNotEquals(sortOrder, validated);
             assertEquals(SongQuery.Sort.BY_TITLE, validated);
         }
+
+        {
+            String sortOrder = SongQuery.Sort.BY_DURATION;
+            String validated = SongRepositoryImpl.validateSortOrder(sortOrder);
+            assertEquals(sortOrder, validated);
+        }
     }
 
     @Test

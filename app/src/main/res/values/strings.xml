@@ -41,6 +41,7 @@
     <string name="sort_by_date_modified">By date modified</string>
     <string name="sort_by_filename">By filename</string>
     <string name="sort_by_play_order">By play order</string>
+    <string name="sort_by_duration">By duration</string>
 
     <!--Rating-->
     <string name="would_you_rate">Would you rate this app for 5 stars?</string>

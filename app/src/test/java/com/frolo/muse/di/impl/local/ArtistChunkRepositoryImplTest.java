@@ -44,6 +44,12 @@ public class ArtistChunkRepositoryImplTest {
             assertNotEquals(sortOrder, validated);
             assertEquals(SongQuery.Sort.BY_DEFAULT, validated);
         }
+
+        {
+            String sortOrder = SongQuery.Sort.BY_DURATION;
+            String validated = ArtistChunkRepositoryImpl.validateSortOrder(sortOrder);
+            assertEquals(sortOrder, validated);
+        }
     }
 
     @Test

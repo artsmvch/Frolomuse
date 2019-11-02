@@ -36,6 +36,7 @@ final class SongQuery {
     static final class Sort {
         // Sort orders are case-insensitive
 
+        // For albums, artists and genres only
         static final String BY_DEFAULT = "";
 
         static final String BY_TITLE =
@@ -50,6 +51,9 @@ final class SongQuery {
         // For playlist only
         static final String BY_PLAY_ORDER =
                 MediaStore.Audio.Playlists.Members.PLAY_ORDER + " ASC";
+
+        static final String BY_DURATION =
+                MediaStore.Audio.Media.DURATION + " ASC";
 
         private Sort() {
         }

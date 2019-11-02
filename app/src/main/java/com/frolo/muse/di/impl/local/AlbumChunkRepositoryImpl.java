@@ -18,7 +18,8 @@ public class AlbumChunkRepositoryImpl
     private final static String[] SORT_ORDER_KEYS = {
             SongQuery.Sort.BY_DEFAULT,
             SongQuery.Sort.BY_TITLE,
-            SongQuery.Sort.BY_ARTIST
+            SongQuery.Sort.BY_ARTIST,
+            SongQuery.Sort.BY_DURATION
     };
 
     // Returns sort order candidate if valid or default
@@ -33,7 +34,7 @@ public class AlbumChunkRepositoryImpl
 
     public AlbumChunkRepositoryImpl(final Context context) {
         super(context);
-        this.mSortOrders = new LinkedHashMap<String, String>(3, 1f) {{
+        this.mSortOrders = new LinkedHashMap<String, String>(4, 1f) {{
             put(SongQuery.Sort.BY_DEFAULT,
                     context.getString(R.string.sort_by_default));
 
@@ -42,6 +43,9 @@ public class AlbumChunkRepositoryImpl
 
             put(SongQuery.Sort.BY_ARTIST,
                     context.getString(R.string.sort_by_artist));
+
+            put(SongQuery.Sort.BY_DURATION,
+                    context.getString(R.string.sort_by_duration));
         }};
     }
 
