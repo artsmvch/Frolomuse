@@ -28,6 +28,7 @@
     <!--Sort orders-->
     <string name="sort">Сортировать</string>
     <string name="ascending">По возрастанию</string>
+    <string name="sort_by_default">По умолчанию</string>
     <string name="sort_by_name">По названию</string>
     <string name="sort_by_artist">По артисту</string>
     <string name="sort_by_album">По альбому</string>

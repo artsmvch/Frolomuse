@@ -28,6 +28,7 @@
     <!--Sort orders-->
     <string name="sort">तरह</string>
     <string name="ascending">आरोही</string>
+    <string name="sort_by_default">डिफ़ॉल्ट रूप से</string>
     <string name="sort_by_name">नाम से</string>
     <string name="sort_by_artist">कलाकार द्वारा</string>
     <string name="sort_by_album">एल्बम द्वारा</string>

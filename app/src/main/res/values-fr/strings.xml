@@ -28,6 +28,7 @@
     <!--Sort orders-->
     <string name="sort">Trier</string>
     <string name="ascending">Ascendant</string>
+    <string name="sort_by_default">Par défaut</string>
     <string name="sort_by_name">Par nom</string>
     <string name="sort_by_artist">Par artiste</string>
     <string name="sort_by_album">Par album</string>

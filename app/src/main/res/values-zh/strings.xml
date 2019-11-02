@@ -28,6 +28,7 @@
     <!--Sort orders-->
     <string name="sort">分類</string>
     <string name="ascending">上升</string>
+    <string name="sort_by_default">默認</string>
     <string name="sort_by_name">按名字</string>
     <string name="sort_by_artist">由藝術家</string>
     <string name="sort_by_album">通過專輯</string>

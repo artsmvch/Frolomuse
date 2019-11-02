@@ -28,6 +28,7 @@
     <!--Sort orders-->
     <string name="sort">ソート</string>
     <string name="ascending">上昇</string>
+    <string name="sort_by_default">デフォルトで</string>
     <string name="sort_by_name">名前で</string>
     <string name="sort_by_artist">アーティストによる</string>
     <string name="sort_by_album">アルバム別</string>

@@ -28,6 +28,7 @@
     <!--Sort orders-->
     <string name="sort">Menyortir</string>
     <string name="ascending">Naik</string>
+    <string name="sort_by_default">Secara default</string>
     <string name="sort_by_name">Berdasarkan nama</string>
     <string name="sort_by_artist">Berdasarkan artis</string>
     <string name="sort_by_album">Berdasarkan album</string>

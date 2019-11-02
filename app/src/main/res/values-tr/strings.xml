@@ -27,6 +27,7 @@
     <!--Sort orders-->
     <string name="sort">Çeşit</string>
     <string name="ascending">Yükselen</string>
+    <string name="sort_by_default">Varsayılan olarak</string>
     <string name="sort_by_name">İsimle</string>
     <string name="sort_by_artist">Sanatçının</string>
     <string name="sort_by_album">Albüme göre</string>
