@@ -32,11 +32,23 @@ final class Query {
         T build(Cursor cursor, String[] projection);
     }
 
+    /**
+     * Generates an exception that indicates a null cursor returned for the queried uri.
+     * @param uri uri for which the query returned null
+     * @return a generated exception
+     */
     /*package*/ static Exception genNullCursorErr(Uri uri) {
         return new IllegalArgumentException(
                 "Query returned null cursor for uri: " + uri);
     }
 
+    /**
+     * Creates a flowable that emits an object every time some data changed on the uri provided.
+     * An additional object is emitted on the subscribe.
+     * @param contentResolver content resolver
+     * @param uri uri to observe
+     * @return a flowable source
+     */
     /*package*/ static Flowable<Object> createFlowable(
             final ContentResolver contentResolver,
             final Uri uri
@@ -75,6 +87,13 @@ final class Query {
         }, BackpressureStrategy.LATEST);
     }
 
+    /**
+     * Creates a flowable that emits an object every time some data changed on the uris provided.
+     * An additional object is emitted on the subscribe.
+     * @param contentResolver content resolver
+     * @param uris uris to observe
+     * @return a flowable source
+     */
     /*package*/ static Flowable<Object> createFlowable(
             final ContentResolver contentResolver,
             final List<Uri> uris
