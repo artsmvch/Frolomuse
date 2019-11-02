@@ -39,6 +39,7 @@
     <string name="sort_by_date_modified">Par date de modification</string>
     <string name="sort_by_filename">Par nom de fichier</string>
     <string name="sort_by_play_order">Par ordre de jeu</string>
+    <string name="sort_by_duration">Par durée</string>
 
     <!--Rating-->
     <string name="would_you_rate">Pourriez-vous évaluer cette application pour 5 étoiles?</string>

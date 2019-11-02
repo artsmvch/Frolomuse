@@ -39,6 +39,7 @@
     <string name="sort_by_date_modified">По дате изменения</string>
     <string name="sort_by_filename">По названию</string>
     <string name="sort_by_play_order">По порядку игры</string>
+    <string name="sort_by_duration">По продолжительности</string>
 
     <!--Rating-->
     <string name="would_you_rate">Оценили бы Вы приложение в 5 звёзд?</string>

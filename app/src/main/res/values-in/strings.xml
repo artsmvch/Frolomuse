@@ -39,6 +39,7 @@
     <string name="sort_by_date_modified">Berdasarkan tanggal dimodifikasi</string>
     <string name="sort_by_filename">Berdasarkan nama file</string>
     <string name="sort_by_play_order">Berdasarkan urutan main</string>
+    <string name="sort_by_duration">Berdasarkan durasi</string>
 
     <!--Rating-->
     <string name="would_you_rate">Apakah Anda memberi nilai aplikasi ini untuk 5 bintang?</string>

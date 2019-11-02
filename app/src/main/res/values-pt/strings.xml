@@ -39,6 +39,7 @@
     <string name="sort_by_date_modified">Por data modificada</string>
     <string name="sort_by_filename">Por nome do arquivo</string>
     <string name="sort_by_play_order">Por ordem de reprodução</string>
+    <string name="sort_by_duration">Por duração</string>
 
     <!--Rating-->
     <string name="would_you_rate">Você avaliaria este app por 5 estrelas?</string>

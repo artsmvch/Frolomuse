@@ -39,6 +39,7 @@
     <string name="sort_by_date_modified">按日期修改</string>
     <string name="sort_by_filename">按文件名</string>
     <string name="sort_by_play_order">按播放順序</string>
+    <string name="sort_by_duration">按時長</string>
 
     <!--Rating-->
     <string name="would_you_rate">你會為5星評價這款應用嗎？</string>

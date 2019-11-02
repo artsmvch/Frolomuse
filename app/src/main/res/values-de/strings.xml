@@ -39,6 +39,7 @@
     <string name="sort_by_date_modified">Nach Datum geändert</string>
     <string name="sort_by_filename">Nach Dateiname</string>
     <string name="sort_by_play_order">Nach Spielreihenfolge</string>
+    <string name="sort_by_duration">Nach Dauer</string>
 
     <!--Rating-->
     <string name="would_you_rate">Würden Sie diese App für 5 Sterne bewerten?</string>

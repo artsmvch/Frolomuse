@@ -39,6 +39,7 @@
     <string name="sort_by_date_modified">変更日時</string>
     <string name="sort_by_filename">ファイル名で</string>
     <string name="sort_by_play_order">プレイ順で</string>
+    <string name="sort_by_duration">期間別</string>
 
     <!--Rating-->
     <string name="would_you_rate">このアプリを5つ星と評価しますか？</string>

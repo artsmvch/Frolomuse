@@ -38,6 +38,7 @@
     <string name="sort_by_date_modified">Değişiklik tarihine göre</string>
     <string name="sort_by_filename">Dosya adına göre</string>
     <string name="sort_by_play_order">Oynatma sırasına göre</string>
+    <string name="sort_by_duration">Süreye göre</string>
 
     <!--Rating-->
     <string name="would_you_rate">Bu uygulamayı 5 yıldız için değerlendirir misiniz?</string>

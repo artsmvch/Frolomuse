@@ -39,6 +39,7 @@
     <string name="sort_by_date_modified">तिथि संशोधित करके</string>
     <string name="sort_by_filename">फ़ाइल नाम से</string>
     <string name="sort_by_play_order">खेलने के आदेश से</string>
+    <string name="sort_by_duration">अवधि के अनुसार</string>
 
     <!--Rating-->
     <string name="would_you_rate">क्या आप इस ऐप को 5 सितारों के लिए रेट करेंगे?</string>
