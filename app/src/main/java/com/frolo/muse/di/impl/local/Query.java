@@ -8,6 +8,8 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -40,6 +42,24 @@ final class Query {
     /*package*/ static Exception genNullCursorErr(Uri uri) {
         return new IllegalArgumentException(
                 "Query returned null cursor for uri: " + uri);
+    }
+
+    /**
+     * Returns a valid sort order for content resolvers.
+     * If the given 'candidate' is null or empty then the sort order is null.
+     * Otherwise the 'candidate' is returned.
+     * @param candidate to validate
+     * @return a valid sort order
+     */
+    @Nullable
+    /*package*/ static String validateSortOrder(@Nullable String candidate) {
+        if (candidate == null) {
+            return null;
+        }
+        if (candidate.isEmpty()) {
+            return null;
+        }
+        return candidate;
     }
 
     /**
@@ -187,8 +207,8 @@ final class Query {
                 new Callable<List<T>>() {
                     @Override
                     public List<T> call() throws Exception {
-                        Cursor cursor = resolver
-                                .query(uri, projection, selection, selectionArgs, sortOrder);
+                        Cursor cursor = resolver.query(
+                                uri, projection, selection, selectionArgs, validateSortOrder(sortOrder));
 
                         if (cursor == null) {
                             throw genNullCursorErr(uri);
@@ -230,8 +250,8 @@ final class Query {
                         String[] selectionArgs = null;
                         String sortOrder = null;
 
-                        Cursor cursor = resolver
-                                .query(itemUri, projection, selection, selectionArgs, sortOrder);
+                        Cursor cursor = resolver.query(
+                                itemUri, projection, selection, selectionArgs, sortOrder);
 
                         if (cursor == null) {
                             throw genNullCursorErr(itemUri);
