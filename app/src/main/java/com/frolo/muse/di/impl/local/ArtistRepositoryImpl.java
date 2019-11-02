@@ -19,6 +19,20 @@ import io.reactivex.Single;
 
 public class ArtistRepositoryImpl implements ArtistRepository {
 
+    private final static String[] SORT_ORDER_KEYS = {
+            ArtistQuery.Sort.BY_ARTIST,
+            ArtistQuery.Sort.BY_NUMBER_OF_ALBUMS,
+            ArtistQuery.Sort.BY_NUMBER_OF_TRACKS
+    };
+
+    // Returns sort order candidate if valid or default
+    static String validateSortOrder(String candidate) {
+        return Preconditions.takeIfNotNullAndListedOrDefault(
+                candidate,
+                SORT_ORDER_KEYS,
+                ArtistQuery.Sort.BY_ARTIST);
+    }
+
     private final Context mContext;
     private final Map<String, String> mSortOrders;
 

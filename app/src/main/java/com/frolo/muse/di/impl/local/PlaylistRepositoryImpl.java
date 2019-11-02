@@ -20,6 +20,20 @@ import io.reactivex.Single;
 public class PlaylistRepositoryImpl
         implements PlaylistRepository {
 
+    private final static String[] SORT_ORDER_KEYS = {
+            PlaylistQuery.Sort.BY_NAME,
+            PlaylistQuery.Sort.BY_DATE_ADDED,
+            PlaylistQuery.Sort.BY_DATE_MODIFIED
+    };
+
+    // Returns sort order candidate if valid or default
+    static String validateSortOrder(String candidate) {
+        return Preconditions.takeIfNotNullAndListedOrDefault(
+                candidate,
+                SORT_ORDER_KEYS,
+                PlaylistQuery.Sort.BY_NAME);
+    }
+
     private final Context mContext;
     private final Map<String, String> mSortOrders;
 

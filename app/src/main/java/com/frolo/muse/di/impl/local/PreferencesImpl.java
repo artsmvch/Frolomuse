@@ -309,87 +309,43 @@ public class PreferencesImpl implements Preferences {
     public String getSortOrderForSection(@Library.Section int section) {
         String order = preferences.getString(getKeySortOrderForSection(section), null);
         switch (section) {
-            case Library.ALBUMS: {
-                if (isNullOrNotMatchingAnyOthers(order,
-                        AlbumQuery.Sort.BY_ALBUM,
-                        AlbumQuery.Sort.BY_NUMBER_OF_SONGS))
-                    return AlbumQuery.Sort.BY_ALBUM;
-                else return order;
-            }
-            case Library.ARTISTS: {
-                if (isNullOrNotMatchingAnyOthers(order,
-                        ArtistQuery.Sort.BY_ARTIST,
-                        ArtistQuery.Sort.BY_NUMBER_OF_ALBUMS,
-                        ArtistQuery.Sort.BY_NUMBER_OF_TRACKS))
-                    return ArtistQuery.Sort.BY_ARTIST;
-                else return order;
-            }
-            case Library.GENRES: {
-                if (isNullOrNotMatchingAnyOthers(order,
-                        GenreQuery.Sort.BY_NAME))
-                    return GenreQuery.Sort.BY_NAME;
-                else return order;
-            }
-            case Library.PLAYLISTS: {
-                if (isNullOrNotMatchingAnyOthers(order,
-                        PlaylistQuery.Sort.BY_NAME,
-                        PlaylistQuery.Sort.BY_DATE_ADDED,
-                        PlaylistQuery.Sort.BY_DATE_MODIFIED))
-                    return PlaylistQuery.Sort.BY_NAME;
-                else return order;
-            }
+            case Library.ALBUMS:
+                return AlbumRepositoryImpl.validateSortOrder(order);
+
+            case Library.ARTISTS:
+                return ArtistRepositoryImpl.validateSortOrder(order);
+
+            case Library.GENRES:
+                return GenreRepositoryImpl.validateSortOrder(order);
+
+            case Library.PLAYLISTS:
+                return PlaylistRepositoryImpl.validateSortOrder(order);
+
             case Library.FAVOURITES:
             case Library.RECENTLY_ADDED:
-            case Library.ALL_SONGS:{
-                if (isNullOrNotMatchingAnyOthers(order,
-                        SongQuery.Sort.BY_TITLE,
-                        SongQuery.Sort.BY_ALBUM,
-                        SongQuery.Sort.BY_ARTIST))
-                    return SongQuery.Sort.BY_TITLE;
-                else return order;
-            }
-            // Same as for SONGS, but excluding SORT_BY_ALBUM
-            case Library.ALBUM:{
-                if (isNullOrNotMatchingAnyOthers(order,
-                        SongQuery.Sort.BY_TITLE,
-                        SongQuery.Sort.BY_ARTIST))
-                    return SongQuery.Sort.BY_TITLE;
-                else return order;
-            }
-            // Same as for SONGS, but excluding SORT_BY_ARTIST
-            case Library.ARTIST:{
-                if (isNullOrNotMatchingAnyOthers(order,
-                        SongQuery.Sort.BY_TITLE,
-                        SongQuery.Sort.BY_ALBUM))
-                    return SongQuery.Sort.BY_TITLE;
-                else return order;
-            }
-            // Same as for SONGS
-            case Library.GENRE:{
-                if (isNullOrNotMatchingAnyOthers(order,
-                        SongQuery.Sort.BY_TITLE,
-                        SongQuery.Sort.BY_ALBUM,
-                        SongQuery.Sort.BY_ARTIST))
-                    return SongQuery.Sort.BY_TITLE;
-                else return order;
-            }
-            case Library.PLAYLIST:{
-                if (isNullOrNotMatchingAnyOthers(order,
-                        SongQuery.Sort.BY_TITLE,
-                        SongQuery.Sort.BY_ALBUM,
-                        SongQuery.Sort.BY_ARTIST,
-                        SongQuery.Sort.BY_PLAY_ORDER))
-                    return SongQuery.Sort.BY_PLAY_ORDER;
-                else return order;
-            }
+            case Library.ALL_SONGS:
+                return SongRepositoryImpl.validateSortOrder(order);
+
+            case Library.ALBUM:
+                return AlbumChunkRepositoryImpl.validateSortOrder(order);
+
+            case Library.ARTIST:
+                return ArtistChunkRepositoryImpl.validateSortOrder(order);
+
+            case Library.GENRE:
+                return GenreChunkRepositoryImpl.validateSortOrder(order);
+
+            case Library.PLAYLIST:
+                return PlaylistChunkRepositoryImpl.validateSortOrder(order);
+
             case Library.FOLDERS: {
-                if (isNullOrNotMatchingAnyOthers(order,
-                        MyFileQuery.Sort.BY_FILENAME))
-                    return MyFileQuery.Sort.BY_FILENAME;
-                else return order;
+                return MyFileRepositoryImpl.validateSortOrder(order);
             }
+
+            case Library.MIXED:
             default:
-                throw new IllegalArgumentException("Unknown library section: " + section);
+                throw new IllegalArgumentException(
+                        "Unsupported library section: " + section);
         }
     }
 

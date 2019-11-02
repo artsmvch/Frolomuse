@@ -15,11 +15,28 @@ public class ArtistChunkRepositoryImpl
         extends SongRepositoryImpl
         implements ArtistChunkRepository {
 
+    private final static String[] SORT_ORDER_KEYS = {
+            SongQuery.Sort.BY_DEFAULT,
+            SongQuery.Sort.BY_TITLE,
+            SongQuery.Sort.BY_ALBUM
+    };
+
+    // Returns sort order candidate if valid or default
+    static String validateSortOrder(String candidate) {
+        return Preconditions.takeIfNotNullAndListedOrDefault(
+                candidate,
+                SORT_ORDER_KEYS,
+                SongQuery.Sort.BY_DEFAULT);
+    }
+
     private final Map<String, String> mSortOrders;
 
     public ArtistChunkRepositoryImpl(final Context context) {
         super(context);
-        mSortOrders = new LinkedHashMap<String, String>(2, 1f) {{
+        mSortOrders = new LinkedHashMap<String, String>(3, 1f) {{
+            put(SongQuery.Sort.BY_DEFAULT,
+                    context.getString(R.string.sort_by_default));
+
             put(SongQuery.Sort.BY_TITLE,
                     context.getString(R.string.sort_by_name));
 

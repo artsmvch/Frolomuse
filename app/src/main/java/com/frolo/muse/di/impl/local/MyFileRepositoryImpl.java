@@ -19,6 +19,18 @@ import io.reactivex.Single;
 
 public class MyFileRepositoryImpl implements MyFileRepository {
 
+    private final static String[] SORT_ORDER_KEYS = {
+            MyFileQuery.Sort.BY_FILENAME
+    };
+
+    // Returns sort order candidate if valid or default
+    static String validateSortOrder(String candidate) {
+        return Preconditions.takeIfNotNullAndListedOrDefault(
+                candidate,
+                SORT_ORDER_KEYS,
+                MyFileQuery.Sort.BY_FILENAME);
+    }
+
     private final Context mContext;
     private final Map<String, String> mSortOrders =
             new LinkedHashMap<>(1, 1f);

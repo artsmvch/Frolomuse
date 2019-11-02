@@ -19,6 +19,21 @@ public class PlaylistChunkRepositoryImpl
         extends SongRepositoryImpl
         implements PlaylistChunkRepository {
 
+    private final static String[] SORT_ORDER_KEYS = {
+            SongQuery.Sort.BY_PLAY_ORDER,
+            SongQuery.Sort.BY_TITLE,
+            SongQuery.Sort.BY_ALBUM,
+            SongQuery.Sort.BY_ARTIST
+    };
+
+    // Returns sort order candidate if valid or default
+    static String validateSortOrder(String candidate) {
+        return Preconditions.takeIfNotNullAndListedOrDefault(
+                candidate,
+                SORT_ORDER_KEYS,
+                SongQuery.Sort.BY_PLAY_ORDER);
+    }
+
     private final Map<String, String> mSortOrders;
 
     public PlaylistChunkRepositoryImpl(Context context) {

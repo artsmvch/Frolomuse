@@ -36,6 +36,8 @@ final class SongQuery {
     static final class Sort {
         // Sort orders are case-insensitive
 
+        static final String BY_DEFAULT = "";
+
         static final String BY_TITLE =
                 MediaStore.Audio.Media.TITLE + " COLLATE NOCASE ASC";
 

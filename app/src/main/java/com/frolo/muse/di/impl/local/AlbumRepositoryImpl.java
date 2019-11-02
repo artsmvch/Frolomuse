@@ -20,6 +20,19 @@ import io.reactivex.Single;
 
 public class AlbumRepositoryImpl implements AlbumRepository {
 
+    private final static String[] SORT_ORDER_KEYS = {
+            AlbumQuery.Sort.BY_ALBUM,
+            AlbumQuery.Sort.BY_NUMBER_OF_SONGS
+    };
+
+    // Returns sort order candidate if valid or default
+    static String validateSortOrder(String candidate) {
+        return Preconditions.takeIfNotNullAndListedOrDefault(
+                candidate,
+                SORT_ORDER_KEYS,
+                AlbumQuery.Sort.BY_ALBUM);
+    }
+
     private final Context mContext;
     private final Map<String, String> mSortOrders;
 
