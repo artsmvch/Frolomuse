@@ -17,6 +17,7 @@
     <color name="dark_gray">#505050</color>
     <color name="md_gray">#777777</color>
 
+    <color name="gray_txt">#919191</color>
     <color name="medium_gray">#BBBBBB</color>
     <color name="light_gray">#D3D3D3</color>
     <color name="gray_smoke">#e6e6e6</color>

@@ -9,7 +9,17 @@ import com.frolo.muse.R
 import com.frolo.muse.model.Recently
 import com.frolo.muse.model.menu.RecentPeriodMenu
 import com.frolo.muse.model.menu.SortOrderMenu
+import android.text.style.ForegroundColorSpan
+import android.text.SpannableString
+import android.view.MenuItem
+import androidx.annotation.ColorInt
 
+
+private fun MenuItem.setTitleTint(@ColorInt color: Int) {
+    val ss = SpannableString(title)
+    ss.setSpan(ForegroundColorSpan(color), 0, ss.length, 0)
+    title = ss
+}
 
 fun View.chooseSortOrder(
         sortOrderMenu: SortOrderMenu,
