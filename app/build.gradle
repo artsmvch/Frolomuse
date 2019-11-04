@@ -49,8 +49,8 @@ android {
         applicationId "com.frolo.musp"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 73
-        versionName "4.03.01"
+        versionCode 74
+        versionName "4.03.02"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         setProperty("archivesBaseName", applicationId + "-v" + versionCode + "(" + versionName + ")")
         multiDexEnabled true
