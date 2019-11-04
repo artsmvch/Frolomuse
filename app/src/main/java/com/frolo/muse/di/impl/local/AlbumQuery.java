@@ -32,6 +32,19 @@ final class AlbumQuery {
                 }
             };
 
+    private static final Query.Builder<Album> BUILDER_ARTIST_MEMBER =
+            new Query.Builder<Album>() {
+                @Override
+                public Album build(Cursor cursor, String[] projection) {
+                    return new Album(
+                            cursor.getLong(cursor.getColumnIndex(PROJECTION_ARTIST_MEMBER[0])),
+                            cursor.getString(cursor.getColumnIndex(PROJECTION_ARTIST_MEMBER[1])),
+                            cursor.getString(cursor.getColumnIndex(PROJECTION_ARTIST_MEMBER[2])),
+                            cursor.getInt(cursor.getColumnIndex(PROJECTION_ARTIST_MEMBER[3]))
+                    );
+                }
+            };
+
     // Sort orders are case-insensitive
     static final class Sort {
 
@@ -47,6 +60,13 @@ final class AlbumQuery {
             MediaStore.Audio.Albums.ALBUM,
             MediaStore.Audio.Albums.ARTIST,
             MediaStore.Audio.Albums.NUMBER_OF_SONGS
+    };
+
+    private static final String[] PROJECTION_ARTIST_MEMBER = {
+            MediaStore.Audio.Artists.Albums.ALBUM_ID,
+            MediaStore.Audio.Artists.Albums.ALBUM,
+            MediaStore.Audio.Artists.Albums.ARTIST,
+            MediaStore.Audio.Artists.Albums.NUMBER_OF_SONGS
     };
 
     /*package*/ static Flowable<List<Album>> queryAll(
@@ -114,11 +134,11 @@ final class AlbumQuery {
         return Query.query(
                 resolver,
                 uri,
-                PROJECTION,
+                PROJECTION_ARTIST_MEMBER,
                 selection,
                 selectionArgs,
                 sortOrder,
-                BUILDER
+                BUILDER_ARTIST_MEMBER
         );
     }
 
