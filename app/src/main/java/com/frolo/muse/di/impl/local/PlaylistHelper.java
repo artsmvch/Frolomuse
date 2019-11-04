@@ -24,6 +24,31 @@ final class PlaylistHelper {
     private static final String[] PROJECTION_PLAYLIST_MEMBER =
             new String[] { MediaStore.Audio.Playlists.Members.AUDIO_ID };
 
+    private static int countRows(
+            ContentResolver resolver,
+            Uri uri) throws Exception {
+
+        String[] projection = { "count(*)" };
+        String selection = null;
+        String[] selectionArgs = null;
+        String sortOrder = null;
+        Cursor cursor = resolver.query(uri, projection, selection, selectionArgs, sortOrder);
+
+        if (cursor == null) {
+            throw Query.genNullCursorErr(uri);
+        }
+
+        final int base;
+        try {
+            cursor.moveToFirst();
+            base = cursor.getInt(0);
+        } finally {
+            cursor.close();
+        }
+
+        return base;
+    }
+
     private static boolean checkPlaylistHasAudioMember_Internal(
             ContentResolver resolver,
             long playlistId,
@@ -59,23 +84,8 @@ final class PlaylistHelper {
 
         Uri uri = MediaStore.Audio.Playlists.Members
                 .getContentUri("external", playlistId);
-        String[] projection = { "count(*)" };
-        String selection = null;
-        String[] selectionArgs = null;
-        String sortOrder = null;
-        Cursor cursor = resolver.query(uri, projection, selection, selectionArgs, sortOrder);
 
-        if (cursor == null) {
-            throw Query.genNullCursorErr(uri);
-        }
-
-        final int base;
-        try {
-            cursor.moveToFirst();
-            base = cursor.getInt(0);
-        } finally {
-            cursor.close();
-        }
+        final int base = countRows(resolver, uri);
 
         ContentValues values = new ContentValues();
         values.put(MediaStore.Audio.Playlists.Members.PLAY_ORDER, base + audioId);
@@ -94,21 +104,8 @@ final class PlaylistHelper {
 
         Uri playlistUri = MediaStore.Audio.Playlists.Members
                 .getContentUri("external", playlistId);
-        String[] playlistProjection = new String[] { "count(*)" };
-        Cursor playlistCursor = resolver
-                .query(playlistUri, playlistProjection, null, null, null);
 
-        if (playlistCursor == null) {
-            throw Query.genNullCursorErr(playlistUri);
-        }
-
-        final int base;
-        try {
-            playlistCursor.moveToFirst();
-            base = playlistCursor.getInt(0);
-        } finally {
-            playlistCursor.close();
-        }
+        final int base = countRows(resolver, playlistUri);
 
         Uri audioUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
         String[] audioProjection = new String[] { MediaStore.Audio.Media._ID };
@@ -178,21 +175,8 @@ final class PlaylistHelper {
 
         Uri playlistUri = MediaStore.Audio.Playlists.Members
                 .getContentUri("external", playlistId);
-        String[] playlistProjection = { "count(*)" };
-        Cursor playlistCursor = resolver
-                .query(playlistUri, playlistProjection, null, null, null);
 
-        if (playlistCursor == null) {
-            throw Query.genNullCursorErr(playlistUri);
-        }
-
-        final int base;
-        try {
-            playlistCursor.moveToFirst();
-            base = playlistCursor.getInt(0);
-        } finally {
-            playlistCursor.close();
-        }
+        final int base = countRows(resolver, playlistUri);
 
         Uri genreUri = MediaStore.Audio.Genres.Members
                 .getContentUri("external", genreId);
@@ -352,21 +336,6 @@ final class PlaylistHelper {
             public void run() throws Exception {
                 Uri uri = MediaStore.Audio.Playlists.Members.
                         getContentUri("external", playlistId);
-                String[] projection = { "count(*)" };
-                Cursor cursor = resolver
-                        .query(uri, projection, null, null, null);
-
-                if (cursor == null) {
-                    throw Query.genNullCursorErr(uri);
-                }
-
-                final int base;
-                try {
-                    cursor.moveToFirst();
-                    base = cursor.getInt(0);
-                } finally {
-                    cursor.close();
-                }
 
                 String where = MediaStore.Audio.Playlists.Members.AUDIO_ID + " = " + song.getId();
                 int deletedCount = resolver.delete(uri, where, null);
