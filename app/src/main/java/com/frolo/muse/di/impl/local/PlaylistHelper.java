@@ -4,6 +4,8 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
+import android.provider.BaseColumns;
 import android.provider.MediaStore;
 
 import com.frolo.muse.model.media.Media;
@@ -28,25 +30,47 @@ final class PlaylistHelper {
             ContentResolver resolver,
             Uri uri) throws Exception {
 
-        String[] projection = { "count(*)" };
-        String selection = null;
-        String[] selectionArgs = null;
-        String sortOrder = null;
-        Cursor cursor = resolver.query(uri, projection, selection, selectionArgs, sortOrder);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            // Querying "count(*)" is not supported in Q
+            String[] projection = { BaseColumns._ID };
+            String selection = null;
+            String[] selectionArgs = null;
+            String sortOrder = null;
+            Cursor cursor = resolver.query(uri, projection, selection, selectionArgs, sortOrder);
 
-        if (cursor == null) {
-            throw Query.genNullCursorErr(uri);
+            if (cursor == null) {
+                throw Query.genNullCursorErr(uri);
+            }
+
+            final int base;
+            try {
+                base = cursor.getCount();
+            } finally {
+                cursor.close();
+            }
+
+            return base;
+        } else {
+            String[] projection = { "count(*)" };
+            String selection = null;
+            String[] selectionArgs = null;
+            String sortOrder = null;
+            Cursor cursor = resolver.query(uri, projection, selection, selectionArgs, sortOrder);
+
+            if (cursor == null) {
+                throw Query.genNullCursorErr(uri);
+            }
+
+            final int base;
+            try {
+                cursor.moveToFirst();
+                base = cursor.getInt(0);
+            } finally {
+                cursor.close();
+            }
+
+            return base;
         }
-
-        final int base;
-        try {
-            cursor.moveToFirst();
-            base = cursor.getInt(0);
-        } finally {
-            cursor.close();
-        }
-
-        return base;
     }
 
     private static boolean checkPlaylistHasAudioMember_Internal(
