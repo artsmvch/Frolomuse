@@ -5,6 +5,7 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.MediaStore;
 
 import com.frolo.muse.model.media.Album;
@@ -131,15 +132,28 @@ final class AlbumQuery {
         final String selection = null;
         final String[] selectionArgs = null;
         final String sortOrder = MediaStore.MediaColumns.TITLE + " COLLATE NOCASE ASC";
-        return Query.query(
-                resolver,
-                uri,
-                PROJECTION_ARTIST_MEMBER,
-                selection,
-                selectionArgs,
-                sortOrder,
-                BUILDER_ARTIST_MEMBER
-        );
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            return Query.query(
+                    resolver,
+                    uri,
+                    PROJECTION_ARTIST_MEMBER,
+                    selection,
+                    selectionArgs,
+                    sortOrder,
+                    BUILDER_ARTIST_MEMBER
+            );
+        } else {
+            return Query.query(
+                    resolver,
+                    uri,
+                    PROJECTION,
+                    selection,
+                    selectionArgs,
+                    sortOrder,
+                    BUILDER
+            );
+        }
     }
 
     /*package*/ static Completable updateAlbumArtPath(
