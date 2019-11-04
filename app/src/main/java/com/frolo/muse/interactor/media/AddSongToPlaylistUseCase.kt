@@ -33,7 +33,7 @@ class AddSongToPlaylistUseCase @AssistedInject constructor(
                 .flatMapCompletable { selectedItems ->
                     playlistChunkRepository.addToPlaylist(playlist, selectedItems)
                 }
-                .doOnSubscribe {
+                .doOnComplete {
                     navigator.goBack()
                 }
     }
