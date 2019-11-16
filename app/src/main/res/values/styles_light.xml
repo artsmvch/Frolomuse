@@ -193,7 +193,7 @@
         <item name="overlayTint">#9AFFFFFF</item>
         <item name="iconNormalTint">#b6b6b6</item>
         <item name="visualizerColor">@color/md_cyan_600</item>
-        <item name="highlightColor">@color/md_blue_grey_500</item>
+        <item name="highlightColor">@color/md_blue_500</item>
         <item name="searchHeader">@color/md_blue_A100</item>
         <item name="buttonAction">@style/Button.Action.Blue</item>
         <item name="buttonCancel">@style/Button.Cancel.NoBackground</item>
