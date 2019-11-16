@@ -159,7 +159,7 @@ final class SongQuery {
             final ContentResolver resolver,
             final String filter) {
         final String selection = MediaStore.Audio.Media.TITLE + " LIKE ?";
-        final String[] selectionArgs = new String[]{ filter + "%" };
+        final String[] selectionArgs = new String[]{ "%" + filter + "%" };
         final String sortOrder = Sort.BY_TITLE;
         return Query.query(
                 resolver,

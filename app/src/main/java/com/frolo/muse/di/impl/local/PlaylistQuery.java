@@ -148,7 +148,7 @@ final class PlaylistQuery {
             final ContentResolver resolver,
             final String filter) {
         final String selection = MediaStore.Audio.Playlists.NAME + " LIKE ?";
-        final String[] selectionArgs = new String[]{ filter + "%" };
+        final String[] selectionArgs = new String[]{ "%" + filter + "%" };
         return Query.query(
                 resolver,
                 URI,

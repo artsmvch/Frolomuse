@@ -98,7 +98,7 @@ final class AlbumQuery {
             String filter
     ) {
         final String selection = MediaStore.Audio.Albums.ALBUM + " LIKE ?";
-        final String[] selectionArgs = new String[]{ filter + "%" };
+        final String[] selectionArgs = new String[]{ "%" + filter + "%" };
         return Query.query(
                 resolver,
                 URI,

@@ -70,7 +70,7 @@ final class ArtistQuery {
             ContentResolver resolver,
             String filter) {
         final String selection = MediaStore.Audio.Artists.ARTIST + " LIKE ?";
-        final String[] selectionArgs = new String[]{ filter + "%" };
+        final String[] selectionArgs = new String[]{ "%" + filter + "%" };
         final String sortOrder = Sort.BY_ARTIST;
         return Query.query(
                 resolver,

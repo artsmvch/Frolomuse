@@ -68,7 +68,7 @@ final class GenreQuery {
             ContentResolver resolver,
             String filter) {
         final String selection = MediaStore.Audio.Genres.NAME + " LIKE ?";
-        final String[] selectionArgs = new String[]{ filter + "%" };
+        final String[] selectionArgs = new String[]{ "%" + filter + "%" };
         final String sortOrder = Sort.BY_NAME;
         return Query.query(
                 resolver,
