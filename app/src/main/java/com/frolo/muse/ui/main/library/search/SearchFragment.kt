@@ -90,7 +90,7 @@ class SearchFragment: AbsMediaCollectionFragment<Media>() {
         }
 
         sv_query.apply {
-            queryHint = getString(R.string.type_at_least_two_letters)
+            queryHint = getString(R.string.nav_search)
             setIconifiedByDefault(false)
             isIconified = false
             setOnCloseListener { true } // do NOT allow to close

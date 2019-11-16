@@ -40,7 +40,7 @@ class SearchViewModel @Inject constructor(
     private val publisher: PublishProcessor<String> by lazy {
         PublishProcessor.create<String>().also { publisher ->
             publisher.debounce(200, TimeUnit.MILLISECONDS)
-                    .filter { query -> query.length >= 2 }
+                    .filter { query -> query.length >= 1 }
                     .switchMap { query ->
                         searchMediaUseCase.search(query)
                                 .map { items -> query to items }
