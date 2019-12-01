@@ -129,7 +129,7 @@ class MyFileListFragment: AbsMediaCollectionFragment<MyFile>(),
             }
 
             showFolderSetDefaultMessageEvent.observe(owner) {
-                toastLongMessage(R.string.this_folder_is_default_now)
+                toastLongMessage(R.string.folder_is_default_message)
             }
         }
     }

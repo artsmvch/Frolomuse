@@ -21,6 +21,8 @@
     <string name="deleted">刪除</string>
     <string name="type_at_least_two_letters">輸入至少兩個字母</string>
     <string name="will_be_played_next">接下來會播放</string>
+    <string name="set_as_default">設為默認</string>
+    <string name="folder_is_default_message">文件瀏覽器現在將從此文件夾打開</string>
 
     <!--Errors-->
     <string name="failed_to_delete_s">無法刪除 %s</string>

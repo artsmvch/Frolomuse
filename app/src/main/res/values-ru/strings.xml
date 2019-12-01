@@ -21,6 +21,8 @@
     <string name="deleted">Удалено</string>
     <string name="type_at_least_two_letters">Введите не менее двух букв</string>
     <string name="will_be_played_next">Будет воспроизведено следующим</string>
+    <string name="set_as_default">Установить по умолчанию</string>
+    <string name="folder_is_default_message">Браузер файлов теперь будет открываться из этой папки</string>
 
     <!--Errors-->
     <string name="failed_to_delete_s">Не удалось удалить %s</string>

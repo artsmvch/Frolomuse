@@ -21,6 +21,8 @@
     <string name="deleted">Gelöscht</string>
     <string name="type_at_least_two_letters">Geben Sie mindestens zwei Buchstaben ein</string>
     <string name="will_be_played_next">Wird als nächstes gespielt</string>
+    <string name="set_as_default">Als Standard festlegen</string>
+    <string name="folder_is_default_message">Der Dateibrowser wird nun in diesem Ordner geöffnet</string>
 
     <!--Errors-->
     <string name="failed_to_delete_s">Fehler beim Löschen %s</string>

@@ -21,6 +21,8 @@
     <string name="deleted">Supprimé</string>
     <string name="type_at_least_two_letters">Tapez au moins deux lettres</string>
     <string name="will_be_played_next">Sera joué ensuite</string>
+    <string name="set_as_default">Définir par défaut</string>
+    <string name="folder_is_default_message">Le navigateur de fichiers va maintenant s'ouvrir depuis ce dossier</string>
 
     <!--Errors-->
     <string name="failed_to_delete_s">Impossible de supprimer %s</string>

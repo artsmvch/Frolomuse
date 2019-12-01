@@ -21,6 +21,8 @@
     <string name="deleted">Dihapus</string>
     <string name="type_at_least_two_letters">Ketikkan setidaknya dua huruf</string>
     <string name="will_be_played_next">Akan dimainkan selanjutnya</string>
+    <string name="set_as_default">Ditetapkan sebagai default</string>
+    <string name="folder_is_default_message">Peramban file sekarang akan terbuka dari folder ini</string>
 
     <!--Errors-->
     <string name="failed_to_delete_s">Gagal menghapus %s</string>

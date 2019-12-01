@@ -21,6 +21,8 @@
     <string name="deleted">Deleted</string>
     <string name="type_at_least_two_letters">Type at least two letters</string>
     <string name="will_be_played_next">Will be played next</string>
+    <string name="set_as_default">Set as default</string>
+    <string name="folder_is_default_message">The file browser will now open from this folder</string>
 
     <!--Errors-->
     <string name="failed_to_delete_s">Failed to delete %s</string>

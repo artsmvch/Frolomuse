@@ -21,6 +21,8 @@
     <string name="deleted">Excluído</string>
     <string name="type_at_least_two_letters">Digite pelo menos duas letras</string>
     <string name="will_be_played_next">Será jogado em seguida</string>
+    <string name="set_as_default">Definir como padrão</string>
+    <string name="folder_is_default_message">O navegador de arquivos será aberto a partir desta pasta</string>
 
     <!--Errors-->
     <string name="failed_to_delete_s">Falha ao excluir %s</string>
