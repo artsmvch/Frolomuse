@@ -127,6 +127,10 @@ class MyFileListFragment: AbsMediaCollectionFragment<MyFile>(),
                     hideProgressDialog()
                 }
             }
+
+            showFolderSetDefaultMessageEvent.observe(owner) {
+                toastLongMessage(R.string.this_folder_is_default_now)
+            }
         }
     }
 

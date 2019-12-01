@@ -1,23 +1,34 @@
 package com.frolo.muse.di.impl.local;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.SharedPreferences;
 
+import com.frolo.muse.BuildConfig;
 import com.frolo.muse.R;
 import com.frolo.muse.model.media.MyFile;
 import com.frolo.muse.model.media.Song;
 import com.frolo.muse.repository.MyFileRepository;
 
+import java.io.File;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
+import io.reactivex.functions.Action;
 
 
 public class MyFileRepositoryImpl implements MyFileRepository {
+
+    /*Prefs*/
+    private static final String PREFS_NAME = BuildConfig.APPLICATION_ID + ".file";
+
+    private static final String KEY_DEFAULT_FOLDER_PATH = "default_folder_path";
 
     private final static String[] SORT_ORDER_KEYS = {
             MyFileQuery.Sort.BY_FILENAME
@@ -35,10 +46,13 @@ public class MyFileRepositoryImpl implements MyFileRepository {
     private final Map<String, String> mSortOrders =
             new LinkedHashMap<>(1, 1f);
 
+    private final SharedPreferences mPrefs;
+
     public MyFileRepositoryImpl(Context context) {
         this.mContext = context;
         mSortOrders.put(MyFileQuery.Sort.BY_FILENAME,
                 context.getString(R.string.sort_by_filename));
+        mPrefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
     }
 
     @Override
@@ -131,6 +145,53 @@ public class MyFileRepositoryImpl implements MyFileRepository {
     @Override
     public Single<MyFile> getRootFile() {
         return Single.just(MyFileQuery.getRootFile());
+    }
+
+    @Override
+    public Single<MyFile> getDefaultFolder() {
+        return Single.fromCallable(new Callable<MyFile>() {
+            @Override
+            public MyFile call() throws Exception {
+                String defaultFolderPath = mPrefs.getString(KEY_DEFAULT_FOLDER_PATH, null);
+                if (defaultFolderPath == null) {
+                    throw new NullPointerException();
+                }
+                File file = new File(defaultFolderPath);
+                if (!file.exists()) {
+                    throw new IllegalStateException("File does not exist");
+                }
+                if (file.isHidden()) {
+                    throw new IllegalStateException("File is hidden");
+                }
+                if (!file.isDirectory()) {
+                    throw new IllegalStateException("File is not a directory");
+                }
+                return new MyFile(file, false);
+            }
+        }).onErrorResumeNext(getRootFile());
+    }
+
+    @Override
+    public Completable setDefaultFolder(final MyFile folder) {
+        return Completable.fromAction(new Action() {
+            @SuppressLint("ApplySharedPref")
+            @Override
+            public void run() throws Exception {
+                File file = folder.getJavaFile();
+                if (!file.exists()) {
+                    throw new IllegalStateException("File does not exist");
+                }
+                if (file.isHidden()) {
+                    throw new IllegalStateException("File is hidden");
+                }
+                if (!file.isDirectory()) {
+                    throw new IllegalStateException("File is not a directory");
+                }
+
+                String filePath = file.getAbsolutePath();
+                mPrefs.edit().putString(KEY_DEFAULT_FOLDER_PATH, filePath).commit();
+            }
+        });
     }
 
     @Override

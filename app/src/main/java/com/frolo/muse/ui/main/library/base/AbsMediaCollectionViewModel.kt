@@ -437,6 +437,15 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
                 }
     }
 
+    fun onSetAsDefaultOptionSelected() {
+        val event = _openOptionsMenuEvent.value ?: return
+        _closeOptionsMenuEvent.value = event
+        setAsDefault(event.item)
+    }
+
+    protected open fun setAsDefault(item: E) {
+    }
+
     fun onShareOptionSelected() {
         val event = _openOptionsMenuEvent.value ?: return
         _closeOptionsMenuEvent.value = event

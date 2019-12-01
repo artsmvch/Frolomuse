@@ -28,7 +28,7 @@ class GetAllMyFilesUseCase @Inject constructor(
 
     private val rootProcessor: BehaviorProcessor<MyFile> by lazy {
         BehaviorProcessor.createDefault<MyFile>(
-                repository.rootFile.blockingGet())
+                repository.defaultFolder.blockingGet())
     }
 
     private fun browse(

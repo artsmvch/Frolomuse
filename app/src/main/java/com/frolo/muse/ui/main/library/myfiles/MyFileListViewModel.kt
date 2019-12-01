@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import com.frolo.muse.arch.SingleLiveEvent
+import com.frolo.muse.arch.call
 import com.frolo.muse.engine.Player
 import com.frolo.muse.engine.SimplePlayerObserver
 import com.frolo.muse.navigator.Navigator
@@ -30,6 +32,7 @@ class MyFileListViewModel @Inject constructor(
         shareMediaUseCase: ShareMediaUseCase<MyFile>,
         deleteMediaUseCase: DeleteMediaUseCase<MyFile>,
         changeFavouriteUseCase: ChangeFavouriteUseCase<MyFile>,
+        private val setFolderAsDefaultUseCase: SetFolderAsDefaultUseCase,
         private val schedulerProvider: SchedulerProvider,
         navigator: Navigator,
         eventLogger: EventLogger
@@ -91,6 +94,9 @@ class MyFileListViewModel @Inject constructor(
     private val _isCollectingSongs: MutableLiveData<Boolean> = MutableLiveData()
     val isCollectingSongs: LiveData<Boolean> = _isCollectingSongs
 
+    private val _showFolderSetDefaultMessageEvent = SingleLiveEvent<Unit>()
+    val showFolderSetDefaultMessageEvent: LiveData<Unit> = _showFolderSetDefaultMessageEvent
+
     init {
         player.registerObserver(playerObserver)
         _isPlaying.value = player.isPlaying()
@@ -141,6 +147,14 @@ class MyFileListViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    override fun setAsDefault(item: MyFile) {
+        setFolderAsDefaultUseCase.setFolderAsDefault(item)
+                .observeOn(schedulerProvider.main())
+                .subscribeFor {
+                    _showFolderSetDefaultMessageEvent.call()
+                }
     }
 
     override fun handleItemClick(item: MyFile) {
