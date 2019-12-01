@@ -4,6 +4,7 @@ import com.frolo.muse.model.media.MyFile;
 
 import java.util.List;
 
+import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 
@@ -13,6 +14,10 @@ public interface MyFileRepository extends MediaRepository<MyFile> {
      * @return the root file of the FileSystem
      */
     Single<MyFile> getRootFile();
+
+    Single<MyFile> getDefaultFolder();
+
+    Completable setDefaultFolder(MyFile folder);
 
     /**
      * This method searches {@code parent} only for the files that are songs or are folders that contain songs;

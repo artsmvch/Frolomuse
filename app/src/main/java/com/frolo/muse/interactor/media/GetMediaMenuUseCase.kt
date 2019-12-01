@@ -1,9 +1,6 @@
 package com.frolo.muse.interactor.media
 
-import com.frolo.muse.model.media.Album
-import com.frolo.muse.model.media.Media
-import com.frolo.muse.model.media.Playlist
-import com.frolo.muse.model.media.Song
+import com.frolo.muse.model.media.*
 import com.frolo.muse.model.menu.ContextualMenu
 import com.frolo.muse.model.menu.OptionsMenu
 import com.frolo.muse.repository.MediaRepository
@@ -39,7 +36,8 @@ class GetMediaMenuUseCase<E: Media> constructor(
                             editOptionAvailable = item is Song || item is Album || item is Playlist,
                             addToQueueOptionAvailable = item !is Playlist,
                             viewAlbumOptionAvailable = false,//item is Song,
-                            viewArtistOptionAvailable = false//item is Song || item is Album
+                            viewArtistOptionAvailable = false,//item is Song || item is Album
+                            setAsDefaultOptionAvailable = item is MyFile && item.isDirectory
                     )
                 }
                 .subscribeOn(schedulerProvider.worker())

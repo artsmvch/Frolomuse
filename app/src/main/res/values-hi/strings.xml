@@ -21,6 +21,8 @@
     <string name="deleted">हटाए गए</string>
     <string name="type_at_least_two_letters">कम से कम दो अक्षर टाइप करें</string>
     <string name="will_be_played_next">आगे खेला जाएगा</string>
+    <string name="set_as_default">डिफाल्ट के रूप में सेट</string>
+    <string name="folder_is_default_message">फ़ाइल ब्राउज़र अब इस फ़ोल्डर से खुलेगा</string>
 
     <!--Errors-->
     <string name="failed_to_delete_s">%s को हटाने में विफल</string>

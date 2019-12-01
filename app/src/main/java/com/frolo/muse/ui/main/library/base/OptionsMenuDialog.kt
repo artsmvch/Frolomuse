@@ -38,7 +38,8 @@ class OptionsMenuDialog<E: Media> constructor(
         ADD_TO_PLAYLIST,
         VIEW_ALBUM,
         VIEW_ARTIST,
-        VIEW_GENRE
+        VIEW_GENRE,
+        SET_AS_DEFAULT
     }
 
     private val iconTint = StyleUtil.getIconTintColor(context)
@@ -78,6 +79,7 @@ class OptionsMenuDialog<E: Media> constructor(
         setContentView(rootView)
 
         with(this) {
+            btn_set_as_default.setOnClickListener { onOptionSelected(item, Option.SET_AS_DEFAULT) }
             btn_play.setOnClickListener { onOptionSelected(item, Option.PLAY) }
             btn_share.setOnClickListener { onOptionSelected(item, Option.SHARE) }
             btn_delete.setOnClickListener { onOptionSelected(item, Option.DELETE) }
@@ -98,6 +100,7 @@ class OptionsMenuDialog<E: Media> constructor(
             btn_view_artist.visibility = if (optionsMenu.viewArtistOptionAvailable) View.VISIBLE else View.GONE
             btn_edit.visibility = if (optionsMenu.editOptionAvailable) View.VISIBLE else View.GONE
             btn_add_to_playlist.visibility = if (optionsMenu.addToPlaylistOptionAvailable) View.VISIBLE else View.GONE
+            btn_set_as_default.visibility = if (optionsMenu.setAsDefaultOptionAvailable) View.VISIBLE else View.GONE
 
             tv_media_name.text = item.getName()
             tv_media_type.text = item.getTypeName(context.resources)

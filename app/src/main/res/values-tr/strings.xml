@@ -20,6 +20,8 @@
     <string name="deleted">Silindi</string>
     <string name="type_at_least_two_letters">En az iki harf yazın</string>
     <string name="will_be_played_next">Bu sonraki oynanacak</string>
+    <string name="set_as_default">Varsayılan olarak ayarla</string>
+    <string name="folder_is_default_message">Dosya tarayıcı şimdi bu klasörden açılacak</string>
 
     <!--Errors-->
     <string name="failed_to_delete_s">%s silinemedi</string>

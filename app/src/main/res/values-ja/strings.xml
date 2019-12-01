@@ -21,6 +21,8 @@
     <string name="deleted">削除済み</string>
     <string name="type_at_least_two_letters">少なくとも2文字を入力してください</string>
     <string name="will_be_played_next">次に再生されます</string>
+    <string name="set_as_default">デフォルトとして設定</string>
+    <string name="folder_is_default_message">これで、ファイルブラウザがこのフォルダから開きます</string>
 
     <!--Errors-->
     <string name="failed_to_delete_s">%s を削除できませんでした</string>
