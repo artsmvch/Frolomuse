@@ -26,7 +26,12 @@
     <string name="set_as_default">Set as default</string>
     <string name="folder_is_default_message">The file browser will now open from this folder</string>
     <string name="add_to_hidden">Add to hidden</string>
-    <string name="added_to_hidden_message">The file is hidden. You can return it back in the settings</string>
+    <string name="added_to_hidden_message">The file is hidden now. You can return it back in the settings</string>
+
+    <!--Hidden files-->
+    <string name="hidden_files">Hidden files</string>
+    <string name="hidden_files_desc">Hidden files</string>
+    <string name="remove_from_hidden">Remove from hidden</string>
 
     <!--Errors-->
     <string name="failed_to_delete_s">Failed to delete %s</string>

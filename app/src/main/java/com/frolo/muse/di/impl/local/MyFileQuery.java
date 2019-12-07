@@ -47,7 +47,7 @@ final class MyFileQuery {
 
     private static final String[] PROJECTION_HIDDEN_FILES =
             {
-                    "DISTINCT " + AppMediaStore.HiddenFiles.ABSOLUTE_PATH,
+                    AppMediaStore.HiddenFiles.ABSOLUTE_PATH,
                     AppMediaStore.HiddenFiles.TIME_HIDDEN
             };
 

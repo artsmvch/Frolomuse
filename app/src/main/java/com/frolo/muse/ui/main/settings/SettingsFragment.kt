@@ -20,6 +20,7 @@ import com.frolo.muse.repository.Preferences
 import com.frolo.muse.sleeptimer.PlayerSleepTimer
 import com.frolo.muse.ui.goToStore
 import com.frolo.muse.ui.helpWithTranslations
+import com.frolo.muse.ui.main.settings.hidden.HiddenFilesDialog
 import com.frolo.muse.ui.main.settings.info.AppInfoDialog
 import com.frolo.muse.ui.main.settings.library.LibrarySectionChooserDialog
 import com.frolo.muse.ui.main.settings.libs.ThirdPartyLibsFragment
@@ -39,6 +40,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
         private const val TAG_LICENCES = "licences"
         private const val TAG_SLEEP_TIMER = "sleep_timer"
         private const val TAG_APP_INFO = "app_info"
+        private const val TAG_HIDDEN_FILES = "hidden_files"
 
         // Factory
         fun newInstance() = SettingsFragment()
@@ -114,6 +116,13 @@ class SettingsFragment : PreferenceFragmentCompat(),
         findPreference("sleep_timer").apply {
             onPreferenceClickListener = Preference.OnPreferenceClickListener {
                 processSleepTimer()
+                true
+            }
+        }
+
+        findPreference("hidden_files").apply {
+            onPreferenceClickListener = Preference.OnPreferenceClickListener {
+                showHiddenFilesDialog()
                 true
             }
         }
@@ -206,6 +215,11 @@ class SettingsFragment : PreferenceFragmentCompat(),
         if (PlayerSleepTimer.resetCurrentSleepTimer(host)) {
             Toast.makeText(context, R.string.sleep_timer_is_off, Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun showHiddenFilesDialog() {
+        val dialog = HiddenFilesDialog.newInstance()
+        dialog.show(childFragmentManager, TAG_HIDDEN_FILES)
     }
 
     private fun showScanMediaDialog() {

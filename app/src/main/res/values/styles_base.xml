@@ -31,6 +31,8 @@
         <item name="android:windowAnimationStyle">@style/DialogAnimation</item>
         <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
         <item name="android:gravity">center</item>
+
+        <item name="textAppearanceButton">@style/Base.AppTheme.TextAppearance.Button</item>
     </style>
 
     <!--Preferences-->
@@ -400,11 +402,19 @@
         <item name="play_button_pause_background">#31999999</item>
         <item name="play_button_resume_background">#31999999</item>
         <item name="play_button_icon_tint">#535353</item>
+
+        <item name="textAppearanceButton">@style/Base.AppTheme.TextAppearance.Button</item>
     </style>
 
     <style name="Base.AppTheme.Launch" parent="Base.AppTheme">
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowTranslucentNavigation">true</item>
         <item name="android:windowBackground">@drawable/png_cloud</item>
+    </style>
+
+    <!--Text appearance-->
+    <style name="Base.AppTheme.TextAppearance.Button" parent="TextAppearance.MaterialComponents.Button">
+        <item name="android:background">?selectableItemBackground</item>
+        <item name="android:textColor">?android:textColorPrimary</item>
     </style>
 </resources>
