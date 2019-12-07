@@ -37,7 +37,8 @@ class GetMediaMenuUseCase<E: Media> constructor(
                             addToQueueOptionAvailable = item !is Playlist,
                             viewAlbumOptionAvailable = false,//item is Song,
                             viewArtistOptionAvailable = false,//item is Song || item is Album
-                            setAsDefaultOptionAvailable = item is MyFile && item.isDirectory
+                            setAsDefaultOptionAvailable = item is MyFile && item.isDirectory,
+                            addToHiddenOptionAvailable = item is MyFile
                     )
                 }
                 .subscribeOn(schedulerProvider.worker())

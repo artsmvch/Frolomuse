@@ -11,6 +11,7 @@ import com.frolo.muse.engine.SimplePlayerObserver
 import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.interactor.media.*
 import com.frolo.muse.interactor.media.get.GetAllMyFilesUseCase
+import com.frolo.muse.interactor.media.hidden.AddToHiddenUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.media.MyFile
 import com.frolo.muse.model.media.Song
@@ -33,6 +34,7 @@ class MyFileListViewModel @Inject constructor(
         deleteMediaUseCase: DeleteMediaUseCase<MyFile>,
         changeFavouriteUseCase: ChangeFavouriteUseCase<MyFile>,
         private val setFolderAsDefaultUseCase: SetFolderAsDefaultUseCase,
+        private val addToHiddenUseCase: AddToHiddenUseCase,
         private val schedulerProvider: SchedulerProvider,
         navigator: Navigator,
         eventLogger: EventLogger
@@ -97,6 +99,9 @@ class MyFileListViewModel @Inject constructor(
     private val _showFolderSetDefaultMessageEvent = SingleLiveEvent<Unit>()
     val showFolderSetDefaultMessageEvent: LiveData<Unit> = _showFolderSetDefaultMessageEvent
 
+    private val _showFolderAddedToHiddenMessageEvent = SingleLiveEvent<Unit>()
+    val showFolderAddedToHiddenMessageEvent: LiveData<Unit> = _showFolderAddedToHiddenMessageEvent
+
     init {
         player.registerObserver(playerObserver)
         _isPlaying.value = player.isPlaying()
@@ -154,6 +159,14 @@ class MyFileListViewModel @Inject constructor(
                 .observeOn(schedulerProvider.main())
                 .subscribeFor {
                     _showFolderSetDefaultMessageEvent.call()
+                }
+    }
+
+    override fun addToHidden(item: MyFile) {
+        addToHiddenUseCase.addToHidden(item)
+                .observeOn(schedulerProvider.main())
+                .subscribeFor {
+                    _showFolderAddedToHiddenMessageEvent.call()
                 }
     }
 

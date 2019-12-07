@@ -131,6 +131,10 @@ class MyFileListFragment: AbsMediaCollectionFragment<MyFile>(),
             showFolderSetDefaultMessageEvent.observe(owner) {
                 toastLongMessage(R.string.folder_is_default_message)
             }
+
+            showFolderAddedToHiddenMessageEvent.observe(owner) {
+                toastLongMessage(R.string.added_to_hidden_message)
+            }
         }
     }
 

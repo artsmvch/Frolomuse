@@ -49,6 +49,12 @@ public class AppContentProvider extends ContentProvider {
             + AppMediaStore.Lyrics.TEXT + " text, "
             + AppMediaStore.Lyrics.TIME_ADDED + " long);";
 
+    private static final String SQL_CREATE_HIDDEN_FILES = "create table " + AppMediaStore.HiddenFiles.TABLE + "("
+            + AppMediaStore.HiddenFiles._ID + " integer primary key, "
+            + AppMediaStore.HiddenFiles.ABSOLUTE_PATH + " text, "
+            + AppMediaStore.HiddenFiles.TIME_HIDDEN + " long, "
+            + "UNIQUE(" + AppMediaStore.HiddenFiles.ABSOLUTE_PATH + "));";
+
     // TYPES
     private static final String FAVOURITE_CONTENT_TYPE = "vnd.android.cursor.dir/vnd."
             + AUTHORITY + '.' + AppMediaStore.Favourites.TABLE;
@@ -62,6 +68,10 @@ public class AppContentProvider extends ContentProvider {
             + AUTHORITY + '.' + AppMediaStore.Lyrics.TABLE;
     private static final String LYRICS_CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd."
             + AUTHORITY + '.' + AppMediaStore.Lyrics.TABLE;
+    private static final String HIDDEN_FILES_CONTENT_TYPE = "vnd.android.cursor.dir/vnd."
+            + AUTHORITY + '.' + AppMediaStore.HiddenFiles.TABLE;
+    private static final String HIDDEN_FILES_CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd."
+            + AUTHORITY + '.' + AppMediaStore.HiddenFiles.TABLE;
 
     //FOR URI MATCHER
     private static final int URI_FAVOURITE = 1;
@@ -70,6 +80,8 @@ public class AppContentProvider extends ContentProvider {
     private static final int URI_PRESET_ID = 4;
     private static final int URI_LYRICS = 5;
     private static final int URI_LYRICS_ID = 6;
+    private static final int URI_HIDDEN_FILES = 7;
+    private static final int URI_HIDDEN_FILES_ID = 8;
 
     private static final UriMatcher URI_MATCHER;
     // initializing UriMatcher
@@ -81,6 +93,8 @@ public class AppContentProvider extends ContentProvider {
         URI_MATCHER.addURI(AUTHORITY, AppMediaStore.Presets.TABLE + "/#", URI_PRESET_ID);
         URI_MATCHER.addURI(AUTHORITY, AppMediaStore.Lyrics.TABLE, URI_LYRICS);
         URI_MATCHER.addURI(AUTHORITY, AppMediaStore.Lyrics.TABLE + "/#", URI_LYRICS_ID);
+        URI_MATCHER.addURI(AUTHORITY, AppMediaStore.HiddenFiles.TABLE, URI_HIDDEN_FILES);
+        URI_MATCHER.addURI(AUTHORITY, AppMediaStore.HiddenFiles.TABLE + "/#", URI_HIDDEN_FILES_ID);
     }
 
     private SQLiteDatabase db;
@@ -146,6 +160,20 @@ public class AppContentProvider extends ContentProvider {
                 else selection = selection + " AND " + AppMediaStore.Lyrics._ID + " = " + id;
                 break;
             }
+            case URI_HIDDEN_FILES: {
+                table = AppMediaStore.HiddenFiles.TABLE;
+                observedUri = AppMediaStore.HiddenFiles.CONTENT_URI;
+                if (TextUtils.isEmpty(sortOrder)) sortOrder = AppMediaStore.HiddenFiles.TIME_HIDDEN + " ASC";
+                break;
+            }
+            case URI_HIDDEN_FILES_ID: {
+                table = AppMediaStore.HiddenFiles.TABLE;
+                observedUri = AppMediaStore.HiddenFiles.CONTENT_URI;
+                String id = uri.getLastPathSegment();
+                if (TextUtils.isEmpty(selection)) selection = AppMediaStore.HiddenFiles._ID + " = " + id;
+                else selection = selection + " AND " + AppMediaStore.HiddenFiles._ID + " = " + id;
+                break;
+            }
             default: throw new IllegalArgumentException("Wrong Uri: " + uri);
         }
         db = dbHelper.getReadableDatabase();
@@ -158,13 +186,15 @@ public class AppContentProvider extends ContentProvider {
     @Override
     public String getType(@NonNull Uri uri) {
         switch (URI_MATCHER.match(uri)) {
-            case URI_FAVOURITE:     return FAVOURITE_CONTENT_TYPE;
-            case URI_FAVOURITE_ID:  return FAVOURITE_CONTENT_ITEM_TYPE;
-            case URI_PRESET:        return PRESET_CONTENT_TYPE;
-            case URI_PRESET_ID:     return PRESET_CONTENT_ITEM_TYPE;
-            case URI_LYRICS:        return LYRICS_CONTENT_TYPE;
-            case URI_LYRICS_ID:     return LYRICS_CONTENT_ITEM_TYPE;
-            default:                throw new IllegalArgumentException("Wrong Uri: " + uri);
+            case URI_FAVOURITE:         return FAVOURITE_CONTENT_TYPE;
+            case URI_FAVOURITE_ID:      return FAVOURITE_CONTENT_ITEM_TYPE;
+            case URI_PRESET:            return PRESET_CONTENT_TYPE;
+            case URI_PRESET_ID:         return PRESET_CONTENT_ITEM_TYPE;
+            case URI_LYRICS:            return LYRICS_CONTENT_TYPE;
+            case URI_LYRICS_ID:         return LYRICS_CONTENT_ITEM_TYPE;
+            case URI_HIDDEN_FILES:      return HIDDEN_FILES_CONTENT_TYPE;
+            case URI_HIDDEN_FILES_ID:   return HIDDEN_FILES_CONTENT_ITEM_TYPE;
+            default:                    throw new IllegalArgumentException("Wrong Uri: " + uri);
         }
     }
 
@@ -189,6 +219,12 @@ public class AppContentProvider extends ContentProvider {
             db = dbHelper.getWritableDatabase();
             long rowId = db.insert(AppMediaStore.Lyrics.TABLE, null, values);
             Uri resultUri = ContentUris.withAppendedId(AppMediaStore.Lyrics.CONTENT_URI, rowId);
+            getContext().getContentResolver().notifyChange(resultUri, null);
+            return resultUri;
+        } else if (URI_MATCHER.match(uri) == URI_HIDDEN_FILES) {
+            db = dbHelper.getWritableDatabase();
+            long rowId = db.insert(AppMediaStore.HiddenFiles.TABLE, null, values);
+            Uri resultUri = ContentUris.withAppendedId(AppMediaStore.HiddenFiles.CONTENT_URI, rowId);
             getContext().getContentResolver().notifyChange(resultUri, null);
             return resultUri;
         }
@@ -224,6 +260,14 @@ public class AppContentProvider extends ContentProvider {
                 String id = uri.getLastPathSegment();
                 if (TextUtils.isEmpty(selection)) selection = AppMediaStore.Lyrics._ID + " = " + id;
                 else selection = selection + " AND " + AppMediaStore.Lyrics._ID + " = " + id;
+                break;
+            }
+            case URI_HIDDEN_FILES: table = AppMediaStore.HiddenFiles.TABLE; break;
+            case URI_HIDDEN_FILES_ID: {
+                table = AppMediaStore.HiddenFiles.TABLE;
+                String id = uri.getLastPathSegment();
+                if (TextUtils.isEmpty(selection)) selection = AppMediaStore.HiddenFiles._ID + " = " + id;
+                else selection = selection + " AND " + AppMediaStore.HiddenFiles._ID + " = " + id;
                 break;
             }
             default: throw new IllegalArgumentException("Wrong Uri: " + uri);
@@ -266,6 +310,14 @@ public class AppContentProvider extends ContentProvider {
                 else selection = selection + " AND " + AppMediaStore.Lyrics._ID + " = " + id;
                 break;
             }
+            case URI_HIDDEN_FILES: table = AppMediaStore.HiddenFiles.TABLE; break;
+            case URI_HIDDEN_FILES_ID: {
+                table = AppMediaStore.HiddenFiles.TABLE;
+                String id = uri.getLastPathSegment();
+                if (TextUtils.isEmpty(selection)) selection = AppMediaStore.HiddenFiles._ID + " = " + id;
+                else selection = selection + " AND " + AppMediaStore.HiddenFiles._ID + " = " + id;
+                break;
+            }
             default: throw new IllegalArgumentException("Wrong Uri: " + uri);
         }
         db = dbHelper.getWritableDatabase();
@@ -291,6 +343,7 @@ public class AppContentProvider extends ContentProvider {
             db.execSQL(SQL_CREATE_FAVOURITES);
             db.execSQL(SQL_CREATE_PRESETS);
             db.execSQL(SQL_CREATE_LYRICS);
+            db.execSQL(SQL_CREATE_HIDDEN_FILES);
         }
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -303,6 +356,11 @@ public class AppContentProvider extends ContentProvider {
                 // The workaround is just to drop the table and create it again.
                 db.execSQL("DROP TABLE " + AppMediaStore.Presets.TABLE);
                 db.execSQL(SQL_CREATE_PRESETS);
+            }
+
+            if (oldVersion < Versions.V_3) {
+                // Add HiddenFiles table
+                db.execSQL(SQL_CREATE_HIDDEN_FILES);
             }
         }
     }

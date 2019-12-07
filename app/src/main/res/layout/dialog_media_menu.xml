@@ -101,6 +101,13 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/btn_add_to_hidden"
+                style="@style/Button.MediaMenu"
+                android:text="@string/add_to_hidden" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_action_play"
                 android:id="@+id/btn_play"
                 style="@style/Button.MediaMenu"

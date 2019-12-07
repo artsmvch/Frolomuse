@@ -1,12 +1,16 @@
 package com.frolo.muse.di.impl.local;
 
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 
+import com.frolo.muse.App;
+import com.frolo.muse.BuildConfig;
+import com.frolo.muse.db.AppMediaStore;
 import com.frolo.muse.model.media.MyFile;
 
 import java.io.File;
@@ -18,9 +22,11 @@ import java.util.Comparator;
 import java.util.List;
 
 import io.reactivex.BackpressureStrategy;
+import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.FlowableEmitter;
 import io.reactivex.FlowableOnSubscribe;
+import io.reactivex.functions.Action;
 
 
 final class MyFileQuery {
@@ -35,6 +41,35 @@ final class MyFileQuery {
     private static final String PATH_STORAGE_ROOT = "/storage"; // absolute root
     private static final String PATH_EMULATED_ROOT = PATH_STORAGE_ROOT + "/emulated";
     private static final String PATH_EMULATED_0_ROOT = PATH_STORAGE_ROOT + "/emulated/0";
+
+    /*Hidden files*/
+    private static final Uri URI_HIDDEN_FILES = AppMediaStore.HiddenFiles.getContentUri();
+
+    private static final String[] PROJECTION_HIDDEN_FILES =
+            {
+                    "DISTINCT " + AppMediaStore.HiddenFiles.ABSOLUTE_PATH,
+                    AppMediaStore.HiddenFiles.TIME_HIDDEN
+            };
+
+    private static final Query.Builder<MyFile> BUILDER_HIDDEN_FILES =
+            new Query.Builder<MyFile>() {
+                @Override
+                public MyFile build(Cursor cursor, String[] projection) {
+                    String absolutePath = cursor.getString(
+                            cursor.getColumnIndex(PROJECTION_HIDDEN_FILES[0]));
+
+                    try {
+                        File javaFile = new File(absolutePath);
+                        boolean isSongFile = guessIsAudio(absolutePath);
+                        return new MyFile(javaFile, isSongFile);
+                    } catch (Throwable err) {
+                        if (BuildConfig.DEBUG) {
+                            throw new RuntimeException(err);
+                        }
+                        return null;
+                    }
+                }
+            };
 
     // we are only interested in audios and folders containing audios
     private static class AudioFileFilter implements FileFilter {
@@ -149,6 +184,9 @@ final class MyFileQuery {
                             "Cannot browse not a directory: " + myFile);
                 }
 
+                final ContentResolver resolver = context.getContentResolver();
+                final String[] PROJECTION_EMPTY = new String[0];
+
                 final List<MyFile> result = new ArrayList<>();
                 emitter.onNext(new ArrayList<>(result));
                 //final FileFilter filter = new AudioFileFilter(context, target.getJavaFile());
@@ -164,7 +202,22 @@ final class MyFileQuery {
                             return;
                         }
 
-                        if (filter.accept(f)) {
+                        // Check if it's hidden
+                        Cursor cursor = resolver.query(
+                                URI_HIDDEN_FILES,
+                                PROJECTION_EMPTY,
+                                AppMediaStore.HiddenFiles.ABSOLUTE_PATH + " = ?",
+                                new String[] { f.getAbsolutePath() },
+                                null
+                        );
+
+                        boolean isHidden = cursor != null && cursor.getCount() > 0;
+
+                        if (cursor != null) {
+                            cursor.close();
+                        }
+
+                        if (!isHidden && filter.accept(f)) {
                             result.add(new MyFile(f, guessIsAudio(f.getAbsolutePath())));
                             emitter.onNext(new ArrayList<>(result));
                         }
@@ -206,6 +259,50 @@ final class MyFileQuery {
                 emitter.onComplete();
             }
         }, BackpressureStrategy.LATEST);
+    }
+
+    static Flowable<List<MyFile>> getHiddenFiles(ContentResolver resolver) {
+        return Query.query(
+                resolver,
+                URI_HIDDEN_FILES,
+                PROJECTION_HIDDEN_FILES,
+                null,
+                null,
+                null,
+                BUILDER_HIDDEN_FILES
+        );
+    }
+
+    static Completable setFileHidden(final ContentResolver resolver, final MyFile item, final boolean hidden) {
+        return Completable.fromAction(
+                new Action() {
+                    @Override
+                    public void run() throws Exception {
+                        if (hidden) {
+                            ContentValues values = new ContentValues();
+                            values.put(AppMediaStore.HiddenFiles.ABSOLUTE_PATH, item.getJavaFile().getAbsolutePath());
+                            values.put(AppMediaStore.HiddenFiles.TIME_HIDDEN, System.currentTimeMillis());
+                            Uri resultUri = resolver.insert(URI_HIDDEN_FILES, values);
+                            if (resultUri == null) {
+                                // Is it ok?
+                            }
+                        } else {
+                            String selection = AppMediaStore.HiddenFiles.ABSOLUTE_PATH + " = ?";
+                            String[] selectionArgs = new String[] { item.getJavaFile().getAbsolutePath() };
+                            int deletedCount = resolver.delete(
+                                    URI_HIDDEN_FILES,
+                                    selection,
+                                    selectionArgs
+                            );
+                            if (deletedCount == 0) {
+                                throw new IllegalArgumentException(
+                                        "Failed to delete the file from hidden. Perhaps he was no longer hidden."
+                                );
+                            }
+                        }
+                    }
+                }
+        );
     }
 
     private MyFileQuery() {

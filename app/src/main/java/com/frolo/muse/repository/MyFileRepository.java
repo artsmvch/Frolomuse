@@ -27,4 +27,8 @@ public interface MyFileRepository extends MediaRepository<MyFile> {
      * @return only songs and folders that have songs inside themselves
      */
     Flowable<List<MyFile>> browse(MyFile parent);
+
+    Flowable<List<MyFile>> getHiddenFiles();
+
+    Completable setFileHidden(MyFile item, boolean hidden);
 }

@@ -187,6 +187,7 @@ abstract class AbsMediaCollectionFragment <E: Media>: BaseFragment(),
         val dialog = OptionsMenuDialog(requireContext(), optionsMenu) { _, option ->
             when (option) {
                 OptionsMenuDialog.Option.SET_AS_DEFAULT -> viewModel.onSetAsDefaultOptionSelected()
+                OptionsMenuDialog.Option.ADD_TO_HIDDEN -> viewModel.onAddToHiddenOptionSelected()
                 OptionsMenuDialog.Option.SHARE -> viewModel.onShareOptionSelected()
                 OptionsMenuDialog.Option.DELETE -> viewModel.onDeleteOptionSelected()
                 OptionsMenuDialog.Option.LIKE -> viewModel.onLikeOptionClicked()

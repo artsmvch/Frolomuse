@@ -198,4 +198,18 @@ public class MyFileRepositoryImpl implements MyFileRepository {
     public Flowable<List<MyFile>> browse(final MyFile myFile) {
         return MyFileQuery.browse(mContext, myFile);
     }
+
+    @Override
+    public Flowable<List<MyFile>> getHiddenFiles() {
+        return MyFileQuery.getHiddenFiles(mContext.getContentResolver());
+    }
+
+    @Override
+    public Completable setFileHidden(MyFile item, boolean hidden) {
+        return MyFileQuery.setFileHidden(
+                mContext.getContentResolver(),
+                item,
+                hidden
+        );
+    }
 }

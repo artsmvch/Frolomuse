@@ -9,4 +9,7 @@ final class Versions {
 
     // Added lyrics
     static final int V_2 = 2;
+
+    // Added hidden files
+    static final int V_3 = 3;
 }
