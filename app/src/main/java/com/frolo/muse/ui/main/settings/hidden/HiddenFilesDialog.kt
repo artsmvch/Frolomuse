@@ -32,7 +32,7 @@ class HiddenFilesDialog : BaseDialogFragment() {
             val metrics = resources.displayMetrics
             val width = metrics.widthPixels
             val height = metrics.heightPixels
-            setupDialogSize(this, 6 * width / 7, 5 * height / 7)
+            setupDialogSize(this, 10 * width / 11, 10 * height / 11)
         }
     }
 
