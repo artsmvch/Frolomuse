@@ -6,18 +6,20 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.FileObserver;
 import android.provider.MediaStore;
 
-import com.frolo.muse.App;
 import com.frolo.muse.BuildConfig;
 import com.frolo.muse.db.AppMediaStore;
 import com.frolo.muse.model.media.MyFile;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.Serializable;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -26,7 +28,9 @@ import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.FlowableEmitter;
 import io.reactivex.FlowableOnSubscribe;
+import io.reactivex.disposables.Disposables;
 import io.reactivex.functions.Action;
+import io.reactivex.functions.Function;
 
 
 final class MyFileQuery {
@@ -167,7 +171,85 @@ final class MyFileQuery {
         return roots;
     }
 
-    static Flowable<List<MyFile>> browse(final Context context, final MyFile myFile) {
+    /*Creates a flowable that emits lists of deleted files*/
+    @Deprecated
+    private static Flowable<List<MyFile>> observeFileDeletion(
+            Context context,
+            final MyFile myFile
+    ) {
+        return Flowable.create(new FlowableOnSubscribe<List<MyFile>>() {
+            @Override
+            public void subscribe(final FlowableEmitter<List<MyFile>> emitter) throws Exception {
+                if (!emitter.isCancelled()) {
+                    final File fileToObserve = myFile.getJavaFile();
+                    final int mask = FileObserver.DELETE;
+                    final FileObserver fileObserver = new FileObserver(fileToObserve.getAbsolutePath(), mask) {
+                        @Override
+                        public void onEvent(int event, String path) {
+                            if (path == null) {
+                                return;
+                            }
+
+                            if (event == FileObserver.DELETE) {
+                                File javaFile = new File(path);
+                                boolean isSong = guessIsAudio(path);
+                                List<MyFile> files = Collections.singletonList(new MyFile(javaFile, isSong));
+                                emitter.onNext(files);
+                            }
+                        }
+                    };
+
+                    fileObserver.startWatching();
+
+                    emitter.setDisposable(Disposables.fromAction(new Action() {
+                        @Override
+                        public void run() {
+                            fileObserver.stopWatching();
+                        }
+                    }));
+                }
+
+                if (!emitter.isCancelled()) {
+                    emitter.onNext(Collections.<MyFile>emptyList());
+                }
+            }
+        }, BackpressureStrategy.BUFFER);
+    }
+
+    /*Creates a flowable that emits lists of deleted files*/
+    private static Flowable<List<File>> observeFileDeletion_Internal(
+            Context context,
+            final MyFile myFile
+    ) {
+        return Flowable.create(new FlowableOnSubscribe<List<File>>() {
+            @Override
+            public void subscribe(final FlowableEmitter<List<File>> emitter) {
+                if (!emitter.isCancelled()) {
+                    final FileDeletion.Watcher w = new FileDeletion.Watcher() {
+                        @Override
+                        public void onFilesDeleted(List<File> files) {
+                            emitter.onNext(files);
+                        }
+                    };
+
+                    FileDeletion.startWatching(w);
+
+                    emitter.setDisposable(Disposables.fromAction(new Action() {
+                        @Override
+                        public void run() {
+                            FileDeletion.stopWatching(w);
+                        }
+                    }));
+                }
+
+                if (!emitter.isCancelled()) {
+                    emitter.onNext(Collections.<File>emptyList());
+                }
+            }
+        }, BackpressureStrategy.BUFFER);
+    }
+
+    private static Flowable<List<MyFile>> browse_Internal(final Context context, final MyFile myFile) {
         return Flowable.create(new FlowableOnSubscribe<List<MyFile>>() {
             @Override
             public void subscribe(final FlowableEmitter<List<MyFile>> emitter) {
@@ -184,9 +266,6 @@ final class MyFileQuery {
                             "Cannot browse not a directory: " + myFile);
                 }
 
-                final ContentResolver resolver = context.getContentResolver();
-                final String[] PROJECTION_EMPTY = new String[0];
-
                 final List<MyFile> result = new ArrayList<>();
                 emitter.onNext(new ArrayList<>(result));
                 //final FileFilter filter = new AudioFileFilter(context, target.getJavaFile());
@@ -202,63 +281,55 @@ final class MyFileQuery {
                             return;
                         }
 
-                        // Check if it's hidden
-                        Cursor cursor = resolver.query(
-                                URI_HIDDEN_FILES,
-                                PROJECTION_EMPTY,
-                                AppMediaStore.HiddenFiles.ABSOLUTE_PATH + " = ?",
-                                new String[] { f.getAbsolutePath() },
-                                null
-                        );
-
-                        boolean isHidden = cursor != null && cursor.getCount() > 0;
-
-                        if (cursor != null) {
-                            cursor.close();
-                        }
-
-                        if (!isHidden && filter.accept(f)) {
+                        if (filter.accept(f)) {
                             result.add(new MyFile(f, guessIsAudio(f.getAbsolutePath())));
                             emitter.onNext(new ArrayList<>(result));
                         }
                     }
                 }
 
-//                {
-//                    final String fileToObserve = myFile.getJavaFile().getAbsolutePath();
-//                    final int mask = FileObserver.DELETE;
-//                    final FileObserver fileObserver = new FileObserver(fileToObserve, mask) {
-//                        @Override
-//                        public void onEvent(int event, String path) {
-//                            if (path == null) {
-//                                return;
-//                            }
-//
-//                            if (event == FileObserver.DELETE) {
-//                                for (int i = 0; i < result.size(); i++) {
-//                                    if (result.get(i).getJavaFile().getAbsolutePath().equals(path)) {
-//                                        result.remove(i);
-//                                        emitter.onNext(new ArrayList<>(result));
-//                                        break;
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    };
-//
-//                    fileObserver.startWatching();
-//
-//                    emitter.setDisposable(Disposables.fromAction(new Action() {
-//                        @Override
-//                        public void run() {
-//                            fileObserver.stopWatching();
-//                        }
-//                    }));
-//                }
-
-                emitter.onComplete();
+                //emitter.onComplete();
             }
         }, BackpressureStrategy.LATEST);
+    }
+
+    static Flowable<List<MyFile>> browse(final Context context, final MyFile myFile) {
+        List<Flowable<? extends List<? extends Serializable>>> sources = Arrays.asList(
+                browse_Internal(context, myFile),
+                getHiddenFiles(context.getContentResolver()),
+                observeFileDeletion_Internal(context, myFile)
+        );
+
+        return Flowable.combineLatest(
+                sources,
+                new Function<Object[], List<MyFile>>() {
+                    @Override
+                    public List<MyFile> apply(Object[] objects) {
+                        List<MyFile> browsedMyFiles = (List<MyFile>) objects[0];
+                        List<MyFile> hiddenMyFiles = (List<MyFile>) objects[1];
+                        List<File> deletedFiles = (List<File>) objects[2];
+
+                        List<MyFile> result = new ArrayList<>(browsedMyFiles);
+
+                        // Clean up from the hidden files first
+                        result.removeAll(hiddenMyFiles);
+
+                        // Then remove all the items that have been deleted
+                        for (int i = 0; i < result.size(); i++) {
+                            MyFile item = result.get(i);
+
+                            for (File f : deletedFiles) {
+                                if (item.getJavaFile().equals(f)) {
+                                    result.remove(i--);
+                                    break;
+                                }
+                            }
+                        }
+
+                        return result;
+                    }
+                }
+        );
     }
 
     static Flowable<List<MyFile>> getHiddenFiles(ContentResolver resolver) {

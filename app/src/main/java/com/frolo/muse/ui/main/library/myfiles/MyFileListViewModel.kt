@@ -3,7 +3,6 @@ package com.frolo.muse.ui.main.library.myfiles
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import com.frolo.muse.arch.SingleLiveEvent
 import com.frolo.muse.arch.call
 import com.frolo.muse.engine.Player
@@ -54,12 +53,6 @@ class MyFileListViewModel @Inject constructor(
 
     private var playingPositionDisposable: Disposable? = null
 
-    private val deletedItemsObserver = Observer<List<MyFile>> { deletedItems ->
-        mediaList.value?.also { safeMediaList ->
-            submitMediaList(safeMediaList - deletedItems)
-        }
-    }
-
     private val playerObserver = object : SimplePlayerObserver() {
         override fun onSongChanged(player: Player, song: Song?, positionInQueue: Int) {
             detectPlayingPosition(mediaList.value, song)
@@ -105,7 +98,6 @@ class MyFileListViewModel @Inject constructor(
     init {
         player.registerObserver(playerObserver)
         _isPlaying.value = player.isPlaying()
-        deletedItemsEvent.observeForever(deletedItemsObserver)
     }
 
     private fun detectPlayingPosition(myFileList: List<MyFile>?, song: Song?) {
@@ -137,10 +129,8 @@ class MyFileListViewModel @Inject constructor(
                 .doOnSubscribe { s ->
                     browserSubscription?.cancel()
                     browserSubscription = s
-                    setLoading(true)
                     _root.value = myFile
                 }
-                .doFinally { setLoading(false) }
                 .subscribeFor { list -> submitMediaList(list) }
     }
 
@@ -192,7 +182,6 @@ class MyFileListViewModel @Inject constructor(
         browserSubscription?.cancel()
         player.unregisterObserver(playerObserver)
         playingPositionDisposable?.dispose()
-        deletedItemsEvent.removeObserver(deletedItemsObserver)
         super.onCleared()
     }
 

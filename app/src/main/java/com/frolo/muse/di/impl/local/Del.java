@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 import android.provider.MediaStore;
 
+import com.frolo.muse.BuildConfig;
 import com.frolo.muse.model.media.Album;
 import com.frolo.muse.model.media.Artist;
 import com.frolo.muse.model.media.Genre;
@@ -16,14 +17,18 @@ import com.frolo.muse.model.media.Playlist;
 import com.frolo.muse.model.media.Song;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 import io.reactivex.Completable;
 import io.reactivex.functions.Action;
 
 
 final class Del {
+    private static final boolean DEBUG = BuildConfig.DEBUG;
+
     private static final Uri URI_SONG =
             MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
 
@@ -37,26 +42,63 @@ final class Del {
             final Uri uri,
             final Collection<?extends Media> items) throws Exception {
 
-        StringBuilder opDeleteSelectionBuilder =
-                new StringBuilder(BaseColumns._ID + " IN (");
+        // Step 1: delete media items from the Media Store DB
+        {
+            StringBuilder opDeleteSelectionBuilder =
+                    new StringBuilder(BaseColumns._ID + " IN (");
 
-        boolean firstLooped = false;
-        for (Media media : items) {
-            if (firstLooped) {
-                opDeleteSelectionBuilder.append(',');
+            boolean firstLooped = false;
+            for (Media media : items) {
+                if (firstLooped) {
+                    opDeleteSelectionBuilder.append(',');
+                }
+                opDeleteSelectionBuilder.append(media.getId());
+
+                firstLooped = true;
             }
-            opDeleteSelectionBuilder.append(media.getId());
+            opDeleteSelectionBuilder.append(')');
 
-            firstLooped = true;
+            String opDeleteSelection = opDeleteSelectionBuilder.toString();
+
+            int deletedCount = resolver
+                    .delete(uri, opDeleteSelection, null);
+
+            // TODO: check deletedCount
         }
-        opDeleteSelectionBuilder.append(')');
 
-        String opDeleteSelection = opDeleteSelectionBuilder.toString();
+        // Step 2: delete files that belongs to the media items
+        {
+            List<File> filesToDelete = new ArrayList<>();
+            for (Media media : items) {
+                final File file;
 
-        int deletedCount = resolver
-                .delete(uri, opDeleteSelection, null);
+                if (media.getKind() == Media.SONG) {
+                    String src = ((Song) media).getSource();
+                    file = new File(src);
+                } else if (media.getKind() == Media.MY_FILE) {
+                    file = ((MyFile) media).getJavaFile();
+                } else {
+                    file = null;
+                }
 
-        // TODO: check deletedCount
+                if (file != null && file.exists()) {
+                    filesToDelete.add(file);
+                }
+            }
+
+            for (File f : filesToDelete) {
+                boolean result = f.delete();
+                if (!result) {
+                    if (DEBUG) {
+                        throw new RuntimeException(
+                                "Failed to delete file " + f.getAbsolutePath()
+                        );
+                    }
+                }
+            }
+
+            FileDeletion.dispatchDeleted(filesToDelete);
+        }
     }
 
     private static void deleteSongFilesFromQuery_Internal(
