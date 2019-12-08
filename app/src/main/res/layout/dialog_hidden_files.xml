@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -32,12 +32,14 @@
             android:layout_height="match_parent"
             tools:listitem="@layout/item_hidden_file"/>
 
-        <include
-            android:id="@+id/inc_placeholder"
-            layout="@layout/include_placeholder"
+        <com.frolo.muse.views.PlaceholderView
+            android:id="@+id/view_placeholder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"/>
+            android:layout_gravity="center"
+            android:layout_margin="24dp"
+            app:image="@drawable/ic_hidden_80dp"
+            app:message="@string/hidden_files_placeholder_message"/>
 
         <com.frolo.muse.views.progress.IBar
             android:id="@+id/pb_loading"

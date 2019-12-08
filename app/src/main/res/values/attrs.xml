@@ -66,4 +66,9 @@
         <attr name="strokeColor" format="color|reference"/>
         <attr name="circleColor" format="color|reference"/>
     </declare-styleable>
+
+    <declare-styleable name="PlaceholderView">
+        <attr name="image" format="reference"/>
+        <attr name="message" format="string|reference"/>
+    </declare-styleable>
 </resources>

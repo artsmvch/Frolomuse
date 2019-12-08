@@ -61,7 +61,7 @@ class HiddenFilesDialog : BaseDialogFragment() {
 
             placeholderVisible.observe(owner) {
                 dialog?.apply {
-                    inc_placeholder.visibility = if (it) View.VISIBLE else View.GONE
+                    view_placeholder.visibility = if (it) View.VISIBLE else View.GONE
                 }
             }
 

@@ -32,6 +32,9 @@
     <string name="hidden_files">Hidden files</string>
     <string name="hidden_files_desc">Hidden files</string>
     <string name="remove_from_hidden">Remove from hidden</string>
+    <string name="hidden_files_placeholder_message">
+        You have no hidden files yet. To hide a file, select the appropriate option in the file browser.
+    </string>
 
     <!--Errors-->
     <string name="failed_to_delete_s">Failed to delete %s</string>
