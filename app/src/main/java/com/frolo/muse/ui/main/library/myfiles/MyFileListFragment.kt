@@ -133,7 +133,7 @@ class MyFileListFragment: AbsMediaCollectionFragment<MyFile>(),
             }
 
             showFolderAddedToHiddenMessageEvent.observe(owner) {
-                toastLongMessage(R.string.added_to_hidden_message)
+                toastLongMessage(R.string.hidden_message)
             }
         }
     }

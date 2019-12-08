@@ -105,7 +105,7 @@
                 android:drawableStart="@drawable/ic_hidden_16dp"
                 android:id="@+id/btn_add_to_hidden"
                 style="@style/Button.MediaMenu"
-                android:text="@string/add_to_hidden" />
+                android:text="@string/hide_file" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"

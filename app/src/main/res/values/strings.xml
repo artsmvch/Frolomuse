@@ -25,13 +25,12 @@
     <string name="will_be_played_next">Will be played next</string>
     <string name="set_as_default">Set as default</string>
     <string name="folder_is_default_message">The file browser will now open from this folder</string>
-    <string name="add_to_hidden">Add to hidden</string>
-    <string name="added_to_hidden_message">The file is hidden now. You can return it back in the settings</string>
+    <string name="hide_file">Hide</string>
+    <string name="hidden_message">The file is hidden now. You can return it back in the settings</string>
 
     <!--Hidden files-->
     <string name="hidden_files">Hidden files</string>
-    <string name="hidden_files_desc">Hidden files</string>
-    <string name="remove_from_hidden">Remove from hidden</string>
+    <string name="hidden_files_desc">Files that are hidden in the file browser</string>
     <string name="hidden_files_placeholder_message">
         You have no hidden files yet. To hide a file, select the appropriate option in the file browser.
     </string>
