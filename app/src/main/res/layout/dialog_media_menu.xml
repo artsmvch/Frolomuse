@@ -83,6 +83,7 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:fillViewport="true">
+
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
@@ -101,6 +102,7 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_hidden_16dp"
                 android:id="@+id/btn_add_to_hidden"
                 style="@style/Button.MediaMenu"
                 android:text="@string/add_to_hidden" />

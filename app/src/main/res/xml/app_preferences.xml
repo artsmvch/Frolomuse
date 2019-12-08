@@ -52,7 +52,7 @@
             android:summary="@string/sleep_time_description"/>
 
         <Preference
-            android:icon="@drawable/ic_hidden"
+            android:icon="@drawable/ic_hidden_24dp"
             android:key="hidden_files"
             android:title="@string/hidden_files"
             android:summary="@string/hidden_files_desc"/>
