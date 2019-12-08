@@ -23,6 +23,15 @@
     <string name="will_be_played_next">Wird als nächstes gespielt</string>
     <string name="set_as_default">Als Standard festlegen</string>
     <string name="folder_is_default_message">Der Dateibrowser wird nun in diesem Ordner geöffnet</string>
+    <string name="hide_file">Verbergen</string>
+    <string name="hidden_message">Die Datei ist jetzt versteckt. Sie können es in den Einstellungen zurückgeben</string>
+
+    <!--Hidden files-->
+    <string name="hidden_files">Versteckte Dateien</string>
+    <string name="hidden_files_desc">Dateien, die im Dateibrowser versteckt sind</string>
+    <string name="hidden_files_placeholder_message">
+        Sie haben noch keine versteckten Dateien. Um eine Datei ausblenden, wählen Sie die entsprechende Option im Dateibrowser.
+    </string>
 
     <!--Errors-->
     <string name="failed_to_delete_s">Fehler beim Löschen %s</string>

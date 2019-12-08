@@ -23,6 +23,15 @@
     <string name="will_be_played_next">Будет воспроизведено следующим</string>
     <string name="set_as_default">Установить по умолчанию</string>
     <string name="folder_is_default_message">Браузер файлов теперь будет открываться из этой папки</string>
+    <string name="hide_file">Спрятать</string>
+    <string name="hidden_message">Файл скрыт. Вы можете вернуть его обратно в настройках</string>
+
+    <!--Hidden files-->
+    <string name="hidden_files">Скрытые файлы</string>
+    <string name="hidden_files_desc">Файлы, которые скрыты в браузере файлов</string>
+    <string name="hidden_files_placeholder_message">
+        У вас еще нет скрытых файлов. Чтобы скрыть файл, выберите соответствующий параметр в браузере файлов.
+    </string>
 
     <!--Errors-->
     <string name="failed_to_delete_s">Не удалось удалить %s</string>

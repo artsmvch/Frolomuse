@@ -23,6 +23,15 @@
     <string name="will_be_played_next">接下來會播放</string>
     <string name="set_as_default">設為默認</string>
     <string name="folder_is_default_message">文件瀏覽器現在將從此文件夾打開</string>
+    <string name="hide_file">隐藏</string>
+    <string name="hidden_message">该文件现已隐藏。 您可以在设置中将其返回</string>
+
+    <!--Hidden files-->
+    <string name="hidden_files">隐藏文件</string>
+    <string name="hidden_files_desc">隐藏在文件浏览器中的文件</string>
+    <string name="hidden_files_placeholder_message">
+        您还没有隐藏文件。 要隐藏文件，请在文件浏览器中选择适当的选项。
+    </string>
 
     <!--Errors-->
     <string name="failed_to_delete_s">無法刪除 %s</string>

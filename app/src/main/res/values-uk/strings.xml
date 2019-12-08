@@ -22,6 +22,15 @@
     <string name="will_be_played_next">Буде грати далі</string>
     <string name="set_as_default">Встановити за замовчуванням</string>
     <string name="folder_is_default_message">Тепер браузер файлів відкриється з цієї папки</string>
+    <string name="hide_file">Сховати</string>
+    <string name="hidden_message">Файл зараз приховано. Ви можете повернути його назад у налаштуваннях</string>
+
+    <!--Hidden files-->
+    <string name="hidden_files">Приховані файли</string>
+    <string name="hidden_files_desc">Файли, які приховані у файловому браузері</string>
+    <string name="hidden_files_placeholder_message">
+        У вас ще немає прихованих файлів. Щоб приховати файл, виберіть відповідний варіант у браузері файлів.
+    </string>
 
     <!--Errors-->
     <string name="failed_to_delete_s">Не вдалося видалити %s</string>

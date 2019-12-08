@@ -23,6 +23,15 @@
     <string name="will_be_played_next">Será jogado em seguida</string>
     <string name="set_as_default">Definir como padrão</string>
     <string name="folder_is_default_message">O navegador de arquivos será aberto a partir desta pasta</string>
+    <string name="hide_file">Ocultar</string>
+    <string name="hidden_message">O arquivo está oculto agora. Você pode devolvê-lo nas configurações</string>
+
+    <!--Hidden files-->
+    <string name="hidden_files">Arquivos ocultos</string>
+    <string name="hidden_files_desc">Arquivos ocultos no navegador de arquivos</string>
+    <string name="hidden_files_placeholder_message">
+        Você ainda não possui arquivos ocultos. Para ocultar um arquivo, selecione a opção apropriada no navegador de arquivos.
+    </string>
 
     <!--Errors-->
     <string name="failed_to_delete_s">Falha ao excluir %s</string>

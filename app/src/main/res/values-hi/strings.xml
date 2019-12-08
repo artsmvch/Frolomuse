@@ -23,6 +23,15 @@
     <string name="will_be_played_next">आगे खेला जाएगा</string>
     <string name="set_as_default">डिफाल्ट के रूप में सेट</string>
     <string name="folder_is_default_message">फ़ाइल ब्राउज़र अब इस फ़ोल्डर से खुलेगा</string>
+    <string name="hide_file">छिपाना</string>
+    <string name="hidden_message">फ़ाइल अब छिपी हुई है। आप इसे सेटिंग्स में वापस कर सकते हैं</string>
+
+    <!--Hidden files-->
+    <string name="hidden_files">छिपी हुई फाइलें</string>
+    <string name="hidden_files_desc">फ़ाइलें जो फ़ाइल ब्राउज़र में छिपी हुई हैं</string>
+    <string name="hidden_files_placeholder_message">
+        आपके पास अभी तक कोई छिपी हुई फ़ाइल नहीं है। किसी फ़ाइल को छिपाने के लिए, फ़ाइल ब्राउज़र में उपयुक्त विकल्प का चयन करें।
+    </string>
 
     <!--Errors-->
     <string name="failed_to_delete_s">%s को हटाने में विफल</string>

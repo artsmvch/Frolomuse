@@ -23,6 +23,15 @@
     <string name="will_be_played_next">Sera joué ensuite</string>
     <string name="set_as_default">Définir par défaut</string>
     <string name="folder_is_default_message">Le navigateur de fichiers va maintenant s\'ouvrir depuis ce dossier</string>
+    <string name="hide_file">Cacher</string>
+    <string name="hidden_message">Le fichier est maintenant masqué. Vous pouvez le retourner dans les paramètres</string>
+
+    <!--Hidden files-->
+    <string name="hidden_files">Fichiers cachés</string>
+    <string name="hidden_files_desc">Fichiers masqués dans le navigateur de fichiers</string>
+    <string name="hidden_files_placeholder_message">
+        Vous n\'avez pas encore de fichiers cachés. Pour masquer un fichier, sélectionnez l\'option appropriée dans le navigateur de fichiers.
+    </string>
 
     <!--Errors-->
     <string name="failed_to_delete_s">Impossible de supprimer %s</string>

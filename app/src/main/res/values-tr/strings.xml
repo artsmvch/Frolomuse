@@ -22,6 +22,15 @@
     <string name="will_be_played_next">Bu sonraki oynanacak</string>
     <string name="set_as_default">Varsayılan olarak ayarla</string>
     <string name="folder_is_default_message">Dosya tarayıcı şimdi bu klasörden açılacak</string>
+    <string name="hide_file">Saklamak</string>
+    <string name="hidden_message">Dosya gizlendi. Ayarlarda tekrar gösterebilirsiniz.</string>
+
+    <!--Hidden files-->
+    <string name="hidden_files">Gizlenmiş dosyalar</string>
+    <string name="hidden_files_desc">Dosya tarayıcısında gizlenmiş dosyalar</string>
+    <string name="hidden_files_placeholder_message">
+        Henüz hiçbir gizli dosyanız yok. Bir dosyayı gizlemek için, dosya tarayıcısında uygun seçeneği seçin.
+    </string>
 
     <!--Errors-->
     <string name="failed_to_delete_s">%s silinemedi</string>
