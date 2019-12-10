@@ -23,8 +23,8 @@
     <string name="will_be_played_next">Será jogado em seguida</string>
     <string name="set_as_default">Definir como padrão</string>
     <string name="folder_is_default_message">O navegador de arquivos será aberto a partir desta pasta</string>
-    <string name="hide_file">Ocultar</string>
-    <string name="hidden_message">O arquivo está oculto agora. Você pode devolvê-lo nas configurações</string>
+    <string name="hide">Ocultar</string>
+    <string name="message_one_file_hidden">O arquivo está oculto agora. Você pode devolvê-lo nas configurações</string>
 
     <!--Hidden files-->
     <string name="hidden_files">Arquivos ocultos</string>

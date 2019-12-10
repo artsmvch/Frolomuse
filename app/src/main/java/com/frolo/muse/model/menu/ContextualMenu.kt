@@ -11,4 +11,6 @@ data class ContextualMenu<E : Media> constructor(
         val addToQueueOptionAvailable: Boolean,
         val deleteOptionAvailable: Boolean,
         val shareOptionAvailable: Boolean,
-        val addToPlaylistOptionAvailable: Boolean)
+        val addToPlaylistOptionAvailable: Boolean,
+        val hideOptionAvailable: Boolean
+)

@@ -132,8 +132,12 @@ class MyFileListFragment: AbsMediaCollectionFragment<MyFile>(),
                 toastLongMessage(R.string.folder_is_default_message)
             }
 
-            showFolderAddedToHiddenMessageEvent.observe(owner) {
-                toastLongMessage(R.string.hidden_message)
+            showFolderAddedToHiddenMessageEvent.observe(owner) { count ->
+                if (count > 1) {
+                    toastLongMessage(R.string.message_multiple_files_hidden)
+                } else {
+                    toastLongMessage(R.string.message_one_file_hidden)
+                }
             }
         }
     }

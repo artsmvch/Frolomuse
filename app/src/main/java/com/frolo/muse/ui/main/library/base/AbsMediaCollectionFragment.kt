@@ -187,7 +187,7 @@ abstract class AbsMediaCollectionFragment <E: Media>: BaseFragment(),
         val dialog = OptionsMenuDialog(requireContext(), optionsMenu) { _, option ->
             when (option) {
                 OptionsMenuDialog.Option.SET_AS_DEFAULT -> viewModel.onSetAsDefaultOptionSelected()
-                OptionsMenuDialog.Option.ADD_TO_HIDDEN -> viewModel.onAddToHiddenOptionSelected()
+                OptionsMenuDialog.Option.HIDE -> viewModel.onHideOptionSelected()
                 OptionsMenuDialog.Option.SHARE -> viewModel.onShareOptionSelected()
                 OptionsMenuDialog.Option.DELETE -> viewModel.onDeleteOptionSelected()
                 OptionsMenuDialog.Option.LIKE -> viewModel.onLikeOptionClicked()
@@ -209,6 +209,7 @@ abstract class AbsMediaCollectionFragment <E: Media>: BaseFragment(),
             val actionModeCallback = ContextualActionMode(contextualMenu) { option ->
                 when (option) {
                     ContextualActionMode.Option.SELECT_ALL -> viewModel.onSelectAllContextualOptionSelected()
+                    ContextualActionMode.Option.HIDE -> viewModel.onHideContextualOptionSelected()
                     ContextualActionMode.Option.PLAY -> viewModel.onPlayContextualOptionSelected()
                     ContextualActionMode.Option.PLAY_NEXT -> viewModel.onPlayNextContextualOptionSelected()
                     ContextualActionMode.Option.ADD_TO_QUEUE -> viewModel.onAddToQueueContextualOptionSelected()

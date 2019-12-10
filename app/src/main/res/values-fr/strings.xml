@@ -23,8 +23,8 @@
     <string name="will_be_played_next">Sera joué ensuite</string>
     <string name="set_as_default">Définir par défaut</string>
     <string name="folder_is_default_message">Le navigateur de fichiers va maintenant s\'ouvrir depuis ce dossier</string>
-    <string name="hide_file">Cacher</string>
-    <string name="hidden_message">Le fichier est maintenant masqué. Vous pouvez le retourner dans les paramètres</string>
+    <string name="hide">Cacher</string>
+    <string name="message_one_file_hidden">Le fichier est maintenant masqué. Vous pouvez le retourner dans les paramètres</string>
 
     <!--Hidden files-->
     <string name="hidden_files">Fichiers cachés</string>

@@ -23,8 +23,8 @@
     <string name="will_be_played_next">Akan dimainkan selanjutnya</string>
     <string name="set_as_default">Ditetapkan sebagai default</string>
     <string name="folder_is_default_message">Peramban file sekarang akan terbuka dari folder ini</string>
-    <string name="hide_file">Menyembunyikan</string>
-    <string name="hidden_message">File disembunyikan sekarang. Anda dapat mengembalikannya di pengaturan</string>
+    <string name="hide">Menyembunyikan</string>
+    <string name="message_one_file_hidden">File disembunyikan sekarang. Anda dapat mengembalikannya di pengaturan</string>
 
     <!--Hidden files-->
     <string name="hidden_files">File tersembunyi</string>

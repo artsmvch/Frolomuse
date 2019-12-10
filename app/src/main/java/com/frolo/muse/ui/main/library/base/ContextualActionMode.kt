@@ -21,12 +21,14 @@ class ContextualActionMode<E: Media> constructor(
         ADD_TO_QUEUE,
         SHARE,
         DELETE,
-        ADD_TO_PLAYLIST
+        ADD_TO_PLAYLIST,
+        HIDE
     }
 
     override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
         val option = when(item.itemId) {
             R.id.action_select_all -> Option.SELECT_ALL
+            R.id.action_hide -> Option.HIDE
             R.id.action_play -> Option.PLAY
             R.id.action_play_next -> Option.PLAY_NEXT
             R.id.action_add_to_queue -> Option.ADD_TO_QUEUE
@@ -43,6 +45,7 @@ class ContextualActionMode<E: Media> constructor(
         mode.menuInflater.inflate(R.menu.fragment_base_list_context, menu)
         // configuring menu
         menu.findItem(R.id.action_select_all)?.apply { isVisible = contextualMenu.selectAllOptionAvailable }
+        menu.findItem(R.id.action_hide)?.apply { isVisible = contextualMenu.hideOptionAvailable }
         menu.findItem(R.id.action_play)?.apply { isVisible = contextualMenu.playOptionAvailable }
         menu.findItem(R.id.action_play_next)?.apply { isVisible = contextualMenu.playNextOptionAvailable }
         menu.findItem(R.id.action_add_to_queue)?.apply { isVisible = contextualMenu.addToQueueOptionAvailable }

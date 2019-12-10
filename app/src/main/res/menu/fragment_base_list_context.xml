@@ -8,6 +8,12 @@
         app:showAsAction="ifRoom"
         android:title="@string/select_all" />
 
+    <item android:id="@+id/action_hide"
+        android:icon="@drawable/ic_hidden_16dp"
+        android:name="@string/hide"
+        app:showAsAction="never"
+        android:title="@string/hide" />
+
     <item android:id="@+id/action_play"
         android:icon="@drawable/ic_action_play"
         android:name="@string/play"

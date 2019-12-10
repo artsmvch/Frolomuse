@@ -228,7 +228,9 @@ class AbsMediaCollectionViewModelTest {
                 true,
                 true,
                 true,
-                true, true
+                true,
+                true,
+                true
                 )
 
         whenever(getMediaUseCase.getMediaList())

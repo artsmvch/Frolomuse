@@ -40,7 +40,7 @@ class OptionsMenuDialog<E: Media> constructor(
         VIEW_ARTIST,
         VIEW_GENRE,
         SET_AS_DEFAULT,
-        ADD_TO_HIDDEN
+        HIDE
     }
 
     private val iconTint = StyleUtil.getIconTintColor(context)
@@ -81,7 +81,7 @@ class OptionsMenuDialog<E: Media> constructor(
 
         with(this) {
             btn_set_as_default.setOnClickListener { onOptionSelected(item, Option.SET_AS_DEFAULT) }
-            btn_add_to_hidden.setOnClickListener { onOptionSelected(item, Option.ADD_TO_HIDDEN) }
+            btn_add_to_hidden.setOnClickListener { onOptionSelected(item, Option.HIDE) }
             btn_play.setOnClickListener { onOptionSelected(item, Option.PLAY) }
             btn_share.setOnClickListener { onOptionSelected(item, Option.SHARE) }
             btn_delete.setOnClickListener { onOptionSelected(item, Option.DELETE) }

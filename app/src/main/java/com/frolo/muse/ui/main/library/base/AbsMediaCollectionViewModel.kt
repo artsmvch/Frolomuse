@@ -17,6 +17,7 @@ import com.frolo.muse.model.menu.OptionsMenu
 import com.frolo.muse.model.menu.SortOrderMenu
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.base.BaseViewModel
+import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
 import io.reactivex.disposables.Disposable
@@ -331,6 +332,23 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
                 .subscribeFor { mediaSet: Set<E> -> _selectedItems.value = mediaSet }
     }
 
+    fun onHideContextualOptionSelected() {
+        val selectedItems = selectedItems.value ?: return
+        performHide(selectedItems)
+                .observeOn(schedulerProvider.main())
+                .doOnSubscribe { disposable ->
+                    lastContextualDisposable = disposable
+                    _selectedItems.value = emptySet()
+                    _isProcessingContextual.value = true
+                }
+                .doFinally { _isProcessingContextual.value = false }
+                .subscribeFor {  }
+    }
+
+    protected open fun performHide(items: Set<E>): Completable {
+        return Completable.error(UnsupportedOperationException())
+    }
+
     fun onPlayContextualOptionSelected() {
         val selectedItems = selectedItems.value ?: return
         playMediaUseCase.play(selectedItems)
@@ -440,19 +458,21 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
     fun onSetAsDefaultOptionSelected() {
         val event = _openOptionsMenuEvent.value ?: return
         _closeOptionsMenuEvent.value = event
-        setAsDefault(event.item)
+        performSetAsDefault(event.item).subscribeFor {  }
     }
 
-    protected open fun setAsDefault(item: E) {
+    protected open fun performSetAsDefault(item: E): Completable {
+        return Completable.error(UnsupportedOperationException())
     }
 
-    fun onAddToHiddenOptionSelected() {
+    fun onHideOptionSelected() {
         val event = _openOptionsMenuEvent.value ?: return
         _closeOptionsMenuEvent.value = event
-        addToHidden(event.item)
+        performHide(event.item).subscribeFor {  }
     }
 
-    protected open fun addToHidden(item: E) {
+    protected open fun performHide(item: E): Completable {
+        return Completable.error(UnsupportedOperationException())
     }
 
     fun onShareOptionSelected() {

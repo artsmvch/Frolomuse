@@ -10,12 +10,13 @@ import com.frolo.muse.engine.SimplePlayerObserver
 import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.interactor.media.*
 import com.frolo.muse.interactor.media.get.GetAllMyFilesUseCase
-import com.frolo.muse.interactor.media.hidden.AddToHiddenUseCase
+import com.frolo.muse.interactor.media.hidden.HideFilesUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.media.MyFile
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.main.library.base.AbsMediaCollectionViewModel
+import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.SingleObserver
 import io.reactivex.disposables.Disposable
@@ -33,7 +34,7 @@ class MyFileListViewModel @Inject constructor(
         deleteMediaUseCase: DeleteMediaUseCase<MyFile>,
         changeFavouriteUseCase: ChangeFavouriteUseCase<MyFile>,
         private val setFolderAsDefaultUseCase: SetFolderAsDefaultUseCase,
-        private val addToHiddenUseCase: AddToHiddenUseCase,
+        private val hideFilesUseCase: HideFilesUseCase,
         private val schedulerProvider: SchedulerProvider,
         navigator: Navigator,
         eventLogger: EventLogger
@@ -87,13 +88,16 @@ class MyFileListViewModel @Inject constructor(
     val root: LiveData<MyFile> get() = _root
 
     private val _isCollectingSongs: MutableLiveData<Boolean> = MutableLiveData()
-    val isCollectingSongs: LiveData<Boolean> = _isCollectingSongs
+    val isCollectingSongs: LiveData<Boolean> get() = _isCollectingSongs
 
     private val _showFolderSetDefaultMessageEvent = SingleLiveEvent<Unit>()
-    val showFolderSetDefaultMessageEvent: LiveData<Unit> = _showFolderSetDefaultMessageEvent
+    val showFolderSetDefaultMessageEvent: LiveData<Unit>
+        get() = _showFolderSetDefaultMessageEvent
 
-    private val _showFolderAddedToHiddenMessageEvent = SingleLiveEvent<Unit>()
-    val showFolderAddedToHiddenMessageEvent: LiveData<Unit> = _showFolderAddedToHiddenMessageEvent
+    // Fires when one or several files have been hidden. Value represents the count of hidden files
+    private val _showFolderAddedToHiddenMessageEvent = SingleLiveEvent<Int>()
+    val showFolderAddedToHiddenMessageEvent: LiveData<Int>
+        get() = _showFolderAddedToHiddenMessageEvent
 
     init {
         player.registerObserver(playerObserver)
@@ -144,19 +148,27 @@ class MyFileListViewModel @Inject constructor(
         }
     }
 
-    override fun setAsDefault(item: MyFile) {
-        setFolderAsDefaultUseCase.setFolderAsDefault(item)
+    override fun performSetAsDefault(item: MyFile): Completable {
+        return setFolderAsDefaultUseCase.setFolderAsDefault(item)
                 .observeOn(schedulerProvider.main())
-                .subscribeFor {
+                .doOnComplete {
                     _showFolderSetDefaultMessageEvent.call()
                 }
     }
 
-    override fun addToHidden(item: MyFile) {
-        addToHiddenUseCase.addToHidden(item)
+    override fun performHide(item: MyFile): Completable {
+        return hideFilesUseCase.hide(item)
                 .observeOn(schedulerProvider.main())
-                .subscribeFor {
-                    _showFolderAddedToHiddenMessageEvent.call()
+                .doOnComplete {
+                    _showFolderAddedToHiddenMessageEvent.value = 1
+                }
+    }
+
+    override fun performHide(items: Set<MyFile>): Completable {
+        return hideFilesUseCase.hide(items)
+                .observeOn(schedulerProvider.main())
+                .doOnComplete {
+                    _showFolderAddedToHiddenMessageEvent.value = items.size
                 }
     }
 
