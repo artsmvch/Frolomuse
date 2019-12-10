@@ -23,7 +23,8 @@
     <string name="set_as_default">Varsayılan olarak ayarla</string>
     <string name="folder_is_default_message">Dosya tarayıcı şimdi bu klasörden açılacak</string>
     <string name="hide">Saklamak</string>
-    <string name="message_one_file_hidden">Dosya gizlendi. Ayarlarda tekrar gösterebilirsiniz.</string>
+    <string name="message_one_file_hidden">Dosya gizlendi. Ayarlarında geri dönebilirsiniz</string>
+    <string name="message_multiple_files_hidden">Seçilen dosyalar gizlendi. Ayarlarda geri dönebilirsiniz</string>
 
     <!--Hidden files-->
     <string name="hidden_files">Gizlenmiş dosyalar</string>

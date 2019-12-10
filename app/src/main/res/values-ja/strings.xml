@@ -24,7 +24,8 @@
     <string name="set_as_default">デフォルトとして設定</string>
     <string name="folder_is_default_message">これで、ファイルブラウザがこのフォルダから開きます</string>
     <string name="hide">隠す</string>
-    <string name="message_one_file_hidden">ファイルは非表示になりました。 設定で戻すことができます</string>
+    <string name="message_one_file_hidden">ファイルは非表示になっています。 設定で戻すことができます</string>
+    <string name="message_multiple_files_hidden">選択したファイルは非表示になっています。 設定に戻すことができます</string>
 
     <!--Hidden files-->
     <string name="hidden_files">隠しファイル</string>

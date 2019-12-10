@@ -24,7 +24,8 @@
     <string name="set_as_default">डिफाल्ट के रूप में सेट</string>
     <string name="folder_is_default_message">फ़ाइल ब्राउज़र अब इस फ़ोल्डर से खुलेगा</string>
     <string name="hide">छिपाना</string>
-    <string name="message_one_file_hidden">फ़ाइल अब छिपी हुई है। आप इसे सेटिंग्स में वापस कर सकते हैं</string>
+    <string name="message_one_file_hidden">फाइल को छिपा दिया गया है। आप इसे सेटिंग्स में वापस कर सकते हैं</string>
+    <string name="message_multiple_files_hidden">चयनित फ़ाइलों को छिपा दिया गया है। आप उन्हें सेटिंग्स में वापस कर सकते हैं</string>
 
     <!--Hidden files-->
     <string name="hidden_files">छिपी हुई फाइलें</string>

@@ -23,7 +23,8 @@
     <string name="set_as_default">Встановити за замовчуванням</string>
     <string name="folder_is_default_message">Тепер браузер файлів відкриється з цієї папки</string>
     <string name="hide">Сховати</string>
-    <string name="message_one_file_hidden">Файл зараз приховано. Ви можете повернути його назад у налаштуваннях</string>
+    <string name="message_one_file_hidden">Файл приховано. Ви можете повернути його назад у налаштуваннях</string>
+    <string name="message_multiple_files_hidden">Вибрані файли приховано. Ви можете повернути їх назад у налаштуваннях</string>
 
     <!--Hidden files-->
     <string name="hidden_files">Приховані файли</string>

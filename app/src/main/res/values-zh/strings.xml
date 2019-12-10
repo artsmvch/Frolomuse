@@ -24,7 +24,8 @@
     <string name="set_as_default">設為默認</string>
     <string name="folder_is_default_message">文件瀏覽器現在將從此文件夾打開</string>
     <string name="hide">隐藏</string>
-    <string name="message_one_file_hidden">该文件现已隐藏。 您可以在设置中将其返回</string>
+    <string name="message_one_file_hidden">該文件已被隱藏。 您可以在設置中將其返回</string>
+    <string name="message_multiple_files_hidden">所選文件已隱藏。 您可以在設置中返回它們</string>
 
     <!--Hidden files-->
     <string name="hidden_files">隐藏文件</string>

@@ -24,7 +24,8 @@
     <string name="set_as_default">Establecer por defecto</string>
     <string name="folder_is_default_message">El explorador de archivos ahora se abrirá desde esta carpeta</string>
     <string name="hide">Esconder</string>
-    <string name="message_one_file_hidden">El archivo está oculto ahora. Puedes devolverlo en la configuración</string>
+    <string name="message_one_file_hidden">El archivo ha sido oculto. Puedes devolverlo en la configuración</string>
+    <string name="message_multiple_files_hidden">Los archivos seleccionados han sido ocultos. Puede devolverlos en la configuración</string>
 
     <!--Hidden files-->
     <string name="hidden_files">Archivo oculto</string>
