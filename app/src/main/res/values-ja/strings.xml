@@ -105,8 +105,8 @@
 
     <!--deletion confirmation-->
     <string name="confirmation">確認</string>
-    <string name="sure_to_delete_item">このアイテムを削除してもよろしいですか？</string>
-    <string name="sure_to_delete_items">これらのアイテムを削除してもよろしいですか？</string>
+    <string name="confirmation_delete_item">このアイテムを削除してもよろしいですか？</string>
+    <string name="confirmation_delete_items">これらのアイテムを削除してもよろしいですか？</string>
 
     <!--titles for main view pager-->
     <string name="all_songs">すべての音楽</string>

@@ -106,8 +106,8 @@
 
     <!--deletion confirmation-->
     <string name="confirmation">Confirmación</string>
-    <string name="sure_to_delete_item">¿Estás seguro de que quieres eliminar este elemento?</string>
-    <string name="sure_to_delete_items">¿Estás seguro de que deseas eliminar estos elementos?</string>
+    <string name="confirmation_delete_item">¿Estás seguro de que quieres eliminar este elemento?</string>
+    <string name="confirmation_delete_items">¿Estás seguro de que deseas eliminar estos elementos?</string>
 
     <!--titles for main view pager-->
     <string name="all_songs">Toda la música</string>

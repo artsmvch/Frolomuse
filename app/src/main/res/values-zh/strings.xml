@@ -105,8 +105,8 @@
 
     <!--deletion confirmation-->
     <string name="confirmation">確認</string>
-    <string name="sure_to_delete_item">你確定要刪除這個項目嗎？</string>
-    <string name="sure_to_delete_items">您確定要刪除這些項嗎？</string>
+    <string name="confirmation_delete_item">你確定要刪除這個項目嗎？</string>
+    <string name="confirmation_delete_items">您確定要刪除這些項嗎？</string>
 
     <!--titles for main view pager-->
     <string name="all_songs">所有的音樂</string>

@@ -10,13 +10,15 @@ import androidx.appcompat.view.ActionMode
 import androidx.lifecycle.LifecycleOwner
 import com.frolo.muse.R
 import com.frolo.muse.arch.observe
-import com.frolo.muse.model.media.Media
+import com.frolo.muse.model.media.*
 import com.frolo.muse.model.menu.ContextualMenu
 import com.frolo.muse.model.menu.OptionsMenu
 import com.frolo.muse.model.menu.SortOrderMenu
 import com.frolo.muse.ui.base.BackPressHandler
 import com.frolo.muse.ui.base.BaseFragment
+import com.frolo.muse.ui.getDeleteConfirmationMessage
 import com.frolo.muse.ui.main.confirmDeletion
+import com.frolo.muse.ui.mayHaveSeveralRelatedSongs
 
 
 abstract class AbsMediaCollectionFragment <E: Media>: BaseFragment(),
@@ -161,14 +163,22 @@ abstract class AbsMediaCollectionFragment <E: Media>: BaseFragment(),
 
             // Deletion confirmation
             confirmDeletionEvent.observe(owner) { item ->
-                context?.confirmDeletion(getString(R.string.sure_to_delete_item)) {
-                    checkReadWritePermissionsFor { viewModel.onConfirmedDeletion(item) }
+                context?.also { safeContext ->
+                    val msg = safeContext.getDeleteConfirmationMessage(item)
+
+                    safeContext.confirmDeletion(msg) {
+                        checkReadWritePermissionsFor { viewModel.onConfirmedDeletion(item) }
+                    }
                 }
             }
 
             confirmMultipleDeletionEvent.observe(owner) { items ->
-                context?.confirmDeletion(getString(R.string.sure_to_delete_items)) {
-                    checkReadWritePermissionsFor { viewModel.onConfirmedMultipleDeletion(items) }
+                context?.also { safeContext ->
+                    val msg = safeContext.getDeleteConfirmationMessage(items)
+
+                    safeContext.confirmDeletion(msg) {
+                        checkReadWritePermissionsFor { viewModel.onConfirmedMultipleDeletion(items) }
+                    }
                 }
             }
 

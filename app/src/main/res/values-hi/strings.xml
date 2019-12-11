@@ -106,8 +106,8 @@
 
     <!--deletion confirmation-->
     <string name="confirmation">पुष्टीकरण</string>
-    <string name="sure_to_delete_item">क्या आप सुनिश्चित रूप से इस आइटम को मिटाना चाहते हैं?</string>
-    <string name="sure_to_delete_items">क्या आप वाकई इन वस्तुओं को हटाना चाहते हैं?</string>
+    <string name="confirmation_delete_item">क्या आप सुनिश्चित रूप से इस आइटम को मिटाना चाहते हैं?</string>
+    <string name="confirmation_delete_items">क्या आप वाकई इन वस्तुओं को हटाना चाहते हैं?</string>
 
     <!--titles for main view pager-->
     <string name="all_songs">पूरा संगीत</string>

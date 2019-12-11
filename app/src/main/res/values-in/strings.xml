@@ -106,8 +106,8 @@
 
     <!--deletion confirmation-->
     <string name="confirmation">Konfirmasi</string>
-    <string name="sure_to_delete_item">Anda yakin ingin menghapus item ini?</string>
-    <string name="sure_to_delete_items">Anda yakin ingin menghapus item ini?</string>
+    <string name="confirmation_delete_item">Anda yakin ingin menghapus item ini?</string>
+    <string name="confirmation_delete_items">Anda yakin ingin menghapus item ini?</string>
 
     <!--titles for main view pager-->
     <string name="all_songs">Semua musik</string>

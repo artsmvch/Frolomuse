@@ -106,8 +106,8 @@
 
     <!--deletion confirmation-->
     <string name="confirmation">Onayla</string>
-    <string name="sure_to_delete_item">Bu öğeyi silmek istediğinize emin misiniz?</string>
-    <string name="sure_to_delete_items">Bu öğeleri silmek istediğinize emin misiniz?</string>
+    <string name="confirmation_delete_item">Bu öğeyi silmek istediğinize emin misiniz?</string>
+    <string name="confirmation_delete_items">Bu öğeleri silmek istediğinize emin misiniz?</string>
 
     <!--titles for main view pager-->
     <string name="all_songs">Bütün müzikler</string>

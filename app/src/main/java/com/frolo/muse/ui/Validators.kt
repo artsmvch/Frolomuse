@@ -1,5 +1,6 @@
 package com.frolo.muse.ui
 
+import android.content.Context
 import android.content.res.Resources
 import com.frolo.muse.R
 import com.frolo.muse.model.Library
@@ -152,4 +153,36 @@ fun getSectionName(res: Resources, @Library.Section section: Int): String {
         Library.RECENTLY_ADDED -> res.getString(R.string.recently_added)
         else -> res.getString(R.string.placeholder_unknown)
     }
+}
+
+// Returns true if the media item may have several related to it songs
+fun Media.mayHaveSeveralRelatedSongs(): Boolean {
+    return when (kind) {
+        Media.ALBUM,
+        Media.ARTIST,
+        Media.GENRE,
+        Media.PLAYLIST -> true
+        Media.MY_FILE -> (this as MyFile).isDirectory
+        else -> false
+    }
+}
+
+fun Context.getDeleteConfirmationMessage(item: Media): String {
+    val msgResId = if (item.mayHaveSeveralRelatedSongs()
+            && item.kind != Media.PLAYLIST) // Since we don't delete songs when deleting playlists
+        R.string.confirmation_delete_item_and_related_song_files
+    else R.string.confirmation_delete_item
+
+    return getString(msgResId)
+}
+
+fun Context.getDeleteConfirmationMessage(items: List<Media>): String {
+    val firstItem = items.firstOrNull() ?: return getString(R.string.confirmation_delete_items)
+
+    val msgResId = if (firstItem.mayHaveSeveralRelatedSongs()
+            && firstItem.kind != Media.PLAYLIST) // Since we don't delete songs when deleting playlists
+        R.string.confirmation_delete_items_and_related_song_files
+    else R.string.confirmation_delete_items
+
+    return getString(msgResId)
 }

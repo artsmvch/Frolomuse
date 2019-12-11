@@ -406,7 +406,7 @@ class PlayerFragment: BaseFragment() {
 
             // Confirmation
             confirmDeletionEvent.observe(owner) { song ->
-                val msg = getString(R.string.sure_to_delete_item)
+                val msg = getString(R.string.confirmation_delete_item)
                 activity?.confirmDeletion(msg) {
                     checkWritePermissionFor {
                         viewModel.onConfirmedDeletion(song)
