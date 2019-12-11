@@ -108,6 +108,12 @@
     <string name="confirmation">Confirmation</string>
     <string name="confirmation_delete_item">Êtes-vous sûr de bien vouloir supprimer cet élément?</string>
     <string name="confirmation_delete_items">Êtes-vous sûr de vouloir supprimer ces éléments?</string>
+    <string name="confirmation_delete_item_and_related_song_files">
+        Êtes-vous sûr de bien vouloir supprimer cet élément? Tous les fichiers musicaux qu\'ils contiennent seront également supprimés.
+    </string>
+    <string name="confirmation_delete_items_and_related_song_files">
+        Voulez-vous vraiment supprimer ces éléments? Tous les fichiers musicaux qu'ils contiennent seront également supprimés.
+    </string>
 
     <!--titles for main view pager-->
     <string name="all_songs">Toute la musique</string>

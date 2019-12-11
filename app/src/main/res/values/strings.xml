@@ -112,10 +112,10 @@
     <string name="confirmation_delete_item">Are you sure you want to delete this item?</string>
     <string name="confirmation_delete_items">Are you sure you want to delete these items?</string>
     <string name="confirmation_delete_item_and_related_song_files">
-        Are you sure you want to delete this item? All song files in it will also be deleted.
+        Are you sure you want to delete this item? All music files contained therein will also be deleted.
     </string>
     <string name="confirmation_delete_items_and_related_song_files">
-        Are you sure you want to delete these items? All song files in them will also be deleted.
+        Are you sure you want to delete these items? All music files contained in them will also be deleted.
     </string>
 
     <!--titles for main view pager-->
