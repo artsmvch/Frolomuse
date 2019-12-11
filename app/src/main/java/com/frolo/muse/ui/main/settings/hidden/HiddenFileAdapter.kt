@@ -15,6 +15,10 @@ class HiddenFileAdapter constructor(
         private val onRemoveClick: (item: MyFile) -> Unit
 ): ListAdapter<MyFile, HiddenFileAdapter.HiddenFileViewHolder>(HiddenFileItemCallback) {
 
+    private fun getItemOrNull(position: Int): MyFile? {
+        return if (position in 0 until itemCount) getItem(position) else null
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HiddenFileViewHolder {
         val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_hidden_file, parent, false)
@@ -41,7 +45,7 @@ class HiddenFileAdapter constructor(
         }
 
         override fun onClick(v: View?) {
-            onRemoveClick(getItem(adapterPosition))
+            getItemOrNull(adapterPosition)?.also(onRemoveClick)
         }
 
     }
