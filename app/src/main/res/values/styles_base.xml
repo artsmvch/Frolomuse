@@ -105,6 +105,7 @@
         <item name="showTrack">false</item>
         <item name="fastScrollEnabled">false</item>
         <item name="android:overScrollMode">always</item>
+        <item name="android:layoutAnimation">@anim/list_layout_animation</item>
     </style>
 
     <style name="Base.AppTheme.ViewPager.Album" parent="Base.AppTheme">
