@@ -18,7 +18,6 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.frolo.mediabutton.PlayButton
@@ -60,7 +59,7 @@ class PlayerFragment: BaseFragment() {
     private val viewModel: PlayerViewModel by viewModel()
 
     // UI variables
-    private var previousAlbumViewPagerState = ViewPager.SCROLL_STATE_IDLE
+    private var previousAlbumViewPagerState = ViewPager2.SCROLL_STATE_IDLE
     // indicates if the user is scrolling (or scrolled) the album view pager
     private var userScrolledAlbumViewPager = false
 
@@ -77,11 +76,11 @@ class PlayerFragment: BaseFragment() {
         }
 
         override fun onPageScrollStateChanged(state: Int) {
-            if (previousAlbumViewPagerState == ViewPager.SCROLL_STATE_DRAGGING
-                    && state == ViewPager.SCROLL_STATE_SETTLING) {
+            if (previousAlbumViewPagerState == ViewPager2.SCROLL_STATE_DRAGGING
+                    && state == ViewPager2.SCROLL_STATE_SETTLING) {
                 userScrolledAlbumViewPager = true
-            } else if (previousAlbumViewPagerState == ViewPager.SCROLL_STATE_SETTLING
-                    && state == ViewPager.SCROLL_STATE_IDLE) {
+            } else if (previousAlbumViewPagerState == ViewPager2.SCROLL_STATE_SETTLING
+                    && state == ViewPager2.SCROLL_STATE_IDLE) {
                 userScrolledAlbumViewPager = false
             }
             previousAlbumViewPagerState = state
@@ -194,7 +193,7 @@ class PlayerFragment: BaseFragment() {
         }
 
         // NOTE: Need to set default values to the following variables every time fragment view created.
-        previousAlbumViewPagerState = ViewPager.SCROLL_STATE_IDLE
+        previousAlbumViewPagerState = ViewPager2.SCROLL_STATE_IDLE
         userScrolledAlbumViewPager = false
         isTrackingProgress = false
 
@@ -207,7 +206,7 @@ class PlayerFragment: BaseFragment() {
             // do not clip to padding so the previews will be visible
             clipToPadding = false
             // disable over scroll because the position of this effect is wrong according to padding
-            overScrollMode = ViewPager.OVER_SCROLL_NEVER
+            overScrollMode = ViewPager2.OVER_SCROLL_NEVER
             // the line above doesn't work, but the following should
             (getChildAt(0) as? RecyclerView)?.overScrollMode = RecyclerView.OVER_SCROLL_NEVER
             // setup the adapter
