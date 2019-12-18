@@ -60,11 +60,22 @@ class PlaylistFragment: AbsSongCollectionFragment() {
         }
         override fun onFinishInteracting() {
             isDragging = false
-            if (view != null) {
-                viewModel.onFinishInteracting()
+            view?.also { safeView ->
+                val oldCallback = finishInteractingCallback
+                if (oldCallback != null) {
+                    safeView.removeCallbacks(oldCallback)
+                }
+                val newCallback = Runnable {
+                    viewModel.onFinishInteracting()
+                }
+                safeView.post(newCallback)
+                finishInteractingCallback = newCallback
             }
         }
     }
+
+    private var finishInteractingCallback: Runnable? = null
+
     override val adapter: SongAdapter by lazy {
         SwappableSongAdapter(Glide.with(this), onDragListener).apply {
             setHasStableIds(true)
@@ -138,6 +149,14 @@ class PlaylistFragment: AbsSongCollectionFragment() {
             R.id.action_sort -> viewModel.onSortOrderOptionSelected()
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onDestroyView() {
+        finishInteractingCallback?.also { safeCallback ->
+            view?.removeCallbacks(safeCallback)
+        }
+        finishInteractingCallback = null
+        super.onDestroyView()
     }
 
     private fun showTitle(title: String) {
