@@ -24,10 +24,6 @@ class SongAdapter constructor(
 ): RecyclerView.Adapter<SongAdapter.SongViewHolder>() {
 
     private var queue: SongQueue? = null
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
 
     fun submitQueue(queue: SongQueue?) {
         val callback = SongQueueCallback(this.queue, queue)
