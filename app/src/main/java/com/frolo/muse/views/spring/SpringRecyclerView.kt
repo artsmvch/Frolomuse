@@ -25,6 +25,7 @@ class SpringRecyclerView @JvmOverloads constructor(
 
     init {
         edgeEffectFactory = springManager.createFactory()
+        itemAnimator?.setupDurationsByDefault()
     }
 
     override fun draw(canvas: Canvas) {

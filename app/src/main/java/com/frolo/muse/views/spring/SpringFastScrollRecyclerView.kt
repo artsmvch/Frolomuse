@@ -3,6 +3,7 @@ package com.frolo.muse.views.spring
 import android.content.Context
 import android.graphics.Canvas
 import android.util.AttributeSet
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.l4digital.fastscroll.FastScrollRecyclerView
 
 
@@ -21,6 +22,7 @@ class SpringFastScrollRecyclerView @JvmOverloads constructor(
 
     init {
         edgeEffectFactory = springManager.createFactory()
+        itemAnimator?.setupDurationsByDefault()
     }
 
     override fun draw(canvas: Canvas) {
