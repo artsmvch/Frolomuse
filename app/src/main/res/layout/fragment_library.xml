@@ -31,7 +31,7 @@
             app:tabMode="scrollable" />
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.viewpager.widget.ViewPager
+    <com.frolo.muse.views.viewpager.SafeViewPager
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         android:overScrollMode="never"
         android:id="@+id/vp_sections"
