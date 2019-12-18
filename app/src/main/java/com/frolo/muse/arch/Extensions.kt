@@ -16,8 +16,20 @@ fun <T,R,U> combine(first: LiveData<R>, second: LiveData<U>, combiner: (R?, U?) 
     }
 }
 
-fun <T> LiveData<T>.observe(owner: LifecycleOwner, onChanged: ((value: T) -> Unit)) {
+/**
+ * Convenience method for observing live data.
+ */
+fun <T> LiveData<T>.observe(owner: LifecycleOwner, onChanged: ((value: T?) -> Unit)) {
     observe(owner, Observer(onChanged))
+}
+
+/**
+ * Same as [observe] but only calls [onChanged] if the value is not null.
+ */
+fun <T> LiveData<T>.observeNonNull(owner: LifecycleOwner, onChanged: ((value: T) -> Unit)) {
+    observe(owner) {
+        if (it != null) onChanged.invoke(it)
+    }
 }
 
 /**

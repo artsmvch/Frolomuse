@@ -9,7 +9,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
 import com.frolo.muse.R
-import com.frolo.muse.arch.observe
+import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.model.media.Playlist
 import com.frolo.muse.model.media.SelectableSongQuery
 import com.frolo.muse.model.media.Song
@@ -116,26 +116,26 @@ class AddSongToPlaylistFragment: BaseFragment() {
 
     private fun observeViewModel(owner: LifecycleOwner) {
         viewModel.apply {
-            error.observe(owner) { err ->
+            error.observeNonNull(owner) { err ->
                 toastError(err)
             }
 
-            selectableSongQuery.observe(owner) { songQuery ->
+            selectableSongQuery.observeNonNull(owner) { songQuery ->
                 onSubmitSongList(songQuery)
             }
 
-            selectedItems.observe(owner) { selectedItems ->
+            selectedItems.observeNonNull(owner) { selectedItems ->
                 onSubmitSelection(selectedItems)
             }
 
-            placeholderVisible.observe(owner) { isVisible ->
+            placeholderVisible.observeNonNull(owner) { isVisible ->
                 onSetPlaceholderVisible(isVisible)
             }
 
-            songsAddedToPlaylistEvent.observe(owner) {
+            songsAddedToPlaylistEvent.observeNonNull(owner) {
             }
 
-            isAddingSongsToPlaylist.observe(owner) { isAddingSongsToPlaylist ->
+            isAddingSongsToPlaylist.observeNonNull(owner) { isAddingSongsToPlaylist ->
                 onAddingSongsToPlaylistState(isAddingSongsToPlaylist)
             }
         }

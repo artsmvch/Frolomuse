@@ -6,6 +6,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.frolo.muse.R
 import com.frolo.muse.arch.observe
+import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.model.media.MyFile
 import com.frolo.muse.ui.base.BackPressHandler
 import com.frolo.muse.ui.getNameAsRootString
@@ -107,20 +108,20 @@ class MyFileListFragment: AbsMediaCollectionFragment<MyFile>(),
 
     private fun observeViewModel(owner: LifecycleOwner) {
         viewModel.apply {
-            isPlaying.observe(owner) { isPlaying ->
+            isPlaying.observeNonNull(owner) { isPlaying ->
                 adapter.setPlayingState(isPlaying)
             }
 
-            playingPosition.observe(owner) { playingPosition ->
+            playingPosition.observeNonNull(owner) { playingPosition ->
                 val isPlaying = isPlaying.value ?: false
                 adapter.setPlayingPositionAndState(playingPosition, isPlaying)
             }
 
-            root.observe(owner) { root ->
+            root.observeNonNull(owner) { root ->
                 onDisplayRoot(root)
             }
 
-            isCollectingSongs.observe(owner) { isCollecting ->
+            isCollectingSongs.observeNonNull(owner) { isCollecting ->
                 if (isCollecting) {
                     showProgressDialog()
                 } else {
@@ -132,7 +133,7 @@ class MyFileListFragment: AbsMediaCollectionFragment<MyFile>(),
                 toastLongMessage(R.string.folder_is_default_message)
             }
 
-            showFolderAddedToHiddenMessageEvent.observe(owner) { count ->
+            showFolderAddedToHiddenMessageEvent.observeNonNull(owner) { count ->
                 if (count > 1) {
                     toastLongMessage(R.string.message_multiple_files_hidden)
                 } else {

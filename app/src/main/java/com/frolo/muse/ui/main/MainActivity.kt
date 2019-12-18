@@ -16,7 +16,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProviders
 import com.frolo.muse.R
 import com.frolo.muse.arch.observe
-import com.frolo.muse.di.modules.ViewModelModule
+import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.engine.Player
 import com.frolo.muse.ui.base.BackPressHandler
 import com.frolo.muse.ui.base.BaseActivity

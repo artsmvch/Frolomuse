@@ -31,7 +31,7 @@ class MainViewModel @Inject constructor(
     private val _askReadStoragePermissionsEvent: SingleLiveEvent<Unit> = SingleLiveEvent()
     val askReadStoragePermissionsEvent: LiveData<Unit> = _askReadStoragePermissionsEvent
 
-    private val _askToRateEvent: MutableLiveData<Unit> = SingleLiveEvent()
+    private val _askToRateEvent = SingleLiveEvent<Unit>()
     val askToRateEvent: LiveData<Unit> = _askToRateEvent
 
     init {
@@ -80,7 +80,7 @@ class MainViewModel @Inject constructor(
                 }
                 .subscribeFor { needRate ->
                     if (needRate) {
-                        _askToRateEvent.value = Unit
+                        _askToRateEvent.call()
                     }
                 }
     }

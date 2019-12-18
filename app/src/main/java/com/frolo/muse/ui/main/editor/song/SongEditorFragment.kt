@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
 import com.frolo.muse.GlideManager
 import com.frolo.muse.R
-import com.frolo.muse.arch.observe
+import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.ui.base.BaseDialogFragment
 import com.frolo.muse.ui.base.serializableArg
@@ -89,15 +89,15 @@ class SongEditorFragment: BaseDialogFragment() {
 
     private fun observeViewModel(owner: LifecycleOwner) {
         viewModel.apply {
-            isLoadingUpdate.observe(owner) { isLoading ->
+            isLoadingUpdate.observeNonNull(owner) { isLoading ->
                 onSetLoading(isLoading)
             }
 
-            updateError.observe(owner) { err ->
+            updateError.observeNonNull(owner) { err ->
                 onDisplayError(err)
             }
 
-            updatedSong.observe(owner) { newSong ->
+            updatedSong.observeNonNull(owner) { newSong ->
                 onSongUpdated(newSong)
             }
         }

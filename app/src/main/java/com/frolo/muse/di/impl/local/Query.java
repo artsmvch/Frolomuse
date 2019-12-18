@@ -66,7 +66,7 @@ final class Query {
      * Creates a flowable that emits an object every time some data changed on the uri provided.
      * An additional object is emitted on the subscribe.
      * @param contentResolver content resolver
-     * @param uri uri to observe
+     * @param uri uri to observeNonNull
      * @return a flowable source
      */
     /*package*/ static Flowable<Object> createFlowable(
@@ -111,7 +111,7 @@ final class Query {
      * Creates a flowable that emits an object every time some data changed on the uris provided.
      * An additional object is emitted on the subscribe.
      * @param contentResolver content resolver
-     * @param uris uris to observe
+     * @param uris uris to observeNonNull
      * @return a flowable source
      */
     /*package*/ static Flowable<Object> createFlowable(

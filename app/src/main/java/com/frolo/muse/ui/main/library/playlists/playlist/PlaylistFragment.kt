@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.frolo.muse.R
-import com.frolo.muse.arch.observe
+import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.model.media.Playlist
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.ui.base.adapter.SimpleItemTouchHelperCallback
@@ -20,7 +20,6 @@ import com.frolo.muse.ui.main.library.base.SwappableSongAdapter
 import com.frolo.muse.ui.main.decorateAsLinear
 import com.frolo.muse.ui.main.library.base.AbsSongCollectionFragment
 import com.frolo.muse.ui.main.library.base.SongAdapter
-import com.frolo.muse.ui.main.overrideAnimationDuration
 import com.frolo.muse.ui.toPx
 import com.frolo.muse.views.Slider
 import com.frolo.muse.views.showBackArrow
@@ -198,15 +197,15 @@ class PlaylistFragment: AbsSongCollectionFragment() {
 
     private fun observeViewModel(owner: LifecycleOwner) {
         viewModel.apply {
-            playlist.observe(owner) { item ->
+            playlist.observeNonNull(owner) { item ->
                 showTitle(item.name)
             }
 
-            mediaItemCount.observe(owner) { count ->
+            mediaItemCount.observeNonNull(owner) { count ->
                 tv_title.text = requireContext().resources.getQuantityString(R.plurals.s_songs, count, count)
             }
 
-            isSwappingEnabled.observe(owner) { isSwappingEnabled ->
+            isSwappingEnabled.observeNonNull(owner) { isSwappingEnabled ->
                 (rv_list.adapter as SwappableSongAdapter).also { adapter ->
                     adapter.itemViewType = if (isSwappingEnabled) {
                         SwappableSongAdapter.VIEW_TYPE_SWAPPABLE

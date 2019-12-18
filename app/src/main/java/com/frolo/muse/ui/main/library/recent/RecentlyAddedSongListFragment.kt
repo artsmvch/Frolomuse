@@ -8,7 +8,7 @@ import android.view.View
 import androidx.lifecycle.LifecycleOwner
 import com.bumptech.glide.Glide
 import com.frolo.muse.R
-import com.frolo.muse.arch.observe
+import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.model.menu.RecentPeriodMenu
 import com.frolo.muse.ui.main.AlbumArtUpdateHandler
@@ -75,16 +75,16 @@ class RecentlyAddedSongListFragment: SimpleMediaCollectionFragment<Song>() {
 
     private fun observeViewModel(owner: LifecycleOwner) {
         viewModel.apply {
-            isPlaying.observe(owner) { isPlaying ->
+            isPlaying.observeNonNull(owner) { isPlaying ->
                 adapter.setPlayingState(isPlaying)
             }
 
-            playingPosition.observe(owner) { playingPosition ->
+            playingPosition.observeNonNull(owner) { playingPosition ->
                 val isPlaying = isPlaying.value ?: false
                 adapter.setPlayingPositionAndState(playingPosition, isPlaying)
             }
 
-            openRecentPeriodMenuEvent.observe(owner) { recentPeriodMenu ->
+            openRecentPeriodMenuEvent.observeNonNull(owner) { recentPeriodMenu ->
                 onShowRecentPeriodMenu(recentPeriodMenu)
             }
 

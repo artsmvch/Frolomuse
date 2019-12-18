@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.frolo.muse.*
-import com.frolo.muse.arch.observe
+import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.model.media.Album
 import com.frolo.muse.ui.base.BaseDialogFragment
 import com.frolo.muse.ui.base.serializableArg
@@ -105,20 +105,20 @@ class AlbumEditorFragment : BaseDialogFragment() {
 
     private fun observeViewModel(owner: LifecycleOwner) {
         viewModel.apply {
-            error.observe(owner) { err ->
+            error.observeNonNull(owner) { err ->
                 postError(err)
                 dismiss()
             }
 
-            isLoadingUpdate.observe(owner) { isLoading ->
+            isLoadingUpdate.observeNonNull(owner) { isLoading ->
                 onSetLoading(isLoading)
             }
 
-            updatedEvent.observe(owner) { event ->
+            updatedEvent.observeNonNull(owner) { event ->
                 onAlbumUpdated(event.album, event.artChanged, event.newFilepath)
             }
 
-            albumArtConfig.observe(owner) { config ->
+            albumArtConfig.observeNonNull(owner) { config ->
                 val id: Long? = config.id
                 val filepath: String? = config.data
                 when {

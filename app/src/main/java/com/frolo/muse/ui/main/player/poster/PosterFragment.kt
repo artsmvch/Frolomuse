@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.frolo.muse.R
-import com.frolo.muse.arch.observe
+import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.ui.base.BaseDialogFragment
 import com.frolo.muse.ui.base.withArg
@@ -69,11 +69,11 @@ class PosterFragment: BaseDialogFragment() {
 
     private fun observeViewModel(owner: LifecycleOwner) {
         viewModel.apply {
-            error.observe(owner) { err ->
+            error.observeNonNull(owner) { err ->
                 postError(err)
             }
 
-            isCreatingPoster.observe(owner) { isCreating ->
+            isCreatingPoster.observeNonNull(owner) { isCreating ->
                 dialog?.apply {
                     if (isCreating) {
                         Anim.fadeIn(pb_loading)
@@ -83,7 +83,7 @@ class PosterFragment: BaseDialogFragment() {
                 }
             }
 
-            poster.observe(owner) { bmp ->
+            poster.observeNonNull(owner) { bmp ->
                 dialog?.apply {
                     Glide.with(this@PosterFragment)
                             .load(bmp)
@@ -92,7 +92,7 @@ class PosterFragment: BaseDialogFragment() {
                 }
             }
 
-            startedSharingEvent.observe(owner) {
+            startedSharingEvent.observeNonNull(owner) {
                 dismiss()
             }
         }

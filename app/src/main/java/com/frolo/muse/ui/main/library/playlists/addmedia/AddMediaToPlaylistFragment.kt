@@ -5,12 +5,11 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.view.Window
-import android.widget.Toast
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.frolo.muse.R
-import com.frolo.muse.arch.observe
+import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.model.media.Media
 import com.frolo.muse.model.media.Playlist
 import com.frolo.muse.ui.base.BaseDialogFragment
@@ -106,27 +105,27 @@ class AddMediaToPlaylistFragment : BaseDialogFragment() {
 
     private fun observeViewModel(owner: LifecycleOwner) {
         viewModel.apply {
-            isLoading.observe(owner) { isLoading ->
+            isLoading.observeNonNull(owner) { isLoading ->
                 onSetLoading(isLoading)
             }
 
-            placeholderVisible.observe(owner) { visible ->
+            placeholderVisible.observeNonNull(owner) { visible ->
                 onSetPlaceholderVisible(visible)
             }
 
-            playlists.observe(owner) { list ->
+            playlists.observeNonNull(owner) { list ->
                 onSubmitList(list)
             }
 
-            error.observe(owner) { err ->
+            error.observeNonNull(owner) { err ->
                 onDisplayError(err)
             }
 
-            isAddingItemsToPlaylist.observe(owner) { isAdding ->
+            isAddingItemsToPlaylist.observeNonNull(owner) { isAdding ->
                 onSetAddingItemsToPlaylist(isAdding)
             }
 
-            itemsAddedToPlaylistEvent.observe(owner) {
+            itemsAddedToPlaylistEvent.observeNonNull(owner) {
                 onItemsAddedToPlaylist()
             }
         }

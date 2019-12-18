@@ -3,7 +3,7 @@ package com.frolo.muse.ui.main.library.favourites
 import android.os.Bundle
 import androidx.lifecycle.LifecycleOwner
 import com.bumptech.glide.Glide
-import com.frolo.muse.arch.observe
+import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.ui.main.AlbumArtUpdateHandler
 import com.frolo.muse.ui.main.library.base.SimpleMediaCollectionFragment
@@ -39,11 +39,11 @@ class FavouriteSongListFragment: SimpleMediaCollectionFragment<Song>() {
 
     private fun observerViewModel(owner: LifecycleOwner) {
         viewModel.apply {
-            isPlaying.observe(owner) { isPlaying ->
+            isPlaying.observeNonNull(owner) { isPlaying ->
                 adapter.setPlayingState(isPlaying)
             }
 
-            playingPosition.observe(owner) { playingPosition ->
+            playingPosition.observeNonNull(owner) { playingPosition ->
                 val isPlaying = isPlaying.value ?: false
                 adapter.setPlayingPositionAndState(playingPosition, isPlaying)
             }

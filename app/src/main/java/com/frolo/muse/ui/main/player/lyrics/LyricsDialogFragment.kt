@@ -10,6 +10,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProviders
 import com.frolo.muse.R
 import com.frolo.muse.arch.observe
+import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.model.lyrics.Lyrics
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.ui.base.BaseDialogFragment
@@ -62,23 +63,23 @@ class LyricsDialogFragment: BaseDialogFragment() {
 
     private fun observeViewModel(owner: LifecycleOwner) {
         viewModel.apply {
-            error.observe(owner) { err ->
+            error.observeNonNull(owner) { err ->
                 onDisplayError(err)
             }
 
-            isEditable.observe(owner) { isEditable ->
+            isEditable.observeNonNull(owner) { isEditable ->
                 onSetEditable(isEditable)
             }
 
-            isLoadingLyrics.observe(owner) { isLoading ->
+            isLoadingLyrics.observeNonNull(owner) { isLoading ->
                 onSetLoadingLyrics(isLoading)
             }
 
-            isSavingLyrics.observe(owner) { isSaving ->
+            isSavingLyrics.observeNonNull(owner) { isSaving ->
                 onSetSavingLyrics(isSaving)
             }
 
-            lyrics.observe(owner) { lyrics ->
+            lyrics.observeNonNull(owner) { lyrics ->
                 onDisplayLyrics(lyrics)
             }
 
@@ -86,7 +87,7 @@ class LyricsDialogFragment: BaseDialogFragment() {
                 onLyricsSaved()
             }
 
-            songName.observe(owner) { songName ->
+            songName.observeNonNull(owner) { songName ->
                 onDisplaySongName(songName)
             }
         }

@@ -25,6 +25,7 @@ import com.frolo.mediabutton.PlayButton
 import com.frolo.muse.R
 import com.frolo.muse.Trace
 import com.frolo.muse.arch.observe
+import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.engine.Player
 import com.frolo.muse.engine.SongQueue
 import com.frolo.muse.model.media.Song
@@ -324,25 +325,25 @@ class PlayerFragment: BaseFragment() {
 
     private fun observeViewModel(owner: LifecycleOwner) {
         viewModel.apply {
-            deletedSong.observe(owner) {
+            deletedSong.observeNonNull(owner) {
                 toastShortMessage(R.string.deleted)
             }
 
-            isFavourite.observe(owner) { isFavourite ->
+            isFavourite.observeNonNull(owner) { isFavourite ->
                 updateFavouriteIcon(isFavourite, animate = true)
             }
 
-            songQueue.observe(owner) { queue: SongQueue? ->
+            songQueue.observeNonNull(owner) { queue: SongQueue? ->
                 Trace.d(LOG_TAG, "SongQueue changed")
                 (vp_album_art.adapter as? SongAdapter)?.submitQueue(queue)
             }
 
-            invalidateSongQueueEvent.observe(owner) {
+            invalidateSongQueueEvent.observeNonNull(owner) {
                 Trace.d(LOG_TAG, "InvalidateSongQueue event fired")
                 vp_album_art.adapter?.notifyDataSetChanged()
             }
 
-            song.observe(owner) { song: Song? ->
+            song.observeNonNull(owner) { song: Song? ->
                 Trace.d(LOG_TAG, "Song changed")
                 if (song != null) {
                     tsw_song_name.setText(song.getNameString(resources))
@@ -353,11 +354,11 @@ class PlayerFragment: BaseFragment() {
                 }
             }
 
-            placeholderVisible.observe(owner) { isVisible ->
+            placeholderVisible.observeNonNull(owner) { isVisible ->
                 layout_player_placeholder.visibility = if (isVisible) View.VISIBLE else View.GONE
             }
 
-            songPosition.observe(owner) { position ->
+            songPosition.observeNonNull(owner) { position ->
                 Trace.d(LOG_TAG, "Song position changed to $position")
 
                 vp_album_art.removeCallbacks(setCurrentItemCallback)
@@ -376,36 +377,36 @@ class PlayerFragment: BaseFragment() {
                 context?.showVolumeControl()
             }
 
-            playbackDuration.observe(owner) { duration ->
+            playbackDuration.observeNonNull(owner) { duration ->
                 sb_progress.max = duration
                 tv_duration.text = duration.asDurationInMs()
             }
 
-            playbackProgress.observe(owner) { progress ->
+            playbackProgress.observeNonNull(owner) { progress ->
                 if (!isTrackingProgress) {
                     sb_progress.progress = progress
                     tv_position.text = progress.asDurationInMs()
                 }
             }
 
-            playbackStatus.observe(owner) { status: Boolean ->
+            playbackStatus.observeNonNull(owner) { status: Boolean ->
                 updatePlayButton(status)
             }
 
-            abStatus.observe(owner) { abStatus ->
+            abStatus.observeNonNull(owner) { abStatus ->
                 updateAB(abStatus.first, abStatus.second, false)
             }
 
-            shuffleMode.observe(owner) { mode ->
+            shuffleMode.observeNonNull(owner) { mode ->
                 updateShuffleIcon(mode, true)
             }
 
-            repeatMode.observe(owner) { mode ->
+            repeatMode.observeNonNull(owner) { mode ->
                 updateRepeatIcon(mode, true)
             }
 
             // Confirmation
-            confirmDeletionEvent.observe(owner) { song ->
+            confirmDeletionEvent.observeNonNull(owner) { song ->
                 val msg = getString(R.string.confirmation_delete_item)
                 activity?.confirmDeletion(msg) {
                     checkWritePermissionFor {

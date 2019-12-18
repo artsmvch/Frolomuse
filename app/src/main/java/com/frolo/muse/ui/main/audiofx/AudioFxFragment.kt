@@ -13,7 +13,7 @@ import androidx.lifecycle.LifecycleOwner
 import com.frolo.muse.R
 import com.frolo.muse.StyleUtil
 import com.frolo.muse.Trace
-import com.frolo.muse.arch.observe
+import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.main.audiofx.adapter.PresetAdapter
 import com.frolo.muse.ui.main.audiofx.adapter.PresetReverbAdapter
@@ -269,11 +269,11 @@ class AudioFxFragment: BaseFragment() {
 
     private fun observeViewModel(owner: LifecycleOwner) {
         viewModel.apply {
-            error.observe(owner) { err ->
+            error.observeNonNull(owner) { err ->
                 toastError(err)
             }
 
-            audioFxAvailable.observe(owner) { available ->
+            audioFxAvailable.observeNonNull(owner) { available ->
                 if (available) {
                     layout_audio_fx_content.setOnTryTouchingListener {
                         if (layout_audio_fx_hint.visibility != View.VISIBLE) {
@@ -291,24 +291,24 @@ class AudioFxFragment: BaseFragment() {
                 }
             }
 
-            equalizerAvailable.observe(owner) { available ->
+            equalizerAvailable.observeNonNull(owner) { available ->
                 layout_eq_bars.visibility = if (available) View.VISIBLE else View.GONE
                 ll_preset_chooser.visibility = if (available) View.VISIBLE else View.GONE
             }
 
-            bassBoostAvailable.observe(owner) { available ->
+            bassBoostAvailable.observeNonNull(owner) { available ->
                 ll_bass_boost.visibility = if (available) View.VISIBLE else View.GONE
             }
 
-            virtualizerAvailable.observe(owner) { available ->
+            virtualizerAvailable.observeNonNull(owner) { available ->
                 ll_virtualizer.visibility = if (available) View.VISIBLE else View.GONE
             }
 
-            presetReverbAvailable.observe(owner) { available ->
+            presetReverbAvailable.observeNonNull(owner) { available ->
                 ll_preset_reverb_chooser.visibility = if (available) View.VISIBLE else View.GONE
             }
 
-            audioFxEnabled.observe(owner) { enabled ->
+            audioFxEnabled.observeNonNull(owner) { enabled ->
                 layout_audio_fx_content.isEnabled = enabled
 
                 if (layout_audio_fx_hint.visibility == View.VISIBLE) {
@@ -321,11 +321,11 @@ class AudioFxFragment: BaseFragment() {
                 enableStatusSwitchView?.isChecked = enabled
             }
 
-            bandLevels.observe(owner) { audioFx ->
+            bandLevels.observeNonNull(owner) { audioFx ->
                 layout_eq_bars.bindWith(audioFx, true)
             }
 
-            presets.observe(owner) { presets ->
+            presets.observeNonNull(owner) { presets ->
                 val adapter = PresetAdapter(presets) { item ->
                     onDeletePresetClicked(item)
                 }
@@ -336,7 +336,7 @@ class AudioFxFragment: BaseFragment() {
                 }
             }
 
-            currentPreset.observe(owner) { preset ->
+            currentPreset.observeNonNull(owner) { preset ->
                 val adapter = sp_presets.adapter as? PresetAdapter
                 if (adapter != null) {
                     val position = adapter.indexOf(preset)
@@ -346,23 +346,23 @@ class AudioFxFragment: BaseFragment() {
                 }
             }
 
-            bassStrengthRange.observe(owner) { range ->
+            bassStrengthRange.observeNonNull(owner) { range ->
                 sb_bass_boost.max = range.second.toInt()
             }
 
-            bassStrength.observe(owner) { strength ->
+            bassStrength.observeNonNull(owner) { strength ->
                 sb_bass_boost.progress = strength.toInt()
             }
 
-            virtStrengthRange.observe(owner) { range ->
+            virtStrengthRange.observeNonNull(owner) { range ->
                 sb_virtualizer.max = range.second.toInt()
             }
 
-            virtStrength.observe(owner) { strength ->
+            virtStrength.observeNonNull(owner) { strength ->
                 sb_virtualizer.progress = strength.toInt()
             }
 
-            presetReverbs.observe(owner) { reverbs ->
+            presetReverbs.observeNonNull(owner) { reverbs ->
                 sp_preset_reverbs.adapter = PresetReverbAdapter(reverbs)
                 val position = presetReverbIndex.value.let { index ->
                     reverbs.indexOfFirst { it.first == index }
@@ -370,7 +370,7 @@ class AudioFxFragment: BaseFragment() {
                 sp_preset_reverbs.setSelection(position, false)
             }
 
-            presetReverbIndex.observe(owner) { index ->
+            presetReverbIndex.observeNonNull(owner) { index ->
 
             }
         }

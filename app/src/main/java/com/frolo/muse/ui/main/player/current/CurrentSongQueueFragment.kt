@@ -20,7 +20,7 @@ import com.frolo.muse.ui.main.library.base.BaseAdapter
 import com.frolo.muse.ui.main.library.base.SongAdapter
 import com.frolo.muse.ui.main.library.playlists.create.PlaylistCreateEvent
 import com.frolo.muse.views.showBackArrow
-import com.frolo.muse.arch.observe
+import com.frolo.muse.arch.observeNonNull
 import kotlinx.android.synthetic.main.fragment_base_list.*
 import kotlinx.android.synthetic.main.fragment_current_playlist.*
 
@@ -192,11 +192,11 @@ class CurrentSongQueueFragment: AbsMediaCollectionFragment<Song>() {
 
     private fun observeViewModel(owner: LifecycleOwner) {
         viewModel.apply {
-            isPlaying.observe(owner) { isPlaying ->
+            isPlaying.observeNonNull(owner) { isPlaying ->
                 adapter.setPlayingState(isPlaying)
             }
 
-            playingPosition.observe(owner) { playingPosition ->
+            playingPosition.observeNonNull(owner) { playingPosition ->
                 val isPlaying = isPlaying.value ?: false
                 adapter.setPlayingPositionAndState(playingPosition, isPlaying)
             }

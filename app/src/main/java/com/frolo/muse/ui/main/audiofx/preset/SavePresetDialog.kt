@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProviders
 import com.frolo.muse.R
-import com.frolo.muse.arch.observe
+import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.model.preset.CustomPreset
 import com.frolo.muse.ui.main.library.base.inputname.AbsInputNameDialog
 
@@ -40,20 +40,20 @@ class SavePresetDialog : AbsInputNameDialog() {
 
     private fun observeViewModel(owner: LifecycleOwner) {
         viewModel.apply {
-            isSavingPreset.observe(owner) { isSaving ->
+            isSavingPreset.observeNonNull(owner) { isSaving ->
                 setIsLoading(isSaving)
             }
 
-            presetSavedEvent.observe(owner) { preset ->
+            presetSavedEvent.observeNonNull(owner) { preset ->
                 onPresetSaved(preset)
             }
 
-            savingError.observe(owner) { err ->
+            savingError.observeNonNull(owner) { err ->
                 displayInputError(err)
 
             }
 
-            error.observe(owner) { err ->
+            error.observeNonNull(owner) { err ->
                 displayError(err)
             }
         }

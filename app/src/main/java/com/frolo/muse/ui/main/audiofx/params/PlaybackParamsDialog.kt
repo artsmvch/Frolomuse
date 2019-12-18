@@ -8,7 +8,7 @@ import android.view.Window
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.LifecycleOwner
 import com.frolo.muse.R
-import com.frolo.muse.arch.observe
+import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.ui.base.BaseDialogFragment
 import com.frolo.muse.views.observeProgress
 import kotlinx.android.synthetic.main.dialog_playback_params.*
@@ -69,17 +69,17 @@ class PlaybackParamsDialog : BaseDialogFragment() {
 
     private fun observeViewModel(owner: LifecycleOwner) {
         viewModel.apply {
-            error.observe(owner) { err ->
+            error.observeNonNull(owner) { err ->
                 postError(err)
             }
 
-            speed.observe(owner) { speed ->
+            speed.observeNonNull(owner) { speed ->
                 dialog?.apply {
                     cv_speed.progress = (speed * 100).toInt()
                 }
             }
 
-            pitch.observe(owner) { pitch ->
+            pitch.observeNonNull(owner) { pitch ->
                 dialog?.apply {
                     cv_pitch.progress = (pitch * 100).toInt()
                 }

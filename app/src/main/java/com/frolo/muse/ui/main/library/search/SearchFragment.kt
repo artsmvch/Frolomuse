@@ -8,7 +8,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.LifecycleOwner
 import com.bumptech.glide.Glide
 import com.frolo.muse.R
-import com.frolo.muse.arch.observe
+import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.model.media.Media
 import com.frolo.muse.ui.main.library.base.AbsMediaCollectionFragment
 import com.frolo.muse.ui.main.library.base.BaseAdapter
@@ -129,7 +129,7 @@ class SearchFragment: AbsMediaCollectionFragment<Media>() {
 
     private fun observerViewModel(owner: LifecycleOwner) {
         viewModel.apply {
-            query.observe(owner) { query: String ->
+            query.observeNonNull(owner) { query: String ->
                 adapter.query = query
             }
         }

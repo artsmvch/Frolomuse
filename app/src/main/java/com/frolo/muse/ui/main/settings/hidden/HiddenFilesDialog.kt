@@ -6,7 +6,7 @@ import android.view.View
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.frolo.muse.R
-import com.frolo.muse.arch.observe
+import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.ui.base.BaseDialogFragment
 import kotlinx.android.synthetic.main.dialog_hidden_files.*
 
@@ -53,25 +53,25 @@ class HiddenFilesDialog : BaseDialogFragment() {
 
     private fun observeViewModel(owner: LifecycleOwner) {
         viewModel.apply {
-            hiddenFiles.observe(owner) {
+            hiddenFiles.observeNonNull(owner) {
                 dialog?.apply {
                     (rv_files.adapter as? HiddenFileAdapter)?.submitList(it)
                 }
             }
 
-            placeholderVisible.observe(owner) {
+            placeholderVisible.observeNonNull(owner) {
                 dialog?.apply {
                     view_placeholder.visibility = if (it) View.VISIBLE else View.GONE
                 }
             }
 
-            isLoading.observe(owner) {
+            isLoading.observeNonNull(owner) {
                 dialog?.apply {
                     pb_loading.visibility = if (it) View.VISIBLE else View.GONE
                 }
             }
 
-            error.observe(owner) {
+            error.observeNonNull(owner) {
                 postError(it)
             }
         }

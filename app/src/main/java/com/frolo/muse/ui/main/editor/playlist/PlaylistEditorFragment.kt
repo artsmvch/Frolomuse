@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProviders
 import com.frolo.muse.R
-import com.frolo.muse.arch.observe
+import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.model.media.Playlist
 import com.frolo.muse.ui.base.serializableArg
 import com.frolo.muse.ui.base.withArg
@@ -35,19 +35,19 @@ class PlaylistEditorFragment : AbsInputNameDialog() {
 
     private fun observeViewModel(owner: LifecycleOwner) {
         viewModel.apply {
-            isLoadingUpdate.observe(owner) { isLoading ->
+            isLoadingUpdate.observeNonNull(owner) { isLoading ->
                 setIsLoading(isLoading)
             }
 
-            updatedPlaylist.observe(owner) { playlist ->
+            updatedPlaylist.observeNonNull(owner) { playlist ->
                 onPlaylistUpdated(playlist)
             }
 
-            inputError.observe(owner) { err ->
+            inputError.observeNonNull(owner) { err ->
                 displayInputError(err)
             }
 
-            error.observe(owner) { err ->
+            error.observeNonNull(owner) { err ->
                 displayError(err)
             }
         }

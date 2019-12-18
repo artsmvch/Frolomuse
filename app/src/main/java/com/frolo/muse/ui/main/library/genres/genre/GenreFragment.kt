@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.frolo.muse.R
-import com.frolo.muse.arch.observe
+import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.model.media.Genre
 import com.frolo.muse.ui.base.withArg
 import com.frolo.muse.ui.main.decorateAsLinear
@@ -101,11 +101,11 @@ class GenreFragment: AbsSongCollectionFragment() {
 
     private fun observeViewModel(owner: LifecycleOwner) {
         viewModel.apply {
-            mediaItemCount.observe(owner) { count ->
+            mediaItemCount.observeNonNull(owner) { count ->
                 tv_title.text = requireContext().resources.getQuantityString(R.plurals.s_songs, count, count)
             }
 
-            title.observe(owner) { title ->
+            title.observeNonNull(owner) { title ->
                 (activity as? AppCompatActivity)?.apply {
                     supportActionBar?.title = title
                 }

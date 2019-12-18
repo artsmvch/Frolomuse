@@ -10,6 +10,7 @@ import androidx.appcompat.view.ActionMode
 import androidx.lifecycle.LifecycleOwner
 import com.frolo.muse.R
 import com.frolo.muse.arch.observe
+import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.model.media.*
 import com.frolo.muse.model.menu.ContextualMenu
 import com.frolo.muse.model.menu.OptionsMenu
@@ -18,7 +19,6 @@ import com.frolo.muse.ui.base.BackPressHandler
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.getDeleteConfirmationMessage
 import com.frolo.muse.ui.main.confirmDeletion
-import com.frolo.muse.ui.mayHaveSeveralRelatedSongs
 
 
 abstract class AbsMediaCollectionFragment <E: Media>: BaseFragment(),
@@ -89,70 +89,70 @@ abstract class AbsMediaCollectionFragment <E: Media>: BaseFragment(),
             }
 
             // Error
-            error.observe(owner) { err ->
+            error.observeNonNull(owner) { err ->
                 onDisplayError(err)
             }
 
             // Common
-            deletedItemsEvent.observe(owner) {
+            deletedItemsEvent.observeNonNull(owner) {
                 toastShortMessage(R.string.deleted)
             }
 
             // sort order
-            openSortOrderMenuEvent.observe(owner) { sortOrderMenu: SortOrderMenu ->
+            openSortOrderMenuEvent.observeNonNull(owner) { sortOrderMenu: SortOrderMenu ->
                 onShowSortOrderMenu(sortOrderMenu)
             }
 
             // Media collection
-            mediaList.observe(owner) { list ->
+            mediaList.observeNonNull(owner) { list ->
                 onSubmitList(list)
             }
 
-            isLoading.observe(owner) { isLoading ->
+            isLoading.observeNonNull(owner) { isLoading ->
                 onSetLoading(isLoading)
             }
 
-            placeholderVisible.observe(owner) { isVisible ->
+            placeholderVisible.observeNonNull(owner) { isVisible ->
                 onSetPlaceholderVisible(isVisible)
             }
 
             // Options menu
-            openOptionsMenuEvent.observe(owner) { optionsMenu ->
+            openOptionsMenuEvent.observeNonNull(owner) { optionsMenu ->
                 optionsMenuDialog?.cancel()
                 optionsMenuDialog = onShowOptionsMenuDialog(optionsMenu)
             }
 
-            closeOptionsMenuEvent.observe(owner) { optionsMenu ->
+            closeOptionsMenuEvent.observeNonNull(owner) { optionsMenu ->
                 optionsMenuDialog?.cancel()
                 optionsMenuDialog = null
             }
 
-            optionsMenuItemFavourite.observe(owner) { isFavourite ->
+            optionsMenuItemFavourite.observeNonNull(owner) { isFavourite ->
                 optionsMenuDialog?.setLiked(isFavourite)
             }
 
             // Contextual menu
-            openContextualMenuEvent.observe(owner) { contextualMenu ->
+            openContextualMenuEvent.observeNonNull(owner) { contextualMenu ->
                 actionMode?.finish()
                 actionMode = onShowContextualMenu(contextualMenu)
             }
 
-            selectedItems.observe(owner) { selectedItems ->
+            selectedItems.observeNonNull(owner) { selectedItems ->
                 onSubmitSelectedItems(selectedItems)
             }
 
-            selectedItemsCount.observe(owner) { count ->
+            selectedItemsCount.observeNonNull(owner) { count ->
                 actionMode?.title = count.toString()
             }
 
-            isInContextualMode.observe(owner) { isInContextualMode ->
+            isInContextualMode.observeNonNull(owner) { isInContextualMode ->
                 if (!isInContextualMode) {
                     actionMode?.finish()
                     actionMode = null
                 }
             }
 
-            isProcessingContextual.observe(owner) { isProcessingContextual ->
+            isProcessingContextual.observeNonNull(owner) { isProcessingContextual ->
                 if (isProcessingContextual) {
                     contextualProgressDialog?.cancel()
                     contextualProgressDialog = onShowContextualProgressDialog()
@@ -162,7 +162,7 @@ abstract class AbsMediaCollectionFragment <E: Media>: BaseFragment(),
             }
 
             // Deletion confirmation
-            confirmDeletionEvent.observe(owner) { item ->
+            confirmDeletionEvent.observeNonNull(owner) { item ->
                 context?.also { safeContext ->
                     val msg = safeContext.getDeleteConfirmationMessage(item)
 
@@ -172,7 +172,7 @@ abstract class AbsMediaCollectionFragment <E: Media>: BaseFragment(),
                 }
             }
 
-            confirmMultipleDeletionEvent.observe(owner) { items ->
+            confirmMultipleDeletionEvent.observeNonNull(owner) { items ->
                 context?.also { safeContext ->
                     val msg = safeContext.getDeleteConfirmationMessage(items)
 
@@ -183,11 +183,11 @@ abstract class AbsMediaCollectionFragment <E: Media>: BaseFragment(),
             }
 
             // Events
-            addedNextToQueue.observe(owner) {
+            addedNextToQueue.observeNonNull(owner) {
                 toastShortMessage(R.string.will_be_played_next)
             }
 
-            addedToQueue.observe(owner) {
+            addedToQueue.observeNonNull(owner) {
                 toastShortMessage(R.string.added_to_queue)
             }
         }
