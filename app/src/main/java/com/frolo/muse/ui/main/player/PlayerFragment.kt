@@ -333,7 +333,7 @@ class PlayerFragment: BaseFragment() {
                 updateFavouriteIcon(isFavourite, animate = true)
             }
 
-            songQueue.observeNonNull(owner) { queue: SongQueue? ->
+            songQueue.observe(owner) { queue: SongQueue? ->
                 Trace.d(LOG_TAG, "SongQueue changed")
                 (vp_album_art.adapter as? SongAdapter)?.submitQueue(queue)
             }
