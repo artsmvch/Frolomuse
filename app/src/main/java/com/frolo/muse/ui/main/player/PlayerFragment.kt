@@ -54,6 +54,20 @@ class PlayerFragment: BaseFragment() {
         fun newInstance() = PlayerFragment()
     }
 
+    private class SetViewPagerPosition constructor(
+            val pager: ViewPager2,
+            val position: Int
+    ): Runnable {
+
+        override fun run() {
+            pager.setCurrentItem(position, true)
+        }
+
+        override fun equals(other: Any?): Boolean {
+            return this === other
+        }
+    }
+
     private lateinit var colorProvider: ColorProvider
 
     private val viewModel: PlayerViewModel by viewModel()
@@ -360,16 +374,12 @@ class PlayerFragment: BaseFragment() {
             songPosition.observeNonNull(owner) { position ->
                 Trace.d(LOG_TAG, "Song position changed to $position")
 
-                vp_album_art.removeCallbacks(setCurrentItemCallback)
-
                 // There is an issue with setting current item in ViewPager2:
                 // If we set current item to 1 and then in some near future set item to 2
                 // Then the final item position will be 1. WTF?
-                setCurrentItemCallback = Runnable {
-                    vp_album_art.setCurrentItem(position, true)
-                }
+                setCurrentItemCallback = SetViewPagerPosition(vp_album_art, position)
 
-                vp_album_art.post(setCurrentItemCallback)
+                vp_album_art.postDelayed(setCurrentItemCallback, 150)
             }
 
             showVolumeControlEvent.observe(owner) {
