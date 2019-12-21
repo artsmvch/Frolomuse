@@ -97,6 +97,7 @@ class PlayerViewModel @Inject constructor(
     }
 
     private val _songPosition: MutableLiveData<Int> = MediatorLiveData<Int>().apply {
+        value = player.getCurrentPositionInQueue()
         // triggers
         addSource(invalidateSongQueueEvent) {
             value = player.getCurrentPositionInQueue()
