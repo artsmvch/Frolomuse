@@ -80,58 +80,60 @@ class PlayerViewModel @Inject constructor(
         _invalidateSongQueueEvent.value = queue
     }
 
-    private val _deletedSong = SingleLiveEvent<Song>()
-    val deletedSong: LiveData<Song> = _deletedSong
+    private val _songDeletedEvent = SingleLiveEvent<Song>()
+    val songDeletedEvent: LiveData<Song> get() = _songDeletedEvent
 
-    private val _songQueue: MutableLiveData<SongQueue> = MutableLiveData()
-    val songQueue: LiveData<SongQueue> = _songQueue
+    private val _songQueue = MutableLiveData<SongQueue>()
+    val songQueue: LiveData<SongQueue> get() = _songQueue
 
-    private val _invalidateSongQueueEvent: MutableLiveData<SongQueue> = SingleLiveEvent()
-    val invalidateSongQueueEvent: LiveData<SongQueue> = _invalidateSongQueueEvent
+    private val _invalidateSongQueueEvent = SingleLiveEvent<SongQueue>()
+    val invalidateSongQueueEvent: LiveData<SongQueue>
+        get() = _invalidateSongQueueEvent
 
-    private val _song: MutableLiveData<Song> = MutableLiveData()
-    val song: LiveData<Song> = _song
+    private val _song = MutableLiveData<Song>()
+    val song: LiveData<Song> get() = _song
 
-    val placeholderVisible: LiveData<Boolean> = Transformations.map(song) { song: Song? ->
-        song == null
-    }
+    val placeholderVisible: LiveData<Boolean> =
+            Transformations.map(song) { song: Song? -> song == null }
 
-    private val _songPosition: MutableLiveData<Int> = MediatorLiveData<Int>().apply {
+    private val _songPosition = MediatorLiveData<Int>().apply {
         value = player.getCurrentPositionInQueue()
         // triggers
         addSource(invalidateSongQueueEvent) {
             value = player.getCurrentPositionInQueue()
         }
     }
-    val songPosition: LiveData<Int> = _songPosition
+    val songPosition: LiveData<Int> get() = _songPosition
 
-    private val _showVolumeControlEvent: MutableLiveData<Unit> = SingleLiveEvent()
-    val showVolumeControlEvent: LiveData<Unit> = _showVolumeControlEvent
+    private val _showVolumeControlEvent = SingleLiveEvent<Unit>()
+    val showVolumeControlEvent: LiveData<Unit>
+        get() = _showVolumeControlEvent
 
     private val _isFavourite = MutableLiveData<Boolean>()
-    val isFavourite: LiveData<Boolean> = _isFavourite
+    val isFavourite: LiveData<Boolean> get() = _isFavourite
 
-    private val _playbackDuration: MutableLiveData<Int> = MutableLiveData()
-    val playbackDuration: LiveData<Int> = _playbackDuration
+    private val _playbackDuration = MutableLiveData<Int>()
+    val playbackDuration: LiveData<Int> get() = _playbackDuration
 
-    private val _playbackProgress: MutableLiveData<Int> = MutableLiveData()
-    val playbackProgress: LiveData<Int> = _playbackProgress
+    private val _playbackProgress = MutableLiveData<Int>()
+    val playbackProgress: LiveData<Int> get() = _playbackProgress
 
-    private val _playbackStatus: MutableLiveData<Boolean> = MutableLiveData()
-    val playbackStatus: LiveData<Boolean> = _playbackStatus
+    private val _playbackStatus = MutableLiveData<Boolean>()
+    val playbackStatus: LiveData<Boolean> get() = _playbackStatus
 
-    private val _abStatus: MutableLiveData<Pair<Boolean, Boolean>> = MutableLiveData()
-    val abStatus: LiveData<Pair<Boolean, Boolean>> = _abStatus
+    // Pair stands for <A enabled, B enabled>
+    private val _abStatus = MutableLiveData<Pair<Boolean, Boolean>>()
+    val abStatus: LiveData<Pair<Boolean, Boolean>> get() = _abStatus
 
-    private val _shuffleMode: MutableLiveData<Int> = MutableLiveData()
-    val shuffleMode: LiveData<Int> = _shuffleMode
+    private val _shuffleMode = MutableLiveData<Int>()
+    val shuffleMode: LiveData<Int> get() = _shuffleMode
 
-    private val _repeatMode: MutableLiveData<Int> = MutableLiveData()
-    val repeatMode: LiveData<Int> = _repeatMode
+    private val _repeatMode = MutableLiveData<Int>()
+    val repeatMode: LiveData<Int> get() = _repeatMode
 
     // Confirmation
-    private val _confirmDeletionEvent: MutableLiveData<Song> = SingleLiveEvent()
-    val confirmDeletionEvent: LiveData<Song> = _confirmDeletionEvent
+    private val _confirmDeletionEvent = SingleLiveEvent<Song>()
+    val confirmDeletionEvent: LiveData<Song> get() = _confirmDeletionEvent
 
     init {
         player.registerObserver(playerObserver)
@@ -171,19 +173,6 @@ class PlayerViewModel @Inject constructor(
         _repeatMode.value = player.getRepeatMode()
         checkFavourite()
         startObservingPlaybackProgress()
-    }
-
-    fun onSongUpdate(previous: Song, updated: Song) {
-        player.update(updated)
-        player.getCurrent()?.let {
-            if (it == previous) {
-                _song.value = updated
-            }
-        }
-    }
-
-    fun onAlbumUpdate(previous: Album, updated: Album) {
-        _songQueue.value = player.getCurrentQueue()
     }
 
     fun onLikeClicked() {
@@ -316,7 +305,7 @@ class PlayerViewModel @Inject constructor(
     fun onConfirmedDeletion(song: Song) {
         deleteMediaUseCase.delete(song)
                 .observeOn(schedulerProvider.main())
-                .subscribeFor { _deletedSong.value = song }
+                .subscribeFor { _songDeletedEvent.value = song }
     }
 
     override fun onCleared() {

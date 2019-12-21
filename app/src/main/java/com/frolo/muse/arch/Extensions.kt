@@ -38,3 +38,5 @@ fun <T> LiveData<T>.observeNonNull(owner: LifecycleOwner, onChanged: ((value: T)
 fun SingleLiveEvent<Unit>.call() {
     value = Unit
 }
+
+fun <T> liveDataOf(item: T?) = object : LiveData<T>(item) { }

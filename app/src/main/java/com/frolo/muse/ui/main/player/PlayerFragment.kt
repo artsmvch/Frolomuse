@@ -324,7 +324,7 @@ class PlayerFragment: BaseFragment() {
 
     private fun observeViewModel(owner: LifecycleOwner) {
         viewModel.apply {
-            deletedSong.observeNonNull(owner) {
+            songDeletedEvent.observeNonNull(owner) {
                 toastShortMessage(R.string.deleted)
             }
 
