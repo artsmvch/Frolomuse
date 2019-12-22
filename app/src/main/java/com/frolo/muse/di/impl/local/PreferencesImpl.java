@@ -319,7 +319,7 @@ public class PreferencesImpl implements Preferences {
                 new Callable<String>() {
                     @Override
                     public String call() {
-                        String order = preferences.getString(getKeySortOrderForSection(section), null);
+                        String order = preferences.getString(key, null);
                         switch (section) {
                             case Library.ALBUMS:
                                 return AlbumRepositoryImpl.validateSortOrder(order);
