@@ -6,6 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import com.frolo.muse.engine.Player
 import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.interactor.media.*
+import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
+import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
 import com.frolo.muse.interactor.media.get.GetPlaylistUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.media.Playlist
@@ -23,6 +25,7 @@ class PlaylistViewModel constructor(
         playMediaUseCase: PlayMediaUseCase<Song>,
         shareMediaUseCase: ShareMediaUseCase<Song>,
         deleteMediaUseCase: DeleteMediaUseCase<Song>,
+        getIsFavouriteUseCase: GetIsFavouriteUseCase<Song>,
         changeFavouriteUseCase: ChangeFavouriteUseCase<Song>,
         private val schedulerProvider: SchedulerProvider,
         private val navigator: Navigator,
@@ -35,6 +38,7 @@ class PlaylistViewModel constructor(
         playMediaUseCase,
         shareMediaUseCase,
         deleteMediaUseCase,
+        getIsFavouriteUseCase,
         changeFavouriteUseCase,
         schedulerProvider,
         navigator,

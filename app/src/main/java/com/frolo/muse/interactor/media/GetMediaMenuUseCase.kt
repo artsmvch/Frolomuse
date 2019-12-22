@@ -17,6 +17,7 @@ class GetMediaMenuUseCase<E: Media> constructor(
         // First check if the item can be favourite and if so then check if it is favourite
         val favouriteOptionOperator = if (item is Song) {
             repository.isFavourite(item)
+                    .firstOrError()
                     .map { isFavourite -> true to isFavourite }
         } else {
             Single.just(false to false)

@@ -6,6 +6,8 @@ import com.frolo.muse.di.AppComponent
 import com.frolo.muse.engine.Player
 import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.interactor.media.*
+import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
+import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
 import com.frolo.muse.interactor.media.get.GetPlaylistUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.media.Playlist
@@ -36,6 +38,8 @@ class PlaylistVMFactory constructor(
     @Inject
     internal lateinit var deleteMediaUseCase: DeleteMediaUseCase<Song>
     @Inject
+    internal lateinit var getIsFavouriteUseCase: GetIsFavouriteUseCase<Song>
+    @Inject
     internal lateinit var changeFavouriteUseCase: ChangeFavouriteUseCase<Song>
     @Inject
     internal lateinit var schedulerProvider: SchedulerProvider
@@ -65,6 +69,7 @@ class PlaylistVMFactory constructor(
                 playMediaUseCase,
                 shareMediaUseCase,
                 deleteMediaUseCase,
+                getIsFavouriteUseCase,
                 changeFavouriteUseCase,
                 schedulerProvider,
                 navigator,

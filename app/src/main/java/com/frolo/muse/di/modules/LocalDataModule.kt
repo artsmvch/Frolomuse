@@ -3,6 +3,7 @@ package com.frolo.muse.di.modules
 import android.content.Context
 import com.frolo.muse.di.Repo
 import com.frolo.muse.di.impl.local.*
+import com.frolo.muse.model.media.*
 import com.frolo.muse.repository.*
 import dagger.Module
 import dagger.Provides
@@ -16,6 +17,43 @@ class LocalDataModule {
     fun providePreferences(context: Context): Preferences {
         return PreferencesImpl(context)
     }
+
+    //region Generic media repositories
+    @Provides
+    fun provideSongMediaRepository(repository: SongRepository): MediaRepository<Song> {
+        return repository
+    }
+
+    @Provides
+    fun provideAlbumMediaRepository(repository: AlbumRepository): MediaRepository<Album> {
+        return repository
+    }
+
+    @Provides
+    fun provideArtistMediaRepository(repository: ArtistRepository): MediaRepository<Artist> {
+        return repository
+    }
+
+    @Provides
+    fun provideGenreMediaRepository(repository: GenreRepository): MediaRepository<Genre> {
+        return repository
+    }
+
+    @Provides
+    fun providePlaylistMediaRepository(repository: PlaylistRepository): MediaRepository<Playlist> {
+        return repository
+    }
+
+    @Provides
+    fun provideMyFileMediaRepository(repository: MyFileRepository): MediaRepository<MyFile> {
+        return repository
+    }
+
+    @Provides
+    fun provideMediaRepository(repository: GenericMediaRepository): MediaRepository<Media> {
+        return repository
+    }
+    //endregion
 
     @Singleton
     @Provides

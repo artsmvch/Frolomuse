@@ -122,12 +122,12 @@ public class GenreRepositoryImpl implements GenreRepository {
     }
 
     @Override
-    public Single<Boolean> isFavourite(Genre item) {
-        return Single.error(new UnsupportedOperationException());
+    public Flowable<Boolean> isFavourite(Genre item) {
+        return Flowable.error(new UnsupportedOperationException());
     }
 
     @Override
-    public Single<Boolean> changeFavourite(Genre item) {
-        return Single.error(new UnsupportedOperationException());
+    public Completable changeFavourite(Genre item) {
+        return Completable.error(new UnsupportedOperationException());
     }
 }

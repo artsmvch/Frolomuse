@@ -428,37 +428,41 @@ final class SongQuery {
                 BUILDER_SONG);
     }
 
-    /*package*/ static Single<Boolean> isFavourite(
+    /*package*/ static Flowable<Boolean> isFavourite(
             final ContentResolver resolver,
             final Song item
     ) {
-        return Single.fromCallable(new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                Uri uri = ContentUris.withAppendedId(
-                        AppMediaStore.Favourites.getContentUri(), item.getId());
-                Cursor cursor = resolver
-                        .query(uri, null, null, null, null);
-                if (cursor != null) {
-                    boolean isFavourite = false;
-                    try {
-                        isFavourite = cursor.moveToFirst();
-                    } finally {
-                        cursor.close();
+        return Query.createFlowable(
+                resolver,
+                AppMediaStore.Favourites.getContentUri(),
+                new Callable<Boolean>() {
+                    @Override
+                    public Boolean call() {
+                        Uri uri = ContentUris.withAppendedId(
+                                AppMediaStore.Favourites.getContentUri(), item.getId());
+                        Cursor cursor = resolver
+                                .query(uri, null, null, null, null);
+                        if (cursor != null) {
+                            boolean isFavourite = false;
+                            try {
+                                isFavourite = cursor.moveToFirst();
+                            } finally {
+                                cursor.close();
+                            }
+                            return isFavourite;
+                        } else {
+                            return false;
+                        }
                     }
-                    return isFavourite;
-                } else {
-                    return false;
                 }
-            }
-        });
+        );
     }
 
-    /*package*/ static Single<Boolean> changeFavourite(
+    /*package*/ static Completable changeFavourite(
             final ContentResolver resolver,
             final Song item
     ) {
-        return Single.fromCallable(new Callable<Boolean>() {
+        return Completable.fromCallable(new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
                 Uri uri = ContentUris.withAppendedId(

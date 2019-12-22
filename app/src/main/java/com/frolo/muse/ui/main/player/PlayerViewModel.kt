@@ -5,10 +5,12 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.frolo.muse.arch.SingleLiveEvent
+import com.frolo.muse.arch.liveDataOf
 import com.frolo.muse.di.Exec
 import com.frolo.muse.engine.*
-import com.frolo.muse.interactor.media.ChangeFavouriteUseCase
+import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
 import com.frolo.muse.interactor.media.DeleteMediaUseCase
+import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
 import com.frolo.muse.interactor.player.ControlPlayerUseCase
 import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.logger.EventLogger
@@ -17,7 +19,6 @@ import com.frolo.muse.model.media.Song
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.base.BaseViewModel
 import io.reactivex.Observable
-import io.reactivex.Single
 import io.reactivex.disposables.Disposable
 import java.util.concurrent.Executor
 import java.util.concurrent.TimeUnit
@@ -28,6 +29,7 @@ class PlayerViewModel @Inject constructor(
         private val player: Player,
         @Exec(Exec.Type.MAIN) private val mainThreadExecutor: Executor,
         private val schedulerProvider: SchedulerProvider,
+        private val getIsFavouriteUseCase: GetIsFavouriteUseCase<Song>,
         private val changeFavouriteUseCase: ChangeFavouriteUseCase<Song>,
         private val deleteMediaUseCase: DeleteMediaUseCase<Song>,
         private val controlPlayerUseCase: ControlPlayerUseCase,
@@ -57,7 +59,6 @@ class PlayerViewModel @Inject constructor(
             if (player.isPrepared()) {
                 _playbackProgress.value = player.getProgress()
             }
-            checkFavourite()
         }
         override fun onPlaybackStarted(player: Player) {
             _playbackStatus.value = true
@@ -109,8 +110,17 @@ class PlayerViewModel @Inject constructor(
     val showVolumeControlEvent: LiveData<Unit>
         get() = _showVolumeControlEvent
 
-    private val _isFavourite = MutableLiveData<Boolean>()
-    val isFavourite: LiveData<Boolean> get() = _isFavourite
+    val isFavourite: LiveData<Boolean> =
+            Transformations.switchMap(song) { song: Song? ->
+                if (song != null) {
+                    MutableLiveData<Boolean>().apply {
+                        getIsFavouriteUseCase.isFavourite(song)
+                                .onErrorReturnItem(false)
+                                .observeOn(schedulerProvider.main())
+                                .subscribeFor { value = it }
+                    }
+                } else liveDataOf(false)
+            }
 
     private val _playbackDuration = MutableLiveData<Int>()
     val playbackDuration: LiveData<Int> get() = _playbackDuration
@@ -153,15 +163,6 @@ class PlayerViewModel @Inject constructor(
         playbackProgressDisposable?.dispose()
     }
 
-    private fun checkFavourite() {
-        Single.fromCallable { _song.value }
-                .flatMap { changeFavouriteUseCase.getIsFavourite(it) }
-                .observeOn(schedulerProvider.main())
-                .subscribeFor { value ->
-                    _isFavourite.value = value
-                }
-    }
-
     fun onOpened() {
         _songQueue.value = player.getCurrentQueue()
         _song.value = player.getCurrent()
@@ -171,17 +172,16 @@ class PlayerViewModel @Inject constructor(
         _abStatus.value = Pair(player.isAPointed(), player.isBPointed())
         _shuffleMode.value = player.getShuffleMode()
         _repeatMode.value = player.getRepeatMode()
-        checkFavourite()
         startObservingPlaybackProgress()
     }
 
     fun onLikeClicked() {
-        Single.fromCallable { _song.value }
-                .flatMap { changeFavouriteUseCase.changeFavourite(it) }
-                .observeOn(schedulerProvider.main())
-                .subscribeFor { value ->
-                    _isFavourite.value = value
-                }
+        song.value?.also { safeValue ->
+            changeFavouriteUseCase.changeFavourite(safeValue)
+                    .observeOn(schedulerProvider.main())
+                    .subscribeFor {  }
+
+        }
     }
 
     fun onVolumeControlClicked() {

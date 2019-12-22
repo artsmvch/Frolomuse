@@ -2,6 +2,8 @@ package com.frolo.muse.ui.main.library.base
 
 import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.interactor.media.*
+import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
+import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
 import com.frolo.muse.interactor.media.get.GetMediaUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.media.Media
@@ -15,6 +17,7 @@ class TestMediaCollectionViewModel<T> constructor(
         playMediaUseCase: PlayMediaUseCase<T>,
         shareMediaUseCase: ShareMediaUseCase<T>,
         deleteMediaUseCase: DeleteMediaUseCase<T>,
+        getIsFavouriteUseCase: GetIsFavouriteUseCase<T>,
         changeFavouriteUseCase: ChangeFavouriteUseCase<T>,
         schedulerProvider: SchedulerProvider,
         navigator: Navigator,
@@ -26,6 +29,7 @@ class TestMediaCollectionViewModel<T> constructor(
         playMediaUseCase,
         shareMediaUseCase,
         deleteMediaUseCase,
+        getIsFavouriteUseCase,
         changeFavouriteUseCase,
         schedulerProvider,
         navigator,

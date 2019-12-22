@@ -5,6 +5,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.frolo.muse.di.AppComponent
 import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.interactor.media.*
+import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
+import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
 import com.frolo.muse.interactor.media.get.GetAlbumsOfArtistUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.media.Album
@@ -31,6 +33,8 @@ class AlbumsOfArtistVMFactory constructor(
     @Inject
     internal lateinit var deleteMediaUseCase: DeleteMediaUseCase<Album>
     @Inject
+    internal lateinit var getIsFavouriteUseCase: GetIsFavouriteUseCase<Album>
+    @Inject
     internal lateinit var changeFavouriteUseCase: ChangeFavouriteUseCase<Album>
     @Inject
     internal lateinit var schedulerProvider: SchedulerProvider
@@ -55,6 +59,7 @@ class AlbumsOfArtistVMFactory constructor(
                 playMediaUseCase,
                 shareMediaUseCase,
                 deleteMediaUseCase,
+                getIsFavouriteUseCase,
                 changeFavouriteUseCase,
                 schedulerProvider,
                 navigator,

@@ -252,7 +252,7 @@ public class GenericMediaRepositoryImpl implements GenericMediaRepository {
 
     @SuppressLint("SwitchIntDef")
     @Override
-    public Single<Boolean> isFavourite(Media item) {
+    public Flowable<Boolean> isFavourite(Media item) {
         switch (item.getKind()) {
             case Media.SONG: {
                 return mSongRepo.isFavourite((Song) item);
@@ -274,7 +274,7 @@ public class GenericMediaRepositoryImpl implements GenericMediaRepository {
                 return mPlaylistRepo.isFavourite((Playlist) item);
             }
 
-            default: return Single.error(
+            default: return Flowable.error(
                     new UnknownMediaException(item)
             );
         }
@@ -282,7 +282,7 @@ public class GenericMediaRepositoryImpl implements GenericMediaRepository {
 
     @SuppressLint("SwitchIntDef")
     @Override
-    public Single<Boolean> changeFavourite(Media item) {
+    public Completable changeFavourite(Media item) {
         switch (item.getKind()) {
             case Media.SONG: {
                 return mSongRepo.changeFavourite((Song) item);
@@ -304,7 +304,7 @@ public class GenericMediaRepositoryImpl implements GenericMediaRepository {
                 return mPlaylistRepo.changeFavourite((Playlist) item);
             }
 
-            default: return Single.error(
+            default: return Completable.error(
                     new UnknownMediaException(item)
             );
         }

@@ -187,12 +187,12 @@ public class SongRepositoryImpl
     }
 
     @Override
-    public Single<Boolean> isFavourite(final Song item) {
+    public Flowable<Boolean> isFavourite(final Song item) {
         return SongQuery.isFavourite(mContext.getContentResolver(), item);
     }
 
     @Override
-    public Single<Boolean> changeFavourite(final Song item) {
+    public Completable changeFavourite(final Song item) {
         return SongQuery.changeFavourite(mContext.getContentResolver(), item);
     }
 }

@@ -3,6 +3,8 @@ package com.frolo.muse.ui.main.library.base
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.frolo.muse.*
 import com.frolo.muse.interactor.media.*
+import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
+import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
 import com.frolo.muse.interactor.media.get.GetMediaUseCase
 import com.frolo.muse.model.media.Media
 import com.frolo.muse.model.menu.ContextualMenu
@@ -44,6 +46,8 @@ class AbsMediaCollectionViewModelTest {
     @Mock
     private lateinit var deleteMediaUseCase: DeleteMediaUseCase<Media>
     @Mock
+    private lateinit var getIsFavouriteUseCase: GetIsFavouriteUseCase<Media>
+    @Mock
     private lateinit var changeFavouriteUseCase: ChangeFavouriteUseCase<Media>
     private val schedulerProvider = TestSchedulerProvider.SHARED
     private val navigator = TestNavigator()
@@ -64,6 +68,7 @@ class AbsMediaCollectionViewModelTest {
                 playMediaUseCase,
                 shareMediaUseCase,
                 deleteMediaUseCase,
+                getIsFavouriteUseCase,
                 changeFavouriteUseCase,
                 schedulerProvider,
                 navigator,
