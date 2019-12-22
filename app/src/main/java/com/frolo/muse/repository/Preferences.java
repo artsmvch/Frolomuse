@@ -14,6 +14,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.List;
 
+import io.reactivex.Completable;
+import io.reactivex.Flowable;
+
 public interface Preferences {
     @IntDef({THEME_LIGHT, THEME_DARK_BLUE, THEME_DARK_BLUE_ESPECIAL, THEME_DARK_PURPLE})
     @Retention(RetentionPolicy.SOURCE)
@@ -77,10 +80,10 @@ public interface Preferences {
     @Deprecated
     void saveSortOrderReversed(@Media.Kind int kind, boolean reversed);
 
-    String getSortOrderForSection(@Library.Section int section);
-    void saveSortOrderForSection(@Library.Section int section, String sortOrder);
-    boolean isSortOrderReversedForSection(@Library.Section int section);
-    void saveSortOrderReversedForSection(@Library.Section int section, boolean reversed);
+    Flowable<String> getSortOrderForSection(@Library.Section int section);
+    Completable saveSortOrderForSection(@Library.Section int section, String sortOrder);
+    Flowable<Boolean> isSortOrderReversedForSection(@Library.Section int section);
+    Completable saveSortOrderReversedForSection(@Library.Section int section, boolean reversed);
 
     boolean isLibrarySectionEnabled(@Library.Section int section);
     void setLibrarySectionEnabled(@Library.Section int section, boolean enabled);

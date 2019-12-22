@@ -46,9 +46,11 @@ class GetPlaylistUseCase @AssistedInject constructor(
     }
 
     fun isCurrentSortOrderSwappable(): Single<Boolean> {
-        return preferences.getSortOrderForSection(Library.PLAYLIST).let { sortOrder ->
-            playlistChunkRepository.isSwappingAllowedForSortOrder(sortOrder)
-        }
+        return preferences.getSortOrderForSection(Library.PLAYLIST)
+                .firstOrError()
+                .flatMap { sortOrder ->
+                    playlistChunkRepository.isSwappingAllowedForSortOrder(sortOrder)
+                }
     }
 
     override fun getSortedCollection(sortOrder: String): Flowable<List<Song>> {
@@ -61,12 +63,16 @@ class GetPlaylistUseCase @AssistedInject constructor(
     }
 
     fun swapItems(listSize: Int, fromPosition: Int, toPosition: Int): Completable {
-        return playlistChunkRepository.isSwappingAllowedForSortOrder(
-                preferences.getSortOrderForSection(Library.PLAYLIST))
+        return preferences.getSortOrderForSection(Library.PLAYLIST)
+                .firstOrError()
+                .flatMap { sortOrder ->
+                    playlistChunkRepository.isSwappingAllowedForSortOrder(sortOrder)
+                }
                 .flatMapCompletable { isSwappingAllowed ->
                     if (isSwappingAllowed) {
                         val isReversed = preferences
                                 .isSortOrderReversedForSection(Library.PLAYLIST)
+                                .blockingFirst()
 
                         val actualFromPosition = if (isReversed) {
                             (listSize - 1) - fromPosition

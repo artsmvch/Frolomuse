@@ -2,6 +2,7 @@ package com.frolo.muse.di.impl.local;
 
 import android.content.ContentResolver;
 import android.content.ContentUris;
+import android.content.SharedPreferences;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.net.Uri;
@@ -12,6 +13,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.Callable;
 
 import io.reactivex.BackpressureStrategy;
@@ -34,6 +36,7 @@ final class Query {
         T build(Cursor cursor, String[] projection);
     }
 
+    //region Content resolver
     /**
      * Generates an exception that indicates a null cursor returned for the queried uri.
      * @param uri uri for which the query returned null
@@ -276,6 +279,69 @@ final class Query {
                 }
         );
     }
+    //endregion
+
+    //region Preferences
+    /*package*/ static Flowable<Object> createFlowable(
+            final SharedPreferences preferences,
+            final String key
+    ) {
+        return Flowable.create(
+                new FlowableOnSubscribe<Object>() {
+                    @Override
+                    public void subscribe(final FlowableEmitter<Object> emitter) {
+                        if (!emitter.isCancelled()) {
+                            final SharedPreferences.OnSharedPreferenceChangeListener trigger =
+                                    new SharedPreferences.OnSharedPreferenceChangeListener() {
+
+                                @Override
+                                public void onSharedPreferenceChanged(
+                                        SharedPreferences sharedPreferences,
+                                        String _key
+                                ) {
+                                    if (!emitter.isCancelled()) {
+                                        if (Objects.equals(key, _key)) {
+                                            emitter.onNext(NOTHING);
+                                        }
+                                    }
+                                }
+                            };
+
+                            preferences.registerOnSharedPreferenceChangeListener(trigger);
+
+                            emitter.setDisposable(Disposables.fromAction(new Action() {
+                                @Override
+                                public void run() {
+                                    preferences.unregisterOnSharedPreferenceChangeListener(trigger);
+                                }
+                            }));
+                        }
+
+                        if (!emitter.isCancelled()) {
+                            emitter.onNext(NOTHING);
+                        }
+                    }
+                },
+                BackpressureStrategy.LATEST
+        );
+    }
+
+    /*package*/ static <T> Flowable<T> createFlowable(
+            final SharedPreferences preferences,
+            final String key,
+            final Callable<T> callable
+    ) {
+        final Maybe<T> maybe = Maybe.fromCallable(callable);
+
+        return createFlowable(preferences, key)
+                .flatMapMaybe(new Function<Object, MaybeSource<? extends T>>() {
+                    @Override
+                    public MaybeSource<? extends T> apply(Object o) {
+                        return maybe;
+                    }
+                });
+    }
+    //endregion
 
     private Query() {
     }

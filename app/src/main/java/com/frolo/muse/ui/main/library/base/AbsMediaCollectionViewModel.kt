@@ -184,15 +184,15 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
 
     open fun onSortOrderSelected(sortOrder: String) {
         // TODO: find the way to make this method final
-        getMediaUseCase.applySortOrder(sortOrder).apply {
-            fetch(this)
-        }
+        getMediaUseCase.applySortOrder(sortOrder)
+                .observeOn(schedulerProvider.main())
+                .subscribeFor {  }
     }
 
     fun onSortOrderReversedChanged(reversed: Boolean) {
-        getMediaUseCase.applySortOrderReversed(reversed).apply {
-            fetch(this)
-        }
+        getMediaUseCase.applySortOrderReversed(reversed)
+                .observeOn(schedulerProvider.main())
+                .subscribeFor {  }
     }
 
     private fun fetch(source: Flowable<List<E>>) {

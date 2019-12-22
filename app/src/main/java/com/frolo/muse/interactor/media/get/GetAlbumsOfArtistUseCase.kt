@@ -7,6 +7,7 @@ import com.frolo.muse.repository.AlbumRepository
 import com.frolo.muse.rx.SchedulerProvider
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
+import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
 
@@ -21,12 +22,12 @@ class GetAlbumsOfArtistUseCase @AssistedInject constructor(
         return Single.error(UnsupportedOperationException())
     }
 
-    override fun applySortOrder(sortOrder: String): Flowable<List<Album>> {
-        return Flowable.error(UnsupportedOperationException())
+    override fun applySortOrder(sortOrder: String): Completable {
+        return Completable.error(UnsupportedOperationException())
     }
 
-    override fun applySortOrderReversed(isReversed: Boolean): Flowable<List<Album>> {
-        return Flowable.error(UnsupportedOperationException())
+    override fun applySortOrderReversed(isReversed: Boolean): Completable {
+        return Completable.error(UnsupportedOperationException())
     }
 
     override fun getMediaList(): Flowable<List<Album>> {
