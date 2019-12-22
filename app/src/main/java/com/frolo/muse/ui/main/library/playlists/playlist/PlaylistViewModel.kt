@@ -49,9 +49,7 @@ class PlaylistViewModel constructor(
         MutableLiveData<Playlist>().apply {
             getPlaylistUseCase.getPlaylist()
                     .observeOn(schedulerProvider.main())
-                    .subscribeFor { item ->
-                        value = item
-                    }
+                    .subscribeFor { value = it }
         }
     }
     val playlist: LiveData<Playlist> get() = _playlist
@@ -63,7 +61,7 @@ class PlaylistViewModel constructor(
                     .blockingGet()
         }
     }
-    val isSwappingEnabled: LiveData<Boolean> = _isSwappingEnabled
+    val isSwappingEnabled: LiveData<Boolean> get() = _isSwappingEnabled
 
     override fun onSortOrderSelected(sortOrder: String) {
         super.onSortOrderSelected(sortOrder)
