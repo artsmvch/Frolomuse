@@ -98,56 +98,56 @@ class AudioFxViewModel @Inject constructor(
         }
     }
 
-    private val _audioSessionId: MutableLiveData<Int> = MutableLiveData()
-    val audioSessionId: LiveData<Int> = _audioSessionId
+    //region LiveData members
+    private val _audioSessionId = MutableLiveData<Int>()
+    val audioSessionId: LiveData<Int> get() = _audioSessionId
 
     // Available status
-    private val _audioFxAvailable: MutableLiveData<Boolean> = MutableLiveData()
-    val audioFxAvailable: LiveData<Boolean> = _audioFxAvailable
+    private val _audioFxAvailable = MutableLiveData<Boolean>()
+    val audioFxAvailable: LiveData<Boolean> get() = _audioFxAvailable
 
-    private val _equalizerAvailable: MutableLiveData<Boolean> = MutableLiveData()
-    val equalizerAvailable: LiveData<Boolean> = _equalizerAvailable
+    private val _equalizerAvailable = MutableLiveData<Boolean>()
+    val equalizerAvailable: LiveData<Boolean> get() = _equalizerAvailable
 
-    private val _bassBoostAvailable: MutableLiveData<Boolean> = MutableLiveData()
-    val bassBoostAvailable: LiveData<Boolean> = _bassBoostAvailable
+    private val _bassBoostAvailable = MutableLiveData<Boolean>()
+    val bassBoostAvailable: LiveData<Boolean> get() = _bassBoostAvailable
 
-    private val _virtualizerAvailable: MutableLiveData<Boolean> = MutableLiveData()
-    val virtualizerAvailable: LiveData<Boolean> = _virtualizerAvailable
+    private val _virtualizerAvailable = MutableLiveData<Boolean>()
+    val virtualizerAvailable: LiveData<Boolean> get() = _virtualizerAvailable
 
-    private val _presetReverbAvailable: MutableLiveData<Boolean> = MutableLiveData()
-    val presetReverbAvailable: LiveData<Boolean> = _presetReverbAvailable
+    private val _presetReverbAvailable = MutableLiveData<Boolean>()
+    val presetReverbAvailable: LiveData<Boolean> get() = _presetReverbAvailable
 
-    // Enabled status
-    private val _audioFxEnabled: MutableLiveData<Boolean> = MutableLiveData()
-    val audioFxEnabled: LiveData<Boolean> = _audioFxEnabled
+    private val _audioFxEnabled = MutableLiveData<Boolean>()
+    val audioFxEnabled: LiveData<Boolean> get() = _audioFxEnabled
 
-    // Equalizer
-    private val _bandLevels: MutableLiveData<AudioFx> = MutableLiveData()
-    val bandLevels: LiveData<AudioFx> = _bandLevels
+    private val _bandLevels = MutableLiveData<AudioFx>()
+    val bandLevels: LiveData<AudioFx> get() = _bandLevels
 
-    private val _presets: MutableLiveData<List<Preset>> = MutableLiveData()
-    val presets: LiveData<List<Preset>> = _presets
+    private val _presets = MutableLiveData<List<Preset>>()
+    val presets: LiveData<List<Preset>> get() = _presets
 
-    private val _currentPreset: MutableLiveData<Preset> = MutableLiveData()
-    val currentPreset: LiveData<Preset> = _currentPreset
+    private val _currentPreset = MutableLiveData<Preset>()
+    val currentPreset: LiveData<Preset> get() = _currentPreset
 
-    private val _bassStrengthRange: MutableLiveData<Pair<Short, Short>> = MutableLiveData()
-    val bassStrengthRange: LiveData<Pair<Short, Short>> = _bassStrengthRange
+    private val _bassStrengthRange = MutableLiveData<Pair<Short, Short>>()
+    val bassStrengthRange: LiveData<Pair<Short, Short>> get() = _bassStrengthRange
 
-    private val _bassStrength: MutableLiveData<Short> = MutableLiveData()
-    val bassStrength: LiveData<Short> = _bassStrength
+    private val _bassStrength = MutableLiveData<Short>()
+    val bassStrength: LiveData<Short> get() = _bassStrength
 
-    private val _virtStrengthRange: MutableLiveData<Pair<Short, Short>> = MutableLiveData()
-    val virtStrengthRange: LiveData<Pair<Short, Short>> = _virtStrengthRange
+    private val _virtStrengthRange = MutableLiveData<Pair<Short, Short>>()
+    val virtStrengthRange: LiveData<Pair<Short, Short>> get() = _virtStrengthRange
 
-    private val _virtStrength: MutableLiveData<Short> = MutableLiveData()
-    val virtStrength: LiveData<Short> = _virtStrength
+    private val _virtStrength = MutableLiveData<Short>()
+    val virtStrength: LiveData<Short> get() = _virtStrength
 
-    private val _presetReverbs: MutableLiveData<List<Pair<Short, String>>> = MutableLiveData()
-    val presetReverbs: LiveData<List<Pair<Short, String>>> = _presetReverbs
+    private val _presetReverbs = MutableLiveData<List<Pair<Short, String>>>()
+    val presetReverbs: LiveData<List<Pair<Short, String>>> get() = _presetReverbs
 
-    private val _presetReverbIndex: MutableLiveData<Short> = MutableLiveData()
-    val presetReverbIndex: LiveData<Short> = _presetReverbIndex
+    private val _presetReverbIndex = MutableLiveData<Short>()
+    val presetReverbIndex: LiveData<Short> get() = _presetReverbIndex
+    //endregion
 
     init {
         audioFx.registerObserver(audioFxObserver)
