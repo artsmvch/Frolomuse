@@ -44,11 +44,7 @@ class GenreViewModel constructor(
         eventLogger
 ) {
 
-    private val _title: MutableLiveData<String> = MutableLiveData()
-    val title: LiveData<String> = _title
-
-    init {
-        _title.value = genreArg.name
-    }
+    private val _title by lazy { MutableLiveData(genreArg.name) }
+    val title: LiveData<String> get() = _title
 
 }
