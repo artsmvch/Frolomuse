@@ -123,20 +123,31 @@ class AudioFxImpl constructor(
     private val hasPresetReverb: Boolean
 
     init {
-        // Checking out what audio effects the device does have
-        val desc = AudioEffect.queryEffects()
         var hasEqualizer = false
         var hasBassBoost = false
         var hasVirtualizer = false
         var hasPresetReverb = false
-        for (i in desc.indices) {
-            when {
-                desc[i].type == AudioEffect.EFFECT_TYPE_EQUALIZER -> hasEqualizer = true
-                desc[i].type == AudioEffect.EFFECT_TYPE_BASS_BOOST -> hasBassBoost = true
-                desc[i].type == AudioEffect.EFFECT_TYPE_VIRTUALIZER -> hasVirtualizer = true
-                desc[i].type == AudioEffect.EFFECT_TYPE_PRESET_REVERB -> hasPresetReverb = true
+
+        // Retrieving descriptors of all audio effects in this device
+        val descriptors = try {
+            AudioEffect.queryEffects()
+        } catch (e: Throwable) {
+            log(e)
+            null
+        }
+
+        // Checking what audio effects the device does have
+        if (descriptors != null) {
+            for (i in descriptors.indices) {
+                when (descriptors[i].type) {
+                    AudioEffect.EFFECT_TYPE_EQUALIZER -> hasEqualizer = true
+                    AudioEffect.EFFECT_TYPE_BASS_BOOST -> hasBassBoost = true
+                    AudioEffect.EFFECT_TYPE_VIRTUALIZER -> hasVirtualizer = true
+                    AudioEffect.EFFECT_TYPE_PRESET_REVERB -> hasPresetReverb = true
+                }
             }
         }
+
         this.hasEqualizer = hasEqualizer
         this.hasBassBoost = hasBassBoost
         this.hasVirtualizer = hasVirtualizer
