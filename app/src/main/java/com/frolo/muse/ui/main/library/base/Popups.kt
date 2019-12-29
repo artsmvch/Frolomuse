@@ -1,5 +1,6 @@
 package com.frolo.muse.ui.main.library.base
 
+import android.content.Context
 import android.view.Gravity
 import android.view.Menu
 import android.view.View
@@ -12,13 +13,15 @@ import com.frolo.muse.model.menu.SortOrderMenu
 import android.text.style.ForegroundColorSpan
 import android.text.SpannableString
 import android.view.MenuItem
-import androidx.annotation.ColorInt
+import androidx.core.content.ContextCompat
 
 
-private fun MenuItem.setTitleTint(@ColorInt color: Int) {
-    val ss = SpannableString(title)
-    ss.setSpan(ForegroundColorSpan(color), 0, ss.length, 0)
-    title = ss
+private fun MenuItem.setEnabledCompat(enabled: Boolean, context: Context) {
+    isEnabled = enabled
+    title = SpannableString(title).apply {
+        val color = ContextCompat.getColor(context, R.color.popup_header)
+        setSpan(ForegroundColorSpan(color), 0, length, 0)
+    }
 }
 
 fun View.chooseSortOrder(
@@ -31,7 +34,10 @@ fun View.chooseSortOrder(
 
     popupMenu.menuInflater.inflate(R.menu.popup_sort_order, popupMenu.menu)
     popupMenu.menu.also { menu ->
-        menu.findItem(R.id.title)?.setOnMenuItemClickListener { true }
+        menu.findItem(R.id.title)?.apply {
+            setEnabledCompat(false, context)
+            setOnMenuItemClickListener { true }
+        }
 
         sortOrderMenu.sortOrders.entries.forEachIndexed { index, entry ->
             val menuItem = menu.add(R.id.orders, Menu.NONE, index, entry.value)
@@ -74,7 +80,10 @@ fun View.chooseRecentPeriod(
 
     popupMenu.menuInflater.inflate(R.menu.popup_recent_period, popupMenu.menu)
     popupMenu.menu.also { menu ->
-        menu.findItem(R.id.title)?.setOnMenuItemClickListener { true }
+        menu.findItem(R.id.title)?.apply {
+            setEnabledCompat(false, context)
+            setOnMenuItemClickListener { true }
+        }
 
         val menuItemId = when (recentPeriodMenu.selectedPeriod) {
             Recently.FOR_LAST_HOUR -> R.id.action_for_last_hour
