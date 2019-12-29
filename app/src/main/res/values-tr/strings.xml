@@ -155,13 +155,13 @@
     <string name="version">Uygulama sürümü</string>
     <string name="licenses">Lisanslar</string>
     <string name="choose_theme">Temayı Seç</string>
-    <string name="light_theme">Işık tema</string>
+    <string name="light_theme">Parlak tema</string>
     <string name="dark_blue_theme">Koyu mavi tema</string>
     <string name="dark_especial_theme">Karanlık özel tema</string>
     <string name="dark_purple_theme">Koyu mor tema</string>
     <string name="pause_playback">Oynatmayı duraklat</string>
     <string name="resume_playback">Çalmaya devam et</string>
-    <string name="pause_on_unplugged">Kulaklık takılı kaldıktan sonra çalmayı duraklat</string>
+    <string name="pause_on_unplugged">Kulaklıklıgı çıkardıktan sonra oynatmayı duraklat</string>
     <string name="resume_on_plugged_in">Kulaklık takılı olduktan sonra oynatmaya devam et</string>
     <string name="sleep_timer">Uyku zamanlayıcısı</string>
     <string name="sleep_time_description">Çalmayı durdurmak için bir zamanlayıcı ayarlayın</string>
@@ -207,7 +207,7 @@
     <!--playback params-->
     <string name="playback_params">Oynatma Paramları</string>
     <string name="speed">Hız</string>
-    <string name="pitch">Saha</string>
+    <string name="pitch">Ton</string>
     <string name="reset">Sıfırla</string>
     <string name="normalize">Normalleştirmek</string>
 
@@ -225,7 +225,7 @@
     <string name="show_album_grid">Albümleri görüntülemek için ızgarayı kullanın</string>
 
     <!--Preset-->
-    <string name="preset">Ön ayar</string>
+    <string name="preset">Türler</string>
     <string name="preset_none">Hiçbir şey değil</string>
     <string name="preset_normal">Normal</string>
     <string name="preset_rock">Rock</string>
@@ -239,7 +239,7 @@
     <string name="preset_pop">Pop</string>
 
     <!--Preset reverb-->
-    <string name="preset_reverb">Yankılanma</string>
+    <string name="preset_reverb">Eko Ayarları</string>
     <string name="preset_reverb_none">Hiçbir şey değil</string>
     <string name="preset_reverb_large_hall">Büyük salon</string>
     <string name="preset_reverb_large_room">Geniş oda</string>
