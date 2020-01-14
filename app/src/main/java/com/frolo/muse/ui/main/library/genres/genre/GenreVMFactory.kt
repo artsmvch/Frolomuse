@@ -6,6 +6,8 @@ import com.frolo.muse.di.AppComponent
 import com.frolo.muse.engine.Player
 import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.interactor.media.*
+import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
+import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
 import com.frolo.muse.interactor.media.get.GetGenreSongsUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.media.Genre
@@ -36,6 +38,8 @@ class GenreVMFactory constructor(
     @Inject
     internal lateinit var deleteMediaUseCase: DeleteMediaUseCase<Song>
     @Inject
+    internal lateinit var getIsFavouriteUseCase: GetIsFavouriteUseCase<Song>
+    @Inject
     internal lateinit var changeFavouriteUseCase: ChangeFavouriteUseCase<Song>
     @Inject
     internal lateinit var schedulerProvider: SchedulerProvider
@@ -65,6 +69,7 @@ class GenreVMFactory constructor(
                 playMediaUseCase,
                 shareMediaUseCase,
                 deleteMediaUseCase,
+                getIsFavouriteUseCase,
                 changeFavouriteUseCase,
                 schedulerProvider,
                 navigator,

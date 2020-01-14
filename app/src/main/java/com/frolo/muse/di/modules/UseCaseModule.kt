@@ -4,6 +4,7 @@ import com.frolo.muse.engine.Player
 import com.frolo.muse.engine.SongQueueFactory
 import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.interactor.media.*
+import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
 import com.frolo.muse.interactor.media.get.*
 import com.frolo.muse.interactor.player.ControlPlayerUseCase
 import com.frolo.muse.interactor.player.RestorePlayerStateUseCase
@@ -13,7 +14,6 @@ import com.frolo.muse.model.media.*
 import com.frolo.muse.repository.*
 import com.frolo.muse.rx.SchedulerProvider
 import com.squareup.inject.assisted.dagger2.AssistedModule
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

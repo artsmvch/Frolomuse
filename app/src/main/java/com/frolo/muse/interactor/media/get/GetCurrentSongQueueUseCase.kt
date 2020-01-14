@@ -3,6 +3,7 @@ package com.frolo.muse.interactor.media.get
 import com.frolo.muse.engine.Player
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.model.menu.SortOrderMenu
+import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
 
@@ -15,12 +16,12 @@ class GetCurrentSongQueueUseCase constructor(
         return Single.error(UnsupportedOperationException())
     }
 
-    override fun applySortOrder(sortOrder: String): Flowable<List<Song>> {
-        return Flowable.error(UnsupportedOperationException())
+    override fun applySortOrder(sortOrder: String): Completable {
+        return Completable.error(UnsupportedOperationException())
     }
 
-    override fun applySortOrderReversed(isReversed: Boolean): Flowable<List<Song>> {
-        return Flowable.error(UnsupportedOperationException())
+    override fun applySortOrderReversed(isReversed: Boolean): Completable {
+        return Completable.error(UnsupportedOperationException())
     }
 
     override fun getMediaList(): Flowable<List<Song>> {

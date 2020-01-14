@@ -8,6 +8,8 @@ import com.frolo.muse.engine.SimplePlayerObserver
 import com.frolo.muse.engine.SongQueue
 import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.interactor.media.*
+import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
+import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
 import com.frolo.muse.interactor.media.get.GetCurrentSongQueueUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.media.Song
@@ -26,6 +28,7 @@ class CurrentSongQueueViewModel @Inject constructor(
         playMediaUseCase: PlayMediaUseCase<Song>,
         shareMediaUseCase: ShareMediaUseCase<Song>,
         deleteMediaUseCase: DeleteMediaUseCase<Song>,
+        getIsFavouriteUseCase: GetIsFavouriteUseCase<Song>,
         changeFavouriteUseCase: ChangeFavouriteUseCase<Song>,
         schedulerProvider: SchedulerProvider,
         private val navigator: Navigator,
@@ -37,6 +40,7 @@ class CurrentSongQueueViewModel @Inject constructor(
         playMediaUseCase,
         shareMediaUseCase,
         deleteMediaUseCase,
+        getIsFavouriteUseCase,
         changeFavouriteUseCase,
         schedulerProvider,
         navigator,

@@ -9,6 +9,8 @@ import com.frolo.muse.rx.SchedulerProvider
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
+import io.reactivex.functions.BiFunction
+import io.reactivex.functions.Function
 
 
 abstract class GetSectionedMediaUseCase <E: Media> constructor(
@@ -20,61 +22,64 @@ abstract class GetSectionedMediaUseCase <E: Media> constructor(
 
     abstract fun getSortedCollection(sortOrder: String): Flowable<List<E>>
 
-    private fun getItems(sortOrder: String, isReversed: Boolean): Flowable<List<E>> {
-        return getSortedCollection(sortOrder)
-                .map { list ->
-                    when (section) {
-                        // MyFiles do not have unique ID so we cannot distinct them
-                        Library.FOLDERS -> list
-                        // Mixed media list may contain media items with different type but same ID
-                        // so we cannot distinct them
-                        Library.MIXED -> list
-                        else -> list.distinctBy { item -> item.id }
-                    }
-                }
-                .map { list ->
-                    if (isReversed) {
-                        list.reversed()
-                    } else list
-                }
-                .subscribeOn(schedulerProvider.worker())
-    }
-
     override fun getSortOrderMenu(): Single<SortOrderMenu> {
         return repository.sortOrders
-                .map { sortOrders ->
-                    val selectedSortOrder = preferences.getSortOrderForSection(section)
-                    val sortOrderReversed = preferences.isSortOrderReversedForSection(section)
-                    SortOrderMenu(sortOrders, selectedSortOrder, sortOrderReversed)
+                .flatMap {  sortOrders ->
+                    Single.zip(
+                            preferences.getSortOrderForSection(section).firstOrError(),
+                            preferences.isSortOrderReversedForSection(section).firstOrError(),
+                            BiFunction { savedSortOrder: String, isReversed: Boolean ->
+                                SortOrderMenu(sortOrders, savedSortOrder, isReversed)
+                            }
+                    )
                 }
                 .subscribeOn(schedulerProvider.worker())
     }
 
-    override fun applySortOrder(sortOrder: String): Flowable<List<E>> {
-        return Completable.fromAction {
-            preferences.saveSortOrderForSection(section, sortOrder)
-        }
-                .andThen(getItems(
-                        sortOrder,
-                        preferences.isSortOrderReversedForSection(section)))
+    override fun applySortOrder(sortOrder: String): Completable {
+        return preferences.saveSortOrderForSection(section, sortOrder)
                 .subscribeOn(schedulerProvider.worker())
     }
 
-    override fun applySortOrderReversed(isReversed: Boolean): Flowable<List<E>> {
-        return Completable.fromAction {
-            preferences.saveSortOrderReversedForSection(section, isReversed)
-        }
-                .andThen(getItems(
-                        preferences.getSortOrderForSection(section),
-                        isReversed)
-                )
+    override fun applySortOrderReversed(isReversed: Boolean): Completable {
+        return preferences.saveSortOrderReversedForSection(section, isReversed)
                 .subscribeOn(schedulerProvider.worker())
     }
 
     override fun getMediaList(): Flowable<List<E>> {
-        return getItems(
+        val sources = listOf(
                 preferences.getSortOrderForSection(section),
-                preferences.isSortOrderReversedForSection(section))
+                preferences.isSortOrderReversedForSection(section)
+        )
+
+        val combiner = Function<Array<Any>, Pair<String, Boolean>> { arr ->
+            (arr[0] as String) to (arr[1] as Boolean)
+        }
+
+        return Flowable.combineLatest(
+                sources,
+                combiner
+        ).flatMap { pair ->
+            val sortOrder = pair.first
+            val isReversed = pair.second
+            getSortedCollection(sortOrder)
+                    .map { list ->
+                        when (section) {
+                            // MyFiles do not have unique ID so we cannot distinct them
+                            Library.FOLDERS -> list
+                            // Mixed media list may contain media items with different type but same ID
+                            // so we cannot distinct them
+                            Library.MIXED -> list
+                            else -> list.distinctBy { item -> item.id }
+                        }
+                    }
+                    .map { list ->
+                        if (isReversed) {
+                            list.reversed()
+                        } else list
+                    }
+                    .subscribeOn(schedulerProvider.worker())
+        }
     }
 
 }

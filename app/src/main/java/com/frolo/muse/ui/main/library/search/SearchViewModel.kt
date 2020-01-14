@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.interactor.media.*
+import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
+import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
 import com.frolo.muse.interactor.media.get.SearchMediaUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.media.Media
@@ -21,6 +23,7 @@ class SearchViewModel @Inject constructor(
         playMediaUseCase: PlayMediaUseCase<Media>,
         shareMediaUseCase: ShareMediaUseCase<Media>,
         deleteMediaUseCase: DeleteMediaUseCase<Media>,
+        getIsFavouriteUseCase: GetIsFavouriteUseCase<Media>,
         changeFavouriteUseCase: ChangeFavouriteUseCase<Media>,
         schedulerProvider: SchedulerProvider,
         navigator: Navigator,
@@ -32,6 +35,7 @@ class SearchViewModel @Inject constructor(
         playMediaUseCase,
         shareMediaUseCase,
         deleteMediaUseCase,
+        getIsFavouriteUseCase,
         changeFavouriteUseCase,
         schedulerProvider,
         navigator,

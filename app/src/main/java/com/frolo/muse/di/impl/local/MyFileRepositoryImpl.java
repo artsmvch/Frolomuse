@@ -133,13 +133,13 @@ public class MyFileRepositoryImpl implements MyFileRepository {
     }
 
     @Override
-    public Single<Boolean> isFavourite(MyFile item) {
-        return Single.error(new UnsupportedOperationException());
+    public Flowable<Boolean> isFavourite(MyFile item) {
+        return Flowable.error(new UnsupportedOperationException());
     }
 
     @Override
-    public Single<Boolean> changeFavourite(MyFile item) {
-        return Single.error(new UnsupportedOperationException());
+    public Completable changeFavourite(MyFile item) {
+        return Completable.error(new UnsupportedOperationException());
     }
 
     @Override

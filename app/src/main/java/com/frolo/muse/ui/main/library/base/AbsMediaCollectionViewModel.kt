@@ -9,6 +9,8 @@ import com.frolo.muse.arch.call
 import com.frolo.muse.arch.combine
 import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.interactor.media.*
+import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
+import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
 import com.frolo.muse.interactor.media.get.GetMediaUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.media.*
@@ -31,6 +33,7 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
         private val playMediaUseCase: PlayMediaUseCase<E>,
         private val shareMediaUseCase: ShareMediaUseCase<E>,
         private val deleteMediaUseCase: DeleteMediaUseCase<E>,
+        private val getIsFavouriteUseCase: GetIsFavouriteUseCase<E>,
         private val changeFavouriteUseCase: ChangeFavouriteUseCase<E>,
         private val schedulerProvider: SchedulerProvider,
         private val navigator: Navigator,
@@ -181,15 +184,15 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
 
     open fun onSortOrderSelected(sortOrder: String) {
         // TODO: find the way to make this method final
-        getMediaUseCase.applySortOrder(sortOrder).apply {
-            fetch(this)
-        }
+        getMediaUseCase.applySortOrder(sortOrder)
+                .observeOn(schedulerProvider.main())
+                .subscribeFor {  }
     }
 
     fun onSortOrderReversedChanged(reversed: Boolean) {
-        getMediaUseCase.applySortOrderReversed(reversed).apply {
-            fetch(this)
-        }
+        getMediaUseCase.applySortOrderReversed(reversed)
+                .observeOn(schedulerProvider.main())
+                .subscribeFor {  }
     }
 
     private fun fetch(source: Flowable<List<E>>) {
@@ -449,6 +452,8 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
     fun onLikeOptionClicked() {
         val event = _openOptionsMenuEvent.value ?: return
         changeFavouriteUseCase.changeFavourite(event.item)
+                .andThen(getIsFavouriteUseCase.isFavourite(event.item))
+                .firstOrError()
                 .observeOn(schedulerProvider.main())
                 .subscribeFor { isFavourite ->
                     _optionsMenuItemFavourite.value = isFavourite

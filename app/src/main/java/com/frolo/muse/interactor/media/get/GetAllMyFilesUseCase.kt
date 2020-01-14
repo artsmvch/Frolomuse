@@ -39,7 +39,7 @@ class GetAllMyFilesUseCase @Inject constructor(
         return repository.browse(myFile)
                 .map { list ->
                     if (checkForReversion
-                            && preferences.isSortOrderReversedForSection(Library.FOLDERS)) {
+                            && preferences.isSortOrderReversedForSection(Library.FOLDERS).blockingFirst()) {
                         list.reversed()
                     } else list
                 }

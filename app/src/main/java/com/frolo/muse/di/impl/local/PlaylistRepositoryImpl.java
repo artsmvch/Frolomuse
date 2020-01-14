@@ -140,12 +140,12 @@ public class PlaylistRepositoryImpl
     }
 
     @Override
-    public Single<Boolean> isFavourite(Playlist item) {
-        return Single.error(new UnsupportedOperationException());
+    public Flowable<Boolean> isFavourite(Playlist item) {
+        return Flowable.error(new UnsupportedOperationException());
     }
 
     @Override
-    public Single<Boolean> changeFavourite(Playlist item) {
-        return Single.error(new UnsupportedOperationException());
+    public Completable changeFavourite(Playlist item) {
+        return Completable.error(new UnsupportedOperationException());
     }
 }

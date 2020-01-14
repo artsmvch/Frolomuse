@@ -5,10 +5,12 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.frolo.muse.arch.SingleLiveEvent
+import com.frolo.muse.arch.liveDataOf
 import com.frolo.muse.di.Exec
 import com.frolo.muse.engine.*
-import com.frolo.muse.interactor.media.ChangeFavouriteUseCase
+import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
 import com.frolo.muse.interactor.media.DeleteMediaUseCase
+import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
 import com.frolo.muse.interactor.player.ControlPlayerUseCase
 import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.logger.EventLogger
@@ -17,7 +19,6 @@ import com.frolo.muse.model.media.Song
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.base.BaseViewModel
 import io.reactivex.Observable
-import io.reactivex.Single
 import io.reactivex.disposables.Disposable
 import java.util.concurrent.Executor
 import java.util.concurrent.TimeUnit
@@ -28,6 +29,7 @@ class PlayerViewModel @Inject constructor(
         private val player: Player,
         @Exec(Exec.Type.MAIN) private val mainThreadExecutor: Executor,
         private val schedulerProvider: SchedulerProvider,
+        private val getIsFavouriteUseCase: GetIsFavouriteUseCase<Song>,
         private val changeFavouriteUseCase: ChangeFavouriteUseCase<Song>,
         private val deleteMediaUseCase: DeleteMediaUseCase<Song>,
         private val controlPlayerUseCase: ControlPlayerUseCase,
@@ -57,7 +59,6 @@ class PlayerViewModel @Inject constructor(
             if (player.isPrepared()) {
                 _playbackProgress.value = player.getProgress()
             }
-            checkFavourite()
         }
         override fun onPlaybackStarted(player: Player) {
             _playbackStatus.value = true
@@ -80,57 +81,69 @@ class PlayerViewModel @Inject constructor(
         _invalidateSongQueueEvent.value = queue
     }
 
-    private val _deletedSong = SingleLiveEvent<Song>()
-    val deletedSong: LiveData<Song> = _deletedSong
+    private val _songDeletedEvent = SingleLiveEvent<Song>()
+    val songDeletedEvent: LiveData<Song> get() = _songDeletedEvent
 
-    private val _songQueue: MutableLiveData<SongQueue> = MutableLiveData()
-    val songQueue: LiveData<SongQueue> = _songQueue
+    private val _songQueue = MutableLiveData<SongQueue>()
+    val songQueue: LiveData<SongQueue> get() = _songQueue
 
-    private val _invalidateSongQueueEvent: MutableLiveData<SongQueue> = SingleLiveEvent()
-    val invalidateSongQueueEvent: LiveData<SongQueue> = _invalidateSongQueueEvent
+    private val _invalidateSongQueueEvent = SingleLiveEvent<SongQueue>()
+    val invalidateSongQueueEvent: LiveData<SongQueue>
+        get() = _invalidateSongQueueEvent
 
-    private val _song: MutableLiveData<Song> = MutableLiveData()
-    val song: LiveData<Song> = _song
+    private val _song = MutableLiveData<Song>()
+    val song: LiveData<Song> get() = _song
 
-    val placeholderVisible: LiveData<Boolean> = Transformations.map(song) { song: Song? ->
-        song == null
-    }
+    val placeholderVisible: LiveData<Boolean> =
+            Transformations.map(song) { song: Song? -> song == null }
 
-    private val _songPosition: MutableLiveData<Int> = MediatorLiveData<Int>().apply {
+    private val _songPosition = MediatorLiveData<Int>().apply {
+        value = player.getCurrentPositionInQueue()
         // triggers
         addSource(invalidateSongQueueEvent) {
             value = player.getCurrentPositionInQueue()
         }
     }
-    val songPosition: LiveData<Int> = _songPosition
+    val songPosition: LiveData<Int> get() = _songPosition
 
-    private val _showVolumeControlEvent: MutableLiveData<Unit> = SingleLiveEvent()
-    val showVolumeControlEvent: LiveData<Unit> = _showVolumeControlEvent
+    private val _showVolumeControlEvent = SingleLiveEvent<Unit>()
+    val showVolumeControlEvent: LiveData<Unit>
+        get() = _showVolumeControlEvent
 
-    private val _isFavourite = MutableLiveData<Boolean>()
-    val isFavourite: LiveData<Boolean> = _isFavourite
+    val isFavourite: LiveData<Boolean> =
+            Transformations.switchMap(song) { song: Song? ->
+                if (song != null) {
+                    MutableLiveData<Boolean>().apply {
+                        getIsFavouriteUseCase.isFavourite(song)
+                                .onErrorReturnItem(false)
+                                .observeOn(schedulerProvider.main())
+                                .subscribeFor { value = it }
+                    }
+                } else liveDataOf(false)
+            }
 
-    private val _playbackDuration: MutableLiveData<Int> = MutableLiveData()
-    val playbackDuration: LiveData<Int> = _playbackDuration
+    private val _playbackDuration = MutableLiveData<Int>()
+    val playbackDuration: LiveData<Int> get() = _playbackDuration
 
-    private val _playbackProgress: MutableLiveData<Int> = MutableLiveData()
-    val playbackProgress: LiveData<Int> = _playbackProgress
+    private val _playbackProgress = MutableLiveData<Int>()
+    val playbackProgress: LiveData<Int> get() = _playbackProgress
 
-    private val _playbackStatus: MutableLiveData<Boolean> = MutableLiveData()
-    val playbackStatus: LiveData<Boolean> = _playbackStatus
+    private val _playbackStatus = MutableLiveData<Boolean>()
+    val playbackStatus: LiveData<Boolean> get() = _playbackStatus
 
-    private val _abStatus: MutableLiveData<Pair<Boolean, Boolean>> = MutableLiveData()
-    val abStatus: LiveData<Pair<Boolean, Boolean>> = _abStatus
+    // Pair stands for <A enabled, B enabled>
+    private val _abStatus = MutableLiveData<Pair<Boolean, Boolean>>()
+    val abStatus: LiveData<Pair<Boolean, Boolean>> get() = _abStatus
 
-    private val _shuffleMode: MutableLiveData<Int> = MutableLiveData()
-    val shuffleMode: LiveData<Int> = _shuffleMode
+    private val _shuffleMode = MutableLiveData<Int>()
+    val shuffleMode: LiveData<Int> get() = _shuffleMode
 
-    private val _repeatMode: MutableLiveData<Int> = MutableLiveData()
-    val repeatMode: LiveData<Int> = _repeatMode
+    private val _repeatMode = MutableLiveData<Int>()
+    val repeatMode: LiveData<Int> get() = _repeatMode
 
     // Confirmation
-    private val _confirmDeletionEvent: MutableLiveData<Song> = SingleLiveEvent()
-    val confirmDeletionEvent: LiveData<Song> = _confirmDeletionEvent
+    private val _confirmDeletionEvent = SingleLiveEvent<Song>()
+    val confirmDeletionEvent: LiveData<Song> get() = _confirmDeletionEvent
 
     init {
         player.registerObserver(playerObserver)
@@ -150,15 +163,6 @@ class PlayerViewModel @Inject constructor(
         playbackProgressDisposable?.dispose()
     }
 
-    private fun checkFavourite() {
-        Single.fromCallable { _song.value }
-                .flatMap { changeFavouriteUseCase.getIsFavourite(it) }
-                .observeOn(schedulerProvider.main())
-                .subscribeFor { value ->
-                    _isFavourite.value = value
-                }
-    }
-
     fun onOpened() {
         _songQueue.value = player.getCurrentQueue()
         _song.value = player.getCurrent()
@@ -168,30 +172,16 @@ class PlayerViewModel @Inject constructor(
         _abStatus.value = Pair(player.isAPointed(), player.isBPointed())
         _shuffleMode.value = player.getShuffleMode()
         _repeatMode.value = player.getRepeatMode()
-        checkFavourite()
         startObservingPlaybackProgress()
     }
 
-    fun onSongUpdate(previous: Song, updated: Song) {
-        player.update(updated)
-        player.getCurrent()?.let {
-            if (it == previous) {
-                _song.value = updated
-            }
-        }
-    }
-
-    fun onAlbumUpdate(previous: Album, updated: Album) {
-        _songQueue.value = player.getCurrentQueue()
-    }
-
     fun onLikeClicked() {
-        Single.fromCallable { _song.value }
-                .flatMap { changeFavouriteUseCase.changeFavourite(it) }
-                .observeOn(schedulerProvider.main())
-                .subscribeFor { value ->
-                    _isFavourite.value = value
-                }
+        song.value?.also { safeValue ->
+            changeFavouriteUseCase.changeFavourite(safeValue)
+                    .observeOn(schedulerProvider.main())
+                    .subscribeFor {  }
+
+        }
     }
 
     fun onVolumeControlClicked() {
@@ -315,7 +305,7 @@ class PlayerViewModel @Inject constructor(
     fun onConfirmedDeletion(song: Song) {
         deleteMediaUseCase.delete(song)
                 .observeOn(schedulerProvider.main())
-                .subscribeFor { _deletedSong.value = song }
+                .subscribeFor { _songDeletedEvent.value = song }
     }
 
     override fun onCleared() {

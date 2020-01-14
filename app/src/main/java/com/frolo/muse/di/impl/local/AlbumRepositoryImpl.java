@@ -125,13 +125,13 @@ public class AlbumRepositoryImpl implements AlbumRepository {
     }
 
     @Override
-    public Single<Boolean> isFavourite(Album item) {
-        return Single.error(new UnsupportedOperationException());
+    public Flowable<Boolean> isFavourite(Album item) {
+        return Flowable.error(new UnsupportedOperationException());
     }
 
     @Override
-    public Single<Boolean> changeFavourite(Album item) {
-        return Single.error(new UnsupportedOperationException());
+    public Completable changeFavourite(Album item) {
+        return Completable.error(new UnsupportedOperationException());
     }
 
     @Override

@@ -2,6 +2,8 @@ package com.frolo.muse.ui.main.library.genres
 
 import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.interactor.media.*
+import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
+import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
 import com.frolo.muse.interactor.media.get.GetAllMediaUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.media.Genre
@@ -17,6 +19,7 @@ class GenreListViewModel @Inject constructor(
         playMediaUseCase: PlayMediaUseCase<Genre>,
         shareMediaUseCase: ShareMediaUseCase<Genre>,
         deleteMediaUseCase: DeleteMediaUseCase<Genre>,
+        getIsFavouriteUseCase: GetIsFavouriteUseCase<Genre>,
         changeFavouriteUseCase: ChangeFavouriteUseCase<Genre>,
         schedulerProvider: SchedulerProvider,
         navigator: Navigator,
@@ -28,6 +31,7 @@ class GenreListViewModel @Inject constructor(
         playMediaUseCase,
         shareMediaUseCase,
         deleteMediaUseCase,
+        getIsFavouriteUseCase,
         changeFavouriteUseCase,
         schedulerProvider,
         navigator,

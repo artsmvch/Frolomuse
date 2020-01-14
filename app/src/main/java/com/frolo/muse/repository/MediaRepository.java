@@ -115,6 +115,6 @@ public interface MediaRepository<E extends Media> {
      * ***************************************** */
 
     Flowable<List<E>> getAllFavouriteItems();
-    Single<Boolean> isFavourite(E item);
-    Single<Boolean> changeFavourite(E item);
+    Flowable<Boolean> isFavourite(E item);
+    Completable changeFavourite(E item);
 }

@@ -16,6 +16,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.concurrent.Callable;
+
+import io.reactivex.Completable;
+import io.reactivex.Flowable;
+import io.reactivex.functions.Action;
 
 
 public class PreferencesImpl implements Preferences {
@@ -306,62 +311,109 @@ public class PreferencesImpl implements Preferences {
     }
 
     @Override
-    public String getSortOrderForSection(@Library.Section int section) {
-        String order = preferences.getString(getKeySortOrderForSection(section), null);
-        switch (section) {
-            case Library.ALBUMS:
-                return AlbumRepositoryImpl.validateSortOrder(order);
+    public Flowable<String> getSortOrderForSection(final @Library.Section int section) {
+        final String key = getKeySortOrderForSection(section);
+        return Query.createFlowable(
+                preferences,
+                key,
+                new Callable<String>() {
+                    @Override
+                    public String call() {
+                        String order = preferences.getString(key, null);
+                        switch (section) {
+                            case Library.ALBUMS:
+                                return AlbumRepositoryImpl.validateSortOrder(order);
 
-            case Library.ARTISTS:
-                return ArtistRepositoryImpl.validateSortOrder(order);
+                            case Library.ARTISTS:
+                                return ArtistRepositoryImpl.validateSortOrder(order);
 
-            case Library.GENRES:
-                return GenreRepositoryImpl.validateSortOrder(order);
+                            case Library.GENRES:
+                                return GenreRepositoryImpl.validateSortOrder(order);
 
-            case Library.PLAYLISTS:
-                return PlaylistRepositoryImpl.validateSortOrder(order);
+                            case Library.PLAYLISTS:
+                                return PlaylistRepositoryImpl.validateSortOrder(order);
 
-            case Library.FAVOURITES:
-            case Library.RECENTLY_ADDED:
-            case Library.ALL_SONGS:
-                return SongRepositoryImpl.validateSortOrder(order);
+                            case Library.FAVOURITES:
+                            case Library.RECENTLY_ADDED:
+                            case Library.ALL_SONGS:
+                                return SongRepositoryImpl.validateSortOrder(order);
 
-            case Library.ALBUM:
-                return AlbumChunkRepositoryImpl.validateSortOrder(order);
+                            case Library.ALBUM:
+                                return AlbumChunkRepositoryImpl.validateSortOrder(order);
 
-            case Library.ARTIST:
-                return ArtistChunkRepositoryImpl.validateSortOrder(order);
+                            case Library.ARTIST:
+                                return ArtistChunkRepositoryImpl.validateSortOrder(order);
 
-            case Library.GENRE:
-                return GenreChunkRepositoryImpl.validateSortOrder(order);
+                            case Library.GENRE:
+                                return GenreChunkRepositoryImpl.validateSortOrder(order);
 
-            case Library.PLAYLIST:
-                return PlaylistChunkRepositoryImpl.validateSortOrder(order);
+                            case Library.PLAYLIST:
+                                return PlaylistChunkRepositoryImpl.validateSortOrder(order);
 
-            case Library.FOLDERS: {
-                return MyFileRepositoryImpl.validateSortOrder(order);
-            }
+                            case Library.FOLDERS: {
+                                return MyFileRepositoryImpl.validateSortOrder(order);
+                            }
 
-            case Library.MIXED:
-            default:
-                throw new IllegalArgumentException(
-                        "Unsupported library section: " + section);
-        }
+                            case Library.MIXED:
+                            default:
+                                throw new IllegalArgumentException(
+                                        "Unsupported library section: " + section
+                                );
+                        }
+                    }
+                }
+        );
     }
 
     @Override
-    public void saveSortOrderForSection(@Library.Section int section, String sortOrder) {
-        preferences.edit().putString(getKeySortOrderForSection(section), sortOrder).apply();
+    public Completable saveSortOrderForSection(
+            final @Library.Section int section,
+            final String sortOrder
+    ) {
+        return Completable.fromAction(
+                new Action() {
+                    @Override
+                    public void run() {
+                        final String key = getKeySortOrderForSection(section);
+                        preferences.edit()
+                                .putString(key, sortOrder)
+                                .apply();
+                    }
+                }
+        );
     }
 
     @Override
-    public boolean isSortOrderReversedForSection(@Library.Section int section) {
-        return preferences.getBoolean(getKeySortReversedOrderForSection(section), false);
+    public Flowable<Boolean> isSortOrderReversedForSection(@Library.Section int section) {
+        final String key = getKeySortReversedOrderForSection(section);
+        return Query.createFlowable(
+                preferences,
+                key,
+                new Callable<Boolean>() {
+                    @Override
+                    public Boolean call() {
+                        return preferences.getBoolean(key, false);
+                    }
+                }
+        );
     }
 
     @Override
-    public void saveSortOrderReversedForSection(@Library.Section int section, boolean reversed) {
-        preferences.edit().putBoolean(getKeySortReversedOrderForSection(section), reversed).apply();
+    public Completable saveSortOrderReversedForSection(
+            final @Library.Section int section,
+            final boolean reversed
+    ) {
+        return Completable.fromAction(
+                new Action() {
+                    @Override
+                    public void run() {
+                        final String key = getKeySortReversedOrderForSection(section);
+                        preferences.edit()
+                                .putBoolean(key, reversed)
+                                .apply();
+                    }
+                }
+        );
     }
 
     @Override

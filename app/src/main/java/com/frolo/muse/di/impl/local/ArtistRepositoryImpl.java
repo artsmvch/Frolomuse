@@ -130,12 +130,12 @@ public class ArtistRepositoryImpl implements ArtistRepository {
     }
 
     @Override
-    public Single<Boolean> isFavourite(Artist item) {
-        return Single.error(new UnsupportedOperationException());
+    public Flowable<Boolean> isFavourite(Artist item) {
+        return Flowable.error(new UnsupportedOperationException());
     }
 
     @Override
-    public Single<Boolean> changeFavourite(Artist item) {
-        return Single.error(new UnsupportedOperationException());
+    public Completable changeFavourite(Artist item) {
+        return Completable.error(new UnsupportedOperationException());
     }
 }

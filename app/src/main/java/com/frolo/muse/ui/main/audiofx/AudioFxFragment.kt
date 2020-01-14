@@ -113,13 +113,15 @@ class AudioFxFragment: BaseFragment() {
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
-        try {
-            visualizer?.release()
-        } catch (e: Throwable) {
-            Trace.e(e)
+        visualizer?.also { safeVisualizer ->
+            safeVisualizer.runCatching {
+                release()
+            }.onFailure {
+                Trace.e(it)
+            }
         }
         visualizer = null
+        super.onDestroyView()
     }
 
     override fun onDetach() {
@@ -155,21 +157,19 @@ class AudioFxFragment: BaseFragment() {
             color = gainedColor
         }
 
-        if (visualizer == null) {
-            try {
-                val sessionId = viewModel.audioSessionId.value ?: return
-                visualizer = Visualizer(sessionId)
-            } catch (e: Throwable) {
-                visualizer = null
-                Trace.e(e)
-                toastError(e)
+        runCatching {
+            if (visualizer == null) {
+                visualizer = viewModel.audioSessionId.value?.let { Visualizer(it) }
             }
+        }.onFailure {
+            Trace.e(it)
+            toastError(it)
         }
-        visualizer?.also { visualizer ->
-            try {
-                val captureSize = Visualizer.getCaptureSizeRange()[0]
-                visualizer.captureSize = captureSize
-                visualizer.setDataCaptureListener(object : Visualizer.OnDataCaptureListener {
+
+        visualizer?.also { safeVisualizer ->
+            safeVisualizer.runCatching {
+                captureSize = Visualizer.getCaptureSizeRange()[0]
+                setDataCaptureListener(object : Visualizer.OnDataCaptureListener {
                     override fun onFftDataCapture(visualizer: Visualizer?, fft: ByteArray?, samplingRate: Int) {
                         // we ignore fft
                     }
@@ -177,9 +177,9 @@ class AudioFxFragment: BaseFragment() {
                         visualizer_view?.setData(waveform)
                     }
                 }, Visualizer.getMaxCaptureRate(), true, false)
-                visualizer.enabled = true
-            } catch (e: Throwable) {
-                Trace.e(e)
+                enabled = true
+            }.onFailure {
+                Trace.e(it)
             }
         }
     }

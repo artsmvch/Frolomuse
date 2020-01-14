@@ -2,6 +2,8 @@ package com.frolo.muse.ui.main.library.albums
 
 import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.interactor.media.*
+import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
+import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
 import com.frolo.muse.interactor.media.get.GetAllMediaUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.media.Album
@@ -17,6 +19,7 @@ class AlbumListViewModel @Inject constructor(
         playMediaUseCase: PlayMediaUseCase<Album>,
         shareMediaUseCase: ShareMediaUseCase<Album>,
         deleteMediaUseCase: DeleteMediaUseCase<Album>,
+        getIsFavouriteUseCase: GetIsFavouriteUseCase<Album>,
         changeFavouriteUseCase: ChangeFavouriteUseCase<Album>,
         schedulerProvider: SchedulerProvider,
         navigator: Navigator,
@@ -28,6 +31,7 @@ class AlbumListViewModel @Inject constructor(
         playMediaUseCase,
         shareMediaUseCase,
         deleteMediaUseCase,
+        getIsFavouriteUseCase,
         changeFavouriteUseCase,
         schedulerProvider,
         navigator,
