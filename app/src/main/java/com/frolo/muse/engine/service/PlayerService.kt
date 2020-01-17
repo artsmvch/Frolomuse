@@ -103,12 +103,9 @@ class PlayerService: Service() {
         isBound = false
         Trace.d(TAG, "Service gets unbound")
         if (notificationCancelled) {
-//            // Service is unbound and not in foreground. We don't know why it got unbound.
-//            // The user may have closed the app or the system killed activities due to low memory. Who knows.
-//            // So let's give it the last chance to be alive. Start foreground!
-//            Trace.w(TAG, "Service is not in foreground, but we want to keep it alive. Let's start it in foreground again!")
-//            // Last chance to keep it alive
-//            startForeground(NOTIFICATION_ID_PLAYBACK, buildPlaybackNotification())
+            // Service is unbound and not in foreground. We don't know why it got unbound.
+            // The user may have closed the app or the system killed activities due to low memory. Who knows.
+            // Give it the last chance to be alive? NO!
 
             Trace.w(TAG, "Service is not in foreground. STOP IT!")
             // The service is not in foreground. It may live only 60 seconds if it's Android API v26+
