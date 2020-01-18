@@ -600,11 +600,11 @@ final class SongQuery {
                             new Function<Object[], List<SongWithPlayCount>>() {
                                 @Override
                                 public List<SongWithPlayCount> apply(Object[] objects) {
-                                    List<SongWithPlayCount> result = new ArrayList<>();
+                                    List<SongWithPlayCount> result = new ArrayList<>(objects.length);
                                     for (Object obj : objects) {
                                         @SuppressWarnings("unchecked")
-                                        List<SongWithPlayCount> items = (List<SongWithPlayCount>) obj;
-                                        result.addAll(items);
+                                        SongWithPlayCount item = (SongWithPlayCount) obj;
+                                        result.add(item);
                                     }
                                     return result;
                                 }
