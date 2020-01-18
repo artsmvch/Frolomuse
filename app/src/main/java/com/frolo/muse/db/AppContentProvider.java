@@ -107,8 +107,8 @@ public class AppContentProvider extends ContentProvider {
         URI_MATCHER.addURI(AUTHORITY, AppMediaStore.Lyrics.TABLE + "/#", URI_LYRICS_ID);
         URI_MATCHER.addURI(AUTHORITY, AppMediaStore.HiddenFiles.TABLE, URI_HIDDEN_FILES);
         URI_MATCHER.addURI(AUTHORITY, AppMediaStore.HiddenFiles.TABLE + "/#", URI_HIDDEN_FILES_ID);
-        URI_MATCHER.addURI(AUTHORITY, AppMediaStore.HiddenFiles.TABLE, URI_SONG_PLAY_COUNT);
-        URI_MATCHER.addURI(AUTHORITY, AppMediaStore.HiddenFiles.TABLE + "/#", URI_SONG_PLAY_COUNT_ID);
+        URI_MATCHER.addURI(AUTHORITY, AppMediaStore.SongPlayCount.TABLE, URI_SONG_PLAY_COUNT);
+        URI_MATCHER.addURI(AUTHORITY, AppMediaStore.SongPlayCount.TABLE + "/#", URI_SONG_PLAY_COUNT_ID);
     }
 
     private SQLiteDatabase db;
