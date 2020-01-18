@@ -854,6 +854,19 @@ abstract class UseCaseModule {
                     albumRepository,
                     artistRepository)
         }
+
+        /*Song play count*/
+        @Provides
+        @Singleton
+        @JvmStatic
+        fun provideDispatchSongPlayeduseCase(
+                schedulerProvider: SchedulerProvider,
+                songRepository: SongRepository
+        ): DispatchSongPlayedUseCase {
+            return DispatchSongPlayedUseCase(
+                    schedulerProvider,
+                    songRepository)
+        }
     }
 
 //    @Singleton

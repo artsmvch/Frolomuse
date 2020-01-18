@@ -650,6 +650,61 @@ final class SongQuery {
         }
     }
 
+    /*package*/ static Completable addSongPlayCount(
+            final ContentResolver resolver,
+            final Song song,
+            final int delta
+    ) {
+        return Completable.fromAction(new Action() {
+            @Override
+            public void run() throws Exception {
+                final Uri uri = AppMediaStore.SongPlayCount.getContentUri();
+                final String[] projection = new String[] { AppMediaStore.SongPlayCount.PLAY_COUNT };
+                final String selection = AppMediaStore.SongPlayCount.ABSOLUTE_PATH + "=?";
+                final String[] selectionArgs = new String[] { song.getSource() };
+                Cursor cursor = resolver.query(uri, projection, selection, selectionArgs, null);
+
+                if (cursor == null) {
+                    throw Query.genNullCursorErr(uri);
+                }
+
+                final int currentPlayCount;
+                final boolean entityExists;
+                try {
+                    if (cursor.moveToFirst()) {
+                        entityExists = true;
+                        currentPlayCount = cursor.getInt(cursor.getColumnIndex(projection[0]));
+                    } else {
+                        entityExists = false;
+                        currentPlayCount = 0;
+                    }
+                } finally {
+                    cursor.close();
+                }
+
+                final int updatedPlayCount = currentPlayCount + delta;
+
+                if (entityExists) {
+                    ContentValues values = new ContentValues(1);
+                    values.put(AppMediaStore.SongPlayCount.PLAY_COUNT, updatedPlayCount);
+                    int updatedCount = resolver.update(uri, values, selection, selectionArgs);
+                    if (updatedCount == 0) {
+                        // TODO: throw an exception
+                    }
+                } else {
+                    ContentValues values = new ContentValues(2);
+                    values.put(AppMediaStore.SongPlayCount.ABSOLUTE_PATH, song.getSource());
+                    values.put(AppMediaStore.SongPlayCount.PLAY_COUNT, updatedPlayCount);
+                    Uri resultUri = resolver.insert(uri, values);
+                    if (resultUri == null) {
+                        // TODO: throw an exception
+                    }
+                }
+
+            }
+        });
+    }
+
     private SongQuery() {
     }
 

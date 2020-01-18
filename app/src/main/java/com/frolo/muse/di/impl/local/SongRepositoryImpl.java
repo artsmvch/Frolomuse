@@ -201,4 +201,9 @@ public class SongRepositoryImpl
     public Flowable<List<SongWithPlayCount>> getSongsWithPlayCount(int minPlayCount) {
         return SongQuery.querySongsWithPlayCount(mContext.getContentResolver(), minPlayCount);
     }
+
+    @Override
+    public Completable addSongPlayCount(Song song, int delta) {
+        return SongQuery.addSongPlayCount(mContext.getContentResolver(), song, delta);
+    }
 }

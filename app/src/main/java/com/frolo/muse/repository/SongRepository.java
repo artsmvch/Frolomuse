@@ -9,6 +9,7 @@ import com.frolo.muse.model.media.SongWithPlayCount;
 
 import java.util.List;
 
+import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 
@@ -31,4 +32,6 @@ public interface SongRepository extends MediaRepository<Song> {
     Flowable<List<Song>> getRecentlyAddedSongs(long dateAdded);
 
     Flowable<List<SongWithPlayCount>> getSongsWithPlayCount(int minPlayCount);
+
+    Completable addSongPlayCount(Song song, int delta);
 }
