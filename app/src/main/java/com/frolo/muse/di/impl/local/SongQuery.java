@@ -568,7 +568,7 @@ final class SongQuery {
     ) {
         final Uri songPlayCountUri = AppMediaStore.SongPlayCount.getContentUri();
         if (minPlayCount > 0) {
-            final String selection = AppMediaStore.SongPlayCount.PLAY_COUNT + ">=";
+            final String selection = AppMediaStore.SongPlayCount.PLAY_COUNT + ">= ?";
             final String[] selectionArgs = new String[] { String.valueOf(minPlayCount) };
             return Query.query(
                     resolver,
