@@ -8,6 +8,7 @@ import com.frolo.muse.model.media.Artist;
 import com.frolo.muse.model.media.Genre;
 import com.frolo.muse.model.media.Playlist;
 import com.frolo.muse.model.media.Song;
+import com.frolo.muse.model.media.SongWithPlayCount;
 import com.frolo.muse.repository.SongRepository;
 
 import java.util.ArrayList;
@@ -194,5 +195,10 @@ public class SongRepositoryImpl
     @Override
     public Completable changeFavourite(final Song item) {
         return SongQuery.changeFavourite(mContext.getContentResolver(), item);
+    }
+
+    @Override
+    public Flowable<List<SongWithPlayCount>> getSongsWithPlayCount(int minPlayCount) {
+        return SongQuery.querySongsWithPlayCount(mContext.getContentResolver(), minPlayCount);
     }
 }

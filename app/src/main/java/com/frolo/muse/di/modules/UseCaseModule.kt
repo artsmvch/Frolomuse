@@ -143,6 +143,18 @@ abstract class UseCaseModule {
             )
         }
 
+        @Provides
+        @JvmStatic
+        fun provideGetMostPlayedSongsUseCase(
+                repository: SongRepository,
+                schedulerProvider: SchedulerProvider
+        ): GetMostPlayedSongsUseCase {
+            return GetMostPlayedSongsUseCase(
+                    repository,
+                    schedulerProvider
+            )
+        }
+
         /*GetMediaMenuUseCase*/
         @Provides
         @JvmStatic

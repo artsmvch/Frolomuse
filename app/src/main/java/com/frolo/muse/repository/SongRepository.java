@@ -5,6 +5,7 @@ import com.frolo.muse.model.media.Artist;
 import com.frolo.muse.model.media.Genre;
 import com.frolo.muse.model.media.Playlist;
 import com.frolo.muse.model.media.Song;
+import com.frolo.muse.model.media.SongWithPlayCount;
 
 import java.util.List;
 
@@ -28,4 +29,6 @@ public interface SongRepository extends MediaRepository<Song> {
 
     // date added is a timestamp in SECONDS
     Flowable<List<Song>> getRecentlyAddedSongs(long dateAdded);
+
+    Flowable<List<SongWithPlayCount>> getSongsWithPlayCount(int minPlayCount);
 }

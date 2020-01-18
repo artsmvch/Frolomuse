@@ -14,7 +14,7 @@ public final class AppMediaStore {
     }
 
     static final String DB_NAME = "Frolomuse_db";
-    static final int DB_VERSION = Versions.V_3;
+    static final int DB_VERSION = Versions.V_4;
 
     static final String AUTHORITY = BuildConfig.APPLICATION_ID + ".MediaStore";
 
@@ -72,6 +72,21 @@ public final class AppMediaStore {
         static final String TABLE = "hidden_files";
         public static final String ABSOLUTE_PATH = "absolute_path";
         public static final String TIME_HIDDEN = "time_hidden";
+
+        static final Uri CONTENT_URI = Uri.parse(SCHEME + "://" + AUTHORITY + '/' + TABLE);
+
+        public static Uri getContentUri() {
+            return CONTENT_URI;
+        }
+    }
+
+    public static class SongPlayCount implements BaseColumns {
+        private SongPlayCount() {
+        }
+
+        static final String TABLE = "song_play_count";
+        public static final String ABSOLUTE_PATH = "absolute_path";
+        public static final String PLAY_COUNT = "play_count";
 
         static final Uri CONTENT_URI = Uri.parse(SCHEME + "://" + AUTHORITY + '/' + TABLE);
 

@@ -6,6 +6,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.util.Pair;
 
 import com.frolo.muse.db.AppMediaStore;
 import com.frolo.muse.model.media.Album;
@@ -14,6 +15,9 @@ import com.frolo.muse.model.media.Genre;
 import com.frolo.muse.model.media.MyFile;
 import com.frolo.muse.model.media.Playlist;
 import com.frolo.muse.model.media.Song;
+import com.frolo.muse.model.media.SongWithPlayCount;
+
+import org.reactivestreams.Publisher;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -83,6 +87,11 @@ final class SongQuery {
             MediaStore.Audio.Playlists.Members.YEAR,
     };
 
+    private static final String[] PROJECTION_SONG_PLAY_COUNT = new String[] {
+            AppMediaStore.SongPlayCount.ABSOLUTE_PATH,
+            AppMediaStore.SongPlayCount.ABSOLUTE_PATH
+    };
+
     private static final Query.Builder<Song> BUILDER_SONG =
             new Query.Builder<Song>() {
         @Override
@@ -120,6 +129,18 @@ final class SongQuery {
             );
         }
     };
+
+    private static final Query.Builder<Pair<String, Integer>> BUILDER_SONG_PLAY_COUNT =
+            new Query.Builder<Pair<String, Integer>>() {
+                @Override
+                public Pair<String, Integer> build(Cursor cursor, String[] projection) {
+                    String absolutePath = cursor.getString(
+                            cursor.getColumnIndex(PROJECTION_SONG_PLAY_COUNT[0]));
+                    int playCount = cursor.getInt(
+                            cursor.getColumnIndex(PROJECTION_SONG_PLAY_COUNT[1]));
+                    return new Pair<>(absolutePath, playCount);
+                }
+            };
 
     private static final Function<Object[], List<Song>> COMBINER =
             new Function<Object[], List<Song>>() {
@@ -539,6 +560,94 @@ final class SongQuery {
                 }
             }
         });
+    }
+
+    /*package*/ static Flowable<List<SongWithPlayCount>> querySongsWithPlayCount(
+            final ContentResolver resolver,
+            final int minPlayCount
+    ) {
+        final Uri songPlayCountUri = AppMediaStore.SongPlayCount.getContentUri();
+        if (minPlayCount > 0) {
+            final String selection = AppMediaStore.SongPlayCount.PLAY_COUNT + ">=";
+            final String[] selectionArgs = new String[] { String.valueOf(minPlayCount) };
+            return Query.query(
+                    resolver,
+                    songPlayCountUri,
+                    PROJECTION_SONG_PLAY_COUNT,
+                    selection,
+                    selectionArgs,
+                    null,
+                    BUILDER_SONG_PLAY_COUNT
+            ).flatMap(new Function<List<Pair<String, Integer>>, Publisher<List<SongWithPlayCount>>>() {
+                @Override
+                public Publisher<List<SongWithPlayCount>> apply(List<Pair<String, Integer>> pairs) {
+                    final List<Flowable<SongWithPlayCount>> sources = new ArrayList<>(pairs.size());
+                    for (Pair<String, Integer> pair : pairs) {
+                        final String absolutePath = pair.first;
+                        final int playCount = pair.second;
+                        Flowable<SongWithPlayCount> source =
+                                querySingleByPath(resolver, absolutePath)
+                                .map(new Function<Song, SongWithPlayCount>() {
+                                    @Override
+                                    public SongWithPlayCount apply(Song song) {
+                                        return new SongWithPlayCount(song, playCount);
+                                    }
+                                });
+                        sources.add(source);
+                    }
+                    return Flowable.combineLatest(
+                            sources,
+                            new Function<Object[], List<SongWithPlayCount>>() {
+                                @Override
+                                public List<SongWithPlayCount> apply(Object[] objects) {
+                                    List<SongWithPlayCount> result = new ArrayList<>();
+                                    for (Object obj : objects) {
+                                        @SuppressWarnings("unchecked")
+                                        List<SongWithPlayCount> items = (List<SongWithPlayCount>) obj;
+                                        result.addAll(items);
+                                    }
+                                    return result;
+                                }
+                            }
+                    );
+                }
+            });
+        } else {
+            return queryAll(resolver)
+                    .map(new Function<List<Song>, List<SongWithPlayCount>>() {
+                        @Override
+                        public List<SongWithPlayCount> apply(List<Song> songs) {
+                            final List<SongWithPlayCount> items = new ArrayList<>(songs.size());
+                            final String[] playCountProjection = new String[] { AppMediaStore.SongPlayCount.PLAY_COUNT };
+                            final String selection = AppMediaStore.SongPlayCount.ABSOLUTE_PATH + " =?";
+                            for (Song song : songs) {
+                                Cursor cursor = resolver.query(
+                                        songPlayCountUri,
+                                        playCountProjection,
+                                        selection,
+                                        new String[] { song.getSource() },
+                                        null
+                                );
+
+                                final int playCount;
+                                if (cursor != null) {
+                                    try {
+                                        playCount = cursor.getInt(
+                                                cursor.getColumnIndex(playCountProjection[0]));
+                                    } finally {
+                                        cursor.close();
+                                    }
+                                } else {
+                                    playCount = 0;
+                                }
+
+                                SongWithPlayCount item = new SongWithPlayCount(song, playCount);
+                                items.add(item);
+                            }
+                            return items;
+                        }
+                    });
+        }
     }
 
     private SongQuery() {
