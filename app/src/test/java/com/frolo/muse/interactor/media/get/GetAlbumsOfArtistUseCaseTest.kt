@@ -55,32 +55,32 @@ class GetAlbumsOfArtistUseCaseTest {
 
     @Test
     fun test_applySortOrder() {
-        val subscriber = TestSubscriber.create<List<Media>>()
+        val observer = TestObserver.create<List<Media>>()
 
         getAlbumsOfArtistUseCase.applySortOrder("test")
-                .subscribe(subscriber)
+                .subscribe(observer)
 
-        subscriber.assertError(UnsupportedOperationException::class.java)
+        observer.assertError(UnsupportedOperationException::class.java)
     }
 
     @Test
     fun test_applySortOrderReversed() {
         run {
-            val subscriber = TestSubscriber.create<List<Media>>()
+            val observer = TestObserver.create<List<Media>>()
 
             getAlbumsOfArtistUseCase.applySortOrderReversed(true)
-                    .subscribe(subscriber)
+                    .subscribe(observer)
 
-            subscriber.assertError(UnsupportedOperationException::class.java)
+            observer.assertError(UnsupportedOperationException::class.java)
         }
 
         run {
-            val subscriber = TestSubscriber.create<List<Media>>()
+            val observer = TestObserver.create<List<Media>>()
 
             getAlbumsOfArtistUseCase.applySortOrderReversed(false)
-                    .subscribe(subscriber)
+                    .subscribe(observer)
 
-            subscriber.assertError(UnsupportedOperationException::class.java)
+            observer.assertError(UnsupportedOperationException::class.java)
         }
     }
 

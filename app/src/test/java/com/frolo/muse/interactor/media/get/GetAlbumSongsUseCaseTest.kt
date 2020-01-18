@@ -9,11 +9,10 @@ import com.frolo.muse.model.media.Song
 import com.frolo.muse.model.menu.SortOrderMenu
 import com.frolo.muse.repository.AlbumChunkRepository
 import com.frolo.muse.repository.Preferences
-import com.frolo.muse.repository.SongRepository
-import com.frolo.muse.thenDoNothing
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.whenever
+import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
 import io.reactivex.observers.TestObserver
@@ -80,10 +79,10 @@ class GetAlbumSongsUseCaseTest {
             val subscriber = TestSubscriber.create<List<Song>>()
 
             whenever(preferences.getSortOrderForSection(eq(Library.ALBUM)))
-                    .doReturn(sortOrder1)
+                    .doReturn(Flowable.just(sortOrder1))
 
             whenever(preferences.isSortOrderReversedForSection(eq(Library.ALBUM)))
-                    .doReturn(false)
+                    .doReturn(Flowable.just(false))
 
             getAlbumSongsUseCase.getMediaList()
                     .subscribe(subscriber)
@@ -96,10 +95,10 @@ class GetAlbumSongsUseCaseTest {
             val subscriber = TestSubscriber.create<List<Song>>()
 
             whenever(preferences.getSortOrderForSection(eq(Library.ALBUM)))
-                    .doReturn(sortOrder2)
+                    .doReturn(Flowable.just(sortOrder2))
 
             whenever(preferences.isSortOrderReversedForSection(eq(Library.ALBUM)))
-                    .doReturn(true)
+                    .doReturn(Flowable.just(true))
 
             getAlbumSongsUseCase.getMediaList()
                     .subscribe(subscriber)
@@ -113,7 +112,10 @@ class GetAlbumSongsUseCaseTest {
         val subscriber = TestSubscriber.create<List<Song>>()
 
         whenever(preferences.getSortOrderForSection(eq(Library.ALBUM)))
-                .doReturn(sortOrder1)
+                .doReturn(Flowable.just(sortOrder1))
+
+        whenever(preferences.isSortOrderReversedForSection(eq(Library.ALBUM)))
+                .doReturn(Flowable.just(false))
 
         whenever(repository.getSongsFromAlbum(eq(album), eq(sortOrder1)))
                 .doReturn(Flowable.error(UnsupportedOperationException()))
@@ -126,31 +128,28 @@ class GetAlbumSongsUseCaseTest {
 
     @Test
     fun test_applySortOrder_Success() {
-        val subscriber = TestSubscriber.create<List<Song>>()
+        val observer = TestObserver.create<List<Song>>()
 
         whenever(preferences.saveSortOrderForSection(eq(Library.ALBUM), eq(sortOrder1)))
-                .thenDoNothing()
+                .doReturn(Completable.complete())
 
         getAlbumSongsUseCase.applySortOrder(sortOrder1)
-                .subscribe(subscriber)
+                .subscribe(observer)
 
-        subscriber.assertResult(result1)
+        observer.assertComplete()
     }
 
     @Test
     fun test_applySortOrder_Failure() {
-        val subscriber = TestSubscriber.create<List<Song>>()
+        val observer = TestObserver.create<List<Song>>()
 
         whenever(preferences.saveSortOrderForSection(eq(Library.ALBUM), eq(sortOrder1)))
-                .thenDoNothing()
-
-        whenever(repository.getSongsFromAlbum(eq(album), eq(sortOrder1)))
-                .thenReturn(Flowable.error(UnsupportedOperationException()))
+                .doReturn(Completable.error(UnsupportedOperationException()))
 
         getAlbumSongsUseCase.applySortOrder(sortOrder1)
-                .subscribe(subscriber)
+                .subscribe(observer)
 
-        subscriber.assertError(UnsupportedOperationException::class.java)
+        observer.assertError(UnsupportedOperationException::class.java)
     }
 
     @Test
@@ -159,10 +158,10 @@ class GetAlbumSongsUseCaseTest {
             val observer = TestObserver.create<SortOrderMenu>()
 
             whenever(preferences.getSortOrderForSection(eq(Library.ALBUM)))
-                    .doReturn(sortOrder1)
+                    .doReturn(Flowable.just(sortOrder1))
 
             whenever(preferences.isSortOrderReversedForSection(eq(Library.ALBUM)))
-                    .doReturn(true)
+                    .doReturn(Flowable.just(true))
 
             getAlbumSongsUseCase.getSortOrderMenu()
                     .subscribe(observer)
@@ -186,10 +185,10 @@ class GetAlbumSongsUseCaseTest {
                     .doReturn(Single.error(UnsupportedOperationException()))
 
             whenever(preferences.getSortOrderForSection(eq(Library.ALBUM)))
-                    .doReturn(sortOrder1)
+                    .doReturn(Flowable.just(sortOrder1))
 
             whenever(preferences.isSortOrderReversedForSection(eq(Library.ALBUM)))
-                    .doReturn(true)
+                    .doReturn(Flowable.just(true))
 
             getAlbumSongsUseCase.getSortOrderMenu()
                     .subscribe(observer)
