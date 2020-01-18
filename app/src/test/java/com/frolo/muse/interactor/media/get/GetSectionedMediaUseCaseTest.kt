@@ -11,9 +11,7 @@ import com.frolo.muse.rx.SchedulerProvider
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.whenever
-import io.reactivex.Completable
-import io.reactivex.Flowable
-import io.reactivex.Single
+import io.reactivex.*
 import io.reactivex.observers.TestObserver
 import io.reactivex.subscribers.TestSubscriber
 import org.junit.Before
@@ -100,6 +98,126 @@ class GetSectionedMediaUseCaseTest {
 
             /*testing*/
             subscriber.assertResult(result)
+        }
+    }
+
+    @Test
+    fun test_getMediaListDuringSortOrderAndReverseFlowChanges_Success() {
+        // Testing flows of sort order change
+        run {
+            val subscriber = TestSubscriber.create<List<Media>>()
+
+            /*mocking*/
+            val sortOrder1 = "sort_order_1"
+            val result1 = mockMediaList(size = 10)
+
+            val sortOrder2 = "sort_order_2"
+            val result2 = mockMediaList(size = 5)
+
+            whenever(getSectionedMediaUseCase.getSortedCollection(eq(sortOrder1)))
+                    .thenReturn(Flowable.just(result1))
+
+            whenever(getSectionedMediaUseCase.getSortedCollection(eq(sortOrder2)))
+                    .thenReturn(Flowable.just(result2))
+
+            var sortOrderEmitter: Emitter<String>? = null
+
+            whenever(preferences.getSortOrderForSection(eq(section)))
+                    .thenReturn(
+                            Flowable.create(
+                                    { sortOrderEmitter = it },
+                                    BackpressureStrategy.BUFFER
+                            )
+                    )
+
+            var sortOrderReversedEmitter: Emitter<Boolean>? = null
+
+            whenever(preferences.isSortOrderReversedForSection(eq(section)))
+                    .thenReturn(
+                            Flowable.create(
+                                    { sortOrderReversedEmitter = it },
+                                    BackpressureStrategy.BUFFER
+                            )
+                    )
+
+            /*calling method*/
+            getSectionedMediaUseCase.getMediaList()
+                    .subscribe(subscriber)
+
+            // emits sort order 1
+            sortOrderEmitter!!.onNext(sortOrder1)
+
+            subscriber.assertNoValues()
+
+            // emits sort order reversed = false
+            sortOrderReversedEmitter!!.onNext(false)
+
+            subscriber.assertValueAt(0, result1)
+
+            // emits sort order reversed = true
+            sortOrderReversedEmitter!!.onNext(true)
+
+            subscriber.assertValueAt(1, result1.asReversed())
+
+            // emits sort order 2
+            sortOrderEmitter!!.onNext(sortOrder2)
+
+            subscriber.assertValueAt(2, result2.asReversed())
+
+            // emits sort order reversed = false
+            sortOrderReversedEmitter!!.onNext(false)
+
+            subscriber.assertValueAt(3, result2)
+
+            // emits sort order 1
+            sortOrderEmitter!!.onNext(sortOrder1)
+
+            subscriber.assertValueAt(4, result1)
+
+            // emits sort order 2
+            sortOrderEmitter!!.onNext(sortOrder2)
+
+            subscriber.assertValueAt(5, result2)
+        }
+    }
+
+    @Test
+    fun test_getMediaListDuringSortOrderAndReverseFlowChanges_Failure() {
+        // Testing flows of sort order change
+        run {
+            val subscriber = TestSubscriber.create<List<Media>>()
+
+            /*mocking*/
+            val sortOrder1 = "sort_order_1"
+            val result1 = mockMediaList(size = 10)
+
+            whenever(getSectionedMediaUseCase.getSortedCollection(eq(sortOrder1)))
+                    .thenReturn(Flowable.just(result1))
+
+            var sortOrderEmitter: Emitter<String>? = null
+
+            whenever(preferences.getSortOrderForSection(eq(section)))
+                    .thenReturn(
+                            Flowable.create(
+                                    { sortOrderEmitter = it },
+                                    BackpressureStrategy.BUFFER
+                            )
+                    )
+
+            whenever(preferences.isSortOrderReversedForSection(eq(section)))
+                    .thenReturn(Flowable.just(false))
+
+            /*calling method*/
+            getSectionedMediaUseCase.getMediaList()
+                    .subscribe(subscriber)
+
+            /*testing sort order 1*/
+            sortOrderEmitter!!.onNext(sortOrder1)
+            subscriber.assertValueAt(0, result1)
+
+            /*testing sort order error*/
+            sortOrderEmitter!!.onError(UnsupportedOperationException())
+            subscriber.assertError(UnsupportedOperationException::class.java)
         }
     }
 
