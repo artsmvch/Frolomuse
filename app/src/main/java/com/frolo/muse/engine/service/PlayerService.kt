@@ -20,9 +20,11 @@ import com.frolo.muse.Trace
 import com.frolo.muse.engine.*
 import com.frolo.muse.engine.service.PlayerService.Companion.newIntent
 import com.frolo.muse.engine.service.PlayerService.PlayerBinder
+import com.frolo.muse.interactor.media.DispatchSongPlayedUseCase
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.repository.PresetRepository
+import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.sleeptimer.PlayerSleepTimer
 import com.frolo.muse.ui.main.MainActivity
 import javax.inject.Inject
@@ -127,6 +129,10 @@ class PlayerService: Service() {
     lateinit var preferences: Preferences
     @Inject
     lateinit var presetRepository: PresetRepository
+    @Inject
+    lateinit var schedulerProvider: SchedulerProvider
+    @Inject
+    lateinit var dispatchSongPlayedUseCase: DispatchSongPlayedUseCase
 
     // You may be interested, why we use broadcast receiver (PendingIntent.getBroadcast) instead of simply starting service (PendingIntent.getService).
     // Well, this receiver is registered only while the service is running, so it will not receive any intent if the service is destroyed.
@@ -215,6 +221,7 @@ class PlayerService: Service() {
         }
 
         player.registerObserver(PlayerStateObserver(preferences))
+        player.registerObserver(SongPlayCountObserver(schedulerProvider, dispatchSongPlayedUseCase))
 
         Trace.d(TAG, "Service created")
     }
