@@ -7,7 +7,7 @@ import android.database.ContentObserver;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Handler;
-import android.os.Looper;
+import android.os.HandlerThread;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -30,7 +30,16 @@ import io.reactivex.functions.Function;
 final class Query {
 
     private final static Object NOTHING = new Object();
-    private final static Handler HANDLER = new Handler(Looper.getMainLooper());
+
+    private static class WorkerHandler {
+        // This handler is supposed to be lazy initialized
+        private final static Handler sInstance;
+        static {
+            HandlerThread thread = new HandlerThread("QueryWorker");
+            thread.start();
+            sInstance = new Handler(thread.getLooper());
+        }
+    }
 
     interface Builder<T> {
         T build(Cursor cursor, String[] projection);
@@ -81,7 +90,7 @@ final class Query {
             public void subscribe(final FlowableEmitter<Object> emitter) {
                 if (!emitter.isCancelled()) {
                     final boolean notifyForDescendants = true;
-                    final ContentObserver trigger = new ContentObserver(HANDLER) {
+                    final ContentObserver trigger = new ContentObserver(WorkerHandler.sInstance) {
                         @Override
                         public void onChange(boolean selfChange, Uri uri) {
                             if (!emitter.isCancelled()) {
@@ -129,7 +138,7 @@ final class Query {
                     final List<ContentObserver> triggers = new ArrayList<>(uris.size());
 
                     for (Uri uri : uris) {
-                        final ContentObserver trigger = new ContentObserver(HANDLER) {
+                        final ContentObserver trigger = new ContentObserver(WorkerHandler.sInstance) {
                             @Override
                             public void onChange(boolean selfChange, Uri uri) {
                                 if (!emitter.isCancelled()) {
