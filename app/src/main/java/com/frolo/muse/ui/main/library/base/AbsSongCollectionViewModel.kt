@@ -75,7 +75,7 @@ abstract class AbsSongCollectionViewModel<T: Song> constructor(
     }
 
     private fun detectPlayingPosition(songList: List<Song>?, song: Song?) {
-        Single.fromCallable { songList?.indexOf(song) ?: -1 }
+        Single.fromCallable { songList?.indexOfFirst { it.id == song?.id } ?: -1 }
                 .subscribeOn(schedulerProvider.computation())
                 .observeOn(schedulerProvider.main())
                 .subscribe(object : SingleObserver<Int> {
