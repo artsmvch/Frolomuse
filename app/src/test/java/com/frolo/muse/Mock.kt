@@ -1,5 +1,6 @@
 package com.frolo.muse
 
+import com.frolo.muse.model.media.Song
 import kotlin.random.Random
 import kotlin.reflect.KClass
 import kotlin.reflect.full.isSubclassOf
@@ -56,6 +57,10 @@ fun <T: Any> mockKT(clazz: KClass<T>): T {
         }
     }
 
+    if (clazz.isAbstract) {
+        return tryMockAbstract(clazz)
+    }
+
     val constructors = clazz.constructors
             .sortedBy { it.parameters.size }
 
@@ -91,4 +96,25 @@ private fun mockPrimitiveOrNull(clazz: KClass<*>) = when(clazz) {
 
     //else -> throw IllegalArgumentException("The given clazz is not a primitive")
     else -> null
+}
+
+// Tries mocking an instance based on known interfaces/abstract classes
+private fun <T: Any> tryMockAbstract(clazz: KClass<T>): T {
+    if (clazz == Song::class) {
+        @Suppress("UNCHECKED_CAST")
+        return SongImpl(
+                mockKT(),
+                mockKT(),
+                mockKT(),
+                mockKT(),
+                mockKT(),
+                mockKT(),
+                mockKT(),
+                mockKT(),
+                mockKT(),
+                mockKT()
+        ) as T
+    }
+
+    error("Failed to instantiate interface/abstract class")
 }
