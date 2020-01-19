@@ -54,7 +54,7 @@
         android:layout_marginStart="8dp"
         app:layout_constraintStart_toEndOf="@id/imv_album_art"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/tv_duration"
+        app:layout_constraintEnd_toStartOf="@id/tv_play_count"
         app:layout_constraintBottom_toTopOf="@id/tv_artist_name"
         app:layout_constraintVertical_chainStyle="packed"
         style="@style/Item.Text.Primary"
