@@ -1,10 +1,10 @@
 package com.frolo.muse.model.media;
 
-
 import java.io.Serializable;
+import java.util.Objects;
 
 
-public class SongWithPlayCount implements Song, Serializable {
+public final class SongWithPlayCount implements Song, Serializable {
     private final Song song;
     private final int playCount;
 
@@ -36,7 +36,7 @@ public class SongWithPlayCount implements Song, Serializable {
         if (obj == null) return false;
         if (!(obj instanceof SongWithPlayCount)) return false;
         SongWithPlayCount another = (SongWithPlayCount) obj;
-        return playCount == another.playCount && song.equals(another.song);
+        return playCount == another.playCount && Objects.equals(song, another.song);
     }
 
     @Override
