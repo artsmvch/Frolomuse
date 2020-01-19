@@ -21,7 +21,7 @@ class ClickMediaUseCase <E: Media> constructor(
 
     private fun processPlay(target: Song, songs: List<Song>, toggleIfSameSong: Boolean) {
         val currentSong = player.getCurrent()
-        if (toggleIfSameSong && currentSong == target) {
+        if (toggleIfSameSong && currentSong?.id == target.id) {
             // if we've chosen the same song that is currently being played then toggle the playback
             player.toggle()
         } else {
