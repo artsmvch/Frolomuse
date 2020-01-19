@@ -36,6 +36,7 @@ import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Function;
+import kotlin.Suppress;
 
 
 final class SongQuery {
@@ -733,8 +734,32 @@ final class SongQuery {
                 }
             });
         } else {
-            return queryAll(resolver)
-                    .map(new Function<List<Song>, List<SongWithPlayCount>>() {
+            Flowable<List<Song>> allSongsQuery = Query.query(
+                    resolver,
+                    URI,
+                    PROJECTION_SONG,
+                    null,
+                    null,
+                    null,
+                    BUILDER_SONG);
+
+            Flowable<Object> playCountChangeTrigger = Query.createFlowable(
+                    resolver,
+                    songPlayCountUri
+            );
+
+            Flowable<List<Song>> allSongsResultQuery = Flowable.combineLatest(
+                    Arrays.asList(allSongsQuery, playCountChangeTrigger),
+                    new Function<Object[], List<Song>>() {
+                        @Override
+                        @SuppressWarnings("unchecked")
+                        public List<Song> apply(Object[] objects) {
+                            return (List<Song>) objects[0];
+                        }
+                    }
+            );
+
+            return allSongsResultQuery.map(new Function<List<Song>, List<SongWithPlayCount>>() {
                         @Override
                         public List<SongWithPlayCount> apply(List<Song> songs) {
                             final List<SongWithPlayCount> items = new ArrayList<>(songs.size());
