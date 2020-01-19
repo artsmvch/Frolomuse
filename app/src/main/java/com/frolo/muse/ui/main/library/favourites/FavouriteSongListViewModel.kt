@@ -26,7 +26,7 @@ class FavouriteSongListViewModel @Inject constructor(
         schedulerProvider: SchedulerProvider,
         navigator: Navigator,
         eventLogger: EventLogger
-): AbsSongCollectionViewModel(
+): AbsSongCollectionViewModel<Song>(
         player,
         getFavouriteSongsUseCase,
         getMediaMenuUseCase,

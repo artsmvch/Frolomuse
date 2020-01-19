@@ -61,7 +61,7 @@ class CurrentSongQueueFragment: AbsMediaCollectionFragment<Song>() {
         }
     }
 
-    private val adapter: SongAdapter by lazy {
+    private val adapter: SongAdapter<Song> by lazy {
         SwappableSongAdapter(Glide.with(this), onDragListener)
     }
 

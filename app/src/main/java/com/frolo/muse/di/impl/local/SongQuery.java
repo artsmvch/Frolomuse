@@ -752,8 +752,12 @@ final class SongQuery {
                                 final int playCount;
                                 if (cursor != null) {
                                     try {
-                                        playCount = cursor.getInt(
-                                                cursor.getColumnIndex(playCountProjection[0]));
+                                        if (cursor.moveToFirst()) {
+                                            playCount = cursor.getInt(
+                                                    cursor.getColumnIndex(playCountProjection[0]));
+                                        } else {
+                                            playCount = 0;
+                                        }
                                     } finally {
                                         cursor.close();
                                     }

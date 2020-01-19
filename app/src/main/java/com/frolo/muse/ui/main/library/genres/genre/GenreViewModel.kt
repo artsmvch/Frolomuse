@@ -29,7 +29,7 @@ class GenreViewModel constructor(
         navigator: Navigator,
         eventLogger: EventLogger,
         genreArg: Genre
-): AbsSongCollectionViewModel(
+): AbsSongCollectionViewModel<Song>(
         player,
         getGenreSongsUseCase,
         getMediaMenuUseCase,

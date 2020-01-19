@@ -18,6 +18,7 @@ import com.frolo.muse.ui.main.library.artists.artist.songs.SongsOfArtistViewMode
 import com.frolo.muse.ui.main.library.favourites.FavouriteSongListViewModel
 import com.frolo.muse.ui.main.library.genres.GenreListViewModel
 import com.frolo.muse.ui.main.library.genres.genre.GenreViewModel
+import com.frolo.muse.ui.main.library.mostplayed.MostPlayedViewModel
 import com.frolo.muse.ui.main.library.myfiles.MyFileListViewModel
 import com.frolo.muse.ui.main.library.playlists.PlaylistListViewModel
 import com.frolo.muse.ui.main.library.playlists.addmedia.AddMediaToPlaylistViewModel
@@ -55,8 +56,17 @@ abstract class ViewModelModule {
     ): ViewModelProvider.Factory {
 
         @Suppress("UNCHECKED_CAST")
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T =
-                viewModels[modelClass]!!.get() as T
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+            val provider = viewModels[modelClass]
+
+            if (provider == null) {
+                throw IllegalArgumentException(
+                    "Provider for $modelClass not found. You may have forgotten to declare bind method in this module"
+                )
+            }
+
+            return provider.get() as T
+        }
     }
 
     @Binds
@@ -133,4 +143,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(HiddenFilesViewModel::class)
     abstract fun bindHiddenFilesViewModel(viewModel: HiddenFilesViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(MostPlayedViewModel::class)
+    abstract fun bindMostPlayedViewModel(viewModel: MostPlayedViewModel): ViewModel
 }

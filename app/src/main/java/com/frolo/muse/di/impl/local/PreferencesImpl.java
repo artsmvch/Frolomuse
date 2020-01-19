@@ -51,6 +51,21 @@ public class PreferencesImpl implements Preferences {
     private static final String KEY_ALBUM_GRID_ENABLED = "album_big_item_displaying";
     private static final String KEY_THEME = "app_theme";
 
+    private static final List<Integer> sDefaultLibrarySections;
+    static {
+        List<Integer> sections = new ArrayList<>(9);
+        sections.add(Library.ALL_SONGS);
+        sections.add(Library.ARTISTS);
+        sections.add(Library.ALBUMS);
+        sections.add(Library.GENRES);
+        sections.add(Library.FAVOURITES);
+        sections.add(Library.RECENTLY_ADDED);
+        sections.add(Library.PLAYLISTS);
+        sections.add(Library.FOLDERS);
+        sections.add(Library.MOST_PLAYED);
+        sDefaultLibrarySections = sections;
+    }
+
     // Sort orders
     @Deprecated
     private static final String KEY_SORT_ORDER = "sort_order";
@@ -427,16 +442,7 @@ public class PreferencesImpl implements Preferences {
     }
 
     private List<Integer> getDefaultLibrarySections() {
-        List<Integer> sections = new ArrayList<>(8);
-        sections.add(Library.ALL_SONGS);
-        sections.add(Library.ARTISTS);
-        sections.add(Library.ALBUMS);
-        sections.add(Library.GENRES);
-        sections.add(Library.FAVOURITES);
-        sections.add(Library.RECENTLY_ADDED);
-        sections.add(Library.PLAYLISTS);
-        sections.add(Library.FOLDERS);
-        return sections;
+        return new ArrayList<>(sDefaultLibrarySections);
     }
 
     @Override
@@ -453,6 +459,12 @@ public class PreferencesImpl implements Preferences {
                 Integer section = Integer.valueOf(nextToken);
                 sections.add(section);
             }
+
+            // checking that no sections are lost
+            for (Integer s : sDefaultLibrarySections) {
+                if (!sections.contains(s)) sections.add(s);
+            }
+
             return sections;
         } catch (Exception e) { // if any exception occurs
             return getDefaultLibrarySections();

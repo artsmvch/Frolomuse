@@ -151,6 +151,7 @@ fun getSectionName(res: Resources, @Library.Section section: Int): String {
         Library.PLAYLISTS -> res.getString(R.string.playlists)
         Library.FOLDERS -> res.getString(R.string.folders)
         Library.RECENTLY_ADDED -> res.getString(R.string.recently_added)
+        Library.MOST_PLAYED -> res.getString(R.string.most_played)
         else -> res.getString(R.string.placeholder_unknown)
     }
 }

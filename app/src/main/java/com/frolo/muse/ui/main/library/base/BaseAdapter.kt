@@ -165,7 +165,7 @@ abstract class BaseAdapter<E, VH> constructor(
         onBindViewHolder(holder, position, node.item, node.selected, false)
     }
 
-    override fun onBindViewHolder(holder: VH, position: Int, payloads: List<Any>) {
+    final override fun onBindViewHolder(holder: VH, position: Int, payloads: List<Any>) {
         val node = nodes[position]
         val selectionChanged = payloads.isNotEmpty() && payloads[0] as Boolean
         onBindViewHolder(holder, position, node.item, node.selected, selectionChanged)

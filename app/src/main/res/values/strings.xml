@@ -127,6 +127,7 @@
     <string name="playlists">Playlists</string>
     <string name="folders">Folders</string>
     <string name="recently_added">Recently added</string>
+    <string name="most_played">Most played</string>
 
     <!--counting tracks, albums, genres and etc.-->
     <string name="number_of_albums">%s albums</string>

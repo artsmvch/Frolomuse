@@ -9,13 +9,15 @@ import com.bumptech.glide.Glide
 import com.frolo.muse.R
 import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.model.media.Artist
+import com.frolo.muse.model.media.Song
 import com.frolo.muse.ui.base.withArg
 import com.frolo.muse.ui.main.decorateAsLinear
 import com.frolo.muse.ui.main.library.base.AbsSongCollectionFragment
+import com.frolo.muse.ui.main.library.base.SongAdapter
 import kotlinx.android.synthetic.main.include_backdrop_front_list.*
 
 
-class SongsOfArtistFragment: AbsSongCollectionFragment() {
+class SongsOfArtistFragment: AbsSongCollectionFragment<Song>() {
 
     companion object {
         private const val ARG_ARTIST = "artist"
@@ -31,7 +33,7 @@ class SongsOfArtistFragment: AbsSongCollectionFragment() {
                 .get(SongsOfArtistViewModel::class.java)
     }
 
-    override val adapter by lazy {
+    override val adapter: SongAdapter<Song> by lazy {
         SongOfArtistAdapter(Glide.with(this)).apply {
             setHasStableIds(true)
         }

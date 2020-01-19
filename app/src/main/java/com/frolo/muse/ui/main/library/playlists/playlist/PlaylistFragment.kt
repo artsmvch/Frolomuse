@@ -27,7 +27,7 @@ import kotlinx.android.synthetic.main.fragment_playlist.*
 import kotlinx.android.synthetic.main.include_backdrop_front_list.*
 
 
-class PlaylistFragment: AbsSongCollectionFragment() {
+class PlaylistFragment: AbsSongCollectionFragment<Song>() {
 
     companion object {
         private const val ARG_PLAYLIST = "playlist"
@@ -75,7 +75,7 @@ class PlaylistFragment: AbsSongCollectionFragment() {
 
     private var finishInteractingCallback: Runnable? = null
 
-    override val adapter: SongAdapter by lazy {
+    override val adapter: SongAdapter<Song> by lazy {
         SwappableSongAdapter(Glide.with(this), onDragListener).apply {
             setHasStableIds(true)
         }

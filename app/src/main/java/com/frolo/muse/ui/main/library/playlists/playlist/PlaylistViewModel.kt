@@ -30,7 +30,7 @@ class PlaylistViewModel constructor(
         private val schedulerProvider: SchedulerProvider,
         private val navigator: Navigator,
         eventLogger: EventLogger
-): AbsSongCollectionViewModel(
+): AbsSongCollectionViewModel<Song>(
         player,
         getPlaylistUseCase,
         getMediaMenuUseCase,

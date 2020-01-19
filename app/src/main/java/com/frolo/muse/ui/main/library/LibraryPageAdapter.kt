@@ -13,6 +13,7 @@ import com.frolo.muse.ui.main.library.albums.AlbumListFragment
 import com.frolo.muse.ui.main.library.artists.ArtistListFragment
 import com.frolo.muse.ui.main.library.favourites.FavouriteSongListFragment
 import com.frolo.muse.ui.main.library.genres.GenreListFragment
+import com.frolo.muse.ui.main.library.mostplayed.MostPlayedFragment
 import com.frolo.muse.ui.main.library.myfiles.MyFileListFragment
 import com.frolo.muse.ui.main.library.playlists.PlaylistListFragment
 import com.frolo.muse.ui.main.library.recent.RecentlyAddedSongListFragment
@@ -47,8 +48,9 @@ class LibraryPageAdapter constructor(
             Library.FOLDERS -> MyFileListFragment()
             Library.FAVOURITES -> FavouriteSongListFragment()
             Library.RECENTLY_ADDED -> RecentlyAddedSongListFragment()
-            else -> throw IllegalArgumentException(
-                    "No item at the given position: $position")
+            Library.MOST_PLAYED -> MostPlayedFragment()
+
+            else -> throw IllegalArgumentException("No item at the given position: $position")
         }
     }
 

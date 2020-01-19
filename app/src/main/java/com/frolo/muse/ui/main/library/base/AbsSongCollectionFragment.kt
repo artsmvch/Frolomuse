@@ -7,18 +7,20 @@ import com.frolo.muse.model.media.Song
 import com.frolo.muse.ui.main.AlbumArtUpdateHandler
 
 
-abstract class AbsSongCollectionFragment : AbsMediaCollectionFragment<Song>() {
+abstract class AbsSongCollectionFragment<T: Song> : AbsMediaCollectionFragment<T>() {
 
-    abstract override val viewModel: AbsSongCollectionViewModel
-    abstract val adapter: SongAdapter
-    private val adapterListener = object : BaseAdapter.Listener<Song> {
-        override fun onItemClick(item: Song, position: Int) {
+    abstract override val viewModel: AbsSongCollectionViewModel<T>
+
+    abstract val adapter: SongAdapter<T>
+
+    private val adapterListener = object : BaseAdapter.Listener<T> {
+        override fun onItemClick(item: T, position: Int) {
             viewModel.onItemClicked(item)
         }
-        override fun onItemLongClick(item: Song, position: Int) {
+        override fun onItemLongClick(item: T, position: Int) {
             viewModel.onItemLongClicked(item)
         }
-        override fun onOptionsMenuClick(item: Song, position: Int) {
+        override fun onOptionsMenuClick(item: T, position: Int) {
             viewModel.onOptionsMenuClicked(item)
         }
     }
@@ -45,7 +47,7 @@ abstract class AbsSongCollectionFragment : AbsMediaCollectionFragment<Song>() {
         adapter.listener = null
     }
 
-    override fun onSubmitList(list: List<Song>) {
+    override fun onSubmitList(list: List<T>) {
         // a little dirty bullshit.
         // we don't want to retrieve values from the view model ourselves.
         val playingPosition = viewModel.playingPosition.value ?: -1
@@ -53,7 +55,7 @@ abstract class AbsSongCollectionFragment : AbsMediaCollectionFragment<Song>() {
         adapter.submit(list, playingPosition, isPlaying)
     }
 
-    override fun onSubmitSelectedItems(selectedItems: Set<Song>) {
+    override fun onSubmitSelectedItems(selectedItems: Set<T>) {
         adapter.submitSelection(selectedItems)
     }
 
