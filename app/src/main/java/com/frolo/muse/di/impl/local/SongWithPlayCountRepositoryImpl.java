@@ -87,7 +87,7 @@ public class SongWithPlayCountRepositoryImpl implements SongWithPlayCountReposit
 
     @Override
     public Flowable<List<SongWithPlayCount>> getAllItems() {
-        return mDelegate.getSongsWithPlayCount(0);
+        return SongQuery.querySongsWithPlayCount(mContext.getContentResolver(), 0);
     }
 
     @Override

@@ -734,66 +734,34 @@ final class SongQuery {
                 }
             });
         } else {
-            Flowable<List<Song>> allSongsQuery = Query.query(
-                    resolver,
-                    URI,
-                    PROJECTION_SONG,
-                    null,
-                    null,
-                    null,
-                    BUILDER_SONG);
-
-            Flowable<Object> playCountChangeTrigger = Query.createFlowable(
-                    resolver,
-                    songPlayCountUri
-            );
-
-            Flowable<List<Song>> allSongsResultQuery = Flowable.combineLatest(
-                    Arrays.asList(allSongsQuery, playCountChangeTrigger),
-                    new Function<Object[], List<Song>>() {
+            return queryAll(resolver, Sort.BY_TITLE)
+                    .flatMap(new Function<List<Song>, Publisher<List<SongWithPlayCount>>>() {
                         @Override
-                        @SuppressWarnings("unchecked")
-                        public List<Song> apply(Object[] objects) {
-                            return (List<Song>) objects[0];
-                        }
-                    }
-            );
+                        public Publisher<List<SongWithPlayCount>> apply(List<Song> songs) {
+                            List<Flowable<SongWithPlayCount>> sources = new ArrayList<>(songs.size());
+                            for (final Song song : songs) {
+                                Flowable<SongWithPlayCount> source =
+                                    getPlayCount(resolver, song)
+                                        .map(new Function<Integer, SongWithPlayCount>() {
+                                            @Override
+                                            public SongWithPlayCount apply(Integer count) {
+                                                return new SongWithPlayCount(song, count);
+                                            }
+                                        });
 
-            return allSongsResultQuery.map(new Function<List<Song>, List<SongWithPlayCount>>() {
-                        @Override
-                        public List<SongWithPlayCount> apply(List<Song> songs) {
-                            final List<SongWithPlayCount> items = new ArrayList<>(songs.size());
-                            final String[] playCountProjection = new String[] { AppMediaStore.SongPlayCount.PLAY_COUNT };
-                            final String selection = AppMediaStore.SongPlayCount.ABSOLUTE_PATH + " =?";
-                            for (Song song : songs) {
-                                Cursor cursor = resolver.query(
-                                        songPlayCountUri,
-                                        playCountProjection,
-                                        selection,
-                                        new String[] { song.getSource() },
-                                        null
-                                );
-
-                                final int playCount;
-                                if (cursor != null) {
-                                    try {
-                                        if (cursor.moveToFirst()) {
-                                            playCount = cursor.getInt(
-                                                    cursor.getColumnIndex(playCountProjection[0]));
-                                        } else {
-                                            playCount = 0;
-                                        }
-                                    } finally {
-                                        cursor.close();
-                                    }
-                                } else {
-                                    playCount = 0;
-                                }
-
-                                SongWithPlayCount item = new SongWithPlayCount(song, playCount);
-                                items.add(item);
+                                sources.add(source);
                             }
-                            return items;
+
+                            return Flowable.combineLatest(sources, new Function<Object[], List<SongWithPlayCount>>() {
+                                @Override
+                                public List<SongWithPlayCount> apply(Object[] objects) {
+                                    List<SongWithPlayCount> items = new ArrayList<>(objects.length);
+                                    for (Object obj : objects) {
+                                        items.add((SongWithPlayCount) obj);
+                                    }
+                                    return items;
+                                }
+                            });
                         }
                     });
         }
