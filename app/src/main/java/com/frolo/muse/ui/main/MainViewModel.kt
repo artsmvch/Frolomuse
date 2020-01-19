@@ -28,17 +28,16 @@ class MainViewModel @Inject constructor(
 
     private var askToRateDisposable: Disposable? = null
 
-    private val _askReadStoragePermissionsEvent: SingleLiveEvent<Unit> = SingleLiveEvent()
-    val askReadStoragePermissionsEvent: LiveData<Unit> = _askReadStoragePermissionsEvent
+    private val _askReadStoragePermissionsEvent by lazy {
+        SingleLiveEvent<Unit>().apply { call() }
+    }
+    val askReadStoragePermissionsEvent: LiveData<Unit>
+        get() = _askReadStoragePermissionsEvent
 
     private val _askToRateEvent = SingleLiveEvent<Unit>()
-    val askToRateEvent: LiveData<Unit> = _askToRateEvent
+    val askToRateEvent: LiveData<Unit> get() = _askToRateEvent
 
-    init {
-        _askReadStoragePermissionsEvent.call()
-    }
-
-    private fun resolvePlayerAndPermissionState() {
+    private fun checkPlayerAndPermission() {
         _player?.also { safePlayer ->
             _permissionGranted.also { granted ->
                 if (granted) {
@@ -107,7 +106,7 @@ class MainViewModel @Inject constructor(
 
     fun onPlayerConnected(player: Player) {
         _player = player
-        resolvePlayerAndPermissionState()
+        checkPlayerAndPermission()
     }
 
     fun onPlayerDisconnected() {
@@ -116,7 +115,7 @@ class MainViewModel @Inject constructor(
 
     fun onReadStoragePermissionGranted() {
         _permissionGranted = true
-        resolvePlayerAndPermissionState()
+        checkPlayerAndPermission()
     }
 
     fun onReadStoragePermissionDenied() {
