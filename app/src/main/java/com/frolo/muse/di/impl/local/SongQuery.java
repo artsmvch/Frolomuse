@@ -184,6 +184,18 @@ final class SongQuery {
         }
     }
 
+    private static class SongPlayCount {
+        final String absolutePath;
+        final int playCount;
+        final long lastPlayTime;
+
+        SongPlayCount(String absolutePath, int playCount, long lastPlayTime) {
+            this.absolutePath = absolutePath;
+            this.playCount = playCount;
+            this.lastPlayTime = lastPlayTime;
+        }
+    }
+
     private static final String[] PROJECTION_SONG = new String[] {
             MediaStore.Audio.Media._ID,
             MediaStore.Audio.Media.DATA,
@@ -210,7 +222,8 @@ final class SongQuery {
 
     private static final String[] PROJECTION_SONG_PLAY_COUNT = new String[] {
             AppMediaStore.SongPlayCount.ABSOLUTE_PATH,
-            AppMediaStore.SongPlayCount.ABSOLUTE_PATH
+            AppMediaStore.SongPlayCount.PLAY_COUNT,
+            AppMediaStore.SongPlayCount.LAST_PLAY_TIME
     };
 
     private static final Query.Builder<Song> BUILDER_SONG =
@@ -251,15 +264,17 @@ final class SongQuery {
         }
     };
 
-    private static final Query.Builder<Pair<String, Integer>> BUILDER_SONG_PLAY_COUNT =
-            new Query.Builder<Pair<String, Integer>>() {
+    private static final Query.Builder<SongPlayCount> BUILDER_SONG_PLAY_COUNT =
+            new Query.Builder<SongPlayCount>() {
                 @Override
-                public Pair<String, Integer> build(Cursor cursor, String[] projection) {
+                public SongPlayCount build(Cursor cursor, String[] projection) {
                     String absolutePath = cursor.getString(
                             cursor.getColumnIndex(PROJECTION_SONG_PLAY_COUNT[0]));
                     int playCount = cursor.getInt(
                             cursor.getColumnIndex(PROJECTION_SONG_PLAY_COUNT[1]));
-                    return new Pair<>(absolutePath, playCount);
+                    long lastPlayCount = cursor.getLong(
+                            cursor.getColumnIndex(PROJECTION_SONG_PLAY_COUNT[2]));
+                    return new SongPlayCount(absolutePath, playCount, lastPlayCount);
                 }
             };
 
@@ -699,19 +714,17 @@ final class SongQuery {
                     selectionArgs,
                     null,
                     BUILDER_SONG_PLAY_COUNT
-            ).flatMap(new Function<List<Pair<String, Integer>>, Publisher<List<SongWithPlayCount>>>() {
+            ).flatMap(new Function<List<SongPlayCount>, Publisher<List<SongWithPlayCount>>>() {
                 @Override
-                public Publisher<List<SongWithPlayCount>> apply(List<Pair<String, Integer>> pairs) {
-                    final List<Flowable<SongWithPlayCount>> sources = new ArrayList<>(pairs.size());
-                    for (Pair<String, Integer> pair : pairs) {
-                        final String absolutePath = pair.first;
-                        final int playCount = pair.second;
+                public Publisher<List<SongWithPlayCount>> apply(List<SongPlayCount> counts) {
+                    final List<Flowable<SongWithPlayCount>> sources = new ArrayList<>(counts.size());
+                    for (final SongPlayCount count : counts) {
                         Flowable<SongWithPlayCount> source =
-                                querySingleByPath(resolver, absolutePath)
+                                querySingleByPath(resolver, count.absolutePath)
                                 .map(new Function<Song, SongWithPlayCount>() {
                                     @Override
                                     public SongWithPlayCount apply(Song song) {
-                                        return new SongWithPlayCount(song, playCount);
+                                        return new SongWithPlayCount(song, count.playCount, count.lastPlayTime);
                                     }
                                 });
                         sources.add(source);
@@ -741,13 +754,7 @@ final class SongQuery {
                             List<Flowable<SongWithPlayCount>> sources = new ArrayList<>(songs.size());
                             for (final Song song : songs) {
                                 Flowable<SongWithPlayCount> source =
-                                    getPlayCount(resolver, song)
-                                        .map(new Function<Integer, SongWithPlayCount>() {
-                                            @Override
-                                            public SongWithPlayCount apply(Integer count) {
-                                                return new SongWithPlayCount(song, count);
-                                            }
-                                        });
+                                    getSongWithPlayCount(resolver, song);
 
                                 sources.add(source);
                             }
@@ -767,18 +774,25 @@ final class SongQuery {
         }
     }
 
-    /*package*/ static Flowable<Integer> getPlayCount(
+    /*package*/ static Flowable<SongWithPlayCount> getSongWithPlayCount(
             final ContentResolver resolver,
             final Song song
     ) {
         final Uri uri = AppMediaStore.SongPlayCount.getContentUri();
-        return Query.createFlowable(resolver, uri, new Callable<Integer>() {
+        return Query.createFlowable(resolver, uri, new Callable<SongWithPlayCount>() {
             @Override
-            public Integer call() throws Exception {
+            public SongWithPlayCount call() throws Exception {
                 final Uri uri = AppMediaStore.SongPlayCount.getContentUri();
-                final String[] projection = new String[] { AppMediaStore.SongPlayCount.PLAY_COUNT };
+
+                final String[] projection =
+                    new String[] {
+                        AppMediaStore.SongPlayCount.PLAY_COUNT,
+                        AppMediaStore.SongPlayCount.LAST_PLAY_TIME
+                    };
+
                 final String selection = AppMediaStore.SongPlayCount.ABSOLUTE_PATH + "=?";
                 final String[] selectionArgs = new String[] { song.getSource() };
+
                 Cursor cursor = resolver.query(uri, projection, selection, selectionArgs, null);
 
                 if (cursor == null) {
@@ -786,17 +800,20 @@ final class SongQuery {
                 }
 
                 final int playCount;
+                final Long lastPlayTime;
                 try {
                     if (cursor.moveToFirst()) {
                         playCount = cursor.getInt(cursor.getColumnIndex(projection[0]));
+                        lastPlayTime = cursor.getLong(cursor.getColumnIndex(projection[1]));
                     } else {
                         playCount = 0;
+                        lastPlayTime = null;
                     }
                 } finally {
                     cursor.close();
                 }
 
-                return playCount;
+                return new SongWithPlayCount(song, playCount, lastPlayTime);
             }
         });
     }
@@ -834,18 +851,21 @@ final class SongQuery {
                 }
 
                 final int updatedPlayCount = currentPlayCount + delta;
+                final long lastPlayTime = System.currentTimeMillis();
 
                 if (entityExists) {
-                    ContentValues values = new ContentValues(1);
+                    ContentValues values = new ContentValues(2);
                     values.put(AppMediaStore.SongPlayCount.PLAY_COUNT, updatedPlayCount);
+                    values.put(AppMediaStore.SongPlayCount.LAST_PLAY_TIME, lastPlayTime);
                     int updatedCount = resolver.update(uri, values, selection, selectionArgs);
                     if (updatedCount == 0) {
                         // TODO: throw an exception
                     }
                 } else {
-                    ContentValues values = new ContentValues(2);
+                    ContentValues values = new ContentValues(3);
                     values.put(AppMediaStore.SongPlayCount.ABSOLUTE_PATH, song.getSource());
                     values.put(AppMediaStore.SongPlayCount.PLAY_COUNT, updatedPlayCount);
+                    values.put(AppMediaStore.SongPlayCount.LAST_PLAY_TIME, lastPlayTime);
                     Uri resultUri = resolver.insert(uri, values);
                     if (resultUri == null) {
                         // TODO: throw an exception

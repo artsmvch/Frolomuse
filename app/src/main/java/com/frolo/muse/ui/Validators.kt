@@ -2,6 +2,7 @@ package com.frolo.muse.ui
 
 import android.content.Context
 import android.content.res.Resources
+import android.text.format.DateUtils
 import com.frolo.muse.R
 import com.frolo.muse.model.Library
 import com.frolo.muse.model.media.*
@@ -106,6 +107,18 @@ fun MyFile.getNameAsRootString(): String {
 
 fun Song.getDurationString(): String {
     return duration.asDurationInMs()
+}
+
+fun SongWithPlayCount.getLastTimePlayedString(ctx: Context): CharSequence {
+    val time = lastPlayTime ?: return ctx.getString(R.string.not_played_yet)
+
+    val now = System.currentTimeMillis()
+
+    val minResolution = (1000 * 60 * 60 * 24).toLong()
+
+    val flags = DateUtils.FORMAT_SHOW_TIME or DateUtils.FORMAT_SHOW_WEEKDAY
+
+    return DateUtils.getRelativeTimeSpanString(now, time, minResolution, flags)
 }
 
 fun Int.asDurationInMs(): String {

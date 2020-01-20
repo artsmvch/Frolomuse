@@ -1,5 +1,7 @@
 package com.frolo.muse.model.media;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -7,10 +9,12 @@ import java.util.Objects;
 public final class SongWithPlayCount implements Song, Serializable {
     private final Song song;
     private final int playCount;
+    private final Long lastPlayTime;
 
-    public SongWithPlayCount(Song song, int playCount) {
+    public SongWithPlayCount(Song song, int playCount, @Nullable Long lastPlayTime) {
         this.song = song;
         this.playCount = playCount;
+        this.lastPlayTime = lastPlayTime;
     }
 
     public Song getSong() {
@@ -19,6 +23,15 @@ public final class SongWithPlayCount implements Song, Serializable {
 
     public int getPlayCount() {
         return playCount;
+    }
+
+    @Nullable
+    public Long getLastPlayTime() {
+        return lastPlayTime;
+    }
+
+    public boolean hasLastPlayTime() {
+        return lastPlayTime != null;
     }
 
     @Override

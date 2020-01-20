@@ -31,38 +31,32 @@ public class SongWithPlayCountRepositoryImpl implements SongWithPlayCountReposit
     private final SongRepository mDelegate;
 
     private final Function<List<Song>, Publisher<List<SongWithPlayCount>>> FLAT_MAPPER =
-            new Function<List<Song>, Publisher<List<SongWithPlayCount>>>() {
-                @Override
-                public Publisher<List<SongWithPlayCount>> apply(List<Song> songs) {
-                    final List<Flowable<SongWithPlayCount>> sources = new ArrayList<>(songs.size());
-                    for (final Song song : songs) {
-                        Flowable<SongWithPlayCount> source =
-                                SongQuery.getPlayCount(mContext.getContentResolver(), song)
-                                        .map(new Function<Integer, SongWithPlayCount>() {
-                                            @Override
-                                            public SongWithPlayCount apply(Integer playCount) {
-                                                return new SongWithPlayCount(song, playCount);
-                                            }
-                                        });
+        new Function<List<Song>, Publisher<List<SongWithPlayCount>>>() {
+            @Override
+            public Publisher<List<SongWithPlayCount>> apply(List<Song> songs) {
+                final List<Flowable<SongWithPlayCount>> sources = new ArrayList<>(songs.size());
+                for (final Song song : songs) {
+                    Flowable<SongWithPlayCount> source =
+                            SongQuery.getSongWithPlayCount(mContext.getContentResolver(), song);
 
-                        sources.add(source);
-                    }
-
-                    Function<Object[], List<SongWithPlayCount>> combiner =
-                            new Function<Object[], List<SongWithPlayCount>>() {
-                                @Override
-                                public List<SongWithPlayCount> apply(Object[] objects) {
-                                    List<SongWithPlayCount> items = new ArrayList<>(objects.length);
-                                    for (Object obj : objects) {
-                                        items.add((SongWithPlayCount) obj);
-                                    }
-                                    return items;
-                                }
-                            };
-
-                    return Flowable.combineLatest(sources, combiner);
+                    sources.add(source);
                 }
-            };
+
+                Function<Object[], List<SongWithPlayCount>> combiner =
+                    new Function<Object[], List<SongWithPlayCount>>() {
+                        @Override
+                        public List<SongWithPlayCount> apply(Object[] objects) {
+                            List<SongWithPlayCount> items = new ArrayList<>(objects.length);
+                            for (Object obj : objects) {
+                                items.add((SongWithPlayCount) obj);
+                            }
+                            return items;
+                        }
+                    };
+
+                return Flowable.combineLatest(sources, combiner);
+            }
+        };
 
     public SongWithPlayCountRepositoryImpl(Context context, SongRepository delegate) {
         this.mContext = context;
@@ -103,18 +97,12 @@ public class SongWithPlayCountRepositoryImpl implements SongWithPlayCountReposit
     @Override
     public Flowable<SongWithPlayCount> getItem(long id) {
         return mDelegate.getItem(id)
-                .flatMap(new Function<Song, Publisher<SongWithPlayCount>>() {
-                    @Override
-                    public Publisher<SongWithPlayCount> apply(final Song song) {
-                        return SongQuery.getPlayCount(mContext.getContentResolver(), song)
-                                .map(new Function<Integer, SongWithPlayCount>() {
-                                    @Override
-                                    public SongWithPlayCount apply(Integer playCount) {
-                                        return new SongWithPlayCount(song, playCount);
-                                    }
-                                });
-                    }
-                });
+            .flatMap(new Function<Song, Publisher<SongWithPlayCount>>() {
+                @Override
+                public Publisher<SongWithPlayCount> apply(final Song song) {
+                    return SongQuery.getSongWithPlayCount(mContext.getContentResolver(), song);
+                }
+            });
     }
 
     @Override

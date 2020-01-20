@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     android:minHeight="@dimen/preferred_item_height"
     android:background="@drawable/bg_item_media"
-    android:paddingBottom="8dp">
+    android:paddingBottom="16dp">
 
     <ImageView
         android:layout_margin="@dimen/list_item_img_art_padding"
@@ -17,8 +17,7 @@
         android:layout_width="@dimen/list_item_img_art_size"
         android:layout_height="@dimen/list_item_img_art_size"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <include
         android:id="@+id/view_options_menu"
@@ -30,12 +29,11 @@
         layout="@layout/include_options_menu" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:textColor="?attr/android:textColorSecondary"
-        android:layout_margin="5.5dp"
+        android:layout_margin="4dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tv_duration"
-        android:textAppearance="?textAppearanceListItem"
+        android:textAppearance="?textAppearanceListItemSecondary"
         android:maxLines="1"
         app:layout_constraintEnd_toStartOf="@id/view_options_menu"
         app:layout_constraintTop_toTopOf="@id/view_options_menu"
@@ -44,10 +42,10 @@
 
     <com.frolo.muse.views.MiniVisualizer
         android:id="@+id/mini_visualizer"
-        android:layout_width="25dp"
-        android:layout_height="19.1dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginEnd="5.5dp"
+        android:layout_width="24dp"
+        android:layout_height="20dp"
+        android:layout_marginBottom="6dp"
+        android:layout_marginEnd="6dp"
         app:layout_constraintEnd_toStartOf="@id/view_options_menu"
         app:layout_constraintBottom_toBottomOf="parent" />
 
@@ -79,23 +77,36 @@
         tools:text="@string/placeholder_unknown" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:textColor="?attr/android:textColorSecondary"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:id="@+id/tv_play_count"
         android:textAppearance="?textAppearanceListItemSecondary"
         android:maxLines="2"
         android:layout_marginTop="2dp"
-        app:layout_constraintStart_toStartOf="@id/tv_song_name"
+        app:layout_constraintStart_toStartOf="@id/tv_artist_name"
         app:layout_constraintTop_toBottomOf="@id/tv_artist_name"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/tv_artist_name"
+        app:layout_constraintBottom_toTopOf="@id/tv_last_time_played"
         tools:text="Played 100 times"/>
 
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_last_time_played"
+        android:textAppearance="?textAppearanceListItemSecondary"
+        android:maxLines="2"
+        android:layout_marginTop="2dp"
+        app:layout_constraintStart_toStartOf="@id/tv_play_count"
+        app:layout_constraintTop_toBottomOf="@id/tv_play_count"
+        app:layout_constraintEnd_toEndOf="@id/tv_play_count"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:text="Last time played today"/>
+
     <include
-        app:layout_constraintEnd_toEndOf="@id/imv_album_art"
-        app:layout_constraintBottom_toBottomOf="@id/imv_album_art"
         layout="@layout/include_check"
         android:layout_width="@dimen/list_item_check_size"
-        android:layout_height="@dimen/list_item_check_size" />
+        android:layout_height="@dimen/list_item_check_size"
+        app:layout_constraintEnd_toEndOf="@id/imv_album_art"
+        app:layout_constraintBottom_toBottomOf="@id/imv_album_art"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

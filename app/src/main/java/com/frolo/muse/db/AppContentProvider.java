@@ -59,6 +59,7 @@ public class AppContentProvider extends ContentProvider {
             + AppMediaStore.SongPlayCount._ID + " integer primary key, "
             + AppMediaStore.SongPlayCount.ABSOLUTE_PATH + " text, "
             + AppMediaStore.SongPlayCount.PLAY_COUNT + " integer, "
+            + AppMediaStore.SongPlayCount.LAST_PLAY_TIME + " long, "
             + "UNIQUE(" + AppMediaStore.SongPlayCount.ABSOLUTE_PATH + "));";
 
     // TYPES

@@ -87,6 +87,7 @@ public final class AppMediaStore {
         static final String TABLE = "song_play_count";
         public static final String ABSOLUTE_PATH = "absolute_path";
         public static final String PLAY_COUNT = "play_count";
+        public static final String LAST_PLAY_TIME = "last_play_time";
 
         static final Uri CONTENT_URI = Uri.parse(SCHEME + "://" + AUTHORITY + '/' + TABLE);
 
