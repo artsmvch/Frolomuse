@@ -8,6 +8,7 @@ import com.frolo.muse.R
 import com.frolo.muse.inflateChild
 import com.frolo.muse.model.media.SongWithPlayCount
 import com.frolo.muse.ui.getArtistString
+import com.frolo.muse.ui.getDurationString
 import com.frolo.muse.ui.getNameString
 import com.frolo.muse.ui.main.library.base.SongAdapter
 import kotlinx.android.synthetic.main.include_check.view.*
@@ -34,7 +35,8 @@ class SongWithPlayCountAdapter constructor(
             val res = resources
             tv_song_name.text = item.getNameString(res)
             tv_artist_name.text = item.getArtistString(res)
-            tv_play_count.text = item.playCount.toString()
+            tv_duration.text = item.getDurationString()
+            tv_play_count.text = res.getQuantityString(R.plurals.played_s_times, item.playCount, item.playCount)
 
             val options = GlideManager.get()
                     .requestOptions(item.albumId)

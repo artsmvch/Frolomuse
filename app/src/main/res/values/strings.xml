@@ -146,6 +146,14 @@
     <string name="for_last_month">For last month</string>
     <string name="for_last_year">For last year</string>
 
+    <!--play count-->
+    <plurals name="played_s_times">
+        <item quantity="zero">Played %d times</item>
+        <item quantity="one">Played %d time</item>
+        <item quantity="many">Played %d times</item>
+        <item quantity="other">Played %d times</item>
+    </plurals>
+
     <!--navigation drawer menu-->
     <string name="nav_library">Library</string>
     <string name="nav_player">Player</string>
