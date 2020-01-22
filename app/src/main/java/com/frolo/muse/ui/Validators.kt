@@ -118,7 +118,7 @@ fun SongWithPlayCount.getLastTimePlayedString(ctx: Context): CharSequence {
 
     val flags = DateUtils.FORMAT_SHOW_TIME or DateUtils.FORMAT_SHOW_WEEKDAY
 
-    return DateUtils.getRelativeTimeSpanString(now, time, minResolution, flags)
+    return DateUtils.getRelativeTimeSpanString(time, now, minResolution, flags)
 }
 
 fun Int.asDurationInMs(): String {
