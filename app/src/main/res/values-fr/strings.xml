@@ -124,6 +124,7 @@
     <string name="playlists">Playlists</string>
     <string name="folders">Dossiers</string>
     <string name="recently_added">Recientemente añadido</string>
+    <string name="most_played">Le plus joué</string>
 
     <!--counting tracks, albums, genres and etc.-->
     <string name="number_of_albums">%s albums</string>
@@ -141,6 +142,14 @@
     <string name="for_last_week">Pour la semaine dernière</string>
     <string name="for_last_month">Pour le mois dernier</string>
     <string name="for_last_year">Pour l\'année dernière</string>
+
+    <!--play count-->
+    <string name="not_played_yet">Pas encore joué</string>
+    <string name="last_time_s">Dernière fois: %s</string>
+    <plurals name="played_s_times">
+        <item quantity="one">Joué %d fois</item>
+        <item quantity="other">Joué %d fois</item>
+    </plurals>
 
     <!--navigation drawer menu-->
     <string name="nav_library">Bibliothèque</string>

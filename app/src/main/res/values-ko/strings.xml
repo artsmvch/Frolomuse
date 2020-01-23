@@ -123,6 +123,7 @@
     <string name="playlists">재생 목록</string>
     <string name="folders">폴더</string>
     <string name="recently_added">최근에 추가</string>
+    <string name="most_played">가장 많이 연주</string>
 
     <!--counting tracks, albums, genres and etc.-->
     <string name="number_of_albums">앨범 %d 개</string>
@@ -140,6 +141,13 @@
     <string name="for_last_week">지난주</string>
     <string name="for_last_month">지난 달</string>
     <string name="for_last_year">작년</string>
+
+    <!--play count-->
+    <string name="not_played_yet">아직 재생되지 않았습니다</string>
+    <string name="last_time_s">마지막 시간 : %s</string>
+    <plurals name="played_s_times">
+        <item quantity="other">%d 번 플레이 함</item>
+    </plurals>
 
     <!--navigation drawer menu-->
     <string name="nav_library">도서관</string>

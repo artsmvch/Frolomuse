@@ -124,6 +124,7 @@
     <string name="playlists">Daftar putar</string>
     <string name="folders">Folder</string>
     <string name="recently_added">Baru-baru ini ditambahkan</string>
+    <string name="most_played">Paling sering dimainkan</string>
 
     <!--counting tracks, albums, genres and etc.-->
     <string name="number_of_albums">%s album</string>
@@ -141,6 +142,13 @@
     <string name="for_last_week">Untuk minggu lalu</string>
     <string name="for_last_month">Untuk bulan lalu</string>
     <string name="for_last_year">Untuk tahun lalu</string>
+
+    <!--play count-->
+    <string name="not_played_yet">Belum dimainkan</string>
+    <string name="last_time_s">Terakhir kali: %s</string>
+    <plurals name="played_s_times">
+        <item quantity="other">Dimainkan %d kali</item>
+    </plurals>
 
     <!--navigation drawer menu-->
     <string name="nav_library">Perpustakaan</string>

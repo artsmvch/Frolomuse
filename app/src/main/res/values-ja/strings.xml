@@ -123,6 +123,7 @@
     <string name="playlists">プレイリスト</string>
     <string name="folders">フォルダ</string>
     <string name="recently_added">最近追加された</string>
+    <string name="most_played">最もプレイされた</string>
 
     <!--counting tracks, albums, genres and etc.-->
     <string name="number_of_albums">%s 枚のアルバム</string>
@@ -140,6 +141,13 @@
     <string name="for_last_week">先週</string>
     <string name="for_last_month">先月</string>
     <string name="for_last_year">昨年のために</string>
+
+    <!--play count-->
+    <string name="not_played_yet">まだプレイされていません</string>
+    <string name="last_time_s">前回: %s</string>
+    <plurals name="played_s_times">
+        <item quantity="other">%d 回プレイした</item>
+    </plurals>
 
     <!--navigation drawer menu-->
     <string name="nav_library">ライブラリ</string>

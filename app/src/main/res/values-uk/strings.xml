@@ -125,6 +125,7 @@
     <string name="playlists">Плейлисти</string>
     <string name="folders">Папки</string>
     <string name="recently_added">Нещодавно додані</string>
+    <string name="most_played">Більшість грав</string>
 
     <!--counting tracks, albums, genres and etc.-->
     <string name="number_of_albums">%s альбомів</string>
@@ -142,6 +143,16 @@
     <string name="for_last_week">За останній тиждень</string>
     <string name="for_last_month">За останній місяць</string>
     <string name="for_last_year">За останній рік</string>
+
+    <!--play count-->
+    <string name="not_played_yet">Ще не грав</string>
+    <string name="last_time_s">Останнього разу: %s</string>
+    <plurals name="played_s_times">
+        <item quantity="one">Грали %d раз</item>
+        <item quantity="few">Грали %d рази</item>
+        <item quantity="many">Грали %d разів</item>
+        <item quantity="other">Грали %d разів</item>
+    </plurals>
 
     <!--navigation drawer menu-->
     <string name="nav_library">Бібліотека</string>
