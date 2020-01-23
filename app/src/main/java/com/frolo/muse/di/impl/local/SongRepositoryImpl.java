@@ -195,4 +195,9 @@ public class SongRepositoryImpl
     public Completable changeFavourite(final Song item) {
         return SongQuery.changeFavourite(mContext.getContentResolver(), item);
     }
+
+    @Override
+    public Completable addSongPlayCount(Song song, int delta) {
+        return SongQuery.addSongPlayCount(mContext.getContentResolver(), song, delta);
+    }
 }

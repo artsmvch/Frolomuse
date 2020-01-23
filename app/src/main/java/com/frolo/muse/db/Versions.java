@@ -12,4 +12,7 @@ final class Versions {
 
     // Added hidden files
     static final int V_3 = 3;
+
+    // Song play count
+    static final int V_4 = 4;
 }

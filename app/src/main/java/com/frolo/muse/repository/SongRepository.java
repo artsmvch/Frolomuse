@@ -8,8 +8,10 @@ import com.frolo.muse.model.media.Song;
 
 import java.util.List;
 
+import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
+
 
 public interface SongRepository extends MediaRepository<Song> {
     /**
@@ -28,4 +30,6 @@ public interface SongRepository extends MediaRepository<Song> {
 
     // date added is a timestamp in SECONDS
     Flowable<List<Song>> getRecentlyAddedSongs(long dateAdded);
+
+    Completable addSongPlayCount(Song song, int delta);
 }

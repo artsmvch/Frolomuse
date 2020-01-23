@@ -31,7 +31,7 @@ class RecentlyAddedSongListViewModel @Inject constructor(
         private val schedulerProvider: SchedulerProvider,
         navigator: Navigator,
         eventLogger: EventLogger
-): AbsSongCollectionViewModel (
+): AbsSongCollectionViewModel<Song>(
         player,
         getRecentlyAddedSongUseCase,
         getMediaMenuUseCase,

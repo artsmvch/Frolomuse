@@ -25,7 +25,7 @@ class SongsOfArtistViewModel constructor(
         schedulerProvider: SchedulerProvider,
         navigator: Navigator,
         eventLogger: EventLogger
-): AbsSongCollectionViewModel(
+): AbsSongCollectionViewModel<Song>(
         player,
         getSongsOfArtistUseCase,
         getMediaMenuUseCase,

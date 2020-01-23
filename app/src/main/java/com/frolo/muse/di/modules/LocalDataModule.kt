@@ -25,6 +25,13 @@ class LocalDataModule {
     }
 
     @Provides
+    fun provideSongWithPlayCountMediaRepository(
+            repository: SongWithPlayCountRepository
+    ): MediaRepository<SongWithPlayCount> {
+        return repository
+    }
+
+    @Provides
     fun provideAlbumMediaRepository(repository: AlbumRepository): MediaRepository<Album> {
         return repository
     }
@@ -59,6 +66,14 @@ class LocalDataModule {
     @Provides
     fun provideSongRepository(context: Context): SongRepository {
         return SongRepositoryImpl(context)
+    }
+
+    @Provides
+    fun provideSongWithPlayCountRepository(
+            context: Context,
+            repository: SongRepository
+    ): SongWithPlayCountRepository {
+        return SongWithPlayCountRepositoryImpl(context, repository)
     }
 
     @Singleton

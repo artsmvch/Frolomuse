@@ -6,20 +6,29 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.util.Pair;
+
+import androidx.annotation.NonNull;
 
 import com.frolo.muse.db.AppMediaStore;
 import com.frolo.muse.model.media.Album;
 import com.frolo.muse.model.media.Artist;
 import com.frolo.muse.model.media.Genre;
+import com.frolo.muse.model.media.Media;
 import com.frolo.muse.model.media.MyFile;
 import com.frolo.muse.model.media.Playlist;
 import com.frolo.muse.model.media.Song;
+import com.frolo.muse.model.media.SongWithPlayCount;
+
+import org.reactivestreams.Publisher;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.Callable;
 
 import io.reactivex.Completable;
@@ -27,6 +36,7 @@ import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Function;
+import kotlin.Suppress;
 
 
 final class SongQuery {
@@ -59,6 +69,133 @@ final class SongQuery {
         }
     }
 
+    private static class SimpleSong implements Song, Serializable {
+
+        final long id;
+        final String source;
+        final String title;
+        final long albumId;
+        final String album;
+        final long artistId;
+        final String artist;
+        final String genre;
+        final int duration;
+        final int year;
+
+        SimpleSong(
+                long id,
+                String source,
+                String title,
+                long albumId,
+                String album,
+                long artistId,
+                String artist,
+                String genre,
+                int duration,
+                int year) {
+            this.id = id;
+            this.source = source;
+            this.title = title != null ? title : "";
+            this.albumId = albumId;
+            this.album = album != null ? album : "";
+            this.artistId = artistId;
+            this.artist = artist != null ? artist : "";
+            this.genre = genre != null ? genre : "";
+            this.duration = duration;
+            this.year = year;
+        }
+
+        public String getSource() {
+            return source;
+        }
+
+        @Override
+        public boolean equals(Object obj) {
+            if (obj == this) return true;
+            if (obj != null && obj instanceof SimpleSong) {
+                SimpleSong another = (SimpleSong) obj;
+                return id == another.id
+                        && Objects.equals(source, another.source)
+                        && Objects.equals(title, another.title)
+                        && albumId == another.albumId
+                        && Objects.equals(album, another.album)
+                        && artistId == another.artistId
+                        && Objects.equals(artist, another.artist)
+                        && Objects.equals(genre, another.genre)
+                        && duration == another.duration
+                        && year == another.year;
+            } else return false;
+        }
+
+        @Override
+        public int hashCode() {
+            return (int) getId();
+        }
+
+        @Override
+        public String toString() {
+            return source;
+        }
+
+        @Override
+        public long getId() {
+            return id;
+        }
+
+        @Override
+        public int getKind() {
+            return Media.SONG;
+        }
+
+        @NonNull
+        public String getTitle() {
+            return title;
+        }
+
+        @NonNull
+        public String getArtist() {
+            return artist;
+        }
+
+        @NonNull
+        public String getAlbum() {
+            return album;
+        }
+
+        public long getAlbumId() {
+            return albumId;
+        }
+
+        public int getDuration() {
+            return duration;
+        }
+
+        public int getYear() {
+            return year;
+        }
+
+        @NonNull
+        public String getGenre() {
+            return genre;
+        }
+
+        public long getArtistId() {
+            return artistId;
+        }
+    }
+
+    private static class SongPlayCount {
+        final String absolutePath;
+        final int playCount;
+        final long lastPlayTime;
+
+        SongPlayCount(String absolutePath, int playCount, long lastPlayTime) {
+            this.absolutePath = absolutePath;
+            this.playCount = playCount;
+            this.lastPlayTime = lastPlayTime;
+        }
+    }
+
     private static final String[] PROJECTION_SONG = new String[] {
             MediaStore.Audio.Media._ID,
             MediaStore.Audio.Media.DATA,
@@ -83,11 +220,17 @@ final class SongQuery {
             MediaStore.Audio.Playlists.Members.YEAR,
     };
 
+    private static final String[] PROJECTION_SONG_PLAY_COUNT = new String[] {
+            AppMediaStore.SongPlayCount.ABSOLUTE_PATH,
+            AppMediaStore.SongPlayCount.PLAY_COUNT,
+            AppMediaStore.SongPlayCount.LAST_PLAY_TIME
+    };
+
     private static final Query.Builder<Song> BUILDER_SONG =
             new Query.Builder<Song>() {
         @Override
         public Song build(Cursor cursor, String[] projection) {
-            return new Song(
+            return new SimpleSong(
                     cursor.getLong(cursor.getColumnIndex(PROJECTION_SONG[0])),
                     cursor.getString(cursor.getColumnIndex(PROJECTION_SONG[1])),
                     cursor.getString(cursor.getColumnIndex(PROJECTION_SONG[2])),
@@ -106,7 +249,7 @@ final class SongQuery {
             new Query.Builder<Song>() {
         @Override
         public Song build(Cursor cursor, String[] projection) {
-            return new Song(
+            return new SimpleSong(
                     cursor.getLong(cursor.getColumnIndex(PROJECTION_PLAYLIST_MEMBER[0])),
                     cursor.getString(cursor.getColumnIndex(PROJECTION_PLAYLIST_MEMBER[1])),
                     cursor.getString(cursor.getColumnIndex(PROJECTION_PLAYLIST_MEMBER[2])),
@@ -120,6 +263,20 @@ final class SongQuery {
             );
         }
     };
+
+    private static final Query.Builder<SongPlayCount> BUILDER_SONG_PLAY_COUNT =
+            new Query.Builder<SongPlayCount>() {
+                @Override
+                public SongPlayCount build(Cursor cursor, String[] projection) {
+                    String absolutePath = cursor.getString(
+                            cursor.getColumnIndex(PROJECTION_SONG_PLAY_COUNT[0]));
+                    int playCount = cursor.getInt(
+                            cursor.getColumnIndex(PROJECTION_SONG_PLAY_COUNT[1]));
+                    long lastPlayCount = cursor.getLong(
+                            cursor.getColumnIndex(PROJECTION_SONG_PLAY_COUNT[2]));
+                    return new SongPlayCount(absolutePath, playCount, lastPlayCount);
+                }
+            };
 
     private static final Function<Object[], List<Song>> COMBINER =
             new Function<Object[], List<Song>>() {
@@ -537,6 +694,184 @@ final class SongQuery {
                 if (updatedCount == 0) {
                     // TODO: throw an exception if it failed to update
                 }
+            }
+        });
+    }
+
+    /*package*/ static Flowable<List<SongWithPlayCount>> querySongsWithPlayCount(
+            final ContentResolver resolver,
+            final int minPlayCount
+    ) {
+        final Uri songPlayCountUri = AppMediaStore.SongPlayCount.getContentUri();
+        if (minPlayCount > 0) {
+            final String selection = AppMediaStore.SongPlayCount.PLAY_COUNT + ">= ?";
+            final String[] selectionArgs = new String[] { String.valueOf(minPlayCount) };
+            return Query.query(
+                    resolver,
+                    songPlayCountUri,
+                    PROJECTION_SONG_PLAY_COUNT,
+                    selection,
+                    selectionArgs,
+                    null,
+                    BUILDER_SONG_PLAY_COUNT
+            ).flatMap(new Function<List<SongPlayCount>, Publisher<List<SongWithPlayCount>>>() {
+                @Override
+                public Publisher<List<SongWithPlayCount>> apply(List<SongPlayCount> counts) {
+                    final List<Flowable<SongWithPlayCount>> sources = new ArrayList<>(counts.size());
+                    for (final SongPlayCount count : counts) {
+                        Flowable<SongWithPlayCount> source =
+                                querySingleByPath(resolver, count.absolutePath)
+                                .map(new Function<Song, SongWithPlayCount>() {
+                                    @Override
+                                    public SongWithPlayCount apply(Song song) {
+                                        return new SongWithPlayCount(song, count.playCount, count.lastPlayTime);
+                                    }
+                                });
+                        sources.add(source);
+                    }
+                    return Flowable.combineLatest(
+                            sources,
+                            new Function<Object[], List<SongWithPlayCount>>() {
+                                @Override
+                                public List<SongWithPlayCount> apply(Object[] objects) {
+                                    List<SongWithPlayCount> result = new ArrayList<>(objects.length);
+                                    for (Object obj : objects) {
+                                        @SuppressWarnings("unchecked")
+                                        SongWithPlayCount item = (SongWithPlayCount) obj;
+                                        result.add(item);
+                                    }
+                                    return result;
+                                }
+                            }
+                    );
+                }
+            });
+        } else {
+            return queryAll(resolver, Sort.BY_TITLE)
+                    .flatMap(new Function<List<Song>, Publisher<List<SongWithPlayCount>>>() {
+                        @Override
+                        public Publisher<List<SongWithPlayCount>> apply(List<Song> songs) {
+                            List<Flowable<SongWithPlayCount>> sources = new ArrayList<>(songs.size());
+                            for (final Song song : songs) {
+                                Flowable<SongWithPlayCount> source =
+                                    getSongWithPlayCount(resolver, song);
+
+                                sources.add(source);
+                            }
+
+                            return Flowable.combineLatest(sources, new Function<Object[], List<SongWithPlayCount>>() {
+                                @Override
+                                public List<SongWithPlayCount> apply(Object[] objects) {
+                                    List<SongWithPlayCount> items = new ArrayList<>(objects.length);
+                                    for (Object obj : objects) {
+                                        items.add((SongWithPlayCount) obj);
+                                    }
+                                    return items;
+                                }
+                            });
+                        }
+                    });
+        }
+    }
+
+    /*package*/ static Flowable<SongWithPlayCount> getSongWithPlayCount(
+            final ContentResolver resolver,
+            final Song song
+    ) {
+        final Uri uri = AppMediaStore.SongPlayCount.getContentUri();
+        return Query.createFlowable(resolver, uri, new Callable<SongWithPlayCount>() {
+            @Override
+            public SongWithPlayCount call() throws Exception {
+                final Uri uri = AppMediaStore.SongPlayCount.getContentUri();
+
+                final String[] projection =
+                    new String[] {
+                        AppMediaStore.SongPlayCount.PLAY_COUNT,
+                        AppMediaStore.SongPlayCount.LAST_PLAY_TIME
+                    };
+
+                final String selection = AppMediaStore.SongPlayCount.ABSOLUTE_PATH + "=?";
+                final String[] selectionArgs = new String[] { song.getSource() };
+
+                Cursor cursor = resolver.query(uri, projection, selection, selectionArgs, null);
+
+                if (cursor == null) {
+                    throw Query.genNullCursorErr(uri);
+                }
+
+                final int playCount;
+                final Long lastPlayTime;
+                try {
+                    if (cursor.moveToFirst()) {
+                        playCount = cursor.getInt(cursor.getColumnIndex(projection[0]));
+                        lastPlayTime = cursor.getLong(cursor.getColumnIndex(projection[1]));
+                    } else {
+                        playCount = 0;
+                        lastPlayTime = null;
+                    }
+                } finally {
+                    cursor.close();
+                }
+
+                return new SongWithPlayCount(song, playCount, lastPlayTime);
+            }
+        });
+    }
+
+    /*package*/ static Completable addSongPlayCount(
+            final ContentResolver resolver,
+            final Song song,
+            final int delta
+    ) {
+        return Completable.fromAction(new Action() {
+            @Override
+            public void run() throws Exception {
+                final Uri uri = AppMediaStore.SongPlayCount.getContentUri();
+                final String[] projection = new String[] { AppMediaStore.SongPlayCount.PLAY_COUNT };
+                final String selection = AppMediaStore.SongPlayCount.ABSOLUTE_PATH + "=?";
+                final String[] selectionArgs = new String[] { song.getSource() };
+                Cursor cursor = resolver.query(uri, projection, selection, selectionArgs, null);
+
+                if (cursor == null) {
+                    throw Query.genNullCursorErr(uri);
+                }
+
+                final int currentPlayCount;
+                final boolean entityExists;
+                try {
+                    if (cursor.moveToFirst()) {
+                        entityExists = true;
+                        currentPlayCount = cursor.getInt(cursor.getColumnIndex(projection[0]));
+                    } else {
+                        entityExists = false;
+                        currentPlayCount = 0;
+                    }
+                } finally {
+                    cursor.close();
+                }
+
+                final int updatedPlayCount = currentPlayCount + delta;
+                final long lastPlayTime = System.currentTimeMillis();
+
+                if (entityExists) {
+                    ContentValues values = new ContentValues(2);
+                    values.put(AppMediaStore.SongPlayCount.PLAY_COUNT, updatedPlayCount);
+                    values.put(AppMediaStore.SongPlayCount.LAST_PLAY_TIME, lastPlayTime);
+                    int updatedCount = resolver.update(uri, values, selection, selectionArgs);
+                    if (updatedCount == 0) {
+                        // TODO: throw an exception
+                    }
+                } else {
+                    ContentValues values = new ContentValues(3);
+                    values.put(AppMediaStore.SongPlayCount.ABSOLUTE_PATH, song.getSource());
+                    values.put(AppMediaStore.SongPlayCount.PLAY_COUNT, updatedPlayCount);
+                    values.put(AppMediaStore.SongPlayCount.LAST_PLAY_TIME, lastPlayTime);
+                    Uri resultUri = resolver.insert(uri, values);
+                    if (resultUri == null) {
+                        // TODO: throw an exception
+                    }
+                }
+
             }
         });
     }

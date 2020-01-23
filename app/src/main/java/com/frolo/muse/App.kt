@@ -1,5 +1,6 @@
 package com.frolo.muse
 
+import android.os.StrictMode
 import androidx.core.content.ContextCompat
 import androidx.multidex.MultiDexApplication
 import com.crashlytics.android.Crashlytics
@@ -89,20 +90,20 @@ class App : MultiDexApplication() {
     }
 
     private fun setupStrictMode() {
-//        if (BuildConfig.DEBUG) {
-//            StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder()
-//                    .detectDiskReads()
-//                    .detectDiskWrites()
-//                    .detectNetwork()
-//                    .penaltyLog()
-//                    .build())
-//            StrictMode.setVmPolicy(StrictMode.VmPolicy.Builder()
-//                    .detectLeakedSqlLiteObjects()
-//                    .detectLeakedClosableObjects()
-//                    .penaltyLog()
-//                    .penaltyDeath()
-//                    .build())
-//        }
+        if (BuildConfig.DEBUG) {
+            StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder()
+                    .detectDiskReads()
+                    .detectDiskWrites()
+                    .detectNetwork()
+                    .penaltyLog()
+                    .build())
+            StrictMode.setVmPolicy(StrictMode.VmPolicy.Builder()
+                    .detectLeakedSqlLiteObjects()
+                    .detectLeakedClosableObjects()
+                    .penaltyLog()
+                    .penaltyDeath()
+                    .build())
+        }
     }
 
     private fun dispatchAppLaunched() {

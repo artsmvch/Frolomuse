@@ -166,9 +166,7 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
      *******************************/
 
     fun onReadPermissionGranted() {
-        getMediaUseCase.getMediaList().apply {
-            fetch(this)
-        }
+        doFetch()
     }
 
     /********************************
@@ -195,8 +193,12 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
                 .subscribeFor {  }
     }
 
-    private fun fetch(source: Flowable<List<E>>) {
-        source
+    /**
+     * Convenient method for fetching media collection.
+     * This properly dispatches subscription's events to other live data members.
+     */
+    private fun doFetch() {
+        getMediaUseCase.getMediaList()
                 .observeOn(schedulerProvider.computation())
                 .doOnNext { list ->
                     openOptionsMenuEvent.value?.also { safeMenu ->
@@ -213,11 +215,11 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
                         _isLoading.value = true
                     }
                 }
-                .doOnNext { list ->
+                .doOnNext {
                     _mediaListFetched = true
                     _isLoading.value = false
                 }
-                .doOnError { err ->
+                .doOnError {
                     _isLoading.value = false
                 }
                 .subscribe(
@@ -246,10 +248,7 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
     internal fun onActive() {
         if (_activated.not() || _mediaListFetched.not()) {
             _activated = true
-
-            getMediaUseCase.getMediaList().apply {
-                fetch(this)
-            }
+            doFetch()
         }
     }
 

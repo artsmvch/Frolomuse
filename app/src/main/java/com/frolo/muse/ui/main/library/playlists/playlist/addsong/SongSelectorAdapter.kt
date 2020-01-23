@@ -1,11 +1,11 @@
 package com.frolo.muse.ui.main.library.playlists.playlist.addsong
 
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.RequestManager
 import com.frolo.muse.R
+import com.frolo.muse.inflateChild
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.ui.getAlbumString
 import com.frolo.muse.ui.getDurationString
@@ -16,24 +16,19 @@ import kotlinx.android.synthetic.main.item_select_song.view.*
 
 class SongSelectorAdapter constructor(
         requestManager: RequestManager
-): SongAdapter(requestManager) {
+): SongAdapter<Song>(requestManager) {
 
     override fun onCreateBaseViewHolder(
             parent: ViewGroup,
-            viewType: Int): SongViewHolder {
-
-        val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_select_song, parent, false)
-
-        return SongSelectorViewHolder(view)
-    }
+            viewType: Int
+    ) = SongSelectorViewHolder(parent.inflateChild(R.layout.item_select_song))
 
     override fun onBindViewHolder(
             holder: SongViewHolder,
             position: Int,
             item: Song,
-            selected: Boolean, selectionChanged: Boolean) {
-
+            selected: Boolean, selectionChanged: Boolean
+    ) {
         val selectorViewHolder = holder as SongSelectorViewHolder
         with(selectorViewHolder.itemView) {
             val res = resources

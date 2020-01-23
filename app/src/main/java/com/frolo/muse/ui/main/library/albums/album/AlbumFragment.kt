@@ -12,6 +12,7 @@ import com.frolo.muse.GlideManager
 import com.frolo.muse.R
 import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.model.media.Album
+import com.frolo.muse.model.media.Song
 import com.frolo.muse.ui.base.withArg
 import com.frolo.muse.ui.main.AlbumArtUpdateHandler
 import com.frolo.muse.ui.main.decorateAsLinear
@@ -21,7 +22,7 @@ import com.frolo.muse.views.showBackArrow
 import kotlinx.android.synthetic.main.fragment_album.*
 
 
-class AlbumFragment: AbsSongCollectionFragment() {
+class AlbumFragment: AbsSongCollectionFragment<Song>() {
     companion object {
 
         private const val ARG_ALBUM = "album"
@@ -39,7 +40,7 @@ class AlbumFragment: AbsSongCollectionFragment() {
     }
 
     override val adapter by lazy {
-        SongAdapter(Glide.with(this)).apply {
+        SongAdapter<Song>(Glide.with(this)).apply {
             setHasStableIds(true)
         }
     }

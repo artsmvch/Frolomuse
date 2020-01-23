@@ -29,7 +29,7 @@ class AlbumViewModel constructor(
         private val navigator: Navigator,
         eventLogger: EventLogger,
         private val albumArg: Album
-): AbsSongCollectionViewModel(
+): AbsSongCollectionViewModel<Song>(
         player,
         getAlbumSongsUseCase,
         getMediaMenuUseCase,

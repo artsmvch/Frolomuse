@@ -1,11 +1,11 @@
 package com.frolo.muse.ui.main.library.artists.artist.songs
 
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.RequestManager
 import com.frolo.muse.GlideManager
 import com.frolo.muse.R
+import com.frolo.muse.inflateChild
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.ui.getAlbumString
 import com.frolo.muse.ui.getDurationString
@@ -17,22 +17,19 @@ import kotlinx.android.synthetic.main.item_song_of_artist.view.*
 
 class SongOfArtistAdapter constructor(
         private val requestManager: RequestManager
-): SongAdapter(requestManager) {
+): SongAdapter<Song>(requestManager) {
 
     override fun onCreateBaseViewHolder(
             parent: ViewGroup,
-            viewType: Int): SongViewHolder {
-
-        val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_song_of_artist, parent, false)
-        return SongViewHolder(view)
-    }
+            viewType: Int
+    ) = SongViewHolder(parent.inflateChild(R.layout.item_song_of_artist))
 
     override fun onBindViewHolder(
             holder: SongViewHolder,
             position: Int,
             item: Song,
-            selected: Boolean, selectionChanged: Boolean) {
+            selected: Boolean, selectionChanged: Boolean
+    ) {
 
         with(holder.itemView) {
             val res = resources

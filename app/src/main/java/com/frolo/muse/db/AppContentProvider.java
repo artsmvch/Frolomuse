@@ -55,6 +55,13 @@ public class AppContentProvider extends ContentProvider {
             + AppMediaStore.HiddenFiles.TIME_HIDDEN + " long, "
             + "UNIQUE(" + AppMediaStore.HiddenFiles.ABSOLUTE_PATH + "));";
 
+    private static final String SQL_CREATE_SONG_PLAY_COUNT = "create table " + AppMediaStore.SongPlayCount.TABLE + "("
+            + AppMediaStore.SongPlayCount._ID + " integer primary key, "
+            + AppMediaStore.SongPlayCount.ABSOLUTE_PATH + " text, "
+            + AppMediaStore.SongPlayCount.PLAY_COUNT + " integer, "
+            + AppMediaStore.SongPlayCount.LAST_PLAY_TIME + " long, "
+            + "UNIQUE(" + AppMediaStore.SongPlayCount.ABSOLUTE_PATH + "));";
+
     // TYPES
     private static final String FAVOURITE_CONTENT_TYPE = "vnd.android.cursor.dir/vnd."
             + AUTHORITY + '.' + AppMediaStore.Favourites.TABLE;
@@ -72,6 +79,10 @@ public class AppContentProvider extends ContentProvider {
             + AUTHORITY + '.' + AppMediaStore.HiddenFiles.TABLE;
     private static final String HIDDEN_FILES_CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd."
             + AUTHORITY + '.' + AppMediaStore.HiddenFiles.TABLE;
+    private static final String SONG_PLAY_COUNT_CONTENT_TYPE = "vnd.android.cursor.dir/vnd."
+            + AUTHORITY + '.' + AppMediaStore.SongPlayCount.TABLE;
+    private static final String SONG_PLAY_COUNT_CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd."
+            + AUTHORITY + '.' + AppMediaStore.SongPlayCount.TABLE;
 
     //FOR URI MATCHER
     private static final int URI_FAVOURITE = 1;
@@ -82,6 +93,8 @@ public class AppContentProvider extends ContentProvider {
     private static final int URI_LYRICS_ID = 6;
     private static final int URI_HIDDEN_FILES = 7;
     private static final int URI_HIDDEN_FILES_ID = 8;
+    private static final int URI_SONG_PLAY_COUNT = 9;
+    private static final int URI_SONG_PLAY_COUNT_ID = 10;
 
     private static final UriMatcher URI_MATCHER;
     // initializing UriMatcher
@@ -95,6 +108,8 @@ public class AppContentProvider extends ContentProvider {
         URI_MATCHER.addURI(AUTHORITY, AppMediaStore.Lyrics.TABLE + "/#", URI_LYRICS_ID);
         URI_MATCHER.addURI(AUTHORITY, AppMediaStore.HiddenFiles.TABLE, URI_HIDDEN_FILES);
         URI_MATCHER.addURI(AUTHORITY, AppMediaStore.HiddenFiles.TABLE + "/#", URI_HIDDEN_FILES_ID);
+        URI_MATCHER.addURI(AUTHORITY, AppMediaStore.SongPlayCount.TABLE, URI_SONG_PLAY_COUNT);
+        URI_MATCHER.addURI(AUTHORITY, AppMediaStore.SongPlayCount.TABLE + "/#", URI_SONG_PLAY_COUNT_ID);
     }
 
     private SQLiteDatabase db;
@@ -174,6 +189,21 @@ public class AppContentProvider extends ContentProvider {
                 else selection = selection + " AND " + AppMediaStore.HiddenFiles._ID + " = " + id;
                 break;
             }
+
+            case URI_SONG_PLAY_COUNT: {
+                table = AppMediaStore.SongPlayCount.TABLE;
+                observedUri = AppMediaStore.SongPlayCount.CONTENT_URI;
+                if (TextUtils.isEmpty(sortOrder)) sortOrder = AppMediaStore.SongPlayCount.PLAY_COUNT + " ASC";
+                break;
+            }
+            case URI_SONG_PLAY_COUNT_ID: {
+                table = AppMediaStore.SongPlayCount.TABLE;
+                observedUri = AppMediaStore.SongPlayCount.CONTENT_URI;
+                String id = uri.getLastPathSegment();
+                if (TextUtils.isEmpty(selection)) selection = AppMediaStore.SongPlayCount._ID + " = " + id;
+                else selection = selection + " AND " + AppMediaStore.SongPlayCount._ID + " = " + id;
+                break;
+            }
             default: throw new IllegalArgumentException("Wrong Uri: " + uri);
         }
         db = dbHelper.getReadableDatabase();
@@ -194,6 +224,8 @@ public class AppContentProvider extends ContentProvider {
             case URI_LYRICS_ID:         return LYRICS_CONTENT_ITEM_TYPE;
             case URI_HIDDEN_FILES:      return HIDDEN_FILES_CONTENT_TYPE;
             case URI_HIDDEN_FILES_ID:   return HIDDEN_FILES_CONTENT_ITEM_TYPE;
+            case URI_SONG_PLAY_COUNT:   return SONG_PLAY_COUNT_CONTENT_TYPE;
+            case URI_SONG_PLAY_COUNT_ID:return SONG_PLAY_COUNT_CONTENT_ITEM_TYPE;
             default:                    throw new IllegalArgumentException("Wrong Uri: " + uri);
         }
     }
@@ -225,6 +257,12 @@ public class AppContentProvider extends ContentProvider {
             db = dbHelper.getWritableDatabase();
             long rowId = db.insert(AppMediaStore.HiddenFiles.TABLE, null, values);
             Uri resultUri = ContentUris.withAppendedId(AppMediaStore.HiddenFiles.CONTENT_URI, rowId);
+            getContext().getContentResolver().notifyChange(resultUri, null);
+            return resultUri;
+        } else if (URI_MATCHER.match(uri) == URI_SONG_PLAY_COUNT) {
+            db = dbHelper.getWritableDatabase();
+            long rowId = db.insert(AppMediaStore.SongPlayCount.TABLE, null, values);
+            Uri resultUri = ContentUris.withAppendedId(AppMediaStore.SongPlayCount.CONTENT_URI, rowId);
             getContext().getContentResolver().notifyChange(resultUri, null);
             return resultUri;
         }
@@ -270,6 +308,16 @@ public class AppContentProvider extends ContentProvider {
                 else selection = selection + " AND " + AppMediaStore.HiddenFiles._ID + " = " + id;
                 break;
             }
+
+            case URI_SONG_PLAY_COUNT: table = AppMediaStore.SongPlayCount.TABLE; break;
+            case URI_SONG_PLAY_COUNT_ID: {
+                table = AppMediaStore.SongPlayCount.TABLE;
+                String id = uri.getLastPathSegment();
+                if (TextUtils.isEmpty(selection)) selection = AppMediaStore.SongPlayCount._ID + " = " + id;
+                else selection = selection + " AND " + AppMediaStore.SongPlayCount._ID + " = " + id;
+                break;
+            }
+
             default: throw new IllegalArgumentException("Wrong Uri: " + uri);
         }
         db = dbHelper.getWritableDatabase();
@@ -318,6 +366,16 @@ public class AppContentProvider extends ContentProvider {
                 else selection = selection + " AND " + AppMediaStore.HiddenFiles._ID + " = " + id;
                 break;
             }
+
+            case URI_SONG_PLAY_COUNT: table = AppMediaStore.SongPlayCount.TABLE; break;
+            case URI_SONG_PLAY_COUNT_ID: {
+                table = AppMediaStore.SongPlayCount.TABLE;
+                String id = uri.getLastPathSegment();
+                if (TextUtils.isEmpty(selection)) selection = AppMediaStore.SongPlayCount._ID + " = " + id;
+                else selection = selection + " AND " + AppMediaStore.SongPlayCount._ID + " = " + id;
+                break;
+            }
+
             default: throw new IllegalArgumentException("Wrong Uri: " + uri);
         }
         db = dbHelper.getWritableDatabase();
@@ -344,6 +402,7 @@ public class AppContentProvider extends ContentProvider {
             db.execSQL(SQL_CREATE_PRESETS);
             db.execSQL(SQL_CREATE_LYRICS);
             db.execSQL(SQL_CREATE_HIDDEN_FILES);
+            db.execSQL(SQL_CREATE_SONG_PLAY_COUNT);
         }
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -361,6 +420,11 @@ public class AppContentProvider extends ContentProvider {
             if (oldVersion < Versions.V_3) {
                 // Add HiddenFiles table
                 db.execSQL(SQL_CREATE_HIDDEN_FILES);
+            }
+
+            if (oldVersion < Versions.V_4) {
+                // Add SongPlayCount table
+                db.execSQL(SQL_CREATE_SONG_PLAY_COUNT);
             }
         }
     }

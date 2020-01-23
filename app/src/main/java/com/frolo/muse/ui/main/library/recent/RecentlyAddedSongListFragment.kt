@@ -26,8 +26,8 @@ class RecentlyAddedSongListFragment: SimpleMediaCollectionFragment<Song>() {
 
     override val viewModel: RecentlyAddedSongListViewModel by viewModel()
 
-    override val adapter by lazy {
-        SongAdapter(Glide.with(this)).apply {
+    override val adapter: SongAdapter<Song> by lazy {
+        SongAdapter<Song>(Glide.with(this)).apply {
             setHasStableIds(true)
         }
     }

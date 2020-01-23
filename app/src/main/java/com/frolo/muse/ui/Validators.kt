@@ -2,6 +2,7 @@ package com.frolo.muse.ui
 
 import android.content.Context
 import android.content.res.Resources
+import android.text.format.DateUtils
 import com.frolo.muse.R
 import com.frolo.muse.model.Library
 import com.frolo.muse.model.media.*
@@ -108,6 +109,18 @@ fun Song.getDurationString(): String {
     return duration.asDurationInMs()
 }
 
+fun SongWithPlayCount.getLastTimePlayedString(ctx: Context): CharSequence {
+    val time = lastPlayTime ?: return ""
+
+    val now = System.currentTimeMillis()
+
+    val minResolution = (1000 * 60 * 60 * 24).toLong()
+
+    val flags = DateUtils.FORMAT_SHOW_TIME or DateUtils.FORMAT_SHOW_WEEKDAY
+
+    return DateUtils.getRelativeTimeSpanString(time, now, minResolution, flags)
+}
+
 fun Int.asDurationInMs(): String {
     val totalSeconds = this / 1000
     val totalMinutes = totalSeconds / 60
@@ -151,6 +164,7 @@ fun getSectionName(res: Resources, @Library.Section section: Int): String {
         Library.PLAYLISTS -> res.getString(R.string.playlists)
         Library.FOLDERS -> res.getString(R.string.folders)
         Library.RECENTLY_ADDED -> res.getString(R.string.recently_added)
+        Library.MOST_PLAYED -> res.getString(R.string.most_played)
         else -> res.getString(R.string.placeholder_unknown)
     }
 }

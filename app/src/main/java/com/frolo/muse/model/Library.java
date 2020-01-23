@@ -23,9 +23,10 @@ public interface Library {
     int GENRE = 10;
     int PLAYLIST = 11;
     int MIXED = 12;
+    int MOST_PLAYED = 13;
 
-    @IntDef({ALL_SONGS, ALBUMS, ARTISTS, GENRES, FAVOURITES, PLAYLISTS,
-            FOLDERS, RECENTLY_ADDED, ALBUM, ARTIST, GENRE, PLAYLIST, MIXED})
+    @IntDef({ALL_SONGS, ALBUMS, ARTISTS, GENRES, FAVOURITES, PLAYLISTS, FOLDERS,
+            RECENTLY_ADDED, ALBUM, ARTIST, GENRE, PLAYLIST, MIXED, MOST_PLAYED})
     @Target({ElementType.LOCAL_VARIABLE, ElementType.FIELD,
             ElementType.METHOD, ElementType.PARAMETER, ElementType.TYPE_USE})
     @Retention(RetentionPolicy.RUNTIME)

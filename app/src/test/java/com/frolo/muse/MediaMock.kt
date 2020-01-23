@@ -28,7 +28,7 @@ fun mockSongList(size: Int = 1, allowIdCollisions: Boolean = false): List<Song> 
         val item: Song = if (allowIdCollisions) {
             mock()
         } else {
-            Song(
+            SongImpl(
                     index.toLong(),
                     mockKT(),
                     mockKT(),

@@ -16,6 +16,7 @@ abstract class SimpleMediaCollectionFragment <E: Media>:
         AbsMediaCollectionFragment<E>() {
 
     abstract val adapter: BaseAdapter<E, *>
+
     private val adapterListener = object : BaseAdapter.Listener<E> {
         override fun onItemClick(item: E, position: Int) {
             viewModel.onItemClicked(item)

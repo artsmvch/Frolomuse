@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.frolo.muse.R
+import com.frolo.muse.inflateChild
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.ui.base.adapter.ItemTouchHelperAdapter
 import com.frolo.muse.ui.getAlbumString
@@ -19,7 +20,7 @@ import kotlinx.android.synthetic.main.include_draggable_item_song.view.*
 class SwappableSongAdapter constructor(
         requestManager: RequestManager,
         private val onDragListener: OnDragListener? = null
-): SongAdapter(requestManager), ItemTouchHelperAdapter {
+): SongAdapter<Song>(requestManager), ItemTouchHelperAdapter {
 
     companion object {
         const val VIEW_TYPE_NORMAL = 0
@@ -66,8 +67,7 @@ class SwappableSongAdapter constructor(
             }
 
             VIEW_TYPE_SWAPPABLE -> {
-                val view = LayoutInflater.from(parent.context)
-                        .inflate(R.layout.include_draggable_item_song, parent, false)
+                val view = parent.inflateChild(R.layout.include_draggable_item_song)
 
                 SwappableSongViewHolder(view).apply {
                     val viewToDrag = itemView.findViewById<View>(R.id.view_drag_and_drop)
@@ -83,7 +83,7 @@ class SwappableSongAdapter constructor(
                     }
                 }
             }
-            else -> throw IllegalArgumentException("Unknown itemViewType: $viewType")
+            else -> throw IllegalArgumentException("Unexpected view type: $viewType")
         }
     }
 
@@ -92,7 +92,8 @@ class SwappableSongAdapter constructor(
             position: Int,
             item: Song,
             selected: Boolean,
-            selectionChanged: Boolean) {
+            selectionChanged: Boolean
+    ) {
 
         if (holder is SwappableSongViewHolder) {
             with(holder.itemView) {

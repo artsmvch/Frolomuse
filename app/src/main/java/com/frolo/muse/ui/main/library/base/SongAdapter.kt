@@ -1,11 +1,11 @@
 package com.frolo.muse.ui.main.library.base
 
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.RequestManager
 import com.frolo.muse.GlideManager
 import com.frolo.muse.R
+import com.frolo.muse.inflateChild
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.ui.getArtistString
 import com.frolo.muse.ui.getDurationString
@@ -16,9 +16,9 @@ import kotlinx.android.synthetic.main.include_check.view.*
 import kotlinx.android.synthetic.main.item_song.view.*
 
 
-open class SongAdapter constructor(
+open class SongAdapter<T: Song> constructor(
         private val requestManager: RequestManager
-): BaseAdapter<Song, SongAdapter.SongViewHolder>(), FastScroller.SectionIndexer {
+): BaseAdapter<T, SongAdapter.SongViewHolder>(), FastScroller.SectionIndexer {
 
     var playingPosition = -1
         private set
@@ -27,7 +27,7 @@ open class SongAdapter constructor(
 
     override fun getItemId(position: Int) = getItemAt(position).id
 
-    fun submit(list: List<Song>, position: Int, isPlaying: Boolean) {
+    fun submit(list: List<T>, position: Int, isPlaying: Boolean) {
         this.playingPosition = position
         this.isPlaying = isPlaying
         submit(list)
@@ -76,17 +76,16 @@ open class SongAdapter constructor(
 
     override fun onCreateBaseViewHolder(
             parent: ViewGroup,
-            viewType: Int): SongViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        return SongViewHolder(inflater.inflate(R.layout.item_song, parent, false))
-    }
+            viewType: Int
+    ) = SongViewHolder(parent.inflateChild(R.layout.item_song))
 
     override fun onBindViewHolder(
             holder: SongViewHolder,
             position: Int,
-            item: Song,
+            item: T,
             selected: Boolean,
-            selectionChanged: Boolean) {
+            selectionChanged: Boolean
+    ) {
 
         with(holder.itemView) {
             val res = resources

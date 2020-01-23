@@ -18,20 +18,20 @@ import io.reactivex.SingleObserver
 import io.reactivex.disposables.Disposable
 
 
-abstract class AbsSongCollectionViewModel constructor(
+abstract class AbsSongCollectionViewModel<T: Song> constructor(
         private val player: Player,
-        getMediaListUseCase: GetMediaUseCase<Song>,
-        getMediaMenuUseCase: GetMediaMenuUseCase<Song>,
-        clickMediaUseCase: ClickMediaUseCase<Song>,
-        playMediaUseCase: PlayMediaUseCase<Song>,
-        shareMediaUseCase: ShareMediaUseCase<Song>,
-        deleteMediaUseCase: DeleteMediaUseCase<Song>,
-        getIsFavouriteUseCase: GetIsFavouriteUseCase<Song>,
-        changeFavouriteUseCase: ChangeFavouriteUseCase<Song>,
+        getMediaListUseCase: GetMediaUseCase<T>,
+        getMediaMenuUseCase: GetMediaMenuUseCase<T>,
+        clickMediaUseCase: ClickMediaUseCase<T>,
+        playMediaUseCase: PlayMediaUseCase<T>,
+        shareMediaUseCase: ShareMediaUseCase<T>,
+        deleteMediaUseCase: DeleteMediaUseCase<T>,
+        getIsFavouriteUseCase: GetIsFavouriteUseCase<T>,
+        changeFavouriteUseCase: ChangeFavouriteUseCase<T>,
         private val schedulerProvider: SchedulerProvider,
         navigator: Navigator,
         eventLogger: EventLogger
-): AbsMediaCollectionViewModel<Song>(
+): AbsMediaCollectionViewModel<T>(
         getMediaListUseCase,
         getMediaMenuUseCase,
         clickMediaUseCase,
@@ -75,7 +75,7 @@ abstract class AbsSongCollectionViewModel constructor(
     }
 
     private fun detectPlayingPosition(songList: List<Song>?, song: Song?) {
-        Single.fromCallable { songList?.indexOf(song) ?: -1 }
+        Single.fromCallable { songList?.indexOfFirst { it.id == song?.id } ?: -1 }
                 .subscribeOn(schedulerProvider.computation())
                 .observeOn(schedulerProvider.main())
                 .subscribe(object : SingleObserver<Int> {
