@@ -50,8 +50,14 @@ class SongWithPlayCountAdapter constructor(
             tv_song_name.text = item.getNameString(res)
             tv_artist_name.text = item.getArtistString(res)
             tv_duration.text = item.getDurationString()
-            tv_play_count.text = res.getQuantityString(R.plurals.played_s_times, item.playCount, item.playCount)
-            tv_last_time_played.text = item.getLastTimePlayedString(context)
+
+            if (item.hasLastPlayTime()) {
+                tv_play_count.text = res.getQuantityString(R.plurals.played_s_times, item.playCount, item.playCount)
+                tv_last_time_played.text = res.getString(R.string.last_time_s, item.getLastTimePlayedString(context))
+            } else {
+                tv_play_count.text = res.getString(R.string.not_played_yet)
+                tv_last_time_played.text = null
+            }
 
             val options = GlideManager.get()
                 .requestOptions(item.albumId)

@@ -110,7 +110,7 @@ fun Song.getDurationString(): String {
 }
 
 fun SongWithPlayCount.getLastTimePlayedString(ctx: Context): CharSequence {
-    val time = lastPlayTime ?: return ctx.getString(R.string.not_played_yet)
+    val time = lastPlayTime ?: return ""
 
     val now = System.currentTimeMillis()
 

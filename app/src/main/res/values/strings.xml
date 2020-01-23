@@ -148,6 +148,7 @@
 
     <!--play count-->
     <string name="not_played_yet">Not played yet</string>
+    <string name="last_time_s">Last time: %s</string>
     <string name="played_today">Played today</string>
     <string name="played_yesterday">Played yesterday</string>
     <string name="played_several_day_ago">Played several days ago</string>
