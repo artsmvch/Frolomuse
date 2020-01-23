@@ -21,7 +21,11 @@ class SongPlayCountObserver constructor(
 ): SimplePlayerObserver() {
 
     private companion object {
-        const val MIN_VALUABLE_DURATION = 5_000 //5 seconds
+        const val NEGLIGIBLE_DURATION = 0.01f
+
+        const val MIN_VALUABLE_DURATION = 5_000 // 5 seconds
+
+        const val MIN_VALUABLE_PERCENT_OF_DURATION = 0.3f // 30% of duration
 
         const val PLAYBACK_NOT_STARTED_YET = -1L
     }
@@ -50,13 +54,17 @@ class SongPlayCountObserver constructor(
             // If it wasn't even prepared then do not consider it as played
             !isPrepared -> false
 
-            currentSongDuration <= MIN_VALUABLE_DURATION -> {
+            // If song's duration is so negligible then ignore it
+            currentSongDuration < NEGLIGIBLE_DURATION -> false
+
+            currentSongDuration < MIN_VALUABLE_DURATION -> {
                 performanceDuration >= currentSongDuration * 0.9 // 90% of song's duration
             }
 
-            performanceDuration >= MIN_VALUABLE_DURATION -> true
-
-            else -> false
+            else -> {
+                val percent = performanceDuration.toFloat() / currentSongDuration
+                percent >= MIN_VALUABLE_PERCENT_OF_DURATION && performanceDuration >= MIN_VALUABLE_DURATION * 0.9
+            }
         }
 
         if (isPerformed) {
