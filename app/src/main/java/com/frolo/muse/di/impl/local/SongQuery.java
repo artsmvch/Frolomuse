@@ -704,6 +704,86 @@ final class SongQuery {
         });
     }
 
+    //region SongWithPlayCount queries
+    /**
+     * Returns a flowable that emits {@link SongWithPlayCount} item for the given <code>song</code>.
+     *
+     * @param resolver content resolver.
+     * @param song to query the play count.
+     * @return a flowable that emits {@link SongWithPlayCount}.
+     */
+    /*package*/ static Flowable<SongWithPlayCount> getSongWithPlayCount(
+            final ContentResolver resolver,
+            final Song song
+    ) {
+        final String targetPath = song.getSource();
+        return Flowable.create(new FlowableOnSubscribe<String>() {
+            @Override
+            public void subscribe(final FlowableEmitter<String> emitter) {
+                if (!emitter.isCancelled()) {
+                    final SongPlayCounter.Watcher w = new SongPlayCounter.Watcher() {
+                        @Override
+                        public void onChanged(String absolutePath) {
+                            if (targetPath.equals(absolutePath)) {
+                                emitter.onNext(absolutePath);
+                            }
+                        }
+                    };
+
+                    SongPlayCounter.startWatching(w);
+
+                    emitter.setDisposable(Disposables.fromAction(new Action() {
+                        @Override
+                        public void run() {
+                            SongPlayCounter.stopWatching(w);
+                        }
+                    }));
+                }
+
+                if (!emitter.isCancelled()) {
+                    emitter.onNext(targetPath);
+                }
+            }
+        }, BackpressureStrategy.LATEST)
+                .map(new Function<String, SongWithPlayCount>() {
+                    @Override
+                    public SongWithPlayCount apply(String s) throws Exception {
+                        final Uri uri = AppMediaStore.SongPlayCount.getContentUri();
+
+                        final String[] projection =
+                                new String[] {
+                                        AppMediaStore.SongPlayCount.PLAY_COUNT,
+                                        AppMediaStore.SongPlayCount.LAST_PLAY_TIME
+                                };
+
+                        final String selection = AppMediaStore.SongPlayCount.ABSOLUTE_PATH + "=?";
+                        final String[] selectionArgs = new String[] { song.getSource() };
+
+                        Cursor cursor = resolver.query(uri, projection, selection, selectionArgs, null);
+
+                        if (cursor == null) {
+                            throw Query.genNullCursorErr(uri);
+                        }
+
+                        final int playCount;
+                        final Long lastPlayTime;
+                        try {
+                            if (cursor.moveToFirst()) {
+                                playCount = cursor.getInt(cursor.getColumnIndex(projection[0]));
+                                lastPlayTime = cursor.getLong(cursor.getColumnIndex(projection[1]));
+                            } else {
+                                playCount = 0;
+                                lastPlayTime = null;
+                            }
+                        } finally {
+                            cursor.close();
+                        }
+
+                        return new SongWithPlayCount(song, playCount, lastPlayTime);
+                    }
+                });
+    }
+
     /*package*/ static Flowable<List<SongWithPlayCount>> querySongsWithPlayCount(
             final ContentResolver resolver,
             final int minPlayCount
@@ -780,88 +860,6 @@ final class SongQuery {
         }
     }
 
-    /**
-     * Returns a flowable that emits {@link SongWithPlayCount} item for the given <code>song</code>.
-     * NOTE: The returned source is distinct until changed!
-     * It's made for the sake of optimization:
-     * for example, when the source will be flat mapped, the downstream will not be notified without a reason.
-     *
-     * @param resolver content resolver.
-     * @param song to query play count and wrap into {@link SongWithPlayCount}.
-     * @return a flowable that emits {@link SongWithPlayCount}.
-     */
-    /*package*/ static Flowable<SongWithPlayCount> getSongWithPlayCount(
-            final ContentResolver resolver,
-            final Song song
-    ) {
-        final String targetPath = song.getSource();
-        return Flowable.create(new FlowableOnSubscribe<String>() {
-            @Override
-            public void subscribe(final FlowableEmitter<String> emitter) {
-                if (!emitter.isCancelled()) {
-                    final SongPlayCounter.Watcher w = new SongPlayCounter.Watcher() {
-                        @Override
-                        public void onChanged(String absolutePath) {
-                            if (targetPath.equals(absolutePath)) {
-                                emitter.onNext(absolutePath);
-                            }
-                        }
-                    };
-
-                    SongPlayCounter.startWatching(w);
-
-                    emitter.setDisposable(Disposables.fromAction(new Action() {
-                        @Override
-                        public void run() {
-                            SongPlayCounter.stopWatching(w);
-                        }
-                    }));
-                }
-
-                if (!emitter.isCancelled()) {
-                    emitter.onNext(targetPath);
-                }
-            }
-        }, BackpressureStrategy.LATEST)
-                .map(new Function<String, SongWithPlayCount>() {
-                    @Override
-                    public SongWithPlayCount apply(String s) throws Exception {
-                        final Uri uri = AppMediaStore.SongPlayCount.getContentUri();
-
-                        final String[] projection =
-                            new String[] {
-                                AppMediaStore.SongPlayCount.PLAY_COUNT,
-                                AppMediaStore.SongPlayCount.LAST_PLAY_TIME
-                            };
-
-                        final String selection = AppMediaStore.SongPlayCount.ABSOLUTE_PATH + "=?";
-                        final String[] selectionArgs = new String[] { song.getSource() };
-
-                        Cursor cursor = resolver.query(uri, projection, selection, selectionArgs, null);
-
-                        if (cursor == null) {
-                            throw Query.genNullCursorErr(uri);
-                        }
-
-                        final int playCount;
-                        final Long lastPlayTime;
-                        try {
-                            if (cursor.moveToFirst()) {
-                                playCount = cursor.getInt(cursor.getColumnIndex(projection[0]));
-                                lastPlayTime = cursor.getLong(cursor.getColumnIndex(projection[1]));
-                            } else {
-                                playCount = 0;
-                                lastPlayTime = null;
-                            }
-                        } finally {
-                            cursor.close();
-                        }
-
-                        return new SongWithPlayCount(song, playCount, lastPlayTime);
-                    }
-                });
-    }
-
     /*package*/ static Completable addSongPlayCount(
             final ContentResolver resolver,
             final Song song,
@@ -921,6 +919,7 @@ final class SongQuery {
             }
         });
     }
+    //endregion
 
     private SongQuery() {
     }
