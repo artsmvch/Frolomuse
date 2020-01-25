@@ -35,6 +35,7 @@ import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.functions.Action;
+import io.reactivex.functions.BiPredicate;
 import io.reactivex.functions.Function;
 import kotlin.Suppress;
 
@@ -774,6 +775,16 @@ final class SongQuery {
         }
     }
 
+    /**
+     * Returns a flowable that emits {@link SongWithPlayCount} item for the given <code>song</code>.
+     * NOTE: The returned source is distinct until changed!
+     * It's made for the sake of optimization:
+     * for example, when the source will be flat mapped, the downstream will not be notified without a reason.
+     *
+     * @param resolver content resolver.
+     * @param song to query play count and wrap into {@link SongWithPlayCount}.
+     * @return a flowable that emits {@link SongWithPlayCount}.
+     */
     /*package*/ static Flowable<SongWithPlayCount> getSongWithPlayCount(
             final ContentResolver resolver,
             final Song song
@@ -814,6 +825,12 @@ final class SongQuery {
                 }
 
                 return new SongWithPlayCount(song, playCount, lastPlayTime);
+            }
+        }).distinctUntilChanged(new BiPredicate<SongWithPlayCount, SongWithPlayCount>() {
+            @Override
+            public boolean test(SongWithPlayCount item1, SongWithPlayCount item2) {
+                return item1.getPlayCount() == item2.getPlayCount()
+                        && Objects.equals(item1.getLastPlayTime(), item2.getLastPlayTime());
             }
         });
     }
