@@ -109,17 +109,16 @@ fun Song.getDurationString(): String {
     return duration.asDurationInMs()
 }
 
+//region Relative time spans
+private const val MIN_TIME_SPAN = (1000 * 60 * 60 * 24).toLong() // 1 day
+private const val TIME_SPAN_FORMATS = DateUtils.FORMAT_ABBREV_ALL
+
 fun SongWithPlayCount.getLastTimePlayedString(ctx: Context): CharSequence {
     val time = lastPlayTime ?: return ""
-
     val now = System.currentTimeMillis()
-
-    val minResolution = (1000 * 60 * 60 * 24).toLong()
-
-    val flags = DateUtils.FORMAT_SHOW_TIME or DateUtils.FORMAT_SHOW_WEEKDAY
-
-    return DateUtils.getRelativeTimeSpanString(time, now, minResolution, flags)
+    return DateUtils.getRelativeTimeSpanString(time, now, MIN_TIME_SPAN, TIME_SPAN_FORMATS)
 }
+//endregion
 
 fun Int.asDurationInMs(): String {
     val totalSeconds = this / 1000
