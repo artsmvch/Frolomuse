@@ -192,6 +192,15 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
                 .subscribeFor {  }
     }
 
+    //region Media list subscription
+    protected fun requireSubscription() {
+        doFetch()
+    }
+
+    protected fun cancelSubscription() {
+        mediaListSubscription?.cancel()
+    }
+
     /**
      * Convenient method for fetching media collection.
      * This properly dispatches subscription's events to other live data members.
@@ -239,6 +248,7 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
                 )
                 .save()
     }
+    //endregion
 
     /********************************
      ******* LIFECYCLE EVENTS *******

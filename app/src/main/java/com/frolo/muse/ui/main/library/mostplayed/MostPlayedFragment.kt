@@ -30,6 +30,16 @@ class MostPlayedFragment : SimpleMediaCollectionFragment<SongWithPlayCount>() {
         observeViewModel(viewLifecycleOwner)
     }
 
+    override fun onStart() {
+        super.onStart()
+        viewModel.onStart()
+    }
+
+    override fun onStop() {
+        viewModel.onStop()
+        super.onStop()
+    }
+
     private fun observeViewModel(owner: LifecycleOwner) {
         viewModel.apply {
             isPlaying.observeNonNull(owner) { isPlaying ->
