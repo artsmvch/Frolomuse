@@ -12,7 +12,6 @@ import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import io.reactivex.Completable
 import io.reactivex.Flowable
-import io.reactivex.Single
 
 
 class GetPlaylistUseCase @AssistedInject constructor(
@@ -41,16 +40,12 @@ class GetPlaylistUseCase @AssistedInject constructor(
         navigator.addSongsToPlaylist(playlist)
     }
 
-    fun isSortOrderSwappable(sortOrder: String): Single<Boolean> {
-        return playlistChunkRepository.isSwappingAllowedForSortOrder(sortOrder)
-    }
-
-    fun isCurrentSortOrderSwappable(): Single<Boolean> {
+    fun isCurrentSortOrderSwappable(): Flowable<Boolean> {
         return preferences.getSortOrderForSection(Library.PLAYLIST)
-                .firstOrError()
-                .flatMap { sortOrder ->
+                .flatMapSingle { sortOrder ->
                     playlistChunkRepository.isSwappingAllowedForSortOrder(sortOrder)
                 }
+                .subscribeOn(schedulerProvider.worker())
     }
 
     override fun getSortedCollection(sortOrder: String): Flowable<List<Song>> {

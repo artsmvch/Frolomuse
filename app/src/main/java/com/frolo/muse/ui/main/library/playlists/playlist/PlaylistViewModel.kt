@@ -56,19 +56,16 @@ class PlaylistViewModel constructor(
 
     private val _isSwappingEnabled: MutableLiveData<Boolean> by lazy {
         MediatorLiveData<Boolean>().apply {
-            value = getPlaylistUseCase
+            value = false
+            getPlaylistUseCase
                     .isCurrentSortOrderSwappable()
-                    .blockingGet()
+                    .observeOn(schedulerProvider.main())
+                    .subscribeFor {
+                        value = it
+                    }
         }
     }
     val isSwappingEnabled: LiveData<Boolean> get() = _isSwappingEnabled
-
-    override fun onSortOrderSelected(sortOrder: String) {
-        super.onSortOrderSelected(sortOrder)
-        _isSwappingEnabled.value = getPlaylistUseCase
-                .isSortOrderSwappable(sortOrder)
-                .blockingGet()
-    }
 
     fun onEditPlaylistOptionSelected() {
         getPlaylistUseCase.edit()

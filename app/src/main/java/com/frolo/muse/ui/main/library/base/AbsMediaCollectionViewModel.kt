@@ -180,8 +180,7 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
                 }
     }
 
-    open fun onSortOrderSelected(sortOrder: String) {
-        // TODO: find the way to make this method final
+    fun onSortOrderSelected(sortOrder: String) {
         getMediaUseCase.applySortOrder(sortOrder)
                 .observeOn(schedulerProvider.main())
                 .subscribeFor {  }
