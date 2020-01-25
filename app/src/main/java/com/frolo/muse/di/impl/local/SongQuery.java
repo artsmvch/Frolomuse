@@ -27,13 +27,18 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.Callable;
 
+import io.reactivex.BackpressureStrategy;
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
+import io.reactivex.FlowableEmitter;
+import io.reactivex.FlowableOnSubscribe;
 import io.reactivex.Single;
+import io.reactivex.disposables.Disposables;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.BiPredicate;
 import io.reactivex.functions.Function;
@@ -789,50 +794,72 @@ final class SongQuery {
             final ContentResolver resolver,
             final Song song
     ) {
-        final Uri uri = AppMediaStore.SongPlayCount.getContentUri();
-        return Query.createFlowable(resolver, uri, new Callable<SongWithPlayCount>() {
+        final String targetPath = song.getSource();
+        return Flowable.create(new FlowableOnSubscribe<String>() {
             @Override
-            public SongWithPlayCount call() throws Exception {
-                final Uri uri = AppMediaStore.SongPlayCount.getContentUri();
-
-                final String[] projection =
-                    new String[] {
-                        AppMediaStore.SongPlayCount.PLAY_COUNT,
-                        AppMediaStore.SongPlayCount.LAST_PLAY_TIME
+            public void subscribe(final FlowableEmitter<String> emitter) {
+                if (!emitter.isCancelled()) {
+                    final SongPlayCounter.Watcher w = new SongPlayCounter.Watcher() {
+                        @Override
+                        public void onChanged(String absolutePath) {
+                            if (targetPath.equals(absolutePath)) {
+                                emitter.onNext(absolutePath);
+                            }
+                        }
                     };
 
-                final String selection = AppMediaStore.SongPlayCount.ABSOLUTE_PATH + "=?";
-                final String[] selectionArgs = new String[] { song.getSource() };
+                    SongPlayCounter.startWatching(w);
 
-                Cursor cursor = resolver.query(uri, projection, selection, selectionArgs, null);
-
-                if (cursor == null) {
-                    throw Query.genNullCursorErr(uri);
+                    emitter.setDisposable(Disposables.fromAction(new Action() {
+                        @Override
+                        public void run() {
+                            SongPlayCounter.stopWatching(w);
+                        }
+                    }));
                 }
 
-                final int playCount;
-                final Long lastPlayTime;
-                try {
-                    if (cursor.moveToFirst()) {
-                        playCount = cursor.getInt(cursor.getColumnIndex(projection[0]));
-                        lastPlayTime = cursor.getLong(cursor.getColumnIndex(projection[1]));
-                    } else {
-                        playCount = 0;
-                        lastPlayTime = null;
+                if (!emitter.isCancelled()) {
+                    emitter.onNext(targetPath);
+                }
+            }
+        }, BackpressureStrategy.LATEST)
+                .map(new Function<String, SongWithPlayCount>() {
+                    @Override
+                    public SongWithPlayCount apply(String s) throws Exception {
+                        final Uri uri = AppMediaStore.SongPlayCount.getContentUri();
+
+                        final String[] projection =
+                            new String[] {
+                                AppMediaStore.SongPlayCount.PLAY_COUNT,
+                                AppMediaStore.SongPlayCount.LAST_PLAY_TIME
+                            };
+
+                        final String selection = AppMediaStore.SongPlayCount.ABSOLUTE_PATH + "=?";
+                        final String[] selectionArgs = new String[] { song.getSource() };
+
+                        Cursor cursor = resolver.query(uri, projection, selection, selectionArgs, null);
+
+                        if (cursor == null) {
+                            throw Query.genNullCursorErr(uri);
+                        }
+
+                        final int playCount;
+                        final Long lastPlayTime;
+                        try {
+                            if (cursor.moveToFirst()) {
+                                playCount = cursor.getInt(cursor.getColumnIndex(projection[0]));
+                                lastPlayTime = cursor.getLong(cursor.getColumnIndex(projection[1]));
+                            } else {
+                                playCount = 0;
+                                lastPlayTime = null;
+                            }
+                        } finally {
+                            cursor.close();
+                        }
+
+                        return new SongWithPlayCount(song, playCount, lastPlayTime);
                     }
-                } finally {
-                    cursor.close();
-                }
-
-                return new SongWithPlayCount(song, playCount, lastPlayTime);
-            }
-        }).distinctUntilChanged(new BiPredicate<SongWithPlayCount, SongWithPlayCount>() {
-            @Override
-            public boolean test(SongWithPlayCount item1, SongWithPlayCount item2) {
-                return item1.getPlayCount() == item2.getPlayCount()
-                        && Objects.equals(item1.getLastPlayTime(), item2.getLastPlayTime());
-            }
-        });
+                });
     }
 
     /*package*/ static Completable addSongPlayCount(
@@ -888,6 +915,8 @@ final class SongQuery {
                         // TODO: throw an exception
                     }
                 }
+
+                SongPlayCounter.dispatchChanged(song.getSource());
 
             }
         });
