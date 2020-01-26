@@ -5,6 +5,8 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Handler;
+import android.os.HandlerThread;
 import android.provider.BaseColumns;
 import android.provider.MediaStore;
 
@@ -18,6 +20,9 @@ import java.util.Collection;
 import java.util.List;
 
 import io.reactivex.Completable;
+import io.reactivex.CompletableEmitter;
+import io.reactivex.CompletableOnSubscribe;
+import io.reactivex.disposables.Disposables;
 import io.reactivex.functions.Action;
 
 
@@ -26,9 +31,75 @@ final class PlaylistHelper {
     private static final String[] PROJECTION_PLAYLIST_MEMBER =
             new String[] { MediaStore.Audio.Playlists.Members.AUDIO_ID };
 
-    private static int countRows(
-            ContentResolver resolver,
-            Uri uri) throws Exception {
+    /**
+     * All the updates, insertions and deletions in playlists
+     * should be performed on {@link WorkerHandler#sInstance} handler.
+     * This will prevent unwanted errors when some audio elements are moved or deleted at the same time.
+     * {@link WorkerHandler#sInstance} is lazy initialized and thread-safe.
+     */
+    private static class WorkerHandler {
+        private final static Handler sInstance;
+        static {
+            HandlerThread thread = new HandlerThread("PlaylistHelperWorker");
+            thread.start();
+            sInstance = new Handler(thread.getLooper());
+        }
+    }
+
+    /**
+     * Wraps <code>action</code> into a completable source.
+     * <code>action</code> will be performed on {@link WorkerHandler#sInstance} handler.
+     *
+     * All the update, insertion and deletion actions should be wrapped with this.
+     * This is made to prevent unwanted errors, @see {@link WorkerHandler#sInstance}.
+     *
+     * @param action to run.
+     * @return completable source.
+     */
+    private static Completable wrap(final Action action) {
+        return Completable.create(new CompletableOnSubscribe() {
+            @Override
+            public void subscribe(final CompletableEmitter emitter) {
+                final Runnable command = new Runnable() {
+                    @Override
+                    public void run() {
+                        if (!emitter.isDisposed()) {
+                            try {
+                                action.run();
+                                emitter.onComplete();
+                            } catch (Throwable e) {
+                                emitter.onError(e);
+                            }
+                        }
+                    }
+                };
+
+                emitter.setDisposable(Disposables.fromAction(new Action() {
+                    @Override
+                    public void run() {
+                        WorkerHandler.sInstance.removeCallbacks(command);
+                    }
+                }));
+
+                if (!emitter.isDisposed()) {
+                    WorkerHandler.sInstance.post(command);
+                }
+            }
+        });
+    }
+
+    /**
+     * Calculates the count of the rows in the cursor returned by the query performed for <code>uri</code>.
+     * The query is performed with null selection.
+     * @param resolver content resolver.
+     * @param uri checked uri.
+     * @return the count of the rows.
+     * @throws Exception if any
+     */
+    private static int countRows_Internal(
+        ContentResolver resolver,
+        Uri uri
+    ) throws Exception {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             // Querying "count(*)" is not supported in Q
@@ -74,9 +145,10 @@ final class PlaylistHelper {
     }
 
     private static boolean checkPlaylistHasAudioMember_Internal(
-            ContentResolver resolver,
-            long playlistId,
-            long audioId) {
+        ContentResolver resolver,
+        long playlistId,
+        long audioId
+    ) {
         boolean hasAudioMember = false;
 
         Uri playlistUri = MediaStore.Audio.Playlists.Members.getContentUri(
@@ -100,16 +172,17 @@ final class PlaylistHelper {
     }
 
     private static void addAudioToPlaylist_Internal(
-            ContentResolver resolver,
-            long playlistId,
-            long audioId) throws Exception {
+        ContentResolver resolver,
+        long playlistId,
+        long audioId
+    ) throws Exception {
         if (checkPlaylistHasAudioMember_Internal(resolver, playlistId, audioId))
             return;
 
         Uri uri = MediaStore.Audio.Playlists.Members
                 .getContentUri("external", playlistId);
 
-        final int base = countRows(resolver, uri);
+        final int base = countRows_Internal(resolver, uri);
 
         ContentValues values = new ContentValues();
         values.put(MediaStore.Audio.Playlists.Members.PLAY_ORDER, base + audioId);
@@ -121,15 +194,16 @@ final class PlaylistHelper {
     }
 
     private static void addAudioQueryToPlaylist_Internal(
-            ContentResolver resolver,
-            long playlistId,
-            String selection,
-            String[] selectionArgs) throws Exception {
+        ContentResolver resolver,
+        long playlistId,
+        String selection,
+        String[] selectionArgs
+    ) throws Exception {
 
         Uri playlistUri = MediaStore.Audio.Playlists.Members
                 .getContentUri("external", playlistId);
 
-        final int base = countRows(resolver, playlistUri);
+        final int base = countRows_Internal(resolver, playlistUri);
 
         Uri audioUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
         String[] audioProjection = new String[] { MediaStore.Audio.Media._ID };
@@ -164,25 +238,28 @@ final class PlaylistHelper {
     }
 
     private static void addAlbumToPlaylist_Internal(
-            ContentResolver resolver,
-            long playlistId,
-            long albumId) throws Exception {
+        ContentResolver resolver,
+        long playlistId,
+        long albumId
+    ) throws Exception {
         String selection = "is_music != 0 and album_id = " + albumId;
         addAudioQueryToPlaylist_Internal(resolver, playlistId, selection, null);
     }
 
     private static void addArtistToPlaylist_Internal(
-            ContentResolver resolver,
-            long playlistId,
-            long artistId) throws Exception {
+        ContentResolver resolver,
+        long playlistId,
+        long artistId
+    ) throws Exception {
         String selection = "is_music != 0 and artist_id = " + artistId;
         addAudioQueryToPlaylist_Internal(resolver, playlistId, selection, null);
     }
 
     private static void addMyFileToPlaylist_Internal(
-            ContentResolver resolver,
-            long playlistId,
-            MyFile myFile) throws Exception {
+        ContentResolver resolver,
+        long playlistId,
+        MyFile myFile
+    ) throws Exception {
         String selection = MediaStore.Audio.Media.DATA + " like ?";
         // as audio file
         String[] argsAsAudioFile = { "%" + myFile.getJavaFile().getAbsolutePath() };
@@ -193,14 +270,15 @@ final class PlaylistHelper {
     }
 
     private static void addGenreToPlaylist_Internal(
-            ContentResolver resolver,
-            long playlistId,
-            long genreId) throws Exception {
+        ContentResolver resolver,
+        long playlistId,
+        long genreId
+    ) throws Exception {
 
         Uri playlistUri = MediaStore.Audio.Playlists.Members
                 .getContentUri("external", playlistId);
 
-        final int base = countRows(resolver, playlistUri);
+        final int base = countRows_Internal(resolver, playlistUri);
 
         Uri genreUri = MediaStore.Audio.Genres.Members
                 .getContentUri("external", genreId);
@@ -237,9 +315,10 @@ final class PlaylistHelper {
     }
 
     /*package*/ static Completable addAlbumToPlaylist(
-            final ContentResolver resolver,
-            final long playlistId,
-            final long albumId) {
+        final ContentResolver resolver,
+        final long playlistId,
+        final long albumId
+    ) {
         return Completable.fromAction(new Action() {
             @Override public void run() throws Exception {
                 addAlbumToPlaylist_Internal(resolver, playlistId, albumId);
@@ -248,10 +327,11 @@ final class PlaylistHelper {
     }
 
     /*package*/ static Completable addArtistToPlaylist(
-            final ContentResolver resolver,
-            final long playlistId,
-            final long artistId) {
-        return Completable.fromAction(new Action() {
+        final ContentResolver resolver,
+        final long playlistId,
+        final long artistId
+    ) {
+        return wrap(new Action() {
             @Override public void run() throws Exception {
                 addArtistToPlaylist_Internal(resolver, playlistId, artistId);
             }
@@ -259,10 +339,11 @@ final class PlaylistHelper {
     }
 
     /*package*/ static Completable addMyFileToPlaylist(
-            final ContentResolver resolver,
-            final long playlistId,
-            final MyFile myFile) {
-        return Completable.fromAction(new Action() {
+        final ContentResolver resolver,
+        final long playlistId,
+        final MyFile myFile
+    ) {
+        return wrap(new Action() {
             @Override public void run() throws Exception {
                 addMyFileToPlaylist_Internal(resolver, playlistId, myFile);
             }
@@ -270,11 +351,11 @@ final class PlaylistHelper {
     }
 
     /*package*/ static Completable addGenreToPlaylist(
-            final ContentResolver resolver,
-            final long playlistId,
-            final long genreId) {
-
-        return Completable.fromAction(new Action() {
+        final ContentResolver resolver,
+        final long playlistId,
+        final long genreId
+    ) {
+        return wrap(new Action() {
             @Override public void run() throws Exception {
                 addGenreToPlaylist_Internal(resolver, playlistId, genreId);
             }
@@ -282,10 +363,11 @@ final class PlaylistHelper {
     }
 
     /*package*/ static Completable addSongToPlaylist(
-            final ContentResolver resolver,
-            final long playlistId,
-            final long audioId) {
-        return Completable.fromAction(new Action() {
+        final ContentResolver resolver,
+        final long playlistId,
+        final long audioId
+    ) {
+        return wrap(new Action() {
             @Override public void run() throws Exception {
                 addAudioToPlaylist_Internal(resolver, playlistId, audioId);
             }
@@ -293,11 +375,11 @@ final class PlaylistHelper {
     }
 
     /*package*/ static <E extends Media> Completable addItemToPlaylist(
-            final ContentResolver resolver,
-            final long playlistId,
-            final E item) {
-
-        return Completable.fromAction(new Action() {
+        final ContentResolver resolver,
+        final long playlistId,
+        final E item
+    ) {
+        return wrap(new Action() {
             @Override public void run() throws Exception {
                 switch (item.getKind()) {
                     case Media.SONG: {
@@ -339,10 +421,10 @@ final class PlaylistHelper {
     }
 
     /*package*/ static <E extends Media> Completable addItemsToPlaylist(
-            final ContentResolver resolver,
-            final long playlistId,
-            final Collection<E> items) {
-
+        final ContentResolver resolver,
+        final long playlistId,
+        final Collection<E> items
+    ) {
         List<Completable> sources = new ArrayList<>(items.size());
         for (E item : items) {
             sources.add(addItemToPlaylist(resolver, playlistId, item));
@@ -351,11 +433,11 @@ final class PlaylistHelper {
     }
 
     /*package*/ static Completable removeFromPlaylist(
-            final ContentResolver resolver,
-            final long playlistId,
-            final Song song) {
-
-        return Completable.fromAction(new Action() {
+        final ContentResolver resolver,
+        final long playlistId,
+        final Song song
+    ) {
+        return wrap(new Action() {
             @Override
             public void run() throws Exception {
                 Uri uri = MediaStore.Audio.Playlists.Members.
@@ -370,11 +452,12 @@ final class PlaylistHelper {
     }
 
     /*package*/ static Completable moveItemInPlaylist(
-            final ContentResolver resolver,
-            final long playlistId,
-            final int fromPosition,
-            final int toPosition) {
-        return Completable.fromAction(new Action() {
+        final ContentResolver resolver,
+        final long playlistId,
+        final int fromPosition,
+        final int toPosition
+    ) {
+        return wrap(new Action() {
             @Override public void run() throws Exception {
                 boolean moved = MediaStore.Audio.Playlists.Members
                         .moveItem(resolver, playlistId, fromPosition, toPosition);
