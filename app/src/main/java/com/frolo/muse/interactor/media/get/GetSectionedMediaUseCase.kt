@@ -59,7 +59,7 @@ abstract class GetSectionedMediaUseCase <E: Media> constructor(
         return Flowable.combineLatest(
                 sources,
                 combiner
-        ).flatMap { pair ->
+        ).switchMap { pair ->
             val sortOrder = pair.first
             val isReversed = pair.second
             getSortedCollection(sortOrder)
