@@ -24,16 +24,16 @@ abstract class GetSectionedMediaUseCase <E: Media> constructor(
 
     override fun getSortOrderMenu(): Single<SortOrderMenu> {
         return repository.sortOrders
-                .flatMap {  sortOrders ->
-                    Single.zip(
-                            preferences.getSortOrderForSection(section).firstOrError(),
-                            preferences.isSortOrderReversedForSection(section).firstOrError(),
-                            BiFunction { savedSortOrder: String, isReversed: Boolean ->
-                                SortOrderMenu(sortOrders, savedSortOrder, isReversed)
-                            }
-                    )
-                }
-                .subscribeOn(schedulerProvider.worker())
+            .flatMap {  sortOrders ->
+                Single.zip(
+                    preferences.getSortOrderForSection(section).firstOrError(),
+                    preferences.isSortOrderReversedForSection(section).firstOrError(),
+                    BiFunction { savedSortOrder: String, isReversed: Boolean ->
+                        SortOrderMenu(sortOrders, savedSortOrder, isReversed)
+                    }
+                )
+            }
+            .subscribeOn(schedulerProvider.worker())
     }
 
     override fun applySortOrder(sortOrder: String): Completable {
@@ -48,21 +48,19 @@ abstract class GetSectionedMediaUseCase <E: Media> constructor(
 
     override fun getMediaList(): Flowable<List<E>> {
         val sources = listOf(
-                preferences.getSortOrderForSection(section),
-                preferences.isSortOrderReversedForSection(section)
+            preferences.getSortOrderForSection(section),
+            preferences.isSortOrderReversedForSection(section)
         )
 
         val combiner = Function<Array<Any>, Pair<String, Boolean>> { arr ->
             (arr[0] as String) to (arr[1] as Boolean)
         }
 
-        return Flowable.combineLatest(
-                sources,
-                combiner
-        ).switchMap { pair ->
-            val sortOrder = pair.first
-            val isReversed = pair.second
-            getSortedCollection(sortOrder)
+        return Flowable.combineLatest(sources, combiner)
+            .switchMap { pair ->
+                val sortOrder = pair.first
+                val isReversed = pair.second
+                getSortedCollection(sortOrder)
                     .map { list ->
                         when (section) {
                             // MyFiles do not have unique ID so we cannot distinct them
