@@ -13,3 +13,10 @@ import androidx.annotation.LayoutRes
 fun ViewGroup.inflateChild(@LayoutRes layoutId: Int): View {
     return LayoutInflater.from(context).inflate(layoutId, this, false)
 }
+
+/**
+ * Delegates the call to [View.removeCallbacks] only if [action] is not null.
+ */
+fun View.removeCallbacksSafely(action: Runnable?) {
+    if (action != null) removeCallbacks(action)
+}

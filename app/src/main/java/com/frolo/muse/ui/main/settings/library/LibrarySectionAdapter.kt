@@ -70,14 +70,14 @@ class LibrarySectionAdapter constructor(
     }
 
     override fun onItemMove(fromPosition: Int, toPosition: Int) {
-        swap(fromPosition, toPosition)
+        moveItem(fromPosition, toPosition)
     }
+
+    override fun onDragEnded(fromPosition: Int, toPosition: Int) = Unit
 
     override fun onItemDismiss(position: Int) {
-        throw IllegalArgumentException("Items in this adapter cannot be dismissed")
+        throw IllegalArgumentException("Items in this adapter may not be dismissed")
     }
-
-    override fun onDragEnded() = Unit
 
     class LibrarySectionViewHolder(itemView: View): BaseViewHolder(itemView) {
         override val viewOptionsMenu: View? = null

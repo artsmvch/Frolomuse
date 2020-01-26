@@ -218,8 +218,16 @@ public final class SongQueue implements Cloneable {
         invalidateSelf();
     }
 
-    /*package*/ synchronized void swap(int fromPosition, int toPosition) {
-        Collections.swap(mSongs, fromPosition, toPosition);
+    /*package*/ synchronized void moveItem(int fromPosition, int toPosition) {
+        if (fromPosition < toPosition) {
+            for (int i = fromPosition; i < toPosition; i++) {
+                Collections.swap(mSongs, i, i + 1);
+            }
+        } else {
+            for (int i = fromPosition; i > toPosition; i--) {
+                Collections.swap(mSongs, i, i - 1);
+            }
+        }
         invalidateSelf();
     }
 

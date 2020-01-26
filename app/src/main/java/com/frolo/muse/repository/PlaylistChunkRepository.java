@@ -19,11 +19,11 @@ public interface PlaylistChunkRepository extends SongRepository {
      * ********************************************
      * ***************************************** */
 
-    Single<Boolean> isSwappingAllowedForSortOrder(String sortOrder);
+    Single<Boolean> isMovingAllowedForSortOrder(String sortOrder);
 
     Completable addToPlaylist(Playlist playlist, Collection<Song> items);
 
     Completable removeFromPlaylist(Playlist playlist, Song item);
 
-    Completable swapItemsInPlaylist(Playlist playlist, int fromPos, int toPos);
+    Completable moveItemInPlaylist(Playlist playlist, int fromPos, int toPos);
 }

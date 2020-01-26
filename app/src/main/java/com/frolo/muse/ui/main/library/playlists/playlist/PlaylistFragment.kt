@@ -14,9 +14,10 @@ import com.frolo.muse.R
 import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.model.media.Playlist
 import com.frolo.muse.model.media.Song
+import com.frolo.muse.removeCallbacksSafely
 import com.frolo.muse.ui.base.adapter.SimpleItemTouchHelperCallback
 import com.frolo.muse.ui.base.withArg
-import com.frolo.muse.ui.main.library.base.SwappableSongAdapter
+import com.frolo.muse.ui.main.library.base.DragSongAdapter
 import com.frolo.muse.ui.main.decorateAsLinear
 import com.frolo.muse.ui.main.library.base.AbsSongCollectionFragment
 import com.frolo.muse.ui.main.library.base.SongAdapter
@@ -44,34 +45,32 @@ class PlaylistFragment: AbsSongCollectionFragment<Song>() {
                 .get(PlaylistViewModel::class.java)
     }
 
-    private var isDragging: Boolean = false
     private lateinit var itemTouchHelper: ItemTouchHelper
-    private val onDragListener = object : SwappableSongAdapter.OnDragListener {
+
+    private val onDragListener = object : DragSongAdapter.OnDragListener {
         override fun onTouchDragView(holder: RecyclerView.ViewHolder) {
-            isDragging = true
             itemTouchHelper.startDrag(holder)
         }
-        override fun onItemDismissed(position: Int) {
-            performRemovingFromPlaylist(adapter.getItemAt(position))
-        }
-        override fun onItemMoved(fromPosition: Int, toPosition: Int) {
-            performSwappingInPlaylist(fromPosition, toPosition)
-        }
-        override fun onDragEnded() {
-            isDragging = false
+
+        override fun onDragEnded(fromPosition: Int, toPosition: Int) {
             view?.apply {
-                removeCallbacks(onDragEndedCallback)
-                post(onDragEndedCallback)
+                removeCallbacksSafely(onDragEndedCallback)
+                val callback = Runnable { dispatchItemMoved(fromPosition, toPosition) }
+                post(callback)
+                onDragEndedCallback = callback
             }
+
+        }
+
+        override fun onItemDismissed(position: Int) {
+            dispatchItemRemoved(adapter.getItemAt(position))
         }
     }
 
-    private val onDragEndedCallback = Runnable {
-        viewModel.onDragEnded()
-    }
+    private var onDragEndedCallback: Runnable? = null
 
     override val adapter: SongAdapter<Song> by lazy {
-        SwappableSongAdapter(Glide.with(this), onDragListener).apply {
+        DragSongAdapter(Glide.with(this), onDragListener).apply {
             setHasStableIds(true)
         }
     }
@@ -98,7 +97,7 @@ class PlaylistFragment: AbsSongCollectionFragment<Song>() {
             }
         }
 
-        val callback = SimpleItemTouchHelperCallback(adapter as SwappableSongAdapter)
+        val callback = SimpleItemTouchHelperCallback(adapter as DragSongAdapter)
         val touchHelper = ItemTouchHelper(callback)
         touchHelper.attachToRecyclerView(rv_list)
         itemTouchHelper = touchHelper
@@ -123,8 +122,6 @@ class PlaylistFragment: AbsSongCollectionFragment<Song>() {
             decorateAsLinear()
         }
 
-        isDragging = false
-
         fab_add_song.setOnClickListener { viewModel.onAddSongButtonClicked() }
     }
 
@@ -147,6 +144,7 @@ class PlaylistFragment: AbsSongCollectionFragment<Song>() {
 
     override fun onDestroyView() {
         view?.removeCallbacks(onDragEndedCallback)
+        onDragEndedCallback = null
         super.onDestroyView()
     }
 
@@ -156,22 +154,15 @@ class PlaylistFragment: AbsSongCollectionFragment<Song>() {
         }
     }
 
-    private fun performRemovingFromPlaylist(item: Song) {
+    private fun dispatchItemRemoved(item: Song) {
         checkWritePermissionFor {
-            viewModel.onRemoveItem(item)
+            viewModel.onItemRemoved(item)
         }
     }
 
-    private fun performSwappingInPlaylist(fromPosition: Int, toPosition: Int) {
+    private fun dispatchItemMoved(fromPosition: Int, toPosition: Int) {
         checkWritePermissionFor {
-            viewModel.onSwapItems(fromPosition, toPosition)
-        }
-    }
-
-    override fun onSubmitList(list: List<Song>) {
-        // Disallow submitting lists while dragging
-        if (!isDragging) {
-            super.onSubmitList(list)
+            viewModel.onItemMoved(fromPosition, toPosition)
         }
     }
 
@@ -198,11 +189,11 @@ class PlaylistFragment: AbsSongCollectionFragment<Song>() {
             }
 
             isSwappingEnabled.observeNonNull(owner) { isSwappingEnabled ->
-                (rv_list.adapter as SwappableSongAdapter).also { adapter ->
+                (rv_list.adapter as DragSongAdapter).also { adapter ->
                     adapter.itemViewType = if (isSwappingEnabled) {
-                        SwappableSongAdapter.VIEW_TYPE_SWAPPABLE
+                        DragSongAdapter.VIEW_TYPE_SWAPPABLE
                     } else {
-                        SwappableSongAdapter.VIEW_TYPE_NORMAL
+                        DragSongAdapter.VIEW_TYPE_NORMAL
                     }
                 }
             }

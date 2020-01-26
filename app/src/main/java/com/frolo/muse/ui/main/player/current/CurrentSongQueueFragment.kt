@@ -13,7 +13,7 @@ import com.bumptech.glide.Glide
 import com.frolo.muse.R
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.ui.base.adapter.SimpleItemTouchHelperCallback
-import com.frolo.muse.ui.main.library.base.SwappableSongAdapter
+import com.frolo.muse.ui.main.library.base.DragSongAdapter
 import com.frolo.muse.ui.main.decorateAsLinear
 import com.frolo.muse.ui.main.library.base.AbsMediaCollectionFragment
 import com.frolo.muse.ui.main.library.base.BaseAdapter
@@ -21,6 +21,7 @@ import com.frolo.muse.ui.main.library.base.SongAdapter
 import com.frolo.muse.ui.main.library.playlists.create.PlaylistCreateEvent
 import com.frolo.muse.views.showBackArrow
 import com.frolo.muse.arch.observeNonNull
+import com.frolo.muse.removeCallbacksSafely
 import kotlinx.android.synthetic.main.fragment_base_list.*
 import kotlinx.android.synthetic.main.fragment_current_playlist.*
 
@@ -35,31 +36,30 @@ class CurrentSongQueueFragment: AbsMediaCollectionFragment<Song>() {
 
     override val viewModel: CurrentSongQueueViewModel by viewModel()
 
-    private var isDragging: Boolean = false
     private lateinit var itemTouchHelper: ItemTouchHelper
-    private val onDragListener = object : SwappableSongAdapter.OnDragListener {
+
+    private val onDragListener = object : DragSongAdapter.OnDragListener {
         override fun onTouchDragView(holder: RecyclerView.ViewHolder) {
-            isDragging = true
             itemTouchHelper.startDrag(holder)
         }
+
+        override fun onDragEnded(fromPosition: Int, toPosition: Int) {
+            view?.apply {
+                removeCallbacksSafely(onDragEndedCallback)
+                val callback = Runnable { viewModel.onItemMoved(fromPosition, toPosition) }
+                post(callback)
+                onDragEndedCallback = callback
+            }
+        }
+
         override fun onItemDismissed(position: Int) {
             val item = adapter.getItemAt(position)
             viewModel.onItemPositionDismissed(item, position)
         }
-        override fun onItemMoved(fromPosition: Int, toPosition: Int) {
-            viewModel.onItemMoved(fromPosition, toPosition)
-        }
-        override fun onDragEnded() {
-            isDragging = false
-            view?.apply {
-                removeCallbacks(onDragEndedCallback)
-                post(onDragEndedCallback)
-            }
-        }
     }
 
     private val adapter: SongAdapter<Song> by lazy {
-        SwappableSongAdapter(Glide.with(this), onDragListener)
+        DragSongAdapter(Glide.with(this), onDragListener)
     }
 
     private val adapterListener = object : BaseAdapter.Listener<Song> {
@@ -74,9 +74,7 @@ class CurrentSongQueueFragment: AbsMediaCollectionFragment<Song>() {
         }
     }
 
-    private val onDragEndedCallback = Runnable {
-        viewModel.onDragEnded()
-    }
+    private var onDragEndedCallback: Runnable? = null
 
     private lateinit var playlistCreateEvent: PlaylistCreateEvent
 
@@ -113,14 +111,12 @@ class CurrentSongQueueFragment: AbsMediaCollectionFragment<Song>() {
         }
 
         itemTouchHelper = SimpleItemTouchHelperCallback(
-                adapter as SwappableSongAdapter
+            adapter as DragSongAdapter
         ).let { callback ->
             ItemTouchHelper(callback).apply {
                 attachToRecyclerView(rv_list)
             }
         }
-
-        isDragging = false
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -153,6 +149,7 @@ class CurrentSongQueueFragment: AbsMediaCollectionFragment<Song>() {
 
     override fun onDestroyView() {
         view?.removeCallbacks(onDragEndedCallback)
+        onDragEndedCallback = null
         super.onDestroyView()
     }
 
@@ -162,13 +159,11 @@ class CurrentSongQueueFragment: AbsMediaCollectionFragment<Song>() {
     }
 
     override fun onSubmitList(list: List<Song>) {
-        if (!isDragging) {
-            // a little dirty bullshit.
-            // we don't want to retrieve values from the view model ourselves.
-            val playingPosition = viewModel.playingPosition.value ?: -1
-            val isPlaying = viewModel.isPlaying.value ?: false
-            adapter.submit(list, playingPosition, isPlaying)
-        }
+        // a little dirty bullshit.
+        // we don't want to retrieve values from the view model ourselves.
+        val playingPosition = viewModel.playingPosition.value ?: -1
+        val isPlaying = viewModel.isPlaying.value ?: false
+        adapter.submit(list, playingPosition, isPlaying)
     }
 
     override fun onSubmitSelectedItems(selectedItems: Set<Song>) {

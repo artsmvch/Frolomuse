@@ -89,12 +89,12 @@ abstract class BaseAdapter<E, VH> constructor(
 
     fun indexOf(item: E) = nodes.indexOfFirst { node -> node.item == item }
 
-    protected open fun onPreSwap(fromPosition: Int, toPosition: Int) {
+    protected open fun onPreMove(fromPosition: Int, toPosition: Int) {
         // to override
     }
 
-    fun swap(fromPosition: Int, toPosition: Int) {
-        onPreSwap(fromPosition, toPosition)
+    fun moveItem(fromPosition: Int, toPosition: Int) {
+        onPreMove(fromPosition, toPosition)
         if (fromPosition < toPosition) {
             for (i in fromPosition until toPosition) {
                 Collections.swap(nodes, i, i + 1)

@@ -63,7 +63,7 @@ public class PlaylistChunkRepositoryImpl
     }
 
     @Override
-    public Single<Boolean> isSwappingAllowedForSortOrder(String sortOrder) {
+    public Single<Boolean> isMovingAllowedForSortOrder(String sortOrder) {
         return Single.just(sortOrder.equals(SongQuery.Sort.BY_PLAY_ORDER));
     }
 
@@ -84,8 +84,8 @@ public class PlaylistChunkRepositoryImpl
     }
 
     @Override
-    public Completable swapItemsInPlaylist(Playlist playlist, int fromPos, int toPos) {
-        return PlaylistHelper.swapItemsInPlaylist(
+    public Completable moveItemInPlaylist(Playlist playlist, int fromPos, int toPos) {
+        return PlaylistHelper.moveItemInPlaylist(
                 getContext().getContentResolver(),
                 playlist.getId(),
                 fromPos,

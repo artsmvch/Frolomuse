@@ -369,7 +369,7 @@ final class PlaylistHelper {
         });
     }
 
-    /*package*/ static Completable swapItemsInPlaylist(
+    /*package*/ static Completable moveItemInPlaylist(
             final ContentResolver resolver,
             final long playlistId,
             final int fromPosition,

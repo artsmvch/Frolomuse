@@ -42,10 +42,10 @@ class GetPlaylistUseCase @AssistedInject constructor(
 
     fun isCurrentSortOrderSwappable(): Flowable<Boolean> {
         return preferences.getSortOrderForSection(Library.PLAYLIST)
-                .flatMapSingle { sortOrder ->
-                    playlistChunkRepository.isSwappingAllowedForSortOrder(sortOrder)
-                }
-                .subscribeOn(schedulerProvider.worker())
+            .flatMapSingle { sortOrder ->
+                playlistChunkRepository.isMovingAllowedForSortOrder(sortOrder)
+            }
+            .subscribeOn(schedulerProvider.worker())
     }
 
     override fun getSortedCollection(sortOrder: String): Flowable<List<Song>> {
@@ -54,36 +54,38 @@ class GetPlaylistUseCase @AssistedInject constructor(
 
     fun removeItem(song: Song): Completable {
         return playlistChunkRepository.removeFromPlaylist(playlist, song)
-                .subscribeOn(schedulerProvider.worker())
+            .subscribeOn(schedulerProvider.worker())
     }
 
-    fun swapItems(listSize: Int, fromPosition: Int, toPosition: Int): Completable {
+    fun moveItem(listSize: Int, fromPosition: Int, toPosition: Int): Completable {
         return preferences.getSortOrderForSection(Library.PLAYLIST)
-                .firstOrError()
-                .flatMap { sortOrder ->
-                    playlistChunkRepository.isSwappingAllowedForSortOrder(sortOrder)
-                }
-                .flatMapCompletable { isSwappingAllowed ->
-                    if (isSwappingAllowed) {
-                        val isReversed = preferences
-                                .isSortOrderReversedForSection(Library.PLAYLIST)
-                                .blockingFirst()
+            .firstOrError()
+            .flatMap { sortOrder ->
+                playlistChunkRepository.isMovingAllowedForSortOrder(sortOrder)
+            }
+            .flatMapCompletable { isMovingAllowed ->
+                if (isMovingAllowed) {
+                    val isReversed = preferences
+                        .isSortOrderReversedForSection(Library.PLAYLIST)
+                        .blockingFirst()
 
-                        val actualFromPosition = if (isReversed) {
-                            (listSize - 1) - fromPosition
-                        } else fromPosition
+                    val actualFromPosition = if (isReversed) {
+                        (listSize - 1) - fromPosition
+                    } else fromPosition
 
-                        val actualToPosition = if (isReversed) {
-                            (listSize - 1) - toPosition
-                        } else toPosition
+                    val actualToPosition = if (isReversed) {
+                        (listSize - 1) - toPosition
+                    } else toPosition
 
-                        playlistChunkRepository.swapItemsInPlaylist(
-                                playlist,
-                                actualFromPosition,
-                                actualToPosition)
-                    } else Completable.complete()
-                }
-                .subscribeOn(schedulerProvider.worker())
+                    playlistChunkRepository.moveItemInPlaylist(
+                        playlist,
+                        actualFromPosition,
+                        actualToPosition
+                    )
+
+                } else Completable.complete()
+            }
+            .subscribeOn(schedulerProvider.worker())
     }
 
     @AssistedInject.Factory

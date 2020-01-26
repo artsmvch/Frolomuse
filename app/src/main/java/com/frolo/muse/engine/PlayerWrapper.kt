@@ -134,8 +134,8 @@ class PlayerWrapper : Player {
         origin?.addAllNext(songs)
     }
 
-    override fun swap(fromPosition: Int, toPosition: Int) {
-        origin?.swap(fromPosition, toPosition)
+    override fun moveItem(fromPosition: Int, toPosition: Int) {
+        origin?.moveItem(fromPosition, toPosition)
     }
 
     override fun getAudioFx(): AudioFx {

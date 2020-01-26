@@ -36,7 +36,7 @@ class TestPlayer: Player {
     override fun addAll(songs: List<Song>) = Unit
     override fun addNext(song: Song) = Unit
     override fun addAllNext(songs: List<Song>) = Unit
-    override fun swap(fromPosition: Int, toPosition: Int) = Unit
+    override fun moveItem(fromPosition: Int, toPosition: Int) = Unit
     override fun getAudioFx(): AudioFx = TestAudioFx()
     override fun isAPointed(): Boolean = false
     override fun isBPointed(): Boolean = false

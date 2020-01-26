@@ -66,7 +66,7 @@ open class SongAdapter<T: Song> constructor(
         }
     }
 
-    override fun onPreSwap(fromPosition: Int, toPosition: Int) {
+    override fun onPreMove(fromPosition: Int, toPosition: Int) {
         when (playingPosition) {
             fromPosition -> playingPosition = toPosition
             in (fromPosition + 1)..toPosition -> playingPosition--

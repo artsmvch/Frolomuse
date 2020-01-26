@@ -111,7 +111,7 @@ class CurrentSongQueueViewModel @Inject constructor(
     }
 
     fun onItemMoved(fromPosition: Int, toPosition: Int) {
-        player.swap(fromPosition, toPosition)
+        player.moveItem(fromPosition, toPosition)
     }
 
     fun onDragEnded() {

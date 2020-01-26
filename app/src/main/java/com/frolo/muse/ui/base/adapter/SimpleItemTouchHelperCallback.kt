@@ -10,23 +10,32 @@ class SimpleItemTouchHelperCallback constructor(
         private val itemViewSwipeEnabled: Boolean = true
 ) : ItemTouchHelper.Callback() {
 
+    private var startPosition: Int? = null
+    private var resultPosition: Int? = null
+
     override fun isLongPressDragEnabled() = longPressDragEnabled
 
     override fun isItemViewSwipeEnabled() = itemViewSwipeEnabled
 
     override fun getMovementFlags(
-            recyclerView: RecyclerView,
-            viewHolder: RecyclerView.ViewHolder): Int {
-
+        recyclerView: RecyclerView,
+        viewHolder: RecyclerView.ViewHolder
+    ): Int {
         val dragFlags = ItemTouchHelper.UP or ItemTouchHelper.DOWN
         val swipeFlags = ItemTouchHelper.START or ItemTouchHelper.END
         return makeMovementFlags(dragFlags, swipeFlags)
     }
 
     override fun onMove(
-            recyclerView: RecyclerView,
-            viewHolder: RecyclerView.ViewHolder,
-            target: RecyclerView.ViewHolder): Boolean {
+        recyclerView: RecyclerView,
+        viewHolder: RecyclerView.ViewHolder,
+        target: RecyclerView.ViewHolder
+    ): Boolean {
+        if (startPosition == null) {
+            // This is the first move
+            startPosition = viewHolder.adapterPosition
+        }
+        resultPosition = target.adapterPosition
 
         adapter.onItemMove(viewHolder.adapterPosition, target.adapterPosition)
         return true
@@ -38,6 +47,14 @@ class SimpleItemTouchHelperCallback constructor(
 
     override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
         super.clearView(recyclerView, viewHolder)
-        adapter.onDragEnded()
+
+        startPosition?.also { safeStartPosition ->
+            resultPosition?.also { resultPosition ->
+                adapter.onDragEnded(safeStartPosition, resultPosition)
+            }
+        }
+
+        startPosition = null
+        resultPosition = null
     }
 }

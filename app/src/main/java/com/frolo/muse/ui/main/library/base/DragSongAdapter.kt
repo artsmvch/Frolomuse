@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.include_check.view.*
 import kotlinx.android.synthetic.main.include_draggable_item_song.view.*
 
 
-class SwappableSongAdapter constructor(
+class DragSongAdapter constructor(
         requestManager: RequestManager,
         private val onDragListener: OnDragListener? = null
 ): SongAdapter<Song>(requestManager), ItemTouchHelperAdapter {
@@ -29,8 +29,7 @@ class SwappableSongAdapter constructor(
     interface OnDragListener {
         fun onTouchDragView(holder: RecyclerView.ViewHolder)
         fun onItemDismissed(position: Int)
-        fun onItemMoved(fromPosition: Int, toPosition: Int)
-        fun onDragEnded()
+        fun onDragEnded(fromPosition: Int, toPosition: Int)
     }
 
     var itemViewType: Int = VIEW_TYPE_SWAPPABLE
@@ -42,17 +41,16 @@ class SwappableSongAdapter constructor(
         }
 
     override fun onItemMove(fromPosition: Int, toPosition: Int) {
-        onDragListener?.onItemMoved(fromPosition, toPosition)
-        swap(fromPosition, toPosition)
+        moveItem(fromPosition, toPosition)
+    }
+
+    override fun onDragEnded(fromPosition: Int, toPosition: Int) {
+        onDragListener?.onDragEnded(fromPosition, toPosition)
     }
 
     override fun onItemDismiss(position: Int) {
         onDragListener?.onItemDismissed(position)
         remove(position)
-    }
-
-    override fun onDragEnded() {
-        onDragListener?.onDragEnded()
     }
 
     override fun getItemViewType(position: Int): Int {

@@ -48,8 +48,8 @@ class PlaylistViewModel constructor(
     private val _playlist: MutableLiveData<Playlist> by lazy {
         MutableLiveData<Playlist>().apply {
             getPlaylistUseCase.getPlaylist()
-                    .observeOn(schedulerProvider.main())
-                    .subscribeFor { value = it }
+                .observeOn(schedulerProvider.main())
+                .subscribeFor { value = it }
         }
     }
     val playlist: LiveData<Playlist> get() = _playlist
@@ -57,12 +57,13 @@ class PlaylistViewModel constructor(
     private val _isSwappingEnabled: MutableLiveData<Boolean> by lazy {
         MediatorLiveData<Boolean>().apply {
             value = false
+
             getPlaylistUseCase
-                    .isCurrentSortOrderSwappable()
-                    .observeOn(schedulerProvider.main())
-                    .subscribeFor {
-                        value = it
-                    }
+                .isCurrentSortOrderSwappable()
+                .observeOn(schedulerProvider.main())
+                .subscribeFor {
+                    value = it
+                }
         }
     }
     val isSwappingEnabled: LiveData<Boolean> get() = _isSwappingEnabled
@@ -75,28 +76,28 @@ class PlaylistViewModel constructor(
         getPlaylistUseCase.addSongs()
     }
 
-    fun onRemoveItem(item: Song) {
+    fun onItemRemoved(item: Song) {
         getPlaylistUseCase.removeItem(item)
-                .andThen(Single.fromCallable {
-                    mediaList.value.let { list ->
-                        if (list != null) {
-                            list - item
-                        } else emptyList()
-                    }
-                })
-                .observeOn(schedulerProvider.main())
-                .subscribeFor { newList ->
-                    submitMediaList(newList)
+            .andThen(Single.fromCallable {
+                mediaList.value.let { list ->
+                    if (list != null) {
+                        list - item
+                    } else emptyList()
                 }
+            })
+            .observeOn(schedulerProvider.main())
+            .subscribeFor { newList ->
+                submitMediaList(newList)
+            }
     }
 
-    fun onSwapItems(fromPosition: Int, toPosition: Int) {
+    fun onItemMoved(fromPosition: Int, toPosition: Int) {
         val listSize = mediaItemCount.value ?: return
 
-        getPlaylistUseCase.swapItems(listSize, fromPosition, toPosition)
-                .observeOn(schedulerProvider.main())
-                .subscribeFor {
-                }
+        getPlaylistUseCase.moveItem(listSize, fromPosition, toPosition)
+            .observeOn(schedulerProvider.main())
+            .subscribeFor {
+            }
     }
 
     fun onDragEnded() {

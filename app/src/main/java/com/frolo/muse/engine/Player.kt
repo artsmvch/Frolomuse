@@ -35,7 +35,7 @@ interface Player {
     fun addAll(songs: List<Song>)
     fun addNext(song: Song)
     fun addAllNext(songs: List<Song>)
-    fun swap(fromPosition: Int, toPosition: Int)
+    fun moveItem(fromPosition: Int, toPosition: Int)
     fun getAudioFx(): AudioFx
     // AB functionality
     fun isAPointed(): Boolean

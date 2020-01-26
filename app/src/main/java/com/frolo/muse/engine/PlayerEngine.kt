@@ -796,12 +796,12 @@ class PlayerEngine constructor(
         }
     }
 
-    override fun swap(fromPosition: Int, toPosition: Int) {
+    override fun moveItem(fromPosition: Int, toPosition: Int) {
         execOnEngineThread {
             synchronized(lock) {
                 originSongQueue?.let { queue ->
                     if (fromPosition >= 0 && toPosition >= 0) {
-                        queue.swap(fromPosition, toPosition)
+                        queue.moveItem(fromPosition, toPosition)
                     }
                 }
 
@@ -823,7 +823,7 @@ class PlayerEngine constructor(
 
                 currentSongQueue.also { songQueue ->
                     if (fromPosition >= 0 && toPosition >= 0) {
-                        songQueue.swap(fromPosition, toPosition)
+                        songQueue.moveItem(fromPosition, toPosition)
                     }
                 }
             }
