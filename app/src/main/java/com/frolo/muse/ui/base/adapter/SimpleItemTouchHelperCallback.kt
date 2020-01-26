@@ -38,6 +38,6 @@ class SimpleItemTouchHelperCallback constructor(
 
     override fun clearView(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder) {
         super.clearView(recyclerView, viewHolder)
-        adapter.onFinishInteracting()
+        adapter.onDragEnded()
     }
 }

@@ -99,7 +99,7 @@ class PlaylistViewModel constructor(
                 }
     }
 
-    fun onFinishInteracting() {
+    fun onDragEnded() {
         submitMediaList(mediaList.value ?: emptyList())
     }
 }

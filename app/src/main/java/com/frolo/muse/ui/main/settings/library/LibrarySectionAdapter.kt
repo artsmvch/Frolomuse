@@ -77,6 +77,8 @@ class LibrarySectionAdapter constructor(
         throw IllegalArgumentException("Items in this adapter cannot be dismissed")
     }
 
+    override fun onDragEnded() = Unit
+
     class LibrarySectionViewHolder(itemView: View): BaseViewHolder(itemView) {
         override val viewOptionsMenu: View? = null
     }

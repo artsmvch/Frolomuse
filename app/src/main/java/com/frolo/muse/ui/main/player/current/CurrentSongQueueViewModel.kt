@@ -114,7 +114,7 @@ class CurrentSongQueueViewModel @Inject constructor(
         player.swap(fromPosition, toPosition)
     }
 
-    fun onFinishedDragging() {
+    fun onDragEnded() {
         handleQueue(player.getCurrentQueue())
     }
 

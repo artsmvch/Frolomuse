@@ -57,23 +57,18 @@ class PlaylistFragment: AbsSongCollectionFragment<Song>() {
         override fun onItemMoved(fromPosition: Int, toPosition: Int) {
             performSwappingInPlaylist(fromPosition, toPosition)
         }
-        override fun onFinishInteracting() {
+        override fun onDragEnded() {
             isDragging = false
-            view?.also { safeView ->
-                val oldCallback = finishInteractingCallback
-                if (oldCallback != null) {
-                    safeView.removeCallbacks(oldCallback)
-                }
-                val newCallback = Runnable {
-                    viewModel.onFinishInteracting()
-                }
-                safeView.post(newCallback)
-                finishInteractingCallback = newCallback
+            view?.apply {
+                removeCallbacks(onDragEndedCallback)
+                post(onDragEndedCallback)
             }
         }
     }
 
-    private var finishInteractingCallback: Runnable? = null
+    private val onDragEndedCallback = Runnable {
+        viewModel.onDragEnded()
+    }
 
     override val adapter: SongAdapter<Song> by lazy {
         SwappableSongAdapter(Glide.with(this), onDragListener).apply {
@@ -151,10 +146,7 @@ class PlaylistFragment: AbsSongCollectionFragment<Song>() {
     }
 
     override fun onDestroyView() {
-        finishInteractingCallback?.also { safeCallback ->
-            view?.removeCallbacks(safeCallback)
-        }
-        finishInteractingCallback = null
+        view?.removeCallbacks(onDragEndedCallback)
         super.onDestroyView()
     }
 

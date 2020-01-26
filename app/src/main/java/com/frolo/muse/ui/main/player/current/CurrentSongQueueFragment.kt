@@ -49,14 +49,11 @@ class CurrentSongQueueFragment: AbsMediaCollectionFragment<Song>() {
         override fun onItemMoved(fromPosition: Int, toPosition: Int) {
             viewModel.onItemMoved(fromPosition, toPosition)
         }
-        override fun onFinishInteracting() {
+        override fun onDragEnded() {
             isDragging = false
-            view?.also {
-                // Here, we are sure that the view is created and no NPE will occur
-                rv_list.apply {
-                    removeCallbacks(onFinishInteractingCallback)
-                    post(onFinishInteractingCallback)
-                }
+            view?.apply {
+                removeCallbacks(onDragEndedCallback)
+                post(onDragEndedCallback)
             }
         }
     }
@@ -77,8 +74,8 @@ class CurrentSongQueueFragment: AbsMediaCollectionFragment<Song>() {
         }
     }
 
-    private val onFinishInteractingCallback = Runnable {
-        viewModel.onFinishedDragging()
+    private val onDragEndedCallback = Runnable {
+        viewModel.onDragEnded()
     }
 
     private lateinit var playlistCreateEvent: PlaylistCreateEvent
@@ -155,7 +152,7 @@ class CurrentSongQueueFragment: AbsMediaCollectionFragment<Song>() {
     }
 
     override fun onDestroyView() {
-        rv_list.removeCallbacks(onFinishInteractingCallback)
+        view?.removeCallbacks(onDragEndedCallback)
         super.onDestroyView()
     }
 

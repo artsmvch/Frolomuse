@@ -1,6 +1,5 @@
 package com.frolo.muse.ui.main.library.base
 
-import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
@@ -31,7 +30,7 @@ class SwappableSongAdapter constructor(
         fun onTouchDragView(holder: RecyclerView.ViewHolder)
         fun onItemDismissed(position: Int)
         fun onItemMoved(fromPosition: Int, toPosition: Int)
-        fun onFinishInteracting() = Unit
+        fun onDragEnded()
     }
 
     var itemViewType: Int = VIEW_TYPE_SWAPPABLE
@@ -52,8 +51,8 @@ class SwappableSongAdapter constructor(
         remove(position)
     }
 
-    override fun onFinishInteracting() {
-        onDragListener?.onFinishInteracting()
+    override fun onDragEnded() {
+        onDragListener?.onDragEnded()
     }
 
     override fun getItemViewType(position: Int): Int {
