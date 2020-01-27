@@ -292,47 +292,54 @@ final class Query {
 
     //region Preferences
     /*package*/ static Flowable<Object> createFlowable(
-            final SharedPreferences preferences,
-            final String key
+        final SharedPreferences preferences,
+        final String key
     ) {
-        return Flowable.create(
-                new FlowableOnSubscribe<Object>() {
-                    @Override
-                    public void subscribe(final FlowableEmitter<Object> emitter) {
-                        if (!emitter.isCancelled()) {
-                            final SharedPreferences.OnSharedPreferenceChangeListener trigger =
-                                    new SharedPreferences.OnSharedPreferenceChangeListener() {
+        return Flowable.create(new FlowableOnSubscribe<Object>() {
+            @Override
+            public void subscribe(final FlowableEmitter<Object> emitter) {
+                if (!emitter.isCancelled()) {
 
-                                @Override
-                                public void onSharedPreferenceChanged(
-                                        SharedPreferences sharedPreferences,
-                                        String _key
-                                ) {
-                                    if (!emitter.isCancelled()) {
-                                        if (Objects.equals(key, _key)) {
-                                            emitter.onNext(NOTHING);
+                    final SharedPreferences.OnSharedPreferenceChangeListener trigger =
+                            new SharedPreferences.OnSharedPreferenceChangeListener() {
+
+                        @Override
+                        public void onSharedPreferenceChanged(
+                            SharedPreferences sharedPreferences,
+                            String _key
+                        ) {
+                            if (!emitter.isCancelled()) {
+                                // making sure that's the key we are interested in
+                                if (Objects.equals(key, _key)) {
+                                    // making sure the value passed on the background thread
+                                    WorkerHandler.sInstance.post(
+                                        new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                emitter.onNext(NOTHING);
+                                            }
                                         }
-                                    }
+                                    );
                                 }
-                            };
-
-                            preferences.registerOnSharedPreferenceChangeListener(trigger);
-
-                            emitter.setDisposable(Disposables.fromAction(new Action() {
-                                @Override
-                                public void run() {
-                                    preferences.unregisterOnSharedPreferenceChangeListener(trigger);
-                                }
-                            }));
+                            }
                         }
+                    };
 
-                        if (!emitter.isCancelled()) {
-                            emitter.onNext(NOTHING);
+                    preferences.registerOnSharedPreferenceChangeListener(trigger);
+
+                    emitter.setDisposable(Disposables.fromAction(new Action() {
+                        @Override
+                        public void run() {
+                            preferences.unregisterOnSharedPreferenceChangeListener(trigger);
                         }
-                    }
-                },
-                BackpressureStrategy.LATEST
-        );
+                    }));
+                }
+
+                if (!emitter.isCancelled()) {
+                    emitter.onNext(NOTHING);
+                }
+            }
+        }, BackpressureStrategy.LATEST);
     }
 
     /*package*/ static <T> Flowable<T> createFlowable(
