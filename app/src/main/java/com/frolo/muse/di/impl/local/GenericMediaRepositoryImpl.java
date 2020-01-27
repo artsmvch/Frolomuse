@@ -65,15 +65,18 @@ public class GenericMediaRepositoryImpl implements GenericMediaRepository {
         this.mMyFileRepo = myFileRepo;
     }
 
-    private Function5<List<Song>, List<Album>, List<Artist>, List<Genre>, List<Playlist>, List<Media>> createZipper() {
+    private Function5<List<Song>, List<Album>, List<Artist>, List<Genre>, List<Playlist>, List<Media>> createCombiner() {
         return new Function5<List<Song>, List<Album>, List<Artist>, List<Genre>, List<Playlist>, List<Media>>() {
             @Override
-            public List<Media> apply(List<Song> songs,
-                                     List<Album> albums,
-                                     List<Artist> artists,
-                                     List<Genre> genres,
-                                     List<Playlist> playlists) {
-                List<Media> items = new ArrayList<>();
+            public List<Media> apply(
+                    List<Song> songs,
+                    List<Album> albums,
+                    List<Artist> artists,
+                    List<Genre> genres,
+                    List<Playlist> playlists
+            ) {
+                int totalSize = songs.size() + albums.size() + artists.size() + genres.size() + playlists.size();
+                List<Media> items = new ArrayList<>(totalSize);
                 items.addAll(songs);
                 items.addAll(albums);
                 items.addAll(artists);
@@ -97,7 +100,7 @@ public class GenericMediaRepositoryImpl implements GenericMediaRepository {
                 mArtistRepo.getAllItems(),
                 mGenreRepo.getAllItems(),
                 mPlaylistRepo.getAllItems(),
-                createZipper());
+                createCombiner());
     }
 
     @Override
@@ -108,7 +111,7 @@ public class GenericMediaRepositoryImpl implements GenericMediaRepository {
                 mArtistRepo.getAllItems(sortOrder),
                 mGenreRepo.getAllItems(sortOrder),
                 mPlaylistRepo.getAllItems(sortOrder),
-                createZipper());
+                createCombiner());
     }
 
     @Override
@@ -119,7 +122,7 @@ public class GenericMediaRepositoryImpl implements GenericMediaRepository {
                 mArtistRepo.getFilteredItems(filter),
                 mGenreRepo.getFilteredItems(filter),
                 mPlaylistRepo.getFilteredItems(filter),
-                createZipper());
+                createCombiner());
     }
 
     @Override
@@ -147,7 +150,7 @@ public class GenericMediaRepositoryImpl implements GenericMediaRepository {
 
             case Media.MY_FILE:
             default:
-                throw new UnknownMediaException(item);
+                return Completable.error(new UnknownMediaException(item));
         }
     }
 
@@ -206,8 +209,7 @@ public class GenericMediaRepositoryImpl implements GenericMediaRepository {
             }
 
             default: {
-                return Single.error(
-                        new UnknownMediaException(item));
+                return Single.error(new UnknownMediaException(item));
             }
         }
     }
@@ -230,24 +232,13 @@ public class GenericMediaRepositoryImpl implements GenericMediaRepository {
 
     @Override
     public Flowable<List<Media>> getAllFavouriteItems() {
-        return Flowable.zip(
+        return Flowable.combineLatest(
                 mSongRepo.getAllFavouriteItems(),
-                mArtistRepo.getAllFavouriteItems(),
                 mAlbumRepo.getAllFavouriteItems(),
+                mArtistRepo.getAllFavouriteItems(),
                 mGenreRepo.getAllFavouriteItems(),
                 mPlaylistRepo.getAllFavouriteItems(),
-                new Function5<List<Song>, List<Artist>, List<Album>, List<Genre>, List<Playlist>, List<Media>>() {
-                    @Override
-                    public List<Media> apply(List<Song> songs, List<Artist> artists, List<Album> albums, List<Genre> genres, List<Playlist> playlists) throws Exception {
-                        List<Media> list = new ArrayList<>();
-                        list.addAll(songs);
-                        list.addAll(artists);
-                        list.addAll(artists);
-                        list.addAll(genres);
-                        list.addAll(playlists);
-                        return list;
-                    }
-                });
+                createCombiner());
     }
 
     @SuppressLint("SwitchIntDef")
@@ -274,9 +265,9 @@ public class GenericMediaRepositoryImpl implements GenericMediaRepository {
                 return mPlaylistRepo.isFavourite((Playlist) item);
             }
 
-            default: return Flowable.error(
-                    new UnknownMediaException(item)
-            );
+            default: {
+                return Flowable.error(new UnknownMediaException(item));
+            }
         }
     }
 
@@ -304,9 +295,9 @@ public class GenericMediaRepositoryImpl implements GenericMediaRepository {
                 return mPlaylistRepo.changeFavourite((Playlist) item);
             }
 
-            default: return Completable.error(
-                    new UnknownMediaException(item)
-            );
+            default: {
+                return Completable.error(new UnknownMediaException(item));
+            }
         }
     }
 }
