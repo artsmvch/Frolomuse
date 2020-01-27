@@ -43,7 +43,7 @@ class AddSongToPlaylistViewModel constructor(
     private val queryPublisher: PublishProcessor<String> by lazy {
         val publisher = PublishProcessor.create<String>()
         publisher.debounce(300, TimeUnit.MILLISECONDS)
-                .flatMap { query -> addSongToPlaylistUseCase.search(query) }
+                .switchMap { query -> addSongToPlaylistUseCase.search(query) }
                 .map { songs ->
                     SelectableSongQuery(songs, selectedItems.value ?: emptySet())
                 }
