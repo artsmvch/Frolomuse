@@ -50,7 +50,11 @@ class SimpleItemTouchHelperCallback constructor(
 
         startPosition?.also { safeStartPosition ->
             resultPosition?.also { resultPosition ->
-                adapter.onDragEnded(safeStartPosition, resultPosition)
+                if (safeStartPosition != resultPosition) {
+                    adapter.onDragEndedWithResult(safeStartPosition, resultPosition)
+                } else {
+                    adapter.onDragEnded()
+                }
             }
         }
 

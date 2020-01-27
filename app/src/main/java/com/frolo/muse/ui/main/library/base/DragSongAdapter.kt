@@ -29,7 +29,7 @@ class DragSongAdapter constructor(
     interface OnDragListener {
         fun onTouchDragView(holder: RecyclerView.ViewHolder)
         fun onItemDismissed(position: Int)
-        fun onDragEnded(fromPosition: Int, toPosition: Int)
+        fun onItemMoved(fromPosition: Int, toPosition: Int)
     }
 
     var itemViewType: Int = VIEW_TYPE_SWAPPABLE
@@ -44,9 +44,11 @@ class DragSongAdapter constructor(
         moveItem(fromPosition, toPosition)
     }
 
-    override fun onDragEnded(fromPosition: Int, toPosition: Int) {
-        onDragListener?.onDragEnded(fromPosition, toPosition)
+    override fun onDragEndedWithResult(fromPosition: Int, toPosition: Int) {
+        onDragListener?.onItemMoved(fromPosition, toPosition)
     }
+
+    override fun onDragEnded() = Unit
 
     override fun onItemDismiss(position: Int) {
         onDragListener?.onItemDismissed(position)

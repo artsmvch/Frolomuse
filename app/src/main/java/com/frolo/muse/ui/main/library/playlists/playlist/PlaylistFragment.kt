@@ -52,7 +52,7 @@ class PlaylistFragment: AbsSongCollectionFragment<Song>() {
             itemTouchHelper.startDrag(holder)
         }
 
-        override fun onDragEnded(fromPosition: Int, toPosition: Int) {
+        override fun onItemMoved(fromPosition: Int, toPosition: Int) {
             view?.apply {
                 removeCallbacksSafely(onDragEndedCallback)
                 val callback = Runnable { dispatchItemMoved(fromPosition, toPosition) }

@@ -73,7 +73,9 @@ class LibrarySectionAdapter constructor(
         moveItem(fromPosition, toPosition)
     }
 
-    override fun onDragEnded(fromPosition: Int, toPosition: Int) = Unit
+    override fun onDragEndedWithResult(fromPosition: Int, toPosition: Int) = Unit
+
+    override fun onDragEnded() = Unit
 
     override fun onItemDismiss(position: Int) {
         throw IllegalArgumentException("Items in this adapter may not be dismissed")

@@ -13,10 +13,19 @@ interface ItemTouchHelperAdapter {
 
     /**
      * Called when the current drag is ended.
-     * The result of this drag if the move from [fromPosition] to [toPosition].
+     * The result of this drag is the move from [fromPosition] to [toPosition].
      * Any additional cleanups should go here.
+     * NOTE: this method will not be called if [onDragEndedWithResult] was called.
      */
-    fun onDragEnded(fromPosition: Int, toPosition: Int)
+    fun onDragEndedWithResult(fromPosition: Int, toPosition: Int)
+
+    /**
+     * Called when the current drag is ended,
+     * but the dragged item ultimately stayed at the same position.
+     * Any additional cleanups should go here.
+     * NOTE: this method will not be called if [onDragEnded] was called.
+     */
+    fun onDragEnded()
 
     /**
      * Called when an item gets dismissed with a swipe.
