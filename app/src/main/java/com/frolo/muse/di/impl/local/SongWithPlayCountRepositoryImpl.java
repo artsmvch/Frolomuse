@@ -30,7 +30,7 @@ public class SongWithPlayCountRepositoryImpl implements SongWithPlayCountReposit
     private final Context mContext;
     private final SongRepository mDelegate;
 
-    private final Function<List<Song>, Publisher<List<SongWithPlayCount>>> FLAT_MAPPER =
+    private final Function<List<Song>, Publisher<List<SongWithPlayCount>>> MAPPER =
         new Function<List<Song>, Publisher<List<SongWithPlayCount>>>() {
             @Override
             public Publisher<List<SongWithPlayCount>> apply(List<Song> songs) {
@@ -86,18 +86,18 @@ public class SongWithPlayCountRepositoryImpl implements SongWithPlayCountReposit
 
     @Override
     public Flowable<List<SongWithPlayCount>> getAllItems(String sortOrder) {
-        return mDelegate.getAllItems(sortOrder).flatMap(FLAT_MAPPER);
+        return mDelegate.getAllItems(sortOrder).switchMap(MAPPER);
     }
 
     @Override
     public Flowable<List<SongWithPlayCount>> getFilteredItems(String filter) {
-        return mDelegate.getFilteredItems(filter).flatMap(FLAT_MAPPER);
+        return mDelegate.getFilteredItems(filter).switchMap(MAPPER);
     }
 
     @Override
     public Flowable<SongWithPlayCount> getItem(long id) {
         return mDelegate.getItem(id)
-            .flatMap(new Function<Song, Publisher<SongWithPlayCount>>() {
+            .switchMap(new Function<Song, Publisher<SongWithPlayCount>>() {
                 @Override
                 public Publisher<SongWithPlayCount> apply(final Song song) {
                     return SongQuery.getSongWithPlayCount(mContext.getContentResolver(), song);
@@ -147,7 +147,7 @@ public class SongWithPlayCountRepositoryImpl implements SongWithPlayCountReposit
 
     @Override
     public Flowable<List<SongWithPlayCount>> getAllFavouriteItems() {
-        return mDelegate.getAllFavouriteItems().flatMap(FLAT_MAPPER);
+        return mDelegate.getAllFavouriteItems().switchMap(MAPPER);
     }
 
     @Override
