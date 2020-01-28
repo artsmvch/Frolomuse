@@ -83,4 +83,7 @@ interface AppComponent {
     fun provideGetPlaylistSongsUseCaseFactory(): GetPlaylistUseCase.Factory
     fun provideAddMediaToPlaylistUseCaseFactory(): AddMediaToPlaylistUseCase.Factory
     fun provideAddSongToPlaylistUseCaseFactory(): AddSongToPlaylistUseCase.Factory
+
+    // VM factory creators
+    fun providePosterVMFactoryCreator(): PosterVMFactory.Creator
 }

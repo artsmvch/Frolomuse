@@ -31,8 +31,11 @@ class PosterFragment: BaseDialogFragment() {
 
     private val viewModel: PosterViewModel by lazy {
         val song = requireArguments().getSerializable(ARG_SONG) as Song
-        val app = requireApp()
-        val vmFactory = PosterVMFactory(app, app.appComponent, song)
+        val vmFactory = requireApp()
+                .appComponent
+                .providePosterVMFactoryCreator()
+                .create(song)
+
         ViewModelProviders.of(this, vmFactory)
                 .get(PosterViewModel::class.java)
     }
@@ -86,14 +89,10 @@ class PosterFragment: BaseDialogFragment() {
             poster.observeNonNull(owner) { bmp ->
                 dialog?.apply {
                     Glide.with(this@PosterFragment)
-                            .load(bmp)
-                            .transition(DrawableTransitionOptions.withCrossFade())
-                            .into(imv_poster)
+                        .load(bmp)
+                        .transition(DrawableTransitionOptions.withCrossFade())
+                        .into(imv_poster)
                 }
-            }
-
-            startedSharingEvent.observeNonNull(owner) {
-                dismiss()
             }
         }
     }
