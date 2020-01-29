@@ -8,6 +8,7 @@ import android.renderscript.RSRuntimeException
 import androidx.core.content.ContextCompat
 import com.frolo.muse.R
 import com.frolo.muse.model.media.Song
+import com.frolo.muse.rx.SchedulerProvider
 import io.reactivex.Single
 import jp.wasabeef.glide.transformations.internal.FastBlur
 import jp.wasabeef.glide.transformations.internal.RSBlur
@@ -19,13 +20,14 @@ import kotlin.math.min
  * Creates [Bitmap] poster for a song.
  */
 class CreatePosterUseCase @Inject constructor(
-    private val context: Context
+    private val context: Context,
+    private val schedulerProvider: SchedulerProvider
 ) {
 
     fun createPoster(song: Song): Single<Bitmap> =
         Single.fromCallable {
             blockingCreatePoster(song)
-        }
+        }.subscribeOn(schedulerProvider.worker())
 
     private fun blockingCreatePoster(song: Song): Bitmap {
         val res = context.resources

@@ -2,6 +2,7 @@ package com.frolo.muse.interactor.poster
 
 import android.content.Context
 import android.graphics.Bitmap
+import com.frolo.muse.rx.SchedulerProvider
 import io.reactivex.Single
 import java.io.File
 import java.io.FileOutputStream
@@ -12,7 +13,8 @@ import javax.inject.Inject
  * Saves bitmaps in the cache dir in the internal storage.
  */
 class SavePosterUseCase @Inject constructor(
-    private val context: Context
+    private val context: Context,
+    private val schedulerProvider: SchedulerProvider
 ) {
 
     /**
@@ -28,6 +30,6 @@ class SavePosterUseCase @Inject constructor(
             }
             file.setReadable(true, true)
             return@fromCallable file
-        }
+        }.subscribeOn(schedulerProvider.worker())
 
 }

@@ -35,7 +35,6 @@ class PosterViewModel constructor(
 
     private fun doCreatePoster() {
         createPosterUseCase.createPoster(songArg)
-            .subscribeOn(schedulerProvider.worker())
             .observeOn(schedulerProvider.main())
             .doOnSubscribe { _isCreatingPoster.value = true }
             .doFinally { _isCreatingPoster.value = false }
@@ -50,7 +49,6 @@ class PosterViewModel constructor(
             navigator.sharePoster(songArg, file)
         } else {
             savePosterUseCase.savePoster(bmp)
-                .subscribeOn(schedulerProvider.worker())
                 .observeOn(schedulerProvider.main())
                 .doOnSuccess { posterFile -> _posterFile.value = posterFile }
                 .subscribeFor { posterFile -> navigator.sharePoster(songArg, posterFile) }
