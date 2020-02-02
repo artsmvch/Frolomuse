@@ -37,13 +37,18 @@ class SongOfArtistAdapter constructor(
             tv_album_name.text = item.getAlbumString(res)
             tv_duration.text = item.getDurationString()
 
-            if (position != playingPosition) {
-                mini_visualizer.visibility = View.GONE
-                mini_visualizer.setAnimating(false)
-            } else {
+            val isPlayPosition = position == playingPosition
+
+            if (isPlayPosition) {
                 mini_visualizer.visibility = View.VISIBLE
                 mini_visualizer.setAnimating(isPlaying)
+            } else {
+                mini_visualizer.visibility = View.GONE
+                mini_visualizer.setAnimating(false)
             }
+
+            view_play_position_background.visibility =
+                    if (isPlayPosition) View.VISIBLE else View.INVISIBLE
 
             requestManager.makeRequest(item.albumId)
                     .placeholder(R.drawable.ic_note_rounded_placeholder)

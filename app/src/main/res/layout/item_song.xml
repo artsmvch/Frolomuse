@@ -2,9 +2,30 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    style="@style/Layout.Item.Media">
+    android:minHeight="@dimen/preferred_item_height">
+
+    <View
+        android:id="@+id/view_play_position_background"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/bg_play_position"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <View
+        android:id="@+id/view_media_background"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/bg_item_media"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <ImageView
         android:layout_margin="@dimen/list_item_img_art_padding"
@@ -21,23 +42,22 @@
         android:id="@+id/view_options_menu"
         android:layout_width="@dimen/options_menu_width"
         android:layout_height="60dp"
+        layout="@layout/include_options_menu"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        layout="@layout/include_options_menu" />
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:textColor="?attr/android:textColorSecondary"
-        android:layout_margin="5.5dp"
+        android:layout_margin="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/placeholder_zero_duration"
         android:id="@+id/tv_duration"
-        android:textSize="13sp"
+        android:textAppearance="?textAppearanceListItemSecondary"
         app:layout_constraintEnd_toStartOf="@id/view_options_menu"
         app:layout_constraintTop_toTopOf="@id/view_options_menu"
         app:layout_constraintBottom_toBottomOf="@id/view_options_menu"
-        android:layout_centerVertical="true"/>
+        tools:text="1:00"/>
 
     <com.frolo.muse.views.MiniVisualizer
         android:id="@+id/mini_visualizer"
@@ -59,7 +79,7 @@
         app:layout_constraintVertical_chainStyle="packed"
         style="@style/Item.Text.Primary"
         android:id="@+id/tv_song_name"
-        android:text="@string/placeholder_unknown"/>
+        tools:text="Song name"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:layout_width="0dp"
@@ -70,7 +90,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         style="@style/Item.Text.Secondary"
         android:id="@+id/tv_artist_name"
-        android:text="@string/placeholder_unknown" />
+        tools:text="Artist name" />
 
     <include
         app:layout_constraintEnd_toEndOf="@id/imv_album_art"

@@ -65,13 +65,18 @@ class SongWithPlayCountAdapter constructor(
                 .circleCrop()
                 .into(imv_album_art)
 
-            if (position != playingPosition) {
-                mini_visualizer.visibility = View.INVISIBLE
-                mini_visualizer.setAnimating(false)
-            } else {
+            val isPlayPosition = position == playingPosition
+
+            if (isPlayPosition) {
                 mini_visualizer.visibility = View.VISIBLE
                 mini_visualizer.setAnimating(isPlaying)
+            } else {
+                mini_visualizer.visibility = View.INVISIBLE
+                mini_visualizer.setAnimating(false)
             }
+
+            view_play_position_background.visibility =
+                    if (isPlayPosition) View.VISIBLE else View.INVISIBLE
 
             imv_check.setChecked(selected, selectionChanged)
 

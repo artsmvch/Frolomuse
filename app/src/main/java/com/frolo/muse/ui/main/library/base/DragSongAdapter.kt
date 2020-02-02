@@ -102,18 +102,20 @@ class DragSongAdapter constructor(
                 tv_artist_name.text = item.getArtistString(res)
                 tv_duration.text = item.getDurationString()
 
-                if (position != playingPosition) {
-                    mini_visualizer.visibility = View.GONE
-                    mini_visualizer.setAnimating(false)
-                } else {
+                val isPlayPosition = position == playingPosition
+
+                if (isPlayPosition) {
                     mini_visualizer.visibility = View.VISIBLE
                     mini_visualizer.setAnimating(isPlaying)
+                } else {
+                    mini_visualizer.visibility = View.GONE
+                    mini_visualizer.setAnimating(false)
                 }
 
                 imv_check.setChecked(selected, selectionChanged)
 
                 view_play_position_background.visibility =
-                    if (position != playingPosition) View.INVISIBLE else View.VISIBLE
+                    if (isPlayPosition) View.VISIBLE else View.INVISIBLE
 
                 isSelected = selected
             }
