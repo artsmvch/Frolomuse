@@ -31,10 +31,16 @@ class CurrentSongQueueFragment: AbsMediaCollectionFragment<Song>() {
 
     companion object {
 
+        private const val SCROLL_THRESHOLD_IN_INCH = 0.3f
+
         private const val TIME_FOR_SCROLLING = 1000L // 1 second
 
         // Factory
         fun newInstance() = CurrentSongQueueFragment()
+
+        private fun getScrollThresholdInPx(context: Context): Int {
+            return (SCROLL_THRESHOLD_IN_INCH * context.resources.displayMetrics.densityDpi).toInt()
+        }
     }
 
     override val viewModel: CurrentSongQueueViewModel by viewModel()
@@ -125,6 +131,10 @@ class CurrentSongQueueFragment: AbsMediaCollectionFragment<Song>() {
 
         rv_list.doOnLayout {
             checkListChunkShown()
+        }
+
+        rv_list.doOnVerticalScroll(threshold = getScrollThresholdInPx(requireContext())) {
+            viewModel.onScrolled()
         }
 
         fab_scroll_to_play_position.setOnClickListener {

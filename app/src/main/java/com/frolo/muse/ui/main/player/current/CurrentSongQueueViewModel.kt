@@ -80,6 +80,13 @@ class CurrentSongQueueViewModel @Inject constructor(
     private val _playingPosition = MutableLiveData<Int>()
     val playingPosition: LiveData<Int> get() = _playingPosition
 
+    /**
+     * This is a flag that indicates whether the scroll-to-position prompt was shown or not.
+     * This flag resets to false every time [onStart] is called.
+     * The prompt to scroll to play position may be shown only if this flag is false.
+     */
+    private var scrollToPositionPromptShown: Boolean = false
+
     private val _scrollToPositionButtonVisible = MutableLiveData<Boolean>(false)
     val scrollToPositionButtonVisible: LiveData<Boolean> get() = _scrollToPositionButtonVisible
 
@@ -102,6 +109,7 @@ class CurrentSongQueueViewModel @Inject constructor(
     }
 
     fun onStart() {
+        scrollToPositionPromptShown = false
         handleQueue(player.getCurrentQueue())
     }
 
@@ -115,8 +123,14 @@ class CurrentSongQueueViewModel @Inject constructor(
      * so the user will have some time to decide whether he wants or not to scroll to the play position.
      */
     fun onListChunkShown(fromPosition: Int, toPosition: Int) {
+        if (scrollToPositionPromptShown) {
+            // It was shown before, we don't want to prompt the user again
+            return
+        }
+
         val playingPosition = playingPosition.value ?: return
         if (playingPosition !in fromPosition..toPosition) {
+            scrollToPositionPromptShown = true
             _scrollToPositionButtonVisible.value = true
 
             Completable.timer(SCROLL_BUTTON_VISIBLE_TIMEOUT, TimeUnit.MILLISECONDS)
@@ -129,6 +143,12 @@ class CurrentSongQueueViewModel @Inject constructor(
                         _scrollToPositionButtonVisible.value = false
                     }
         }
+    }
+
+    fun onScrolled() {
+        hideScrollToPositionButtonDisposable?.dispose()
+        hideScrollToPositionButtonDisposable = null
+        _scrollToPositionButtonVisible.value = false
     }
 
     fun onScrollToPositionClicked() {
