@@ -103,6 +103,7 @@
         android:maxLines="2"
         android:layout_marginTop="6dp"
         android:textStyle="italic"
+        app:layout_goneMarginBottom="16dp"
         app:layout_constraintStart_toStartOf="@id/tv_artist_name"
         app:layout_constraintTop_toBottomOf="@id/tv_artist_name"
         app:layout_constraintEnd_toEndOf="@id/tv_artist_name"
