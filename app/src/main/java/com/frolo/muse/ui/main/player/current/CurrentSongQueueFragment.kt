@@ -254,9 +254,18 @@ class CurrentSongQueueFragment: AbsMediaCollectionFragment<Song>() {
     }
 
     /**
-     * Scrolls the list to [position].
+     * Immediately scrolls the list to [position].
      */
     private fun scrollToPosition(position: Int) {
+        (rv_list.layoutManager as? LinearLayoutManager)?.also { lm ->
+            lm.scrollToPositionWithOffset(position, 0)
+        }
+    }
+
+    /**
+     * Smoothly scrolls the list to [position].
+     */
+    private fun smootlyScrollToPosition(position: Int) {
         val lm = rv_list.layoutManager as? LinearLayoutManager ?: return
 
         val anyChild = (if (lm.childCount > 0) lm.getChildAt(0) else null)
