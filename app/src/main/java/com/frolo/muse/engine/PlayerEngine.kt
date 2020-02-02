@@ -621,7 +621,7 @@ class PlayerEngine constructor(
 
     override fun getCurrent(): Song? = currentSong
 
-    override fun getCurrentPositionInQueue(): Int  = currentPositionInQueue
+    override fun getCurrentPositionInQueue(): Int = currentPositionInQueue
 
     override fun getCurrentQueue(): SongQueue? = currentSongQueue
 

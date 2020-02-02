@@ -5,23 +5,24 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.doOnLayout
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.frolo.muse.R
+import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.model.media.Song
+import com.frolo.muse.safelyRemoveCallbacks
 import com.frolo.muse.ui.base.adapter.SimpleItemTouchHelperCallback
-import com.frolo.muse.ui.main.library.base.DragSongAdapter
 import com.frolo.muse.ui.main.decorateAsLinear
 import com.frolo.muse.ui.main.library.base.AbsMediaCollectionFragment
 import com.frolo.muse.ui.main.library.base.BaseAdapter
+import com.frolo.muse.ui.main.library.base.DragSongAdapter
 import com.frolo.muse.ui.main.library.base.SongAdapter
 import com.frolo.muse.ui.main.library.playlists.create.PlaylistCreateEvent
 import com.frolo.muse.views.showBackArrow
-import com.frolo.muse.arch.observeNonNull
-import com.frolo.muse.removeCallbacksSafely
 import kotlinx.android.synthetic.main.fragment_base_list.*
 import kotlinx.android.synthetic.main.fragment_current_playlist.*
 
@@ -29,6 +30,8 @@ import kotlinx.android.synthetic.main.fragment_current_playlist.*
 class CurrentSongQueueFragment: AbsMediaCollectionFragment<Song>() {
 
     companion object {
+
+        private const val TIME_FOR_SCROLLING = 1000L // 1 second
 
         // Factory
         fun newInstance() = CurrentSongQueueFragment()
@@ -45,7 +48,7 @@ class CurrentSongQueueFragment: AbsMediaCollectionFragment<Song>() {
 
         override fun onItemMoved(fromPosition: Int, toPosition: Int) {
             view?.apply {
-                removeCallbacksSafely(onDragEndedCallback)
+                safelyRemoveCallbacks(onDragEndedCallback)
                 val callback = Runnable { viewModel.onItemMoved(fromPosition, toPosition) }
                 post(callback)
                 onDragEndedCallback = callback
@@ -77,6 +80,8 @@ class CurrentSongQueueFragment: AbsMediaCollectionFragment<Song>() {
     private var onDragEndedCallback: Runnable? = null
 
     private lateinit var playlistCreateEvent: PlaylistCreateEvent
+
+    private var scrollToPositionCallback: Runnable? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -117,6 +122,14 @@ class CurrentSongQueueFragment: AbsMediaCollectionFragment<Song>() {
                 attachToRecyclerView(rv_list)
             }
         }
+
+        rv_list.doOnLayout {
+            checkListChunkShown()
+        }
+
+        fab_scroll_to_play_position.setOnClickListener {
+            viewModel.onScrollToPositionClicked()
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -148,8 +161,10 @@ class CurrentSongQueueFragment: AbsMediaCollectionFragment<Song>() {
     }
 
     override fun onDestroyView() {
-        view?.removeCallbacks(onDragEndedCallback)
+        view?.safelyRemoveCallbacks(onDragEndedCallback)
         onDragEndedCallback = null
+        view?.safelyRemoveCallbacks(scrollToPositionCallback)
+        scrollToPositionCallback = null
         super.onDestroyView()
     }
 
@@ -192,6 +207,83 @@ class CurrentSongQueueFragment: AbsMediaCollectionFragment<Song>() {
                 val isPlaying = isPlaying.value ?: false
                 adapter.setPlayingPositionAndState(playingPosition, isPlaying)
             }
+
+            scrollToPositionButtonVisible.observeNonNull(owner) { visible ->
+                if (visible) fab_scroll_to_play_position.show()
+                else fab_scroll_to_play_position.hide()
+            }
+
+            scrollToPositionEvent.observeNonNull(owner) { position ->
+                postScrollToPosition(position)
+            }
         }
+    }
+
+    /**
+     * Checks if there is some list's chunk shown.
+     * Finds first and last visible positions in the list
+     * and notifies the view model about them (if they're valid).
+     *
+     * NOTE: this method should be called only once when the list is laid out.
+     */
+    private fun checkListChunkShown() {
+        val lm = rv_list.layoutManager as? LinearLayoutManager ?: return
+        val firstPosition = lm.findFirstVisibleItemPosition()
+        val lastPosition = lm.findLastVisibleItemPosition()
+        if (firstPosition != RecyclerView.NO_POSITION && lastPosition != RecyclerView.NO_POSITION) {
+            viewModel.onListChunkShown(firstPosition, lastPosition)
+        }
+    }
+
+    private fun postScrollToPosition(position: Int) {
+        val safeView = view ?: return
+        safeView.removeCallbacks(scrollToPositionCallback)
+        val r = Runnable { scrollToPosition(position) }
+        scrollToPositionCallback = r
+        safeView.post(r)
+    }
+
+    /**
+     * Scrolls the list to [position].
+     */
+    private fun scrollToPosition(position: Int) {
+        val lm = rv_list.layoutManager as? LinearLayoutManager ?: return
+
+        val anyChild = (if (lm.childCount > 0) lm.getChildAt(0) else null)
+                ?: // no children in layout manager
+                return
+
+        // child height in pixels
+        val childHeight = anyChild.measuredHeight
+
+        // distance in pixels to go
+        val distanceToGo: Int
+
+        val firstPosition = lm.findFirstVisibleItemPosition()
+        if (firstPosition == RecyclerView.NO_POSITION) {
+            return
+        }
+
+        val lastPosition = lm.findLastVisibleItemPosition()
+        if (lastPosition == RecyclerView.NO_POSITION) {
+            return
+        }
+
+        distanceToGo = when {
+            firstPosition > position -> childHeight * (firstPosition - position)
+
+            lastPosition < position -> childHeight * (position - lastPosition)
+
+            else -> return
+        }
+
+        lm.startSmoothScroll(
+            obtainSmoothScroller(
+                context = requireContext(),
+                targetPosition = position,
+                timeForScrolling = TIME_FOR_SCROLLING,
+                distance = distanceToGo
+            )
+        )
     }
 }

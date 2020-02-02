@@ -14,7 +14,7 @@ import com.frolo.muse.R
 import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.model.media.Playlist
 import com.frolo.muse.model.media.Song
-import com.frolo.muse.removeCallbacksSafely
+import com.frolo.muse.safelyRemoveCallbacks
 import com.frolo.muse.ui.base.adapter.SimpleItemTouchHelperCallback
 import com.frolo.muse.ui.base.withArg
 import com.frolo.muse.ui.main.library.base.DragSongAdapter
@@ -54,7 +54,7 @@ class PlaylistFragment: AbsSongCollectionFragment<Song>() {
 
         override fun onItemMoved(fromPosition: Int, toPosition: Int) {
             view?.apply {
-                removeCallbacksSafely(onDragEndedCallback)
+                safelyRemoveCallbacks(onDragEndedCallback)
                 val callback = Runnable { dispatchItemMoved(fromPosition, toPosition) }
                 post(callback)
                 onDragEndedCallback = callback
