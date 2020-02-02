@@ -200,6 +200,7 @@
         <item name="play_button_pause_background">#318E99FF</item>
         <item name="play_button_resume_background">#318E99FF</item>
         <item name="play_button_icon_tint">?attr/iconNormalTint</item>
+        <item name="playPositionBackground">@color/play_position_background_light</item>
 
         <item name="iconSongPlaceholder">@drawable/ic_note_rounded_blue</item>
         <item name="iconAlbumPlaceholder">@drawable/ic_note_square_blue</item>

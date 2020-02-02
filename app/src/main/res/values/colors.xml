@@ -80,4 +80,8 @@
 
     <color name="item_icon_foreground_yellow">#AAB9F1</color>
     <color name="item_icon_background_yellow">#37A1B0FA</color>
+
+    <!--Play position background-->
+    <color name="play_position_background_light">#4DB8B8B8</color>
+    <color name="play_position_background_dark">#32FFFFFF</color>
 </resources>

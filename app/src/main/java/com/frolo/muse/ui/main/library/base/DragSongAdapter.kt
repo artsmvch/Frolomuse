@@ -10,10 +10,11 @@ import com.frolo.muse.inflateChild
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.ui.base.adapter.ItemTouchHelperAdapter
 import com.frolo.muse.ui.getAlbumString
+import com.frolo.muse.ui.getArtistString
 import com.frolo.muse.ui.getDurationString
 import com.frolo.muse.ui.getNameString
 import kotlinx.android.synthetic.main.include_check.view.*
-import kotlinx.android.synthetic.main.include_draggable_item_song.view.*
+import kotlinx.android.synthetic.main.item_drag_song.view.*
 
 
 class DragSongAdapter constructor(
@@ -66,7 +67,7 @@ class DragSongAdapter constructor(
             }
 
             VIEW_TYPE_SWAPPABLE -> {
-                val view = parent.inflateChild(R.layout.include_draggable_item_song)
+                val view = parent.inflateChild(R.layout.item_drag_song)
 
                 SwappableSongViewHolder(view).apply {
                     val viewToDrag = itemView.findViewById<View>(R.id.view_drag_and_drop)
@@ -98,7 +99,7 @@ class DragSongAdapter constructor(
             with(holder.itemView) {
                 val res = resources
                 tv_song_name.text = item.getNameString(res)
-                tv_album_name.text = item.getAlbumString(res)
+                tv_artist_name.text = item.getArtistString(res)
                 tv_duration.text = item.getDurationString()
 
                 if (position != playingPosition) {
@@ -110,6 +111,9 @@ class DragSongAdapter constructor(
                 }
 
                 imv_check.setChecked(selected, selectionChanged)
+
+                view_play_position_background.visibility =
+                    if (position != playingPosition) View.INVISIBLE else View.VISIBLE
 
                 isSelected = selected
             }

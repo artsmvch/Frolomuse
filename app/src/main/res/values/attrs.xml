@@ -25,6 +25,7 @@
     <attr name="searchHeader" format="color|reference"/>
     <attr name="buttonAction" format="reference"/>
     <attr name="buttonCancel" format="reference"/>
+    <attr name="playPositionBackground" format="color|reference"/>
 
     <attr format="reference" name="iBarStyle"/>
 
