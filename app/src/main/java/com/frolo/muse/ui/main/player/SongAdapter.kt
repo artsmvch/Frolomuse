@@ -12,9 +12,9 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
-import com.frolo.muse.GlideManager
 import com.frolo.muse.R
 import com.frolo.muse.engine.SongQueue
+import com.frolo.muse.glide.makeRequest
 import com.frolo.muse.model.media.Song
 import kotlinx.android.synthetic.main.include_square_album_art.view.*
 
@@ -80,19 +80,11 @@ class SongAdapter constructor(
         fun bind(item: Song?) {
             with(itemView) {
                 pb_loading.visibility = View.VISIBLE
-
-                val albumId = item?.albumId ?: -1
-
-                val options = GlideManager.get()
-                        .requestOptions(albumId)
-                        .placeholder(null)
-                        .error(R.drawable.ic_album_art_large_placeholder)
-                val uri = GlideManager.albumArtUri(albumId)
-
                 cv_album_art.visibility = View.INVISIBLE
 
-                requestManager.load(uri)
-                        .apply(options)
+                requestManager.makeRequest(item?.albumId ?: -1)
+                        .placeholder(null)
+                        .error(R.drawable.ic_album_art_large_placeholder)
                         .addListener(this@SongViewHolder)
                         .transition(DrawableTransitionOptions().crossFade())
                         .into(imv_album_art)

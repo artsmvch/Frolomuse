@@ -10,9 +10,12 @@ import android.view.Window
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.frolo.muse.*
+import com.frolo.muse.R
+import com.frolo.muse.UriPathDetector
 import com.frolo.muse.arch.observeNonNull
+import com.frolo.muse.glide.GlideAlbumArtHelper
 import com.frolo.muse.model.media.Album
 import com.frolo.muse.ui.base.BaseDialogFragment
 import com.frolo.muse.ui.base.serializableArg
@@ -122,8 +125,8 @@ class AlbumEditorFragment : BaseDialogFragment() {
                 val id: Long? = config.id
                 val filepath: String? = config.data
                 when {
-                    id != null -> loadArtWithId(id)
-                    filepath != null -> loadArtWithFilepath(filepath)
+                    id != null -> loadAlbumArt(id)
+                    filepath != null -> loadImage(filepath)
                     else -> loadPlaceholder()
                 }
             }
@@ -143,11 +146,11 @@ class AlbumEditorFragment : BaseDialogFragment() {
         }
     }
 
-    private fun loadArtWithId(id: Long) {
+    private fun loadAlbumArt(albumId: Long) {
         dialog?.apply {
-            val uri = GlideManager.albumArtUri(id)
-            val options = GlideManager.get()
-                    .requestOptions(id)
+            val uri = GlideAlbumArtHelper.getUri(albumId)
+            val options = GlideAlbumArtHelper.get()
+                    .makeRequestOptions(albumId)
                     .placeholder(R.drawable.vector_note_square)
                     .error(R.drawable.vector_note_square)
                     .dontAnimate()
@@ -156,19 +159,17 @@ class AlbumEditorFragment : BaseDialogFragment() {
                     .asBitmap()
                     .load(uri)
                     .apply(options)
-                    //.transition(BitmapTransitionOptions.withCrossFade())
                     .into(imv_album_art)
         }
     }
 
-    private fun loadArtWithFilepath(filepath: String) {
+    private fun loadImage(filepath: String) {
         dialog?.apply {
-            val options = GlideManager.get().defaultRequestOptions()
             Glide.with(this@AlbumEditorFragment)
-                    .load(filepath)
-                    .apply(options)
-                    .transition(DrawableTransitionOptions.withCrossFade())
-                    .into(imv_album_art)
+                .load(filepath)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .into(imv_album_art)
         }
     }
 
@@ -194,8 +195,7 @@ class AlbumEditorFragment : BaseDialogFragment() {
         if (artChanged) {
             // Important to invalidate the key!
             // Fuckin' glide is not able to do it itself.
-            GlideManager.get().invalidateKey(album.id)
-            AlbumArtUpdateEvent.dispatch(requireContext(), album.id, filepath)
+            GlideAlbumArtHelper.get().invalidate(album.id)
         }
         dismiss()
     }

@@ -3,8 +3,8 @@ package com.frolo.muse.ui.main.library.base
 import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.RequestManager
-import com.frolo.muse.GlideManager
 import com.frolo.muse.R
+import com.frolo.muse.glide.makeRequest
 import com.frolo.muse.inflateChild
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.ui.getArtistString
@@ -93,12 +93,9 @@ open class SongAdapter<T: Song> constructor(
             tv_artist_name.text = item.getArtistString(res)
             tv_duration.text = item.getDurationString()
 
-            val options = GlideManager.get()
-                    .requestOptions(item.albumId)
+            requestManager.makeRequest(item.albumId)
                     .placeholder(R.drawable.ic_note_rounded_placeholder)
-            requestManager
-                    .load(GlideManager.albumArtUri(item.albumId))
-                    .apply(options)
+                    .error(R.drawable.ic_note_rounded_placeholder)
                     .circleCrop()
                     .into(imv_album_art)
 

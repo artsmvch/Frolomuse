@@ -9,9 +9,10 @@ import androidx.lifecycle.LifecycleOwner
 import com.bumptech.glide.Glide
 import com.frolo.muse.R
 import com.frolo.muse.arch.observeNonNull
+import com.frolo.muse.glide.GlideAlbumArtHelper
+import com.frolo.muse.glide.observe
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.model.menu.RecentPeriodMenu
-import com.frolo.muse.ui.main.AlbumArtUpdateHandler
 import com.frolo.muse.ui.main.library.base.SimpleMediaCollectionFragment
 import com.frolo.muse.ui.main.library.base.SongAdapter
 import com.frolo.muse.ui.main.library.base.chooseRecentPeriod
@@ -35,7 +36,7 @@ class RecentlyAddedSongListFragment: SimpleMediaCollectionFragment<Song>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        AlbumArtUpdateHandler.attach(this) { _, _ ->
+        GlideAlbumArtHelper.get().observe(this) {
             adapter.forceResubmit()
         }
     }

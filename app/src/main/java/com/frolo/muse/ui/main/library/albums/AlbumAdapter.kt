@@ -1,6 +1,5 @@
 package com.frolo.muse.ui.main.library.albums
 
-import android.content.ContentUris
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,8 +8,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.frolo.muse.GlideManager
 import com.frolo.muse.R
+import com.frolo.muse.glide.makeRequest
 import com.frolo.muse.model.media.Album
 import com.frolo.muse.ui.getNumberOfTracksString
 import com.frolo.muse.ui.main.library.base.BaseAdapter
@@ -66,14 +65,12 @@ class AlbumAdapter constructor(
 
         if (holder is SmallItemViewHolder) {
             with(holder) {
-                val albumId = item.id
-                val options = GlideManager.get().requestOptions(albumId)
-                requestManager.load(ContentUris.withAppendedId(GlideManager.albumArtUri(), albumId))
-                        .apply(options)
+                requestManager.makeRequest(item.id)
                         .placeholder(R.drawable.vector_note_square)
                         .error(R.drawable.vector_note_square)
                         .transition(DrawableTransitionOptions.withCrossFade())
                         .into(imageAlbumArt)
+
                 textAlbumName.text = item.name
                 textArtistName.text = item.artist
 
@@ -81,11 +78,7 @@ class AlbumAdapter constructor(
             }
         } else if (holder is BigItemViewHolder) {
             with(holder) {
-                val albumId = item.id
-                val options = GlideManager.get().requestOptions(albumId)
-                requestManager
-                        .load(ContentUris.withAppendedId(GlideManager.albumArtUri(), albumId))
-                        .apply(options)
+                requestManager.makeRequest(item.id)
                         .placeholder(R.drawable.vector_note_square)
                         .error(R.drawable.vector_note_square)
                         .transition(DrawableTransitionOptions.withCrossFade())

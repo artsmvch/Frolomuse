@@ -23,3 +23,5 @@
 -keep public class * extends java.lang.Exception
 
 -keep class com.google.android.material.switchmaterial.SwitchMaterial { *; }
+
+-keep public class * extends com.bumptech.glide.module.AppGlideModule

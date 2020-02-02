@@ -3,8 +3,9 @@ package com.frolo.muse.ui.main.library.base
 import android.os.Bundle
 import androidx.lifecycle.LifecycleOwner
 import com.frolo.muse.arch.observeNonNull
+import com.frolo.muse.glide.GlideAlbumArtHelper
+import com.frolo.muse.glide.observe
 import com.frolo.muse.model.media.Song
-import com.frolo.muse.ui.main.AlbumArtUpdateHandler
 
 
 abstract class AbsSongCollectionFragment<T: Song> : AbsMediaCollectionFragment<T>() {
@@ -27,7 +28,7 @@ abstract class AbsSongCollectionFragment<T: Song> : AbsMediaCollectionFragment<T
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        AlbumArtUpdateHandler.attach(this) { _, _ ->
+        GlideAlbumArtHelper.get().observe(this) {
             adapter.forceResubmit()
         }
     }

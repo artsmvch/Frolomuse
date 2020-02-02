@@ -2,7 +2,8 @@ package com.frolo.muse.ui.main.library.search.adapter
 
 import android.view.View
 import com.bumptech.glide.RequestManager
-import com.frolo.muse.GlideManager
+import com.frolo.muse.R
+import com.frolo.muse.glide.makeRequest
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.ui.getAlbumString
 import com.frolo.muse.ui.getDurationString
@@ -30,10 +31,9 @@ class SongViewHolder(itemView: View): MediaAdapter.MediaViewHolder(itemView) {
             tv_artist_name.text = item.getAlbumString(res)
             tv_duration.text = item.getDurationString()
 
-            val options = GlideManager.get().requestOptions(item.albumId)
-            requestManager
-                    .load(GlideManager.albumArtUri(item.albumId))
-                    .apply(options)
+            requestManager.makeRequest(item.albumId)
+                    .placeholder(R.drawable.ic_note_rounded_placeholder)
+                    .error(R.drawable.ic_note_rounded_placeholder)
                     .circleCrop()
                     .into(imv_album_art)
 

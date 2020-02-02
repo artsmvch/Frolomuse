@@ -4,8 +4,9 @@ import android.os.Bundle
 import androidx.lifecycle.LifecycleOwner
 import com.bumptech.glide.Glide
 import com.frolo.muse.arch.observeNonNull
+import com.frolo.muse.glide.GlideAlbumArtHelper
+import com.frolo.muse.glide.observe
 import com.frolo.muse.model.media.SongWithPlayCount
-import com.frolo.muse.ui.main.AlbumArtUpdateHandler
 import com.frolo.muse.ui.main.library.base.SimpleMediaCollectionFragment
 import com.frolo.muse.ui.main.library.base.SongAdapter
 
@@ -20,7 +21,7 @@ class MostPlayedFragment : SimpleMediaCollectionFragment<SongWithPlayCount>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        AlbumArtUpdateHandler.attach(this) { _, _ ->
+        GlideAlbumArtHelper.get().observe(this) {
             adapter.forceResubmit()
         }
     }

@@ -7,9 +7,9 @@ import android.view.Window
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
-import com.frolo.muse.GlideManager
 import com.frolo.muse.R
 import com.frolo.muse.arch.observeNonNull
+import com.frolo.muse.glide.makeRequest
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.ui.base.BaseDialogFragment
 import com.frolo.muse.ui.base.serializableArg
@@ -79,10 +79,10 @@ class SongEditorFragment: BaseDialogFragment() {
             tv_duration.text = getString(R.string.duration, song.getDurationString())
             tv_filepath.text = song.source
 
-            val options = GlideManager.get().requestOptions(song.albumId)
             Glide.with(this@SongEditorFragment)
-                    .load(GlideManager.albumArtUri(song.albumId))
-                    .apply(options)
+                    .makeRequest(song.albumId)
+                    .placeholder(R.drawable.ic_note_rounded_placeholder)
+                    .error(R.drawable.ic_note_rounded_placeholder)
                     .into(imv_album_art)
         }
     }

@@ -14,12 +14,12 @@ import androidx.core.app.NotificationCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.frolo.muse.App
-import com.frolo.muse.GlideManager
 import com.frolo.muse.R
 import com.frolo.muse.Trace
 import com.frolo.muse.engine.*
 import com.frolo.muse.engine.service.PlayerService.Companion.newIntent
 import com.frolo.muse.engine.service.PlayerService.PlayerBinder
+import com.frolo.muse.glide.GlideAlbumArtHelper
 import com.frolo.muse.interactor.media.DispatchSongPlayedUseCase
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.repository.Preferences
@@ -394,22 +394,25 @@ class PlayerService: Service() {
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .build()
 
+        //region Load image
         val target = SafeNotificationTarget.create(
                 this, R.id.imv_album_art, remoteViews, notification, NOTIFICATION_ID_PLAYBACK)
         val error = Glide.with(this)
                 .asBitmap()
                 .load(R.drawable.png_note_256x256)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
-        val options = GlideManager.get()
-                .requestOptions(song?.albumId ?: -1)
+        val options = GlideAlbumArtHelper.get()
+                .makeRequestOptions(song?.albumId ?: -1)
                 .placeholder(R.drawable.png_note_256x256)
                 .error(R.drawable.png_note_256x256)
+        val uri = GlideAlbumArtHelper.getUri(song?.albumId ?: -1)
         Glide.with(this)
                 .asBitmap()
-                .load(GlideManager.albumArtUri(song?.albumId ?: -1))
+                .load(uri)
                 .apply(options)
                 .error(error)
                 .into(target)
+        //endregion
 
         return notification
     }

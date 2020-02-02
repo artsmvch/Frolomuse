@@ -10,9 +10,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.frolo.muse.R
+import com.frolo.muse.glide.GlideAlbumArtHelper
+import com.frolo.muse.glide.observe
 import com.frolo.muse.model.media.Album
 import com.frolo.muse.repository.Preferences
-import com.frolo.muse.ui.main.AlbumArtUpdateHandler
 import com.frolo.muse.ui.main.decorateAsGrid
 import com.frolo.muse.ui.main.decorateAsLinear
 import com.frolo.muse.ui.main.library.base.SimpleMediaCollectionFragment
@@ -34,7 +35,7 @@ class AlbumListFragment: SimpleMediaCollectionFragment<Album>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        AlbumArtUpdateHandler.attach(this) { _, _ ->
+        GlideAlbumArtHelper.get().observe(this) {
             adapter.forceResubmit()
         }
     }

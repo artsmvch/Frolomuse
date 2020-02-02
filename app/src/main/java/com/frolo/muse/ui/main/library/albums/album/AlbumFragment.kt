@@ -8,13 +8,14 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.frolo.muse.GlideManager
 import com.frolo.muse.R
 import com.frolo.muse.arch.observeNonNull
+import com.frolo.muse.glide.GlideAlbumArtHelper
+import com.frolo.muse.glide.makeRequest
+import com.frolo.muse.glide.observe
 import com.frolo.muse.model.media.Album
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.ui.base.withArg
-import com.frolo.muse.ui.main.AlbumArtUpdateHandler
 import com.frolo.muse.ui.main.decorateAsLinear
 import com.frolo.muse.ui.main.library.base.AbsSongCollectionFragment
 import com.frolo.muse.ui.main.library.base.SongAdapter
@@ -48,7 +49,7 @@ class AlbumFragment: AbsSongCollectionFragment<Song>() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        AlbumArtUpdateHandler.attach(this) { _, _ ->
+        GlideAlbumArtHelper.get().observe(this) {
             viewModel.albumId.value?.also { albumId ->
                 loadAlbumArt(albumId)
             }
@@ -134,14 +135,10 @@ class AlbumFragment: AbsSongCollectionFragment<Song>() {
     }
 
     private fun loadAlbumArt(albumId: Long) {
-        val options = GlideManager.get()
-                .requestOptions(albumId)
+        Glide.with(this@AlbumFragment)
+                .makeRequest(albumId)
                 .placeholder(R.drawable.vector_note_square)
                 .error(R.drawable.vector_note_square)
-
-        Glide.with(this@AlbumFragment)
-                .load(GlideManager.albumArtUri(albumId))
-                .apply(options)
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(imv_album_art)
     }

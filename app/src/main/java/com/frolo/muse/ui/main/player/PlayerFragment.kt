@@ -27,12 +27,13 @@ import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.engine.Player
 import com.frolo.muse.engine.SongQueue
+import com.frolo.muse.glide.GlideAlbumArtHelper
+import com.frolo.muse.glide.observe
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.ui.asDurationInMs
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.getArtistString
 import com.frolo.muse.ui.getNameString
-import com.frolo.muse.ui.main.AlbumArtUpdateHandler
 import com.frolo.muse.ui.main.confirmDeletion
 import com.frolo.muse.ui.main.showVolumeControl
 import com.frolo.muse.views.Anim
@@ -128,7 +129,7 @@ class PlayerFragment: BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        AlbumArtUpdateHandler.attach(this) { _, _ ->
+        GlideAlbumArtHelper.get().observe(this) {
             (vp_album_art.adapter as? SongAdapter)?.notifyDataSetChanged()
 
             vp_album_art.removeCallbacks(requestTransformCallback)

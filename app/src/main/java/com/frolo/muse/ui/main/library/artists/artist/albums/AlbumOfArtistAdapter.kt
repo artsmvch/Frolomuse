@@ -6,8 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.RequestManager
-import com.frolo.muse.GlideManager
 import com.frolo.muse.R
+import com.frolo.muse.glide.makeRequest
+import com.frolo.muse.inflateChild
 import com.frolo.muse.model.media.Album
 import com.frolo.muse.ui.getNameString
 import com.frolo.muse.ui.main.library.base.BaseAdapter
@@ -21,32 +22,25 @@ class AlbumOfArtistAdapter constructor(
 
     override fun getItemId(position: Int) = getItemAt(position).id
 
-    override fun onCreateBaseViewHolder(parent: ViewGroup, viewType: Int): AlbumViewHolder {
-        val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_album_of_artist, parent, false)
-
-        return AlbumViewHolder(view)
-    }
+    override fun onCreateBaseViewHolder(parent: ViewGroup, viewType: Int) =
+        AlbumViewHolder(
+            parent.inflateChild(R.layout.item_album_of_artist)
+        )
 
     override fun onBindViewHolder(
-            holder: AlbumViewHolder,
-            position: Int,
-            item: Album,
-            selected: Boolean,
-            selectionChanged: Boolean) {
+        holder: AlbumViewHolder,
+        position: Int,
+        item: Album,
+        selected: Boolean,
+        selectionChanged: Boolean
+    ) {
 
         with(holder.itemView) {
-            val res = resources
+            tv_album_name.text = item.getNameString(resources)
 
-            tv_album_name.text = item.getNameString(res)
-
-            val albumId = item.id
-            val options = GlideManager.get()
-                    .requestOptions(albumId)
+            requestManager.makeRequest(item.id)
                     .placeholder(R.drawable.vector_note_square)
                     .error(R.drawable.vector_note_square)
-            requestManager.load(ContentUris.withAppendedId(GlideManager.albumArtUri(), albumId))
-                    .apply(options)
                     .into(imv_album_art)
 
             imv_check.setChecked(selected, selectionChanged)

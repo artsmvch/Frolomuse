@@ -1,6 +1,5 @@
 package com.frolo.muse.widget;
 
-
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
@@ -8,6 +7,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.widget.RemoteViews;
 
 import androidx.annotation.Nullable;
@@ -16,11 +16,11 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.AppWidgetTarget;
-import com.frolo.muse.GlideManager;
 import com.frolo.muse.R;
 import com.frolo.muse.Trace;
 import com.frolo.muse.engine.Player;
 import com.frolo.muse.engine.service.PlayerService;
+import com.frolo.muse.glide.GlideAlbumArtHelper;
 import com.frolo.muse.model.media.Song;
 import com.frolo.muse.ui.main.MainActivity;
 
@@ -31,6 +31,7 @@ import static com.frolo.muse.widget.Helper.RC_COMMAND_SWITCH_TO_NEXT_SHUFFLE_MOD
 import static com.frolo.muse.widget.Helper.RC_COMMAND_TOGGLE;
 import static com.frolo.muse.widget.Helper.RC_OPEN_PLAYER;
 import static com.frolo.muse.widget.Helper.getPendingIntent;
+
 
 public class PlayerWidget4Provider extends AppWidgetProvider {
     private static final String TAG = PlayerWidget4Provider.class.getSimpleName();
@@ -185,13 +186,16 @@ public class PlayerWidget4Provider extends AppWidgetProvider {
                     .apply(commonRequestOptions);
 
             // overriding default request options
-            final RequestOptions defaultRequestOptions = GlideManager.get().requestOptions(current.getAlbumId())
+            final RequestOptions defaultRequestOptions = GlideAlbumArtHelper.get()
+                    .makeRequestOptions(current.getAlbumId())
                     .placeholder(R.drawable.png_note_circle_gray_256x256)
                     .error(R.drawable.png_note_circle_gray_256x256);
 
+            final Uri uri = GlideAlbumArtHelper.getUri(current.getAlbumId());
+
             Glide.with(context)
                     .asBitmap()
-                    .load(GlideManager.albumArtUri(current.getAlbumId()))
+                    .load(uri)
                     .apply(commonRequestOptions.apply(defaultRequestOptions))
                     .error(err)
                     .into(widgetTarget);
