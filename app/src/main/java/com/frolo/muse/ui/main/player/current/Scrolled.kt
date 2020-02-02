@@ -9,7 +9,7 @@ import kotlin.math.abs
  * If scrolled more than [threshold] pixels from the starting position when this method was called,
  * then [onScroll] callback is invoked and the observation ends.
  */
-fun RecyclerView.doOnVerticalScroll(threshold: Int, onScroll: () -> Unit) {
+fun RecyclerView.doOnVerticalScroll(threshold: Int = 0, onScroll: () -> Unit) {
     val listener = object : RecyclerView.OnScrollListener() {
         var currThreshold: Int = 0
 
