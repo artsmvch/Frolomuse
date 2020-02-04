@@ -1,14 +1,15 @@
 package com.frolo.muse.ui.main.library.genres
 
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import com.frolo.muse.R
+import com.frolo.muse.inflateChild
 import com.frolo.muse.model.media.Genre
 import com.frolo.muse.ui.getNameString
 import com.frolo.muse.ui.main.library.base.BaseAdapter
 import com.frolo.muse.util.CharSequences
+import com.frolo.muse.views.media.MediaConstraintLayout
 import com.l4digital.fastscroll.FastScroller
 import kotlinx.android.synthetic.main.include_check.view.*
 import kotlinx.android.synthetic.main.item_genre.view.*
@@ -27,26 +28,25 @@ class GenreAdapter: BaseAdapter<Genre, GenreAdapter.GenreViewHolder>(GenreItemCa
     }
 
     override fun onCreateBaseViewHolder(
-            parent: ViewGroup,
-            viewType: Int): GenreViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        return GenreViewHolder(inflater.inflate(R.layout.item_genre, parent, false))
-    }
+        parent: ViewGroup,
+        viewType: Int
+    ) = GenreViewHolder(parent.inflateChild(R.layout.item_genre))
 
     override fun onBindViewHolder(
-            holder: GenreViewHolder,
-            position: Int,
-            item: Genre,
-            selected: Boolean,
-            selectionChanged: Boolean) {
+        holder: GenreViewHolder,
+        position: Int,
+        item: Genre,
+        selected: Boolean,
+        selectionChanged: Boolean
+    ) {
 
-        with(holder.itemView) {
+        with(holder.itemView as MediaConstraintLayout) {
             val res = holder.itemView.resources
             tv_genre_name.text = item.getNameString(res)
 
             imv_check.setChecked(selected, selectionChanged)
 
-            isSelected = selected
+            setChecked(selected)
         }
     }
 

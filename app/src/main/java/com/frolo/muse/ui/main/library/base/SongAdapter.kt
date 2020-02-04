@@ -11,13 +11,14 @@ import com.frolo.muse.ui.getArtistString
 import com.frolo.muse.ui.getDurationString
 import com.frolo.muse.ui.getNameString
 import com.frolo.muse.util.CharSequences
+import com.frolo.muse.views.media.MediaConstraintLayout
 import com.l4digital.fastscroll.FastScroller
 import kotlinx.android.synthetic.main.include_check.view.*
 import kotlinx.android.synthetic.main.item_song.view.*
 
 
 open class SongAdapter<T: Song> constructor(
-        private val requestManager: RequestManager
+    private val requestManager: RequestManager
 ): BaseAdapter<T, SongAdapter.SongViewHolder>(), FastScroller.SectionIndexer {
 
     var playingPosition = -1
@@ -75,19 +76,19 @@ open class SongAdapter<T: Song> constructor(
     }
 
     override fun onCreateBaseViewHolder(
-            parent: ViewGroup,
-            viewType: Int
+        parent: ViewGroup,
+        viewType: Int
     ) = SongViewHolder(parent.inflateChild(R.layout.item_song))
 
     override fun onBindViewHolder(
-            holder: SongViewHolder,
-            position: Int,
-            item: T,
-            selected: Boolean,
-            selectionChanged: Boolean
+        holder: SongViewHolder,
+        position: Int,
+        item: T,
+        selected: Boolean,
+        selectionChanged: Boolean
     ) {
 
-        with(holder.itemView) {
+        with((holder.itemView as MediaConstraintLayout)) {
             val res = resources
             tv_song_name.text = item.getNameString(res)
             tv_artist_name.text = item.getArtistString(res)
@@ -109,12 +110,10 @@ open class SongAdapter<T: Song> constructor(
                 mini_visualizer.setAnimating(false)
             }
 
-            view_play_position_background.visibility =
-                if (isPlayPosition) View.VISIBLE else View.INVISIBLE
-
             imv_check.setChecked(selected, selectionChanged)
 
-            isSelected = selected
+            setChecked(selected)
+            setPlaying(isPlayPosition)
         }
     }
 

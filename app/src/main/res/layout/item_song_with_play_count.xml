@@ -1,31 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<com.frolo.muse.views.media.MediaConstraintLayout
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minHeight="@dimen/preferred_item_height">
-
-    <View
-        android:id="@+id/view_play_position_background"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@drawable/bg_play_position"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
-
-    <View
-        android:id="@+id/view_media_background"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@drawable/bg_item_media"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+    android:minHeight="@dimen/preferred_item_height"
+    android:background="@drawable/bg_item_media">
 
     <ImageView
         android:layout_margin="@dimen/list_item_img_art_padding"
@@ -132,4 +113,4 @@
         app:layout_constraintEnd_toEndOf="@id/imv_album_art"
         app:layout_constraintBottom_toBottomOf="@id/imv_album_art"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</com.frolo.muse.views.media.MediaConstraintLayout>

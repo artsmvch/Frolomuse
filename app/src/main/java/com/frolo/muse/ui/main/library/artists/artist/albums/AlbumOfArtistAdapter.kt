@@ -1,7 +1,5 @@
 package com.frolo.muse.ui.main.library.artists.artist.albums
 
-import android.content.ContentUris
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -17,15 +15,16 @@ import kotlinx.android.synthetic.main.item_album_of_artist.view.*
 
 
 class AlbumOfArtistAdapter constructor(
-        private val requestManager: RequestManager
+    private val requestManager: RequestManager
 ): BaseAdapter<Album, AlbumOfArtistAdapter.AlbumViewHolder>(AlbumOfArtistItemCallback) {
 
     override fun getItemId(position: Int) = getItemAt(position).id
 
-    override fun onCreateBaseViewHolder(parent: ViewGroup, viewType: Int) =
-        AlbumViewHolder(
-            parent.inflateChild(R.layout.item_album_of_artist)
-        )
+    override fun onCreateBaseViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ) = AlbumViewHolder(parent.inflateChild(R.layout.item_album_of_artist)
+    )
 
     override fun onBindViewHolder(
         holder: AlbumViewHolder,

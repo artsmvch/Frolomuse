@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<com.frolo.muse.views.media.MediaConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    style="@style/Layout.Item.Media">
+    android:minHeight="@dimen/preferred_item_height"
+    android:background="@drawable/bg_item_media">
 
     <ImageView
         app:layout_constraintStart_toStartOf="parent"
@@ -42,4 +43,4 @@
         layout="@layout/include_check"
         android:layout_width="@dimen/list_item_check_size"
         android:layout_height="@dimen/list_item_check_size" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+</com.frolo.muse.views.media.MediaConstraintLayout>

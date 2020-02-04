@@ -12,6 +12,7 @@ import com.frolo.muse.ui.getDurationString
 import com.frolo.muse.ui.getLastTimePlayedString
 import com.frolo.muse.ui.getNameString
 import com.frolo.muse.ui.main.library.base.SongAdapter
+import com.frolo.muse.views.media.MediaConstraintLayout
 import kotlinx.android.synthetic.main.include_check.view.*
 import kotlinx.android.synthetic.main.item_song_with_play_count.view.*
 
@@ -45,7 +46,7 @@ class SongWithPlayCountAdapter constructor(
         selected: Boolean,
         selectionChanged: Boolean
     ) {
-        with(holder.itemView) {
+        with(holder.itemView as MediaConstraintLayout) {
             val res = resources
             tv_song_name.text = item.getNameString(res)
             tv_artist_name.text = item.getArtistString(res)
@@ -75,12 +76,10 @@ class SongWithPlayCountAdapter constructor(
                 mini_visualizer.setAnimating(false)
             }
 
-            view_play_position_background.visibility =
-                    if (isPlayPosition) View.VISIBLE else View.INVISIBLE
-
             imv_check.setChecked(selected, selectionChanged)
 
-            isSelected = selected
+            setChecked(selected)
+            setPlaying(isPlayPosition)
         }
     }
 

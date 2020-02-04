@@ -1,13 +1,14 @@
 package com.frolo.muse.ui.main.library.myfiles
 
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.frolo.muse.R
+import com.frolo.muse.inflateChild
 import com.frolo.muse.model.media.MyFile
 import com.frolo.muse.ui.getNameString
 import com.frolo.muse.ui.main.library.base.BaseAdapter
 import com.frolo.muse.util.CharSequences
+import com.frolo.muse.views.media.MediaConstraintLayout
 import com.l4digital.fastscroll.FastScroller
 import kotlinx.android.synthetic.main.include_check.view.*
 import kotlinx.android.synthetic.main.item_file.view.*
@@ -76,20 +77,20 @@ class MyFileAdapter: BaseAdapter<MyFile,
         }
     }
 
-    override fun onCreateBaseViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        val view = inflater.inflate(R.layout.item_file, parent, false)
-        return MyFileViewHolder(view)
-    }
+    override fun onCreateBaseViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ) = MyFileViewHolder(parent.inflateChild(R.layout.item_file))
 
     override fun onBindViewHolder(
-            holder: BaseViewHolder,
-            position: Int,
-            item: MyFile,
-            selected: Boolean,
-            selectionChanged: Boolean) {
+        holder: BaseViewHolder,
+        position: Int,
+        item: MyFile,
+        selected: Boolean,
+        selectionChanged: Boolean
+    ) {
 
-        with(holder.itemView) {
+        with(holder.itemView as MediaConstraintLayout) {
             tv_filename.text = item.getNameString()
             when {
                 item.isDirectory -> imv_file_art.setImageResource(R.drawable.ic_folder)
@@ -107,12 +108,10 @@ class MyFileAdapter: BaseAdapter<MyFile,
                 mini_visualizer.setAnimating(false)
             }
 
-            view_play_position_background.visibility =
-                if (isPlayPosition) View.VISIBLE else View.INVISIBLE
-
             imv_check.setChecked(selected, selectionChanged)
 
-            isSelected = selected
+            setChecked(selected)
+            setPlaying(isPlayPosition)
         }
     }
 

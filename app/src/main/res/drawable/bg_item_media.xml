@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+<layer-list
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item>
         <ripple
@@ -15,10 +17,17 @@
 
     <item>
         <selector>
-            <item android:state_selected="true">
+            <item app:state_item_checked="true">
                 <shape android:shape="rectangle">
                     <corners android:radius="@dimen/list_item_shape_radius"/>
-                    <solid android:color="@color/bg_media_item"/>
+                    <solid android:color="@color/bg_item_media"/>
+                </shape>
+            </item>
+
+            <item app:state_item_playing="true">
+                <shape android:shape="rectangle">
+                    <corners android:radius="@dimen/list_item_shape_radius"/>
+                    <solid android:color="?playPositionBackground"/>
                 </shape>
             </item>
         </selector>

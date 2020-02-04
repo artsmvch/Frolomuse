@@ -9,17 +9,17 @@ import com.frolo.muse.R
 import com.frolo.muse.inflateChild
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.ui.base.adapter.ItemTouchHelperAdapter
-import com.frolo.muse.ui.getAlbumString
 import com.frolo.muse.ui.getArtistString
 import com.frolo.muse.ui.getDurationString
 import com.frolo.muse.ui.getNameString
+import com.frolo.muse.views.media.MediaConstraintLayout
 import kotlinx.android.synthetic.main.include_check.view.*
 import kotlinx.android.synthetic.main.item_drag_song.view.*
 
 
 class DragSongAdapter constructor(
-        requestManager: RequestManager,
-        private val onDragListener: OnDragListener? = null
+    requestManager: RequestManager,
+    private val onDragListener: OnDragListener? = null
 ): SongAdapter<Song>(requestManager), ItemTouchHelperAdapter {
 
     companion object {
@@ -69,7 +69,7 @@ class DragSongAdapter constructor(
             VIEW_TYPE_SWAPPABLE -> {
                 val view = parent.inflateChild(R.layout.item_drag_song)
 
-                SwappableSongViewHolder(view).apply {
+                DragSongViewHolder(view).apply {
                     val viewToDrag = itemView.findViewById<View>(R.id.view_drag_and_drop)
                     viewToDrag.setOnTouchListener { _, event ->
                         when (event.action) {
@@ -88,15 +88,15 @@ class DragSongAdapter constructor(
     }
 
     override fun onBindViewHolder(
-            holder: SongViewHolder,
-            position: Int,
-            item: Song,
-            selected: Boolean,
-            selectionChanged: Boolean
+        holder: SongViewHolder,
+        position: Int,
+        item: Song,
+        selected: Boolean,
+        selectionChanged: Boolean
     ) {
 
-        if (holder is SwappableSongViewHolder) {
-            with(holder.itemView) {
+        if (holder is DragSongViewHolder) {
+            with(holder.itemView as MediaConstraintLayout) {
                 val res = resources
                 tv_song_name.text = item.getNameString(res)
                 tv_artist_name.text = item.getArtistString(res)
@@ -114,17 +114,13 @@ class DragSongAdapter constructor(
 
                 imv_check.setChecked(selected, selectionChanged)
 
-                view_play_position_background.visibility =
-                    if (isPlayPosition) View.VISIBLE else View.INVISIBLE
-
-                isSelected = selected
+                setChecked(selected)
+                setPlaying(isPlayPosition)
             }
         } else {
             super.onBindViewHolder(holder, position, item, selected, selectionChanged)
         }
     }
 
-    class SwappableSongViewHolder(
-            itemView: View
-    ): SongViewHolder(itemView)
+    class DragSongViewHolder(itemView: View): SongViewHolder(itemView)
 }

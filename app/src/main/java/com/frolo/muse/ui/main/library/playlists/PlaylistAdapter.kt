@@ -5,11 +5,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import com.frolo.muse.R
+import com.frolo.muse.inflateChild
 import com.frolo.muse.model.media.Playlist
 import com.frolo.muse.ui.getDateAddedString
 import com.frolo.muse.ui.getNameString
 import com.frolo.muse.ui.main.library.base.BaseAdapter
 import com.frolo.muse.util.CharSequences
+import com.frolo.muse.views.media.MediaConstraintLayout
 import com.l4digital.fastscroll.FastScroller
 import kotlinx.android.synthetic.main.include_check.view.*
 import kotlinx.android.synthetic.main.item_playlist.view.*
@@ -19,13 +21,9 @@ class PlaylistAdapter : BaseAdapter<Playlist, PlaylistAdapter.PlaylistViewHolder
         FastScroller.SectionIndexer {
 
     override fun onCreateBaseViewHolder(
-            parent: ViewGroup,
-            viewType: Int): PlaylistViewHolder {
-
-        val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_playlist, parent, false)
-        return PlaylistViewHolder(view)
-    }
+        parent: ViewGroup,
+        viewType: Int
+    ) = PlaylistViewHolder(parent.inflateChild(R.layout.item_playlist))
 
     override fun getSectionText(position: Int): CharSequence {
         if (position >= itemCount) return CharSequences.empty()
@@ -35,18 +33,20 @@ class PlaylistAdapter : BaseAdapter<Playlist, PlaylistAdapter.PlaylistViewHolder
     }
 
     override fun onBindViewHolder(
-            holder: PlaylistViewHolder,
-            position: Int,
-            item: Playlist,
-            selected: Boolean, selectionChanged: Boolean) {
+        holder: PlaylistViewHolder,
+        position: Int,
+        item: Playlist,
+        selected: Boolean,
+        selectionChanged: Boolean
+    ) {
 
-        with(holder.itemView) {
+        with(holder.itemView as MediaConstraintLayout) {
             tv_playlist_name.text = item.getNameString(resources)
             tv_playlist_date_modified.text = item.getDateAddedString(resources)
 
             imv_check.setChecked(selected, selectionChanged)
             
-            isSelected = selected
+            setChecked(selected)
         }
     }
 

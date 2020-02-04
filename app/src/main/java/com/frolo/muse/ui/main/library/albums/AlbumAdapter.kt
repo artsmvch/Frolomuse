@@ -1,6 +1,5 @@
 package com.frolo.muse.ui.main.library.albums
 
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -10,17 +9,19 @@ import com.bumptech.glide.RequestManager
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.frolo.muse.R
 import com.frolo.muse.glide.makeRequest
+import com.frolo.muse.inflateChild
 import com.frolo.muse.model.media.Album
 import com.frolo.muse.ui.getNumberOfTracksString
 import com.frolo.muse.ui.main.library.base.BaseAdapter
 import com.frolo.muse.util.CharSequences
 import com.frolo.muse.views.checkable.CheckView
+import com.frolo.muse.views.media.MediaConstraintLayout
 import com.google.android.material.card.MaterialCardView
 import com.l4digital.fastscroll.FastScroller
 
 
 class AlbumAdapter constructor(
-        private val requestManager: RequestManager
+    private val requestManager: RequestManager
 ): BaseAdapter<Album, BaseAdapter.BaseViewHolder>(AlbumItemCallback), FastScroller.SectionIndexer {
 
     companion object {
@@ -45,55 +46,61 @@ class AlbumAdapter constructor(
         }
     }
 
-    override fun onCreateBaseViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        return when (viewType) {
-            VIEW_TYPE_SMALL_ITEM -> SmallItemViewHolder(
-                    inflater.inflate(R.layout.item_album_card, parent, false))
-            VIEW_TYPE_BIG_ITEM -> BigItemViewHolder(
-                    inflater.inflate(R.layout.item_album, parent, false))
-            else -> throw IllegalArgumentException("Unknown item view type: $itemViewType")
-        }
+    override fun onCreateBaseViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ) = when (viewType) {
+
+        VIEW_TYPE_SMALL_ITEM -> SmallItemViewHolder(parent.inflateChild(R.layout.item_album_card))
+
+        VIEW_TYPE_BIG_ITEM -> BigItemViewHolder(parent.inflateChild(R.layout.item_album))
+
+        else -> throw IllegalArgumentException("Unknown item view type: $itemViewType")
     }
 
     override fun onBindViewHolder(
-            holder: BaseViewHolder,
-            position: Int,
-            item: Album,
-            selected: Boolean,
-            selectionChanged: Boolean) {
+        holder: BaseViewHolder,
+        position: Int,
+        item: Album,
+        selected: Boolean,
+        selectionChanged: Boolean
+    ) {
 
-        if (holder is SmallItemViewHolder) {
-            with(holder) {
-                requestManager.makeRequest(item.id)
-                        .placeholder(R.drawable.vector_note_square)
-                        .error(R.drawable.vector_note_square)
-                        .transition(DrawableTransitionOptions.withCrossFade())
-                        .into(imageAlbumArt)
+        when (holder) {
+            is SmallItemViewHolder -> {
+                with(holder) {
+                    requestManager.makeRequest(item.id)
+                            .placeholder(R.drawable.vector_note_square)
+                            .error(R.drawable.vector_note_square)
+                            .transition(DrawableTransitionOptions.withCrossFade())
+                            .into(imageAlbumArt)
 
-                textAlbumName.text = item.name
-                textArtistName.text = item.artist
+                    textAlbumName.text = item.name
+                    textArtistName.text = item.artist
 
-                imageCheck.setChecked(selected, selectionChanged)
+                    imageCheck.setChecked(selected, selectionChanged)
+                }
             }
-        } else if (holder is BigItemViewHolder) {
-            with(holder) {
-                requestManager.makeRequest(item.id)
-                        .placeholder(R.drawable.vector_note_square)
-                        .error(R.drawable.vector_note_square)
-                        .transition(DrawableTransitionOptions.withCrossFade())
-                        .into(imageAlbumArt)
 
-                textAlbumName.text = item.name
-                textArtistName.text = item.artist
-                textNumberOfTracks.text = item.getNumberOfTracksString(itemView.resources)
+            is BigItemViewHolder -> {
+                with(holder) {
+                    requestManager.makeRequest(item.id)
+                            .placeholder(R.drawable.vector_note_square)
+                            .error(R.drawable.vector_note_square)
+                            .transition(DrawableTransitionOptions.withCrossFade())
+                            .into(imageAlbumArt)
 
-                imageCheck.setChecked(selected, selectionChanged)
+                    textAlbumName.text = item.name
+                    textArtistName.text = item.artist
+                    textNumberOfTracks.text = item.getNumberOfTracksString(itemView.resources)
 
-                itemView.isSelected = selected
+                    imageCheck.setChecked(selected, selectionChanged)
+
+                    (itemView as MediaConstraintLayout).setChecked(selected)
+                }
             }
-        } else {
-            throw IllegalArgumentException("Unknown holder: $holder")
+
+            else -> throw IllegalArgumentException("Unknown holder: $holder")
         }
     }
 
