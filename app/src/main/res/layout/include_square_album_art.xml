@@ -7,8 +7,8 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_album_art"
-        app:cardElevation="0dp"
-        app:cardMaxElevation="0dp"
+        app:cardElevation="4dp"
+        app:cardMaxElevation="4dp"
         app:cardCornerRadius="32dp"
         app:cardPreventCornerOverlap="false"
         app:cardBackgroundColor="@color/transparent"
@@ -17,7 +17,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="1"
-        android:layout_margin="0dp"
+        android:layout_margin="8dp"
         android:layout_width="0dp"
         android:layout_height="0dp">
 

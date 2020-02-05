@@ -1,7 +1,6 @@
 package com.frolo.muse.ui.main.player
 
 import android.graphics.drawable.Drawable
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -15,12 +14,13 @@ import com.bumptech.glide.request.target.Target
 import com.frolo.muse.R
 import com.frolo.muse.engine.SongQueue
 import com.frolo.muse.glide.makeRequest
+import com.frolo.muse.inflateChild
 import com.frolo.muse.model.media.Song
 import kotlinx.android.synthetic.main.include_square_album_art.view.*
 
 
 class SongAdapter constructor(
-        private val requestManager: RequestManager
+    private val requestManager: RequestManager
 ): RecyclerView.Adapter<SongAdapter.SongViewHolder>() {
 
     private var queue: SongQueue? = null
@@ -34,11 +34,10 @@ class SongAdapter constructor(
 
     fun getItemAt(position: Int) = queue?.getItemAt(position)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SongViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        val view = inflater.inflate(R.layout.include_square_album_art, parent, false)
-        return SongViewHolder(view)
-    }
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ) = SongViewHolder(parent.inflateChild(R.layout.include_square_album_art))
 
     override fun getItemCount(): Int = queue?.length ?: 0
 
@@ -47,14 +46,16 @@ class SongAdapter constructor(
         holder.bind(item)
     }
 
-    inner class SongViewHolder(itemView: View): RecyclerView.ViewHolder(itemView),
+    inner class SongViewHolder(itemView: View):
+            RecyclerView.ViewHolder(itemView),
             RequestListener<Drawable> {
 
         override fun onLoadFailed(
-                e: GlideException?,
-                model: Any?,
-                target: Target<Drawable>?,
-                isFirstResource: Boolean): Boolean {
+            e: GlideException?,
+            model: Any?,
+            target: Target<Drawable>?,
+            isFirstResource: Boolean
+        ): Boolean {
 
             with(itemView) {
                 pb_loading.visibility = View.INVISIBLE
@@ -64,11 +65,12 @@ class SongAdapter constructor(
         }
 
         override fun onResourceReady(
-                resource: Drawable?,
-                model: Any?, target:
-                Target<Drawable>?,
-                dataSource: DataSource?,
-                isFirstResource: Boolean): Boolean {
+            resource: Drawable?,
+            model: Any?, target:
+            Target<Drawable>?,
+            dataSource: DataSource?,
+            isFirstResource: Boolean
+        ): Boolean {
 
             with(itemView) {
                 pb_loading.visibility = View.INVISIBLE
@@ -93,8 +95,8 @@ class SongAdapter constructor(
     }
 
     private class SongQueueCallback constructor(
-            private val oldQueue: SongQueue?,
-            private val newQueue: SongQueue?
+        private val oldQueue: SongQueue?,
+        private val newQueue: SongQueue?
     ) : DiffUtil.Callback() {
 
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
