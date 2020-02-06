@@ -14,7 +14,7 @@ import com.bumptech.glide.Glide
 import com.frolo.muse.R
 import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.model.media.Song
-import com.frolo.muse.safelyRemoveCallbacks
+import com.frolo.muse.removeCallbacksSafely
 import com.frolo.muse.ui.base.adapter.SimpleItemTouchHelperCallback
 import com.frolo.muse.ui.main.decorateAsLinear
 import com.frolo.muse.ui.main.library.base.AbsMediaCollectionFragment
@@ -54,7 +54,7 @@ class CurrentSongQueueFragment: AbsMediaCollectionFragment<Song>() {
 
         override fun onItemMoved(fromPosition: Int, toPosition: Int) {
             view?.apply {
-                safelyRemoveCallbacks(onDragEndedCallback)
+                removeCallbacksSafely(onDragEndedCallback)
                 val callback = Runnable { viewModel.onItemMoved(fromPosition, toPosition) }
                 post(callback)
                 onDragEndedCallback = callback
@@ -171,9 +171,9 @@ class CurrentSongQueueFragment: AbsMediaCollectionFragment<Song>() {
     }
 
     override fun onDestroyView() {
-        view?.safelyRemoveCallbacks(onDragEndedCallback)
+        view?.removeCallbacksSafely(onDragEndedCallback)
         onDragEndedCallback = null
-        view?.safelyRemoveCallbacks(scrollToPositionCallback)
+        view?.removeCallbacksSafely(scrollToPositionCallback)
         scrollToPositionCallback = null
         super.onDestroyView()
     }

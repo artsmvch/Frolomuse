@@ -17,6 +17,6 @@ fun ViewGroup.inflateChild(@LayoutRes layoutId: Int): View {
 /**
  * Delegates the call to [View.removeCallbacks] only if [action] is not null.
  */
-fun View.safelyRemoveCallbacks(action: Runnable?) {
+fun View.removeCallbacksSafely(action: Runnable?) {
     if (action != null) removeCallbacks(action)
 }
