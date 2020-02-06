@@ -7,15 +7,12 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Build;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.Process;
-import android.provider.MediaStore;
 import android.util.SparseArray;
 import android.widget.RemoteViews;
 
@@ -27,14 +24,12 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import com.frolo.muse.R;
 import com.frolo.muse.Trace;
 
-import java.io.File;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class MediaScanService extends Service {
-    private static final String TAG = MediaScanService.class.getSimpleName();
+    private static final String LOG_TAG = MediaScanService.class.getSimpleName();
 
     private static final int RC_CANCEL = 3731;
 
@@ -127,7 +122,7 @@ public class MediaScanService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        Trace.d(TAG, "Creating service");
+        Trace.d(LOG_TAG, "Creating service");
         mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         HandlerThread thread = new HandlerThread("MediaScan", Process.THREAD_PRIORITY_DEFAULT);
         thread.start();
@@ -158,34 +153,33 @@ public class MediaScanService extends Service {
     public int onStartCommand(@Nullable final Intent intent, int flags, final int startId) {
         final String action = intent != null ? intent.getAction() : null;
         if (action != null && action.equals(ACTION_CANCEL_SCAN_MEDIA)) {
-            Trace.d(TAG, "Handling intent: CANCEL_SCAN_MEDIA");
+            Trace.d(LOG_TAG, "Handling intent: CANCEL_SCAN_MEDIA");
             abortAllScanners();
             stopForeground(true);
             stopSelf();
             return START_NOT_STICKY;
         } else if (action != null && action.equals(ACTION_SCAN_MEDIA)) {
-            Trace.d(TAG, "Handling intent: SCAN_MEDIA");
+            Trace.d(LOG_TAG, "Handling intent: SCAN_MEDIA");
             mMainHandler.post(mNotifyPreparingFilesCallback);
             mEngineHandler.post(new Runnable() {
                 @Override
                 public void run() {
                     List<String> files = getFilesExtra(intent);
                     if (files == null) {
-                        Trace.d(TAG, "No files extra in intent. Retrieving all media files");
+                        Trace.d(LOG_TAG, "No files extra in intent. Collecting files for scanning");
                         try {
-                            files = getAllAudioFiles();
-                            validateMediaFilesAccordingMediaStore(files);
+                            files = AudioFileCollector.get(MediaScanService.this).collect();
                         } catch (SecurityException e) {
-                            Trace.e(TAG, e);
+                            Trace.e(LOG_TAG, e);
                             files = new ArrayList<>(0);
                         }
                     }
                     if (Thread.interrupted()) {
-                        Trace.w(TAG, "Engine thread is interrupted");
+                        Trace.w(LOG_TAG, "Engine thread is interrupted");
                         // thread interrupted => cancel scanning
                         return;
                     }
-                    Trace.d(TAG, "Scanning files...");
+                    Trace.d(LOG_TAG, "Scanning files...");
                     scanAsync(files, startId);
                     Handler h = mMainHandler;
                     if (h != null) {
@@ -199,7 +193,7 @@ public class MediaScanService extends Service {
                             }
                         });
                     } else {
-                        Trace.w(TAG, "Main handler is null");
+                        Trace.w(LOG_TAG, "Main handler is null");
                     }
                 }
             });
@@ -211,7 +205,7 @@ public class MediaScanService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Trace.d(TAG, "Destroying service");
+        Trace.d(LOG_TAG, "Destroying service");
         stopForeground(true);
 
         mNotificationManager = null;
@@ -279,96 +273,5 @@ public class MediaScanService extends Service {
             // put it for this start id
             mScanners.put(startId, info);
         }
-    }
-
-    /**
-     * Collects all audio files in the device.
-     * @return list of all audio files
-     */
-    private static List<String> getAllAudioFiles() {
-        final String absolutePath = Environment.getExternalStorageDirectory().getAbsolutePath();
-        final List<String> list = new ArrayList<>();
-        collectAudioFiles(list, absolutePath);
-        collectAudioFiles(list, absolutePath + "/");
-        return list;
-    }
-
-    /**
-     * Searches for all audio files that may be in the given {@code fromPath} folder.
-     * Note that the search is recursive.
-     * @param dst collection to collect files
-     * @param fromPath file to start the search
-     */
-    private static void collectAudioFiles(List<String> dst, String fromPath) {
-        File file = new File(fromPath);
-        if (!file.isHidden() && file.isDirectory() && !isNotValid(file)) {
-            File[] listFiles = file.listFiles();
-            if (listFiles != null && listFiles.length > 0) {
-                for (File childFile : listFiles) {
-                    if (childFile.isDirectory()) {
-                        // recursively searching for audio files in child file
-                        collectAudioFiles(dst, childFile.getAbsolutePath());
-                    } else if (isAudioFile(childFile.getAbsolutePath())) {
-                        // it may be an audio file, let's add it
-                        dst.add(childFile.getAbsolutePath());
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * Validates the given {@code dst} collection of files according to the Media Store.
-     * Adds any file found in the MediaStore but absent in the collection.
-     * Removes any file found in the MediaStore and that is in the collection already.
-     * @param dst collected audio files from the external storage
-     */
-    private void validateMediaFilesAccordingMediaStore(List<String> dst) {
-        final String[] projection = new String[] { "_data" };
-        Cursor query = getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, projection, null, null, null);
-        if (query != null) {
-            if (query.moveToFirst()) {
-                do {
-                    try {
-                        String string = query.getString(0);
-                        if (dst.contains(string)) {
-                            // this files is identified by MediaStore already, no need to scan it again. Remove it from the collection!
-                            dst.remove(string);
-                        } else {
-                            // this files is not in the collection, it may be deleted already, so need to scan it. Add it to the collection!
-                            dst.add(string);
-                        }
-                    } catch (Throwable e) {
-                        Trace.e(TAG, e);
-                    }
-                } while (query.moveToNext());
-            }
-            query.close();
-        }
-    }
-
-    // Not sure what a hell is it
-    private static boolean isNotValid(File file) {
-        return new File(file, ".nomedia").exists();
-    }
-
-    /**
-     * Checks if {@code filepath} is an audio file.
-     * @param filepath file to test
-     * @return true if the file is an audio file, false - otherwise
-     */
-    private static boolean isAudioFile(String filepath) {
-        if (filepath == null || filepath.isEmpty()) {
-            return false;
-        }
-        String type = null;
-        // Not sure why we do this
-        String replaceAll = filepath.replaceAll("[#]", "");
-        try {
-            type = URLConnection.guessContentTypeFromName(replaceAll);
-        } catch (StringIndexOutOfBoundsException e) {
-            Trace.e(e);
-        }
-        return type != null && type.indexOf("audio") == 0;
     }
 }
