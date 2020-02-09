@@ -72,10 +72,13 @@
     <style name="Base.BottomSheet.Dialog" parent="Theme.MaterialComponents.BottomSheetDialog">
     </style>
 
-    <style name="ProgressBar.Horizontal.MediaScan" parent="Widget.AppCompat.ProgressBar.Horizontal">
+    <style name="ProgressBar.Horizontal.MediaScan.Preparing" parent="Widget.AppCompat.ProgressBar.Horizontal">
         <item name="android:indeterminate">true</item>
         <item name="android:indeterminateTint">@color/dodger_blue</item>
         <item name="android:indeterminateTintMode">src_in</item>
+    </style>
+
+    <style name="ProgressBar.Horizontal.MediaScan.Scanning" parent="Widget.AppCompat.ProgressBar.Horizontal">
     </style>
 
     <style name="Item.Text.Primary.MediaScan" parent="Item.Text.Primary">

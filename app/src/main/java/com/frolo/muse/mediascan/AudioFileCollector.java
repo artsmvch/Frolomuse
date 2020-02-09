@@ -6,12 +6,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.WorkerThread;
 
-import com.frolo.muse.Trace;
+import com.frolo.muse.BuildConfig;
 
 import java.io.File;
 import java.net.URLConnection;
@@ -34,7 +35,7 @@ final class AudioFileCollector {
     }
 
     private void logError(Throwable err) {
-        Trace.e(err);
+        if (BuildConfig.DEBUG) Log.e("AudioFileCollector", "", err);
     }
 
     /**

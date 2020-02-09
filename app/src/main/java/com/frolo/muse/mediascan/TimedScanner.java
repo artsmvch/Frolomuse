@@ -4,6 +4,7 @@ import android.content.Context;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.util.Log;
 
 import androidx.annotation.AnyThread;
@@ -15,7 +16,6 @@ import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 
 
 final class TimedScanner {
@@ -25,20 +25,16 @@ final class TimedScanner {
     private static final String LOG_TAG = TimedScanner.class.getSimpleName();
 
     static TimedScanner create(
-            Context ctx,
-            Handler engineHandler,
-            Handler callbackHandler,
-            List<String> files,
-            long timeout,
-            ScanCallback callback
-    ) {
-        return new TimedScanner(ctx, engineHandler, callbackHandler, files, timeout, callback);
+            Context ctx, Handler handler, List<String> files,
+            long timeout, ScanCallback callback) {
+
+        return new TimedScanner(ctx, handler, files, timeout, callback);
     }
 
     private final AtomicBoolean mStarted = new AtomicBoolean(false);
     private final AtomicBoolean mDisposed = new AtomicBoolean(false);
 
-    private final AtomicInteger mPathCount = new AtomicInteger(0);
+    private final int mPathCount;
 
     private final BlockingQueue<String> mPendingPaths;
 
@@ -46,8 +42,7 @@ final class TimedScanner {
 
     private final long mTimeout;
 
-    private final Handler mEngineHandler;
-    private final Handler mCallbackHandler;
+    private final Handler mHandler;
 
     private final WeakReference<ScanCallback> mCallback;
 
@@ -72,10 +67,10 @@ final class TimedScanner {
         }
     };
 
-    private TimedScanner(Context ctx, Handler engineHandler, Handler callbackHandler, List<String> files, long timeout, ScanCallback callback) {
-        mEngineHandler = engineHandler;
-        mCallbackHandler = callbackHandler;
+    private TimedScanner(Context ctx, Handler handler, List<String> files, long timeout, ScanCallback callback) {
+        mHandler = handler;
         mConnection = new MediaScannerConnection(ctx, mClientProxy);
+        mPathCount = files.size();
         mPendingPaths = new LinkedBlockingQueue<>(files);
         mTimeout = timeout;
         mCallback = new WeakReference<>(callback);
@@ -125,22 +120,41 @@ final class TimedScanner {
 
     @AnyThread
     private void execScanNextPath() {
-        mEngineHandler.removeCallbacksAndMessages(mCheckTimeoutToken);
+        mHandler.removeCallbacksAndMessages(mCheckTimeoutToken);
+
+        if (mDisposed.get() || !mConnection.isConnected()) {
+            // it's over
+            return;
+        }
 
         final String path = mPendingPaths.poll();
 
-        if (path != null) {
+        if (mPendingPaths.isEmpty()) {
+            disposeInternal(true);
+        } else {
             if (DEBUG) Log.d(LOG_TAG, "Scanning " + path + ". " + mPendingPaths.size() + " paths left");
 
             mConnection.scanFile(path, null);
 
-            mEngineHandler.postAtTime(mCheckTimeoutTask, mCheckTimeoutToken, mTimeout);
-        } else {
-            disposeInternal(true);
+            exec(mHandler, mCheckTimeoutTask, mCheckTimeoutToken, mTimeout);
         }
     }
 
     //endregion
+
+    private void exec(Runnable task, Object token) {
+        mHandler.removeCallbacksAndMessages(token);
+        if (mHandler.getLooper().getThread() == Thread.currentThread()) {
+            task.run();
+        } else {
+            mHandler.postAtTime(task, token, SystemClock.uptimeMillis());
+        }
+    }
+
+    private void exec(Handler handler, Runnable task, Object token, long delay) {
+        handler.removeCallbacksAndMessages(token);
+        handler.postAtTime(task, token, SystemClock.uptimeMillis() + delay);
+    }
 
     //region Dispatchers
 
@@ -158,8 +172,7 @@ final class TimedScanner {
 
     @AnyThread
     private void dispatchScanStarted() {
-        mCallbackHandler.removeCallbacksAndMessages(mDispatchScanStartedToken);
-        mCallbackHandler.postAtTime(mDispatchScanStartedTask, mDispatchScanStartedToken, 0);
+        exec(mDispatchScanStartedTask, mDispatchScanStartedToken);
     }
 
     private final Object mDispatchProgressChangedToken = new Object();
@@ -169,16 +182,15 @@ final class TimedScanner {
                 public void run() {
                     ScanCallback callback = mCallback.get();
                     if (callback != null) {
-                        int progress = mPathCount.get() - mPendingPaths.size();
-                        callback.onProgressChanged(progress, mPathCount.get());
+                        int progress = mPathCount - mPendingPaths.size();
+                        callback.onProgressChanged(mPathCount, progress);
                     }
                 }
             };
 
     @AnyThread
     private void dispatchProgressChanged() {
-        mCallbackHandler.removeCallbacksAndMessages(mDispatchProgressChangedToken);
-        mCallbackHandler.postAtTime(mDispatchProgressChangedTask, mDispatchProgressChangedToken, 0);
+        exec(mDispatchProgressChangedTask, mDispatchProgressChangedToken);
     }
 
     private final Object mDispatchScanCompletedToken = new Object();
@@ -195,8 +207,7 @@ final class TimedScanner {
 
     @AnyThread
     private void dispatchScanCompleted() {
-        mCallbackHandler.removeCallbacksAndMessages(mDispatchScanCompletedToken);
-        mCallbackHandler.postAtTime(mDispatchScanCompleted, mDispatchScanCompletedToken, 0);
+        exec(mDispatchScanCompleted, mDispatchScanCompletedToken);
     }
 
     private final Object mDispatchScanCancelledToken = new Object();
@@ -213,8 +224,7 @@ final class TimedScanner {
 
     @AnyThread
     private void dispatchScanCancelled() {
-        mCallbackHandler.removeCallbacksAndMessages(mDispatchScanCancelledToken);
-        mCallbackHandler.postAtTime(mDispatchScanCancelled, mDispatchScanCancelledToken, 0);
+        exec(mDispatchScanCancelled, mDispatchScanCancelledToken);
     }
 
     //endregion
@@ -223,7 +233,7 @@ final class TimedScanner {
 
         void onScanStarted();
 
-        void onProgressChanged(int progress, int total);
+        void onProgressChanged(int total, int progress);
 
         void onScanCompleted();
 
