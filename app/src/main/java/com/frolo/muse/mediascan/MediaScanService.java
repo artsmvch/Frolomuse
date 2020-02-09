@@ -70,8 +70,8 @@ public class MediaScanService extends Service {
     private static class ScannerInfo {
         final int mStartId;
         final List<String> mFiles;
-        final AsyncMediaScanner mScanner;
-        ScannerInfo(int startId, List<String> files, AsyncMediaScanner scanner) {
+        final TimedScanner mScanner;
+        ScannerInfo(int startId, List<String> files, TimedScanner scanner) {
             this.mStartId = startId;
             this.mFiles = files;
             this.mScanner = scanner;
@@ -224,7 +224,7 @@ public class MediaScanService extends Service {
         synchronized (mScanners) {
             for (int i = 0; i < mScanners.size(); i++) {
                 ScannerInfo item = mScanners.valueAt(i);
-                item.mScanner.abortScanning();
+                item.mScanner.dispose();
             }
             mScanners.clear();
         }
@@ -235,14 +235,20 @@ public class MediaScanService extends Service {
         final Context appContext = getApplicationContext();
         // We need to pass the application context to avoid memory leak issues.
         // See https://stackoverflow.com/questions/5739140/mediascannerconnection-produces-android-app-serviceconnectionleaked
-        final AsyncMediaScanner scanner = new AsyncMediaScanner(appContext, files, new AsyncMediaScanner.Listener() {
+        final TimedScanner scanner = TimedScanner.create(appContext, mEngineHandler, mMainHandler, files, 5_000, new TimedScanner.ScanCallback() {
             @Override
-            public void onStarted() {
+            public void onScanStarted() {
                 Intent statusIntent = new Intent(ACTION_MEDIA_SCANNING_STATUS).putExtra(EXTRA_MEDIA_SCANNING_STARTED, true);
                 LocalBroadcastManager.getInstance(appContext).sendBroadcast(statusIntent);
             }
+
             @Override
-            public void onCompleted() {
+            public void onProgressChanged(int progress, int total) {
+
+            }
+
+            @Override
+            public void onScanCompleted() {
                 Intent statusIntent = new Intent(ACTION_MEDIA_SCANNING_STATUS).putExtra(EXTRA_MEDIA_SCANNING_COMPLETED, true);
                 LocalBroadcastManager.getInstance(appContext).sendBroadcast(statusIntent);
                 synchronized (mScanners) {
@@ -250,8 +256,9 @@ public class MediaScanService extends Service {
                 }
                 stopSelf(startId);
             }
+
             @Override
-            public void onCancelled() {
+            public void onScanCancelled() {
                 Intent statusIntent = new Intent(ACTION_MEDIA_SCANNING_STATUS).putExtra(EXTRA_MEDIA_SCANNING_CANCELLED, true);
                 LocalBroadcastManager.getInstance(appContext).sendBroadcast(statusIntent);
                 synchronized (mScanners) {
@@ -265,11 +272,11 @@ public class MediaScanService extends Service {
             ScannerInfo oldInfo = mScanners.get(startId);
             if (oldInfo != null) {
                 // abort old scanner
-                oldInfo.mScanner.abortScanning();
+                oldInfo.mScanner.dispose();
             }
 
             // start new scanner
-            info.mScanner.startScanning();
+            info.mScanner.start();
             // put it for this start id
             mScanners.put(startId, info);
         }
