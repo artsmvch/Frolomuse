@@ -13,9 +13,11 @@ import com.frolo.muse.BuildConfig;
 
 import java.lang.ref.WeakReference;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 final class TimedScanner {
@@ -37,6 +39,9 @@ final class TimedScanner {
     private final int mPathCount;
 
     private final BlockingQueue<String> mPendingPaths;
+
+    // The path that is currently being scanned
+    private final AtomicReference<String> mCurrentPath = new AtomicReference<>();
 
     private final MediaScannerConnection mConnection;
 
@@ -60,6 +65,11 @@ final class TimedScanner {
 
         @Override
         public void onScanCompleted(String path, Uri uri) {
+            if (path != null && !path.equals(mCurrentPath.get())) {
+                // that's not the path we're expecting
+                return;
+            }
+
             if (!mDisposed.get()) {
                 dispatchProgressChanged();
                 execScanNextPath();
@@ -114,6 +124,8 @@ final class TimedScanner {
     private final Runnable mCheckTimeoutTask = new Runnable() {
         @Override
         public void run() {
+            String problematicPath = mCurrentPath.getAndSet(null);
+            if (DEBUG) Log.w(LOG_TAG, "Timeout for " + problematicPath + ". Keep on scanning");
             execScanNextPath();
         }
     };
@@ -133,6 +145,8 @@ final class TimedScanner {
             disposeInternal(true);
         } else {
             if (DEBUG) Log.d(LOG_TAG, "Scanning " + path + ". " + mPendingPaths.size() + " paths left");
+
+            mCurrentPath.set(path);
 
             mConnection.scanFile(path, null);
 
