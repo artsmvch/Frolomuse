@@ -17,6 +17,7 @@ import android.util.Log;
 import android.util.SparseArray;
 import android.widget.RemoteViews;
 
+import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -242,7 +243,16 @@ public class MediaScanService extends Service {
                     return;
                 }
 
-                scanAsync(startId, files);
+                Handler h = mMainHandler;
+                if (h != null) {
+                    final List<String> paths = files;
+                    h.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            scanAsync(startId, paths);
+                        }
+                    });
+                }
             }
         };
 
@@ -255,11 +265,16 @@ public class MediaScanService extends Service {
      * @param startId id of the command
      * @param files to scan
      */
+    @MainThread
     private void scanAsync(final int startId, @NonNull final List<String> files) {
-        //String[] strArr = (String[]) files.toArray(new String[files.size()]);
-        final Context appContext = getApplicationContext();
+        if (!mCreated) {
+            // Service is not created yet or destroyed already
+            return;
+        }
+
         // We need to pass the application context to avoid memory leak issues.
         // See https://stackoverflow.com/questions/5739140/mediascannerconnection-produces-android-app-serviceconnectionleaked
+        final Context appContext = getApplicationContext();
 
         final TimedScanner.ScanCallback callback = new TimedScanner.ScanCallback() {
             @Override
