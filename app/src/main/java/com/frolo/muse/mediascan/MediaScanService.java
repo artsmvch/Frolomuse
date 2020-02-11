@@ -376,15 +376,18 @@ public class MediaScanService extends Service {
     //endregion
 
     private Notification createPreparationNotification() {
-        final RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.notification_media_scan_scanning);
+        final RemoteViews remoteViews = new RemoteViews(getPackageName(), R.layout.notification_media_scan_preparing);
 
         final PendingIntent cancelPi = PendingIntent.getService(
                 this, RC_CANCEL, newCancelIntent(this), PendingIntent.FLAG_UPDATE_CURRENT);
         remoteViews.setOnClickPendingIntent(R.id.btn_cancel, cancelPi);
 
+        remoteViews.setProgressBar(R.id.pb_progress, 0, 0, true);
+
         return new NotificationCompat.Builder(this, CHANNEL_ID_MEDIA_SCANNER)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setCustomContentView(remoteViews)
+                .setContentTitle(getString(R.string.preparing_files_to_scan))
+                .setCustomBigContentView(remoteViews)
                 .setSmallIcon(R.drawable.ic_scan_file)
                 .build();
     }
@@ -394,6 +397,8 @@ public class MediaScanService extends Service {
 
         remoteViews.setTextViewText(R.id.tv_message, getString(R.string.scanning_media_storage));
 
+        remoteViews.setTextViewText(R.id.tv_progress, progress + "/" + total);
+
         final PendingIntent cancelPi = PendingIntent.getService(
                 this, RC_CANCEL, newCancelIntent(this), PendingIntent.FLAG_UPDATE_CURRENT);
         remoteViews.setOnClickPendingIntent(R.id.btn_cancel, cancelPi);
@@ -402,7 +407,8 @@ public class MediaScanService extends Service {
 
         return new NotificationCompat.Builder(this, CHANNEL_ID_MEDIA_SCANNER)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setCustomContentView(remoteViews)
+                .setContentTitle(getString(R.string.scanning_media_storage))
+                .setCustomBigContentView(remoteViews)
                 .setSmallIcon(R.drawable.ic_scan_file)
                 .build();
     }

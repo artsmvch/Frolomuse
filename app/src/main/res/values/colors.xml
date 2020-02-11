@@ -84,4 +84,8 @@
     <!--Play position background-->
     <color name="play_position_background_light">#4DB8B8B8</color>
     <color name="play_position_background_dark">#32FFFFFF</color>
+
+    <!--Media Scan notifications-->
+    <color name="notification_text">@color/custom_black</color>
+    <color name="notification_accent">@color/md_light_blue_600</color>
 </resources>

@@ -1,41 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingStart="8dp"
-    android:paddingTop="6dp"
-    android:paddingEnd="8dp"
-    android:paddingBottom="6dp">
+    android:padding="8dp">
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/tv_message"
+        android:text="@string/scanning_media_storage"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical">
-
-        <TextView
-            style="@style/Item.Text.Primary.MediaScan"
-            android:id="@+id/tv_message"
-            android:text="@string/scanning_media_storage"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content" />
-
-        <ImageView
-            android:tint="@color/custom_black"
-            android:id="@+id/btn_cancel"
-            android:src="@drawable/ic_cross"
-            android:padding="6dp"
-            android:layout_width="24dp"
-            android:layout_height="24dp" />
-    </LinearLayout>
+        style="@style/Item.Text.Primary.MediaScan.Title"/>
 
     <ProgressBar
         android:id="@+id/pb_progress"
-        android:layout_marginTop="2dp"
-        style="@style/ProgressBar.Horizontal.MediaScan.Scanning"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        style="@style/ProgressBar.Horizontal.MediaScan.Scanning"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/tv_progress"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            style="@style/Item.Text.Primary.MediaScan.Progress"
+            tools:text="10/99"/>
+
+        <TextView
+            android:id="@+id/btn_cancel"
+            android:text="@string/cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Item.Text.Primary.MediaScan.Button"/>
+    </LinearLayout>
+
 </LinearLayout>
