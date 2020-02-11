@@ -320,6 +320,8 @@ public class MediaScanService extends Service {
 
     //region Event handlers
     private void handleScanPreparation(int startId) {
+        if (DEBUG) Log.d(LOG_TAG, String.format("Preparing: startId=%d. Created=%b", startId, mCreated));
+
         if (mNotificationManager != null) {
             Notification notification = createPreparationNotification();
             mNotificationManager.notify(NOTIFICATION_ID_MEDIA_SCANNER, notification);
@@ -327,6 +329,8 @@ public class MediaScanService extends Service {
     }
 
     private void handleScanStarted(int startId, int total) {
+        if (DEBUG) Log.d(LOG_TAG, String.format("Scan started: startId=%d, total=%d. Created=%b", startId, total, mCreated));
+
         if (mCreated) {
             Intent statusIntent = new Intent(ACTION_MEDIA_SCANNING_STATUS)
                     .putExtra(EXTRA_MEDIA_SCANNING_STARTED, true);
@@ -340,6 +344,8 @@ public class MediaScanService extends Service {
     }
 
     private void handleProgressChanged(int startId, int total, int progress) {
+        if (DEBUG) Log.d(LOG_TAG, String.format("Progress changed: startId=%d, total=%d, progress=%d. Created=%b", startId, total, progress, mCreated));
+
         if (mNotificationManager != null) {
             Notification notification = createProgressNotification(total, progress);
             mNotificationManager.notify(NOTIFICATION_ID_MEDIA_SCANNER, notification);
@@ -347,6 +353,8 @@ public class MediaScanService extends Service {
     }
 
     private void handleScanCompleted(int startId) {
+        if (DEBUG) Log.d(LOG_TAG, String.format("Scan completed: startId=%d. Created=%b", startId, mCreated));
+
         if (mCreated) {
             Intent statusIntent = new Intent(ACTION_MEDIA_SCANNING_STATUS).
                     putExtra(EXTRA_MEDIA_SCANNING_COMPLETED, true);
@@ -361,6 +369,8 @@ public class MediaScanService extends Service {
     }
 
     private void handleScanCancelled(int startId) {
+        if (DEBUG) Log.d(LOG_TAG, String.format("Scan cancelled: startId=%d. Created=%b", startId, mCreated));
+
         if (mCreated) {
             Intent statusIntent = new Intent(ACTION_MEDIA_SCANNING_STATUS)
                     .putExtra(EXTRA_MEDIA_SCANNING_CANCELLED, true);
