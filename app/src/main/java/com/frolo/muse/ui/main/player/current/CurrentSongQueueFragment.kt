@@ -136,10 +136,6 @@ class CurrentSongQueueFragment: AbsMediaCollectionFragment<Song>() {
         rv_list.doOnVerticalScroll(threshold = getScrollThresholdInPx(requireContext())) {
             viewModel.onScrolled()
         }
-
-        fab_scroll_to_play_position.setOnClickListener {
-            viewModel.onScrollToPositionClicked()
-        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -216,11 +212,6 @@ class CurrentSongQueueFragment: AbsMediaCollectionFragment<Song>() {
             playingPosition.observeNonNull(owner) { playingPosition ->
                 val isPlaying = isPlaying.value ?: false
                 adapter.setPlayingPositionAndState(playingPosition, isPlaying)
-            }
-
-            scrollToPositionButtonVisible.observeNonNull(owner) { visible ->
-                if (visible) fab_scroll_to_play_position.show()
-                else fab_scroll_to_play_position.hide()
             }
 
             scrollToPositionEvent.observeNonNull(owner) { position ->
