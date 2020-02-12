@@ -20,6 +20,7 @@ import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.base.BaseViewModel
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
+import org.reactivestreams.Subscription
 import java.util.concurrent.Executor
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -111,16 +112,22 @@ class PlayerViewModel @Inject constructor(
         get() = _showVolumeControlEvent
 
     val isFavourite: LiveData<Boolean> =
-            Transformations.switchMap(song) { song: Song? ->
-                if (song != null) {
-                    MutableLiveData<Boolean>().apply {
-                        getIsFavouriteUseCase.isFavourite(song)
-                                .onErrorReturnItem(false)
-                                .observeOn(schedulerProvider.main())
-                                .subscribeFor { value = it }
-                    }
-                } else liveDataOf(false)
-            }
+        Transformations.switchMap(song) { song: Song? ->
+            if (song != null) {
+                MutableLiveData<Boolean>().apply {
+                    getIsFavouriteUseCase.isFavourite(song)
+                        .onErrorReturnItem(false)
+                        .observeOn(schedulerProvider.main())
+                        .doOnSubscribe {
+                            isFavouriteSubscription?.cancel()
+                            isFavouriteSubscription = it
+                        }
+                        .subscribeFor { value = it }
+                }
+            } else liveDataOf(false)
+        }
+    // Keep reference to the current GetIsFavourite flow subscription so we can always cancel it
+    private var isFavouriteSubscription: Subscription? = null
 
     private val _playbackDuration = MutableLiveData<Int>()
     val playbackDuration: LiveData<Int> get() = _playbackDuration
