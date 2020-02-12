@@ -11,9 +11,7 @@ import androidx.annotation.AnyThread;
 
 import com.frolo.muse.BuildConfig;
 
-import java.lang.ref.WeakReference;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -49,7 +47,7 @@ final class TimedScanner {
 
     private final Handler mHandler;
 
-    private final WeakReference<ScanCallback> mCallback;
+    private final ScanCallback mCallback;
 
     private final MediaScannerConnection.MediaScannerConnectionClient mClientProxy =
             new MediaScannerConnection.MediaScannerConnectionClient() {
@@ -83,7 +81,7 @@ final class TimedScanner {
         mPathCount = files.size();
         mPendingPaths = new LinkedBlockingQueue<>(files);
         mTimeout = timeout;
-        mCallback = new WeakReference<>(callback);
+        mCallback = callback;
     }
 
     private void disposeInternal(boolean completed) {
@@ -177,7 +175,7 @@ final class TimedScanner {
             new Runnable() {
                 @Override
                 public void run() {
-                    ScanCallback callback = mCallback.get();
+                    ScanCallback callback = mCallback;
                     if (callback != null) {
                         callback.onScanStarted();
                     }
@@ -194,7 +192,7 @@ final class TimedScanner {
             new Runnable() {
                 @Override
                 public void run() {
-                    ScanCallback callback = mCallback.get();
+                    ScanCallback callback = mCallback;
                     if (callback != null) {
                         int progress = mPathCount - mPendingPaths.size();
                         callback.onProgressChanged(mPathCount, progress);
@@ -212,7 +210,7 @@ final class TimedScanner {
             new Runnable() {
                 @Override
                 public void run() {
-                    ScanCallback callback = mCallback.get();
+                    ScanCallback callback = mCallback;
                     if (callback != null) {
                         callback.onScanCompleted();
                     }
@@ -229,7 +227,7 @@ final class TimedScanner {
             new Runnable() {
                 @Override
                 public void run() {
-                    ScanCallback callback = mCallback.get();
+                    ScanCallback callback = mCallback;
                     if (callback != null) {
                         callback.onScanCancelled();
                     }
