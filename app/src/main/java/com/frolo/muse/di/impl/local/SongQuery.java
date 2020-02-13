@@ -803,6 +803,11 @@ final class SongQuery {
             ).switchMap(new Function<List<SongPlayCount>, Publisher<List<SongWithPlayCount>>>() {
                 @Override
                 public Publisher<List<SongWithPlayCount>> apply(List<SongPlayCount> counts) {
+                    if (counts.isEmpty()) {
+                        // return this flowable because Flowable.combineLatest for empty collection will not work for us
+                        return Flowable.just(Collections.<SongWithPlayCount>emptyList());
+                    }
+
                     final List<Flowable<SongWithPlayCount>> sources = new ArrayList<>(counts.size());
                     for (final SongPlayCount count : counts) {
                         Flowable<SongWithPlayCount> source = querySingleByPath(resolver, count.absolutePath)
@@ -836,6 +841,11 @@ final class SongQuery {
                 .switchMap(new Function<List<Song>, Publisher<List<SongWithPlayCount>>>() {
                     @Override
                     public Publisher<List<SongWithPlayCount>> apply(List<Song> songs) {
+                        if (songs.isEmpty()) {
+                            // return this flowable because Flowable.combineLatest for empty collection will not work for us
+                            return Flowable.just(Collections.<SongWithPlayCount>emptyList());
+                        }
+
                         List<Flowable<SongWithPlayCount>> sources = new ArrayList<>(songs.size());
                         for (final Song song : songs) {
                             Flowable<SongWithPlayCount> source =
