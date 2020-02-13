@@ -227,7 +227,7 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
                     _mediaListFetched = true
                     _isLoading.value = false
                 }
-                .doOnError {
+                .doOnTerminate {
                     _isLoading.value = false
                 }
                 .subscribe(
