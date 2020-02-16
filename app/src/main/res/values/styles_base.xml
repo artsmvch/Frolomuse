@@ -438,7 +438,7 @@
     <style name="Base.AppTheme.Launch" parent="Base.AppTheme">
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowTranslucentNavigation">true</item>
-        <item name="android:windowBackground">@drawable/bg_logo</item>
+        <item name="android:windowBackground">@drawable/splash</item>
     </style>
 
     <!--Text appearance-->
