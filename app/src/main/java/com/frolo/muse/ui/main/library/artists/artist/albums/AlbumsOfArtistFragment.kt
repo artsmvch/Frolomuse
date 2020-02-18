@@ -13,7 +13,7 @@ import com.frolo.muse.model.media.Artist
 import com.frolo.muse.ui.base.withArg
 import com.frolo.muse.ui.main.library.base.AbsMediaCollectionFragment
 import com.frolo.muse.ui.main.library.base.BaseAdapter
-import com.frolo.muse.ui.toPx
+import com.frolo.muse.toPx
 import com.frolo.muse.views.MarginItemDecoration
 import kotlinx.android.synthetic.main.fragment_albums_of_artist.*
 

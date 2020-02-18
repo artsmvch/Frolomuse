@@ -1,4 +1,4 @@
-package com.frolo.muse.ui
+package com.frolo.muse
 
 import android.content.Context
 import android.content.res.Resources

@@ -7,7 +7,7 @@ import android.widget.Checkable
 import android.widget.ImageView
 import com.frolo.muse.R
 import com.frolo.muse.StyleUtil
-import com.frolo.muse.ui.toPx
+import com.frolo.muse.toPx
 import com.frolo.muse.views.InsetDrawable
 
 

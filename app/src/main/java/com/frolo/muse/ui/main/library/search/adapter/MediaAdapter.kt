@@ -13,7 +13,7 @@ import com.frolo.muse.R
 import com.frolo.muse.StyleUtil
 import com.frolo.muse.model.media.*
 import com.frolo.muse.ui.main.library.base.BaseAdapter
-import com.frolo.muse.ui.toPx
+import com.frolo.muse.toPx
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter
 import kotlinx.android.synthetic.main.item_header.view.*
 import kotlin.properties.Delegates

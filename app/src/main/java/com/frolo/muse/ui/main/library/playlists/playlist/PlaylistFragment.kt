@@ -21,7 +21,7 @@ import com.frolo.muse.ui.main.library.base.DragSongAdapter
 import com.frolo.muse.ui.main.decorateAsLinear
 import com.frolo.muse.ui.main.library.base.AbsSongCollectionFragment
 import com.frolo.muse.ui.main.library.base.SongAdapter
-import com.frolo.muse.ui.toPx
+import com.frolo.muse.toPx
 import com.frolo.muse.views.Slider
 import com.frolo.muse.views.showBackArrow
 import kotlinx.android.synthetic.main.fragment_playlist.*

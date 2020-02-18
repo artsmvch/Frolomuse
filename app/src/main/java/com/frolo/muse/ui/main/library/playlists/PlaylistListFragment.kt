@@ -10,7 +10,7 @@ import com.frolo.muse.model.media.Playlist
 import com.frolo.muse.ui.main.library.FabCallback
 import com.frolo.muse.ui.main.library.base.BaseAdapter
 import com.frolo.muse.ui.main.library.base.SimpleMediaCollectionFragment
-import com.frolo.muse.ui.toPx
+import com.frolo.muse.toPx
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
