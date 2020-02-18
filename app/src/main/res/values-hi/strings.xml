@@ -132,7 +132,7 @@
     <string name="no_albums">कोई एल्बम नहीं</string>
     <string name="no_tracks">कोई ट्रैक नहीं</string>
     <string name="one_track">1 ट्रैक</string>
-    <string name="number_of_tracks">%s ट्रैक</string>
+    <string name="number_of_tracks">%d ट्रैक</string>
 
     <!--recently added-->
     <string name="added">जोड़ा गया</string>

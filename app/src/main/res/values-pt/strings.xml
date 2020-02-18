@@ -132,7 +132,7 @@
     <string name="no_albums">Nenhum álbum</string>
     <string name="no_tracks">Sem faixas</string>
     <string name="one_track">1 faixa</string>
-    <string name="number_of_tracks">%s faixas</string>
+    <string name="number_of_tracks">%d faixas</string>
 
     <!--recently added-->
     <string name="added">Adicionado</string>

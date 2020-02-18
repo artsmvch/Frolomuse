@@ -131,7 +131,7 @@
     <string name="no_albums">沒有專輯</string>
     <string name="no_tracks">沒有曲目</string>
     <string name="one_track">1軌</string>
-    <string name="number_of_tracks">%s 曲目</string>
+    <string name="number_of_tracks">%d 曲目</string>
 
     <!--recently added-->
     <string name="added">添加</string>

@@ -46,7 +46,7 @@ fun Album.getNumberOfTracksString(res: Resources): String {
         when (count) {
             0 -> res.getString(R.string.no_tracks)
             1 -> res.getString(R.string.one_track)
-            else -> res.getString(R.string.number_of_tracks, count.toString())
+            else -> res.getString(R.string.number_of_tracks, count)
         }
     }
 }

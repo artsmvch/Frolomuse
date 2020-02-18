@@ -133,7 +133,7 @@
     <string name="no_albums">Немає альбомів</string>
     <string name="no_tracks">Ніяких доріжок</string>
     <string name="one_track">1 трек</string>
-    <string name="number_of_tracks">%s доріжки</string>
+    <string name="number_of_tracks">%d доріжки</string>
 
     <!--recently added-->
     <string name="added">Додано</string>

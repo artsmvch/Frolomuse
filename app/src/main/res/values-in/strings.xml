@@ -132,7 +132,7 @@
     <string name="no_albums">Tidak ada album</string>
     <string name="no_tracks">Tidak ada trek</string>
     <string name="one_track">Tidak ada lagu</string>
-    <string name="number_of_tracks">%s lagu</string>
+    <string name="number_of_tracks">%d lagu</string>
 
     <!--recently added-->
     <string name="added">Ditambahkan</string>

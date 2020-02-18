@@ -134,7 +134,7 @@
     <string name="no_albums">Нет альбомов</string>
     <string name="no_tracks">Нет треков</string>
     <string name="one_track">1 трек</string>
-    <string name="number_of_tracks">%s тр.</string>
+    <string name="number_of_tracks">%d тр.</string>
 
     <!--recently added-->
     <string name="added">Добавлено</string>
