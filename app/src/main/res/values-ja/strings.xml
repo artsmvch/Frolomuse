@@ -126,7 +126,7 @@
     <string name="most_played">最もプレイされた</string>
 
     <!--counting tracks, albums, genres and etc.-->
-    <string name="number_of_albums">%s 枚のアルバム</string>
+    <string name="number_of_albums">%d 枚のアルバム</string>
     <string name="one_album">1枚のアルバム</string>
     <string name="no_albums">アルバムがありません</string>
     <string name="no_tracks">歌なし</string>

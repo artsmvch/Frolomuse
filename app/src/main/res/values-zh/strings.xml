@@ -126,7 +126,7 @@
     <string name="most_played">最多玩</string>
 
     <!--counting tracks, albums, genres and etc.-->
-    <string name="number_of_albums">%s 張專輯</string>
+    <string name="number_of_albums">%d 張專輯</string>
     <string name="one_album">1張專輯</string>
     <string name="no_albums">沒有專輯</string>
     <string name="no_tracks">沒有曲目</string>

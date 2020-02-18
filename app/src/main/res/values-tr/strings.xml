@@ -127,7 +127,7 @@
     <string name="most_played">En çok oynanan</string>
 
     <!--counting tracks, albums, genres and etc.-->
-    <string name="number_of_albums">%s albüm</string>
+    <string name="number_of_albums">%d albüm</string>
     <string name="one_album">1 albüm</string>
     <string name="no_albums">Albüm yok</string>
     <string name="no_tracks">Şarkı yok</string>

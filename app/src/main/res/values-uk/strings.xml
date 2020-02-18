@@ -128,7 +128,7 @@
     <string name="most_played">Більшість грав</string>
 
     <!--counting tracks, albums, genres and etc.-->
-    <string name="number_of_albums">%s альбомів</string>
+    <string name="number_of_albums">%d альбомів</string>
     <string name="one_album">1 альбом</string>
     <string name="no_albums">Немає альбомів</string>
     <string name="no_tracks">Ніяких доріжок</string>

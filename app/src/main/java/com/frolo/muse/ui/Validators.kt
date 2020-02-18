@@ -62,7 +62,7 @@ fun Artist.getNumberOfAlbumsString(res: Resources): String {
         when (count) {
             0 -> res.getString(R.string.no_albums)
             1 -> res.getString(R.string.one_album)
-            else -> res.getString(R.string.number_of_albums, count.toString())
+            else -> res.getString(R.string.number_of_albums, count)
         }
     }
 }

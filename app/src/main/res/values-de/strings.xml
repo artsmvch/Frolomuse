@@ -127,7 +127,7 @@
     <string name="most_played">Meist gespielt</string>
 
     <!--counting tracks, albums, genres and etc.-->
-    <string name="number_of_albums">%s Alben</string>
+    <string name="number_of_albums">%d Alben</string>
     <string name="one_album">1 album</string>
     <string name="no_albums">Keine Alben</string>
     <string name="no_tracks">Keine Stücke</string>

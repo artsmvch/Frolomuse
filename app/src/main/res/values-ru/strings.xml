@@ -129,7 +129,7 @@
     <string name="most_played">Популярные</string>
 
     <!--counting tracks, albums, genres and etc.-->
-    <string name="number_of_albums">%s альб.</string>
+    <string name="number_of_albums">%d альб.</string>
     <string name="one_album">1 альбом</string>
     <string name="no_albums">Нет альбомов</string>
     <string name="no_tracks">Нет треков</string>

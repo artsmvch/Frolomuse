@@ -127,7 +127,7 @@
     <string name="most_played">Paling sering dimainkan</string>
 
     <!--counting tracks, albums, genres and etc.-->
-    <string name="number_of_albums">%s album</string>
+    <string name="number_of_albums">%d album</string>
     <string name="one_album">1 album</string>
     <string name="no_albums">Tidak ada album</string>
     <string name="no_tracks">Tidak ada trek</string>
