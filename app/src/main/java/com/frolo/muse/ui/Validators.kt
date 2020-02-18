@@ -72,7 +72,7 @@ fun Artist.getNumberOfTracksString(res: Resources): String {
         when (number) {
             0 -> res.getString(R.string.no_tracks)
             1 -> res.getString(R.string.one_track)
-            else -> res.getString(R.string.number_of_tracks, number.toString())
+            else -> res.getString(R.string.number_of_tracks, number)
         }
     }
 }
