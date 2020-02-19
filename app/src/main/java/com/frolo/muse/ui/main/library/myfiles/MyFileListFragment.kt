@@ -143,8 +143,10 @@ class MyFileListFragment: AbsMediaCollectionFragment<MyFile>(),
             }
 
             scanFilesEvent.observeNonNull(owner) { targetFiles ->
-                context?.also { safeContext ->
-                    MediaScanService.start(safeContext, targetFiles)
+                checkReadPermissionFor {
+                    context?.also { safeContext ->
+                        MediaScanService.start(safeContext, targetFiles)
+                    }
                 }
             }
         }
