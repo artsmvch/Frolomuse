@@ -491,6 +491,7 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
     fun onScanFilesOptionSelected() {
         val event = _openOptionsMenuEvent.value ?: return
         _closeOptionsMenuEvent.value = event
+        performScanFiles(event.item).subscribeFor {  }
     }
 
     protected open fun performScanFiles(item: E): Completable {

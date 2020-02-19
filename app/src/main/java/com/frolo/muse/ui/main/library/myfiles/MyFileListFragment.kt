@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.frolo.muse.R
 import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
+import com.frolo.muse.mediascan.MediaScanService
 import com.frolo.muse.model.media.MyFile
 import com.frolo.muse.ui.base.BackPressHandler
 import com.frolo.muse.ui.getNameAsRootString
@@ -142,7 +143,9 @@ class MyFileListFragment: AbsMediaCollectionFragment<MyFile>(),
             }
 
             scanFilesEvent.observeNonNull(owner) { myFile ->
-                // TODO: start MediaScan service
+                context?.also { safeContext ->
+                    MediaScanService.start(safeContext, myFile.javaFile.absolutePath)
+                }
             }
         }
     }

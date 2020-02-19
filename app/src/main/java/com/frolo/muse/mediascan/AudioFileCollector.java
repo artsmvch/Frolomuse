@@ -1,6 +1,5 @@
 package com.frolo.muse.mediascan;
 
-
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
@@ -39,17 +38,31 @@ final class AudioFileCollector {
     }
 
     /**
-     * Collects all audio files that need to be scanned.
+     * Collects all audio files on the device that need to be scanned.
      * NOTE: this should be called on a worker thread.
      * @return audio files to scan.
      */
     @WorkerThread
-    List<String> collect() {
+    List<String> collectAll() {
         final String absolutePath = Environment.getExternalStorageDirectory().getAbsolutePath();
         final List<String> list = new ArrayList<>();
-        collectAllAudioFiles(list, absolutePath);
-        collectAllAudioFiles(list, absolutePath + "/");
+        collectAudioFiles(list, absolutePath);
+        collectAudioFiles(list, absolutePath + "/");
         checkWithMediaStore(list);
+        return list;
+    }
+
+    /**
+     * Collects audio files from the given <code>files</code> (including their nested child files) that need to be scanned.
+     * NOTE: this should be called on a worker thread.
+     * @return audio files within the given <code>files</code> to scan.
+     */
+    @WorkerThread
+    List<String> collectFrom(@NonNull List<String> files) {
+        final List<String> list = new ArrayList<>();
+        for (String file : files) {
+            collectAudioFiles(list, file);
+        }
         return list;
     }
 
@@ -60,7 +73,7 @@ final class AudioFileCollector {
      * @param dst to collect files to it
      * @param startPath file from which the search starts
      */
-    private void collectAllAudioFiles(List<String> dst, String startPath) {
+    private void collectAudioFiles(List<String> dst, String startPath) {
         File file = new File(startPath);
         if (!file.isHidden() && file.isDirectory() && !canSkipScanning(file)) {
             File[] listFiles = file.listFiles();
@@ -68,7 +81,7 @@ final class AudioFileCollector {
                 for (File childFile : listFiles) {
                     if (childFile.isDirectory()) {
                         // recursively searching for audio files in child file
-                        collectAllAudioFiles(dst, childFile.getAbsolutePath());
+                        collectAudioFiles(dst, childFile.getAbsolutePath());
                     } else if (isAudioFile(childFile.getAbsolutePath())) {
                         // it's an audio file, let's add it
                         dst.add(childFile.getAbsolutePath());

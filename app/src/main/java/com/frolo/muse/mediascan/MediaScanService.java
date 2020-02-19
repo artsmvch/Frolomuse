@@ -22,6 +22,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.frolo.muse.BuildConfig;
@@ -57,15 +58,22 @@ public class MediaScanService extends Service {
     private static final String CHANNEL_ID_MEDIA_SCANNER = "media_scanner";
     private static final int NOTIFICATION_ID_MEDIA_SCANNER = 1735;
 
-    public static Intent newIntent(Context context, @Nullable ArrayList<String> files) {
-        return new Intent(context, MediaScanService.class)
-                .setAction(ACTION_SCAN_MEDIA)
-                .putExtra(EXTRA_FILES, files);
+    public static void start(@NonNull Context ctx) {
+        Intent intent = new Intent(ctx, MediaScanService.class).setAction(ACTION_SCAN_MEDIA);
+        ContextCompat.startForegroundService(ctx, intent);
     }
 
-    public static Intent newIntent(Context context) {
-        return new Intent(context, MediaScanService.class)
-                .setAction(ACTION_SCAN_MEDIA);
+    public static void start(@NonNull Context ctx, @NonNull ArrayList<String> targetFiles) {
+        Intent intent = new Intent(ctx, MediaScanService.class)
+                .setAction(ACTION_SCAN_MEDIA)
+                .putExtra(EXTRA_FILES, targetFiles);
+        ContextCompat.startForegroundService(ctx, intent);
+    }
+
+    public static void start(@NonNull Context ctx, @NonNull String targetFile) {
+        ArrayList<String> targetFiles = new ArrayList<>(1);
+        targetFiles.add(targetFile);
+        start(ctx, targetFiles);
     }
 
     private static Intent newCancelIntent(Context context) {
@@ -157,10 +165,10 @@ public class MediaScanService extends Service {
 
             if (intent.hasExtra(EXTRA_FILES)) {
                 List<String> args = intent.getStringArrayListExtra(EXTRA_FILES);
-                final List<String> files = args != null ? args : Collections.<String>emptyList();
-                scanAsync(startId, files);
+                final List<String> targetFiles = args != null ? args : Collections.<String>emptyList();
+                execCollectAndScanFiles(startId, false, targetFiles);
             } else {
-                execCollectAndScanAllFiles(startId);
+                execCollectAndScanFiles(startId, true, null);
             }
 
             return START_REDELIVER_INTENT;
@@ -219,19 +227,36 @@ public class MediaScanService extends Service {
     }
 
     /**
-     * Collects and scans all the files on the device that need to be scanned.
+     * Collects and scans files on the device that need to be scanned.
+     * If <code>fullRescan</code> is true then all files in the device will be collected.
+     * Otherwise, only files from <code>targetFiles</code> (including their nested child files) will be collected, if not null.
+     *
      * Note that collection is performed on the engine thread,
      * and then the async scanning is started on the main thread.
      * @param startId id of the command
+     * @param fullRescan true if this should collect all the files on the device
+     * @param targetFiles from which to collect files for scanning, ignored if <code>fullRescan</code> is true
      */
-    private void execCollectAndScanAllFiles(final int startId) {
+    private void execCollectAndScanFiles(
+        final int startId,
+        final boolean fullRescan,
+        @Nullable final List<String> targetFiles
+    ) {
         final Runnable task = new Runnable() {
             @Override
             public void run() {
                 if (DEBUG) Log.w(LOG_TAG, "Collect all files to scan");
                 List<String> files;
                 try {
-                    files = AudioFileCollector.get(MediaScanService.this).collect();
+                    final AudioFileCollector collector = AudioFileCollector.get(MediaScanService.this);
+
+                    if (fullRescan) {
+                        files = collector.collectAll();
+                    } else if (targetFiles != null) {
+                        files = collector.collectFrom(targetFiles);
+                    } else {
+                        files = new ArrayList<>(0);
+                    }
                 } catch (SecurityException e) {
                     if (DEBUG) Log.e(LOG_TAG, "", e);
                     files = new ArrayList<>(0);

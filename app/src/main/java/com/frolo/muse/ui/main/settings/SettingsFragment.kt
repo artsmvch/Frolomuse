@@ -267,9 +267,8 @@ class SettingsFragment : PreferenceFragmentCompat(),
     }
 
     private fun startScanningMedia() {
-        context?.let { context ->
-            val intent = MediaScanService.newIntent(context)
-            ContextCompat.startForegroundService(context, intent)
+        context?.let { safeContext ->
+            MediaScanService.start(safeContext)
         }
     }
 
