@@ -198,6 +198,7 @@ abstract class AbsMediaCollectionFragment <E: Media>: BaseFragment(),
             when (option) {
                 OptionsMenuDialog.Option.SET_AS_DEFAULT -> viewModel.onSetAsDefaultOptionSelected()
                 OptionsMenuDialog.Option.HIDE -> viewModel.onHideOptionSelected()
+                OptionsMenuDialog.Option.SCAN_FILES -> viewModel.onScanFilesOptionSelected()
                 OptionsMenuDialog.Option.SHARE -> viewModel.onShareOptionSelected()
                 OptionsMenuDialog.Option.DELETE -> viewModel.onDeleteOptionSelected()
                 OptionsMenuDialog.Option.LIKE -> viewModel.onLikeOptionClicked()

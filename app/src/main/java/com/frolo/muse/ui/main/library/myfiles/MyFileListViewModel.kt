@@ -103,6 +103,9 @@ class MyFileListViewModel @Inject constructor(
     val showFolderAddedToHiddenMessageEvent: LiveData<Int>
         get() = _showFolderAddedToHiddenMessageEvent
 
+    private val _scanFilesEvent = SingleLiveEvent<MyFile>()
+    val scanFilesEvent: LiveData<MyFile> get() = _scanFilesEvent
+
     init {
         player.registerObserver(playerObserver)
         _isPlaying.value = player.isPlaying()
@@ -173,6 +176,14 @@ class MyFileListViewModel @Inject constructor(
                 .observeOn(schedulerProvider.main())
                 .doOnComplete {
                     _showFolderAddedToHiddenMessageEvent.value = items.size
+                }
+    }
+
+    override fun performScanFiles(item: MyFile): Completable {
+        return Completable.complete()
+                .observeOn(schedulerProvider.main())
+                .doOnComplete {
+                    _scanFilesEvent.value = item
                 }
     }
 

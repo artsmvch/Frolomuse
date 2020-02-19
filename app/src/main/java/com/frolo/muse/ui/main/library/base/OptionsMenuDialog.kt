@@ -40,7 +40,8 @@ class OptionsMenuDialog<E: Media> constructor(
         VIEW_ARTIST,
         VIEW_GENRE,
         SET_AS_DEFAULT,
-        HIDE
+        HIDE,
+        SCAN_FILES
     }
 
     private val iconTint = StyleUtil.getIconTintColor(context)
@@ -82,6 +83,7 @@ class OptionsMenuDialog<E: Media> constructor(
         with(this) {
             btn_set_as_default.setOnClickListener { onOptionSelected(item, Option.SET_AS_DEFAULT) }
             btn_add_to_hidden.setOnClickListener { onOptionSelected(item, Option.HIDE) }
+            btn_scan_files.setOnClickListener { onOptionSelected(item, Option.SCAN_FILES) }
             btn_play.setOnClickListener { onOptionSelected(item, Option.PLAY) }
             btn_share.setOnClickListener { onOptionSelected(item, Option.SHARE) }
             btn_delete.setOnClickListener { onOptionSelected(item, Option.DELETE) }
@@ -104,6 +106,7 @@ class OptionsMenuDialog<E: Media> constructor(
             btn_add_to_playlist.visibility = if (optionsMenu.addToPlaylistOptionAvailable) View.VISIBLE else View.GONE
             btn_set_as_default.visibility = if (optionsMenu.setAsDefaultOptionAvailable) View.VISIBLE else View.GONE
             btn_add_to_hidden.visibility = if (optionsMenu.addToHiddenOptionAvailable) View.VISIBLE else View.GONE
+            btn_scan_files.visibility = if (optionsMenu.scanFilesOptionAvailable) View.VISIBLE else View.GONE
 
             tv_media_name.text = item.getName()
             tv_media_type.text = item.getTypeName(context.resources)

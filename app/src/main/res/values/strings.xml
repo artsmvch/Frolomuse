@@ -28,6 +28,7 @@
     <string name="hide">Hide</string>
     <string name="message_one_file_hidden">The file has been hidden. You can return it back in the settings</string>
     <string name="message_multiple_files_hidden">The selected files have been hidden. You can return them back in the settings</string>
+    <string name="scan_files">Scan files</string>
 
     <!--Hidden files-->
     <string name="hidden_files">Hidden files</string>

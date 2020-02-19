@@ -9,56 +9,57 @@ import io.reactivex.Single
 
 
 class GetMediaMenuUseCase<E: Media> constructor(
-        private val schedulerProvider: SchedulerProvider,
-        private val repository: MediaRepository<E>
+    private val schedulerProvider: SchedulerProvider,
+    private val repository: MediaRepository<E>
 ) {
 
     fun getOptionsMenu(item: E): Single<OptionsMenu<E>> {
         // First check if the item can be favourite and if so then check if it is favourite
         val favouriteOptionOperator = if (item is Song) {
             repository.isFavourite(item)
-                    .firstOrError()
-                    .map { isFavourite -> true to isFavourite }
+                .firstOrError()
+                .map { isFavourite -> true to isFavourite }
         } else {
             Single.just(false to false)
         }
 
         return favouriteOptionOperator
-                .map { favouriteOption ->
-                    OptionsMenu(
-                            item = item,
-                            favouriteOptionAvailable = favouriteOption.first,
-                            isFavourite = favouriteOption.second,
-                            shareOptionAvailable = true,
-                            deleteOptionAvailable = true,
-                            playOptionAvailable = true,
-                            playNextOptionAvailable = true,
-                            addToPlaylistOptionAvailable = true,
-                            editOptionAvailable = item is Song || item is Album || item is Playlist,
-                            addToQueueOptionAvailable = item !is Playlist,
-                            viewAlbumOptionAvailable = false,//item is Song,
-                            viewArtistOptionAvailable = false,//item is Song || item is Album
-                            setAsDefaultOptionAvailable = item is MyFile && item.isDirectory,
-                            addToHiddenOptionAvailable = item is MyFile
-                    )
-                }
-                .subscribeOn(schedulerProvider.worker())
-                .observeOn(schedulerProvider.main())
+            .map { favouriteOption ->
+                OptionsMenu(
+                    item = item,
+                    favouriteOptionAvailable = favouriteOption.first,
+                    isFavourite = favouriteOption.second,
+                    shareOptionAvailable = true,
+                    deleteOptionAvailable = true,
+                    playOptionAvailable = true,
+                    playNextOptionAvailable = true,
+                    addToPlaylistOptionAvailable = true,
+                    editOptionAvailable = item is Song || item is Album || item is Playlist,
+                    addToQueueOptionAvailable = item !is Playlist,
+                    viewAlbumOptionAvailable = false,//item is Song,
+                    viewArtistOptionAvailable = false,//item is Song || item is Album
+                    setAsDefaultOptionAvailable = item is MyFile && item.isDirectory,
+                    addToHiddenOptionAvailable = item is MyFile,
+                    scanFilesOptionAvailable = item is MyFile && item.isDirectory
+                )
+            }
+            .subscribeOn(schedulerProvider.worker())
+            .observeOn(schedulerProvider.main())
     }
 
     fun getContextualMenu(initiator: E): Single<ContextualMenu<E>> {
         return Single.just(
-                ContextualMenu(
-                        targetItem = initiator,
-                        selectAllOptionAvailable = true,
-                        playOptionAvailable = true,
-                        playNextOptionAvailable = true,
-                        addToQueueOptionAvailable = true,
-                        deleteOptionAvailable = true,
-                        shareOptionAvailable = true,
-                        addToPlaylistOptionAvailable = true,
-                        hideOptionAvailable = initiator is MyFile
-                )
+            ContextualMenu(
+                targetItem = initiator,
+                selectAllOptionAvailable = true,
+                playOptionAvailable = true,
+                playNextOptionAvailable = true,
+                addToQueueOptionAvailable = true,
+                deleteOptionAvailable = true,
+                shareOptionAvailable = true,
+                addToPlaylistOptionAvailable = true,
+                hideOptionAvailable = initiator is MyFile
+            )
         )
     }
 

@@ -488,6 +488,15 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
         return Completable.error(UnsupportedOperationException())
     }
 
+    fun onScanFilesOptionSelected() {
+        val event = _openOptionsMenuEvent.value ?: return
+        _closeOptionsMenuEvent.value = event
+    }
+
+    protected open fun performScanFiles(item: E): Completable {
+        return Completable.error(UnsupportedOperationException())
+    }
+
     fun onShareOptionSelected() {
         val event = _openOptionsMenuEvent.value ?: return
         _closeOptionsMenuEvent.value = event

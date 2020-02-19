@@ -140,6 +140,10 @@ class MyFileListFragment: AbsMediaCollectionFragment<MyFile>(),
                     toastLongMessage(R.string.message_one_file_hidden)
                 }
             }
+
+            scanFilesEvent.observeNonNull(owner) { myFile ->
+                // TODO: start MediaScan service
+            }
         }
     }
 

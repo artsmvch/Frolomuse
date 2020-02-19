@@ -110,6 +110,14 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_scan_16dp"
+                android:id="@+id/btn_scan_files"
+                style="@style/Button.MediaMenu"
+                android:text="@string/scan_files" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_action_play"
                 android:id="@+id/btn_play"
                 style="@style/Button.MediaMenu"
