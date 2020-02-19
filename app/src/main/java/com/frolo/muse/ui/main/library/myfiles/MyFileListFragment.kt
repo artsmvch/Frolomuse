@@ -142,9 +142,9 @@ class MyFileListFragment: AbsMediaCollectionFragment<MyFile>(),
                 }
             }
 
-            scanFilesEvent.observeNonNull(owner) { myFile ->
+            scanFilesEvent.observeNonNull(owner) { targetFiles ->
                 context?.also { safeContext ->
-                    MediaScanService.start(safeContext, myFile.javaFile.absolutePath)
+                    MediaScanService.start(safeContext, targetFiles)
                 }
             }
         }

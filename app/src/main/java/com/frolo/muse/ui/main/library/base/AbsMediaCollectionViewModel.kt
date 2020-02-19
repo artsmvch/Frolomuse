@@ -343,6 +343,23 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
                 .subscribeFor { mediaSet: Set<E> -> _selectedItems.value = mediaSet }
     }
 
+    fun onScanFilesContextualOptionSelected() {
+        val selectedItems = selectedItems.value ?: return
+        performScanFiles(selectedItems)
+                .observeOn(schedulerProvider.main())
+                .doOnSubscribe { disposable ->
+                    lastContextualDisposable = disposable
+                    _selectedItems.value = emptySet()
+                    _isProcessingContextual.value = true
+                }
+                .doFinally { _isProcessingContextual.value = false }
+                .subscribeFor {  }
+    }
+
+    protected open fun performScanFiles(items: Set<E>): Completable {
+        return Completable.error(UnsupportedOperationException())
+    }
+
     fun onHideContextualOptionSelected() {
         val selectedItems = selectedItems.value ?: return
         performHide(selectedItems)

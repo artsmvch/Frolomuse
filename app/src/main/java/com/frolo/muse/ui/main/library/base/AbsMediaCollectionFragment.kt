@@ -220,6 +220,7 @@ abstract class AbsMediaCollectionFragment <E: Media>: BaseFragment(),
             val actionModeCallback = ContextualActionMode(contextualMenu) { option ->
                 when (option) {
                     ContextualActionMode.Option.SELECT_ALL -> viewModel.onSelectAllContextualOptionSelected()
+                    ContextualActionMode.Option.SCAN_FILES -> viewModel.onScanFilesContextualOptionSelected()
                     ContextualActionMode.Option.HIDE -> viewModel.onHideContextualOptionSelected()
                     ContextualActionMode.Option.PLAY -> viewModel.onPlayContextualOptionSelected()
                     ContextualActionMode.Option.PLAY_NEXT -> viewModel.onPlayNextContextualOptionSelected()

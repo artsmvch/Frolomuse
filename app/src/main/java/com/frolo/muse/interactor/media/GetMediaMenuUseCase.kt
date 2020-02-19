@@ -58,7 +58,8 @@ class GetMediaMenuUseCase<E: Media> constructor(
                 deleteOptionAvailable = true,
                 shareOptionAvailable = true,
                 addToPlaylistOptionAvailable = true,
-                hideOptionAvailable = initiator is MyFile
+                hideOptionAvailable = initiator is MyFile,
+                scanFilesOptionAvailable = initiator is MyFile
             )
         )
     }

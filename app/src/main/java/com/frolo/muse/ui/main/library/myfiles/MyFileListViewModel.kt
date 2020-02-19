@@ -103,8 +103,9 @@ class MyFileListViewModel @Inject constructor(
     val showFolderAddedToHiddenMessageEvent: LiveData<Int>
         get() = _showFolderAddedToHiddenMessageEvent
 
-    private val _scanFilesEvent = SingleLiveEvent<MyFile>()
-    val scanFilesEvent: LiveData<MyFile> get() = _scanFilesEvent
+    // Stores an ArrayList of file paths for scanning
+    private val _scanFilesEvent = SingleLiveEvent<ArrayList<String>>()
+    val scanFilesEvent: LiveData<ArrayList<String>> get() = _scanFilesEvent
 
     init {
         player.registerObserver(playerObserver)
@@ -180,11 +181,21 @@ class MyFileListViewModel @Inject constructor(
     }
 
     override fun performScanFiles(item: MyFile): Completable {
-        return Completable.complete()
-                .observeOn(schedulerProvider.main())
-                .doOnComplete {
-                    _scanFilesEvent.value = item
-                }
+        return performScanFiles(setOf(item))
+    }
+
+    override fun performScanFiles(items: Set<MyFile>): Completable {
+        return Single.fromCallable {
+            val targetFiles = ArrayList<String>()
+            items.mapTo(targetFiles) { it.javaFile.absolutePath }
+            targetFiles
+        }
+            .subscribeOn(schedulerProvider.computation())
+            .observeOn(schedulerProvider.main())
+            .doOnSuccess { targetFiles ->
+                _scanFilesEvent.value = targetFiles
+            }
+            .ignoreElement()
     }
 
     override fun handleItemClick(item: MyFile) {

@@ -8,6 +8,12 @@
         app:showAsAction="ifRoom"
         android:title="@string/select_all" />
 
+    <item android:id="@+id/action_scan"
+        android:icon="@drawable/ic_scan_16dp"
+        android:name="@string/scan_files"
+        app:showAsAction="never"
+        android:title="@string/scan_files" />
+
     <item android:id="@+id/action_hide"
         android:icon="@drawable/ic_hidden_16dp"
         android:name="@string/hide"
