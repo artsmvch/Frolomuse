@@ -235,6 +235,7 @@ class AbsMediaCollectionViewModelTest {
                 true,
                 true,
                 true,
+                true,
                 true
                 )
 
