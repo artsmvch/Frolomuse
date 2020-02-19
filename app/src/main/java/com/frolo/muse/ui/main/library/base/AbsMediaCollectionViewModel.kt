@@ -20,7 +20,6 @@ import com.frolo.muse.model.menu.SortOrderMenu
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.base.BaseViewModel
 import io.reactivex.Completable
-import io.reactivex.Flowable
 import io.reactivex.Single
 import io.reactivex.disposables.Disposable
 import org.reactivestreams.Subscription
@@ -345,7 +344,7 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
 
     fun onScanFilesContextualOptionSelected() {
         val selectedItems = selectedItems.value ?: return
-        performScanFiles(selectedItems)
+        doScanFiles(selectedItems)
                 .observeOn(schedulerProvider.main())
                 .doOnSubscribe { disposable ->
                     lastContextualDisposable = disposable
@@ -356,13 +355,13 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
                 .subscribeFor {  }
     }
 
-    protected open fun performScanFiles(items: Set<E>): Completable {
+    protected open fun doScanFiles(items: Set<E>): Completable {
         return Completable.error(UnsupportedOperationException())
     }
 
     fun onHideContextualOptionSelected() {
         val selectedItems = selectedItems.value ?: return
-        performHide(selectedItems)
+        doHide(selectedItems)
                 .observeOn(schedulerProvider.main())
                 .doOnSubscribe { disposable ->
                     lastContextualDisposable = disposable
@@ -373,7 +372,7 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
                 .subscribeFor {  }
     }
 
-    protected open fun performHide(items: Set<E>): Completable {
+    protected open fun doHide(items: Set<E>): Completable {
         return Completable.error(UnsupportedOperationException())
     }
 
@@ -488,30 +487,30 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
     fun onSetAsDefaultOptionSelected() {
         val event = _openOptionsMenuEvent.value ?: return
         _closeOptionsMenuEvent.value = event
-        performSetAsDefault(event.item).subscribeFor {  }
+        doSetAsDefault(event.item).subscribeFor {  }
     }
 
-    protected open fun performSetAsDefault(item: E): Completable {
+    protected open fun doSetAsDefault(item: E): Completable {
         return Completable.error(UnsupportedOperationException())
     }
 
     fun onHideOptionSelected() {
         val event = _openOptionsMenuEvent.value ?: return
         _closeOptionsMenuEvent.value = event
-        performHide(event.item).subscribeFor {  }
+        doHide(event.item).subscribeFor {  }
     }
 
-    protected open fun performHide(item: E): Completable {
+    protected open fun doHide(item: E): Completable {
         return Completable.error(UnsupportedOperationException())
     }
 
     fun onScanFilesOptionSelected() {
         val event = _openOptionsMenuEvent.value ?: return
         _closeOptionsMenuEvent.value = event
-        performScanFiles(event.item).subscribeFor {  }
+        doScanFiles(event.item).subscribeFor {  }
     }
 
-    protected open fun performScanFiles(item: E): Completable {
+    protected open fun doScanFiles(item: E): Completable {
         return Completable.error(UnsupportedOperationException())
     }
 

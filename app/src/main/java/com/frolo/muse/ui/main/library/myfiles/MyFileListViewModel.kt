@@ -156,7 +156,7 @@ class MyFileListViewModel @Inject constructor(
         }
     }
 
-    override fun performSetAsDefault(item: MyFile): Completable {
+    override fun doSetAsDefault(item: MyFile): Completable {
         return setFolderAsDefaultUseCase.setFolderAsDefault(item)
                 .observeOn(schedulerProvider.main())
                 .doOnComplete {
@@ -164,7 +164,7 @@ class MyFileListViewModel @Inject constructor(
                 }
     }
 
-    override fun performHide(item: MyFile): Completable {
+    override fun doHide(item: MyFile): Completable {
         return hideFilesUseCase.hide(item)
                 .observeOn(schedulerProvider.main())
                 .doOnComplete {
@@ -172,7 +172,7 @@ class MyFileListViewModel @Inject constructor(
                 }
     }
 
-    override fun performHide(items: Set<MyFile>): Completable {
+    override fun doHide(items: Set<MyFile>): Completable {
         return hideFilesUseCase.hide(items)
                 .observeOn(schedulerProvider.main())
                 .doOnComplete {
@@ -180,11 +180,11 @@ class MyFileListViewModel @Inject constructor(
                 }
     }
 
-    override fun performScanFiles(item: MyFile): Completable {
-        return performScanFiles(setOf(item))
+    override fun doScanFiles(item: MyFile): Completable {
+        return doScanFiles(setOf(item))
     }
 
-    override fun performScanFiles(items: Set<MyFile>): Completable {
+    override fun doScanFiles(items: Set<MyFile>): Completable {
         return Single.fromCallable {
             val targetFiles = ArrayList<String>()
             items.mapTo(targetFiles) { it.javaFile.absolutePath }
