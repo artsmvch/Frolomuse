@@ -45,43 +45,49 @@ final class AudioFileCollector {
     @WorkerThread
     List<String> collectAll() {
         final String absolutePath = Environment.getExternalStorageDirectory().getAbsolutePath();
+
         final List<String> list = new ArrayList<>();
-        collectAudioFiles(list, absolutePath);
-        collectAudioFiles(list, absolutePath + "/");
-        checkWithMediaStore(list);
+
+        collectAudioFiles(absolutePath, list);
+        collectAudioFiles(absolutePath + "/", list);
+
+        distinctByMediaStore(null, list);
+
         return list;
     }
 
     /**
-     * Collects audio files from the given <code>files</code> (including their nested child files) that need to be scanned.
+     * Collects all files that need to be scanned in the hierarchy of all <code>targetFiles</code>.
      * NOTE: this should be called on a worker thread.
-     * @return audio files within the given <code>files</code> to scan.
+     * @param targetFiles where to collect files for scanning
+     * @return audio files to scan.
      */
     @WorkerThread
-    List<String> collectFrom(@NonNull List<String> files) {
+    List<String> collectFrom(@NonNull List<String> targetFiles) {
         final List<String> list = new ArrayList<>();
-        for (String file : files) {
-            collectAudioFiles(list, file);
+        for (String filepath : targetFiles) {
+            collectAudioFiles(filepath, list);
+            distinctByMediaStore(filepath, list);
         }
         return list;
     }
 
     /**
-     * Searches for all audio files that are in the given <code>startPath</code> hierarchy.
-     * This also verifies that <code>starPath</code> is not hidden, is a directory and cannot be skipped for scanning.
+     * Collects all audio files in the <code>parent</code> hierarchy.
+     * This also verifies that <code>parent</code> is not hidden, is a directory and cannot be skipped for scanning.
      * NOTE: the search is recursive.
      * @param dst to collect files to it
-     * @param startPath file from which the search starts
+     * @param parent from which the search starts
      */
-    private void collectAudioFiles(List<String> dst, String startPath) {
-        File file = new File(startPath);
+    private void collectAudioFiles(String parent, List<String> dst) {
+        File file = new File(parent);
         if (!file.isHidden() && file.isDirectory() && !canSkipScanning(file)) {
             File[] listFiles = file.listFiles();
             if (listFiles != null && listFiles.length > 0) {
                 for (File childFile : listFiles) {
                     if (childFile.isDirectory()) {
                         // recursively searching for audio files in child file
-                        collectAudioFiles(dst, childFile.getAbsolutePath());
+                        collectAudioFiles(childFile.getAbsolutePath(), dst);
                     } else if (isAudioFile(childFile.getAbsolutePath())) {
                         // it's an audio file, let's add it
                         dst.add(childFile.getAbsolutePath());
@@ -92,16 +98,34 @@ final class AudioFileCollector {
     }
 
     /**
-     * Checks <code>audioFiles</code> according to the MediaStore on the device.
-     * All files that the MediaStore knows are considered as scanned.
-     * Adds any file found in the MediaStore but absent in the collection.
-     * Removes any file found in the MediaStore and that is in the collection already.
-     * @param audioFiles to check
+     * This adds any file found in the MediaStore but absent in the collection.
+     * This removes any file found in the MediaStore and that is in the collection already.
+     *
+     * Clients may specify <code>parent</code> as common parent
+     * to narrow down the selection of files from the MediaStore that need to be checked.
+     * If <code>parent</code> is null, then all the files on the device will be checked.
+     *
+     * @param parent to narrow down the selection of files from the MediaStore, or null if all files in the MediaStore should be checked.
+     * @param audioFiles to verify
      */
-    private void checkWithMediaStore(List<String> audioFiles) {
-        final String[] projection = new String[] { "_data" };
+    private void distinctByMediaStore(@Nullable String parent, List<String> audioFiles) {
         final ContentResolver cr = mContext.getContentResolver();
-        Cursor cursor = cr.query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, projection, null, null, null);
+        final String[] projection = new String[] { MediaStore.Audio.Media.DATA };
+
+        final String selection;
+        final String[] selectionArgs;
+        if (parent != null) {
+            // if fromPath is not null, then we can use 'where' condition
+            selection = MediaStore.Audio.Media.DATA + " LIKE ?";
+            selectionArgs = new String[] { "%" + parent + "%" };
+        } else {
+            selection = null;
+            selectionArgs = null;
+        }
+
+        final Cursor cursor =
+                cr.query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, projection, selection, selectionArgs, null);
+
         if (cursor != null) {
             try {
                 if (cursor.moveToFirst()) {
