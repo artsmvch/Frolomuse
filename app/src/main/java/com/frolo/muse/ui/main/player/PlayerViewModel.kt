@@ -14,6 +14,7 @@ import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
 import com.frolo.muse.interactor.player.ControlPlayerUseCase
 import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.logger.EventLogger
+import com.frolo.muse.model.ABState
 import com.frolo.muse.model.media.Album
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.rx.SchedulerProvider
@@ -27,15 +28,15 @@ import javax.inject.Inject
 
 
 class PlayerViewModel @Inject constructor(
-        private val player: Player,
-        @Exec(Exec.Type.MAIN) private val mainThreadExecutor: Executor,
-        private val schedulerProvider: SchedulerProvider,
-        private val getIsFavouriteUseCase: GetIsFavouriteUseCase<Song>,
-        private val changeFavouriteUseCase: ChangeFavouriteUseCase<Song>,
-        private val deleteMediaUseCase: DeleteMediaUseCase<Song>,
-        private val controlPlayerUseCase: ControlPlayerUseCase,
-        private val navigator: Navigator,
-        private val eventLogger: EventLogger
+    private val player: Player,
+    @Exec(Exec.Type.MAIN) private val mainThreadExecutor: Executor,
+    private val schedulerProvider: SchedulerProvider,
+    private val getIsFavouriteUseCase: GetIsFavouriteUseCase<Song>,
+    private val changeFavouriteUseCase: ChangeFavouriteUseCase<Song>,
+    private val deleteMediaUseCase: DeleteMediaUseCase<Song>,
+    private val controlPlayerUseCase: ControlPlayerUseCase,
+    private val navigator: Navigator,
+    private val eventLogger: EventLogger
 ): BaseViewModel(eventLogger) {
 
     private var playbackProgressDisposable: Disposable? = null
@@ -62,13 +63,13 @@ class PlayerViewModel @Inject constructor(
             }
         }
         override fun onPlaybackStarted(player: Player) {
-            _playbackStatus.value = true
+            _isPlaying.value = true
         }
         override fun onPlaybackPaused(player: Player) {
-            _playbackStatus.value = false
+            _isPlaying.value = false
         }
         override fun onABChanged(player: Player, aPointed: Boolean, bPointed: Boolean) {
-            _abStatus.value = Pair(aPointed, bPointed)
+            _abState.value = ABState(aPointed, bPointed)
         }
         override fun onShuffleModeChanged(player: Player, mode: Int) {
             _shuffleMode.value = mode
@@ -135,12 +136,11 @@ class PlayerViewModel @Inject constructor(
     private val _playbackProgress = MutableLiveData<Int>()
     val playbackProgress: LiveData<Int> get() = _playbackProgress
 
-    private val _playbackStatus = MutableLiveData<Boolean>()
-    val playbackStatus: LiveData<Boolean> get() = _playbackStatus
+    private val _isPlaying = MutableLiveData<Boolean>()
+    val isPlaying: LiveData<Boolean> get() = _isPlaying
 
-    // Pair stands for <A enabled, B enabled>
-    private val _abStatus = MutableLiveData<Pair<Boolean, Boolean>>()
-    val abStatus: LiveData<Pair<Boolean, Boolean>> get() = _abStatus
+    private val _abState = MutableLiveData<ABState>()
+    val abState: LiveData<ABState> get() = _abState
 
     private val _shuffleMode = MutableLiveData<Int>()
     val shuffleMode: LiveData<Int> get() = _shuffleMode
@@ -175,8 +175,8 @@ class PlayerViewModel @Inject constructor(
         _song.value = player.getCurrent()
         _playbackDuration.value = player.getDuration()
         _playbackProgress.value = player.getProgress()
-        _playbackStatus.value = player.isPlaying()
-        _abStatus.value = Pair(player.isAPointed(), player.isBPointed())
+        _isPlaying.value = player.isPlaying()
+        _abState.value = ABState(player.isAPointed(), player.isBPointed())
         _shuffleMode.value = player.getShuffleMode()
         _repeatMode.value = player.getRepeatMode()
         startObservingPlaybackProgress()
@@ -185,9 +185,8 @@ class PlayerViewModel @Inject constructor(
     fun onLikeClicked() {
         song.value?.also { safeValue ->
             changeFavouriteUseCase.changeFavourite(safeValue)
-                    .observeOn(schedulerProvider.main())
-                    .subscribeFor {  }
-
+                .observeOn(schedulerProvider.main())
+                .subscribeFor {  }
         }
     }
 
@@ -250,26 +249,26 @@ class PlayerViewModel @Inject constructor(
 
     fun onViewAlbumOptionSelected() {
         controlPlayerUseCase.getAlbum()
-                .observeOn(schedulerProvider.main())
-                .subscribeFor { album ->
-                    navigator.openAlbum(album)
-                }
+            .observeOn(schedulerProvider.main())
+            .subscribeFor { album ->
+                navigator.openAlbum(album)
+            }
     }
 
     fun onViewArtistOptionSelected() {
         controlPlayerUseCase.getArtist()
-                .observeOn(schedulerProvider.main())
-                .subscribeFor { artist ->
-                    navigator.openArtist(artist)
-                }
+            .observeOn(schedulerProvider.main())
+            .subscribeFor { artist ->
+                navigator.openArtist(artist)
+            }
     }
 
     fun onViewGenreOptionSelected() {
         controlPlayerUseCase.getGenre()
-                .observeOn(schedulerProvider.main())
-                .subscribeFor { genre ->
-                    navigator.openGenre(genre)
-                }
+            .observeOn(schedulerProvider.main())
+            .subscribeFor { genre ->
+                navigator.openGenre(genre)
+            }
     }
 
     fun onViewCurrentPlayingOptionSelected() {
@@ -311,8 +310,8 @@ class PlayerViewModel @Inject constructor(
 
     fun onConfirmedDeletion(song: Song) {
         deleteMediaUseCase.delete(song)
-                .observeOn(schedulerProvider.main())
-                .subscribeFor { _songDeletedEvent.value = song }
+            .observeOn(schedulerProvider.main())
+            .subscribeFor { _songDeletedEvent.value = song }
     }
 
     override fun onCleared() {

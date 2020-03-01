@@ -337,91 +337,89 @@ class PlayerFragment: BaseFragment() {
         btn_ab.text = ss
     }
 
-    private fun observeViewModel(owner: LifecycleOwner) {
-        viewModel.apply {
-            songDeletedEvent.observeNonNull(owner) {
-                toastShortMessage(R.string.deleted)
+    private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
+        songDeletedEvent.observeNonNull(owner) {
+            toastShortMessage(R.string.deleted)
+        }
+
+        isFavourite.observeNonNull(owner) { isFavourite ->
+            updateFavouriteIcon(isFavourite, animate = true)
+        }
+
+        songQueue.observe(owner) { queue: SongQueue? ->
+            Trace.d(LOG_TAG, "SongQueue changed")
+            (vp_album_art.adapter as? SongAdapter)?.submitQueue(queue)
+        }
+
+        invalidateSongQueueEvent.observeNonNull(owner) {
+            Trace.d(LOG_TAG, "InvalidateSongQueue event fired")
+            vp_album_art.adapter?.notifyDataSetChanged()
+        }
+
+        song.observe(owner) { song: Song? ->
+            Trace.d(LOG_TAG, "Song changed")
+            if (song != null) {
+                tsw_song_name.setText(song.getNameString(resources))
+                tsw_artist_name.setText(song.getArtistString(resources))
+            } else {
+                tsw_song_name.setText("")
+                tsw_artist_name.setText("")
             }
+        }
 
-            isFavourite.observeNonNull(owner) { isFavourite ->
-                updateFavouriteIcon(isFavourite, animate = true)
+        placeholderVisible.observeNonNull(owner) { isVisible ->
+            layout_player_placeholder.visibility = if (isVisible) View.VISIBLE else View.GONE
+        }
+
+        songPosition.observeNonNull(owner) { position ->
+            Trace.d(LOG_TAG, "Song position changed to $position")
+
+            // There is an issue with setting current item in ViewPager2:
+            // If we set current item to 1 and then in some near future set item to 2
+            // Then the final item position will be 1. WTF?
+            setCurrentItemCallback = SetViewPagerPosition(vp_album_art, position)
+
+            vp_album_art.postDelayed(setCurrentItemCallback, 150)
+        }
+
+        showVolumeControlEvent.observe(owner) {
+            context?.showVolumeControl()
+        }
+
+        playbackDuration.observeNonNull(owner) { duration ->
+            sb_progress.max = duration
+            tv_duration.text = duration.asDurationInMs()
+        }
+
+        playbackProgress.observeNonNull(owner) { progress ->
+            if (!isTrackingProgress) {
+                sb_progress.progress = progress
+                tv_position.text = progress.asDurationInMs()
             }
+        }
 
-            songQueue.observe(owner) { queue: SongQueue? ->
-                Trace.d(LOG_TAG, "SongQueue changed")
-                (vp_album_art.adapter as? SongAdapter)?.submitQueue(queue)
-            }
+        isPlaying.observeNonNull(owner) { status: Boolean ->
+            updatePlayButton(status)
+        }
 
-            invalidateSongQueueEvent.observeNonNull(owner) {
-                Trace.d(LOG_TAG, "InvalidateSongQueue event fired")
-                vp_album_art.adapter?.notifyDataSetChanged()
-            }
+        abState.observeNonNull(owner) { abState ->
+            updateAB(abState.isAPointed, abState.isBPointed, false)
+        }
 
-            song.observeNonNull(owner) { song: Song? ->
-                Trace.d(LOG_TAG, "Song changed")
-                if (song != null) {
-                    tsw_song_name.setText(song.getNameString(resources))
-                    tsw_artist_name.setText(song.getArtistString(resources))
-                } else {
-                    tsw_song_name.setText("")
-                    tsw_artist_name.setText("")
-                }
-            }
+        shuffleMode.observeNonNull(owner) { mode ->
+            updateShuffleIcon(mode, true)
+        }
 
-            placeholderVisible.observeNonNull(owner) { isVisible ->
-                layout_player_placeholder.visibility = if (isVisible) View.VISIBLE else View.GONE
-            }
+        repeatMode.observeNonNull(owner) { mode ->
+            updateRepeatIcon(mode, true)
+        }
 
-            songPosition.observeNonNull(owner) { position ->
-                Trace.d(LOG_TAG, "Song position changed to $position")
-
-                // There is an issue with setting current item in ViewPager2:
-                // If we set current item to 1 and then in some near future set item to 2
-                // Then the final item position will be 1. WTF?
-                setCurrentItemCallback = SetViewPagerPosition(vp_album_art, position)
-
-                vp_album_art.postDelayed(setCurrentItemCallback, 150)
-            }
-
-            showVolumeControlEvent.observe(owner) {
-                context?.showVolumeControl()
-            }
-
-            playbackDuration.observeNonNull(owner) { duration ->
-                sb_progress.max = duration
-                tv_duration.text = duration.asDurationInMs()
-            }
-
-            playbackProgress.observeNonNull(owner) { progress ->
-                if (!isTrackingProgress) {
-                    sb_progress.progress = progress
-                    tv_position.text = progress.asDurationInMs()
-                }
-            }
-
-            playbackStatus.observeNonNull(owner) { status: Boolean ->
-                updatePlayButton(status)
-            }
-
-            abStatus.observeNonNull(owner) { abStatus ->
-                updateAB(abStatus.first, abStatus.second, false)
-            }
-
-            shuffleMode.observeNonNull(owner) { mode ->
-                updateShuffleIcon(mode, true)
-            }
-
-            repeatMode.observeNonNull(owner) { mode ->
-                updateRepeatIcon(mode, true)
-            }
-
-            // Confirmation
-            confirmDeletionEvent.observeNonNull(owner) { song ->
-                val msg = getString(R.string.confirmation_delete_item)
-                activity?.confirmDeletion(msg) {
-                    checkWritePermissionFor {
-                        viewModel.onConfirmedDeletion(song)
-                    }
+        // Confirmation
+        confirmDeletionEvent.observeNonNull(owner) { song ->
+            val msg = getString(R.string.confirmation_delete_item)
+            activity?.confirmDeletion(msg) {
+                checkWritePermissionFor {
+                    viewModel.onConfirmedDeletion(song)
                 }
             }
         }
