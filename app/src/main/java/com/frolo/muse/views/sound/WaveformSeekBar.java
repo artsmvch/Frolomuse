@@ -282,7 +282,7 @@ public class WaveformSeekBar extends View {
     }
 
     public float getProgressPercent() {
-        return mProgressPercentPosition;
+        return getCorrectPercent(mProgressPercentPosition);
     }
 
     @Override
