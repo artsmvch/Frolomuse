@@ -45,6 +45,12 @@ public class WaveformSeekBar extends View {
         return dp * ((float) context.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
     }
 
+    private static float getCorrectPercent(float percent) {
+        if (percent < 0) return 0f;
+        if (percent > 1) return 1;
+        return percent;
+    }
+
     //Styling
     @ColorInt
     private int mWaveBackgroundColor;
@@ -137,7 +143,7 @@ public class WaveformSeekBar extends View {
             mProgressPosition = position;
             invalidate();
         }
-        mListener.onProgressInPercentageChanged(this, percent, fromUser);
+        mListener.onProgressInPercentageChanged(this, getCorrectPercent(percent), fromUser);
     }
 
     /**
