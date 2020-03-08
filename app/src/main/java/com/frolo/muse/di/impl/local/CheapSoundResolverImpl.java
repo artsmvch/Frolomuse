@@ -52,7 +52,10 @@ public class CheapSoundResolverImpl implements SoundResolver {
                         maxFrameGain = v;
                     }
                 }
-                Thread.sleep(250 + random.nextInt(1250));
+                try {
+                    Thread.sleep(250 + random.nextInt(1250));
+                } catch (InterruptedException ignored) {
+                }
                 return new SoundImpl(frameGains, maxFrameGain);
             }
         });
