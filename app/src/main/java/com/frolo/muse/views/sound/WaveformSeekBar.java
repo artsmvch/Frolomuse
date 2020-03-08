@@ -77,9 +77,7 @@ public class WaveformSeekBar extends View {
     private boolean mIsTracking = false;
 
     //Waveform data and its progress
-    private int[] mWaves;
-    private int mMinWaveValue;
-    private int mMaxWaveValue;
+    private Waveform mWaveform;
     private float mProgressPercentPosition = 0.0f;
     private float mProgressPosition = -1; // position of the progress in percentage
 
@@ -117,10 +115,7 @@ public class WaveformSeekBar extends View {
     }
 
     private int getWaveCount() {
-        if (mWaves != null)
-            return mWaves.length;
-
-        return 0;
+        return mWaveform != null ? mWaveform.getWaveCount() : 0;
     }
 
     public void setOnSeekBarChangeListener(@Nullable OnSeekBarChangeListener l) {
@@ -146,38 +141,37 @@ public class WaveformSeekBar extends View {
     }
 
     /**
+     * Setups {@code waves} to display.
+     * @param waves new waveform data
+     */
+    public void setWaveform(@Nullable int[] waves) {
+        setWaveform(new WaveformImpl(waves));
+    }
+
+    /**
+     * Setups {@code waves} to display and then animates it.
+     * @param waves new waveform data
+     * @param animate if waveform appearance needs to be animated
+     */
+    public void setWaveform(@Nullable int[] waves, boolean animate) {
+        setWaveform(new WaveformImpl(waves), animate);
+    }
+
+    /**
      * Setups {@code waveform} to display.
      * @param waveform new waveform data
      */
-    public void setWaveform(@Nullable int[] waveform) {
+    public void setWaveform(@Nullable Waveform waveform) {
         setWaveform(waveform, true);
     }
 
     /**
      * Setups {@code waveform} to display and then animates it.
      * @param waveform new waveform data
+     * @param animate if waveform appearance needs to be animated
      */
-    public void setWaveform(@Nullable int[] waveform, boolean animate) {
-        this.mWaves = waveform;
-
-        if (waveform != null && waveform.length > 0) {
-            int minWaveValue = waveform[0];
-            int maxWaveValue = waveform[0];
-            for (int i = 1; i < waveform.length; i++) {
-                if (waveform[i] > maxWaveValue) {
-                    maxWaveValue = waveform[i];
-                }
-
-                if (waveform[i] < minWaveValue) {
-                    minWaveValue = waveform[i];
-                }
-            }
-            mMinWaveValue = minWaveValue;
-            mMaxWaveValue = maxWaveValue;
-        } else {
-            mMinWaveValue = 0;
-            mMaxWaveValue = 0;
-        }
+    public void setWaveform(@Nullable Waveform waveform, boolean animate) {
+        this.mWaveform = waveform;
 
         if (mWaveAnim != null) {
             mWaveAnim.cancel();
@@ -369,10 +363,11 @@ public class WaveformSeekBar extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        final int[] waves = mWaves;
-        if (waves == null || waves.length <= 0) {
+        final Waveform waveform = mWaveform;
+        if (waveform == null || waveform.getWaveCount() <= 0) {
             return;
         }
+        final int maxWave = waveform.getMaxWave();
 
         final int contentHeight = getMeasuredHeight() - getPaddingTop() - getPaddingBottom();
         final int leftPadding = getPaddingLeft();
@@ -380,9 +375,9 @@ public class WaveformSeekBar extends View {
         final float maxWaveHeight = contentHeight * mWaveHeightFactor;
         final float waveHalfOfWidth = mWaveWidth / 2;
 
-        for (int i = 0; i < waves.length; i++) {
-            int wave = waves[i];
-            float waveHeight = maxWaveHeight * ((float) wave / mMaxWaveValue);
+        for (int i = 0; i < waveform.getWaveCount(); i++) {
+            int wave = waveform.getWaveAt(i);
+            float waveHeight = maxWaveHeight * ((float) wave / maxWave);
             float waveHalfOfHeight = waveHeight / 2;
             float waveCenterX = i * (mWaveWidth + mWaveGap) + mWaveGap + waveHalfOfWidth + leftPadding;
 
@@ -400,6 +395,51 @@ public class WaveformSeekBar extends View {
                     mWaveCornerRadius,
                     mWaveCornerRadius,
                     paint);
+        }
+    }
+
+    public interface Waveform {
+        int getWaveCount();
+
+        int getWaveAt(int index);
+
+        int getMaxWave();
+    }
+
+    private static class WaveformImpl implements Waveform {
+
+        final int waveCount;
+        final int[] waves;
+        final int maxWave;
+
+        WaveformImpl(int[] waves) {
+            this.waves = waves;
+            this.waveCount = waves != null ? waves.length : 0;
+
+            if (waves != null && waves.length > 0) {
+                int maxWave = waves[0];
+                for (int w : waves) {
+                    if (w > maxWave) maxWave = w;
+                }
+                this.maxWave = maxWave;
+            } else {
+                this.maxWave = 0;
+            }
+        }
+
+        @Override
+        public int getWaveCount() {
+            return waveCount;
+        }
+
+        @Override
+        public int getWaveAt(int index) {
+            return waves[index];
+        }
+
+        @Override
+        public int getMaxWave() {
+            return maxWave;
         }
     }
 

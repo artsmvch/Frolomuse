@@ -162,4 +162,10 @@ class LocalDataModule {
     fun providePresetRepository(context: Context): PresetRepository {
         return PresetRepositoryImpl(context)
     }
+
+    @Singleton
+    @Provides
+    fun provideSoundResolver(): SoundResolver {
+        return CheapSoundResolverImpl()
+    }
 }

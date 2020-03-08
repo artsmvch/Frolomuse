@@ -13,11 +13,13 @@ import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
 import com.frolo.muse.interactor.media.DeleteMediaUseCase
 import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
 import com.frolo.muse.interactor.player.ControlPlayerUseCase
+import com.frolo.muse.interactor.player.ResolveSoundUseCase
 import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.ABState
 import com.frolo.muse.model.media.Album
 import com.frolo.muse.model.media.Song
+import com.frolo.muse.model.sound.Sound
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.base.BaseViewModel
 import io.reactivex.Observable
@@ -29,15 +31,16 @@ import javax.inject.Inject
 
 
 class PlayerViewModel @Inject constructor(
-    private val player: Player,
-    @Exec(Exec.Type.MAIN) private val mainThreadExecutor: Executor,
-    private val schedulerProvider: SchedulerProvider,
-    private val getIsFavouriteUseCase: GetIsFavouriteUseCase<Song>,
-    private val changeFavouriteUseCase: ChangeFavouriteUseCase<Song>,
-    private val deleteMediaUseCase: DeleteMediaUseCase<Song>,
-    private val controlPlayerUseCase: ControlPlayerUseCase,
-    private val navigator: Navigator,
-    private val eventLogger: EventLogger
+        private val player: Player,
+        @Exec(Exec.Type.MAIN) private val mainThreadExecutor: Executor,
+        private val schedulerProvider: SchedulerProvider,
+        private val getIsFavouriteUseCase: GetIsFavouriteUseCase<Song>,
+        private val changeFavouriteUseCase: ChangeFavouriteUseCase<Song>,
+        private val deleteMediaUseCase: DeleteMediaUseCase<Song>,
+        private val controlPlayerUseCase: ControlPlayerUseCase,
+        private val resolveSoundUseCase: ResolveSoundUseCase,
+        private val navigator: Navigator,
+        private val eventLogger: EventLogger
 ): BaseViewModel(eventLogger) {
 
     private var playbackProgressDisposable: Disposable? = null
@@ -94,8 +97,26 @@ class PlayerViewModel @Inject constructor(
     val invalidateSongQueueEvent: LiveData<SongQueue>
         get() = _invalidateSongQueueEvent
 
-    private val _song = MutableLiveData<Song>()
+    private val _song = MutableLiveData<Song>(null)
     val song: LiveData<Song> get() = _song
+
+    val sound: LiveData<Sound> =
+        Transformations.switchMap(song) { song ->
+            if (song == null) liveDataOf<Sound>(null)
+            else MutableLiveData<Sound>().apply {
+                value = null
+                resolveSoundUseCase.resolve(song.source)
+                    .observeOn(schedulerProvider.main())
+                    .doOnSubscribe { s ->
+                        resolveSoundSubscription?.cancel()
+                        resolveSoundSubscription = s
+                    }
+                    .subscribeFor { sound ->
+                        value = sound
+                    }
+            }
+        }
+    private var resolveSoundSubscription: Subscription? = null
 
     val placeholderVisible: LiveData<Boolean> =
             Transformations.map(song) { song: Song? -> song == null }

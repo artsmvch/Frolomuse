@@ -34,6 +34,8 @@ import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.getArtistString
 import com.frolo.muse.ui.getNameString
 import com.frolo.muse.ui.main.confirmDeletion
+import com.frolo.muse.ui.main.player.waveform.SoundWaveform
+import com.frolo.muse.ui.main.player.waveform.StaticWaveform
 import com.frolo.muse.ui.main.showVolumeControl
 import com.frolo.muse.views.Anim
 import com.frolo.muse.views.sound.WaveformSeekBar
@@ -44,7 +46,6 @@ import kotlinx.android.synthetic.main.include_player.*
 import kotlinx.android.synthetic.main.include_player_controller.*
 import kotlinx.android.synthetic.main.include_player_panel.*
 import kotlinx.android.synthetic.main.include_player_toolbar.*
-import kotlin.random.Random
 
 
 class PlayerFragment: BaseFragment() {
@@ -369,15 +370,15 @@ class PlayerFragment: BaseFragment() {
                 tsw_song_name.setText("")
                 tsw_artist_name.setText("")
             }
+        }
 
-            // TODO: delete this example
-            waveform_seek_bar.apply {
-                val random = Random(System.currentTimeMillis())
-                val frameGainCount = 100
-                val frameGains = IntArray(frameGainCount) {
-                    100 + random.nextInt(100)
-                }
-                setWaveform(frameGains)
+        sound.observe(owner) { sound ->
+            if (sound != null) {
+                val waveform = SoundWaveform(sound)
+                waveform_seek_bar.setWaveform(waveform, true)
+            } else {
+                val waveform = StaticWaveform(100, 1, 15)
+                waveform_seek_bar.setWaveform(waveform, false)
             }
         }
 
