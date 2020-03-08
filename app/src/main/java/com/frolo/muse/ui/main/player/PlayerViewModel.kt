@@ -5,6 +5,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.frolo.muse.arch.SingleLiveEvent
+import com.frolo.muse.arch.combine
 import com.frolo.muse.arch.liveDataOf
 import com.frolo.muse.di.Exec
 import com.frolo.muse.engine.*
@@ -136,6 +137,13 @@ class PlayerViewModel @Inject constructor(
     private val _playbackProgress = MutableLiveData<Int>()
     val playbackProgress: LiveData<Int> get() = _playbackProgress
 
+    val progressPercent: LiveData<Float> =
+        combine(playbackDuration, playbackProgress) { duration, progress ->
+            if (duration != null && progress != null)
+                progress.toFloat() / duration
+            else 0.0f
+        }
+
     private val _isPlaying = MutableLiveData<Boolean>()
     val isPlaying: LiveData<Boolean> get() = _isPlaying
 
@@ -194,12 +202,17 @@ class PlayerViewModel @Inject constructor(
         _showVolumeControlEvent.value = Unit
     }
 
-    fun onSeekProgressTo(progress: Int) {
-        _playbackProgress.value = progress
+    fun onSeekProgressToPercent(percent: Float) {
+        _playbackProgress.value = getProgressFromPercent(percent)
     }
 
-    fun onProgressSoughtTo(progress: Int) {
-        player.seekTo(progress)
+    fun onProgressSoughtToPercent(percent: Float) {
+        player.seekTo(getProgressFromPercent(percent))
+    }
+
+    private fun getProgressFromPercent(percent: Float): Int {
+        val duration = playbackDuration.value ?: 0
+        return (duration * percent).toInt()
     }
 
     fun onSwipedToPosition(position: Int) {

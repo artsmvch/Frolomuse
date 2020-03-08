@@ -446,4 +446,14 @@
         <item name="android:background">?selectableItemBackground</item>
         <item name="android:textColor">?android:textColorPrimary</item>
     </style>
+
+    <!--WaveformSeekBar-->
+    <style name="Base.AppTheme.WaveformSeekBar" parent="">
+        <item name="waveMaxWidth">10dp</item>
+        <item name="waveGap">1dp</item>
+        <item name="waveCornerRadius">1dp</item>
+        <item name="waveBackgroundColor">#A0A9AE</item>
+        <item name="waveProgressColor">#0F65B0</item>
+        <item name="waveAnimDuration">300</item>
+    </style>
 </resources>

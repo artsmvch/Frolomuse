@@ -10,7 +10,6 @@ import android.text.style.ForegroundColorSpan
 import android.util.TypedValue
 import android.view.*
 import android.widget.FrameLayout
-import android.widget.SeekBar
 import android.widget.TextSwitcher
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatTextView
@@ -37,6 +36,7 @@ import com.frolo.muse.ui.getNameString
 import com.frolo.muse.ui.main.confirmDeletion
 import com.frolo.muse.ui.main.showVolumeControl
 import com.frolo.muse.views.Anim
+import com.frolo.muse.views.sound.WaveformSeekBar
 import kotlinx.android.synthetic.main.fragment_player.*
 import kotlinx.android.synthetic.main.include_message.*
 import kotlinx.android.synthetic.main.include_playback_progress.*
@@ -44,6 +44,7 @@ import kotlinx.android.synthetic.main.include_player.*
 import kotlinx.android.synthetic.main.include_player_controller.*
 import kotlinx.android.synthetic.main.include_player_panel.*
 import kotlinx.android.synthetic.main.include_player_toolbar.*
+import kotlin.random.Random
 
 
 class PlayerFragment: BaseFragment() {
@@ -56,8 +57,8 @@ class PlayerFragment: BaseFragment() {
     }
 
     private class SetViewPagerPosition constructor(
-            val pager: ViewPager2,
-            val position: Int
+        val pager: ViewPager2,
+        val position: Int
     ): Runnable {
 
         override fun run() {
@@ -104,21 +105,24 @@ class PlayerFragment: BaseFragment() {
 
     // indicates if the user is currently tracking the progress bar
     private var isTrackingProgress = false
-    private val seekBarListener = object : SeekBar.OnSeekBarChangeListener {
-        override fun onProgressChanged(seekBar: SeekBar, progress: Int, byUser: Boolean) {
-            if (byUser) { // by user
-                viewModel.onSeekProgressTo(seekBar.progress)
+    private val seekBarListener = object : WaveformSeekBar.OnSeekBarChangeListener {
+        override fun onProgressInPercentageChanged(seekBar: WaveformSeekBar, percent: Float, fromUser: Boolean) {
+            if (fromUser) { // by user
+                viewModel.onSeekProgressToPercent(percent)
             }
         }
-        override fun onStartTrackingTouch(seekBar: SeekBar) {
+
+        override fun onStartTrackingTouch(seekBar: WaveformSeekBar) {
             isTrackingProgress = true
         }
-        override fun onStopTrackingTouch(seekBar: SeekBar) {
+
+        override fun onStopTrackingTouch(seekBar: WaveformSeekBar) {
             if (isTrackingProgress) {
                 isTrackingProgress = false
-                viewModel.onProgressSoughtTo(seekBar.progress)
+                viewModel.onProgressSoughtToPercent(seekBar.progressPercent)
             }
         }
+
     }
 
     override fun onAttach(context: Context) {
@@ -141,15 +145,15 @@ class PlayerFragment: BaseFragment() {
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_player, container, false)
-    }
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View = inflater.inflate(R.layout.fragment_player, container, false)
 
     override fun onViewCreated(
-            view: View,
-            savedInstanceState: Bundle?) {
+        view: View,
+        savedInstanceState: Bundle?
+    ) {
         super.onViewCreated(view, savedInstanceState)
         initUI()
     }
@@ -165,7 +169,7 @@ class PlayerFragment: BaseFragment() {
     override fun onStart() {
         super.onStart()
         vp_album_art.registerOnPageChangeCallback(onPageChangeCallback)
-        sb_progress.setOnSeekBarChangeListener(seekBarListener)
+        waveform_seek_bar.setOnSeekBarChangeListener(seekBarListener)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -190,7 +194,7 @@ class PlayerFragment: BaseFragment() {
     override fun onStop() {
         super.onStop()
         vp_album_art.unregisterOnPageChangeCallback(onPageChangeCallback)
-        sb_progress.setOnSeekBarChangeListener(null)
+        waveform_seek_bar.setOnSeekBarChangeListener(null)
     }
 
     override fun onDestroyView() {
@@ -365,6 +369,16 @@ class PlayerFragment: BaseFragment() {
                 tsw_song_name.setText("")
                 tsw_artist_name.setText("")
             }
+
+            // TODO: delete this example
+            waveform_seek_bar.apply {
+                val random = Random(System.currentTimeMillis())
+                val frameGainCount = 100
+                val frameGains = IntArray(frameGainCount) {
+                    100 + random.nextInt(100)
+                }
+                setWaveform(frameGains)
+            }
         }
 
         placeholderVisible.observeNonNull(owner) { isVisible ->
@@ -387,14 +401,16 @@ class PlayerFragment: BaseFragment() {
         }
 
         playbackDuration.observeNonNull(owner) { duration ->
-            sb_progress.max = duration
             tv_duration.text = duration.asDurationInMs()
         }
 
         playbackProgress.observeNonNull(owner) { progress ->
+            tv_position.text = progress.asDurationInMs()
+        }
+
+        progressPercent.observeNonNull(owner) { percent ->
             if (!isTrackingProgress) {
-                sb_progress.progress = progress
-                tv_position.text = progress.asDurationInMs()
+                waveform_seek_bar.setProgressInPercentage(percent)
             }
         }
 

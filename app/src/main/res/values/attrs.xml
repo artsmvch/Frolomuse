@@ -29,6 +29,8 @@
 
     <attr format="reference" name="iBarStyle"/>
 
+    <attr name="waveformSeekBarStyle" format="reference"/>
+
     <declare-styleable name="MiniVisualizer">
         <attr name="blockNumber" format="integer" />
         <attr name="blockSpacing" format="dimension" />
@@ -77,5 +79,14 @@
     <declare-styleable name="MediaItemState">
         <attr name="state_item_checked" format="boolean" />
         <attr name="state_item_playing" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="WaveformSeekBar">
+        <attr name="waveBackgroundColor" format="color"/>
+        <attr name="waveProgressColor" format="color"/>
+        <attr name="waveGap" format="dimension"/>
+        <attr name="waveCornerRadius" format="dimension"/>
+        <attr name="waveMaxWidth" format="dimension"/>
+        <attr name="waveAnimDuration" format="integer"/>
     </declare-styleable>
 </resources>

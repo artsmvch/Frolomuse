@@ -15,12 +15,15 @@
         android:layout_width="50dp"
         android:layout_height="wrap_content" />
 
-    <androidx.appcompat.widget.AppCompatSeekBar
-        android:max="@integer/progress_max"
-        android:id="@+id/sb_progress"
+    <com.frolo.muse.views.sound.WaveformSeekBar
+        android:id="@+id/waveform_seek_bar"
         android:layout_weight="1"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"/>
+        android:layout_height="60dp"
+        android:paddingStart="8dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="8dp"
+        android:paddingBottom="8dp"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:gravity="center_vertical"
