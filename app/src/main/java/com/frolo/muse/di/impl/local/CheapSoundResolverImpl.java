@@ -1,5 +1,6 @@
 package com.frolo.muse.di.impl.local;
 
+import com.frolo.muse.BuildConfig;
 import com.frolo.muse.model.sound.Sound;
 import com.frolo.muse.repository.SoundResolver;
 
@@ -42,7 +43,7 @@ public class CheapSoundResolverImpl implements SoundResolver {
             @Override
             public Sound call() throws Exception {
                 final Random random = new Random(System.currentTimeMillis());
-                final int frameCount = 100;
+                final int frameCount = BuildConfig.SOUND_FRAME_GAIN_COUNT;
                 final int[] frameGains = new int[frameCount];
                 int maxFrameGain = Integer.MIN_VALUE;
                 for (int i = 0; i < frameCount; i++) {

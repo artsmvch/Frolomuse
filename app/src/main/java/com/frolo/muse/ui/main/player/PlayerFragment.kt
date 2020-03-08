@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.frolo.mediabutton.PlayButton
+import com.frolo.muse.BuildConfig
 import com.frolo.muse.R
 import com.frolo.muse.Trace
 import com.frolo.muse.arch.observe
@@ -377,7 +378,7 @@ class PlayerFragment: BaseFragment() {
                 val waveform = SoundWaveform(sound)
                 waveform_seek_bar.setWaveform(waveform, true)
             } else {
-                val waveform = StaticWaveform(100, 1, 15)
+                val waveform = StaticWaveform(BuildConfig.SOUND_FRAME_GAIN_COUNT, 1, 10)
                 waveform_seek_bar.setWaveform(waveform, false)
             }
         }

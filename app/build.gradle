@@ -61,6 +61,8 @@ android {
         buildConfigField "String", "FLURRY_KEY", "\"P5FNPGFXNB6WGXP8RWND\""
         buildConfigField "String", "DEVELOPER_EMAIL", "\"alexei.artsimovich@gmail.com\""
 
+        buildConfigField ('int', "SOUND_FRAME_GAIN_COUNT", "50")
+
         vectorDrawables.useSupportLibrary = true
 
         resConfigs "de", "en", "es", "fr", "hi", "in", "ja", "pt", "ru", "tr", "zh", "uk", "ko"
