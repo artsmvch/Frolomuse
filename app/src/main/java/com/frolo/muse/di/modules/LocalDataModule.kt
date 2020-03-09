@@ -3,6 +3,7 @@ package com.frolo.muse.di.modules
 import android.content.Context
 import com.frolo.muse.di.Repo
 import com.frolo.muse.di.impl.local.*
+import com.frolo.muse.di.impl.sound.android.AndroidSoundResolverImpl
 import com.frolo.muse.di.impl.sound.random.RandomSoundResolverImpl
 import com.frolo.muse.model.media.*
 import com.frolo.muse.repository.*
@@ -167,6 +168,6 @@ class LocalDataModule {
     @Singleton
     @Provides
     fun provideSoundResolver(): SoundResolver {
-        return RandomSoundResolverImpl()
+        return AndroidSoundResolverImpl()
     }
 }
