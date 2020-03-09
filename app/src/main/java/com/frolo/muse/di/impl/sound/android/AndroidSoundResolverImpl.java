@@ -1,5 +1,7 @@
 package com.frolo.muse.di.impl.sound.android;
 
+import androidx.collection.LruCache;
+
 import com.frolo.muse.BuildConfig;
 import com.frolo.muse.model.sound.Sound;
 import com.frolo.muse.repository.SoundResolver;
@@ -36,15 +38,28 @@ public class AndroidSoundResolverImpl implements SoundResolver {
         }
     }
 
+    private static int calculateCacheSize() {
+        return 1 * 1024 * 1024; // 1 mb
+    }
+
+    private final LruCache<String, SoundFile> cache =
+            new SoundFileLruCache(calculateCacheSize());
+
     @Override
     public Flowable<Sound> resolve(final String filepath) {
         return Flowable.fromCallable(new Callable<Sound>() {
             @Override
             public Sound call() throws Exception {
-                SoundFile soundFile =  SoundFile.create(new File(filepath), BuildConfig.SOUND_FRAME_GAIN_COUNT);
+                SoundFile soundFile = cache.get(filepath);
+                if (soundFile == null) {
+                    soundFile = SoundFile.create(new File(filepath), BuildConfig.SOUND_FRAME_GAIN_COUNT);
+                    if (soundFile == null) {
+                        throw new NullPointerException("Failed to create SoundFile for filepath " + filepath);
+                    }
+                    cache.put(filepath, soundFile);
+                }
                 return new SoundImpl(soundFile);
             }
         });
     }
-
 }
