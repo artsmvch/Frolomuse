@@ -1,4 +1,4 @@
-package com.frolo.muse.di.impl.local;
+package com.frolo.muse.di.impl.sound.random;
 
 import com.frolo.muse.BuildConfig;
 import com.frolo.muse.model.sound.Sound;
@@ -10,7 +10,7 @@ import java.util.concurrent.Callable;
 import io.reactivex.Flowable;
 
 
-public class CheapSoundResolverImpl implements SoundResolver {
+public class RandomSoundResolverImpl implements SoundResolver {
 
     private static class SoundImpl implements Sound {
         final int[] frameGains;
