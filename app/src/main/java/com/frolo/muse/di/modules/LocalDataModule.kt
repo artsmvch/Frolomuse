@@ -1,10 +1,10 @@
 package com.frolo.muse.di.modules
 
 import android.content.Context
+import com.frolo.muse.BuildConfig
 import com.frolo.muse.di.Repo
 import com.frolo.muse.di.impl.local.*
-import com.frolo.muse.di.impl.sound.android.AndroidSoundResolverImpl
-import com.frolo.muse.di.impl.sound.random.RandomSoundResolverImpl
+import com.frolo.muse.di.impl.sound.bass.BASSSoundResolverImpl
 import com.frolo.muse.model.media.*
 import com.frolo.muse.repository.*
 import dagger.Module
@@ -168,6 +168,6 @@ class LocalDataModule {
     @Singleton
     @Provides
     fun provideSoundResolver(): SoundResolver {
-        return AndroidSoundResolverImpl()
+        return BASSSoundResolverImpl(BuildConfig.SOUND_FRAME_GAIN_COUNT)
     }
 }

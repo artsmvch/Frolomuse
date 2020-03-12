@@ -68,6 +68,10 @@ android {
         resConfigs "de", "en", "es", "fr", "hi", "in", "ja", "pt", "ru", "tr", "zh", "uk", "ko"
 
         manifestPlaceholders = [ fabricApiKey:"f2eef1e1cae51612a4a816a63743782d34cfa83d" ]
+
+        ndk {
+            abiFilters "armeabi", "armeabi-v7a", "x86"
+        }
     }
     buildTypes {
         debug {
@@ -100,6 +104,13 @@ android {
         // Or, if you prefer, you can continue to check for errors in release builds,
         // but continue the build even when errors are found:
         //abortOnError false
+    }
+
+    sourceSets {
+        main {
+            jni.srcDirs = ['src/main/jniLibs']
+            jniLibs.srcDir 'src/main/jniLibs'
+        }
     }
 }
 
