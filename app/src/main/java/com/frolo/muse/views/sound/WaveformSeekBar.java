@@ -202,23 +202,41 @@ public class WaveformSeekBar extends View {
         }
     }
 
+    /**
+     * Sets the wave background color.
+     * @param color background color
+     */
     public void setWaveBackgroundColor(@ColorInt int color) {
         this.mWaveBackgroundColor = color;
         mWaveBackgroundPaint.setColor(mWaveProgressColor);
         invalidate();
     }
 
+    /**
+     * Sets the wave progress color.
+     * @param color progress color
+     */
     public void setWaveProgressColor(@ColorInt int color) {
         this.mWaveProgressColor = color;
         mWaveProgressPaint.setColor(mWaveProgressColor);
         invalidate();
     }
 
-    public void setPreferredWaveGap(int gapIxPx) {
-        this.mPrefWaveGap = gapIxPx;
+    /**
+     * Sets the gap between waves in pixels.
+     * NOTE: the final gap may be not the same value,
+     * for example, in cases where the wave width is too small, so the wave is almost invisible.
+     * @param gap the gap between waves in pixels
+     */
+    public void setPreferredWaveGap(int gap) {
+        this.mPrefWaveGap = gap;
         calculateWaveDimensions(getWaveCount());
     }
 
+    /**
+     * Sets the wave rect corner radius in pixels.
+     * @param radius the wave rect corner radius in pixels
+     */
     public void setWaveCornerRadius(int radius) {
         this.mWaveCornerRadius = radius;
         invalidate();
@@ -281,6 +299,10 @@ public class WaveformSeekBar extends View {
         invalidate();
     }
 
+    /**
+     * Returns the progress position in percent.
+     * @return the progress position in percent
+     */
     public float getProgressPercent() {
         return getCorrectPercent(mProgressPercentPosition);
     }
