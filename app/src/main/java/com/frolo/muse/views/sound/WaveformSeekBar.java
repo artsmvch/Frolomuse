@@ -138,7 +138,7 @@ public class WaveformSeekBar extends View {
 
     private void setProgressInPercentageInternal(float percent, boolean fromUser) {
         mProgressPercentPosition = percent;
-        int position = (int) (getWaveCount() * percent);
+        int position = Math.round(getWaveCount() * percent) - 1;
         if (mProgressPosition != position) {
             mProgressPosition = position;
             invalidate();
