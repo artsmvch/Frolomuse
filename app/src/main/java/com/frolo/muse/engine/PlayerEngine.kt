@@ -473,6 +473,10 @@ class PlayerEngine constructor(
     private fun skipToInternal(position: Int, byUser: Boolean, forceStartPlaying: Boolean) {
         ThreadStrictMode.assertBackground()
         synchronized(lock) {
+            if (position == currentPositionInQueue) {
+                return
+            }
+
             if (position < 0) {
                 Trace.w(LOG_TAG, "Cannot skip to negative position: [position=$position]")
             } else {
