@@ -35,6 +35,8 @@ import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.getArtistString
 import com.frolo.muse.ui.getNameString
 import com.frolo.muse.ui.main.confirmDeletion
+import com.frolo.muse.ui.main.player.carousel.AlbumCardCarouselHelper
+import com.frolo.muse.ui.main.player.carousel.AlbumCardAdapter
 import com.frolo.muse.ui.main.player.waveform.SoundWaveform
 import com.frolo.muse.ui.main.player.waveform.StaticWaveform
 import com.frolo.muse.ui.main.showVolumeControl
@@ -136,7 +138,7 @@ class PlayerFragment: BaseFragment() {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         GlideAlbumArtHelper.get().observe(this) {
-            (vp_album_art.adapter as? SongAdapter)?.notifyDataSetChanged()
+            (vp_album_art.adapter as? AlbumCardAdapter)?.notifyDataSetChanged()
 
             vp_album_art.removeCallbacks(requestTransformCallback)
             requestTransformCallback = Runnable {
@@ -219,19 +221,8 @@ class PlayerFragment: BaseFragment() {
         isTrackingProgress = false
 
         vp_album_art.apply {
-            CardViewPagerLayoutListener.setup(this)
-            // make the previews visible
-            offscreenPageLimit = 1
-            // do NOT clip the children, because otherwise the previews are not visible
-            clipChildren = false
-            // do not clip to padding so the previews will be visible
-            clipToPadding = false
-            // disable over scroll because the position of this effect is wrong according to padding
-            overScrollMode = ViewPager2.OVER_SCROLL_NEVER
-            // the line above doesn't work, but the following should
-            (getChildAt(0) as? RecyclerView)?.overScrollMode = RecyclerView.OVER_SCROLL_NEVER
-            // setup the adapter
-            adapter = SongAdapter(Glide.with(this@PlayerFragment))
+            AlbumCardCarouselHelper.setup(this)
+            adapter = AlbumCardAdapter(requestManager = Glide.with(this@PlayerFragment))
         }
 
         // show overlay with appropriate message if current song is null
@@ -354,7 +345,7 @@ class PlayerFragment: BaseFragment() {
 
         songQueue.observe(owner) { queue: SongQueue? ->
             Trace.d(LOG_TAG, "SongQueue changed")
-            (vp_album_art.adapter as? SongAdapter)?.submitQueue(queue)
+            (vp_album_art.adapter as? AlbumCardAdapter)?.submitQueue(queue)
         }
 
         invalidateSongQueueEvent.observeNonNull(owner) {
@@ -389,6 +380,10 @@ class PlayerFragment: BaseFragment() {
 
         songPosition.observeNonNull(owner) { position ->
             Trace.d(LOG_TAG, "Song position changed to $position")
+
+            setCurrentItemCallback?.also { safeCallback ->
+                vp_album_art.removeCallbacks(safeCallback)
+            }
 
             // There is an issue with setting current item in ViewPager2:
             // If we set current item to 1 and then in some near future set item to 2

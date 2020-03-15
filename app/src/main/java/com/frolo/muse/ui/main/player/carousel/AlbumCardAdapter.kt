@@ -1,4 +1,4 @@
-package com.frolo.muse.ui.main.player
+package com.frolo.muse.ui.main.player.carousel
 
 import android.graphics.drawable.Drawable
 import android.view.View
@@ -19,9 +19,9 @@ import com.frolo.muse.model.media.Song
 import kotlinx.android.synthetic.main.include_square_album_art.view.*
 
 
-class SongAdapter constructor(
+class AlbumCardAdapter constructor(
     private val requestManager: RequestManager
-): RecyclerView.Adapter<SongAdapter.SongViewHolder>() {
+): RecyclerView.Adapter<AlbumCardAdapter.SongViewHolder>() {
 
     private var queue: SongQueue? = null
 
