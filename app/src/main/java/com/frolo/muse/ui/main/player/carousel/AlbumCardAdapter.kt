@@ -3,6 +3,7 @@ package com.frolo.muse.ui.main.player.carousel
 import android.graphics.drawable.Drawable
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
@@ -16,12 +17,14 @@ import com.frolo.muse.engine.SongQueue
 import com.frolo.muse.glide.makeRequest
 import com.frolo.muse.inflateChild
 import com.frolo.muse.model.media.Song
+import com.frolo.muse.toPx
 import kotlinx.android.synthetic.main.include_square_album_art.view.*
+import kotlin.math.max
 
 
 class AlbumCardAdapter constructor(
     private val requestManager: RequestManager
-): RecyclerView.Adapter<AlbumCardAdapter.SongViewHolder>() {
+): RecyclerView.Adapter<AlbumCardAdapter.AlbumArtViewHolder>() {
 
     private var queue: SongQueue? = null
 
@@ -37,18 +40,40 @@ class AlbumCardAdapter constructor(
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ) = SongViewHolder(parent.inflateChild(R.layout.include_square_album_art))
+    ): AlbumArtViewHolder {
+        val itemView = parent.inflateChild(R.layout.include_square_album_art)
+
+        val maxCardElevation = 16f.toPx(parent.context)
+        val cornerRadius = 6f.toPx(parent.context)
+
+        val horizontalPadding =
+                calculateCardHorizontalShadowPadding(maxCardElevation, cornerRadius)
+
+        val verticalPadding =
+                calculateCardVerticalShadowPadding(maxCardElevation, cornerRadius)
+
+        val padding = max(horizontalPadding, verticalPadding).toInt()
+
+        itemView.cv_album_art.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+            leftMargin = padding
+            topMargin = padding
+            rightMargin = padding
+            bottomMargin = padding
+        }
+
+        return AlbumArtViewHolder(itemView)
+    }
 
     override fun getItemCount(): Int = queue?.length ?: 0
 
-    override fun onBindViewHolder(holder: SongViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: AlbumArtViewHolder, position: Int) {
         val item = getItemAt(position)
         holder.bind(item)
     }
 
-    inner class SongViewHolder(itemView: View):
-            RecyclerView.ViewHolder(itemView),
-            RequestListener<Drawable> {
+    inner class AlbumArtViewHolder constructor(
+        itemView: View
+    ): RecyclerView.ViewHolder(itemView), RequestListener<Drawable> {
 
         override fun onLoadFailed(
             e: GlideException?,
@@ -79,18 +104,16 @@ class AlbumCardAdapter constructor(
             return false
         }
 
-        fun bind(item: Song?) {
-            with(itemView) {
-                pb_loading.visibility = View.VISIBLE
-                cv_album_art.visibility = View.INVISIBLE
+        fun bind(item: Song?) = with(itemView) {
+            pb_loading.visibility = View.VISIBLE
+            cv_album_art.visibility = View.INVISIBLE
 
-                requestManager.makeRequest(item?.albumId ?: -1)
-                        .placeholder(null)
-                        .error(R.drawable.ic_album_art_large_placeholder)
-                        .addListener(this@SongViewHolder)
-                        .transition(DrawableTransitionOptions().crossFade())
-                        .into(imv_album_art)
-            }
+            requestManager.makeRequest(item?.albumId ?: -1)
+                .placeholder(null)
+                .error(R.drawable.ic_album_art_large_placeholder)
+                .addListener(this@AlbumArtViewHolder)
+                .transition(DrawableTransitionOptions().crossFade())
+                .into(imv_album_art)
         }
     }
 

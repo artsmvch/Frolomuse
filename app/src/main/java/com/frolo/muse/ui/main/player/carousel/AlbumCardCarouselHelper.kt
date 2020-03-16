@@ -4,6 +4,9 @@ import android.view.View
 import android.view.ViewTreeObserver
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.frolo.muse.toPx
+import kotlinx.android.synthetic.main.include_square_album_art.view.*
+import kotlin.math.abs
 import kotlin.math.min
 
 
@@ -15,10 +18,19 @@ class AlbumCardCarouselHelper private constructor(
     private val maxPageScale: Float = 1f
 
     /**
+     * Minimal card elevation that all items must have on their album cards.
+     */
+    private val baseCardElevation: Float = 4f.toPx(viewPager.context)
+    /**
+     * Additional card elevation for the currently selected item.
+     */
+    private val raisingCardElevation: Float = 12f.toPx(viewPager.context)
+
+    /**
      * The maximum percent of the page width relatively to the pager width.
      * This value must be such that the previews of the left and right pages are visible enough.
      */
-    private val maxPageWidthPercent: Float = 0.6f
+    private val maxPageWidthPercent: Float = 0.7f
 
     override fun onGlobalLayout() {
         // remove itself from listener as the viewpager laid out
@@ -38,7 +50,14 @@ class AlbumCardCarouselHelper private constructor(
 
         viewPager.setPadding(hp, vp, hp, vp)
 
-        viewPager.setPageTransformer(AlbumCardTransformer(minPageScale, maxPageScale))
+        AlbumCardTransformer(
+            minScale = minPageScale,
+            maxScale = maxPageScale,
+            baseCardElevation = baseCardElevation,
+            raisingCardElevation = raisingCardElevation
+        ).also { transformer ->
+            viewPager.setPageTransformer(transformer)
+        }
     }
 
     companion object {
@@ -76,7 +95,9 @@ class AlbumCardCarouselHelper private constructor(
 
 private class AlbumCardTransformer constructor(
     private val minScale: Float,
-    private val maxScale: Float
+    private val maxScale: Float,
+    private val baseCardElevation: Float,
+    private val raisingCardElevation: Float
 ) : ViewPager2.PageTransformer {
 
     override fun transformPage(page: View, position: Float) {
@@ -95,10 +116,17 @@ private class AlbumCardTransformer constructor(
         val offset = if (position < 0f) absOffset else -absOffset
 
         // translation offset makes it closer to the currently selected page
-        page.translationX = offset * 1.5f
+        page.translationX = offset
 
         page.scaleX = scaleValue
         page.scaleY = scaleValue
+
+        page.cv_album_art.cardElevation = calculateCardElevation(position)
+    }
+
+    private fun calculateCardElevation(position: Float): Float {
+        val raisingElevationCoefficient = 1f - min(1f, abs(position))
+        return baseCardElevation + raisingCardElevation * raisingElevationCoefficient
     }
 
 }
