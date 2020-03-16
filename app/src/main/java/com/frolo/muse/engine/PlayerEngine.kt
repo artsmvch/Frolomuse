@@ -201,9 +201,18 @@ class PlayerEngine constructor(
 
     /**
      * Executes the given [block] on the engine thread using appropriate handler.
+     * If the [clearAllPending] is true, then all pending tasks for this thread will be cleared.
      * If the [token] is not null, then the callback previously added with this [token] will be removed.
      */
-    private inline fun execOnEngineThread(token: Any? = null, crossinline block: () -> Unit) {
+    private inline fun execOnEngineThread(
+        clearAllPending: Boolean = false,
+        token: Any? = null,
+        crossinline block: () -> Unit
+    ) {
+        if (clearAllPending) {
+            engineHandler.removeCallbacksAndMessages(null)
+        }
+
         if (isOnEngineThread()) {
             block()
         } else {
@@ -588,25 +597,25 @@ class PlayerEngine constructor(
     }
 
     override fun skipToPrevious() {
-        execOnEngineThread {
+        execOnEngineThread(clearAllPending = true) {
             skipToPreviousInternal(true)
         }
     }
 
     override fun skipToNext() {
-        execOnEngineThread {
+        execOnEngineThread(clearAllPending = true) {
             skipToNextInternal(true)
         }
     }
 
     override fun skipTo(position: Int, forceStartPlaying: Boolean) {
-        execOnEngineThread(tokenSkipTo) {
+        execOnEngineThread(clearAllPending = true, token = tokenSkipTo) {
             skipToInternal(position, true, forceStartPlaying)
         }
     }
 
     override fun skipTo(song: Song, forceStartPlaying: Boolean) {
-        execOnEngineThread(tokenSkipTo) {
+        execOnEngineThread(clearAllPending = true, token = tokenSkipTo) {
             skipToInternal(song, true, forceStartPlaying)
         }
     }
