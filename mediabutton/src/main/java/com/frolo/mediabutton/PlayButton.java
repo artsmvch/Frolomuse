@@ -8,10 +8,11 @@ import android.util.AttributeSet;
 
 
 public class PlayButton extends androidx.appcompat.widget.AppCompatImageView {
-    private Drawable pause;
-    private Drawable resume;
-    private AnimatedVectorDrawableCompat pauseToResume;
-    private AnimatedVectorDrawableCompat resumeToPause;
+
+    private final Drawable pause;
+    private final Drawable resume;
+    private final AnimatedVectorDrawableCompat pauseToResume;
+    private final AnimatedVectorDrawableCompat resumeToPause;
 
     private State state = State.PAUSE;
 
@@ -27,10 +28,7 @@ public class PlayButton extends androidx.appcompat.widget.AppCompatImageView {
 
     public PlayButton(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(context, attrs);
-    }
 
-    private void init(Context context, AttributeSet attrs) {
         resumeToPause = AnimatedVectorDrawableCompat.create(context, R.drawable.ic_resume_to_pause);
         pauseToResume = AnimatedVectorDrawableCompat.create(context, R.drawable.ic_pause_to_resume);
         resume = ContextCompat.getDrawable(context, R.drawable.ic_resume);
@@ -44,34 +42,37 @@ public class PlayButton extends androidx.appcompat.widget.AppCompatImageView {
     public void setState(State state, boolean animate) {
         if (this.state != state) {
             this.state = state;
-            checkStateInternal(state, animate);
+            setStateInternal(state, animate);
         }
     }
 
-    private synchronized void checkStateInternal(State state, boolean animate) {
+    private void setStateInternal(final State state, final boolean animate) {
         if (animatedVector != null) {
             animatedVector.stop();
+            animatedVector = null;
         }
 
-        if (state == State.PAUSE) {
-            if (animate && isAttachedToWindow()) {
-                animatedVector = resumeToPause;
-                setImageDrawable(animatedVector);
-                animatedVector.start();
-            } else {
-                animatedVector = null;
-                setImageDrawable(pause);
-            }
+        final boolean actuallyAnimate = animate && isAttachedToWindow();
+
+        if (actuallyAnimate) {
+            final AnimatedVectorDrawableCompat animation;
+            if (state == State.PAUSE) animation = resumeToPause;
+            else animation = pauseToResume;
+
+            setImageDrawable(animation);
+            animation.start();
+
+            animatedVector = animation;
         } else {
-            if (animate && isAttachedToWindow()) {
-                animatedVector = pauseToResume;
-                setImageDrawable(animatedVector);
-                animatedVector.start();
-            } else {
-                animatedVector = null;
-                setImageDrawable(resume);
-            }
+            if (state == State.PAUSE) setImageDrawable(pause);
+            else setImageDrawable(resume);
         }
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        setStateInternal(state, false);
     }
 
     public enum State {
