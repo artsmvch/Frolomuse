@@ -8,6 +8,7 @@ import com.frolo.muse.toPx
 import kotlinx.android.synthetic.main.include_square_album_art.view.*
 import kotlin.math.abs
 import kotlin.math.min
+import kotlin.math.pow
 
 
 class AlbumCardCarouselHelper private constructor(
@@ -125,7 +126,8 @@ private class AlbumCardTransformer constructor(
     }
 
     private fun calculateCardElevation(position: Float): Float {
-        val raisingElevationCoefficient = 1f - min(1f, abs(position))
+        val offsetCoefficient = 1f - min(1f, abs(position))
+        val raisingElevationCoefficient = offsetCoefficient.pow(3)
         return baseCardElevation + raisingCardElevation * raisingElevationCoefficient
     }
 
