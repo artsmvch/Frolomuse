@@ -36,10 +36,6 @@ class MiniPlayerFragment : BaseFragment() {
     ): View = inflater.inflate(R.layout.fragment_mini_player, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        view.setOnTouchListener { v, event ->
-            true
-        }
-
         view.setOnClickListener {
             onMiniPlayerClickListener?.onMiniPlayerLayoutClick(this)
         }
@@ -95,15 +91,15 @@ class MiniPlayerFragment : BaseFragment() {
         val requestManager = Glide.with(this)
 
         val errorRequest = requestManager.load(R.drawable.ic_album_art_large_placeholder)
-                .circleCrop()
-                .transition(DrawableTransitionOptions.withCrossFade(200))
+            .circleCrop()
+            .transition(DrawableTransitionOptions.withCrossFade(200))
 
         requestManager
-                .makeRequest(song.albumId)
-                .circleCrop()
-                .transition(DrawableTransitionOptions.withCrossFade(200))
-                .error(errorRequest)
-                .into(imv_art)
+            .makeRequest(song.albumId)
+            .circleCrop()
+            .transition(DrawableTransitionOptions.withCrossFade(200))
+            .error(errorRequest)
+            .into(imv_art)
     }
 
 }
