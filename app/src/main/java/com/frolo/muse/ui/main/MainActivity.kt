@@ -176,6 +176,12 @@ class MainActivity : BaseActivity(),
     }
 
     override fun onBackPressed() {
+        val behavior = BottomSheetBehavior.from(sliding_player_layout)
+        if (behavior.state == BottomSheetBehavior.STATE_EXPANDED) {
+            behavior.state = BottomSheetBehavior.STATE_COLLAPSED
+            return
+        }
+
         fragNavController.let { controller ->
             if (isFragmentManagerStateSaved) {
                 super.onBackPressed()
