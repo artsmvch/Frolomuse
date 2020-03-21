@@ -1,37 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <FrameLayout
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottom_navigation_view"
+        android:id="@+id/container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="56dp"/>
 
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            app:menu="@menu/activity_main"
-            android:id="@+id/bottomNavigationView"
-            android:layout_alignParentBottom="true"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+    <View
+        app:layout_constraintStart_toStartOf="@id/container"
+        app:layout_constraintTop_toTopOf="@id/container"
+        app:layout_constraintEnd_toEndOf="@id/container"
+        app:layout_constraintBottom_toBottomOf="@id/container"
+        android:id="@+id/view_dim_overlay"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="#99000000"
+        android:alpha="0.0"/>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp">
 
         <FrameLayout
-            android:layout_alignParentTop="true"
-            android:id="@+id/container"
-            android:layout_above="@id/bottomNavigationView"
+            android:id="@+id/sliding_player_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-    </RelativeLayout>
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="?colorSurface"
+            app:behavior_hideable="false"
+            app:behavior_peekHeight="112dp"
+            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
-    <FrameLayout
-        android:id="@+id/sliding_player_layout"
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="112dp">
+
+                <FrameLayout
+                    android:id="@+id/container_mini_player"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:layout_gravity="top|center_horizontal"/>
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/container_player"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            </FrameLayout>
+        </FrameLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/bottom_navigation_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="?colorSurface"
-        app:behavior_hideable="true"
-        app:behavior_peekHeight="0dp"
-        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
-    </FrameLayout>
-
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+        android:layout_height="56dp"
+        android:layout_alignParentBottom="true"
+        app:menu="@menu/activity_main"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

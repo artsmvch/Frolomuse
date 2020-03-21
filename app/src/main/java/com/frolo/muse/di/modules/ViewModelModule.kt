@@ -31,6 +31,7 @@ import com.frolo.muse.ui.main.library.songs.SongListViewModel
 import com.frolo.muse.ui.main.player.PlayerViewModel
 import com.frolo.muse.ui.main.player.current.CurrentSongQueueViewModel
 import com.frolo.muse.ui.main.player.lyrics.LyricsViewModel
+import com.frolo.muse.ui.main.player.mini.MiniPlayerViewModel
 import com.frolo.muse.ui.main.player.poster.PosterViewModel
 import com.frolo.muse.ui.main.settings.hidden.HiddenFilesViewModel
 import dagger.Binds
@@ -78,6 +79,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(PlayerViewModel::class)
     abstract fun bindPlayerViewModel(viewModel: PlayerViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(MiniPlayerViewModel::class)
+    abstract fun bindMiniPlayerViewModel(viewModel: MiniPlayerViewModel): ViewModel
 
     @Binds
     @IntoMap

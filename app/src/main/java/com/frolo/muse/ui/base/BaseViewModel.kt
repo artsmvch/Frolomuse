@@ -15,7 +15,7 @@ import io.reactivex.disposables.Disposable
 
 
 abstract class BaseViewModel constructor(
-        private val eventLogger: EventLogger
+    private val eventLogger: EventLogger
 ): ViewModel() {
 
     private val disposables = CompositeDisposable()
