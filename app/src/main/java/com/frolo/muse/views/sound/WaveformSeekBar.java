@@ -12,6 +12,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewParent;
 import android.view.animation.Interpolator;
 
 import androidx.annotation.ColorInt;
@@ -314,7 +315,7 @@ public class WaveformSeekBar extends View {
 
     @Override
     protected int getSuggestedMinimumHeight() {
-        return (int) dpToPx(getContext(), 100f);
+        return (int) dpToPx(getContext(), 72f);
     }
 
     @Override
@@ -363,6 +364,11 @@ public class WaveformSeekBar extends View {
                 mListener.onStopTrackingTouch(this);
             }
 
+            ViewParent parent = getParent();
+            if (parent != null) {
+                parent.requestDisallowInterceptTouchEvent(false);
+            }
+
             if (DEBUG) Log.d(LOG_TAG, "Stopped tracking");
 
             return false;
@@ -373,6 +379,11 @@ public class WaveformSeekBar extends View {
 
             if (mListener != null) {
                 mListener.onStartTrackingTouch(this);
+            }
+
+            ViewParent parent = getParent();
+            if (parent != null) {
+                parent.requestDisallowInterceptTouchEvent(true);
             }
 
             if (DEBUG) Log.d(LOG_TAG, "Started tracking");

@@ -6,10 +6,10 @@ import android.view.View
 import java.util.*
 
 
-class PulsingTouchDownListener constructor(
-        private val delay: Long,
-        private val period: Long,
-        private val onPulse: () -> Unit
+class PulseTouchDownListener constructor(
+    private val delay: Long,
+    private val period: Long,
+    private val onPulse: () -> Unit
 ): View.OnTouchListener {
     private var holdingTouchDown = false
     private var timer: Timer? = null
@@ -39,6 +39,7 @@ class PulsingTouchDownListener constructor(
                 }
                 false
             }
+
             MotionEvent.ACTION_UP, MotionEvent.ACTION_OUTSIDE, MotionEvent.ACTION_CANCEL -> {
                 if (!holdingTouchDown) {
                     timer?.apply {
@@ -55,6 +56,7 @@ class PulsingTouchDownListener constructor(
                     true
                 }
             }
+
             else -> false
         }
     }

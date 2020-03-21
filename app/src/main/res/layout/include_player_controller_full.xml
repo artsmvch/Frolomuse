@@ -1,34 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:gravity="bottom"
-    android:paddingBottom="16dp"
-    android:id="@+id/content"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <include
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        layout="@layout/include_player_controller" />
+        layout="@layout/include_playback_progress"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"/>
 
     <include
-        android:layout_marginTop="4dp"
-        android:layout_height="wrap_content"
+        layout="@layout/include_player_controller"
         android:layout_width="match_parent"
-        layout="@layout/include_playback_progress"/>
+        android:layout_height="60dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="32dp"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:textColor="?attr/android:textColorSecondary"
         android:layout_gravity="center_horizontal"
         android:visibility="visible"
         android:textStyle="bold"
-        android:paddingTop="0dp"
+        android:paddingTop="16dp"
         android:paddingBottom="0dp"
         android:paddingLeft="6dp"
         android:paddingRight="6dp"

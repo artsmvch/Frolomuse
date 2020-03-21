@@ -375,7 +375,7 @@ class PlayerService: Service() {
                                 PendingIntent.FLAG_UPDATE_CURRENT))
             }
 
-            MainActivity.newIntent(context, MainActivity.INDEX_PLAYER).also { intent ->
+            MainActivity.newIntent(context, MainActivity.INDEX_LIBRARY).also { intent ->
                 setOnClickPendingIntent(R.id.ll_root,
                         PendingIntent.getActivity(
                                 context,

@@ -11,12 +11,9 @@ import android.util.TypedValue
 import android.view.*
 import android.widget.FrameLayout
 import android.widget.TextSwitcher
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatTextView
-import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.frolo.mediabutton.PlayButton
@@ -45,10 +42,9 @@ import com.frolo.muse.views.sound.WaveformSeekBar
 import kotlinx.android.synthetic.main.fragment_player.*
 import kotlinx.android.synthetic.main.include_message.*
 import kotlinx.android.synthetic.main.include_playback_progress.*
-import kotlinx.android.synthetic.main.include_player.*
+import kotlinx.android.synthetic.main.include_player_controller_full.*
 import kotlinx.android.synthetic.main.include_player_controller.*
 import kotlinx.android.synthetic.main.include_player_panel.*
-import kotlinx.android.synthetic.main.include_player_toolbar.*
 
 
 class PlayerFragment: BaseFragment() {
@@ -158,8 +154,71 @@ class PlayerFragment: BaseFragment() {
         view: View,
         savedInstanceState: Bundle?
     ) {
-        super.onViewCreated(view, savedInstanceState)
-        initUI()
+        // NOTE: Need to set default values to the following variables every time fragment view created.
+        previousAlbumViewPagerState = ViewPager2.SCROLL_STATE_IDLE
+        userScrolledAlbumViewPager = false
+        isTrackingProgress = false
+
+        // prevent from propagating motion events underneath fragment's view
+        view.setOnTouchListener { _, _ -> true }
+
+        vp_album_art.apply {
+            AlbumCardCarouselHelper.setup(this)
+            adapter = AlbumCardAdapter(requestManager = Glide.with(this@PlayerFragment))
+        }
+
+        // show overlay with appropriate message if current song is null
+        layout_player_placeholder.apply {
+            setOnTouchListener { _, _ -> true }
+            tv_message.text = getString(R.string.current_playlist_is_empty)
+        }
+
+        initTextSwitcher(tsw_song_name, 18f, Typeface.DEFAULT_BOLD)
+        initTextSwitcher(tsw_artist_name, 12f)
+
+        btn_play.setOnClickListener {
+            viewModel.onPlayButtonClicked()
+        }
+
+        btn_skip_to_previous.setOnClickListener {
+            viewModel.onSkipToPreviousButtonClicked()
+        }
+
+        btn_skip_to_previous.setOnTouchListener(PulseTouchDownListener(500, 750) {
+            viewModel.onSkipToPreviousButtonLongClicked()
+        })
+
+        btn_skip_to_next.setOnClickListener {
+            viewModel.onSkipToNextButtonClicked()
+        }
+
+        btn_skip_to_next.setOnTouchListener(PulseTouchDownListener(500, 750) {
+            viewModel.onSkipToNextButtonLongClicked()
+        })
+
+        btn_repeat_mode.setOnClickListener {
+            viewModel.onRepeatModeButtonClicked()
+        }
+
+        btn_shuffle_mode.setOnClickListener {
+            viewModel.onShuffleModeButtonClicked()
+        }
+
+        btn_ab.setOnClickListener {
+            viewModel.onABButtonClicked()
+        }
+
+        btn_view_playlist.setOnClickListener {
+            viewModel.onViewCurrentPlayingOptionSelected()
+        }
+
+        btn_like.setOnClickListener {
+            viewModel.onLikeClicked()
+        }
+
+        btn_volume.setOnClickListener {
+            viewModel.onVolumeControlClicked()
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -209,64 +268,27 @@ class PlayerFragment: BaseFragment() {
         super.onDestroyView()
     }
 
-    private fun initUI() {
-        (activity as AppCompatActivity?)?.apply { 
-            setSupportActionBar(inc_toolbar as Toolbar)
-            title = ""
-        }
-
-        // NOTE: Need to set default values to the following variables every time fragment view created.
-        previousAlbumViewPagerState = ViewPager2.SCROLL_STATE_IDLE
-        userScrolledAlbumViewPager = false
-        isTrackingProgress = false
-
-        vp_album_art.apply {
-            AlbumCardCarouselHelper.setup(this)
-            adapter = AlbumCardAdapter(requestManager = Glide.with(this@PlayerFragment))
-        }
-
-        // show overlay with appropriate message if current song is null
-        layout_player_placeholder.apply {
-            setOnClickListener { /*stub*/ }
-            tv_message.text = getString(R.string.current_playlist_is_empty)
-        }
-
-        initTextSwitcher(tsw_song_name, 18f, Typeface.DEFAULT_BOLD)
-        initTextSwitcher(tsw_artist_name, 12f)
-        btn_play.setOnClickListener { viewModel.onPlayButtonClicked() }
-        btn_skip_to_previous.setOnClickListener { viewModel.onSkipToPreviousButtonClicked() }
-        btn_skip_to_previous.setOnTouchListener(PulsingTouchDownListener(500, 750) {
-            viewModel.onSkipToPreviousButtonLongClicked()
-        })
-        btn_skip_to_next.setOnClickListener { viewModel.onSkipToNextButtonClicked() }
-        btn_skip_to_next.setOnTouchListener(PulsingTouchDownListener(500, 750) {
-            viewModel.onSkipToNextButtonLongClicked()
-        })
-        btn_repeat_mode.setOnClickListener { viewModel.onRepeatModeButtonClicked() }
-        btn_shuffle_mode.setOnClickListener { viewModel.onShuffleModeButtonClicked() }
-        btn_ab.setOnClickListener { viewModel.onABButtonClicked() }
-        btn_view_playlist.setOnClickListener { viewModel.onViewCurrentPlayingOptionSelected() }
-        btn_like.setOnClickListener { viewModel.onLikeClicked() }
-        btn_volume.setOnClickListener { viewModel.onVolumeControlClicked() }
-    }
-
     /********************************
      ********* UI UPDATES ***********
      *******************************/
 
     // Helper method
     private fun initTextSwitcher(
-            view: TextSwitcher,
-            textSizeInSp: Float,
-            typeface: Typeface = Typeface.DEFAULT) {
+        view: TextSwitcher,
+        textSizeInSp: Float,
+        typeface: Typeface = Typeface.DEFAULT
+    ) {
         view.setFactory {
             AppCompatTextView(context).apply {
                 setTextSize(TypedValue.COMPLEX_UNIT_SP, textSizeInSp)
-                gravity = Gravity.START
+                gravity = Gravity.CENTER
                 //textView.setTypeface(MyApplication.getTypeface());
                 layoutParams = FrameLayout.LayoutParams(
-                        ViewGroup.LayoutParams.MATCH_PARENT,
-                        ViewGroup.LayoutParams.WRAP_CONTENT).apply { gravity = Gravity.CENTER }
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                ).apply {
+                    gravity = Gravity.CENTER
+                }
 
                 maxLines = 1
                 ellipsize = TextUtils.TruncateAt.END

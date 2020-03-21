@@ -24,7 +24,7 @@ import java.io.File
 
 
 class NavigatorImpl<T> constructor(
-        private val root: T
+    private val root: T
 ) : Navigator where T: Context, T: FragmentNavigator {
 
     override fun goToStore() {

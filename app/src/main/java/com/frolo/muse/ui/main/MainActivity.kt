@@ -16,7 +16,6 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProviders
 import com.frolo.muse.R
 import com.frolo.muse.arch.observe
-import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.engine.Player
 import com.frolo.muse.ui.base.BackPressHandler
 import com.frolo.muse.ui.base.BaseActivity
@@ -26,6 +25,7 @@ import com.frolo.muse.ui.main.library.LibraryFragment
 import com.frolo.muse.ui.main.library.search.SearchFragment
 import com.frolo.muse.ui.main.player.PlayerFragment
 import com.frolo.muse.ui.main.settings.AppBarSettingsFragment
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.ncapdevi.fragnav.FragNavController
 import com.ncapdevi.fragnav.FragNavTransactionOptions
 import kotlinx.android.synthetic.main.activity_main.*
@@ -41,18 +41,13 @@ class MainActivity : BaseActivity(),
         private const val EXTRA_TAB_INDEX = "last_tab_index"
 
         const val INDEX_LIBRARY = FragNavController.TAB1
-        const val INDEX_PLAYER = FragNavController.TAB2
-        const val INDEX_EQUALIZER = FragNavController.TAB3
-        const val INDEX_SEARCH = FragNavController.TAB4
-        const val INDEX_SETTINGS = FragNavController.TAB5
+        //const val INDEX_PLAYER = FragNavController.TAB2
+        const val INDEX_EQUALIZER = FragNavController.TAB2
+        const val INDEX_SEARCH = FragNavController.TAB3
+        const val INDEX_SETTINGS = FragNavController.TAB4
 
-        fun newIntent(
-                context: Context,
-                tabIndex: Int = INDEX_PLAYER): Intent {
-
-            return Intent(context, MainActivity::class.java)
-                    .putExtra(EXTRA_TAB_INDEX, tabIndex)
-        }
+        fun newIntent(context: Context, tabIndex: Int = INDEX_LIBRARY): Intent =
+                Intent(context, MainActivity::class.java).putExtra(EXTRA_TAB_INDEX, tabIndex)
     }
 
     /*presentation*/
@@ -239,6 +234,10 @@ class MainActivity : BaseActivity(),
         requireApp().onPlayerConnected(player)
         viewModel.onPlayerConnected(player)
         initializeFragNavController(lastSavedInstanceState)
+
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.sliding_player_layout, PlayerFragment())
+            .commit()
     }
 
     override fun onPlayerDisconnected() {
@@ -266,7 +265,7 @@ class MainActivity : BaseActivity(),
                 override fun getRootFragment(index: Int): Fragment {
                     when (index) {
                         INDEX_LIBRARY -> return LibraryFragment.newInstance()
-                        INDEX_PLAYER -> return PlayerFragment.newInstance()
+                        //INDEX_PLAYER -> return PlayerFragment.newInstance()
                         INDEX_EQUALIZER-> return AudioFxFragment.newInstance()
                         INDEX_SEARCH -> return SearchFragment.newInstance()
                         INDEX_SETTINGS-> return AppBarSettingsFragment.newInstance()
@@ -282,36 +281,48 @@ class MainActivity : BaseActivity(),
             if (isFragmentManagerStateSaved)
                 return@setOnNavigationItemSelectedListener true
 
-            fragNavController?.also { controller ->
-                when (menuItem.itemId) {
-                    R.id.nav_library -> {
-                        controller.switchTab(INDEX_LIBRARY)
-                        currTabIndex = 0
-                    }
-                    R.id.nav_player -> {
-                        controller.switchTab(INDEX_PLAYER)
-                        currTabIndex = 1
-                    }
-                    R.id.nav_equalizer -> {
-                        controller.switchTab(INDEX_EQUALIZER)
-                        currTabIndex = 2
-                    }
-                    R.id.nav_search -> {
-                        controller.switchTab(INDEX_SEARCH)
-                        currTabIndex = 3
-                    }
-                    R.id.nav_settings -> {
-                        controller.switchTab(INDEX_SETTINGS)
-                        currTabIndex = 4
-                    }
+            val safeFragNavController = fragNavController
+                    ?: return@setOnNavigationItemSelectedListener false
+
+            when (menuItem.itemId) {
+                R.id.nav_library -> {
+                    safeFragNavController.switchTab(INDEX_LIBRARY)
+                    currTabIndex = 0
+                    true
                 }
+
+                R.id.nav_player -> {
+                    //controller.switchTab(INDEX_PLAYER)
+                    //currTabIndex = 1
+                    expandSlidingPlayer()
+                    false
+                }
+
+                R.id.nav_equalizer -> {
+                    safeFragNavController.switchTab(INDEX_EQUALIZER)
+                    currTabIndex = 2
+                    true
+                }
+
+                R.id.nav_search -> {
+                    safeFragNavController.switchTab(INDEX_SEARCH)
+                    currTabIndex = 3
+                    true
+                }
+
+                R.id.nav_settings -> {
+                    safeFragNavController.switchTab(INDEX_SETTINGS)
+                    currTabIndex = 4
+                    true
+                }
+
+                else -> false
             }
-            return@setOnNavigationItemSelectedListener true
         }
         bottomNavigationView.setOnNavigationItemReselectedListener { fragNavController?.clearStack() }
         bottomNavigationView.selectedItemId = when(currTabIndex) {
             INDEX_LIBRARY -> R.id.nav_library
-            INDEX_PLAYER -> R.id.nav_player
+            //INDEX_PLAYER -> R.id.nav_player
             INDEX_EQUALIZER -> R.id.nav_equalizer
             INDEX_SEARCH -> R.id.nav_search
             INDEX_SETTINGS -> R.id.nav_settings
@@ -343,7 +354,7 @@ class MainActivity : BaseActivity(),
         if (extraTabIndex != currTabIndex) {
             bottomNavigationView.selectedItemId = when(extraTabIndex) {
                 INDEX_LIBRARY -> R.id.nav_library
-                INDEX_PLAYER -> R.id.nav_player
+                //INDEX_PLAYER -> R.id.nav_player
                 INDEX_EQUALIZER -> R.id.nav_equalizer
                 INDEX_SEARCH -> R.id.nav_search
                 INDEX_SETTINGS -> R.id.nav_settings
@@ -413,5 +424,9 @@ class MainActivity : BaseActivity(),
                 requestReadStoragePermission()
             }
         }
+    }
+
+    private fun expandSlidingPlayer() {
+        BottomSheetBehavior.from(sliding_player_layout).state = BottomSheetBehavior.STATE_EXPANDED
     }
 }

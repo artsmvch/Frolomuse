@@ -1,35 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp">
+    android:paddingLeft="12dp"
+    android:paddingRight="12dp"
+    android:gravity="center">
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:gravity="center"
         android:id="@+id/tv_position"
+        android:layout_width="52dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
         android:textSize="12sp"
-        android:text="@string/placeholder_zero_duration"
-        android:layout_width="50dp"
-        android:layout_height="wrap_content" />
+        tools:text="@string/placeholder_zero_duration"/>
 
     <com.frolo.muse.views.sound.WaveformSeekBar
         android:id="@+id/waveform_seek_bar"
         android:layout_weight="1"
         android:layout_width="0dp"
-        android:layout_height="60dp"
+        android:layout_height="32dp"
         android:paddingStart="8dp"
-        android:paddingTop="8dp"
-        android:paddingEnd="8dp"
-        android:paddingBottom="8dp"/>
+        android:paddingEnd="8dp"/>
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:gravity="center_vertical"
         android:id="@+id/tv_duration"
+        android:layout_width="52dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
         android:textSize="12sp"
-        android:text="@string/placeholder_zero_duration"
-        android:layout_width="50dp"
-        android:layout_height="wrap_content" />
+        tools:text="@string/placeholder_zero_duration"/>
 </LinearLayout>
