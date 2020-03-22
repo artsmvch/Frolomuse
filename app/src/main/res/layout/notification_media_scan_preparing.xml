@@ -11,7 +11,7 @@
         android:text="@string/preparing_files_to_scan"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/Item.Text.Primary.MediaScan.Title"/>
+        android:textAppearance="@style/Base.AppTheme.TextAppearance.ListItem"/>
 
     <ProgressBar
         android:id="@+id/pb_progress"
@@ -25,5 +25,5 @@
         android:layout_gravity="end"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/Item.Text.Primary.MediaScan.Button"/>
+        android:textAppearance="?textAppearanceButton"/>
 </LinearLayout>

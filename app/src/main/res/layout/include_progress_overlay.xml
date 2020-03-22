@@ -2,8 +2,13 @@
 <FrameLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/overlayTint"
     xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?colorSurface"
+        android:alpha="0.5"/>
 
     <com.frolo.muse.views.progress.IBar
         android:id="@+id/sb_progress"

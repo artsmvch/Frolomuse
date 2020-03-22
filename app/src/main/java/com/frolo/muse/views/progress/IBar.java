@@ -63,7 +63,7 @@ public class IBar extends View {
 
     public IBar(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        init(attrs, defStyleAttr, 0);
+        init(attrs, defStyleAttr, R.style.Base_IBar);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)

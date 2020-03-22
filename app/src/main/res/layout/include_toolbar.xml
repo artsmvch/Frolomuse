@@ -6,8 +6,8 @@
     android:id="@+id/tb_actions"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
-    app:titleTextAppearance="@style/Toolbar.TitleAppearance"
-    app:subtitleTextAppearance="@style/Toolbar.SubtitleAppearance"
+    app:titleTextAppearance="@style/Base.AppTheme.TextAppearance.Toolbar.Title"
+    app:subtitleTextAppearance="@style/Base.AppTheme.TextAppearance.Toolbar.Subtitle"
     android:minHeight="?attr/actionBarSize"
     tools:title="Toolbar"
     tools:subtitle="Subtitle"/>

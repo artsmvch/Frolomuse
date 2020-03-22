@@ -40,7 +40,7 @@ abstract class BaseDialogFragment : AppCompatDialogFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         dialog?.window?.also { window ->
-            window.attributes.windowAnimations = R.style.DialogAnimation
+            window.attributes.windowAnimations = R.style.Base_AppTheme_WindowAnimation_Dialog
         }
     }
 

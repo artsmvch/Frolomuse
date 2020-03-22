@@ -12,7 +12,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        style="@style/Layout.Dialog.Content">
+        android:paddingStart="16dp"
+        android:paddingTop="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="8dp">
 
         <androidx.appcompat.widget.AppCompatTextView
             app:layout_constraintStart_toStartOf="parent"
@@ -21,7 +24,7 @@
             android:id="@+id/tv_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            style="@style/Text.Dialog.Title" />
+            android:textAppearance="?textAppearanceHeadline5" />
 
         <com.google.android.material.textfield.TextInputLayout
             app:layout_constraintStart_toStartOf="parent"
@@ -48,8 +51,7 @@
             android:text="@string/save"
             android:id="@+id/btn_add"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="?attr/buttonAction"/>
+            android:layout_height="wrap_content"/>
 
         <com.google.android.material.button.MaterialButton
             app:layout_constraintTop_toTopOf="@id/btn_add"
@@ -59,8 +61,7 @@
             android:id="@+id/btn_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="12dp"
-            style="?attr/buttonCancel"/>
+            android:layout_marginEnd="12dp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <include

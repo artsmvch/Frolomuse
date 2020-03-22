@@ -110,7 +110,7 @@ class AlbumCardAdapter constructor(
 
             requestManager.makeRequest(item?.albumId ?: -1)
                 .placeholder(null)
-                .error(R.drawable.ic_album_art_large_placeholder)
+                .error(R.drawable.ic_album_200dp)
                 .addListener(this@AlbumArtViewHolder)
                 .transition(DrawableTransitionOptions().crossFade())
                 .into(imv_album_art)

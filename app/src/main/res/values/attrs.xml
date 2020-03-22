@@ -1,31 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <attr name="backdropBackLayer" format="color|reference"/>
-    <attr name="backdropFrontLayer" format="color|reference"/>
 
-    <attr name="colorContextual" format="color|reference"/>
-    <attr name="colorOnContextual" format="color|reference"/>
+    <!--Tint for all icons in the app including action icon, placeholders etc.-->
+    <attr name="iconImageTint" format="color"/>
 
-    <attr name="iconSongPlaceholder" format="reference"/>
-    <attr name="iconAlbumPlaceholder" format="reference"/>
-    <attr name="iconAlbumArtLargePlaceholder" format="reference"/>
-    <attr name="iconMusicFolderPlaceholder" format="reference"/>
-    <attr name="iconFolderPlaceholder" format="reference"/>
-    <attr name="iconRootFolderPlaceholder" format="reference"/>
-    <attr name="iconFilePlaceholder" format="reference"/>
-    <attr name="itemIconForegroundTint" format="color"/>
-    <attr name="itemIconBackgroundTint" format="color"/>
-    <attr name="playerToolbarStyle" format="reference"/>
     <attr name="modeOffTint" format="color"/>
     <attr name="modeOnTint" format="color"/>
-    <attr name="overlayTint" format="color"/>
-    <attr name="iconNormalTint" format="color"/>
-    <attr name="visualizerColor" format="color"/>
-    <attr name="highlightColor" format="color"/>
-    <attr name="searchHeader" format="color|reference"/>
-    <attr name="buttonAction" format="reference"/>
-    <attr name="buttonCancel" format="reference"/>
-    <attr name="playPositionBackground" format="color|reference"/>
+
+    <attr name="backdropBackLayer" format="color|reference"/>
+    <attr name="backdropFrontLayer" format="color|reference"/>
 
     <attr format="reference" name="iBarStyle"/>
 
@@ -65,9 +48,9 @@
     </declare-styleable>
 
     <declare-styleable name="CheckView">
-        <attr name="strokeWidth" format="dimension|reference"/>
-        <attr name="strokeColor" format="color|reference"/>
-        <attr name="circleColor" format="color|reference"/>
+        <attr name="strokeWidth" format="dimension"/>
+        <attr name="strokeColor" format="color"/>
+        <attr name="circleColor" format="color"/>
     </declare-styleable>
 
     <declare-styleable name="PlaceholderView">

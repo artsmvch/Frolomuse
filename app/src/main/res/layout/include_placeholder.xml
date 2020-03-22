@@ -8,7 +8,7 @@
 
     <ImageView
         android:alpha="0.85"
-        android:tint="?attr/iconNormalTint"
+        android:tint="?attr/iconImageTint"
         android:layout_margin="8dp"
         android:src="@drawable/ic_empty_box"
         android:layout_width="60dp"

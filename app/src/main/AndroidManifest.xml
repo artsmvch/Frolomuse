@@ -91,7 +91,7 @@
 
         <activity
             android:name=".ui.player.PlayerActivity"
-            android:theme="@style/BaseAppTheme.Transparent">
+            android:theme="@style/Base.AppTheme.Player.Transparent">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
                 <action android:name="android.intent.action.VIEW" />

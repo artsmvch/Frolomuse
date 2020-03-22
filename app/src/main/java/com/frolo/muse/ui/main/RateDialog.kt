@@ -10,15 +10,11 @@ import kotlinx.android.synthetic.main.dialog_rate.*
 
 
 class RateDialog constructor(
-        context: Context,
-        private val callback: (dialog: RateDialog, button: Button) -> Unit
+    context: Context,
+    private val callback: (dialog: RateDialog, button: Button) -> Unit
 ): Dialog(context) {
 
-    enum class Button {
-        NO,
-        REMIND_LATER,
-        RATE
-    }
+    enum class Button { NO, REMIND_LATER, RATE }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,16 +37,14 @@ class RateDialog constructor(
 
     private fun setupDialogBackground() {
         window?.let { window ->
-            dialogContentRoot.background = window.decorView.background
+            ll_content.background = window.decorView.background
             window.setBackgroundDrawableResource(android.R.color.transparent)
         }
     }
 
-    private fun initUI(dialog: Dialog) {
-        with(dialog) {
-            btn_no.setOnClickListener { callback(this@RateDialog, Button.NO) }
-            btn_rate.setOnClickListener { callback(this@RateDialog, Button.RATE) }
-            btn_remind_later.setOnClickListener { callback(this@RateDialog, Button.REMIND_LATER) }
-        }
+    private fun initUI(dialog: Dialog) = with(dialog) {
+        btn_no.setOnClickListener { callback(this@RateDialog, Button.NO) }
+        btn_rate.setOnClickListener { callback(this@RateDialog, Button.RATE) }
+        btn_remind_later.setOnClickListener { callback(this@RateDialog, Button.REMIND_LATER) }
     }
 }

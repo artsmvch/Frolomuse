@@ -13,13 +13,9 @@ import com.frolo.muse.Trace
  * -https://fabric.io/frolovs-projects/android/apps/com.frolo.musp/issues/5cb8c183f8b88c29638ffecc?time=last-seven-days
  */
 class SafeViewPager @JvmOverloads constructor(
-        context: Context,
-        attrs: AttributeSet? = null
+    context: Context,
+    attrs: AttributeSet? = null
 ): ViewPager(context, attrs) {
-
-    private companion object {
-        const val LOG_TAG = "SafeViewPager"
-    }
 
     override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
         return try {
@@ -28,6 +24,10 @@ class SafeViewPager @JvmOverloads constructor(
             Trace.e(LOG_TAG, e)
             false
         }
+    }
+
+    private companion object {
+        const val LOG_TAG = "SafeViewPager"
     }
 
 }

@@ -159,7 +159,7 @@ public class PreferencesImpl implements Preferences {
         final int value = preferences.getInt(KEY_THEME, THEME_DARK_BLUE);
         // check if the given int value is one of the available themes
         switch (value) {
-            case THEME_LIGHT:
+            case THEME_LIGHT_BLUE:
             case THEME_DARK_BLUE:
             case THEME_DARK_BLUE_ESPECIAL:
             case THEME_DARK_PURPLE: return value;

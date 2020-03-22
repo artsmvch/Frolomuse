@@ -5,7 +5,6 @@
     android:layout_height="wrap_content">
 
     <com.frolo.muse.views.spring.SpringRecyclerView
-        style="@style/Base.RecyclerView"
         android:id="@+id/rv_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

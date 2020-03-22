@@ -8,7 +8,10 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        style="@style/Layout.Dialog.Content.AlbumEditor">
+        android:paddingStart="8dp"
+        android:paddingTop="8dp"
+        android:paddingEnd="8dp"
+        android:paddingBottom="8dp">
 
         <ImageView
             app:layout_constraintStart_toStartOf="parent"
@@ -29,7 +32,7 @@
             android:id="@+id/btn_delete_art"
             android:padding="12dp"
             android:layout_gravity="bottom|start"
-            android:tint="?attr/iconNormalTint"
+            android:tint="?attr/iconImageTint"
             android:src="@drawable/ic_trash"
             android:layout_width="40dp"
             android:layout_height="40dp" />
@@ -43,8 +46,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:id="@+id/btn_cancel"
-            android:text="@string/cancel"
-            style="?attr/buttonCancel"/>
+            android:text="@string/cancel"/>
 
         <com.google.android.material.button.MaterialButton
             android:layout_width="wrap_content"
@@ -56,14 +58,13 @@
             app:layout_constraintBottom_toBottomOf="@id/btn_cancel"
             app:layout_constraintEnd_toEndOf="parent"
             android:id="@+id/btn_save"
-            android:text="@string/save"
-            style="?attr/buttonAction"/>
+            android:text="@string/save"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <include
-        android:visibility="gone"
         layout="@layout/include_progress_overlay"
         android:id="@+id/inc_overlay"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
 </FrameLayout>

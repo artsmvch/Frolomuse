@@ -8,23 +8,26 @@
     android:layout_height="wrap_content">
 
     <ImageView
-        android:tint="?attr/iconNormalTint"
+        android:tint="?attr/iconImageTint"
         android:src="@drawable/ic_burger"
         android:padding="18dp"
         android:id="@+id/view_drag_and_drop"
         android:cropToPadding="true"
         android:layout_width="@dimen/list_item_img_art_size"
         android:layout_height="@dimen/list_item_img_art_size"/>
+
     <androidx.appcompat.widget.AppCompatTextView
-        style="@style/Item.Text.Primary"
         android:id="@+id/tv_section_name"
         android:layout_weight="1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:textAppearance="?textAppearanceListItem"
+        android:lines="2"
         tools:text="Too long text here. This text must be ellipsized"/>
+
     <com.google.android.material.switchmaterial.SwitchMaterial
-        android:layout_marginEnd="8dp"
         android:id="@+id/sw_section_enabled"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"/>
 </LinearLayout>

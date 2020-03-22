@@ -2,6 +2,7 @@
 <com.frolo.muse.views.media.MediaConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minHeight="@dimen/preferred_item_height"
@@ -20,22 +21,22 @@
         app:layout_constraintTop_toTopOf="@id/view_options_menu"
         app:layout_constraintEnd_toStartOf="@id/view_options_menu"
         app:layout_constraintBottom_toBottomOf="@id/view_options_menu"
-        android:id="@+id/tv_number_of_tracks"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/placeholder_no_tracks"
-        style="@style/Item.Text.Secondary"/>
+        android:textAppearance="?textAppearanceListItemSecondary"
+        android:lines="1"
+        android:id="@+id/tv_number_of_tracks"
+        tools:text="1:45"/>
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:id="@+id/imv_artist_art"
-        android:layout_centerVertical="true"
-        android:src="@drawable/ic_music_folder_placeholder"
         android:layout_margin="@dimen/list_item_img_art_padding"
         android:layout_width="@dimen/list_item_img_art_size"
-        android:layout_height="@dimen/list_item_img_art_size" />
+        android:layout_height="@dimen/list_item_img_art_size"
+        android:src="@drawable/ic_framed_artist_48dp"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         app:layout_constraintStart_toEndOf="@id/imv_artist_art"
@@ -44,10 +45,12 @@
         app:layout_constraintBottom_toTopOf="@id/tv_number_of_albums"
         app:layout_constraintVertical_chainStyle="packed"
         android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        style="@style/Item.Text.Primary"
-        android:text="@string/placeholder_unknown"
-        android:id="@+id/tv_artist_name"/>
+        android:textAppearance="?textAppearanceListItem"
+        android:lines="1"
+        android:id="@+id/tv_artist_name"
+        tools:text="Artist name"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         app:layout_constraintStart_toStartOf="@id/tv_artist_name"
@@ -55,9 +58,11 @@
         app:layout_constraintEnd_toEndOf="@id/tv_artist_name"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_width="0dp"
-        style="@style/Item.Text.Secondary"
-        android:text="@string/placeholder_unknown"
-        android:id="@+id/tv_number_of_albums"/>
+        android:layout_height="wrap_content"
+        android:textAppearance="?textAppearanceListItemSecondary"
+        android:lines="1"
+        android:id="@+id/tv_number_of_albums"
+        tools:text="100"/>
 
     <include
         app:layout_constraintEnd_toEndOf="@id/imv_artist_art"

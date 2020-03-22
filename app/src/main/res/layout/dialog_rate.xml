@@ -5,7 +5,7 @@
     android:layout_height="wrap_content">
 
     <LinearLayout
-        android:id="@+id/dialogContentRoot"
+        android:id="@+id/ll_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -17,11 +17,11 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:layout_margin="16dp"
-            android:gravity="center"
-            android:textSize="24sp"
             android:text="@string/would_you_rate"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textAppearance="?textAppearanceHeadline4"/>
 
         <LinearLayout
             android:orientation="horizontal"
@@ -29,33 +29,42 @@
             android:layout_height="wrap_content">
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:layout_marginEnd="15dp"
+                android:id="@+id/btn_no"
                 android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:id="@+id/btn_no"
-                android:textSize="16sp"
+                android:padding="16dp"
                 android:text="@string/no"
-                style="@style/Button.Rate" />
+                android:textAppearance="?textAppearanceButton"
+                android:gravity="center"
+                android:textSize="18sp"
+                android:background="?selectableItemBackground"/>
+
             <androidx.appcompat.widget.AppCompatTextView
-                android:textStyle="bold"
+                android:id="@+id/btn_rate"
                 android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:layout_weight="2"
-                android:id="@+id/btn_rate"
-                android:textSize="20sp"
+                android:layout_marginStart="16dp"
+                android:padding="16dp"
+                android:textStyle="bold"
                 android:text="@string/rate"
-                style="@style/Button.Rate"/>
+                android:textAppearance="?textAppearanceButton"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:background="?selectableItemBackground"/>
         </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:textSize="16sp"
-            android:layout_margin="6dp"
+            android:id="@+id/btn_remind_later"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:id="@+id/btn_remind_later"
+            android:layout_margin="8dp"
+            android:padding="8dp"
             android:text="@string/remind_me_later"
-            style="@style/Button.Rate" />
+            android:textAppearance="?textAppearanceButton"
+            android:gravity="center"
+            android:background="?selectableItemBackground"/>
     </LinearLayout>
 
     <ImageView

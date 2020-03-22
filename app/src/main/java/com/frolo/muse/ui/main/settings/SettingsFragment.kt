@@ -250,9 +250,10 @@ class SettingsFragment : PreferenceFragmentCompat(),
     }
 
     override fun onRequestPermissionsResult(
-            requestCode: Int,
-            permissions: Array<out String>,
-            grantResults: IntArray) {
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == RC_SCAN_MEDIA) {
             for (i in permissions.indices) {
@@ -283,7 +284,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
                 getString(R.string.dark_purple_theme)
         )
         val currentThemeIndex = when(preferences.theme) {
-            Preferences.THEME_LIGHT -> 0
+            Preferences.THEME_LIGHT_BLUE -> 0
             Preferences.THEME_DARK_BLUE -> 1
             Preferences.THEME_DARK_BLUE_ESPECIAL -> 2
             Preferences.THEME_DARK_PURPLE -> 3
@@ -295,7 +296,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
                 .setSingleChoiceItems(themes, currentThemeIndex) { dialog, which ->
                     dialog.dismiss()
                     val themeConstInt = when (which) {
-                        0 -> Preferences.THEME_LIGHT
+                        0 -> Preferences.THEME_LIGHT_BLUE
                         1 -> Preferences.THEME_DARK_BLUE
                         2 -> Preferences.THEME_DARK_BLUE_ESPECIAL
                         3 -> Preferences.THEME_DARK_PURPLE

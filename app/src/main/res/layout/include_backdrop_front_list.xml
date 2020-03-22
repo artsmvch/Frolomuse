@@ -16,11 +16,11 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_title"
-                style="@style/Text.Header.Subtitle"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginStart="@dimen/backdrop_padding"
                 android:layout_marginEnd="@dimen/backdrop_padding"
+                android:textAppearance="?textAppearanceHeadline5"
                 tools:text="Media collection"/>
 
             <include
@@ -36,7 +36,6 @@
                 android:layout_height="match_parent">
 
                 <com.frolo.muse.views.spring.SpringFastScrollRecyclerView
-                    style="@style/Base.RecyclerView"
                     android:id="@+id/rv_list"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>

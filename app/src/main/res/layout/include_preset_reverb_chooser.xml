@@ -8,13 +8,16 @@
     android:gravity="center_vertical"
     android:paddingStart="12dp"
     android:paddingEnd="12dp">
+
     <androidx.appcompat.widget.AppCompatTextView
-        android:text="@string/preset_reverb"
-        style="@style/Item.Text.Secondary.AudioFx" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?textAppearanceSubtitle1"
+        android:text="@string/preset_reverb"/>
 
     <androidx.appcompat.widget.AppCompatSpinner
-        android:layout_marginStart="12dp"
         android:id="@+id/sp_preset_reverbs"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"/>
 </LinearLayout>

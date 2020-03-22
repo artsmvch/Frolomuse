@@ -55,7 +55,7 @@ class AlbumAdapter constructor(
 
         VIEW_TYPE_BIG_ITEM -> BigItemViewHolder(parent.inflateChild(R.layout.item_album))
 
-        else -> throw IllegalArgumentException("Unknown item view type: $itemViewType")
+        else -> throw IllegalArgumentException("Unexpected item view type: $itemViewType")
     }
 
     override fun onBindViewHolder(
@@ -70,10 +70,10 @@ class AlbumAdapter constructor(
             is SmallItemViewHolder -> {
                 with(holder) {
                     requestManager.makeRequest(item.id)
-                            .placeholder(R.drawable.vector_note_square)
-                            .error(R.drawable.vector_note_square)
-                            .transition(DrawableTransitionOptions.withCrossFade())
-                            .into(imageAlbumArt)
+                        .placeholder(R.drawable.ic_framed_album_48dp)
+                        .error(R.drawable.ic_framed_album_48dp)
+                        .transition(DrawableTransitionOptions.withCrossFade())
+                        .into(imageAlbumArt)
 
                     textAlbumName.text = item.name
                     textArtistName.text = item.artist
@@ -85,10 +85,10 @@ class AlbumAdapter constructor(
             is BigItemViewHolder -> {
                 with(holder) {
                     requestManager.makeRequest(item.id)
-                            .placeholder(R.drawable.vector_note_square)
-                            .error(R.drawable.vector_note_square)
-                            .transition(DrawableTransitionOptions.withCrossFade())
-                            .into(imageAlbumArt)
+                        .placeholder(R.drawable.ic_framed_album_48dp)
+                        .error(R.drawable.ic_framed_album_48dp)
+                        .transition(DrawableTransitionOptions.withCrossFade())
+                        .into(imageAlbumArt)
 
                     textAlbumName.text = item.name
                     textArtistName.text = item.artist

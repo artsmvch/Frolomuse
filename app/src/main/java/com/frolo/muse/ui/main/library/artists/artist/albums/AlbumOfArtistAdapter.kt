@@ -23,8 +23,7 @@ class AlbumOfArtistAdapter constructor(
     override fun onCreateBaseViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ) = AlbumViewHolder(parent.inflateChild(R.layout.item_album_of_artist)
-    )
+    ) = AlbumViewHolder(parent.inflateChild(R.layout.item_album_of_artist))
 
     override fun onBindViewHolder(
         holder: AlbumViewHolder,
@@ -32,18 +31,15 @@ class AlbumOfArtistAdapter constructor(
         item: Album,
         selected: Boolean,
         selectionChanged: Boolean
-    ) {
+    ) = with(holder.itemView) {
+        tv_album_name.text = item.getNameString(resources)
 
-        with(holder.itemView) {
-            tv_album_name.text = item.getNameString(resources)
+        requestManager.makeRequest(item.id)
+                .placeholder(R.drawable.ic_framed_music_note_48dp)
+                .error(R.drawable.ic_framed_music_note_48dp)
+                .into(imv_album_art)
 
-            requestManager.makeRequest(item.id)
-                    .placeholder(R.drawable.vector_note_square)
-                    .error(R.drawable.vector_note_square)
-                    .into(imv_album_art)
-
-            imv_check.setChecked(selected, selectionChanged)
-        }
+        imv_check.setChecked(selected, selectionChanged)
     }
 
     class AlbumViewHolder(itemView: View): BaseAdapter.BaseViewHolder(itemView) {

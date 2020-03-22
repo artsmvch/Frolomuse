@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    style="@style/Layout.Item.Media">
+    android:minHeight="@dimen/preferred_item_height"
+    android:background="@drawable/bg_item_media">
 
     <com.frolo.muse.views.MiniVisualizer
         android:id="@+id/mini_visualizer"
@@ -15,15 +17,15 @@
         android:layout_marginEnd="5.5dp" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:textColor="?attr/android:textColorSecondary"
-        android:layout_margin="5.5dp"
+        android:id="@+id/tv_duration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/placeholder_zero_duration"
-        android:id="@+id/tv_duration"
-        android:textSize="13sp"
+        android:layout_margin="6dp"
+        android:textAppearance="?textAppearanceListItemSecondary"
+        android:lines="1"
         android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"/>
+        android:layout_centerVertical="true"
+        tools:text="1:45"/>
 
     <com.frolo.muse.views.checkable.CheckableImageView
         android:layout_margin="@dimen/list_item_img_art_padding"
@@ -46,13 +48,19 @@
         android:layout_toStartOf="@id/tv_duration">
 
         <androidx.appcompat.widget.AppCompatTextView
-            style="@style/Item.Text.Primary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?textAppearanceListItem"
+            android:lines="1"
             android:id="@+id/tv_song_name"
-            android:text="@string/placeholder_unknown"/>
+            tools:text="Song name"/>
 
         <androidx.appcompat.widget.AppCompatTextView
-            style="@style/Item.Text.Secondary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?textAppearanceListItemSecondary"
+            android:lines="1"
             android:id="@+id/tv_album_name"
-            android:text="@string/placeholder_unknown" />
+            tools:text="Album name"/>
     </LinearLayout>
 </RelativeLayout>

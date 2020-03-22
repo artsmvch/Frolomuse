@@ -9,7 +9,7 @@
     android:background="@drawable/bg_item_media">
 
     <ImageView
-        android:tint="?attr/iconNormalTint"
+        android:tint="?attr/iconImageTint"
         android:src="@drawable/ic_burger"
         android:padding="17dp"
         android:id="@+id/view_drag_and_drop"
@@ -55,26 +55,28 @@
         android:layout_marginEnd="5.5dp" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         app:layout_constraintStart_toEndOf="@id/view_drag_and_drop"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toStartOf="@id/tv_duration"
         app:layout_constraintBottom_toTopOf="@id/tv_artist_name"
         app:layout_constraintVertical_chainStyle="packed"
-        style="@style/Item.Text.Primary"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:textAppearance="?textAppearanceListItem"
+        android:maxLines="1"
         android:id="@+id/tv_song_name"
         tools:text="Song name"/>
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="@id/tv_song_name"
         app:layout_constraintTop_toBottomOf="@id/tv_song_name"
         app:layout_constraintEnd_toEndOf="@id/tv_song_name"
         app:layout_constraintBottom_toBottomOf="parent"
-        style="@style/Item.Text.Secondary"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="?textAppearanceListItem"
+        android:maxLines="1"
         android:id="@+id/tv_artist_name"
         tools:text="Artist name" />
 

@@ -18,15 +18,16 @@ import kotlin.math.abs
 import kotlin.math.min
 import kotlin.math.sqrt
 
+
 /**
  * Animated check mark.
  * Origin: https://github.com/cdflynn/checkview
  */
 class CheckView @JvmOverloads constructor(
-        context: Context,
-        attrs: AttributeSet? = null,
-        defStyleAttr: Int = 0
-): View(context, attrs, defStyleAttr), Checkable {
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+): View(context, attrs, defStyleAttr, R.style.Base_AppTheme_CheckView), Checkable {
 
     private val checkInterpolator: Interpolator = run {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -97,7 +98,7 @@ class CheckView @JvmOverloads constructor(
     init {
         if (attrs != null) {
             val arr = context.theme
-                    .obtainStyledAttributes(attrs, R.styleable.CheckView, 0, 0)
+                    .obtainStyledAttributes(attrs, R.styleable.CheckView, defStyleAttr, R.style.Base_AppTheme_CheckView)
 
             try {
                 strokeWidth = arr.getDimension(

@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <com.google.android.material.appbar.AppBarLayout
-        style="@style/Base.AppBarLayout.Lifted"
+        style="@style/Base.AppTheme.AppBarLayout.Lifted"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize">
 

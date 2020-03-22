@@ -33,7 +33,7 @@
         android:padding="14dp"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:tint="?attr/iconNormalTint"
+        android:tint="?attr/iconImageTint"
         android:src="@drawable/ic_cross"/>
 
 </LinearLayout>

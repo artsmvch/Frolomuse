@@ -12,7 +12,7 @@
         android:text="@string/scanning_media_storage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/Item.Text.Primary.MediaScan.Title"/>
+        android:textAppearance="?textAppearanceListItem"/>
 
     <ProgressBar
         android:id="@+id/pb_progress"
@@ -31,7 +31,7 @@
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            style="@style/Item.Text.Primary.MediaScan.Progress"
+            android:textAppearance="?textAppearanceListItem"
             tools:text="10/99"/>
 
         <TextView
@@ -39,7 +39,7 @@
             android:text="@string/cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/Item.Text.Primary.MediaScan.Button"/>
+            android:textAppearance="?textAppearanceButton"/>
     </LinearLayout>
 
 </LinearLayout>

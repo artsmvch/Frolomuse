@@ -24,7 +24,7 @@
             android:paddingBottom="16dp">
 
             <de.hdodenhof.circleimageview.CircleImageView
-                android:src="@drawable/ic_note_rounded_placeholder"
+                android:src="@drawable/ic_framed_music_note_48dp"
                 android:id="@+id/imv_album_art"
                 android:layout_width="50dp"
                 android:layout_height="50dp"

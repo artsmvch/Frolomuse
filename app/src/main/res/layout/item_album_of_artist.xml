@@ -2,17 +2,16 @@
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="152dp"
-    android:layout_height="152dp"
-    style="@style/CardView.Item.Media.AlbumOfArtist">
+    android:layout_height="152dp">
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <ImageView
+            android:id="@+id/imv_album_art"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/imv_album_art"
             android:adjustViewBounds="true"
             android:scaleType="centerCrop" />
 
@@ -32,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/placeholder_unknown"
                 android:id="@+id/tv_album_name"
-                style="@style/Item.Text.Primary.AlbumOfArtist"/>
+                android:textAppearance="?textAppearanceListItem"/>
 
             <ImageView
                 android:paddingTop="6dp"

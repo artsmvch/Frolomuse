@@ -136,10 +136,10 @@ class AlbumFragment: AbsSongCollectionFragment<Song>() {
 
     private fun loadAlbumArt(albumId: Long) {
         Glide.with(this@AlbumFragment)
-                .makeRequest(albumId)
-                .placeholder(R.drawable.vector_note_square)
-                .error(R.drawable.vector_note_square)
-                .transition(DrawableTransitionOptions.withCrossFade())
-                .into(imv_album_art)
+            .makeRequest(albumId)
+            .placeholder(R.drawable.ic_album_200dp)
+            .error(R.drawable.ic_album_200dp)
+            .transition(DrawableTransitionOptions.withCrossFade())
+            .into(imv_album_art)
     }
 }

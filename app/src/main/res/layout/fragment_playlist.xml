@@ -8,7 +8,7 @@
     style="@style/Layout.Backdrop.Back">
 
     <com.google.android.material.appbar.AppBarLayout
-        style="@style/Base.AppBarLayout.Transparent"
+        style="@style/Base.AppTheme.AppBarLayout.Transparent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -17,7 +17,7 @@
             android:id="@+id/tb_actions"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            style="@style/Base.Toolbar.Transparent"
+            style="@style/Base.AppTheme.Toolbar.Transparent"
             tools:title="Toolbar"
             tools:subtitle="Subtitle"/>
     </com.google.android.material.appbar.AppBarLayout>

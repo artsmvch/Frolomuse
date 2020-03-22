@@ -16,16 +16,17 @@ class AlbumViewHolder(itemView: View): MediaAdapter.MediaViewHolder(itemView) {
     override val viewOptionsMenu: View? = itemView.findViewById(R.id.view_options_menu)
 
     fun bind(
-            item: Album,
-            selected: Boolean,
-            selectionChanged: Boolean,
-            requestManager: RequestManager,
-            query: String) {
+        item: Album,
+        selected: Boolean,
+        selectionChanged: Boolean,
+        requestManager: RequestManager,
+        query: String
+    ) {
 
         with(itemView) {
             requestManager.makeRequest(item.id)
-                    .placeholder(R.drawable.ic_note_square_placeholder)
-                    .error(R.drawable.ic_note_square_placeholder)
+                    .placeholder(R.drawable.ic_framed_music_note_48dp)
+                    .error(R.drawable.ic_framed_music_note_48dp)
                     .into(imv_album_art)
 
             tv_album_name.text = item.getNameString(resources).highlight(query)

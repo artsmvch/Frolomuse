@@ -13,6 +13,7 @@
         android:layout_weight="1"
         android:layout_width="0dp"
         android:layout_height="match_parent">
+
         <com.frolo.muse.views.equalizer.EqualizerLayout
             android:layout_marginStart="12dp"
             android:layout_marginTop="12dp"
@@ -39,7 +40,6 @@
                 android:gravity="bottom" />
             <com.google.android.material.button.MaterialButton
                 android:textSize="12sp"
-                style="?attr/buttonAction"
                 android:text="@string/show_visualizer"
                 android:layout_gravity="center"
                 android:id="@+id/btn_show_visualizer"
@@ -53,21 +53,25 @@
         android:layout_weight="1"
         android:layout_width="0dp"
         android:layout_height="match_parent">
+
         <include
             android:layout_marginTop="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             layout="@layout/include_preset_reverb_chooser"/>
+
         <include
             android:layout_marginTop="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             layout="@layout/include_preset_chooser"/>
+
         <include
             android:layout_marginTop="12dp"
             layout="@layout/include_seekbar_bass_boost"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"/>
+
         <include
             android:layout_marginTop="8dp"
             layout="@layout/include_seekbar_visualizer"

@@ -20,9 +20,9 @@
         android:textColor="?android:attr/textColorPrimary"
         android:maxLines="5"
         android:gravity="center"
-        style="@style/Item.Text.Primary"
         android:text="@string/audio_fx_hint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textAppearance="?textAppearanceHeadline5"
         tools:text="Please turn on the equalizer first. I repeat, turn on the equalizer first"/>
 </LinearLayout>

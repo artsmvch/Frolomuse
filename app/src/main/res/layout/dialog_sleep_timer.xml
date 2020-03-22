@@ -3,17 +3,16 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:padding="16dp"
     android:gravity="center"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:orientation="vertical">
 
     <androidx.appcompat.widget.AppCompatTextView
-        style="@style/Item.Text.Primary"
-        android:textSize="20sp"
         android:text="@string/sleep_timer"
         android:layout_marginBottom="12dp"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textAppearance="?textAppearanceHeadline5"/>
 
     <LinearLayout
         android:orientation="horizontal"
@@ -21,6 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center">
+
         <androidx.appcompat.widget.AppCompatEditText
             android:gravity="center"
             android:inputType="number"
@@ -37,7 +37,7 @@
         <ImageView
             android:scaleType="fitXY"
             android:src="@drawable/ic_dot_divider"
-            android:tint="?attr/iconNormalTint"
+            android:tint="?attr/iconImageTint"
             android:layout_width="10dp"
             android:layout_height="10dp"/>
 
@@ -57,7 +57,7 @@
         <ImageView
             android:scaleType="fitXY"
             android:src="@drawable/ic_dot_divider"
-            android:tint="?attr/iconNormalTint"
+            android:tint="?attr/iconImageTint"
             android:layout_width="10dp"
             android:layout_height="10dp"/>
 
@@ -87,8 +87,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/cancel"
-            android:id="@+id/btn_cancel"
-            style="?attr/buttonCancel" />
+            android:id="@+id/btn_cancel"/>
 
         <View
             android:layout_width="20dp"
@@ -100,7 +99,6 @@
             android:layout_gravity="center"
             android:drawableStart="@drawable/ic_check_mark_white"
             android:text="@string/done"
-            android:id="@+id/btn_done"
-            style="?attr/buttonAction" />
+            android:id="@+id/btn_done"/>
     </LinearLayout>
 </LinearLayout>

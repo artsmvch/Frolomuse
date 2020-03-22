@@ -19,11 +19,12 @@ class SongViewHolder(itemView: View): MediaAdapter.MediaViewHolder(itemView) {
     }
 
     fun bind(
-            item: Song,
-            selected: Boolean,
-            selectionChanged: Boolean,
-            requestManager: RequestManager,
-            query: String) {
+        item: Song,
+        selected: Boolean,
+        selectionChanged: Boolean,
+        requestManager: RequestManager,
+        query: String
+    ) {
 
         with(itemView) {
             val res = resources
@@ -32,8 +33,8 @@ class SongViewHolder(itemView: View): MediaAdapter.MediaViewHolder(itemView) {
             tv_duration.text = item.getDurationString()
 
             requestManager.makeRequest(item.albumId)
-                    .placeholder(R.drawable.ic_note_rounded_placeholder)
-                    .error(R.drawable.ic_note_rounded_placeholder)
+                    .placeholder(R.drawable.ic_framed_music_note_48dp)
+                    .error(R.drawable.ic_framed_music_note_48dp)
                     .circleCrop()
                     .into(imv_album_art)
 

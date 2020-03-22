@@ -132,7 +132,6 @@ class PlayerFragment: BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
         GlideAlbumArtHelper.get().observe(this) {
             (vp_album_art.adapter as? AlbumCardAdapter)?.notifyDataSetChanged()
 
@@ -150,10 +149,7 @@ class PlayerFragment: BaseFragment() {
         savedInstanceState: Bundle?
     ): View = inflater.inflate(R.layout.fragment_player, container, false)
 
-    override fun onViewCreated(
-        view: View,
-        savedInstanceState: Bundle?
-    ) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         // NOTE: Need to set default values to the following variables every time fragment view created.
         previousAlbumViewPagerState = ViewPager2.SCROLL_STATE_IDLE
         userScrolledAlbumViewPager = false
@@ -235,24 +231,24 @@ class PlayerFragment: BaseFragment() {
         waveform_seek_bar.setOnSeekBarChangeListener(seekBarListener)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.fragment_player, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
-            R.id.action_edit_song_tags -> viewModel.onEditSongOptionSelected()
-            R.id.action_edit_album_cover -> viewModel.onEditAlbumOptionSelected()
-            R.id.action_share -> viewModel.onShareOptionSelected()
-            R.id.action_cut_ringtone -> viewModel.onRingCutterOptionSelected()
-            R.id.action_delete -> viewModel.onDeleteOptionSelected()
-            R.id.action_view_album -> viewModel.onViewAlbumOptionSelected()
-            R.id.action_view_artist -> viewModel.onViewArtistOptionSelected()
-            R.id.action_create_poster -> viewModel.onViewPosterOptionSelected()
-            //R.id.action_view_lyrics -> viewModel.onViewLyricsOptionSelected()
-        }
-        return super.onOptionsItemSelected(item)
-    }
+//    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+//        inflater.inflate(R.menu.fragment_player, menu)
+//    }
+//
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        when(item.itemId) {
+//            R.id.action_edit_song_tags -> viewModel.onEditSongOptionSelected()
+//            R.id.action_edit_album_cover -> viewModel.onEditAlbumOptionSelected()
+//            R.id.action_share -> viewModel.onShareOptionSelected()
+//            R.id.action_cut_ringtone -> viewModel.onRingCutterOptionSelected()
+//            R.id.action_delete -> viewModel.onDeleteOptionSelected()
+//            R.id.action_view_album -> viewModel.onViewAlbumOptionSelected()
+//            R.id.action_view_artist -> viewModel.onViewArtistOptionSelected()
+//            R.id.action_create_poster -> viewModel.onViewPosterOptionSelected()
+//            //R.id.action_view_lyrics -> viewModel.onViewLyricsOptionSelected()
+//        }
+//        return super.onOptionsItemSelected(item)
+//    }
 
     override fun onStop() {
         super.onStop()

@@ -7,13 +7,15 @@
     android:layout_height="wrap_content"
     android:paddingStart="12dp"
     android:paddingEnd="4dp">
+
     <androidx.appcompat.widget.AppCompatTextView
-        style="@style/Item.Text.Secondary.AudioFx"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="?textAppearanceSubtitle1"
         android:maxLines="1"
         android:ellipsize="end"
-        android:text="@string/bass"
-        android:layout_width="80dp"
-        android:layout_height="wrap_content" />
+        android:text="@string/bass"/>
+
     <androidx.appcompat.widget.AppCompatSeekBar
         android:id="@+id/sb_bass_boost"
         android:layout_width="match_parent"

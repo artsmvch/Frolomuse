@@ -9,21 +9,20 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:minHeight="@dimen/default_bar_size"
         android:gravity="center_vertical|top">
 
         <androidx.appcompat.widget.AppCompatTextView
-            style="@style/Item.Text.Primary"
             android:id="@+id/tv_song_name"
-            android:textSize="19sp"
-            android:padding="10dp"
             android:layout_weight="1"
             android:layout_width="0dp"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:textAppearance="?textAppearanceHeadline5"/>
 
         <ImageView
             android:background="?attr/selectableItemBackground"
             android:id="@+id/imv_close"
-            android:tint="?attr/iconNormalTint"
+            android:tint="?attr/iconImageTint"
             android:src="@drawable/ic_cross"
             android:padding="15dp"
             android:layout_width="45dp"
@@ -47,20 +46,19 @@
             android:fillViewport="true">
 
             <androidx.appcompat.widget.AppCompatEditText
-                style="@style/Text.Lyrics"
                 android:id="@+id/tv_lyrics"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"/>
 
         </ScrollView>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_error"
-            style="@style/Item.Text.Primary"
             android:maxLines="10"
             android:gravity="center"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:textAppearance="?textAppearanceBody1"/>
 
         <com.frolo.muse.views.progress.IBar
             android:layout_gravity="center"
@@ -76,7 +74,6 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_save"
-        style="?attr/buttonAction"
         android:text="@string/save"
         android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"

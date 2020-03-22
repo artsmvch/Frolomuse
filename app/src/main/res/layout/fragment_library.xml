@@ -7,43 +7,37 @@
     android:layout_height="match_parent">
 
     <com.google.android.material.appbar.AppBarLayout
-        style="@style/Base.AppBarLayout.Lifted"
         android:background="@color/transparent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        style="@style/Base.AppTheme.AppBarLayout.Lifted">
 
-        <androidx.appcompat.widget.Toolbar
-            app:layout_scrollFlags="scroll|enterAlways|snap"
+        <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/tb_actions"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            style="@style/Base.Toolbar"
-            tools:title="Toolbar"
-            tools:subtitle="Subtitle"/>
+            android:layout_height="?actionBarSize"
+            app:layout_scrollFlags="scroll|enterAlways|snap"
+            tools:title="Library"/>
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tl_sections"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:tabPaddingStart="20dp"
-            app:tabPaddingEnd="20dp"
-            app:tabGravity="fill"
-            app:tabMode="scrollable" />
+            android:layout_height="wrap_content"/>
     </com.google.android.material.appbar.AppBarLayout>
 
     <com.frolo.muse.views.viewpager.SafeViewPager
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:overScrollMode="never"
         android:id="@+id/vp_sections"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:overScrollMode="never"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab_action"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_margin="24dp"
         android:layout_gravity="bottom|end"
-        android:id="@+id/fab_action"
-        app:fabSize="normal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        app:fabSize="normal"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

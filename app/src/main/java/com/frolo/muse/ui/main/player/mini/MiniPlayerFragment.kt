@@ -90,7 +90,7 @@ class MiniPlayerFragment : BaseFragment() {
     private fun loadArt(song: Song) {
         val requestManager = Glide.with(this)
 
-        val errorRequest = requestManager.load(R.drawable.ic_album_art_large_placeholder)
+        val errorRequest = requestManager.load(R.drawable.ic_framed_music_note_48dp)
             .circleCrop()
             .transition(DrawableTransitionOptions.withCrossFade(200))
 

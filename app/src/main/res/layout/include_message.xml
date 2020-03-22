@@ -13,7 +13,8 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?attr/overlayTint"/>
+        android:alpha="0.5"
+        android:background="?colorSurface"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,7 +23,7 @@
         android:gravity="center">
 
         <ImageView
-            android:tint="?attr/iconNormalTint"
+            android:tint="?attr/iconImageTint"
             android:layout_margin="10dp"
             android:src="@drawable/ic_sad_smile"
             android:layout_width="36dp"

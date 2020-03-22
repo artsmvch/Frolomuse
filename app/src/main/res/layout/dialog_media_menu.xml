@@ -10,23 +10,21 @@
     android:gravity="start">
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        android:id="@+id/tv_media_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/Text.MediaMenu"
-        android:textSize="19sp"
-        android:id="@+id/tv_media_name"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:textAppearance="?textAppearanceHeadline5"
         tools:text="Media Name"/>
 
     <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_media_type"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/Text.MediaMenu"
-        android:textSize="15sp"
-        android:id="@+id/tv_media_type"
+        android:textAppearance="?textAppearanceHeadline6"
         tools:text="Media Type"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -41,8 +39,9 @@
             android:layout_marginTop="8dp"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:tint="?attr/iconNormalTint"
-            style="@style/Icon.MediaMenu"
+            android:padding="16dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:tint="?attr/iconImageTint"
             android:src="@drawable/ic_share"
             android:id="@+id/btn_share"/>
 
@@ -53,8 +52,9 @@
             app:layout_constraintBottom_toBottomOf="@id/btn_share"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:tint="?attr/iconNormalTint"
-            style="@style/Icon.MediaMenu"
+            android:padding="16dp"
+            android:background="?selectableItemBackgroundBorderless"
+            android:tint="?attr/iconImageTint"
             android:src="@drawable/ic_trash"
             android:id="@+id/btn_delete"/>
 
@@ -65,10 +65,10 @@
             app:layout_constraintBottom_toBottomOf="@id/btn_share"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            style="@style/Icon.MediaMenu"
+            android:padding="16dp"
+            android:background="?selectableItemBackgroundBorderless"
             android:src="@drawable/ic_heart"
-            android:id="@+id/btn_like"
-            android:background="@color/transparent"/>
+            android:id="@+id/btn_like"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -92,82 +92,75 @@
             android:paddingBottom="16dp">
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/btn_set_as_default"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_root_folder"
-                android:id="@+id/btn_set_as_default"
-                style="@style/Button.MediaMenu"
                 android:text="@string/set_as_default" />
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/btn_add_to_hidden"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_hidden_16dp"
-                android:id="@+id/btn_add_to_hidden"
-                style="@style/Button.MediaMenu"
                 android:text="@string/hide" />
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/btn_scan_files"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_scan_16dp"
-                android:id="@+id/btn_scan_files"
-                style="@style/Button.MediaMenu"
                 android:text="@string/scan_files" />
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/btn_play"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_action_play"
-                android:id="@+id/btn_play"
-                style="@style/Button.MediaMenu"
                 android:text="@string/play" />
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/btn_play_next"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_action_play_next"
-                android:id="@+id/btn_play_next"
-                style="@style/Button.MediaMenu"
                 android:text="@string/play_next" />
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/btn_add_to_queue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_action_add_to_queue"
-                android:id="@+id/btn_add_to_queue"
-                style="@style/Button.MediaMenu"
                 android:text="@string/add_to_queue" />
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/btn_view_album"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/btn_view_album"
-                style="@style/Button.MediaMenu"
                 android:text="@string/view_album" />
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/btn_view_artist"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/btn_view_artist"
-                style="@style/Button.MediaMenu"
                 android:text="@string/view_artist" />
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/btn_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_action_edit"
-                android:id="@+id/btn_edit"
-                style="@style/Button.MediaMenu"
                 android:text="@string/edit" />
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/btn_add_to_playlist"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_action_add_to_playlist"
-                android:id="@+id/btn_add_to_playlist"
-                style="@style/Button.MediaMenu"
                 android:text="@string/add_to_playlist" />
+
         </LinearLayout>
+
     </androidx.core.widget.NestedScrollView>
+
 </LinearLayout>

@@ -10,14 +10,14 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/Base.AppBarLayout.Transparent">
+        style="@style/Base.AppTheme.AppBarLayout.Transparent">
 
         <androidx.appcompat.widget.Toolbar
             app:layout_scrollFlags="scroll|enterAlways|snap"
             android:id="@+id/tb_actions"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            style="@style/Base.Toolbar.Transparent"
+            style="@style/Base.AppTheme.Toolbar.Transparent"
             tools:title="Toolbar"
             tools:subtitle="Subtitle"/>
 

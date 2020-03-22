@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:fillViewport="true"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:overScrollMode="never">
+    android:overScrollMode="never"
+    android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -18,7 +18,10 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            style="@style/Layout.Dialog.Content">
+            android:paddingStart="16dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="8dp">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 app:layout_constraintStart_toStartOf="parent"
@@ -32,28 +35,36 @@
                 app:layout_constraintStart_toEndOf="@id/imv_album_art"
                 app:layout_constraintTop_toTopOf="@id/imv_album_art"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginStart="8dp"
-                android:maxLines="1"
-                android:text="@string/filepath"
                 android:id="@+id/tv_filepath"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                style="@style/Item.Text.Primary"/>
+                android:layout_marginStart="8dp"
+                android:textAppearance="?textAppearanceBody2"
+                android:maxLines="10"
+                tools:text="Filepath"/>
 
             <androidx.appcompat.widget.AppCompatTextView
                 app:layout_constraintStart_toStartOf="@id/tv_filepath"
                 app:layout_constraintTop_toBottomOf="@id/tv_filepath"
                 app:layout_constraintEnd_toEndOf="@id/tv_filepath"
-                android:maxLines="1"
-                android:text="@string/duration"
                 android:id="@+id/tv_duration"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                style="@style/Item.Text.Secondary"/>
+                android:textAppearance="?textAppearanceBody2"
+                android:lines="1"
+                android:text="@string/duration"
+                tools:text="1:45"/>
+
+            <androidx.constraintlayout.widget.Barrier
+                app:constraint_referenced_ids="imv_album_art,tv_duration"
+                app:barrierDirection="bottom"
+                android:id="@+id/barrier1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
             <com.google.android.material.textfield.TextInputLayout
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_duration"
+                app:layout_constraintTop_toBottomOf="@id/barrier1"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginTop="24dp"
                 android:id="@+id/til_song_name"
@@ -62,8 +73,6 @@
                 android:hint="@string/song_name_layout">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:inputType="textNoSuggestions"
-                    android:textColor="?attr/android:textColorPrimary"
                     android:id="@+id/edt_song_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
@@ -80,8 +89,6 @@
                 android:hint="@string/artist_name_layout">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:inputType="textNoSuggestions"
-                    android:textColor="?attr/android:textColorPrimary"
                     android:id="@+id/edt_artist_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
@@ -98,8 +105,6 @@
                 android:hint="@string/album_name_layout">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:inputType="textNoSuggestions"
-                    android:textColor="?attr/android:textColorPrimary"
                     android:id="@+id/edt_album_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
@@ -116,8 +121,6 @@
                 android:hint="@string/genre_name_layout">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:inputType="textNoSuggestions"
-                    android:textColor="?attr/android:textColorPrimary"
                     android:id="@+id/edt_genre_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
@@ -130,8 +133,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/save"
-                android:id="@+id/btn_save"
-                style="?attr/buttonAction" />
+                android:id="@+id/btn_save"/>
 
             <com.google.android.material.button.MaterialButton
                 app:layout_constraintTop_toTopOf="@id/btn_save"
@@ -141,8 +143,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/cancel"
-                android:id="@+id/btn_cancel"
-                style="?attr/buttonCancel" />
+                android:id="@+id/btn_cancel"/>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <include

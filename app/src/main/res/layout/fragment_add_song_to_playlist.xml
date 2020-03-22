@@ -12,14 +12,14 @@
         android:id="@+id/abl_appbar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        style="@style/Base.AppBarLayout.Lifted">
+        style="@style/Base.AppTheme.AppBarLayout.Lifted">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/tb_actions"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:titleTextAppearance="@style/Toolbar.TitleAppearance"
-            app:subtitleTextAppearance="@style/Toolbar.SubtitleAppearance"
+            app:titleTextAppearance="@style/Base.AppTheme.TextAppearance.Toolbar.Title"
+            app:subtitleTextAppearance="@style/Base.AppTheme.TextAppearance.Toolbar.Subtitle"
             android:minHeight="?attr/actionBarSize">
 
             <androidx.appcompat.widget.SearchView
@@ -38,11 +38,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:id="@+id/btn_add_to_playlist"
         android:layout_width="0dp"
         android:layout_height="56dp"
-        android:id="@+id/btn_add_to_playlist"
         android:text="@string/add_to_playlist"
-        style="@style/Text.Button" />
+        android:textAppearance="?textAppearanceButton"
+        android:background="?selectableItemBackground"/>
 
     <include
         app:layout_constraintStart_toStartOf="parent"
@@ -60,8 +61,7 @@
         app:layout_constraintBottom_toTopOf="@id/view_divider"
         android:id="@+id/rv_list"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        style="@style/Base.RecyclerView"/>
+        android:layout_height="0dp"/>
 
     <include
         app:layout_constraintStart_toStartOf="@id/rv_list"

@@ -18,7 +18,7 @@ import io.reactivex.Completable;
 import io.reactivex.Flowable;
 
 public interface Preferences {
-    @IntDef({THEME_LIGHT, THEME_DARK_BLUE, THEME_DARK_BLUE_ESPECIAL, THEME_DARK_PURPLE})
+    @IntDef({THEME_LIGHT_BLUE, THEME_DARK_BLUE, THEME_DARK_BLUE_ESPECIAL, THEME_DARK_PURPLE})
     @Retention(RetentionPolicy.SOURCE)
     public @interface Theme { }
     int THEME_BLACK_AND_BLUE = 1;
@@ -26,7 +26,7 @@ public interface Preferences {
     // All new themes should be more than 10
     int THEME_SEA_GREEN = 11;
     // new evolution
-    int THEME_LIGHT = 21;
+    int THEME_LIGHT_BLUE = 21;
     int THEME_DARK_BLUE = 22;
     int THEME_DARK_BLUE_ESPECIAL = 23;
     int THEME_DARK_PURPLE = 24;

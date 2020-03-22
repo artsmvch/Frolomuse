@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="app_blue_action_mode">#09215F</color>
+    <color name="app_blue_primary">#387BED</color>
+    <color name="app_blue_primary_dark">@color/app_blue_primary</color>
+    <color name="app_blue_primary_variant">#0B4BA9</color>
+    <color name="app_blue_secondary">#EC616C</color>
+    <color name="app_blue_secondary_variant">#297594</color>
+
+    <style name="AppTheme.Light.Blue" parent="Base.AppTheme.Light">
+        <item name="actionModeBackground">@color/app_blue_action_mode</item>
+
+        <!--Material colors-->
+        <item name="colorPrimary">@color/app_blue_primary</item>
+        <item name="colorPrimaryDark">@color/app_blue_primary_dark</item>
+        <item name="colorPrimaryVariant">#045079</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorAccent">@color/app_blue_secondary</item>
+        <item name="colorSecondary">@color/app_blue_secondary</item>
+        <item name="colorSecondaryVariant">@color/app_blue_secondary_variant</item>
+        <item name="colorOnSecondary">#FFFFFF</item>
+        <item name="colorError">@color/md_red_600</item>
+        <item name="colorSurface">#FFFFFF</item>
+        <item name="colorOnSurface">#515151</item>
+    </style>
+
+    <style name="AppTheme.Light.Blue.Dialog.Alert" parent="Theme.MaterialComponents.Dialog.Alert">
+        <item name="android:windowAnimationStyle">@style/Base.AppTheme.WindowAnimation.Dialog</item>
+        <item name="colorAccent">#E21A88</item>
+        <item name="android:textColor">@color/text_primary_dark</item>
+        <item name="android:textColorPrimary">@color/text_primary_dark</item>
+        <item name="android:textColorSecondary">@color/text_secondary_dark</item>
+        <item name="dialogCornerRadius">@dimen/dialog_corner_radius</item>
+        <item name="textColorAlertDialogListItem">@color/text_primary_dark</item>
+        <item name="android:background">@drawable/bg_dialog_light</item>
+        <item name="colorControlNormal">@color/md_grey_400</item>
+        <item name="buttonBarButtonStyle">@style/Base.Button.AlertDialog.Light.Blue</item>
+    </style>
+
+    <style name="Base.AppTheme.Light.Blue.Dialog.MaterialAlert" parent="Base.AppTheme.MaterialAlertDialog">
+        <item name="shapeAppearanceOverlay">@style/Base.ShapeAppearanceOverlay.Rounded</item>
+        <item name="android:windowAnimationStyle">@style/Base.AppTheme.WindowAnimation.Dialog</item>
+        <item name="colorAccent">#414445</item>
+        <item name="android:textColor">#414445</item>
+        <item name="android:textColorPrimary">#414445</item>
+        <item name="android:textColorSecondary">#919191</item>
+        <item name="textColorAlertDialogListItem">#919191</item>
+        <item name="colorControlNormal">@color/medium_gray</item>
+        <item name="colorControlActivated">@color/md_pink_500</item>
+    </style>
+
+    <style name="AppTheme.Light.Blue.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeWidth">1.2dp</item>
+        <item name="boxStrokeWidthFocused">1.2dp</item>
+        <item name="hintTextColor">@color/md_blue_400</item>
+        <item name="android:textColorHint">@color/md_blue_400</item>
+        <item name="boxStrokeColor">@color/edt_outline_light</item>
+    </style>
+</resources>

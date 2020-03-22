@@ -13,10 +13,9 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_message"
-        android:textSize="20sp"
-        android:layout_marginStart="25dp"
-        android:text="@string/loading"
-        style="@style/Item.Text.Primary"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:text="@string/loading"
+        android:textAppearance="?textAppearanceBody1"/>
 </LinearLayout>

@@ -2,6 +2,7 @@
 <com.frolo.muse.views.media.MediaConstraintLayout
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minHeight="@dimen/preferred_item_height"
@@ -42,31 +43,37 @@
         app:layout_constraintStart_toEndOf="@id/imv_album_art"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toStartOf="@id/view_options_menu"
-        style="@style/Item.Text.Primary"
-        android:layout_marginStart="6dp"
-        android:layout_marginTop="6dp"
         android:layout_width="0dp"
-        android:gravity="start"
-        android:text="@string/placeholder_unknown"
-        android:id="@+id/tv_album_name"/>
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:textAppearance="?textAppearanceListItem"
+        android:lines="1"
+        android:ellipsize="end"
+        android:id="@+id/tv_album_name"
+        tools:text="Album name"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         app:layout_constraintStart_toStartOf="@id/tv_album_name"
         app:layout_constraintTop_toBottomOf="@id/tv_album_name"
         app:layout_constraintEnd_toEndOf="@id/tv_album_name"
-        style="@style/Item.Text.Secondary"
         android:layout_width="0dp"
-        android:gravity="start"
+        android:layout_height="wrap_content"
+        android:textAppearance="?textAppearanceListItemSecondary"
+        android:lines="1"
+        android:ellipsize="end"
         android:id="@+id/tv_artist_name"
-        android:text="@string/placeholder_unknown" />
+        tools:text="Artist name"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         app:layout_constraintStart_toStartOf="@id/tv_artist_name"
         app:layout_constraintTop_toBottomOf="@id/tv_artist_name"
         app:layout_constraintEnd_toEndOf="@id/tv_artist_name"
-        style="@style/Item.Text.Secondary"
         android:layout_width="0dp"
-        android:gravity="start"
+        android:layout_height="wrap_content"
+        android:textAppearance="?textAppearanceListItemSecondary"
+        android:lines="1"
+        android:ellipsize="end"
         android:id="@+id/tv_number_of_tracks"
-        android:text="@string/placeholder_no_tracks" />
+        tools:text="No tracks"/>
 </com.frolo.muse.views.media.MediaConstraintLayout>

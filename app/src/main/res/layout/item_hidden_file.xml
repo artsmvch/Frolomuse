@@ -27,7 +27,7 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:padding="4dp"
-        android:tint="?iconNormalTint"
+        android:tint="?iconImageTint"
         android:src="@drawable/ic_cross"
         android:background="?selectableItemBackgroundBorderless"/>
 </LinearLayout>

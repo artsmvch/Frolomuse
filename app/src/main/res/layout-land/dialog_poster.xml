@@ -3,8 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
-    android:layout_height="match_parent"
-    style="@style/Layout.Dialog.Content.AlbumPoster">
+    android:layout_height="match_parent">
 
     <ImageView
         app:layout_constraintStart_toStartOf="parent"
@@ -35,6 +34,5 @@
         android:layout_marginStart="12dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/share"
-        style="?attr/buttonAction"/>
+        android:text="@string/share"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

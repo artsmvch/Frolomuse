@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="BaseSeekBar.Player" parent="Base.SeekBar.Light">
+    <style name="Base.AppTheme.SeekBar.Player" parent="AppTheme.Light.Blue.SeekBar">
     </style>
 
-    <style name="BaseAppTheme.Transparent" parent="Base.AppTheme">
+    <style name="Base.AppTheme.Player.Transparent" parent="Base.AppTheme.Light">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowIsTranslucent">true</item>
@@ -15,15 +15,9 @@
         <item name="play_button_resume_background">#31999999</item>
         <item name="play_button_icon_tint">#535353</item>
 
-        <item name="iconSongPlaceholder">@drawable/ic_note_rounded_blue</item>
-        <item name="iconAlbumPlaceholder">@drawable/ic_note_square_blue</item>
-        <item name="iconAlbumArtLargePlaceholder">@drawable/ic_note_large_blue</item>
-        <item name="iconMusicFolderPlaceholder">@drawable/ic_music_folder_rounded_blue</item>
-        <item name="iconFilePlaceholder">@drawable/ic_file</item>
-
         <item name="colorPrimaryDark">@color/black_dark</item>
         <item name="colorAccent">#E027A6</item>
 
-        <item name="seekBarStyle">@style/BaseSeekBar.Player</item>
+        <item name="seekBarStyle">@style/Base.AppTheme.SeekBar.Player</item>
     </style>
 </resources>

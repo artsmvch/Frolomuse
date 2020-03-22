@@ -30,7 +30,7 @@ public final class StyleUtil {
 
     @ColorInt
     public static int getVisualizerColor(@NonNull Context context) {
-        int[] attrs = { R.attr.visualizerColor};
+        int[] attrs = { R.attr.colorSecondary };
         TypedArray ta = context.obtainStyledAttributes(attrs);
         int color = ta.getColor(0, Color.WHITE);
         ta.recycle();
@@ -41,7 +41,7 @@ public final class StyleUtil {
     public static int getIconTintColor(@NonNull Context context) {
         TypedValue typedValue = new TypedValue();
         Resources.Theme theme = context.getTheme();
-        theme.resolveAttribute(R.attr.iconNormalTint, typedValue, true);
+        theme.resolveAttribute(R.attr.iconImageTint, typedValue, true);
         return typedValue.data;
     }
 
@@ -59,7 +59,7 @@ public final class StyleUtil {
 
     @ColorInt
     public static int getHighlightColor(@NonNull Context context) {
-        int[] attrs = { R.attr.highlightColor};
+        int[] attrs = { R.attr.colorSecondaryVariant };
         TypedArray ta = context.obtainStyledAttributes(attrs);
         int color = ta.getColor(0, Color.YELLOW);
         ta.recycle();
@@ -77,7 +77,7 @@ public final class StyleUtil {
 
     @ColorInt
     public static int getColorContextual(@NonNull Context context) {
-        int[] attrs = { R.attr.colorContextual };
+        int[] attrs = { R.attr.colorSecondary };
         TypedArray ta = context.obtainStyledAttributes(attrs);
         int color = ta.getColor(0, Color.BLACK);
         ta.recycle();
@@ -86,7 +86,7 @@ public final class StyleUtil {
 
     @ColorInt
     public static int getColorOnContextual(@NonNull Context context) {
-        int[] attrs = { R.attr.colorOnContextual };
+        int[] attrs = { R.attr.colorOnSecondary };
         TypedArray ta = context.obtainStyledAttributes(attrs);
         int color = ta.getColor(0, Color.WHITE);
         ta.recycle();

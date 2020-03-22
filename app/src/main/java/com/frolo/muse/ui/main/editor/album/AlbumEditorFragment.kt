@@ -151,8 +151,6 @@ class AlbumEditorFragment : BaseDialogFragment() {
             val uri = GlideAlbumArtHelper.getUri(albumId)
             val options = GlideAlbumArtHelper.get()
                     .makeRequestOptions(albumId)
-                    .placeholder(R.drawable.vector_note_square)
-                    .error(R.drawable.vector_note_square)
                     .dontAnimate()
                     .centerCrop()
             Glide.with(this@AlbumEditorFragment)
@@ -177,7 +175,8 @@ class AlbumEditorFragment : BaseDialogFragment() {
         dialog?.apply {
             // do NOT load it using Glide. It doesn't work sometimes.
             // I can't figure out why this shit happens.
-            imv_album_art.setImageResource(R.drawable.vector_note_square)
+            throw UnsupportedOperationException("Not implemented")
+            //imv_album_art.setImageResource(R.drawable.vector_note_square)
         }
     }
 

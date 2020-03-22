@@ -81,8 +81,8 @@ class SongEditorFragment: BaseDialogFragment() {
 
             Glide.with(this@SongEditorFragment)
                     .makeRequest(song.albumId)
-                    .placeholder(R.drawable.ic_note_rounded_placeholder)
-                    .error(R.drawable.ic_note_rounded_placeholder)
+                    .placeholder(R.drawable.ic_framed_music_note_48dp)
+                    .error(R.drawable.ic_framed_music_note_48dp)
                     .into(imv_album_art)
         }
     }

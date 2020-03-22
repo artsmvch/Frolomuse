@@ -95,8 +95,8 @@ open class SongAdapter<T: Song> constructor(
             tv_duration.text = item.getDurationString()
 
             requestManager.makeRequest(item.albumId)
-                    .placeholder(R.drawable.ic_note_rounded_placeholder)
-                    .error(R.drawable.ic_note_rounded_placeholder)
+                    .placeholder(R.drawable.ic_framed_music_note_48dp)
+                    .error(R.drawable.ic_framed_music_note_48dp)
                     .circleCrop()
                     .into(imv_album_art)
 

@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <!--Starting from API v22 we can set custom progress background using only colors-->
-    <style name="Base.SeekBar.Light" parent="Base.SeekBar">
+    <style name="AppTheme.Light.Blue.SeekBar" parent="Base.AppTheme.SeekBar">
         <item name="colorAccent">#E027A6</item>
         <item name="colorControlActivated">#E027A6</item>
         <item name="colorControlHighlight">#E4E4E4</item>
         <item name="android:progressBackgroundTint">#B8B7B7</item>
     </style>
+
 </resources>

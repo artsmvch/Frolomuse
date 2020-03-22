@@ -17,12 +17,12 @@
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            style="@style/Text.Header.Subtitle"/>
+            android:textAppearance="?textAppearanceHeadline5"/>
 
         <ImageView
             android:background="?attr/selectableItemBackground"
             android:id="@+id/imv_close"
-            android:tint="?attr/iconNormalTint"
+            android:tint="?attr/iconImageTint"
             android:src="@drawable/ic_cross"
             android:padding="15dp"
             android:layout_width="45dp"
@@ -37,7 +37,6 @@
         android:layout_weight="1">
 
         <com.frolo.muse.views.spring.SpringFastScrollRecyclerView
-            style="@style/Base.RecyclerView"
             android:id="@+id/rv_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>

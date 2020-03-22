@@ -11,7 +11,7 @@
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="360dp"
-        style="@style/Base.AppBarLayout.Transparent">
+        style="@style/Base.AppTheme.AppBarLayout.Transparent">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/ctl_toolbar"
@@ -23,8 +23,8 @@
             app:expandedTitleMarginStart="48dp"
             app:expandedTitleMarginEnd="64dp"
             app:expandedTitleMarginBottom="92dp"
-            app:expandedTitleTextAppearance="@style/Toolbar.TitleAppearance.Light.Expanded"
-            app:collapsedTitleTextAppearance="@style/Toolbar.TitleAppearance.Light.Collapsed"
+            app:expandedTitleTextAppearance="@style/Base.AppTheme.TextAppearance.Toolbar.Expanded"
+            app:collapsedTitleTextAppearance="@style/Base.AppTheme.TextAppearance.Toolbar.Collapsed"
             app:title="@string/placeholder_unknown">
 
             <FrameLayout
@@ -51,7 +51,7 @@
                 android:id="@+id/tb_actions"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                style="@style/Base.Toolbar.Transparent"/>
+                style="@style/Base.AppTheme.Toolbar.Transparent"/>
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -73,11 +73,11 @@
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv_title"
-                    style="@style/Text.Header.Subtitle"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:layout_marginStart="@dimen/backdrop_padding"
                     android:layout_marginEnd="@dimen/backdrop_padding"
+                    android:textAppearance="?textAppearanceHeadline5"
                     tools:text="Album"/>
 
                 <include
@@ -93,7 +93,6 @@
                     android:layout_height="match_parent">
 
                     <com.frolo.muse.views.spring.SpringFastScrollRecyclerView
-                        style="@style/Base.RecyclerView"
                         android:id="@+id/rv_list"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"/>

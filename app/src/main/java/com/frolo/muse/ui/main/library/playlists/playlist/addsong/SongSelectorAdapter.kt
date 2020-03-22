@@ -24,10 +24,10 @@ class SongSelectorAdapter constructor(
     ) = SongSelectorViewHolder(parent.inflateChild(R.layout.item_select_song))
 
     override fun onBindViewHolder(
-            holder: SongViewHolder,
-            position: Int,
-            item: Song,
-            selected: Boolean, selectionChanged: Boolean
+        holder: SongViewHolder,
+        position: Int,
+        item: Song,
+        selected: Boolean, selectionChanged: Boolean
     ) {
         val selectorViewHolder = holder as SongSelectorViewHolder
         with(selectorViewHolder.itemView) {
@@ -44,7 +44,7 @@ class SongSelectorAdapter constructor(
                 mini_visualizer.setAnimating(isPlaying)
             }
 
-            chb_select_song.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_note_rounded_placeholder)!!)
+            chb_select_song.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_framed_music_note_48dp)!!)
 
             chb_select_song.setChecked(checked = selected, animate = selectionChanged)
 
