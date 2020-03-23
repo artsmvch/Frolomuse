@@ -10,19 +10,35 @@
         android:background="@color/transparent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/Base.AppTheme.AppBarLayout.Lifted">
+        style="@style/Base.AppTheme.AppBarLayout.Transparent">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/tb_actions"
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
+            android:background="?colorSurface"
+            android:elevation="0dp"
             app:layout_scrollFlags="scroll|enterAlways|snap"
-            tools:title="Library"/>
+            tools:title="Library">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="start|center_vertical"
+                android:textAppearance="?textAppearanceHeadline5"
+                android:textColor="?colorOnSurface"
+                android:text="@string/nav_library"/>
+        </com.google.android.material.appbar.MaterialToolbar>
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tl_sections"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/app_thin_divider_size"
+            android:background="?dividerTint"/>
     </com.google.android.material.appbar.AppBarLayout>
 
     <com.frolo.muse.views.viewpager.SafeViewPager

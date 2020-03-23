@@ -3,6 +3,7 @@
 
     <!--Tint for all icons in the app including action icon, placeholders etc.-->
     <attr name="iconImageTint" format="color"/>
+    <attr name="dividerTint" format="color"/>
 
     <attr name="modeOffTint" format="color"/>
     <attr name="modeOnTint" format="color"/>

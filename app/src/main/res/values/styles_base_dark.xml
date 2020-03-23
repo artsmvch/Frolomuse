@@ -52,6 +52,7 @@
 
         <!--custom attrs-->
         <item name="iconImageTint">#FFFFFF</item>
+        <item name="dividerTint">#ABABAB</item>
         <item name="backdropBackLayer">?colorPrimaryDark</item>
         <item name="backdropFrontLayer">@color/white</item>
         <item name="modeOffTint">#b6b6b6</item>

@@ -3,6 +3,9 @@
     <!--Default dimension for bar widgets such as Toolbar, BottomNavigationView, TabLayout etc.-->
     <dimen name="default_bar_size">52dp</dimen>
 
+    <!--Dividers-->
+    <dimen name="app_thin_divider_size">1px</dimen>
+
     <dimen name="horizontal_padding">12dp</dimen>
 
     <!--media item (list)-->
