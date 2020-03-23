@@ -8,33 +8,37 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.frolo.muse.R
 import com.frolo.muse.model.media.Media
+import com.frolo.muse.ui.base.NoClipping
 import com.frolo.muse.ui.main.decorateAsLinear
 import kotlinx.android.synthetic.main.fragment_base_list.*
 
 
 abstract class SimpleMediaCollectionFragment <E: Media>:
-        AbsMediaCollectionFragment<E>() {
+        AbsMediaCollectionFragment<E>(),
+        NoClipping {
 
     abstract val adapter: BaseAdapter<E, *>
 
-    private val adapterListener = object : BaseAdapter.Listener<E> {
-        override fun onItemClick(item: E, position: Int) {
-            viewModel.onItemClicked(item)
+    private val adapterListener =
+        object : BaseAdapter.Listener<E> {
+            override fun onItemClick(item: E, position: Int) {
+                viewModel.onItemClicked(item)
+            }
+
+            override fun onItemLongClick(item: E, position: Int) {
+                viewModel.onItemLongClicked(item)
+            }
+
+            override fun onOptionsMenuClick(item: E, position: Int) {
+                viewModel.onOptionsMenuClicked(item)
+            }
         }
-        override fun onItemLongClick(item: E, position: Int) {
-            viewModel.onItemLongClicked(item)
-        }
-        override fun onOptionsMenuClick(item: E, position: Int) {
-            viewModel.onOptionsMenuClicked(item)
-        }
-    }
 
     final override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_base_list, container, false)
-    }
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View = inflater.inflate(R.layout.fragment_base_list, container, false)
 
     final override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -76,5 +80,15 @@ abstract class SimpleMediaCollectionFragment <E: Media>:
 
     final override fun onDisplayError(err: Throwable) {
         toastError(err)
+    }
+
+    final override fun removeClipping(left: Int, top: Int, right: Int, bottom: Int) {
+        view?.also { safeView ->
+            if (safeView is ViewGroup) {
+                rv_list.setPadding(left, top, right, bottom)
+                rv_list.clipToPadding = false
+                safeView.clipToPadding = false
+            }
+        }
     }
 }

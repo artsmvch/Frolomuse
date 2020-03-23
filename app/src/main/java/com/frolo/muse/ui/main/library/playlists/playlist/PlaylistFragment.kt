@@ -22,13 +22,14 @@ import com.frolo.muse.ui.main.decorateAsLinear
 import com.frolo.muse.ui.main.library.base.AbsSongCollectionFragment
 import com.frolo.muse.ui.main.library.base.SongAdapter
 import com.frolo.muse.toPx
+import com.frolo.muse.ui.base.NoClipping
 import com.frolo.muse.views.Slider
 import com.frolo.muse.views.showBackArrow
 import kotlinx.android.synthetic.main.fragment_playlist.*
 import kotlinx.android.synthetic.main.include_backdrop_front_list.*
 
 
-class PlaylistFragment: AbsSongCollectionFragment<Song>() {
+class PlaylistFragment: AbsSongCollectionFragment<Song>(), NoClipping {
 
     companion object {
         private const val ARG_PLAYLIST = "playlist"
@@ -81,14 +82,12 @@ class PlaylistFragment: AbsSongCollectionFragment<Song>() {
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_playlist, container, false)
-    }
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View = inflater.inflate(R.layout.fragment_playlist, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         (activity as? AppCompatActivity)?.apply {
             setSupportActionBar(tb_actions as Toolbar)
             supportActionBar?.apply {
@@ -178,24 +177,32 @@ class PlaylistFragment: AbsSongCollectionFragment<Song>() {
         toastError(err)
     }
 
-    private fun observeViewModel(owner: LifecycleOwner) {
-        viewModel.apply {
-            playlist.observeNonNull(owner) { item ->
-                showTitle(item.name)
-            }
+    private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
+        playlist.observeNonNull(owner) { item ->
+            showTitle(item.name)
+        }
 
-            mediaItemCount.observeNonNull(owner) { count ->
-                tv_title.text = requireContext().resources.getQuantityString(R.plurals.s_songs, count, count)
-            }
+        mediaItemCount.observeNonNull(owner) { count ->
+            tv_title.text = requireContext().resources.getQuantityString(R.plurals.s_songs, count, count)
+        }
 
-            isSwappingEnabled.observeNonNull(owner) { isSwappingEnabled ->
-                (rv_list.adapter as DragSongAdapter).also { adapter ->
-                    adapter.itemViewType = if (isSwappingEnabled) {
-                        DragSongAdapter.VIEW_TYPE_SWAPPABLE
-                    } else {
-                        DragSongAdapter.VIEW_TYPE_NORMAL
-                    }
+        isSwappingEnabled.observeNonNull(owner) { isSwappingEnabled ->
+            (rv_list.adapter as DragSongAdapter).also { adapter ->
+                adapter.itemViewType = if (isSwappingEnabled) {
+                    DragSongAdapter.VIEW_TYPE_SWAPPABLE
+                } else {
+                    DragSongAdapter.VIEW_TYPE_NORMAL
                 }
+            }
+        }
+    }
+
+    override fun removeClipping(left: Int, top: Int, right: Int, bottom: Int) {
+        view?.also { safeView ->
+            if (safeView is ViewGroup) {
+                rv_list.setPadding(left, top, right, bottom)
+                rv_list.clipToPadding = false
+                safeView.clipToPadding = false
             }
         }
     }

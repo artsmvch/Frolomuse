@@ -15,6 +15,7 @@ import com.frolo.muse.glide.makeRequest
 import com.frolo.muse.glide.observe
 import com.frolo.muse.model.media.Album
 import com.frolo.muse.model.media.Song
+import com.frolo.muse.ui.base.NoClipping
 import com.frolo.muse.ui.base.withArg
 import com.frolo.muse.ui.main.decorateAsLinear
 import com.frolo.muse.ui.main.library.base.AbsSongCollectionFragment
@@ -23,7 +24,7 @@ import com.frolo.muse.views.showBackArrow
 import kotlinx.android.synthetic.main.fragment_album.*
 
 
-class AlbumFragment: AbsSongCollectionFragment<Song>() {
+class AlbumFragment: AbsSongCollectionFragment<Song>(), NoClipping {
     companion object {
 
         private const val ARG_ALBUM = "album"
@@ -57,15 +58,22 @@ class AlbumFragment: AbsSongCollectionFragment<Song>() {
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_album, container, false)
-    }
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View = inflater.inflate(R.layout.fragment_album, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initUI()
+        rv_list.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = this@AlbumFragment.adapter
+            decorateAsLinear()
+        }
+
+        (activity as? AppCompatActivity)?.apply {
+            setSupportActionBar(tb_actions)
+            supportActionBar?.showBackArrow()
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -91,34 +99,17 @@ class AlbumFragment: AbsSongCollectionFragment<Song>() {
         }
     }
 
-    private fun initUI() {
-        val context = requireContext()
-
-        rv_list.apply {
-            layoutManager = LinearLayoutManager(context)
-            adapter = this@AlbumFragment.adapter
-            decorateAsLinear()
+    private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
+        mediaItemCount.observeNonNull(owner) { count ->
+            tv_title.text = requireContext().resources.getQuantityString(R.plurals.s_songs, count, count)
         }
 
-        (activity as? AppCompatActivity)?.apply {
-            setSupportActionBar(tb_actions)
-            supportActionBar?.showBackArrow()
+        title.observeNonNull(owner) { title ->
+            ctl_toolbar.title = title
         }
-    }
 
-    private fun observeViewModel(owner: LifecycleOwner) {
-        viewModel.apply {
-            mediaItemCount.observeNonNull(owner) { count ->
-                tv_title.text = requireContext().resources.getQuantityString(R.plurals.s_songs, count, count)
-            }
-
-            title.observeNonNull(owner) { title ->
-                ctl_toolbar.title = title
-            }
-
-            albumId.observeNonNull(owner) { albumId ->
-                loadAlbumArt(albumId)
-            }
+        albumId.observeNonNull(owner) { albumId ->
+            loadAlbumArt(albumId)
         }
     }
 
@@ -141,5 +132,15 @@ class AlbumFragment: AbsSongCollectionFragment<Song>() {
             .error(R.drawable.ic_album_200dp)
             .transition(DrawableTransitionOptions.withCrossFade())
             .into(imv_album_art)
+    }
+
+    override fun removeClipping(left: Int, top: Int, right: Int, bottom: Int) {
+        view?.also { safeView ->
+            if (safeView is ViewGroup) {
+                rv_list.setPadding(left, top, right, bottom)
+                rv_list.clipToPadding = false
+                safeView.clipToPadding = false
+            }
+        }
     }
 }

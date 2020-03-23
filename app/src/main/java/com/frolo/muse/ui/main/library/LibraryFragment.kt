@@ -6,18 +6,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.updateLayoutParams
 import androidx.viewpager.widget.ViewPager
 import com.frolo.muse.R
 import com.frolo.muse.model.Library
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.ui.base.BackPressHandler
 import com.frolo.muse.ui.base.BaseFragment
+import com.frolo.muse.ui.base.NoClipping
 import com.frolo.muse.ui.main.removeAllFragmentsNow
 import kotlinx.android.synthetic.main.fragment_library.*
 
 
 class LibraryFragment: BaseFragment(),
-        BackPressHandler {
+        BackPressHandler,
+        NoClipping {
 
     companion object {
         // Factory
@@ -32,9 +35,10 @@ class LibraryFragment: BaseFragment(),
         override fun onPageScrollStateChanged(state: Int) = Unit
 
         override fun onPageScrolled(
-                position: Int,
-                positionOffset: Float,
-                positionOffsetPixels: Int) {
+            position: Int,
+            positionOffset: Float,
+            positionOffsetPixels: Int
+        ) {
             // it's better to check only if position offset is in range -0,1..0,1
             if (positionOffset > -0.1 && positionOffset < 0.1) {
                 invalidateFab()
@@ -47,30 +51,12 @@ class LibraryFragment: BaseFragment(),
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_library, container, false)
-    }
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View = inflater.inflate(R.layout.fragment_library, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initUI()
-    }
-
-    override fun onDestroyView() {
-        vp_sections.removeOnPageChangeListener(onPageChangeCallback)
-        super.onDestroyView()
-    }
-
-    override fun onBackPress(): Boolean {
-        val position = vp_sections.currentItem
-        val adapter = vp_sections.adapter as? LibraryPageAdapter ?: return false
-        val fragment: BackPressHandler = adapter.getPageAt(position) as? BackPressHandler ?: return false
-        return fragment.onBackPress()
-    }
-
-    private fun initUI() {
         (activity as? AppCompatActivity)?.apply {
             setSupportActionBar(tb_actions as Toolbar)
             title = getString(R.string.nav_library)
@@ -109,6 +95,18 @@ class LibraryFragment: BaseFragment(),
         invalidateFab()
     }
 
+    override fun onDestroyView() {
+        vp_sections.removeOnPageChangeListener(onPageChangeCallback)
+        super.onDestroyView()
+    }
+
+    override fun onBackPress(): Boolean {
+        val position = vp_sections.currentItem
+        val adapter = vp_sections.adapter as? LibraryPageAdapter ?: return false
+        val fragment: BackPressHandler = adapter.getPageAt(position) as? BackPressHandler ?: return false
+        return fragment.onBackPress()
+    }
+
     private fun invalidateFab() {
         val adapter = vp_sections.adapter as? LibraryPageAdapter
         val currFragment = adapter?.getPageAt(vp_sections.currentItem)
@@ -117,6 +115,15 @@ class LibraryFragment: BaseFragment(),
             fab_action.show()
         } else {
             fab_action.hide()
+        }
+    }
+
+    override fun removeClipping(left: Int, top: Int, right: Int, bottom: Int) {
+        fab_action.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+            leftMargin += left
+            topMargin += top
+            rightMargin += right
+            bottomMargin += bottom
         }
     }
 }

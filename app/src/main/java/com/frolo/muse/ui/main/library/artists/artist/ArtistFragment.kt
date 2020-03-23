@@ -33,23 +33,12 @@ class ArtistFragment: BaseFragment() {
     private val artist: Artist by serializableArg(ARG_ARTIST)
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_artist, container, false)
-    }
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View = inflater.inflate(R.layout.fragment_artist, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initUI()
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        observeViewModel(viewLifecycleOwner)
-    }
-
-    private fun initUI() {
         (activity as? AppCompatActivity)?.apply {
             setSupportActionBar(tb_actions as Toolbar)
             supportActionBar?.apply {
@@ -60,7 +49,13 @@ class ArtistFragment: BaseFragment() {
         }
 
         initAlbumsOfArtistFragment(artist)
+
         initSongsOfArtistFragment(artist)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        observeViewModel(viewLifecycleOwner)
     }
 
     private fun initAlbumsOfArtistFragment(arg: Artist) {

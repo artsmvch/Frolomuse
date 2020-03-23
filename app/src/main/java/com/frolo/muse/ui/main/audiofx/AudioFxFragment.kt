@@ -15,6 +15,7 @@ import com.frolo.muse.StyleUtil
 import com.frolo.muse.Trace
 import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.ui.base.BaseFragment
+import com.frolo.muse.ui.base.NoClipping
 import com.frolo.muse.ui.main.audiofx.adapter.PresetAdapter
 import com.frolo.muse.ui.main.audiofx.adapter.PresetReverbAdapter
 import com.frolo.muse.ui.main.audiofx.preset.PresetSavedEvent
@@ -32,7 +33,7 @@ import kotlinx.android.synthetic.main.include_seekbar_visualizer.*
 import kotlinx.android.synthetic.main.include_toolbar.*
 
 
-class AudioFxFragment: BaseFragment() {
+class AudioFxFragment: BaseFragment(), NoClipping {
 
     companion object {
 
@@ -64,15 +65,31 @@ class AudioFxFragment: BaseFragment() {
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_audio_fx, container, false)
-    }
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View = inflater.inflate(R.layout.fragment_audio_fx, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initUI()
+        (activity as? AppCompatActivity)?.apply {
+            setSupportActionBar(tb_actions)
+            supportActionBar?.apply {
+                setTitle(R.string.nav_equalizer)
+                setDisplayShowTitleEnabled(true)
+            }
+        }
+
+        initEqBars()
+
+        initPresetChooser()
+
+        initPresetReverbChooser()
+
+        initBassBoostBar()
+
+        initVirtualizer()
+
+        initVisualizer()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -127,23 +144,6 @@ class AudioFxFragment: BaseFragment() {
     override fun onDetach() {
         presetSaveEvent.unregister(requireContext())
         super.onDetach()
-    }
-
-    private fun initUI() {
-        (activity as? AppCompatActivity)?.apply {
-            setSupportActionBar(tb_actions)
-            supportActionBar?.apply {
-                setTitle(R.string.nav_equalizer)
-                setDisplayShowTitleEnabled(true)
-            }
-        }
-
-        initEqBars()
-        initPresetChooser()
-        initPresetReverbChooser()
-        initBassBoostBar()
-        initVirtualizer()
-        initVisualizer()
     }
 
     private fun showWaveForm() {
@@ -267,111 +267,118 @@ class AudioFxFragment: BaseFragment() {
         }
     }
 
-    private fun observeViewModel(owner: LifecycleOwner) {
-        viewModel.apply {
-            error.observeNonNull(owner) { err ->
-                toastError(err)
-            }
+    private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
+        error.observeNonNull(owner) { err ->
+            toastError(err)
+        }
 
-            audioFxAvailable.observeNonNull(owner) { available ->
-                if (available) {
-                    layout_audio_fx_content.setOnTryTouchingListener {
-                        if (layout_audio_fx_hint.visibility != View.VISIBLE) {
-                            Anim.fadeIn(layout_audio_fx_hint, duration = 300)
-                            runDelayedOnUI({
-                                Anim.fadeOut(layout_audio_fx_hint, 300)
-                            }, 1800)
-                        }
+        audioFxAvailable.observeNonNull(owner) { available ->
+            if (available) {
+                layout_audio_fx_content.setOnTryTouchingListener {
+                    if (layout_audio_fx_hint.visibility != View.VISIBLE) {
+                        Anim.fadeIn(layout_audio_fx_hint, duration = 300)
+                        runDelayedOnUI({
+                            Anim.fadeOut(layout_audio_fx_hint, 300)
+                        }, 1800)
                     }
-                    layout_player_placeholder.visibility = View.GONE
-                } else {
-                    tv_message.setText(R.string.current_playlist_is_empty)
-                    layout_player_placeholder.setOnClickListener { } // to make all view under overlay non-clickable
-                    layout_player_placeholder.visibility = View.VISIBLE
                 }
+                layout_player_placeholder.visibility = View.GONE
+            } else {
+                tv_message.setText(R.string.current_playlist_is_empty)
+                layout_player_placeholder.setOnClickListener { } // to make all view under overlay non-clickable
+                layout_player_placeholder.visibility = View.VISIBLE
+            }
+        }
+
+        equalizerAvailable.observeNonNull(owner) { available ->
+            layout_eq_bars.visibility = if (available) View.VISIBLE else View.GONE
+            ll_preset_chooser.visibility = if (available) View.VISIBLE else View.GONE
+        }
+
+        bassBoostAvailable.observeNonNull(owner) { available ->
+            ll_bass_boost.visibility = if (available) View.VISIBLE else View.GONE
+        }
+
+        virtualizerAvailable.observeNonNull(owner) { available ->
+            ll_virtualizer.visibility = if (available) View.VISIBLE else View.GONE
+        }
+
+        presetReverbAvailable.observeNonNull(owner) { available ->
+            ll_preset_reverb_chooser.visibility = if (available) View.VISIBLE else View.GONE
+        }
+
+        audioFxEnabled.observeNonNull(owner) { enabled ->
+            layout_audio_fx_content.isEnabled = enabled
+
+            if (layout_audio_fx_hint.visibility == View.VISIBLE) {
+                Anim.fadeOut(layout_audio_fx_hint)
             }
 
-            equalizerAvailable.observeNonNull(owner) { available ->
-                layout_eq_bars.visibility = if (available) View.VISIBLE else View.GONE
-                ll_preset_chooser.visibility = if (available) View.VISIBLE else View.GONE
+            val toAlpha = if (enabled) 1.0f else 0.3f
+            Anim.alpha(layout_audio_fx_content, toAlpha)
+
+            enableStatusSwitchView?.isChecked = enabled
+        }
+
+        bandLevels.observeNonNull(owner) { audioFx ->
+            layout_eq_bars.bindWith(audioFx, true)
+        }
+
+        presets.observeNonNull(owner) { presets ->
+            val adapter = PresetAdapter(presets) { item ->
+                onDeletePresetClicked(item)
             }
-
-            bassBoostAvailable.observeNonNull(owner) { available ->
-                ll_bass_boost.visibility = if (available) View.VISIBLE else View.GONE
+            sp_presets.adapter = adapter
+            val position = viewModel.currentPreset.value?.let { adapter.indexOf(it) } ?: -1
+            if (position >= 0 && position < adapter.count) {
+                sp_presets.setSelection(position, false)
             }
+        }
 
-            virtualizerAvailable.observeNonNull(owner) { available ->
-                ll_virtualizer.visibility = if (available) View.VISIBLE else View.GONE
-            }
-
-            presetReverbAvailable.observeNonNull(owner) { available ->
-                ll_preset_reverb_chooser.visibility = if (available) View.VISIBLE else View.GONE
-            }
-
-            audioFxEnabled.observeNonNull(owner) { enabled ->
-                layout_audio_fx_content.isEnabled = enabled
-
-                if (layout_audio_fx_hint.visibility == View.VISIBLE) {
-                    Anim.fadeOut(layout_audio_fx_hint)
-                }
-
-                val toAlpha = if (enabled) 1.0f else 0.3f
-                Anim.alpha(layout_audio_fx_content, toAlpha)
-
-                enableStatusSwitchView?.isChecked = enabled
-            }
-
-            bandLevels.observeNonNull(owner) { audioFx ->
-                layout_eq_bars.bindWith(audioFx, true)
-            }
-
-            presets.observeNonNull(owner) { presets ->
-                val adapter = PresetAdapter(presets) { item ->
-                    onDeletePresetClicked(item)
-                }
-                sp_presets.adapter = adapter
-                val position = viewModel.currentPreset.value?.let { adapter.indexOf(it) } ?: -1
+        currentPreset.observeNonNull(owner) { preset ->
+            val adapter = sp_presets.adapter as? PresetAdapter
+            if (adapter != null) {
+                val position = adapter.indexOf(preset)
                 if (position >= 0 && position < adapter.count) {
                     sp_presets.setSelection(position, false)
                 }
             }
+        }
 
-            currentPreset.observeNonNull(owner) { preset ->
-                val adapter = sp_presets.adapter as? PresetAdapter
-                if (adapter != null) {
-                    val position = adapter.indexOf(preset)
-                    if (position >= 0 && position < adapter.count) {
-                        sp_presets.setSelection(position, false)
-                    }
-                }
+        bassStrengthRange.observeNonNull(owner) { range ->
+            sb_bass_boost.max = range.second.toInt()
+        }
+
+        bassStrength.observeNonNull(owner) { strength ->
+            sb_bass_boost.progress = strength.toInt()
+        }
+
+        virtStrengthRange.observeNonNull(owner) { range ->
+            sb_virtualizer.max = range.second.toInt()
+        }
+
+        virtStrength.observeNonNull(owner) { strength ->
+            sb_virtualizer.progress = strength.toInt()
+        }
+
+        presetReverbs.observeNonNull(owner) { reverbs ->
+            sp_preset_reverbs.adapter = PresetReverbAdapter(reverbs)
+            val position = presetReverbIndex.value.let { index ->
+                reverbs.indexOfFirst { it.first == index }
             }
+            sp_preset_reverbs.setSelection(position, false)
+        }
 
-            bassStrengthRange.observeNonNull(owner) { range ->
-                sb_bass_boost.max = range.second.toInt()
-            }
+        presetReverbIndex.observeNonNull(owner) { index ->
 
-            bassStrength.observeNonNull(owner) { strength ->
-                sb_bass_boost.progress = strength.toInt()
-            }
+        }
+    }
 
-            virtStrengthRange.observeNonNull(owner) { range ->
-                sb_virtualizer.max = range.second.toInt()
-            }
-
-            virtStrength.observeNonNull(owner) { strength ->
-                sb_virtualizer.progress = strength.toInt()
-            }
-
-            presetReverbs.observeNonNull(owner) { reverbs ->
-                sp_preset_reverbs.adapter = PresetReverbAdapter(reverbs)
-                val position = presetReverbIndex.value.let { index ->
-                    reverbs.indexOfFirst { it.first == index }
-                }
-                sp_preset_reverbs.setSelection(position, false)
-            }
-
-            presetReverbIndex.observeNonNull(owner) { index ->
-
+    override fun removeClipping(left: Int, top: Int, right: Int, bottom: Int) {
+        view?.also { safeView ->
+            if (safeView is ViewGroup) {
+                safeView.setPadding(left, top, right, bottom)
+                safeView.clipToPadding = false
             }
         }
     }

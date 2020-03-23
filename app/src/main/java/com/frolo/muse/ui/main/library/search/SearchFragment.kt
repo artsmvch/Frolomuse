@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.frolo.muse.R
 import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.model.media.Media
+import com.frolo.muse.ui.base.NoClipping
 import com.frolo.muse.ui.main.library.base.AbsMediaCollectionFragment
 import com.frolo.muse.ui.main.library.base.BaseAdapter
 import com.frolo.muse.ui.main.library.search.adapter.MediaAdapter
@@ -18,7 +19,7 @@ import kotlinx.android.synthetic.main.fragment_base_list.*
 import kotlinx.android.synthetic.main.fragment_search.*
 
 
-class SearchFragment: AbsMediaCollectionFragment<Media>() {
+class SearchFragment: AbsMediaCollectionFragment<Media>(), NoClipping {
 
     companion object {
         private const val EXTRA_QUERY = "query"
@@ -31,17 +32,20 @@ class SearchFragment: AbsMediaCollectionFragment<Media>() {
 
     private val adapter by lazy { MediaAdapter(Glide.with(this)) }
 
-    private val adapterListener = object : BaseAdapter.Listener<Media> {
-        override fun onItemClick(item: Media, position: Int) {
-            viewModel.onItemClicked(item)
+    private val adapterListener =
+        object : BaseAdapter.Listener<Media> {
+            override fun onItemClick(item: Media, position: Int) {
+                viewModel.onItemClicked(item)
+            }
+
+            override fun onItemLongClick(item: Media, position: Int) {
+                viewModel.onItemLongClicked(item)
+            }
+
+            override fun onOptionsMenuClick(item: Media, position: Int) {
+                viewModel.onOptionsMenuClicked(item)
+            }
         }
-        override fun onItemLongClick(item: Media, position: Int) {
-            viewModel.onItemLongClicked(item)
-        }
-        override fun onOptionsMenuClick(item: Media, position: Int) {
-            viewModel.onOptionsMenuClicked(item)
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,33 +58,12 @@ class SearchFragment: AbsMediaCollectionFragment<Media>() {
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_search, container, false)
-    }
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View = inflater.inflate(R.layout.fragment_search, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        initUI(savedInstanceState)
-    }
-
-    override fun onStart() {
-        super.onStart()
-        adapter.listener = adapterListener
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString(EXTRA_QUERY, sv_query?.query.toString())
-    }
-
-    override fun onStop() {
-        super.onStop()
-        adapter.listener = null
-    }
-
-    private fun initUI(savedInstanceState: Bundle?) {
         // setup list
         rv_list.apply {
             adapter = this@SearchFragment.adapter
@@ -107,6 +90,21 @@ class SearchFragment: AbsMediaCollectionFragment<Media>() {
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        adapter.listener = adapterListener
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(EXTRA_QUERY, sv_query?.query.toString())
+    }
+
+    override fun onStop() {
+        super.onStop()
+        adapter.listener = null
+    }
+
     override fun onSetLoading(loading: Boolean) {
         pb_loading.visibility = if (loading) View.VISIBLE else View.GONE
     }
@@ -127,10 +125,18 @@ class SearchFragment: AbsMediaCollectionFragment<Media>() {
         toastError(err)
     }
 
-    private fun observerViewModel(owner: LifecycleOwner) {
-        viewModel.apply {
-            query.observeNonNull(owner) { query: String ->
-                adapter.query = query
+    private fun observerViewModel(owner: LifecycleOwner) = with(viewModel) {
+        query.observeNonNull(owner) { query: String ->
+            adapter.query = query
+        }
+    }
+
+    override fun removeClipping(left: Int, top: Int, right: Int, bottom: Int) {
+        view?.also { safeView ->
+            if (safeView is ViewGroup) {
+                rv_list.setPadding(left, top, right, bottom)
+                rv_list.clipToPadding = false
+                safeView.clipToPadding = false
             }
         }
     }

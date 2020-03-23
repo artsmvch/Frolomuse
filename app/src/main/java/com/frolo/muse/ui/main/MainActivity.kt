@@ -17,6 +17,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.graphics.ColorUtils
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProviders
 import com.frolo.muse.R
@@ -28,6 +29,7 @@ import com.frolo.muse.toPx
 import com.frolo.muse.ui.base.BackPressHandler
 import com.frolo.muse.ui.base.BaseActivity
 import com.frolo.muse.ui.base.FragmentNavigator
+import com.frolo.muse.ui.base.NoClipping
 import com.frolo.muse.ui.main.audiofx.AudioFxFragment
 import com.frolo.muse.ui.main.library.LibraryFragment
 import com.frolo.muse.ui.main.library.search.SearchFragment
@@ -96,6 +98,15 @@ class MainActivity : BaseActivity(),
             override fun onStateChanged(bottomSheet: View, newState: Int) = Unit
         }
 
+    private val fragmentLifecycleCallbacks: FragmentManager.FragmentLifecycleCallbacks =
+        object : FragmentManager.FragmentLifecycleCallbacks() {
+            override fun onFragmentViewCreated(fm: FragmentManager, f: Fragment, v: View, savedInstanceState: Bundle?) {
+                if (f is NoClipping) {
+                    f.removeClipping(0, 0, 0, 56f.toPx(v.context).toInt())
+                }
+            }
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         supportRequestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY) // it's important to call window feature before onCreate
 
@@ -119,6 +130,8 @@ class MainActivity : BaseActivity(),
         requireApp().onFragmentNavigatorCreated(this)
 
         observerViewModel(this)
+
+        supportFragmentManager.registerFragmentLifecycleCallbacks(fragmentLifecycleCallbacks, true)
     }
 
     private fun loadUI() {
@@ -167,6 +180,19 @@ class MainActivity : BaseActivity(),
         with(BottomSheetBehavior.from(sliding_player_layout)) {
             removeBottomSheetCallback(bottomSheetCallback)
         }
+    }
+
+    override fun onStop() {
+        if (isFinishing) {
+            supportFragmentManager.unregisterFragmentLifecycleCallbacks(fragmentLifecycleCallbacks)
+        }
+        super.onStop()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        supportFragmentManager.unregisterFragmentLifecycleCallbacks(fragmentLifecycleCallbacks)
+        requireApp().onFragmentNavigatorDestroyed()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -250,11 +276,6 @@ class MainActivity : BaseActivity(),
                 finish()
             }
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        requireApp().onFragmentNavigatorDestroyed()
     }
 
     override fun pushFragment(newFragment: Fragment) {

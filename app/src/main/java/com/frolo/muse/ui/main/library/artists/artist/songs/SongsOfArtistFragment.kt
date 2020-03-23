@@ -10,6 +10,7 @@ import com.frolo.muse.R
 import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.model.media.Artist
 import com.frolo.muse.model.media.Song
+import com.frolo.muse.ui.base.NoClipping
 import com.frolo.muse.ui.base.withArg
 import com.frolo.muse.ui.main.decorateAsLinear
 import com.frolo.muse.ui.main.library.base.AbsSongCollectionFragment
@@ -17,7 +18,7 @@ import com.frolo.muse.ui.main.library.base.SongAdapter
 import kotlinx.android.synthetic.main.include_backdrop_front_list.*
 
 
-class SongsOfArtistFragment: AbsSongCollectionFragment<Song>() {
+class SongsOfArtistFragment: AbsSongCollectionFragment<Song>(), NoClipping {
 
     companion object {
         private const val ARG_ARTIST = "artist"
@@ -45,14 +46,12 @@ class SongsOfArtistFragment: AbsSongCollectionFragment<Song>() {
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.include_backdrop_front_list, container, false)
-    }
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View = inflater.inflate(R.layout.include_backdrop_front_list, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         // set up list
         rv_list.layoutManager = LinearLayoutManager(context)
         rv_list.adapter = adapter
@@ -87,10 +86,18 @@ class SongsOfArtistFragment: AbsSongCollectionFragment<Song>() {
         toastError(err)
     }
 
-    private fun observeViewModel(owner: LifecycleOwner) {
-        viewModel.apply {
-            mediaItemCount.observeNonNull(owner) { count ->
-                tv_title.text = requireContext().resources.getQuantityString(R.plurals.s_songs, count, count)
+    private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
+        mediaItemCount.observeNonNull(owner) { count ->
+            tv_title.text = requireContext().resources.getQuantityString(R.plurals.s_songs, count, count)
+        }
+    }
+
+    override fun removeClipping(left: Int, top: Int, right: Int, bottom: Int) {
+        view?.also { safeView ->
+            if (safeView is ViewGroup) {
+                rv_list.setPadding(left, top, right, bottom)
+                rv_list.clipToPadding = false
+                safeView.clipToPadding = false
             }
         }
     }
