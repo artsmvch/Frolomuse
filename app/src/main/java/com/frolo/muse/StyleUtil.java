@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.util.TypedValue;
 
+import androidx.annotation.AttrRes;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 
@@ -91,5 +92,12 @@ public final class StyleUtil {
         int color = ta.getColor(0, Color.WHITE);
         ta.recycle();
         return color;
+    }
+
+    @ColorInt
+    public static int readColorAttrValue(@NonNull Context context, @AttrRes int attrId) {
+        final TypedValue typedValue = new TypedValue();
+        context.getTheme().resolveAttribute(attrId, typedValue, true);
+        return typedValue.data;
     }
 }

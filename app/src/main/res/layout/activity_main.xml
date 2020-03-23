@@ -32,16 +32,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_width="0dp"
-        android:layout_height="0dp">
+        android:layout_height="0dp"
+        android:background="@null">
 
         <FrameLayout
             android:id="@+id/sliding_player_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:background="?colorSurface"
-            android:elevation="8dp"
-            android:outlineProvider="bounds"
+            android:background="@null"
             app:behavior_hideable="false"
             app:behavior_peekHeight="112dp"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
@@ -53,14 +51,12 @@
             </FrameLayout>
 
             <FrameLayout
+                android:id="@+id/container_mini_player"
                 android:layout_width="match_parent"
-                android:layout_height="112dp">
-
-                <FrameLayout
-                    android:id="@+id/container_mini_player"
-                    android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:layout_gravity="top|center_horizontal"/>
+                android:layout_height="112dp"
+                android:paddingStart="32dp"
+                android:paddingBottom="56dp"
+                android:paddingEnd="32dp">
             </FrameLayout>
         </FrameLayout>
 

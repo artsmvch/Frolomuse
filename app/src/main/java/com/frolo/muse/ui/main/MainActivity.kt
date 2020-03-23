@@ -5,6 +5,8 @@ import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
@@ -12,13 +14,17 @@ import android.view.View
 import android.view.Window
 import android.view.animation.DecelerateInterpolator
 import androidx.core.app.ActivityCompat
+import androidx.core.graphics.ColorUtils
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProviders
 import com.frolo.muse.R
+import com.frolo.muse.StyleUtil
+import com.frolo.muse.Trace
 import com.frolo.muse.arch.observe
 import com.frolo.muse.engine.Player
+import com.frolo.muse.toPx
 import com.frolo.muse.ui.base.BackPressHandler
 import com.frolo.muse.ui.base.BaseActivity
 import com.frolo.muse.ui.base.FragmentNavigator
@@ -30,6 +36,9 @@ import com.frolo.muse.ui.main.player.mini.MiniPlayerFragment
 import com.frolo.muse.ui.main.player.mini.OnMiniPlayerClickListener
 import com.frolo.muse.ui.main.settings.AppBarSettingsFragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.shape.CornerFamily
+import com.google.android.material.shape.MaterialShapeDrawable
+import com.google.android.material.shape.ShapeAppearanceModel
 import com.ncapdevi.fragnav.FragNavController
 import com.ncapdevi.fragnav.FragNavTransactionOptions
 import kotlinx.android.synthetic.main.activity_main.*
@@ -96,6 +105,8 @@ class MainActivity : BaseActivity(),
 
         setContentView(R.layout.activity_main)
 
+        loadUI()
+
         // we need to determine the index
         currTabIndex = if (savedInstanceState != null && savedInstanceState.containsKey(EXTRA_TAB_INDEX)) {
             savedInstanceState.getInt(EXTRA_TAB_INDEX, TAB_INDEX_DEFAULT)
@@ -108,6 +119,28 @@ class MainActivity : BaseActivity(),
         requireApp().onFragmentNavigatorCreated(this)
 
         observerViewModel(this)
+    }
+
+    private fun loadUI() {
+        val bottomNavCornerRadius = 48f.toPx(this)
+
+        bottom_navigation_view.background = MaterialShapeDrawable().apply {
+            fillColor = ColorStateList.valueOf(Color.WHITE)
+            shapeAppearanceModel = ShapeAppearanceModel.builder()
+                .setTopLeftCorner(CornerFamily.ROUNDED, bottomNavCornerRadius)
+                .setTopRightCorner(CornerFamily.ROUNDED, bottomNavCornerRadius)
+                .build()
+        }
+
+        sliding_player_layout.background = MaterialShapeDrawable().apply {
+            fillColor = ColorStateList.valueOf(Color.WHITE)
+            shapeAppearanceModel = ShapeAppearanceModel.builder()
+                    .setTopLeftCorner(CornerFamily.ROUNDED, bottomNavCornerRadius)
+                    .setTopRightCorner(CornerFamily.ROUNDED, bottomNavCornerRadius)
+                    .build()
+        }
+
+        handleSlide(0.0f)
     }
 
     override fun onRestart() {
@@ -124,7 +157,6 @@ class MainActivity : BaseActivity(),
 
         with(BottomSheetBehavior.from(sliding_player_layout)) {
             addBottomSheetCallback(bottomSheetCallback)
-            //handleSlide()
         }
     }
 
@@ -472,6 +504,18 @@ class MainActivity : BaseActivity(),
         view_dim_overlay.alpha = 1 - (1 - slideOffset).pow(2)
 
         container_mini_player.alpha = max(0f, 1f - slideOffset * 4)
+
+        (sliding_player_layout.background as? MaterialShapeDrawable)?.apply {
+            val targetColor = StyleUtil.readColorAttrValue(this@MainActivity, R.attr.colorPrimary)
+            fillColor = ColorStateList.valueOf(ColorUtils.blendARGB(Color.WHITE, targetColor, (1 - slideOffset)))
+
+            val cornerRadius = 48f.toPx(this@MainActivity) * (1 - slideOffset)
+            Trace.d("MainActivitySlide", "cornerRadius=$cornerRadius")
+            this.shapeAppearanceModel = ShapeAppearanceModel.builder()
+                .setTopLeftCorner(CornerFamily.ROUNDED, cornerRadius)
+                .setTopRightCorner(CornerFamily.ROUNDED, cornerRadius)
+                .build()
+        }
     }
 
     override fun onMiniPlayerLayoutClick(fragment: MiniPlayerFragment) {

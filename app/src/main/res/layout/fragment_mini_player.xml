@@ -18,7 +18,7 @@
         android:id="@+id/imv_art"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        tools:src="@drawable/ic_note_rounded_placeholder"/>
+        tools:src="@drawable/ic_framed_music_note_48dp"/>
 
     <com.frolo.muse.views.text.AppTextSwitcher
         app:layout_constraintStart_toEndOf="@id/imv_art"
@@ -41,5 +41,8 @@
         app:layout_constraintDimensionRatio="1"
         android:id="@+id/btn_play"
         android:layout_width="0dp"
-        android:layout_height="0dp"/>
+        android:layout_height="0dp"
+        android:background="@drawable/bg_play_button_rounded_rect"
+        app:pauseBackground="@color/white"
+        app:resumeBackground="@color/white"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
