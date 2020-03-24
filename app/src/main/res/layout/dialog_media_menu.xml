@@ -117,21 +117,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:optionTitle="@string/play"
-                app:optionIcon="@drawable/ic_action_play"/>
+                app:optionIcon="@drawable/ic_option_play_48dp"/>
 
             <com.frolo.muse.views.text.OptionTextView
                 android:id="@+id/btn_play_next"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:optionTitle="@string/play_next"
-                app:optionIcon="@drawable/ic_action_play_next"/>
+                app:optionIcon="@drawable/ic_option_play_next_48dp"/>
 
             <com.frolo.muse.views.text.OptionTextView
                 android:id="@+id/btn_add_to_queue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:optionTitle="@string/add_to_queue"
-                app:optionIcon="@drawable/ic_action_add_to_queue"/>
+                app:optionIcon="@drawable/ic_option_add_to_queue_48dp"/>
 
             <com.frolo.muse.views.text.OptionTextView
                 android:id="@+id/btn_view_album"
@@ -150,14 +150,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:optionTitle="@string/edit"
-                app:optionIcon="@drawable/ic_action_edit"/>
+                app:optionIcon="@drawable/ic_option_edit_48dp"/>
 
             <com.frolo.muse.views.text.OptionTextView
                 android:id="@+id/btn_add_to_playlist"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:optionTitle="@string/add_to_playlist"
-                app:optionIcon="@drawable/ic_action_add_to_playlist"/>
+                app:optionIcon="@drawable/ic_option_add_to_playlist_48dp"/>
 
         </LinearLayout>
 
