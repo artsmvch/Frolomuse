@@ -73,4 +73,11 @@
         <attr name="waveMaxWidth" format="dimension"/>
         <attr name="waveAnimDuration" format="integer"/>
     </declare-styleable>
+
+    <declare-styleable name="OptionTextView">
+        <attr name="optionTitle" format="string"/>
+        <attr name="optionIcon" format="reference"/>
+    </declare-styleable>
+
+    <attr name="optionTextViewStyle" format="reference"/>
 </resources>

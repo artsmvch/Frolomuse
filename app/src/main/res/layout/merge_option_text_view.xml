@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:parentTag="android.widget.LinearLayout">
+
+    <ImageView
+        android:id="@+id/imv_icon"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:padding="6dp"
+        android:tint="?iconImageTint"/>
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:textAppearance="?textAppearanceBody1"
+        tools:text="Title"/>
+</merge>

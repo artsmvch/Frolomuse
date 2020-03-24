@@ -22,26 +22,15 @@ import kotlinx.android.synthetic.main.dialog_media_menu.*
 
 
 class OptionsMenuDialog<E: Media> constructor(
-        context: Context,
-        private val optionsMenu: OptionsMenu<E>,
-        private val onOptionSelected: (item: E, option: Option) -> Unit
+    context: Context,
+    private val optionsMenu: OptionsMenu<E>,
+    private val onOptionSelected: (item: E, option: Option) -> Unit
 ): BottomSheetDialog(context) {
 
     enum class Option {
-        SHARE,
-        DELETE,
-        LIKE,
-        PLAY,
-        PLAY_NEXT,
-        ADD_TO_QUEUE,
-        EDIT,
-        ADD_TO_PLAYLIST,
-        VIEW_ALBUM,
-        VIEW_ARTIST,
-        VIEW_GENRE,
-        SET_AS_DEFAULT,
-        HIDE,
-        SCAN_FILES
+        SHARE, DELETE, LIKE, PLAY, PLAY_NEXT, ADD_TO_QUEUE,
+        EDIT, ADD_TO_PLAYLIST, VIEW_ALBUM, VIEW_ARTIST,
+        VIEW_GENRE, SET_AS_DEFAULT, HIDE, SCAN_FILES
     }
 
     private val iconTint = StyleUtil.getIconTintColor(context)

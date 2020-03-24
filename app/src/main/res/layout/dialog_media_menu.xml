@@ -72,10 +72,10 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <include
-        layout="@layout/include_divider"
+    <View
         android:layout_width="match_parent"
-        android:layout_height="@dimen/vertical_divider_height"/>
+        android:layout_height="@dimen/app_thin_divider_size"
+        android:background="?dividerTint"/>
 
     <androidx.core.widget.NestedScrollView
         android:overScrollMode="never"
@@ -91,73 +91,73 @@
             android:paddingTop="16dp"
             android:paddingBottom="16dp">
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <com.frolo.muse.views.text.OptionTextView
                 android:id="@+id/btn_set_as_default"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableStart="@drawable/ic_root_folder"
-                android:text="@string/set_as_default" />
+                app:optionTitle="@string/set_as_default"
+                app:optionIcon="@drawable/ic_root_folder"/>
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <com.frolo.muse.views.text.OptionTextView
                 android:id="@+id/btn_add_to_hidden"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableStart="@drawable/ic_hidden_16dp"
-                android:text="@string/hide" />
+                app:optionTitle="@string/hide"
+                app:optionIcon="@drawable/ic_hidden_16dp"/>
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <com.frolo.muse.views.text.OptionTextView
                 android:id="@+id/btn_scan_files"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableStart="@drawable/ic_scan_16dp"
-                android:text="@string/scan_files" />
+                app:optionTitle="@string/scan_files"
+                app:optionIcon="@drawable/ic_scan_16dp"/>
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <com.frolo.muse.views.text.OptionTextView
                 android:id="@+id/btn_play"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableStart="@drawable/ic_action_play"
-                android:text="@string/play" />
+                app:optionTitle="@string/play"
+                app:optionIcon="@drawable/ic_action_play"/>
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <com.frolo.muse.views.text.OptionTextView
                 android:id="@+id/btn_play_next"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableStart="@drawable/ic_action_play_next"
-                android:text="@string/play_next" />
+                app:optionTitle="@string/play_next"
+                app:optionIcon="@drawable/ic_action_play_next"/>
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <com.frolo.muse.views.text.OptionTextView
                 android:id="@+id/btn_add_to_queue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableStart="@drawable/ic_action_add_to_queue"
-                android:text="@string/add_to_queue" />
+                app:optionTitle="@string/add_to_queue"
+                app:optionIcon="@drawable/ic_action_add_to_queue"/>
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <com.frolo.muse.views.text.OptionTextView
                 android:id="@+id/btn_view_album"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/view_album" />
+                app:optionTitle="@string/view_album" />
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <com.frolo.muse.views.text.OptionTextView
                 android:id="@+id/btn_view_artist"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/view_artist" />
+                app:optionTitle="@string/view_artist" />
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <com.frolo.muse.views.text.OptionTextView
                 android:id="@+id/btn_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableStart="@drawable/ic_action_edit"
-                android:text="@string/edit" />
+                app:optionTitle="@string/edit"
+                app:optionIcon="@drawable/ic_action_edit"/>
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <com.frolo.muse.views.text.OptionTextView
                 android:id="@+id/btn_add_to_playlist"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableStart="@drawable/ic_action_add_to_playlist"
-                android:text="@string/add_to_playlist" />
+                app:optionTitle="@string/add_to_playlist"
+                app:optionIcon="@drawable/ic_action_add_to_playlist"/>
 
         </LinearLayout>
 
