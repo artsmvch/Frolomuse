@@ -6,8 +6,8 @@
 
     <ImageView
         android:id="@+id/imv_icon"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:padding="4dp"
         android:tint="?iconImageTint"/>
 
