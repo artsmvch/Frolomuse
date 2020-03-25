@@ -10,6 +10,7 @@ import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
 import android.widget.LinearLayout
+import androidx.core.view.updateLayoutParams
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import com.frolo.muse.R
 import kotlinx.android.synthetic.main.merge_option_text_view.view.*
@@ -42,6 +43,14 @@ class OptionTextView @JvmOverloads constructor(
             imv_icon.setImageDrawable(value)
         }
 
+    var optionIconPadding: Int = 0
+        set(value) {
+            field = value
+            imv_icon.updateLayoutParams<MarginLayoutParams> {
+                marginEnd = value
+            }
+        }
+
     init {
         orientation = HORIZONTAL
         gravity = Gravity.CENTER_VERTICAL
@@ -53,6 +62,7 @@ class OptionTextView @JvmOverloads constructor(
 
         optionTitle = arr.getString(R.styleable.OptionTextView_optionTitle)
         optionIcon = arr.getDrawable(R.styleable.OptionTextView_optionIcon)
+        optionIconPadding = arr.getDimension(R.styleable.OptionTextView_optionIconPadding, 0f).toInt()
 
         arr.recycle()
     }
