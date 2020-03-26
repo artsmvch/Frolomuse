@@ -26,9 +26,6 @@ class MiniPlayerFragment : BaseFragment() {
 
     private val viewModel: MiniPlayerViewModel by viewModel()
 
-    private val onMiniPlayerClickListener: OnMiniPlayerClickListener?
-        get() = (context as? OnMiniPlayerClickListener) ?: (parentFragment as? OnMiniPlayerClickListener)
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -36,9 +33,6 @@ class MiniPlayerFragment : BaseFragment() {
     ): View = inflater.inflate(R.layout.fragment_mini_player, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        view.setOnClickListener {
-            onMiniPlayerClickListener?.onMiniPlayerLayoutClick(this)
-        }
 
         with(tsw_song_name) {
             setFactory {

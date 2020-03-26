@@ -49,14 +49,25 @@
                 android:layout_height="match_parent">
             </FrameLayout>
 
-            <FrameLayout
-                android:id="@+id/container_mini_player"
+            <com.frolo.muse.ui.main.player.mini.MiniPlayerContainer
+                android:id="@+id/mini_player_container"
                 android:layout_width="match_parent"
                 android:layout_height="112dp"
                 android:paddingStart="32dp"
                 android:paddingBottom="56dp"
-                android:paddingEnd="32dp">
-            </FrameLayout>
+                android:paddingEnd="32dp"
+                android:layout_gravity="top"/>
+
+            <ImageView
+                android:id="@+id/btn_slide_down"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_margin="12dp"
+                android:padding="8dp"
+                android:src="@drawable/ic_arrow_down_48dp"
+                android:layout_gravity="top|end"
+                android:tint="?iconImageTint"
+                android:background="@drawable/bg_arrow_down"/>
         </FrameLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

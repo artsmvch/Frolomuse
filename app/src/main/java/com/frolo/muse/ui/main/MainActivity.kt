@@ -35,7 +35,6 @@ import com.frolo.muse.ui.main.library.LibraryFragment
 import com.frolo.muse.ui.main.library.search.SearchFragment
 import com.frolo.muse.ui.main.player.PlayerFragment
 import com.frolo.muse.ui.main.player.mini.MiniPlayerFragment
-import com.frolo.muse.ui.main.player.mini.OnMiniPlayerClickListener
 import com.frolo.muse.ui.main.settings.AppBarSettingsFragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.shape.CornerFamily
@@ -50,8 +49,7 @@ import kotlin.math.pow
 
 class MainActivity : BaseActivity(),
         FragmentNavigator,
-        PlayerHolderFragment.PlayerConnection,
-        OnMiniPlayerClickListener {
+        PlayerHolderFragment.PlayerConnection {
 
     companion object {
         private const val RC_READ_STORAGE = 1043
@@ -153,6 +151,14 @@ class MainActivity : BaseActivity(),
                     .build()
         }
 
+        mini_player_container.setOnClickListener {
+            expandSlidingPlayer()
+        }
+
+        btn_slide_down.setOnClickListener {
+            collapseSlidingPlayer()
+        }
+
         handleSlide(0.0f)
     }
 
@@ -206,9 +212,10 @@ class MainActivity : BaseActivity(),
     }
 
     override fun onRequestPermissionsResult(
-            requestCode: Int,
-            permissions: Array<out String>,
-            grantResults: IntArray) {
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         if (requestCode == RC_READ_STORAGE) {
             val index = permissions.indexOf(Manifest.permission.READ_EXTERNAL_STORAGE)
             if (index >= 0) {
@@ -325,8 +332,8 @@ class MainActivity : BaseActivity(),
             .commit()
 
         supportFragmentManager.beginTransaction()
-                .replace(R.id.container_mini_player, MiniPlayerFragment())
-                .commit()
+            .replace(R.id.mini_player_container, MiniPlayerFragment())
+            .commit()
     }
 
     override fun onPlayerDisconnected() {
@@ -512,6 +519,10 @@ class MainActivity : BaseActivity(),
         BottomSheetBehavior.from(sliding_player_layout).state = BottomSheetBehavior.STATE_EXPANDED
     }
 
+    private fun collapseSlidingPlayer() {
+        BottomSheetBehavior.from(sliding_player_layout).state = BottomSheetBehavior.STATE_COLLAPSED
+    }
+
     private fun handleSlide(slideOffset: Float) {
         bottom_navigation_view.also { child ->
             val heightToAnimate = slideOffset * child.height
@@ -524,7 +535,12 @@ class MainActivity : BaseActivity(),
 
         view_dim_overlay.alpha = 1 - (1 - slideOffset).pow(2)
 
-        container_mini_player.alpha = max(0f, 1f - slideOffset * 4)
+        mini_player_container.alpha = max(0f, 1f - slideOffset * 4)
+        mini_player_container.touchesDisabled = slideOffset > 0.4
+
+        btn_slide_down.alpha = max(0f, slideOffset * 2 - 1)
+        btn_slide_down.rotation = (1 - slideOffset) * 180
+        btn_slide_down.isEnabled = slideOffset > 0.5
 
         (sliding_player_layout.background as? MaterialShapeDrawable)?.apply {
             val targetColor = StyleUtil.readColorAttrValue(this@MainActivity, R.attr.colorPrimary)
@@ -539,7 +555,4 @@ class MainActivity : BaseActivity(),
         }
     }
 
-    override fun onMiniPlayerLayoutClick(fragment: MiniPlayerFragment) {
-        expandSlidingPlayer()
-    }
 }
