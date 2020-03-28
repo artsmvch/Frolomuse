@@ -23,10 +23,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <include
+            <include layout="@layout/include_audio_fx_content"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                layout="@layout/include_audio_fx_content"/>
+                android:layout_height="match_parent"/>
 
             <include layout="@layout/include_audio_fx_content_lock"
                 android:id="@+id/inc_audio_fx_content_lock"
@@ -38,8 +37,7 @@
 
     </LinearLayout>
 
-    <include
+    <include layout="@layout/include_message"
         android:id="@+id/layout_player_placeholder"
-        layout="@layout/include_message"
         android:visibility="gone"/>
 </FrameLayout>

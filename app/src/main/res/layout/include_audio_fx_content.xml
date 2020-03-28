@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.frolo.muse.views.TouchableLinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:id="@+id/layout_audio_fx_content"
-    android:layout_gravity="center"
-    android:gravity="bottom"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="bottom"
+    android:background="?colorSurface">
 
     <include
         android:layout_marginTop="12dp"

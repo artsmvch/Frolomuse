@@ -16,6 +16,7 @@ import com.frolo.muse.R
 import com.frolo.muse.StyleUtil
 import com.frolo.muse.Trace
 import com.frolo.muse.arch.observeNonNull
+import com.frolo.muse.glide.GlideOptions.bitmapTransform
 import com.frolo.muse.ui.Snapshots
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.base.NoClipping
@@ -299,7 +300,7 @@ class AudioFxFragment: BaseFragment(), NoClipping {
                     val snapshot = Snapshots.make(layout_audio_fx_content)
                     Glide.with(this@AudioFxFragment)
                         .load(snapshot)
-                        .transform(BlurTransformation(5))
+                        .apply(bitmapTransform(BlurTransformation(5)))
                         .transition(DrawableTransitionOptions.withCrossFade(200))
                         .into(imv_blurred_snapshot)
                 }
