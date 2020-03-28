@@ -24,11 +24,8 @@ public final class Snapshots {
      */
     @Nullable
     public static Bitmap make(@NonNull final View view) {
-        if (!ViewCompat.isLaidOut(view)) {
-            // View is not laid out
-            return null;
-        }
 
+        // First checking the drawing cache
         view.setDrawingCacheEnabled(true);
         final Bitmap drawingCache = view.getDrawingCache();
         view.setDrawingCacheEnabled(false);
@@ -38,7 +35,7 @@ public final class Snapshots {
             return Bitmap.createBitmap(drawingCache);
         }
 
-        // Drawing cache is invalid, creating a snapshot on my own
+        // The drawing cache is invalid, creating a snapshot on my own
         final int width = view.getMeasuredWidth();
         final int height = view.getMeasuredHeight();
         final Bitmap bmp = Bitmap.createBitmap(width , height, Bitmap.Config.ARGB_8888);
