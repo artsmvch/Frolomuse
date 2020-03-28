@@ -47,10 +47,6 @@ class AudioFxFragment: BaseFragment(), NoClipping {
 
     private val viewModel: AudioFxViewModel by viewModel()
 
-    private var trackingEqualizerBand = false
-    private var trackingBass = false
-    private var trackingVirtualizer = false
-
     private var enableStatusSwitchView: CompoundButton? = null
     private var visualizer: Visualizer? = null
 
@@ -94,8 +90,6 @@ class AudioFxFragment: BaseFragment(), NoClipping {
                 enableStatusSwitchView = switchView
             }
         }
-
-        initEqBars()
 
         initPresetChooser()
 
@@ -183,31 +177,15 @@ class AudioFxFragment: BaseFragment(), NoClipping {
         }
     }
 
-    private fun initEqBars() {
-        layout_eq_bars.setOnBandLevelChangeListener(object : EqualizerLayout.OnBandLevelChangeListener {
-            override fun onStartTrackingBandLevel(band: Short, level: Short) {
-                trackingEqualizerBand = true
-            }
-            override fun onBandLevelChange(band: Short, level: Short) {
-                viewModel.onBandLevelChanged(band, level)
-            }
-            override fun onStopTrackingBandLevel(band: Short, level: Short) {
-                trackingEqualizerBand = false
-            }
-        })
-    }
-
     private fun initBassBoostBar() {
         sb_bass_boost.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 viewModel.onBassStrengthChanged(seekBar.progress.toShort())
             }
-            override fun onStartTrackingTouch(seekBar: SeekBar) {
-                trackingBass = true
-            }
-            override fun onStopTrackingTouch(seekBar: SeekBar) {
-                trackingBass = false
-            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar) = Unit
+
+            override fun onStopTrackingTouch(seekBar: SeekBar) = Unit
         })
     }
 
@@ -216,12 +194,10 @@ class AudioFxFragment: BaseFragment(), NoClipping {
             override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
                 viewModel.onVirtStrengthChanged(seekBar.progress.toShort())
             }
-            override fun onStartTrackingTouch(seekBar: SeekBar) {
-                trackingVirtualizer = true
-            }
-            override fun onStopTrackingTouch(seekBar: SeekBar) {
-                trackingVirtualizer = false
-            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar) = Unit
+
+            override fun onStopTrackingTouch(seekBar: SeekBar) = Unit
         })
     }
 
@@ -235,7 +211,7 @@ class AudioFxFragment: BaseFragment(), NoClipping {
         }
 
         btn_save_preset.setOnClickListener {
-            val currentBandLevels = layout_eq_bars.getLevels()
+            val currentBandLevels = equalizer_view.currentLevels
             viewModel.onSavePresetButtonClicked(currentBandLevels)
         }
     }
@@ -266,7 +242,7 @@ class AudioFxFragment: BaseFragment(), NoClipping {
         }
 
         equalizerAvailable.observeNonNull(owner) { available ->
-            layout_eq_bars.visibility = if (available) View.VISIBLE else View.GONE
+            equalizer_view.visibility = if (available) View.VISIBLE else View.GONE
             ll_preset_chooser.visibility = if (available) View.VISIBLE else View.GONE
         }
 
@@ -318,7 +294,8 @@ class AudioFxFragment: BaseFragment(), NoClipping {
         }
 
         bandLevels.observeNonNull(owner) { audioFx ->
-            layout_eq_bars.bindWith(audioFx, true)
+            val equalizerProvider = AudioFxEqualizerProvider(audioFx)
+            equalizer_view.setup(equalizerProvider, true)
         }
 
         presets.observeNonNull(owner) { presets ->

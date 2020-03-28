@@ -19,15 +19,12 @@
         android:layout_height="wrap_content"
         layout="@layout/include_preset_chooser"/>
 
-    <com.frolo.muse.views.equalizer.EqualizerLayout
+    <com.frolo.muse.ui.main.audiofx.eq.EqualizerView
+        android:id="@+id/equalizer_view"
         android:layout_marginTop="28dp"
-        android:visibility="visible"
-        android:id="@+id/layout_eq_bars"
-        android:layout_gravity="center"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="5"
-        android:orientation="horizontal"/>
+        android:layout_weight="5"/>
 
     <include
         android:layout_marginTop="12dp"

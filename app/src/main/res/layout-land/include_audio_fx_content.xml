@@ -13,25 +13,24 @@
         android:layout_width="0dp"
         android:layout_height="match_parent">
 
-        <com.frolo.muse.views.equalizer.EqualizerLayout
+        <com.frolo.muse.ui.main.audiofx.eq.EqualizerView
+            android:id="@+id/equalizer_view"
             android:layout_marginStart="12dp"
             android:layout_marginTop="12dp"
             android:layout_marginEnd="12dp"
             android:layout_marginBottom="4dp"
-            android:visibility="visible"
-            android:id="@+id/layout_eq_bars"
             android:layout_gravity="center"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="7"
-            android:orientation="horizontal">
-        </com.frolo.muse.views.equalizer.EqualizerLayout>
+            android:orientation="horizontal"/>
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="2"
             android:gravity="center">
+
             <com.frolo.muse.views.visualizer.VisualizerView
                 android:id="@+id/visualizer_view"
                 android:layout_width="match_parent"
