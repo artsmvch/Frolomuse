@@ -296,8 +296,10 @@ class AudioFxFragment: BaseFragment(), NoClipping {
                     }
                     .start()
             } else {
-                layout_audio_fx_content.doOnLayout {
-                    val snapshot = Snapshots.make(layout_audio_fx_content)
+                layout_audio_fx_content.doOnLayout { view ->
+                    val backgroundColor: Int =
+                            StyleUtil.readColorAttrValue(view.context, R.attr.colorSurface)
+                    val snapshot = Snapshots.make(view, backgroundColor)
                     Glide.with(this@AudioFxFragment)
                         .load(snapshot)
                         .apply(bitmapTransform(BlurTransformation(5)))
