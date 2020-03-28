@@ -167,7 +167,7 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     kapt 'com.github.bumptech.glide:compiler:4.11.0'
     // Glide transformations
-    implementation 'jp.wasabeef:glide-transformations:3.1.0'
+    implementation 'jp.wasabeef:glide-transformations:4.0.0'
 
     // Sticky headers recycler view
     implementation 'com.timehop.stickyheadersrecyclerview:library:0.4.3@aar'

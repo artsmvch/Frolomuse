@@ -8,29 +8,32 @@ import android.os.Bundle
 import android.view.*
 import android.widget.CompoundButton
 import android.widget.SeekBar
-import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.doOnLayout
 import androidx.lifecycle.LifecycleOwner
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.frolo.muse.R
 import com.frolo.muse.StyleUtil
 import com.frolo.muse.Trace
 import com.frolo.muse.arch.observeNonNull
+import com.frolo.muse.ui.Snapshots
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.base.NoClipping
 import com.frolo.muse.ui.main.audiofx.adapter.PresetAdapter
 import com.frolo.muse.ui.main.audiofx.adapter.PresetReverbAdapter
 import com.frolo.muse.ui.main.audiofx.preset.PresetSavedEvent
-import com.frolo.muse.views.Anim
 import com.frolo.muse.views.equalizer.EqualizerLayout
 import com.frolo.muse.views.observeSelection
 import com.frolo.muse.views.visualizer.SpectrumRenderer
+import jp.wasabeef.glide.transformations.BlurTransformation
 import kotlinx.android.synthetic.main.fragment_audio_fx.*
 import kotlinx.android.synthetic.main.include_audio_fx_content.*
+import kotlinx.android.synthetic.main.include_audio_fx_content_lock.*
 import kotlinx.android.synthetic.main.include_message.*
 import kotlinx.android.synthetic.main.include_preset_chooser.*
 import kotlinx.android.synthetic.main.include_preset_reverb_chooser.*
 import kotlinx.android.synthetic.main.include_seekbar_bass_boost.*
 import kotlinx.android.synthetic.main.include_seekbar_visualizer.*
-import kotlinx.android.synthetic.main.include_toolbar.*
 
 
 class AudioFxFragment: BaseFragment(), NoClipping {
@@ -59,11 +62,6 @@ class AudioFxFragment: BaseFragment(), NoClipping {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -71,11 +69,28 @@ class AudioFxFragment: BaseFragment(), NoClipping {
     ): View = inflater.inflate(R.layout.fragment_audio_fx, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        (activity as? AppCompatActivity)?.apply {
-            setSupportActionBar(tb_actions)
-            supportActionBar?.apply {
-                setTitle(R.string.nav_equalizer)
-                setDisplayShowTitleEnabled(true)
+
+        tb_actions.apply {
+            setTitle(R.string.nav_equalizer)
+
+            inflateMenu(R.menu.fragment_audio_fx)
+
+            menu.findItem(R.id.action_playback_params)?.also { safeMenuItem ->
+                // this option is available only for Android API versions M (Marshmallow) and higher
+                safeMenuItem.isVisible = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+
+                safeMenuItem.setOnMenuItemClickListener {
+                    viewModel.onPlaybackParamsOptionSelected()
+                    true
+                }
+            }
+
+            menu.findItem(R.id.action_switch_audio_fx)?.also { safeMenuItem ->
+                val switchView = safeMenuItem.actionView as CompoundButton
+                switchView.setOnCheckedChangeListener { _, isChecked ->
+                    viewModel.onEnableStatusChanged(isChecked)
+                }
+                enableStatusSwitchView = switchView
             }
         }
 
@@ -98,44 +113,11 @@ class AudioFxFragment: BaseFragment(), NoClipping {
         viewModel.onOpened()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.fragment_audio_fx, menu)
-        menu.findItem(R.id.action_playback_params).also { menuItem ->
-            // this option is visible only for android versions MARSHMALLOW and higher
-            menuItem.isVisible = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-        }
-        menu.findItem(R.id.action_switch_audio_fx).also { menuItem ->
-            val shouldBeEnabled = viewModel.audioFxEnabled.value ?: false
-            val switchView = menuItem.actionView as CompoundButton
-            if (switchView.isChecked != shouldBeEnabled) {
-                switchView.isChecked = shouldBeEnabled
-            }
-            switchView.setOnCheckedChangeListener { _, isChecked ->
-                viewModel.onEnableStatusChanged(isChecked)
-            }
-            enableStatusSwitchView = switchView
-        }
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
-            R.id.action_playback_params -> viewModel.onPlaybackParamsOptionSelected()
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
-    override fun onStop() {
-        super.onStop()
-        layout_audio_fx_hint.visibility = View.GONE
-    }
-
     override fun onDestroyView() {
         visualizer?.also { safeVisualizer ->
-            safeVisualizer.runCatching {
-                release()
-            }.onFailure {
-                Trace.e(it)
-            }
+            safeVisualizer
+                .runCatching { release() }
+                .onFailure { Trace.e(it) }
         }
         visualizer = null
         super.onDestroyView()
@@ -274,14 +256,6 @@ class AudioFxFragment: BaseFragment(), NoClipping {
 
         audioFxAvailable.observeNonNull(owner) { available ->
             if (available) {
-                layout_audio_fx_content.setOnTryTouchingListener {
-                    if (layout_audio_fx_hint.visibility != View.VISIBLE) {
-                        Anim.fadeIn(layout_audio_fx_hint, duration = 300)
-                        runDelayedOnUI({
-                            Anim.fadeOut(layout_audio_fx_hint, 300)
-                        }, 1800)
-                    }
-                }
                 layout_player_placeholder.visibility = View.GONE
             } else {
                 tv_message.setText(R.string.current_playlist_is_empty)
@@ -308,16 +282,36 @@ class AudioFxFragment: BaseFragment(), NoClipping {
         }
 
         audioFxEnabled.observeNonNull(owner) { enabled ->
+            enableStatusSwitchView?.isChecked = enabled
+
             layout_audio_fx_content.isEnabled = enabled
 
-            if (layout_audio_fx_hint.visibility == View.VISIBLE) {
-                Anim.fadeOut(layout_audio_fx_hint)
+            if (enabled) {
+                inc_audio_fx_content_lock.animate()
+                    .alpha(0.0f)
+                    .setDuration(300L)
+                    .withEndAction {
+                        inc_audio_fx_content_lock?.visibility = View.INVISIBLE
+                    }
+                    .start()
+            } else {
+                layout_audio_fx_content.doOnLayout {
+                    val snapshot = Snapshots.make(layout_audio_fx_content)
+                    Glide.with(this@AudioFxFragment)
+                        .load(snapshot)
+                        .transform(BlurTransformation(5))
+                        .transition(DrawableTransitionOptions.withCrossFade(200))
+                        .into(imv_blurred_snapshot)
+                }
+
+                inc_audio_fx_content_lock.animate()
+                    .alpha(1.0f)
+                    .setDuration(300L)
+                    .withStartAction {
+                        inc_audio_fx_content_lock?.visibility = View.VISIBLE
+                    }
+                    .start()
             }
-
-            val toAlpha = if (enabled) 1.0f else 0.3f
-            Anim.alpha(layout_audio_fx_content, toAlpha)
-
-            enableStatusSwitchView?.isChecked = enabled
         }
 
         bandLevels.observeNonNull(owner) { audioFx ->
@@ -381,5 +375,9 @@ class AudioFxFragment: BaseFragment(), NoClipping {
                 safeView.clipToPadding = false
             }
         }
+    }
+
+    private fun setAudioFxEnabledInternal(enabled: Boolean) {
+
     }
 }

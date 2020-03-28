@@ -1,16 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:orientation="vertical"
-        android:gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
 
-        <include layout="@layout/include_toolbar"/>
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/tb_actions"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:minHeight="?attr/actionBarSize"
+            tools:title="Toolbar"
+            tools:subtitle="Subtitle"/>
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -21,14 +28,12 @@
                 android:layout_height="match_parent"
                 layout="@layout/include_audio_fx_content"/>
 
-            <include
-                android:visibility="invisible"
-                android:layout_margin="10dp"
-                android:layout_gravity="top|end"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                layout="@layout/include_audio_fx_hint"
-                android:id="@+id/layout_audio_fx_hint"/>
+            <include layout="@layout/include_audio_fx_content_lock"
+                android:id="@+id/inc_audio_fx_content_lock"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                tools:visibility="visible"/>
         </FrameLayout>
 
     </LinearLayout>
