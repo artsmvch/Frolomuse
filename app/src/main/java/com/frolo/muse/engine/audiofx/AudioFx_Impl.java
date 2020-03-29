@@ -95,9 +95,9 @@ public class AudioFx_Impl implements AudioFxApplicable {
         mHasVirtualizer = hasVirtualizer;
         mHasPresetReverb = hasPresetReverb;
 
-        mPersistence = new AudioFx_Persistence(context, prefsName);
+        mPersistence = AudioFx_Persistence.create(context, prefsName);
 
-        mObserverRegistry = AudioFx_ObserverRegistry.getInstance(context, this);
+        mObserverRegistry = AudioFx_ObserverRegistry.create(context, this);
     }
 
     private void report(Throwable t) {

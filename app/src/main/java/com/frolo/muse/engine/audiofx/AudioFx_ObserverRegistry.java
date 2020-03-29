@@ -16,9 +16,13 @@ import com.frolo.muse.model.reverb.Reverb;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 
+/**
+ * The thread-safe registry for observers of type {@link AudioFxObserver}.
+ * NOTE: All observer methods are called on the main thread.
+ */
 final class AudioFx_ObserverRegistry {
 
-    static AudioFx_ObserverRegistry getInstance(@NonNull Context context, @NonNull AudioFx audioFx) {
+    static AudioFx_ObserverRegistry create(@NonNull Context context, @NonNull AudioFx audioFx) {
         return new AudioFx_ObserverRegistry(context, audioFx);
     }
 
