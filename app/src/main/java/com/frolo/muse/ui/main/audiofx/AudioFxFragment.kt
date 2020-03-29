@@ -21,9 +21,8 @@ import com.frolo.muse.ui.Snapshots
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.base.NoClipping
 import com.frolo.muse.ui.main.audiofx.adapter.PresetAdapter
-import com.frolo.muse.ui.main.audiofx.adapter.PresetReverbAdapter
+import com.frolo.muse.ui.main.audiofx.adapter.ReverbAdapter
 import com.frolo.muse.ui.main.audiofx.preset.PresetSavedEvent
-import com.frolo.muse.views.equalizer.EqualizerLayout
 import com.frolo.muse.views.observeSelection
 import com.frolo.muse.views.visualizer.SpectrumRenderer
 import jp.wasabeef.glide.transformations.BlurTransformation
@@ -218,10 +217,10 @@ class AudioFxFragment: BaseFragment(), NoClipping {
 
     private fun initPresetReverbChooser() {
         sp_preset_reverbs.observeSelection { adapterView, position ->
-            val adapter = adapterView.adapter as? PresetReverbAdapter
+            val adapter = adapterView.adapter as? ReverbAdapter
             if (adapter != null) {
                 val item = adapter.getItem(position)
-                viewModel.onPresetReverbSelected(item.first)
+                viewModel.onReverbSelected(item)
             }
         }
     }
@@ -335,15 +334,13 @@ class AudioFxFragment: BaseFragment(), NoClipping {
             sb_virtualizer.progress = strength.toInt()
         }
 
-        presetReverbs.observeNonNull(owner) { reverbs ->
-            sp_preset_reverbs.adapter = PresetReverbAdapter(reverbs)
-            val position = presetReverbIndex.value.let { index ->
-                reverbs.indexOfFirst { it.first == index }
-            }
-            sp_preset_reverbs.setSelection(position, false)
+        reverbs.observeNonNull(owner) { reverbs ->
+            sp_preset_reverbs.adapter = ReverbAdapter(reverbs)
+            val selection = reverbs.indexOfFirst { it == selectedReverb.value }
+            sp_preset_reverbs.setSelection(selection, false)
         }
 
-        presetReverbIndex.observeNonNull(owner) { index ->
+        selectedReverb.observeNonNull(owner) { index ->
 
         }
     }
@@ -357,7 +354,4 @@ class AudioFxFragment: BaseFragment(), NoClipping {
         }
     }
 
-    private fun setAudioFxEnabledInternal(enabled: Boolean) {
-
-    }
 }

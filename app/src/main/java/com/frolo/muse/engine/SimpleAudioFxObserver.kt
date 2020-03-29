@@ -1,6 +1,7 @@
 package com.frolo.muse.engine
 
 import com.frolo.muse.model.preset.Preset
+import com.frolo.muse.model.reverb.Reverb
 
 
 abstract class SimpleAudioFxObserver: AudioFxObserver {
@@ -16,5 +17,5 @@ abstract class SimpleAudioFxObserver: AudioFxObserver {
 
     override fun onVirtualizerStrengthChanged(audioFx: AudioFx, strength: Short) = Unit
 
-    override fun onPresetReverbUsed(audioFx: AudioFx, presetReverbIndex: Short) = Unit
+    override fun onReverbUsed(audioFx: AudioFx, reverb: Reverb) = Unit
 }

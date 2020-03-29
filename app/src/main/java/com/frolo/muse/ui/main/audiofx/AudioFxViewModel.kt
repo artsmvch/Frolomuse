@@ -8,9 +8,9 @@ import com.frolo.muse.engine.Player
 import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.preset.CustomPreset
-import com.frolo.muse.model.preset.NativePreset
 import com.frolo.muse.model.preset.Preset
 import com.frolo.muse.model.preset.VoidPreset
+import com.frolo.muse.model.reverb.Reverb
 import com.frolo.muse.repository.PresetRepository
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.base.BaseViewModel
@@ -20,12 +20,12 @@ import javax.inject.Inject
 
 
 class AudioFxViewModel @Inject constructor(
-        private val player: Player,
-        private val audioFx: AudioFx,
-        private val schedulerProvider: SchedulerProvider,
-        private val repository: PresetRepository,
-        private val navigator: Navigator,
-        private val eventLogger: EventLogger
+    private val player: Player,
+    private val audioFx: AudioFx,
+    private val schedulerProvider: SchedulerProvider,
+    private val repository: PresetRepository,
+    private val navigator: Navigator,
+    private val eventLogger: EventLogger
 ): BaseViewModel(eventLogger) {
 
     private val voidPreset = repository.voidPreset.blockingGet()
@@ -93,8 +93,8 @@ class AudioFxViewModel @Inject constructor(
         override fun onVirtualizerStrengthChanged(audioFx: AudioFx, strength: Short) {
             _virtStrength.value = strength
         }
-        override fun onPresetReverbUsed(audioFx: AudioFx, presetReverbIndex: Short) {
-            _presetReverbIndex.value = presetReverbIndex
+        override fun onReverbUsed(audioFx: AudioFx, reverb: Reverb) {
+            _selectedReverb.value = reverb
         }
     }
 
@@ -142,11 +142,11 @@ class AudioFxViewModel @Inject constructor(
     private val _virtStrength = MutableLiveData<Short>()
     val virtStrength: LiveData<Short> get() = _virtStrength
 
-    private val _presetReverbs = MutableLiveData<List<Pair<Short, String>>>()
-    val presetReverbs: LiveData<List<Pair<Short, String>>> get() = _presetReverbs
+    private val _reverbs = MutableLiveData<List<Reverb>>()
+    val reverbs: LiveData<List<Reverb>> get() = _reverbs
 
-    private val _presetReverbIndex = MutableLiveData<Short>()
-    val presetReverbIndex: LiveData<Short> get() = _presetReverbIndex
+    private val _selectedReverb = MutableLiveData<Reverb>()
+    val selectedReverb: LiveData<Reverb> get() = _selectedReverb
     //endregion
 
     init {
@@ -156,15 +156,14 @@ class AudioFxViewModel @Inject constructor(
 
     private fun loadPresets() {
         repository.presets
-                .map { customPresets ->
-                    val nativePresets: MutableList<Preset> = (0 until audioFx.getNumberOfPresets())
-                            .map { index -> NativePreset(index.toShort(), audioFx.getPresetName(index.toShort())) }
-                            .toMutableList()
-                    return@map listOf(voidPreset) + nativePresets + customPresets
-                }
-                .subscribeFor(schedulerProvider) { presets ->
-                    _presets.value = presets
-                }
+            .observeOn(schedulerProvider.computation())
+            .map { customPresets ->
+                val nativePresets = audioFx.nativePresets
+                return@map listOf(voidPreset) + nativePresets + customPresets
+            }
+            .subscribeFor(schedulerProvider) { presets ->
+                _presets.value = presets
+            }
     }
 
     fun onOpened() {
@@ -175,17 +174,13 @@ class AudioFxViewModel @Inject constructor(
         _equalizerAvailable.value = audioFx.hasEqualizer()
         _bassBoostAvailable.value = audioFx.hasBassBoost()
         _virtualizerAvailable.value = audioFx.hasVirtualizer()
-        _presetReverbAvailable.value = audioFx.hasPresetReverb()
+        _presetReverbAvailable.value = audioFx.hasPresetReverbEffect()
         // enabled status
         _audioFxEnabled.value = audioFx.isEnabled()
         // equalizer
         _bandLevels.value = audioFx
         // preset
-        _currentPreset.value = when {
-            audioFx.isUsingCustomPreset() -> audioFx.getCurrentCustomPreset()
-            audioFx.isUsingNativePreset() -> audioFx.getCurrentNativePreset()
-            else -> voidPreset
-        }
+        _currentPreset.value = audioFx.currentPreset ?: voidPreset
         // bass
         _bassStrengthRange.value = audioFx.getMinBassStrength() to audioFx.getMaxBassStrength()
         _bassStrength.value = audioFx.getBassStrength()
@@ -193,14 +188,14 @@ class AudioFxViewModel @Inject constructor(
         _virtStrengthRange.value = audioFx.getMinVirtualizerStrength() to audioFx.getMaxVirtualizerStrength()
         _virtStrength.value = audioFx.getVirtualizerStrength()
         // preset reverb
-        _presetReverbs.value = audioFx.getPresetReverbIndexes().map { it to audioFx.getPresetReverbName(it) }
-        _presetReverbIndex.value = audioFx.getCurrentPresetReverb()
+        _reverbs.value = audioFx.reverbs
+        _selectedReverb.value = audioFx.currentReverb
 
         loadPresets()
     }
 
     fun onPresetSaved(preset: CustomPreset) {
-        audioFx.useCustomPreset(preset)
+        audioFx.usePreset(preset)
         loadPresets()
     }
 
@@ -215,22 +210,20 @@ class AudioFxViewModel @Inject constructor(
     }
 
     fun onEnableStatusChanged(enabled: Boolean) {
-        audioFx.setEnabled(enabled)
+        audioFx.isEnabled = enabled
         audioFx.save()
     }
 
     fun onPresetSelected(preset: Preset) {
         when (preset) {
-            is NativePreset -> audioFx.useNativePreset(preset)
-            is CustomPreset -> audioFx.useCustomPreset(preset)
             is VoidPreset -> audioFx.unusePreset()
-            else -> Unit
+            else -> audioFx.usePreset(preset)
         }
         audioFx.save()
     }
 
-    fun onPresetReverbSelected(index: Short) {
-        audioFx.usePresetReverb(index)
+    fun onReverbSelected(item: Reverb) {
+        audioFx.useReverb(item)
         audioFx.save()
     }
 

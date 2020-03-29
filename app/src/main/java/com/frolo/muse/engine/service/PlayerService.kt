@@ -17,6 +17,7 @@ import com.frolo.muse.App
 import com.frolo.muse.R
 import com.frolo.muse.Trace
 import com.frolo.muse.engine.*
+import com.frolo.muse.engine.audiofx.AudioFx_Impl
 import com.frolo.muse.engine.service.PlayerService.Companion.newIntent
 import com.frolo.muse.engine.service.PlayerService.PlayerBinder
 import com.frolo.muse.glide.GlideAlbumArtHelper
@@ -196,7 +197,8 @@ class PlayerService: Service() {
         val eventHandler = Handler(Looper.getMainLooper())
 
         // Creating eq impl
-        val audioFxApplicable = AudioFxImpl(this, presetRepository)
+        val audioFxApplicable: AudioFxApplicable =
+                AudioFx_Impl.getInstance(this, "com.frolo.muse.audiofx.persistence")
 
         val observerRegistry = ObserverRegistry(this) { player, forceNotify ->
             notifyAboutPlayback(forceNotify)

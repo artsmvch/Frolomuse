@@ -2,8 +2,10 @@ package com.frolo.muse.engine.stub
 
 import com.frolo.muse.engine.AudioFx
 import com.frolo.muse.engine.AudioFxObserver
-import com.frolo.muse.model.preset.CustomPreset
 import com.frolo.muse.model.preset.NativePreset
+import com.frolo.muse.model.preset.Preset
+import com.frolo.muse.model.reverb.Reverb
+
 
 object AudioFxStub: AudioFx {
     override fun save() = Unit
@@ -19,21 +21,14 @@ object AudioFxStub: AudioFx {
     override fun getNumberOfBands(): Short = 0
     override fun getBandLevel(band: Short): Short = 0
     override fun setBandLevel(band: Short, level: Short) = Unit
-    override fun getNumberOfPresets(): Short = 0
-    override fun getPresetName(index: Short): String = ""
-    override fun useNativePreset(preset: NativePreset) = Unit
+    override fun getNativePresets(): List<NativePreset> = emptyList()
+    override fun getCurrentPreset(): Preset? = null
     override fun unusePreset() = Unit
-    override fun useCustomPreset(preset: CustomPreset) = Unit
-    override fun isUsingNativePreset(): Boolean = false
-    override fun isUsingCustomPreset(): Boolean = false
-    override fun getCurrentNativePreset(): NativePreset? = null
-    override fun getCurrentCustomPreset(): CustomPreset? = null
-    override fun hasPresetReverb(): Boolean = false
-    override fun getNumberOfPresetReverbs(): Short = 0
-    override fun getPresetReverbIndexes(): ShortArray = shortArrayOf()
-    override fun getPresetReverbName(index: Short): String = ""
-    override fun usePresetReverb(index: Short) = Unit
-    override fun getCurrentPresetReverb(): Short = 0
+    override fun usePreset(preset: Preset?) = Unit
+    override fun hasPresetReverbEffect(): Boolean = false
+    override fun getReverbs(): List<Reverb> = emptyList()
+    override fun getCurrentReverb(): Reverb = Reverb.NONE
+    override fun useReverb(reverb: Reverb?) = Unit
     override fun hasBassBoost(): Boolean = false
     override fun getMinBassStrength(): Short = 0
     override fun getMaxBassStrength(): Short = 0

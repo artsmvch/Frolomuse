@@ -29,7 +29,7 @@ class TestAudioFx: AudioFx {
     override fun isUsingCustomPreset(): Boolean = false
     override fun getCurrentNativePreset(): NativePreset? = null
     override fun getCurrentCustomPreset(): CustomPreset? = null
-    override fun hasPresetReverb(): Boolean = false
+    override fun hasPresetReverbEffect(): Boolean = false
     override fun getNumberOfPresetReverbs(): Short = 0
     override fun getPresetReverbIndexes(): ShortArray = shortArrayOf()
     override fun getPresetReverbName(index: Short): String = ""
