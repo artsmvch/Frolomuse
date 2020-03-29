@@ -8,10 +8,37 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 
+import com.frolo.muse.engine.AudioFx;
+import com.frolo.muse.engine.AudioFxObserver;
+import com.frolo.muse.model.preset.Preset;
+import com.frolo.muse.model.reverb.Reverb;
+
 
 public final class EqualizerView extends LinearLayout {
 
-    private EqualizerProvider equalizerProvider;
+    private AudioFx audioFx;
+
+    private final AudioFxObserver audioFxObserver = new AudioFxObserver() {
+        @Override public void onEnabled(AudioFx audioFx) { }
+
+        @Override public void onDisabled(AudioFx audioFx) { }
+
+        @Override
+        public void onBandLevelChanged(AudioFx audioFx, short band, short level) {
+            if (band >= 0 && band < getChildCount()) {
+                DbSlider slider = (DbSlider) getChildAt(band);
+                slider.setValue(level);
+            }
+        }
+
+        @Override public void onPresetUsed(AudioFx audioFx, Preset preset) { }
+
+        @Override public void onBassStrengthChanged(AudioFx audioFx, short strength) { }
+
+        @Override public void onVirtualizerStrengthChanged(AudioFx audioFx, short strength) { }
+
+        @Override public void onReverbUsed(AudioFx audioFx, Reverb reverb) { }
+    };
 
     public EqualizerView(Context context) {
         this(context, null);
@@ -54,39 +81,51 @@ public final class EqualizerView extends LinearLayout {
     }
 
     /**
-     * Setups the view with the given <code>provider</code>.
-     * @param provider equalizer provider
+     * Setups the view with the given <code>audioFx</code>.
+     * @param audioFx to bind with
      */
-    public void setup(@Nullable EqualizerProvider provider) {
-        setup(provider, true);
+    public void setup(@Nullable AudioFx audioFx) {
+        setup(audioFx, true);
     }
 
     /**
-     * Setups the view with the given <code>provider</code>.
-     * @param provider equalizer provider
+     * Setups the view with the given <code>audioFx</code>.
+     * @param audioFx to bind with
      * @param animate if true, then the changes will be animated
      */
-    public void setup(@Nullable EqualizerProvider provider, boolean animate) {
-        this.equalizerProvider = provider;
+    public void setup(@Nullable AudioFx audioFx, boolean animate) {
+        AudioFx oldAudioFx = this.audioFx;
+        if (oldAudioFx != null) {
+            oldAudioFx.unregisterObserver(audioFxObserver);
+        }
 
-        if (provider == null) {
-            // No provider - no sliders
+        this.audioFx = audioFx;
+
+        if (audioFx == null) {
+            // No AudioFx - no sliders
             removeAllViews();
             return;
         }
 
+        if (isAttachedToWindow()) {
+            audioFx.registerObserver(audioFxObserver);
+        }
+
         final ViewGroup container = this;
 
-        final int numberOfBands = provider.getNumberOfBands();
+        final int numberOfBands = audioFx.getNumberOfBands();
 
-        final int minBandLevel = provider.getMinBandLevel();
-        final int maxBandLevel = provider.getMaxBandLevel();
+        final int minBandLevel = audioFx.getMinBandLevelRange();
+        final int maxBandLevel = audioFx.getMaxBandLevelRange();
 
         int addedBandCount = 0;
-        for (int bandIndex = 0; bandIndex < numberOfBands; bandIndex++) {
+        for (short bandIndex = 0; bandIndex < numberOfBands; bandIndex++) {
 
-            final DbRange dbRange = provider.getDbRange(bandIndex);
-            final int currentValue = provider.getBandLevel(bandIndex);
+            //final DbRange dbRange = audioFx.getDbRange(bandIndex);
+//            int[] arr = audioFx.getBandFreqRange(bandIndex.toShort())
+//            int min = arr.getOrNull(0) ?: 0
+//            int max = arr.getOrNull(1) ?: 0
+            final int currentValue = audioFx.getBandLevel(bandIndex);
 
             final DbSlider slider;
             if (bandIndex >= container.getChildCount())  {
@@ -136,13 +175,40 @@ public final class EqualizerView extends LinearLayout {
     }
 
     private void setBandLevelInternal(int bandIndex, int level) {
-        EqualizerProvider provider = equalizerProvider;
-        if (provider != null) {
-            final int numberOfBands = provider.getNumberOfBands();
+        AudioFx audioFx = this.audioFx;
+        if (audioFx != null) {
+            final int numberOfBands = audioFx.getNumberOfBands();
             if (bandIndex >= 0 && bandIndex < numberOfBands) {
-                provider.setBandLevel(bandIndex, (short) level);
+                audioFx.setBandLevel((short) bandIndex, (short) level);
             }
         }
     }
 
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+
+        AudioFx currAudioFx = this.audioFx;
+        if (currAudioFx != null) {
+            currAudioFx.registerObserver(audioFxObserver);
+
+            final int numberOfBands = audioFx.getNumberOfBands();
+            final int viewChildCount = getChildCount();
+            // Actually, numberOfBands must be equal viewChildCount
+            for (short i = 0; i < Math.min(numberOfBands, viewChildCount); i++) {
+                DbSlider slider = (DbSlider) getChildAt(i);
+                slider.setValue(audioFx.getBandLevel(i));
+            }
+        }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+
+        AudioFx currAudioFx = this.audioFx;
+        if (currAudioFx != null) {
+            currAudioFx.unregisterObserver(audioFxObserver);
+        }
+    }
 }

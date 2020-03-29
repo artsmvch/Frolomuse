@@ -311,10 +311,58 @@ public class AudioFx_Impl implements AudioFxApplicable {
     @Override
     public void usePreset(Preset preset) {
         if (preset instanceof NativePreset) {
+            int eqUseFlag = mPersistence.getEqUseFlag();
+            NativePreset lastPreset = mPersistence.getLastNativePreset();
+            if (eqUseFlag == AudioFx_Persistence.FLAG_EQ_USE_NATIVE_PRESET
+                    && Objects.equals(preset, lastPreset)) {
+                // No changes
+                return;
+            }
+
+            try {
+                Equalizer equalizer = mEqualizer;
+                if (equalizer != null) {
+                    short presetIndex = ((NativePreset) preset).getIndex();
+                    equalizer.usePreset(presetIndex);
+
+                    int numberOfBands = equalizer.getNumberOfBands();
+                    for (short band = 0; band < numberOfBands; band++) {
+                        mObserverRegistry.dispatchBandLevelChanged(band, equalizer.getBandLevel(band));
+                    }
+                }
+            } catch (Throwable t) {
+                report(t);
+            }
+
             mPersistence.saveEqUseFlag(AudioFx_Persistence.FLAG_EQ_USE_NATIVE_PRESET);
             mPersistence.saveLastNativePreset((NativePreset) preset);
             mObserverRegistry.dispatchPresetUsed(preset);
         } else if (preset instanceof CustomPreset) {
+
+            int eqUseFlag = mPersistence.getEqUseFlag();
+            CustomPreset lastPreset = mPersistence.getLastCustomPreset();
+            if (eqUseFlag == AudioFx_Persistence.FLAG_EQ_USE_CUSTOM_PRESET
+                    && Objects.equals(preset, lastPreset)) {
+                // No changes
+                return;
+            }
+
+            try {
+                Equalizer equalizer = mEqualizer;
+                if (equalizer != null) {
+                    short[] levels = ((CustomPreset) preset).getLevels();
+
+                    int numberOfBands = equalizer.getNumberOfBands();
+                    int levelCount = levels != null ? levels.length : 0;
+                    for (short band = 0; band < Math.min(numberOfBands, levelCount); band++) {
+                        equalizer.setBandLevel(band, levels[band]);
+                        mObserverRegistry.dispatchBandLevelChanged(band, levels[band]);
+                    }
+                }
+            } catch (Throwable t) {
+                report(t);
+            }
+
             mPersistence.saveEqUseFlag(AudioFx_Persistence.FLAG_EQ_USE_CUSTOM_PRESET);
             mPersistence.saveLastCustomPreset((CustomPreset) preset);
             mObserverRegistry.dispatchPresetUsed(preset);

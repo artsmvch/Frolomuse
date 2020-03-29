@@ -293,8 +293,7 @@ class AudioFxFragment: BaseFragment(), NoClipping {
         }
 
         bandLevels.observeNonNull(owner) { audioFx ->
-            val equalizerProvider = AudioFxEqualizerProvider(audioFx)
-            equalizer_view.setup(equalizerProvider, true)
+            equalizer_view.setup(audioFx, true)
         }
 
         presets.observeNonNull(owner) { presets ->

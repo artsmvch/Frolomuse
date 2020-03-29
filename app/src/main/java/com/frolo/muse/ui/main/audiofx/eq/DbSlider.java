@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.animation.Interpolator;
 import android.widget.LinearLayout;
@@ -27,6 +28,8 @@ import com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBar;
 public final class DbSlider extends LinearLayout {
 
     private static final boolean DEBUG = BuildConfig.DEBUG;
+
+    private static final String LOG_TAG = "DbSlider";
 
     private static final long PROGRESS_ANIM_DURATION = 150L;
     private static final Interpolator sProgressAnimInterpolator =
@@ -54,6 +57,7 @@ public final class DbSlider extends LinearLayout {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 int newValue = mMinValue + progress;
+                if (DEBUG) Log.d(LOG_TAG, "User changed the value to " + newValue);
                 DbSlider.this.setValueInternal(newValue, false, fromUser);
             }
 
@@ -140,10 +144,12 @@ public final class DbSlider extends LinearLayout {
     private void setValueInternal(int value, boolean animate, boolean fromUser) {
         int newValue = clamp(mMinValue, mMaxValue, value);
         final int currValue = getValue();
-        if (newValue == currValue) {
+        if (newValue == currValue && !fromUser) {
             // No actions required
             return;
         }
+
+        if (DEBUG) Log.d(LOG_TAG, "Setting the value internal: new_value=" + newValue);
 
         // Clear the previous animation, if any
         if (mProgressAnim != null) {

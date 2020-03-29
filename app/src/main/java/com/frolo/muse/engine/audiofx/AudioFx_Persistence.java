@@ -185,7 +185,7 @@ final class AudioFx_Persistence {
     synchronized void saveReverb(Reverb reverb) {
         checkStateRestored();
         mReverb = reverb;
-        // TODO: persist changes in the preferences
+        mPrefs.edit().putInt(KEY_REVERB, Serialization.trySerializeReverb(reverb)).apply();
     }
 
     synchronized void save() {
@@ -205,5 +205,11 @@ final class AudioFx_Persistence {
         editor.putInt(KEY_REVERB, Serialization.trySerializeReverb(mReverb));
 
         editor.apply();
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        save();
+        super.finalize();
     }
 }
