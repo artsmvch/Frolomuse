@@ -94,9 +94,17 @@ class AudioFxFragment: BaseFragment(), NoClipping {
 
         initPresetReverbChooser()
 
-        initBassBoostBar()
+        slider_bass_boost.addOnChangeListener { _, value, fromUser ->
+            if (fromUser) {
+                viewModel.onBassStrengthChanged(value.toShort())
+            }
+        }
 
-        initVirtualizer()
+        slider_virtualizer.addOnChangeListener { _, value, fromUser ->
+            if (fromUser) {
+                viewModel.onVirtStrengthChanged(value.toShort())
+            }
+        }
 
         initVisualizer()
     }
@@ -174,30 +182,6 @@ class AudioFxFragment: BaseFragment(), NoClipping {
             btn_show_visualizer.visibility = View.GONE
             showWaveForm()
         }
-    }
-
-    private fun initBassBoostBar() {
-        sb_bass_boost.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                viewModel.onBassStrengthChanged(seekBar.progress.toShort())
-            }
-
-            override fun onStartTrackingTouch(seekBar: SeekBar) = Unit
-
-            override fun onStopTrackingTouch(seekBar: SeekBar) = Unit
-        })
-    }
-
-    private fun initVirtualizer() {
-        sb_virtualizer.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                viewModel.onVirtStrengthChanged(seekBar.progress.toShort())
-            }
-
-            override fun onStartTrackingTouch(seekBar: SeekBar) = Unit
-
-            override fun onStopTrackingTouch(seekBar: SeekBar) = Unit
-        })
     }
 
     private fun initPresetChooser() {
@@ -318,19 +302,21 @@ class AudioFxFragment: BaseFragment(), NoClipping {
         }
 
         bassStrengthRange.observeNonNull(owner) { range ->
-            sb_bass_boost.max = range.second.toInt()
+            slider_bass_boost.valueFrom = range.min.toFloat()
+            slider_bass_boost.valueTo = range.max.toFloat()
         }
 
         bassStrength.observeNonNull(owner) { strength ->
-            sb_bass_boost.progress = strength.toInt()
+            slider_bass_boost.value = strength.toFloat()
         }
 
         virtStrengthRange.observeNonNull(owner) { range ->
-            sb_virtualizer.max = range.second.toInt()
+            slider_virtualizer.valueFrom = range.min.toFloat()
+            slider_virtualizer.valueTo = range.max.toFloat()
         }
 
         virtStrength.observeNonNull(owner) { strength ->
-            sb_virtualizer.progress = strength.toInt()
+            slider_virtualizer.value = strength.toFloat()
         }
 
         reverbs.observeNonNull(owner) { reverbs ->

@@ -7,6 +7,7 @@ import com.frolo.muse.engine.AudioFxObserver
 import com.frolo.muse.engine.Player
 import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.logger.EventLogger
+import com.frolo.muse.model.ShortRange
 import com.frolo.muse.model.preset.CustomPreset
 import com.frolo.muse.model.preset.Preset
 import com.frolo.muse.model.preset.VoidPreset
@@ -19,6 +20,7 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 
+// TODO: check on which schedulers are all rx sources subscribed in here
 class AudioFxViewModel @Inject constructor(
     private val player: Player,
     private val audioFx: AudioFx,
@@ -30,46 +32,31 @@ class AudioFxViewModel @Inject constructor(
 
     private val voidPreset = repository.voidPreset.blockingGet()
 
-    // Publishers
-    private val bandLevelPublisher: PublishProcessor<Pair<Short, Short>> by lazy {
-        PublishProcessor.create<Pair<Short, Short>>().also { publisher ->
-            publisher
-                    .debounce(300, TimeUnit.MILLISECONDS)
-                    .onBackpressureLatest()
-                    .subscribeOn(schedulerProvider.worker())
-                    .observeOn(schedulerProvider.main())
-                    .subscribeFor { pair ->
-                        audioFx.setBandLevel(pair.first, pair.second)
-                        audioFx.save()
-                    }
-        }
-    }
-
     private val bassBoostPublisher: PublishProcessor<Short> by lazy {
         PublishProcessor.create<Short>().also { publisher ->
             publisher
-                    .debounce(200, TimeUnit.MILLISECONDS)
-                    .onBackpressureLatest()
-                    .subscribeOn(schedulerProvider.worker())
-                    .observeOn(schedulerProvider.main())
-                    .subscribeFor { value ->
-                        audioFx.setBassStrength(value)
-                        audioFx.save()
-                    }
+                .debounce(200, TimeUnit.MILLISECONDS)
+                .onBackpressureLatest()
+                .subscribeOn(schedulerProvider.worker())
+                .observeOn(schedulerProvider.main())
+                .subscribeFor { value ->
+                    audioFx.bassStrength = value
+                    audioFx.save()
+                }
         }
     }
 
     private val virtualizerPublisher: PublishProcessor<Short> by lazy {
         PublishProcessor.create<Short>().also { publisher ->
             publisher
-                    .debounce(200, TimeUnit.MILLISECONDS)
-                    .onBackpressureLatest()
-                    .subscribeOn(schedulerProvider.worker())
-                    .observeOn(schedulerProvider.main())
-                    .subscribeFor { value ->
-                        audioFx.setVirtualizerStrength(value)
-                        audioFx.save()
-                    }
+                .debounce(200, TimeUnit.MILLISECONDS)
+                .onBackpressureLatest()
+                .subscribeOn(schedulerProvider.worker())
+                .observeOn(schedulerProvider.main())
+                .subscribeFor { value ->
+                    audioFx.virtualizerStrength = value
+                    audioFx.save()
+                }
         }
     }
 
@@ -130,14 +117,14 @@ class AudioFxViewModel @Inject constructor(
     private val _currentPreset = MutableLiveData<Preset>()
     val currentPreset: LiveData<Preset> get() = _currentPreset
 
-    private val _bassStrengthRange = MutableLiveData<Pair<Short, Short>>()
-    val bassStrengthRange: LiveData<Pair<Short, Short>> get() = _bassStrengthRange
+    private val _bassStrengthRange = MutableLiveData<ShortRange>()
+    val bassStrengthRange: LiveData<ShortRange> get() = _bassStrengthRange
 
     private val _bassStrength = MutableLiveData<Short>()
     val bassStrength: LiveData<Short> get() = _bassStrength
 
-    private val _virtStrengthRange = MutableLiveData<Pair<Short, Short>>()
-    val virtStrengthRange: LiveData<Pair<Short, Short>> get() = _virtStrengthRange
+    private val _virtStrengthRange = MutableLiveData<ShortRange>()
+    val virtStrengthRange: LiveData<ShortRange> get() = _virtStrengthRange
 
     private val _virtStrength = MutableLiveData<Short>()
     val virtStrength: LiveData<Short> get() = _virtStrength
@@ -156,6 +143,7 @@ class AudioFxViewModel @Inject constructor(
 
     private fun loadPresets() {
         repository.presets
+            .subscribeOn(schedulerProvider.worker())
             .observeOn(schedulerProvider.computation())
             .map { customPresets ->
                 val nativePresets = audioFx.nativePresets
@@ -176,17 +164,19 @@ class AudioFxViewModel @Inject constructor(
         _virtualizerAvailable.value = audioFx.hasVirtualizer()
         _presetReverbAvailable.value = audioFx.hasPresetReverbEffect()
         // enabled status
-        _audioFxEnabled.value = audioFx.isEnabled()
+        _audioFxEnabled.value = audioFx.isEnabled
         // equalizer
         _bandLevels.value = audioFx
         // preset
         _currentPreset.value = audioFx.currentPreset ?: voidPreset
         // bass
-        _bassStrengthRange.value = audioFx.getMinBassStrength() to audioFx.getMaxBassStrength()
-        _bassStrength.value = audioFx.getBassStrength()
+        _bassStrengthRange.value =
+                ShortRange.of(audioFx.minBassStrength, audioFx.maxBassStrength)
+        _bassStrength.value = audioFx.bassStrength
         // virt
-        _virtStrengthRange.value = audioFx.getMinVirtualizerStrength() to audioFx.getMaxVirtualizerStrength()
-        _virtStrength.value = audioFx.getVirtualizerStrength()
+        _virtStrengthRange.value =
+                ShortRange.of(audioFx.minVirtualizerStrength, audioFx.maxVirtualizerStrength)
+        _virtStrength.value = audioFx.virtualizerStrength
         // preset reverb
         _reverbs.value = audioFx.reverbs
         _selectedReverb.value = audioFx.currentReverb
@@ -201,17 +191,16 @@ class AudioFxViewModel @Inject constructor(
 
     fun onDeletePresetClicked(preset: CustomPreset) {
         repository.delete(preset)
-                .doOnComplete {
-                    audioFx.unusePreset()
-                    loadPresets()
-                }
-                .subscribeFor(schedulerProvider) {
-                }
+            .subscribeOn(schedulerProvider.worker())
+            .observeOn(schedulerProvider.main())
+            .subscribeFor(schedulerProvider) {
+                audioFx.unusePreset()
+                loadPresets()
+            }
     }
 
     fun onEnableStatusChanged(enabled: Boolean) {
         audioFx.isEnabled = enabled
-        audioFx.save()
     }
 
     fun onPresetSelected(preset: Preset) {
@@ -219,27 +208,18 @@ class AudioFxViewModel @Inject constructor(
             is VoidPreset -> audioFx.unusePreset()
             else -> audioFx.usePreset(preset)
         }
-        audioFx.save()
     }
 
     fun onReverbSelected(item: Reverb) {
         audioFx.useReverb(item)
-        audioFx.save()
-    }
-
-    fun onBandLevelChanged(band: Short, level: Short) {
-        bandLevelPublisher.onNext(Pair(band, level))
-        audioFx.save()
     }
 
     fun onBassStrengthChanged(strength: Short) {
         bassBoostPublisher.onNext(strength)
-        audioFx.save()
     }
 
     fun onVirtStrengthChanged(strength: Short) {
         virtualizerPublisher.onNext(strength)
-        audioFx.save()
     }
 
     fun onPlaybackParamsOptionSelected() {
