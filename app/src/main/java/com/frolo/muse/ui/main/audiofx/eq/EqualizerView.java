@@ -1,11 +1,15 @@
 package com.frolo.muse.ui.main.audiofx.eq;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.frolo.muse.engine.AudioFx;
@@ -15,6 +19,36 @@ import com.frolo.muse.model.reverb.Reverb;
 
 
 public final class EqualizerView extends LinearLayout {
+
+    private static final long DEBOUNCE_SET_BAND_LEVEL = 300L;
+
+    /**
+     * Special handler for delaying band level setting.
+     * {@link Message#what} is used as band index.
+     * {@link Message#arg1} is used as level value.
+     */
+    private class EqHandler extends Handler {
+
+        EqHandler(Looper looper) {
+            super(looper);
+        }
+
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            final short band = (short) msg.what;
+            final short level = (short) msg.arg1;
+
+            AudioFx audioFx = EqualizerView.this.audioFx;
+            if (audioFx != null) {
+                final int numberOfBands = audioFx.getNumberOfBands();
+                if (band >= 0 && band < numberOfBands) {
+                    audioFx.setBandLevel(band, level);
+                }
+            }
+        }
+    }
+
+    private final EqHandler handler;
 
     private AudioFx audioFx;
 
@@ -52,6 +86,8 @@ public final class EqualizerView extends LinearLayout {
         super(context, attrs, defStyleAttr);
 
         super.setOrientation(HORIZONTAL);
+
+        handler = new EqHandler(context.getMainLooper());
     }
 
     /**
@@ -175,13 +211,9 @@ public final class EqualizerView extends LinearLayout {
     }
 
     private void setBandLevelInternal(int bandIndex, int level) {
-        AudioFx audioFx = this.audioFx;
-        if (audioFx != null) {
-            final int numberOfBands = audioFx.getNumberOfBands();
-            if (bandIndex >= 0 && bandIndex < numberOfBands) {
-                audioFx.setBandLevel((short) bandIndex, (short) level);
-            }
-        }
+        handler.removeMessages(bandIndex);
+        Message message = handler.obtainMessage(bandIndex, level, 0);
+        handler.sendMessageDelayed(message, DEBOUNCE_SET_BAND_LEVEL);
     }
 
     @Override
@@ -210,5 +242,7 @@ public final class EqualizerView extends LinearLayout {
         if (currAudioFx != null) {
             currAudioFx.unregisterObserver(audioFxObserver);
         }
+
+        handler.removeCallbacksAndMessages(null);
     }
 }
