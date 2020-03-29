@@ -290,7 +290,7 @@ public class AudioFx_Impl implements AudioFxApplicable {
             return presets;
         } catch (Throwable t) {
             report(t);
-            return new ArrayList<>();
+            return new ArrayList<>(0);
         }
     }
 
