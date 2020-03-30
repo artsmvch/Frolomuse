@@ -145,32 +145,8 @@ class AudioFxFragment: BaseFragment(), NoClipping {
         super.onDetach()
     }
 
-    private fun resolveVisualizerRendererType(type: VisualizerRendererType) {
-        val renderer = when(type) {
-            VisualizerRendererType.CIRCLE -> CircleSpectrumRenderer()
-            VisualizerRendererType.CIRCLE_SPECTRUM -> CircleSpectrumRenderer()
-            VisualizerRendererType.LINE -> LineRenderer()
-            VisualizerRendererType.LINE_SPECTRUM -> LineSpectrumRenderer()
-            VisualizerRendererType.SPECTRUM -> SpectrumRenderer()
-        }
-
-        val context = visualizer_view.context
-        //val extinctColor = ContextCompat.getColor(context, R.color.ghost)
-        val gainedColor = StyleUtil.getVisualizerColor(context)
-
-        visualizer_view.renderer = renderer.apply { color = gainedColor }
-    }
-
     private fun showWaveForm() {
         visualizer_view.visibility = View.VISIBLE
-
-        val context = visualizer_view.context
-        //val extinctColor = ContextCompat.getColor(context, R.color.ghost)
-        val gainedColor = StyleUtil.getVisualizerColor(context)
-
-        visualizer_view.renderer = SpectrumRenderer().apply {
-            color = gainedColor
-        }
 
         runCatching {
             if (visualizer == null) {
@@ -382,7 +358,18 @@ class AudioFxFragment: BaseFragment(), NoClipping {
         }
 
         visualizerRendererType.observeNonNull(owner) { type ->
-            resolveVisualizerRendererType(type)
+            val renderer = when(type) {
+                VisualizerRendererType.CIRCLE -> CircleSpectrumRenderer()
+                VisualizerRendererType.CIRCLE_SPECTRUM -> CircleSpectrumRenderer()
+                VisualizerRendererType.LINE -> LineRenderer()
+                VisualizerRendererType.LINE_SPECTRUM -> LineSpectrumRenderer()
+                VisualizerRendererType.SPECTRUM -> SpectrumRenderer()
+                else -> null
+            }
+
+            visualizer_view.renderer = renderer?.apply {
+                color = StyleUtil.getVisualizerColor(visualizer_view.context)
+            }
         }
 
         selectVisualizerRendererTypeEvent.observeNonNull(owner) { currSelectedType ->
