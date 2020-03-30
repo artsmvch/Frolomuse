@@ -13,6 +13,8 @@ class VisualizerRendererTypeAdapter constructor(
     private val types: Array<VisualizerRendererType>
 ): BaseAdapter() {
 
+    fun indexOf(item: VisualizerRendererType) = types.indexOf(item)
+
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val textView = if (convertView != null) convertView as TextView
         else {

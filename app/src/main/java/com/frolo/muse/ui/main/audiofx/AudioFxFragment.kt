@@ -370,6 +370,16 @@ class AudioFxFragment: BaseFragment(), NoClipping {
             visualizer_view.renderer = renderer?.apply {
                 color = StyleUtil.getVisualizerColor(visualizer_view.context)
             }
+
+            val adapter = spinner_visualizer_renderer_type.adapter as? VisualizerRendererTypeAdapter
+            if (adapter != null) {
+                val position = adapter.indexOf(type)
+                if (position >= 0 && position < adapter.count) {
+                    spinner_visualizer_renderer_type.setSelection(position)
+                }
+            }
+
+            spinner_visualizer_renderer_type.setTag(R.id.tag_spinner_selected_item, type)
         }
 
         selectVisualizerRendererTypeEvent.observeNonNull(owner) { currSelectedType ->
