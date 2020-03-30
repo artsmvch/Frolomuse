@@ -7,7 +7,6 @@ import android.os.Build
 import android.os.Bundle
 import android.view.*
 import android.widget.CompoundButton
-import android.widget.SeekBar
 import androidx.core.view.doOnLayout
 import androidx.lifecycle.LifecycleOwner
 import com.bumptech.glide.Glide
@@ -17,6 +16,8 @@ import com.frolo.muse.StyleUtil
 import com.frolo.muse.Trace
 import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.glide.GlideOptions.bitmapTransform
+import com.frolo.muse.model.preset.Preset
+import com.frolo.muse.model.reverb.Reverb
 import com.frolo.muse.ui.Snapshots
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.base.NoClipping
@@ -200,7 +201,7 @@ class AudioFxFragment: BaseFragment(), NoClipping {
     }
 
     private fun initPresetReverbChooser() {
-        sp_preset_reverbs.observeSelection { adapterView, position ->
+        sp_reverbs.observeSelection { adapterView, position ->
             val adapter = adapterView.adapter as? ReverbAdapter
             if (adapter != null) {
                 val item = adapter.getItem(position)
@@ -284,10 +285,15 @@ class AudioFxFragment: BaseFragment(), NoClipping {
             val adapter = PresetAdapter(presets) { item ->
                 onDeletePresetClicked(item)
             }
+
             sp_presets.adapter = adapter
-            val position = viewModel.currentPreset.value?.let { adapter.indexOf(it) } ?: -1
-            if (position >= 0 && position < adapter.count) {
-                sp_presets.setSelection(position, false)
+
+            val selectedItem = sp_presets.getTag(R.id.tag_spinner_selected_item) as? Preset
+
+            val selectedItemPosition = presets.indexOfFirst { it == selectedItem }
+
+            if (selectedItemPosition >= 0 && selectedItemPosition < adapter.count) {
+                sp_presets.setSelection(selectedItemPosition, false)
             }
         }
 
@@ -299,6 +305,7 @@ class AudioFxFragment: BaseFragment(), NoClipping {
                     sp_presets.setSelection(position, false)
                 }
             }
+            sp_presets.setTag(R.id.tag_spinner_selected_item, preset)
         }
 
         bassStrengthRange.observeNonNull(owner) { range ->
@@ -320,13 +327,28 @@ class AudioFxFragment: BaseFragment(), NoClipping {
         }
 
         reverbs.observeNonNull(owner) { reverbs ->
-            sp_preset_reverbs.adapter = ReverbAdapter(reverbs)
-            val selection = reverbs.indexOfFirst { it == selectedReverb.value }
-            sp_preset_reverbs.setSelection(selection, false)
+            val adapter = ReverbAdapter(reverbs)
+
+            sp_reverbs.adapter = adapter
+
+            val selectedItem = sp_reverbs.getTag(R.id.tag_spinner_selected_item) as? Reverb
+
+            val selectedItemPosition = reverbs.indexOfFirst { it == selectedItem }
+
+            if (selectedItemPosition >= 0 && selectedItemPosition < adapter.count) {
+                sp_reverbs.setSelection(selectedItemPosition, false)
+            }
         }
 
-        selectedReverb.observeNonNull(owner) { index ->
-
+        selectedReverb.observeNonNull(owner) { reverb ->
+            val adapter = sp_reverbs.adapter as? ReverbAdapter
+            if (adapter != null) {
+                val position = adapter.indexOf(reverb)
+                if (position >= 0 && position < adapter.count) {
+                    sp_reverbs.setSelection(position, false)
+                }
+            }
+            sp_reverbs.setTag(R.id.tag_spinner_selected_item, reverb)
         }
     }
 

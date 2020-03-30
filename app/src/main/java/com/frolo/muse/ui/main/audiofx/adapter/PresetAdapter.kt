@@ -1,6 +1,5 @@
 package com.frolo.muse.ui.main.audiofx.adapter
 
-
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,8 +15,8 @@ import java.lang.ref.WeakReference
 
 
 class PresetAdapter constructor(
-        private val presets: List<Preset>,
-        onRemoveItem: ((item: CustomPreset) -> Unit)? = null
+    private val presets: List<Preset>,
+    onRemoveItem: ((item: CustomPreset) -> Unit)? = null
 ) : BaseAdapter() {
 
     private val onRemoveItemListener = WeakReference(onRemoveItem)
@@ -54,23 +53,21 @@ class PresetAdapter constructor(
         }
     }
 
-    private fun bindView(itemView: View, preset: Preset) {
-        itemView.apply {
-            val name = preset.name
-            if (preset is NativePreset) {
-                imv_preset_icon.setImageResource(getDrawableIdForPreset(name))
-                tv_preset_name.setText(getStringIdForPreset(name))
-            } else {
-                imv_preset_icon.setImageDrawable(null)
-                tv_preset_name.text = name
-            }
-            btn_remove?.apply {
-                visibility = if (preset is CustomPreset) View.VISIBLE else View.GONE
-                setOnClickListener {
-                    (preset as? CustomPreset)?.let { item ->
-                        onRemoveItemListener.get()?.let { onRemoveItem ->
-                            onRemoveItem(item)
-                        }
+    private fun bindView(itemView: View, preset: Preset) = itemView.apply {
+        val name = preset.name
+        if (preset is NativePreset) {
+            imv_preset_icon.setImageResource(getDrawableIdForPreset(name))
+            tv_preset_name.setText(getStringIdForPreset(name))
+        } else {
+            imv_preset_icon.setImageDrawable(null)
+            tv_preset_name.text = name
+        }
+        btn_remove?.apply {
+            visibility = if (preset is CustomPreset) View.VISIBLE else View.GONE
+            setOnClickListener {
+                (preset as? CustomPreset)?.let { item ->
+                    onRemoveItemListener.get()?.let { onRemoveItem ->
+                        onRemoveItem(item)
                     }
                 }
             }

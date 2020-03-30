@@ -15,6 +15,8 @@ class ReverbAdapter constructor(
     private val reverbs: List<Reverb>
 ) : BaseAdapter() {
 
+    fun indexOf(item: Reverb) = reverbs.indexOf(item)
+
     private fun Reverb.getName(context: Context): String {
         @StringRes val stringResId: Int = when (this) {
             Reverb.NONE -> R.string.preset_reverb_none

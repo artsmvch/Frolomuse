@@ -16,7 +16,7 @@
         android:text="@string/preset_reverb"/>
 
     <androidx.appcompat.widget.AppCompatSpinner
-        android:id="@+id/sp_preset_reverbs"
+        android:id="@+id/sp_reverbs"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"/>
