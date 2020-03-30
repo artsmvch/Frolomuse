@@ -16,6 +16,7 @@ import com.frolo.muse.StyleUtil
 import com.frolo.muse.Trace
 import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.glide.GlideOptions.bitmapTransform
+import com.frolo.muse.model.VisualizerRendererType
 import com.frolo.muse.model.preset.Preset
 import com.frolo.muse.model.reverb.Reverb
 import com.frolo.muse.ui.Snapshots
@@ -24,7 +25,11 @@ import com.frolo.muse.ui.base.NoClipping
 import com.frolo.muse.ui.main.audiofx.adapter.PresetAdapter
 import com.frolo.muse.ui.main.audiofx.adapter.ReverbAdapter
 import com.frolo.muse.ui.main.audiofx.preset.PresetSavedEvent
+import com.frolo.muse.ui.main.audiofx.vrt.VisualizerRendererTypeAdapter
 import com.frolo.muse.views.observeSelection
+import com.frolo.muse.views.visualizer.CircleSpectrumRenderer
+import com.frolo.muse.views.visualizer.LineRenderer
+import com.frolo.muse.views.visualizer.LineSpectrumRenderer
 import com.frolo.muse.views.visualizer.SpectrumRenderer
 import jp.wasabeef.glide.transformations.BlurTransformation
 import kotlinx.android.synthetic.main.fragment_audio_fx.*
@@ -107,6 +112,15 @@ class AudioFxFragment: BaseFragment(), NoClipping {
             }
         }
 
+        spinner_visualizer_renderer_type.adapter =
+                VisualizerRendererTypeAdapter(VisualizerRendererType.values())
+        spinner_visualizer_renderer_type.observeSelection { adapterView, position ->
+            (adapterView.adapter as? VisualizerRendererTypeAdapter)?.also { adapter ->
+                val selectedItem = adapter.getItem(position)
+                viewModel.onVisualizerRendererTypeSelected(selectedItem)
+            }
+        }
+
         initVisualizer()
     }
 
@@ -129,6 +143,22 @@ class AudioFxFragment: BaseFragment(), NoClipping {
     override fun onDetach() {
         presetSaveEvent.unregister(requireContext())
         super.onDetach()
+    }
+
+    private fun resolveVisualizerRendererType(type: VisualizerRendererType) {
+        val renderer = when(type) {
+            VisualizerRendererType.CIRCLE -> CircleSpectrumRenderer()
+            VisualizerRendererType.CIRCLE_SPECTRUM -> CircleSpectrumRenderer()
+            VisualizerRendererType.LINE -> LineRenderer()
+            VisualizerRendererType.LINE_SPECTRUM -> LineSpectrumRenderer()
+            VisualizerRendererType.SPECTRUM -> SpectrumRenderer()
+        }
+
+        val context = visualizer_view.context
+        //val extinctColor = ContextCompat.getColor(context, R.color.ghost)
+        val gainedColor = StyleUtil.getVisualizerColor(context)
+
+        visualizer_view.renderer = renderer.apply { color = gainedColor }
     }
 
     private fun showWaveForm() {
@@ -349,6 +379,13 @@ class AudioFxFragment: BaseFragment(), NoClipping {
                 }
             }
             sp_reverbs.setTag(R.id.tag_spinner_selected_item, reverb)
+        }
+
+        visualizerRendererType.observeNonNull(owner) { type ->
+            resolveVisualizerRendererType(type)
+        }
+
+        selectVisualizerRendererTypeEvent.observeNonNull(owner) { currSelectedType ->
         }
     }
 

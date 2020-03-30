@@ -3,12 +3,17 @@ package com.frolo.muse.di.impl.local;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import androidx.annotation.Nullable;
+
 import com.frolo.muse.engine.Player;
 import com.frolo.muse.engine.SongQueue;
 import com.frolo.muse.model.Library;
 import com.frolo.muse.model.Recently;
+import com.frolo.muse.model.VisualizerRendererType;
 import com.frolo.muse.model.media.Media;
 import com.frolo.muse.repository.Preferences;
+import com.frolo.rxpreference.RxOptional;
+import com.frolo.rxpreference.RxPreference;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -21,6 +26,7 @@ import java.util.concurrent.Callable;
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.functions.Action;
+import io.reactivex.functions.Function;
 
 
 public class PreferencesImpl implements Preferences {
@@ -50,6 +56,8 @@ public class PreferencesImpl implements Preferences {
 
     private static final String KEY_ALBUM_GRID_ENABLED = "album_big_item_displaying";
     private static final String KEY_THEME = "app_theme";
+
+    private static final String KEY_VISUALIZER_RENDERER_TYPE = "visualizer_renderer_type";
 
     private static final List<Integer> sDefaultLibrarySections;
     static {
@@ -490,4 +498,59 @@ public class PreferencesImpl implements Preferences {
     public void setRecentlyAddedPeriod(@Recently.Period int period) {
         preferences.edit().putInt(KEY_RECENTLY_ADDED_PERIOD, period).apply();
     }
+
+    @Override
+    public Flowable<VisualizerRendererType> getVisualizerRendererType() {
+        return RxPreference.ofInt(preferences, KEY_VISUALIZER_RENDERER_TYPE)
+            .get()
+            .map(new Function<RxOptional<Integer>, VisualizerRendererType>() {
+                @Override
+                public VisualizerRendererType apply(RxOptional<Integer> optional) {
+                    VisualizerRendererType mapped = null;
+                    if (optional.isPresent()) {
+                        mapped = mapIntToVisualizerRendererType(optional.get());
+                    }
+                    return mapped != null ? mapped : VisualizerRendererType.LINE_SPECTRUM;
+                }
+            });
+    }
+
+    @Override
+    public Completable setVisualizerRendererType(final VisualizerRendererType type) {
+        return Completable.fromAction(new Action() {
+            @Override
+            public void run() {
+                final int intValue = mapVisualizerRendererTypeToInt(type);
+                preferences.edit().putInt(KEY_VISUALIZER_RENDERER_TYPE, intValue).apply();
+            }
+        });
+    }
+
+    private static int mapVisualizerRendererTypeToInt(VisualizerRendererType type) {
+        if (type == null) return -1;
+
+        switch (type) {
+            case CIRCLE:            return 0;
+            case CIRCLE_SPECTRUM:   return 1;
+            case LINE:              return 2;
+            case LINE_SPECTRUM:     return 3;
+            case SPECTRUM:          return 4;
+            default:                return 3;
+        }
+    }
+
+    @Nullable
+    private static VisualizerRendererType mapIntToVisualizerRendererType(Integer value) {
+        if (value == null) return null;
+
+        switch (value) {
+            case 0:     return VisualizerRendererType.CIRCLE;
+            case 1:     return VisualizerRendererType.CIRCLE_SPECTRUM;
+            case 2:     return VisualizerRendererType.LINE;
+            case 3:     return VisualizerRendererType.LINE_SPECTRUM;
+            case 4:     return VisualizerRendererType.SPECTRUM;
+            default:    return null;
+        }
+    }
+
 }

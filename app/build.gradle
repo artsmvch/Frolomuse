@@ -205,6 +205,10 @@ dependencies {
 
 //    def media2_version = "1.0.0"
 //    implementation "androidx.media2:media2-player:$media2_version"
+
+    // RxAdapter ContentResolver and SharedPreferences
+    implementation 'com.github.alexei-frolo:RxContent:1.0.3'
+
 }
 
 apply plugin: 'com.google.gms.google-services'

@@ -2,16 +2,19 @@ package com.frolo.muse.ui.main.audiofx
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.frolo.muse.arch.SingleLiveEvent
 import com.frolo.muse.engine.AudioFx
 import com.frolo.muse.engine.AudioFxObserver
 import com.frolo.muse.engine.Player
 import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.ShortRange
+import com.frolo.muse.model.VisualizerRendererType
 import com.frolo.muse.model.preset.CustomPreset
 import com.frolo.muse.model.preset.Preset
 import com.frolo.muse.model.preset.VoidPreset
 import com.frolo.muse.model.reverb.Reverb
+import com.frolo.muse.repository.Preferences
 import com.frolo.muse.repository.PresetRepository
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.base.BaseViewModel
@@ -26,6 +29,7 @@ class AudioFxViewModel @Inject constructor(
     private val audioFx: AudioFx,
     private val schedulerProvider: SchedulerProvider,
     private val repository: PresetRepository,
+    private val preferences: Preferences,
     private val navigator: Navigator,
     private val eventLogger: EventLogger
 ): BaseViewModel(eventLogger) {
@@ -134,6 +138,19 @@ class AudioFxViewModel @Inject constructor(
 
     private val _selectedReverb = MutableLiveData<Reverb>()
     val selectedReverb: LiveData<Reverb> get() = _selectedReverb
+
+    val visualizerRendererType by lazy {
+        MutableLiveData<VisualizerRendererType>().apply {
+            preferences.visualizerRendererType
+                .observeOn(schedulerProvider.main())
+                .subscribeFor {  type -> value = type }
+        }
+    }
+
+    private val _selectVisualizerRendererTypeEvent = SingleLiveEvent<VisualizerRendererType>()
+    val selectVisualizerRendererTypeEvent: LiveData<VisualizerRendererType>
+        get() = _selectVisualizerRendererTypeEvent
+
     //endregion
 
     init {
@@ -228,6 +245,17 @@ class AudioFxViewModel @Inject constructor(
 
     fun onSavePresetButtonClicked(currentBandLevels: ShortArray) {
         navigator.savePreset(currentBandLevels)
+    }
+
+    fun onVisualizerRendererTypeOptionClicked() {
+        val currType = visualizerRendererType.value ?: return
+        _selectVisualizerRendererTypeEvent.value = currType
+    }
+
+    fun onVisualizerRendererTypeSelected(type: VisualizerRendererType) {
+        preferences.setVisualizerRendererType(type)
+            .subscribeFor(schedulerProvider) {
+            }
     }
 
     override fun onCleared() {

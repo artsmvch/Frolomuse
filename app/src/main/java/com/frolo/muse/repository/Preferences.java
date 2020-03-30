@@ -1,12 +1,12 @@
 package com.frolo.muse.repository;
 
-
 import androidx.annotation.IntDef;
 
 import com.frolo.muse.engine.Player;
 import com.frolo.muse.engine.SongQueue;
 import com.frolo.muse.model.Library;
 import com.frolo.muse.model.Recently;
+import com.frolo.muse.model.VisualizerRendererType;
 import com.frolo.muse.model.media.Media;
 
 import java.io.PrintWriter;
@@ -16,6 +16,7 @@ import java.util.List;
 
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
+
 
 public interface Preferences {
     @IntDef({THEME_LIGHT_BLUE, THEME_DARK_BLUE, THEME_DARK_BLUE_ESPECIAL, THEME_DARK_PURPLE})
@@ -30,7 +31,6 @@ public interface Preferences {
     int THEME_DARK_BLUE = 22;
     int THEME_DARK_BLUE_ESPECIAL = 23;
     int THEME_DARK_PURPLE = 24;
-
 
     void dump(PrintWriter pw);
 
@@ -97,4 +97,7 @@ public interface Preferences {
 
     @Recently.Period int getRecentlyAddedPeriod();
     void setRecentlyAddedPeriod(@Recently.Period int period);
+
+    Flowable<VisualizerRendererType> getVisualizerRendererType();
+    Completable setVisualizerRendererType(VisualizerRendererType type);
 }
