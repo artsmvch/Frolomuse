@@ -19,7 +19,13 @@ public class BASSSoundResolverImpl implements SoundResolver {
     private static final String LOG_TAG = "BASSSoundResolverImpl";
 
     private static int calcSoundCacheSize(int levelCount) {
-        return 2 * 1024 * 1024; // 2 MB of memory
+        // The maximum allowed capacity is 1 megabyte
+        final int maxAllowedSize = 1 * 1024 * 1024;
+
+        // We want the cache to be able to store at least 100 items
+        final int preferredCacheSize = 100 * levelCount + SoundLruCache.getIntSize();
+
+        return Math.min(maxAllowedSize, preferredCacheSize);
     }
 
     private static String getBASSErrorMessage(int errCode) {

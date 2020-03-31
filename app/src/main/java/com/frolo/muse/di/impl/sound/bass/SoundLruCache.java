@@ -9,10 +9,10 @@ import com.frolo.muse.model.sound.Sound;
 final class SoundLruCache extends LruCache<String, Sound> {
 
     /**
-     * Returns the size of one variable of type int in bytes.
-     * @return the size of one variable of type int in bytes
+     * This is how many bytes one integer takes.
+     * @return how many bytes one integer takes
      */
-    private static int getIntSize() {
+    static int getIntSize() {
         return 4;
     }
 
