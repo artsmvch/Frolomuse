@@ -18,30 +18,8 @@ public class BASSSoundResolverImpl implements SoundResolver {
     private static final boolean DEBUG = BuildConfig.DEBUG;
     private static final String LOG_TAG = "BASSSoundResolverImpl";
 
-    private static class SoundImpl implements Sound {
-
-        final int[] frameGains;
-        final int maxFrameGain;
-
-        SoundImpl(int[] frameGains, int maxFrameGain) {
-            this.frameGains = frameGains;
-            this.maxFrameGain = maxFrameGain;
-        }
-
-        @Override
-        public int getFrameCount() {
-            return frameGains != null ? frameGains.length : 0;
-        }
-
-        @Override
-        public int getFrameGainAt(int position) {
-            return frameGains[position];
-        }
-
-        @Override
-        public int getMaxFrameGain() {
-            return maxFrameGain;
-        }
+    private static int calcSoundCacheSize(int levelCount) {
+        return 2 * 1024 * 1024; // 2 MB of memory
     }
 
     private static String getBASSErrorMessage(int errCode) {
@@ -91,8 +69,11 @@ public class BASSSoundResolverImpl implements SoundResolver {
 
     private final int levelCount;
 
+    private final SoundLruCache cache;
+
     public BASSSoundResolverImpl(int levelCount) {
         this.levelCount = levelCount;
+        this.cache = new SoundLruCache(calcSoundCacheSize(levelCount));
 
         boolean initialized = BASS.BASS_Init(0, 44100, BASS.BASS_DEVICE_LATENCY);
         if (!initialized) {
@@ -105,7 +86,18 @@ public class BASSSoundResolverImpl implements SoundResolver {
         return Flowable.fromCallable(new Callable<Sound>() {
             @Override
             public Sound call() throws Exception {
-                return resolve_Internal(filepath, levelCount);
+                // Checking the cache first
+                final Sound cached = cache.get(filepath);
+                if (cached != null)
+                    return cached;
+
+                // No cached value, creating a new one
+                final Sound sound = resolve_Internal(filepath, levelCount);
+
+                // Putting it in the cache for further optimization
+                cache.put(filepath, sound);
+
+                return sound;
             }
         });
     }
