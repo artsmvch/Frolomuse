@@ -1,0 +1,1 @@
+all so-libraries for un4seen.BASS are taken from https://github.com/RockMyWorld/basslib-android
