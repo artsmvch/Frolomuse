@@ -3,7 +3,6 @@ package com.frolo.muse.ui.main.player.current
 import android.content.Context
 import android.os.Bundle
 import android.view.*
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.doOnLayout
 import androidx.lifecycle.LifecycleOwner
@@ -22,12 +21,14 @@ import com.frolo.muse.ui.main.library.base.BaseAdapter
 import com.frolo.muse.ui.main.library.base.DragSongAdapter
 import com.frolo.muse.ui.main.library.base.SongAdapter
 import com.frolo.muse.ui.main.library.playlists.create.PlaylistCreateEvent
-import com.frolo.muse.views.showBackArrow
 import kotlinx.android.synthetic.main.fragment_base_list.*
 import kotlinx.android.synthetic.main.fragment_current_playlist.*
 
 
-class CurrentSongQueueFragment: AbsMediaCollectionFragment<Song>() {
+/**
+ * This fragment shows the queue of songs currently being played by the player.
+ */
+class CurrSongQueueFragment: AbsMediaCollectionFragment<Song>() {
 
     companion object {
 
@@ -36,7 +37,7 @@ class CurrentSongQueueFragment: AbsMediaCollectionFragment<Song>() {
         private const val TIME_FOR_SCROLLING = 1000L // 1 second
 
         // Factory
-        fun newInstance() = CurrentSongQueueFragment()
+        fun newInstance() = CurrSongQueueFragment()
 
         private fun getScrollThresholdInPx(context: Context): Int {
             return (SCROLL_THRESHOLD_IN_INCH * context.resources.displayMetrics.densityDpi).toInt()
@@ -75,9 +76,11 @@ class CurrentSongQueueFragment: AbsMediaCollectionFragment<Song>() {
         override fun onItemClick(item: Song, position: Int) {
             viewModel.onItemPositionClicked(item, position)
         }
+
         override fun onItemLongClick(item: Song, position: Int) {
             viewModel.onItemLongClicked(item)
         }
+
         override fun onOptionsMenuClick(item: Song, position: Int) {
             viewModel.onOptionsMenuClicked(item)
         }
@@ -96,28 +99,31 @@ class CurrentSongQueueFragment: AbsMediaCollectionFragment<Song>() {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
-
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_current_playlist, container, false)
-    }
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View = inflater.inflate(R.layout.fragment_current_playlist, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        (activity as? AppCompatActivity)?.apply {
-            setSupportActionBar(tb_actions as Toolbar)
-            supportActionBar?.showBackArrow()
-            supportActionBar?.title = getString(R.string.current_playing)
+        view.setOnTouchListener { _, _ -> true }
+
+        (tb_actions as? Toolbar)?.apply {
+            setTitle(R.string.current_playing)
+
+            inflateMenu(R.menu.fragment_current_playlist)
+
+            setOnMenuItemClickListener { menuItem ->
+                if (menuItem.itemId == R.id.action_create_playlist) {
+                    viewModel.onSaveOptionSelected()
+                    true
+                } else false
+            }
         }
 
         rv_list.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = this@CurrentSongQueueFragment.adapter
+            adapter = this@CurrSongQueueFragment.adapter
             decorateAsLinear()
         }
 
@@ -147,17 +153,6 @@ class CurrentSongQueueFragment: AbsMediaCollectionFragment<Song>() {
         super.onStart()
         adapter.listener = adapterListener
         viewModel.onStart()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.fragment_current_playlist, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.action_create_playlist) {
-            viewModel.onSaveOptionSelected()
-        }
-        return super.onOptionsItemSelected(item)
     }
 
     override fun onStop() {
@@ -203,20 +198,18 @@ class CurrentSongQueueFragment: AbsMediaCollectionFragment<Song>() {
         toastError(err)
     }
 
-    private fun observeViewModel(owner: LifecycleOwner) {
-        viewModel.apply {
-            isPlaying.observeNonNull(owner) { isPlaying ->
-                adapter.setPlayingState(isPlaying)
-            }
+    private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
+        isPlaying.observeNonNull(owner) { isPlaying ->
+            adapter.setPlayingState(isPlaying)
+        }
 
-            playingPosition.observeNonNull(owner) { playingPosition ->
-                val isPlaying = isPlaying.value ?: false
-                adapter.setPlayingPositionAndState(playingPosition, isPlaying)
-            }
+        playingPosition.observeNonNull(owner) { playingPosition ->
+            val isPlaying = isPlaying.value ?: false
+            adapter.setPlayingPositionAndState(playingPosition, isPlaying)
+        }
 
-            scrollToPositionEvent.observeNonNull(owner) { position ->
-                postScrollToPosition(position)
-            }
+        scrollToPositionEvent.observeNonNull(owner) { position ->
+            postScrollToPosition(position)
         }
     }
 

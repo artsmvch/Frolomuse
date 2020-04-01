@@ -17,7 +17,6 @@ import com.frolo.muse.ui.main.library.playlists.addmedia.AddMediaToPlaylistFragm
 import com.frolo.muse.ui.main.library.playlists.create.CreatePlaylistDialog
 import com.frolo.muse.ui.main.library.playlists.playlist.PlaylistFragment
 import com.frolo.muse.ui.main.library.playlists.playlist.addsong.AddSongToPlaylistFragment
-import com.frolo.muse.ui.main.player.current.CurrentSongQueueFragment
 import com.frolo.muse.ui.main.player.lyrics.LyricsDialogFragment
 import com.frolo.muse.ui.main.player.poster.PosterFragment
 import java.io.File

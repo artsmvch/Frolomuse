@@ -34,7 +34,7 @@ import com.frolo.muse.ui.getNameString
 import com.frolo.muse.ui.main.confirmDeletion
 import com.frolo.muse.ui.main.player.carousel.AlbumCardCarouselHelper
 import com.frolo.muse.ui.main.player.carousel.AlbumCardAdapter
-import com.frolo.muse.ui.main.player.current.CurrentSongQueueFragment
+import com.frolo.muse.ui.main.player.current.CurrSongQueueFragment
 import com.frolo.muse.ui.main.player.waveform.SoundWaveform
 import com.frolo.muse.ui.main.player.waveform.StaticWaveform
 import com.frolo.muse.ui.main.showVolumeControl
@@ -237,7 +237,7 @@ class PlayerFragment: BaseFragment() {
             }
 
         childFragmentManager.beginTransaction()
-            .replace(R.id.container_current_song_queue, CurrentSongQueueFragment.newInstance())
+            .replace(R.id.container_current_song_queue, CurrSongQueueFragment.newInstance())
             .commit()
 
         imv_hook_arrow.setOnClickListener {
