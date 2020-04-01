@@ -155,7 +155,7 @@ class MainActivity : PlayerHostActivity(),
         super.onRestart()
         if (pendingFragControllerInitialization) {
             pendingFragControllerInitialization = false
-            initializeFragNavController(lastSavedInstanceState)
+            initializeFragments(lastSavedInstanceState)
         }
     }
 
@@ -314,15 +314,7 @@ class MainActivity : PlayerHostActivity(),
     override fun onPlayerConnected(player: Player) {
         requireApp().onPlayerConnected(player)
         viewModel.onPlayerConnected(player)
-        initializeFragNavController(lastSavedInstanceState)
-
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.container_player, PlayerFragment())
-            .commit()
-
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.mini_player_container, MiniPlayerFragment())
-            .commit()
+        initializeFragments(lastSavedInstanceState)
     }
 
     override fun onPlayerDisconnected() {
@@ -332,7 +324,7 @@ class MainActivity : PlayerHostActivity(),
     }
 
     // return true if created successfully
-    private fun initializeFragNavController(savedInstanceState: Bundle?): Boolean {
+    private fun initializeFragments(savedInstanceState: Bundle?): Boolean {
         val fragmentManager = supportFragmentManager
         if (fragmentManager.isStateSaved) {
             pendingFragControllerInitialization = true
@@ -406,6 +398,15 @@ class MainActivity : PlayerHostActivity(),
             INDEX_SETTINGS -> R.id.nav_settings
             else -> R.id.nav_library
         }
+
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.container_player, PlayerFragment())
+            .commit()
+
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.mini_player_container, MiniPlayerFragment())
+            .commit()
+
         return true
     }
 
