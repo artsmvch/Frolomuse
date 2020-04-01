@@ -1,17 +1,10 @@
 package com.frolo.muse.ui.base
 
-
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.frolo.muse.App
 import com.frolo.muse.R
-import com.frolo.muse.mediascan.MediaScanService
 import com.frolo.muse.repository.Preferences
 import javax.inject.Inject
 
@@ -24,36 +17,10 @@ abstract class BaseActivity: AppCompatActivity() {
 
     fun requireApp() = application as App
 
-    private val scanningStatusIntentFilter = IntentFilter(MediaScanService.ACTION_MEDIA_SCANNING_STATUS)
-    private val scanningStatusBroadcastReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context, intent: Intent?) {
-            val action = intent?.action
-            if (action == MediaScanService.ACTION_MEDIA_SCANNING_STATUS) {
-                if (intent.getBooleanExtra(MediaScanService.EXTRA_MEDIA_SCANNING_STARTED, false)) {
-                    postMessage(getString(R.string.scanning_started))
-                } else if (intent.getBooleanExtra(MediaScanService.EXTRA_MEDIA_SCANNING_COMPLETED, false)) {
-                    postMessage(getString(R.string.scanning_completed))
-                } else if (intent.getBooleanExtra(MediaScanService.EXTRA_MEDIA_SCANNING_CANCELLED, false)) {
-                    // User cancelled the scanning himself, no need to notify him about that
-                }
-            }
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         requireApp().appComponent.inject(this)
         applySavedTheme()
         super.onCreate(savedInstanceState)
-    }
-
-    override fun onStart() {
-        super.onStart()
-        LocalBroadcastManager.getInstance(this).registerReceiver(scanningStatusBroadcastReceiver, scanningStatusIntentFilter)
-    }
-
-    override fun onStop() {
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(scanningStatusBroadcastReceiver)
-        super.onStop()
     }
 
     private fun applySavedTheme() {

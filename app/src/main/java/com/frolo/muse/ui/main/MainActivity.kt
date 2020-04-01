@@ -29,6 +29,7 @@ import com.frolo.muse.ui.PlayerHostActivity
 import com.frolo.muse.ui.base.BackPressHandler
 import com.frolo.muse.ui.base.FragmentNavigator
 import com.frolo.muse.ui.base.NoClipping
+import com.frolo.muse.ui.base.ScanStatusObserver
 import com.frolo.muse.ui.main.audiofx.AudioFxFragment
 import com.frolo.muse.ui.main.library.LibraryFragment
 import com.frolo.muse.ui.main.library.search.SearchFragment
@@ -119,6 +120,8 @@ class MainActivity : PlayerHostActivity(),
         observerViewModel(this)
 
         supportFragmentManager.registerFragmentLifecycleCallbacks(fragmentLifecycleCallbacks, true)
+
+        observeScanStatus()
     }
 
     private fun loadUI() {
@@ -149,6 +152,22 @@ class MainActivity : PlayerHostActivity(),
         }
 
         handleSlide(0.0f)
+    }
+
+    private fun observeScanStatus() {
+        ScanStatusObserver.observe(
+            context = this,
+            lifecycleOwner = this,
+            onScanStarted = {
+                postMessage(getString(R.string.scanning_started))
+            },
+            onScanCompleted = {
+                postMessage(getString(R.string.scanning_completed))
+            },
+            onScanCancelled = {
+                // User has cancelled the scanning himself, no need to notify him about that
+            }
+        )
     }
 
     override fun onRestart() {
