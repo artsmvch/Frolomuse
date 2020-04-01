@@ -34,11 +34,13 @@ import com.frolo.muse.ui.getNameString
 import com.frolo.muse.ui.main.confirmDeletion
 import com.frolo.muse.ui.main.player.carousel.AlbumCardCarouselHelper
 import com.frolo.muse.ui.main.player.carousel.AlbumCardAdapter
+import com.frolo.muse.ui.main.player.current.CurrentSongQueueFragment
 import com.frolo.muse.ui.main.player.waveform.SoundWaveform
 import com.frolo.muse.ui.main.player.waveform.StaticWaveform
 import com.frolo.muse.ui.main.showVolumeControl
 import com.frolo.muse.views.Anim
 import com.frolo.muse.views.sound.WaveformSeekBar
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.fragment_player.*
 import kotlinx.android.synthetic.main.include_message.*
 import kotlinx.android.synthetic.main.include_playback_progress.*
@@ -124,6 +126,17 @@ class PlayerFragment: BaseFragment() {
         }
 
     }
+
+    // BottomSheet: CurrentSongQueue
+    private val bottomSheetCallback =
+        object : BottomSheetBehavior.BottomSheetCallback() {
+            override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                imv_hook_arrow.alpha = 1 - slideOffset
+                container_current_song_queue.alpha = slideOffset
+            }
+
+            override fun onStateChanged(bottomSheet: View, newState: Int) = Unit
+        }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -215,6 +228,21 @@ class PlayerFragment: BaseFragment() {
         btn_volume.setOnClickListener {
             viewModel.onVolumeControlClicked()
         }
+
+        val behavior = BottomSheetBehavior.from(bottom_sheet_current_song_queue)
+            .apply {
+                addBottomSheetCallback(bottomSheetCallback)
+                state = BottomSheetBehavior.STATE_COLLAPSED
+                bottomSheetCallback.onSlide(bottom_sheet_current_song_queue, 0.0f)
+            }
+
+        childFragmentManager.beginTransaction()
+            .replace(R.id.container_current_song_queue, CurrentSongQueueFragment.newInstance())
+            .commit()
+
+        imv_hook_arrow.setOnClickListener {
+            behavior.state = BottomSheetBehavior.STATE_EXPANDED
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -261,6 +289,12 @@ class PlayerFragment: BaseFragment() {
             removeCallbacks(requestTransformCallback)
             removeCallbacks(setCurrentItemCallback)
         }
+
+        BottomSheetBehavior.from(bottom_sheet_current_song_queue)
+            .apply {
+                removeBottomSheetCallback(bottomSheetCallback)
+            }
+
         super.onDestroyView()
     }
 

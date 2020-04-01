@@ -129,8 +129,8 @@ class NavigatorImpl<T> constructor(
     }
 
     override fun openCurrentPlaying() {
-        val fragment = CurrentSongQueueFragment.newInstance()
-        root.pushFragment(fragment)
+//        val fragment = CurrentSongQueueFragment.newInstance()
+//        root.pushFragment(fragment)
     }
 
     override fun openPlayer() {
