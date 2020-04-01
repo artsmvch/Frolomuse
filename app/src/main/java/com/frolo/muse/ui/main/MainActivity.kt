@@ -11,7 +11,6 @@ import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.view.Window
 import android.view.animation.DecelerateInterpolator
 import androidx.core.app.ActivityCompat
 import androidx.core.graphics.ColorUtils
@@ -26,8 +25,8 @@ import com.frolo.muse.Trace
 import com.frolo.muse.arch.observe
 import com.frolo.muse.engine.Player
 import com.frolo.muse.toPx
+import com.frolo.muse.ui.PlayerHostActivity
 import com.frolo.muse.ui.base.BackPressHandler
-import com.frolo.muse.ui.base.BaseActivity
 import com.frolo.muse.ui.base.FragmentNavigator
 import com.frolo.muse.ui.base.NoClipping
 import com.frolo.muse.ui.main.audiofx.AudioFxFragment
@@ -47,9 +46,8 @@ import kotlin.math.max
 import kotlin.math.pow
 
 
-class MainActivity : BaseActivity(),
-        FragmentNavigator,
-        PlayerHolderFragment.PlayerConnection {
+class MainActivity : PlayerHostActivity(),
+        FragmentNavigator {
 
     companion object {
         private const val RC_READ_STORAGE = 1043
@@ -81,9 +79,6 @@ class MainActivity : BaseActivity(),
     private var fragNavController: FragNavController? = null
     private var currTabIndex = TAB_INDEX_DEFAULT
 
-    // hold this value for fragment controller because it's initialization is asynchronous relatively to the activity creation
-    private var lastSavedInstanceState: Bundle? = null
-
     // Rate Dialog
     private var rateDialog: Dialog? = null
 
@@ -106,10 +101,6 @@ class MainActivity : BaseActivity(),
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        supportRequestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY) // it's important to call window feature before onCreate
-
-        lastSavedInstanceState = savedInstanceState
-
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
@@ -122,8 +113,6 @@ class MainActivity : BaseActivity(),
         } else {
             intent?.getIntExtra(EXTRA_TAB_INDEX, TAB_INDEX_DEFAULT) ?: TAB_INDEX_DEFAULT
         }
-
-        checkForPlayerHolder()
 
         requireApp().onFragmentNavigatorCreated(this)
 
@@ -449,43 +438,6 @@ class MainActivity : BaseActivity(),
                 INDEX_SETTINGS -> R.id.nav_settings
                 else -> R.id.nav_library
             }
-        }
-    }
-
-    private fun checkForPlayerHolder() {
-        // Need to find PlayerHolderFragment
-        val playerHolderTag = "PlayerHolder"
-        val playerHolderFragment = supportFragmentManager.findFragmentByTag(playerHolderTag) as? PlayerHolderFragment
-        val player = playerHolderFragment?.player
-        if (playerHolderFragment == null || player == null) {
-            // PlayerHolderFragment or its player instance is null. Need to start from the beginning.
-
-            // We assume that the saved instance state is zero
-            lastSavedInstanceState = null
-
-            // Now we remove all back stack entries from the fragment manager.
-            for (i in 0 until supportFragmentManager.backStackEntryCount) {
-                supportFragmentManager.popBackStackImmediate()
-            }
-            // Then we remove all fragments from the fragment manager.
-            val removeAllFragmentsTransaction = supportFragmentManager.beginTransaction()
-            for (fragment in supportFragmentManager.fragments) {
-                if (fragment != null) {
-                    removeAllFragmentsTransaction.remove(fragment)
-                }
-            }
-            removeAllFragmentsTransaction.commitNow()
-
-            // Finally we add a new PlayerHolderFragment.
-            // NOTE: it must be added to the back stack as well.
-            supportFragmentManager
-                    .beginTransaction()
-                    .add(PlayerHolderFragment(), playerHolderTag)
-                    .addToBackStack(null) // important to add it to back stack, otherwise - fragment will be removed on activity's destroy
-                    .commit()
-        } else {
-            // OK there is a PlayerHolderFragment with non-null player instance. We can assume it's connected.
-            onPlayerConnected(player)
         }
     }
 
