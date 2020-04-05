@@ -33,7 +33,7 @@ import com.frolo.muse.ui.base.ScanStatusObserver
 import com.frolo.muse.ui.main.audiofx.AudioFxFragment
 import com.frolo.muse.ui.main.library.LibraryFragment
 import com.frolo.muse.ui.main.library.search.SearchFragment
-import com.frolo.muse.ui.main.player.OnDisallowInterceptTouchesListener
+import com.frolo.muse.ui.main.player.PlayerFragCallback
 import com.frolo.muse.ui.main.player.PlayerFragment
 import com.frolo.muse.ui.main.player.mini.MiniPlayerFragment
 import com.frolo.muse.ui.main.settings.AppBarSettingsFragment
@@ -50,7 +50,7 @@ import kotlin.math.pow
 
 class MainActivity : PlayerHostActivity(),
         FragmentNavigator,
-        OnDisallowInterceptTouchesListener {
+        PlayerFragCallback {
 
     companion object {
         private const val RC_READ_STORAGE = 1043
@@ -521,9 +521,9 @@ class MainActivity : PlayerHostActivity(),
         }
     }
 
-    override fun onDisallowInterceptTouches(disallow: Boolean) {
+    override fun setPlayerSheetDraggable(draggable: Boolean) {
         BottomSheetBehavior.from(sliding_player_layout).apply {
-            isDraggable = !disallow
+            isDraggable = draggable
         }
     }
 

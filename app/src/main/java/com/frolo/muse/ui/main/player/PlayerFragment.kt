@@ -27,7 +27,6 @@ import com.frolo.muse.engine.SongQueue
 import com.frolo.muse.glide.GlideAlbumArtHelper
 import com.frolo.muse.glide.observe
 import com.frolo.muse.model.media.Song
-import com.frolo.muse.ui.UISheet
 import com.frolo.muse.ui.asDurationInMs
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.getArtistString
@@ -51,7 +50,7 @@ import kotlinx.android.synthetic.main.include_player_controller.*
 import kotlinx.android.synthetic.main.include_player_panel.*
 
 
-class PlayerFragment: BaseFragment(), UISheet {
+class PlayerFragment: BaseFragment() {
 
     companion object {
         private const val LOG_TAG = "PlayerFragment"
@@ -129,8 +128,8 @@ class PlayerFragment: BaseFragment(), UISheet {
 
     }
 
-    private val onDisallowInterceptTouchesListener: OnDisallowInterceptTouchesListener?
-        get() = activity as? OnDisallowInterceptTouchesListener
+    private val playerFragCallback: PlayerFragCallback?
+        get() = activity as? PlayerFragCallback
 
     // BottomSheet: CurrentSongQueue
     private val bottomSheetCallback =
@@ -142,17 +141,12 @@ class PlayerFragment: BaseFragment(), UISheet {
 
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 if (newState == BottomSheetBehavior.STATE_EXPANDED) {
-                    requestDisallowInterceptTouchEvent(true)
+                    playerFragCallback?.setPlayerSheetDraggable(false)
                 } else if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
-                    requestDisallowInterceptTouchEvent(false)
+                    playerFragCallback?.setPlayerSheetDraggable(true)
                 }
             }
         }
-
-    private fun requestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {
-        app_coordinator_layout.parent?.requestDisallowInterceptTouchEvent(disallowIntercept)
-        onDisallowInterceptTouchesListener?.onDisallowInterceptTouches(disallowIntercept)
-    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -252,11 +246,11 @@ class PlayerFragment: BaseFragment(), UISheet {
         bottom_sheet_current_song_queue.touchCallback =
             object : TouchFrameLayout.TouchCallback {
                 override fun onTouchDown() {
-                    requestDisallowInterceptTouchEvent(true)
+                    playerFragCallback?.setPlayerSheetDraggable(false)
                 }
 
                 override fun onTouchRelease() {
-                    requestDisallowInterceptTouchEvent(false)
+                    playerFragCallback?.setPlayerSheetDraggable(false)
                 }
             }
 
@@ -493,10 +487,6 @@ class PlayerFragment: BaseFragment(), UISheet {
                 }
             }
         }
-    }
-
-    override fun onSheetSlide(offset: Float) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
 }
