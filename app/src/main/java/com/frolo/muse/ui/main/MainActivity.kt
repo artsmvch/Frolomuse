@@ -149,10 +149,6 @@ class MainActivity : PlayerHostActivity(),
             expandSlidingPlayer()
         }
 
-        btn_slide_down.setOnClickListener {
-            collapseSlidingPlayer()
-        }
-
         handleSlide(0.0f)
     }
 
@@ -511,10 +507,6 @@ class MainActivity : PlayerHostActivity(),
 
         mini_player_container.alpha = max(0f, 1f - slideOffset * 4)
         mini_player_container.touchesDisabled = slideOffset > 0.4
-
-        btn_slide_down.alpha = max(0f, slideOffset * 2 - 1)
-        btn_slide_down.rotation = (1 - slideOffset) * 180
-        btn_slide_down.isEnabled = slideOffset > 0.5
 
         (sliding_player_layout.background as? MaterialShapeDrawable)?.apply {
             val targetColor = StyleUtil.readColorAttrValue(this@MainActivity, R.attr.colorPrimary)
