@@ -34,17 +34,13 @@ import com.frolo.muse.ui.getNameString
 import com.frolo.muse.ui.main.confirmDeletion
 import com.frolo.muse.ui.main.player.carousel.AlbumCardCarouselHelper
 import com.frolo.muse.ui.main.player.carousel.AlbumCardAdapter
-import com.frolo.muse.ui.main.player.current.CurrSongQueueFragment
 import com.frolo.muse.ui.main.player.waveform.SoundWaveform
 import com.frolo.muse.ui.main.player.waveform.StaticWaveform
 import com.frolo.muse.ui.main.showVolumeControl
 import com.frolo.muse.views.Anim
 import com.frolo.muse.views.sound.WaveformSeekBar
-import com.google.android.material.bottomsheet.BottomSheetBehavior
-import kotlinx.android.synthetic.main.fragment_player.*
-import kotlinx.android.synthetic.main.include_message.*
 import kotlinx.android.synthetic.main.include_playback_progress.*
-import kotlinx.android.synthetic.main.include_player_content.*
+import kotlinx.android.synthetic.main.fragment_player.*
 import kotlinx.android.synthetic.main.include_player_controller_full.*
 import kotlinx.android.synthetic.main.include_player_controller.*
 import kotlinx.android.synthetic.main.include_player_panel.*
@@ -128,26 +124,6 @@ class PlayerFragment: BaseFragment() {
 
     }
 
-    private val playerFragCallback: PlayerFragCallback?
-        get() = activity as? PlayerFragCallback
-
-    // BottomSheet: CurrentSongQueue
-    private val bottomSheetCallback =
-        object : BottomSheetBehavior.BottomSheetCallback() {
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                imv_hook_arrow.alpha = 1 - slideOffset
-                container_current_song_queue.alpha = slideOffset
-            }
-
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-                if (newState == BottomSheetBehavior.STATE_EXPANDED) {
-                    playerFragCallback?.setPlayerSheetDraggable(false)
-                } else if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
-                    playerFragCallback?.setPlayerSheetDraggable(true)
-                }
-            }
-        }
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
         colorProvider = ColorProvider(context)
@@ -178,15 +154,12 @@ class PlayerFragment: BaseFragment() {
         userScrolledAlbumViewPager = false
         isTrackingProgress = false
 
+        // Intercepting all touches to prevent their processing in the lower view layers
+        view.setOnTouchListener { _, _ -> true }
+
         vp_album_art.apply {
             AlbumCardCarouselHelper.setup(this)
             adapter = AlbumCardAdapter(requestManager = Glide.with(this@PlayerFragment))
-        }
-
-        // show overlay with appropriate message if current song is null
-        layout_player_placeholder.apply {
-            setOnTouchListener { _, _ -> true }
-            tv_message.text = getString(R.string.current_playlist_is_empty)
         }
 
         initTextSwitcher(tsw_song_name, 18f, Typeface.DEFAULT_BOLD)
@@ -235,32 +208,6 @@ class PlayerFragment: BaseFragment() {
         btn_volume.setOnClickListener {
             viewModel.onVolumeControlClicked()
         }
-
-        val behavior = BottomSheetBehavior.from(bottom_sheet_current_song_queue)
-            .apply {
-                addBottomSheetCallback(bottomSheetCallback)
-                state = BottomSheetBehavior.STATE_COLLAPSED
-                bottomSheetCallback.onSlide(bottom_sheet_current_song_queue, 0.0f)
-            }
-
-        bottom_sheet_current_song_queue.touchCallback =
-            object : TouchFrameLayout.TouchCallback {
-                override fun onTouchDown() {
-                    playerFragCallback?.setPlayerSheetDraggable(false)
-                }
-
-                override fun onTouchRelease() {
-                    playerFragCallback?.setPlayerSheetDraggable(false)
-                }
-            }
-
-        childFragmentManager.beginTransaction()
-            .replace(R.id.container_current_song_queue, CurrSongQueueFragment.newInstance())
-            .commit()
-
-        fl_hook.setOnClickListener {
-            behavior.state = BottomSheetBehavior.STATE_EXPANDED
-        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -288,11 +235,6 @@ class PlayerFragment: BaseFragment() {
             removeCallbacks(requestTransformCallback)
             removeCallbacks(setCurrentItemCallback)
         }
-
-        BottomSheetBehavior.from(bottom_sheet_current_song_queue)
-            .apply {
-                removeBottomSheetCallback(bottomSheetCallback)
-            }
 
         super.onDestroyView()
     }
@@ -426,7 +368,7 @@ class PlayerFragment: BaseFragment() {
         }
 
         placeholderVisible.observeNonNull(owner) { isVisible ->
-            layout_player_placeholder.visibility = if (isVisible) View.VISIBLE else View.GONE
+            //layout_player_placeholder.visibility = if (isVisible) View.VISIBLE else View.GONE
         }
 
         songPosition.observeNonNull(owner) { position ->

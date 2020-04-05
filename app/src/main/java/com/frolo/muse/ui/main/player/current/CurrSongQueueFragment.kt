@@ -106,6 +106,7 @@ class CurrSongQueueFragment: AbsMediaCollectionFragment<Song>() {
     ): View = inflater.inflate(R.layout.fragment_current_playlist, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        // Intercepting all touches to prevent their processing in the lower view layers
         view.setOnTouchListener { _, _ -> true }
 
         (tb_actions as? Toolbar)?.apply {
