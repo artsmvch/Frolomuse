@@ -11,12 +11,11 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.frolo.muse.engine.Player;
 import com.frolo.muse.ui.base.BaseActivity;
-import com.frolo.muse.ui.main.PlayerHolderFragment;
 
 
 abstract public class PlayerHostActivity
         extends BaseActivity
-        implements PlayerHolderFragment.PlayerConnection {
+        implements PlayerHostFragment.PlayerConnectionHandler {
 
     private static final String LOG_TAG = "PlayerHostActivity";
 
@@ -93,7 +92,7 @@ abstract public class PlayerHostActivity
     protected abstract void playerDidDisconnect(@NonNull Player player);
 
     /**
-     * Checks if there is a valid instance of {@link PlayerHolderFragment} in the fragment manager.
+     * Checks if there is a valid instance of {@link PlayerHostFragment} in the fragment manager.
      * If not, then a new one will be added.
      * That PlayerHolder fragment is supposed to connect to a player service and dispatch about its lifecycle to this activity.
      * When a player gets connected, then {@link PlayerHostActivity#onPlayerConnected(Player)} method is called.
@@ -107,8 +106,8 @@ abstract public class PlayerHostActivity
 
         final Player player;
 
-        if (frag != null && frag instanceof PlayerHolderFragment) {
-            player = ((PlayerHolderFragment) frag).getPlayer();
+        if (frag != null && frag instanceof PlayerHostFragment) {
+            player = ((PlayerHostFragment) frag).getPlayer();
         } else {
             player = null;
         }
@@ -135,7 +134,7 @@ abstract public class PlayerHostActivity
             // Finally,adding a new instance of PlayerHolderFragment.
             // To persist activity' configuration changes, this must be added to the back stack as well.
             fm.beginTransaction()
-                .add(new PlayerHolderFragment(), FRAG_TAG_PLAYER_HOLDER)
+                .add(new PlayerHostFragment(), FRAG_TAG_PLAYER_HOLDER)
                 .addToBackStack(null)
                 .commit();
         } else {

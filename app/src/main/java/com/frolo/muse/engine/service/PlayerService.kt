@@ -81,6 +81,7 @@ class PlayerService: Service() {
         private const val CHANNEL_ID_PLAYBACK = "playback"
         private const val NOTIFICATION_ID_PLAYBACK = 1001
 
+        @JvmStatic
         fun newIntent(context: Context): Intent = Intent(context, PlayerService::class.java)
 
         fun newIntent(context: Context, command: Int): Intent = Intent(context, PlayerService::class.java)
