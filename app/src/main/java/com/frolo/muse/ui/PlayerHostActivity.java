@@ -1,6 +1,7 @@
 package com.frolo.muse.ui;
 
 import android.os.Bundle;
+import android.os.Handler;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,18 +26,31 @@ abstract public class PlayerHostActivity
 
     private Player mPlayer;
 
+    private final Runnable mCheckPlayerHolderTask =
+            new Runnable() {
+                @Override
+                public void run() {
+                    checkPlayerHolder();
+                }
+            };
+
+    private Handler mHandler;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         mLastSavedInstanceState = savedInstanceState;
 
         super.onCreate(savedInstanceState);
 
-        checkPlayerHolder();
+        mHandler = new Handler(getMainLooper());
+        mHandler.post(mCheckPlayerHolderTask);
     }
 
     @Override
     protected void onDestroy() {
         mLastSavedInstanceState = null;
+        mHandler.removeCallbacks(mCheckPlayerHolderTask);
+        mHandler = null;
         super.onDestroy();
     }
 
@@ -60,10 +74,23 @@ abstract public class PlayerHostActivity
     }
 
     @Override
-    public abstract void onPlayerConnected(@NonNull Player player);
+    public final void onPlayerConnected(@NonNull Player player) {
+        mPlayer = player;
+        playerDidConnect(player);
+    }
 
     @Override
-    public abstract void onPlayerDisconnected();
+    public final void onPlayerDisconnected() {
+        final Player player = mPlayer;
+        if (player != null) {
+            playerDidDisconnect(player);
+        }
+        mPlayer = null;
+    }
+
+    protected abstract void playerDidConnect(@NonNull Player player);
+
+    protected abstract void playerDidDisconnect(@NonNull Player player);
 
     /**
      * Checks if there is a valid instance of {@link PlayerHolderFragment} in the fragment manager.

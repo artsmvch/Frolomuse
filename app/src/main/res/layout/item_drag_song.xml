@@ -75,7 +75,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textAppearance="?textAppearanceListItem"
+        android:textAppearance="?textAppearanceListItemSecondary"
         android:maxLines="1"
         android:id="@+id/tv_artist_name"
         tools:text="Artist name" />

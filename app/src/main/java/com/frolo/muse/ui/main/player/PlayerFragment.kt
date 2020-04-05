@@ -27,6 +27,7 @@ import com.frolo.muse.engine.SongQueue
 import com.frolo.muse.glide.GlideAlbumArtHelper
 import com.frolo.muse.glide.observe
 import com.frolo.muse.model.media.Song
+import com.frolo.muse.ui.UISheet
 import com.frolo.muse.ui.asDurationInMs
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.getArtistString
@@ -44,12 +45,13 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.fragment_player.*
 import kotlinx.android.synthetic.main.include_message.*
 import kotlinx.android.synthetic.main.include_playback_progress.*
+import kotlinx.android.synthetic.main.include_player_content.*
 import kotlinx.android.synthetic.main.include_player_controller_full.*
 import kotlinx.android.synthetic.main.include_player_controller.*
 import kotlinx.android.synthetic.main.include_player_panel.*
 
 
-class PlayerFragment: BaseFragment() {
+class PlayerFragment: BaseFragment(), UISheet {
 
     companion object {
         private const val LOG_TAG = "PlayerFragment"
@@ -127,6 +129,9 @@ class PlayerFragment: BaseFragment() {
 
     }
 
+    private val onDisallowInterceptTouchesListener: OnDisallowInterceptTouchesListener?
+        get() = activity as? OnDisallowInterceptTouchesListener
+
     // BottomSheet: CurrentSongQueue
     private val bottomSheetCallback =
         object : BottomSheetBehavior.BottomSheetCallback() {
@@ -135,8 +140,19 @@ class PlayerFragment: BaseFragment() {
                 container_current_song_queue.alpha = slideOffset
             }
 
-            override fun onStateChanged(bottomSheet: View, newState: Int) = Unit
+            override fun onStateChanged(bottomSheet: View, newState: Int) {
+                if (newState == BottomSheetBehavior.STATE_EXPANDED) {
+                    requestDisallowInterceptTouchEvent(true)
+                } else if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
+                    requestDisallowInterceptTouchEvent(false)
+                }
+            }
         }
+
+    private fun requestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {
+        app_coordinator_layout.parent?.requestDisallowInterceptTouchEvent(disallowIntercept)
+        onDisallowInterceptTouchesListener?.onDisallowInterceptTouches(disallowIntercept)
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -167,9 +183,6 @@ class PlayerFragment: BaseFragment() {
         previousAlbumViewPagerState = ViewPager2.SCROLL_STATE_IDLE
         userScrolledAlbumViewPager = false
         isTrackingProgress = false
-
-        // prevent from propagating motion events underneath fragment's view
-        view.setOnTouchListener { _, _ -> true }
 
         vp_album_art.apply {
             AlbumCardCarouselHelper.setup(this)
@@ -236,11 +249,22 @@ class PlayerFragment: BaseFragment() {
                 bottomSheetCallback.onSlide(bottom_sheet_current_song_queue, 0.0f)
             }
 
+        bottom_sheet_current_song_queue.touchCallback =
+            object : TouchFrameLayout.TouchCallback {
+                override fun onTouchDown() {
+                    requestDisallowInterceptTouchEvent(true)
+                }
+
+                override fun onTouchRelease() {
+                    requestDisallowInterceptTouchEvent(false)
+                }
+            }
+
         childFragmentManager.beginTransaction()
             .replace(R.id.container_current_song_queue, CurrSongQueueFragment.newInstance())
             .commit()
 
-        imv_hook_arrow.setOnClickListener {
+        fl_hook.setOnClickListener {
             behavior.state = BottomSheetBehavior.STATE_EXPANDED
         }
     }
@@ -258,25 +282,6 @@ class PlayerFragment: BaseFragment() {
         vp_album_art.registerOnPageChangeCallback(onPageChangeCallback)
         waveform_seek_bar.setOnSeekBarChangeListener(seekBarListener)
     }
-
-//    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-//        inflater.inflate(R.menu.fragment_player, menu)
-//    }
-//
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        when(item.itemId) {
-//            R.id.action_edit_song_tags -> viewModel.onEditSongOptionSelected()
-//            R.id.action_edit_album_cover -> viewModel.onEditAlbumOptionSelected()
-//            R.id.action_share -> viewModel.onShareOptionSelected()
-//            R.id.action_cut_ringtone -> viewModel.onRingCutterOptionSelected()
-//            R.id.action_delete -> viewModel.onDeleteOptionSelected()
-//            R.id.action_view_album -> viewModel.onViewAlbumOptionSelected()
-//            R.id.action_view_artist -> viewModel.onViewArtistOptionSelected()
-//            R.id.action_create_poster -> viewModel.onViewPosterOptionSelected()
-//            //R.id.action_view_lyrics -> viewModel.onViewLyricsOptionSelected()
-//        }
-//        return super.onOptionsItemSelected(item)
-//    }
 
     override fun onStop() {
         super.onStop()
@@ -489,4 +494,9 @@ class PlayerFragment: BaseFragment() {
             }
         }
     }
+
+    override fun onSheetSlide(offset: Float) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
 }

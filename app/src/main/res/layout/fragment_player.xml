@@ -1,93 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <include layout="@layout/include_player_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:elevation="0dp">
+        android:layout_height="match_parent" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"/>
-
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/vp_album_art"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"/>
-
-        <TextSwitcher
-            android:id="@+id/tsw_song_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            tools:text="Song title"/>
-
-        <TextSwitcher
-            android:id="@+id/tsw_artist_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            tools:text="Artist title"/>
-
-        <include
-            layout="@layout/include_player_panel"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_gravity="center_horizontal"/>
-
-        <include
-            layout="@layout/include_player_controller_full"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="24dp"/>
-    </LinearLayout>
-
-    <include
-        layout="@layout/include_message"
+    <include layout="@layout/include_message"
         android:id="@+id/layout_player_placeholder"
         android:visibility="gone"
         android:elevation="6dp"/>
 
-    <LinearLayout
-        android:id="@+id/bottom_sheet_current_song_queue"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/app_coordinator_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:behavior_hideable="false"
-        app:behavior_peekHeight="32dp"
-        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+        android:elevation="10dp">
 
-        <ImageView
-            android:id="@+id/imv_hook_arrow"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:layout_marginTop="4dp"
-            android:padding="8dp"
-            android:layout_gravity="top|center_horizontal"
-            android:src="@drawable/ic_arrow_top_hook"
-            android:background="?selectableItemBackgroundBorderless"/>
-
-        <FrameLayout
-            android:id="@+id/container_current_song_queue"
+        <com.frolo.muse.ui.main.player.TouchFrameLayout
+            android:id="@+id/bottom_sheet_current_song_queue"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="?colorSurface"/>
-    </LinearLayout>
+            android:background="?colorSurface"
+            app:behavior_hideable="false"
+            app:behavior_peekHeight="?actionBarSize"
+            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+            <FrameLayout
+                android:id="@+id/container_current_song_queue"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?colorSurface"/>
+
+            <FrameLayout
+                android:id="@+id/fl_hook"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:layout_gravity="top|center_horizontal"
+                android:background="?selectableItemBackground">
+
+                <ImageView
+                    android:id="@+id/imv_hook_arrow"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_marginTop="4dp"
+                    android:padding="8dp"
+                    android:src="@drawable/ic_arrow_top_hook"
+                    android:layout_gravity="center"
+                    android:background="?selectableItemBackgroundBorderless"/>
+            </FrameLayout>
+        </com.frolo.muse.ui.main.player.TouchFrameLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</FrameLayout>

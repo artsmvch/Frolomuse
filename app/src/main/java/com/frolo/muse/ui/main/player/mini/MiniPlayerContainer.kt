@@ -1,5 +1,6 @@
 package com.frolo.muse.ui.main.player.mini
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
@@ -23,6 +24,12 @@ class MiniPlayerContainer @JvmOverloads constructor(
     override fun onInterceptTouchEvent(ev: MotionEvent?): Boolean {
         if (touchesDisabled) return true
         return super.onInterceptTouchEvent(ev)
+    }
+
+    @SuppressLint("ClickableViewAccessibility")
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        if (touchesDisabled) return false
+        return super.onTouchEvent(event)
     }
 
 }
