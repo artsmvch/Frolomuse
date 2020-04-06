@@ -54,7 +54,7 @@
         android:layout_height="@dimen/vertical_divider_height"
         layout="@layout/include_divider"/>
 
-    <com.frolo.muse.views.spring.SpringFastScrollRecyclerView
+    <com.frolo.muse.views.spring.AppRecyclerView
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/abl_appbar"
         app:layout_constraintEnd_toEndOf="parent"
