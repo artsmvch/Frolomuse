@@ -3,7 +3,6 @@ package com.frolo.muse.ui.main.player.current
 import android.content.Context
 import android.os.Bundle
 import android.view.*
-import androidx.appcompat.widget.Toolbar
 import androidx.core.view.doOnLayout
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -109,7 +108,7 @@ class CurrSongQueueFragment: AbsMediaCollectionFragment<Song>() {
         // Intercepting all touches to prevent their processing in the lower view layers
         view.setOnTouchListener { _, _ -> true }
 
-        (tb_actions as? Toolbar)?.apply {
+        tb_actions.apply {
             setTitle(R.string.current_playing)
 
             inflateMenu(R.menu.fragment_current_playlist)
