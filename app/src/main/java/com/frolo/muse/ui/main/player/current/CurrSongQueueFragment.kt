@@ -249,7 +249,7 @@ class CurrSongQueueFragment: AbsMediaCollectionFragment<Song>() {
     /**
      * Smoothly scrolls the list to [position].
      */
-    private fun smootlyScrollToPosition(position: Int) {
+    private fun smoothlyScrollToPosition(position: Int) {
         val lm = rv_list.layoutManager as? LinearLayoutManager ?: return
 
         val anyChild = (if (lm.childCount > 0) lm.getChildAt(0) else null)
