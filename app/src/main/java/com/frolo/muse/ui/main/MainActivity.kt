@@ -50,35 +50,16 @@ class MainActivity : PlayerHostActivity(),
         FragmentNavigator,
         PlayerSheetCallback {
 
-    companion object {
-        private const val RC_READ_STORAGE = 1043
-
-        private const val EXTRA_TAB_INDEX = "last_tab_index"
-
-        const val INDEX_LIBRARY = FragNavController.TAB1
-        const val INDEX_EQUALIZER = FragNavController.TAB2
-        const val INDEX_SEARCH = FragNavController.TAB3
-        const val INDEX_SETTINGS = FragNavController.TAB4
-
-        private const val TAB_INDEX_DEFAULT = 0
-
-        fun newIntent(context: Context, tabIndex: Int = INDEX_LIBRARY): Intent =
-                Intent(context, MainActivity::class.java).putExtra(EXTRA_TAB_INDEX, tabIndex)
-    }
-
-    /*presentation*/
+    // Reference to the presentation layer
     private val viewModel: MainViewModel by lazy {
-        val vmFactory = requireApp()
-                .appComponent
-                .provideVMFactory()
-        ViewModelProviders.of(this, vmFactory)[MainViewModel::class.java]
+        val vmFactory = requireApp().appComponent.provideVMFactory()
+        ViewModelProviders.of(this, vmFactory).get(MainViewModel::class.java)
     }
 
     // Fragment controller
-    private var pendingFragControllerInitialization = false
-    private val isFragmentManagerStateSaved: Boolean get() = supportFragmentManager.isStateSaved
+    private var fragNavControllerInitialized: Boolean = false
     private var fragNavController: FragNavController? = null
-    private var currTabIndex = TAB_INDEX_DEFAULT
+    private var currTabIndex: Int = TAB_INDEX_DEFAULT
 
     // Rate Dialog
     private var rateDialog: Dialog? = null
@@ -168,9 +149,9 @@ class MainActivity : PlayerHostActivity(),
 
     override fun onRestart() {
         super.onRestart()
-        if (pendingFragControllerInitialization) {
-            pendingFragControllerInitialization = false
-            initializeFragments(lastSavedInstanceState)
+        if (!fragNavControllerInitialized
+                && tryInitializeFragNavController(lastSavedInstanceState)) {
+            fragNavControllerInitialized = true
         }
     }
 
@@ -206,13 +187,16 @@ class MainActivity : PlayerHostActivity(),
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return if (item.itemId == android.R.id.home) {
-            fragNavController?.let { controller ->
-                if (!controller.isRootFragment && controller.popFragment().not())
-                    finish()
+        if (item.itemId == android.R.id.home) {
+            fragNavController?.doIfStateNotSaved {
+                // First try to pop a fragment.
+                // If out of luck, then finish the activity.
+                if (!popFragment()) finish()
             }
-            true
-        } else super.onOptionsItemSelected(item)
+            return true
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onRequestPermissionsResult(
@@ -252,7 +236,7 @@ class MainActivity : PlayerHostActivity(),
         }
 
         fragNavController.let { controller ->
-            if (isFragmentManagerStateSaved) {
+            if (supportFragmentManager.isStateSaved) {
                 super.onBackPressed()
             }
 
@@ -290,26 +274,24 @@ class MainActivity : PlayerHostActivity(),
     }
 
     override fun pushFragment(newFragment: Fragment) {
-        if (isFragmentManagerStateSaved)
-            return
-        fragNavController?.pushFragment(newFragment)
+        fragNavController?.doIfStateNotSaved {
+            pushFragment(newFragment)
+        }
     }
 
     override fun pop() {
-        if (isFragmentManagerStateSaved)
-            return
-        fragNavController?.let { controller ->
-            val currDialogFrag = controller.currentDialogFrag
+        fragNavController?.doIfStateNotSaved {
+            val currDialogFrag = currentDialogFrag
             if (currDialogFrag != null
                     && currDialogFrag.isAdded) {
                 // There's a dialog fragment opened.
                 // Clear it first.
-                controller.clearDialogFragment()
+                clearDialogFragment()
             } else {
-                val stack = controller.currentStack
+                val stack = currentStack
                 if (stack != null && stack.size > 1) {
                     // pop stack only if it's not null and its size is more than 1.
-                    controller.popFragments(1)
+                    popFragments(1)
                 } else {
                     // Stack is empty or has only root fragment.
                     // Let's finish the activity.
@@ -320,16 +302,18 @@ class MainActivity : PlayerHostActivity(),
     }
 
     override fun pushDialog(newDialog: DialogFragment) {
-        if (isFragmentManagerStateSaved)
-            return
-
-        fragNavController?.showDialogFragment(newDialog)
+        fragNavController?.doIfStateNotSaved {
+            showDialogFragment(newDialog)
+        }
     }
 
     override fun playerDidConnect(player: Player) {
         requireApp().onPlayerConnected(player)
         viewModel.onPlayerConnected(player)
-        initializeFragments(lastSavedInstanceState)
+        if (!fragNavControllerInitialized
+                && tryInitializeFragNavController(lastSavedInstanceState)) {
+            fragNavControllerInitialized = true
+        }
     }
 
     override fun playerDidDisconnect(player: Player) {
@@ -338,22 +322,28 @@ class MainActivity : PlayerHostActivity(),
         finish()
     }
 
-    // return true if created successfully
-    private fun initializeFragments(savedInstanceState: Bundle?): Boolean {
+    /**
+     * Tries to initialize [FragNavController] and configure navigation related widgets for it.
+     * Returns true, if the controller is successfully initialized and can be used,
+     * false - otherwise.
+     */
+    private fun tryInitializeFragNavController(savedInstanceState: Bundle?): Boolean {
         val fragmentManager = supportFragmentManager
+
         if (fragmentManager.isStateSaved) {
-            pendingFragControllerInitialization = true
+            // FragmentManager's state is saved, we cannot perform any operation on it.
             return false
         }
 
         fragNavController = FragNavController(fragmentManager, R.id.container).apply {
-            //fragmentHideStrategy = FragNavController.REMOVE
             defaultTransactionOptions = FragNavTransactionOptions
                     .newBuilder()
                     .customAnimations(R.anim.fade_in, R.anim.fade_out, R.anim.fade_in, R.anim.fade_out)
                     .build()
+
             rootFragmentListener = object : FragNavController.RootFragmentListener {
                 override val numberOfRootFragments = 5
+
                 override fun getRootFragment(index: Int): Fragment {
                     when (index) {
                         INDEX_LIBRARY -> return LibraryFragment.newInstance()
@@ -366,37 +356,32 @@ class MainActivity : PlayerHostActivity(),
                 }
 
             }
+
             initialize(currTabIndex, savedInstanceState)
         }
 
         bottom_navigation_view.setOnNavigationItemSelectedListener { menuItem ->
-            if (isFragmentManagerStateSaved)
-                return@setOnNavigationItemSelectedListener true
-
-            val safeFragNavController = fragNavController
-                    ?: return@setOnNavigationItemSelectedListener false
-
             when (menuItem.itemId) {
                 R.id.nav_library -> {
-                    safeFragNavController.switchTab(INDEX_LIBRARY)
+                    fragNavController?.doIfStateNotSaved { switchTab(INDEX_LIBRARY) }
                     currTabIndex = 0
                     true
                 }
 
                 R.id.nav_equalizer -> {
-                    safeFragNavController.switchTab(INDEX_EQUALIZER)
+                    fragNavController?.doIfStateNotSaved { switchTab(INDEX_EQUALIZER) }
                     currTabIndex = 1
                     true
                 }
 
                 R.id.nav_search -> {
-                    safeFragNavController.switchTab(INDEX_SEARCH)
+                    fragNavController?.doIfStateNotSaved { switchTab(INDEX_SEARCH) }
                     currTabIndex = 2
                     true
                 }
 
                 R.id.nav_settings -> {
-                    safeFragNavController.switchTab(INDEX_SETTINGS)
+                    fragNavController?.doIfStateNotSaved { switchTab(INDEX_SETTINGS) }
                     currTabIndex = 3
                     true
                 }
@@ -404,10 +389,13 @@ class MainActivity : PlayerHostActivity(),
                 else -> false
             }
         }
-        bottom_navigation_view.setOnNavigationItemReselectedListener { fragNavController?.clearStack() }
+
+        bottom_navigation_view.setOnNavigationItemReselectedListener {
+            fragNavController?.doIfStateNotSaved { clearStack() }
+        }
+
         bottom_navigation_view.selectedItemId = when(currTabIndex) {
             INDEX_LIBRARY -> R.id.nav_library
-            //INDEX_PLAYER -> R.id.nav_player
             INDEX_EQUALIZER -> R.id.nav_equalizer
             INDEX_SEARCH -> R.id.nav_search
             INDEX_SETTINGS -> R.id.nav_settings
@@ -444,11 +432,10 @@ class MainActivity : PlayerHostActivity(),
     }
 
     private fun handleNewIntent(intent: Intent) {
-        val extraTabIndex = intent.getIntExtra(EXTRA_TAB_INDEX, currTabIndex)
-        if (extraTabIndex != currTabIndex) {
-            bottom_navigation_view.selectedItemId = when(extraTabIndex) {
+        val tabIndexExtra = intent.getIntExtra(EXTRA_TAB_INDEX, currTabIndex)
+        if (tabIndexExtra != currTabIndex) {
+            bottom_navigation_view.selectedItemId = when (tabIndexExtra) {
                 INDEX_LIBRARY -> R.id.nav_library
-                //INDEX_PLAYER -> R.id.nav_player
                 INDEX_EQUALIZER -> R.id.nav_equalizer
                 INDEX_SEARCH -> R.id.nav_search
                 INDEX_SETTINGS -> R.id.nav_settings
@@ -457,29 +444,23 @@ class MainActivity : PlayerHostActivity(),
         }
     }
 
-    private fun checkReadStoragePermission(requestIfNeeded: Boolean) {
+    private fun requestReadStoragePermission() {
         val permission = Manifest.permission.READ_EXTERNAL_STORAGE
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M
                 || ActivityCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED) {
             viewModel.onReadStoragePermissionGranted()
-        } else if (requestIfNeeded) {
+        } else {
             requestPermissions(arrayOf(permission), RC_READ_STORAGE)
         }
     }
 
-    private fun requestReadStoragePermission() {
-        checkReadStoragePermission(true)
-    }
+    private fun observerViewModel(owner: LifecycleOwner) = with(viewModel) {
+        askToRateEvent.observe(owner) {
+            showRateDialog()
+        }
 
-    private fun observerViewModel(owner: LifecycleOwner) {
-        viewModel.apply {
-            askToRateEvent.observe(owner) {
-                showRateDialog()
-            }
-
-            askReadStoragePermissionsEvent.observe(owner) {
-                requestReadStoragePermission()
-            }
+        askReadStoragePermissionsEvent.observe(owner) {
+            requestReadStoragePermission()
         }
     }
 
@@ -495,10 +476,10 @@ class MainActivity : PlayerHostActivity(),
         bottom_navigation_view.also { child ->
             val heightToAnimate = slideOffset * child.height
             child.animate()
-                    .translationY(heightToAnimate)
-                    .setInterpolator(DecelerateInterpolator())
-                    .setDuration(0)
-                    .start()
+                .translationY(heightToAnimate)
+                .setInterpolator(DecelerateInterpolator())
+                .setDuration(0)
+                .start()
         }
 
         view_dim_overlay.alpha = 1 - (1 - slideOffset).pow(2)
@@ -522,6 +503,26 @@ class MainActivity : PlayerHostActivity(),
     override fun setPlayerSheetDraggable(draggable: Boolean) {
         BottomSheetBehavior.from(sliding_player_layout).apply {
             isDraggable = draggable
+        }
+    }
+
+    companion object {
+        private const val RC_READ_STORAGE = 1043
+
+        private const val EXTRA_TAB_INDEX = "last_tab_index"
+
+        const val INDEX_LIBRARY = FragNavController.TAB1
+        const val INDEX_EQUALIZER = FragNavController.TAB2
+        const val INDEX_SEARCH = FragNavController.TAB3
+        const val INDEX_SETTINGS = FragNavController.TAB4
+
+        private const val TAB_INDEX_DEFAULT = 0
+
+        fun newIntent(context: Context, tabIndex: Int = INDEX_LIBRARY): Intent =
+                Intent(context, MainActivity::class.java).putExtra(EXTRA_TAB_INDEX, tabIndex)
+
+        private fun FragNavController.doIfStateNotSaved(block: FragNavController.() -> Unit) {
+            if (!isStateSaved) block.invoke(this)
         }
     }
 
