@@ -24,7 +24,7 @@ class PlayerSheetFragment : BaseFragment() {
         object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
                 fl_hook.alpha = 1 - slideOffset
-                fl_hook.isEnabled = slideOffset < 0.4
+                fl_hook.isClickable = slideOffset < 0.4
                 container_current_song_queue.alpha = slideOffset
             }
 
