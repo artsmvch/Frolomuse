@@ -160,25 +160,28 @@ class MainActivity : PlayerHostActivity(),
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        viewModel.onResume()
-
+    override fun onStart() {
+        super.onStart()
         with(BottomSheetBehavior.from(sliding_player_layout)) {
             addBottomSheetCallback(bottomSheetCallback)
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.onResume()
+    }
+
     override fun onPause() {
         super.onPause()
         viewModel.onPause()
-
-        with(BottomSheetBehavior.from(sliding_player_layout)) {
-            removeBottomSheetCallback(bottomSheetCallback)
-        }
     }
 
     override fun onStop() {
+        with(BottomSheetBehavior.from(sliding_player_layout)) {
+            removeBottomSheetCallback(bottomSheetCallback)
+        }
+
         if (isFinishing) {
             supportFragmentManager.unregisterFragmentLifecycleCallbacks(fragmentLifecycleCallbacks)
         }
