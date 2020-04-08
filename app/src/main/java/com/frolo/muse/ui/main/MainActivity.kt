@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.DecelerateInterpolator
+import androidx.appcompat.view.ActionMode
 import androidx.core.app.ActivityCompat
 import androidx.core.graphics.ColorUtils
 import androidx.fragment.app.DialogFragment
@@ -42,6 +43,7 @@ import com.google.android.material.shape.ShapeAppearanceModel
 import com.ncapdevi.fragnav.FragNavController
 import com.ncapdevi.fragnav.FragNavTransactionOptions
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.*
 import kotlin.math.max
 import kotlin.math.pow
 
@@ -63,6 +65,9 @@ class MainActivity : PlayerHostActivity(),
 
     // Rate Dialog
     private var rateDialog: Dialog? = null
+
+    // Active support action mode
+    private val activeActionModes = LinkedList<ActionMode>()
 
     private val bottomSheetCallback: BottomSheetBehavior.BottomSheetCallback =
         object : BottomSheetBehavior.BottomSheetCallback() {
@@ -507,12 +512,27 @@ class MainActivity : PlayerHostActivity(),
                 .setTopRightCorner(CornerFamily.ROUNDED, cornerRadius)
                 .build()
         }
+
+        if (slideOffset > 0.6) {
+            activeActionModes.forEach { it.finish() }
+            activeActionModes.clear()
+        }
     }
 
     override fun setPlayerSheetDraggable(draggable: Boolean) {
         BottomSheetBehavior.from(sliding_player_layout).apply {
             isDraggable = draggable
         }
+    }
+
+    override fun onSupportActionModeStarted(mode: ActionMode) {
+        super.onSupportActionModeStarted(mode)
+        activeActionModes.add(mode)
+    }
+
+    override fun onSupportActionModeFinished(mode: ActionMode) {
+        super.onSupportActionModeFinished(mode)
+        activeActionModes.remove(mode)
     }
 
     companion object {
