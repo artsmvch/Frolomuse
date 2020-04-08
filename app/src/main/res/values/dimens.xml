@@ -78,5 +78,9 @@
     <!--backdrop-->
     <dimen name="backdrop_radius">36dp</dimen>
     <dimen name="backdrop_padding">@dimen/backdrop_radius</dimen>
+
+    <!--MiniVisualizer-->
+    <dimen name="min_visualizer_width">24dp</dimen>
+    <dimen name="min_visualizer_height">16dp</dimen>
 </resources>
 
