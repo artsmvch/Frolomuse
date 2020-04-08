@@ -229,47 +229,56 @@ class MainActivity : PlayerHostActivity(),
     }
 
     override fun onBackPressed() {
+        val fragmentManager = supportFragmentManager
+        if (fragmentManager.isStateSaved) {
+            // FragmentManager's state is saved, cannot perform any action on it.
+            super.onBackPressed()
+            return
+        }
+
+        val frag = fragmentManager.findFragmentByTag(FRAG_TAG_PLAYER_SHEET)
+        if (frag != null && frag is BackPressHandler && frag.isResumed) {
+            // We can delegate the back press only if the fragment is BackPressHandler and is resumed
+            if (frag.onBackPress()) {
+                // The player sheet fragment successfully handled the back press.
+                return
+            }
+        }
+
         val behavior = BottomSheetBehavior.from(sliding_player_layout)
         if (behavior.state == BottomSheetBehavior.STATE_EXPANDED) {
+            // Collapse the player sheet if it is expanded.
             behavior.state = BottomSheetBehavior.STATE_COLLAPSED
             return
         }
 
-        fragNavController.let { controller ->
-            if (supportFragmentManager.isStateSaved) {
-                super.onBackPressed()
-            }
+        val controller = this.fragNavController
 
-            if (controller == null) { // not even initialized yet
-                finish()
+        if (controller == null || controller.isStateSaved) {
+            super.onBackPressed()
+            return
+        }
+
+        val currentFrag = controller.currentFrag
+        if (currentFrag is BackPressHandler && currentFrag.isResumed) {
+            if (currentFrag.onBackPress()) {
+                // The current fragment successfully handled the back press.
                 return
             }
+        }
 
-            val current = controller.currentFrag
-            if (current is BackPressHandler
-                    /*
-                    Also need to check if the fragment has a view created,
-                    so it is able to handle the back press
-                    */
-                    && current.view != null) {
-                if (current.onBackPress()) { // fragment successfully handled it itself
-                    return
-                }
-            }
-
-            if (controller.isRootFragment) {
-                // Just call finish. Calling onBackPressed() causes popping bac stack from the fragment manager.
-                // This will simply removes PlayerHolderFragment and not finish the activity.
-                // This is not what we want.
-                //super.onBackPressed()
-                finish()
-            } else if (controller.popFragment().not()) { // no fragments left in the stack
-                // Just call finish. Calling onBackPressed() causes popping bac stack from the fragment manager.
-                // This will simply removes PlayerHolderFragment and not finish the activity.
-                // This is not what we want.
-                //super.onBackPressed()
-                finish()
-            }
+        if (controller.isRootFragment) {
+            // Just call finish. Calling onBackPressed() causes popping bac stack from the fragment manager.
+            // This will simply removes PlayerHolderFragment and not finish the activity.
+            // This is not what we want.
+            //super.onBackPressed()
+            finish()
+        } else if (!controller.popFragment()) { // no fragments left in the stack
+            // Just call finish. Calling onBackPressed() causes popping bac stack from the fragment manager.
+            // This will simply removes PlayerHolderFragment and not finish the activity.
+            // This is not what we want.
+            //super.onBackPressed()
+            finish()
         }
     }
 
@@ -403,11 +412,11 @@ class MainActivity : PlayerHostActivity(),
         }
 
         supportFragmentManager.beginTransaction()
-            .replace(R.id.container_player, PlayerSheetFragment())
+            .replace(R.id.container_player, PlayerSheetFragment(), FRAG_TAG_PLAYER_SHEET)
             .commit()
 
         supportFragmentManager.beginTransaction()
-            .replace(R.id.mini_player_container, MiniPlayerFragment())
+            .replace(R.id.mini_player_container, MiniPlayerFragment(), FRAG_TAG_MIN_PLAYER)
             .commit()
 
         return true
@@ -508,6 +517,10 @@ class MainActivity : PlayerHostActivity(),
 
     companion object {
         private const val RC_READ_STORAGE = 1043
+
+        // Fragment tags
+        private const val FRAG_TAG_PLAYER_SHEET = "com.frolo.muse.ui.main.PLAYER_SHEET"
+        private const val FRAG_TAG_MIN_PLAYER = "com.frolo.muse.ui.main.MINI_PLAYER"
 
         private const val EXTRA_TAB_INDEX = "last_tab_index"
 
