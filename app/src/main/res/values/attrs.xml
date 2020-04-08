@@ -15,12 +15,6 @@
 
     <attr name="waveformSeekBarStyle" format="reference"/>
 
-    <declare-styleable name="MiniVisualizer">
-        <attr name="blockNumber" format="integer" />
-        <attr name="blockSpacing" format="dimension" />
-        <attr name="backgroundColor" format="color" />
-    </declare-styleable>
-
     <declare-styleable name="FroloBar">
         <attr name="activeColor"/>
         <attr name="inactiveColor"/>
@@ -81,4 +75,11 @@
     </declare-styleable>
 
     <attr name="optionTextViewStyle" format="reference"/>
+
+    <!--MiniVisualizer-->
+    <declare-styleable name="MiniVisualizer">
+        <attr name="barColor" format="color" />
+    </declare-styleable>
+
+    <attr name="miniVisualizerStyle" format="reference"/>
 </resources>

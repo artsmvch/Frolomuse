@@ -102,10 +102,10 @@ class MyFileAdapter: BaseAdapter<MyFile,
 
             if (isPlayPosition) {
                 mini_visualizer.visibility = View.VISIBLE
-                mini_visualizer.setAnimating(isPlaying)
+                mini_visualizer.setAnimate(isPlaying)
             } else {
                 mini_visualizer.visibility = View.INVISIBLE
-                mini_visualizer.setAnimating(false)
+                mini_visualizer.setAnimate(false)
             }
 
             imv_check.setChecked(selected, selectionChanged)

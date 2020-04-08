@@ -38,10 +38,10 @@ class SongSelectorAdapter constructor(
 
             if (position != playingPosition) {
                 mini_visualizer.visibility = View.GONE
-                mini_visualizer.setAnimating(false)
+                mini_visualizer.setAnimate(false)
             } else {
                 mini_visualizer.visibility = View.VISIBLE
-                mini_visualizer.setAnimating(isPlaying)
+                mini_visualizer.setAnimate(isPlaying)
             }
 
             chb_select_song.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_framed_music_note_48dp)!!)

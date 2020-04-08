@@ -104,10 +104,10 @@ open class SongAdapter<T: Song> constructor(
 
             if (isPlayPosition) {
                 mini_visualizer.visibility = View.VISIBLE
-                mini_visualizer.setAnimating(isPlaying)
+                mini_visualizer.setAnimate(isPlaying)
             } else {
                 mini_visualizer.visibility = View.GONE
-                mini_visualizer.setAnimating(false)
+                mini_visualizer.setAnimate(false)
             }
 
             imv_check.setChecked(selected, selectionChanged)

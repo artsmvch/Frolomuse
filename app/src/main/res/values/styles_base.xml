@@ -104,6 +104,11 @@
         <item name="waveAnimDuration">300</item>
     </style>
 
+    <!--MiniVisualizer-->
+    <style name="Base.AppTheme.MiniVisualizer" parent="">
+        <item name="barColor">#DA5F78</item>
+    </style>
+
     <!--CheckView-->
     <style name="Base.AppTheme.CheckView" parent="">
         <item name="strokeWidth">2dp</item>
