@@ -3,6 +3,7 @@ package com.frolo.muse.ui.main.library.albums.album
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -10,11 +11,14 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.frolo.muse.R
 import com.frolo.muse.arch.observeNonNull
+import com.frolo.muse.calculateCardHorizontalShadowPadding
+import com.frolo.muse.calculateCardVerticalShadowPadding
 import com.frolo.muse.glide.GlideAlbumArtHelper
 import com.frolo.muse.glide.makeRequest
 import com.frolo.muse.glide.observe
 import com.frolo.muse.model.media.Album
 import com.frolo.muse.model.media.Song
+import com.frolo.muse.toPx
 import com.frolo.muse.ui.base.NoClipping
 import com.frolo.muse.ui.base.withArg
 import com.frolo.muse.ui.main.decorateAsLinear
@@ -47,16 +51,6 @@ class AlbumFragment: AbsSongCollectionFragment<Song>(), NoClipping {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-        GlideAlbumArtHelper.get().observe(this) {
-            viewModel.albumId.value?.also { albumId ->
-                loadAlbumArt(albumId)
-            }
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -70,42 +64,56 @@ class AlbumFragment: AbsSongCollectionFragment<Song>(), NoClipping {
             decorateAsLinear()
         }
 
-        (activity as? AppCompatActivity)?.apply {
-            setSupportActionBar(tb_actions)
-            supportActionBar?.showBackArrow()
+        tb_actions.apply {
+            inflateMenu(R.menu.fragment_album)
+            setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+
+                    R.id.action_sort -> {
+                        viewModel.onSortOrderOptionSelected()
+                        true
+                    }
+
+                    else -> false
+                }
+            }
+        }
+
+        cv_album_art.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+            val shadow = 16f.toPx(view.context)
+            val corner = 4f.toPx(view.context)
+            val horizontalShadow = calculateCardHorizontalShadowPadding(shadow, corner).toInt()
+            val verticalShadow = calculateCardVerticalShadowPadding(shadow, corner).toInt()
+
+            leftMargin = horizontalShadow
+            topMargin = verticalShadow
+            rightMargin = horizontalShadow
+            bottomMargin = verticalShadow
+        }
+
+        cv_album_art.setOnClickListener {
+            viewModel.onAlbumArtClicked()
         }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         observeViewModel(viewLifecycleOwner)
-    }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.fragment_album, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when(item.itemId) {
-            R.id.action_edit -> {
-                viewModel.onEditAlbumOptionSelected()
-                true
+        GlideAlbumArtHelper.get().observe(this) { updatedAlbumId ->
+            viewModel.albumId.value?.also { albumId ->
+                if (albumId == updatedAlbumId) loadAlbumArt(albumId)
             }
-            R.id.action_sort -> {
-                viewModel.onSortOrderOptionSelected()
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
         }
     }
 
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
         mediaItemCount.observeNonNull(owner) { count ->
-            tv_title.text = requireContext().resources.getQuantityString(R.plurals.s_songs, count, count)
+            //tv_title.text = requireContext().resources.getQuantityString(R.plurals.s_songs, count, count)
         }
 
         title.observeNonNull(owner) { title ->
-            ctl_toolbar.title = title
+            //tb_actions.title = title
         }
 
         albumId.observeNonNull(owner) { albumId ->

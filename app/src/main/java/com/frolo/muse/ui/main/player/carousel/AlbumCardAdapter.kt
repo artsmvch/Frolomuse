@@ -12,12 +12,10 @@ import com.bumptech.glide.load.engine.GlideException
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
-import com.frolo.muse.R
+import com.frolo.muse.*
 import com.frolo.muse.engine.SongQueue
 import com.frolo.muse.glide.makeRequest
-import com.frolo.muse.inflateChild
 import com.frolo.muse.model.media.Song
-import com.frolo.muse.toPx
 import kotlinx.android.synthetic.main.include_square_album_art.view.*
 import kotlin.math.max
 

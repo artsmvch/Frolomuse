@@ -44,18 +44,13 @@ class AlbumViewModel constructor(
         eventLogger
 ) {
 
-    private val _title: MutableLiveData<String> = MutableLiveData()
-    val title: LiveData<String> = _title
+    private val _title: MutableLiveData<String> = MutableLiveData(albumArg.name)
+    val title: LiveData<String> get() = _title
 
-    private val _albumId: MutableLiveData<Long> = MutableLiveData()
-    val albumId: LiveData<Long> = _albumId
+    private val _albumId: MutableLiveData<Long> = MutableLiveData(albumArg.id)
+    val albumId: LiveData<Long> get() = _albumId
 
-    init {
-        _title.value = albumArg.name
-        _albumId.value = albumArg.id
-    }
-
-    fun onEditAlbumOptionSelected() {
+    fun onAlbumArtClicked() {
         navigator.editAlbum(albumArg)
     }
 

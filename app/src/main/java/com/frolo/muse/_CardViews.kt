@@ -1,4 +1,4 @@
-package com.frolo.muse.ui.main.player.carousel
+package com.frolo.muse
 
 import kotlin.math.cos
 
