@@ -40,7 +40,7 @@
             android:layout_height="match_parent"
             android:background="@null"
             app:behavior_hideable="false"
-            app:behavior_peekHeight="112dp"
+            app:behavior_peekHeight="96dp"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
             <FrameLayout
@@ -52,9 +52,9 @@
             <com.frolo.muse.ui.main.player.mini.MiniPlayerContainer
                 android:id="@+id/mini_player_container"
                 android:layout_width="match_parent"
-                android:layout_height="112dp"
+                android:layout_height="96dp"
                 android:paddingStart="32dp"
-                android:paddingBottom="56dp"
+                android:paddingBottom="48dp"
                 android:paddingEnd="32dp"
                 android:layout_gravity="top"/>
         </FrameLayout>
@@ -67,7 +67,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:id="@+id/bottom_navigation_view"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="48dp"
         android:layout_alignParentBottom="true"
         app:menu="@menu/activity_main"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
