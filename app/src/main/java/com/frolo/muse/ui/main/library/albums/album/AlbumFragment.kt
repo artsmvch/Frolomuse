@@ -2,7 +2,6 @@ package com.frolo.muse.ui.main.library.albums.album
 
 import android.os.Bundle
 import android.view.*
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProviders
@@ -24,8 +23,10 @@ import com.frolo.muse.ui.base.withArg
 import com.frolo.muse.ui.main.decorateAsLinear
 import com.frolo.muse.ui.main.library.base.AbsSongCollectionFragment
 import com.frolo.muse.ui.main.library.base.SongAdapter
-import com.frolo.muse.views.showBackArrow
+import com.google.android.material.appbar.AppBarLayout
+import jp.wasabeef.glide.transformations.BlurTransformation
 import kotlinx.android.synthetic.main.fragment_album.*
+import kotlin.math.abs
 
 
 class AlbumFragment: AbsSongCollectionFragment<Song>(), NoClipping {
@@ -37,6 +38,13 @@ class AlbumFragment: AbsSongCollectionFragment<Song>(), NoClipping {
         fun newInstance(album: Album) = AlbumFragment()
                 .withArg(ARG_ALBUM, album)
     }
+
+    private val onOffsetChangedListener: AppBarLayout.OnOffsetChangedListener =
+        AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
+//            if (abs(verticalOffset) < appBarLayout.measuredHeight - fab_play.measuredHeight / 2) {
+//                fab_play.show()
+//            } else fab_play.hide()
+        }
 
     override val viewModel: AlbumViewModel by lazy {
         val album = requireArguments().getSerializable(ARG_ALBUM) as Album
@@ -94,6 +102,12 @@ class AlbumFragment: AbsSongCollectionFragment<Song>(), NoClipping {
         cv_album_art.setOnClickListener {
             viewModel.onAlbumArtClicked()
         }
+
+        fab_play.setOnClickListener {
+            viewModel.onPlayButtonClicked()
+        }
+
+        app_bar_layout.addOnOffsetChangedListener(onOffsetChangedListener)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -107,6 +121,12 @@ class AlbumFragment: AbsSongCollectionFragment<Song>(), NoClipping {
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        app_bar_layout.removeOnOffsetChangedListener(onOffsetChangedListener)
+    }
+
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
         mediaItemCount.observeNonNull(owner) { count ->
             //tv_title.text = requireContext().resources.getQuantityString(R.plurals.s_songs, count, count)
@@ -118,6 +138,10 @@ class AlbumFragment: AbsSongCollectionFragment<Song>(), NoClipping {
 
         albumId.observeNonNull(owner) { albumId ->
             loadAlbumArt(albumId)
+        }
+
+        playButtonVisible.observeNonNull(owner) { isVisible ->
+            if (isVisible) fab_play.show() else fab_play.hide()
         }
     }
 
@@ -140,6 +164,14 @@ class AlbumFragment: AbsSongCollectionFragment<Song>(), NoClipping {
             .error(R.drawable.ic_album_200dp)
             .transition(DrawableTransitionOptions.withCrossFade())
             .into(imv_album_art)
+
+        Glide.with(this@AlbumFragment)
+            .makeRequest(albumId)
+            .placeholder(R.drawable.ic_album_200dp)
+            .error(R.drawable.ic_album_200dp)
+            .transform(BlurTransformation(25))
+            .transition(DrawableTransitionOptions.withCrossFade())
+            .into(imv_blurred_album_art)
     }
 
     override fun removeClipping(left: Int, top: Int, right: Int, bottom: Int) {

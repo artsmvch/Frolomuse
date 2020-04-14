@@ -2,6 +2,8 @@ package com.frolo.muse.ui.main.library.albums.album
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
+import com.frolo.muse.arch.map
 import com.frolo.muse.engine.Player
 import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.interactor.media.*
@@ -20,7 +22,7 @@ class AlbumViewModel constructor(
         getAlbumSongsUseCase: GetAlbumSongsUseCase,
         getMediaMenuUseCase: GetMediaMenuUseCase<Song>,
         clickMediaUseCase: ClickMediaUseCase<Song>,
-        playMediaUseCase: PlayMediaUseCase<Song>,
+        private val playMediaUseCase: PlayMediaUseCase<Song>,
         shareMediaUseCase: ShareMediaUseCase<Song>,
         deleteMediaUseCase: DeleteMediaUseCase<Song>,
         getIsFavouriteUseCase: GetIsFavouriteUseCase<Song>,
@@ -50,6 +52,11 @@ class AlbumViewModel constructor(
     private val _albumId: MutableLiveData<Long> = MutableLiveData(albumArg.id)
     val albumId: LiveData<Long> get() = _albumId
 
+    val playButtonVisible: LiveData<Boolean> =
+        mediaList.map(initialValue = false) { list ->
+            !list.isNullOrEmpty()
+        }
+
     fun onAlbumArtClicked() {
         navigator.editAlbum(albumArg)
     }
@@ -59,6 +66,11 @@ class AlbumViewModel constructor(
             _title.value = updatedAlbum.name
             _albumId.value = updatedAlbum.id
         }
+    }
+
+    fun onPlayButtonClicked() {
+        val snapshot = mediaList.value.orEmpty()
+        playMediaUseCase.play(snapshot).subscribeFor {  }
     }
 
 }
