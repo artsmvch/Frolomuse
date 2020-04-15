@@ -2,6 +2,7 @@ package com.frolo.muse.ui.main.library.albums.album
 
 import android.os.Bundle
 import android.view.*
+import androidx.core.graphics.ColorUtils
 import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProviders
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.frolo.muse.R
+import com.frolo.muse.StyleUtil
 import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.glide.GlideAlbumArtHelper
@@ -23,6 +25,7 @@ import com.frolo.muse.ui.main.library.base.AbsSongCollectionFragment
 import com.google.android.material.appbar.AppBarLayout
 import jp.wasabeef.glide.transformations.BlurTransformation
 import kotlinx.android.synthetic.main.fragment_album.*
+import kotlin.math.abs
 
 
 class AlbumFragment: AbsSongCollectionFragment<Song>(), NoClipping {
@@ -40,6 +43,12 @@ class AlbumFragment: AbsSongCollectionFragment<Song>(), NoClipping {
 //            if (abs(verticalOffset) < appBarLayout.measuredHeight - fab_play.measuredHeight / 2) {
 //                fab_play.show()
 //            } else fab_play.hide()
+            //val surfaceColor = StyleUtil.readColorAttrValue(appBarLayout.context, R.attr.colorSurface)
+            val factor: Float = abs(verticalOffset.toFloat() / appBarLayout.totalScrollRange)
+            val targetAlpha = if (factor > 0.95) 1f else 0f
+            tb_actions.animate().alpha(targetAlpha).setDuration(200L).start()
+//            val factoredColor = ColorUtils.setAlphaComponent(surfaceColor, (255 * factor).toInt())
+//            tb_actions.setBackgroundColor(factoredColor)
         }
 
     override val viewModel: AlbumViewModel by lazy {

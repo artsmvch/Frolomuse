@@ -9,8 +9,7 @@
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        style="@style/Base.AppTheme.AppBarLayout.Transparent">
+        android:layout_height="wrap_content">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
@@ -18,11 +17,16 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:toolbarId="@id/tb_actions">
 
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/tb_actions"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?colorSurface"
+                app:layout_collapseMode="pin"/>
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layout_collapseMode="parallax"
-                app:layout_collapseParallaxMultiplier="0.7">
+                android:layout_height="match_parent">
 
                 <ImageView
                     app:layout_constraintStart_toStartOf="parent"
@@ -99,13 +103,14 @@
                     tools:text="Artist name"/>
 
                 <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                    app:layout_constraintStart_toStartOf="@id/tv_artist_name"
-                    app:layout_constraintTop_toBottomOf="@id/tv_artist_name"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/cv_album_art"
+                    app:layout_constraintTop_toBottomOf="@id/cv_album_art"
+                    app:layout_constraintEnd_toEndOf="@id/cv_album_art"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintVertical_bias="0.0"
+                    app:layout_constraintWidth_default="wrap"
                     android:id="@+id/fab_play"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:minWidth="36dp"
                     android:minHeight="24dp"
@@ -120,16 +125,9 @@
                     app:elevation="36dp"
                     app:iconPadding="12dp"
                     app:iconSize="10dp"
-                    app:icon="@drawable/ic_play"/>
+                    app:icon="@drawable/ic_play"
+                    tools:text="Long floating action button"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/tb_actions"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:elevation="0dp"
-                android:background="@color/transparent"
-                app:layout_collapseMode="pin"/>
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
