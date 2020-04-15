@@ -15,7 +15,7 @@
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_scrollFlags="scroll|snap"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:toolbarId="@id/tb_actions">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -34,14 +34,28 @@
                     android:layout_height="0dp"
                     android:scaleType="centerCrop"/>
 
+                <View
+                    app:layout_constraintStart_toStartOf="@id/imv_blurred_album_art"
+                    app:layout_constraintTop_toTopOf="@id/imv_blurred_album_art"
+                    app:layout_constraintEnd_toEndOf="@id/imv_blurred_album_art"
+                    app:layout_constraintBottom_toBottomOf="@id/imv_blurred_album_art"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:background="?colorSurface"
+                    android:alpha="0.9"/>
+
                 <com.google.android.material.card.MaterialCardView
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
                     android:id="@+id/cv_album_art"
-                    android:layout_width="92dp"
-                    android:layout_height="92dp"
+                    android:layout_width="108dp"
+                    android:layout_height="108dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="?actionBarSize"
+                    android:layout_marginBottom="16dp"
                     android:layout_gravity="center_horizontal"
                     app:cardUseCompatPadding="false"
                     app:cardElevation="16dp"
@@ -53,9 +67,63 @@
                         android:layout_height="match_parent"
                         android:scaleType="centerCrop"/>
                 </com.google.android.material.card.MaterialCardView>
+
+                <TextView
+                    app:layout_constraintStart_toEndOf="@id/cv_album_art"
+                    app:layout_constraintTop_toTopOf="@id/cv_album_art"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/tv_artist_name"
+                    app:layout_constraintVertical_chainStyle="packed"
+                    app:layout_constraintVertical_bias="0.0"
+                    android:id="@+id/tv_album_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:textAppearance="?textAppearanceHeadline5"
+                    android:maxLines="3"
+                    android:ellipsize="end"
+                    tools:text="Album name"/>
+
+                <TextView
+                    app:layout_constraintStart_toStartOf="@id/tv_album_name"
+                    app:layout_constraintTop_toBottomOf="@id/tv_album_name"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/fab_play"
+                    android:id="@+id/tv_artist_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?textAppearanceBody1"
+                    android:textColor="?colorAccent"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    tools:text="Artist name"/>
+
+                <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                    app:layout_constraintStart_toStartOf="@id/tv_artist_name"
+                    app:layout_constraintTop_toBottomOf="@id/tv_artist_name"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    android:id="@+id/fab_play"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minWidth="36dp"
+                    android:minHeight="24dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:paddingStart="12dp"
+                    android:paddingTop="6dp"
+                    android:paddingEnd="12dp"
+                    android:paddingBottom="6dp"
+                    android:text="@string/play"
+                    android:textSize="12sp"
+                    app:elevation="36dp"
+                    app:iconPadding="12dp"
+                    app:iconSize="10dp"
+                    app:icon="@drawable/ic_play"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <androidx.appcompat.widget.Toolbar
+            <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/tb_actions"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
@@ -89,16 +157,4 @@
             android:visibility="gone"
             android:id="@+id/pb_loading" />
     </FrameLayout>
-
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/fab_play"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:minHeight="40dp"
-        android:text="@string/play"
-        app:elevation="72dp"
-        app:iconSize="16dp"
-        app:icon="@drawable/ic_play"
-        app:layout_anchor="@id/app_bar_layout"
-        app:layout_anchorGravity="bottom|center_horizontal"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

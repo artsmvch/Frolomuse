@@ -3,6 +3,7 @@ package com.frolo.muse.ui.main.library.albums.album
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import com.frolo.muse.arch.liveDataOf
 import com.frolo.muse.arch.map
 import com.frolo.muse.engine.Player
 import com.frolo.muse.navigator.Navigator
@@ -51,6 +52,10 @@ class AlbumViewModel constructor(
 
     private val _albumId: MutableLiveData<Long> = MutableLiveData(albumArg.id)
     val albumId: LiveData<Long> get() = _albumId
+
+    val albumName: LiveData<String> = liveDataOf(albumArg.name)
+
+    val artistName: LiveData<String> = liveDataOf(albumArg.artist)
 
     val playButtonVisible: LiveData<Boolean> =
         mediaList.map(initialValue = false) { list ->

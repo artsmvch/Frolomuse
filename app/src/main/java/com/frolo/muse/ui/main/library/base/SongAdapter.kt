@@ -2,6 +2,7 @@ package com.frolo.muse.ui.main.library.base
 
 import android.view.View
 import android.view.ViewGroup
+import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import com.frolo.muse.R
 import com.frolo.muse.glide.makeRequest
@@ -18,7 +19,7 @@ import kotlinx.android.synthetic.main.item_song.view.*
 
 
 open class SongAdapter<T: Song> constructor(
-    private val requestManager: RequestManager
+    private val requestManager: RequestManager? = null
 ): BaseAdapter<T, SongAdapter.SongViewHolder>(), FastScroller.SectionIndexer {
 
     var playingPosition = -1
@@ -94,11 +95,12 @@ open class SongAdapter<T: Song> constructor(
             tv_artist_name.text = item.getArtistString(res)
             tv_duration.text = item.getDurationString()
 
-            requestManager.makeRequest(item.albumId)
-                    .placeholder(R.drawable.ic_framed_music_note_48dp)
-                    .error(R.drawable.ic_framed_music_note_48dp)
-                    .circleCrop()
-                    .into(imv_album_art)
+            val safeRequestManager = requestManager ?: Glide.with(this)
+            safeRequestManager.makeRequest(item.albumId)
+                .placeholder(R.drawable.ic_framed_music_note_48dp)
+                .error(R.drawable.ic_framed_music_note_48dp)
+                .circleCrop()
+                .into(imv_album_art)
 
             val isPlayPosition = position == playingPosition
 

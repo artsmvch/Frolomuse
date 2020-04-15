@@ -9,24 +9,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.frolo.muse.R
+import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
-import com.frolo.muse.calculateCardHorizontalShadowPadding
-import com.frolo.muse.calculateCardVerticalShadowPadding
 import com.frolo.muse.glide.GlideAlbumArtHelper
 import com.frolo.muse.glide.makeRequest
 import com.frolo.muse.glide.observe
 import com.frolo.muse.model.media.Album
 import com.frolo.muse.model.media.Song
-import com.frolo.muse.toPx
 import com.frolo.muse.ui.base.NoClipping
 import com.frolo.muse.ui.base.withArg
 import com.frolo.muse.ui.main.decorateAsLinear
 import com.frolo.muse.ui.main.library.base.AbsSongCollectionFragment
-import com.frolo.muse.ui.main.library.base.SongAdapter
 import com.google.android.material.appbar.AppBarLayout
 import jp.wasabeef.glide.transformations.BlurTransformation
 import kotlinx.android.synthetic.main.fragment_album.*
-import kotlin.math.abs
 
 
 class AlbumFragment: AbsSongCollectionFragment<Song>(), NoClipping {
@@ -54,7 +50,7 @@ class AlbumFragment: AbsSongCollectionFragment<Song>(), NoClipping {
     }
 
     override val adapter by lazy {
-        SongAdapter<Song>(Glide.with(this)).apply {
+        SongOfAlbumAdapter().apply {
             setHasStableIds(true)
         }
     }
@@ -88,15 +84,15 @@ class AlbumFragment: AbsSongCollectionFragment<Song>(), NoClipping {
         }
 
         cv_album_art.updateLayoutParams<ViewGroup.MarginLayoutParams> {
-            val shadow = 16f.toPx(view.context)
-            val corner = 4f.toPx(view.context)
-            val horizontalShadow = calculateCardHorizontalShadowPadding(shadow, corner).toInt()
-            val verticalShadow = calculateCardVerticalShadowPadding(shadow, corner).toInt()
-
-            leftMargin = horizontalShadow
-            topMargin = verticalShadow
-            rightMargin = horizontalShadow
-            bottomMargin = verticalShadow
+//            val shadow = 16f.toPx(view.context)
+//            val corner = 4f.toPx(view.context)
+//            val horizontalShadow = calculateCardHorizontalShadowPadding(shadow, corner).toInt()
+//            val verticalShadow = calculateCardVerticalShadowPadding(shadow, corner).toInt()
+//
+//            leftMargin = horizontalShadow
+//            topMargin = verticalShadow
+//            rightMargin = horizontalShadow
+//            bottomMargin = verticalShadow
         }
 
         cv_album_art.setOnClickListener {
@@ -134,6 +130,14 @@ class AlbumFragment: AbsSongCollectionFragment<Song>(), NoClipping {
 
         title.observeNonNull(owner) { title ->
             //tb_actions.title = title
+        }
+
+        albumName.observe(owner) { albumName ->
+            tv_album_name.text = albumName
+        }
+
+        artistName.observe(owner) { artistName ->
+            tv_artist_name.text = artistName
         }
 
         albumId.observeNonNull(owner) { albumId ->

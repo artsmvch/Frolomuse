@@ -129,6 +129,7 @@ abstract public class PlayerHostActivity
             for (final Fragment f : fm.getFragments()) {
                 if (f != null) removeAllFragmentsTransaction.remove(f);
             }
+            // TODO: check if the fragment manager state is saved before calling this method
             removeAllFragmentsTransaction.commitNow();
 
             // Finally,adding a new instance of PlayerHolderFragment.
