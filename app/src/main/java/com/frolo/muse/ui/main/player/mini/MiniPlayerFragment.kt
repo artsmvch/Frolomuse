@@ -67,7 +67,7 @@ class MiniPlayerFragment : BaseFragment() {
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
         currentSong.observe(owner) { song: Song? ->
             if (song != null) {
-                tsw_song_name.setCurrentText(song.title)
+                tsw_song_name.setText(song.title)
                 loadArt(song)
             }
         }

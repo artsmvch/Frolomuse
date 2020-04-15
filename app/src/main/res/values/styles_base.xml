@@ -63,27 +63,6 @@
         <item name="cardPreventCornerOverlap">false</item>
     </style>
 
-    <!--Text appearances-->
-    <style name="Base.AppTheme.TextAppearance.ListItem" parent="@style/TextAppearance.AppCompat.Subhead">
-        <item name="android:textSize">18sp</item>
-        <item name="android:textColor">?android:attr/textColorPrimary</item>
-    </style>
-
-    <style name="Base.AppTheme.TextAppearance.ListItemSmall" parent="@style/TextAppearance.AppCompat.Subhead">
-        <item name="android:textSize">18sp</item>
-        <item name="android:textColor">?android:attr/textColorPrimary</item>
-    </style>
-
-    <style name="Base.AppTheme.TextAppearance.ListItemSecondary" parent="@style/TextAppearance.AppCompat.Body1">
-        <item name="android:textSize">14sp</item>
-        <item name="android:textColor">?android:attr/textColorSecondary</item>
-    </style>
-
-    <style name="Base.AppTheme.TextAppearance.Button" parent="TextAppearance.MaterialComponents.Button">
-        <item name="android:background">?selectableItemBackground</item>
-        <item name="android:textColor">?android:textColorPrimary</item>
-    </style>
-
     <!--OptionTextView-->
     <style name="Base.AppTheme.OptionTextView" parent="">
         <item name="android:paddingStart">16dp</item>

@@ -82,4 +82,12 @@
     </declare-styleable>
 
     <attr name="miniVisualizerStyle" format="reference"/>
+
+    <!--AppTextSwitcher-->
+    <declare-styleable name="AppTextSwitcher">
+        <attr name="textColor" format="color"/>
+        <attr name="textAppearance" format="reference"/>
+    </declare-styleable>
+
+    <attr name="appTextSwitcherStyle" format="reference"/>
 </resources>
