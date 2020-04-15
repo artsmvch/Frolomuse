@@ -19,6 +19,7 @@ import com.frolo.muse.glide.observe
 import com.frolo.muse.model.media.Album
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.ui.base.NoClipping
+import com.frolo.muse.ui.base.setupNavigation
 import com.frolo.muse.ui.base.withArg
 import com.frolo.muse.ui.main.decorateAsLinear
 import com.frolo.muse.ui.main.library.base.AbsSongCollectionFragment
@@ -26,6 +27,7 @@ import com.google.android.material.appbar.AppBarLayout
 import jp.wasabeef.glide.transformations.BlurTransformation
 import kotlinx.android.synthetic.main.fragment_album.*
 import kotlin.math.abs
+import kotlin.math.max
 
 
 class AlbumFragment: AbsSongCollectionFragment<Song>(), NoClipping {
@@ -40,15 +42,11 @@ class AlbumFragment: AbsSongCollectionFragment<Song>(), NoClipping {
 
     private val onOffsetChangedListener: AppBarLayout.OnOffsetChangedListener =
         AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
-//            if (abs(verticalOffset) < appBarLayout.measuredHeight - fab_play.measuredHeight / 2) {
-//                fab_play.show()
-//            } else fab_play.hide()
-            //val surfaceColor = StyleUtil.readColorAttrValue(appBarLayout.context, R.attr.colorSurface)
-            val factor: Float = abs(verticalOffset.toFloat() / appBarLayout.totalScrollRange)
-            val targetAlpha = if (factor > 0.95) 1f else 0f
-            tb_actions.animate().alpha(targetAlpha).setDuration(200L).start()
-//            val factoredColor = ColorUtils.setAlphaComponent(surfaceColor, (255 * factor).toInt())
-//            tb_actions.setBackgroundColor(factoredColor)
+            val surfaceColor = StyleUtil.readColorAttrValue(appBarLayout.context, R.attr.colorSurface)
+            val scrollFactor: Float = abs(verticalOffset.toFloat() / appBarLayout.totalScrollRange)
+            val targetAlphaFactor = max(0f, scrollFactor - 0.9f) / 0.1f
+            val factoredColor = ColorUtils.setAlphaComponent(surfaceColor, (255 * targetAlphaFactor).toInt())
+            tb_actions.setBackgroundColor(factoredColor)
         }
 
     override val viewModel: AlbumViewModel by lazy {
@@ -71,6 +69,8 @@ class AlbumFragment: AbsSongCollectionFragment<Song>(), NoClipping {
     ): View = inflater.inflate(R.layout.fragment_album, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        setupNavigation(tb_actions)
+
         rv_list.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = this@AlbumFragment.adapter
@@ -90,18 +90,6 @@ class AlbumFragment: AbsSongCollectionFragment<Song>(), NoClipping {
                     else -> false
                 }
             }
-        }
-
-        cv_album_art.updateLayoutParams<ViewGroup.MarginLayoutParams> {
-//            val shadow = 16f.toPx(view.context)
-//            val corner = 4f.toPx(view.context)
-//            val horizontalShadow = calculateCardHorizontalShadowPadding(shadow, corner).toInt()
-//            val verticalShadow = calculateCardVerticalShadowPadding(shadow, corner).toInt()
-//
-//            leftMargin = horizontalShadow
-//            topMargin = verticalShadow
-//            rightMargin = horizontalShadow
-//            bottomMargin = verticalShadow
         }
 
         cv_album_art.setOnClickListener {
