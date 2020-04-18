@@ -1,13 +1,24 @@
 package com.frolo.mediabutton;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 
+import androidx.annotation.Nullable;
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat;
 import androidx.core.content.ContextCompat;
 import android.util.AttributeSet;
 
 
+/**
+ * ImageView that represents a music play button.
+ * The button has two possible states: {@link State#RESUME} and {@link State#PAUSE}.
+ * The state is set using {@link PlayButton#setState(State, boolean)} method.
+ * The change of the state may be animated.
+ *
+ * NOTE: setting direct attributes in xml does not work for this widget.
+ * If you want to define some attributes then create a theme and apply with android:theme.
+ */
 public class PlayButton extends androidx.appcompat.widget.AppCompatImageView {
 
     private final Drawable pause;
@@ -61,16 +72,22 @@ public class PlayButton extends androidx.appcompat.widget.AppCompatImageView {
 
         if (actuallyAnimate) {
             final AnimatedVectorDrawableCompat animation;
-            if (state == State.PAUSE) animation = resumeToPause;
-            else animation = pauseToResume;
+            if (state == State.PAUSE) {
+                animation = resumeToPause;
+            } else {
+                animation = pauseToResume;
+            }
 
-            setImageDrawable(animation);
+            super.setImageDrawable(animation);
             animation.start();
 
             animatedVector = animation;
         } else {
-            if (state == State.PAUSE) setImageDrawable(pause);
-            else setImageDrawable(resume);
+            if (state == State.PAUSE) {
+                super.setImageDrawable(pause);
+            } else {
+                super.setImageDrawable(resume);
+            }
         }
     }
 
@@ -78,6 +95,16 @@ public class PlayButton extends androidx.appcompat.widget.AppCompatImageView {
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         setStateInternal(state, false);
+    }
+
+    @Override
+    public void setImageDrawable(@Nullable Drawable drawable) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void setImageBitmap(Bitmap bm) {
+        throw new UnsupportedOperationException();
     }
 
     public enum State {
