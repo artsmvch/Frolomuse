@@ -2,7 +2,6 @@ package com.frolo.muse.ui.main.library.albums.album
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import com.frolo.muse.arch.liveDataOf
 import com.frolo.muse.arch.map
 import com.frolo.muse.engine.Player
@@ -47,9 +46,6 @@ class AlbumViewModel constructor(
         eventLogger
 ) {
 
-    private val _title: MutableLiveData<String> = MutableLiveData(albumArg.name)
-    val title: LiveData<String> get() = _title
-
     private val _albumId: MutableLiveData<Long> = MutableLiveData(albumArg.id)
     val albumId: LiveData<Long> get() = _albumId
 
@@ -64,13 +60,6 @@ class AlbumViewModel constructor(
 
     fun onAlbumArtClicked() {
         navigator.editAlbum(albumArg)
-    }
-
-    fun onAlbumUpdated(previousAlbum: Album, updatedAlbum: Album) {
-        if (previousAlbum == albumArg) {
-            _title.value = updatedAlbum.name
-            _albumId.value = updatedAlbum.id
-        }
     }
 
     fun onPlayButtonClicked() {

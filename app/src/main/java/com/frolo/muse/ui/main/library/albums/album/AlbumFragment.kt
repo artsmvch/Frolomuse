@@ -1,13 +1,10 @@
 package com.frolo.muse.ui.main.library.albums.album
 
 import android.content.res.ColorStateList
-import android.graphics.Bitmap
-import android.os.AsyncTask
 import android.os.Bundle
 import android.view.*
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProviders
-import androidx.palette.graphics.Palette
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions
@@ -30,7 +27,6 @@ import com.google.android.material.shape.MaterialShapeDrawable
 import com.google.android.material.shape.ShapeAppearanceModel
 import kotlinx.android.synthetic.main.fragment_album.*
 import kotlin.math.abs
-import kotlin.math.max
 import kotlin.math.pow
 
 
@@ -145,11 +141,6 @@ class AlbumFragment: AbsSongCollectionFragment<Song>(), NoClipping {
 
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
         mediaItemCount.observeNonNull(owner) { count ->
-            //tv_title.text = requireContext().resources.getQuantityString(R.plurals.s_songs, count, count)
-        }
-
-        title.observeNonNull(owner) { title ->
-            //tb_actions.title = title
         }
 
         albumName.observe(owner) { albumName ->
@@ -186,18 +177,8 @@ class AlbumFragment: AbsSongCollectionFragment<Song>(), NoClipping {
             .makeRequestAsBitmap(albumId)
             .placeholder(R.drawable.ic_album_200dp)
             .error(R.drawable.ic_album_200dp)
-            //.whenResourceReady { resource -> setupHeaderColors(resource) }
-            //.whenLoadFailed { setupHeaderColors(null as? Bitmap?) }
             .transition(BitmapTransitionOptions.withCrossFade())
             .into(imv_album_art)
-
-//        Glide.with(this@AlbumFragment)
-//            .makeRequest(albumId)
-//            .placeholder(R.drawable.ic_album_200dp)
-//            .error(R.drawable.ic_album_200dp)
-//            .transform(BlurTransformation(25))
-//            .transition(DrawableTransitionOptions.withCrossFade())
-//            .into(imv_blurred_album_art)
     }
 
     override fun removeClipping(left: Int, top: Int, right: Int, bottom: Int) {
@@ -208,44 +189,6 @@ class AlbumFragment: AbsSongCollectionFragment<Song>(), NoClipping {
                 safeView.clipToPadding = false
             }
         }
-    }
-
-    private fun setupHeaderColors(resource: Bitmap?) {
-        if (resource != null) {
-            val task: AsyncTask<*, *, *> = Palette.from(resource).generate { palette ->
-                setupHeaderColors(palette)
-            }
-
-            saveUIAsyncTask(task)
-        } else {
-            val palette: Palette? = null
-            setupHeaderColors(palette)
-        }
-    }
-
-    private fun setupHeaderColors(palette: Palette?) {
-        val ctx = context ?: return
-
-        val defBackgroundColor = StyleUtil.readColorAttrValue(ctx, R.attr.colorPrimary)
-        val defTextColor = StyleUtil.readColorAttrValue(ctx, R.attr.colorOnPrimary)
-        val defFancyColor = StyleUtil.readColorAttrValue(ctx, R.attr.colorAccent)
-
-        if (palette != null) {
-            val swatch = palette.vibrantSwatch
-
-            val resultBackgroundColor = swatch!!.rgb
-
-            val resultTextColor = swatch.titleTextColor
-
-            val resultFancyColor = swatch.bodyTextColor
-
-            app_bar_layout.setBackgroundColor(resultBackgroundColor)
-            tv_album_name.setTextColor(resultTextColor)
-        } else {
-            app_bar_layout.setBackgroundColor(defBackgroundColor)
-            tv_album_name.setTextColor(defTextColor)
-        }
-
     }
 
 }
