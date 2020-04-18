@@ -3,6 +3,7 @@ package com.frolo.muse.ui.base
 import android.Manifest
 import android.app.Dialog
 import android.content.Context
+import android.os.AsyncTask
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.StringRes
@@ -32,6 +33,9 @@ abstract class BaseFragment: Fragment() {
     // UI operations
     private val uiDisposables = CompositeDisposable()
 
+    // UI Tasks
+    private val uiAsyncTasks = ArrayList<AsyncTask<*, *, *>>(3)
+
     // Single progress dialog
     private var progressDialog: Dialog? = null
 
@@ -50,6 +54,11 @@ abstract class BaseFragment: Fragment() {
 
     override fun onDestroyView() {
         progressDialog?.cancel()
+
+        // Disposing UI async tasks
+        uiAsyncTasks.forEach { it.cancel(true) }
+        uiAsyncTasks.clear()
+
         super.onDestroyView()
     }
 
@@ -216,4 +225,17 @@ abstract class BaseFragment: Fragment() {
     protected fun invalidateOptionsMenu() {
         activity?.invalidateOptionsMenu()
     }
+
+    /**
+     * Saves the given [task] to cancel it when fragment's view is destroyed.
+     * If the fragment has no created view, then the task is cancelled immediately.
+     */
+    protected fun saveUIAsyncTask(task: AsyncTask<*, *, *>) {
+        if (view == null) {
+            task.cancel(true)
+        } else {
+            uiAsyncTasks.add(task)
+        }
+    }
+
 }

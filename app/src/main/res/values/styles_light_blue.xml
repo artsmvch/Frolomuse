@@ -2,7 +2,7 @@
 <resources>
 
     <color name="app_blue_action_mode">#09215F</color>
-    <color name="app_blue_primary">#AEE0EF</color>
+    <color name="app_blue_primary">#6DA3BC</color>
     <color name="app_blue_primary_dark">@color/app_blue_primary</color>
     <color name="app_blue_primary_variant">#0B4BA9</color>
     <color name="app_blue_secondary">#EC616C</color>

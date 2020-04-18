@@ -1,32 +1,37 @@
 package com.frolo.muse.ui.main.library.albums.album
 
+import android.content.res.ColorStateList
+import android.graphics.Bitmap
+import android.os.AsyncTask
 import android.os.Bundle
 import android.view.*
-import androidx.core.graphics.ColorUtils
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProviders
+import androidx.palette.graphics.Palette
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions
 import com.frolo.muse.R
 import com.frolo.muse.StyleUtil
 import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
-import com.frolo.muse.glide.GlideAlbumArtHelper
-import com.frolo.muse.glide.makeRequest
-import com.frolo.muse.glide.observe
+import com.frolo.muse.glide.*
 import com.frolo.muse.model.media.Album
 import com.frolo.muse.model.media.Song
+import com.frolo.muse.toPx
 import com.frolo.muse.ui.base.NoClipping
 import com.frolo.muse.ui.base.setupNavigation
 import com.frolo.muse.ui.base.withArg
 import com.frolo.muse.ui.main.decorateAsLinear
 import com.frolo.muse.ui.main.library.base.AbsSongCollectionFragment
 import com.google.android.material.appbar.AppBarLayout
-import jp.wasabeef.glide.transformations.BlurTransformation
+import com.google.android.material.shape.CornerFamily
+import com.google.android.material.shape.MaterialShapeDrawable
+import com.google.android.material.shape.ShapeAppearanceModel
 import kotlinx.android.synthetic.main.fragment_album.*
 import kotlin.math.abs
 import kotlin.math.max
+import kotlin.math.pow
 
 
 class AlbumFragment: AbsSongCollectionFragment<Song>(), NoClipping {
@@ -40,12 +45,22 @@ class AlbumFragment: AbsSongCollectionFragment<Song>(), NoClipping {
     }
 
     private val onOffsetChangedListener: AppBarLayout.OnOffsetChangedListener =
-        AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
-            val surfaceColor = StyleUtil.readColorAttrValue(appBarLayout.context, R.attr.colorSurface)
-            val scrollFactor: Float = abs(verticalOffset.toFloat() / appBarLayout.totalScrollRange)
-            val targetAlphaFactor = max(0f, scrollFactor - 0.9f) / 0.1f
-            val factoredColor = ColorUtils.setAlphaComponent(surfaceColor, (255 * targetAlphaFactor).toInt())
-            tb_actions.setBackgroundColor(factoredColor)
+        AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
+            val scrollFactor: Float = abs(verticalOffset.toFloat() / (view_backdrop.measuredHeight))
+
+            if (scrollFactor < 0.3) {
+                if (!fab_play.isOrWillBeShown) fab_play.show()
+            } else {
+                if (!fab_play.isOrWillBeHidden) fab_play.hide()
+            }
+
+            (view_backdrop.background as? MaterialShapeDrawable)?.apply {
+                val poweredScrollFactor = scrollFactor.pow(2)
+                val cornerRadius = backdropCornerRadius * (1 - poweredScrollFactor)
+                this.shapeAppearanceModel = ShapeAppearanceModel.builder()
+                    .setBottomRightCorner(CornerFamily.ROUNDED, cornerRadius)
+                    .build()
+            }
         }
 
     override val viewModel: AlbumViewModel by lazy {
@@ -60,6 +75,8 @@ class AlbumFragment: AbsSongCollectionFragment<Song>(), NoClipping {
             setHasStableIds(true)
         }
     }
+
+    private val backdropCornerRadius: Float by lazy { 72f.toPx(requireContext()) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -100,6 +117,13 @@ class AlbumFragment: AbsSongCollectionFragment<Song>(), NoClipping {
         }
 
         app_bar_layout.addOnOffsetChangedListener(onOffsetChangedListener)
+
+        view_backdrop.background = MaterialShapeDrawable().apply {
+            fillColor = ColorStateList.valueOf(StyleUtil.readColorAttrValue(view.context, R.attr.colorPrimary))
+            shapeAppearanceModel = ShapeAppearanceModel.builder()
+                .setBottomRightCorner(CornerFamily.ROUNDED, backdropCornerRadius)
+                .build()
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -159,19 +183,21 @@ class AlbumFragment: AbsSongCollectionFragment<Song>(), NoClipping {
 
     private fun loadAlbumArt(albumId: Long) {
         Glide.with(this@AlbumFragment)
-            .makeRequest(albumId)
+            .makeRequestAsBitmap(albumId)
             .placeholder(R.drawable.ic_album_200dp)
             .error(R.drawable.ic_album_200dp)
-            .transition(DrawableTransitionOptions.withCrossFade())
+            //.whenResourceReady { resource -> setupHeaderColors(resource) }
+            //.whenLoadFailed { setupHeaderColors(null as? Bitmap?) }
+            .transition(BitmapTransitionOptions.withCrossFade())
             .into(imv_album_art)
 
-        Glide.with(this@AlbumFragment)
-            .makeRequest(albumId)
-            .placeholder(R.drawable.ic_album_200dp)
-            .error(R.drawable.ic_album_200dp)
-            .transform(BlurTransformation(25))
-            .transition(DrawableTransitionOptions.withCrossFade())
-            .into(imv_blurred_album_art)
+//        Glide.with(this@AlbumFragment)
+//            .makeRequest(albumId)
+//            .placeholder(R.drawable.ic_album_200dp)
+//            .error(R.drawable.ic_album_200dp)
+//            .transform(BlurTransformation(25))
+//            .transition(DrawableTransitionOptions.withCrossFade())
+//            .into(imv_blurred_album_art)
     }
 
     override fun removeClipping(left: Int, top: Int, right: Int, bottom: Int) {
@@ -183,4 +209,43 @@ class AlbumFragment: AbsSongCollectionFragment<Song>(), NoClipping {
             }
         }
     }
+
+    private fun setupHeaderColors(resource: Bitmap?) {
+        if (resource != null) {
+            val task: AsyncTask<*, *, *> = Palette.from(resource).generate { palette ->
+                setupHeaderColors(palette)
+            }
+
+            saveUIAsyncTask(task)
+        } else {
+            val palette: Palette? = null
+            setupHeaderColors(palette)
+        }
+    }
+
+    private fun setupHeaderColors(palette: Palette?) {
+        val ctx = context ?: return
+
+        val defBackgroundColor = StyleUtil.readColorAttrValue(ctx, R.attr.colorPrimary)
+        val defTextColor = StyleUtil.readColorAttrValue(ctx, R.attr.colorOnPrimary)
+        val defFancyColor = StyleUtil.readColorAttrValue(ctx, R.attr.colorAccent)
+
+        if (palette != null) {
+            val swatch = palette.vibrantSwatch
+
+            val resultBackgroundColor = swatch!!.rgb
+
+            val resultTextColor = swatch.titleTextColor
+
+            val resultFancyColor = swatch.bodyTextColor
+
+            app_bar_layout.setBackgroundColor(resultBackgroundColor)
+            tv_album_name.setTextColor(resultTextColor)
+        } else {
+            app_bar_layout.setBackgroundColor(defBackgroundColor)
+            tv_album_name.setTextColor(defTextColor)
+        }
+
+    }
+
 }

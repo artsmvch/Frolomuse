@@ -2,6 +2,7 @@ package com.frolo.muse.glide;
 
 
 import android.content.ContentUris;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 
@@ -172,6 +173,28 @@ public final class GlideAlbumArtHelper {
         final Uri model = getUri(albumId);
         final RequestOptions options = makeRequestOptions(albumId);
         return manager.load(model).apply(options);
+    }
+
+    /**
+     * Makes a request as Bitmap for the given <code>albumId</code>.
+     * The request loads Uri for album art (@see {@link GlideAlbumArtHelper#getUri(long)}).
+     * Request options made with {@link GlideAlbumArtHelper#makeRequestOptions(long)} are applied to the request.
+     *
+     * Should be called on {@link UiThread}.
+     *
+     * @param manager to make RequestBuilder by loading the model
+     * @param albumId for which to make RequestBuilder
+     * @return RequestBuilder
+     */
+    @NonNull
+    public RequestBuilder<Bitmap> makeRequestAsBitmap(
+        @NonNull RequestManager manager,
+        long albumId
+    ) {
+        ThreadStrictMode.assertMain();
+        final Uri model = getUri(albumId);
+        final RequestOptions options = makeRequestOptions(albumId);
+        return manager.asBitmap().load(model).apply(options);
     }
 
     /**
