@@ -4,6 +4,7 @@
     <style name="Base.AppTheme.TextAppearance.ListItem" parent="@style/TextAppearance.AppCompat.Subhead">
         <item name="android:textSize">17.5sp</item>
         <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="fontFamily">sans-serif</item>
     </style>
 
     <style name="Base.AppTheme.TextAppearance.ListItemSmall" parent="@style/TextAppearance.AppCompat.Subhead">

@@ -5,28 +5,15 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.util.TypedValue;
 
 import androidx.annotation.AttrRes;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 
-import java.lang.reflect.Field;
-
 
 public final class StyleUtil {
     private StyleUtil() {
-    }
-
-    public static Typeface overrideFont(Context context,
-                                        String defaultFontNameToOverride,
-                                        String customFontFileNameInAssets) throws Exception {
-        final Typeface customFontTypeface = Typeface.createFromAsset(context.getAssets(), customFontFileNameInAssets);
-        final Field defaultFontTypefaceField = Typeface.class.getDeclaredField(defaultFontNameToOverride);
-        defaultFontTypefaceField.setAccessible(true);
-        defaultFontTypefaceField.set(null, customFontTypeface);
-        return customFontTypeface;
     }
 
     @ColorInt

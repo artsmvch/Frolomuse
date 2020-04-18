@@ -3,7 +3,6 @@ package com.frolo.muse.ui.main.library.albums.album
 import android.os.Bundle
 import android.view.*
 import androidx.core.graphics.ColorUtils
-import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager

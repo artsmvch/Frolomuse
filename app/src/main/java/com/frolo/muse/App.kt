@@ -61,16 +61,6 @@ class App : MultiDexApplication() {
         // consider initializing crashlytics in Release version only
         Fabric.with(this, Crashlytics())
 
-        try {
-            // apply font from assets
-            val typeface = StyleUtil.overrideFont(
-                    this,
-                    "SERIF",
-                    "fonts/OpenSans-Regular.ttf") // CaviarDreams
-        } catch (e: Throwable) {
-            eventLogger.log(e)
-        }
-
         // init Rx plugins
         RxJavaPlugins.setErrorHandler { err ->
             // Default error consumer
