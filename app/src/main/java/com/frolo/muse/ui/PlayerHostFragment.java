@@ -51,19 +51,23 @@ public final class PlayerHostFragment extends Fragment {
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
-            mPlayerServiceBound = false;
-            mPlayer = null;
-            if (mConnHandler != null) {
-                mConnHandler.onPlayerDisconnected();
-            }
+            noteServiceDisconnected();
         }
     };
 
-    PlayerHostFragment() {
+    public PlayerHostFragment() {
         // It is really important that the fragment instance is retained.
         // This will help avoid binding to the player service on every configuration changes etc.
         // because onCreate will be called only once (except the cases when the app was killed by the system).
         super.setRetainInstance(true);
+    }
+
+    private void noteServiceDisconnected() {
+        mPlayerServiceBound = false;
+        mPlayer = null;
+        if (mConnHandler != null) {
+            mConnHandler.onPlayerDisconnected();
+        }
     }
 
     @Override
@@ -104,6 +108,10 @@ public final class PlayerHostFragment extends Fragment {
     public void onDestroy() {
         Context appContext = requireContext().getApplicationContext();
         appContext.unbindService(mConn);
+
+        // TODO: note that the player has been disconnected
+        noteServiceDisconnected();
+
         super.onDestroy();
     }
 

@@ -88,7 +88,7 @@ class MainActivity : PlayerHostActivity(),
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+        super.onCreate(null)
 
         setContentView(R.layout.activity_main)
 
@@ -108,6 +108,8 @@ class MainActivity : PlayerHostActivity(),
         supportFragmentManager.registerFragmentLifecycleCallbacks(fragmentLifecycleCallbacks, true)
 
         observeScanStatus()
+
+        maybeInitializeFragments(player, lastSavedInstanceState)
     }
 
     private fun loadUI() {
@@ -154,10 +156,7 @@ class MainActivity : PlayerHostActivity(),
 
     override fun onRestart() {
         super.onRestart()
-        if (!fragNavControllerInitialized
-                && tryInitializeFragNavController(lastSavedInstanceState)) {
-            fragNavControllerInitialized = true
-        }
+        maybeInitializeFragments(player, lastSavedInstanceState)
     }
 
     override fun onStart() {
@@ -327,10 +326,7 @@ class MainActivity : PlayerHostActivity(),
     override fun playerDidConnect(player: Player) {
         requireApp().onPlayerConnected(player)
         viewModel.onPlayerConnected(player)
-        if (!fragNavControllerInitialized
-                && tryInitializeFragNavController(lastSavedInstanceState)) {
-            fragNavControllerInitialized = true
-        }
+        maybeInitializeFragments(player, lastSavedInstanceState)
     }
 
     override fun playerDidDisconnect(player: Player) {
@@ -341,10 +337,18 @@ class MainActivity : PlayerHostActivity(),
 
     /**
      * Tries to initialize [FragNavController] and configure navigation related widgets for it.
-     * Returns true, if the controller is successfully initialized and can be used,
-     * false - otherwise.
+     * If [player] is null, then this immediately returns false, cause no fragments can work without a non-null player instance.
+     * If fragments were initialized earlier, then this also return false.
      */
-    private fun tryInitializeFragNavController(savedInstanceState: Bundle?): Boolean {
+    private fun maybeInitializeFragments(player: Player?, savedInstanceState: Bundle?): Boolean {
+        if (player == null) {
+            return false
+        }
+
+        if (fragNavControllerInitialized) {
+            return false
+        }
+
         val fragmentManager = supportFragmentManager
 
         if (fragmentManager.isStateSaved) {
@@ -354,9 +358,9 @@ class MainActivity : PlayerHostActivity(),
 
         fragNavController = FragNavController(fragmentManager, R.id.container).apply {
             defaultTransactionOptions = FragNavTransactionOptions
-                    .newBuilder()
-                    .customAnimations(R.anim.fade_in, R.anim.fade_out, R.anim.fade_in, R.anim.fade_out)
-                    .build()
+                .newBuilder()
+                .customAnimations(R.anim.fade_in, R.anim.fade_out, R.anim.fade_in, R.anim.fade_out)
+                .build()
 
             rootFragmentListener = object : FragNavController.RootFragmentListener {
                 override val numberOfRootFragments = 5
@@ -426,6 +430,8 @@ class MainActivity : PlayerHostActivity(),
         supportFragmentManager.beginTransaction()
             .replace(R.id.mini_player_container, MiniPlayerFragment(), FRAG_TAG_MIN_PLAYER)
             .commit()
+
+        fragNavControllerInitialized = true
 
         return true
     }

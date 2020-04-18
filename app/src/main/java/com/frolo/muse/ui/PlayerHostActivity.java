@@ -100,49 +100,44 @@ abstract public class PlayerHostActivity
      */
     private void checkPlayerHolder() {
         final FragmentManager fm = getSupportFragmentManager();
+        if (fm.isStateSaved()) {
+            return;
+        }
 
         // Finding PlayerHolder fragment
         final Fragment frag = fm.findFragmentByTag(FRAG_TAG_PLAYER_HOLDER);
 
-        final Player player;
-
         if (frag != null && frag instanceof PlayerHostFragment) {
-            player = ((PlayerHostFragment) frag).getPlayer();
-        } else {
-            player = null;
+            // OK, the PlayerHost fragment is there
+            mPlayer = ((PlayerHostFragment) frag).getPlayer();
+            return;
         }
 
-        if (frag == null || player == null) {
-            // The PlayerHolder fragment or its player is NULL.
-            // We need to recreate everything from the very beginning.
-            // The last saved instance state is not counted as valid in such a case.
+        // The PlayerHolder fragment is NULL.
+        // We need to recreate everything from the very beginning.
+        // The last saved instance state is not counted as valid in such a case.
 
-            mLastSavedInstanceState = null;
+        mLastSavedInstanceState = null;
 
-            // Popping all entries from the back stack.
-            for (int i = 0; i < fm.getBackStackEntryCount(); i++) {
-                fm.popBackStackImmediate();
-            }
-
-            // Removing all fragments from the fragment manager.
-            FragmentTransaction removeAllFragmentsTransaction = fm.beginTransaction();
-            for (final Fragment f : fm.getFragments()) {
-                if (f != null) removeAllFragmentsTransaction.remove(f);
-            }
-            // TODO: check if the fragment manager state is saved before calling this method
-            removeAllFragmentsTransaction.commitNow();
-
-            // Finally,adding a new instance of PlayerHolderFragment.
-            // To persist activity' configuration changes, this must be added to the back stack as well.
-            fm.beginTransaction()
-                .add(new PlayerHostFragment(), FRAG_TAG_PLAYER_HOLDER)
-                .addToBackStack(null)
-                .commit();
-        } else {
-            // OK, there is an instance of PlayerHolderFragment with a non-null player.
-            // We can assume that it has been connected.
-            onPlayerConnected(player);
+        // Popping all entries from the back stack.
+        for (int i = 0; i < fm.getBackStackEntryCount(); i++) {
+            fm.popBackStackImmediate();
         }
+
+        // First removing all fragments from the fragment manager.
+        final FragmentTransaction removeAllFragmentsTransaction = fm.beginTransaction();
+        for (final Fragment f : fm.getFragments()) {
+            if (f != null) removeAllFragmentsTransaction.remove(f);
+        }
+        removeAllFragmentsTransaction.commitNow();
+
+        // Finally, adding a new instance of PlayerHost fragment.
+        // NOTE: This transaction MUST be added to the back stack,
+        // so that the fragment will not be destroyed by any other transaction.
+        fm.beginTransaction()
+            .add(new PlayerHostFragment(), FRAG_TAG_PLAYER_HOLDER)
+            .addToBackStack(null)
+            .commit();
     }
 
 }
