@@ -59,13 +59,11 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHeight_max="48dp"
-        app:layout_constraintWidth_max="48dp"
+        app:layout_constraintHeight_max="32dp"
+        app:layout_constraintWidth_max="32dp"
         app:layout_constraintDimensionRatio="1"
         android:id="@+id/btn_play"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@drawable/bg_play_button_rounded_rect"
-        app:pauseBackground="@color/white"
-        app:resumeBackground="@color/white"/>
+        android:theme="@style/PlayButton.JustIcon.White"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

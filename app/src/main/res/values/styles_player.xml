@@ -11,9 +11,6 @@
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:backgroundDimEnabled">false</item>
-        <item name="play_button_pause_background">#31999999</item>
-        <item name="play_button_resume_background">#31999999</item>
-        <item name="play_button_icon_tint">#535353</item>
 
         <item name="colorPrimaryDark">@color/black_dark</item>
         <item name="colorAccent">#E027A6</item>

@@ -2,6 +2,7 @@ package com.frolo.mediabutton;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat;
 import androidx.core.content.ContextCompat;
 import android.util.AttributeSet;
@@ -29,10 +30,14 @@ public class PlayButton extends androidx.appcompat.widget.AppCompatImageView {
     public PlayButton(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        resumeToPause = AnimatedVectorDrawableCompat.create(context, R.drawable.ic_resume_to_pause);
-        pauseToResume = AnimatedVectorDrawableCompat.create(context, R.drawable.ic_pause_to_resume);
-        resume = ContextCompat.getDrawable(context, R.drawable.ic_resume);
-        pause = ContextCompat.getDrawable(context, R.drawable.ic_pause);
+        // TODO: make sure all needed attributes are defined
+
+        final Context styledContext = context; // new ContextThemeWrapper(context, R.style.PlayButton_Default)
+
+        resumeToPause = AnimatedVectorDrawableCompat.create(styledContext, R.drawable.ic_resume_to_pause);
+        pauseToResume = AnimatedVectorDrawableCompat.create(styledContext, R.drawable.ic_pause_to_resume);
+        resume = ContextCompat.getDrawable(styledContext, R.drawable.ic_resume);
+        pause = ContextCompat.getDrawable(styledContext, R.drawable.ic_pause);
     }
 
     public State getState() {

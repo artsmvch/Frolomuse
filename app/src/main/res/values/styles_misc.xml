@@ -17,4 +17,17 @@
         <item name="android:progressTint">@color/notification_accent</item>
         <item name="android:progressTintMode">src_in</item>
     </style>
+
+    <style name="PlayButton.JustIcon.White" parent="PlayButton.Default">
+        <item name="pauseBackground">@color/transparent</item>
+        <item name="resumeBackground">@color/transparent</item>
+        <item name="iconTint">@color/white</item>
+    </style>
+
+    <style name="PlayButton.Main" parent="PlayButton.Default">
+        <item name="pauseBackground">@color/transparent</item>
+        <item name="resumeBackground">@color/transparent</item>
+        <item name="iconTint">?iconImageTint</item>
+        <item name="android:background">@drawable/bg_main_play_button</item>
+    </style>
 </resources>

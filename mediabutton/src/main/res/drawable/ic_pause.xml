@@ -6,7 +6,7 @@
     android:viewportHeight="192">
     <path
         android:name="background"
-        android:fillColor="?attr/play_button_pause_background"
+        android:fillColor="?attr/pauseBackground"
         android:pathData="@string/drawable_circular" />
     <group
         android:name="rotationGroup"
@@ -14,11 +14,11 @@
         android:pivotY="96">
         <path
             android:name="left"
-            android:fillColor="?attr/play_button_icon_tint"
+            android:fillColor="?attr/iconTint"
             android:pathData="@string/drawable_vector_pause_left" />
         <path
             android:name="right"
-            android:fillColor="?attr/play_button_icon_tint"
+            android:fillColor="?attr/iconTint"
             android:pathData="@string/drawable_vector_pause_right" />
     </group>
 </vector>

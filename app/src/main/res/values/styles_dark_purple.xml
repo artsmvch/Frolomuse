@@ -102,8 +102,5 @@
         <item name="backdropFrontLayer">?colorPrimaryDark</item>
         <item name="modeOffTint">#b6b6b6</item>
         <item name="modeOnTint">#ff0066</item>
-        <item name="play_button_pause_background">#318E99FF</item>
-        <item name="play_button_resume_background">#318E99FF</item>
-        <item name="play_button_icon_tint">?attr/iconImageTint</item>
     </style>
 </resources>

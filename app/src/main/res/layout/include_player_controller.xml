@@ -43,18 +43,17 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.frolo.mediabutton.PlayButton
-        android:background="@drawable/ripple_play_button"
         android:id="@+id/btn_play"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:tint="?attr/iconImageTint"
         app:layout_constraintHeight_percent="0.85"
         app:layout_constraintDimensionRatio="1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btn_skip_to_next"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/btn_skip_to_previous"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:theme="@style/PlayButton.Main"/>
 
     <ImageView
         android:background="@drawable/ripple_play_button"

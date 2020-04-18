@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="PlayButton">
-        <attr name="animDuration" format="integer"/>
-        <attr name="resumeBackground" format="color"/>
-        <attr name="pauseBackground" format="color"/>
-    </declare-styleable>
+
+    <style name="PlayButton.Default" parent="">
+        <item name="pauseBackground">#C3C3C3</item>
+        <item name="resumeBackground">#C3C3C3</item>
+        <item name="iconTint">#434343</item>
+        <item name="morphDuration">150</item>
+    </style>
+
 </resources>

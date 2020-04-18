@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <attr name="play_button_pause_background" format="color"/>
-    <attr name="play_button_resume_background" format="color"/>
-    <attr name="play_button_icon_tint" format="color"/>
+
+    <declare-styleable name="PlayButton">
+        <attr name="pauseBackground" format="color" />
+        <attr name="resumeBackground" format="color" />
+        <attr name="iconTint" format="color" />
+        <attr name="morphDuration" format="integer"/>
+    </declare-styleable>
+
+    <attr name="playButtonStyle" format="reference"/>
+
 </resources>

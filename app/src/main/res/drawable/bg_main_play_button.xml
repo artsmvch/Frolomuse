@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item>
+        <shape android:shape="oval">
+            <solid android:color="#10000000" />
+            <corners android:radius="15dp" />
+        </shape>
+    </item>
+
+    <item>
+        <ripple android:color="?android:attr/colorControlHighlight">
+            <item android:id="@android:id/mask">
+                <shape android:shape="oval">
+                    <solid android:color="#000000" />
+                    <corners android:radius="15dp" />
+                </shape>
+            </item>
+        </ripple>
+    </item>
+
+</layer-list>

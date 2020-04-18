@@ -6,7 +6,7 @@
     android:viewportHeight="192">
     <path
         android:name="background"
-        android:fillColor="?attr/play_button_resume_background"
+        android:fillColor="?attr/resumeBackground"
         android:pathData="@string/drawable_circular" />
     <group
         android:name="rotationGroup"
@@ -16,11 +16,11 @@
         android:rotation="90">
         <path
             android:name="left"
-            android:fillColor="?attr/play_button_icon_tint"
+            android:fillColor="?attr/iconTint"
             android:pathData="@string/drawable_vector_resume_left" />
         <path
             android:name="right"
-            android:fillColor="?attr/play_button_icon_tint"
+            android:fillColor="?attr/iconTint"
             android:pathData="@string/drawable_vector_resume_right" />
     </group>
 </vector>
