@@ -24,8 +24,8 @@ class PlayerSheetFragment : BaseFragment(), BackPressHandler {
     private val bottomSheetCallback =
         object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                fl_hook.alpha = 1 - slideOffset
-                fl_hook.isClickable = slideOffset < 0.4
+                layout_hook.alpha = 1 - slideOffset
+                layout_hook.isClickable = slideOffset < 0.4
                 container_current_song_queue.alpha = slideOffset
             }
 
@@ -73,7 +73,7 @@ class PlayerSheetFragment : BaseFragment(), BackPressHandler {
             .replace(R.id.container_current_song_queue, CurrSongQueueFragment.newInstance())
             .commit()
 
-        fl_hook.setOnClickListener {
+        layout_hook.setOnClickListener {
             behavior.state = BottomSheetBehavior.STATE_EXPANDED
         }
     }

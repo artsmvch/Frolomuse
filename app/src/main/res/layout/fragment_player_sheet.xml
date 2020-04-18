@@ -26,22 +26,32 @@
             android:layout_height="match_parent"
             android:background="?colorSurface"/>
 
-        <FrameLayout
-            android:id="@+id/fl_hook"
+        <LinearLayout
+            android:id="@+id/layout_hook"
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
             android:layout_gravity="top|center_horizontal"
+            android:orientation="vertical"
+            android:gravity="center"
             android:background="?selectableItemBackground">
 
             <ImageView
-                android:id="@+id/imv_hook_arrow"
-                android:layout_width="40dp"
-                android:layout_height="18dp"
-                android:padding="8dp"
-                android:src="@drawable/ic_hook"
-                android:layout_gravity="center"
-                android:background="?selectableItemBackgroundBorderless"/>
-        </FrameLayout>
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:src="@drawable/ic_arrow_up_72dp"
+                android:tint="?iconImageTint"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?textAppearanceCaption"
+                android:text="@string/current_song_queue"
+                android:lines="1"
+                android:ellipsize="end"
+                app:autoSizeTextType="uniform"
+                app:autoSizeMinTextSize="10sp"
+                app:autoSizeMaxTextSize="14sp"/>
+        </LinearLayout>
     </com.frolo.muse.ui.main.player.TouchFrameLayout>
 
     <include layout="@layout/include_message"
