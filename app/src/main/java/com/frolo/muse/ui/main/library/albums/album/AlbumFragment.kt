@@ -15,7 +15,7 @@ import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.glide.*
 import com.frolo.muse.model.media.Album
 import com.frolo.muse.model.media.Song
-import com.frolo.muse.toPx
+import com.frolo.muse.dp2px
 import com.frolo.muse.ui.base.NoClipping
 import com.frolo.muse.ui.base.setupNavigation
 import com.frolo.muse.ui.base.withArg
@@ -72,7 +72,7 @@ class AlbumFragment: AbsSongCollectionFragment<Song>(), NoClipping {
         }
     }
 
-    private val backdropCornerRadius: Float by lazy { 72f.toPx(requireContext()) }
+    private val backdropCornerRadius: Float by lazy { 72f.dp2px(requireContext()) }
 
     override fun onCreateView(
         inflater: LayoutInflater,

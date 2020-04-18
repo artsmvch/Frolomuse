@@ -4,7 +4,7 @@ import android.view.View
 import android.view.ViewTreeObserver
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
-import com.frolo.muse.toPx
+import com.frolo.muse.dp2px
 import kotlinx.android.synthetic.main.include_square_album_art.view.*
 import kotlin.math.abs
 import kotlin.math.min
@@ -21,11 +21,11 @@ class AlbumCardCarouselHelper private constructor(
     /**
      * Minimal card elevation that all items must have on their album cards.
      */
-    private val baseCardElevation: Float = 4f.toPx(viewPager.context)
+    private val baseCardElevation: Float = 4f.dp2px(viewPager.context)
     /**
      * Additional card elevation for the currently selected item.
      */
-    private val raisingCardElevation: Float = 12f.toPx(viewPager.context)
+    private val raisingCardElevation: Float = 12f.dp2px(viewPager.context)
 
     /**
      * The maximum percent of the page width relatively to the pager width.

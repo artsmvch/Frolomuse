@@ -21,7 +21,7 @@ import com.frolo.muse.ui.main.library.base.DragSongAdapter
 import com.frolo.muse.ui.main.decorateAsLinear
 import com.frolo.muse.ui.main.library.base.AbsSongCollectionFragment
 import com.frolo.muse.ui.main.library.base.SongAdapter
-import com.frolo.muse.toPx
+import com.frolo.muse.dp2px
 import com.frolo.muse.ui.base.NoClipping
 import com.frolo.muse.views.Slider
 import com.frolo.muse.views.showBackArrow
@@ -103,7 +103,7 @@ class PlaylistFragment: AbsSongCollectionFragment<Song>(), NoClipping {
 
         rv_list.apply {
             layoutManager = LinearLayoutManager(context)
-            setPadding(0, 0, 0, 64f.toPx(context).toInt())
+            setPadding(0, 0, 0, 64f.dp2px(context).toInt())
             clipToPadding = false
 
             val slider = object : Slider() {

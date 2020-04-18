@@ -25,7 +25,7 @@ import com.frolo.muse.StyleUtil
 import com.frolo.muse.Trace
 import com.frolo.muse.arch.observe
 import com.frolo.muse.engine.Player
-import com.frolo.muse.toPx
+import com.frolo.muse.dp2px
 import com.frolo.muse.ui.PlayerHostActivity
 import com.frolo.muse.ui.base.BackPressHandler
 import com.frolo.muse.ui.base.FragmentNavigator
@@ -82,7 +82,7 @@ class MainActivity : PlayerHostActivity(),
         object : FragmentManager.FragmentLifecycleCallbacks() {
             override fun onFragmentViewCreated(fm: FragmentManager, f: Fragment, v: View, savedInstanceState: Bundle?) {
                 if (f is NoClipping) {
-                    f.removeClipping(0, 0, 0, 56f.toPx(v.context).toInt())
+                    f.removeClipping(0, 0, 0, 56f.dp2px(v.context).toInt())
                 }
             }
         }
@@ -113,7 +113,7 @@ class MainActivity : PlayerHostActivity(),
     }
 
     private fun loadUI() {
-        val bottomNavCornerRadius = 48f.toPx(this)
+        val bottomNavCornerRadius = 48f.dp2px(this)
 
         bottom_navigation_view.background = MaterialShapeDrawable().apply {
             fillColor = ColorStateList.valueOf(Color.WHITE)
@@ -514,7 +514,7 @@ class MainActivity : PlayerHostActivity(),
             val targetColor = StyleUtil.readColorAttrValue(this@MainActivity, R.attr.colorPrimary)
             fillColor = ColorStateList.valueOf(ColorUtils.blendARGB(Color.WHITE, targetColor, (1 - slideOffset)))
 
-            val cornerRadius = 48f.toPx(this@MainActivity) * (1 - slideOffset)
+            val cornerRadius = 48f.dp2px(this@MainActivity) * (1 - slideOffset)
             Trace.d("MainActivitySlide", "cornerRadius=$cornerRadius")
             this.shapeAppearanceModel = ShapeAppearanceModel.builder()
                 .setTopLeftCorner(CornerFamily.ROUNDED, cornerRadius)

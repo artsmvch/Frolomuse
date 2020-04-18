@@ -10,7 +10,7 @@ import com.frolo.muse.model.media.Playlist
 import com.frolo.muse.ui.main.library.FabCallback
 import com.frolo.muse.ui.main.library.base.BaseAdapter
 import com.frolo.muse.ui.main.library.base.SimpleMediaCollectionFragment
-import com.frolo.muse.toPx
+import com.frolo.muse.dp2px
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
@@ -50,7 +50,7 @@ class PlaylistListFragment: SimpleMediaCollectionFragment<Playlist>(),
         super.onDecorateList(list)
         list.apply {
             clipToPadding = false
-            setPadding(0, 0, 0, 72f.toPx(context).toInt())
+            setPadding(0, 0, 0, 72f.dp2px(context).toInt())
         }
     }
 

@@ -13,7 +13,7 @@ import com.frolo.muse.R
 import com.frolo.muse.StyleUtil
 import com.frolo.muse.model.media.*
 import com.frolo.muse.ui.main.library.base.BaseAdapter
-import com.frolo.muse.toPx
+import com.frolo.muse.dp2px
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter
 import kotlinx.android.synthetic.main.item_header.view.*
 import kotlin.properties.Delegates
@@ -95,7 +95,7 @@ class MediaAdapter(private val requestManager: RequestManager):
             itemView.apply {
                 layoutParams = layoutParams.also { params ->
                     if (params is ViewGroup.MarginLayoutParams) {
-                        val margin = 2f.toPx(context).toInt()
+                        val margin = 2f.dp2px(context).toInt()
                         params.leftMargin = margin
                         params.topMargin = margin
                         params.marginEnd = margin

@@ -6,31 +6,52 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minHeight="48dp"
-    android:padding="8dp">
+    android:paddingStart="8dp"
+    android:paddingTop="4dp"
+    android:paddingEnd="8dp"
+    android:paddingBottom="2dp">
 
     <ImageView
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHeight_max="72dp"
-        app:layout_constraintWidth_max="72dp"
+        app:layout_constraintHeight_max="12dp"
+        app:layout_constraintWidth_max="12dp"
         app:layout_constraintDimensionRatio="1"
-        android:id="@+id/imv_art"
+        android:id="@+id/imv_arrow_up"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        tools:src="@drawable/ic_framed_music_note_48dp"/>
+        android:src="@drawable/ic_arrow_up_72dp"
+        android:tint="?colorOnPrimary"
+        android:scaleType="fitCenter"/>
 
-    <com.frolo.muse.views.text.AppTextSwitcher
-        app:layout_constraintStart_toEndOf="@id/imv_art"
+    <TextView
+        app:layout_constraintStart_toEndOf="@id/imv_arrow_up"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toStartOf="@id/btn_play"
+        app:layout_constraintBottom_toTopOf="@id/tsw_song_name"
+        app:layout_constraintVertical_chainStyle="packed"
+        android:id="@+id/tv_now_playing"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="16dp"
+        android:textAppearance="?textAppearanceCaption"
+        android:gravity="start|center_vertical"
+        android:lines="1"
+        android:ellipsize="end"
+        android:textColor="@color/color_on_primary_alpha60"
+        android:text="@string/now_playing"/>
+
+    <com.frolo.muse.views.text.AppTextSwitcher
+        app:layout_constraintStart_toStartOf="@id/tv_now_playing"
+        app:layout_constraintTop_toBottomOf="@id/tv_now_playing"
+        app:layout_constraintEnd_toEndOf="@id/tv_now_playing"
         app:layout_constraintBottom_toBottomOf="parent"
         android:id="@+id/tsw_song_name"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        app:textAppearance="?textAppearanceBody2"
+        android:layout_height="wrap_content"
+        app:textAppearance="?textAppearanceBody1"
         app:textColor="?colorOnPrimary"
         tools:text="Song name"/>
 

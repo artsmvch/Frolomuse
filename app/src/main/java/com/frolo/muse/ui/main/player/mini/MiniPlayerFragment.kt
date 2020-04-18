@@ -9,14 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.core.widget.TextViewCompat
 import androidx.lifecycle.LifecycleOwner
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.frolo.mediabutton.PlayButton
 import com.frolo.muse.R
 import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
-import com.frolo.muse.glide.makeRequest
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.ui.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_mini_player.*
@@ -37,17 +35,21 @@ class MiniPlayerFragment : BaseFragment() {
         with(tsw_song_name) {
             setFactory {
                 AppCompatTextView(context).apply {
-                    setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
-                    gravity = Gravity.START or Gravity.CENTER_VERTICAL
+                    gravity = Gravity.START or Gravity.TOP
                     layoutParams = FrameLayout.LayoutParams(
-                            ViewGroup.LayoutParams.MATCH_PARENT,
-                            ViewGroup.LayoutParams.WRAP_CONTENT
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT
                     ).apply {
-                        gravity = Gravity.START or Gravity.CENTER_VERTICAL
+                        gravity = Gravity.START or Gravity.TOP
                     }
 
                     maxLines = 1
                     ellipsize = TextUtils.TruncateAt.END
+
+                    includeFontPadding = false
+
+                    TextViewCompat.setAutoSizeTextTypeUniformWithConfiguration(
+                            this, 10, 15, 1, TypedValue.COMPLEX_UNIT_SP)
                 }
             }
             setInAnimation(context, R.anim.fade_in)
@@ -68,7 +70,6 @@ class MiniPlayerFragment : BaseFragment() {
         currentSong.observe(owner) { song: Song? ->
             if (song != null) {
                 tsw_song_name.setText(song.title)
-                loadArt(song)
             }
         }
 
@@ -79,15 +80,6 @@ class MiniPlayerFragment : BaseFragment() {
 
             btn_play.setState(state, true)
         }
-    }
-
-    private fun loadArt(song: Song) {
-        Glide.with(this)
-            .makeRequest(song.albumId)
-            .error(R.drawable.ic_framed_music_note_48dp)
-            .circleCrop()
-            .transition(DrawableTransitionOptions.withCrossFade(200))
-            .into(imv_art)
     }
 
 }

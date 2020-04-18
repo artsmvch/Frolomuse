@@ -64,6 +64,7 @@
 
     <string name="choose_playlist">Choose playlist</string>
     <string name="current_playing">Current playing</string>
+    <string name="now_playing">Now playing</string>
     <string name="track">Track</string>
     <string name="album">Album</string>
     <string name="artist">Artist</string>

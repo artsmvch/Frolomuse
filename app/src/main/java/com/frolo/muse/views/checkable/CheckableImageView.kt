@@ -7,7 +7,7 @@ import android.widget.Checkable
 import android.widget.ImageView
 import com.frolo.muse.R
 import com.frolo.muse.StyleUtil
-import com.frolo.muse.toPx
+import com.frolo.muse.dp2px
 import com.frolo.muse.views.InsetDrawable
 
 
@@ -39,7 +39,7 @@ class CheckableImageView @JvmOverloads constructor(
             }
         }
 
-        val insetCheckMarkDrawable = InsetDrawable(checkMarkDrawable, 4f.toPx(context).toInt())
+        val insetCheckMarkDrawable = InsetDrawable(checkMarkDrawable, 4f.dp2px(context).toInt())
         checkFlipDrawable = CheckFlipDrawable(target = targetDrawable, checkMark = insetCheckMarkDrawable)
         super.setImageDrawable(checkFlipDrawable)
     }

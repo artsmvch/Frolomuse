@@ -13,7 +13,7 @@ import com.frolo.muse.model.media.Artist
 import com.frolo.muse.ui.base.withArg
 import com.frolo.muse.ui.main.library.base.AbsMediaCollectionFragment
 import com.frolo.muse.ui.main.library.base.BaseAdapter
-import com.frolo.muse.toPx
+import com.frolo.muse.dp2px
 import com.frolo.muse.views.MarginItemDecoration
 import kotlinx.android.synthetic.main.fragment_albums_of_artist.*
 
@@ -66,11 +66,11 @@ class AlbumsOfArtistFragment : AbsMediaCollectionFragment<Album>() {
             adapter = this@AlbumsOfArtistFragment.adapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
 
-            val m = 8f.toPx(context).toInt()
+            val m = 8f.dp2px(context).toInt()
             addItemDecoration(MarginItemDecoration.createLinear(m, 0))
 
-            val px = 8f.toPx(view.context).toInt()
-            val py = 8f.toPx(view.context).toInt()
+            val px = 8f.dp2px(view.context).toInt()
+            val py = 8f.dp2px(view.context).toInt()
             setPadding(px, py, px, py)
             clipToPadding = false
         }
