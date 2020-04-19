@@ -213,6 +213,8 @@ dependencies {
     // RxAdapter ContentResolver and SharedPreferences
     implementation 'com.github.alexei-frolo:RxContent:1.0.3'
 
+    // Circular Progress Bar
+    implementation 'com.mikhaellopez:circularprogressbar:3.0.3'
 }
 
 apply plugin: 'com.google.gms.google-services'

@@ -6,12 +6,16 @@ import com.frolo.muse.engine.Player
 import com.frolo.muse.engine.SimplePlayerObserver
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.media.Song
+import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.base.BaseViewModel
+import io.reactivex.Observable
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 
 class MiniPlayerViewModel @Inject constructor(
     private val player: Player,
+    private val schedulerProvider: SchedulerProvider,
     private val eventLogger: EventLogger
 ): BaseViewModel(eventLogger) {
 
@@ -21,9 +25,19 @@ class MiniPlayerViewModel @Inject constructor(
     private val _isPlaying = MutableLiveData<Boolean>(player.isPlaying())
     val isPlaying: LiveData<Boolean> get() = _isPlaying
 
+    private val _maxProgress = MutableLiveData<Int>(player.getDuration())
+    val maxProgress: LiveData<Int> get() = _maxProgress
+
+    private val _progress = MutableLiveData<Int>(player.getProgress())
+    val progress: LiveData<Int> get() = _progress
+
     private val playerObserver = object : SimplePlayerObserver() {
         override fun onSongChanged(player: Player, song: Song?, positionInQueue: Int) {
             _currentSong.value = song
+        }
+
+        override fun onPrepared(player: Player) {
+            _maxProgress.value = player.getDuration()
         }
 
         override fun onPlaybackPaused(player: Player) {
@@ -37,14 +51,13 @@ class MiniPlayerViewModel @Inject constructor(
 
     init {
         player.registerObserver(playerObserver)
-    }
 
-    fun onPreviousClicked() {
-        player.skipToPrevious()
-    }
-
-    fun onNextClicked() {
-        player.skipToNext()
+        // For observing player's progress
+        Observable.interval(1, TimeUnit.SECONDS)
+            .observeOn(schedulerProvider.main())
+            .subscribeFor {
+                _progress.value = player.getProgress()
+            }
     }
 
     fun onPlayButtonClicked() {

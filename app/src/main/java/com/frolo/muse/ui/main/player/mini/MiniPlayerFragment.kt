@@ -1,15 +1,16 @@
 package com.frolo.muse.ui.main.player.mini
 
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.core.graphics.ColorUtils
 import androidx.lifecycle.LifecycleOwner
 import com.frolo.mediabutton.PlayButton
 import com.frolo.muse.R
+import com.frolo.muse.StyleUtil
 import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.model.media.Song
@@ -56,6 +57,12 @@ class MiniPlayerFragment : BaseFragment() {
         btn_play.setOnClickListener {
             viewModel.onPlayButtonClicked()
         }
+
+        pb_progress.apply {
+            val colorOnPrimary = StyleUtil.readColorAttrValue(context, R.attr.colorOnPrimary)
+            backgroundProgressBarColor = ColorUtils.setAlphaComponent(colorOnPrimary, (0.2f * 255).toInt())
+            progressBarColor = colorOnPrimary
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -76,6 +83,14 @@ class MiniPlayerFragment : BaseFragment() {
                 else PlayButton.State.RESUME
 
             btn_play.setState(state, true)
+        }
+
+        maxProgress.observeNonNull(owner) { max ->
+            pb_progress.progressMax = max.toFloat()
+        }
+
+        progress.observeNonNull(owner) { progress ->
+            pb_progress.progress = progress.toFloat()
         }
     }
 

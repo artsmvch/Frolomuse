@@ -9,6 +9,7 @@ import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.rx.SchedulerProvider
 import io.reactivex.Completable
 import io.reactivex.Flowable
+import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -37,6 +38,12 @@ abstract class BaseViewModel constructor(
      * Subscribe for (without schedulers)
      */
     fun <T> Flowable<T>.subscribeFor(consumer: (T) -> Unit) {
+        this
+                .subscribe({ consumer(it) }, { err -> logError(err) })
+                .save()
+    }
+
+    fun <T> Observable<T>.subscribeFor(consumer: (T) -> Unit) {
         this
                 .subscribe({ consumer(it) }, { err -> logError(err) })
                 .save()

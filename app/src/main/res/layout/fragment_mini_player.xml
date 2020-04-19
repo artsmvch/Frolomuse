@@ -55,15 +55,31 @@
         app:textColor="?colorOnPrimary"
         tools:text="Song name"/>
 
-    <com.frolo.mediabutton.PlayButton
+    <com.mikhaellopez.circularprogressbar.CircularProgressBar
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHeight_max="40dp"
+        app:layout_constraintWidth_max="40dp"
+        app:layout_constraintDimensionRatio="1"
+        android:id="@+id/pb_progress"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="4dp"
+        app:cpb_background_progressbar_width="2dp"
+        app:cpb_progressbar_width="2dp" />
+
+    <com.frolo.mediabutton.PlayButton
+        app:layout_constraintStart_toStartOf="@id/pb_progress"
+        app:layout_constraintTop_toTopOf="@id/pb_progress"
+        app:layout_constraintEnd_toEndOf="@id/pb_progress"
+        app:layout_constraintBottom_toBottomOf="@id/pb_progress"
         app:layout_constraintHeight_max="32dp"
         app:layout_constraintWidth_max="32dp"
         app:layout_constraintDimensionRatio="1"
         android:id="@+id/btn_play"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_margin="2dp"
         android:theme="@style/PlayButton.JustIcon.White"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
