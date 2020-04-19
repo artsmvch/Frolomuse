@@ -2,20 +2,18 @@ package com.frolo.muse.ui.main.player.mini
 
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.TypedValue
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import androidx.appcompat.widget.AppCompatTextView
-import androidx.core.widget.TextViewCompat
 import androidx.lifecycle.LifecycleOwner
 import com.frolo.mediabutton.PlayButton
 import com.frolo.muse.R
 import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.model.media.Song
+import com.frolo.muse.sp2px
 import com.frolo.muse.ui.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_mini_player.*
 
@@ -33,8 +31,11 @@ class MiniPlayerFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         with(tsw_song_name) {
+
+            val maxTextSizeInPx = 15f.sp2px(context).toInt()
+
             setFactory {
-                AppCompatTextView(context).apply {
+                FitSingleLineTextView(context).apply {
                     gravity = Gravity.START or Gravity.TOP
                     layoutParams = FrameLayout.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT,
@@ -43,13 +44,9 @@ class MiniPlayerFragment : BaseFragment() {
                         gravity = Gravity.START or Gravity.TOP
                     }
 
-                    maxLines = 1
-                    ellipsize = TextUtils.TruncateAt.END
-
                     includeFontPadding = false
 
-                    TextViewCompat.setAutoSizeTextTypeUniformWithConfiguration(
-                            this, 10, 15, 1, TypedValue.COMPLEX_UNIT_SP)
+                    setMaxTextSize(maxTextSizeInPx)
                 }
             }
             setInAnimation(context, R.anim.fade_in)
