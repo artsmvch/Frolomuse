@@ -71,6 +71,9 @@ final class SongQuery {
         static final String BY_DURATION =
                 MediaStore.Audio.Media.DURATION + " ASC";
 
+        static final String BY_TRACK_NUMBER =
+                MediaStore.Audio.Media.TRACK + " ASC";
+
         private Sort() {
         }
     }
@@ -446,13 +449,19 @@ final class SongQuery {
             final String sortOrder) {
         String selection = "is_music != 0 and album_id = " + album.getId();
         String[] selectionArgs = null;
+        // TODO: consider passing the actual sort order as the param
+        final String actualSortOrder;
+        if (sortOrder == null || sortOrder.isEmpty()) {
+            // in albums, the default sort order is the sort order by track number
+            actualSortOrder = Sort.BY_TRACK_NUMBER;
+        } else actualSortOrder = sortOrder;
         return Query.query(
                 resolver,
                 URI,
                 PROJECTION_SONG,
                 selection,
                 selectionArgs,
-                sortOrder,
+                actualSortOrder,
                 BUILDER_SONG);
     }
 
