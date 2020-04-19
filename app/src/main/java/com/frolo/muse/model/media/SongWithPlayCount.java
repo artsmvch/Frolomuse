@@ -96,4 +96,9 @@ public final class SongWithPlayCount implements Song, Serializable {
     public long getArtistId() {
         return song.getArtistId();
     }
+
+    @Override
+    public int getTrackNumber() {
+        return song.getTrackNumber();
+    }
 }

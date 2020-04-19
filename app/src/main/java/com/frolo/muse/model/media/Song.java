@@ -24,4 +24,6 @@ public interface Song extends Media, Serializable {
 
     int getYear();
 
+    int getTrackNumber();
+
 }

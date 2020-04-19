@@ -87,18 +87,21 @@ final class SongQuery {
         final String genre;
         final int duration;
         final int year;
+        final int trackNumber;
 
         SimpleSong(
-                long id,
-                String source,
-                String title,
-                long albumId,
-                String album,
-                long artistId,
-                String artist,
-                String genre,
-                int duration,
-                int year) {
+            long id,
+            String source,
+            String title,
+            long albumId,
+            String album,
+            long artistId,
+            String artist,
+            String genre,
+            int duration,
+            int year,
+            int trackNumber
+        ) {
             this.id = id;
             this.source = source;
             this.title = title != null ? title : "";
@@ -109,6 +112,7 @@ final class SongQuery {
             this.genre = genre != null ? genre : "";
             this.duration = duration;
             this.year = year;
+            this.trackNumber = trackNumber;
         }
 
         public String getSource() {
@@ -188,6 +192,11 @@ final class SongQuery {
         public long getArtistId() {
             return artistId;
         }
+
+        @Override
+        public int getTrackNumber() {
+            return trackNumber;
+        }
     }
 
     private static class SongPlayCount {
@@ -211,7 +220,8 @@ final class SongQuery {
             MediaStore.Audio.Media.ARTIST_ID,
             MediaStore.Audio.Media.ARTIST,
             MediaStore.Audio.Media.DURATION,
-            MediaStore.Audio.Media.YEAR
+            MediaStore.Audio.Media.YEAR,
+            MediaStore.Audio.Playlists.Members.TRACK
     };
 
     private static final String[] PROJECTION_PLAYLIST_MEMBER = new String[] {
@@ -224,6 +234,7 @@ final class SongQuery {
             MediaStore.Audio.Playlists.Members.ARTIST,
             MediaStore.Audio.Playlists.Members.DURATION,
             MediaStore.Audio.Playlists.Members.YEAR,
+            MediaStore.Audio.Playlists.Members.TRACK
     };
 
     private static final String[] PROJECTION_SONG_PLAY_COUNT = new String[] {
@@ -246,7 +257,8 @@ final class SongQuery {
                     cursor.getString(cursor.getColumnIndex(PROJECTION_SONG[6])),
                     "",
                     cursor.getInt(cursor.getColumnIndex(PROJECTION_SONG[7])),
-                    cursor.getInt(cursor.getColumnIndex(PROJECTION_SONG[8]))
+                    cursor.getInt(cursor.getColumnIndex(PROJECTION_SONG[8])),
+                    cursor.getInt(cursor.getColumnIndex(PROJECTION_SONG[9]))
             );
         }
     };
@@ -265,7 +277,8 @@ final class SongQuery {
                     cursor.getString(cursor.getColumnIndex(PROJECTION_PLAYLIST_MEMBER[6])),
                     "",
                     cursor.getInt(cursor.getColumnIndex(PROJECTION_PLAYLIST_MEMBER[7])),
-                    cursor.getInt(cursor.getColumnIndex(PROJECTION_PLAYLIST_MEMBER[8]))
+                    cursor.getInt(cursor.getColumnIndex(PROJECTION_PLAYLIST_MEMBER[8])),
+                    cursor.getInt(cursor.getColumnIndex(PROJECTION_SONG[9]))
             );
         }
     };

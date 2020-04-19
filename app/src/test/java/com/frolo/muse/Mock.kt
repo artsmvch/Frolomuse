@@ -112,6 +112,7 @@ private fun <T: Any> tryMockAbstract(clazz: KClass<T>): T {
                 mockKT(),
                 mockKT(),
                 mockKT(),
+                mockKT(),
                 mockKT()
         ) as T
     }

@@ -14,7 +14,8 @@ internal class SongImpl constructor(
     private val artist: String,
     private val genre: String,
     private val duration: Int,
-    private val year: Int
+    private val year: Int,
+    private val trackNumber: Int
 ): Song {
     override fun getArtistId() = artistId
 
@@ -37,5 +38,7 @@ internal class SongImpl constructor(
     override fun getAlbum() = album
 
     override fun getYear() = year
+
+    override fun getTrackNumber(): Int = trackNumber
 
 }
