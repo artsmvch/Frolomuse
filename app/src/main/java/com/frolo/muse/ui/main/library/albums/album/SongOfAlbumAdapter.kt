@@ -8,6 +8,7 @@ import com.frolo.muse.model.media.Song
 import com.frolo.muse.ui.getArtistString
 import com.frolo.muse.ui.getDurationString
 import com.frolo.muse.ui.getNameString
+import com.frolo.muse.ui.getTrackNumberString
 import com.frolo.muse.ui.main.library.base.SongAdapter
 import com.frolo.muse.views.media.MediaConstraintLayout
 import kotlinx.android.synthetic.main.include_check.view.*
@@ -29,7 +30,7 @@ class SongOfAlbumAdapter : SongAdapter<Song>() {
         selectionChanged: Boolean
     ) = with((holder.itemView as MediaConstraintLayout)) {
         val res = resources
-        tv_song_number.text = item.trackNumber.toString()
+        tv_song_number.text = item.getTrackNumberString(res)
         tv_song_name.text = item.getNameString(res)
         tv_artist_name.text = item.getArtistString(res)
         tv_duration.text = item.getDurationString()

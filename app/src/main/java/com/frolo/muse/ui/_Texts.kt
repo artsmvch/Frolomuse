@@ -23,6 +23,16 @@ fun Song.getArtistString(res: Resources): String {
     }
 }
 
+fun Song.getTrackNumberString(res: Resources): String {
+    return trackNumber.run {
+        val diskNumber = this / 1000
+        if (diskNumber > 0) {
+            val actualTrackNumber = trackNumber % 1000
+            "$actualTrackNumber ($diskNumber)"
+        } else trackNumber.toString()
+    }
+}
+
 fun Song.getAlbumString(res: Resources): String {
     return album.run {
         if (this.isNullOrBlank()) res.getString(R.string.placeholder_unknown) else this

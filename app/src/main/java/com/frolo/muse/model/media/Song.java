@@ -24,6 +24,12 @@ public interface Song extends Media, Serializable {
 
     int getYear();
 
+    /**
+     * Represents the track number of this song on the album, if any.
+     * This number encodes both the track number and the disc number.
+     * For multi-disc sets, this number will be 1xxx for tracks on the first disc, 2xxx for tracks on the second disc, etc.
+     * @return the track number of this on the album
+     */
     int getTrackNumber();
 
 }
