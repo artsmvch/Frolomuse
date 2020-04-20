@@ -11,13 +11,13 @@ import com.frolo.muse.ui.base.withNullableArg
 import com.frolo.muse.ui.main.library.base.inputname.AbsInputNameDialog
 
 
-class CreatePlaylistDialog : AbsInputNameDialog() {
+class SavePlaylistDialog : AbsInputNameDialog() {
 
     companion object {
         private const val ARG_SONGS = "songs"
 
         // Factory
-        fun newInstance(songs: ArrayList<Song>? = null) = CreatePlaylistDialog()
+        fun newInstance(songs: ArrayList<Song>? = null) = SavePlaylistDialog()
                 .withNullableArg(ARG_SONGS, songs)
     }
 
@@ -34,23 +34,21 @@ class CreatePlaylistDialog : AbsInputNameDialog() {
         observeViewModel(this)
     }
 
-    private fun observeViewModel(owner: LifecycleOwner) {
-        viewModel.apply {
-            error.observeNonNull(owner) { err ->
-                displayError(err)
-            }
+    private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
+        error.observeNonNull(owner) { err ->
+            displayError(err)
+        }
 
-            creationError.observeNonNull(owner) { err ->
-                displayInputError(err)
-            }
+        creationError.observeNonNull(owner) { err ->
+            displayInputError(err)
+        }
 
-            isLoading.observeNonNull(owner) { isLoading ->
-                setIsLoading(isLoading)
-            }
+        isLoading.observeNonNull(owner) { isLoading ->
+            setIsLoading(isLoading)
+        }
 
-            playlistCreatedEvent.observeNonNull(owner) { playlist ->
-                onPlaylistCreated(playlist)
-            }
+        playlistCreatedEvent.observeNonNull(owner) { playlist ->
+            onPlaylistCreated(playlist)
         }
     }
 
@@ -60,9 +58,7 @@ class CreatePlaylistDialog : AbsInputNameDialog() {
         dismiss()
     }
 
-    override fun onGetTitle(): String {
-        return getString(R.string.type_name_for_playlist)
-    }
+    override fun onGetTitle(): String = getString(R.string.save_playlist)
 
     override fun onSaveButtonClick(name: String) {
         checkWritePermissionFor {

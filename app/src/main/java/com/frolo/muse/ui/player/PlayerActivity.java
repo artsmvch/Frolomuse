@@ -95,12 +95,14 @@ public class PlayerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 
+        // TODO: update layout
         setContentView(R.layout.activity_player);
+
         imageAlbumArt = findViewById(R.id.imv_album_art);
         textPosition = findViewById(R.id.tv_position);
         textDuration = findViewById(R.id.tv_duration);
         buttonPlay = findViewById(R.id.btn_play);
-        seekBarProgress = findViewById(R.id.sb_progress);
+        seekBarProgress = findViewById(R.id.pb_progress);
         textTitle = findViewById(R.id.tv_title);
 
         handleIntent(getIntent(), savedInstanceState);

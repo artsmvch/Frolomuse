@@ -17,41 +17,40 @@ abstract class AbsInputNameDialog : BaseDialogFragment() {
     final override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return super.onCreateDialog(savedInstanceState).apply {
             requestWindowFeature(Window.FEATURE_NO_TITLE)
+
             setContentView(R.layout.dialog_input_name)
+
             setupDialogSize(this)
+
             initUI(this)
 
             window?.apply {
                 setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
                 edt_name.requestFocus()
-                setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE) // simulate click on edit text
+                // This simulates a click on the edit text
+                setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
             }
         }
     }
 
-    private fun initUI(dialog: Dialog) {
-        with(dialog) {
-            tv_title.text = onGetTitle()
+    private fun initUI(dialog: Dialog) = with(dialog) {
+        tv_title.text = onGetTitle()
 
-            edt_name.setText(onGetInitialText())
+        edt_name.setText(onGetInitialText())
 
-            inc_progress_overlay.setOnClickListener { } // intercept any click through this overlay
+        // Intercept any touches on this overlay
+        inc_progress_overlay.setOnClickListener { }
 
-            btn_cancel.setOnClickListener { dismiss() }
+        btn_cancel.setOnClickListener { dismiss() }
 
-            btn_add.setOnClickListener {
-                val name = edt_name.getNonNullText()
-                onSaveButtonClick(name)
-            }
+        btn_add.setOnClickListener {
+            val name = edt_name.getNonNullText()
+            onSaveButtonClick(name)
         }
     }
 
     protected fun displayError(err: Throwable) {
-        Toast.makeText(
-                context,
-                err.message,
-                Toast.LENGTH_SHORT)
-                .show()
+        Toast.makeText(context, err.message, Toast.LENGTH_SHORT).show()
     }
 
     protected fun displayInputError(err: Throwable) {

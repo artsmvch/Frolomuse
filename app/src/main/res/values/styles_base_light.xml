@@ -7,7 +7,7 @@
         <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
         <item name="android:gravity">center</item>
         <item name="textAppearanceButton">@style/Base.AppTheme.TextAppearance.Button</item>
-        <item name="android:windowBackground">@drawable/bg_dialog_light</item>
+        <item name="android:windowBackground">@drawable/bg_dialog</item>
         <item name="textInputStyle">@style/AppTheme.Light.Blue.TextInputLayout</item>
         <item name="android:textColor">@color/text_primary_dark</item>
         <item name="android:textColorPrimary">@color/text_primary_dark</item>
