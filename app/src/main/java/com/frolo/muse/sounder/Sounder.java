@@ -96,9 +96,9 @@ public final class Sounder {
 
     public void release() {
         try {
+            mCallback.onPlaybackChanged(this, false);
             mEngine.reset();
             mEngine.release();
-            mCallback.onPlaybackChanged(this, false);
         } catch (Exception e) {
             mCallback.onError(this, e);
         }
