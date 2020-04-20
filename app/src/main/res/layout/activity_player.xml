@@ -43,9 +43,10 @@
                 android:theme="@style/PlayButton.Default"/>
 
             <androidx.appcompat.widget.AppCompatTextView
-                app:layout_constraintTop_toTopOf="@id/imv_album_art"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toEndOf="@id/imv_album_art"
                 app:layout_constraintEnd_toStartOf="@id/btn_play"
+                app:layout_constraintBottom_toTopOf="@id/barrier1"
                 android:id="@+id/tv_title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
