@@ -2,9 +2,9 @@
 <resources>
 
     <style name="PlayButton.Default" parent="">
-        <item name="pauseBackground">#C3C3C3</item>
-        <item name="resumeBackground">#C3C3C3</item>
-        <item name="iconTint">#434343</item>
+        <item name="pauseBackground">#32A9A9A9</item>
+        <item name="resumeBackground">#32A9A9A9</item>
+        <item name="iconTint">#717171</item>
         <item name="morphDuration">150</item>
     </style>
 

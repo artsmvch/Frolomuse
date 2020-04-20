@@ -1,68 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/transparent_black">
 
     <com.google.android.material.circularreveal.cardview.CircularRevealCardView
-        android:layout_centerInParent="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:layout_gravity="center"
         app:cardBackgroundColor="@color/white"
         app:cardElevation="4dp"
-        app:cardCornerRadius="8dp"
-        android:layout_margin="12dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        app:cardCornerRadius="8dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_centerInParent="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
             android:paddingTop="16dp"
-            android:paddingBottom="16dp">
+            android:paddingBottom="24dp">
 
             <de.hdodenhof.circleimageview.CircleImageView
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 android:src="@drawable/ic_framed_music_note_48dp"
                 android:id="@+id/imv_album_art"
                 android:layout_width="50dp"
-                android:layout_height="50dp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"/>
+                android:layout_height="50dp" />
 
             <com.frolo.mediabutton.PlayButton
                 app:layout_constraintTop_toTopOf="@id/imv_album_art"
                 app:layout_constraintBottom_toBottomOf="@id/imv_album_art"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:id="@+id/btn_play"
-                android:padding="5dp"
-                android:layout_width="45dp"
-                android:layout_height="45dp" />
+                android:padding="6dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:theme="@style/PlayButton.Default"/>
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:layout_margin="10dp"
-                android:gravity="start"
-                android:textSize="17.1sp"
-                android:padding="5dp"
-                android:id="@+id/tv_title"
-                android:text="@string/placeholder_unknown"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:maxLines="1"
-                android:ellipsize="end"
                 app:layout_constraintTop_toTopOf="@id/imv_album_art"
                 app:layout_constraintStart_toEndOf="@id/imv_album_art"
-                app:layout_constraintEnd_toStartOf="@id/btn_play"/>
-
-            <include layout="@layout/include_playback_progress"
-                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toStartOf="@id/btn_play"
+                android:id="@+id/tv_title"
                 android:layout_width="0dp"
-                android:layout_marginTop="16dp"
-                app:layout_constraintTop_toBottomOf="@id/imv_album_art"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
+                android:textAppearance="?textAppearanceHeadline6"
+                android:gravity="start|center_vertical"
+                android:maxLines="3"
+                android:ellipsize="end"
+                tools:text="Song title"/>
+
+            <androidx.constraintlayout.widget.Barrier
+                app:constraint_referenced_ids="imv_album_art,tv_title,btn_play"
+                app:barrierDirection="bottom"
+                android:id="@+id/barrier1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <androidx.appcompat.widget.AppCompatTextView
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintTop_toTopOf="@id/seek_bar_progress"
+                app:layout_constraintEnd_toStartOf="@id/seek_bar_progress"
+                app:layout_constraintBottom_toBottomOf="@id/seek_bar_progress"
+                android:id="@+id/tv_position"
+                android:layout_width="52dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textAppearance="?textAppearanceBody2"
+                android:textSize="12sp"
+                tools:text="1:45"/>
+
+            <androidx.appcompat.widget.AppCompatSeekBar
+                app:layout_constraintStart_toEndOf="@id/tv_position"
+                app:layout_constraintTop_toBottomOf="@id/barrier1"
+                app:layout_constraintEnd_toStartOf="@id/tv_duration"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:id="@+id/seek_bar_progress"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                app:layout_constraintStart_toEndOf="@id/seek_bar_progress"
+                app:layout_constraintTop_toTopOf="@id/seek_bar_progress"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="@id/seek_bar_progress"
+                android:id="@+id/tv_duration"
+                android:layout_width="52dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textAppearance="?textAppearanceBody2"
+                android:textSize="12sp"
+                tools:text="5:17"/>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </com.google.android.material.circularreveal.cardview.CircularRevealCardView>
-</RelativeLayout>
+
+</FrameLayout>

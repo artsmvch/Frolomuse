@@ -1,6 +1,5 @@
 package com.frolo.muse.ui.player;
 
-
 import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -95,14 +94,13 @@ public class PlayerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 
-        // TODO: update layout
         setContentView(R.layout.activity_player);
 
         imageAlbumArt = findViewById(R.id.imv_album_art);
         textPosition = findViewById(R.id.tv_position);
         textDuration = findViewById(R.id.tv_duration);
         buttonPlay = findViewById(R.id.btn_play);
-        seekBarProgress = findViewById(R.id.pb_progress);
+        seekBarProgress = findViewById(R.id.seek_bar_progress);
         textTitle = findViewById(R.id.tv_title);
 
         handleIntent(getIntent(), savedInstanceState);
@@ -155,6 +153,10 @@ public class PlayerActivity extends AppCompatActivity {
                 ContentResolver resolver = this.getContentResolver();
                 try {
                     ParcelFileDescriptor pfd = resolver.openFileDescriptor(uri, "r");
+                    if (pfd == null) {
+                        finish();
+                        return;
+                    }
 
                     // Attempt to restore the sounder state
                     final int pos;
@@ -168,8 +170,8 @@ public class PlayerActivity extends AppCompatActivity {
                     }
 
                     // release previous sounder
-                    if (sounder != null)
-                        sounder.release();
+                    if (sounder != null) sounder.release();
+
                     sounder = new Sounder(pfd.getFileDescriptor(), new Sounder.Callback() {
                         @Override public void onPlaybackChanged(Sounder sounder, boolean isPlaying) {
                             if (!isPlaying) audioManager.abandonAudioFocus(focusChangeListener);
@@ -191,6 +193,13 @@ public class PlayerActivity extends AppCompatActivity {
                             }
                         }
                     });
+
+                    try {
+                        pfd.close();
+                    } catch (Throwable error) {
+                        Trace.e(error);
+                    }
+
                     sounder.seekTo(pos);
                     if (isPlaying) {
                         // start playing only if the audio manager allows
