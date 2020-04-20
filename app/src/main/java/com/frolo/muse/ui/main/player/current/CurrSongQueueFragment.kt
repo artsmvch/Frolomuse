@@ -21,7 +21,7 @@ import com.frolo.muse.ui.main.library.base.DragSongAdapter
 import com.frolo.muse.ui.main.library.base.SongAdapter
 import com.frolo.muse.ui.main.library.playlists.create.PlaylistCreateEvent
 import kotlinx.android.synthetic.main.fragment_base_list.*
-import kotlinx.android.synthetic.main.fragment_current_playlist.*
+import kotlinx.android.synthetic.main.fragment_curr_song_queue.*
 
 
 /**
@@ -43,7 +43,11 @@ class CurrSongQueueFragment: AbsMediaCollectionFragment<Song>() {
         }
     }
 
-    override val viewModel: CurrentSongQueueViewModel by viewModel()
+    interface OnCloseIconClickListener {
+        fun onCloseIconClick(fragment: CurrSongQueueFragment)
+    }
+
+    override val viewModel: CurrSongQueueViewModel by viewModel()
 
     private lateinit var itemTouchHelper: ItemTouchHelper
 
@@ -91,6 +95,9 @@ class CurrSongQueueFragment: AbsMediaCollectionFragment<Song>() {
 
     private var scrollToPositionCallback: Runnable? = null
 
+    private val onCloseIconClickListener: OnCloseIconClickListener?
+        get() = parentFragment as? OnCloseIconClickListener
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         playlistCreateEvent = PlaylistCreateEvent.register(context) { playlist ->
@@ -102,23 +109,18 @@ class CurrSongQueueFragment: AbsMediaCollectionFragment<Song>() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = inflater.inflate(R.layout.fragment_current_playlist, container, false)
+    ): View = inflater.inflate(R.layout.fragment_curr_song_queue, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         // Intercepting all touches to prevent their processing in the lower view layers
         view.setOnTouchListener { _, _ -> true }
 
-        tb_actions.apply {
-            setTitle(R.string.current_playing)
+        imv_close.setOnClickListener {
+            onCloseIconClickListener?.onCloseIconClick(this)
+        }
 
-            inflateMenu(R.menu.fragment_current_playlist)
-
-            setOnMenuItemClickListener { menuItem ->
-                if (menuItem.itemId == R.id.action_create_playlist) {
-                    viewModel.onSaveOptionSelected()
-                    true
-                } else false
-            }
+        btn_save_as_playlist.setOnClickListener {
+            viewModel.onSaveAsPlaylistOptionSelected()
         }
 
         rv_list.apply {

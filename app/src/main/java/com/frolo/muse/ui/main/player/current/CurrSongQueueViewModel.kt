@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 
-class CurrentSongQueueViewModel @Inject constructor(
+class CurrSongQueueViewModel @Inject constructor(
         @Exec(Exec.Type.MAIN) private val mainThreadExecutor: Executor,
         private val player: Player,
         getCurrentSongQueueUseCase: GetCurrentSongQueueUseCase,
@@ -182,7 +182,7 @@ class CurrentSongQueueViewModel @Inject constructor(
         player.moveItem(fromPosition, toPosition)
     }
 
-    fun onSaveOptionSelected() {
+    fun onSaveAsPlaylistOptionSelected() {
         val songs = ArrayList(mediaList.value ?: emptyList())
         navigator.createPlaylist(songs)
     }

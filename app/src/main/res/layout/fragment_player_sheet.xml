@@ -11,11 +11,18 @@
         android:layout_height="match_parent"
         android:layout_marginBottom="?actionBarSize"/>
 
+    <View
+        android:id="@+id/view_dim_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#99000000"
+        android:alpha="0.0"/>
+
     <com.frolo.muse.ui.main.player.TouchFrameLayout
         android:id="@+id/bottom_sheet_current_song_queue"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="?colorSurface"
+        android:background="@drawable/bg_bottom_sheet"
         app:behavior_hideable="false"
         app:behavior_peekHeight="?actionBarSize"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
@@ -23,8 +30,7 @@
         <FrameLayout
             android:id="@+id/container_current_song_queue"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="?colorSurface"/>
+            android:layout_height="match_parent"/>
 
         <LinearLayout
             android:id="@+id/layout_hook"

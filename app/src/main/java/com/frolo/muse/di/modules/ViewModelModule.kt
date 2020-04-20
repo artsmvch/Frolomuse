@@ -6,33 +6,19 @@ import com.frolo.muse.di.ViewModelKey
 import com.frolo.muse.ui.main.MainViewModel
 import com.frolo.muse.ui.main.audiofx.AudioFxViewModel
 import com.frolo.muse.ui.main.audiofx.params.PlaybackParamsViewModel
-import com.frolo.muse.ui.main.audiofx.preset.SavePresetViewModel
-import com.frolo.muse.ui.main.editor.album.AlbumEditorViewModel
-import com.frolo.muse.ui.main.editor.playlist.PlaylistEditorViewModel
-import com.frolo.muse.ui.main.editor.song.SongEditorViewModel
 import com.frolo.muse.ui.main.library.albums.AlbumListViewModel
-import com.frolo.muse.ui.main.library.albums.album.AlbumViewModel
 import com.frolo.muse.ui.main.library.artists.ArtistListViewModel
-import com.frolo.muse.ui.main.library.artists.artist.albums.AlbumsOfArtistViewModel
-import com.frolo.muse.ui.main.library.artists.artist.songs.SongsOfArtistViewModel
 import com.frolo.muse.ui.main.library.favourites.FavouriteSongListViewModel
 import com.frolo.muse.ui.main.library.genres.GenreListViewModel
-import com.frolo.muse.ui.main.library.genres.genre.GenreViewModel
 import com.frolo.muse.ui.main.library.mostplayed.MostPlayedViewModel
 import com.frolo.muse.ui.main.library.myfiles.MyFileListViewModel
 import com.frolo.muse.ui.main.library.playlists.PlaylistListViewModel
-import com.frolo.muse.ui.main.library.playlists.addmedia.AddMediaToPlaylistViewModel
-import com.frolo.muse.ui.main.library.playlists.create.CreatePlaylistViewModel
-import com.frolo.muse.ui.main.library.playlists.playlist.PlaylistViewModel
-import com.frolo.muse.ui.main.library.playlists.playlist.addsong.AddSongToPlaylistViewModel
 import com.frolo.muse.ui.main.library.recent.RecentlyAddedSongListViewModel
 import com.frolo.muse.ui.main.library.search.SearchViewModel
 import com.frolo.muse.ui.main.library.songs.SongListViewModel
 import com.frolo.muse.ui.main.player.PlayerViewModel
-import com.frolo.muse.ui.main.player.current.CurrentSongQueueViewModel
-import com.frolo.muse.ui.main.player.lyrics.LyricsViewModel
+import com.frolo.muse.ui.main.player.current.CurrSongQueueViewModel
 import com.frolo.muse.ui.main.player.mini.MiniPlayerViewModel
-import com.frolo.muse.ui.main.player.poster.PosterViewModel
 import com.frolo.muse.ui.main.settings.hidden.HiddenFilesViewModel
 import dagger.Binds
 import dagger.Module
@@ -142,8 +128,8 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(CurrentSongQueueViewModel::class)
-    abstract fun bindCurrentSongQueueViewModel(viewModel: CurrentSongQueueViewModel): ViewModel
+    @ViewModelKey(CurrSongQueueViewModel::class)
+    abstract fun bindCurrSongQueueViewModel(viewModel: CurrSongQueueViewModel): ViewModel
 
     @Binds
     @IntoMap

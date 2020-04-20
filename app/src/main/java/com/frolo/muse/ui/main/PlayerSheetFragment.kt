@@ -13,9 +13,12 @@ import com.frolo.muse.ui.main.player.current.CurrSongQueueFragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.fragment_player_sheet.*
 import kotlinx.android.synthetic.main.include_message.*
+import kotlin.math.pow
 
 
-class PlayerSheetFragment : BaseFragment(), BackPressHandler {
+class PlayerSheetFragment : BaseFragment(),
+        BackPressHandler,
+        CurrSongQueueFragment.OnCloseIconClickListener {
 
     private val playerSheetCallback: PlayerSheetCallback?
         get() = activity as? PlayerSheetCallback
@@ -27,6 +30,7 @@ class PlayerSheetFragment : BaseFragment(), BackPressHandler {
                 layout_hook.alpha = 1 - slideOffset
                 layout_hook.isClickable = slideOffset < 0.4
                 container_current_song_queue.alpha = slideOffset
+                view_dim_overlay.alpha = 1 - (1 - slideOffset).pow(2)
             }
 
             override fun onStateChanged(bottomSheet: View, newState: Int) {
@@ -93,6 +97,12 @@ class PlayerSheetFragment : BaseFragment(), BackPressHandler {
                 state = BottomSheetBehavior.STATE_COLLAPSED
                 true
             } else false
+        }
+    }
+
+    override fun onCloseIconClick(fragment: CurrSongQueueFragment) {
+        BottomSheetBehavior.from(bottom_sheet_current_song_queue).apply {
+            state = BottomSheetBehavior.STATE_COLLAPSED
         }
     }
 
