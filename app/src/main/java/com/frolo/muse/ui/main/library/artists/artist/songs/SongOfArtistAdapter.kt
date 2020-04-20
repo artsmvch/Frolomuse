@@ -30,35 +30,32 @@ class SongOfArtistAdapter constructor(
         position: Int,
         item: Song,
         selected: Boolean, selectionChanged: Boolean
-    ) {
+    ) = with(holder.itemView as MediaConstraintLayout) {
+        val res = resources
+        tv_song_name.text = item.getNameString(res)
+        tv_album_name.text = item.getAlbumString(res)
+        tv_duration.text = item.getDurationString()
 
-        with(holder.itemView as MediaConstraintLayout) {
-            val res = resources
-            tv_song_name.text = item.getNameString(res)
-            tv_album_name.text = item.getAlbumString(res)
-            tv_duration.text = item.getDurationString()
+        val isPlayPosition = position == playingPosition
 
-            val isPlayPosition = position == playingPosition
-
-            if (isPlayPosition) {
-                mini_visualizer.visibility = View.VISIBLE
-                mini_visualizer.setAnimate(isPlaying)
-            } else {
-                mini_visualizer.visibility = View.GONE
-                mini_visualizer.setAnimate(false)
-            }
-
-            requestManager.makeRequest(item.albumId)
-                    .placeholder(R.drawable.ic_framed_music_note_48dp)
-                    .error(R.drawable.ic_framed_music_note_48dp)
-                    .circleCrop()
-                    .into(imv_album_art)
-
-            imv_check.setChecked(selected, selectionChanged)
-
-            setChecked(selected)
-            setPlaying(isPlayPosition)
+        if (isPlayPosition) {
+            mini_visualizer.visibility = View.VISIBLE
+            mini_visualizer.setAnimate(isPlaying)
+        } else {
+            mini_visualizer.visibility = View.GONE
+            mini_visualizer.setAnimate(false)
         }
+
+        requestManager.makeRequest(item.albumId)
+            .placeholder(R.drawable.ic_framed_music_note_48dp)
+            .error(R.drawable.ic_framed_music_note_48dp)
+            .circleCrop()
+            .into(imv_album_art)
+
+        imv_check.setChecked(selected, selectionChanged)
+
+        setChecked(selected)
+        setPlaying(isPlayPosition)
     }
 
 }

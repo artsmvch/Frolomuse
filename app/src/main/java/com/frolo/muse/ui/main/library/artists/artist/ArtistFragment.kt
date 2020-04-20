@@ -14,6 +14,7 @@ import com.frolo.muse.ui.base.serializableArg
 import com.frolo.muse.ui.base.withArg
 import com.frolo.muse.ui.main.library.artists.artist.albums.AlbumsOfArtistFragment
 import com.frolo.muse.ui.main.library.artists.artist.songs.SongsOfArtistFragment
+import com.frolo.muse.ui.main.library.artists.artist.songs.SongsOfArtistViewModel
 import com.frolo.muse.views.showBackArrow
 import kotlinx.android.synthetic.main.fragment_artist.*
 
@@ -31,6 +32,10 @@ class ArtistFragment: BaseFragment() {
     }
 
     private val artist: Artist by serializableArg(ARG_ARTIST)
+
+//    private val songsOfArtistViewModel: SongsOfArtistViewModel by lazy {
+//
+//    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -62,9 +67,9 @@ class ArtistFragment: BaseFragment() {
         val fragment = childFragmentManager.findFragmentByTag(TAG_ALBUMS_OF_ARTIST)
         if (fragment == null) {
             childFragmentManager
-                    .beginTransaction()
-                    .replace(R.id.fm_albums_container, AlbumsOfArtistFragment.newInstance(arg), TAG_ALBUMS_OF_ARTIST)
-                    .commit()
+                .beginTransaction()
+                .replace(R.id.fl_albums_container, AlbumsOfArtistFragment.newInstance(arg), TAG_ALBUMS_OF_ARTIST)
+                .commit()
         }
     }
 
@@ -72,9 +77,9 @@ class ArtistFragment: BaseFragment() {
         val fragment = childFragmentManager.findFragmentByTag(TAG_SONGS_OF_ARTIST)
         if (fragment == null) {
             childFragmentManager
-                    .beginTransaction()
-                    .replace(R.id.fm_songs_container, SongsOfArtistFragment.newInstance(arg), TAG_SONGS_OF_ARTIST)
-                    .commit()
+                .beginTransaction()
+                .replace(R.id.fl_songs_container, SongsOfArtistFragment.newInstance(arg), TAG_SONGS_OF_ARTIST)
+                .commit()
         }
     }
 

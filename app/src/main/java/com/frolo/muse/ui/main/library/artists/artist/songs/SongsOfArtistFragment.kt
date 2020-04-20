@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.frolo.muse.R
-import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.model.media.Artist
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.ui.base.NoClipping
@@ -15,7 +14,7 @@ import com.frolo.muse.ui.base.withArg
 import com.frolo.muse.ui.main.decorateAsLinear
 import com.frolo.muse.ui.main.library.base.AbsSongCollectionFragment
 import com.frolo.muse.ui.main.library.base.SongAdapter
-import kotlinx.android.synthetic.main.include_backdrop_front_list.*
+import kotlinx.android.synthetic.main.fragment_base_list.*
 
 
 class SongsOfArtistFragment: AbsSongCollectionFragment<Song>(), NoClipping {
@@ -49,10 +48,9 @@ class SongsOfArtistFragment: AbsSongCollectionFragment<Song>(), NoClipping {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = inflater.inflate(R.layout.include_backdrop_front_list, container, false)
+    ): View = inflater.inflate(R.layout.fragment_base_list, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        // set up list
         rv_list.layoutManager = LinearLayoutManager(context)
         rv_list.adapter = adapter
         rv_list.decorateAsLinear()
@@ -87,9 +85,6 @@ class SongsOfArtistFragment: AbsSongCollectionFragment<Song>(), NoClipping {
     }
 
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
-        mediaItemCount.observeNonNull(owner) { count ->
-            tv_title.text = requireContext().resources.getQuantityString(R.plurals.s_songs, count, count)
-        }
     }
 
     override fun removeClipping(left: Int, top: Int, right: Int, bottom: Int) {

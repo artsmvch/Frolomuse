@@ -44,24 +44,24 @@ class AlbumsOfArtistFragment : AbsMediaCollectionFragment<Album>() {
         override fun onItemClick(item: Album, position: Int) {
             viewModel.onItemClicked(item)
         }
+
         override fun onItemLongClick(item: Album, position: Int) {
             viewModel.onItemLongClicked(item)
         }
+
         override fun onOptionsMenuClick(item: Album, position: Int) {
             viewModel.onOptionsMenuClicked(item)
         }
     }
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_albums_of_artist, container, false)
-    }
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View = inflater.inflate(R.layout.fragment_albums_of_artist, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        // set up list
+
         rv_list.apply {
             adapter = this@AlbumsOfArtistFragment.adapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)

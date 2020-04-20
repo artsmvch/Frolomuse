@@ -5,39 +5,37 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    style="@style/Layout.Backdrop.Back">
+    app:statusBarBackground="?colorPrimary">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/Base.AppTheme.AppBarLayout.Transparent">
+        app:elevation="0dp"
+        app:liftOnScroll="false">
 
-        <androidx.appcompat.widget.Toolbar
-            app:layout_scrollFlags="scroll|enterAlways|snap"
+        <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/tb_actions"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            style="@style/Base.AppTheme.Toolbar.Transparent"
+            android:background="?colorPrimary"
+            android:elevation="0dp"
+            app:navigationIcon="@drawable/ic_navigation_up"
+            app:layout_scrollFlags="scroll"
             tools:title="Toolbar"
             tools:subtitle="Subtitle"/>
 
         <FrameLayout
-            app:layout_scrollFlags="scroll|enterAlways"
-            android:paddingTop="4dp"
-            android:paddingBottom="2dp"
-            android:id="@+id/fm_albums_container"
+            android:id="@+id/fl_albums_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="32dp"
+            app:layout_scrollFlags="scroll"/>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <com.google.android.material.card.MaterialCardView
+    <FrameLayout
+        android:id="@+id/fl_songs_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        style="@style/CardView.Backdrop.Front">
-        <FrameLayout
-            android:id="@+id/fm_songs_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-    </com.google.android.material.card.MaterialCardView>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

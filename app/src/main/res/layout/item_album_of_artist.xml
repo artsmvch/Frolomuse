@@ -1,55 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="152dp"
-    android:layout_height="152dp">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="96dp"
+    android:layout_height="wrap_content">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <com.google.android.material.card.MaterialCardView
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintDimensionRatio="1"
+        android:id="@+id/cv_album_art"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_margin="8dp"
+        app:cardElevation="2dp"
+        app:cardUseCompatPadding="false"
+        app:cardCornerRadius="16dp">
 
         <ImageView
             android:id="@+id/imv_album_art"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:adjustViewBounds="true"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerCrop"
+            tools:src="@drawable/ic_album_200dp"/>
+    </com.google.android.material.card.MaterialCardView>
 
-        <LinearLayout
-            android:layout_gravity="bottom"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:paddingStart="18dp"
-            android:paddingEnd="18dp"
-            android:background="@color/transparent_black">
+    <include layout="@layout/include_check"
+        app:layout_constraintTop_toTopOf="@id/cv_album_art"
+        app:layout_constraintEnd_toEndOf="@id/cv_album_art"
+        android:layout_gravity="top|end"
+        android:layout_width="@dimen/list_item_check_size"
+        android:layout_height="@dimen/list_item_check_size"
+        android:layout_margin="12dp" />
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:text="@string/placeholder_unknown"
-                android:id="@+id/tv_album_name"
-                android:textAppearance="?textAppearanceListItem"/>
+    <ImageView
+        app:layout_constraintTop_toBottomOf="@id/cv_album_art"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/view_options_menu"
+        android:layout_width="20dp"
+        android:layout_height="42dp"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp"
+        android:paddingStart="2dp"
+        android:paddingEnd="4dp"
+        android:src="@drawable/ic_options_menu"
+        android:tint="?colorOnPrimary" />
 
-            <ImageView
-                android:paddingTop="6dp"
-                android:paddingBottom="6dp"
-                android:paddingStart="6dp"
-                android:paddingEnd="8dp"
-                android:id="@+id/view_options_menu"
-                android:layout_width="28dp"
-                android:layout_height="42dp"
-                android:src="@drawable/ic_options_menu"
-                android:tint="@color/white" />
-        </LinearLayout>
+    <androidx.appcompat.widget.AppCompatTextView
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cv_album_art"
+        app:layout_constraintEnd_toStartOf="@id/view_options_menu"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/tv_album_name"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:gravity="start|center_vertical"
+        android:textAppearance="?textAppearanceListItemSecondary"
+        android:lineSpacingExtra="0px"
+        android:includeFontPadding="false"
+        android:textColor="?colorOnPrimary"
+        android:lines="3"
+        android:ellipsize="end"
+        tools:text="An example of a long album name" />
 
-        <include
-            layout="@layout/include_check"
-            android:layout_gravity="top|end"
-            android:layout_width="@dimen/list_item_check_size"
-            android:layout_height="@dimen/list_item_check_size"
-            android:layout_margin="12dp"/>
-    </FrameLayout>
-</com.google.android.material.card.MaterialCardView>
+</androidx.constraintlayout.widget.ConstraintLayout>
