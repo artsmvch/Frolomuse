@@ -12,8 +12,8 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:backgroundDimEnabled">false</item>
 
-        <item name="colorPrimaryDark">@color/black_dark</item>
-        <item name="colorAccent">#E027A6</item>
+        <item name="colorPrimaryDark">#202020</item>
+        <item name="colorAccent">#DC4D69</item>
 
         <item name="seekBarStyle">@style/Base.AppTheme.SeekBar.Player</item>
     </style>
