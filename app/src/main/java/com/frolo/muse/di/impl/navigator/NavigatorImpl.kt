@@ -18,7 +18,7 @@ import com.frolo.muse.ui.main.library.playlists.create.SavePlaylistDialog
 import com.frolo.muse.ui.main.library.playlists.playlist.PlaylistFragment
 import com.frolo.muse.ui.main.library.playlists.playlist.addsong.AddSongToPlaylistFragment
 import com.frolo.muse.ui.main.player.lyrics.LyricsDialogFragment
-import com.frolo.muse.ui.main.player.poster.PosterFragment
+import com.frolo.muse.ui.main.player.poster.PosterDialog
 import java.io.File
 
 
@@ -75,7 +75,7 @@ class NavigatorImpl<T> constructor(
     }
 
     override fun viewPoster(song: Song) {
-        val fragment = PosterFragment.newInstance(song)
+        val fragment = PosterDialog.newInstance(song)
         root.pushDialog(fragment)
     }
 

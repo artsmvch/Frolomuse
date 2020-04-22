@@ -41,7 +41,11 @@ class PosterViewModel constructor(
             .subscribeFor { bmp -> _poster.value = bmp }
     }
 
-    fun onShareButtonClicked() {
+    fun onCancelClicked() {
+        navigator.goBack()
+    }
+
+    fun onShareClicked() {
         val bmp = _poster.value ?: return
         val file = _posterFile.value
         if (file != null) {

@@ -2,13 +2,18 @@ package com.frolo.muse.ui.main.player.poster
 
 import android.app.Dialog
 import android.content.res.Configuration
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.ViewGroup
 import android.view.Window
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProviders
+import com.alexvasilkov.gestures.views.GestureImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.frolo.muse.R
 import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.model.media.Song
@@ -19,22 +24,14 @@ import kotlinx.android.synthetic.main.dialog_poster.*
 import kotlin.math.min
 
 
-class PosterFragment: BaseDialogFragment() {
-
-    companion object {
-        private const val ARG_SONG = "song"
-
-        // Factory
-        fun newInstance(song: Song) = PosterFragment()
-                .withArg(ARG_SONG, song)
-    }
+class PosterDialog: BaseDialogFragment() {
 
     private val viewModel: PosterViewModel by lazy {
         val song = requireArguments().getSerializable(ARG_SONG) as Song
         val vmFactory = requireApp()
-                .appComponent
-                .providePosterVMFactoryCreator()
-                .create(song)
+            .appComponent
+            .providePosterVMFactoryCreator()
+            .create(song)
 
         ViewModelProviders.of(this, vmFactory)
                 .get(PosterViewModel::class.java)
@@ -60,40 +57,60 @@ class PosterFragment: BaseDialogFragment() {
                 setupDialogSize(this, min, ViewGroup.LayoutParams.WRAP_CONTENT)
             }
 
-            initUI(this)
+            loadUI(this)
         }
     }
 
-    private fun initUI(dialog: Dialog) {
-        with(dialog) {
-            btn_share.setOnClickListener { viewModel.onShareButtonClicked() }
+    private fun loadUI(dialog: Dialog) = with(dialog) {
+        btn_cancel.setOnClickListener {
+            viewModel.onCancelClicked()
+        }
+
+        btn_share.setOnClickListener {
+            viewModel.onShareClicked()
         }
     }
 
-    private fun observeViewModel(owner: LifecycleOwner) {
-        viewModel.apply {
-            error.observeNonNull(owner) { err ->
-                postError(err)
-            }
+    private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
+        error.observeNonNull(owner) { err ->
+            postError(err)
+        }
 
-            isCreatingPoster.observeNonNull(owner) { isCreating ->
-                dialog?.apply {
-                    if (isCreating) {
-                        Anim.fadeIn(pb_loading)
-                    } else {
-                        Anim.fadeOut(pb_loading)
-                    }
-                }
-            }
-
-            poster.observeNonNull(owner) { bmp ->
-                dialog?.apply {
-                    Glide.with(this@PosterFragment)
-                        .load(bmp)
-                        .transition(DrawableTransitionOptions.withCrossFade())
-                        .into(imv_poster)
+        isCreatingPoster.observeNonNull(owner) { isCreating ->
+            dialog?.apply {
+                if (isCreating) {
+                    Anim.fadeIn(pb_loading)
+                } else {
+                    Anim.fadeOut(pb_loading)
                 }
             }
         }
+
+        poster.observeNonNull(owner) { bmp ->
+            dialog?.apply {
+                Glide.with(this@PosterDialog)
+                    .load(bmp)
+                    .transition(DrawableTransitionOptions.withCrossFade())
+                    .into(
+                        object : CustomTarget<Drawable>() {
+                            override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
+                                imv_poster.setImageDrawable(resource)
+                            }
+
+                            override fun onLoadCleared(placeholder: Drawable?) = Unit
+                        }
+                    )
+            }
+        }
+
     }
+
+    companion object {
+        private const val ARG_SONG = "song"
+
+        // Factory
+        fun newInstance(song: Song) = PosterDialog()
+                .withArg(ARG_SONG, song)
+    }
+
 }

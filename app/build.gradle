@@ -215,6 +215,9 @@ dependencies {
 
     // Circular Progress Bar
     implementation 'com.mikhaellopez:circularprogressbar:3.0.3'
+
+    // Gesture Image View
+    implementation 'com.alexvasilkov:gesture-views:2.6.0'
 }
 
 apply plugin: 'com.google.gms.google-services'
