@@ -82,10 +82,8 @@ public class PlayerWidget3Provider extends AppWidgetProvider {
         Song current;
         if (player != null && ((current = player.getCurrent()) != null)) {
             views.setTextViewText(R.id.tsw_song_name, current.getTitle());
-            views.setTextViewText(R.id.btn_view_playlist, current.getArtist());
         } else {
             views.setTextViewText(R.id.tsw_song_name, context.getString(R.string.placeholder_unknown));
-            views.setTextViewText(R.id.btn_view_playlist, context.getString(R.string.placeholder_unknown));
         }
 
         // play button

@@ -7,13 +7,13 @@
     android:background="@drawable/selector_player_panel">
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/btn_view_playlist"
+        android:id="@+id/btn_volume"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:padding="8dp"
-        android:src="@drawable/ic_simple_playlist"
+        android:src="@drawable/ic_volume"
         app:tint="?iconImageTint"/>
 
     <androidx.appcompat.widget.AppCompatImageView
@@ -27,12 +27,12 @@
         app:tint="?iconImageTint"/>
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/btn_volume"
+        android:id="@+id/btn_options_menu"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:padding="8dp"
-        android:src="@drawable/ic_volume"
+        android:src="@drawable/ic_overflow_two_dots"
         app:tint="?iconImageTint"/>
 </LinearLayout>

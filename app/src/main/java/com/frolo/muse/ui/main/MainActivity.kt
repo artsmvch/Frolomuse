@@ -292,6 +292,8 @@ class MainActivity : PlayerHostActivity(),
     override fun pushFragment(newFragment: Fragment) {
         fragNavController?.doIfStateNotSaved {
             pushFragment(newFragment)
+            // TODO: do we really need to collapse it?
+            collapseSlidingPlayer()
         }
     }
 

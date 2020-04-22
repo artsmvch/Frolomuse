@@ -12,6 +12,7 @@ import android.view.*
 import android.widget.FrameLayout
 import android.widget.TextSwitcher
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import androidx.transition.Fade
@@ -153,6 +154,10 @@ class PlayerFragment: BaseFragment() {
         // Intercepting all touches to prevent their processing in the lower view layers
         view.setOnTouchListener { _, _ -> true }
 
+        btn_options_menu.setOnClickListener { v ->
+            showOptionsMenu(v)
+        }
+
         vp_album_art.apply {
             AlbumCardCarouselHelper.setup(this)
             adapter = AlbumCardAdapter(requestManager = Glide.with(this@PlayerFragment))
@@ -191,10 +196,6 @@ class PlayerFragment: BaseFragment() {
 
         btn_ab.setOnClickListener {
             viewModel.onABButtonClicked()
-        }
-
-        btn_view_playlist.setOnClickListener {
-            viewModel.onViewCurrentPlayingOptionSelected()
         }
 
         btn_like.setOnClickListener {
@@ -323,6 +324,29 @@ class PlayerFragment: BaseFragment() {
         btn_ab.text = ss
     }
 
+    private fun showOptionsMenu(anchorView: View) {
+        val popup = PopupMenu(anchorView.context, anchorView)
+
+        popup.inflate(R.menu.fragment_player)
+
+        popup.setOnMenuItemClickListener { menuItem ->
+            when(menuItem.itemId) {
+                R.id.action_edit_song_tags -> viewModel.onEditSongOptionSelected()
+                R.id.action_edit_album_cover -> viewModel.onEditAlbumOptionSelected()
+                R.id.action_share -> viewModel.onShareOptionSelected()
+                R.id.action_cut_ringtone -> viewModel.onRingCutterOptionSelected()
+                R.id.action_delete -> viewModel.onDeleteOptionSelected()
+                R.id.action_view_album -> viewModel.onViewAlbumOptionSelected()
+                R.id.action_view_artist -> viewModel.onViewArtistOptionSelected()
+                R.id.action_create_poster -> viewModel.onViewPosterOptionSelected()
+                //R.id.action_view_lyrics -> viewModel.onViewLyricsOptionSelected()
+            }
+            return@setOnMenuItemClickListener true
+        }
+
+        popup.show()
+    }
+
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
         songDeletedEvent.observeNonNull(owner) {
             toastShortMessage(R.string.deleted)
@@ -367,7 +391,7 @@ class PlayerFragment: BaseFragment() {
         playerControllersEnabled.observeNonNull(owner) { enabled ->
 
             // Controllers in the top panel
-            btn_view_playlist.markControllerEnabled(enabled)
+            btn_options_menu.markControllerEnabled(enabled)
             btn_like.markControllerEnabled(enabled)
             btn_volume.markControllerEnabled(enabled)
 

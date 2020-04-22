@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="@dimen/widget_3_layout_width"
     android:layout_height="@dimen/widget_3_layout_height"
     android:padding="@dimen/widget_margin">
@@ -18,24 +19,25 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/tsw_song_name"
+            android:id="@+id/tv_song_name"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:ellipsize="end"
             android:gravity="bottom"
             android:maxLines="1"
-            android:paddingStart="5dp"
-            android:paddingEnd="5dp"
-            android:text="@string/placeholder_unknown"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
             android:textColor="@color/white"
-            android:textSize="15.5sp" />
+            android:textSize="15sp"
+            tools:text="Song name"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center">
+
             <ImageView
                 android:layout_weight="1"
                 android:layout_width="0dp"
@@ -44,6 +46,7 @@
                 android:src="@drawable/ic_repeat_disabled"
                 android:adjustViewBounds="true"
                 android:id="@+id/btn_repeat_mode"/>
+
             <ImageView
                 android:layout_weight="1"
                 android:layout_width="0dp"
@@ -52,6 +55,7 @@
                 android:src="@drawable/ic_previous"
                 android:adjustViewBounds="true"
                 android:id="@+id/btn_skip_to_previous"/>
+
             <ImageView
                 android:layout_weight="1"
                 android:layout_width="0dp"
@@ -60,6 +64,7 @@
                 android:src="@drawable/ic_play"
                 android:id="@+id/btn_play"
                 android:adjustViewBounds="true"/>
+
             <ImageView
                 android:layout_weight="1"
                 android:layout_width="0dp"
@@ -68,6 +73,7 @@
                 android:src="@drawable/ic_next"
                 android:adjustViewBounds="true"
                 android:id="@+id/btn_skip_to_next"/>
+
             <ImageView
                 android:layout_weight="1"
                 android:layout_width="0dp"
@@ -76,6 +82,9 @@
                 android:src="@drawable/ic_shuffle_disabled"
                 android:adjustViewBounds="true"
                 android:id="@+id/btn_shuffle_mode"/>
+
         </LinearLayout>
+
     </LinearLayout>
+
 </FrameLayout>
