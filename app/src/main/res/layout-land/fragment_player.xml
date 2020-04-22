@@ -21,22 +21,20 @@
         android:layout_width="0dp"
         android:layout_height="?attr/actionBarSize"/>
 
-    <include
+    <include layout="@layout/include_player_panel"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/guideline"
         app:layout_constraintBottom_toBottomOf="parent"
-        layout="@layout/include_player_panel"
         android:id="@+id/layout_tools_panel"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_margin="10dp"/>
 
-    <androidx.viewpager2.widget.ViewPager2
+    <include layout="@layout/include_player_album_art_carousel"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/view_top_hook"
         app:layout_constraintEnd_toStartOf="@id/guideline"
         app:layout_constraintBottom_toTopOf="@id/layout_tools_panel"
-        android:id="@+id/vp_album_art"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         android:layout_width="0dp"
@@ -67,12 +65,11 @@
         android:layout_marginEnd="16dp"
         tools:text="Artist title"/>
 
-    <include
+    <include layout="@layout/include_player_controller_full"
         app:layout_constraintStart_toEndOf="@id/guideline"
         app:layout_constraintTop_toBottomOf="@id/tsw_artist_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        layout="@layout/include_player_controller_full"
         android:id="@+id/include_player_controller_full"
         android:layout_width="0dp"
         android:layout_height="wrap_content"/>

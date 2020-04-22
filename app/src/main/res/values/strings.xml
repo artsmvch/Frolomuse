@@ -68,6 +68,7 @@
     <string name="queue">Queue</string>
     <string name="current_song_queue">Current song queue</string>
     <string name="save_as_playlist">Save as playlist</string>
+    <string name="no_songs_in_queue">No songs in the queue</string>
     <string name="track">Track</string>
     <string name="album">Album</string>
     <string name="artist">Artist</string>

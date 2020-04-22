@@ -14,6 +14,8 @@ import android.widget.TextSwitcher
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
+import androidx.transition.Fade
+import androidx.transition.TransitionManager
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.frolo.mediabutton.PlayButton
@@ -41,19 +43,13 @@ import com.frolo.muse.views.Anim
 import com.frolo.muse.views.sound.WaveformSeekBar
 import kotlinx.android.synthetic.main.include_playback_progress.*
 import kotlinx.android.synthetic.main.fragment_player.*
+import kotlinx.android.synthetic.main.include_player_album_art_carousel.*
 import kotlinx.android.synthetic.main.include_player_controller_full.*
 import kotlinx.android.synthetic.main.include_player_controller.*
 import kotlinx.android.synthetic.main.include_player_panel.*
 
 
 class PlayerFragment: BaseFragment() {
-
-    companion object {
-        private const val LOG_TAG = "PlayerFragment"
-
-        // Factory
-        fun newInstance() = PlayerFragment()
-    }
 
     private class SetViewPagerPosition constructor(
         val pager: ViewPager2,
@@ -357,6 +353,38 @@ class PlayerFragment: BaseFragment() {
             }
         }
 
+        albumArtCarouselVisible.observeNonNull(owner) { visible ->
+            val transition = Fade().apply {
+                addTarget(vp_album_art)
+                addTarget(tv_no_songs_in_queue)
+                duration = 200L
+            }
+            TransitionManager.beginDelayedTransition(fl_album_art_carousel_container, transition)
+            vp_album_art.visibility = if (visible) View.VISIBLE else View.INVISIBLE
+            tv_no_songs_in_queue.visibility = if (visible) View.INVISIBLE else View.VISIBLE
+        }
+
+        playerControllersEnabled.observeNonNull(owner) { enabled ->
+
+            // Controllers in the top panel
+            btn_view_playlist.markControllerEnabled(enabled)
+            btn_like.markControllerEnabled(enabled)
+            btn_volume.markControllerEnabled(enabled)
+
+            // Waveform progress bar
+            waveform_seek_bar.markControllerEnabled(enabled)
+
+            // Main player controllers
+            btn_repeat_mode.markControllerEnabled(enabled)
+            btn_skip_to_previous.markControllerEnabled(enabled)
+            btn_play.markControllerEnabled(enabled)
+            btn_shuffle_mode.markControllerEnabled(enabled)
+            btn_skip_to_next.markControllerEnabled(enabled)
+
+            // Other controllers
+            btn_ab.markControllerEnabled(enabled)
+        }
+
         sound.observe(owner) { sound ->
             if (sound != null) {
                 val waveform = SoundWaveform(sound)
@@ -429,6 +457,18 @@ class PlayerFragment: BaseFragment() {
                 }
             }
         }
+    }
+
+    companion object {
+        private const val LOG_TAG = "PlayerFragment"
+
+        private fun View.markControllerEnabled(enabled: Boolean) {
+            isEnabled = enabled
+            alpha = if (enabled) 1.0f else 0.5f
+        }
+
+        // Factory
+        fun newInstance() = PlayerFragment()
     }
 
 }

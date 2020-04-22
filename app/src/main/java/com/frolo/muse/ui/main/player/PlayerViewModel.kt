@@ -7,6 +7,7 @@ import androidx.lifecycle.Transformations
 import com.frolo.muse.arch.SingleLiveEvent
 import com.frolo.muse.arch.combine
 import com.frolo.muse.arch.liveDataOf
+import com.frolo.muse.arch.map
 import com.frolo.muse.di.Exec
 import com.frolo.muse.engine.*
 import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
@@ -31,16 +32,16 @@ import javax.inject.Inject
 
 
 class PlayerViewModel @Inject constructor(
-        private val player: Player,
-        @Exec(Exec.Type.MAIN) private val mainThreadExecutor: Executor,
-        private val schedulerProvider: SchedulerProvider,
-        private val getIsFavouriteUseCase: GetIsFavouriteUseCase<Song>,
-        private val changeFavouriteUseCase: ChangeFavouriteUseCase<Song>,
-        private val deleteMediaUseCase: DeleteMediaUseCase<Song>,
-        private val controlPlayerUseCase: ControlPlayerUseCase,
-        private val resolveSoundUseCase: ResolveSoundUseCase,
-        private val navigator: Navigator,
-        private val eventLogger: EventLogger
+    private val player: Player,
+    @Exec(Exec.Type.MAIN) private val mainThreadExecutor: Executor,
+    private val schedulerProvider: SchedulerProvider,
+    private val getIsFavouriteUseCase: GetIsFavouriteUseCase<Song>,
+    private val changeFavouriteUseCase: ChangeFavouriteUseCase<Song>,
+    private val deleteMediaUseCase: DeleteMediaUseCase<Song>,
+    private val controlPlayerUseCase: ControlPlayerUseCase,
+    private val resolveSoundUseCase: ResolveSoundUseCase,
+    private val navigator: Navigator,
+    private val eventLogger: EventLogger
 ): BaseViewModel(eventLogger) {
 
     private var playbackProgressDisposable: Disposable? = null
@@ -50,15 +51,18 @@ class PlayerViewModel @Inject constructor(
             _playbackDuration.value = player.getDuration()
             _playbackProgress.value = 0
         }
+
         override fun onSoughtTo(player: Player, position: Int) {
             _playbackProgress.value = position
         }
+
         override fun onQueueChanged(player: Player, queue: SongQueue) {
             _songQueue.value?.unregisterCallback(queueCallback)
             _songQueue.value = queue.apply {
                 registerCallback(queueCallback, mainThreadExecutor)
             }
         }
+
         override fun onSongChanged(player: Player, song: Song?, positionInQueue: Int) {
             _song.value = song
             _songPosition.value = positionInQueue
@@ -66,18 +70,23 @@ class PlayerViewModel @Inject constructor(
                 _playbackProgress.value = player.getProgress()
             }
         }
+
         override fun onPlaybackStarted(player: Player) {
             _isPlaying.value = true
         }
+
         override fun onPlaybackPaused(player: Player) {
             _isPlaying.value = false
         }
+
         override fun onABChanged(player: Player, aPointed: Boolean, bPointed: Boolean) {
             _abState.value = ABState(aPointed, bPointed)
         }
+
         override fun onShuffleModeChanged(player: Player, mode: Int) {
             _shuffleMode.value = mode
         }
+
         override fun onRepeatModeChanged(player: Player, mode: Int) {
             _repeatMode.value = mode
         }
@@ -99,6 +108,12 @@ class PlayerViewModel @Inject constructor(
 
     private val _song = MutableLiveData<Song>(null)
     val song: LiveData<Song> get() = _song
+
+    val albumArtCarouselVisible: LiveData<Boolean> =
+        song.map(false) { song: Song? -> song != null }
+
+    val playerControllersEnabled: LiveData<Boolean> =
+        song.map(false) { song: Song? -> song != null }
 
     val sound: LiveData<Sound> =
         Transformations.switchMap(song) { song ->
