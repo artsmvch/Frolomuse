@@ -11,6 +11,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProviders
 import com.alexvasilkov.gestures.views.GestureImageView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
@@ -88,8 +89,12 @@ class PosterDialog: BaseDialogFragment() {
 
         poster.observeNonNull(owner) { bmp ->
             dialog?.apply {
+                // NOTE: avoid caching the bitmap in the memory cache and on the disk.
+                // Otherwise Glide will crash trying to get use the bitmap after the view model recycles it.
                 Glide.with(this@PosterDialog)
                     .load(bmp)
+                    .skipMemoryCache(true)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .into(
                         object : CustomTarget<Drawable>() {
