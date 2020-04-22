@@ -2,6 +2,7 @@ package com.frolo.muse.ui.main.player.mini
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.frolo.muse.arch.map
 import com.frolo.muse.engine.Player
 import com.frolo.muse.engine.SimplePlayerObserver
 import com.frolo.muse.logger.EventLogger
@@ -21,6 +22,9 @@ class MiniPlayerViewModel @Inject constructor(
 
     private val _currentSong = MutableLiveData<Song>(player.getCurrent())
     val currentSong: LiveData<Song> get() = _currentSong
+
+    val playerControllersEnabled: LiveData<Boolean> =
+        currentSong.map(false) { song: Song? -> song != null }
 
     private val _isPlaying = MutableLiveData<Boolean>(player.isPlaying())
     val isPlaying: LiveData<Boolean> get() = _isPlaying

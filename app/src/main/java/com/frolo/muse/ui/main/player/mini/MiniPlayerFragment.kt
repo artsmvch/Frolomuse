@@ -72,8 +72,13 @@ class MiniPlayerFragment : BaseFragment() {
 
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
         currentSong.observe(owner) { song: Song? ->
-            if (song != null) {
-                tsw_song_name.setText(song.title)
+            tsw_song_name.setText(song?.title)
+        }
+
+        playerControllersEnabled.observeNonNull(owner) { enabled ->
+            btn_play.apply {
+                isEnabled = enabled
+                alpha = if (enabled) 1.0f else 0.35f
             }
         }
 

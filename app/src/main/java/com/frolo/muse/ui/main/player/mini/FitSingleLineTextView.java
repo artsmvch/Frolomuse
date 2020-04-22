@@ -13,7 +13,7 @@ import androidx.appcompat.widget.AppCompatTextView;
 
 /**
  * TextView that has only one single line.
- * The text size is automatically calculates so that it fits the content height of the widget.
+ * The text size is automatically calculated so that it fits the content height of the widget.
  * The text size can also be limited using {@link FitSingleLineTextView#setMaxTextSize(int)} method.
  *
  * Any attempts to manipulate the line count using {@link FitSingleLineTextView#setLines(int)} or {@link FitSingleLineTextView#setMaxLines(int)} methods
