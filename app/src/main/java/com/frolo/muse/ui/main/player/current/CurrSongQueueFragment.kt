@@ -210,6 +210,13 @@ class CurrSongQueueFragment: AbsMediaCollectionFragment<Song>() {
             adapter.setPlayingPositionAndState(playingPosition, isPlaying)
         }
 
+        saveAsPlaylistOptionEnabled.observeNonNull(owner) { enabled ->
+            btn_save_as_playlist.apply {
+                isEnabled = enabled
+                alpha = if (enabled) 1f else 0.5f
+            }
+        }
+
         scrollToPositionEvent.observeNonNull(owner) { position ->
             postScrollToPosition(position)
         }
