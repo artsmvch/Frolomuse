@@ -1,22 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Base.AppTheme.Light.Dialog" parent="Theme.MaterialComponents.Light.Dialog">
+    <style name="Base.AppTheme.Dialog.Light" parent="Theme.MaterialComponents.Light.Dialog">
         <item name="windowNoTitle">true</item>
         <item name="android:windowTitleStyle">@null</item>
         <item name="android:windowAnimationStyle">@style/Base.AppTheme.WindowAnimation.Dialog</item>
         <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
-        <item name="android:gravity">center</item>
-        <item name="textAppearanceButton">@style/Base.AppTheme.TextAppearance.Button</item>
         <item name="android:windowBackground">@drawable/bg_dialog</item>
+
+        <item name="textAppearanceButton">@style/Base.AppTheme.TextAppearance.Button</item>
+
         <item name="textInputStyle">@style/AppTheme.Light.Blue.TextInputLayout</item>
+        <item name="materialButtonStyle">@style/Base.AppTheme.Button.TextButton</item>
+        <item name="seekBarStyle">@style/AppTheme.Light.Blue.SeekBar</item>
+        <item name="switchStyle">@style/Switch.Light</item>
+
+        <item name="colorAccent">@color/md_pink_500</item>
+
         <item name="android:textColor">@color/text_primary_dark</item>
         <item name="android:textColorPrimary">@color/text_primary_dark</item>
         <item name="android:textColorSecondary">@color/text_secondary_dark</item>
         <item name="android:textColorHint">@color/md_grey_400</item>
-        <item name="seekBarStyle">@style/AppTheme.Light.Blue.SeekBar</item>
-        <item name="colorAccent">@color/md_pink_500</item>
-        <item name="switchStyle">@style/Switch.Light</item>
-        <item name="colorControlHighlight">@color/light_gray</item>
     </style>
 
     <style name="Base.Button.AlertDialog.Light.Blue" parent="Widget.MaterialComponents.Button.TextButton">
@@ -57,6 +60,10 @@
         <item name="android:background">@drawable/bg_bottom_dialog_light</item>
     </style>
 
+    <style name="Base.AppTheme.Button.TextButton" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="cornerRadius">16dp</item>
+    </style>
+
     <style name="AppTheme.Light.Blue.SeekBar" parent="Base.AppTheme.SeekBar">
         <item name="android:progressDrawable">@drawable/bg_progress_light</item>
     </style>
@@ -86,8 +93,8 @@
         <item name="actionBarSize">@dimen/default_bar_size</item>
         <item name="android:actionBarSize">@dimen/default_bar_size</item>
 
-        <item name="dialogTheme">@style/Base.AppTheme.Light.Dialog</item>
-        <item name="android:dialogTheme">@style/Base.AppTheme.Light.Dialog</item>
+        <item name="dialogTheme">@style/Base.AppTheme.Dialog.Light</item>
+        <item name="android:dialogTheme">@style/Base.AppTheme.Dialog.Light</item>
         <item name="materialAlertDialogTheme">@style/Base.AppTheme.Light.Blue.Dialog.MaterialAlert</item>
         <item name="bottomSheetDialogTheme">@style/Base.BottomSheet.Dialog.Light</item>
         <item name="bottomNavigationStyle">@style/Base.AppTheme.Light.BottomNavigation</item>
@@ -99,6 +106,7 @@
         <item name="tabStyle">@style/Base.AppTheme.TabLayout</item>
         <item name="android:textViewStyle">@style/Base.AppTheme.TextView</item>
         <item name="recyclerViewStyle">@style/Base.AppTheme.RecyclerView</item>
+        <item name="materialButtonStyle">@style/Base.AppTheme.Button.TextButton</item>
 
         <item name="actionBarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>

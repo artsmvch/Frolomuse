@@ -29,7 +29,7 @@
         <item name="dialogTheme">@style/AppTheme.Dialog.Light.Blue</item>
     </style>
 
-    <style name="AppTheme.Dialog.Light.Blue" parent="Base.AppTheme.Light.Dialog">
+    <style name="AppTheme.Dialog.Light.Blue" parent="Base.AppTheme.Dialog.Light">
         <item name="colorPrimary">@color/app_blue_primary</item>
         <item name="colorPrimaryDark">@color/app_blue_primary_dark</item>
         <item name="colorPrimarySurface">?colorPrimary</item>

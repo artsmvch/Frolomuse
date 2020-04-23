@@ -21,8 +21,8 @@
         <item name="colorError">@color/md_red_600</item>
         <item name="colorSurface">@color/white</item>
         <item name="colorOnSurface">@color/md_grey_800</item>
-        <item name="dialogTheme">@style/Base.AppTheme.Light.Dialog</item>
-        <item name="android:dialogTheme">@style/Base.AppTheme.Light.Dialog</item>
+        <item name="dialogTheme">@style/Base.AppTheme.Dialog.Light</item>
+        <item name="android:dialogTheme">@style/Base.AppTheme.Dialog.Light</item>
         <item name="bottomSheetDialogTheme">@style/Base.BottomSheet.Dialog.Light</item>
         <item name="textInputStyle">@style/AppTheme.Light.Blue.TextInputLayout</item>
         <item name="bottomNavigationStyle">@style/Base.AppTheme.Light.BottomNavigation</item>

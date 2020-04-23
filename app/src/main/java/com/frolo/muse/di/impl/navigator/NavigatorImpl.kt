@@ -9,7 +9,7 @@ import com.frolo.muse.ui.main.audiofx.params.PlaybackParamsDialog
 import com.frolo.muse.ui.main.audiofx.preset.SavePresetDialog
 import com.frolo.muse.ui.main.editor.album.AlbumEditorFragment
 import com.frolo.muse.ui.main.editor.playlist.PlaylistEditorFragment
-import com.frolo.muse.ui.main.editor.song.SongEditorFragment
+import com.frolo.muse.ui.main.editor.song.SongEditorDialog
 import com.frolo.muse.ui.main.library.albums.album.AlbumFragment
 import com.frolo.muse.ui.main.library.artists.artist.ArtistFragment
 import com.frolo.muse.ui.main.library.genres.genre.GenreFragment
@@ -93,7 +93,7 @@ class NavigatorImpl<T> constructor(
     }
 
     override fun editSong(song: Song) {
-        val fragment = SongEditorFragment.newInstance(song)
+        val fragment = SongEditorDialog.newInstance(song)
         root.pushDialog(fragment)
     }
 
