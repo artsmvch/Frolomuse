@@ -15,25 +15,26 @@ import io.reactivex.Flowable
 
 
 class GetPlaylistUseCase @AssistedInject constructor(
-        private val schedulerProvider: SchedulerProvider,
-        private val playlistRepository: PlaylistRepository,
-        private val playlistChunkRepository: PlaylistChunkRepository,
-        private val preferences: Preferences,
-        private val navigator: Navigator,
-        @Assisted private val playlist: Playlist
+    private val schedulerProvider: SchedulerProvider,
+    private val playlistRepository: PlaylistRepository,
+    private val playlistChunkRepository: PlaylistChunkRepository,
+    private val preferences: Preferences,
+    private val navigator: Navigator,
+    @Assisted private val playlist: Playlist
 ): GetSectionedMediaUseCase<Song>(
-        Library.PLAYLIST,
-        schedulerProvider,
-        playlistChunkRepository,
-        preferences) {
+    Library.PLAYLIST,
+    schedulerProvider,
+    playlistChunkRepository,
+    preferences
+) {
 
     fun getPlaylist(): Flowable<Playlist> {
         return Flowable.just(playlist)
                 .concatWith(playlistRepository.getItem(playlist.id))
     }
 
-    fun edit() {
-        navigator.editPlaylist(playlist)
+    fun edit(freshVersion: Playlist? = null) {
+        navigator.editPlaylist(freshVersion ?: playlist)
     }
 
     fun addSongs() {

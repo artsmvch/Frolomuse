@@ -69,7 +69,7 @@ class PlaylistViewModel constructor(
     val isSwappingEnabled: LiveData<Boolean> get() = _isSwappingEnabled
 
     fun onEditPlaylistOptionSelected() {
-        getPlaylistUseCase.edit()
+        getPlaylistUseCase.edit(playlist.value)
     }
 
     fun onAddSongButtonClicked() {
