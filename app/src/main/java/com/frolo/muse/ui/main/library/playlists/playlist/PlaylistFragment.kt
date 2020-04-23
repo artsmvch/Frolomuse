@@ -32,9 +32,6 @@ import com.google.android.material.shape.MaterialShapeDrawable
 import com.google.android.material.shape.ShapeAppearanceModel
 import kotlinx.android.synthetic.main.fragment_base_list.*
 import kotlinx.android.synthetic.main.fragment_playlist.*
-import kotlinx.android.synthetic.main.fragment_playlist.fab_play
-import kotlinx.android.synthetic.main.fragment_playlist.tb_actions
-import kotlinx.android.synthetic.main.fragment_playlist.view_backdrop
 import kotlin.math.abs
 import kotlin.math.pow
 
@@ -81,14 +78,6 @@ class PlaylistFragment: AbsSongCollectionFragment<Song>(), NoClipping {
     private val onOffsetChangedListener: AppBarLayout.OnOffsetChangedListener =
         AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
             val scrollFactor: Float = abs(verticalOffset.toFloat() / (view_backdrop.measuredHeight))
-
-            // TODO: this ignores the actual state of the Play button in the view model
-
-            if (scrollFactor < 0.3) {
-                fab_play.show()
-            } else {
-                fab_play.hide()
-            }
 
             (view_backdrop.background as? MaterialShapeDrawable)?.apply {
                 val poweredScrollFactor = scrollFactor.pow(2)
@@ -143,6 +132,10 @@ class PlaylistFragment: AbsSongCollectionFragment<Song>(), NoClipping {
             shapeAppearanceModel = ShapeAppearanceModel.builder()
                 .setBottomRightCorner(CornerFamily.ROUNDED, backdropCornerRadius)
                 .build()
+        }
+
+        btn_add_song.setOnClickListener {
+            viewModel.onAddSongButtonClicked()
         }
     }
 

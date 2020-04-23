@@ -33,7 +33,6 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_marginBottom="40dp"
                     android:id="@+id/view_backdrop"
                     android:layout_width="0dp"
                     android:layout_height="0dp"/>
@@ -72,21 +71,50 @@
                     android:ellipsize="end"
                     tools:text="Created 03.15.2019"/>
 
-                <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/view_backdrop"
+                <com.google.android.material.button.MaterialButton
+                    app:layout_constraintStart_toStartOf="@id/tv_playlist_date_created"
+                    app:layout_constraintTop_toBottomOf="@id/tv_playlist_date_created"
                     app:layout_constraintBottom_toBottomOf="@id/view_backdrop"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toStartOf="@id/btn_add_song"
+                    app:layout_constraintWidth_default="wrap"
                     app:layout_constraintHorizontal_bias="0.0"
-                    android:id="@+id/fab_play"
-                    android:layout_width="wrap_content"
+                    app:layout_constraintHorizontal_chainStyle="packed"
+                    android:id="@+id/btn_play"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="44dp"
-                    android:elevation="4dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="24dp"
+                    android:textColor="?colorOnPrimary"
                     android:text="@string/play"
+                    app:rippleColor="@color/color_on_primary_alpha60"
+                    app:strokeColor="?colorOnPrimary"
                     app:icon="@drawable/ic_play"
-                    app:iconSize="12dp"
-                    tools:ignore="RtlHardcoded" />
+                    app:iconSize="10dp"
+                    app:iconPadding="8dp"
+                    app:iconTint="?colorOnPrimary"
+                    app:cornerRadius="16dp"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+
+                <com.google.android.material.button.MaterialButton
+                    app:layout_constraintStart_toEndOf="@id/btn_play"
+                    app:layout_constraintTop_toTopOf="@id/btn_play"
+                    app:layout_constraintBottom_toBottomOf="@id/btn_play"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintWidth_default="wrap"
+                    android:id="@+id/btn_add_song"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:textColor="?colorOnPrimary"
+                    android:text="@string/add_song"
+                    app:rippleColor="@color/color_on_primary_alpha60"
+                    app:strokeColor="?colorOnPrimary"
+                    app:icon="@drawable/ic_plus"
+                    app:iconSize="10dp"
+                    app:iconPadding="8dp"
+                    app:iconTint="?colorOnPrimary"
+                    app:cornerRadius="16dp"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
