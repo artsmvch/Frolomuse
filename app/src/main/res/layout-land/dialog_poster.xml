@@ -13,7 +13,7 @@
         android:id="@+id/imv_poster"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="16dp" />
+        android:layout_marginStart="24dp" />
 
     <com.frolo.muse.views.progress.IBar
         app:layout_constraintStart_toStartOf="@id/imv_poster"
