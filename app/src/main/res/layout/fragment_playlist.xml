@@ -92,14 +92,14 @@
                         android:id="@+id/btn_play"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="?colorOnPrimary"
+                        android:textColor="?colorPrimary"
                         android:text="@string/play"
-                        app:rippleColor="@color/color_on_primary_alpha60"
+                        app:backgroundTint="?colorOnPrimary"
                         app:strokeColor="?colorOnPrimary"
                         app:icon="@drawable/ic_play"
                         app:iconSize="10dp"
                         app:iconPadding="8dp"
-                        app:iconTint="?colorOnPrimary"
+                        app:iconTint="?colorPrimary"
                         app:cornerRadius="16dp"
                         style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
 
