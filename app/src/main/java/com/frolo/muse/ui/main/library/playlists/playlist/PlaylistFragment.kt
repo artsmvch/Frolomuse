@@ -1,9 +1,8 @@
 package com.frolo.muse.ui.main.library.playlists.playlist
 
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.*
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -11,6 +10,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.frolo.muse.R
+import com.frolo.muse.StyleUtil
+import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.model.media.Playlist
 import com.frolo.muse.model.media.Song
@@ -23,21 +24,22 @@ import com.frolo.muse.ui.main.library.base.AbsSongCollectionFragment
 import com.frolo.muse.ui.main.library.base.SongAdapter
 import com.frolo.muse.dp2px
 import com.frolo.muse.ui.base.NoClipping
-import com.frolo.muse.views.Slider
-import com.frolo.muse.views.showBackArrow
+import com.frolo.muse.ui.base.setupNavigation
+import com.frolo.muse.ui.getDateAddedString
+import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.shape.CornerFamily
+import com.google.android.material.shape.MaterialShapeDrawable
+import com.google.android.material.shape.ShapeAppearanceModel
+import kotlinx.android.synthetic.main.fragment_base_list.*
 import kotlinx.android.synthetic.main.fragment_playlist.*
-import kotlinx.android.synthetic.main.include_backdrop_front_list.*
+import kotlinx.android.synthetic.main.fragment_playlist.fab_play
+import kotlinx.android.synthetic.main.fragment_playlist.tb_actions
+import kotlinx.android.synthetic.main.fragment_playlist.view_backdrop
+import kotlin.math.abs
+import kotlin.math.pow
 
 
 class PlaylistFragment: AbsSongCollectionFragment<Song>(), NoClipping {
-
-    companion object {
-        private const val ARG_PLAYLIST = "playlist"
-
-        // Factory
-        fun newInstance(playlist: Playlist) = PlaylistFragment()
-                .withArg(ARG_PLAYLIST, playlist)
-    }
 
     override val viewModel: PlaylistViewModel by lazy {
         val playlist = requireArguments().getSerializable(ARG_PLAYLIST) as Playlist
@@ -76,10 +78,28 @@ class PlaylistFragment: AbsSongCollectionFragment<Song>(), NoClipping {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
+    private val onOffsetChangedListener: AppBarLayout.OnOffsetChangedListener =
+        AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
+            val scrollFactor: Float = abs(verticalOffset.toFloat() / (view_backdrop.measuredHeight))
+
+            // TODO: this ignores the actual state of the Play button in the view model
+
+            if (scrollFactor < 0.3) {
+                fab_play.show()
+            } else {
+                fab_play.hide()
+            }
+
+            (view_backdrop.background as? MaterialShapeDrawable)?.apply {
+                val poweredScrollFactor = scrollFactor.pow(2)
+                val cornerRadius = backdropCornerRadius * (1 - poweredScrollFactor)
+                this.shapeAppearanceModel = ShapeAppearanceModel.builder()
+                        .setBottomRightCorner(CornerFamily.ROUNDED, cornerRadius)
+                        .build()
+            }
+        }
+
+    private val backdropCornerRadius: Float by lazy { 72f.dp2px(requireContext()) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -88,13 +108,7 @@ class PlaylistFragment: AbsSongCollectionFragment<Song>(), NoClipping {
     ): View = inflater.inflate(R.layout.fragment_playlist, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        (activity as? AppCompatActivity)?.apply {
-            setSupportActionBar(tb_actions as Toolbar)
-            supportActionBar?.apply {
-                subtitle = getString(R.string.playlist)
-                showBackArrow()
-            }
-        }
+        setupNavigation(tb_actions)
 
         val callback = SimpleItemTouchHelperCallback(adapter as DragSongAdapter)
         val touchHelper = ItemTouchHelper(callback)
@@ -106,22 +120,30 @@ class PlaylistFragment: AbsSongCollectionFragment<Song>(), NoClipping {
             setPadding(0, 0, 0, 64f.dp2px(context).toInt())
             clipToPadding = false
 
-            val slider = object : Slider() {
-                override fun onSlideUp() {
-                    fab_add_song.show()
-                }
-                override fun onSlideDown() {
-                    fab_add_song.hide()
-                }
-            }
-            addOnScrollListener(slider)
-
             adapter = this@PlaylistFragment.adapter
 
             decorateAsLinear()
         }
 
-        fab_add_song.setOnClickListener { viewModel.onAddSongButtonClicked() }
+        tb_actions.apply {
+            inflateMenu(R.menu.fragment_playlist)
+            setOnMenuItemClickListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.action_edit -> viewModel.onEditPlaylistOptionSelected()
+                    R.id.action_sort -> viewModel.onSortOrderOptionSelected()
+                }
+                return@setOnMenuItemClickListener true
+            }
+        }
+
+        app_bar_layout.addOnOffsetChangedListener(onOffsetChangedListener)
+
+        view_backdrop.background = MaterialShapeDrawable().apply {
+            fillColor = ColorStateList.valueOf(StyleUtil.readColorAttrValue(view.context, R.attr.colorPrimary))
+            shapeAppearanceModel = ShapeAppearanceModel.builder()
+                .setBottomRightCorner(CornerFamily.ROUNDED, backdropCornerRadius)
+                .build()
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -129,28 +151,13 @@ class PlaylistFragment: AbsSongCollectionFragment<Song>(), NoClipping {
         observeViewModel(viewLifecycleOwner)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.fragment_playlist, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
-            R.id.action_edit -> viewModel.onEditPlaylistOptionSelected()
-            R.id.action_sort -> viewModel.onSortOrderOptionSelected()
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
     override fun onDestroyView() {
         view?.removeCallbacks(onDragEndedCallback)
         onDragEndedCallback = null
-        super.onDestroyView()
-    }
 
-    private fun showTitle(title: String) {
-        (activity as? AppCompatActivity)?.supportActionBar?.apply {
-            this.title = title
-        }
+        app_bar_layout.removeOnOffsetChangedListener(onOffsetChangedListener)
+
+        super.onDestroyView()
     }
 
     private fun dispatchItemRemoved(item: Song) {
@@ -178,12 +185,14 @@ class PlaylistFragment: AbsSongCollectionFragment<Song>(), NoClipping {
     }
 
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
-        playlist.observeNonNull(owner) { item ->
-            showTitle(item.name)
+        playlist.observe(owner) { item ->
+            tv_playlist_name.text = item?.name
+            tv_playlist_date_created.text =
+                    item?.getDateAddedString(tv_playlist_date_created.resources)
         }
 
         mediaItemCount.observeNonNull(owner) { count ->
-            tv_title.text = requireContext().resources.getQuantityString(R.plurals.s_songs, count, count)
+            //tv_title.text = requireContext().resources.getQuantityString(R.plurals.s_songs, count, count)
         }
 
         isSwappingEnabled.observeNonNull(owner) { isSwappingEnabled ->
@@ -206,4 +215,13 @@ class PlaylistFragment: AbsSongCollectionFragment<Song>(), NoClipping {
             }
         }
     }
+
+    companion object {
+        private const val ARG_PLAYLIST = "playlist"
+
+        // Factory
+        fun newInstance(playlist: Playlist) = PlaylistFragment()
+                .withArg(ARG_PLAYLIST, playlist)
+    }
+
 }
