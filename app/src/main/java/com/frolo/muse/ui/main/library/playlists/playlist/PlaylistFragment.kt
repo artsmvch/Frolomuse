@@ -134,6 +134,10 @@ class PlaylistFragment: AbsSongCollectionFragment<Song>(), NoClipping {
                 .build()
         }
 
+        btn_play.setOnClickListener {
+            viewModel.onPlayButtonClicked()
+        }
+
         btn_add_song.setOnClickListener {
             viewModel.onAddSongButtonClicked()
         }

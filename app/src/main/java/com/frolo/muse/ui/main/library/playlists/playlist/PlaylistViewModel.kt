@@ -22,7 +22,7 @@ class PlaylistViewModel constructor(
         private val getPlaylistUseCase: GetPlaylistUseCase,
         getMediaMenuUseCase: GetMediaMenuUseCase<Song>,
         clickMediaUseCase: ClickMediaUseCase<Song>,
-        playMediaUseCase: PlayMediaUseCase<Song>,
+        private val playMediaUseCase: PlayMediaUseCase<Song>,
         shareMediaUseCase: ShareMediaUseCase<Song>,
         deleteMediaUseCase: DeleteMediaUseCase<Song>,
         getIsFavouriteUseCase: GetIsFavouriteUseCase<Song>,
@@ -74,6 +74,11 @@ class PlaylistViewModel constructor(
 
     fun onAddSongButtonClicked() {
         getPlaylistUseCase.addSongs()
+    }
+
+    fun onPlayButtonClicked() {
+        val snapshot = mediaList.value.orEmpty()
+        playMediaUseCase.play(snapshot).subscribeFor {  }
     }
 
     fun onItemRemoved(item: Song) {
