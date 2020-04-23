@@ -30,7 +30,8 @@ class GetPlaylistUseCase @AssistedInject constructor(
 
     fun getPlaylist(): Flowable<Playlist> {
         return Flowable.just(playlist)
-                .concatWith(playlistRepository.getItem(playlist.id))
+            .concatWith(playlistRepository.getItem(playlist.id))
+            .subscribeOn(schedulerProvider.worker())
     }
 
     fun edit(freshVersion: Playlist? = null) {
