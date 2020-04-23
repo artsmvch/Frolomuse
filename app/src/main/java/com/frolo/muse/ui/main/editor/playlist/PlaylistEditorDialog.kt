@@ -11,14 +11,7 @@ import com.frolo.muse.ui.base.withArg
 import com.frolo.muse.ui.main.library.base.inputname.AbsInputNameDialog
 
 
-class PlaylistEditorFragment : AbsInputNameDialog() {
-    companion object {
-        private const val ARG_PLAYLIST = "playlist"
-
-        // Factory
-        fun newInstance(playlist: Playlist) = PlaylistEditorFragment()
-                .withArg(ARG_PLAYLIST, playlist)
-    }
+class PlaylistEditorDialog : AbsInputNameDialog() {
 
     private val viewModel: PlaylistEditorViewModel by lazy {
         val vmFactory = PlaylistEditorVMFactory(requireApp().appComponent, playlist)
@@ -33,28 +26,26 @@ class PlaylistEditorFragment : AbsInputNameDialog() {
         observeViewModel(this)
     }
 
-    private fun observeViewModel(owner: LifecycleOwner) {
-        viewModel.apply {
-            isLoadingUpdate.observeNonNull(owner) { isLoading ->
-                setIsLoading(isLoading)
-            }
+    private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
+        isLoadingUpdate.observeNonNull(owner) { isLoading ->
+            setIsLoading(isLoading)
+        }
 
-            updatedPlaylist.observeNonNull(owner) { playlist ->
-                onPlaylistUpdated(playlist)
-            }
+        updatedPlaylist.observeNonNull(owner) { playlist ->
+            onPlaylistUpdated(playlist)
+        }
 
-            inputError.observeNonNull(owner) { err ->
-                displayInputError(err)
-            }
+        inputError.observeNonNull(owner) { err ->
+            displayInputError(err)
+        }
 
-            error.observeNonNull(owner) { err ->
-                displayError(err)
-            }
+        error.observeNonNull(owner) { err ->
+            displayError(err)
         }
     }
 
     override fun onGetTitle(): String {
-        return getString(R.string.edit_name_of_playlist)
+        return getString(R.string.edit_playlist)
     }
 
     override fun onGetInitialText(): String? {
@@ -70,4 +61,13 @@ class PlaylistEditorFragment : AbsInputNameDialog() {
     private fun onPlaylistUpdated(newPlaylist: Playlist) {
         dismiss()
     }
+
+    companion object {
+        private const val ARG_PLAYLIST = "playlist"
+
+        // Factory
+        fun newInstance(playlist: Playlist) = PlaylistEditorDialog()
+                .withArg(ARG_PLAYLIST, playlist)
+    }
+
 }
