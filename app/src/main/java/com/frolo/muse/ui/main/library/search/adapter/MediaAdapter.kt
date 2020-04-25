@@ -5,6 +5,8 @@ import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.ColorInt
+import androidx.core.graphics.ColorUtils
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
@@ -90,7 +92,15 @@ class MediaAdapter constructor(
     }
 
     abstract class MediaViewHolder(itemView: View): BaseViewHolder(itemView) {
-        private val highlightColor = StyleUtil.getHighlightColor(itemView.context)
+
+        @ColorInt
+        private val primaryColor: Int =
+                StyleUtil.readColorAttrValue(itemView.context, R.attr.colorPrimary)
+
+        @ColorInt
+        private val highlightColor: Int =
+                ColorUtils.setAlphaComponent(primaryColor, (0.6 * 255).toInt())
+
         private val highlightSpan = ForegroundColorSpan(highlightColor)
 
         init {
