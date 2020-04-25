@@ -10,10 +10,10 @@ import com.bumptech.glide.Glide
 import com.frolo.muse.R
 import com.frolo.muse.StyleUtil
 import com.frolo.muse.arch.observe
-import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.dp2px
 import com.frolo.muse.model.media.Genre
 import com.frolo.muse.model.media.Song
+import com.frolo.muse.ui.base.NoClipping
 import com.frolo.muse.ui.base.setupNavigation
 import com.frolo.muse.ui.base.withArg
 import com.frolo.muse.ui.main.decorateAsLinear
@@ -30,7 +30,7 @@ import kotlin.math.abs
 import kotlin.math.pow
 
 
-class GenreFragment: AbsSongCollectionFragment<Song>() {
+class GenreFragment: AbsSongCollectionFragment<Song>(), NoClipping {
 
     override val viewModel: GenreViewModel by lazy {
         val genre = requireArguments().getSerializable(ARG_GENRE) as Genre
@@ -128,6 +128,16 @@ class GenreFragment: AbsSongCollectionFragment<Song>() {
 
         title.observe(owner) { title ->
             tv_genre_name.text = title
+        }
+    }
+
+    override fun removeClipping(left: Int, top: Int, right: Int, bottom: Int) {
+        view?.also { safeView ->
+            if (safeView is ViewGroup) {
+                rv_list.setPadding(left, top, right, bottom)
+                rv_list.clipToPadding = false
+                safeView.clipToPadding = false
+            }
         }
     }
 
