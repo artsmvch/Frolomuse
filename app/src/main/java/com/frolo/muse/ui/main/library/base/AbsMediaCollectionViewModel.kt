@@ -73,7 +73,7 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
     val mediaList: LiveData<List<E>> get() = _mediaList
 
     val mediaItemCount: LiveData<Int> by lazy {
-        Transformations.map(mediaList) { list -> list.count() }
+        Transformations.map(mediaList) { list -> list?.count() ?: 0 }
     }
 
     val placeholderVisible: LiveData<Boolean> by lazy {

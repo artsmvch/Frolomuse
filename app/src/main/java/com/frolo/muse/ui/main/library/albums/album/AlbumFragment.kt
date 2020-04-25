@@ -31,14 +31,6 @@ import kotlin.math.pow
 
 
 class AlbumFragment: AbsSongCollectionFragment<Song>(), NoClipping {
-    companion object {
-
-        private const val ARG_ALBUM = "album"
-
-        // Factory
-        fun newInstance(album: Album) = AlbumFragment()
-                .withArg(ARG_ALBUM, album)
-    }
 
     private val onOffsetChangedListener: AppBarLayout.OnOffsetChangedListener =
         AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
@@ -135,15 +127,11 @@ class AlbumFragment: AbsSongCollectionFragment<Song>(), NoClipping {
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
-
         app_bar_layout.removeOnOffsetChangedListener(onOffsetChangedListener)
+        super.onDestroyView()
     }
 
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
-        mediaItemCount.observeNonNull(owner) { count ->
-        }
-
         albumName.observe(owner) { albumName ->
             tv_album_name.text = albumName
         }
@@ -190,6 +178,15 @@ class AlbumFragment: AbsSongCollectionFragment<Song>(), NoClipping {
                 safeView.clipToPadding = false
             }
         }
+    }
+
+    companion object {
+
+        private const val ARG_ALBUM = "album"
+
+        // Factory
+        fun newInstance(album: Album) = AlbumFragment()
+                .withArg(ARG_ALBUM, album)
     }
 
 }
