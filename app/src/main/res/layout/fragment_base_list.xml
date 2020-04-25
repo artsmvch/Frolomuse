@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -10,19 +9,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
-    <include
-        layout="@layout/include_placeholder"
-        android:layout_gravity="center"
+    <include layout="@layout/include_placeholder"
         android:id="@+id/layout_list_placeholder"
-        android:text="@string/nothing_to_show"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <include
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:visibility="gone"
+        android:visibility="gone" />
+
+    <include layout="@layout/include_loading"
         android:id="@+id/pb_loading"
-        layout="@layout/include_loading"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" />
 </FrameLayout>
