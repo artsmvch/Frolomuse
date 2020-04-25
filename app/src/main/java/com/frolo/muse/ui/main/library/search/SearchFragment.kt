@@ -8,7 +8,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.LifecycleOwner
 import com.bumptech.glide.Glide
 import com.frolo.muse.R
-import com.frolo.muse.arch.observeNonNull
+import com.frolo.muse.arch.observe
 import com.frolo.muse.model.media.Media
 import com.frolo.muse.ui.base.NoClipping
 import com.frolo.muse.ui.main.library.base.AbsMediaCollectionFragment
@@ -20,13 +20,6 @@ import kotlinx.android.synthetic.main.fragment_search.*
 
 
 class SearchFragment: AbsMediaCollectionFragment<Media>(), NoClipping {
-
-    companion object {
-        private const val EXTRA_QUERY = "query"
-
-        // Factory
-        fun newInstance() = SearchFragment()
-    }
 
     override val viewModel: SearchViewModel by viewModel()
 
@@ -47,11 +40,6 @@ class SearchFragment: AbsMediaCollectionFragment<Media>(), NoClipping {
             }
         }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         observerViewModel(viewLifecycleOwner)
@@ -64,7 +52,6 @@ class SearchFragment: AbsMediaCollectionFragment<Media>(), NoClipping {
     ): View = inflater.inflate(R.layout.fragment_search, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        // setup list
         rv_list.apply {
             adapter = this@SearchFragment.adapter
             layoutManager = androidx.recyclerview.widget.LinearLayoutManager(rv_list.context)
@@ -126,8 +113,8 @@ class SearchFragment: AbsMediaCollectionFragment<Media>(), NoClipping {
     }
 
     private fun observerViewModel(owner: LifecycleOwner) = with(viewModel) {
-        query.observeNonNull(owner) { query: String ->
-            adapter.query = query
+        query.observe(owner) { query: String? ->
+            adapter.query = query.orEmpty()
         }
     }
 
@@ -140,4 +127,12 @@ class SearchFragment: AbsMediaCollectionFragment<Media>(), NoClipping {
             }
         }
     }
+
+    companion object {
+        private const val EXTRA_QUERY = "query"
+
+        // Factory
+        fun newInstance() = SearchFragment()
+    }
+
 }

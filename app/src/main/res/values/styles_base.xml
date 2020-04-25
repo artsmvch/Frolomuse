@@ -195,4 +195,15 @@
         <item name="android:overScrollMode">always</item>
         <item name="android:layoutAnimation">@anim/list_layout_animation</item>
     </style>
+
+    <!--SearchView-->
+    <style name="Base.AppTheme.SearchView" parent="Widget.AppCompat.SearchView">
+        <item name="android:background">@drawable/bg_search_field_light</item>
+        <item name="queryBackground">@null</item>
+        <item name="iconifiedByDefault">false</item>
+        <item name="searchIcon">@drawable/ic_search_search</item>
+        <item name="closeIcon">@drawable/ic_search_close</item>
+        <item name="android:textSize">14sp</item>
+        <item name="colorControlNormal">@color/tint_search_grey</item>
+    </style>
 </resources>

@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!--Common for all themes-->
+    <color name="tint_search_grey">#828282</color>
+
     <!--common-->
     <color name="scarlet">#ff8080</color>
 

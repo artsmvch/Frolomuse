@@ -58,7 +58,7 @@ class SearchViewModel @Inject constructor(
     }
 
     private val _query: MutableLiveData<String> = MutableLiveData()
-    val query: LiveData<String> = _query
+    val query: LiveData<String> get() = _query
 
     fun onQuerySubmitted(query: String) {
         publisher.onNext(query)

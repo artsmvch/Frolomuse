@@ -3,7 +3,6 @@ package com.frolo.muse.ui.main.library.search.adapter
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -14,64 +13,67 @@ import com.frolo.muse.StyleUtil
 import com.frolo.muse.model.media.*
 import com.frolo.muse.ui.main.library.base.BaseAdapter
 import com.frolo.muse.dp2px
+import com.frolo.muse.inflateChild
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter
 import kotlinx.android.synthetic.main.item_header.view.*
 import kotlin.properties.Delegates
 
 
-class MediaAdapter(private val requestManager: RequestManager):
-        BaseAdapter<Media, MediaAdapter.MediaViewHolder>(MediaItemCallback),
+class MediaAdapter constructor(
+    private val requestManager: RequestManager
+): BaseAdapter<Media, MediaAdapter.MediaViewHolder>(MediaItemCallback),
         StickyRecyclerHeadersAdapter<MediaAdapter.HeaderViewHolder> {
 
     var query by Delegates.observable("") { _, _, _ -> notifyDataSetChanged() }
 
     override fun getItemViewType(position: Int) = getItemAt(position).kind
 
-    override fun onCreateBaseViewHolder(parent: ViewGroup, viewType: Int): MediaViewHolder {
-        val inflater = LayoutInflater.from(parent.context)
-        return when(viewType) {
-            Media.SONG -> SongViewHolder(
-                    inflater.inflate(R.layout.item_song, parent, false))
+    override fun onCreateBaseViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): MediaViewHolder = when(viewType) {
+        Media.SONG -> SongViewHolder(parent.inflateChild(R.layout.item_song))
 
-            Media.ALBUM -> AlbumViewHolder(
-                    inflater.inflate(R.layout.item_album, parent, false))
+        Media.ALBUM -> AlbumViewHolder(parent.inflateChild(R.layout.item_album))
 
-            Media.ARTIST -> ArtistViewHolder(
-                    inflater.inflate(R.layout.item_artist, parent, false))
+        Media.ARTIST -> ArtistViewHolder(parent.inflateChild(R.layout.item_artist))
 
-            Media.GENRE -> GenreViewHolder(
-                    inflater.inflate(R.layout.item_genre, parent, false))
+        Media.GENRE -> GenreViewHolder(parent.inflateChild(R.layout.item_genre))
 
-            Media.PLAYLIST -> PlaylistViewHolder(
-                    inflater.inflate(R.layout.item_playlist, parent, false))
+        Media.PLAYLIST -> PlaylistViewHolder(parent.inflateChild(R.layout.item_playlist))
 
-            else -> throw IllegalArgumentException("Unknown view type: $viewType")
-        }
+        else -> throw IllegalArgumentException("Unexpected view type: $viewType")
     }
 
     override fun onBindViewHolder(
-            holder: MediaViewHolder,
-            position: Int,
-            item: Media,
-            selected: Boolean,
-            selectionChanged: Boolean) {
+        holder: MediaViewHolder,
+        position: Int,
+        item: Media,
+        selected: Boolean,
+        selectionChanged: Boolean
+    ) = when(holder.itemViewType) {
+        Media.SONG ->
+            (holder as SongViewHolder).bind(item as Song, selected, selectionChanged, requestManager, query)
 
-        when(holder) {
-            is SongViewHolder -> holder.bind(item as Song, selected, selectionChanged, requestManager, query)
-            is AlbumViewHolder -> holder.bind(item as Album, selected, selectionChanged, requestManager, query)
-            is ArtistViewHolder -> holder.bind(item as Artist, selected, selectionChanged, query)
-            is GenreViewHolder -> holder.bind(item as Genre, selected, selectionChanged, query)
-            is PlaylistViewHolder -> holder.bind(item as Playlist, selected, selectionChanged, query)
-        }
+        Media.ALBUM ->
+            (holder as AlbumViewHolder).bind(item as Album, selected, selectionChanged, requestManager, query)
+
+        Media.ARTIST ->
+            (holder as ArtistViewHolder).bind(item as Artist, selected, selectionChanged, query)
+
+        Media.GENRE ->
+            (holder as GenreViewHolder).bind(item as Genre, selected, selectionChanged, query)
+
+        Media.PLAYLIST ->
+            (holder as PlaylistViewHolder).bind(item as Playlist, selected, selectionChanged, query)
+
+        else -> throw IllegalArgumentException("Unexpected view type: ${holder.itemViewType}")
     }
 
     override fun getHeaderId(position: Int): Long = getItemViewType(position).toLong()
 
-    override fun onCreateHeaderViewHolder(parent: ViewGroup): HeaderViewHolder {
-        val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_header, parent, false)
-        return HeaderViewHolder(view)
-    }
+    override fun onCreateHeaderViewHolder(parent: ViewGroup): HeaderViewHolder =
+            HeaderViewHolder(parent.inflateChild(R.layout.item_header))
 
     override fun onBindHeaderViewHolder(holder: HeaderViewHolder, position: Int) {
         with(holder.itemView) {
