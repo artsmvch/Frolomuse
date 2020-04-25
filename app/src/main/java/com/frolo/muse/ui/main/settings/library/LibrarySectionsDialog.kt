@@ -10,10 +10,10 @@ import com.frolo.muse.R
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.ui.base.BaseDialogFragment
 import com.frolo.muse.ui.base.adapter.SimpleItemTouchHelperCallback
-import kotlinx.android.synthetic.main.dialog_library_section_chooser.*
+import kotlinx.android.synthetic.main.dialog_library_sections.*
 
 
-class LibrarySectionChooserDialog : BaseDialogFragment(),
+class LibrarySectionsDialog : BaseDialogFragment(),
         LibrarySectionAdapter.OnDragListener {
 
     private val preferences: Preferences by prefs()
@@ -23,7 +23,7 @@ class LibrarySectionChooserDialog : BaseDialogFragment(),
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return super.onCreateDialog(savedInstanceState).apply {
             requestWindowFeature(Window.FEATURE_NO_TITLE)
-            setContentView(R.layout.dialog_library_section_chooser)
+            setContentView(R.layout.dialog_library_sections)
             setupDialogSize(this)
             loadUI(this)
         }
@@ -41,7 +41,7 @@ class LibrarySectionChooserDialog : BaseDialogFragment(),
 
         val sections = preferences.librarySections
         val enabledStatus = sections.associateBy({ it }, { preferences.isLibrarySectionEnabled(it) })
-        val adapter = LibrarySectionAdapter(this@LibrarySectionChooserDialog, sections, enabledStatus)
+        val adapter = LibrarySectionAdapter(this@LibrarySectionsDialog, sections, enabledStatus)
 
         rv_sections.layoutManager = LinearLayoutManager(context)
         rv_sections.adapter = adapter
@@ -76,7 +76,7 @@ class LibrarySectionChooserDialog : BaseDialogFragment(),
     companion object {
 
         // Factory
-        fun newInstance() = LibrarySectionChooserDialog()
+        fun newInstance() = LibrarySectionsDialog()
 
     }
 

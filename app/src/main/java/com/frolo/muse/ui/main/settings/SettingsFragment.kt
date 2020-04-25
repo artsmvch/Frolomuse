@@ -22,7 +22,7 @@ import com.frolo.muse.ui.goToStore
 import com.frolo.muse.ui.helpWithTranslations
 import com.frolo.muse.ui.main.settings.hidden.HiddenFilesDialog
 import com.frolo.muse.ui.main.settings.info.AppInfoDialog
-import com.frolo.muse.ui.main.settings.library.LibrarySectionChooserDialog
+import com.frolo.muse.ui.main.settings.library.LibrarySectionsDialog
 import com.frolo.muse.ui.main.settings.libs.ThirdPartyLibsFragment
 import com.frolo.muse.ui.main.settings.sleeptimer.SleepTimerDialog
 import com.frolo.muse.ui.shareApp
@@ -309,7 +309,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
     }
 
     private fun showLibrarySectionChooser() {
-        val dialog = LibrarySectionChooserDialog.newInstance()
+        val dialog = LibrarySectionsDialog.newInstance()
         dialog.show(childFragmentManager, TAG_LIBRARY_SECTION_CHOOSER)
     }
 
