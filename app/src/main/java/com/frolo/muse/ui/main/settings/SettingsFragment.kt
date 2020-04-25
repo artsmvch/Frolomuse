@@ -240,13 +240,13 @@ class SettingsFragment : PreferenceFragmentCompat(),
                 DialogInterface.BUTTON_NEGATIVE -> Unit
             }
         }
-        AlertDialog.Builder(activity)
-                .setIcon(R.drawable.ic_warning)
-                .setTitle(R.string.rescan_media_library)
-                .setMessage(R.string.do_you_want_to_rescan_media_library)
-                .setPositiveButton(R.string.ok, l)
-                .setNegativeButton(R.string.cancel, l)
-                .show()
+        MaterialAlertDialogBuilder(activity)
+            .setIcon(R.drawable.ic_warning)
+            .setTitle(R.string.rescan_media_library)
+            .setMessage(R.string.do_you_want_to_rescan_media_library)
+            .setPositiveButton(R.string.ok, l)
+            .setNegativeButton(R.string.cancel, l)
+            .show()
     }
 
     override fun onRequestPermissionsResult(
