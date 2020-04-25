@@ -29,8 +29,12 @@ class LibrarySectionChooserDialog : BaseDialogFragment(),
         }
     }
 
-    override fun onDrag(holder: RecyclerView.ViewHolder) {
+    override fun onTouchDragView(holder: RecyclerView.ViewHolder) {
         itemTouchHelper?.startDrag(holder)
+    }
+
+    override fun onItemMoved(fromPosition: Int, toPosition: Int) {
+        saveChanges()
     }
 
     private fun loadUI(dialog: Dialog) = with(dialog) {
@@ -53,7 +57,11 @@ class LibrarySectionChooserDialog : BaseDialogFragment(),
 
     // The best place to save the changes
     override fun onStop() {
+        saveChanges()
         super.onStop()
+    }
+
+    private fun saveChanges() {
         val adapter = dialog?.rv_sections?.adapter as? LibrarySectionAdapter
         if (adapter != null) {
             val sections = adapter.getSections()
