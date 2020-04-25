@@ -19,6 +19,7 @@ import com.frolo.muse.ui.base.withArg
 import com.frolo.muse.ui.main.decorateAsLinear
 import com.frolo.muse.ui.main.library.base.AbsSongCollectionFragment
 import com.frolo.muse.ui.main.library.base.SongAdapter
+import com.frolo.muse.ui.toString
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.shape.CornerFamily
 import com.google.android.material.shape.MaterialShapeDrawable
@@ -121,8 +122,8 @@ class GenreFragment: AbsSongCollectionFragment<Song>() {
     }
 
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
-        mediaItemCount.observeNonNull(owner) { count ->
-            tv_genre_info.text = requireContext().resources.getQuantityString(R.plurals.s_songs, count, count)
+        songCountWithTotalDuration.observe(owner) { songCountWithTotalDuration ->
+            tv_genre_info.text = songCountWithTotalDuration?.toString(resources)
         }
 
         title.observe(owner) { title ->

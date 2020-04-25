@@ -3,6 +3,8 @@ package com.frolo.muse.ui.main.library.base
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
+import com.frolo.muse.arch.liveDataOf
 import com.frolo.muse.engine.Player
 import com.frolo.muse.engine.SimplePlayerObserver
 import com.frolo.muse.navigator.Navigator
@@ -12,6 +14,7 @@ import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
 import com.frolo.muse.interactor.media.get.GetMediaUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.media.Song
+import com.frolo.muse.model.media.SongCountWithTotalDuration
 import com.frolo.muse.rx.SchedulerProvider
 import io.reactivex.Single
 import io.reactivex.SingleObserver
@@ -68,6 +71,30 @@ abstract class AbsSongCollectionViewModel<T: Song> constructor(
         }
     }
     val playingPosition: LiveData<Int> = _playingPosition
+
+    val songCountWithTotalDuration: LiveData<SongCountWithTotalDuration> by lazy {
+        Transformations.switchMap(mediaList) { songs: List<Song>? ->
+            if (songs == null) {
+                // NULL for NULL
+                return@switchMap liveDataOf<SongCountWithTotalDuration>(null)
+            }
+
+            MutableLiveData<SongCountWithTotalDuration>().apply {
+                Single.fromCallable {
+                    val totalDuration = songs.sumBy { it.duration }
+                    SongCountWithTotalDuration(songs.count(), totalDuration)
+                }
+                    .subscribeOn(schedulerProvider.computation())
+                    .observeOn(schedulerProvider.main())
+                    .doOnSubscribe { d ->
+                        calcSongCountWithTotalDurationDisposable?.dispose()
+                        calcSongCountWithTotalDurationDisposable = d
+                    }
+                    .subscribeFor { value = it }
+            }
+        }
+    }
+    private var calcSongCountWithTotalDurationDisposable: Disposable? = null
 
     init {
         player.registerObserver(playerObserver)

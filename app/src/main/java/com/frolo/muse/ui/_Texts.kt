@@ -119,6 +119,25 @@ fun Song.getDurationString(): String {
     return duration.asDurationInMs()
 }
 
+fun SongCountWithTotalDuration.toString(res: Resources): String {
+    val countInfoString = res.getQuantityString(R.plurals.s_songs, songCount, songCount)
+    val durationInfoString = totalDuration.run {
+        val totalSeconds = this / 1000
+        if (totalSeconds < 60) {
+            return@run res.getQuantityString(R.plurals.s_seconds, totalSeconds, totalSeconds)
+        }
+
+        val totalMinutes = totalSeconds / 60
+        if (totalMinutes < 60) {
+            return@run res.getQuantityString(R.plurals.s_minutes, totalMinutes, totalMinutes)
+        }
+
+        val totalHours = totalMinutes / 60
+        return@run res.getQuantityString(R.plurals.s_hours, totalHours, totalHours)
+    }
+    return "$countInfoString • $durationInfoString"
+}
+
 //region Relative time spans
 private const val MIN_TIME_SPAN = (1000 * 60 * 60 * 24).toLong() // 1 day
 private const val TIME_SPAN_FORMATS = DateUtils.FORMAT_ABBREV_ALL
