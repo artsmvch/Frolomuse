@@ -2,6 +2,7 @@ package com.frolo.muse.ui.main.library.genres.genre
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.frolo.muse.arch.liveDataOf
 import com.frolo.muse.engine.Player
 import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.interactor.media.*
@@ -20,7 +21,7 @@ class GenreViewModel constructor(
         getGenreSongsUseCase: GetGenreSongsUseCase,
         getMediaMenuUseCase: GetMediaMenuUseCase<Song>,
         clickMediaUseCase: ClickMediaUseCase<Song>,
-        playMediaUseCase: PlayMediaUseCase<Song>,
+        private val playMediaUseCase: PlayMediaUseCase<Song>,
         shareMediaUseCase: ShareMediaUseCase<Song>,
         deleteMediaUseCase: DeleteMediaUseCase<Song>,
         getIsFavouriteUseCase: GetIsFavouriteUseCase<Song>,
@@ -44,7 +45,11 @@ class GenreViewModel constructor(
         eventLogger
 ) {
 
-    private val _title by lazy { MutableLiveData(genreArg.name) }
-    val title: LiveData<String> get() = _title
+    val title: LiveData<String> = liveDataOf(genreArg.name)
+
+    fun onPlayButtonClicked() {
+        val items = mediaList.value ?: emptyList()
+        playMediaUseCase.play(items).subscribeFor {  }
+    }
 
 }

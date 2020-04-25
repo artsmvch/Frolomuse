@@ -1,33 +1,35 @@
 package com.frolo.muse.ui.main.library.genres.genre
 
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.*
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.frolo.muse.R
+import com.frolo.muse.StyleUtil
+import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
+import com.frolo.muse.dp2px
 import com.frolo.muse.model.media.Genre
 import com.frolo.muse.model.media.Song
+import com.frolo.muse.ui.base.setupNavigation
 import com.frolo.muse.ui.base.withArg
 import com.frolo.muse.ui.main.decorateAsLinear
 import com.frolo.muse.ui.main.library.base.AbsSongCollectionFragment
 import com.frolo.muse.ui.main.library.base.SongAdapter
-import com.frolo.muse.views.showBackArrow
+import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.shape.CornerFamily
+import com.google.android.material.shape.MaterialShapeDrawable
+import com.google.android.material.shape.ShapeAppearanceModel
+import kotlinx.android.synthetic.main.fragment_base_list.*
 import kotlinx.android.synthetic.main.fragment_genre.*
-import kotlinx.android.synthetic.main.include_backdrop_front_list.*
+import kotlin.math.abs
+import kotlin.math.pow
 
 
 class GenreFragment: AbsSongCollectionFragment<Song>() {
-
-    companion object {
-        private const val ARG_GENRE = "genre"
-
-        fun newInstance(genre: Genre) = GenreFragment()
-                .withArg(ARG_GENRE, genre)
-    }
 
     override val viewModel: GenreViewModel by lazy {
         val genre = requireArguments().getSerializable(ARG_GENRE) as Genre
@@ -42,20 +44,39 @@ class GenreFragment: AbsSongCollectionFragment<Song>() {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
+    private val backdropCornerRadius: Float by lazy { 72f.dp2px(requireContext()) }
+
+    private val onOffsetChangedListener: AppBarLayout.OnOffsetChangedListener =
+        AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
+            val scrollFactor: Float = abs(verticalOffset.toFloat() / (view_backdrop.measuredHeight))
+
+            (view_backdrop.background as? MaterialShapeDrawable)?.apply {
+                val poweredScrollFactor = scrollFactor.pow(2)
+                val cornerRadius = backdropCornerRadius * (1 - poweredScrollFactor)
+                this.shapeAppearanceModel = ShapeAppearanceModel.builder()
+                    .setBottomRightCorner(CornerFamily.ROUNDED, cornerRadius)
+                    .build()
+            }
+        }
 
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_genre, container, false)
-    }
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View = inflater.inflate(R.layout.fragment_genre, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        setupNavigation(tb_actions)
+
+        tb_actions.apply {
+            inflateMenu(R.menu.fragment_abs_media_collection)
+            setOnMenuItemClickListener { menuItem ->
+                if (menuItem.itemId == R.id.action_sort) {
+                    viewModel.onSortOrderOptionSelected()
+                }
+                true
+            }
+        }
 
         rv_list.apply {
             layoutManager = LinearLayoutManager(context)
@@ -63,12 +84,17 @@ class GenreFragment: AbsSongCollectionFragment<Song>() {
             decorateAsLinear()
         }
 
-        (activity as? AppCompatActivity)?.apply {
-            setSupportActionBar(tb_actions)
-            supportActionBar?.apply {
-                showBackArrow()
-                subtitle = getString(R.string.genre)
-            }
+        btn_play.setOnClickListener {
+            viewModel.onPlayButtonClicked()
+        }
+
+        app_bar_layout.addOnOffsetChangedListener(onOffsetChangedListener)
+
+        view_backdrop.background = MaterialShapeDrawable().apply {
+            fillColor = ColorStateList.valueOf(StyleUtil.readColorAttrValue(view.context, R.attr.colorPrimary))
+            shapeAppearanceModel = ShapeAppearanceModel.builder()
+                .setBottomRightCorner(CornerFamily.ROUNDED, backdropCornerRadius)
+                .build()
         }
     }
 
@@ -77,15 +103,9 @@ class GenreFragment: AbsSongCollectionFragment<Song>() {
         observeViewModel(viewLifecycleOwner)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.fragment_abs_media_collection, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return if (item.itemId == R.id.action_sort) {
-            viewModel.onSortOrderOptionSelected()
-            true
-        } else super.onOptionsItemSelected(item)
+    override fun onDestroyView() {
+        app_bar_layout.removeOnOffsetChangedListener(onOffsetChangedListener)
+        super.onDestroyView()
     }
 
     override fun onSetLoading(loading: Boolean) {
@@ -100,17 +120,21 @@ class GenreFragment: AbsSongCollectionFragment<Song>() {
         toastError(err)
     }
 
-    private fun observeViewModel(owner: LifecycleOwner) {
-        viewModel.apply {
-            mediaItemCount.observeNonNull(owner) { count ->
-                tv_title.text = requireContext().resources.getQuantityString(R.plurals.s_songs, count, count)
-            }
+    private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
+        mediaItemCount.observeNonNull(owner) { count ->
+            tv_genre_info.text = requireContext().resources.getQuantityString(R.plurals.s_songs, count, count)
+        }
 
-            title.observeNonNull(owner) { title ->
-                (activity as? AppCompatActivity)?.apply {
-                    supportActionBar?.title = title
-                }
-            }
+        title.observe(owner) { title ->
+            tv_genre_name.text = title
         }
     }
+
+    companion object {
+        private const val ARG_GENRE = "genre"
+
+        fun newInstance(genre: Genre) = GenreFragment()
+                .withArg(ARG_GENRE, genre)
+    }
+
 }
