@@ -16,11 +16,6 @@ import kotlinx.android.synthetic.main.dialog_library_section_chooser.*
 class LibrarySectionChooserDialog : BaseDialogFragment(),
         LibrarySectionAdapter.OnDragListener {
 
-    companion object {
-        // Factory
-        fun newInstance() = LibrarySectionChooserDialog()
-    }
-
     private val preferences: Preferences by prefs()
 
     private var itemTouchHelper: ItemTouchHelper? = null
@@ -30,7 +25,7 @@ class LibrarySectionChooserDialog : BaseDialogFragment(),
             requestWindowFeature(Window.FEATURE_NO_TITLE)
             setContentView(R.layout.dialog_library_section_chooser)
             setupDialogSize(this)
-            initUI(this)
+            loadUI(this)
         }
     }
 
@@ -38,21 +33,21 @@ class LibrarySectionChooserDialog : BaseDialogFragment(),
         itemTouchHelper?.startDrag(holder)
     }
 
-    private fun initUI(dialog: Dialog) {
-        with(dialog) {
+    private fun loadUI(dialog: Dialog) = with(dialog) {
 
-            val sections = preferences.librarySections
-            val enabledStatus = sections.associateBy({ it }, { preferences.isLibrarySectionEnabled(it) })
-            val adapter = LibrarySectionAdapter(this@LibrarySectionChooserDialog, sections, enabledStatus)
+        val sections = preferences.librarySections
+        val enabledStatus = sections.associateBy({ it }, { preferences.isLibrarySectionEnabled(it) })
+        val adapter = LibrarySectionAdapter(this@LibrarySectionChooserDialog, sections, enabledStatus)
 
-            rv_sections.layoutManager = LinearLayoutManager(context)
-            rv_sections.adapter = adapter
-            val callback = SimpleItemTouchHelperCallback(adapter = adapter, itemViewSwipeEnabled = false)
-            val touchHelper = ItemTouchHelper(callback)
-            touchHelper.attachToRecyclerView(rv_sections)
-            itemTouchHelper = touchHelper
+        rv_sections.layoutManager = LinearLayoutManager(context)
+        rv_sections.adapter = adapter
+        val callback = SimpleItemTouchHelperCallback(adapter = adapter, itemViewSwipeEnabled = false)
+        val touchHelper = ItemTouchHelper(callback)
+        touchHelper.attachToRecyclerView(rv_sections)
+        itemTouchHelper = touchHelper
 
-            imv_close.setOnClickListener { dismiss() }
+        btn_save.setOnClickListener {
+            dismiss()
         }
     }
 
@@ -69,4 +64,12 @@ class LibrarySectionChooserDialog : BaseDialogFragment(),
             }
         }
     }
+
+    companion object {
+
+        // Factory
+        fun newInstance() = LibrarySectionChooserDialog()
+
+    }
+
 }
