@@ -6,7 +6,8 @@
     <!--Dividers-->
     <dimen name="app_thin_divider_size">1px</dimen>
 
-    <dimen name="horizontal_padding">12dp</dimen>
+    <dimen name="media_item_art_size">52dp</dimen>
+    <dimen name="media_item_art_margin">8dp</dimen>
 
     <!--media item (list)-->
     <dimen name="options_menu_width">48dp</dimen>

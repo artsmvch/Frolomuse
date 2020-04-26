@@ -9,6 +9,7 @@ import com.frolo.muse.ui.getAlbumString
 import com.frolo.muse.ui.getDurationString
 import com.frolo.muse.ui.getNameString
 import kotlinx.android.synthetic.main.include_check.view.*
+import kotlinx.android.synthetic.main.include_song_art_container.view.*
 import kotlinx.android.synthetic.main.item_song.view.*
 
 

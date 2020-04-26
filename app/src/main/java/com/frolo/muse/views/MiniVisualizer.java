@@ -18,7 +18,6 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.core.view.ViewCompat;
 
 import com.frolo.muse.R;
 
@@ -77,11 +76,8 @@ public class MiniVisualizer extends View {
     }
 
     private int calcContentHeight() {
-        if (ViewCompat.isLaidOut(this)) {
-            return getMeasuredHeight() - getPaddingTop() - getPaddingBottom();
-        }
-
-        return 0;
+        final int contentHeight = getMeasuredHeight() - getPaddingTop() - getPaddingBottom();
+        return Math.max(contentHeight, 0);
     }
 
     /**
@@ -152,13 +148,13 @@ public class MiniVisualizer extends View {
         final int contentWidth = w - getPaddingLeft() - getPaddingRight();
         final int contentHeight = h - getPaddingTop() - getPaddingBottom();
 
-        mBarSpacing = contentWidth / 10f;
-        mBarWidth = (contentWidth - 3 * mBarSpacing) / 4;
+        mBarSpacing = contentWidth / 20f;
+        mBarWidth = (contentWidth - 3 * mBarSpacing) / 4f;
 
-        mBarHeight1 = (float) (contentHeight / 3.7);
-        mBarHeight2 = (float) (contentHeight / 1.5);
-        mBarHeight3 = (float) (contentHeight / 5.1);
-        mBarHeight4 = (float) (contentHeight / 4.1);
+        mBarHeight1 = contentHeight / 3.7f;
+        mBarHeight2 = contentHeight / 1.5f;
+        mBarHeight3 = contentHeight / 5.1f;
+        mBarHeight4 = contentHeight / 4.1f;
 
         if (mCurrAnim != null) {
             // This animation is not valid anymore since the size of the view has been changed

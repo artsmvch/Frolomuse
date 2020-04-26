@@ -11,9 +11,11 @@ import com.frolo.muse.model.media.Song
 import com.frolo.muse.ui.getArtistString
 import com.frolo.muse.ui.getDurationString
 import com.frolo.muse.ui.getNameString
+import com.frolo.muse.views.MiniVisualizer
 import com.frolo.muse.views.media.MediaConstraintLayout
 import com.l4digital.fastscroll.FastScroller
 import kotlinx.android.synthetic.main.include_check.view.*
+import kotlinx.android.synthetic.main.include_song_art_container.view.*
 import kotlinx.android.synthetic.main.item_song.view.*
 
 
@@ -88,6 +90,8 @@ open class SongAdapter<T: Song> constructor(
         selectionChanged: Boolean
     ) {
 
+        val isPlayPosition = position == playingPosition
+
         with((holder.itemView as MediaConstraintLayout)) {
             val res = resources
             tv_song_name.text = item.getNameString(res)
@@ -101,27 +105,42 @@ open class SongAdapter<T: Song> constructor(
                 .circleCrop()
                 .into(imv_album_art)
 
-            val isPlayPosition = position == playingPosition
-
-            if (isPlayPosition) {
-                mini_visualizer.visibility = View.VISIBLE
-                mini_visualizer.setAnimate(isPlaying)
-            } else {
-                mini_visualizer.visibility = View.GONE
-                mini_visualizer.setAnimate(false)
-            }
-
             imv_check.setChecked(selected, selectionChanged)
 
             setChecked(selected)
             setPlaying(isPlayPosition)
         }
+
+        holder.resolvePlayingPosition(
+            isPlaying = isPlaying,
+            isPlayPosition = isPlayPosition
+        )
     }
 
     override fun getSectionText(position: Int) = sectionIndexAt(position) { title }
 
     open class SongViewHolder(itemView: View): BaseViewHolder(itemView) {
         override val viewOptionsMenu: View? = itemView.view_options_menu
+
+        private val songArtOverlay: View? =
+                itemView.findViewById(R.id.view_song_art_overlay)
+        private val miniVisualizer: MiniVisualizer? =
+                itemView.findViewById(R.id.mini_visualizer)
+
+        fun resolvePlayingPosition(
+            isPlayPosition: Boolean,
+            isPlaying: Boolean
+        ) {
+            if (isPlayPosition) {
+                songArtOverlay?.visibility = View.VISIBLE
+                miniVisualizer?.visibility = View.VISIBLE
+                miniVisualizer?.setAnimate(isPlaying)
+            } else {
+                songArtOverlay?.visibility = View.INVISIBLE
+                miniVisualizer?.visibility = View.INVISIBLE
+                miniVisualizer?.setAnimate(false)
+            }
+        }
     }
 
 }

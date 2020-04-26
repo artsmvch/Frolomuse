@@ -8,16 +8,14 @@
     android:minHeight="@dimen/preferred_item_height"
     android:background="@drawable/bg_item_media">
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/imv_album_art"
-        android:layout_width="@dimen/list_item_img_art_size"
-        android:layout_height="@dimen/list_item_img_art_size"
-        android:layout_margin="@dimen/list_item_img_art_padding"
-        android:scaleType="centerInside"
+    <include layout="@layout/include_song_art_container"
+        android:id="@+id/include_song_art_container"
+        android:layout_width="@dimen/media_item_art_size"
+        android:layout_height="@dimen/media_item_art_size"
+        android:layout_margin="@dimen/media_item_art_margin"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:src="@drawable/ic_framed_music_note_48dp"/>
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/view_options_menu"
@@ -47,15 +45,6 @@
         app:layout_constraintBottom_toBottomOf="@id/view_options_menu"
         tools:text="3:57:00"/>
 
-    <com.frolo.muse.views.MiniVisualizer
-        android:id="@+id/mini_visualizer"
-        android:layout_width="@dimen/min_visualizer_width"
-        android:layout_height="@dimen/min_visualizer_height"
-        android:layout_marginEnd="6dp"
-        android:layout_marginBottom="6dp"
-        app:layout_constraintEnd_toStartOf="@id/view_options_menu"
-        app:layout_constraintBottom_toBottomOf="parent"/>
-
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_song_name"
         android:layout_width="0dp"
@@ -65,7 +54,7 @@
         android:textAppearance="?textAppearanceListItem"
         android:lines="1"
         android:ellipsize="end"
-        app:layout_constraintStart_toEndOf="@id/imv_album_art"
+        app:layout_constraintStart_toEndOf="@id/include_song_art_container"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toStartOf="@id/tv_duration"
         app:layout_constraintBottom_toTopOf="@id/tv_artist_name"
@@ -85,11 +74,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         tools:text="Artist name" />
 
-    <include
-        layout="@layout/include_check"
+    <include layout="@layout/include_check"
         android:layout_width="@dimen/list_item_check_size"
         android:layout_height="@dimen/list_item_check_size"
-        app:layout_constraintEnd_toEndOf="@id/imv_album_art"
-        app:layout_constraintBottom_toBottomOf="@id/imv_album_art"/>
+        app:layout_constraintEnd_toEndOf="@id/include_song_art_container"
+        app:layout_constraintBottom_toBottomOf="@id/include_song_art_container"/>
 
 </com.frolo.muse.views.media.MediaConstraintLayout>
