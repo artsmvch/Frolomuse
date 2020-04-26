@@ -20,11 +20,6 @@ import com.frolo.muse.ui.main.library.base.showRecentPeriodPopup
 
 class RecentlyAddedSongListFragment: SimpleMediaCollectionFragment<Song>() {
 
-    companion object {
-        //Factory
-        fun newIntent() = RecentlyAddedSongListFragment()
-    }
-
     override val viewModel: RecentlyAddedSongListViewModel by viewModel()
 
     override val adapter: SongAdapter<Song> by lazy {
@@ -61,34 +56,36 @@ class RecentlyAddedSongListFragment: SimpleMediaCollectionFragment<Song>() {
     }
 
     private fun onShowRecentPeriodMenu(recentPeriodMenu: RecentPeriodMenu) {
-        // first try find the menu item view in activity
+        // First trying to find the corresponding view in the fragment view
         val anchorViewInFragment: View? = view?.findViewById(R.id.action_recent_period)
-        // if null then try find the menu item is activity
+        // If null, then trying to find the view in the host activity
         val anchorView: View? = anchorViewInFragment?: activity?.findViewById(R.id.action_recent_period)
 
         anchorView?.let { safeAnchorView ->
-            val popup = safeAnchorView.
-                    showRecentPeriodPopup(recentPeriodMenu) { period ->
-                        viewModel.onPeriodSelected(period)
-                    }
+            safeAnchorView.showRecentPeriodPopup(recentPeriodMenu) { period ->
+                viewModel.onPeriodSelected(period)
+            }
         }
     }
 
-    private fun observeViewModel(owner: LifecycleOwner) {
-        viewModel.apply {
-            isPlaying.observeNonNull(owner) { isPlaying ->
-                adapter.setPlayingState(isPlaying)
-            }
+    private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
+        isPlaying.observeNonNull(owner) { isPlaying ->
+            adapter.setPlayingState(isPlaying)
+        }
 
-            playingPosition.observeNonNull(owner) { playingPosition ->
-                val isPlaying = isPlaying.value ?: false
-                adapter.setPlayingPositionAndState(playingPosition, isPlaying)
-            }
+        playingPosition.observeNonNull(owner) { playingPosition ->
+            val isPlaying = isPlaying.value ?: false
+            adapter.setPlayingPositionAndState(playingPosition, isPlaying)
+        }
 
-            openRecentPeriodMenuEvent.observeNonNull(owner) { recentPeriodMenu ->
-                onShowRecentPeriodMenu(recentPeriodMenu)
-            }
-
+        openRecentPeriodMenuEvent.observeNonNull(owner) { recentPeriodMenu ->
+            onShowRecentPeriodMenu(recentPeriodMenu)
         }
     }
+
+    companion object {
+        //Factory
+        fun newIntent() = RecentlyAddedSongListFragment()
+    }
+
 }
