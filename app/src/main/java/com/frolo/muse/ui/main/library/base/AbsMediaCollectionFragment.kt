@@ -66,130 +66,129 @@ abstract class AbsMediaCollectionFragment <E: Media>: BaseFragment(),
     // If you don't have such a view or want to show it at other location (i.e. other anchor view),
     // then the overriding is necessary.
     protected open fun onShowSortOrderMenu(sortOrderMenu: SortOrderMenu) {
-        // first try find the menu item view in activity
+        // First trying to find the corresponding view in the fragment view
         val anchorViewInFragment: View? = view?.findViewById(R.id.action_sort)
-        // if null then try find the menu item is activity
+        // If null, then trying to find the view in the host activity
         val anchorView: View? = anchorViewInFragment?: activity?.findViewById(R.id.action_sort)
 
         anchorView?.let { safeAnchorView ->
-            val popup = safeAnchorView.showSortOrderPopup(
-                    sortOrderMenu,
-                    { sortOrder -> viewModel.onSortOrderSelected(sortOrder) },
-                    { reversed -> viewModel.onSortOrderReversedChanged(reversed)} )
+            safeAnchorView.showSortOrderPopup(
+                sortOrderMenu = sortOrderMenu,
+                sortOrderConsumer = { sortOrder -> viewModel.onSortOrderSelected(sortOrder) },
+                reversedConsumer = { reversed -> viewModel.onSortOrderReversedChanged(reversed) }
+            )
         }
     }
 
-    private fun observerViewModel(owner: LifecycleOwner) {
-        viewModel.apply {
-            // permission
-            askReadPermissionEvent.observe(owner) {
-                checkReadPermissionFor {
-                    viewModel.onReadPermissionGranted()
-                }
+    private fun observerViewModel(owner: LifecycleOwner) = with(viewModel) {
+        // Permissions
+        askReadPermissionEvent.observe(owner) {
+            checkReadPermissionFor {
+                viewModel.onReadPermissionGranted()
             }
+        }
 
-            // Error
-            error.observeNonNull(owner) { err ->
-                onDisplayError(err)
-            }
+        // Error
+        error.observeNonNull(owner) { err ->
+            onDisplayError(err)
+        }
 
-            // Common
-            deletedItemsEvent.observeNonNull(owner) {
-                toastShortMessage(R.string.deleted)
-            }
+        // Common
+        deletedItemsEvent.observeNonNull(owner) {
+            toastShortMessage(R.string.deleted)
+        }
 
-            // sort order
-            openSortOrderMenuEvent.observeNonNull(owner) { sortOrderMenu: SortOrderMenu ->
-                onShowSortOrderMenu(sortOrderMenu)
-            }
+        // sort order
+        openSortOrderMenuEvent.observeNonNull(owner) { sortOrderMenu: SortOrderMenu ->
+            onShowSortOrderMenu(sortOrderMenu)
+        }
 
-            // Media collection
-            mediaList.observeNonNull(owner) { list ->
-                onSubmitList(list)
-            }
+        // Media collection
+        mediaList.observeNonNull(owner) { list ->
+            onSubmitList(list)
+        }
 
-            isLoading.observeNonNull(owner) { isLoading ->
-                onSetLoading(isLoading)
-            }
+        isLoading.observeNonNull(owner) { isLoading ->
+            onSetLoading(isLoading)
+        }
 
-            placeholderVisible.observeNonNull(owner) { isVisible ->
-                onSetPlaceholderVisible(isVisible)
-            }
+        placeholderVisible.observeNonNull(owner) { isVisible ->
+            onSetPlaceholderVisible(isVisible)
+        }
 
-            // Options menu
-            openOptionsMenuEvent.observeNonNull(owner) { optionsMenu ->
-                optionsMenuDialog?.cancel()
-                optionsMenuDialog = onShowOptionsMenuDialog(optionsMenu)
-            }
+        // Options menu
+        openOptionsMenuEvent.observeNonNull(owner) { optionsMenu ->
+            optionsMenuDialog?.cancel()
+            optionsMenuDialog = onShowOptionsMenuDialog(optionsMenu)
+        }
 
-            closeOptionsMenuEvent.observeNonNull(owner) { optionsMenu ->
-                optionsMenuDialog?.cancel()
-                optionsMenuDialog = null
-            }
+        closeOptionsMenuEvent.observeNonNull(owner) { optionsMenu ->
+            optionsMenuDialog?.cancel()
+            optionsMenuDialog = null
+        }
 
-            optionsMenuItemFavourite.observeNonNull(owner) { isFavourite ->
-                optionsMenuDialog?.setLiked(isFavourite)
-            }
+        optionsMenuItemFavourite.observeNonNull(owner) { isFavourite ->
+            optionsMenuDialog?.setLiked(isFavourite)
+        }
 
-            // Contextual menu
-            openContextualMenuEvent.observeNonNull(owner) { contextualMenu ->
+        // Contextual menu
+        openContextualMenuEvent.observeNonNull(owner) { contextualMenu ->
+            actionMode?.finish()
+            actionMode = onShowContextualMenu(contextualMenu)
+        }
+
+        selectedItems.observeNonNull(owner) { selectedItems ->
+            onSubmitSelectedItems(selectedItems)
+        }
+
+        selectedItemsCount.observeNonNull(owner) { count ->
+            actionMode?.title = count.toString()
+        }
+
+        isInContextualMode.observeNonNull(owner) { isInContextualMode ->
+            if (!isInContextualMode) {
                 actionMode?.finish()
-                actionMode = onShowContextualMenu(contextualMenu)
+                actionMode = null
             }
+        }
 
-            selectedItems.observeNonNull(owner) { selectedItems ->
-                onSubmitSelectedItems(selectedItems)
+        isProcessingContextual.observeNonNull(owner) { isProcessingContextual ->
+            if (isProcessingContextual) {
+                contextualProgressDialog?.cancel()
+                contextualProgressDialog = onShowContextualProgressDialog()
+            } else {
+                contextualProgressDialog?.cancel()
             }
+        }
 
-            selectedItemsCount.observeNonNull(owner) { count ->
-                actionMode?.title = count.toString()
-            }
+        // Deletion confirmation
+        confirmDeletionEvent.observeNonNull(owner) { item ->
+            context?.also { safeContext ->
+                val msg = safeContext.getDeleteConfirmationMessage(item)
 
-            isInContextualMode.observeNonNull(owner) { isInContextualMode ->
-                if (!isInContextualMode) {
-                    actionMode?.finish()
-                    actionMode = null
+                safeContext.confirmDeletion(msg) {
+                    checkReadWritePermissionsFor { viewModel.onConfirmedDeletion(item) }
                 }
             }
+        }
 
-            isProcessingContextual.observeNonNull(owner) { isProcessingContextual ->
-                if (isProcessingContextual) {
-                    contextualProgressDialog?.cancel()
-                    contextualProgressDialog = onShowContextualProgressDialog()
-                } else {
-                    contextualProgressDialog?.cancel()
+        confirmMultipleDeletionEvent.observeNonNull(owner) { items ->
+            context?.also { safeContext ->
+                val msg = safeContext.getDeleteConfirmationMessage(items)
+
+                safeContext.confirmDeletion(msg) {
+                    checkReadWritePermissionsFor { viewModel.onConfirmedMultipleDeletion(items) }
                 }
             }
+        }
 
-            // Deletion confirmation
-            confirmDeletionEvent.observeNonNull(owner) { item ->
-                context?.also { safeContext ->
-                    val msg = safeContext.getDeleteConfirmationMessage(item)
+        // Events
+        addedNextToQueue.observeNonNull(owner) {
+            toastShortMessage(R.string.will_be_played_next)
+        }
 
-                    safeContext.confirmDeletion(msg) {
-                        checkReadWritePermissionsFor { viewModel.onConfirmedDeletion(item) }
-                    }
-                }
-            }
-
-            confirmMultipleDeletionEvent.observeNonNull(owner) { items ->
-                context?.also { safeContext ->
-                    val msg = safeContext.getDeleteConfirmationMessage(items)
-
-                    safeContext.confirmDeletion(msg) {
-                        checkReadWritePermissionsFor { viewModel.onConfirmedMultipleDeletion(items) }
-                    }
-                }
-            }
-
-            // Events
-            addedNextToQueue.observeNonNull(owner) {
-                toastShortMessage(R.string.will_be_played_next)
-            }
-
-            addedToQueue.observeNonNull(owner) {
-                toastShortMessage(R.string.added_to_queue)
-            }
+        addedToQueue.observeNonNull(owner) {
+            toastShortMessage(R.string.added_to_queue)
         }
     }
 
