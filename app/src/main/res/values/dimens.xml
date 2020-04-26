@@ -82,5 +82,8 @@
     <!--MiniVisualizer-->
     <dimen name="min_visualizer_width">24dp</dimen>
     <dimen name="min_visualizer_height">16dp</dimen>
+
+    <!--FastScroller overrides-->
+    <dimen name="fastscroll_scrollbar_padding_end">0dp</dimen>
 </resources>
 
