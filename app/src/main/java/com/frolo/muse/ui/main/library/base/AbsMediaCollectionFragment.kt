@@ -72,7 +72,7 @@ abstract class AbsMediaCollectionFragment <E: Media>: BaseFragment(),
         val anchorView: View? = anchorViewInFragment?: activity?.findViewById(R.id.action_sort)
 
         anchorView?.let { safeAnchorView ->
-            val popup = safeAnchorView.chooseSortOrder(
+            val popup = safeAnchorView.showSortOrderPopup(
                     sortOrderMenu,
                     { sortOrder -> viewModel.onSortOrderSelected(sortOrder) },
                     { reversed -> viewModel.onSortOrderReversedChanged(reversed)} )

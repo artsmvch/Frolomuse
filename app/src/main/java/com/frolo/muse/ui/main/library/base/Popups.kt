@@ -24,13 +24,13 @@ private fun MenuItem.setEnabledCompat(enabled: Boolean, context: Context) {
     }
 }
 
-fun View.chooseSortOrder(
-        sortOrderMenu: SortOrderMenu,
-        sortOrderConsumer: (sortOrder: String) -> Unit,
-        reversedConsumer: (reversed: Boolean) -> Unit): PopupMenu {
+fun View.showSortOrderPopup(
+    sortOrderMenu: SortOrderMenu,
+    sortOrderConsumer: (sortOrder: String) -> Unit,
+    reversedConsumer: (reversed: Boolean) -> Unit
+): PopupMenu {
 
-    val popupMenu = PopupMenu(
-            context, this, Gravity.NO_GRAVITY)
+    val popupMenu = PopupMenu(context, this, Gravity.NO_GRAVITY)
 
     popupMenu.menuInflater.inflate(R.menu.popup_sort_order, popupMenu.menu)
     popupMenu.menu.also { menu ->
@@ -71,12 +71,12 @@ fun View.chooseSortOrder(
 }
 
 
-fun View.chooseRecentPeriod(
-        recentPeriodMenu: RecentPeriodMenu,
-        recentPeriodConsumer: (period: Int) -> Unit): PopupMenu {
+fun View.showRecentPeriodPopup(
+    recentPeriodMenu: RecentPeriodMenu,
+    recentPeriodConsumer: (period: Int) -> Unit
+): PopupMenu {
 
-    val popupMenu = PopupMenu(
-            context, this, Gravity.NO_GRAVITY)
+    val popupMenu = PopupMenu(context, this, Gravity.NO_GRAVITY)
 
     popupMenu.menuInflater.inflate(R.menu.popup_recent_period, popupMenu.menu)
     popupMenu.menu.also { menu ->
@@ -108,7 +108,7 @@ fun View.chooseRecentPeriod(
                         R.id.action_for_last_year -> Recently.FOR_LAST_YEAR
                         else -> {
                             if (BuildConfig.DEBUG) {
-                                throw IllegalArgumentException("Unknown menu item id")
+                                throw IllegalArgumentException("Unexpected menu item id")
                             }
                             Recently.FOR_LAST_YEAR
                         }

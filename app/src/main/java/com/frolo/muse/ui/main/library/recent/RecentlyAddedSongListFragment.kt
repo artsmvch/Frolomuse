@@ -15,7 +15,7 @@ import com.frolo.muse.model.media.Song
 import com.frolo.muse.model.menu.RecentPeriodMenu
 import com.frolo.muse.ui.main.library.base.SimpleMediaCollectionFragment
 import com.frolo.muse.ui.main.library.base.SongAdapter
-import com.frolo.muse.ui.main.library.base.chooseRecentPeriod
+import com.frolo.muse.ui.main.library.base.showRecentPeriodPopup
 
 
 class RecentlyAddedSongListFragment: SimpleMediaCollectionFragment<Song>() {
@@ -68,7 +68,7 @@ class RecentlyAddedSongListFragment: SimpleMediaCollectionFragment<Song>() {
 
         anchorView?.let { safeAnchorView ->
             val popup = safeAnchorView.
-                    chooseRecentPeriod(recentPeriodMenu) { period ->
+                    showRecentPeriodPopup(recentPeriodMenu) { period ->
                         viewModel.onPeriodSelected(period)
                     }
         }
