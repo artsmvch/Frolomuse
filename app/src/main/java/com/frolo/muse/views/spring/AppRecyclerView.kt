@@ -18,11 +18,7 @@ class AppRecyclerView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = R.attr.recyclerViewStyle
-) : FastScrollRecyclerView(
-    ContextThemeWrapper(context, StyleUtil.readStyleAttrValue(context, com.frolo.muse.R.attr.fastScrollerStyle)),
-    attrs,
-    defStyleAttr
-) {
+) : FastScrollRecyclerView(fastScrollerContext(context), attrs, defStyleAttr) {
 
     private val springManager = SpringEdgeEffect.Manager(this)
 
@@ -69,6 +65,16 @@ class AppRecyclerView @JvmOverloads constructor(
             topMargin += top
             bottomMargin += bottom
         }
+    }
+
+    companion object {
+
+        private fun fastScrollerContext(context: Context): Context {
+            val fastScrollerThemeId =
+                    StyleUtil.readStyleAttrValue(context, com.frolo.muse.R.attr.fastScrollerStyle)
+            return ContextThemeWrapper(context, fastScrollerThemeId)
+        }
+
     }
 
 }
