@@ -135,18 +135,19 @@
     </style>
 
     <!--PopupMenu-->
-    <style name="Base.AppTheme.PopupAnimation" parent="">
-        <item name="android:windowEnterAnimation">@anim/popup_enter</item>
-        <item name="android:windowExitAnimation">@anim/popup_exit</item>
+    <style name="Base.AppTheme.PopupMenu.Overflow" parent="Widget.MaterialComponents.PopupMenu.Overflow">
+        <item name="android:popupAnimationStyle">@style/Base.AppTheme.PopupAnimation</item>
     </style>
 
     <style name="Base.AppTheme.PopupMenu" parent="Widget.MaterialComponents.PopupMenu">
         <item name="android:popupAnimationStyle">@style/Base.AppTheme.PopupAnimation</item>
         <item name="overlapAnchor">true</item>
+        <item name="android:dropDownHorizontalOffset">-4dp</item>
     </style>
 
-    <style name="Base.AppTheme.PopupMenu.Overflow" parent="Widget.MaterialComponents.PopupMenu.Overflow">
-        <item name="android:popupAnimationStyle">@style/Base.AppTheme.PopupAnimation</item>
+    <style name="Base.AppTheme.PopupAnimation" parent="">
+<!--        <item name="android:windowEnterAnimation">@anim/popup_enter</item>-->
+<!--        <item name="android:windowExitAnimation">@anim/popup_exit</item>-->
     </style>
 
     <!--Toolbar-->

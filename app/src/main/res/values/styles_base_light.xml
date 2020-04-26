@@ -113,6 +113,8 @@
         <item name="actionBarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.Tinted</item>
+        <item name="actionOverflowMenuStyle">@style/Base.AppTheme.PopupMenu.Overflow</item>
+        <item name="popupMenuStyle">@style/Base.AppTheme.PopupMenu</item>
 
         <item name="colorControlNormal">@color/white</item>
 

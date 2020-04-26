@@ -30,7 +30,7 @@ fun View.showSortOrderPopup(
     reversedConsumer: (reversed: Boolean) -> Unit
 ): PopupMenu {
 
-    val popupMenu = PopupMenu(context, this, Gravity.NO_GRAVITY)
+    val popupMenu = PopupMenu(context, this, Gravity.END)
 
     popupMenu.menuInflater.inflate(R.menu.popup_sort_order, popupMenu.menu)
     popupMenu.menu.also { menu ->
@@ -76,7 +76,7 @@ fun View.showRecentPeriodPopup(
     recentPeriodConsumer: (period: Int) -> Unit
 ): PopupMenu {
 
-    val popupMenu = PopupMenu(context, this, Gravity.NO_GRAVITY)
+    val popupMenu = PopupMenu(context, this, Gravity.END)
 
     popupMenu.menuInflater.inflate(R.menu.popup_recent_period, popupMenu.menu)
     popupMenu.menu.also { menu ->
