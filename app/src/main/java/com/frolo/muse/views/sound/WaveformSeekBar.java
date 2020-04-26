@@ -46,7 +46,7 @@ public class WaveformSeekBar extends View {
         return dp * ((float) context.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
     }
 
-    private static float getCorrectPercent(float percent) {
+    private static float clampPercentage(float percent) {
         if (percent < 0) return 0f;
         if (percent > 1) return 1;
         return percent;
@@ -144,7 +144,9 @@ public class WaveformSeekBar extends View {
             mProgressPosition = position;
             invalidate();
         }
-        mListener.onProgressInPercentageChanged(this, getCorrectPercent(percent), fromUser);
+        if (mListener != null) {
+            mListener.onProgressInPercentageChanged(this, clampPercentage(percent), fromUser);
+        }
     }
 
     /**
@@ -305,7 +307,7 @@ public class WaveformSeekBar extends View {
      * @return the progress position in percent
      */
     public float getProgressPercent() {
-        return getCorrectPercent(mProgressPercentPosition);
+        return clampPercentage(mProgressPercentPosition);
     }
 
     @Override
