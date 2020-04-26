@@ -85,8 +85,19 @@ class MainActivity : PlayerHostActivity(),
     }
 
     @get:ColorInt
+    private val colorPrimaryDark: Int by lazy {
+        StyleUtil.readColorAttrValue(this, R.attr.colorPrimaryDark)
+    }
+
+    @get:ColorInt
     private val colorSurface: Int by lazy {
         StyleUtil.readColorAttrValue(this, R.attr.colorSurface)
+    }
+
+    @get:ColorInt
+    private val actionModeBackgroundColor: Int by lazy {
+        // TODO: we need to be careful with this because the actual value of this attribute may be a drawable
+        StyleUtil.readColorAttrValue(this, R.attr.actionModeBackground)
     }
 
     private val fragmentLifecycleCallbacks: FragmentManager.FragmentLifecycleCallbacks =
@@ -550,11 +561,15 @@ class MainActivity : PlayerHostActivity(),
     override fun onSupportActionModeStarted(mode: ActionMode) {
         super.onSupportActionModeStarted(mode)
         activeActionModes.add(mode)
+        window?.statusBarColor = actionModeBackgroundColor
     }
 
     override fun onSupportActionModeFinished(mode: ActionMode) {
         super.onSupportActionModeFinished(mode)
         activeActionModes.remove(mode)
+        if (activeActionModes.isEmpty()) {
+            window?.statusBarColor = colorPrimaryDark
+        }
     }
 
     companion object {
