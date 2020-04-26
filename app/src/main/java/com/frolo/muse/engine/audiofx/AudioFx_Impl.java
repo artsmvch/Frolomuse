@@ -540,9 +540,9 @@ public class AudioFx_Impl implements AudioFxApplicable {
     @Override
     public synchronized void apply(int audioSessionId) {
         final Integer currSessionId = mLastSessionId;
-        // If tt doesn't change, then we can omit adjustment
-        final boolean sessionHasChanged = currSessionId == null || currSessionId != audioSessionId;;
-        // If tt doesn't change, then we can omit adjustment
+
+        // If it doesn't change, then we can omit adjustment
+        final boolean sessionHasChanged = currSessionId == null || currSessionId != audioSessionId;
 
         final int priority = 0;
 
