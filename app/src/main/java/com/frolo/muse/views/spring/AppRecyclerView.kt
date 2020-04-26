@@ -4,7 +4,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.util.AttributeSet
 import androidx.appcompat.view.ContextThemeWrapper
-import androidx.core.view.updatePadding
+import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.R
 import com.frolo.muse.StyleUtil
 import com.l4digital.fastscroll.FastScrollRecyclerView
@@ -63,18 +63,12 @@ class AppRecyclerView @JvmOverloads constructor(
         return if (isTopFadingEdgeEnabled) super.getTopFadingEdgeStrength() else 0f
     }
 
-    override fun setClipToPadding(clipToPadding: Boolean) {
-        super.setClipToPadding(clipToPadding)
-        fastScroller?.clipToPadding = clipToPadding
-    }
-
     override fun setPadding(left: Int, top: Int, right: Int, bottom: Int) {
         super.setPadding(left, top, right, bottom)
-        fastScroller?.updatePadding(
-            left = left,
-            top = top,
-            right = right,
-            bottom = bottom
-        )
+        fastScroller?.updateLayoutParams<MarginLayoutParams> {
+            topMargin += top
+            bottomMargin += bottom
+        }
     }
+
 }
