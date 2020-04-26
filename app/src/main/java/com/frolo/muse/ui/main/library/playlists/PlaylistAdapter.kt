@@ -1,6 +1,5 @@
 package com.frolo.muse.ui.main.library.playlists
 
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -10,7 +9,7 @@ import com.frolo.muse.model.media.Playlist
 import com.frolo.muse.ui.getDateAddedString
 import com.frolo.muse.ui.getNameString
 import com.frolo.muse.ui.main.library.base.BaseAdapter
-import com.frolo.muse.util.CharSequences
+import com.frolo.muse.ui.main.library.base.sectionIndexAt
 import com.frolo.muse.views.media.MediaConstraintLayout
 import com.l4digital.fastscroll.FastScroller
 import kotlinx.android.synthetic.main.include_check.view.*
@@ -25,12 +24,7 @@ class PlaylistAdapter : BaseAdapter<Playlist, PlaylistAdapter.PlaylistViewHolder
         viewType: Int
     ) = PlaylistViewHolder(parent.inflateChild(R.layout.item_playlist))
 
-    override fun getSectionText(position: Int): CharSequence {
-        if (position >= itemCount) return CharSequences.empty()
-        return getItemAt(position).name.let { name ->
-            CharSequences.firstCharOrEmpty(name)
-        }
-    }
+    override fun getSectionText(position: Int) = sectionIndexAt(position) { name }
 
     override fun onBindViewHolder(
         holder: PlaylistViewHolder,

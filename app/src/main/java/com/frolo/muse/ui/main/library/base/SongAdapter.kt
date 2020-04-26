@@ -11,7 +11,6 @@ import com.frolo.muse.model.media.Song
 import com.frolo.muse.ui.getArtistString
 import com.frolo.muse.ui.getDurationString
 import com.frolo.muse.ui.getNameString
-import com.frolo.muse.util.CharSequences
 import com.frolo.muse.views.media.MediaConstraintLayout
 import com.l4digital.fastscroll.FastScroller
 import kotlinx.android.synthetic.main.include_check.view.*
@@ -119,12 +118,7 @@ open class SongAdapter<T: Song> constructor(
         }
     }
 
-    override fun getSectionText(position: Int): CharSequence {
-        if (position >= itemCount) return CharSequences.empty()
-        return getItemAt(position).title.let { title ->
-            CharSequences.firstCharOrEmpty(title)
-        }
-    }
+    override fun getSectionText(position: Int) = sectionIndexAt(position) { title }
 
     open class SongViewHolder(itemView: View): BaseViewHolder(itemView) {
         override val viewOptionsMenu: View? = itemView.view_options_menu

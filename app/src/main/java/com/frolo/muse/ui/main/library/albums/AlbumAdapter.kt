@@ -13,7 +13,7 @@ import com.frolo.muse.inflateChild
 import com.frolo.muse.model.media.Album
 import com.frolo.muse.ui.getNumberOfTracksString
 import com.frolo.muse.ui.main.library.base.BaseAdapter
-import com.frolo.muse.util.CharSequences
+import com.frolo.muse.ui.main.library.base.sectionIndexAt
 import com.frolo.muse.views.checkable.CheckView
 import com.frolo.muse.views.media.MediaConstraintLayout
 import com.google.android.material.card.MaterialCardView
@@ -39,12 +39,7 @@ class AlbumAdapter constructor(
 
     override fun getItemId(position: Int) = getItemAt(position).id
 
-    override fun getSectionText(position: Int): CharSequence {
-        if (position >= itemCount) return CharSequences.empty()
-        return getItemAt(position).name.let { name ->
-            CharSequences.firstCharOrEmpty(name)
-        }
-    }
+    override fun getSectionText(position: Int) = sectionIndexAt(position) { name }
 
     override fun onCreateBaseViewHolder(
         parent: ViewGroup,

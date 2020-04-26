@@ -8,7 +8,7 @@ import com.frolo.muse.inflateChild
 import com.frolo.muse.model.media.Genre
 import com.frolo.muse.ui.getNameString
 import com.frolo.muse.ui.main.library.base.BaseAdapter
-import com.frolo.muse.util.CharSequences
+import com.frolo.muse.ui.main.library.base.sectionIndexAt
 import com.frolo.muse.views.media.MediaConstraintLayout
 import com.l4digital.fastscroll.FastScroller
 import kotlinx.android.synthetic.main.include_check.view.*
@@ -20,12 +20,7 @@ class GenreAdapter: BaseAdapter<Genre, GenreAdapter.GenreViewHolder>(GenreItemCa
 
     override fun getItemId(position: Int) = getItemAt(position).id
 
-    override fun getSectionText(position: Int): CharSequence {
-        if (position >= itemCount) return CharSequences.empty()
-        return getItemAt(position).name.let { name ->
-            CharSequences.firstCharOrEmpty(name)
-        }
-    }
+    override fun getSectionText(position: Int) = sectionIndexAt(position) { name }
 
     override fun onCreateBaseViewHolder(
         parent: ViewGroup,
