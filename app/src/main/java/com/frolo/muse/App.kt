@@ -17,7 +17,6 @@ import com.frolo.muse.repository.Preferences
 import com.frolo.muse.ui.base.BaseActivity
 import com.frolo.muse.ui.base.FragmentNavigator
 import com.frolo.muse.ui.main.MainActivity
-import com.frolo.muse.util.Mapper
 import io.fabric.sdk.android.Fabric
 import io.reactivex.plugins.RxJavaPlugins
 import javax.inject.Inject
@@ -99,9 +98,8 @@ class App : MultiDexApplication() {
     private fun dispatchAppLaunched() {
         preferences.openCount += 1
         eventLogger.also { logger ->
-            val params = Mapper.map(
-                    EventLogger.PARAM_COUNT,
-                    preferences.openCount.toString())
+            val params: Map<String, String> =
+                mapOf(EventLogger.PARAM_COUNT to preferences.openCount.toString())
             logger.log(EventLogger.EVENT_APP_LAUNCHED, params)
         }
     }
