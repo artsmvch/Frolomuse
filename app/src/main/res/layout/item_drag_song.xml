@@ -33,17 +33,16 @@
         layout="@layout/include_options_menu" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:textColor="?attr/android:textColorSecondary"
-        android:layout_margin="5.5dp"
+        android:id="@+id/tv_duration"
+        android:layout_margin="4dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/placeholder_zero_duration"
-        android:id="@+id/tv_duration"
-        android:textSize="13sp"
+        android:textAppearance="?textAppearanceListItemSecondary"
         app:layout_constraintEnd_toStartOf="@id/view_options_menu"
         app:layout_constraintTop_toTopOf="@id/view_options_menu"
         app:layout_constraintBottom_toBottomOf="@id/view_options_menu"
-        android:layout_centerVertical="true"/>
+        android:layout_centerVertical="true"
+        tools:text="1:45"/>
 
     <com.frolo.muse.views.MiniVisualizer
         android:id="@+id/mini_visualizer"
@@ -80,10 +79,9 @@
         android:id="@+id/tv_artist_name"
         tools:text="Artist name" />
 
-    <include
+    <include layout="@layout/include_check"
         app:layout_constraintEnd_toEndOf="@id/view_drag_and_drop"
         app:layout_constraintBottom_toBottomOf="@id/view_drag_and_drop"
-        layout="@layout/include_check"
         android:layout_width="@dimen/list_item_check_size"
         android:layout_height="@dimen/list_item_check_size" />
 </com.frolo.muse.views.media.MediaConstraintLayout>

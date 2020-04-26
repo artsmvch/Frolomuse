@@ -78,8 +78,8 @@
         <item name="waveMaxWidth">10dp</item>
         <item name="waveGap">1dp</item>
         <item name="waveCornerRadius">1dp</item>
-        <item name="waveBackgroundColor">#A0A9AE</item>
-        <item name="waveProgressColor">#0F65B0</item>
+        <item name="waveBackgroundColor">#80808080</item>
+        <item name="waveProgressColor">?colorAccent</item>
         <item name="waveAnimDuration">300</item>
     </style>
 
@@ -102,7 +102,7 @@
     </style>
 
     <!--BottomNavigationView-->
-    <style name="Base.AppTheme.BottomNavigation" parent="Widget.MaterialComponents.BottomNavigationView">
+    <style name="Base.AppTheme.BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView">
         <item name="itemIconSize">18dp</item>
         <item name="labelVisibilityMode">unlabeled</item>
         <item name="itemHorizontalTranslationEnabled">true</item>
@@ -211,5 +211,10 @@
         <item name="closeIcon">@drawable/ic_search_close</item>
         <item name="android:textSize">14sp</item>
         <item name="colorControlNormal">@color/tint_search_grey</item>
+    </style>
+
+    <!--Button-->
+    <style name="Base.AppTheme.Button.TextButton" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="cornerRadius">16dp</item>
     </style>
 </resources>

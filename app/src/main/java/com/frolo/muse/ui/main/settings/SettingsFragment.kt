@@ -278,16 +278,18 @@ class SettingsFragment : PreferenceFragmentCompat(),
         val icon = ContextCompat.getDrawable(activity, R.drawable.ic_theme)
         // the order is very important
         val themes = arrayOf(
-                getString(R.string.light_theme),
-                getString(R.string.dark_blue_theme),
-                getString(R.string.dark_especial_theme),
-                getString(R.string.dark_purple_theme)
+            getString(R.string.light_theme),
+            getString(R.string.dark_blue_theme),
+            getString(R.string.dark_especial_theme),
+            getString(R.string.dark_purple_theme),
+            getString(R.string.dark_yellow_theme)
         )
         val currentThemeIndex = when(preferences.theme) {
             Preferences.THEME_LIGHT_BLUE -> 0
             Preferences.THEME_DARK_BLUE -> 1
             Preferences.THEME_DARK_BLUE_ESPECIAL -> 2
             Preferences.THEME_DARK_PURPLE -> 3
+            Preferences.THEME_DARK_YELLOW -> 4
             else -> -1
         }
         MaterialAlertDialogBuilder(activity)
@@ -300,6 +302,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
                         1 -> Preferences.THEME_DARK_BLUE
                         2 -> Preferences.THEME_DARK_BLUE_ESPECIAL
                         3 -> Preferences.THEME_DARK_PURPLE
+                        4 -> Preferences.THEME_DARK_YELLOW
                         else -> Preferences.THEME_DARK_BLUE
                     }
                     preferences.saveTheme(themeConstInt)

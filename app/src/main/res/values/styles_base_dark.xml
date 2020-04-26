@@ -23,8 +23,8 @@
         <item name="colorOnSurface">@color/md_grey_800</item>
         <item name="dialogTheme">@style/Base.AppTheme.Dialog.Light</item>
         <item name="android:dialogTheme">@style/Base.AppTheme.Dialog.Light</item>
-        <item name="bottomSheetDialogTheme">@style/Base.BottomSheet.Dialog.Light</item>
-        <item name="textInputStyle">@style/AppTheme.Light.Blue.TextInputLayout</item>
+        <item name="bottomSheetDialogTheme">@style/AppTheme.BottomSheet.Dialog.Light</item>
+        <item name="textInputStyle">@style/AppTheme.TextInputLayout.Light.Blue</item>
         <item name="bottomNavigationStyle">@style/Base.AppTheme.Light.BottomNavigation</item>
         <item name="toolbarStyle">@style/Base.AppTheme.Light.Toolbar</item>
         <item name="dialogCornerRadius">@dimen/dialog_corner_radius</item>
@@ -62,7 +62,7 @@
 
     <style name="Base.AppTheme.Dark.Dialog" parent="Theme.MaterialComponents.Dialog">
         <item name="android:windowBackground">@drawable/bg_dialog_dark</item>
-        <item name="textInputStyle">@style/AppTheme.Light.Blue.TextInputLayout</item>
+        <item name="textInputStyle">@style/AppTheme.TextInputLayout.Light.Blue</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textColorPrimary">@color/white</item>
         <item name="android:textColorSecondary">@color/white_smoke</item>
@@ -80,7 +80,7 @@
         <item name="titleTextColor">@color/white</item>
     </style>
 
-    <style name="Base.AppTheme.Dark.BottomNavigation" parent="Base.AppTheme.BottomNavigation">
+    <style name="Base.AppTheme.Dark.BottomNavigation" parent="Base.AppTheme.BottomNavigationView">
         <item name="android:background">?colorPrimary</item>
         <item name="itemIconTint">@color/nav_dark</item>
     </style>

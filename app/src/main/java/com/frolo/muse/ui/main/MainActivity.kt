@@ -127,7 +127,7 @@ class MainActivity : PlayerHostActivity(),
         val bottomNavCornerRadius = 48f.dp2px(this)
 
         bottom_navigation_view.background = MaterialShapeDrawable().apply {
-            fillColor = ColorStateList.valueOf(Color.WHITE)
+            fillColor = ColorStateList.valueOf(colorSurface)
             shapeAppearanceModel = ShapeAppearanceModel.builder()
                 .setTopLeftCorner(CornerFamily.ROUNDED, bottomNavCornerRadius)
                 .setTopRightCorner(CornerFamily.ROUNDED, bottomNavCornerRadius)
@@ -135,7 +135,7 @@ class MainActivity : PlayerHostActivity(),
         }
 
         sliding_player_layout.background = MaterialShapeDrawable().apply {
-            fillColor = ColorStateList.valueOf(Color.WHITE)
+            fillColor = ColorStateList.valueOf(colorPrimary)
             shapeAppearanceModel = ShapeAppearanceModel.builder()
                     .setTopLeftCorner(CornerFamily.ROUNDED, bottomNavCornerRadius)
                     .setTopRightCorner(CornerFamily.ROUNDED, bottomNavCornerRadius)

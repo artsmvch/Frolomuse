@@ -9,9 +9,9 @@
 
         <item name="textAppearanceButton">@style/Base.AppTheme.TextAppearance.Button</item>
 
-        <item name="textInputStyle">@style/AppTheme.Light.Blue.TextInputLayout</item>
+        <item name="textInputStyle">@style/AppTheme.TextInputLayout.Light.Blue</item>
         <item name="materialButtonStyle">@style/Base.AppTheme.Button.TextButton</item>
-        <item name="seekBarStyle">@style/AppTheme.Light.Blue.SeekBar</item>
+        <item name="seekBarStyle">@style/AppTheme.SeekBar.Light.Blue</item>
         <item name="switchStyle">@style/Switch.Light</item>
 
         <item name="colorAccent">@color/md_pink_500</item>
@@ -22,13 +22,7 @@
         <item name="android:textColorHint">@color/md_grey_400</item>
     </style>
 
-    <style name="Base.Button.AlertDialog.Light.Blue" parent="Widget.MaterialComponents.Button.TextButton">
-        <item name="backgroundTint">@color/transparent</item>
-        <item name="rippleColor">@color/md_blue_50</item>
-        <item name="android:textColor">@color/md_blue_200</item>
-    </style>
-
-    <style name="Base.AppTheme.Light.BottomNavigation" parent="Base.AppTheme.BottomNavigation">
+    <style name="Base.AppTheme.Light.BottomNavigation" parent="Base.AppTheme.BottomNavigationView">
         <item name="android:background">@color/white</item>
         <item name="itemIconTint">@color/nav_light</item>
     </style>
@@ -50,25 +44,21 @@
         <item name="android:textSize">@dimen/toolbar_title</item>
     </style>
 
-    <style name="Base.BottomSheet.Dialog.Light" parent="Base.AppTheme.BottomSheetDialog">
+    <style name="AppTheme.BottomSheet.Dialog.Light" parent="Base.AppTheme.BottomSheetDialog">
         <item name="colorControlHighlight">@color/light_gray</item>
-        <item name="bottomSheetStyle">@style/BottomSheet.Light</item>
+        <item name="bottomSheetStyle">@style/AppTheme.BottomSheet.Light</item>
         <item name="android:navigationBarColor">@color/white</item>
     </style>
 
-    <style name="BottomSheet.Light" parent="@style/Widget.Design.BottomSheet.Modal">
+    <style name="AppTheme.BottomSheet.Light" parent="@style/Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/bg_bottom_dialog_light</item>
     </style>
 
-    <style name="Base.AppTheme.Button.TextButton" parent="Widget.MaterialComponents.Button.TextButton">
-        <item name="cornerRadius">16dp</item>
-    </style>
-
-    <style name="AppTheme.Light.Blue.SeekBar" parent="Base.AppTheme.SeekBar">
+    <style name="AppTheme.SeekBar.Light.Blue" parent="Base.AppTheme.SeekBar">
         <item name="android:progressDrawable">@drawable/bg_progress_light</item>
     </style>
 
-    <style name="Base.AppTheme.Light.Chip.Choice" parent="Widget.MaterialComponents.Chip.Choice">
+    <style name="AppTheme.Chip.Choice.Light.Blue" parent="Widget.MaterialComponents.Chip.Choice">
         <item name="chipBackgroundColor">@color/bg_chip_choice_light</item>
         <item name="android:textColor">@color/custom_black</item>
     </style>
@@ -78,11 +68,11 @@
         <item name="useMaterialThemeColors">false</item>
     </style>
 
-    <style name="Spinner.Light" parent="Widget.AppCompat.Spinner.Underlined">
+    <style name="AppTheme.Spinner.Light" parent="Widget.AppCompat.Spinner.Underlined">
         <item name="android:backgroundTint">#AAAAAA</item>
     </style>
 
-    <style name="Spinner.DropDown.Light" parent="Widget.AppCompat.DropDownItem.Spinner">
+    <style name="AppTheme.Spinner.DropDown.Light" parent="Widget.AppCompat.DropDownItem.Spinner">
     </style>
 
     <!--Base light theme-->
@@ -95,14 +85,14 @@
 
         <item name="dialogTheme">@style/Base.AppTheme.Dialog.Light</item>
         <item name="android:dialogTheme">@style/Base.AppTheme.Dialog.Light</item>
-        <item name="materialAlertDialogTheme">@style/Base.AppTheme.Light.Blue.Dialog.MaterialAlert</item>
-        <item name="bottomSheetDialogTheme">@style/Base.BottomSheet.Dialog.Light</item>
+        <item name="materialAlertDialogTheme">@style/Base.AppTheme.MaterialAlertDialog.Light.Blue</item>
+        <item name="bottomSheetDialogTheme">@style/AppTheme.BottomSheet.Dialog.Light</item>
         <item name="bottomNavigationStyle">@style/Base.AppTheme.Light.BottomNavigation</item>
         <item name="toolbarStyle">@style/Base.AppTheme.Light.Toolbar</item>
         <item name="dialogCornerRadius">@dimen/dialog_corner_radius</item>
-        <item name="seekBarStyle">@style/AppTheme.Light.Blue.SeekBar</item>
-        <item name="chipStyle">@style/Base.AppTheme.Light.Chip.Choice</item>
-        <item name="spinnerStyle">@style/Spinner.Light</item>
+        <item name="seekBarStyle">@style/AppTheme.SeekBar.Light.Blue</item>
+        <item name="chipStyle">@style/AppTheme.Chip.Choice.Light.Blue</item>
+        <item name="spinnerStyle">@style/AppTheme.Spinner.Light</item>
         <item name="tabStyle">@style/Base.AppTheme.TabLayout</item>
         <item name="android:textViewStyle">@style/Base.AppTheme.TextView</item>
         <item name="recyclerViewStyle">@style/Base.AppTheme.RecyclerView</item>

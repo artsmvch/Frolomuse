@@ -19,7 +19,7 @@ import io.reactivex.Flowable;
 
 
 public interface Preferences {
-    @IntDef({THEME_LIGHT_BLUE, THEME_DARK_BLUE, THEME_DARK_BLUE_ESPECIAL, THEME_DARK_PURPLE})
+    @IntDef({THEME_LIGHT_BLUE, THEME_DARK_BLUE, THEME_DARK_BLUE_ESPECIAL, THEME_DARK_PURPLE, THEME_DARK_YELLOW})
     @Retention(RetentionPolicy.SOURCE)
     public @interface Theme { }
     int THEME_BLACK_AND_BLUE = 1;
@@ -31,6 +31,7 @@ public interface Preferences {
     int THEME_DARK_BLUE = 22;
     int THEME_DARK_BLUE_ESPECIAL = 23;
     int THEME_DARK_PURPLE = 24;
+    int THEME_DARK_YELLOW = 25;
 
     void dump(PrintWriter pw);
 

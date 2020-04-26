@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="app_blue_action_mode">#09215F</color>
+    <color name="app_blue_action_mode">#47809B</color>
     <color name="app_blue_primary">#6DA3BC</color>
     <color name="app_blue_primary_dark">@color/app_blue_primary</color>
     <color name="app_blue_primary_variant">#0B4BA9</color>
@@ -45,7 +45,7 @@
         <item name="colorOnSurface">#515151</item>
     </style>
 
-    <style name="AppTheme.Light.Blue.Dialog.Alert" parent="Theme.MaterialComponents.Dialog.Alert">
+    <style name="AppTheme.Dialog.Alert.Light.Blue" parent="Theme.MaterialComponents.Dialog.Alert">
         <item name="android:windowAnimationStyle">@style/Base.AppTheme.WindowAnimation.Dialog</item>
         <item name="colorAccent">#E21A88</item>
         <item name="android:textColor">@color/text_primary_dark</item>
@@ -55,10 +55,16 @@
         <item name="textColorAlertDialogListItem">@color/text_primary_dark</item>
         <item name="android:background">@drawable/bg_dialog</item>
         <item name="colorControlNormal">@color/md_grey_400</item>
-        <item name="buttonBarButtonStyle">@style/Base.Button.AlertDialog.Light.Blue</item>
+        <item name="buttonBarButtonStyle">@style/AppTheme.Button.AlertDialog.Light.Blue</item>
     </style>
 
-    <style name="Base.AppTheme.Light.Blue.Dialog.MaterialAlert" parent="Base.AppTheme.MaterialAlertDialog">
+    <style name="AppTheme.Button.AlertDialog.Light.Blue" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="backgroundTint">@color/transparent</item>
+        <item name="rippleColor">@color/md_blue_50</item>
+        <item name="android:textColor">@color/md_blue_200</item>
+    </style>
+
+    <style name="Base.AppTheme.MaterialAlertDialog.Light.Blue" parent="Base.AppTheme.MaterialAlertDialog">
         <item name="shapeAppearanceOverlay">@style/Base.ShapeAppearanceOverlay.Rounded</item>
         <item name="android:windowAnimationStyle">@style/Base.AppTheme.WindowAnimation.Dialog</item>
         <item name="colorAccent">#414445</item>
@@ -70,7 +76,7 @@
         <item name="colorControlActivated">@color/md_pink_500</item>
     </style>
 
-    <style name="AppTheme.Light.Blue.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+    <style name="AppTheme.TextInputLayout.Light.Blue" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="boxStrokeWidth">1.2dp</item>
         <item name="boxStrokeWidthFocused">1.2dp</item>
         <item name="hintTextColor">@color/md_blue_400</item>

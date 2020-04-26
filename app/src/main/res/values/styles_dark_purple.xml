@@ -74,7 +74,7 @@
         <item name="alertDialogTheme">@style/Base.AlertDialog.Dark.Purple</item>
         <item name="materialAlertDialogTheme">@style/Base.MaterialAlertDialog.Dark.Purple</item>
         <item name="bottomSheetDialogTheme">@style/AppTheme.Dark.Blue.BottomSheetDialog</item>
-        <item name="textInputStyle">@style/AppTheme.Light.Blue.TextInputLayout</item>
+        <item name="textInputStyle">@style/AppTheme.TextInputLayout.Light.Blue</item>
         <item name="bottomNavigationStyle">@style/Base.AppTheme.Dark.BottomNavigation</item>
         <item name="toolbarStyle">@style/Base.AppTheme.Dark.Toolbar</item>
         <item name="dialogCornerRadius">@dimen/dialog_corner_radius</item>

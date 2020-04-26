@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Base.AppTheme.SeekBar.Player" parent="AppTheme.Light.Blue.SeekBar">
+    <style name="Base.AppTheme.SeekBar.Player" parent="AppTheme.SeekBar.Light.Blue">
     </style>
 
     <style name="Base.AppTheme.Player.Transparent" parent="Base.AppTheme.Light">

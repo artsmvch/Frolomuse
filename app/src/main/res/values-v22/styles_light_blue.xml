@@ -2,7 +2,7 @@
 <resources>
 
     <!--Starting from API v22 we can set custom progress background using only colors-->
-    <style name="AppTheme.Light.Blue.SeekBar" parent="Base.AppTheme.SeekBar">
+    <style name="AppTheme.SeekBar.Light.Blue" parent="Base.AppTheme.SeekBar">
         <item name="colorAccent">#E027A6</item>
         <item name="colorControlActivated">#E027A6</item>
         <item name="colorControlHighlight">#E4E4E4</item>

@@ -68,6 +68,5 @@
         android:id="@+id/bottom_navigation_view"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_alignParentBottom="true"
         app:menu="@menu/activity_main"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

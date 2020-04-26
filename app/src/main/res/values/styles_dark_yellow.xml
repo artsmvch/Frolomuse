@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="app_dark_yellow_window_background">#191816</color>
+    <color name="app_dark_yellow_action_mode">#201D1C</color>
+    <color name="app_dark_yellow_primary">#292625</color>
+    <color name="app_dark_yellow_primary_dark">#292625</color>
+    <color name="app_dark_yellow_primary_variant">#312F2E</color>
+    <color name="app_dark_yellow_secondary">#ED8752</color>
+    <color name="app_dark_yellow_secondary_variant">#ED7152</color>
+    <color name="app_dark_yellow_accent">#ED8752</color>
+    <color name="app_dark_yellow_surface">#292625</color>
+
+    <style name="AppTheme.Button.AlertDialog.Dark.Yellow" parent="Widget.MaterialComponents.Button.TextButton">
+        <item name="backgroundTint">@color/transparent</item>
+        <item name="rippleColor">@color/app_dark_yellow_secondary</item>
+        <item name="android:textColor">@color/app_dark_yellow_secondary</item>
+    </style>
+
+    <style name="AppTheme.AlertDialog.Dark.Yellow" parent="Base.AppTheme.AlertDialog">
+        <item name="colorSurface">@color/app_dark_yellow_surface</item>
+        <item name="colorAccent">@color/app_dark_yellow_accent</item>
+        <item name="android:textColor">@color/md_white_1000</item>
+        <item name="android:textColorPrimary">@color/md_white_1000</item>
+        <item name="android:textColorSecondary">@color/md_white_1000</item>
+        <item name="dialogCornerRadius">@dimen/dialog_corner_radius</item>
+        <item name="textColorAlertDialogListItem">@color/md_white_1000</item>
+        <item name="android:background">@drawable/bg_dialog_dark</item>
+        <item name="colorControlNormal">@color/white</item>
+        <item name="buttonBarButtonStyle">@style/AppTheme.Button.AlertDialog.Dark.Yellow</item>
+    </style>
+
+    <style name="AppTheme.MaterialAlertDialog.Dark.Yellow" parent="Base.AppTheme.MaterialAlertDialog">
+        <item name="colorAccent">@color/app_dark_yellow_accent</item>
+        <item name="android:textColor">@color/md_white_1000</item>
+        <item name="android:textColorPrimary">@color/md_white_1000</item>
+        <item name="android:textColorSecondary">@color/md_white_1000</item>
+        <item name="dialogCornerRadius">@dimen/dialog_corner_radius</item>
+        <item name="textColorAlertDialogListItem">@color/md_white_1000</item>
+        <item name="colorControlNormal">@color/md_white_1000</item>
+    </style>
+
+    <style name="AppTheme.BottomSheetDialog.Dark.Yellow" parent="Base.AppTheme.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppTheme.BottomSheet.Dark.Yellow</item>
+    </style>
+
+    <style name="AppTheme.BottomSheet.Dark.Yellow" parent="@style/Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/bg_bottom_sheet</item>
+        <item name="colorSurface">@color/app_dark_yellow_surface</item>
+    </style>
+
+    <style name="AppTheme.SeekBar.Dark.Yellow" parent="Base.AppTheme.SeekBar">
+        <item name="colorAccent">@color/app_dark_yellow_accent</item>
+        <item name="android:progressBackgroundTint">#5A5A5A</item>
+    </style>
+
+    <style name="AppTheme.Dialog.Dark.Yellow" parent="Base.AppTheme.Dark.Dialog">
+        <item name="seekBarStyle">@style/AppTheme.SeekBar.Dark.Yellow</item>
+        <item name="colorAccent">@color/app_dark_yellow_accent</item>
+        <item name="switchStyle">@style/Switch.Dark</item>
+    </style>
+
+    <style name="AppTheme.Spinner.Dark.Yellow" parent="Widget.AppCompat.Spinner.Underlined">
+    </style>
+
+    <style name="AppTheme.TextInputLayout.Dark.Yellow" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeWidth">1.2dp</item>
+        <item name="boxStrokeWidthFocused">1.2dp</item>
+        <item name="hintTextColor">@color/app_dark_yellow_accent</item>
+        <item name="android:textColorHint">@color/app_dark_yellow_accent</item>
+        <item name="boxStrokeColor">@color/edt_outline_light</item>
+    </style>
+
+    <style name="AppTheme.BottomNavigationView.Dark.Yellow" parent="Base.AppTheme.BottomNavigationView">
+        <item name="itemIconTint">@color/nav_dark</item>
+        <item name="background">@color/app_dark_yellow_surface</item>
+        <item name="android:background">@color/app_dark_yellow_window_background</item>
+    </style>
+
+    <style name="Base.AppTheme.Dark.Yellow" parent="Base.AppTheme.Dark">
+        <item name="colorPrimary">@color/app_dark_yellow_primary</item>
+        <item name="colorPrimaryDark">@color/app_dark_yellow_primary_dark</item>
+        <item name="colorAccent">@color/app_dark_yellow_accent</item>
+        <item name="colorPrimaryVariant">@color/app_dark_yellow_primary_variant</item>
+        <item name="colorOnPrimary">@color/md_white_1000</item>
+        <item name="colorSecondary">@color/app_dark_yellow_secondary</item>
+        <item name="colorSecondaryVariant">@color/app_dark_yellow_secondary_variant</item>
+        <item name="colorOnSecondary">@color/md_white_1000</item>
+        <item name="colorError">#FF6E6E</item>
+        <item name="colorSurface">@color/app_dark_yellow_surface</item>
+        <item name="colorOnSurface">@color/md_white_1000</item>
+        <item name="android:dialogTheme">@style/AppTheme.Dialog.Dark.Yellow</item>
+        <item name="dialogTheme">@style/AppTheme.Dialog.Dark.Yellow</item>
+        <item name="alertDialogTheme">@style/AppTheme.AlertDialog.Dark.Yellow</item>
+        <item name="materialAlertDialogTheme">@style/AppTheme.MaterialAlertDialog.Dark.Yellow</item>
+        <item name="bottomSheetDialogTheme">@style/AppTheme.Dark.Blue.BottomSheetDialog</item>
+        <item name="textInputStyle">@style/AppTheme.TextInputLayout.Dark.Yellow</item>
+        <item name="bottomNavigationStyle">@style/AppTheme.BottomNavigationView.Dark.Yellow</item>
+        <item name="seekBarStyle">@style/AppTheme.SeekBar.Dark.Yellow</item>
+<!--        <item name="spinnerStyle">@style/Spinner.Dark.Blue</item>-->
+<!--        <item name="spinnerDropDownItemStyle">@style/Spinner.DropDown.Dark</item>-->
+
+        <item name="dialogCornerRadius">@dimen/dialog_corner_radius</item>
+
+        <item name="actionModeBackground">@color/app_dark_yellow_action_mode</item>
+        <item name="actionBarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.Tinted</item>
+
+        <item name="android:textColor">@color/md_white_1000</item>
+        <item name="android:textColorPrimary">@color/md_white_1000</item>
+        <item name="android:textColorSecondary">@color/md_grey_500</item>
+        <item name="android:textColorHint">@color/md_grey_500</item>
+
+        <item name="android:windowBackground">@color/app_dark_yellow_window_background</item>
+
+        <!--Custom attrs-->
+        <item name="iconImageTint">#EAEAEA</item>
+        <item name="dividerTint">#383634</item>
+        <item name="modeOffTint">#b6b6b6</item>
+        <item name="modeOnTint">#ff0066</item>
+        <item name="iBarStyle">@style/Base.AppTheme.Dark.IBar</item>
+    </style>
+
+</resources>

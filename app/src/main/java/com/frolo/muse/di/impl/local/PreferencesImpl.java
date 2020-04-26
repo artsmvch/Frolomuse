@@ -170,7 +170,9 @@ public class PreferencesImpl implements Preferences {
             case THEME_LIGHT_BLUE:
             case THEME_DARK_BLUE:
             case THEME_DARK_BLUE_ESPECIAL:
-            case THEME_DARK_PURPLE: return value;
+            case THEME_DARK_PURPLE:
+            case THEME_DARK_YELLOW:
+                return value;
             // The value is not valid. Return default theme int
             default: return THEME_DARK_BLUE;
         }
