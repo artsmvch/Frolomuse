@@ -12,6 +12,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.DecelerateInterpolator
+import androidx.annotation.ColorInt
 import androidx.appcompat.view.ActionMode
 import androidx.core.app.ActivityCompat
 import androidx.core.graphics.ColorUtils
@@ -77,6 +78,16 @@ class MainActivity : PlayerHostActivity(),
 
             override fun onStateChanged(bottomSheet: View, newState: Int) = Unit
         }
+
+    @get:ColorInt
+    private val colorPrimary: Int by lazy {
+        StyleUtil.readColorAttrValue(this, R.attr.colorPrimary)
+    }
+
+    @get:ColorInt
+    private val colorSurface: Int by lazy {
+        StyleUtil.readColorAttrValue(this, R.attr.colorSurface)
+    }
 
     private val fragmentLifecycleCallbacks: FragmentManager.FragmentLifecycleCallbacks =
         object : FragmentManager.FragmentLifecycleCallbacks() {
@@ -513,8 +524,8 @@ class MainActivity : PlayerHostActivity(),
         mini_player_container.touchesDisabled = slideOffset > 0.4
 
         (sliding_player_layout.background as? MaterialShapeDrawable)?.apply {
-            val targetColor = StyleUtil.readColorAttrValue(this@MainActivity, R.attr.colorPrimary)
-            fillColor = ColorStateList.valueOf(ColorUtils.blendARGB(Color.WHITE, targetColor, (1 - slideOffset)))
+            val blendedColor = ColorUtils.blendARGB(colorSurface, colorPrimary, (1 - slideOffset))
+            fillColor = ColorStateList.valueOf(blendedColor)
 
             val cornerRadius = 48f.dp2px(this@MainActivity) * (1 - slideOffset)
             Trace.d("MainActivitySlide", "cornerRadius=$cornerRadius")
