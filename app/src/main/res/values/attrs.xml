@@ -15,13 +15,6 @@
 
     <attr name="waveformSeekBarStyle" format="reference"/>
 
-    <declare-styleable name="FroloBar">
-        <attr name="activeColor"/>
-        <attr name="inactiveColor"/>
-        <attr name="periodDuration"/>
-        <attr name="pointCount"/>
-    </declare-styleable>
-
     <declare-styleable name="IBar">
         <attr name="activeColor" format="color"/>
         <attr name="inactiveColor" format="color"/>
@@ -90,4 +83,7 @@
     </declare-styleable>
 
     <attr name="appTextSwitcherStyle" format="reference"/>
+
+    <!--FastScroller-->
+    <attr name="fastScrollerStyle" format="reference"/>
 </resources>

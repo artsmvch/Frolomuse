@@ -108,6 +108,7 @@
         <item name="recyclerViewStyle">@style/Base.AppTheme.RecyclerView</item>
         <item name="materialButtonStyle">@style/Base.AppTheme.Button.TextButton</item>
         <item name="searchViewStyle">@style/Base.AppTheme.SearchView</item>
+        <item name="fastScrollerStyle">@style/Base.AppTheme.FastScroller</item>
 
         <item name="actionBarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>

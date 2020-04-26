@@ -1,11 +1,12 @@
 package com.frolo.muse.views.spring
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Canvas
 import android.util.AttributeSet
+import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.view.updatePadding
 import androidx.recyclerview.R
+import com.frolo.muse.StyleUtil
 import com.l4digital.fastscroll.FastScrollRecyclerView
 import com.l4digital.fastscroll.FastScroller
 
@@ -17,7 +18,11 @@ class AppRecyclerView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = R.attr.recyclerViewStyle
-) : FastScrollRecyclerView(context, attrs, defStyleAttr) {
+) : FastScrollRecyclerView(
+    ContextThemeWrapper(context, StyleUtil.readStyleAttrValue(context, com.frolo.muse.R.attr.fastScrollerStyle)),
+    attrs,
+    defStyleAttr
+) {
 
     private val springManager = SpringEdgeEffect.Manager(this)
 

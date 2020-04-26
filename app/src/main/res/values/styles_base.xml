@@ -185,15 +185,20 @@
 
     <!--RecyclerView-->
     <style name="Base.AppTheme.RecyclerView" parent="">
-        <item name="bubbleColor">?attr/colorAccent</item>
+        <item name="android:overScrollMode">always</item>
+        <item name="android:layoutAnimation">@anim/list_layout_animation</item>
+    </style>
+
+    <!--FastScroller-->
+    <style name="Base.AppTheme.FastScroller" parent="">
+        <item name="bubbleSize">small</item>
+        <item name="bubbleColor">?colorAccent</item>
         <item name="bubbleTextColor">@color/white</item>
-        <item name="handleColor">@color/list_track</item>
-        <item name="trackColor">@color/list_track</item>
+        <item name="handleColor">?colorAccent</item>
+        <item name="trackColor">?colorAccent</item>
         <item name="hideScrollbar">true</item>
         <item name="showTrack">false</item>
         <item name="fastScrollEnabled">false</item>
-        <item name="android:overScrollMode">always</item>
-        <item name="android:layoutAnimation">@anim/list_layout_animation</item>
     </style>
 
     <!--SearchView-->

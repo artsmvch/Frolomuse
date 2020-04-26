@@ -10,6 +10,7 @@ import android.util.TypedValue;
 import androidx.annotation.AttrRes;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
+import androidx.annotation.StyleRes;
 
 
 public final class StyleUtil {
@@ -87,4 +88,12 @@ public final class StyleUtil {
         context.getTheme().resolveAttribute(attrId, typedValue, true);
         return typedValue.data;
     }
+
+    @StyleRes
+    public static int readStyleAttrValue(@NonNull Context context, @AttrRes int attrId) {
+        final TypedValue typedValue = new TypedValue();
+        context.getTheme().resolveAttribute(attrId, typedValue, true);
+        return typedValue.resourceId;
+    }
+
 }
