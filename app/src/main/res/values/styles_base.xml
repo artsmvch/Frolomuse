@@ -43,26 +43,6 @@
         <item name="android:layout_width">wrap_content</item>
     </style>
 
-    <!--BACKDROP-->
-    <style name="Layout.Backdrop.Back" parent="">
-        <item name="android:background">?attr/backdropBackLayer</item>
-    </style>
-
-    <style name="ShapeAppearanceOverlay.Backdrop.Front" parent="">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSizeTopRight">0dp</item>
-        <item name="cornerSizeTopLeft">32dp</item>
-        <item name="cornerSizeBottomRight">0dp</item>
-        <item name="cornerSizeBottomLeft">0dp</item>
-    </style>
-
-    <style name="CardView.Backdrop.Front" parent="Widget.MaterialComponents.CardView">
-        <item name="cardElevation">4dp</item>
-        <item name="cardBackgroundColor">?attr/backdropFrontLayer</item>
-        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Backdrop.Front</item>
-        <item name="cardPreventCornerOverlap">false</item>
-    </style>
-
     <!--OptionTextView-->
     <style name="Base.AppTheme.OptionTextView" parent="">
         <item name="android:paddingStart">16dp</item>

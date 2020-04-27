@@ -8,18 +8,6 @@
     <attr name="modeOffTint" format="color"/>
     <attr name="modeOnTint" format="color"/>
 
-    <attr name="backdropBackLayer" format="color|reference"/>
-    <attr name="backdropFrontLayer" format="color|reference"/>
-
-    <attr format="reference" name="iBarStyle"/>
-
-    <attr name="waveformSeekBarStyle" format="reference"/>
-
-    <declare-styleable name="IBar">
-        <attr name="activeColor" format="color"/>
-        <attr name="inactiveColor" format="color"/>
-    </declare-styleable>
-
     <declare-styleable name="ControllerView">
         <attr name="label" format="string"/>
     </declare-styleable>
@@ -52,6 +40,15 @@
         <attr name="state_item_playing" format="boolean" />
     </declare-styleable>
 
+    <!--IBar-->
+    <attr format="reference" name="iBarStyle"/>
+
+    <declare-styleable name="IBar">
+        <attr name="activeColor" format="color"/>
+        <attr name="inactiveColor" format="color"/>
+    </declare-styleable>
+
+    <!--WaveformSeekBar-->
     <declare-styleable name="WaveformSeekBar">
         <attr name="waveBackgroundColor" format="color"/>
         <attr name="waveProgressColor" format="color"/>
@@ -61,6 +58,9 @@
         <attr name="waveAnimDuration" format="integer"/>
     </declare-styleable>
 
+    <attr name="waveformSeekBarStyle" format="reference"/>
+
+    <!--OptionTextView-->
     <declare-styleable name="OptionTextView">
         <attr name="optionTitle" format="string"/>
         <attr name="optionIcon" format="reference"/>

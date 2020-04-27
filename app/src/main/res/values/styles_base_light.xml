@@ -123,8 +123,6 @@
         <!--custom attrs-->
         <item name="iconImageTint">#ABABAB</item>
         <item name="dividerTint">#E3E3E3</item>
-        <item name="backdropBackLayer">?colorPrimaryDark</item>
-        <item name="backdropFrontLayer">@color/white</item>
         <item name="modeOffTint">#b6b6b6</item>
         <item name="modeOnTint">#ff0066</item>
     </style>
