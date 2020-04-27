@@ -1,11 +1,15 @@
 package com.frolo.muse.ui.main.library.base
 
+import android.content.res.ColorStateList
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.frolo.muse.R
+import com.frolo.muse.StyleUtil
+import com.frolo.muse.dp2px
 import com.frolo.muse.inflateChild
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.ui.base.adapter.ItemTouchHelperAdapter
@@ -14,6 +18,7 @@ import com.frolo.muse.ui.getDurationString
 import com.frolo.muse.ui.getNameString
 import com.frolo.muse.views.media.MediaConstraintLayout
 import kotlinx.android.synthetic.main.include_check.view.*
+import kotlinx.android.synthetic.main.include_song_art_container.view.*
 import kotlinx.android.synthetic.main.item_drag_song.view.*
 
 
@@ -70,7 +75,7 @@ class DragSongAdapter constructor(
                 val view = parent.inflateChild(R.layout.item_drag_song)
 
                 DragSongViewHolder(view).apply {
-                    val viewToDrag = itemView.findViewById<View>(R.id.view_drag_and_drop)
+                    val viewToDrag = itemView.findViewById<View>(R.id.include_song_art_container)
                     viewToDrag.setOnTouchListener { _, event ->
                         when (event.action) {
                             MotionEvent.ACTION_DOWN -> {
@@ -96,31 +101,45 @@ class DragSongAdapter constructor(
     ) {
 
         if (holder is DragSongViewHolder) {
+            val isPlayPosition = position == playingPosition
+
             with(holder.itemView as MediaConstraintLayout) {
                 val res = resources
                 tv_song_name.text = item.getNameString(res)
                 tv_artist_name.text = item.getArtistString(res)
                 tv_duration.text = item.getDurationString()
 
-                val isPlayPosition = position == playingPosition
-
-                if (isPlayPosition) {
-                    mini_visualizer.visibility = View.VISIBLE
-                    mini_visualizer.setAnimate(isPlaying)
-                } else {
-                    mini_visualizer.visibility = View.GONE
-                    mini_visualizer.setAnimate(false)
-                }
-
                 imv_check.setChecked(selected, selectionChanged)
 
                 setChecked(selected)
                 setPlaying(isPlayPosition)
             }
+
+            holder.resolvePlayingPosition(
+                isPlayPosition = isPlayPosition,
+                isPlaying = isPlaying
+            )
         } else {
             super.onBindViewHolder(holder, position, item, selected, selectionChanged)
         }
     }
 
-    class DragSongViewHolder(itemView: View): SongViewHolder(itemView)
+    class DragSongViewHolder(itemView: View): SongViewHolder(itemView) {
+
+        private val dragIconSize: Int = 16f.dp2px(itemView.context).toInt()
+
+        init {
+            itemView.imv_album_art.apply {
+                updateLayoutParams {
+                    width = dragIconSize
+                    height = dragIconSize
+                }
+                setImageResource(R.drawable.ic_burger)
+                imageTintList =
+                    ColorStateList.valueOf(StyleUtil.readColorAttrValue(context, R.attr.iconImageTint))
+            }
+        }
+
+    }
+
 }

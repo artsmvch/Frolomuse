@@ -9,6 +9,7 @@
         android:id="@+id/imv_album_art"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_gravity="center"
         android:layout_margin="1px"
         android:scaleType="centerCrop"
         tools:src="@drawable/ic_framed_music_note_48dp"/>
