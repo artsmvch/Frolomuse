@@ -95,6 +95,7 @@
         <item name="colorError">#FF6E6E</item>
         <item name="colorSurface">@color/app_dark_yellow_surface</item>
         <item name="colorOnSurface">@color/md_white_1000</item>
+
         <item name="android:dialogTheme">@style/AppTheme.Dialog.Dark.Yellow</item>
         <item name="dialogTheme">@style/AppTheme.Dialog.Dark.Yellow</item>
         <item name="alertDialogTheme">@style/AppTheme.AlertDialog.Dark.Yellow</item>

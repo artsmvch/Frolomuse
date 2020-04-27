@@ -21,7 +21,7 @@
         android:layout_width="0dp"
         android:layout_height="?attr/actionBarSize"/>
 
-    <include layout="@layout/include_player_panel"
+    <include layout="@layout/include_player_tool_panel"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/guideline"
         app:layout_constraintBottom_toBottomOf="parent"

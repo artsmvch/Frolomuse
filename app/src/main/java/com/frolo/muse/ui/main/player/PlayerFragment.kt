@@ -47,7 +47,7 @@ import kotlinx.android.synthetic.main.fragment_player.*
 import kotlinx.android.synthetic.main.include_player_album_art_carousel.*
 import kotlinx.android.synthetic.main.include_player_controller_full.*
 import kotlinx.android.synthetic.main.include_player_controller.*
-import kotlinx.android.synthetic.main.include_player_panel.*
+import kotlinx.android.synthetic.main.include_player_tool_panel.*
 
 
 class PlayerFragment: BaseFragment() {

@@ -34,7 +34,7 @@
         android:layout_marginEnd="16dp"
         tools:text="Artist title"/>
 
-    <include layout="@layout/include_player_panel"
+    <include layout="@layout/include_player_tool_panel"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_marginStart="16dp"
