@@ -33,7 +33,8 @@
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tl_sections"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            app:tabMode="scrollable"/>
 
         <View
             android:layout_width="match_parent"

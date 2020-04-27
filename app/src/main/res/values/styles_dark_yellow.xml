@@ -73,6 +73,9 @@
         <item name="boxStrokeColor">@color/edt_outline_light</item>
     </style>
 
+    <style name="AppTheme.TabLayout.Dark.Yellow" parent="Widget.MaterialComponents.TabLayout.Colored">
+    </style>
+
     <style name="AppTheme.BottomNavigationView.Dark.Yellow" parent="Base.AppTheme.BottomNavigationView">
         <item name="itemIconTint">@color/nav_dark</item>
         <item name="background">@color/app_dark_yellow_surface</item>
@@ -104,8 +107,7 @@
         <item name="textInputStyle">@style/AppTheme.TextInputLayout.Dark.Yellow</item>
         <item name="bottomNavigationStyle">@style/AppTheme.BottomNavigationView.Dark.Yellow</item>
         <item name="seekBarStyle">@style/AppTheme.SeekBar.Dark.Yellow</item>
-<!--        <item name="spinnerStyle">@style/Spinner.Dark.Blue</item>-->
-<!--        <item name="spinnerDropDownItemStyle">@style/Spinner.DropDown.Dark</item>-->
+        <item name="tabStyle">@style/AppTheme.TabLayout.Dark.Yellow</item>
 
         <item name="dialogCornerRadius">@dimen/dialog_corner_radius</item>
 
