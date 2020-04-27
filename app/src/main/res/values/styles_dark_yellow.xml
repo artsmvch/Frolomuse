@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!--Dark yellow theme. All the styles are postfixed with .Dark.Yellow-->
+
     <color name="app_dark_yellow_window_background">#191816</color>
     <color name="app_dark_yellow_action_mode">#201D1C</color>
     <color name="app_dark_yellow_primary">#292625</color>
@@ -77,6 +79,10 @@
         <item name="android:background">@color/app_dark_yellow_window_background</item>
     </style>
 
+    <style name="AppTheme.MiniVisualizer.Dark.Yellow" parent="Base.AppTheme.MiniVisualizer">
+        <item name="barColor">@color/app_dark_yellow_secondary</item>
+    </style>
+
     <style name="Base.AppTheme.Dark.Yellow" parent="Base.AppTheme.Dark">
         <item name="colorPrimary">@color/app_dark_yellow_primary</item>
         <item name="colorPrimaryDark">@color/app_dark_yellow_primary_dark</item>
@@ -120,6 +126,7 @@
         <item name="modeOffTint">#b6b6b6</item>
         <item name="modeOnTint">#ff0066</item>
         <item name="iBarStyle">@style/Base.AppTheme.Dark.IBar</item>
+        <item name="miniVisualizerStyle">@style/AppTheme.MiniVisualizer.Dark.Yellow</item>
     </style>
 
 </resources>
