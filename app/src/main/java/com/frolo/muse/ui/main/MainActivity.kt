@@ -540,7 +540,8 @@ class MainActivity : PlayerHostActivity(),
         mini_player_container.touchesDisabled = slideOffset > 0.4
 
         (sliding_player_layout.background as? MaterialShapeDrawable)?.apply {
-            val blendedColor = ColorUtils.blendARGB(colorPrimary, colorPrimarySurface, (1 - slideOffset).pow(2))
+            val blendRatio = max(0f, 1f - slideOffset * 2)
+            val blendedColor = ColorUtils.blendARGB(colorPrimary, colorPrimarySurface, blendRatio)
             fillColor = ColorStateList.valueOf(blendedColor)
 
             val cornerRadius = 48f.dp2px(this@MainActivity) * (1 - slideOffset)

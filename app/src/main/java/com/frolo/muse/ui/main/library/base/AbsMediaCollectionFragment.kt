@@ -25,7 +25,7 @@ abstract class AbsMediaCollectionFragment <E: Media>: BaseFragment(),
         BackPressHandler {
 
     // Options menu
-    private var optionsMenuDialog: OptionsMenuDialog<E>? = null
+    private var mediaOptionsDialog: MediaOptionsDialog<E>? = null
 
     // Contextual menu
     private var actionMode: ActionMode? = null
@@ -118,17 +118,17 @@ abstract class AbsMediaCollectionFragment <E: Media>: BaseFragment(),
 
         // Options menu
         openOptionsMenuEvent.observeNonNull(owner) { optionsMenu ->
-            optionsMenuDialog?.cancel()
-            optionsMenuDialog = onShowOptionsMenuDialog(optionsMenu)
+            mediaOptionsDialog?.cancel()
+            mediaOptionsDialog = onShowOptionsMenuDialog(optionsMenu)
         }
 
         closeOptionsMenuEvent.observeNonNull(owner) { optionsMenu ->
-            optionsMenuDialog?.cancel()
-            optionsMenuDialog = null
+            mediaOptionsDialog?.cancel()
+            mediaOptionsDialog = null
         }
 
         optionsMenuItemFavourite.observeNonNull(owner) { isFavourite ->
-            optionsMenuDialog?.setLiked(isFavourite)
+            mediaOptionsDialog?.setLiked(isFavourite)
         }
 
         // Contextual menu
@@ -192,23 +192,23 @@ abstract class AbsMediaCollectionFragment <E: Media>: BaseFragment(),
         }
     }
 
-    private fun onShowOptionsMenuDialog(optionsMenu: OptionsMenu<E>): OptionsMenuDialog<E> {
-        val dialog = OptionsMenuDialog(requireContext(), optionsMenu) { _, option ->
+    private fun onShowOptionsMenuDialog(optionsMenu: OptionsMenu<E>): MediaOptionsDialog<E> {
+        val dialog = MediaOptionsDialog(requireContext(), optionsMenu) { _, option ->
             when (option) {
-                OptionsMenuDialog.Option.SET_AS_DEFAULT -> viewModel.onSetAsDefaultOptionSelected()
-                OptionsMenuDialog.Option.HIDE -> viewModel.onHideOptionSelected()
-                OptionsMenuDialog.Option.SCAN_FILES -> viewModel.onScanFilesOptionSelected()
-                OptionsMenuDialog.Option.SHARE -> viewModel.onShareOptionSelected()
-                OptionsMenuDialog.Option.DELETE -> viewModel.onDeleteOptionSelected()
-                OptionsMenuDialog.Option.LIKE -> viewModel.onLikeOptionClicked()
-                OptionsMenuDialog.Option.PLAY -> viewModel.onPlayOptionSelected()
-                OptionsMenuDialog.Option.PLAY_NEXT -> viewModel.onPlayNextOptionSelected()
-                OptionsMenuDialog.Option.ADD_TO_QUEUE -> viewModel.onAddToQueueOptionSelected()
-                OptionsMenuDialog.Option.EDIT -> viewModel.onEditOptionSelected()
-                OptionsMenuDialog.Option.ADD_TO_PLAYLIST -> viewModel.onAddToPlaylistOptionSelected()
-                OptionsMenuDialog.Option.VIEW_ALBUM -> viewModel.onViewAlbumOptionSelected()
-                OptionsMenuDialog.Option.VIEW_ARTIST -> viewModel.onViewArtistOptionSelected()
-                OptionsMenuDialog.Option.VIEW_GENRE -> viewModel.onViewGenreOptionSelected()
+                MediaOptionsDialog.Option.SET_AS_DEFAULT -> viewModel.onSetAsDefaultOptionSelected()
+                MediaOptionsDialog.Option.HIDE -> viewModel.onHideOptionSelected()
+                MediaOptionsDialog.Option.SCAN_FILES -> viewModel.onScanFilesOptionSelected()
+                MediaOptionsDialog.Option.SHARE -> viewModel.onShareOptionSelected()
+                MediaOptionsDialog.Option.DELETE -> viewModel.onDeleteOptionSelected()
+                MediaOptionsDialog.Option.LIKE -> viewModel.onLikeOptionClicked()
+                MediaOptionsDialog.Option.PLAY -> viewModel.onPlayOptionSelected()
+                MediaOptionsDialog.Option.PLAY_NEXT -> viewModel.onPlayNextOptionSelected()
+                MediaOptionsDialog.Option.ADD_TO_QUEUE -> viewModel.onAddToQueueOptionSelected()
+                MediaOptionsDialog.Option.EDIT -> viewModel.onEditOptionSelected()
+                MediaOptionsDialog.Option.ADD_TO_PLAYLIST -> viewModel.onAddToPlaylistOptionSelected()
+                MediaOptionsDialog.Option.VIEW_ALBUM -> viewModel.onViewAlbumOptionSelected()
+                MediaOptionsDialog.Option.VIEW_ARTIST -> viewModel.onViewArtistOptionSelected()
+                MediaOptionsDialog.Option.VIEW_GENRE -> viewModel.onViewGenreOptionSelected()
             }
         }
         return dialog.apply { show() }

@@ -64,6 +64,7 @@
     <declare-styleable name="OptionTextView">
         <attr name="optionTitle" format="string"/>
         <attr name="optionIcon" format="reference"/>
+        <attr name="optionIconSize" format="dimension"/>
         <attr name="optionIconPadding" format="dimension"/>
     </declare-styleable>
 

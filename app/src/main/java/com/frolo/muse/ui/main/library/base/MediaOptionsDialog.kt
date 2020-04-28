@@ -18,10 +18,10 @@ import com.frolo.muse.ui.getTypeName
 import com.frolo.muse.views.Anim
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import kotlinx.android.synthetic.main.dialog_media_menu.*
+import kotlinx.android.synthetic.main.dialog_media_options.*
 
 
-class OptionsMenuDialog<E: Media> constructor(
+class MediaOptionsDialog<E: Media> constructor(
     context: Context,
     private val optionsMenu: OptionsMenu<E>,
     private val onOptionSelected: (item: E, option: Option) -> Unit
@@ -65,7 +65,7 @@ class OptionsMenuDialog<E: Media> constructor(
         val item = optionsMenu.item
 
         val rootView = LayoutInflater.from(context)
-                .inflate(R.layout.dialog_media_menu, null, false)
+                .inflate(R.layout.dialog_media_options, null, false)
 
         setContentView(rootView)
 

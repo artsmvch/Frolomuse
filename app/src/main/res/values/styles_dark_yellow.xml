@@ -72,8 +72,7 @@
     </style>
 
     <style name="AppTheme.BottomSheet.Dark.Yellow" parent="@style/Widget.Design.BottomSheet.Modal">
-        <item name="android:background">@drawable/bg_bottom_sheet</item>
-        <item name="colorSurface">@color/app_dark_yellow_surface</item>
+        <item name="android:background">@drawable/bg_bottom_sheet_dark_yellow</item>
     </style>
 
     <style name="AppTheme.SeekBar.Dark.Yellow" parent="Base.AppTheme.SeekBar">
@@ -123,7 +122,7 @@
         <item name="dialogTheme">@style/AppTheme.Dialog.Dark.Yellow</item>
         <item name="alertDialogTheme">@style/AppTheme.AlertDialog.Dark.Yellow</item>
         <item name="materialAlertDialogTheme">@style/AppTheme.MaterialAlertDialog.Dark.Yellow</item>
-        <item name="bottomSheetDialogTheme">@style/AppTheme.Dark.Blue.BottomSheetDialog</item>
+        <item name="bottomSheetDialogTheme">@style/AppTheme.BottomSheetDialog.Dark.Yellow</item>
         <item name="textInputStyle">@style/AppTheme.TextInputLayout.Dark.Yellow</item>
         <item name="bottomNavigationStyle">@style/AppTheme.BottomNavigationView.Dark.Yellow</item>
         <item name="seekBarStyle">@style/AppTheme.SeekBar.Dark.Yellow</item>

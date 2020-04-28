@@ -43,6 +43,15 @@ class OptionTextView @JvmOverloads constructor(
             imv_icon.setImageDrawable(value)
         }
 
+    var optionIconSize: Int = 0
+        set(value) {
+            field = value
+            imv_icon.updateLayoutParams<MarginLayoutParams> {
+                width = value
+                height = value
+            }
+        }
+
     var optionIconPadding: Int = 0
         set(value) {
             field = value
@@ -62,6 +71,7 @@ class OptionTextView @JvmOverloads constructor(
 
         optionTitle = arr.getString(R.styleable.OptionTextView_optionTitle)
         optionIcon = arr.getDrawable(R.styleable.OptionTextView_optionIcon)
+        optionIconSize = arr.getDimension(R.styleable.OptionTextView_optionIconSize, 0f).toInt()
         optionIconPadding = arr.getDimension(R.styleable.OptionTextView_optionIconPadding, 0f).toInt()
 
         arr.recycle()

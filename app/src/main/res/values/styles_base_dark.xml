@@ -56,6 +56,7 @@
         <item name="modeOffTint">#b6b6b6</item>
         <item name="modeOnTint">#ff0066</item>
         <item name="iBarStyle">@style/Base.AppTheme.Dark.IBar</item>
+        <item name="fastScrollerStyle">@style/Base.AppTheme.FastScroller</item>
     </style>
 
     <style name="Base.AppTheme.Dark.Dialog" parent="Theme.MaterialComponents.Dialog">
