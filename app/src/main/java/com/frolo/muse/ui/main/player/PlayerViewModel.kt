@@ -133,9 +133,6 @@ class PlayerViewModel @Inject constructor(
         }
     private var resolveSoundSubscription: Subscription? = null
 
-    val placeholderVisible: LiveData<Boolean> =
-            Transformations.map(song) { song: Song? -> song == null }
-
     private val _songPosition = MediatorLiveData<Int>().apply {
         value = player.getCurrentPositionInQueue()
         // triggers

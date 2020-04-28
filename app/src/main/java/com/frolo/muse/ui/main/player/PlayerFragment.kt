@@ -419,10 +419,6 @@ class PlayerFragment: BaseFragment() {
             }
         }
 
-        placeholderVisible.observeNonNull(owner) { isVisible ->
-            //layout_player_placeholder.visibility = if (isVisible) View.VISIBLE else View.GONE
-        }
-
         songPosition.observeNonNull(owner) { position ->
             Trace.d(LOG_TAG, "Song position changed to $position")
 
