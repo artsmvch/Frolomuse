@@ -13,6 +13,29 @@
     <color name="app_dark_yellow_accent">#ED8752</color>
     <color name="app_dark_yellow_surface">#292625</color>
 
+    <style name="AppTheme.Dialog.Dark.Yellow" parent="Base.AppTheme.Dark.Dialog">
+        <item name="colorPrimary">@color/app_dark_yellow_accent</item>
+        <item name="colorPrimaryDark">@color/app_dark_yellow_primary_dark</item>
+        <item name="colorAccent">@color/app_dark_yellow_accent</item>
+        <item name="colorPrimaryVariant">@color/app_dark_yellow_primary_variant</item>
+        <item name="colorOnPrimary">@color/md_white_1000</item>
+        <item name="colorSecondary">@color/app_dark_yellow_secondary</item>
+        <item name="colorSecondaryVariant">@color/app_dark_yellow_secondary_variant</item>
+        <item name="colorOnSecondary">@color/md_white_1000</item>
+        <item name="colorError">#FF6E6E</item>
+        <item name="colorSurface">@color/app_dark_yellow_surface</item>
+        <item name="colorOnSurface">@color/md_white_1000</item>
+
+        <item name="seekBarStyle">@style/AppTheme.SeekBar.Dark.Yellow</item>
+        <item name="switchStyle">@style/Switch.Dark</item>
+        <item name="textInputStyle">@style/AppTheme.TextInputLayout.Dark.Yellow</item>
+
+        <item name="android:textColor">@color/md_white_1000</item>
+        <item name="android:textColorPrimary">@color/md_white_1000</item>
+        <item name="android:textColorSecondary">@color/md_grey_300</item>
+        <item name="android:textColorHint">@color/md_grey_300</item>
+    </style>
+
     <style name="AppTheme.Button.AlertDialog.Dark.Yellow" parent="Widget.MaterialComponents.Button.TextButton">
         <item name="backgroundTint">@color/transparent</item>
         <item name="rippleColor">@color/app_dark_yellow_secondary</item>
@@ -56,12 +79,6 @@
         <item name="android:progressBackgroundTint">#5A5A5A</item>
     </style>
 
-    <style name="AppTheme.Dialog.Dark.Yellow" parent="Base.AppTheme.Dark.Dialog">
-        <item name="seekBarStyle">@style/AppTheme.SeekBar.Dark.Yellow</item>
-        <item name="colorAccent">@color/app_dark_yellow_accent</item>
-        <item name="switchStyle">@style/Switch.Dark</item>
-    </style>
-
     <style name="AppTheme.Spinner.Dark.Yellow" parent="Widget.AppCompat.Spinner.Underlined">
     </style>
 
@@ -70,7 +87,6 @@
         <item name="boxStrokeWidthFocused">1.2dp</item>
         <item name="hintTextColor">@color/app_dark_yellow_accent</item>
         <item name="android:textColorHint">@color/app_dark_yellow_accent</item>
-        <item name="boxStrokeColor">@color/edt_outline_light</item>
     </style>
 
     <style name="AppTheme.TabLayout.Dark.Yellow" parent="Widget.MaterialComponents.TabLayout.Colored">

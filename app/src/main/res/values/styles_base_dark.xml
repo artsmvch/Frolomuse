@@ -59,13 +59,15 @@
     </style>
 
     <style name="Base.AppTheme.Dark.Dialog" parent="Theme.MaterialComponents.Dialog">
-        <item name="android:windowBackground">@drawable/bg_dialog_dark</item>
-        <item name="textInputStyle">@style/AppTheme.TextInputLayout.Light.Blue</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:textColorPrimary">@color/white</item>
-        <item name="android:textColorSecondary">@color/white_smoke</item>
-        <item name="android:textColorHint">@color/gray_smoke</item>
-        <item name="switchStyle">@style/Switch.Dark</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowTitleStyle">@null</item>
+        <item name="android:windowAnimationStyle">@style/Base.AppTheme.WindowAnimation.Dialog</item>
+        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+        <item name="android:windowBackground">@drawable/bg_dialog</item>
+
+        <item name="textAppearanceButton">@style/Base.AppTheme.TextAppearance.Button</item>
+
+        <item name="materialButtonStyle">@style/Base.AppTheme.Button.TextButton</item>
     </style>
 
     <style name="Base.AppTheme.Dark.IBar" parent="android:style/Widget">

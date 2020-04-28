@@ -2,7 +2,7 @@
 <selector
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item app:state_item_checked="true" android:color="?colorSecondary" android:alpha="0.08"/>
-    <item app:state_item_playing="true" android:color="?colorPrimary" android:alpha="0.12"/>
+    <item app:state_item_checked="true" android:color="?colorSecondary" android:alpha="0.36"/>
+    <item app:state_item_playing="true" android:color="?colorSecondaryVariant" android:alpha="0.12"/>
     <item android:color="@color/transparent"/>
 </selector>

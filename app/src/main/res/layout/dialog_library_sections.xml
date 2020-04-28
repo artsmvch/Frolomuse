@@ -40,5 +40,5 @@
         android:minHeight="52dp"
         android:gravity="center"
         android:text="@string/save"
-        style="?textAppearanceButton" />
+        android:textAppearance="?textAppearanceButton" />
 </LinearLayout>
