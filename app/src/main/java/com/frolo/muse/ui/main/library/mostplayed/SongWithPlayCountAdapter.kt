@@ -14,6 +14,7 @@ import com.frolo.muse.ui.getNameString
 import com.frolo.muse.ui.main.library.base.SongAdapter
 import com.frolo.muse.views.media.MediaConstraintLayout
 import kotlinx.android.synthetic.main.include_check.view.*
+import kotlinx.android.synthetic.main.include_song_art_container.view.*
 import kotlinx.android.synthetic.main.item_song_with_play_count.view.*
 
 
@@ -46,6 +47,8 @@ class SongWithPlayCountAdapter constructor(
         selected: Boolean,
         selectionChanged: Boolean
     ) {
+        val isPlayPosition = position == playingPosition
+
         with(holder.itemView as MediaConstraintLayout) {
             val res = resources
             tv_song_name.text = item.getNameString(res)
@@ -66,21 +69,16 @@ class SongWithPlayCountAdapter constructor(
                 .circleCrop()
                 .into(imv_album_art)
 
-            val isPlayPosition = position == playingPosition
-
-            if (isPlayPosition) {
-                mini_visualizer.visibility = View.VISIBLE
-                mini_visualizer.setAnimate(isPlaying)
-            } else {
-                mini_visualizer.visibility = View.INVISIBLE
-                mini_visualizer.setAnimate(false)
-            }
-
             imv_check.setChecked(selected, selectionChanged)
 
             setChecked(selected)
             setPlaying(isPlayPosition)
         }
+
+        holder.resolvePlayingPosition(
+            isPlayPosition = isPlayPosition,
+            isPlaying = isPlaying
+        )
     }
 
     class SongWithPlayCountViewHolder(
@@ -93,8 +91,7 @@ class SongWithPlayCountAdapter constructor(
                 if (hasLastPlayTime) View.VISIBLE else View.GONE
         }
 
-        override val viewOptionsMenu: View?
-            get() = itemView.view_options_menu
+        override val viewOptionsMenu: View? = itemView.view_options_menu
     }
 
 }
