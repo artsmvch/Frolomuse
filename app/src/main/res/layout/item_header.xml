@@ -12,7 +12,7 @@
     android:paddingTop="6dp"
     android:paddingEnd="24dp"
     android:paddingBottom="6dp"
-    android:background="?colorPrimary"
-    android:textColor="?colorOnPrimary"
+    android:background="?colorPrimarySurface"
+    android:textColor="?colorOnPrimarySurface"
     android:gravity="start"
     tools:text="Header" />

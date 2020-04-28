@@ -189,8 +189,16 @@
         <item name="iconifiedByDefault">false</item>
         <item name="searchIcon">@drawable/ic_search_search</item>
         <item name="closeIcon">@drawable/ic_search_close</item>
-        <item name="android:textSize">14sp</item>
         <item name="colorControlNormal">@color/tint_search_grey</item>
+    </style>
+
+    <!--AutocompleteTextView-->
+    <style name="Base.AppTheme.AutoCompleteTextView" parent="Widget.AppCompat.AutoCompleteTextView">
+        <item name="android:textColor">@color/md_grey_800</item>
+        <item name="android:textColorHint">@color/md_grey_500</item>
+        <item name="android:textCursorDrawable">@null</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
     <!--Button-->

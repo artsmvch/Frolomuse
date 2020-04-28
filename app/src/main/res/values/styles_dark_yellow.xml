@@ -128,6 +128,8 @@
         <item name="bottomNavigationStyle">@style/AppTheme.BottomNavigationView.Dark.Yellow</item>
         <item name="seekBarStyle">@style/AppTheme.SeekBar.Dark.Yellow</item>
         <item name="tabStyle">@style/AppTheme.TabLayout.Dark.Yellow</item>
+        <item name="searchViewStyle">@style/Base.AppTheme.SearchView</item>
+        <item name="autoCompleteTextViewStyle">@style/Base.AppTheme.AutoCompleteTextView</item>
 
         <item name="dialogCornerRadius">@dimen/dialog_corner_radius</item>
 

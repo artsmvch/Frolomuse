@@ -94,12 +94,12 @@ class MediaAdapter constructor(
     abstract class MediaViewHolder(itemView: View): BaseViewHolder(itemView) {
 
         @ColorInt
-        private val primaryColor: Int =
-                StyleUtil.readColorAttrValue(itemView.context, R.attr.colorPrimary)
+        private val primarySurfaceColor: Int =
+                StyleUtil.readColorAttrValue(itemView.context, R.attr.colorPrimarySurface)
 
         @ColorInt
         private val highlightColor: Int =
-                ColorUtils.setAlphaComponent(primaryColor, (0.6 * 255).toInt())
+                ColorUtils.setAlphaComponent(primarySurfaceColor, (0.85f * 255).toInt())
 
         private val highlightSpan = ForegroundColorSpan(highlightColor)
 
