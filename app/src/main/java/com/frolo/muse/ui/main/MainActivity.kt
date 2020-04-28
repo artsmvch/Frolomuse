@@ -90,6 +90,11 @@ class MainActivity : PlayerHostActivity(),
     }
 
     @get:ColorInt
+    private val colorPrimarySurface: Int by lazy {
+        StyleUtil.readColorAttrValue(this, R.attr.colorPrimarySurface)
+    }
+
+    @get:ColorInt
     private val colorSurface: Int by lazy {
         StyleUtil.readColorAttrValue(this, R.attr.colorSurface)
     }
@@ -146,11 +151,11 @@ class MainActivity : PlayerHostActivity(),
         }
 
         sliding_player_layout.background = MaterialShapeDrawable().apply {
-            fillColor = ColorStateList.valueOf(colorPrimary)
+            fillColor = ColorStateList.valueOf(colorPrimarySurface)
             shapeAppearanceModel = ShapeAppearanceModel.builder()
-                    .setTopLeftCorner(CornerFamily.ROUNDED, bottomNavCornerRadius)
-                    .setTopRightCorner(CornerFamily.ROUNDED, bottomNavCornerRadius)
-                    .build()
+                .setTopLeftCorner(CornerFamily.ROUNDED, bottomNavCornerRadius)
+                .setTopRightCorner(CornerFamily.ROUNDED, bottomNavCornerRadius)
+                .build()
         }
 
         mini_player_container.setOnClickListener {
@@ -535,7 +540,7 @@ class MainActivity : PlayerHostActivity(),
         mini_player_container.touchesDisabled = slideOffset > 0.4
 
         (sliding_player_layout.background as? MaterialShapeDrawable)?.apply {
-            val blendedColor = ColorUtils.blendARGB(colorSurface, colorPrimary, (1 - slideOffset))
+            val blendedColor = ColorUtils.blendARGB(colorPrimary, colorPrimarySurface, (1 - slideOffset).pow(2))
             fillColor = ColorStateList.valueOf(blendedColor)
 
             val cornerRadius = 48f.dp2px(this@MainActivity) * (1 - slideOffset)

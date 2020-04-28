@@ -8,6 +8,8 @@
     <color name="app_dark_yellow_primary">#292625</color>
     <color name="app_dark_yellow_primary_dark">#292625</color>
     <color name="app_dark_yellow_primary_variant">#312F2E</color>
+    <color name="app_dark_yellow_primary_surface">#ED8752</color>
+    <color name="app_dark_yellow_on_primary_surface">#FFFFFF</color>
     <color name="app_dark_yellow_secondary">#ED8752</color>
     <color name="app_dark_yellow_secondary_variant">#ED7152</color>
     <color name="app_dark_yellow_accent">#ED8752</color>
@@ -108,6 +110,8 @@
         <item name="colorAccent">@color/app_dark_yellow_accent</item>
         <item name="colorPrimaryVariant">@color/app_dark_yellow_primary_variant</item>
         <item name="colorOnPrimary">@color/md_white_1000</item>
+        <item name="colorPrimarySurface">@color/app_dark_yellow_primary_surface</item>
+        <item name="colorOnPrimarySurface">@color/app_dark_yellow_on_primary_surface</item>
         <item name="colorSecondary">@color/app_dark_yellow_secondary</item>
         <item name="colorSecondaryVariant">@color/app_dark_yellow_secondary_variant</item>
         <item name="colorOnSecondary">@color/md_white_1000</item>
@@ -138,6 +142,7 @@
         <item name="android:textColorHint">@color/md_grey_500</item>
 
         <item name="android:windowBackground">@color/app_dark_yellow_window_background</item>
+        <item name="android:navigationBarColor">@color/app_dark_yellow_primary</item>
 
         <!--Custom attrs-->
         <item name="iconImageTint">#EAEAEA</item>
