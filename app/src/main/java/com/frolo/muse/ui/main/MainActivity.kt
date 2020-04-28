@@ -541,7 +541,7 @@ class MainActivity : PlayerHostActivity(),
 
         (sliding_player_layout.background as? MaterialShapeDrawable)?.apply {
             val blendRatio = max(0f, 1f - slideOffset * 2)
-            val blendedColor = ColorUtils.blendARGB(colorPrimary, colorPrimarySurface, blendRatio)
+            val blendedColor = ColorUtils.blendARGB(colorSurface, colorPrimarySurface, blendRatio)
             fillColor = ColorStateList.valueOf(blendedColor)
 
             val cornerRadius = 48f.dp2px(this@MainActivity) * (1 - slideOffset)
