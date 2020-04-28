@@ -12,6 +12,7 @@ import com.frolo.muse.R
 import com.frolo.muse.StyleUtil
 import com.frolo.muse.model.media.Media
 import com.frolo.muse.model.menu.OptionsMenu
+import com.frolo.muse.ui.Dialogs
 import com.frolo.muse.ui.getName
 import com.frolo.muse.ui.getTypeName
 import com.frolo.muse.views.Anim
@@ -40,6 +41,7 @@ class MediaOptionsDialog<E: Media> constructor(
             mutate().setColorFilter(iconTint, PorterDuff.Mode.SRC_ATOP)
         }
         drawableFilledHeart = ContextCompat.getDrawable(context, R.drawable.ic_filled_heart)!!
+        Dialogs.fixBottomSheet(this)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
