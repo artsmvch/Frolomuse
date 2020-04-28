@@ -3,7 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:id="@+id/cl_root"
+    android:visibility="invisible">
 
     <androidx.fragment.app.FragmentContainerView
         app:layout_constraintStart_toStartOf="parent"

@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
@@ -49,6 +48,7 @@ import kotlin.math.max
 import kotlin.math.pow
 
 
+// TODO: show some splash until the player is connected and the fragment are loaded
 class MainActivity : PlayerHostActivity(),
         FragmentNavigator,
         PlayerSheetCallback {
@@ -454,11 +454,11 @@ class MainActivity : PlayerHostActivity(),
 
         supportFragmentManager.beginTransaction()
             .replace(R.id.container_player, PlayerSheetFragment(), FRAG_TAG_PLAYER_SHEET)
-            .commit()
-
-        supportFragmentManager.beginTransaction()
             .replace(R.id.mini_player_container, MiniPlayerFragment(), FRAG_TAG_MIN_PLAYER)
             .commit()
+
+        // Finally the root layout can be visible
+        cl_root.visibility = View.VISIBLE
 
         fragNavControllerInitialized = true
 
