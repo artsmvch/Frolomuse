@@ -27,7 +27,7 @@ class HiddenFilesDialog : BaseDialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return super.onCreateDialog(savedInstanceState).apply {
             setContentView(R.layout.dialog_hidden_files)
-            initUI(this)
+            loadUI(this)
 
             val metrics = resources.displayMetrics
             val width = metrics.widthPixels
@@ -36,7 +36,7 @@ class HiddenFilesDialog : BaseDialogFragment() {
         }
     }
 
-    private fun initUI(dialog: Dialog) {
+    private fun loadUI(dialog: Dialog) {
         with(dialog) {
             btn_ok.setOnClickListener {
                 dismiss()

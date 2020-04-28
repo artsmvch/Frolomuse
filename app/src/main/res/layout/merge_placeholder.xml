@@ -17,7 +17,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:textSize="16sp"
-        style="?textAppearanceBody1"
+        android:textSize="15sp"
+        android:textAppearance="?textAppearanceBody1"
+        android:gravity="center"
         tools:text="Empty"/>
 </merge>
