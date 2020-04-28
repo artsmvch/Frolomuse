@@ -526,7 +526,8 @@ class MainActivity : PlayerHostActivity(),
 
     private fun handleSlide(slideOffset: Float) {
         bottom_navigation_view.also { child ->
-            val heightToAnimate = slideOffset * child.height
+            val overTranslation = 1.2f
+            val heightToAnimate = slideOffset * child.height * overTranslation
             child.animate()
                 .translationY(heightToAnimate)
                 .setInterpolator(DecelerateInterpolator())
