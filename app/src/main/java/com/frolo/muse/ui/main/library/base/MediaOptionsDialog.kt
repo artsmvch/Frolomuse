@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
 import com.frolo.muse.R
 import com.frolo.muse.StyleUtil
@@ -16,7 +15,6 @@ import com.frolo.muse.model.menu.OptionsMenu
 import com.frolo.muse.ui.getName
 import com.frolo.muse.ui.getTypeName
 import com.frolo.muse.views.Anim
-import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.android.synthetic.main.dialog_media_options.*
 
@@ -33,7 +31,7 @@ class MediaOptionsDialog<E: Media> constructor(
         VIEW_GENRE, SET_AS_DEFAULT, HIDE, SCAN_FILES
     }
 
-    private val iconTint = StyleUtil.getIconTintColor(context)
+    private val iconTint = StyleUtil.readColorAttrValue(context, R.attr.iconImageTint)
     private val drawableHeart: Drawable
     private val drawableFilledHeart: Drawable
 
@@ -42,26 +40,15 @@ class MediaOptionsDialog<E: Media> constructor(
             mutate().setColorFilter(iconTint, PorterDuff.Mode.SRC_ATOP)
         }
         drawableFilledHeart = ContextCompat.getDrawable(context, R.drawable.ic_filled_heart)!!
-
-        setOnShowListener { dialog ->
-            val bottomSheetDialog = dialog as BottomSheetDialog
-            val bottomSheet = bottomSheetDialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet ) as FrameLayout
-            val bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet)
-            bottomSheetBehavior.apply {
-                state = BottomSheetBehavior.STATE_EXPANDED
-                skipCollapsed = true
-                isHideable = true
-            }
-        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setupView(optionsMenu)
+        setupOptionsMenu(optionsMenu)
         setupSize()
     }
 
-    private fun setupView(optionsMenu: OptionsMenu<E>) {
+    private fun setupOptionsMenu(optionsMenu: OptionsMenu<E>) {
         val item = optionsMenu.item
 
         val rootView = LayoutInflater.from(context)
