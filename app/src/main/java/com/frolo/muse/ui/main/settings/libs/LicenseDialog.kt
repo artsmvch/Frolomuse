@@ -1,6 +1,5 @@
 package com.frolo.muse.ui.main.settings.libs
 
-
 import android.app.Dialog
 import android.os.Bundle
 import android.view.ViewGroup
@@ -8,32 +7,38 @@ import android.view.Window
 import com.frolo.muse.R
 import com.frolo.muse.model.lib.Lib
 import com.frolo.muse.ui.base.BaseDialogFragment
-import kotlinx.android.synthetic.main.dialog_third_party_libs.*
+import kotlinx.android.synthetic.main.dialog_licenses.*
 import java.util.*
 
-class ThirdPartyLibsFragment : BaseDialogFragment() {
 
-    companion object {
-
-        // Factory
-        fun newInstance() = ThirdPartyLibsFragment()
-    }
+class LicenseDialog : BaseDialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return super.onCreateDialog(savedInstanceState).apply {
             requestWindowFeature(Window.FEATURE_NO_TITLE)
-            setContentView(R.layout.dialog_third_party_libs)
+            setContentView(R.layout.dialog_licenses)
 
             val metrics = resources.displayMetrics
             val width = metrics.widthPixels
             val height = metrics.heightPixels
             setupDialogSize(this, 6 * width / 7, ViewGroup.LayoutParams.WRAP_CONTENT)
 
-            initUI(this)
+            loadUI(this)
         }
     }
 
-    private fun fetchLibs(): List<Lib> {
+    private fun loadUI(dialog: Dialog) = with(dialog) {
+        rv_libs.apply {
+            adapter = LibAdapter(getLibs())
+            layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
+        }
+
+        btn_ok.setOnClickListener {
+            dismiss()
+        }
+    }
+
+    private fun getLibs(): List<Lib> {
         val libs = ArrayList<Lib>()
         val res = resources
         val ta = res.obtainTypedArray(R.array.libs)
@@ -59,17 +64,10 @@ class ThirdPartyLibsFragment : BaseDialogFragment() {
         return libs
     }
 
-    private fun initUI(dialog: Dialog) {
-        with(dialog) {
-            rv_libs.apply {
-                val libs = fetchLibs()
-                adapter = LibAdapter(libs)
-                layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
-            }
-            imv_close.setOnClickListener {
-                dismiss()
-            }
-        }
+    companion object {
 
+        // Factory
+        fun newInstance() = LicenseDialog()
     }
+
 }

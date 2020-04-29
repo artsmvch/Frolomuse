@@ -23,7 +23,7 @@ import com.frolo.muse.ui.helpWithTranslations
 import com.frolo.muse.ui.main.settings.hidden.HiddenFilesDialog
 import com.frolo.muse.ui.main.settings.info.AppInfoDialog
 import com.frolo.muse.ui.main.settings.library.LibrarySectionsDialog
-import com.frolo.muse.ui.main.settings.libs.ThirdPartyLibsFragment
+import com.frolo.muse.ui.main.settings.libs.LicenseDialog
 import com.frolo.muse.ui.main.settings.sleeptimer.SleepTimerDialog
 import com.frolo.muse.ui.shareApp
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -317,7 +317,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
     }
 
     private fun showThirdPartyLibs() {
-        val fragment = ThirdPartyLibsFragment.newInstance()
+        val fragment = LicenseDialog.newInstance()
         fragment.show(childFragmentManager, TAG_LICENCES)
     }
 

@@ -6,35 +6,38 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:gravity="start"
-    android:padding="8dp">
+    android:padding="16dp">
 
     <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_lib_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="?textAppearanceListItem"
-        android:textColor="?attr/colorAccent"
-        android:id="@+id/tv_lib_name"
+        android:textColor="?colorAccent"
         tools:text="Lib name"/>
 
     <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_lib_version"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
         android:textAppearance="?textAppearanceListItemSecondary"
-        android:id="@+id/tv_lib_version"
         tools:text="1.0"/>
 
     <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_lib_copyright"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?textAppearanceListItem"
-        android:id="@+id/tv_lib_copyright"
+        android:layout_marginTop="4dp"
+        android:textAppearance="?textAppearanceListItemSecondary"
         tools:text="Copyright"/>
 
     <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_lib_license"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?textAppearanceListItem"
-        android:id="@+id/tv_lib_license"
+        android:layout_marginTop="4dp"
+        android:textAppearance="?textAppearanceListItemSecondary"
         tools:text="License"/>
 
 </LinearLayout>
