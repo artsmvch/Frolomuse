@@ -3,90 +3,78 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="56dp">
 
     <ImageView
-        android:background="@drawable/ripple_play_button"
-        android:padding="2dp"
         android:id="@+id/btn_repeat_mode"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:adjustViewBounds="true"
+        android:padding="3dp"
         android:src="@drawable/ic_repeat_all_to_one"
-        android:tint="?attr/iconImageTint"
+        android:tint="?iconImageTint"
+        android:background="@drawable/ripple_play_button"
         app:layout_constraintDimensionRatio="1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_skip_to_previous"
-        app:layout_constraintHeight_percent="0.55"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHeight_percent="0.6"
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="spread" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_skip_to_previous" />
 
     <ImageView
-        android:background="@drawable/ripple_play_button"
-        android:padding="9dp"
-        android:layout_margin="3dp"
         android:id="@+id/btn_skip_to_previous"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:adjustViewBounds="true"
-        android:src="@drawable/ic_previous"
-        android:tint="?attr/iconImageTint"
+        android:padding="10dp"
+        android:src="@drawable/ic_skip_to_previous"
+        android:tint="?iconImageTint"
+        android:background="@drawable/ripple_play_button"
         app:layout_constraintHeight_percent="0.6"
         app:layout_constraintDimensionRatio="1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_play"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/btn_repeat_mode"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_play"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <com.frolo.mediabutton.PlayButton
         android:id="@+id/btn_play"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintHeight_percent="0.85"
+        android:theme="@style/PlayButton.Main"
+        app:layout_constraintHeight_percent="0.95"
         app:layout_constraintDimensionRatio="1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_skip_to_next"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/btn_skip_to_previous"
         app:layout_constraintTop_toTopOf="parent"
-        android:theme="@style/PlayButton.Main"/>
+        app:layout_constraintEnd_toStartOf="@+id/btn_skip_to_next"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <ImageView
-        android:background="@drawable/ripple_play_button"
-        android:padding="9dp"
-        android:layout_margin="3dp"
         android:id="@+id/btn_skip_to_next"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:adjustViewBounds="true"
-        android:src="@drawable/ic_next"
-        android:tint="?attr/iconImageTint"
+        android:padding="10dp"
+        android:src="@drawable/ic_skip_to_next"
+        android:tint="?iconImageTint"
+        android:background="@drawable/ripple_play_button"
         app:layout_constraintDimensionRatio="1"
         app:layout_constraintHeight_percent="0.6"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btn_shuffle_mode"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/btn_play"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_shuffle_mode"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
     <ImageView
-        android:background="@drawable/ripple_play_button"
-        android:padding="5dp"
         android:id="@+id/btn_shuffle_mode"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:padding="6dp"
         android:src="@drawable/ic_shuffle"
-        android:adjustViewBounds="true"
         android:tint="?attr/iconImageTint"
+        android:background="@drawable/ripple_play_button"
         app:layout_constraintDimensionRatio="1"
-        app:layout_constraintHeight_percent="0.55"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHeight_percent="0.6"
         app:layout_constraintStart_toEndOf="@+id/btn_skip_to_next"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
