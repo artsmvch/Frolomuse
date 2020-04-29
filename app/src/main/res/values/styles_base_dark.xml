@@ -8,6 +8,7 @@
         <item name="windowActionModeOverlay">true</item>
         <item name="actionBarSize">@dimen/default_bar_size</item>
         <item name="android:actionBarSize">@dimen/default_bar_size</item>
+        <item name="actionModeCloseDrawable">@drawable/ic_action_close</item>
 
         <!--Material colors-->
         <item name="colorPrimary">@color/md_light_blue_800</item>

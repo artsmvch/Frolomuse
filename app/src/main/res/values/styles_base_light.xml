@@ -6,6 +6,7 @@
         <item name="android:windowAnimationStyle">@style/Base.AppTheme.WindowAnimation.Dialog</item>
         <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
         <item name="android:windowBackground">@drawable/bg_dialog</item>
+        <item name="actionModeCloseDrawable">@drawable/ic_action_close</item>
 
         <item name="textAppearanceButton">@style/Base.AppTheme.TextAppearance.Button</item>
 
