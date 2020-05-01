@@ -4,7 +4,8 @@
     <dimen name="default_bar_size">52dp</dimen>
 
     <!--Dividers-->
-    <dimen name="app_thin_divider_size">1px</dimen>
+    <dimen name="app_divider_size">1dp</dimen>
+    <dimen name="app_thin_divider_size">0.5dp</dimen>
 
     <dimen name="media_item_art_size">52dp</dimen>
     <dimen name="media_item_art_margin">8dp</dimen>

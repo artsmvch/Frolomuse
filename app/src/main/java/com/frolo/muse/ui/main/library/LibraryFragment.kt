@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.core.view.updateLayoutParams
 import androidx.viewpager.widget.ViewPager
 import com.frolo.muse.R
@@ -22,14 +21,9 @@ class LibraryFragment: BaseFragment(),
         BackPressHandler,
         NoClipping {
 
-    companion object {
-        // Factory
-        fun newInstance() = LibraryFragment()
-    }
-
     private val preferences: Preferences by prefs()
 
-    private var enabledSections: List<@Library.Section Int>? = null
+    private var sections: List<@Library.Section Int>? = null
 
     private val onPageChangeCallback = object : ViewPager.OnPageChangeListener {
         override fun onPageScrollStateChanged(state: Int) = Unit
@@ -58,27 +52,27 @@ class LibraryFragment: BaseFragment(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         (activity as? AppCompatActivity)?.apply {
-            setSupportActionBar(tb_actions as Toolbar)
+            setSupportActionBar(tb_actions)
             title = getString(R.string.nav_library)
         }
 
-        // retrieving library sections from preferences should be synchronous operation
-        val actualEnabledSections = preferences.librarySections
+        // Retrieving library sections from the preferences should be a synchronous operation
+        val actualSections = preferences.librarySections
                 .filter { section -> preferences.isLibrarySectionEnabled(section) }
 
-        if (actualEnabledSections != enabledSections) {
+        if (actualSections != sections) {
             // It's a compelled workaround to prevent the action bar from adding menus
             // of previous fragments that are not at the current position
             childFragmentManager.removeAllFragmentsNow()
-            enabledSections = actualEnabledSections
+            sections = actualSections
         }
 
         vp_sections.apply {
             adapter = LibraryPageAdapter(childFragmentManager, context).apply {
-                sections = actualEnabledSections
+                sections = actualSections
             }
 
-            // adding OnPageChange listener should go after the adapter set up
+            // Registering OnPageChangeListener should go after the adapter is set up
             addOnPageChangeListener(onPageChangeCallback)
         }
 
@@ -125,5 +119,12 @@ class LibraryFragment: BaseFragment(),
             rightMargin += right
             bottomMargin += bottom
         }
+    }
+
+    companion object {
+
+        // Factory
+        fun newInstance() = LibraryFragment()
+
     }
 }

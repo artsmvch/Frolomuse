@@ -7,10 +7,11 @@
     android:layout_height="match_parent">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:background="@color/transparent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/Base.AppTheme.AppBarLayout.Transparent">
+        android:background="@color/transparent"
+        app:elevation="0dp"
+        app:liftOnScroll="false">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/tb_actions"
