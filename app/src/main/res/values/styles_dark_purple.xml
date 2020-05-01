@@ -19,7 +19,7 @@
     <color name="app_dark_purple_accent_ultra">#965EF0</color>
     <color name="app_dark_purple_fast_scroller">#5B3992</color>
 
-    <color name="app_dark_purple_divider_tint">#273441</color>
+    <color name="app_dark_purple_divider_tint">#3A344C</color>
 
     <style name="AppTheme.Dialog.Dark.Purple" parent="Base.AppTheme.Dark.Dialog">
         <item name="colorPrimary">@color/app_dark_purple_primary</item>
