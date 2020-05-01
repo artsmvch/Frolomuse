@@ -140,8 +140,6 @@
         <!--Custom attrs-->
         <item name="iconImageTint">#EAEAEA</item>
         <item name="dividerTint">#383634</item>
-        <item name="modeOffTint">#b6b6b6</item>
-        <item name="modeOnTint">#ff0066</item>
         <item name="iBarStyle">@style/Base.AppTheme.Dark.IBar</item>
         <item name="miniVisualizerStyle">@style/AppTheme.MiniVisualizer.Dark.Yellow</item>
     </style>

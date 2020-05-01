@@ -98,7 +98,5 @@
         <item name="android:windowBackground">@drawable/png_dark_purple_main</item>
 
         <!--custom attrs-->
-        <item name="modeOffTint">#b6b6b6</item>
-        <item name="modeOnTint">#ff0066</item>
     </style>
 </resources>

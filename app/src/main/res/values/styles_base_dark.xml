@@ -54,8 +54,6 @@
         <!--custom attrs-->
         <item name="iconImageTint">#FFFFFF</item>
         <item name="dividerTint">#ABABAB</item>
-        <item name="modeOffTint">#b6b6b6</item>
-        <item name="modeOnTint">#ff0066</item>
         <item name="iBarStyle">@style/Base.AppTheme.Dark.IBar</item>
         <item name="fastScrollerStyle">@style/Base.AppTheme.FastScroller</item>
     </style>

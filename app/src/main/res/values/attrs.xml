@@ -5,9 +5,6 @@
     <attr name="iconImageTint" format="color"/>
     <attr name="dividerTint" format="color"/>
 
-    <attr name="modeOffTint" format="color"/>
-    <attr name="modeOnTint" format="color"/>
-
     <declare-styleable name="ControllerView">
         <attr name="label" format="string"/>
     </declare-styleable>
