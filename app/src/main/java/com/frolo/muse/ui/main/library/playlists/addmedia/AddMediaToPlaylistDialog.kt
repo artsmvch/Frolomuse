@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.view.Window
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProviders
@@ -21,21 +22,13 @@ import com.frolo.muse.views.Anim
 import kotlinx.android.synthetic.main.dialog_add_media_to_playlist.*
 
 
-class AddMediaToPlaylistFragment : BaseDialogFragment() {
-
-    companion object {
-        private const val ARG_MEDIA_LIST = "media_list"
-
-        // Factory
-        fun <E : Media> newInstance(items: ArrayList<E>) = AddMediaToPlaylistFragment()
-                .withArg(ARG_MEDIA_LIST, items)
-    }
+class AddMediaToPlaylistDialog : BaseDialogFragment() {
 
     private val viewModel: AddMediaToPlaylistViewModel by lazy {
         @Suppress("UNCHECKED_CAST")
         val mediaList = requireArguments()
                 .getSerializable(ARG_MEDIA_LIST) as ArrayList<Media>
-        val vmFactory = AddMediaTiPlaylistVMFactory(requireApp().appComponent, mediaList)
+        val vmFactory = AddMediaToPlaylistVMFactory(requireApp().appComponent, mediaList)
         ViewModelProviders.of(this, vmFactory)
                 .get(AddMediaToPlaylistViewModel::class.java)
     }
@@ -48,7 +41,9 @@ class AddMediaToPlaylistFragment : BaseDialogFragment() {
                         viewModel.onPlaylistSelected(item)
                     }
                 }
+
                 override fun onItemLongClick(item: Playlist, position: Int) = Unit
+
                 override fun onOptionsMenuClick(item: Playlist, position: Int) = Unit
             }
         }
@@ -81,9 +76,9 @@ class AddMediaToPlaylistFragment : BaseDialogFragment() {
             val metrics = resources.displayMetrics
             val width = metrics.widthPixels
             val height = metrics.heightPixels
-            setupDialogSize(this, 6 * width / 7, 5 * height / 7)
+            setupDialogSize(this, 11 * width / 12, ViewGroup.LayoutParams.WRAP_CONTENT)
 
-            initUI(this)
+            loadUI(this)
         }
     }
 
@@ -92,42 +87,40 @@ class AddMediaToPlaylistFragment : BaseDialogFragment() {
         super.onDetach()
     }
 
-    private fun initUI(dialog: Dialog) {
-        dialog.apply {
-            rv_list.layoutManager = LinearLayoutManager(context)
-            rv_list.adapter = adapter
+    private fun loadUI(dialog: Dialog) = with(dialog) {
+        rv_list.layoutManager = LinearLayoutManager(context)
+        rv_list.adapter = adapter
 
-            inc_progress_overlay.setOnClickListener { }
+        inc_progress_overlay.setOnTouchListener { _, _ -> true }
 
-            imv_close.setOnClickListener { dismiss() }
+        btn_cancel.setOnClickListener {
+            cancel()
         }
     }
 
-    private fun observeViewModel(owner: LifecycleOwner) {
-        viewModel.apply {
-            isLoading.observeNonNull(owner) { isLoading ->
-                onSetLoading(isLoading)
-            }
+    private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
+        isLoading.observeNonNull(owner) { isLoading ->
+            onSetLoading(isLoading)
+        }
 
-            placeholderVisible.observeNonNull(owner) { visible ->
-                onSetPlaceholderVisible(visible)
-            }
+        placeholderVisible.observeNonNull(owner) { visible ->
+            onSetPlaceholderVisible(visible)
+        }
 
-            playlists.observeNonNull(owner) { list ->
-                onSubmitList(list)
-            }
+        playlists.observeNonNull(owner) { list ->
+            onSubmitList(list)
+        }
 
-            error.observeNonNull(owner) { err ->
-                onDisplayError(err)
-            }
+        error.observeNonNull(owner) { err ->
+            onDisplayError(err)
+        }
 
-            isAddingItemsToPlaylist.observeNonNull(owner) { isAdding ->
-                onSetAddingItemsToPlaylist(isAdding)
-            }
+        isAddingItemsToPlaylist.observeNonNull(owner) { isAdding ->
+            onSetAddingItemsToPlaylist(isAdding)
+        }
 
-            itemsAddedToPlaylistEvent.observeNonNull(owner) {
-                onItemsAddedToPlaylist()
-            }
+        itemsAddedToPlaylistEvent.observeNonNull(owner) {
+            onItemsAddedToPlaylist()
         }
     }
 
@@ -165,4 +158,13 @@ class AddMediaToPlaylistFragment : BaseDialogFragment() {
         postLongMessage(R.string.added)
         dismiss()
     }
+
+    companion object {
+        private const val ARG_MEDIA_LIST = "media_list"
+
+        // Factory
+        fun <E : Media> newInstance(items: ArrayList<E>) = AddMediaToPlaylistDialog()
+                .withArg(ARG_MEDIA_LIST, items)
+    }
+
 }

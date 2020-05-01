@@ -18,7 +18,7 @@ import com.frolo.muse.ui.main.library.albums.album.AlbumVMFactory
 import com.frolo.muse.ui.main.library.artists.artist.albums.AlbumsOfArtistVMFactory
 import com.frolo.muse.ui.main.library.artists.artist.songs.SongsOfArtistVMFactory
 import com.frolo.muse.ui.main.library.genres.genre.GenreVMFactory
-import com.frolo.muse.ui.main.library.playlists.addmedia.AddMediaTiPlaylistVMFactory
+import com.frolo.muse.ui.main.library.playlists.addmedia.AddMediaToPlaylistVMFactory
 import com.frolo.muse.ui.main.library.playlists.create.CreatePlaylistVMFactory
 import com.frolo.muse.ui.main.library.playlists.playlist.PlaylistVMFactory
 import com.frolo.muse.ui.main.library.playlists.playlist.addsong.AddSongToPlaylistVMFactory
@@ -69,7 +69,7 @@ interface AppComponent {
     fun inject(vmf: AlbumEditorVMFactory)
     fun inject(vmf: PlaylistEditorVMFactory)
     fun inject(vmf: PosterVMFactory)
-    fun inject(vmf: AddMediaTiPlaylistVMFactory)
+    fun inject(vmf: AddMediaToPlaylistVMFactory)
     fun inject(vmf: AddSongToPlaylistVMFactory)
     fun inject(vmf: SavePresetVMFactory)
     fun inject(vmf: LyricsVMFactory)

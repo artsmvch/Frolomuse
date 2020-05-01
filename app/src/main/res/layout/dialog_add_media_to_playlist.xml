@@ -1,66 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
+    <androidx.appcompat.widget.AppCompatTextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:textAppearance="?textAppearanceHeadline6"
+        android:gravity="center"
+        android:text="@string/select_playlist"/>
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:text="@string/choose_playlist"
-            android:layout_marginStart="12dp"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:textAppearance="?textAppearanceHeadline5"/>
-
-        <ImageView
-            android:background="?attr/selectableItemBackground"
-            android:id="@+id/imv_close"
-            android:tint="?attr/iconImageTint"
-            android:src="@drawable/ic_cross"
-            android:padding="15dp"
-            android:layout_width="45dp"
-            android:layout_height="45dp" />
-    </LinearLayout>
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:textAppearance="?textAppearanceBody2"
+        android:gravity="center"
+        android:text="@string/select_playlist_to_which_you_want_to_add_music"/>
 
     <include layout="@layout/include_divider"/>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:minHeight="320dp">
 
         <com.frolo.muse.views.spring.AppRecyclerView
             android:id="@+id/rv_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            tools:listitem="@layout/item_simple_playlist"
+            tools:itemCount="5"/>
 
-        <include
-            android:visibility="gone"
-            layout="@layout/include_placeholder"
-            android:layout_gravity="center"
+        <include layout="@layout/include_placeholder"
             android:id="@+id/layout_list_placeholder"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="invisible" />
 
         <com.frolo.muse.views.progress.IBar
             android:id="@+id/pb_loading"
-            android:layout_gravity="center"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <include
-            layout="@layout/include_progress_overlay"
-            android:visibility="gone"
-            android:id="@+id/inc_progress_overlay"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:visibility="invisible" />
+
+        <include layout="@layout/include_progress_overlay"
+            android:id="@+id/inc_progress_overlay"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:visibility="invisible"/>
     </FrameLayout>
+
+    <include layout="@layout/include_divider"/>
+
+    <TextView
+        android:id="@+id/btn_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/dialog_footer_min_height"
+        android:textAppearance="?textAppearanceButton"
+        android:background="?selectableItemBackground"
+        android:gravity="center"
+        android:text="@string/cancel"/>
 </LinearLayout>

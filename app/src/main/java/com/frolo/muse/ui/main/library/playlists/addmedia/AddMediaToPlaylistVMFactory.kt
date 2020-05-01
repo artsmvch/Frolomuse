@@ -11,7 +11,7 @@ import com.frolo.muse.rx.SchedulerProvider
 import javax.inject.Inject
 
 
-class AddMediaTiPlaylistVMFactory constructor(
+class AddMediaToPlaylistVMFactory constructor(
         appComponent: AppComponent,
         itemsArg: List<Media>
 ): ViewModelProvider.Factory {
