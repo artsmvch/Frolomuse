@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="56dp">
+    android:layout_height="64dp">
 
     <ImageView
         android:id="@+id/btn_repeat_mode"
@@ -14,7 +14,7 @@
         android:tint="?iconImageTint"
         android:background="@drawable/ripple_play_button"
         app:layout_constraintDimensionRatio="1"
-        app:layout_constraintHeight_percent="0.6"
+        app:layout_constraintHeight_percent="0.5"
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -29,7 +29,7 @@
         android:src="@drawable/ic_skip_to_previous"
         android:tint="?iconImageTint"
         android:background="@drawable/ripple_play_button"
-        app:layout_constraintHeight_percent="0.6"
+        app:layout_constraintHeight_percent="0.5"
         app:layout_constraintDimensionRatio="1"
         app:layout_constraintStart_toEndOf="@+id/btn_repeat_mode"
         app:layout_constraintTop_toTopOf="parent"
@@ -57,7 +57,7 @@
         android:tint="?iconImageTint"
         android:background="@drawable/ripple_play_button"
         app:layout_constraintDimensionRatio="1"
-        app:layout_constraintHeight_percent="0.6"
+        app:layout_constraintHeight_percent="0.5"
         app:layout_constraintStart_toEndOf="@+id/btn_play"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btn_shuffle_mode"
@@ -72,7 +72,7 @@
         android:tint="?attr/iconImageTint"
         android:background="@drawable/ripple_play_button"
         app:layout_constraintDimensionRatio="1"
-        app:layout_constraintHeight_percent="0.6"
+        app:layout_constraintHeight_percent="0.5"
         app:layout_constraintStart_toEndOf="@+id/btn_skip_to_next"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

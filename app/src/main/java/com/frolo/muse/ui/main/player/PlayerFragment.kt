@@ -69,9 +69,9 @@ class PlayerFragment: BaseFragment() {
 
     private val viewModel: PlayerViewModel by viewModel()
 
-    // UI variables
-    private var previousAlbumViewPagerState = ViewPager2.SCROLL_STATE_IDLE
-    // indicates if the user is scrolling (or scrolled) the album view pager
+    // The state of album view pager
+    private var albumViewPagerState = ViewPager2.SCROLL_STATE_IDLE
+    // This flag indicates whether the user is scrolling the album view pager
     private var userScrolledAlbumViewPager = false
 
     // View pager callbacks
@@ -87,22 +87,22 @@ class PlayerFragment: BaseFragment() {
         }
 
         override fun onPageScrollStateChanged(state: Int) {
-            if (previousAlbumViewPagerState == ViewPager2.SCROLL_STATE_DRAGGING
+            if (albumViewPagerState == ViewPager2.SCROLL_STATE_DRAGGING
                     && state == ViewPager2.SCROLL_STATE_SETTLING) {
                 userScrolledAlbumViewPager = true
-            } else if (previousAlbumViewPagerState == ViewPager2.SCROLL_STATE_SETTLING
+            } else if (albumViewPagerState == ViewPager2.SCROLL_STATE_SETTLING
                     && state == ViewPager2.SCROLL_STATE_IDLE) {
                 userScrolledAlbumViewPager = false
             }
-            previousAlbumViewPagerState = state
+            albumViewPagerState = state
         }
     }
 
-    // indicates if the user is currently tracking the progress bar
+    // This flag indicates whether the user is currently tracking the progress bar
     private var isTrackingProgress = false
     private val seekBarListener = object : WaveformSeekBar.OnSeekBarChangeListener {
         override fun onProgressInPercentageChanged(seekBar: WaveformSeekBar, percent: Float, fromUser: Boolean) {
-            if (fromUser) { // by user
+            if (fromUser) {
                 viewModel.onSeekProgressToPercent(percent)
             }
         }
@@ -151,7 +151,7 @@ class PlayerFragment: BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         // NOTE: Need to set default values to the following variables every time fragment view created.
-        previousAlbumViewPagerState = ViewPager2.SCROLL_STATE_IDLE
+        albumViewPagerState = ViewPager2.SCROLL_STATE_IDLE
         userScrolledAlbumViewPager = false
         isTrackingProgress = false
 
