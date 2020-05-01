@@ -1,114 +1,176 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Base.Button.AlertDialog.Dark.Blue" parent="Widget.MaterialComponents.Button.TextButton">
+
+    <!--Dark blue theme. All the styles are postfixed with .Dark.Blue-->
+
+    <color name="app_dark_blue_window_background">#0C131A</color>
+    <color name="app_dark_blue_action_mode">#0C131A</color>
+    <color name="app_dark_blue_primary">#1A242E</color>
+    <color name="app_dark_blue_primary_dark">#1A242E</color>
+    <color name="app_dark_blue_primary_variant">#1A252E</color>
+    <color name="app_dark_blue_primary_surface">#273C54</color>
+    <color name="app_dark_blue_on_primary_surface">#FFFFFF</color>
+    <color name="app_dark_blue_secondary">#3E88A5</color>
+    <color name="app_dark_blue_secondary_variant">#3E88A5</color>
+    <color name="app_dark_blue_accent">#3E88A5</color>
+    <color name="app_dark_blue_surface">#1A242E</color>
+    <color name="app_dark_blue_on_surface">@color/md_white_1000</color>
+
+    <color name="app_dark_blue_accent_ultra">#64C0E5</color>
+
+    <style name="AppTheme.Dialog.Dark.Blue" parent="Base.AppTheme.Dark.Dialog">
+        <item name="colorPrimary">@color/app_dark_blue_primary</item>
+        <item name="colorPrimaryDark">@color/app_dark_blue_primary_dark</item>
+        <item name="colorAccent">@color/app_dark_blue_accent</item>
+        <item name="colorPrimaryVariant">@color/app_dark_blue_primary_variant</item>
+        <item name="colorOnPrimary">@color/md_white_1000</item>
+        <item name="colorSecondary">@color/app_dark_blue_secondary</item>
+        <item name="colorSecondaryVariant">@color/app_dark_blue_secondary_variant</item>
+        <item name="colorOnSecondary">@color/md_white_1000</item>
+        <item name="colorError">#FF6E6E</item>
+        <item name="colorSurface">@color/app_dark_blue_surface</item>
+        <item name="colorOnSurface">@color/md_white_1000</item>
+
+        <item name="seekBarStyle">@style/AppTheme.SeekBar.Dark.Yellow</item>
+        <item name="switchStyle">@style/Base.AppTheme.Switch.Dark</item>
+        <item name="textInputStyle">@style/AppTheme.TextInputLayout.Dark.Blue</item>
+        <item name="materialButtonStyle">@style/AppTheme.Button.TextButton.Dark.Blue</item>
+
+        <item name="android:textColor">@color/md_white_1000</item>
+        <item name="android:textColorPrimary">@color/md_white_1000</item>
+        <item name="android:textColorSecondary">@color/md_grey_300</item>
+        <item name="android:textColorHint">@color/md_grey_300</item>
+    </style>
+
+    <style name="AppTheme.AlertDialog.Dark.Blue" parent="Base.AppTheme.AlertDialog">
+        <item name="colorSurface">@color/app_dark_blue_surface</item>
+        <item name="colorAccent">@color/app_dark_blue_accent</item>
+        <item name="android:textColor">@color/md_white_1000</item>
+        <item name="android:textColorPrimary">@color/md_white_1000</item>
+        <item name="android:textColorSecondary">@color/md_white_1000</item>
+        <item name="textColorAlertDialogListItem">@color/md_white_1000</item>
+        <item name="colorControlNormal">@color/md_white_1000</item>
+        <item name="android:background">@color/app_dark_blue_surface</item>
+
+        <item name="buttonBarButtonStyle">@style/AppTheme.Button.TextButton.Dialog.Dark.Blue</item>
+        <item name="buttonBarPositiveButtonStyle">@style/AppTheme.Button.TextButton.Dialog.Dark.Blue</item>
+        <item name="buttonBarNegativeButtonStyle">@style/AppTheme.Button.TextButton.Dialog.Dark.Blue</item>
+        <item name="buttonBarNeutralButtonStyle">@style/AppTheme.Button.TextButton.Dialog.Dark.Blue</item>
+    </style>
+
+    <style name="AppTheme.MaterialAlertDialog.Dark.Blue" parent="Base.AppTheme.MaterialAlertDialog">
+        <item name="colorAccent">@color/app_dark_blue_accent</item>
+        <item name="android:textColor">@color/md_white_1000</item>
+        <item name="android:textColorPrimary">@color/md_white_1000</item>
+        <item name="android:textColorSecondary">@color/md_white_1000</item>
+        <item name="textColorAlertDialogListItem">@color/md_white_1000</item>
+        <item name="colorControlNormal">@color/md_white_1000</item>
+        <item name="android:background">@color/app_dark_blue_surface</item>
+
+        <item name="buttonBarButtonStyle">@style/AppTheme.Button.TextButton.Dialog.Dark.Blue</item>
+        <item name="buttonBarPositiveButtonStyle">@style/AppTheme.Button.TextButton.Dialog.Dark.Blue</item>
+        <item name="buttonBarNegativeButtonStyle">@style/AppTheme.Button.TextButton.Dialog.Dark.Blue</item>
+        <item name="buttonBarNeutralButtonStyle">@style/AppTheme.Button.TextButton.Dialog.Dark.Blue</item>
+    </style>
+
+    <style name="AppTheme.BottomSheetDialog.Dark.Blue" parent="Base.AppTheme.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppTheme.BottomSheet.Dark.Blue</item>
+    </style>
+
+    <style name="AppTheme.BottomSheet.Dark.Blue" parent="@style/Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/bg_bottom_sheet_dark_blue</item>
+    </style>
+
+    <style name="AppTheme.SeekBar.Dark.Blue" parent="Base.AppTheme.SeekBar">
+        <item name="colorAccent">@color/app_dark_blue_accent</item>
+        <item name="android:progressBackgroundTint">#5A5A5A</item>
+    </style>
+
+    <style name="AppTheme.Spinner.Dark.Blue" parent="Widget.AppCompat.Spinner.Underlined">
+    </style>
+
+    <style name="AppTheme.TextInputLayout.Dark.Blue" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeWidth">1.2dp</item>
+        <item name="boxStrokeWidthFocused">1.2dp</item>
+        <item name="hintTextColor">@color/app_dark_blue_accent</item>
+        <item name="android:textColorHint">@color/app_dark_blue_accent</item>
+    </style>
+
+    <style name="AppTheme.TabLayout.Dark.Blue" parent="Widget.MaterialComponents.TabLayout.Colored">
+    </style>
+
+    <style name="AppTheme.BottomNavigationView.Dark.Blue" parent="Base.AppTheme.BottomNavigationView">
+        <item name="itemIconTint">@color/nav_dark</item>
+        <item name="background">@color/app_dark_blue_primary_dark</item>
+        <item name="android:background">@color/app_dark_blue_window_background</item>
+    </style>
+
+    <style name="AppTheme.MiniVisualizer.Dark.Blue" parent="Base.AppTheme.MiniVisualizer">
+        <item name="barColor">@color/app_dark_blue_accent_ultra</item>
+    </style>
+
+    <style name="AppTheme.Button.TextButton.Dark.Blue" parent="Base.AppTheme.Button.TextButton">
+        <item name="android:textColor">@color/app_dark_blue_accent_ultra</item>
         <item name="backgroundTint">@color/transparent</item>
-        <item name="rippleColor">@color/md_blue_50</item>
-        <item name="android:textColor">@color/md_blue_200</item>
+        <item name="rippleColor">@color/app_dark_blue_accent_ultra</item>
     </style>
 
-    <style name="Base.AlertDialog.Dark.Blue" parent="Base.AppTheme.AlertDialog">
-        <item name="colorAccent">@color/md_blue_400</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:textColorPrimary">@color/white</item>
-        <item name="android:textColorSecondary">@color/white</item>
-        <item name="dialogCornerRadius">@dimen/dialog_corner_radius</item>
-        <item name="textColorAlertDialogListItem">@color/white</item>
-        <item name="android:background">@drawable/bg_dialog_dark</item>
-        <item name="colorControlNormal">@color/white</item>
-        <item name="buttonBarButtonStyle">@style/Base.Button.AlertDialog.Dark.Blue</item>
-    </style>
-
-    <style name="Base.MaterialAlertDialog.Dark.Blue" parent="Base.AppTheme.MaterialAlertDialog">
-        <item name="colorAccent">@color/md_blue_400</item>
-        <item name="android:textColor">@color/white</item>
-        <item name="android:textColorPrimary">@color/white</item>
-        <item name="android:textColorSecondary">@color/white</item>
-        <item name="dialogCornerRadius">@dimen/dialog_corner_radius</item>
-        <item name="textColorAlertDialogListItem">@color/white</item>
-        <item name="colorControlNormal">@color/white</item>
-    </style>
-
-    <style name="AppTheme.Dark.Blue.BottomSheetDialog" parent="Base.AppTheme.BottomSheetDialog">
-        <item name="bottomSheetStyle">@style/AppTheme.Dark.Blue.BottomSheet</item>
-        <item name="android:navigationBarColor">@color/custom_black</item>
-    </style>
-
-    <style name="AppTheme.Dark.Blue.BottomSheet" parent="@style/Widget.Design.BottomSheet.Modal">
-        <item name="android:background">@drawable/bg_bottom_dialog_dark</item>
-    </style>
-
-    <style name="Switch.Dark" parent="Widget.MaterialComponents.CompoundButton.Switch">
-        <item name="trackTint">#5E5E5E</item>
-        <item name="useMaterialThemeColors">false</item>
-    </style>
-
-    <style name="Spinner.DropDown.Dark" parent="">
-        <item name="android:background">@drawable/bg_spinner_drop_down_dark</item>
-    </style>
-
-    <style name="Base.SeekBar.Dark.Blue" parent="Base.AppTheme.SeekBar">
-        <item name="colorAccent">@color/dodger_blue</item>
-        <item name="android:progressBackgroundTint">#B8B7B7</item>
-    </style>
-
-    <style name="Base.Dialog.Dark.Blue" parent="Base.AppTheme.Dark.Dialog">
-        <item name="seekBarStyle">@style/Base.SeekBar.Dark.Blue</item>
-        <item name="colorAccent">@color/dodger_blue</item>
-        <item name="switchStyle">@style/Switch.Dark</item>
-    </style>
-
-    <style name="Chip.Choice.Dark.Blue" parent="Widget.MaterialComponents.Chip.Choice">
-        <item name="chipBackgroundColor">@color/bg_chip_choice_dark_blue</item>
-        <item name="android:textColor">@color/white</item>
-    </style>
-
-    <style name="Spinner.Dark.Blue" parent="Widget.AppCompat.Spinner.Underlined">
-        <item name="android:backgroundTint">#91ABB9</item>
+    <style name="AppTheme.Button.TextButton.Dialog.Dark.Blue" parent="Base.AppTheme.Button.TextButton.Dialog">
+        <item name="rippleColor">@color/app_dark_blue_accent_ultra</item>
+        <item name="android:textColor">@color/app_dark_blue_accent_ultra</item>
     </style>
 
     <style name="Base.AppTheme.Dark.Blue" parent="Base.AppTheme.Dark">
-        <item name="colorPrimary">@color/night_toolbar</item>
-        <item name="colorPrimaryDark">@color/night_dark</item>
-        <item name="colorAccent">@color/bondi_blue</item>
-        <item name="colorPrimaryVariant">#0E3655</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <item name="colorSecondary">#278DD3</item>
-        <item name="colorSecondaryVariant">#C41C77</item>
-        <item name="colorOnSecondary">#FFFFFF</item>
-        <item name="colorError">#FF6E6E</item>
-        <item name="colorSurface">@color/night_surface</item>
-        <item name="colorOnSurface">#FFFFFF</item>
-        <item name="android:dialogTheme">@style/Base.Dialog.Dark.Blue</item>
-        <item name="dialogTheme">@style/Base.Dialog.Dark.Blue</item>
-        <item name="alertDialogTheme">@style/Base.AlertDialog.Dark.Blue</item>
-        <item name="materialAlertDialogTheme">@style/Base.MaterialAlertDialog.Dark.Blue</item>
-        <item name="bottomSheetDialogTheme">@style/AppTheme.Dark.Blue.BottomSheetDialog</item>
-        <item name="textInputStyle">@style/AppTheme.TextInputLayout.Light.Blue</item>
-        <item name="bottomNavigationStyle">@style/Base.AppTheme.Dark.BottomNavigation</item>
-        <item name="toolbarStyle">@style/Base.AppTheme.Dark.Toolbar</item>
-        <item name="dialogCornerRadius">@dimen/dialog_corner_radius</item>
-        <item name="seekBarStyle">@style/Base.SeekBar.Dark.Blue</item>
-        <item name="chipStyle">@style/Chip.Choice.Dark.Blue</item>
-        <item name="spinnerStyle">@style/Spinner.Dark.Blue</item>
-        <item name="spinnerDropDownItemStyle">@style/Spinner.DropDown.Dark</item>
+        <item name="colorPrimary">@color/app_dark_blue_primary</item>
+        <item name="colorPrimaryDark">@color/app_dark_blue_primary_dark</item>
+        <item name="colorAccent">@color/app_dark_blue_accent</item>
+        <item name="colorPrimaryVariant">@color/app_dark_blue_primary_variant</item>
+        <item name="colorOnPrimary">@color/md_white_1000</item>
+        <item name="colorPrimarySurface">@color/app_dark_blue_primary_surface</item>
+        <item name="colorOnPrimarySurface">@color/app_dark_blue_on_primary_surface</item>
+        <item name="colorSecondary">@color/app_dark_blue_secondary</item>
+        <item name="colorSecondaryVariant">@color/app_dark_blue_secondary_variant</item>
+        <item name="colorOnSecondary">@color/md_white_1000</item>
+        <item name="colorError">#FF8B8B</item>
+        <item name="colorSurface">@color/app_dark_blue_surface</item>
+        <item name="colorOnSurface">@color/md_white_1000</item>
 
-        <item name="actionModeBackground">@color/dodger_blue</item>
+        <item name="android:dialogTheme">@style/AppTheme.Dialog.Dark.Blue</item>
+        <item name="dialogTheme">@style/AppTheme.Dialog.Dark.Blue</item>
+        <item name="alertDialogTheme">@style/AppTheme.AlertDialog.Dark.Blue</item>
+        <item name="materialAlertDialogTheme">@style/AppTheme.MaterialAlertDialog.Dark.Blue</item>
+        <item name="bottomSheetDialogTheme">@style/AppTheme.BottomSheetDialog.Dark.Blue</item>
+        <item name="textInputStyle">@style/AppTheme.TextInputLayout.Dark.Blue</item>
+        <item name="bottomNavigationStyle">@style/AppTheme.BottomNavigationView.Dark.Blue</item>
+        <item name="seekBarStyle">@style/AppTheme.SeekBar.Dark.Blue</item>
+        <item name="tabStyle">@style/AppTheme.TabLayout.Dark.Blue</item>
+        <item name="searchViewStyle">@style/Base.AppTheme.SearchView</item>
+        <item name="autoCompleteTextViewStyle">@style/Base.AppTheme.AutoCompleteTextView</item>
+        <item name="materialButtonStyle">@style/AppTheme.Button.TextButton.Dark.Blue</item>
+
+        <item name="dialogCornerRadius">@dimen/dialog_corner_radius</item>
+
+        <item name="actionModeBackground">@color/app_dark_blue_action_mode</item>
         <item name="actionBarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.Tinted</item>
 
-        <item name="colorControlNormal">@color/white</item>
+        <item name="android:textColor">@color/md_white_1000</item>
+        <item name="android:textColorPrimary">@color/md_white_1000</item>
+        <item name="android:textColorSecondary">@color/md_grey_500</item>
+        <item name="android:textColorHint">@color/md_grey_500</item>
 
-        <item name="android:textColor">@color/white</item>
-        <item name="android:textColorPrimary">@color/white</item>
-        <item name="android:textColorSecondary">@color/gray_smoke</item>
-        <item name="android:textColorHint">@color/gray_smoke</item>
-        <item name="android:windowBackground">@color/night_background</item>
+        <item name="android:windowBackground">@color/app_dark_blue_window_background</item>
+        <item name="android:navigationBarColor">@color/app_dark_blue_primary</item>
 
-        <!--custom attrs-->
+        <!--Custom attrs-->
+        <item name="iconImageTint">#EAEAEA</item>
+        <item name="dividerTint">#273441</item>
+        <item name="iBarStyle">@style/Base.AppTheme.Dark.IBar</item>
+        <item name="miniVisualizerStyle">@style/AppTheme.MiniVisualizer.Dark.Blue</item>
     </style>
 
-    <!-- DARK ESPECIAL BLUE-->
+    <!--Especial dark blue theme. Almost the same as dark blue theme except the window background-->
     <style name="Base.AppTheme.Dark.Blue.Especial" parent="Base.AppTheme.Dark.Blue">
         <item name="android:windowBackground">@drawable/png_universe</item>
     </style>

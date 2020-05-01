@@ -29,7 +29,7 @@
         <item name="colorOnSurface">@color/md_white_1000</item>
 
         <item name="seekBarStyle">@style/AppTheme.SeekBar.Dark.Yellow</item>
-        <item name="switchStyle">@style/Switch.Dark</item>
+        <item name="switchStyle">@style/Base.AppTheme.Switch.Dark</item>
         <item name="textInputStyle">@style/AppTheme.TextInputLayout.Dark.Yellow</item>
 
         <item name="android:textColor">@color/md_white_1000</item>

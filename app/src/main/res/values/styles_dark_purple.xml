@@ -3,7 +3,7 @@
     <style name="Base.Dialog.Dark.Purple" parent="Base.AppTheme.Dark.Dialog">
         <item name="seekBarStyle">@style/Base.SeekBar.Dark.Purple</item>
         <item name="colorAccent">@color/purple_accent</item>
-        <item name="switchStyle">@style/Switch.Dark</item>
+        <item name="switchStyle">@style/Base.AppTheme.Switch.Dark</item>
     </style>
 
     <style name="Chip.Choice.Dark.Purple" parent="Widget.MaterialComponents.Chip.Choice">
@@ -48,7 +48,7 @@
         <item name="android:textColor">@color/md_purple_100</item>
     </style>
 
-    <style name="Base.AlertDialog.Dark.Purple" parent="Base.AlertDialog.Dark.Blue">
+    <style name="Base.AlertDialog.Dark.Purple" parent="Base.AppTheme.AlertDialog">
         <item name="colorAccent">@color/md_purple_200</item>
         <item name="buttonBarButtonStyle">@style/Base.Button.AlertDialog.Dark.Purple</item>
     </style>
@@ -73,7 +73,7 @@
         <item name="dialogTheme">@style/Base.Dialog.Dark.Purple</item>
         <item name="alertDialogTheme">@style/Base.AlertDialog.Dark.Purple</item>
         <item name="materialAlertDialogTheme">@style/Base.MaterialAlertDialog.Dark.Purple</item>
-        <item name="bottomSheetDialogTheme">@style/AppTheme.Dark.Blue.BottomSheetDialog</item>
+<!--        <item name="bottomSheetDialogTheme">@style/AppTheme.Dark.Blue.BottomSheetDialog</item>-->
         <item name="textInputStyle">@style/AppTheme.TextInputLayout.Light.Blue</item>
         <item name="bottomNavigationStyle">@style/Base.AppTheme.Dark.BottomNavigation</item>
         <item name="toolbarStyle">@style/Base.AppTheme.Dark.Toolbar</item>
@@ -82,7 +82,7 @@
         <item name="chipStyle">@style/Chip.Choice.Dark.Purple</item>
         <item name="floatingActionButtonStyle">@style/FloatingActionButton.Purple</item>
         <item name="spinnerStyle">@style/Spinner.Dark.Purple</item>
-        <item name="spinnerDropDownItemStyle">@style/Spinner.DropDown.Dark</item>
+<!--        <item name="spinnerDropDownItemStyle">@style/Spinner.DropDown.Dark</item>-->
 
         <item name="actionModeBackground">@color/md_deep_purple_A700</item>
         <item name="actionBarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>

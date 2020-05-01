@@ -11,23 +11,6 @@
         <item name="actionModeCloseDrawable">@drawable/ic_action_close</item>
 
         <!--Material colors-->
-        <item name="colorPrimary">@color/md_light_blue_800</item>
-        <item name="colorPrimaryDark">@color/md_light_blue_900</item>
-        <item name="colorAccent">@color/md_pink_500</item>
-        <item name="colorPrimaryVariant">@color/md_indigo_A700</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <item name="colorSecondary">@color/md_pink_500</item>
-        <item name="colorSecondaryVariant">@color/md_red_600</item>
-        <item name="colorOnSecondary">@color/white</item>
-        <item name="colorError">@color/md_red_600</item>
-        <item name="colorSurface">@color/white</item>
-        <item name="colorOnSurface">@color/md_grey_800</item>
-        <item name="dialogTheme">@style/Base.AppTheme.Dialog.Light</item>
-        <item name="android:dialogTheme">@style/Base.AppTheme.Dialog.Light</item>
-        <item name="bottomSheetDialogTheme">@style/AppTheme.BottomSheet.Dialog.Light</item>
-        <item name="textInputStyle">@style/AppTheme.TextInputLayout.Light.Blue</item>
-        <item name="bottomNavigationStyle">@style/Base.AppTheme.Light.BottomNavigation</item>
-        <item name="toolbarStyle">@style/Base.AppTheme.Light.Toolbar</item>
         <item name="dialogCornerRadius">@dimen/dialog_corner_radius</item>
         <item name="tabStyle">@style/Base.AppTheme.TabLayout</item>
         <item name="android:textViewStyle">@style/Base.AppTheme.TextView</item>
@@ -85,6 +68,11 @@
     <style name="Base.AppTheme.Dark.BottomNavigation" parent="Base.AppTheme.BottomNavigationView">
         <item name="android:background">?colorPrimary</item>
         <item name="itemIconTint">@color/nav_dark</item>
+    </style>
+
+    <style name="Base.AppTheme.Switch.Dark" parent="Widget.MaterialComponents.CompoundButton.Switch">
+        <item name="trackTint">#5E5E5E</item>
+        <item name="useMaterialThemeColors">false</item>
     </style>
 
 </resources>

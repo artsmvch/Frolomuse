@@ -37,10 +37,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="12dp"
-        android:layout_marginBottom="12dp"
-        android:text="@string/cancel"
-        app:cornerRadius="16dp"
-        style="@style/Widget.MaterialComponents.Button.TextButton"/>
+        android:layout_marginBottom="12dp"/>
 
     <com.google.android.material.button.MaterialButton
         app:layout_constraintStart_toEndOf="@id/imv_poster"
@@ -55,7 +52,5 @@
         android:layout_marginTop="12dp"
         android:layout_marginEnd="12dp"
         android:layout_marginBottom="12dp"
-        android:text="@string/share"
-        app:cornerRadius="16dp"
-        style="@style/Widget.MaterialComponents.Button.TextButton"/>
+        android:text="@string/share"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
