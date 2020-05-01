@@ -5,9 +5,9 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingStart="8dp"
+    android:paddingStart="12dp"
     android:paddingTop="8dp"
-    android:paddingEnd="8dp"
+    android:paddingEnd="12dp"
     android:paddingBottom="8dp"
     android:gravity="center_vertical">
 
@@ -17,16 +17,17 @@
         android:layout_weight="1"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:lines="2"
-        android:gravity="center_vertical"
-        style="?textAppearanceListItemSecondary"
+        android:lines="4"
+        android:gravity="start|center_vertical"
+        android:textAppearance="?textAppearanceListItemSecondary"
+        android:textSize="13sp"
         tools:text="file://test.txt"/>
 
     <ImageView
         android:id="@+id/btn_remove"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:padding="4dp"
+        android:padding="6dp"
         android:tint="?iconImageTint"
         android:src="@drawable/ic_cross"
         android:background="?selectableItemBackgroundBorderless"/>

@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.dialog_licenses.*
 import java.util.*
 
 
-class LicenseDialog : BaseDialogFragment() {
+class LicensesDialog : BaseDialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return super.onCreateDialog(savedInstanceState).apply {
@@ -67,7 +67,7 @@ class LicenseDialog : BaseDialogFragment() {
     companion object {
 
         // Factory
-        fun newInstance() = LicenseDialog()
+        fun newInstance() = LicensesDialog()
     }
 
 }

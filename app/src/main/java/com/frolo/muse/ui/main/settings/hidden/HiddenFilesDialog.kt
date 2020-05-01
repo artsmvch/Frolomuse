@@ -13,10 +13,6 @@ import kotlinx.android.synthetic.main.dialog_hidden_files.*
 
 class HiddenFilesDialog : BaseDialogFragment() {
 
-    companion object {
-        fun newInstance() = HiddenFilesDialog()
-    }
-
     private val viewModel: HiddenFilesViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,45 +32,45 @@ class HiddenFilesDialog : BaseDialogFragment() {
         }
     }
 
-    private fun loadUI(dialog: Dialog) {
-        with(dialog) {
-            btn_ok.setOnClickListener {
-                dismiss()
-            }
+    private fun loadUI(dialog: Dialog) =  with(dialog) {
+        btn_ok.setOnClickListener {
+            dismiss()
+        }
 
-            rv_files.apply {
-                layoutManager = LinearLayoutManager(context)
-                adapter = HiddenFileAdapter {
-                    viewModel.onRemoveClick(it)
-                }
+        rv_files.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = HiddenFileAdapter {
+                viewModel.onRemoveClick(it)
             }
         }
     }
 
-    private fun observeViewModel(owner: LifecycleOwner) {
-        viewModel.apply {
-            hiddenFiles.observeNonNull(owner) {
-                dialog?.apply {
-                    (rv_files.adapter as? HiddenFileAdapter)?.submitList(it)
-                }
-            }
-
-            placeholderVisible.observeNonNull(owner) {
-                dialog?.apply {
-                    view_placeholder.visibility = if (it) View.VISIBLE else View.GONE
-                }
-            }
-
-            isLoading.observeNonNull(owner) {
-                dialog?.apply {
-                    pb_loading.visibility = if (it) View.VISIBLE else View.GONE
-                }
-            }
-
-            error.observeNonNull(owner) {
-                postError(it)
+    private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
+        hiddenFiles.observeNonNull(owner) {
+            dialog?.apply {
+                (rv_files.adapter as? HiddenFileAdapter)?.submitList(it)
             }
         }
+
+        placeholderVisible.observeNonNull(owner) {
+            dialog?.apply {
+                view_placeholder.visibility = if (it) View.VISIBLE else View.GONE
+            }
+        }
+
+        isLoading.observeNonNull(owner) {
+            dialog?.apply {
+                pb_loading.visibility = if (it) View.VISIBLE else View.GONE
+            }
+        }
+
+        error.observeNonNull(owner) {
+            postError(it)
+        }
+    }
+
+    companion object {
+        fun newInstance() = HiddenFilesDialog()
     }
 
 }
