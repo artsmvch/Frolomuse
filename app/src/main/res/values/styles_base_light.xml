@@ -1,12 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!--Base light theme-->
+    <style name="Base.AppTheme.Light" parent="Theme.MaterialComponents.Light">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="actionBarSize">@dimen/default_bar_size</item>
+        <item name="android:actionBarSize">@dimen/default_bar_size</item>
+        <item name="actionModeCloseDrawable">@drawable/ic_action_close</item>
+
+        <item name="dialogTheme">@style/Base.AppTheme.Dialog.Light</item>
+        <item name="android:dialogTheme">@style/Base.AppTheme.Dialog.Light</item>
+        <item name="materialAlertDialogTheme">@style/Base.AppTheme.MaterialAlertDialog.Light.Blue</item>
+        <item name="bottomSheetDialogTheme">@style/AppTheme.BottomSheet.Dialog.Light</item>
+        <item name="bottomNavigationStyle">@style/Base.AppTheme.Light.BottomNavigation</item>
+        <item name="toolbarStyle">@style/Base.AppTheme.Light.Toolbar</item>
+        <item name="dialogCornerRadius">@dimen/dialog_corner_radius</item>
+        <item name="seekBarStyle">@style/AppTheme.SeekBar.Light.Blue</item>
+        <item name="chipStyle">@style/AppTheme.Chip.Choice.Light.Blue</item>
+        <item name="spinnerStyle">@style/AppTheme.Spinner.Light</item>
+        <item name="tabStyle">@style/Base.AppTheme.TabLayout</item>
+        <item name="android:textViewStyle">@style/Base.AppTheme.TextView</item>
+        <item name="recyclerViewStyle">@style/Base.AppTheme.RecyclerView</item>
+        <item name="materialButtonStyle">@style/Base.AppTheme.Button.TextButton</item>
+        <item name="searchViewStyle">@style/Base.AppTheme.SearchView</item>
+        <item name="fastScrollerStyle">@style/Base.AppTheme.FastScroller</item>
+
+        <item name="actionBarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay.Tinted</item>
+        <item name="actionOverflowMenuStyle">@style/Base.AppTheme.PopupMenu.Overflow</item>
+        <item name="popupMenuStyle">@style/Base.AppTheme.PopupMenu</item>
+
+        <item name="android:textColor">@color/text_primary_dark</item>
+        <item name="android:textColorPrimary">@color/text_primary_dark</item>
+        <item name="android:textColorSecondary">@color/text_secondary_dark</item>
+        <item name="android:textColorHint">#ADADAD</item>
+
+        <!--Text appearances-->
+        <item name="textAppearanceListItem">@style/Base.AppTheme.TextAppearance.ListItem</item>
+        <item name="textAppearanceListItemSmall">@style/Base.AppTheme.TextAppearance.ListItemSmall</item>
+        <item name="textAppearanceListItemSecondary">@style/Base.AppTheme.TextAppearance.ListItemSecondary</item>
+
+        <!--Custom attrs-->
+        <item name="iconImageTint">#ABABAB</item>
+        <item name="dividerTint">#E3E3E3</item>
+    </style>
+
     <style name="Base.AppTheme.Dialog.Light" parent="Theme.MaterialComponents.Light.Dialog">
         <item name="windowNoTitle">true</item>
         <item name="android:windowTitleStyle">@null</item>
         <item name="android:windowAnimationStyle">@style/Base.AppTheme.WindowAnimation.Dialog</item>
         <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
         <item name="android:windowBackground">@drawable/bg_dialog</item>
-        <item name="actionModeCloseDrawable">@drawable/ic_action_close</item>
 
         <item name="textAppearanceButton">@style/Base.AppTheme.TextAppearance.Button</item>
 
@@ -74,55 +121,5 @@
     </style>
 
     <style name="AppTheme.Spinner.DropDown.Light" parent="Widget.AppCompat.DropDownItem.Spinner">
-    </style>
-
-    <!--Base light theme-->
-    <style name="Base.AppTheme.Light" parent="Theme.MaterialComponents.Light">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="windowActionModeOverlay">true</item>
-        <item name="actionBarSize">@dimen/default_bar_size</item>
-        <item name="android:actionBarSize">@dimen/default_bar_size</item>
-
-        <item name="dialogTheme">@style/Base.AppTheme.Dialog.Light</item>
-        <item name="android:dialogTheme">@style/Base.AppTheme.Dialog.Light</item>
-        <item name="materialAlertDialogTheme">@style/Base.AppTheme.MaterialAlertDialog.Light.Blue</item>
-        <item name="bottomSheetDialogTheme">@style/AppTheme.BottomSheet.Dialog.Light</item>
-        <item name="bottomNavigationStyle">@style/Base.AppTheme.Light.BottomNavigation</item>
-        <item name="toolbarStyle">@style/Base.AppTheme.Light.Toolbar</item>
-        <item name="dialogCornerRadius">@dimen/dialog_corner_radius</item>
-        <item name="seekBarStyle">@style/AppTheme.SeekBar.Light.Blue</item>
-        <item name="chipStyle">@style/AppTheme.Chip.Choice.Light.Blue</item>
-        <item name="spinnerStyle">@style/AppTheme.Spinner.Light</item>
-        <item name="tabStyle">@style/Base.AppTheme.TabLayout</item>
-        <item name="android:textViewStyle">@style/Base.AppTheme.TextView</item>
-        <item name="recyclerViewStyle">@style/Base.AppTheme.RecyclerView</item>
-        <item name="materialButtonStyle">@style/Base.AppTheme.Button.TextButton</item>
-        <item name="searchViewStyle">@style/Base.AppTheme.SearchView</item>
-        <item name="fastScrollerStyle">@style/Base.AppTheme.FastScroller</item>
-
-        <item name="actionBarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
-        <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
-        <item name="preferenceTheme">@style/PreferenceThemeOverlay.Tinted</item>
-        <item name="actionOverflowMenuStyle">@style/Base.AppTheme.PopupMenu.Overflow</item>
-        <item name="popupMenuStyle">@style/Base.AppTheme.PopupMenu</item>
-
-        <item name="colorControlNormal">@color/white</item>
-
-        <item name="colorControlHighlight">@color/light_gray</item>
-
-        <item name="android:textColor">@color/text_primary_dark</item>
-        <item name="android:textColorPrimary">@color/text_primary_dark</item>
-        <item name="android:textColorSecondary">@color/text_secondary_dark</item>
-        <item name="android:textColorHint">#ADADAD</item>
-
-        <!--Text appearances-->
-        <item name="textAppearanceListItem">@style/Base.AppTheme.TextAppearance.ListItem</item>
-        <item name="textAppearanceListItemSmall">@style/Base.AppTheme.TextAppearance.ListItemSmall</item>
-        <item name="textAppearanceListItemSecondary">@style/Base.AppTheme.TextAppearance.ListItemSecondary</item>
-
-        <!--custom attrs-->
-        <item name="iconImageTint">#ABABAB</item>
-        <item name="dividerTint">#E3E3E3</item>
     </style>
 </resources>

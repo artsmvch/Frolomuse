@@ -6,11 +6,13 @@
         android:id="@+id/action_edit"
         android:title="@string/edit"
         android:icon="@drawable/ic_edit"
+        app:iconTint="?colorOnPrimary"
         app:showAsAction="ifRoom"/>
 
     <item
         android:id="@+id/action_sort"
         android:title="@string/sort"
         android:icon="@drawable/ic_sort"
+        app:iconTint="?colorOnPrimary"
         app:showAsAction="ifRoom"/>
 </menu>

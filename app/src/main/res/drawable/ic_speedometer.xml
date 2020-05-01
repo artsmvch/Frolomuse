@@ -3,8 +3,7 @@
     android:width="@dimen/toolbar_item_icon_size"
     android:height="@dimen/toolbar_item_icon_size"
     android:viewportWidth="87.607"
-    android:viewportHeight="87.607"
-    android:tint="?attr/colorControlNormal">
+    android:viewportHeight="87.607">
 
     <path
         android:fillColor="#FFFFFF"

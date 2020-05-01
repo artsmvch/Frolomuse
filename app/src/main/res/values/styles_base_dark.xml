@@ -17,26 +17,22 @@
         <item name="recyclerViewStyle">@style/Base.AppTheme.RecyclerView</item>
 
         <item name="actionBarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
-        <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+        <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.Tinted</item>
         <item name="actionOverflowMenuStyle">@style/Base.AppTheme.PopupMenu.Overflow</item>
         <item name="popupMenuStyle">@style/Base.AppTheme.PopupMenu</item>
 
-        <item name="colorControlNormal">@color/white</item>
-
-        <item name="colorControlHighlight">@color/light_gray</item>
-
-        <item name="android:textColor">#FFFFFF</item>
-        <item name="android:textColorPrimary">#FFFFFF</item>
-        <item name="android:textColorSecondary">#FFFFFF</item>
-        <item name="android:textColorHint">#FFFFFF</item>
+        <item name="android:textColor">@color/md_white_1000</item>
+        <item name="android:textColorPrimary">@color/md_white_1000</item>
+        <item name="android:textColorSecondary">@color/md_white_1000</item>
+        <item name="android:textColorHint">@color/md_white_1000</item>
 
         <!--Text appearances-->
         <item name="textAppearanceListItem">@style/Base.AppTheme.TextAppearance.ListItem</item>
         <item name="textAppearanceListItemSmall">@style/Base.AppTheme.TextAppearance.ListItem</item>
         <item name="textAppearanceListItemSecondary">@style/Base.AppTheme.TextAppearance.ListItemSecondary</item>
 
-        <!--custom attrs-->
+        <!--Custom attrs-->
         <item name="iconImageTint">#FFFFFF</item>
         <item name="dividerTint">#ABABAB</item>
         <item name="iBarStyle">@style/Base.AppTheme.Dark.IBar</item>
