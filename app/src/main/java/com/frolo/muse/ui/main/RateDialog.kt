@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.dialog_rate.*
 
 class RateDialog constructor(
     context: Context,
-    private val callback: (dialog: RateDialog, button: Button) -> Unit
+    private val onButtonPressed: (dialog: RateDialog, what: Button) -> Unit
 ): Dialog(context) {
 
     enum class Button { NO, REMIND_LATER, RATE }
@@ -22,7 +22,7 @@ class RateDialog constructor(
         setContentView(R.layout.dialog_rate)
         setupDialogSize()
         setupDialogBackground()
-        initUI(this)
+        loadUI(this)
     }
 
     private fun setupDialogSize() {
@@ -31,7 +31,7 @@ class RateDialog constructor(
             val width = metrics.widthPixels
             val height = metrics.heightPixels
 
-            window.setLayout(6 * width / 7, ViewGroup.LayoutParams.WRAP_CONTENT)
+            window.setLayout(11 * width / 12, ViewGroup.LayoutParams.WRAP_CONTENT)
         }
     }
 
@@ -42,9 +42,21 @@ class RateDialog constructor(
         }
     }
 
-    private fun initUI(dialog: Dialog) = with(dialog) {
-        btn_no.setOnClickListener { callback(this@RateDialog, Button.NO) }
-        btn_rate.setOnClickListener { callback(this@RateDialog, Button.RATE) }
-        btn_remind_later.setOnClickListener { callback(this@RateDialog, Button.REMIND_LATER) }
+    private fun loadUI(dialog: Dialog) = with(dialog) {
+        btn_no.setOnClickListener {
+            dispatchButtonPressed(Button.NO)
+        }
+
+        btn_rate.setOnClickListener {
+            dispatchButtonPressed(Button.RATE)
+        }
+
+        btn_remind_later.setOnClickListener {
+            dispatchButtonPressed(Button.REMIND_LATER)
+        }
+    }
+
+    private fun dispatchButtonPressed(button: Button) {
+        onButtonPressed.invoke(this, button)
     }
 }
