@@ -10,13 +10,14 @@
     <color name="app_dark_blue_primary_variant">#1A252E</color>
     <color name="app_dark_blue_primary_surface">#273C54</color>
     <color name="app_dark_blue_on_primary_surface">#FFFFFF</color>
-    <color name="app_dark_blue_secondary">#3E88A5</color>
-    <color name="app_dark_blue_secondary_variant">#3E88A5</color>
-    <color name="app_dark_blue_accent">#3E88A5</color>
+    <color name="app_dark_blue_secondary">@color/app_dark_blue_accent_ultra</color>
+    <color name="app_dark_blue_secondary_variant">@color/app_dark_blue_accent_ultra</color>
+    <color name="app_dark_blue_accent">@color/app_dark_blue_accent_ultra</color>
     <color name="app_dark_blue_surface">#1A242E</color>
     <color name="app_dark_blue_on_surface">@color/md_white_1000</color>
 
     <color name="app_dark_blue_accent_ultra">#64C0E5</color>
+    <color name="app_dark_blue_fast_scroller">#306587</color>
 
     <style name="AppTheme.Dialog.Dark.Blue" parent="Base.AppTheme.Dark.Dialog">
         <item name="colorPrimary">@color/app_dark_blue_primary</item>
@@ -27,7 +28,7 @@
         <item name="colorSecondary">@color/app_dark_blue_secondary</item>
         <item name="colorSecondaryVariant">@color/app_dark_blue_secondary_variant</item>
         <item name="colorOnSecondary">@color/md_white_1000</item>
-        <item name="colorError">#FF6E6E</item>
+        <item name="colorError">#FF8B8B</item>
         <item name="colorSurface">@color/app_dark_blue_surface</item>
         <item name="colorOnSurface">@color/md_white_1000</item>
 
@@ -121,6 +122,10 @@
         <item name="android:textColor">@color/app_dark_blue_accent_ultra</item>
     </style>
 
+    <style name="AppTheme.FastScroller.Dark.Blue" parent="Base.AppTheme.FastScroller">
+        <item name="bubbleColor">@color/app_dark_blue_fast_scroller</item>
+    </style>
+
     <style name="Base.AppTheme.Dark.Blue" parent="Base.AppTheme.Dark">
         <item name="colorPrimary">@color/app_dark_blue_primary</item>
         <item name="colorPrimaryDark">@color/app_dark_blue_primary_dark</item>
@@ -169,6 +174,7 @@
         <item name="dividerTint">#273441</item>
         <item name="iBarStyle">@style/Base.AppTheme.Dark.IBar</item>
         <item name="miniVisualizerStyle">@style/AppTheme.MiniVisualizer.Dark.Blue</item>
+        <item name="fastScrollerStyle">@style/AppTheme.FastScroller.Dark.Blue</item>
     </style>
 
     <!--Especial dark blue theme. Almost the same as dark blue theme except the window background-->
