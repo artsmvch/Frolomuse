@@ -9,7 +9,7 @@ import com.frolo.muse.R
 import com.frolo.muse.ui.base.BaseDialogFragment
 import com.frolo.muse.views.Anim
 import com.frolo.muse.views.getNonNullText
-import kotlinx.android.synthetic.main.dialog_input_name.*
+import kotlinx.android.synthetic.main.dialog_abs_input_name.*
 
 
 abstract class AbsInputNameDialog : BaseDialogFragment() {
@@ -18,7 +18,7 @@ abstract class AbsInputNameDialog : BaseDialogFragment() {
         return super.onCreateDialog(savedInstanceState).apply {
             requestWindowFeature(Window.FEATURE_NO_TITLE)
 
-            setContentView(R.layout.dialog_input_name)
+            setContentView(R.layout.dialog_abs_input_name)
 
             setupDialogSize(this)
 

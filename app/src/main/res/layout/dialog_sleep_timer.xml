@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:padding="16dp"
+    android:padding="8dp"
     android:gravity="center"
     android:orientation="vertical">
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:text="@string/sleep_timer"
-        android:layout_marginBottom="12dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?textAppearanceHeadline5"/>
+        android:textAppearance="?textAppearanceHeadline6"
+        android:text="@string/sleep_timer"/>
 
     <LinearLayout
-        android:orientation="horizontal"
-        android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal"
         android:gravity="center">
 
         <androidx.appcompat.widget.AppCompatEditText
@@ -35,11 +35,11 @@
             android:layout_height="wrap_content" />
 
         <ImageView
+            android:layout_width="8dp"
+            android:layout_height="8dp"
             android:scaleType="fitXY"
             android:src="@drawable/ic_dot_divider"
-            android:tint="?attr/iconImageTint"
-            android:layout_width="10dp"
-            android:layout_height="10dp"/>
+            android:tint="?iconImageTint" />
 
         <androidx.appcompat.widget.AppCompatEditText
             android:gravity="center"
@@ -55,11 +55,11 @@
             android:layout_height="wrap_content" />
 
         <ImageView
+            android:layout_width="8dp"
+            android:layout_height="8dp"
             android:scaleType="fitXY"
             android:src="@drawable/ic_dot_divider"
-            android:tint="?attr/iconImageTint"
-            android:layout_width="10dp"
-            android:layout_height="10dp"/>
+            android:tint="?iconImageTint" />
 
         <androidx.appcompat.widget.AppCompatEditText
             android:gravity="center"
@@ -75,30 +75,28 @@
             android:layout_height="wrap_content" />
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_marginTop="26dp"
-        android:gravity="center_vertical|end"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <com.google.android.flexbox.FlexboxLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_gravity="end"
+        app:flexWrap="wrap"
+        app:alignItems="flex_end"
+        app:showDividerVertical="middle"
+        app:showDividerHorizontal="middle"
+        app:dividerDrawable="@drawable/divider_16dp_x_8dp">
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="@string/cancel"
-            android:id="@+id/btn_cancel"/>
-
-        <View
-            android:layout_width="20dp"
-            android:layout_height="1px"/>
+            android:text="@string/cancel" />
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:drawableStart="@drawable/ic_check_mark_white"
-            android:text="@string/done"
-            android:id="@+id/btn_done"/>
-    </LinearLayout>
+            android:text="@string/save" />
+    </com.google.android.flexbox.FlexboxLayout>
+
 </LinearLayout>
