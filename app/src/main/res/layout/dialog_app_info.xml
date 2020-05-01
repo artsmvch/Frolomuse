@@ -5,22 +5,20 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:gravity="center"
-    android:paddingTop="24dp"
-    android:paddingLeft="24dp"
-    android:paddingRight="24dp"
-    android:paddingBottom="6dp">
+    android:padding="16dp">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:layout_margin="20dp"
+    <ImageView
         android:id="@+id/imv_app_icon"
         android:layout_width="100dp"
-        android:layout_height="100dp" />
+        android:layout_height="100dp"
+        android:layout_margin="32dp"
+        android:tint="?colorAccent"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:textAppearance="?textAppearanceHeadline5"
+        android:textAppearance="?textAppearanceHeadline6"
         android:textStyle="bold"
         android:text="@string/app_name"/>
 
@@ -28,5 +26,5 @@
         android:id="@+id/tv_version"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?textAppearanceBody1"/>
+        android:textAppearance="?textAppearanceBody2"/>
 </LinearLayout>

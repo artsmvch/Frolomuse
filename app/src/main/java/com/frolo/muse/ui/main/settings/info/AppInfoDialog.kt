@@ -1,6 +1,5 @@
 package com.frolo.muse.ui.main.settings.info
 
-
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
@@ -15,10 +14,8 @@ import com.frolo.muse.BuildConfig
 import com.frolo.muse.R
 import kotlinx.android.synthetic.main.dialog_app_info.*
 
+
 class AppInfoDialog : DialogFragment() {
-    companion object {
-        fun newInstance() = AppInfoDialog()
-    }
 
     private lateinit var anim: Animation
 
@@ -33,23 +30,28 @@ class AppInfoDialog : DialogFragment() {
         return super.onCreateDialog(savedInstanceState).apply {
             requestWindowFeature(Window.FEATURE_NO_TITLE)
             setContentView(R.layout.dialog_app_info)
-            iniUI(this)
+            loadUI(this)
         }
     }
 
-    private fun iniUI(dialog: Dialog) {
-        with(dialog) {
-            tv_version.text = BuildConfig.VERSION_NAME
-            imv_app_icon.setOnClickListener {
-                it.startAnimation(anim)
-            }
-            Glide.with(this@AppInfoDialog)
-                    .asBitmap()
-                    .load(R.drawable.png_note_512x512)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    //.centerCrop()
-                    //.circleCrop()
-                    .into(imv_app_icon)
+    private fun loadUI(dialog: Dialog) = with(dialog) {
+        tv_version.text = BuildConfig.VERSION_NAME
+
+        imv_app_icon.setOnClickListener {
+            it.startAnimation(anim)
         }
+
+        Glide.with(this@AppInfoDialog)
+            .asBitmap()
+            .load(R.drawable.png_note_512x512)
+            .circleCrop()
+            .skipMemoryCache(true)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .into(imv_app_icon)
     }
+
+    companion object {
+        fun newInstance() = AppInfoDialog()
+    }
+
 }

@@ -38,23 +38,14 @@
         <item name="android:textColorHint">@color/md_grey_300</item>
     </style>
 
-    <style name="AppTheme.Button.AlertDialog.Dark.Yellow" parent="Widget.MaterialComponents.Button.TextButton">
-        <item name="backgroundTint">@color/transparent</item>
-        <item name="rippleColor">@color/app_dark_yellow_secondary</item>
-        <item name="android:textColor">@color/app_dark_yellow_secondary</item>
-    </style>
-
     <style name="AppTheme.AlertDialog.Dark.Yellow" parent="Base.AppTheme.AlertDialog">
         <item name="colorSurface">@color/app_dark_yellow_surface</item>
         <item name="colorAccent">@color/app_dark_yellow_accent</item>
         <item name="android:textColor">@color/md_white_1000</item>
         <item name="android:textColorPrimary">@color/md_white_1000</item>
         <item name="android:textColorSecondary">@color/md_white_1000</item>
-        <item name="dialogCornerRadius">@dimen/dialog_corner_radius</item>
         <item name="textColorAlertDialogListItem">@color/md_white_1000</item>
-        <item name="android:background">@drawable/bg_dialog_dark</item>
-        <item name="colorControlNormal">@color/white</item>
-        <item name="buttonBarButtonStyle">@style/AppTheme.Button.AlertDialog.Dark.Yellow</item>
+        <item name="colorControlNormal">@color/md_white_1000</item>
     </style>
 
     <style name="AppTheme.MaterialAlertDialog.Dark.Yellow" parent="Base.AppTheme.MaterialAlertDialog">
@@ -62,9 +53,9 @@
         <item name="android:textColor">@color/md_white_1000</item>
         <item name="android:textColorPrimary">@color/md_white_1000</item>
         <item name="android:textColorSecondary">@color/md_white_1000</item>
-        <item name="dialogCornerRadius">@dimen/dialog_corner_radius</item>
         <item name="textColorAlertDialogListItem">@color/md_white_1000</item>
         <item name="colorControlNormal">@color/md_white_1000</item>
+        <item name="android:background">@color/app_dark_yellow_surface</item>
     </style>
 
     <style name="AppTheme.BottomSheetDialog.Dark.Yellow" parent="Base.AppTheme.BottomSheetDialog">

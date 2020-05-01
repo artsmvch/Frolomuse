@@ -32,20 +32,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 class SettingsFragment : PreferenceFragmentCompat(),
         SleepTimerDialog.OnTimeSelectedListener {
 
-    companion object {
-        private const val RC_SCAN_MEDIA = 1573
-
-        private const val TAG_LIBRARY_SECTION_CHOOSER = "library_section_chooser"
-        private const val TAG_THEME_CHOOSER = "theme_chooser"
-        private const val TAG_LICENCES = "licences"
-        private const val TAG_SLEEP_TIMER = "sleep_timer"
-        private const val TAG_APP_INFO = "app_info"
-        private const val TAG_HIDDEN_FILES = "hidden_files"
-
-        // Factory
-        fun newInstance() = SettingsFragment()
-    }
-
     private val preferences: Preferences by lazy {
         (requireContext().applicationContext as App)
                 .appComponent
@@ -58,7 +44,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
     }
 
     private fun decorate(list: androidx.recyclerview.widget.RecyclerView) {
-        // disable over scroll as it looks terrible
+        // Disabling over scroll because it looks not that good
         list.overScrollMode = View.OVER_SCROLL_NEVER
     }
 
@@ -230,7 +216,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
                     val context = context ?: return@OnClickListener
                     val permission = Manifest.permission.READ_EXTERNAL_STORAGE
                     if (ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED) {
-                        // permission already granted
+                        // Permission already granted
                         startScanningMedia()
                     } else {
                         requestPermissions(arrayOf(permission), RC_SCAN_MEDIA)
@@ -259,7 +245,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
             for (i in permissions.indices) {
                 if (permissions[i] == Manifest.permission.READ_EXTERNAL_STORAGE) {
                     if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
-                        // permission granted
+                        // Permission granted
                         startScanningMedia()
                     }
                 }
@@ -275,16 +261,21 @@ class SettingsFragment : PreferenceFragmentCompat(),
 
     private fun showThemeChooser() {
         val activity = activity ?: return
+
+        @Preferences.Theme val currentTheme = preferences.theme
+
         val icon = ContextCompat.getDrawable(activity, R.drawable.ic_theme)
-        // the order is very important
-        val themes = arrayOf(
+
+        // The order is really important
+        val themeNames = arrayOf(
             getString(R.string.light_theme),
             getString(R.string.dark_blue_theme),
             getString(R.string.dark_especial_theme),
             getString(R.string.dark_purple_theme),
             getString(R.string.dark_yellow_theme)
         )
-        val currentThemeIndex = when(preferences.theme) {
+
+        val currentThemeIndex = when(currentTheme) {
             Preferences.THEME_LIGHT_BLUE -> 0
             Preferences.THEME_DARK_BLUE -> 1
             Preferences.THEME_DARK_BLUE_ESPECIAL -> 2
@@ -292,23 +283,27 @@ class SettingsFragment : PreferenceFragmentCompat(),
             Preferences.THEME_DARK_YELLOW -> 4
             else -> -1
         }
+
         MaterialAlertDialogBuilder(activity)
-                .setTitle(getString(R.string.choose_theme))
-                .setIcon(icon)
-                .setSingleChoiceItems(themes, currentThemeIndex) { dialog, which ->
-                    dialog.dismiss()
-                    val themeConstInt = when (which) {
-                        0 -> Preferences.THEME_LIGHT_BLUE
-                        1 -> Preferences.THEME_DARK_BLUE
-                        2 -> Preferences.THEME_DARK_BLUE_ESPECIAL
-                        3 -> Preferences.THEME_DARK_PURPLE
-                        4 -> Preferences.THEME_DARK_YELLOW
-                        else -> Preferences.THEME_DARK_BLUE
-                    }
-                    preferences.saveTheme(themeConstInt)
+            .setTitle(getString(R.string.choose_theme))
+            .setIcon(icon)
+            .setSingleChoiceItems(themeNames, currentThemeIndex) { dialog, which ->
+                dialog.dismiss()
+
+                val selectedTheme = when (which) {
+                    0 -> Preferences.THEME_LIGHT_BLUE
+                    1 -> Preferences.THEME_DARK_BLUE
+                    2 -> Preferences.THEME_DARK_BLUE_ESPECIAL
+                    3 -> Preferences.THEME_DARK_PURPLE
+                    4 -> Preferences.THEME_DARK_YELLOW
+                    else -> Preferences.THEME_DARK_BLUE
+                }
+                if (selectedTheme != currentTheme) {
+                    preferences.saveTheme(selectedTheme)
                     activity.recreate()
                 }
-                .show()
+            }
+            .show()
     }
 
     private fun showLibrarySectionChooser() {
@@ -317,12 +312,27 @@ class SettingsFragment : PreferenceFragmentCompat(),
     }
 
     private fun showThirdPartyLibs() {
-        val fragment = LicenseDialog.newInstance()
-        fragment.show(childFragmentManager, TAG_LICENCES)
+        val dialog = LicenseDialog.newInstance()
+        dialog.show(childFragmentManager, TAG_LICENCES)
     }
 
     private fun showAppInfoDialog() {
         val dialog = AppInfoDialog.newInstance()
         dialog.show(childFragmentManager, TAG_APP_INFO)
     }
+
+    companion object {
+        private const val RC_SCAN_MEDIA = 1573
+
+        private const val TAG_LIBRARY_SECTION_CHOOSER = "library_section_chooser"
+        private const val TAG_THEME_CHOOSER = "theme_chooser"
+        private const val TAG_LICENCES = "licences"
+        private const val TAG_SLEEP_TIMER = "sleep_timer"
+        private const val TAG_APP_INFO = "app_info"
+        private const val TAG_HIDDEN_FILES = "hidden_files"
+
+        // Factory
+        fun newInstance() = SettingsFragment()
+    }
+
 }

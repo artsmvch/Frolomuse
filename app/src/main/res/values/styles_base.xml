@@ -19,12 +19,42 @@
 
     <!--AlertDialog-->
     <style name="Base.AppTheme.AlertDialog" parent="Theme.MaterialComponents.Light.Dialog.Alert.Bridge">
+        <item name="dialogCornerRadius">@dimen/dialog_corner_radius</item>
+
         <item name="android:windowAnimationStyle">@style/Base.AppTheme.WindowAnimation.Dialog</item>
+
+        <item name="android:checkedTextViewStyle">@style/Base.AppTheme.CheckedTextView.AlertDialog</item>
+
+        <item name="buttonBarButtonStyle">@style/Base.AppTheme.Button.TextButton.Dialog</item>
+        <item name="buttonBarPositiveButtonStyle">@style/Base.AppTheme.Button.TextButton.Dialog</item>
+        <item name="buttonBarNegativeButtonStyle">@style/Base.AppTheme.Button.TextButton.Dialog</item>
+        <item name="buttonBarNeutralButtonStyle">@style/Base.AppTheme.Button.TextButton.Dialog</item>
     </style>
 
     <style name="Base.AppTheme.MaterialAlertDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="dialogCornerRadius">@dimen/dialog_corner_radius</item>
+
         <item name="shapeAppearanceOverlay">@style/Base.ShapeAppearanceOverlay.Rounded</item>
+
         <item name="android:windowAnimationStyle">@style/Base.AppTheme.WindowAnimation.Dialog</item>
+
+        <item name="android:checkedTextViewStyle">@style/Base.AppTheme.CheckedTextView.AlertDialog</item>
+
+        <item name="buttonBarButtonStyle">@style/Base.AppTheme.Button.TextButton.Dialog</item>
+        <item name="buttonBarPositiveButtonStyle">@style/Base.AppTheme.Button.TextButton.Dialog</item>
+        <item name="buttonBarNegativeButtonStyle">@style/Base.AppTheme.Button.TextButton.Dialog</item>
+        <item name="buttonBarNeutralButtonStyle">@style/Base.AppTheme.Button.TextButton.Dialog</item>
+    </style>
+
+    <style name="Base.AppTheme.CheckedTextView.AlertDialog" parent="Widget.MaterialComponents.CheckedTextView">
+        <item name="android:background">?selectableItemBackground</item>
+    </style>
+
+    <style name="Base.AppTheme.Button.TextButton.Dialog" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="backgroundTint">@color/transparent</item>
+        <item name="rippleColor">?colorAccent</item>
+        <item name="android:textColor">?colorAccent</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
     <!--BottomSheetDialog-->
