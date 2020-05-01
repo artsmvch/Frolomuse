@@ -55,6 +55,7 @@
         <item name="rippleColor">?colorAccent</item>
         <item name="android:textColor">?colorAccent</item>
         <item name="android:textSize">14sp</item>
+        <item name="cornerRadius">16dp</item>
     </style>
 
     <!--BottomSheetDialog-->

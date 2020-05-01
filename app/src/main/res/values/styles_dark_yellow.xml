@@ -46,6 +46,7 @@
         <item name="android:textColorSecondary">@color/md_white_1000</item>
         <item name="textColorAlertDialogListItem">@color/md_white_1000</item>
         <item name="colorControlNormal">@color/md_white_1000</item>
+        <item name="android:background">@color/app_dark_yellow_surface</item>
     </style>
 
     <style name="AppTheme.MaterialAlertDialog.Dark.Yellow" parent="Base.AppTheme.MaterialAlertDialog">
