@@ -134,33 +134,34 @@
                     android:imeOptions="actionDone"/>
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.button.MaterialButton
+            <com.google.android.flexbox.FlexboxLayout
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/til_genre_name"
-                app:layout_constraintEnd_toStartOf="@id/btn_save"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintWidth_default="wrap"
-                app:layout_constraintHorizontal_chainStyle="packed"
-                android:id="@+id/btn_cancel"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="32dp"
-                android:text="@string/cancel" />
-
-            <com.google.android.material.button.MaterialButton
-                app:layout_constraintStart_toEndOf="@id/btn_cancel"
-                app:layout_constraintTop_toTopOf="@id/btn_cancel"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="@id/btn_cancel"
-                app:layout_constraintWidth_default="wrap"
-                android:id="@+id/btn_save"
+                app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginEnd="8dp"
-                android:text="@string/save"
-                tools:text="Save Save Save Save Save Save Save"/>
+                android:layout_marginTop="24dp"
+                app:flexWrap="wrap"
+                app:justifyContent="center"
+                app:showDividerVertical="middle"
+                app:showDividerHorizontal="middle"
+                app:dividerDrawable="@drawable/divider_16dp_x_8dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_cancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/cancel" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_save"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/save"
+                    tools:text="Save Save Save Save Save Save Save"/>
+            </com.google.android.flexbox.FlexboxLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <include layout="@layout/include_progress_overlay"
