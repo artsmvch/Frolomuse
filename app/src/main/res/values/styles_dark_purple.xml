@@ -156,12 +156,7 @@
         <item name="autoCompleteTextViewStyle">@style/Base.AppTheme.AutoCompleteTextView</item>
         <item name="materialButtonStyle">@style/AppTheme.Button.TextButton.Dark.Purple</item>
 
-        <item name="dialogCornerRadius">@dimen/dialog_corner_radius</item>
-
         <item name="actionModeBackground">@color/app_dark_purple_action_mode</item>
-        <item name="actionBarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
-        <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
-        <item name="preferenceTheme">@style/PreferenceThemeOverlay.Tinted</item>
 
         <item name="android:textColor">@color/md_white_1000</item>
         <item name="android:textColorPrimary">@color/md_white_1000</item>
