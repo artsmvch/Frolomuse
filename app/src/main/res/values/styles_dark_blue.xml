@@ -19,6 +19,8 @@
     <color name="app_dark_blue_accent_ultra">#64C0E5</color>
     <color name="app_dark_blue_fast_scroller">#306587</color>
 
+    <color name="app_dark_blue_divider_tint">#273441</color>
+
     <style name="AppTheme.Dialog.Dark.Blue" parent="Base.AppTheme.Dark.Dialog">
         <item name="colorPrimary">@color/app_dark_blue_primary</item>
         <item name="colorPrimaryDark">@color/app_dark_blue_primary_dark</item>
@@ -32,7 +34,7 @@
         <item name="colorSurface">@color/app_dark_blue_surface</item>
         <item name="colorOnSurface">@color/md_white_1000</item>
 
-        <item name="seekBarStyle">@style/AppTheme.SeekBar.Dark.Yellow</item>
+        <item name="seekBarStyle">@style/AppTheme.SeekBar.Dark.Blue</item>
         <item name="switchStyle">@style/Base.AppTheme.Switch.Dark</item>
         <item name="textInputStyle">@style/AppTheme.TextInputLayout.Dark.Blue</item>
         <item name="materialButtonStyle">@style/AppTheme.Button.TextButton.Dark.Blue</item>
@@ -171,7 +173,7 @@
 
         <!--Custom attrs-->
         <item name="iconImageTint">#EAEAEA</item>
-        <item name="dividerTint">#273441</item>
+        <item name="dividerTint">@color/app_dark_blue_divider_tint</item>
         <item name="iBarStyle">@style/Base.AppTheme.Dark.IBar</item>
         <item name="miniVisualizerStyle">@style/AppTheme.MiniVisualizer.Dark.Blue</item>
         <item name="fastScrollerStyle">@style/AppTheme.FastScroller.Dark.Blue</item>
