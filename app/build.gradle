@@ -112,6 +112,15 @@ android {
             jniLibs.srcDir 'src/main/jniLibs'
         }
     }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
 }
 
 dependencies {
@@ -140,13 +149,13 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel:2.1.0'
     kapt "android.arch.lifecycle:compiler:1.1.1"
 
-    // support
+    // Support
     implementation 'androidx.appcompat:appcompat:1.1.0'
     // Do not use v1.1.1 for preferences: it messes with image tinting
     implementation 'androidx.preference:preference:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'com.google.android.material:material:1.2.0-alpha05'
+    implementation 'com.google.android.material:material:1.2.0-alpha06'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'androidx.dynamicanimation:dynamicanimation:1.0.0'
     implementation "androidx.viewpager2:viewpager2:1.0.0"
@@ -155,9 +164,12 @@ dependencies {
     implementation "androidx.fragment:fragment:1.2.4"
     // Color palette
     implementation 'androidx.palette:palette:1.0.0'
+    // MediaCompat
+    implementation 'androidx.core:core:1.2.0'
+    implementation 'androidx.media:media:1.1.0'
 
     // Useful kotlin extensions
-    implementation "androidx.core:core-ktx:1.1.0"
+    implementation "androidx.core:core-ktx:1.2.0"
 
     // rx
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
@@ -193,7 +205,7 @@ dependencies {
     implementation project(':mediabutton')
 
     // Fabric
-    implementation 'com.google.firebase:firebase-core:16.0.9'
+    implementation 'com.google.firebase:firebase-core:17.4.0'
     implementation 'com.crashlytics.sdk.android:crashlytics:2.10.1'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
