@@ -85,7 +85,7 @@ class SleepTimerDialog : BaseDialogFragment() {
 
             init {
                 @ColorInt val red = ContextCompat.getColor(editor.context, R.color.scarlet)
-                @ColorInt val textColor = StyleUtil.getTextColor(editor.context)
+                @ColorInt val textColor = StyleUtil.readColorAttrValue(editor.context, android.R.attr.textColor)
                 animator = ValueAnimator.ofInt(red, textColor).apply {
                     setEvaluator(ArgbEvaluator())
                     duration = 300
