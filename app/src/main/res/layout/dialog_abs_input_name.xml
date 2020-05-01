@@ -41,31 +41,36 @@
             android:imeOptions="actionDone"/>
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.button.MaterialButton
+    <com.google.android.flexbox.FlexboxLayout
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/til_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:id="@+id/btn_add"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="24dp"
-        android:text="@string/save"
-        app:cornerRadius="16dp"
-        style="@style/Widget.MaterialComponents.Button.TextButton" />
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:gravity="end"
+        app:flexWrap="wrap"
+        app:justifyContent="center"
+        app:showDividerVertical="middle"
+        app:showDividerHorizontal="middle"
+        app:dividerDrawable="@drawable/divider_16dp_x_8dp">
 
-    <com.google.android.material.button.MaterialButton
-        app:layout_constraintTop_toTopOf="@id/btn_add"
-        app:layout_constraintEnd_toStartOf="@id/btn_add"
-        app:layout_constraintBottom_toBottomOf="@id/btn_add"
-        android:id="@+id/btn_cancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
-        android:text="@string/cancel"
-        app:cornerRadius="16dp"
-        style="@style/Widget.MaterialComponents.Button.TextButton"/>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/save"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel"/>
+    </com.google.android.flexbox.FlexboxLayout>
 
     <include layout="@layout/include_progress_overlay"
         app:layout_constraintStart_toStartOf="parent"

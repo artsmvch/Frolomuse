@@ -22,7 +22,7 @@ abstract class AbsInputNameDialog : BaseDialogFragment() {
 
             setupDialogSize(this)
 
-            initUI(this)
+            loadUI(this)
 
             window?.apply {
                 setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
@@ -33,7 +33,7 @@ abstract class AbsInputNameDialog : BaseDialogFragment() {
         }
     }
 
-    private fun initUI(dialog: Dialog) = with(dialog) {
+    private fun loadUI(dialog: Dialog) = with(dialog) {
         tv_title.text = onGetTitle()
 
         edt_name.setText(onGetInitialText())
@@ -41,7 +41,9 @@ abstract class AbsInputNameDialog : BaseDialogFragment() {
         // Intercept any touches on this overlay
         inc_progress_overlay.setOnClickListener { }
 
-        btn_cancel.setOnClickListener { dismiss() }
+        btn_cancel.setOnClickListener {
+            dismiss()
+        }
 
         btn_add.setOnClickListener {
             val name = edt_name.getNonNullText()
