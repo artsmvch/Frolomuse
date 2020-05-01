@@ -28,9 +28,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="16dp"
-        android:hint="@string/playlist_name"
         app:hintAnimationEnabled="false">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -60,16 +59,16 @@
         app:dividerDrawable="@drawable/divider_16dp_x_8dp">
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_add"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/save"/>
-
-        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/cancel"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/save"/>
     </com.google.android.flexbox.FlexboxLayout>
 
     <include layout="@layout/include_progress_overlay"

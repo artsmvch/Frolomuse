@@ -36,6 +36,8 @@ abstract class AbsInputNameDialog : BaseDialogFragment() {
     private fun loadUI(dialog: Dialog) = with(dialog) {
         tv_title.text = onGetTitle()
 
+        til_name.hint = onGetHint()
+
         edt_name.setText(onGetInitialText())
 
         // Intercept any touches on this overlay
@@ -72,6 +74,8 @@ abstract class AbsInputNameDialog : BaseDialogFragment() {
     }
 
     protected abstract fun onGetTitle(): String
+
+    protected open fun onGetHint(): String? = null
 
     protected open fun onGetInitialText(): String? = null
 

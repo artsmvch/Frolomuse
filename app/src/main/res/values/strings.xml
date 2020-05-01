@@ -231,6 +231,8 @@
 
     <!--create preset-->
     <string name="type_name_for_preset">Please type name for preset</string>
+    <string name="save_preset">Save preset</string>
+    <string name="preset_name">Preset name</string>
 
     <!--equalizer-->
     <string name="freq_range">%s hz</string>

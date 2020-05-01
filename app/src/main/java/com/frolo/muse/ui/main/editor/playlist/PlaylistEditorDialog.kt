@@ -44,13 +44,11 @@ class PlaylistEditorDialog : AbsInputNameDialog() {
         }
     }
 
-    override fun onGetTitle(): String {
-        return getString(R.string.edit_playlist)
-    }
+    override fun onGetTitle() = getString(R.string.edit_playlist)
 
-    override fun onGetInitialText(): String? {
-        return playlist.name
-    }
+    override fun onGetHint() = getString(R.string.playlist_name)
+
+    override fun onGetInitialText() = playlist.name
 
     override fun onSaveButtonClick(name: String) {
         checkWritePermissionFor {

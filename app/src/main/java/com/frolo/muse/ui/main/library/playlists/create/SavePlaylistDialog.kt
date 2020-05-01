@@ -58,7 +58,9 @@ class SavePlaylistDialog : AbsInputNameDialog() {
         dismiss()
     }
 
-    override fun onGetTitle(): String = getString(R.string.save_playlist)
+    override fun onGetTitle() = getString(R.string.save_playlist)
+
+    override fun onGetHint() = getString(R.string.playlist_name)
 
     override fun onSaveButtonClick(name: String) {
         checkWritePermissionFor {

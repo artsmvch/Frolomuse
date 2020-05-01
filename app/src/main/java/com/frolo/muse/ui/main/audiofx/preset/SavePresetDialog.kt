@@ -38,24 +38,22 @@ class SavePresetDialog : AbsInputNameDialog() {
         observeViewModel(this)
     }
 
-    private fun observeViewModel(owner: LifecycleOwner) {
-        viewModel.apply {
-            isSavingPreset.observeNonNull(owner) { isSaving ->
-                setIsLoading(isSaving)
-            }
+    private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
+        isSavingPreset.observeNonNull(owner) { isSaving ->
+            setIsLoading(isSaving)
+        }
 
-            presetSavedEvent.observeNonNull(owner) { preset ->
-                onPresetSaved(preset)
-            }
+        presetSavedEvent.observeNonNull(owner) { preset ->
+            onPresetSaved(preset)
+        }
 
-            savingError.observeNonNull(owner) { err ->
-                displayInputError(err)
+        savingError.observeNonNull(owner) { err ->
+            displayInputError(err)
 
-            }
+        }
 
-            error.observeNonNull(owner) { err ->
-                displayError(err)
-            }
+        error.observeNonNull(owner) { err ->
+            displayError(err)
         }
     }
 
@@ -65,9 +63,9 @@ class SavePresetDialog : AbsInputNameDialog() {
         dismiss()
     }
 
-    override fun onGetTitle(): String {
-        return getString(R.string.type_name_for_preset)
-    }
+    override fun onGetTitle() = getString(R.string.save_preset)
+
+    override fun onGetHint() = getString(R.string.preset_name)
 
     override fun onSaveButtonClick(name: String) {
         viewModel.onSaveButtonClicked(name)
