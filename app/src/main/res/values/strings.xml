@@ -81,8 +81,8 @@
     </string>
 
     <!--AddSongToPlaylist-->
-    <string name="add_song_to_playlist_hint">
-        Select songs you want to add to playlist and then press \'Add to playlist\'
+    <string name="add_song_to_s_playlist_hint">
+        Select songs you want to add to the \"%s\" playlist and then click the \'Add to playlist\' button
     </string>
     <plurals name="s_songs_selected">
         <item quantity="one">%d song selected</item>

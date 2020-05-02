@@ -6,6 +6,7 @@ import androidx.lifecycle.Transformations
 import com.frolo.muse.arch.combine
 import com.frolo.muse.interactor.media.AddSongToPlaylistUseCase
 import com.frolo.muse.logger.EventLogger
+import com.frolo.muse.model.media.Playlist
 import com.frolo.muse.model.media.SelectableSongQuery
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.rx.SchedulerProvider
@@ -20,6 +21,12 @@ class AddSongToPlaylistViewModel constructor(
     private val schedulerProvider: SchedulerProvider,
     private val eventLogger: EventLogger
 ): BaseViewModel(eventLogger) {
+
+    val targetPlaylist: LiveData<Playlist> = MutableLiveData<Playlist>().apply {
+        addSongToPlaylistUseCase.getTargetPlaylist()
+            .observeOn(schedulerProvider.main())
+            .subscribeFor { value = it }
+    }
 
     private val _typedQuery: MutableLiveData<String> = MutableLiveData()
 

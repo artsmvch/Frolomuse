@@ -21,6 +21,8 @@ class AddSongToPlaylistUseCase @AssistedInject constructor(
         @Assisted private val playlist: Playlist
 ) {
 
+    fun getTargetPlaylist(): Flowable<Playlist> = Flowable.just(playlist)
+
     fun search(query: String): Flowable<List<Song>> {
         return songRepository.getFilteredItems(query)
                 .subscribeOn(schedulerProvider.worker())

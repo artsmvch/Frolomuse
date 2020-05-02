@@ -8,6 +8,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
 import com.frolo.muse.R
+import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.model.media.Playlist
 import com.frolo.muse.model.media.Song
@@ -112,6 +113,12 @@ class AddSongToPlaylistDialog: BaseDialogFragment() {
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
         error.observeNonNull(owner) { err ->
             postError(err)
+        }
+
+        targetPlaylist.observe(owner) { playlist ->
+            dialog?.apply {
+                tv_hint.text = getString(R.string.add_song_to_s_playlist_hint, playlist?.name.orEmpty())
+            }
         }
 
         selectableSongQuery.observeNonNull(owner) { songQuery ->

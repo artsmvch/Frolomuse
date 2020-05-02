@@ -20,15 +20,16 @@
             android:layout_height="wrap_content">
 
             <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_hint"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:padding="8dp"
-                android:text="@string/add_song_to_playlist_hint"
                 android:textAppearance="?textAppearanceBody2"
                 android:textColor="?colorOnPrimary"
                 android:gravity="center"
-                app:layout_scrollFlags="scroll|enterAlwaysCollapsed|snap"/>
+                app:layout_scrollFlags="scroll|enterAlwaysCollapsed|snap"
+                tools:text="Some useful hint"/>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tv_selection_info"
