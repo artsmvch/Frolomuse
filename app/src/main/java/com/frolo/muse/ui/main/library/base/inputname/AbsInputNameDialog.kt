@@ -20,7 +20,7 @@ abstract class AbsInputNameDialog : BaseDialogFragment() {
 
             setContentView(R.layout.dialog_abs_input_name)
 
-            setupDialogSize(this)
+            setupDialogSizeByDefault(this)
 
             loadUI(this)
 

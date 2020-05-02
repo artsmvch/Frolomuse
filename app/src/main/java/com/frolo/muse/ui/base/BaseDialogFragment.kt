@@ -72,11 +72,31 @@ abstract class BaseDialogFragment : AppCompatDialogFragment() {
     }
     //</editor-fold>
 
-    protected fun setupDialogSize(dialog: Dialog) {
+    protected fun setupDialogSizeByDefault(dialog: Dialog) {
         val metrics = resources.displayMetrics
         val width = metrics.widthPixels
         val height = metrics.heightPixels
         setupDialogSize(dialog, 6 * width / 7, ViewGroup.LayoutParams.WRAP_CONTENT)
+    }
+
+    protected fun setupDialogSizeRelativelyToScreen(
+        dialog: Dialog,
+        widthPercent: Float? = null,
+        heightPercent: Float? = null
+    ) {
+        val metrics = resources.displayMetrics
+        val screenWidth = metrics.widthPixels
+        val screenHeight = metrics.heightPixels
+
+        val targetWidth: Int =
+            if (widthPercent != null) (widthPercent * screenWidth).toInt()
+            else ViewGroup.LayoutParams.MATCH_PARENT
+
+        val targetHeight: Int =
+            if (heightPercent != null) (heightPercent * screenHeight).toInt()
+            else ViewGroup.LayoutParams.MATCH_PARENT
+
+        setupDialogSize(dialog, targetWidth, targetHeight)
     }
 
     protected fun setupDialogSize(dialog: Dialog, width: Int, height: Int) {

@@ -49,6 +49,8 @@
         <item name="textAppearanceButton">@style/Base.AppTheme.TextAppearance.Button</item>
 
         <item name="materialButtonStyle">@style/Base.AppTheme.Button.TextButton</item>
+        <item name="searchViewStyle">@style/Base.AppTheme.SearchView</item>
+        <item name="autoCompleteTextViewStyle">@style/Base.AppTheme.AutoCompleteTextView</item>
     </style>
 
     <style name="Base.AppTheme.Dark.IBar" parent="android:style/Widget">

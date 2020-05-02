@@ -24,7 +24,7 @@ class LibrarySectionsDialog : BaseDialogFragment(),
         return super.onCreateDialog(savedInstanceState).apply {
             requestWindowFeature(Window.FEATURE_NO_TITLE)
             setContentView(R.layout.dialog_library_sections)
-            setupDialogSize(this)
+            setupDialogSizeByDefault(this)
             loadUI(this)
         }
     }

@@ -16,7 +16,7 @@ import com.frolo.muse.ui.main.library.genres.genre.GenreFragment
 import com.frolo.muse.ui.main.library.playlists.addmedia.AddMediaToPlaylistDialog
 import com.frolo.muse.ui.main.library.playlists.create.SavePlaylistDialog
 import com.frolo.muse.ui.main.library.playlists.playlist.PlaylistFragment
-import com.frolo.muse.ui.main.library.playlists.playlist.addsong.AddSongToPlaylistFragment
+import com.frolo.muse.ui.main.library.playlists.playlist.addsong.AddSongToPlaylistDialog
 import com.frolo.muse.ui.main.player.lyrics.LyricsDialogFragment
 import com.frolo.muse.ui.main.player.poster.PosterDialog
 import java.io.File
@@ -113,8 +113,8 @@ class NavigatorImpl<T> constructor(
     }
 
     override fun addSongsToPlaylist(playlist: Playlist) {
-        val fragment = AddSongToPlaylistFragment.newInstance(playlist)
-        root.pushFragment(fragment)
+        val dialog = AddSongToPlaylistDialog.newInstance(playlist)
+        root.pushDialog(dialog)
     }
 
     override fun createPlaylist() {

@@ -1,5 +1,6 @@
 package com.frolo.muse.ui.main.library.playlists.playlist.addsong
 
+import android.app.Dialog
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.widget.SearchView
@@ -9,17 +10,16 @@ import com.bumptech.glide.Glide
 import com.frolo.muse.R
 import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.model.media.Playlist
-import com.frolo.muse.model.media.SelectableSongQuery
 import com.frolo.muse.model.media.Song
-import com.frolo.muse.ui.base.BaseFragment
-import com.frolo.muse.ui.base.setupNavigation
+import com.frolo.muse.ui.base.BaseDialogFragment
 import com.frolo.muse.ui.base.withArg
 import com.frolo.muse.ui.main.decorateAsLinear
 import com.frolo.muse.ui.main.library.base.BaseAdapter
-import kotlinx.android.synthetic.main.fragment_add_song_to_playlist.*
+import com.frolo.muse.views.Anim
+import kotlinx.android.synthetic.main.dialog_add_song_to_playlist.*
 
 
-class AddSongToPlaylistFragment: BaseFragment() {
+class AddSongToPlaylistDialog: BaseDialogFragment() {
 
     private val viewModel: AddSongToPlaylistViewModel by lazy {
         val playlist = requireArguments().getSerializable(ARG_PLAYLIST) as Playlist
@@ -45,18 +45,22 @@ class AddSongToPlaylistFragment: BaseFragment() {
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View = inflater.inflate(R.layout.fragment_add_song_to_playlist, container, false)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        observeViewModel(this)
+    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        return super.onCreateDialog(savedInstanceState).apply {
+            setContentView(R.layout.dialog_add_song_to_playlist)
+            setupDialogSizeRelativelyToScreen(dialog = this, widthPercent = 19f / 20f)
+            loadUI(this)
+        }
+    }
 
-        setupNavigation(tb_actions)
-
+    private fun loadUI(dialog: Dialog) = with(dialog) {
         rv_list.apply {
-            adapter = this@AddSongToPlaylistFragment.adapter
+            adapter = this@AddSongToPlaylistDialog.adapter
             layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
             decorateAsLinear()
         }
@@ -94,55 +98,55 @@ class AddSongToPlaylistFragment: BaseFragment() {
                 viewModel.onQueryTyped("")
             }
         }
-    }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        observeViewModel(viewLifecycleOwner)
+        btn_cancel.setOnClickListener {
+            cancel()
+        }
+
+        include_progress_overlay.setOnTouchListener { _, _ -> true }
     }
 
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
         error.observeNonNull(owner) { err ->
-            toastError(err)
+            postError(err)
         }
 
         selectableSongQuery.observeNonNull(owner) { songQuery ->
-            onSubmitSongList(songQuery)
+            adapter.submit(songQuery.allItems, songQuery.selection)
         }
 
         selectedItems.observeNonNull(owner) { selectedItems ->
-            onSubmitSelection(selectedItems)
+            adapter.submitSelection(selectedItems)
+            dialog?.apply {
+                tv_selection_info.text =
+                        resources.getQuantityString(R.plurals.s_songs_selected, selectedItems.count(), selectedItems.count())
+            }
         }
 
         placeholderVisible.observeNonNull(owner) { isVisible ->
-            onSetPlaceholderVisible(isVisible)
+            dialog?.apply {
+                layout_list_placeholder.visibility = if (isVisible) View.VISIBLE else View.GONE
+            }
+        }
+
+        addToPlaylistButtonEnabled.observeNonNull(owner) { enabled ->
+            dialog?.apply {
+                btn_add_to_playlist.isEnabled = enabled
+                btn_add_to_playlist.alpha = if (enabled) 1f else 0.3f
+            }
         }
 
         songsAddedToPlaylistEvent.observeNonNull(owner) {
         }
 
-        isAddingSongsToPlaylist.observeNonNull(owner) { isAddingSongsToPlaylist ->
-            onAddingSongsToPlaylistState(isAddingSongsToPlaylist)
-        }
-    }
-
-    private fun onSubmitSongList(songQuery: SelectableSongQuery) {
-        adapter.submit(songQuery.allItems, songQuery.selection)
-    }
-
-    private fun onSubmitSelection(selectedItems: Set<Song>) {
-        adapter.submitSelection(selectedItems)
-    }
-
-    private fun onSetPlaceholderVisible(isVisible: Boolean) {
-        layout_list_placeholder.visibility = if (isVisible) View.VISIBLE else View.GONE
-    }
-
-    private fun onAddingSongsToPlaylistState(isAdding: Boolean) {
-        if (isAdding) {
-            showProgressDialog()
-        } else {
-            hideProgressDialog()
+        isAddingSongsToPlaylist.observeNonNull(owner) { isAdding ->
+            dialog?.apply {
+                if (isAdding) {
+                    Anim.fadeIn(include_progress_overlay)
+                } else {
+                    Anim.fadeOut(include_progress_overlay)
+                }
+            }
         }
     }
 
@@ -150,7 +154,7 @@ class AddSongToPlaylistFragment: BaseFragment() {
         private const val ARG_PLAYLIST = "playlist"
 
         // Factory
-        fun newInstance(playlist: Playlist) = AddSongToPlaylistFragment()
+        fun newInstance(playlist: Playlist) = AddSongToPlaylistDialog()
                 .withArg(ARG_PLAYLIST, playlist)
     }
 

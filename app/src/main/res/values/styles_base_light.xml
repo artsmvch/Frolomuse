@@ -61,8 +61,8 @@
         <item name="materialButtonStyle">@style/Base.AppTheme.Button.TextButton</item>
         <item name="seekBarStyle">@style/AppTheme.SeekBar.Light.Blue</item>
         <item name="switchStyle">@style/Switch.Light</item>
-
-        <item name="colorAccent">@color/md_pink_500</item>
+        <item name="searchViewStyle">@style/Base.AppTheme.SearchView</item>
+        <item name="autoCompleteTextViewStyle">@style/Base.AppTheme.AutoCompleteTextView</item>
 
         <item name="android:textColor">@color/text_primary_dark</item>
         <item name="android:textColorPrimary">@color/text_primary_dark</item>

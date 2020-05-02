@@ -3,6 +3,7 @@ package com.frolo.muse.ui.main.library.playlists.playlist.addsong
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
+import com.frolo.muse.arch.combine
 import com.frolo.muse.interactor.media.AddSongToPlaylistUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.media.SelectableSongQuery
@@ -15,18 +16,18 @@ import java.util.concurrent.TimeUnit
 
 
 class AddSongToPlaylistViewModel constructor(
-        private val addSongToPlaylistUseCase: AddSongToPlaylistUseCase,
-        private val schedulerProvider: SchedulerProvider,
-        private val eventLogger: EventLogger
+    private val addSongToPlaylistUseCase: AddSongToPlaylistUseCase,
+    private val schedulerProvider: SchedulerProvider,
+    private val eventLogger: EventLogger
 ): BaseViewModel(eventLogger) {
 
     private val _typedQuery: MutableLiveData<String> = MutableLiveData()
 
     private val _selectableSongQuery: MutableLiveData<SelectableSongQuery> = MutableLiveData()
-    val selectableSongQuery: LiveData<SelectableSongQuery> = _selectableSongQuery
+    val selectableSongQuery: LiveData<SelectableSongQuery> get() = _selectableSongQuery
 
-    private val _selectedItems: MutableLiveData<Set<Song>> = MutableLiveData()
-    val selectedItems: LiveData<Set<Song>> = _selectedItems
+    private val _selectedItems: MutableLiveData<Set<Song>> = MutableLiveData(emptySet())
+    val selectedItems: LiveData<Set<Song>> get() = _selectedItems
 
     val placeholderVisible: LiveData<Boolean> by lazy {
         Transformations.map(_selectableSongQuery) { query ->
@@ -34,11 +35,16 @@ class AddSongToPlaylistViewModel constructor(
         }
     }
 
-    private val _isAddingSongsToPlaylist: MutableLiveData<Boolean> = MutableLiveData()
-    val isAddingSongsToPlaylist: LiveData<Boolean> = _isAddingSongsToPlaylist
+    private val _isAddingSongsToPlaylist = MutableLiveData<Boolean>(false)
+    val isAddingSongsToPlaylist: LiveData<Boolean> get() = _isAddingSongsToPlaylist
+
+    val addToPlaylistButtonEnabled: LiveData<Boolean> =
+        combine(selectedItems, isAddingSongsToPlaylist) { selectedItems, isAdding ->
+            !selectedItems.isNullOrEmpty() && isAdding != true
+        }
 
     private val _songsAddedToPlaylistEvent: MutableLiveData<Unit> = MutableLiveData()
-    val songsAddedToPlaylistEvent: LiveData<Unit> = _songsAddedToPlaylistEvent
+    val songsAddedToPlaylistEvent: LiveData<Unit> get() = _songsAddedToPlaylistEvent
 
     private val queryPublisher: PublishProcessor<String> by lazy {
         val publisher = PublishProcessor.create<String>()
@@ -97,4 +103,5 @@ class AddSongToPlaylistViewModel constructor(
     fun onCloseSearchViewButtonClicked() {
         addSongToPlaylistUseCase.goBack()
     }
+
 }
