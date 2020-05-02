@@ -18,10 +18,8 @@ class SongSelectorAdapter constructor(
         requestManager: RequestManager
 ): SongAdapter<Song>(requestManager) {
 
-    override fun onCreateBaseViewHolder(
-            parent: ViewGroup,
-            viewType: Int
-    ) = SongSelectorViewHolder(parent.inflateChild(R.layout.item_select_song))
+    override fun onCreateBaseViewHolder(parent: ViewGroup, viewType: Int) =
+            SongSelectorViewHolder(parent.inflateChild(R.layout.item_select_song))
 
     override fun onBindViewHolder(
         holder: SongViewHolder,
@@ -36,16 +34,6 @@ class SongSelectorAdapter constructor(
             tv_album_name.text = item.getAlbumString(res)
             tv_duration.text = item.getDurationString()
 
-            if (position != playingPosition) {
-                mini_visualizer.visibility = View.GONE
-                mini_visualizer.setAnimate(false)
-            } else {
-                mini_visualizer.visibility = View.VISIBLE
-                mini_visualizer.setAnimate(isPlaying)
-            }
-
-            chb_select_song.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_framed_music_note_48dp)!!)
-
             chb_select_song.setChecked(checked = selected, animate = selectionChanged)
 
             isSelected = selected
@@ -54,6 +42,12 @@ class SongSelectorAdapter constructor(
 
     class SongSelectorViewHolder(itemView: View): SongViewHolder(itemView) {
         override val viewOptionsMenu: View? = null
+
+        init {
+            val drawable =
+                    ContextCompat.getDrawable(itemView.context, R.drawable.ic_framed_music_note_48dp)
+            itemView.chb_select_song.setImageDrawable(drawable)
+        }
     }
 
 }

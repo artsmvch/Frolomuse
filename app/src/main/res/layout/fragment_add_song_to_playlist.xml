@@ -17,10 +17,7 @@
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/tb_actions"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:titleTextAppearance="@style/Base.AppTheme.TextAppearance.Toolbar.Title"
-            app:subtitleTextAppearance="@style/Base.AppTheme.TextAppearance.Toolbar.Subtitle"
-            android:minHeight="?attr/actionBarSize">
+            android:layout_height="?attr/actionBarSize">
 
             <androidx.appcompat.widget.SearchView
                 android:id="@+id/sv_query"
@@ -45,14 +42,13 @@
         android:textAppearance="?textAppearanceButton"
         android:background="?selectableItemBackground"/>
 
-    <include
+    <include layout="@layout/include_divider"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@id/btn_add_to_playlist"
         app:layout_constraintEnd_toEndOf="parent"
         android:id="@+id/view_divider"
         android:layout_width="0dp"
-        android:layout_height="@dimen/vertical_divider_height"
-        layout="@layout/include_divider"/>
+        android:layout_height="@dimen/vertical_divider_height" />
 
     <com.frolo.muse.views.spring.AppRecyclerView
         app:layout_constraintStart_toStartOf="parent"
@@ -63,12 +59,11 @@
         android:layout_width="0dp"
         android:layout_height="0dp"/>
 
-    <include
+    <include layout="@layout/include_placeholder"
         app:layout_constraintStart_toStartOf="@id/rv_list"
         app:layout_constraintTop_toTopOf="@id/rv_list"
         app:layout_constraintEnd_toEndOf="@id/rv_list"
         app:layout_constraintBottom_toBottomOf="@id/rv_list"
-        layout="@layout/include_placeholder"
         android:layout_gravity="center"
         android:visibility="invisible"
         android:id="@+id/layout_list_placeholder"

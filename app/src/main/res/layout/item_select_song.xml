@@ -7,20 +7,14 @@
     android:minHeight="@dimen/preferred_item_height"
     android:background="@drawable/bg_item_media">
 
-    <com.frolo.muse.views.MiniVisualizer
-        android:id="@+id/mini_visualizer"
-        android:layout_width="25dp"
-        android:layout_height="19.1dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="5dp"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="5.5dp" />
-
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_duration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="6dp"
+        android:layout_marginStart="6dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="6dp"
         android:textAppearance="?textAppearanceListItemSecondary"
         android:lines="1"
         android:layout_alignParentEnd="true"
@@ -28,9 +22,9 @@
         tools:text="1:45"/>
 
     <com.frolo.muse.views.checkable.CheckableImageView
+        android:id="@+id/chb_select_song"
         android:layout_margin="@dimen/list_item_img_art_padding"
         android:scaleType="centerCrop"
-        android:id="@+id/chb_select_song"
         android:cropToPadding="true"
         android:layout_width="@dimen/list_item_img_art_size"
         android:layout_height="@dimen/list_item_img_art_size"
@@ -38,29 +32,32 @@
         android:layout_alignParentStart="true"/>
 
     <LinearLayout
-        android:layout_margin="3dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
         android:gravity="center_vertical|start"
         android:layout_centerVertical="true"
         android:orientation="vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:layout_toEndOf="@id/chb_select_song"
         android:layout_toStartOf="@id/tv_duration">
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_song_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?textAppearanceListItem"
             android:lines="1"
-            android:id="@+id/tv_song_name"
+            android:ellipsize="end"
             tools:text="Song name"/>
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tv_album_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?textAppearanceListItemSecondary"
             android:lines="1"
-            android:id="@+id/tv_album_name"
+            android:ellipsize="end"
             tools:text="Album name"/>
     </LinearLayout>
+
 </RelativeLayout>
