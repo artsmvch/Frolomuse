@@ -106,8 +106,6 @@ class PlaylistFragment: AbsSongCollectionFragment<Song>(), NoClipping {
 
         rv_list.apply {
             layoutManager = LinearLayoutManager(context)
-            setPadding(0, 0, 0, 64f.dp2px(context).toInt())
-            clipToPadding = false
 
             adapter = this@PlaylistFragment.adapter
 
