@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.ViewGroup
+import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.RecyclerView
 import com.frolo.muse.R
 import com.frolo.muse.model.media.Playlist
@@ -17,17 +19,16 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 class PlaylistListFragment: SimpleMediaCollectionFragment<Playlist>(),
         FabCallback {
 
-    companion object {
-        // Factory
-        fun newInstance() = PlaylistListFragment()
-    }
-
     override val viewModel: PlaylistListViewModel by viewModel()
 
     override val adapter: BaseAdapter<Playlist, *> by lazy {
         PlaylistAdapter().apply {
             setHasStableIds(true)
         }
+    }
+
+    private val additionalBottomPadding: Int by lazy {
+        72f.dp2px(requireContext()).toInt()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,7 +51,7 @@ class PlaylistListFragment: SimpleMediaCollectionFragment<Playlist>(),
         super.onDecorateList(list)
         list.apply {
             clipToPadding = false
-            setPadding(0, 0, 0, 72f.dp2px(context).toInt())
+            //updatePadding(bottom = additionalBottomPadding)
         }
     }
 
@@ -63,4 +64,25 @@ class PlaylistListFragment: SimpleMediaCollectionFragment<Playlist>(),
     override fun handleClickOnFab() {
         viewModel.onCreatePlaylistButtonClicked()
     }
+
+    override fun removeClipping(left: Int, top: Int, right: Int, bottom: Int) {
+        view?.also { safeView ->
+            if (safeView is ViewGroup) {
+                safeView.clipToPadding = false
+            }
+        }
+
+        requireList().apply {
+            clipToPadding = false
+            updatePadding(bottom = bottom + additionalBottomPadding)
+        }
+    }
+
+    companion object {
+
+        // Factory
+        fun newInstance() = PlaylistListFragment()
+
+    }
+
 }

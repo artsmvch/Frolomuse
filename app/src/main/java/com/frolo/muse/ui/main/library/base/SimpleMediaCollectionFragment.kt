@@ -42,8 +42,12 @@ abstract class SimpleMediaCollectionFragment <E: Media>:
 
     final override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // set up list
+        // Setting up the list
         onDecorateList(rv_list)
+    }
+
+    protected fun requireList(): RecyclerView {
+        return requireNotNull(rv_list)
     }
 
     protected open fun onDecorateList(list: RecyclerView) {
@@ -82,7 +86,7 @@ abstract class SimpleMediaCollectionFragment <E: Media>:
         toastError(err)
     }
 
-    final override fun removeClipping(left: Int, top: Int, right: Int, bottom: Int) {
+    override fun removeClipping(left: Int, top: Int, right: Int, bottom: Int) {
         view?.also { safeView ->
             if (safeView is ViewGroup) {
                 rv_list.setPadding(left, top, right, bottom)
