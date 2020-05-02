@@ -1,6 +1,6 @@
 package com.frolo.muse.ui.main.editor.song
 
-import android.media.MediaScannerConnection.scanFile
+import android.media.MediaScannerConnection
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -95,16 +95,21 @@ class SongEditorViewModel constructor(
     }
 
     @WorkerThread
-    @Throws(InterruptedException::class)
     private fun scanSync(file: File) {
         val countDownLatch = CountDownLatch(1)
         val context = getApplication<App>()
         val paths = arrayOf(file.absolutePath)
-        scanFile(context, paths, null) { _, _ ->
+        MediaScannerConnection.scanFile(context, paths, null) { _, _ ->
             // Scan completed, counting down the latch
             countDownLatch.countDown()
         }
-        countDownLatch.await(10, TimeUnit.SECONDS) // awaiting with timeout
+        // Need to catch any InterruptedException
+        // because the thread can be interrupted when the view model is cleared.
+        try {
+            // 10 seconds is maximum waiting time for the user
+            countDownLatch.await(10, TimeUnit.SECONDS)
+        } catch (ignored: InterruptedException) {
+        }
     }
 
 }
