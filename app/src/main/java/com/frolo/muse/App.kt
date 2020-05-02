@@ -13,13 +13,11 @@ import com.frolo.muse.engine.PlayerWrapper
 import com.frolo.muse.engine.service.PlayerService
 import com.frolo.muse.navigator.NavigatorWrapper
 import com.frolo.muse.logger.EventLogger
-import com.frolo.muse.repository.Preferences
 import com.frolo.muse.ui.base.BaseActivity
 import com.frolo.muse.ui.base.FragmentNavigator
 import com.frolo.muse.ui.main.MainActivity
 import io.fabric.sdk.android.Fabric
 import io.reactivex.plugins.RxJavaPlugins
-import javax.inject.Inject
 
 
 class App : MultiDexApplication() {
@@ -29,10 +27,8 @@ class App : MultiDexApplication() {
 
     private val lastStartedActivityCallback = LastStartedActivityWatcher()
 
-    @Inject
-    lateinit var preferences: Preferences
-    @Inject
-    lateinit var eventLogger: EventLogger
+    private val preferences by lazy { appComponent.providePreferences() }
+    private val eventLogger by lazy { appComponent.provideEventLogger() }
 
     private val playerWrapper = PlayerWrapper()
     private val navigatorWrapper = NavigatorWrapper()
@@ -40,20 +36,9 @@ class App : MultiDexApplication() {
     override fun onCreate() {
         super.onCreate()
 
-        appComponent = DaggerAppComponent.builder()
-                .appModule(AppModule(this))
-                .playerModule(PlayerModule(playerWrapper))
-                .localDataModule(LocalDataModule())
-                .remoteDataModule(RemoteDataModule())
-                .navigationModule(NavigationModule(navigatorWrapper))
-                .eventLoggerModule(EventLoggerModule(BuildConfig.DEBUG))
-                .networkModule(NetworkModule())
-                .miscModule(MiscModule())
-                .build()
+        appComponent = buildAppComponent()
 
         registerActivityLifecycleCallbacks(lastStartedActivityCallback)
-
-        appComponent.inject(this)
 
         setupStrictMode()
 
@@ -71,27 +56,41 @@ class App : MultiDexApplication() {
             }
         }
 
-        // starting background player in the App class;
-        // so it will be created when the Main activity binds to the service
+        // Starting background player here, in the App class instance
+        // so that the service will be also in created state when the MainActivity binds to the service.
         startBackgroundPlayer()
 
         dispatchAppLaunched()
     }
 
+    private fun buildAppComponent(): AppComponent =
+        DaggerAppComponent.builder()
+            .appModule(AppModule(this))
+            .playerModule(PlayerModule(playerWrapper))
+            .localDataModule(LocalDataModule())
+            .remoteDataModule(RemoteDataModule())
+            .navigationModule(NavigationModule(navigatorWrapper))
+            .eventLoggerModule(EventLoggerModule(BuildConfig.DEBUG))
+            .networkModule(NetworkModule())
+            .miscModule(MiscModule())
+            .build()
+
     private fun setupStrictMode() {
         if (BuildConfig.DEBUG) {
+
             StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder()
-                    .detectDiskReads()
-                    .detectDiskWrites()
-                    .detectNetwork()
-                    .penaltyLog()
-                    .build())
+                .detectDiskReads()
+                .detectDiskWrites()
+                .detectNetwork()
+                .penaltyLog()
+                .build())
+
             StrictMode.setVmPolicy(StrictMode.VmPolicy.Builder()
-                    .detectLeakedSqlLiteObjects()
-                    .detectLeakedClosableObjects()
-                    .penaltyLog()
-                    .penaltyDeath()
-                    .build())
+                .detectLeakedSqlLiteObjects()
+                .detectLeakedClosableObjects()
+                .penaltyLog()
+                .penaltyDeath()
+                .build())
         }
     }
 
@@ -125,4 +124,5 @@ class App : MultiDexApplication() {
     fun onFragmentNavigatorDestroyed() {
         navigatorWrapper.detachOrigin()
     }
+
 }

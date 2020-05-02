@@ -1,6 +1,5 @@
 package com.frolo.muse.di
 
-import com.frolo.muse.App
 import com.frolo.muse.di.modules.*
 import com.frolo.muse.engine.service.PlayerService
 import com.frolo.muse.interactor.media.AddMediaToPlaylistUseCase
@@ -30,20 +29,20 @@ import javax.inject.Singleton
 
 @Singleton
 @Component(
-        modules = [
-            AppModule::class,
-            PlayerModule::class,
-            ViewModelModule::class,
-            LocalDataModule::class,
-            RemoteDataModule::class,
-            NavigationModule::class,
-            EventLoggerModule::class,
-            NetworkModule::class,
-            MiscModule::class,
-            UseCaseModule::class,
-            SongQueueFactoryModule::class,
-            UseCaseModule::class
-        ]
+    modules = [
+        AppModule::class,
+        PlayerModule::class,
+        ViewModelModule::class,
+        LocalDataModule::class,
+        RemoteDataModule::class,
+        NavigationModule::class,
+        EventLoggerModule::class,
+        NetworkModule::class,
+        MiscModule::class,
+        UseCaseModule::class,
+        SongQueueFactoryModule::class,
+        UseCaseModule::class
+    ]
 )
 interface AppComponent {
 
@@ -51,15 +50,13 @@ interface AppComponent {
     fun provideVMFactory(): ViewModelModule.ViewModelFactory
     fun provideEventLogger(): EventLogger
 
-    fun inject(application: App)
-
     fun inject(service: PlayerService)
 
     fun inject(activity: BaseActivity)
 
     fun inject(fragment: PlaybackParamsDialog)
 
-    // vm factories
+    // ViewModel factories
     fun inject(vmf: AlbumVMFactory)
     fun inject(vmf: SongsOfArtistVMFactory)
     fun inject(vmf: AlbumsOfArtistVMFactory)
@@ -75,7 +72,7 @@ interface AppComponent {
     fun inject(vmf: LyricsVMFactory)
     fun inject(vmf: CreatePlaylistVMFactory)
 
-    // use case factories
+    // UseCase factories
     fun provideGetAlbumSongsUseCaseFactory(): GetAlbumSongsUseCase.Factory
     fun provideGetAlbumsOfArtistUseCaseFactory(): GetAlbumsOfArtistUseCase.Factory
     fun provideGetSongsOfArtistUseCaseFactory(): GetSongsOfArtistUseCase.Factory
@@ -84,6 +81,6 @@ interface AppComponent {
     fun provideAddMediaToPlaylistUseCaseFactory(): AddMediaToPlaylistUseCase.Factory
     fun provideAddSongToPlaylistUseCaseFactory(): AddSongToPlaylistUseCase.Factory
 
-    // VM factory creators
+    // ViewModel factory creators
     fun providePosterVMFactoryCreator(): PosterVMFactory.Creator
 }
