@@ -69,7 +69,6 @@ class SongEditorDialog: BaseDialogFragment() {
         edt_artist_name.setText(song.artist)
         edt_genre_name.setText(song.genre)
 
-        tv_duration.text = getString(R.string.duration, song.getDurationString())
         tv_filepath.text = song.source
 
         Glide.with(this@SongEditorDialog)

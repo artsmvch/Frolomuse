@@ -43,20 +43,8 @@
                 android:maxLines="10"
                 tools:text="Filepath: /folder/folder/folder/folder/folder/folder/folder/folder/folder/folder/folder/filename"/>
 
-            <androidx.appcompat.widget.AppCompatTextView
-                app:layout_constraintStart_toStartOf="@id/tv_filepath"
-                app:layout_constraintTop_toBottomOf="@id/tv_filepath"
-                app:layout_constraintEnd_toEndOf="@id/tv_filepath"
-                android:id="@+id/tv_duration"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:textAppearance="?textAppearanceBody2"
-                android:lines="1"
-                android:text="@string/duration"
-                tools:text="1:45"/>
-
             <androidx.constraintlayout.widget.Barrier
-                app:constraint_referenced_ids="imv_album_art,tv_duration"
+                app:constraint_referenced_ids="imv_album_art,tv_filepath"
                 app:barrierDirection="bottom"
                 android:id="@+id/barrier1"
                 android:layout_width="wrap_content"
