@@ -97,6 +97,9 @@ class AddSongToPlaylistDialog: BaseDialogFragment() {
                 // call it anyway, cause setQuery(query, true) not working if query is null or EMPTY
                 viewModel.onQueryTyped("")
             }
+
+            // This prevents keyboard from opening on the start
+            clearFocus()
         }
 
         btn_cancel.setOnClickListener {
