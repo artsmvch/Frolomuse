@@ -60,3 +60,7 @@ fun <T: Serializable> BaseDialogFragment.serializableNullableArg(key: String): L
     requireArguments().getSerializable(key) as? T
 }
 //</editor-fold>
+
+inline fun <reified T> BaseFragment.castHost(): T? {
+    return (parentFragment as? T) ?: (context as? T) ?: (host as? T)
+}

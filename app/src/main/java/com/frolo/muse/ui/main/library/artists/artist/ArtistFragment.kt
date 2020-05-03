@@ -1,36 +1,52 @@
 package com.frolo.muse.ui.main.library.artists.artist
 
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.LifecycleOwner
 import com.frolo.muse.R
+import com.frolo.muse.StyleUtil
+import com.frolo.muse.dp2px
 import com.frolo.muse.model.media.Artist
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.base.serializableArg
+import com.frolo.muse.ui.base.setupNavigation
 import com.frolo.muse.ui.base.withArg
 import com.frolo.muse.ui.main.library.artists.artist.albums.AlbumsOfArtistFragment
 import com.frolo.muse.ui.main.library.artists.artist.songs.SongsOfArtistFragment
-import com.frolo.muse.views.showBackArrow
+import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.shape.CornerFamily
+import com.google.android.material.shape.MaterialShapeDrawable
+import com.google.android.material.shape.ShapeAppearanceModel
 import kotlinx.android.synthetic.main.fragment_artist.*
+import kotlin.math.abs
+import kotlin.math.pow
 
 
 class ArtistFragment: BaseFragment() {
 
-    companion object {
-        private const val TAG_ALBUMS_OF_ARTIST = "albums_of_artist"
-        private const val TAG_SONGS_OF_ARTIST = "albums_of_artist"
-
-        private const val ARG_ARTIST = "artist"
-
-        fun newInstance(artist: Artist) = ArtistFragment()
-                .withArg(ARG_ARTIST, artist)
-    }
-
     private val artist: Artist by serializableArg(ARG_ARTIST)
+
+    private val onOffsetChangedListener: AppBarLayout.OnOffsetChangedListener =
+        AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
+            val scrollFactor: Float = abs(verticalOffset.toFloat() / (view_backdrop.measuredHeight))
+
+            (view_backdrop.background as? MaterialShapeDrawable)?.apply {
+                val poweredScrollFactor = scrollFactor.pow(2)
+                val cornerRadius = backdropCornerRadius * (1 - poweredScrollFactor)
+                this.shapeAppearanceModel = ShapeAppearanceModel.builder()
+                    .setBottomLeftCorner(CornerFamily.ROUNDED, cornerRadius)
+                    .setBottomRightCorner(CornerFamily.ROUNDED, cornerRadius)
+                    .build()
+            }
+        }
+
+    private val backdropCornerRadius: Float by lazy { 16f.dp2px(requireContext()) }
+
+    val toolbar: Toolbar? get() = view?.let { tb_actions }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,14 +55,7 @@ class ArtistFragment: BaseFragment() {
     ): View = inflater.inflate(R.layout.fragment_artist, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        (activity as? AppCompatActivity)?.apply {
-            setSupportActionBar(tb_actions as Toolbar)
-            supportActionBar?.apply {
-                showBackArrow()
-                title = artist.name
-                subtitle = getString(R.string.artist)
-            }
-        }
+        setupNavigation(tb_actions)
 
         val transaction = childFragmentManager.beginTransaction()
 
@@ -63,6 +72,17 @@ class ArtistFragment: BaseFragment() {
         }
 
         transaction.commit()
+
+        view_backdrop.background = MaterialShapeDrawable().apply {
+            fillColor = ColorStateList.valueOf(StyleUtil.readColorAttrValue(view.context, R.attr.colorPrimary))
+            shapeAppearanceModel = ShapeAppearanceModel.builder()
+                .setBottomRightCorner(CornerFamily.ROUNDED, backdropCornerRadius)
+                .build()
+        }
+
+        app_bar_layout.addOnOffsetChangedListener(onOffsetChangedListener)
+
+        tv_artist_name.text = artist.name
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -70,7 +90,22 @@ class ArtistFragment: BaseFragment() {
         observeViewModel(viewLifecycleOwner)
     }
 
+    override fun onDestroyView() {
+        app_bar_layout.removeOnOffsetChangedListener(onOffsetChangedListener)
+        super.onDestroyView()
+    }
+
     private fun observeViewModel(owner: LifecycleOwner) {
+    }
+
+    companion object {
+        private const val TAG_ALBUMS_OF_ARTIST = "albums_of_artist"
+        private const val TAG_SONGS_OF_ARTIST = "albums_of_artist"
+
+        private const val ARG_ARTIST = "artist"
+
+        fun newInstance(artist: Artist) = ArtistFragment()
+                .withArg(ARG_ARTIST, artist)
     }
 
 }

@@ -20,13 +20,6 @@ import kotlinx.android.synthetic.main.fragment_albums_of_artist.*
 
 class AlbumsOfArtistFragment : AbsMediaCollectionFragment<Album>() {
 
-    companion object {
-        private const val ARG_ARTIST = "artist"
-
-        fun newInstance(artist: Artist) = AlbumsOfArtistFragment()
-                .withArg(ARG_ARTIST, artist)
-    }
-
     override val viewModel: AlbumsOfArtistViewModel by lazy {
         val artist = requireArguments().getSerializable(ARG_ARTIST) as Artist
         val vmFactory = AlbumsOfArtistVMFactory(requireApp().appComponent, artist)
@@ -68,11 +61,6 @@ class AlbumsOfArtistFragment : AbsMediaCollectionFragment<Album>() {
 
             val m = 8f.dp2px(context).toInt()
             addItemDecoration(MarginItemDecoration.createLinear(m, 0))
-
-            val px = 8f.dp2px(view.context).toInt()
-            val py = 8f.dp2px(view.context).toInt()
-            setPadding(px, py, px, py)
-            clipToPadding = false
         }
     }
 
@@ -104,6 +92,13 @@ class AlbumsOfArtistFragment : AbsMediaCollectionFragment<Album>() {
 
     override fun onDisplayError(err: Throwable) {
         toastError(err)
+    }
+
+    companion object {
+        private const val ARG_ARTIST = "artist"
+
+        fun newInstance(artist: Artist) = AlbumsOfArtistFragment()
+                .withArg(ARG_ARTIST, artist)
     }
 
 }
