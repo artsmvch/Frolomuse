@@ -1,6 +1,5 @@
 package com.frolo.muse.ui.main.library.albums.album
 
-import android.view.View
 import android.view.ViewGroup
 import com.frolo.muse.R
 import com.frolo.muse.inflateChild
@@ -28,27 +27,28 @@ class SongOfAlbumAdapter : SongAdapter<Song>() {
         item: Song,
         selected: Boolean,
         selectionChanged: Boolean
-    ) = with((holder.itemView as MediaConstraintLayout)) {
-        val res = resources
-        tv_song_number.text = item.getTrackNumberString(res)
-        tv_song_name.text = item.getNameString(res)
-        tv_artist_name.text = item.getArtistString(res)
-        tv_duration.text = item.getDurationString()
+    ) {
 
         val isPlayPosition = position == playingPosition
 
-        if (isPlayPosition) {
-            mini_visualizer.visibility = View.VISIBLE
-            mini_visualizer.setAnimate(isPlaying)
-        } else {
-            mini_visualizer.visibility = View.GONE
-            mini_visualizer.setAnimate(false)
+        with((holder.itemView as MediaConstraintLayout)) {
+            val res = resources
+            tv_song_number.text = item.getTrackNumberString(res)
+            tv_song_name.text = item.getNameString(res)
+            tv_artist_name.text = item.getArtistString(res)
+            tv_duration.text = item.getDurationString()
+
+            imv_check.setChecked(selected, selectionChanged)
+
+            setChecked(selected)
+            setPlaying(isPlayPosition)
         }
 
-        imv_check.setChecked(selected, selectionChanged)
+        holder.resolvePlayingPosition(
+            isPlayPosition = isPlayPosition,
+            isPlaying = isPlaying
+        )
 
-        setChecked(selected)
-        setPlaying(isPlayPosition)
     }
 
 }

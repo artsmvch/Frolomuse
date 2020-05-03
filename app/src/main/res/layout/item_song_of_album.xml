@@ -8,17 +8,36 @@
     android:minHeight="@dimen/preferred_item_height"
     android:background="@drawable/bg_item_media">
 
-    <TextView
-        android:id="@+id/tv_song_number"
-        android:layout_width="@dimen/list_item_img_art_size"
-        android:layout_height="@dimen/list_item_img_art_size"
-        android:layout_margin="@dimen/list_item_img_art_padding"
-        android:textAppearance="?textAppearanceListItemSecondary"
-        android:gravity="center"
+    <FrameLayout
+        android:id="@+id/fl_song_number_container"
+        android:layout_width="@dimen/media_item_art_size"
+        android:layout_height="@dimen/media_item_art_size"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:text="1"/>
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+            android:id="@+id/tv_song_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textAppearance="?textAppearanceListItemSecondary"
+            tools:text="1"/>
+
+        <View
+            android:id="@+id/view_song_art_overlay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_song_art_overlay"
+            android:visibility="invisible"/>
+
+        <com.frolo.muse.views.MiniVisualizer
+            android:id="@+id/mini_visualizer"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:visibility="invisible"/>
+    </FrameLayout>
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/view_options_menu"
@@ -48,15 +67,6 @@
         app:layout_constraintBottom_toBottomOf="@id/view_options_menu"
         tools:text="3:57:00"/>
 
-    <com.frolo.muse.views.MiniVisualizer
-        android:id="@+id/mini_visualizer"
-        android:layout_width="@dimen/min_visualizer_width"
-        android:layout_height="@dimen/min_visualizer_height"
-        android:layout_marginEnd="6dp"
-        android:layout_marginBottom="6dp"
-        app:layout_constraintEnd_toStartOf="@id/view_options_menu"
-        app:layout_constraintBottom_toBottomOf="parent"/>
-
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_song_name"
         android:layout_width="0dp"
@@ -66,7 +76,7 @@
         android:textAppearance="?textAppearanceListItem"
         android:lines="1"
         android:ellipsize="end"
-        app:layout_constraintStart_toEndOf="@id/tv_song_number"
+        app:layout_constraintStart_toEndOf="@id/fl_song_number_container"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toStartOf="@id/tv_duration"
         app:layout_constraintBottom_toTopOf="@id/tv_artist_name"
@@ -86,11 +96,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         tools:text="Artist name" />
 
-    <include
-        layout="@layout/include_check"
+    <include layout="@layout/include_check"
         android:layout_width="@dimen/list_item_check_size"
         android:layout_height="@dimen/list_item_check_size"
-        app:layout_constraintEnd_toEndOf="@id/tv_song_number"
-        app:layout_constraintBottom_toBottomOf="@id/tv_song_number"/>
+        app:layout_constraintEnd_toEndOf="@id/fl_song_number_container"
+        app:layout_constraintBottom_toBottomOf="@id/fl_song_number_container"/>
 
 </com.frolo.muse.views.media.MediaConstraintLayout>
