@@ -70,7 +70,7 @@ class GenreFragment: AbsSongCollectionFragment<Song>(), NoClipping {
         setupNavigation(tb_actions)
 
         tb_actions.apply {
-            inflateMenu(R.menu.fragment_abs_media_collection)
+            inflateMenu(R.menu.fragment_genre)
             setOnMenuItemClickListener { menuItem ->
                 if (menuItem.itemId == R.id.action_sort) {
                     viewModel.onSortOrderOptionSelected()
