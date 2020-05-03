@@ -4,11 +4,6 @@
     <!--Common for all themes-->
     <color name="tint_search_grey">#828282</color>
 
-    <color name="notification_bg_black">#333333</color>
-
-    <color name="dark_gray">#505050</color>
-
-    <color name="medium_gray">#BBBBBB</color>
     <color name="light_gray">#D3D3D3</color>
     <color name='white_smoke'>#F5F5F5</color>
     <color name="white">#FFFFFF</color>
@@ -16,23 +11,12 @@
     <!--transparent-->
     <color name="transparent">@android:color/transparent</color>
     <color name="transparent_black">#91000000</color>
-    <color name="transparent_grey">#54888888</color>
 
-    <!--purples-->
+    <!--Notification-->
+    <color name="notification_bg_black">#333333</color>
+    <color name="notification_accent">@color/md_light_blue_600</color>
 
-    <!--blues-->
-
-
-    <!--widget colors-->
+    <!--Widget-->
     <color name="widget_color_enabled">#FFFFFF</color>
     <color name="widget_color_disabled">#7e7e7e</color>
-
-    <!--Dark blue theme-->
-
-    <!--Dark yellow theme-->
-
-    <!--Play position background-->
-
-    <!--Media Scan notifications-->
-    <color name="notification_accent">@color/md_light_blue_600</color>
 </resources>
