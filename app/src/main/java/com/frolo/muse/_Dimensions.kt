@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.res.Resources
 import android.util.DisplayMetrics
 import android.util.TypedValue
+import android.view.WindowManager
 
 
 fun Float.dp2px(context: Context): Float {
@@ -32,3 +33,12 @@ fun Float.sp2px(context: Context? = null): Float {
             else Resources.getSystem().displayMetrics
     return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, this, metrics)
 }
+
+val Context.screenWidth: Int
+    get() {
+        val displayMetrics = DisplayMetrics()
+        val windowManager = getSystemService(Context.WINDOW_SERVICE) as? WindowManager
+                ?: throw NullPointerException("Context is missing WindowManager")
+        windowManager.defaultDisplay.getMetrics(displayMetrics)
+        return displayMetrics.widthPixels
+    }

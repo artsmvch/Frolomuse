@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.updatePadding
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
@@ -14,7 +15,6 @@ import com.frolo.muse.ui.base.withArg
 import com.frolo.muse.ui.main.library.base.AbsMediaCollectionFragment
 import com.frolo.muse.ui.main.library.base.BaseAdapter
 import com.frolo.muse.dp2px
-import com.frolo.muse.views.MarginItemDecoration
 import kotlinx.android.synthetic.main.fragment_albums_of_artist.*
 
 
@@ -58,9 +58,6 @@ class AlbumsOfArtistFragment : AbsMediaCollectionFragment<Album>() {
         rv_list.apply {
             adapter = this@AlbumsOfArtistFragment.adapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-
-            val m = 8f.dp2px(context).toInt()
-            addItemDecoration(MarginItemDecoration.createLinear(m, 0))
         }
     }
 
@@ -79,6 +76,10 @@ class AlbumsOfArtistFragment : AbsMediaCollectionFragment<Album>() {
     }
 
     override fun onSubmitList(list: List<Album>) {
+        val leftPadding: Int =
+            if (list.size <= 3) 40f.dp2px(rv_list.context).toInt()
+            else 8f.dp2px(rv_list.context).toInt()
+        rv_list.updatePadding(left = leftPadding)
         adapter.submit(list)
     }
 

@@ -10,9 +10,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingStart="32dp"
-        android:paddingEnd="16dp"
+        android:paddingRight="16dp"
         android:clipToPadding="false"
-        tools:ignore="RtlSymmetry" />
+        tools:ignore="RtlHardcoded,RtlSymmetry"
+        tools:listitem="@layout/item_album_of_artist"
+        tools:itemCount="3" />
 
     <include layout="@layout/include_loading"
         android:layout_width="wrap_content"
