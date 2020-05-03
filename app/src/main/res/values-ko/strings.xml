@@ -21,6 +21,7 @@
     <string name="hide">숨는 장소</string>
     <string name="message_one_file_hidden">파일이 숨겨져 있습니다. 설정에서 다시 되돌릴 수 있습니다</string>
     <string name="message_multiple_files_hidden">선택한 파일이 숨겨졌습니다. 설정에서 다시 되돌릴 수 있습니다</string>
+    <string name="scan_files">파일 스캔</string>
 
     <!--Hidden files-->
     <string name="hidden_files">숨겨진 파일</string>
@@ -53,10 +54,26 @@
     <string name="remind_me_later">나중에 다시 확인</string>
     <string name="rate">그래, 난 좋아!</string>
 
+    <string name="now_playing">지금 재생 중</string>
+    <string name="queue">대기열</string>
+    <string name="current_song_queue">현재 노래 대기열</string>
+    <string name="save_as_playlist">재생 목록으로 저장</string>
+    <string name="no_songs_in_queue">대기열에 노래가 없습니다</string>
     <string name="track">오디오 트랙</string>
     <string name="album">앨범</string>
     <string name="artist">예술가</string>
     <string name="genre">장르</string>
+
+    <!--AddMediaToPlaylist-->
+    <string name="select_playlist">재생 목록 선택</string>
+    <string name="select_playlist_to_which_you_want_to_add_music">
+        음악을 추가 할 재생 목록을 선택하십시오
+    </string>
+
+    <!--AddSongToPlaylist-->
+    <string name="add_song_to_s_playlist_hint">
+        \"%s\"재생 목록에 추가 할 노래를 선택한 다음 \'재생 목록에 추가\'단추를 클릭하십시오.
+    </string>
 
     <plurals name="s_songs">
         <item quantity="other">노래 %d 곡</item>
@@ -82,10 +99,9 @@
     <string name="view_album">앨범보기</string>
     <string name="view_artist">아티스트보기</string>
     <string name="create_poster">포스터 만들기</string>
-    <string name="save_playlist">재생 목록 저장</string>
     <string name="play_next">다음에 플레이</string>
     <string name="cut_ringtone">컷 벨소리</string>
-    <!--<string name="view_lyrics">View lyrics</string>-->
+    <string name="add_song">노래 추가</string>
 
     <!--deletion confirmation-->
     <string name="confirmation">확인</string>
@@ -148,6 +164,7 @@
     <string name="dark_blue_theme">진한 파란색 테마</string>
     <string name="dark_especial_theme">어두운 특별한 테마</string>
     <string name="dark_purple_theme">어두운 자주색 테마</string>
+    <string name="dark_yellow_theme">다크 오렌지 테마</string>
     <string name="pause_playback">재생 일시 정지</string>
     <string name="resume_playback">재생 재개</string>
     <string name="pause_on_unplugged">이어폰을 뽑은 후 재생 일시 정지</string>
@@ -177,10 +194,15 @@
 
 
     <!--create and edit playlist-->
+    <string name="save_playlist">재생 목록 저장</string>
+    <string name="edit_playlist">재생 목록 수정</string>
+    <string name="playlist_name">재생 목록 이름</string>
     <string name="name_is_empty">이름은 비어 있지 않아야합니다</string>
     <string name="such_name_already_exists">그런 이름은 이미 존재합니다</string>
 
     <!--create preset-->
+    <string name="save_preset">사전 설정 저장</string>
+    <string name="preset_name">사전 설정 이름</string>
 
     <!--equalizer-->
     <string name="freq_range">%s hz</string>

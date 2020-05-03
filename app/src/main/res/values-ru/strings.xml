@@ -22,6 +22,7 @@
     <string name="hide">Спрятать</string>
     <string name="message_one_file_hidden">Файл был скрыт. Вы можете вернуть его обратно в настройках</string>
     <string name="message_multiple_files_hidden">Выбранные файлы были скрыты. Вы можете вернуть их обратно в настройках</string>
+    <string name="scan_files">Просканировать файлы</string>
 
     <!--Hidden files-->
     <string name="hidden_files">Скрытые файлы</string>
@@ -54,10 +55,26 @@
     <string name="remind_me_later">Спросите меня позже</string>
     <string name="rate">Да, мне нравится!</string>
 
+    <string name="now_playing">Сейчас играет</string>
+    <string name="queue">Очередь</string>
+    <string name="current_song_queue">Текущая очередь песен</string>
+    <string name="save_as_playlist">Сохранить как плейлист</string>
+    <string name="no_songs_in_queue">В очереди нет песен</string>
     <string name="track">Трек</string>
     <string name="album">Альбом</string>
     <string name="artist">Артист</string>
     <string name="genre">Жанр</string>
+
+    <!--AddMediaToPlaylist-->
+    <string name="select_playlist">Выберите плейлист</string>
+    <string name="select_playlist_to_which_you_want_to_add_music">
+        Выберите плейлист, в который вы хотите добавить музыку
+    </string>
+
+    <!--AddSongToPlaylist-->
+    <string name="add_song_to_s_playlist_hint">
+        Выберите песни, которые вы хотите добавить в список воспроизведения \"%s\", а затем нажмите кнопку \"Добавить в плейлист\"
+    </string>
 
     <plurals name="s_songs">
         <item quantity="one">%d трек</item>
@@ -86,9 +103,9 @@
     <string name="view_album">Посмотреть альбом</string>
     <string name="view_artist">Посмотреть артиста</string>
     <string name="create_poster">Создать постер</string>
-    <string name="save_playlist">Сохранить плейлист</string>
     <string name="play_next">Воспроизвести следующим</string>
     <string name="cut_ringtone">Вырезать рингтон</string>
+    <string name="add_song">Добавить песню</string>
 
     <!--deletion confirmation-->
     <string name="confirmation">Подтверждение</string>
@@ -154,6 +171,7 @@
     <string name="dark_blue_theme">Темно-синяя тема</string>
     <string name="dark_especial_theme">Темная особенная тема</string>
     <string name="dark_purple_theme">Темно-фиолетовая тема</string>
+    <string name="dark_yellow_theme">Темно-оранжевая тема</string>
     <string name="pause_playback">Приостановить воспроизведение</string>
     <string name="resume_playback">Продолжить воспроизведение</string>
     <string name="pause_on_unplugged">Перестать играть после отсоединения наушников</string>
@@ -181,10 +199,15 @@
     <string name="rescan_media_library_desc">Сканирование медиа-библиотеки помогает приложению находить новые аудиофайлы</string>
 
     <!-- create playlist-->
+    <string name="save_playlist">Сохранить плейлист</string>
+    <string name="edit_playlist">Редактировать плейлист</string>
+    <string name="playlist_name">Название плейлиста</string>
     <string name="name_is_empty">Имя не  может быть пустым</string>
     <string name="such_name_already_exists">Такое имя уже существует</string>
 
     <!--create preset-->
+    <string name="save_preset">Сохранить пресет</string>
+    <string name="preset_name">Название пресета</string>
 
     <!--equalizer-->
     <string name="freq_range">%s hz</string>

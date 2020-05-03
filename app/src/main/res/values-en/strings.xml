@@ -1,4 +1,6 @@
 <resources>
+    <string name="preference_screen" translatable="false">preference_screen</string>
+    <string name="ab" translatable="false">A-B</string>
     <string name="ok">OK</string>
     <string name="loading">Loading…</string>
     <string name="cancel">Cancel</string>
@@ -22,6 +24,7 @@
     <string name="hide">Hide</string>
     <string name="message_one_file_hidden">The file has been hidden. You can return it back in the settings</string>
     <string name="message_multiple_files_hidden">The selected files have been hidden. You can return them back in the settings</string>
+    <string name="scan_files">Scan files</string>
 
     <!--Hidden files-->
     <string name="hidden_files">Hidden files</string>
@@ -54,14 +57,50 @@
     <string name="remind_me_later">Ask me later</string>
     <string name="rate">Yes, I like it!</string>
 
+    <string name="now_playing">Now playing</string>
+    <string name="queue">Queue</string>
+    <string name="current_song_queue">Current song queue</string>
+    <string name="save_as_playlist">Save as playlist</string>
+    <string name="no_songs_in_queue">No songs in the queue</string>
     <string name="track">Track</string>
     <string name="album">Album</string>
     <string name="artist">Artist</string>
     <string name="genre">Genre</string>
 
+    <!--AddMediaToPlaylist-->
+    <string name="select_playlist">Select playlist</string>
+    <string name="select_playlist_to_which_you_want_to_add_music">
+        Select playlist to which you want to add music
+    </string>
+
+    <!--AddSongToPlaylist-->
+    <string name="add_song_to_s_playlist_hint">
+        Select songs you want to add to the \"%s\" playlist and then click the \'Add to playlist\' button
+    </string>
+
+    <plurals name="s_songs_selected">
+        <item quantity="one">%d song selected</item>
+        <item quantity="other">%d songs selected</item>
+    </plurals>
+
     <plurals name="s_songs">
         <item quantity="one">%d song</item>
         <item quantity="other">%d songs</item>
+    </plurals>
+
+    <plurals name="s_hours">
+        <item quantity="one">%d hour</item>
+        <item quantity="other">%d hours</item>
+    </plurals>
+
+    <plurals name="s_minutes">
+        <item quantity="one">%d min</item>
+        <item quantity="other">%d mins</item>
+    </plurals>
+
+    <plurals name="s_seconds">
+        <item quantity="one">%d second</item>
+        <item quantity="other">%d seconds</item>
     </plurals>
 
     <string name="select_all">Select all</string>
@@ -84,9 +123,9 @@
     <string name="view_album">View album</string>
     <string name="view_artist">View artist</string>
     <string name="create_poster">Create poster</string>
-    <string name="save_playlist">Save playlist</string>
     <string name="play_next">Play next</string>
     <string name="cut_ringtone">Cut ringtone</string>
+    <string name="add_song">Add song</string>
 
     <!--deletion confirmation-->
     <string name="confirmation">Confirmation</string>
@@ -150,6 +189,7 @@
     <string name="dark_blue_theme">Dark blue theme</string>
     <string name="dark_especial_theme">Dark especial theme</string>
     <string name="dark_purple_theme">Dark purple theme</string>
+    <string name="dark_yellow_theme">Dark orange theme</string>
     <string name="pause_playback">Pause playback</string>
     <string name="resume_playback">Resume playback</string>
     <string name="pause_on_unplugged">Pause playback after earphones unplugged</string>
@@ -177,12 +217,16 @@
     <string name="sleep_timer_is_off">Sleep Timer is off</string>
     <string name="rescan_media_library_desc">Scanning media library helps the app find new audio files</string>
 
-
-    <!--create playlist-->
+    <!--create and edit playlist-->
+    <string name="save_playlist">Save playlist</string>
+    <string name="edit_playlist">Edit playlist</string>
+    <string name="playlist_name">Playlist name</string>
     <string name="name_is_empty">The name must be non-empty</string>
     <string name="such_name_already_exists">Such name already exists</string>
 
     <!--create preset-->
+    <string name="save_preset">Save preset</string>
+    <string name="preset_name">Preset name</string>
 
     <!--equalizer-->
     <string name="freq_range">%s hz</string>

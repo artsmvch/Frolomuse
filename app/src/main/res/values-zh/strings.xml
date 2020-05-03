@@ -22,6 +22,7 @@
     <string name="hide">隐藏</string>
     <string name="message_one_file_hidden">該文件已被隱藏。 您可以在設置中將其返回</string>
     <string name="message_multiple_files_hidden">所選文件已隱藏。 您可以在設置中返回它們</string>
+    <string name="scan_files">掃描文件</string>
 
     <!--Hidden files-->
     <string name="hidden_files">隐藏文件</string>
@@ -54,10 +55,26 @@
     <string name="remind_me_later">等會再問我</string>
     <string name="rate">是的，我喜歡它！</string>
 
+    <string name="now_playing">正在播放</string>
+    <string name="queue">隊列</string>
+    <string name="current_song_queue">當前歌曲隊列</string>
+    <string name="save_as_playlist">另存為播放列表</string>
+    <string name="no_songs_in_queue">隊列中沒有歌曲</string>
     <string name="track">跟踪</string>
     <string name="album">專輯</string>
     <string name="artist">藝術家</string>
     <string name="genre">類型</string>
+
+    <!--AddMediaToPlaylist-->
+    <string name="select_playlist">選擇播放列表</string>
+    <string name="select_playlist_to_which_you_want_to_add_music">
+        選擇要添加音樂的播放列表
+    </string>
+
+    <!--AddSongToPlaylist-->
+    <string name="add_song_to_s_playlist_hint">
+        選擇要添加到\“％s\”播放列表中的歌曲，然後單擊\'添加到播放列表\'按鈕
+    </string>
 
     <plurals name="s_songs">
         <item quantity="other">%d 首歌</item>
@@ -83,9 +100,9 @@
     <string name="view_album">查看相冊</string>
     <string name="view_artist">查看藝術家</string>
     <string name="create_poster">製作海報</string>
-    <string name="save_playlist">保存播放列表</string>
     <string name="play_next">接下來玩</string>
     <string name="cut_ringtone">切鈴聲</string>
+    <string name="add_song">添加歌曲</string>
 
     <!--deletion confirmation-->
     <string name="confirmation">確認</string>
@@ -148,6 +165,7 @@
     <string name="dark_blue_theme">深藍色主題</string>
     <string name="dark_especial_theme">黑暗的特殊主題</string>
     <string name="dark_purple_theme">深紫色主題</string>
+    <string name="dark_yellow_theme">深橙色主題</string>
     <string name="pause_playback">暫停播放</string>
     <string name="resume_playback">繼續播放</string>
     <string name="pause_on_unplugged">拔下耳機後暫停播放</string>
@@ -174,10 +192,15 @@
     <string name="rescan_media_library_desc">掃描媒體庫可幫助應用找到新的音頻文件</string>
 
     <!--create playlist-->
+    <string name="save_playlist">保存播放列表</string>
+    <string name="edit_playlist">修改播放列表</string>
+    <string name="playlist_name">播放清單名稱</string>
     <string name="name_is_empty">名稱必須為非空</string>
     <string name="such_name_already_exists">這樣的名字已經存在</string>
 
     <!--create preset-->
+    <string name="save_preset">保存預設</string>
+    <string name="preset_name">預設名稱</string>
 
     <!--equalizer-->
     <string name="freq_range">%s 赫茲</string>

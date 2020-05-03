@@ -22,6 +22,7 @@
     <string name="hide">隠す</string>
     <string name="message_one_file_hidden">ファイルは非表示になっています。 設定で戻すことができます</string>
     <string name="message_multiple_files_hidden">選択したファイルは非表示になっています。 設定に戻すことができます</string>
+    <string name="scan_files">ファイルをスキャンする</string>
 
     <!--Hidden files-->
     <string name="hidden_files">隠しファイル</string>
@@ -54,10 +55,26 @@
     <string name="remind_me_later">後ほど私に質問して</string>
     <string name="rate">はい私はそれが好き！</string>
 
+    <string name="now_playing">現在演奏中</string>
+    <string name="queue">キュー</string>
+    <string name="current_song_queue">現在の曲のキュー</string>
+    <string name="save_as_playlist">プレイリストとして保存</string>
+    <string name="no_songs_in_queue">キューに曲がありません</string>
     <string name="track">歌</string>
     <string name="album">アルバム</string>
     <string name="artist">アーティスト</string>
     <string name="genre">ジャンル</string>
+
+    <!--AddMediaToPlaylist-->
+    <string name="select_playlist">プレイリストを選択</string>
+    <string name="select_playlist_to_which_you_want_to_add_music">
+        音楽を追加するプレイリストを選択します
+    </string>
+
+    <!--AddSongToPlaylist-->
+    <string name="add_song_to_s_playlist_hint">
+        「％s」プレイリストに追加する曲を選択して、「プレイリストに追加」ボタンをクリックします
+    </string>
 
     <plurals name="s_songs">
         <item quantity="other">%d 曲</item>
@@ -83,9 +100,9 @@
     <string name="view_album">アルバムを見る</string>
     <string name="view_artist">アーティストを見る</string>
     <string name="create_poster">ポスターを作成</string>
-    <string name="save_playlist">プレイリストを保存</string>
     <string name="play_next">次に遊ぶ</string>
     <string name="cut_ringtone">着信音をカット</string>
+    <string name="add_song">曲を追加</string>
 
     <!--deletion confirmation-->
     <string name="confirmation">確認</string>
@@ -148,6 +165,7 @@
     <string name="dark_blue_theme">ダークブルーのテーマ</string>
     <string name="dark_especial_theme">ダーク特別テーマ</string>
     <string name="dark_purple_theme">濃い紫色のテーマ</string>
+    <string name="dark_yellow_theme">濃いオレンジのテーマ</string>
     <string name="pause_playback">再生を一時停止する</string>
     <string name="resume_playback">再生を再開する</string>
     <string name="pause_on_unplugged">イヤホンを外した後に再生を一時停止する</string>
@@ -175,10 +193,15 @@
 
 
     <!--create playlist-->
+    <string name="save_playlist">プレイリストを保存</string>
+    <string name="edit_playlist">プレイリストを編集</string>
+    <string name="playlist_name">プレイリスト名</string>
     <string name="name_is_empty">名前は空でなければならない</string>
     <string name="such_name_already_exists">そのような名前は既に存在します</string>
 
     <!--create preset-->
+    <string name="save_preset">プリセットを保存</string>
+    <string name="preset_name">プリセット名</string>
 
     <!--equalizer-->
     <string name="freq_range">%s hz</string>

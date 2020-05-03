@@ -22,6 +22,7 @@
     <string name="hide">छिपाना</string>
     <string name="message_one_file_hidden">फाइल को छिपा दिया गया है। आप इसे सेटिंग्स में वापस कर सकते हैं</string>
     <string name="message_multiple_files_hidden">चयनित फ़ाइलों को छिपा दिया गया है। आप उन्हें सेटिंग्स में वापस कर सकते हैं</string>
+    <string name="scan_files">फ़ाइलों को स्कैन करें</string>
 
     <!--Hidden files-->
     <string name="hidden_files">छिपी हुई फाइलें</string>
@@ -54,10 +55,26 @@
     <string name="remind_me_later">मुझसे बाद में पूछना</string>
     <string name="rate">हाँ मुझे यह पसंद है!</string>
 
+    <string name="now_playing">अभी खेल रहे है</string>
+    <string name="queue">कतार</string>
+    <string name="current_song_queue">वर्तमान गीत कतार</string>
+    <string name="save_as_playlist">प्लेलिस्ट के रूप में सहेजें</string>
+    <string name="no_songs_in_queue">कतार में कोई गीत नहीं</string>
     <string name="track">धावन पथ</string>
     <string name="album">एल्बम</string>
     <string name="artist">कलाकार</string>
     <string name="genre">शैली</string>
+
+    <!--AddMediaToPlaylist-->
+    <string name="select_playlist">प्लेलिस्ट का चयन करें</string>
+    <string name="select_playlist_to_which_you_want_to_add_music">
+        वह प्लेलिस्ट चुनें, जिसमें आप संगीत जोड़ना चाहते हैं
+    </string>
+
+    <!--AddSongToPlaylist-->
+    <string name="add_song_to_s_playlist_hint">
+        उन गीतों का चयन करें जिन्हें आप \"%s\" प्लेलिस्ट में जोड़ना चाहते हैं और फिर \'प्लेलिस्ट में जोड़ें\' बटन पर क्लिक करें
+    </string>
 
     <plurals name="s_songs">
         <item quantity="one">%d गीत</item>
@@ -84,9 +101,9 @@
     <string name="view_album">एल्बम देखें</string>
     <string name="view_artist">कलाकार देखें</string>
     <string name="create_poster">पोस्टर बनाएं</string>
-    <string name="save_playlist">प्लेलिस्ट सहेजें</string>
     <string name="play_next">आगे खेलें</string>
     <string name="cut_ringtone">रिंगटोन को काटें</string>
+    <string name="add_song">गीत जोड़ें</string>
 
     <!--deletion confirmation-->
     <string name="confirmation">पुष्टीकरण</string>
@@ -150,6 +167,7 @@
     <string name="dark_blue_theme">डार्क ब्लू थीम</string>
     <string name="dark_especial_theme">डार्क विशिष्ट विषय</string>
     <string name="dark_purple_theme">डार्क पर्पल थीम</string>
+    <string name="dark_yellow_theme">डार्क ऑरेंज थीम</string>
     <string name="pause_playback">प्लेबैक रोकें</string>
     <string name="resume_playback">प्लेबैक वापस चालू करें</string>
     <string name="pause_on_unplugged">इयरफ़ोन अनप्लग होने के बाद प्लेबैक रोकें</string>
@@ -176,10 +194,15 @@
     <string name="rescan_media_library_desc">मीडिया लाइब्रेरी को स्कैन करने से ऐप को नई ऑडियो फ़ाइलों को खोजने में मदद मिलती है</string>
 
     <!--create playlist-->
+    <string name="save_playlist">प्लेलिस्ट सहेजें</string>
+    <string name="edit_playlist">प्लेलिस्ट संपादित करें</string>
+    <string name="playlist_name">प्लेलिस्ट का नाम</string>
     <string name="name_is_empty">नाम खाली नहीं होना चाहिए</string>
     <string name="such_name_already_exists">ऐसा नाम पहले से मौजूद है</string>
 
     <!--create preset-->
+    <string name="save_preset">प्रीसेट सेव करें</string>
+    <string name="preset_name">प्रीसेट नाम</string>
 
     <!--equalizer-->
     <string name="freq_range">%s हर्ट्ज</string>

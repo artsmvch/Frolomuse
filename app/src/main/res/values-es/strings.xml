@@ -22,6 +22,7 @@
     <string name="hide">Esconder</string>
     <string name="message_one_file_hidden">El archivo ha sido oculto. Puedes devolverlo en la configuración</string>
     <string name="message_multiple_files_hidden">Los archivos seleccionados han sido ocultos. Puede devolverlos en la configuración</string>
+    <string name="scan_files">Escanear archivos</string>
 
     <!--Hidden files-->
     <string name="hidden_files">Archivo oculto</string>
@@ -54,10 +55,26 @@
     <string name="remind_me_later">Pregúntame Luego</string>
     <string name="rate">¡Sí me gusta!</string>
 
+    <string name="now_playing">Jugando ahora</string>
+    <string name="queue">Cola</string>
+    <string name="current_song_queue">Cola de canción actual</string>
+    <string name="save_as_playlist">Guardar como lista de reproducción</string>
+    <string name="no_songs_in_queue">No hay canciones en la cola</string>
     <string name="track">Pista</string>
     <string name="album">Álbum</string>
     <string name="artist">Artista</string>
     <string name="genre">Género</string>
+
+    <!--AddMediaToPlaylist-->
+    <string name="select_playlist">Seleccionar lista de reproducción</string>
+    <string name="select_playlist_to_which_you_want_to_add_music">
+        Seleccione la lista de reproducción a la que desea agregar música
+    </string>
+
+    <!--AddSongToPlaylist-->
+    <string name="add_song_to_s_playlist_hint">
+        Seleccione las canciones que desea agregar a la lista de reproducción \"%s\" y luego haga clic en el botón \'Agregar a la lista de reproducción\'
+    </string>
 
     <plurals name="s_songs">
         <item quantity="one">%d canción</item>
@@ -84,9 +101,9 @@
     <string name="view_album">Ver álbum</string>
     <string name="view_artist">Ver artista</string>
     <string name="create_poster">Crear cartel</string>
-    <string name="save_playlist">Guardar lista de reproducción</string>
     <string name="play_next">Jugar siguiente</string>
     <string name="cut_ringtone">Cortar tono de llamada</string>
+    <string name="add_song">Agregar canción</string>
 
     <!--deletion confirmation-->
     <string name="confirmation">Confirmación</string>
@@ -150,6 +167,7 @@
     <string name="dark_blue_theme">Tema azul oscuro</string>
     <string name="dark_especial_theme">Tema especial oscuro</string>
     <string name="dark_purple_theme">Tema morado oscuro</string>
+    <string name="dark_yellow_theme">Tema naranja oscuro</string>
     <string name="pause_playback">Pausa la reproducción</string>
     <string name="resume_playback">Reanudar la reproducción</string>
     <string name="pause_on_unplugged">Pausa la reproducción después de desconectar los auriculares</string>
@@ -177,10 +195,15 @@
     <string name="rescan_media_library_desc">El escaneo de la biblioteca de medios ayuda a la aplicación a encontrar nuevos archivos de audio</string>
 
     <!--create playlist-->
+    <string name="save_playlist">Guardar lista de reproducción</string>
+    <string name="edit_playlist">Editar lista de reproducción</string>
+    <string name="playlist_name">Nombre de la lista de reproducción</string>
     <string name="name_is_empty">El nombre debe ser no vacío</string>
     <string name="such_name_already_exists">Tal nombre ya existe</string>
 
     <!--create preset-->
+    <string name="save_preset">Guardar preset</string>
+    <string name="preset_name">Nombre preestablecido</string>
 
     <!--equalizer-->
     <string name="freq_range">%s hz</string>

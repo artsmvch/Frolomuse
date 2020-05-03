@@ -21,6 +21,7 @@
     <string name="hide">Сховати</string>
     <string name="message_one_file_hidden">Файл приховано. Ви можете повернути його назад у налаштуваннях</string>
     <string name="message_multiple_files_hidden">Вибрані файли приховано. Ви можете повернути їх назад у налаштуваннях</string>
+    <string name="scan_files">Сканування файлів</string>
 
     <!--Hidden files-->
     <string name="hidden_files">Приховані файли</string>
@@ -53,10 +54,26 @@
     <string name="remind_me_later">Запитаєте мене пізніше</string>
     <string name="rate">Да я люблю його!</string>
 
+    <string name="now_playing">Зараз грає</string>
+    <string name="queue">Чергу</string>
+    <string name="current_song_queue">Поточна черга з піснями</string>
+    <string name="save_as_playlist">Зберегти як список відтворення</string>
+    <string name="no_songs_in_queue">У черзі немає пісень</string>
     <string name="track">Доріжка</string>
     <string name="album">Альбом</string>
     <string name="artist">Виконавець</string>
     <string name="genre">Жанр</string>
+
+    <!--AddMediaToPlaylist-->
+    <string name="select_playlist">Виберіть список відтворення</string>
+    <string name="select_playlist_to_which_you_want_to_add_music">
+        Виберіть список відтворення, до якого потрібно додати музику
+    </string>
+
+    <!--AddSongToPlaylist-->
+    <string name="add_song_to_s_playlist_hint">
+        Виберіть пісні, які потрібно додати до списку відтворення \"%s\", а потім натисніть кнопку \"Додати до списку відтворення\"
+    </string>
 
     <plurals name="s_songs">
         <item quantity="one">%d пісня</item>
@@ -84,10 +101,9 @@
     <string name="view_album">Переглянути альбом</string>
     <string name="view_artist">Переглянути виконавця</string>
     <string name="create_poster">Створіть плакат</string>
-    <string name="save_playlist">Зберегти список відтворення</string>
     <string name="play_next">Грайте далі</string>
     <string name="cut_ringtone">Вирізати рінгтон</string>
-    <!--<string name="view_lyrics">View lyrics</string>-->
+    <string name="add_song">Додати пісню</string>
 
     <!--deletion confirmation-->
     <string name="confirmation">Підтвердження</string>
@@ -153,6 +169,7 @@
     <string name="dark_blue_theme">Темно-синя тема</string>
     <string name="dark_especial_theme">Темна особлива тема</string>
     <string name="dark_purple_theme">Темно-фіолетова тема</string>
+    <string name="dark_yellow_theme">Темно-помаранчева тема</string>
     <string name="pause_playback">Призупинення відтворення</string>
     <string name="resume_playback">Відновити відтворення</string>
     <string name="pause_on_unplugged">Призупинити відтворення після відключення навушників</string>
@@ -181,10 +198,15 @@
 
 
     <!--create and edit playlist-->
+    <string name="save_playlist">Зберегти список відтворення</string>
+    <string name="edit_playlist">Редагувати список відтворення</string>
+    <string name="playlist_name">Назва списку відтворення</string>
     <string name="name_is_empty">Ім\'я має бути не порожнім</string>
     <string name="such_name_already_exists">Така назва вже існує</string>
 
     <!--create preset-->
+    <string name="save_preset">Збережіть пресет</string>
+    <string name="preset_name">Назва пресету</string>
 
     <!--equalizer-->
     <string name="freq_range">%s hz</string>

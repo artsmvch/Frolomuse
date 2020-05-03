@@ -22,6 +22,7 @@
     <string name="hide">Menyembunyikan</string>
     <string name="message_one_file_hidden">File telah disembunyikan. Anda dapat mengembalikannya di pengaturan</string>
     <string name="message_multiple_files_hidden">File yang dipilih telah disembunyikan. Anda dapat mengembalikannya di pengaturan</string>
+    <string name="scan_files">Pindai file</string>
 
     <!--Hidden files-->
     <string name="hidden_files">File tersembunyi</string>
@@ -54,10 +55,26 @@
     <string name="remind_me_later">Tanyakan saya nanti</string>
     <string name="rate">Ya saya suka!</string>
 
+    <string name="now_playing">Sedang diputar</string>
+    <string name="queue">Antre</string>
+    <string name="current_song_queue">Antrean lagu saat ini</string>
+    <string name="save_as_playlist">Simpan sebagai daftar putar</string>
+    <string name="no_songs_in_queue">Tidak ada lagu dalam antrian</string>
     <string name="track">Lagu</string>
     <string name="album">Album</string>
     <string name="artist">Artis</string>
     <string name="genre">Aliran</string>
+
+    <!--AddMediaToPlaylist-->
+    <string name="select_playlist">Pilih daftar putar</string>
+    <string name="select_playlist_to_which_you_want_to_add_music">
+        Pilih daftar putar yang ingin Anda tambahkan musik
+    </string>
+
+    <!--AddSongToPlaylist-->
+    <string name="add_song_to_s_playlist_hint">
+        Pilih lagu yang ingin Anda tambahkan ke daftar putar \"%s\" dan kemudian klik tombol \'Tambah ke daftar putar\'
+    </string>
 
     <plurals name="s_songs">
         <item quantity="other">%d lagu</item>
@@ -83,10 +100,9 @@
     <string name="view_album">Lihat album</string>
     <string name="view_artist">Lihat artis</string>
     <string name="create_poster">Buat poster</string>
-    <string name="save_playlist">Simpan daftar putar</string>
     <string name="play_next">Mainkan selanjutnya</string>
     <string name="cut_ringtone">Potong nada dering</string>
-    <!--<string name="view_lyrics">View lyrics</string>-->
+    <string name="add_song">Tambahkan lagu</string>
 
     <!--deletion confirmation-->
     <string name="confirmation">Konfirmasi</string>
@@ -149,6 +165,7 @@
     <string name="dark_blue_theme">Tema biru gelap</string>
     <string name="dark_especial_theme">Tema utama gelap</string>
     <string name="dark_purple_theme">Tema ungu gelap</string>
+    <string name="dark_yellow_theme">Tema oranye gelap</string>
     <string name="pause_playback">Jeda pemutaran</string>
     <string name="resume_playback">Lanjutkan pemutaran</string>
     <string name="pause_on_unplugged">Jeda pemutaran setelah earphone dicabut</string>
@@ -177,10 +194,15 @@
 
 
     <!--create and edit playlist-->
+    <string name="save_playlist">Simpan daftar putar</string>
+    <string name="edit_playlist">Edit daftar putar</string>
+    <string name="playlist_name">Nama daftar putar</string>
     <string name="name_is_empty">Nama harus kosong</string>
     <string name="such_name_already_exists">Nama seperti itu sudah ada</string>
 
     <!--create preset-->
+    <string name="save_preset">Simpan preset</string>
+    <string name="preset_name">Nama preset</string>
 
     <!--equalizer-->
     <string name="freq_range">%s hz</string>

@@ -22,6 +22,7 @@
     <string name="hide">Verbergen</string>
     <string name="message_one_file_hidden">Die Datei wurde ausgeblendet. Sie können es in den Einstellungen zurückgeben</string>
     <string name="message_multiple_files_hidden">Die ausgewählten Dateien wurden ausgeblendet. Sie können sie in den Einstellungen zurückgeben</string>
+    <string name="scan_files">Dateien scannen</string>
 
     <!--Hidden files-->
     <string name="hidden_files">Versteckte Dateien</string>
@@ -54,10 +55,26 @@
     <string name="remind_me_later">Frag mich später</string>
     <string name="rate">Ja ich mag es!</string>
 
+    <string name="now_playing">Spielt gerade</string>
+    <string name="queue">Warteschlange</string>
+    <string name="current_song_queue">Aktuelle Song-Warteschlange</string>
+    <string name="save_as_playlist">Als Wiedergabeliste speichern</string>
+    <string name="no_songs_in_queue">Keine Songs in der Warteschlange</string>
     <string name="track">Stück</string>
     <string name="album">Album</string>
     <string name="artist">Künstler</string>
     <string name="genre">Genre</string>
+
+    <!--AddMediaToPlaylist-->
+    <string name="select_playlist">Wiedergabeliste auswählen</string>
+    <string name="select_playlist_to_which_you_want_to_add_music">
+        Wählen Sie die Wiedergabeliste aus, zu der Sie Musik hinzufügen möchten
+    </string>
+
+    <!--AddSongToPlaylist-->
+    <string name="add_song_to_s_playlist_hint">
+        Wählen Sie die Lieder aus, die Sie zur Wiedergabeliste \"%s\" hinzufügen möchten, und klicken Sie dann auf die Schaltfläche \'Zur Wiedergabeliste hinzufügen\'
+    </string>
 
     <plurals name="s_songs">
         <item quantity="one">%d Lied</item>
@@ -84,9 +101,9 @@
     <string name="view_album">Album ansehen</string>
     <string name="view_artist">Künstler ansehen</string>
     <string name="create_poster">Plakat erstellen</string>
-    <string name="save_playlist">Wiedergabeliste speichern</string>
     <string name="play_next">Als nächstes spielen</string>
     <string name="cut_ringtone">Klingelton ausschneiden</string>
+    <string name="add_song">Lied hinzufügen</string>
 
     <!--deletion confirmation-->
     <string name="confirmation">Bestätigung</string>
@@ -150,6 +167,7 @@
     <string name="dark_blue_theme">Dunkelblaues Thema</string>
     <string name="dark_especial_theme">Dunkles wolkiges Thema</string>
     <string name="dark_purple_theme">Dunkellila Thema</string>
+    <string name="dark_yellow_theme">Dunkeloranges Thema</string>
     <string name="pause_playback">Wiedergabe anhalten</string>
     <string name="resume_playback">Fortsetzen Wiedergabe</string>
     <string name="pause_on_unplugged">Wiedergabe nach dem Entfernen der Kopfhörer unterbrechen</string>
@@ -177,10 +195,15 @@
     <string name="rescan_media_library_desc">Durch das Scannen der Medienbibliothek kann die App neue Audiodateien finden</string>
 
     <!--create playlist-->
+    <string name="save_playlist">Wiedergabeliste speichern</string>
+    <string name="edit_playlist">Wiedergabeliste bearbeiten</string>
+    <string name="playlist_name">Name der Wiedergabeliste</string>
     <string name="name_is_empty">Der Name darf nicht leer sein</string>
     <string name="such_name_already_exists">Ein solcher Name existiert bereits</string>
 
     <!--create preset-->
+    <string name="save_preset">Preset speichern</string>
+    <string name="preset_name">Name des Presets</string>
 
     <!--equalizer-->
     <string name="freq_range">%s hz</string>
