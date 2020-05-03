@@ -72,9 +72,6 @@
         <item name="android:progressBackgroundTint">#5A5A5A</item>
     </style>
 
-    <style name="AppTheme.Spinner.Dark.Yellow" parent="Widget.AppCompat.Spinner.Underlined">
-    </style>
-
     <style name="AppTheme.TextInputLayout.Dark.Yellow" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="boxStrokeWidth">1.2dp</item>
         <item name="boxStrokeWidthFocused">1.2dp</item>

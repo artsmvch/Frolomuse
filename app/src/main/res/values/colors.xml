@@ -4,29 +4,14 @@
     <!--Common for all themes-->
     <color name="tint_search_grey">#828282</color>
 
-    <!--common-->
-    <color name="scarlet">#ff8080</color>
-
-    <color name="popup_background_dark_normal">#363636</color>
-    <color name="popup_background_dark_pressed">#474747</color>
-    <color name="popup_background_dark_pressed_ripple">#575757</color>
-    <color name="popup_background_light_normal">#ffffff</color>
-    <color name="popup_background_light_pressed">#e6e6e6</color>
-
-    <!--black tints-->
-    <color name="custom_black">#333333</color>
-    <color name="black_odd">#414445</color>
+    <color name="notification_bg_black">#333333</color>
 
     <color name="dark_gray">#505050</color>
-    <color name="md_gray">#777777</color>
 
-    <color name="gray_txt">#919191</color>
     <color name="medium_gray">#BBBBBB</color>
     <color name="light_gray">#D3D3D3</color>
-    <color name="gray_smoke">#e6e6e6</color>
     <color name='white_smoke'>#F5F5F5</color>
     <color name="white">#FFFFFF</color>
-    <color name="almost_white">#FAFAFA</color>
 
     <!--transparent-->
     <color name="transparent">@android:color/transparent</color>
@@ -34,32 +19,8 @@
     <color name="transparent_grey">#54888888</color>
 
     <!--purples-->
-    <color name="medium_purple">#9370DB</color>
-    <color name="darkviolet">#9400D3</color>
-    <color name="lavender">#E6E6FA</color>
-    <color name="orchid">#DA70D6</color>
-    <color name="indigo">#4B0082</color>
-    <color name="plum">#DDA0DD</color>
-    <color name="thistle">#D8BFD8</color>
-    <color name="blueviolet">#8A2BE2</color>
-
-    <color name="custom_purple">#A876C2</color>
-    <color name="accent_purple">#B5AAF1</color>
-
-    <color name="purple_accent">#A598F0</color>
-    <color name="purple_chip">#9E82EE</color>
-    <color name="purple_context">#AB7AEE</color>
-    <color name="purple_action">#9079C7</color>
-    <color name="purple_highlight">#9E82EE</color>
-    <color name="purple_header">#D5967CDF</color>
-    <color name="purple_visualizer">#D5965EF0</color>
 
     <!--blues-->
-
-    <color name="bondi_blue">#0095B6</color>
-    <color name="dodger_blue">#1E90FF</color>
-
-    <color name="album_art_border">#B0CCCCCC</color>
 
 
     <!--widget colors-->
@@ -67,28 +28,11 @@
     <color name="widget_color_disabled">#7e7e7e</color>
 
     <!--Dark blue theme-->
-    <color name="night_dark">#1A242E</color>
-    <color name="night_toolbar">#212D3B</color>
-    <color name="night_surface">#273546</color>
-    <color name="night_background">#1D2733</color>
-
-    <color name="item_icon_foreground_blue">#73B6F1</color>
-    <color name="item_icon_background_blue">#372283DA</color>
 
     <!--Dark yellow theme-->
-    <color name="black_dark">#202020</color>
-    <color name="black_toolbar">#2C2C2C</color>
-    <color name="black_surface">#383838</color>
-    <color name="black_background">#222222</color>
-
-    <color name="item_icon_foreground_yellow">#AAB9F1</color>
-    <color name="item_icon_background_yellow">#37A1B0FA</color>
 
     <!--Play position background-->
-    <color name="play_position_background_light">#4DB8B8B8</color>
-    <color name="play_position_background_dark">#32FFFFFF</color>
 
     <!--Media Scan notifications-->
-    <color name="notification_text">@color/custom_black</color>
     <color name="notification_accent">@color/md_light_blue_600</color>
 </resources>

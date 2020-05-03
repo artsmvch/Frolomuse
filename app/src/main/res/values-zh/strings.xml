@@ -1,7 +1,6 @@
 <resources>
     <string name="ok">好</string>
     <string name="loading">載入中…</string>
-    <string name="done">完成！</string>
     <string name="cancel">取消</string>
     <string name="save">保存</string>
     <string name="saved">保存</string>
@@ -11,15 +10,12 @@
     <string name="sorry_exception">抱歉，出了一些問題</string>
     <string name="app_prefs">應用偏好</string>
     <string name="about">關於</string>
-    <string name="empty">虚拟</string>
     <string name="current_playlist_is_empty">當前播放列表中沒有歌曲。\n
          請選擇其他</string>
     <string name="pick_image">選擇圖片</string>
     <string name="file">文件</string>
-    <string name="created">創建</string>
     <string name="added_to_queue">添加到隊列</string>
     <string name="deleted">刪除</string>
-    <string name="type_at_least_two_letters">輸入至少兩個字母</string>
     <string name="will_be_played_next">接下來會播放</string>
     <string name="set_as_default">設為默認</string>
     <string name="folder_is_default_message">文件瀏覽器現在將從此文件夾打開</string>
@@ -35,7 +31,6 @@
     </string>
 
     <!--Errors-->
-    <string name="failed_to_delete_s">無法刪除 %s</string>
 
     <!--Sort orders-->
     <string name="sort">分類</string>
@@ -59,8 +54,6 @@
     <string name="remind_me_later">等會再問我</string>
     <string name="rate">是的，我喜歡它！</string>
 
-    <string name="choose_playlist">選擇播放列表</string>
-    <string name="current_playing">目前正在播放</string>
     <string name="track">跟踪</string>
     <string name="album">專輯</string>
     <string name="artist">藝術家</string>
@@ -75,15 +68,7 @@
     <!--placeholders-->
     <string name="placeholder_unknown">未知</string>
     <string name="placeholder_zero_duration">0:00</string>
-    <string name="placeholder_unknown_genre">未知</string>
-    <string name="placeholder_no_tracks">沒有曲目</string>
-    <string name="placeholder_unknown_date">19.91.2018</string>
     <string name="placeholder_freq_range">0.00 赫茲</string>
-    <string name="placeholder_header_title">頭</string>
-    <string name="placeholder_lib_name">圖書館</string>
-    <string name="placeholder_lib_version">1.0</string>
-    <string name="placeholder_lib_copyright">版權</string>
-    <string name="placeholder_lib_description">圖書館</string>
 
     <!--options menu-->
     <string name="play">玩</string>
@@ -93,7 +78,6 @@
     <string name="share">分享</string>
     <string name="playlist">播放列表</string>
     <string name="add_to_queue">添加到隊列</string>
-    <string name="create_playlist">創建播放列表</string>
     <string name="edit_song_tags">編輯歌曲標籤</string>
     <string name="edit_album_cover">編輯專輯封面</string>
     <string name="view_album">查看相冊</string>
@@ -151,14 +135,12 @@
 
     <!--navigation drawer menu-->
     <string name="nav_library">圖書館</string>
-    <string name="nav_player">播放機</string>
     <string name="nav_equalizer">均衡器</string>
     <string name="nav_settings">設置</string>
     <string name="nav_search">搜索</string>
     <string name="nav_favourite">喜愛</string>
 
     <!--app preferences-->
-    <string name="theme">主題</string>
     <string name="version">應用版本</string>
     <string name="licenses">許可證</string>
     <string name="choose_theme">選擇主題</string>
@@ -192,27 +174,21 @@
     <string name="rescan_media_library_desc">掃描媒體庫可幫助應用找到新的音頻文件</string>
 
     <!--create playlist-->
-    <string name="type_name_for_playlist">請輸入播放列表的名稱</string>
     <string name="name_is_empty">名稱必須為非空</string>
     <string name="such_name_already_exists">這樣的名字已經存在</string>
-    <string name="edit_name_of_playlist">修改播放列表名稱</string>
 
     <!--create preset-->
-    <string name="type_name_for_preset">請輸入名稱進行預設</string>
 
     <!--equalizer-->
     <string name="freq_range">%s 赫茲</string>
     <string name="nothing_to_show">什麼都沒有顯示</string>
     <string name="bass">低音</string>
     <string name="virtualizer">虛擬器</string>
-    <string name="headset_not_plugged">要使用此效果，請插入耳機</string>
     <string name="show_visualizer">顯示可視化工具</string>
-    <string name="audio_fx_hint">請先打開均衡器</string>
     <!--playback params-->
     <string name="playback_params">播放參數</string>
     <string name="speed">速度</string>
     <string name="pitch">瀝青</string>
-    <string name="reset">重啟</string>
     <string name="normalize">規範化</string>
 
     <!--media file editor-->
@@ -220,8 +196,6 @@
     <string name="album_name_layout">專輯</string>
     <string name="genre_name_layout">類型</string>
     <string name="artist_name_layout">藝術家</string>
-    <string name="filepath">文件路徑 %s</string>
-    <string name="duration">持續時間 %s</string>
 
     <string name="app_theme">應用主題</string>
     <string name="third_part_libs">第三方圖書館</string>

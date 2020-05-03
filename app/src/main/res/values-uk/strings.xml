@@ -1,7 +1,6 @@
 <resources>
     <string name="ok">Добре</string>
     <string name="loading">Завантаження…</string>
-    <string name="done">Зроблено!</string>
     <string name="cancel">Скасувати</string>
     <string name="save">Зберегти</string>
     <string name="saved">Збережено</string>
@@ -11,14 +10,11 @@
     <string name="sorry_exception">Вибачте, щось пішло не так</string>
     <string name="app_prefs">Налаштування програми</string>
     <string name="about">Про додаток</string>
-    <string name="empty">Порожній</string>
     <string name="current_playlist_is_empty">У поточному списку відтворення немає пісень. Виберіть іншу</string>
     <string name="pick_image">Виберіть зображення</string>
     <string name="file">Файл</string>
-    <string name="created">Створено</string>
     <string name="added_to_queue">Додано до черги</string>
     <string name="deleted">Видалено</string>
-    <string name="type_at_least_two_letters">Наберіть принаймні дві літери</string>
     <string name="will_be_played_next">Буде грати далі</string>
     <string name="set_as_default">Встановити за замовчуванням</string>
     <string name="folder_is_default_message">Тепер браузер файлів відкриється з цієї папки</string>
@@ -34,7 +30,6 @@
     </string>
 
     <!--Errors-->
-    <string name="failed_to_delete_s">Не вдалося видалити %s</string>
 
     <!--Sort orders-->
     <string name="sort">Сортувати</string>
@@ -58,8 +53,6 @@
     <string name="remind_me_later">Запитаєте мене пізніше</string>
     <string name="rate">Да я люблю його!</string>
 
-    <string name="choose_playlist">Виберіть список відтворення</string>
-    <string name="current_playing">Поточна гра</string>
     <string name="track">Доріжка</string>
     <string name="album">Альбом</string>
     <string name="artist">Виконавець</string>
@@ -76,15 +69,7 @@
     <!--placeholders-->
     <string name="placeholder_unknown">Невідомо</string>
     <string name="placeholder_zero_duration">0:00</string>
-    <string name="placeholder_unknown_genre">Жанр</string>
-    <string name="placeholder_no_tracks">Ніяких доріжок</string>
-    <string name="placeholder_unknown_date">19.91.2018</string>
     <string name="placeholder_freq_range">0.00 hz</string>
-    <string name="placeholder_header_title">Заголовок</string>
-    <string name="placeholder_lib_name">Бібліотека</string>
-    <string name="placeholder_lib_version">1.0</string>
-    <string name="placeholder_lib_copyright">Авторські права</string>
-    <string name="placeholder_lib_description">Бібліотека</string>
 
     <!--options menu-->
     <string name="play">Грати</string>
@@ -94,7 +79,6 @@
     <string name="share">Поділитися</string>
     <string name="playlist">Плейлист</string>
     <string name="add_to_queue">Додати в чергу</string>
-    <string name="create_playlist">Створити список відтворення</string>
     <string name="edit_song_tags">Редагування тегів пісень</string>
     <string name="edit_album_cover">Редагуйте обкладинку альбому</string>
     <string name="view_album">Переглянути альбом</string>
@@ -156,14 +140,12 @@
 
     <!--navigation drawer menu-->
     <string name="nav_library">Бібліотека</string>
-    <string name="nav_player">Гравець</string>
     <string name="nav_equalizer">Еквалайзер</string>
     <string name="nav_settings">Налаштування</string>
     <string name="nav_search">Пошук</string>
     <string name="nav_favourite">Улюблений</string>
 
     <!--app preferences-->
-    <string name="theme">Тема</string>
     <string name="version">Версія програми</string>
     <string name="licenses">Ліцензії</string>
     <string name="choose_theme">Виберіть Тема</string>
@@ -199,27 +181,21 @@
 
 
     <!--create and edit playlist-->
-    <string name="type_name_for_playlist">Введіть назву для відтворення</string>
     <string name="name_is_empty">Ім\'я має бути не порожнім</string>
     <string name="such_name_already_exists">Така назва вже існує</string>
-    <string name="edit_name_of_playlist">Редагувати назву списку відтворення</string>
 
     <!--create preset-->
-    <string name="type_name_for_preset">Будь ласка, введіть ім\'я для встановлення</string>
 
     <!--equalizer-->
     <string name="freq_range">%s hz</string>
     <string name="nothing_to_show">Нічого показати</string>
     <string name="bass">Бас</string>
     <string name="virtualizer">Віртуалізатор</string>
-    <string name="headset_not_plugged">Щоб використовувати цей ефект, підключіть гарнітуру</string>
     <string name="show_visualizer">Показати візуалізатор</string>
-    <string name="audio_fx_hint">Спершу вимкніть еквалайзерр</string>
     <!--playback params-->
     <string name="playback_params">Параметри відтворення</string>
     <string name="speed">Швидкість</string>
     <string name="pitch">Крок</string>
-    <string name="reset">Скинути</string>
     <string name="normalize">Нормалізувати</string>
 
     <!--media file editor-->
@@ -227,8 +203,6 @@
     <string name="album_name_layout">Альбом</string>
     <string name="genre_name_layout">Жанр</string>
     <string name="artist_name_layout">Виконавця</string>
-    <string name="filepath">Шлях до файлу %s</string>
-    <string name="duration">Тривалість %s</string>
 
     <string name="app_theme">Тема додатка</string>
     <string name="third_part_libs">Сторонні бібліотеки</string>

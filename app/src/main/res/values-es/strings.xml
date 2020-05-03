@@ -1,7 +1,6 @@
 <resources>
     <string name="ok">OK</string>
     <string name="loading">Cargando…</string>
-    <string name="done">¡Hecho!</string>
     <string name="cancel">Cancelar</string>
     <string name="save">Salvar</string>
     <string name="saved">Salvado</string>
@@ -11,15 +10,12 @@
     <string name="sorry_exception">Perdón, algo salió mal</string>
     <string name="app_prefs">Preferencias de la aplicación</string>
     <string name="about">Acerca de</string>
-    <string name="empty">Vacío</string>
     <string name="current_playlist_is_empty">No hay canciones en la lista de reproducción actual.\norte
          Por favor, elija otro</string>
     <string name="pick_image">Seleccionar imagen</string>
     <string name="file">Expediente</string>
-    <string name="created">Creado</string>
     <string name="added_to_queue">Añadido a la cola</string>
     <string name="deleted">Eliminado</string>
-    <string name="type_at_least_two_letters">Escriba al menos dos letras</string>
     <string name="will_be_played_next">Se jugará el próximo</string>
     <string name="set_as_default">Establecer por defecto</string>
     <string name="folder_is_default_message">El explorador de archivos ahora se abrirá desde esta carpeta</string>
@@ -35,7 +31,6 @@
     </string>
 
     <!--Errors-->
-    <string name="failed_to_delete_s">Error al eliminar %s</string>
 
     <!--Sort orders-->
     <string name="sort">Ordenar</string>
@@ -59,8 +54,6 @@
     <string name="remind_me_later">Pregúntame Luego</string>
     <string name="rate">¡Sí me gusta!</string>
 
-    <string name="choose_playlist">Elige la lista de reproducción</string>
-    <string name="current_playing">Juego actual</string>
     <string name="track">Pista</string>
     <string name="album">Álbum</string>
     <string name="artist">Artista</string>
@@ -76,15 +69,7 @@
     <!--placeholders-->
     <string name="placeholder_unknown">Desconocido</string>
     <string name="placeholder_zero_duration">0:00</string>
-    <string name="placeholder_unknown_genre">Desconocido</string>
-    <string name="placeholder_no_tracks">Sin pistas</string>
-    <string name="placeholder_unknown_date">19.91.2018</string>
     <string name="placeholder_freq_range">0.00 hz</string>
-    <string name="placeholder_header_title">Encabezamiento</string>
-    <string name="placeholder_lib_name">Biblioteca</string>
-    <string name="placeholder_lib_version">1.0</string>
-    <string name="placeholder_lib_copyright">Derechos de autor</string>
-    <string name="placeholder_lib_description">Biblioteca</string>
 
     <!--options menu-->
     <string name="play">Jugar</string>
@@ -94,7 +79,6 @@
     <string name="share">Compartir</string>
     <string name="playlist">Lista de reproducción</string>
     <string name="add_to_queue">Añadir a la cola</string>
-    <string name="create_playlist">Crear lista de reproducción</string>
     <string name="edit_song_tags">Editar etiquetas de canciones</string>
     <string name="edit_album_cover">Editar portada del álbum</string>
     <string name="view_album">Ver álbum</string>
@@ -153,14 +137,12 @@
 
     <!--navigation drawer menu-->
     <string name="nav_library">Biblioteca</string>
-    <string name="nav_player">Jugador</string>
     <string name="nav_equalizer">Igualada</string>
     <string name="nav_settings">Configuraciones</string>
     <string name="nav_search">Buscar</string>
     <string name="nav_favourite">Favorito</string>
 
     <!--app preferences-->
-    <string name="theme">Tema</string>
     <string name="version">Versión de la aplicación</string>
     <string name="licenses">Licencias</string>
     <string name="choose_theme">Escoge un tema</string>
@@ -195,27 +177,21 @@
     <string name="rescan_media_library_desc">El escaneo de la biblioteca de medios ayuda a la aplicación a encontrar nuevos archivos de audio</string>
 
     <!--create playlist-->
-    <string name="type_name_for_playlist">Escribe el nombre para la lista de reproducción</string>
     <string name="name_is_empty">El nombre debe ser no vacío</string>
     <string name="such_name_already_exists">Tal nombre ya existe</string>
-    <string name="edit_name_of_playlist">Editar nombre de lista de reproducción</string>
 
     <!--create preset-->
-    <string name="type_name_for_preset">Por favor escriba el nombre del preset</string>
 
     <!--equalizer-->
     <string name="freq_range">%s hz</string>
     <string name="nothing_to_show">Nada que mostrar</string>
     <string name="bass">Bajo</string>
     <string name="virtualizer">Virtualizador</string>
-    <string name="headset_not_plugged">Para usar este efecto, conecte el auricular</string>
     <string name="show_visualizer">Mostrar visualizador</string>
-    <string name="audio_fx_hint">Por favor, encienda el ecualizador primero</string>
     <!--playback params-->
     <string name="playback_params">Parámetros de reproducción</string>
     <string name="speed">Velocidad</string>
     <string name="pitch">Tono</string>
-    <string name="reset">Reiniciar</string>
     <string name="normalize">Normalizar</string>
 
     <!--media file editor-->
@@ -223,8 +199,6 @@
     <string name="album_name_layout">Álbum</string>
     <string name="genre_name_layout">Género</string>
     <string name="artist_name_layout">Artista</string>
-    <string name="filepath">Ruta de archivo %s</string>
-    <string name="duration">Duración %s</string>
 
     <string name="app_theme">Tema de la aplicación</string>
     <string name="third_part_libs">Bibliotecas de terceros</string>

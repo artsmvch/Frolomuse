@@ -6,5 +6,5 @@
 
     <solid android:color="@color/white"/>
 
-    <stroke android:color="@color/dark_gray"/>
+    <stroke android:color="@color/tint_search_grey"/>
 </shape>

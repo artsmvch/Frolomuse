@@ -14,7 +14,6 @@
     <color name="app_dark_blue_secondary_variant">@color/app_dark_blue_accent_ultra</color>
     <color name="app_dark_blue_accent">@color/app_dark_blue_accent_ultra</color>
     <color name="app_dark_blue_surface">#1A242E</color>
-    <color name="app_dark_blue_on_surface">@color/md_white_1000</color>
 
     <color name="app_dark_blue_accent_ultra">#64C0E5</color>
     <color name="app_dark_blue_fast_scroller">#306587</color>
@@ -87,9 +86,6 @@
     <style name="AppTheme.SeekBar.Dark.Blue" parent="Base.AppTheme.SeekBar">
         <item name="colorAccent">@color/app_dark_blue_accent</item>
         <item name="android:progressBackgroundTint">#5A5A5A</item>
-    </style>
-
-    <style name="AppTheme.Spinner.Dark.Blue" parent="Widget.AppCompat.Spinner.Underlined">
     </style>
 
     <style name="AppTheme.TextInputLayout.Dark.Blue" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">

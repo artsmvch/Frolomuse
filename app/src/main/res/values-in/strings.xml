@@ -1,7 +1,6 @@
 <resources>
     <string name="ok">beres</string>
     <string name="loading">Memuat…</string>
-    <string name="done">Selesai!</string>
     <string name="cancel">Membatalkan</string>
     <string name="save">Menyimpan</string>
     <string name="saved">Disimpan</string>
@@ -11,15 +10,12 @@
     <string name="sorry_exception">Maaf, ada yang salah</string>
     <string name="app_prefs">Preferensi aplikasi</string>
     <string name="about">Tentang</string>
-    <string name="empty">Kosong</string>
     <string name="current_playlist_is_empty">Tidak ada lagu di daftar putar saat ini. \n
          Silakan pilih yang lain</string>
     <string name="pick_image">Pilih Gambar</string>
     <string name="file">Mengajukan</string>
-    <string name="created">Dibuat</string>
     <string name="added_to_queue">Ditambahkan ke antrian</string>
     <string name="deleted">Dihapus</string>
-    <string name="type_at_least_two_letters">Ketikkan setidaknya dua huruf</string>
     <string name="will_be_played_next">Akan dimainkan selanjutnya</string>
     <string name="set_as_default">Ditetapkan sebagai default</string>
     <string name="folder_is_default_message">Peramban file sekarang akan terbuka dari folder ini</string>
@@ -35,7 +31,6 @@
     </string>
 
     <!--Errors-->
-    <string name="failed_to_delete_s">Gagal menghapus %s</string>
 
     <!--Sort orders-->
     <string name="sort">Menyortir</string>
@@ -59,8 +54,6 @@
     <string name="remind_me_later">Tanyakan saya nanti</string>
     <string name="rate">Ya saya suka!</string>
 
-    <string name="choose_playlist">Pilih daftar putar</string>
-    <string name="current_playing">Bermain saat ini</string>
     <string name="track">Lagu</string>
     <string name="album">Album</string>
     <string name="artist">Artis</string>
@@ -75,15 +68,7 @@
     <!--placeholders-->
     <string name="placeholder_unknown">Tidak dikenal</string>
     <string name="placeholder_zero_duration">0:00</string>
-    <string name="placeholder_unknown_genre">Aliran</string>
-    <string name="placeholder_no_tracks">Tidak ada lagu</string>
-    <string name="placeholder_unknown_date">19.91.2018</string>
     <string name="placeholder_freq_range">0.00 hz</string>
-    <string name="placeholder_header_title">Header</string>
-    <string name="placeholder_lib_name">Perpustakaan</string>
-    <string name="placeholder_lib_version">1.0</string>
-    <string name="placeholder_lib_copyright">Hak cipta</string>
-    <string name="placeholder_lib_description">Perpustakaan</string>
 
     <!--options menu-->
     <string name="play">Mainkan</string>
@@ -93,7 +78,6 @@
     <string name="share">Bagikan</string>
     <string name="playlist">Daftar putart</string>
     <string name="add_to_queue">Tambahkan ke antrian</string>
-    <string name="create_playlist">Buat daftar putar</string>
     <string name="edit_song_tags">Edit tag lagu</string>
     <string name="edit_album_cover">Edit sampul album</string>
     <string name="view_album">Lihat album</string>
@@ -152,14 +136,12 @@
 
     <!--navigation drawer menu-->
     <string name="nav_library">Perpustakaan</string>
-    <string name="nav_player">Pemain</string>
     <string name="nav_equalizer">Equalizer</string>
     <string name="nav_settings">Pengaturan</string>
     <string name="nav_search">Cari</string>
     <string name="nav_favourite">Favorit</string>
 
     <!--app preferences-->
-    <string name="theme">Tema</string>
     <string name="version">Versi aplikasi</string>
     <string name="licenses">Lisensi</string>
     <string name="choose_theme">Pilih Tema</string>
@@ -195,27 +177,21 @@
 
 
     <!--create and edit playlist-->
-    <string name="type_name_for_playlist">Silakan ketik nama untuk daftar putar</string>
     <string name="name_is_empty">Nama harus kosong</string>
     <string name="such_name_already_exists">Nama seperti itu sudah ada</string>
-    <string name="edit_name_of_playlist">Edit nama daftar putar</string>
 
     <!--create preset-->
-    <string name="type_name_for_preset">Silakan ketik nama untuk prasetel</string>
 
     <!--equalizer-->
     <string name="freq_range">%s hz</string>
     <string name="nothing_to_show">Tidak ada yang ditampilkan</string>
     <string name="bass">Bas</string>
     <string name="virtualizer">Virtualizer</string>
-    <string name="headset_not_plugged">Untuk menggunakan efek ini, colokkan headset</string>
     <string name="show_visualizer">Perlihatkan visualizer</string>
-    <string name="audio_fx_hint">Silakan aktifkan equalizer terlebih dahulu</string>
     <!--playback params-->
     <string name="playback_params">Pemutaran params</string>
     <string name="speed">Kecepatan</string>
     <string name="pitch">Nada</string>
-    <string name="reset">Setel ulang</string>
     <string name="normalize">Normalisasi</string>
 
     <!--media file editor-->
@@ -223,8 +199,6 @@
     <string name="album_name_layout">Album</string>
     <string name="genre_name_layout">Aliran</string>
     <string name="artist_name_layout">Artis</string>
-    <string name="filepath">Jalur File %s</string>
-    <string name="duration">Durasi %s</string>
 
     <string name="app_theme">Tema Aplikasi</string>
     <string name="third_part_libs">Perpustakaan pihak ketiga</string>

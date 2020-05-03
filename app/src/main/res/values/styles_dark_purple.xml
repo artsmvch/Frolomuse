@@ -14,7 +14,6 @@
     <color name="app_dark_purple_secondary_variant">@color/app_dark_purple_accent_ultra</color>
     <color name="app_dark_purple_accent">@color/app_dark_purple_accent_ultra</color>
     <color name="app_dark_purple_surface">#24202C</color>
-    <color name="app_dark_purple_on_surface">@color/md_white_1000</color>
 
     <color name="app_dark_purple_accent_ultra">#965EF0</color>
     <color name="app_dark_purple_fast_scroller">#5B3992</color>
@@ -87,9 +86,6 @@
     <style name="AppTheme.SeekBar.Dark.Purple" parent="Base.AppTheme.SeekBar">
         <item name="colorAccent">@color/app_dark_purple_accent</item>
         <item name="android:progressBackgroundTint">#5A5A5A</item>
-    </style>
-
-    <style name="AppTheme.Spinner.Dark.Purple" parent="Widget.AppCompat.Spinner.Underlined">
     </style>
 
     <style name="AppTheme.TextInputLayout.Dark.Purple" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">

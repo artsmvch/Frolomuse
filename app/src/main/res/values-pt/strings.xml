@@ -1,7 +1,6 @@
 ﻿<resources>
     <string name="ok">Está bem</string>
     <string name="loading">Carregando…</string>
-    <string name="done">Feito!</string>
     <string name="cancel">Cancelar</string>
     <string name="save">Salve</string>
     <string name="saved">Salvou</string>
@@ -11,15 +10,12 @@
     <string name="sorry_exception">Desculpe, algo deu errado</string>
     <string name="app_prefs">Preferências do aplicativo</string>
     <string name="about">Sobre</string>
-    <string name="empty">Vazio</string>
     <string name="current_playlist_is_empty">Não há músicas na lista de reprodução atual.\n
          Por favor escolha outro</string>
     <string name="pick_image">Escolha a imagem</string>
     <string name="file">Arquivo</string>
-    <string name="created">Criado</string>
     <string name="added_to_queue">Adicionado à fila</string>
     <string name="deleted">Excluído</string>
-    <string name="type_at_least_two_letters">Digite pelo menos duas letras</string>
     <string name="will_be_played_next">Será jogado em seguida</string>
     <string name="set_as_default">Definir como padrão</string>
     <string name="folder_is_default_message">O navegador de arquivos será aberto a partir desta pasta</string>
@@ -35,7 +31,6 @@
     </string>
 
     <!--Errors-->
-    <string name="failed_to_delete_s">Falha ao excluir %s</string>
 
     <!--Sort orders-->
     <string name="sort">Ordenar</string>
@@ -59,8 +54,6 @@
     <string name="remind_me_later">Me pergunte depois</string>
     <string name="rate">Sim eu gosto!</string>
 
-    <string name="choose_playlist">Escolher playlist</string>
-    <string name="current_playing">Jogo atual</string>
     <string name="track">Track</string>
     <string name="album">Álbum</string>
     <string name="artist">Artista</string>
@@ -76,15 +69,7 @@
     <!--placeholders-->
     <string name="placeholder_unknown">Desconhecido</string>
     <string name="placeholder_zero_duration">0:00</string>
-    <string name="placeholder_unknown_genre">Gênero</string>
-    <string name="placeholder_no_tracks">Sem faixas</string>
-    <string name="placeholder_unknown_date">19.91.2018</string>
     <string name="placeholder_freq_range">0.00 hz</string>
-    <string name="placeholder_header_title">Cabeçalho</string>
-    <string name="placeholder_lib_name">Lib</string>
-    <string name="placeholder_lib_version">1.0</string>
-    <string name="placeholder_lib_copyright">direito autoral</string>
-    <string name="placeholder_lib_description">Biblioteca</string>
 
     <!--options menu-->
     <string name="play">Toque</string>
@@ -94,7 +79,6 @@
     <string name="share">Compartilhar</string>
     <string name="playlist">Lista de reprodução</string>
     <string name="add_to_queue">Adicionar à fila</string>
-    <string name="create_playlist">Criar lista de reprodução</string>
     <string name="edit_song_tags">Editar tags de músicas</string>
     <string name="edit_album_cover">Editar capa do álbum</string>
     <string name="view_album">Visualizar álbum</string>
@@ -153,14 +137,12 @@
 
     <!--navigation drawer menu-->
     <string name="nav_library">Biblioteca</string>
-    <string name="nav_player">Jogador</string>
     <string name="nav_equalizer">Equalizador</string>
     <string name="nav_settings">Configurações</string>
     <string name="nav_search">Pesquisa</string>
     <string name="nav_favourite">Favorito</string>
 
     <!--app preferences-->
-    <string name="theme">Tema</string>
     <string name="version">Versão do aplicativo</string>
     <string name="licenses">Licenças</string>
     <string name="choose_theme">Escolha o tema</string>
@@ -196,27 +178,21 @@
 
 
     <!--create playlist-->
-    <string name="type_name_for_playlist">Por favor, digite o nome da lista de reprodução</string>
     <string name="name_is_empty">O nome deve estar não vazio</string>
     <string name="such_name_already_exists">Tal nome já existe</string>
-    <string name="edit_name_of_playlist">Editar nome da lista de reprodução</string>
 
     <!--create preset-->
-    <string name="type_name_for_preset">Digite o nome da predefinição</string>
 
     <!--equalizer-->
     <string name="freq_range">%s hz</string>
     <string name="nothing_to_show">Nada para mostrar</string>
     <string name="bass">Baixo</string>
     <string name="virtualizer">Virtualizador</string>
-    <string name="headset_not_plugged">Para usar este efeito, conecte o fone de ouvido</string>
     <string name="show_visualizer">Mostrar visualizador</string>
-    <string name="audio_fx_hint">Por favor, ligue o equalizador primeiro</string>
     <!--playback params-->
     <string name="playback_params">Params de reprodução</string>
     <string name="speed">Rapidez</string>
     <string name="pitch">Tom</string>
-    <string name="reset">Restabelecer</string>
     <string name="normalize">Normalizar</string>
 
     <!--media file editor-->
@@ -224,8 +200,6 @@
     <string name="album_name_layout">Álbum</string>
     <string name="genre_name_layout">Gênero</string>
     <string name="artist_name_layout">Artista</string>
-    <string name="filepath">Caminho de arquivo %s</string>
-    <string name="duration">Duração %s</string>
 
     <string name="app_theme">App Theme</string>
     <string name="third_part_libs">Bibliotecas de terceiros</string>

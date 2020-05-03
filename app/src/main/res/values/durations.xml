@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <integer name="progress_max">1000</integer>
 
     <integer name="fragment_animation_duration">350</integer>
-
-    <integer name="check_mark_anim_duration">150</integer>
 
     <integer name="layout_anim_duration">220</integer>
 </resources>

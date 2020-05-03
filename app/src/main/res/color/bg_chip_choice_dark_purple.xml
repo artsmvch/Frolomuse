@@ -1,9 +1,0 @@
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- 24% opacity -->
-    <item android:alpha="0.92" android:color="@color/purple_chip" android:state_enabled="true" android:state_selected="true"/>
-    <item android:alpha="0.92" android:color="@color/purple_chip" android:state_enabled="true" android:state_checked="true"/>
-    <!-- 12% of 87% opacity -->
-    <item android:alpha="0.20" android:color="@color/purple_chip" android:state_enabled="true"/>
-    <item android:alpha="0.24" android:color="@color/purple_chip"/>
-
-</selector>

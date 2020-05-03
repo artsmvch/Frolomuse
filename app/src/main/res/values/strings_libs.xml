@@ -21,15 +21,6 @@
         <item name="license">Licensed under the Apache License, version 2.0</item>
     </string-array>
 
-    <string-array name="smarttablayout" translatable="false">
-        <item name="name">SmartTablayout</item>
-        <item name="version">1.6.1</item>
-        <item name="copyright">Copyright © 2015 ogaclejapan
-            \nCopyright © 2013 The Android Open Source Project
-        </item>
-        <item name="license">Licensed under the Apache License, version 2.0</item>
-    </string-array>
-
     <string-array name="recyclerbubble" translatable="false">
         <item name="name">Recycler Bubble</item>
         <item name="version">1.0.4</item>
@@ -55,8 +46,6 @@
         <item>@array/glide</item>
         <item>@array/ringdroid</item>
         <item>@array/rxandroid</item>
-        <!--<item>@array/smarttablayout</item>-->
-        <!--<item>@array/ormlite</item>-->
         <item>@array/recyclerbubble</item>
         <item>@array/stickyheadersrecyclerview</item>
         <item>@array/verticalseekbar</item>

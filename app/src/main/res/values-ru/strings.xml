@@ -1,7 +1,6 @@
 <resources>
     <string name="ok">Хорошо</string>
     <string name="loading">Загрузка…</string>
-    <string name="done">Готово!</string>
     <string name="cancel">Отмена</string>
     <string name="save">Сохранить</string>
     <string name="saved">Сохранено</string>
@@ -11,15 +10,12 @@
     <string name="sorry_exception">Извините, произошел сбой</string>
     <string name="app_prefs">Настройки приложения</string>
     <string name="about">Об этом приложении</string>
-    <string name="empty">Пусто</string>
     <string name="current_playlist_is_empty">В текущем плейлисте нет треков.\n
         Пожалуйста, выберите другой</string>
     <string name="pick_image">Выбрать изображение</string>
     <string name="file">Файл</string>
-    <string name="created">Создано</string>
     <string name="added_to_queue">Добавлено в очередь</string>
     <string name="deleted">Удалено</string>
-    <string name="type_at_least_two_letters">Введите не менее двух букв</string>
     <string name="will_be_played_next">Будет воспроизведено следующим</string>
     <string name="set_as_default">Установить по умолчанию</string>
     <string name="folder_is_default_message">Браузер файлов теперь будет открываться из этой папки</string>
@@ -35,7 +31,6 @@
     </string>
 
     <!--Errors-->
-    <string name="failed_to_delete_s">Не удалось удалить %s</string>
 
     <!--Sort orders-->
     <string name="sort">Сортировать</string>
@@ -59,8 +54,6 @@
     <string name="remind_me_later">Спросите меня позже</string>
     <string name="rate">Да, мне нравится!</string>
 
-    <string name="choose_playlist">Выберите плейлист</string>
-    <string name="current_playing">Текущая коллекция</string>
     <string name="track">Трек</string>
     <string name="album">Альбом</string>
     <string name="artist">Артист</string>
@@ -78,15 +71,7 @@
     <!--placeholders-->
     <string name="placeholder_unknown">Неизвестно</string>
     <string name="placeholder_zero_duration">0:00</string>
-    <string name="placeholder_unknown_genre">Жанр</string>
-    <string name="placeholder_no_tracks">Нет треков</string>
-    <string name="placeholder_unknown_date">19.91.2018</string>
     <string name="placeholder_freq_range">0.00 hz</string>
-    <string name="placeholder_header_title">Заголовок</string>
-    <string name="placeholder_lib_name">Библиотека</string>
-    <string name="placeholder_lib_version">1.0</string>
-    <string name="placeholder_lib_copyright">Авторские права</string>
-    <string name="placeholder_lib_description">Библиотеки</string>
 
     <!--options menu-->
     <string name="play">Воспроизвести</string>
@@ -96,7 +81,6 @@
     <string name="share">Поделиться</string>
     <string name="playlist">Плейлист</string>
     <string name="add_to_queue">Добавить в очередь</string>
-    <string name="create_playlist">Создать плейлист</string>
     <string name="edit_song_tags">Редактировать теги песни</string>
     <string name="edit_album_cover">Изменить обложку альбома</string>
     <string name="view_album">Посмотреть альбом</string>
@@ -157,14 +141,12 @@
 
     <!--navigation drawer menu-->
     <string name="nav_library">Библиотека</string>
-    <string name="nav_player">Плеер</string>
     <string name="nav_equalizer">Эквалайзер</string>
     <string name="nav_settings">Настройки</string>
     <string name="nav_search">Поиск</string>
     <string name="nav_favourite">Любимые</string>
 
     <!--app preferences-->
-    <string name="theme">Тема</string>
     <string name="version">Версия приложения</string>
     <string name="licenses">Лицензии</string>
     <string name="choose_theme">Выбрать тему</string>
@@ -199,27 +181,21 @@
     <string name="rescan_media_library_desc">Сканирование медиа-библиотеки помогает приложению находить новые аудиофайлы</string>
 
     <!-- create playlist-->
-    <string name="type_name_for_playlist">Пожалуйста, введите имя для плейлиста</string>
     <string name="name_is_empty">Имя не  может быть пустым</string>
     <string name="such_name_already_exists">Такое имя уже существует</string>
-    <string name="edit_name_of_playlist">Изменить название плейлиста</string>
 
     <!--create preset-->
-    <string name="type_name_for_preset">Пожалуйста, введите имя для пресета</string>
 
     <!--equalizer-->
     <string name="freq_range">%s hz</string>
     <string name="nothing_to_show">Ничего не найдено</string>
     <string name="bass">Бас</string>
     <string name="virtualizer">Виртуал</string>
-    <string name="headset_not_plugged">Подключите наушники, чтобы использовать этот эффект</string>
     <string name="show_visualizer">Показать визуализатор</string>
-    <string name="audio_fx_hint">Пожалуйста, сначала включите эквалайзер</string>
     <!--playback params-->
     <string name="playback_params">Параметры воспроизведения</string>
     <string name="speed">Скорость</string>
     <string name="pitch">Подача</string>
-    <string name="reset">Сброс</string>
     <string name="normalize">Нормализовать</string>
 
     <!--media file editor-->
@@ -227,8 +203,6 @@
     <string name="album_name_layout">Альбом</string>
     <string name="genre_name_layout">Жанр</string>
     <string name="artist_name_layout">Артист</string>
-    <string name="filepath">Путь %s</string>
-    <string name="duration">Длительность %s</string>
 
     <string name="app_theme">Тема приложения</string>
     <string name="third_part_libs">Сторонние библиотеки</string>

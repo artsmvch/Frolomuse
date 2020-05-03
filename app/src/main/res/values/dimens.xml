@@ -18,8 +18,6 @@
 
     <dimen name="list_item_shape_radius">8dp</dimen>
 
-    <dimen name="list_item_divider_height">2dp</dimen>
-
     <dimen name="list_item_check_size">24dp</dimen>
 
     <dimen name="root_file_img_padding">8dp</dimen>
@@ -29,7 +27,6 @@
     <dimen name="widget_margin">6dp</dimen>
 
     <dimen name="toolbar_title">18sp</dimen>
-    <dimen name="toolbar_title_expanded">32sp</dimen>
     <dimen name="toolbar_subtitle">14sp</dimen>
 
     <dimen name="preference_icon_size">20dp</dimen>
@@ -59,15 +56,11 @@
     <dimen name="widget_shuffle_item_padding">13.5dp</dimen>
     <!-- Default screen margins, per the Android Design guidelines. -->
 
-    <dimen name="preferred_action_bar_height">60dp</dimen>
-
     <dimen name="toolbar_item_icon_size">18sp</dimen>
     
     <dimen name="album_art_rounded_corner_radius">12dp</dimen>
 
     <dimen name="vertical_divider_height">1dp</dimen>
-
-    <dimen name="button_corner_radius">8dp</dimen>
 
     <dimen name="dialog_corner_radius">24dp</dimen>
     <dimen name="bottom_sheet_corner_radius">24dp</dimen>
@@ -75,8 +68,6 @@
     <dimen name="dialog_footer_min_height">52dp</dimen>
 
     <!--backdrop-->
-    <dimen name="backdrop_radius">36dp</dimen>
-    <dimen name="backdrop_padding">@dimen/backdrop_radius</dimen>
 
     <!--MiniVisualizer-->
     <dimen name="min_visualizer_width">24dp</dimen>

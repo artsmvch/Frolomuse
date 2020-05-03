@@ -58,16 +58,6 @@
         <item name="inactiveColor">#00FFFFFF</item>
     </style>
 
-    <style name="Base.AppTheme.Dark.Toolbar" parent="Base.AppTheme.Toolbar">
-        <item name="subtitleTextColor">@color/white</item>
-        <item name="titleTextColor">@color/white</item>
-    </style>
-
-    <style name="Base.AppTheme.Dark.BottomNavigation" parent="Base.AppTheme.BottomNavigationView">
-        <item name="android:background">?colorPrimary</item>
-        <item name="itemIconTint">@color/nav_dark</item>
-    </style>
-
     <style name="Base.AppTheme.Switch.Dark" parent="Widget.MaterialComponents.CompoundButton.Switch">
         <item name="trackTint">#5E5E5E</item>
         <item name="useMaterialThemeColors">false</item>

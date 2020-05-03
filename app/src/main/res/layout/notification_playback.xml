@@ -3,14 +3,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="70dp"
-    android:background="@color/custom_black">
+    android:background="@color/notification_bg_black">
 
     <LinearLayout
         android:id="@+id/ll_root"
         android:gravity="center_vertical"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:background="@color/custom_black">
+        android:background="@color/notification_bg_black">
 
         <ImageView
             android:scaleType="centerCrop"
