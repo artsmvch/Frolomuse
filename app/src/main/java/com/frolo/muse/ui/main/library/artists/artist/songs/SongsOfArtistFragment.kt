@@ -62,7 +62,7 @@ class SongsOfArtistFragment: AbsSongCollectionFragment<Song>(), NoClipping {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.fragment_abs_media_collection, menu)
+        inflater.inflate(R.menu.fragment_artist, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
