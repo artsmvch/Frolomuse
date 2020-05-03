@@ -8,23 +8,22 @@
     android:minHeight="@dimen/preferred_item_height"
     android:background="@drawable/bg_item_media">
 
-    <ImageView
+    <include layout="@layout/include_song_art_container"
+        android:id="@+id/include_song_art_container"
+        android:layout_width="@dimen/media_item_art_size"
+        android:layout_height="@dimen/media_item_art_size"
+        android:layout_margin="@dimen/media_item_art_margin"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:id="@+id/imv_album_art"
-        android:layout_margin="@dimen/list_item_img_art_padding"
-        android:layout_width="@dimen/list_item_img_art_size"
-        android:layout_height="@dimen/list_item_img_art_size" />
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
-    <include
+    <include layout="@layout/include_options_menu"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:id="@+id/view_options_menu"
         android:layout_width="@dimen/options_menu_width"
-        android:layout_height="60dp"
-        layout="@layout/include_options_menu" />
+        android:layout_height="60dp" />
 
     <androidx.appcompat.widget.AppCompatTextView
         app:layout_constraintEnd_toStartOf="@id/view_options_menu"
@@ -38,17 +37,8 @@
         android:id="@+id/tv_duration"
         tools:text="1:45"/>
 
-    <com.frolo.muse.views.MiniVisualizer
-        app:layout_constraintEnd_toStartOf="@id/view_options_menu"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:id="@+id/mini_visualizer"
-        android:layout_width="24dp"
-        android:layout_height="16dp"
-        android:layout_marginBottom="4dp"
-        android:layout_marginEnd="6dp"/>
-
     <androidx.appcompat.widget.AppCompatTextView
-        app:layout_constraintStart_toEndOf="@id/imv_album_art"
+        app:layout_constraintStart_toEndOf="@id/include_song_art_container"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toStartOf="@id/tv_duration"
         app:layout_constraintBottom_toTopOf="@id/tv_album_name"
@@ -77,8 +67,8 @@
         tools:text="Album name"/>
 
     <include layout="@layout/include_check"
-        app:layout_constraintEnd_toEndOf="@id/imv_album_art"
-        app:layout_constraintBottom_toBottomOf="@id/imv_album_art"
+        app:layout_constraintEnd_toEndOf="@id/include_song_art_container"
+        app:layout_constraintBottom_toBottomOf="@id/include_song_art_container"
         android:layout_width="@dimen/list_item_check_size"
         android:layout_height="@dimen/list_item_check_size" />
 
