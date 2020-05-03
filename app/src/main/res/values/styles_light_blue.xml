@@ -62,7 +62,19 @@
     </style>
 
     <style name="AppTheme.AlertDialog.Light.Blue" parent="Base.AppTheme.AlertDialog">
+        <item name="colorPrimary">@color/app_blue_primary</item>
+        <item name="colorPrimaryDark">@color/app_blue_primary_dark</item>
+        <item name="colorPrimarySurface">@color/app_blue_primary_surface</item>
+        <item name="colorOnPrimarySurface">@color/app_blue_on_primary_surface</item>
+        <item name="colorPrimaryVariant">@color/app_blue_primary_variant</item>
+        <item name="colorOnPrimary">@color/app_blue_on_primary</item>
         <item name="colorAccent">@color/app_blue_secondary</item>
+        <item name="colorSecondary">@color/app_blue_secondary</item>
+        <item name="colorSecondaryVariant">@color/app_blue_secondary_variant</item>
+        <item name="colorOnSecondary">@color/app_blue_on_secondary</item>
+        <item name="colorError">@color/md_red_500</item>
+        <item name="colorSurface">@color/app_blue_surface</item>
+        <item name="colorOnSurface">@color/app_blue_on_surface</item>
 
         <item name="android:textColor">@color/text_primary_dark</item>
         <item name="android:textColorPrimary">@color/text_primary_dark</item>
@@ -71,10 +83,27 @@
         <item name="textColorAlertDialogListItem">@color/text_primary_dark</item>
 
         <item name="colorControlNormal">@color/md_grey_400</item>
+
+        <item name="buttonBarButtonStyle">@style/AppTheme.Button.TextButton.Dialog.Light.Blue</item>
+        <item name="buttonBarPositiveButtonStyle">@style/AppTheme.Button.TextButton.Dialog.Light.Blue</item>
+        <item name="buttonBarNegativeButtonStyle">@style/AppTheme.Button.TextButton.Dialog.Light.Blue</item>
+        <item name="buttonBarNeutralButtonStyle">@style/AppTheme.Button.TextButton.Dialog.Light.Blue</item>
     </style>
 
     <style name="AppTheme.MaterialAlertDialog.Light.Blue" parent="Base.AppTheme.MaterialAlertDialog">
+        <item name="colorPrimary">@color/app_blue_primary</item>
+        <item name="colorPrimaryDark">@color/app_blue_primary_dark</item>
+        <item name="colorPrimarySurface">@color/app_blue_primary_surface</item>
+        <item name="colorOnPrimarySurface">@color/app_blue_on_primary_surface</item>
+        <item name="colorPrimaryVariant">@color/app_blue_primary_variant</item>
+        <item name="colorOnPrimary">@color/app_blue_on_primary</item>
         <item name="colorAccent">@color/app_blue_secondary</item>
+        <item name="colorSecondary">@color/app_blue_secondary</item>
+        <item name="colorSecondaryVariant">@color/app_blue_secondary_variant</item>
+        <item name="colorOnSecondary">@color/app_blue_on_secondary</item>
+        <item name="colorError">@color/md_red_500</item>
+        <item name="colorSurface">@color/app_blue_surface</item>
+        <item name="colorOnSurface">@color/app_blue_on_surface</item>
 
         <item name="android:textColor">#414445</item>
         <item name="android:textColorPrimary">#414445</item>
@@ -83,10 +112,20 @@
         <item name="textColorAlertDialogListItem">#919191</item>
 
         <item name="colorControlNormal">@color/md_grey_400</item>
+
+        <item name="buttonBarButtonStyle">@style/AppTheme.Button.TextButton.Dialog.Light.Blue</item>
+        <item name="buttonBarPositiveButtonStyle">@style/AppTheme.Button.TextButton.Dialog.Light.Blue</item>
+        <item name="buttonBarNegativeButtonStyle">@style/AppTheme.Button.TextButton.Dialog.Light.Blue</item>
+        <item name="buttonBarNeutralButtonStyle">@style/AppTheme.Button.TextButton.Dialog.Light.Blue</item>
     </style>
 
     <style name="AppTheme.TextInputLayout.Light.Blue" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="boxStrokeWidth">1.2dp</item>
         <item name="boxStrokeWidthFocused">1.6dp</item>
+    </style>
+
+    <style name="AppTheme.Button.TextButton.Dialog.Light.Blue" parent="Base.AppTheme.Button.TextButton.Dialog">
+        <item name="rippleColor">@color/app_blue_primary</item>
+        <item name="android:textColor">@color/app_blue_primary</item>
     </style>
 </resources>
