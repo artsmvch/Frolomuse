@@ -11,7 +11,9 @@ import com.frolo.muse.R
 
 
 class RoundedCornerImageView @JvmOverloads constructor(
-        context: Context, attrs: AttributeSet? = null, defStyle: Int = 0
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyle: Int = 0
 ) : AppCompatImageView(context, attrs, defStyle) {
 
     private val path = Path()
@@ -24,9 +26,9 @@ class RoundedCornerImageView @JvmOverloads constructor(
         arr.recycle()
     }
 
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        rect.set(0f, 0f, measuredWidth.toFloat(), measuredHeight.toFloat())
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        super.onSizeChanged(w, h, oldw, oldh)
+        rect.set(0f, 0f, w.toFloat(), h.toFloat())
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -34,4 +36,5 @@ class RoundedCornerImageView @JvmOverloads constructor(
         canvas.clipPath(path)
         super.onDraw(canvas)
     }
+
 }
