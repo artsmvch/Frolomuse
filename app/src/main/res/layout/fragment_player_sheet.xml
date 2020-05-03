@@ -60,8 +60,4 @@
         </LinearLayout>
     </com.frolo.muse.ui.main.player.TouchFrameLayout>
 
-    <include layout="@layout/include_message"
-        android:id="@+id/layout_player_placeholder"
-        android:visibility="gone"/>
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

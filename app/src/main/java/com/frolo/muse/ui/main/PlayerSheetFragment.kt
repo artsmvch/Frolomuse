@@ -12,7 +12,6 @@ import com.frolo.muse.ui.main.player.TouchFrameLayout
 import com.frolo.muse.ui.main.player.current.CurrSongQueueFragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.fragment_player_sheet.*
-import kotlinx.android.synthetic.main.include_message.*
 import kotlin.math.pow
 
 
@@ -49,10 +48,6 @@ class PlayerSheetFragment : BaseFragment(),
     ): View = inflater.inflate(R.layout.fragment_player_sheet, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        layout_player_placeholder.apply {
-            setOnTouchListener { _, _ -> true }
-            tv_message.text = getString(R.string.current_playlist_is_empty)
-        }
 
         val behavior = BottomSheetBehavior.from(bottom_sheet_current_song_queue)
             .apply {
