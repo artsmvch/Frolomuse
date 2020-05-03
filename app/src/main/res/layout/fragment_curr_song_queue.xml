@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/ll_header"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:orientation="horizontal"
@@ -32,18 +34,23 @@
             android:textAppearance="?textAppearanceHeadline6"
             android:text="@string/queue"/>
 
-        <TextView
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_save_as_playlist"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
+            android:maxWidth="120dp"
+            android:layout_marginEnd="8dp"
+            android:padding="4dp"
             android:maxLines="2"
-            android:gravity="center"
-            android:textAppearance="?textAppearanceBody2"
-            android:textSize="12sp"
+            android:textSize="10sp"
+            android:textColor="?colorOnSurface"
+            app:rippleColor="?colorAccent"
             android:ellipsize="end"
+            android:lineSpacingExtra="0.0sp"
+            android:letterSpacing="0.0"
             android:text="@string/save_as_playlist"
-            android:background="?selectableItemBackgroundBorderless"/>
+            tools:text="This is a test text to see how a very long text looks like"
+            tools:ignore="SmallSp" />
     </LinearLayout>
 
     <View

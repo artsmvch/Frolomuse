@@ -144,6 +144,14 @@ class CurrSongQueueFragment: AbsMediaCollectionFragment<Song>() {
         rv_list.doOnVerticalScroll(threshold = getScrollThresholdInPx(requireContext())) {
             viewModel.onScrolled()
         }
+
+        ll_header.doOnLayout {
+            val width = it.measuredWidth
+            // Just to make sure that the button does not occupy all the space in the header layout
+            if (width > 0) {
+                btn_save_as_playlist.maxWidth = (width / 2.4f).toInt()
+            }
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
