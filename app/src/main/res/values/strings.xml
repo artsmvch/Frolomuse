@@ -78,6 +78,7 @@
         Select songs you want to add to the \"%s\" playlist and then click the \'Add to playlist\' button
     </string>
 
+    <!--Plurals-->
     <plurals name="s_songs_selected">
         <item quantity="one">%d song selected</item>
         <item quantity="other">%d songs selected</item>

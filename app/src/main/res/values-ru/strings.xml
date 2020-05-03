@@ -76,11 +76,40 @@
         Выберите песни, которые вы хотите добавить в список воспроизведения \"%s\", а затем нажмите кнопку \"Добавить в плейлист\"
     </string>
 
+    <!--Plurals-->
+    <plurals name="s_songs_selected">
+        <item quantity="one">%d трек выбран</item>
+        <item quantity="few">%d трека выбрано</item>
+        <item quantity="many">%d треков выбрано</item>
+        <item quantity="other">%d треков выбрано</item>
+    </plurals>
+
     <plurals name="s_songs">
         <item quantity="one">%d трек</item>
         <item quantity="few">%d трека</item>
         <item quantity="many">%d треков</item>
         <item quantity="other">%d треков</item>
+    </plurals>
+
+    <plurals name="s_hours">
+        <item quantity="one">%d час</item>
+        <item quantity="few">%d часа</item>
+        <item quantity="many">%d часов</item>
+        <item quantity="other">%d часов</item>
+    </plurals>
+
+    <plurals name="s_minutes">
+        <item quantity="one">%d минута</item>
+        <item quantity="few">%d минуты</item>
+        <item quantity="many">%d минут</item>
+        <item quantity="other">%d минут</item>
+    </plurals>
+
+    <plurals name="s_seconds">
+        <item quantity="one">%d секунда</item>
+        <item quantity="few">%d секунды</item>
+        <item quantity="many">%d секунд</item>
+        <item quantity="other">%d секунд</item>
     </plurals>
 
     <string name="select_all">Выбрать все</string>

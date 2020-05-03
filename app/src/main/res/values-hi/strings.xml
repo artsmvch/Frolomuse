@@ -76,9 +76,30 @@
         उन गीतों का चयन करें जिन्हें आप \"%s\" प्लेलिस्ट में जोड़ना चाहते हैं और फिर \'प्लेलिस्ट में जोड़ें\' बटन पर क्लिक करें
     </string>
 
+    <!--Plurals-->
+    <plurals name="s_songs_selected">
+        <item quantity="one">%d गीत चुना गया</item>
+        <item quantity="other">%d गाने चुने गए</item>
+    </plurals>
+
     <plurals name="s_songs">
         <item quantity="one">%d गीत</item>
         <item quantity="other">%d गाने</item>
+    </plurals>
+
+    <plurals name="s_hours">
+        <item quantity="one">%d घंटा</item>
+        <item quantity="other">%d घंटे</item>
+    </plurals>
+
+    <plurals name="s_minutes">
+        <item quantity="one">%d मिनट</item>
+        <item quantity="other">%d मिनट</item>
+    </plurals>
+
+    <plurals name="s_seconds">
+        <item quantity="one">%d सेकेंड</item>
+        <item quantity="other">%d सेकंड</item>
     </plurals>
 
     <string name="select_all">सभी का चयन करे</string>

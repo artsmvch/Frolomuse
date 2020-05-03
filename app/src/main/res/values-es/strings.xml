@@ -76,9 +76,30 @@
         Seleccione las canciones que desea agregar a la lista de reproducción \"%s\" y luego haga clic en el botón \'Agregar a la lista de reproducción\'
     </string>
 
+    <!--Plurals-->
+    <plurals name="s_songs_selected">
+        <item quantity="one">%d canción seleccionada</item>
+        <item quantity="other">%d canciones seleccionadas</item>
+    </plurals>
+
     <plurals name="s_songs">
         <item quantity="one">%d canción</item>
         <item quantity="other">%d canciones</item>
+    </plurals>
+
+    <plurals name="s_hours">
+        <item quantity="one">%d hora</item>
+        <item quantity="other">%d horas</item>
+    </plurals>
+
+    <plurals name="s_minutes">
+        <item quantity="one">%d minuto</item>
+        <item quantity="other">%d minutos</item>
+    </plurals>
+
+    <plurals name="s_seconds">
+        <item quantity="one">%d segundo</item>
+        <item quantity="other">%d segundos</item>
     </plurals>
 
     <string name="select_all">Seleccionar todo</string>

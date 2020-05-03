@@ -76,8 +76,25 @@
         Pilih lagu yang ingin Anda tambahkan ke daftar putar \"%s\" dan kemudian klik tombol \'Tambah ke daftar putar\'
     </string>
 
+    <!--Plurals-->
+    <plurals name="s_songs_selected">
+        <item quantity="other">%d lagu dipilih</item>
+    </plurals>
+
     <plurals name="s_songs">
         <item quantity="other">%d lagu</item>
+    </plurals>
+
+    <plurals name="s_hours">
+        <item quantity="other">%d jam</item>
+    </plurals>
+
+    <plurals name="s_minutes">
+        <item quantity="other">%d menit</item>
+    </plurals>
+
+    <plurals name="s_seconds">
+        <item quantity="other">%d detik</item>
     </plurals>
 
     <string name="select_all">Pilih Semua</string>

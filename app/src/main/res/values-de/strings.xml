@@ -76,9 +76,30 @@
         Wählen Sie die Lieder aus, die Sie zur Wiedergabeliste \"%s\" hinzufügen möchten, und klicken Sie dann auf die Schaltfläche \'Zur Wiedergabeliste hinzufügen\'
     </string>
 
+    <!--Plurals-->
+    <plurals name="s_songs_selected">
+        <item quantity="one">%d Lied ausgewählt</item>
+        <item quantity="other">%d Lieder ausgewählt</item>
+    </plurals>
+
     <plurals name="s_songs">
         <item quantity="one">%d Lied</item>
         <item quantity="other">%d Lieder</item>
+    </plurals>
+
+    <plurals name="s_hours">
+        <item quantity="one">%d Stunde</item>
+        <item quantity="other">%d Stunded</item>
+    </plurals>
+
+    <plurals name="s_minutes">
+        <item quantity="one">%d Minute</item>
+        <item quantity="other">%d Minuten</item>
+    </plurals>
+
+    <plurals name="s_seconds">
+        <item quantity="one">%d Sekunde</item>
+        <item quantity="other">%d Sekunden</item>
     </plurals>
 
     <string name="select_all">Wählen Sie Alle</string>

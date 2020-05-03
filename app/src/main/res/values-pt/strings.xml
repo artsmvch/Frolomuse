@@ -76,9 +76,30 @@
         Selecione as músicas que você deseja adicionar à lista de reprodução \"%s\" e clique no botão \'Adicionar à lista de reprodução\'
     </string>
 
+    <!--Plurals-->
+    <plurals name="s_songs_selected">
+        <item quantity="one">%d música selecionada</item>
+        <item quantity="other">%d músicas selecionadas</item>
+    </plurals>
+
     <plurals name="s_songs">
         <item quantity="one">%d música</item>
         <item quantity="other">%d músicas</item>
+    </plurals>
+
+    <plurals name="s_hours">
+        <item quantity="one">%d hora</item>
+        <item quantity="other">%d horas</item>
+    </plurals>
+
+    <plurals name="s_minutes">
+        <item quantity="one">%d minuto</item>
+        <item quantity="other">%d minutos</item>
+    </plurals>
+
+    <plurals name="s_seconds">
+        <item quantity="one">%d segundo</item>
+        <item quantity="other">%d segundos</item>
     </plurals>
 
     <string name="select_all">Selecionar tudo</string>

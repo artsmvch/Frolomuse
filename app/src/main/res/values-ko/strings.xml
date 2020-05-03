@@ -75,8 +75,25 @@
         \"%s\"재생 목록에 추가 할 노래를 선택한 다음 \'재생 목록에 추가\'단추를 클릭하십시오.
     </string>
 
+    <!--Plurals-->
+    <plurals name="s_songs_selected">
+        <item quantity="other">%d 곡 선택</item>
+    </plurals>
+
     <plurals name="s_songs">
         <item quantity="other">노래 %d 곡</item>
+    </plurals>
+
+    <plurals name="s_hours">
+        <item quantity="other">%d 시간</item>
+    </plurals>
+
+    <plurals name="s_minutes">
+        <item quantity="other">%d 분</item>
+    </plurals>
+
+    <plurals name="s_seconds">
+        <item quantity="other">%d 초</item>
     </plurals>
 
     <string name="select_all">모두 선택</string>

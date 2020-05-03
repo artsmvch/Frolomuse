@@ -75,10 +75,35 @@
         Виберіть пісні, які потрібно додати до списку відтворення \"%s\", а потім натисніть кнопку \"Додати до списку відтворення\"
     </string>
 
+    <!--Plurals-->
+    <plurals name="s_songs_selected">
+        <item quantity="one">Вибрано %d пісню</item>
+        <item quantity="few">Вибрано %d пісні</item>
+        <item quantity="many">Вибрано %d пісень</item>
+    </plurals>
+
     <plurals name="s_songs">
         <item quantity="one">%d пісня</item>
         <item quantity="few">%d пісні</item>
         <item quantity="many">%d пісень</item>
+    </plurals>
+
+    <plurals name="s_hours">
+        <item quantity="one">%d година</item>
+        <item quantity="few">%d години</item>
+        <item quantity="many">%d годин</item>
+    </plurals>
+
+    <plurals name="s_minutes">
+        <item quantity="one">%d хвилина</item>
+        <item quantity="few">%d хвилини</item>
+        <item quantity="many">%d хвилин</item>
+    </plurals>
+
+    <plurals name="s_seconds">
+        <item quantity="one">%d секунда</item>
+        <item quantity="few">%d секунди</item>
+        <item quantity="many">%d секунд</item>
     </plurals>
 
     <string name="select_all">Вибрати все</string>

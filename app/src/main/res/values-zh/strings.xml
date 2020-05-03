@@ -76,8 +76,25 @@
         選擇要添加到\“％s\”播放列表中的歌曲，然後單擊\'添加到播放列表\'按鈕
     </string>
 
+    <!--Plurals-->
+    <plurals name="s_songs_selected">
+        <item quantity="other">選擇了%d首歌曲</item>
+    </plurals>
+
     <plurals name="s_songs">
         <item quantity="other">%d 首歌</item>
+    </plurals>
+
+    <plurals name="s_hours">
+        <item quantity="other">%d 小時</item>
+    </plurals>
+
+    <plurals name="s_minutes">
+        <item quantity="other">%d 分鐘</item>
+    </plurals>
+
+    <plurals name="s_seconds">
+        <item quantity="other">%d 秒</item>
     </plurals>
 
     <string name="select_all">全選</string>

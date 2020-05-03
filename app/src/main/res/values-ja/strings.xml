@@ -76,8 +76,25 @@
         「％s」プレイリストに追加する曲を選択して、「プレイリストに追加」ボタンをクリックします
     </string>
 
+    <!--Plurals-->
+    <plurals name="s_songs_selected">
+        <item quantity="other">%d 曲を選択しました</item>
+    </plurals>
+
     <plurals name="s_songs">
         <item quantity="other">%d 曲</item>
+    </plurals>
+
+    <plurals name="s_hours">
+        <item quantity="other">%d 時間</item>
+    </plurals>
+
+    <plurals name="s_minutes">
+        <item quantity="other">%d 分</item>
+    </plurals>
+
+    <plurals name="s_seconds">
+        <item quantity="other">%d 秒</item>
     </plurals>
 
     <string name="select_all">すべて選択</string>

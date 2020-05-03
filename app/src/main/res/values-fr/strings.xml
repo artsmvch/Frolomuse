@@ -76,9 +76,30 @@
         Sélectionnez les chansons que vous souhaitez ajouter à la liste de lecture \"%s\", puis cliquez sur le bouton \'Ajouter à la liste de lecture\'
     </string>
 
+    <!--Plurals-->
+    <plurals name="s_songs_selected">
+        <item quantity="one">%d chanson sélectionnée</item>
+        <item quantity="other">%d chansons sélectionnées</item>
+    </plurals>
+
     <plurals name="s_songs">
         <item quantity="one">%d chanson</item>
         <item quantity="other">%d chansons</item>
+    </plurals>
+
+    <plurals name="s_hours">
+        <item quantity="one">%d heure</item>
+        <item quantity="other">%d heures</item>
+    </plurals>
+
+    <plurals name="s_minutes">
+        <item quantity="one">%d minute</item>
+        <item quantity="other">%d minutes</item>
+    </plurals>
+
+    <plurals name="s_seconds">
+        <item quantity="one">%d seconde</item>
+        <item quantity="other">%d secondes</item>
     </plurals>
 
     <string name="select_all">Tout sélectionner</string>
