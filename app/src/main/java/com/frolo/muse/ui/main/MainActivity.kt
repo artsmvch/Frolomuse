@@ -15,6 +15,7 @@ import androidx.annotation.ColorInt
 import androidx.appcompat.view.ActionMode
 import androidx.core.app.ActivityCompat
 import androidx.core.graphics.ColorUtils
+import androidx.core.view.doOnLayout
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -459,6 +460,12 @@ class MainActivity : PlayerHostActivity(),
 
         // Finally the root layout can be visible
         cl_root.visibility = View.VISIBLE
+
+        sliding_player_layout.doOnLayout { v ->
+            with(BottomSheetBehavior.from(v)) {
+                peekHeight = 96f.dp2px(this@MainActivity).toInt()
+            }
+        }
 
         fragNavControllerInitialized = true
 

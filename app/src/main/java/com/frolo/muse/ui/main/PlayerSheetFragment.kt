@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.doOnLayout
 import com.frolo.muse.R
+import com.frolo.muse.StyleUtil
 import com.frolo.muse.ui.base.BackPressHandler
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.main.player.PlayerFragment
@@ -55,6 +57,11 @@ class PlayerSheetFragment : BaseFragment(),
                 state = BottomSheetBehavior.STATE_COLLAPSED
                 bottomSheetCallback.onSlide(bottom_sheet_current_song_queue, 0.0f)
             }
+
+        view.doOnLayout {
+            behavior.peekHeight =
+                StyleUtil.readDimenAttrValue(view.context, R.attr.actionBarSize).toInt()
+        }
 
         bottom_sheet_current_song_queue.touchCallback =
             object : TouchFrameLayout.TouchCallback {

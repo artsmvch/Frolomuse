@@ -30,4 +30,10 @@ public final class StyleUtil {
         return typedValue.resourceId;
     }
 
+    public static float readDimenAttrValue(@NonNull Context context, @AttrRes int attrId) {
+        final TypedValue typedValue = new TypedValue();
+        context.getTheme().resolveAttribute(attrId, typedValue, true);
+        return typedValue.getDimension(context.getResources().getDisplayMetrics());
+    }
+
 }
