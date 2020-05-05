@@ -1,10 +1,9 @@
 package com.frolo.muse.di.impl.navigator
 
-import android.content.Context
 import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.model.media.*
 import com.frolo.muse.ui.*
-import com.frolo.muse.ui.base.FragmentNavigator
+import com.frolo.muse.ui.main.MainActivity
 import com.frolo.muse.ui.main.audiofx.params.PlaybackParamsDialog
 import com.frolo.muse.ui.main.audiofx.preset.SavePresetDialog
 import com.frolo.muse.ui.main.editor.album.AlbumEditorFragment
@@ -22,9 +21,7 @@ import com.frolo.muse.ui.main.player.poster.PosterDialog
 import java.io.File
 
 
-class NavigatorImpl<T> constructor(
-    private val root: T
-) : Navigator where T: Context, T: FragmentNavigator {
+class NavigatorImpl(private val root: MainActivity) : Navigator {
 
     override fun goToStore() {
         root.goToStore()
@@ -43,7 +40,7 @@ class NavigatorImpl<T> constructor(
     }
 
     override fun openSong(song: Song) {
-        // how to view a song???
+        root.expandSlidingPlayer()
     }
 
     override fun openAlbum(album: Album) {

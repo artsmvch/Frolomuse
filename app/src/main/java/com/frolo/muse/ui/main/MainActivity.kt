@@ -555,7 +555,7 @@ class MainActivity : PlayerHostActivity(),
         }
     }
 
-    private fun expandSlidingPlayer() {
+    fun expandSlidingPlayer() {
         BottomSheetBehavior.from(sliding_player_layout).state = BottomSheetBehavior.STATE_EXPANDED
     }
 
