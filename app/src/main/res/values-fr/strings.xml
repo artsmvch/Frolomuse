@@ -290,6 +290,6 @@
 
     <!--Shortcuts-->
     <string name="create_shortcut">Créer un raccourci</string>
-    <string name="create_shortcut_on_home_screen">Créer un raccourci sur l\'écran d'accueil</string>
+    <string name="create_shortcut_on_home_screen">Créer un raccourci sur l\'écran d\'accueil</string>
     <string name="shortcut_created">Raccourci créé</string>
 </resources>
