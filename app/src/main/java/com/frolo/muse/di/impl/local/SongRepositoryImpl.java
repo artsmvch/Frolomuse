@@ -202,6 +202,11 @@ public class SongRepositoryImpl
     }
 
     @Override
+    public Single<Boolean> isShortcutSupported(Song item) {
+        return Shortcuts.isShortcutSupported(mContext, item);
+    }
+
+    @Override
     public Completable createShortcut(Song item) {
         return Shortcuts.createSongShortcut(mContext, item);
     }

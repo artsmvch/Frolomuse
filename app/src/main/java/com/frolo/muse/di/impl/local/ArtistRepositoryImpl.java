@@ -140,6 +140,11 @@ public class ArtistRepositoryImpl implements ArtistRepository {
     }
 
     @Override
+    public Single<Boolean> isShortcutSupported(Artist item) {
+        return Shortcuts.isShortcutSupported(mContext, item);
+    }
+
+    @Override
     public Completable createShortcut(Artist item) {
         return Shortcuts.createArtistShortcut(mContext, item);
     }

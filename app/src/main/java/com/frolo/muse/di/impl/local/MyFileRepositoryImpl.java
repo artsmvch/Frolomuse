@@ -214,6 +214,11 @@ public class MyFileRepositoryImpl implements MyFileRepository {
     }
 
     @Override
+    public Single<Boolean> isShortcutSupported(MyFile item) {
+        return Shortcuts.isShortcutSupported(mContext, item);
+    }
+
+    @Override
     public Completable createShortcut(MyFile item) {
         return Shortcuts.createMyFileShortcut(mContext, item);
     }

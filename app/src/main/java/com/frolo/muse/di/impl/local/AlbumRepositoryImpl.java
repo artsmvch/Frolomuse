@@ -150,6 +150,11 @@ public class AlbumRepositoryImpl implements AlbumRepository {
     }
 
     @Override
+    public Single<Boolean> isShortcutSupported(Album item) {
+        return Shortcuts.isShortcutSupported(mContext, item);
+    }
+
+    @Override
     public Completable createShortcut(Album item) {
         return Shortcuts.createAlbumShortcut(mContext, item);
     }

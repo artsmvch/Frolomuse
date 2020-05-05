@@ -222,6 +222,20 @@ final class Shortcuts {
         });
     }
 
+    static Single<Boolean> isShortcutSupported(@NonNull Context context, @NonNull Media media) {
+        return Single.fromCallable(new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                if (media.getKind() == Media.MY_FILE) {
+                    // We do not support shortcuts for MyFile media models at all
+                    return false;
+                }
+
+                return ShortcutManagerCompat.isRequestPinShortcutSupported(context);
+            }
+        });
+    }
+
     static Completable createMediaShortcut(@NonNull final Context context, @NonNull final Media media) {
         return Single.zip(createShortcutIntent(context, media), getIcon(context, media), new BiFunction<Intent, BitmapResult, Object>() {
             @Override

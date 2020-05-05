@@ -127,6 +127,9 @@ public interface MediaRepository<E extends Media> {
      * ********************************************
      * ********************************************
      * ***************************************** */
+
+    Single<Boolean> isShortcutSupported(E item);
+
     Completable createShortcut(E item);
 
 }

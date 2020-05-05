@@ -6,6 +6,7 @@ import com.frolo.muse.model.menu.OptionsMenu
 import com.frolo.muse.repository.MediaRepository
 import com.frolo.muse.rx.SchedulerProvider
 import io.reactivex.Single
+import io.reactivex.functions.BiFunction
 
 
 class GetMediaMenuUseCase<E: Media> constructor(
@@ -23,8 +24,8 @@ class GetMediaMenuUseCase<E: Media> constructor(
             Single.just(false to false)
         }
 
-        return favouriteOptionOperator
-            .map { favouriteOption ->
+        val zipper: BiFunction<Pair<Boolean, Boolean>, Boolean, OptionsMenu<E>> =
+            BiFunction { favouriteOption, isShortcutSupported ->
                 OptionsMenu(
                     item = item,
                     favouriteOptionAvailable = favouriteOption.first,
@@ -41,10 +42,12 @@ class GetMediaMenuUseCase<E: Media> constructor(
                     setAsDefaultOptionAvailable = item is MyFile && item.isDirectory,
                     addToHiddenOptionAvailable = item is MyFile,
                     scanFilesOptionAvailable = item is MyFile && item.isDirectory,
-                    // TODO: check for which kind of media we can create shortcuts
-                    shortcutOptionAvailable = true
+                    shortcutOptionAvailable = isShortcutSupported
                 )
             }
+
+        return favouriteOptionOperator
+            .zipWith(repository.isShortcutSupported(item), zipper)
             .subscribeOn(schedulerProvider.worker())
             .observeOn(schedulerProvider.main())
     }

@@ -161,6 +161,11 @@ public class SongWithPlayCountRepositoryImpl implements SongWithPlayCountReposit
     }
 
     @Override
+    public Single<Boolean> isShortcutSupported(SongWithPlayCount item) {
+        return mDelegate.isShortcutSupported(item);
+    }
+
+    @Override
     public Completable createShortcut(SongWithPlayCount item) {
         return mDelegate.createShortcut(item);
     }

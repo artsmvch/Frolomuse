@@ -304,6 +304,44 @@ public class GenericMediaRepositoryImpl implements GenericMediaRepository {
     }
 
     @Override
+    public Single<Boolean> isShortcutSupported(Media item) {
+        return Single.defer(new Callable<SingleSource<Boolean>>() {
+            @Override
+            public SingleSource<Boolean> call() throws Exception {
+                switch (item.getKind()) {
+                    case Media.SONG: {
+                        return mSongRepo.isShortcutSupported((Song) item);
+                    }
+
+                    case Media.ALBUM: {
+                        return mAlbumRepo.isShortcutSupported((Album) item);
+                    }
+
+                    case Media.ARTIST: {
+                        return mArtistRepo.isShortcutSupported((Artist) item);
+                    }
+
+                    case Media.GENRE: {
+                        return mGenreRepo.isShortcutSupported((Genre) item);
+                    }
+
+                    case Media.PLAYLIST: {
+                        return mPlaylistRepo.isShortcutSupported((Playlist) item);
+                    }
+
+                    case Media.MY_FILE: {
+                        return mMyFileRepo.isShortcutSupported((MyFile) item);
+                    }
+
+                    default: {
+                        return Single.error(new UnknownMediaException(item));
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
     public Completable createShortcut(Media item) {
         return Completable.defer(new Callable<CompletableSource>() {
             @Override

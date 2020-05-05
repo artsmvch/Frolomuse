@@ -150,6 +150,11 @@ public class PlaylistRepositoryImpl
     }
 
     @Override
+    public Single<Boolean> isShortcutSupported(Playlist item) {
+        return Shortcuts.isShortcutSupported(mContext, item);
+    }
+
+    @Override
     public Completable createShortcut(Playlist item) {
         return Shortcuts.createPlaylistShortcut(mContext, item);
     }

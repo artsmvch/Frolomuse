@@ -132,6 +132,11 @@ public class GenreRepositoryImpl implements GenreRepository {
     }
 
     @Override
+    public Single<Boolean> isShortcutSupported(Genre item) {
+        return Shortcuts.isShortcutSupported(mContext, item);
+    }
+
+    @Override
     public Completable createShortcut(Genre item) {
         return Shortcuts.createGenreShortcut(mContext, item);
     }
