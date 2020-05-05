@@ -164,7 +164,8 @@
                 android:id="@+id/btn_create_shortcut"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:optionTitle="@string/create_shortcut"/>
+                app:optionTitle="@string/create_shortcut_on_home_screen"
+                app:optionIcon="@drawable/ic_shortcut_48dp"/>
 
             <com.frolo.muse.views.text.OptionTextView
                 android:id="@+id/btn_edit"
