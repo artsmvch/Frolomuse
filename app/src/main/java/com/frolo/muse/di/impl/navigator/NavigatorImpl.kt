@@ -40,7 +40,7 @@ class NavigatorImpl(private val root: MainActivity) : Navigator {
     }
 
     override fun openSong(song: Song) {
-        root.expandSlidingPlayer()
+        // How are we supposed to open this?
     }
 
     override fun openAlbum(album: Album) {
@@ -130,6 +130,7 @@ class NavigatorImpl(private val root: MainActivity) : Navigator {
     }
 
     override fun openPlayer() {
+        root.expandSlidingPlayer()
     }
 
     override fun openAudioFx() {

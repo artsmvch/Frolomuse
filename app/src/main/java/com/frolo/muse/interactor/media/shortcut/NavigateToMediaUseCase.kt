@@ -73,7 +73,7 @@ class NavigateToMediaUseCase @Inject constructor(
                 .doOnSuccess { song ->
                     val songQueue = songQueueFactory.create(listOf(song), listOf(song))
                     player.prepare(songQueue, song, true)
-                    navigator.openSong(song)
+                    navigator.openPlayer()
                 }
                 .ignoreElement()
 
