@@ -1,15 +1,21 @@
 package com.frolo.muse.di.impl.local;
 
+import android.app.PendingIntent;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ShortcutInfo;
+import android.content.pm.ShortcutManager;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Icon;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.MediaStore;
 
 import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 
 import com.frolo.muse.R;
 import com.frolo.muse.ThreadStrictMode;
@@ -47,6 +53,36 @@ final class Shortcuts {
         BitmapResult(@Nullable Bitmap bitmap) {
             this.bitmap = bitmap;
         }
+    }
+
+    @NonNull
+    private static String getShortcutId(@NonNull Media media) {
+        final String prefix;
+        switch (media.getKind()) {
+            case Media.ALBUM:
+                prefix = "album_";
+                break;
+            case Media.ARTIST:
+                prefix = "artist_";
+                break;
+            case Media.GENRE:
+                prefix = "genre_";
+                break;
+            case Media.MY_FILE:
+                prefix = "myfile_";
+                break;
+            case Media.PLAYLIST:
+                prefix = "playlist_";
+                break;
+            case Media.SONG:
+                prefix = "song_";
+                break;
+            default:
+                prefix = "none_";
+                break;
+        }
+
+        return prefix + media.getId();
     }
 
     @MainThread
@@ -88,9 +124,24 @@ final class Shortcuts {
 //        shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //        shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            installShortcut_PostApi26_Internal(context, shortcutIntent, media, mediaName, icon);
+        } else {
+            installShortcut_PreApi26_Internal(context, shortcutIntent, media, mediaName, icon);
+        }
+    }
+
+    @MainThread
+    private static void installShortcut_PreApi26_Internal(
+            @NonNull Context context,
+            @NonNull Intent shortcutIntent,
+            @NonNull Media media,
+            @NonNull String name,
+            @Nullable Bitmap icon
+    ) {
         final Intent addIntent = new Intent("com.android.launcher.action.INSTALL_SHORTCUT");
         addIntent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
-        addIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, mediaName);
+        addIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, name);
         if (icon != null) {
             addIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON, icon);
         } else {
@@ -99,7 +150,41 @@ final class Shortcuts {
             addIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconResource);
         }
         addIntent.putExtra("duplicate", false);
-        applicationContext.sendBroadcast(addIntent);
+        context.sendBroadcast(addIntent);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    @MainThread
+    private static void installShortcut_PostApi26_Internal(
+        @NonNull Context context,
+        @NonNull Intent shortcutIntent,
+        @NonNull Media media,
+        @NonNull String name,
+        @Nullable Bitmap icon
+    ) {
+        ShortcutManager shortcutManager = context.getSystemService(ShortcutManager.class);
+        if (shortcutManager != null && shortcutManager.isRequestPinShortcutSupported()) {
+            final ShortcutInfo.Builder pinShortcutInfoBuilder =
+                    new ShortcutInfo.Builder(context,getShortcutId(media))
+                            .setIntent(shortcutIntent)
+                            .setShortLabel(name);
+
+            if (icon != null) {
+                pinShortcutInfoBuilder.setIcon(Icon.createWithBitmap(icon));
+            } else {
+                pinShortcutInfoBuilder.setIcon(Icon.createWithResource(context, R.mipmap.ic_launcher));
+            }
+
+            final ShortcutInfo pinShortcutInfo = pinShortcutInfoBuilder.build();
+
+            Intent pinnedShortcutCallbackIntent =
+                    shortcutManager.createShortcutResultIntent(pinShortcutInfo);
+
+            // Get notified when a shortcut is pinned successfully
+            PendingIntent successCallback
+                    = PendingIntent.getBroadcast(context, 0, pinnedShortcutCallbackIntent, 0);
+            shortcutManager.requestPinShortcut(pinShortcutInfo, successCallback.getIntentSender());
+        }
     }
 
     private static Single<BitmapResult> getIcon(@NonNull final Context context, @NonNull Media media) {
