@@ -116,6 +116,8 @@ class MainActivity : PlayerHostActivity(),
             }
         }
 
+    private var notHandledIntent: Intent? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(null)
 
@@ -141,7 +143,7 @@ class MainActivity : PlayerHostActivity(),
         maybeInitializeFragments(player, lastSavedInstanceState)
 
         // TODO: need to postpone the handling of the intent cause fragments may not be initialized
-        //handleIntent(intent)
+        handleIntent(intent)
     }
 
     private fun loadUI() {
@@ -473,6 +475,10 @@ class MainActivity : PlayerHostActivity(),
 
         fragNavControllerInitialized = true
 
+        notHandledIntent?.also { safeIntent ->
+            handleIntent(safeIntent)
+        }
+
         return true
     }
 
@@ -494,7 +500,22 @@ class MainActivity : PlayerHostActivity(),
         }
     }
 
+    /**
+     * Handles the given [intent].
+     * If the fragments are not initialized yet then this method does nothing
+     * but marks [intent] as not handled (see [notHandledIntent] so that
+     * it will be handled later when the fragments are initialized.
+     */
     private fun handleIntent(intent: Intent) {
+        if (!fragNavControllerInitialized) {
+            // Fragments are not initialized yet
+            notHandledIntent = intent
+            return
+        }
+
+        // Need to clean it to prevent double-handling
+        notHandledIntent = null
+
         if (intent.hasExtra(EXTRA_NAV_KIND_OF_MEDIA) && intent.hasExtra(EXTRA_NAV_MEDIA_ID)) {
             val kindOfMedia = intent.getIntExtra(EXTRA_NAV_KIND_OF_MEDIA, Media.NONE)
             val mediaId = intent.getLongExtra(EXTRA_NAV_MEDIA_ID, Media.NO_ID)
