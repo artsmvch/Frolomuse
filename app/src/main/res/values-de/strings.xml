@@ -287,4 +287,9 @@
     <string name="scanning_completed">Scanvorgang abgeschlossen</string>
     <string name="rescan_media_library">Medienbibliothek erneut scannen</string>
     <string name="do_you_want_to_rescan_media_library">Möchten Sie Ihre Medienbibliothek erneut scannen?</string>
+
+    <!--Shortcuts-->
+    <string name="create_shortcut">Verknüpfung erstellen</string>
+    <string name="create_shortcut_on_home_screen">Verknüpfung auf dem Startbildschirm erstellen</string>
+    <string name="shortcut_created">Verknüpfung wurde erstellt</string>
 </resources>

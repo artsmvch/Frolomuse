@@ -286,4 +286,9 @@
     <string name="scanning_completed">स्कैनिंग पूरी हुई</string>
     <string name="rescan_media_library">रेसकान मीडिया लाइब्रेरी</string>
     <string name="do_you_want_to_rescan_media_library">क्या आप अपनी मीडिया लाइब्रेरी को फिर से बनाना चाहते हैं?</string>
+
+    <!--Shortcuts-->
+    <string name="create_shortcut">शॉर्टकट बनाएं</string>
+    <string name="create_shortcut_on_home_screen">होम स्क्रीन पर शॉर्टकट बनाएं</string>
+    <string name="shortcut_created">शॉर्टकट बनाया</string>
 </resources>

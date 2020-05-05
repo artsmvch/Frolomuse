@@ -281,4 +281,9 @@
     <string name="scanning_completed">スキャン完了</string>
     <string name="rescan_media_library">メディアライブラリの再スキャン</string>
     <string name="do_you_want_to_rescan_media_library">メディアライブラリを再スキャンしますか？</string>
+
+    <!--Shortcuts-->
+    <string name="create_shortcut">ショートカットを作成する</string>
+    <string name="create_shortcut_on_home_screen">ホーム画面にショートカットを作成</string>
+    <string name="shortcut_created">ショートカットが作成されました</string>
 </resources>

@@ -299,4 +299,9 @@
     <string name="scanning_completed">Сканирование завершено</string>
     <string name="rescan_media_library">Просканировать медиатеку</string>
     <string name="do_you_want_to_rescan_media_library">Вы хотите просканировать свою медиатеку?</string>
+
+    <!--Shortcuts-->
+    <string name="create_shortcut">Создать ярлык</string>
+    <string name="create_shortcut_on_home_screen">Создать ярлык на главном экране</string>
+    <string name="shortcut_created">Ярлык создан</string>
 </resources>

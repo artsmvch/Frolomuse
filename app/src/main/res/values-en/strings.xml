@@ -290,4 +290,9 @@
     <string name="scanning_completed">Scanning completed</string>
     <string name="rescan_media_library">Rescan media library</string>
     <string name="do_you_want_to_rescan_media_library">Do you want to rescan your media library?</string>
+
+    <!--Shortcuts-->
+    <string name="create_shortcut">Create shortcut</string>
+    <string name="create_shortcut_on_home_screen">Create shortcut on home screen</string>
+    <string name="shortcut_created">Shortcut created</string>
 </resources>

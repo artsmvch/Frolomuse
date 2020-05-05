@@ -288,4 +288,9 @@
     <string name="scanning_completed">Digitalização concluída</string>
     <string name="rescan_media_library">Verificar novamente a biblioteca de mídia</string>
     <string name="do_you_want_to_rescan_media_library">Você deseja redigitalizar sua biblioteca de mídia?</string>
+
+    <!--Shortcuts-->
+    <string name="create_shortcut">Criar atalho</string>
+    <string name="create_shortcut_on_home_screen">Criar atalho na tela inicial</string>
+    <string name="shortcut_created">Atalho criado</string>
 </resources>

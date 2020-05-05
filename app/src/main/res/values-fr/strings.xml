@@ -287,4 +287,9 @@
     <string name="scanning_completed">Numérisation terminée</string>
     <string name="rescan_media_library">Nouvelle analyse de la médiathèque</string>
     <string name="do_you_want_to_rescan_media_library">Voulez-vous numériser à nouveau votre bibliothèque multimédia?</string>
+
+    <!--Shortcuts-->
+    <string name="create_shortcut">Créer un raccourci</string>
+    <string name="create_shortcut_on_home_screen">Créer un raccourci sur l\'écran d'accueil</string>
+    <string name="shortcut_created">Raccourci créé</string>
 </resources>

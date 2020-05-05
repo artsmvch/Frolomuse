@@ -294,4 +294,9 @@
     <string name="scanning_completed">Сканування завершено</string>
     <string name="rescan_media_library">Сканувати медіатеку</string>
     <string name="do_you_want_to_rescan_media_library">Ви хочете сканувати свою медіатеку?</string>
+
+    <!--Shortcuts-->
+    <string name="create_shortcut">Створити ярлик</string>
+    <string name="create_shortcut_on_home_screen">Створіть ярлик на головному екрані</string>
+    <string name="shortcut_created">Ярлик створений</string>
 </resources>

@@ -288,4 +288,9 @@
     <string name="scanning_completed">Tarama tamamlandı</string>
     <string name="rescan_media_library">Medya kitaplığını yeniden tara</string>
     <string name="do_you_want_to_rescan_media_library">Medya kitaplığınızı taramak ister misiniz?</string>
+
+    <!--Shortcuts-->
+    <string name="create_shortcut">Kısayol oluştur</string>
+    <string name="create_shortcut_on_home_screen">Ana ekranda kısayol oluşturma</string>
+    <string name="shortcut_created">Kısayol oluşturuldu</string>
 </resources>

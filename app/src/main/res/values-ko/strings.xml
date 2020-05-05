@@ -282,4 +282,9 @@
     <string name="scanning_completed">스캔 완료</string>
     <string name="rescan_media_library">미디어 라이브러리 재검색</string>
     <string name="do_you_want_to_rescan_media_library">미디어 라이브러리를 다시 스캔 하시겠습니까?</string>
+
+    <!--Shortcuts-->
+    <string name="create_shortcut">바로 가기 만들기</string>
+    <string name="create_shortcut_on_home_screen">홈 화면에서 바로 가기 만들기</string>
+    <string name="shortcut_created">바로 가기가 생성되었습니다</string>
 </resources>

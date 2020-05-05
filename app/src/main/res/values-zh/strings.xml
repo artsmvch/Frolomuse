@@ -280,4 +280,9 @@
     <string name="scanning_completed">掃描完成</string>
     <string name="rescan_media_library">重新掃描媒體庫</string>
     <string name="do_you_want_to_rescan_media_library">要重新掃描媒體庫嗎？</string>
+
+    <!--Shortcuts-->
+    <string name="create_shortcut">建立捷徑</string>
+    <string name="create_shortcut_on_home_screen">在主屏幕上創建快捷方式</string>
+    <string name="shortcut_created">捷徑已建立</string>
 </resources>

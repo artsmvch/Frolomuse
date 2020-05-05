@@ -287,4 +287,9 @@
     <string name="scanning_completed">Escaneo completado</string>
     <string name="rescan_media_library">Volver a escanear la biblioteca de medios</string>
     <string name="do_you_want_to_rescan_media_library">¿Quieres volver a escanear tu biblioteca de medios?</string>
+
+    <!--Shortcuts-->
+    <string name="create_shortcut">Crear atajo</string>
+    <string name="create_shortcut_on_home_screen">Crear atajo en la pantalla de inicio</string>
+    <string name="shortcut_created">Atajo creado</string>
 </resources>

@@ -294,5 +294,5 @@
     <!--Shortcuts-->
     <string name="create_shortcut">Create shortcut</string>
     <string name="create_shortcut_on_home_screen">Create shortcut on home screen</string>
-    <string name="shortcut_created">Created</string>
+    <string name="shortcut_created">Shortcut created</string>
 </resources>

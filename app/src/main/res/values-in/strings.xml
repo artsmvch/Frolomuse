@@ -282,4 +282,9 @@
     <string name="scanning_completed">Pemindaian selesai</string>
     <string name="rescan_media_library">Pindai ulang perpustakaan media</string>
     <string name="do_you_want_to_rescan_media_library">Apakah Anda ingin memindai ulang pustaka media Anda?</string>
+
+    <!--Shortcuts-->
+    <string name="create_shortcut">Buat pintasan</string>
+    <string name="create_shortcut_on_home_screen">Buat pintasan di layar beranda</string>
+    <string name="shortcut_created">Pintasan dibuat</string>
 </resources>
