@@ -218,15 +218,25 @@ final class Shortcuts {
                 final Uri artworkUri = Uri.parse("content://media/external/audio/albumart");
                 final Uri albumArtUri = ContentUris.withAppendedId(artworkUri, albumId);
 
-                Bitmap bitmap = null;
                 try {
-                    bitmap = MediaStore.Images.Media.getBitmap(
+                    final Bitmap original = MediaStore.Images.Media.getBitmap(
                             context.getContentResolver(), albumArtUri);
-                    bitmap = Bitmap.createScaledBitmap(bitmap, 200, 200, true);
-                } catch (Exception ignored) {
-                }
+                    if (original == null) {
+                        return new BitmapResult(null);
+                    }
 
-                return new BitmapResult(bitmap);
+                    // TODO: is 200x200 a good size for it?
+                    final Bitmap scaled =
+                            Bitmap.createScaledBitmap(original, 200, 200, true);
+
+                    if (original != scaled) {
+                        original.recycle();
+                    }
+
+                    return new BitmapResult(scaled);
+                } catch (Exception ignored) {
+                    return new BitmapResult(null);
+                }
             }
         });
     }
