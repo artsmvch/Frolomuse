@@ -12,6 +12,7 @@ import com.frolo.muse.interactor.media.*
 import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
 import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
 import com.frolo.muse.interactor.media.get.GetMediaUseCase
+import com.frolo.muse.interactor.media.shortcut.CreateShortcutUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.model.media.SongCountWithTotalDuration
@@ -31,6 +32,7 @@ abstract class AbsSongCollectionViewModel<T: Song> constructor(
         deleteMediaUseCase: DeleteMediaUseCase<T>,
         getIsFavouriteUseCase: GetIsFavouriteUseCase<T>,
         changeFavouriteUseCase: ChangeFavouriteUseCase<T>,
+        createShortcutUseCase: CreateShortcutUseCase<T>,
         private val schedulerProvider: SchedulerProvider,
         navigator: Navigator,
         eventLogger: EventLogger
@@ -43,6 +45,7 @@ abstract class AbsSongCollectionViewModel<T: Song> constructor(
         deleteMediaUseCase,
         getIsFavouriteUseCase,
         changeFavouriteUseCase,
+        createShortcutUseCase,
         schedulerProvider,
         navigator,
         eventLogger

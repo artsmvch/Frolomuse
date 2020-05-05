@@ -13,6 +13,7 @@ import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
 import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
 import com.frolo.muse.interactor.media.get.GetAllMyFilesUseCase
 import com.frolo.muse.interactor.media.hidden.HideFilesUseCase
+import com.frolo.muse.interactor.media.shortcut.CreateShortcutUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.media.MyFile
 import com.frolo.muse.model.media.Song
@@ -36,6 +37,7 @@ class MyFileListViewModel @Inject constructor(
         deleteMediaUseCase: DeleteMediaUseCase<MyFile>,
         getIsFavouriteUseCase: GetIsFavouriteUseCase<MyFile>,
         changeFavouriteUseCase: ChangeFavouriteUseCase<MyFile>,
+        createShortcutUseCase: CreateShortcutUseCase<MyFile>,
         private val setFolderAsDefaultUseCase: SetFolderAsDefaultUseCase,
         private val hideFilesUseCase: HideFilesUseCase,
         private val schedulerProvider: SchedulerProvider,
@@ -50,6 +52,7 @@ class MyFileListViewModel @Inject constructor(
         deleteMediaUseCase,
         getIsFavouriteUseCase,
         changeFavouriteUseCase,
+        createShortcutUseCase,
         schedulerProvider,
         navigator,
         eventLogger) {

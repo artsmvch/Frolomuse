@@ -212,4 +212,10 @@ public class MyFileRepositoryImpl implements MyFileRepository {
                 hidden
         );
     }
+
+    @Override
+    public Completable createShortcut(MyFile item) {
+        return Shortcuts.createMyFileShortcut(mContext, item);
+    }
+
 }

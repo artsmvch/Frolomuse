@@ -190,6 +190,10 @@ abstract class AbsMediaCollectionFragment <E: Media>: BaseFragment(),
         addedToQueue.observeNonNull(owner) {
             toastShortMessage(R.string.added_to_queue)
         }
+
+        shortcutCreatedEvent.observeNonNull(owner) {
+            toastShortMessage(R.string.shortcut_created)
+        }
     }
 
     private fun onShowOptionsMenuDialog(optionsMenu: OptionsMenu<E>): MediaOptionsDialog<E> {
@@ -209,6 +213,7 @@ abstract class AbsMediaCollectionFragment <E: Media>: BaseFragment(),
                 MediaOptionsDialog.Option.VIEW_ALBUM -> viewModel.onViewAlbumOptionSelected()
                 MediaOptionsDialog.Option.VIEW_ARTIST -> viewModel.onViewArtistOptionSelected()
                 MediaOptionsDialog.Option.VIEW_GENRE -> viewModel.onViewGenreOptionSelected()
+                MediaOptionsDialog.Option.CREATE_SHORTCUT -> viewModel.onCreateShortcutOptionSelected()
             }
         }
         return dialog.apply { show() }

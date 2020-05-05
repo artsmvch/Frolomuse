@@ -9,6 +9,7 @@ import com.frolo.muse.interactor.media.*
 import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
 import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
 import com.frolo.muse.interactor.media.get.GetAlbumSongsUseCase
+import com.frolo.muse.interactor.media.shortcut.CreateShortcutUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.media.Album
 import com.frolo.muse.model.media.Song
@@ -40,6 +41,8 @@ class AlbumVMFactory constructor(
     @Inject
     internal lateinit var changeFavouriteUseCase: ChangeFavouriteUseCase<Song>
     @Inject
+    internal lateinit var createShortcutUseCase: CreateShortcutUseCase<Song>
+    @Inject
     internal lateinit var schedulerProvider: SchedulerProvider
     @Inject
     internal lateinit var navigator: Navigator
@@ -65,6 +68,7 @@ class AlbumVMFactory constructor(
                 deleteMediaUseCase,
                 getIsFavouriteUseCase,
                 changeFavouriteUseCase,
+                createShortcutUseCase,
                 schedulerProvider,
                 navigator,
                 eventLogger,

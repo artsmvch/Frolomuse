@@ -138,4 +138,10 @@ public class ArtistRepositoryImpl implements ArtistRepository {
     public Completable changeFavourite(Artist item) {
         return Completable.error(new UnsupportedOperationException());
     }
+
+    @Override
+    public Completable createShortcut(Artist item) {
+        return Shortcuts.createArtistShortcut(mContext, item);
+    }
+
 }

@@ -200,4 +200,10 @@ public class SongRepositoryImpl
     public Completable addSongPlayCount(Song song, int delta) {
         return SongQuery.addSongPlayCount(mContext.getContentResolver(), song, delta);
     }
+
+    @Override
+    public Completable createShortcut(Song item) {
+        return Shortcuts.createSongShortcut(mContext, item);
+    }
+
 }

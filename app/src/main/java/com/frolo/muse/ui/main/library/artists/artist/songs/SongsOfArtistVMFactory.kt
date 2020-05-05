@@ -9,10 +9,10 @@ import com.frolo.muse.interactor.media.*
 import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
 import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
 import com.frolo.muse.interactor.media.get.GetSongsOfArtistUseCase
+import com.frolo.muse.interactor.media.shortcut.CreateShortcutUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.media.Artist
 import com.frolo.muse.model.media.Song
-import com.frolo.muse.repository.ArtistChunkRepository
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.rx.SchedulerProvider
 import javax.inject.Inject
@@ -42,9 +42,9 @@ class SongsOfArtistVMFactory constructor(
     @Inject
     internal lateinit var changeFavouriteUseCase: ChangeFavouriteUseCase<Song>
     @Inject
-    internal lateinit var schedulerProvider: SchedulerProvider
+    internal lateinit var createShortcutUseCase: CreateShortcutUseCase<Song>
     @Inject
-    internal lateinit var artistChunkRepository: ArtistChunkRepository
+    internal lateinit var schedulerProvider: SchedulerProvider
     @Inject
     internal lateinit var preferences: Preferences
     @Inject
@@ -71,6 +71,7 @@ class SongsOfArtistVMFactory constructor(
                 deleteMediaUseCase,
                 getIsFavouriteUseCase,
                 changeFavouriteUseCase,
+                createShortcutUseCase,
                 schedulerProvider,
                 navigator,
                 eventLogger

@@ -12,6 +12,7 @@ import com.frolo.muse.interactor.media.*
 import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
 import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
 import com.frolo.muse.interactor.media.get.GetMediaUseCase
+import com.frolo.muse.interactor.media.shortcut.CreateShortcutUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.media.*
 import com.frolo.muse.model.menu.ContextualMenu
@@ -34,6 +35,7 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
         private val deleteMediaUseCase: DeleteMediaUseCase<E>,
         private val getIsFavouriteUseCase: GetIsFavouriteUseCase<E>,
         private val changeFavouriteUseCase: ChangeFavouriteUseCase<E>,
+        private val createShortcutUseCase: CreateShortcutUseCase<E>,
         private val schedulerProvider: SchedulerProvider,
         private val navigator: Navigator,
         private val eventLogger: EventLogger
@@ -104,6 +106,9 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
 
     private val _addedToQueue: MutableLiveData<Unit> = SingleLiveEvent()
     val addedToQueue: LiveData<Unit> = _addedToQueue
+
+    private val _shortcutCreatedEvent = SingleLiveEvent<Unit>()
+    val shortcutCreatedEvent: LiveData<Unit> get() = _shortcutCreatedEvent
 
     // Contextual
     private val _openContextualMenuEvent: MutableLiveData<ContextualMenu<E>> = SingleLiveEvent()
@@ -612,6 +617,15 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
                 .subscribeFor(schedulerProvider) { items ->
                     navigator.addMediaItemsToPlaylist(items)
                 }
+    }
+
+    fun onCreateShortcutOptionSelected() {
+        val event = _openOptionsMenuEvent.value ?: return
+        _closeOptionsMenuEvent.value = event
+        val item = event.item
+        createShortcutUseCase.createShortcut(item)
+                .observeOn(schedulerProvider.main())
+                .subscribeFor { _shortcutCreatedEvent.call() }
     }
 
     fun onConfirmedDeletion(item: E) {

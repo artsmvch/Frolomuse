@@ -10,6 +10,7 @@ import com.frolo.muse.interactor.media.*
 import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
 import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
 import com.frolo.muse.interactor.media.get.GetAlbumSongsUseCase
+import com.frolo.muse.interactor.media.shortcut.CreateShortcutUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.media.Album
 import com.frolo.muse.model.media.Song
@@ -27,6 +28,7 @@ class AlbumViewModel constructor(
         deleteMediaUseCase: DeleteMediaUseCase<Song>,
         getIsFavouriteUseCase: GetIsFavouriteUseCase<Song>,
         changeFavouriteUseCase: ChangeFavouriteUseCase<Song>,
+        createShortcutUseCase: CreateShortcutUseCase<Song>,
         schedulerProvider: SchedulerProvider,
         private val navigator: Navigator,
         eventLogger: EventLogger,
@@ -41,6 +43,7 @@ class AlbumViewModel constructor(
         deleteMediaUseCase,
         getIsFavouriteUseCase,
         changeFavouriteUseCase,
+        createShortcutUseCase,
         schedulerProvider,
         navigator,
         eventLogger

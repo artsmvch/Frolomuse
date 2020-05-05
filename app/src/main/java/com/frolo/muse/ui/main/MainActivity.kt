@@ -27,6 +27,7 @@ import com.frolo.muse.Trace
 import com.frolo.muse.arch.observe
 import com.frolo.muse.engine.Player
 import com.frolo.muse.dp2px
+import com.frolo.muse.model.media.*
 import com.frolo.muse.ui.PlayerHostActivity
 import com.frolo.muse.ui.base.BackPressHandler
 import com.frolo.muse.ui.base.FragmentNavigator
@@ -138,6 +139,9 @@ class MainActivity : PlayerHostActivity(),
         observeScanStatus()
 
         maybeInitializeFragments(player, lastSavedInstanceState)
+
+        // TODO: need to postpone the handling of the intent cause fragments may not be initialized
+        //handleIntent(intent)
     }
 
     private fun loadUI() {
@@ -254,7 +258,7 @@ class MainActivity : PlayerHostActivity(),
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        handleNewIntent(intent)
+        handleIntent(intent)
     }
 
     public override fun onSaveInstanceState(outState: Bundle) {
@@ -490,15 +494,22 @@ class MainActivity : PlayerHostActivity(),
         }
     }
 
-    private fun handleNewIntent(intent: Intent) {
-        val tabIndexExtra = intent.getIntExtra(EXTRA_TAB_INDEX, currTabIndex)
-        if (tabIndexExtra != currTabIndex) {
-            bottom_navigation_view.selectedItemId = when (tabIndexExtra) {
-                INDEX_LIBRARY -> R.id.nav_library
-                INDEX_EQUALIZER -> R.id.nav_equalizer
-                INDEX_SEARCH -> R.id.nav_search
-                INDEX_SETTINGS -> R.id.nav_settings
-                else -> R.id.nav_library
+    private fun handleIntent(intent: Intent) {
+        if (intent.hasExtra(EXTRA_NAV_KIND_OF_MEDIA) && intent.hasExtra(EXTRA_NAV_MEDIA_ID)) {
+            val kindOfMedia = intent.getIntExtra(EXTRA_NAV_KIND_OF_MEDIA, Media.NONE)
+            val mediaId = intent.getLongExtra(EXTRA_NAV_MEDIA_ID, Media.NO_ID)
+            viewModel.onNavigateToMediaIntent(kindOfMedia, mediaId)
+        } else {
+            // TODO: Actually this also must have a specific action
+            val tabIndexExtra = intent.getIntExtra(EXTRA_TAB_INDEX, currTabIndex)
+            if (tabIndexExtra != currTabIndex) {
+                bottom_navigation_view.selectedItemId = when (tabIndexExtra) {
+                    INDEX_LIBRARY -> R.id.nav_library
+                    INDEX_EQUALIZER -> R.id.nav_equalizer
+                    INDEX_SEARCH -> R.id.nav_search
+                    INDEX_SETTINGS -> R.id.nav_settings
+                    else -> R.id.nav_library
+                }
             }
         }
     }
@@ -593,7 +604,11 @@ class MainActivity : PlayerHostActivity(),
         private const val FRAG_TAG_PLAYER_SHEET = "com.frolo.muse.ui.main.PLAYER_SHEET"
         private const val FRAG_TAG_MIN_PLAYER = "com.frolo.muse.ui.main.MINI_PLAYER"
 
+        //private const val ACTION_NAV_MEDIA = "com.frolo.muse.ui.main.ACTION_NAV_MEDIA"
+
         private const val EXTRA_TAB_INDEX = "last_tab_index"
+        private const val EXTRA_NAV_KIND_OF_MEDIA = "com.frolo.muse.ui.main.nav_kind_of_media"
+        private const val EXTRA_NAV_MEDIA_ID = "com.frolo.muse.ui.main.nav_media_id"
 
         const val INDEX_LIBRARY = FragNavController.TAB1
         const val INDEX_EQUALIZER = FragNavController.TAB2
@@ -602,12 +617,42 @@ class MainActivity : PlayerHostActivity(),
 
         private const val TAB_INDEX_DEFAULT = 0
 
-        fun newIntent(context: Context, tabIndex: Int = INDEX_LIBRARY): Intent =
-                Intent(context, MainActivity::class.java).putExtra(EXTRA_TAB_INDEX, tabIndex)
-
         private fun FragNavController.doIfStateNotSaved(block: FragNavController.() -> Unit) {
             if (!isStateSaved) block.invoke(this)
         }
+
+        //region Intent factories
+
+        fun newIntent(context: Context, tabIndex: Int = INDEX_LIBRARY): Intent =
+                Intent(context, MainActivity::class.java).putExtra(EXTRA_TAB_INDEX, tabIndex)
+
+        private fun newNavMediaIntent(context: Context, media: Media): Intent {
+            return Intent(context, MainActivity::class.java)
+                    .setAction(Intent.ACTION_MAIN)
+                    //.addCategory(Intent.CATEGORY_DEFAULT)
+                    .putExtra(EXTRA_NAV_KIND_OF_MEDIA, media.kind)
+                    .putExtra(EXTRA_NAV_MEDIA_ID, media.id)
+        }
+
+        fun newSongIntent(context: Context, song: Song): Intent =
+                newNavMediaIntent(context, song)
+
+        fun newAlbumIntent(context: Context, album: Album): Intent =
+                newNavMediaIntent(context, album)
+
+        fun newArtistIntent(context: Context, artist: Artist): Intent =
+                newNavMediaIntent(context, artist)
+
+        fun newGenreIntent(context: Context, genre: Genre): Intent =
+                newNavMediaIntent(context, genre)
+
+        fun newPlaylistIntent(context: Context, playlist: Playlist): Intent =
+                newNavMediaIntent(context, playlist)
+
+        fun newMyFileIntent(context: Context, myFile: MyFile): Intent =
+                newNavMediaIntent(context, myFile)
+
+        //endregion
     }
 
 }

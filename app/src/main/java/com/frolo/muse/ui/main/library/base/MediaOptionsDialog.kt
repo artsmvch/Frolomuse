@@ -29,7 +29,7 @@ class MediaOptionsDialog<E: Media> constructor(
     enum class Option {
         SHARE, DELETE, LIKE, PLAY, PLAY_NEXT, ADD_TO_QUEUE,
         EDIT, ADD_TO_PLAYLIST, VIEW_ALBUM, VIEW_ARTIST,
-        VIEW_GENRE, SET_AS_DEFAULT, HIDE, SCAN_FILES
+        VIEW_GENRE, SET_AS_DEFAULT, HIDE, SCAN_FILES, CREATE_SHORTCUT
     }
 
     private val iconTint = StyleUtil.readColorAttrValue(context, R.attr.iconImageTint)
@@ -72,6 +72,7 @@ class MediaOptionsDialog<E: Media> constructor(
             btn_view_artist.setOnClickListener { onOptionSelected(item, Option.VIEW_ARTIST) }
             btn_edit.setOnClickListener { onOptionSelected(item, Option.EDIT) }
             btn_like.setOnClickListener { onOptionSelected(item, Option.LIKE) }
+            btn_create_shortcut.setOnClickListener { onOptionSelected(item, Option.CREATE_SHORTCUT) }
 
             with(btn_like) {
                 visibility = if (optionsMenu.favouriteOptionAvailable) View.VISIBLE else View.GONE
@@ -85,6 +86,7 @@ class MediaOptionsDialog<E: Media> constructor(
             btn_set_as_default.visibility = if (optionsMenu.setAsDefaultOptionAvailable) View.VISIBLE else View.GONE
             btn_add_to_hidden.visibility = if (optionsMenu.addToHiddenOptionAvailable) View.VISIBLE else View.GONE
             btn_scan_files.visibility = if (optionsMenu.scanFilesOptionAvailable) View.VISIBLE else View.GONE
+            btn_create_shortcut.visibility = if (optionsMenu.shortcutOptionAvailable) View.VISIBLE else View.GONE
 
             tv_media_name.text = item.getName()
             tv_media_type.text = item.getTypeName(context.resources)

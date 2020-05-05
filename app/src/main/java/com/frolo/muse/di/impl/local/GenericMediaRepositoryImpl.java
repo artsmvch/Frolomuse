@@ -24,8 +24,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
 
 import io.reactivex.Completable;
+import io.reactivex.CompletableSource;
 import io.reactivex.Flowable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
@@ -300,4 +302,43 @@ public class GenericMediaRepositoryImpl implements GenericMediaRepository {
             }
         }
     }
+
+    @Override
+    public Completable createShortcut(Media item) {
+        return Completable.defer(new Callable<CompletableSource>() {
+            @Override
+            public CompletableSource call() throws Exception {
+                switch (item.getKind()) {
+                    case Media.SONG: {
+                        return mSongRepo.createShortcut((Song) item);
+                    }
+
+                    case Media.ALBUM: {
+                        return mAlbumRepo.createShortcut((Album) item);
+                    }
+
+                    case Media.ARTIST: {
+                        return mArtistRepo.createShortcut((Artist) item);
+                    }
+
+                    case Media.GENRE: {
+                        return mGenreRepo.createShortcut((Genre) item);
+                    }
+
+                    case Media.PLAYLIST: {
+                        return mPlaylistRepo.createShortcut((Playlist) item);
+                    }
+
+                    case Media.MY_FILE: {
+                        return mMyFileRepo.createShortcut((MyFile) item);
+                    }
+
+                    default: {
+                        return Completable.error(new UnknownMediaException(item));
+                    }
+                }
+            }
+        });
+    }
+
 }

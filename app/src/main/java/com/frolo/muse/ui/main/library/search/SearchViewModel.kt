@@ -7,6 +7,7 @@ import com.frolo.muse.interactor.media.*
 import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
 import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
 import com.frolo.muse.interactor.media.get.SearchMediaUseCase
+import com.frolo.muse.interactor.media.shortcut.CreateShortcutUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.media.Media
 import com.frolo.muse.rx.SchedulerProvider
@@ -25,6 +26,7 @@ class SearchViewModel @Inject constructor(
         deleteMediaUseCase: DeleteMediaUseCase<Media>,
         getIsFavouriteUseCase: GetIsFavouriteUseCase<Media>,
         changeFavouriteUseCase: ChangeFavouriteUseCase<Media>,
+        createShortcutUseCase: CreateShortcutUseCase<Media>,
         schedulerProvider: SchedulerProvider,
         navigator: Navigator,
         eventLogger: EventLogger
@@ -37,6 +39,7 @@ class SearchViewModel @Inject constructor(
         deleteMediaUseCase,
         getIsFavouriteUseCase,
         changeFavouriteUseCase,
+        createShortcutUseCase,
         schedulerProvider,
         navigator,
         eventLogger) {

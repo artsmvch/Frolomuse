@@ -1,13 +1,14 @@
 package com.frolo.muse.ui.main
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.frolo.muse.arch.SingleLiveEvent
 import com.frolo.muse.arch.call
 import com.frolo.muse.engine.Player
+import com.frolo.muse.interactor.media.shortcut.NavigateToMediaUseCase
 import com.frolo.muse.interactor.player.RestorePlayerStateUseCase
 import com.frolo.muse.interactor.rate.RateUseCase
 import com.frolo.muse.logger.EventLogger
+import com.frolo.muse.model.media.Media
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.base.BaseViewModel
 import io.reactivex.disposables.Disposable
@@ -15,10 +16,11 @@ import javax.inject.Inject
 
 
 class MainViewModel @Inject constructor(
-        private val rateUseCase: RateUseCase,
-        private val restorePlayerStateUseCase: RestorePlayerStateUseCase,
-        private val schedulerProvider: SchedulerProvider,
-        private val eventLogger: EventLogger
+     private val rateUseCase: RateUseCase,
+     private val restorePlayerStateUseCase: RestorePlayerStateUseCase,
+     private val navigateToMediaUseCase: NavigateToMediaUseCase,
+     private val schedulerProvider: SchedulerProvider,
+     private val eventLogger: EventLogger
 ): BaseViewModel(eventLogger) {
 
     // Internal
@@ -120,6 +122,12 @@ class MainViewModel @Inject constructor(
 
     fun onReadStoragePermissionDenied() {
         _permissionGranted = false
+    }
+
+    fun onNavigateToMediaIntent(@Media.Kind kindOfMedia: Int, mediaId: Long) {
+        navigateToMediaUseCase.navigate(kindOfMedia, mediaId)
+            .observeOn(schedulerProvider.main())
+            .subscribeFor {  }
     }
 
     override fun onCleared() {

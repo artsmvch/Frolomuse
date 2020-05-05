@@ -40,7 +40,9 @@ class GetMediaMenuUseCase<E: Media> constructor(
                     viewArtistOptionAvailable = false,//item is Song || item is Album
                     setAsDefaultOptionAvailable = item is MyFile && item.isDirectory,
                     addToHiddenOptionAvailable = item is MyFile,
-                    scanFilesOptionAvailable = item is MyFile && item.isDirectory
+                    scanFilesOptionAvailable = item is MyFile && item.isDirectory,
+                    // TODO: check for which kind of media we can create shortcuts
+                    shortcutOptionAvailable = true
                 )
             }
             .subscribeOn(schedulerProvider.worker())

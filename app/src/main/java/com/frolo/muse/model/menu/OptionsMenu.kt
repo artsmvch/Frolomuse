@@ -17,5 +17,6 @@ data class OptionsMenu<E : Media> constructor(
     val viewArtistOptionAvailable: Boolean,
     val setAsDefaultOptionAvailable: Boolean,
     val addToHiddenOptionAvailable: Boolean,
-    val scanFilesOptionAvailable: Boolean
+    val scanFilesOptionAvailable: Boolean,
+    val shortcutOptionAvailable: Boolean
 )

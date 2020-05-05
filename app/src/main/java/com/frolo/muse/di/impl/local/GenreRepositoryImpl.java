@@ -130,4 +130,10 @@ public class GenreRepositoryImpl implements GenreRepository {
     public Completable changeFavourite(Genre item) {
         return Completable.error(new UnsupportedOperationException());
     }
+
+    @Override
+    public Completable createShortcut(Genre item) {
+        return Shortcuts.createGenreShortcut(mContext, item);
+    }
+
 }

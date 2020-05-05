@@ -5,6 +5,7 @@ import com.frolo.muse.interactor.media.*
 import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
 import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
 import com.frolo.muse.interactor.media.get.GetAllMediaUseCase
+import com.frolo.muse.interactor.media.shortcut.CreateShortcutUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.media.Playlist
 import com.frolo.muse.rx.SchedulerProvider
@@ -21,6 +22,7 @@ class PlaylistListViewModel @Inject constructor(
         deleteMediaUseCase: DeleteMediaUseCase<Playlist>,
         getIsFavouriteUseCase: GetIsFavouriteUseCase<Playlist>,
         changeFavouriteUseCase: ChangeFavouriteUseCase<Playlist>,
+        createShortcutUseCase: CreateShortcutUseCase<Playlist>,
         schedulerProvider: SchedulerProvider,
         private val navigator: Navigator,
         eventLogger: EventLogger
@@ -33,6 +35,7 @@ class PlaylistListViewModel @Inject constructor(
         deleteMediaUseCase,
         getIsFavouriteUseCase,
         changeFavouriteUseCase,
+        createShortcutUseCase,
         schedulerProvider,
         navigator,
         eventLogger

@@ -161,6 +161,12 @@
                 app:optionTitle="@string/view_artist" />
 
             <com.frolo.muse.views.text.OptionTextView
+                android:id="@+id/btn_create_shortcut"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:optionTitle="@string/create_shortcut"/>
+
+            <com.frolo.muse.views.text.OptionTextView
                 android:id="@+id/btn_edit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

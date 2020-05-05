@@ -148,4 +148,10 @@ public class AlbumRepositoryImpl implements AlbumRepository {
                 albumId,
                 filepath);
     }
+
+    @Override
+    public Completable createShortcut(Album item) {
+        return Shortcuts.createAlbumShortcut(mContext, item);
+    }
+
 }

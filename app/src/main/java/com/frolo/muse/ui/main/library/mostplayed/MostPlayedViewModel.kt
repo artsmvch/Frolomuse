@@ -5,6 +5,7 @@ import com.frolo.muse.interactor.media.*
 import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
 import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
 import com.frolo.muse.interactor.media.get.GetMostPlayedSongsUseCase
+import com.frolo.muse.interactor.media.shortcut.CreateShortcutUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.media.SongWithPlayCount
 import com.frolo.muse.navigator.Navigator
@@ -37,6 +38,7 @@ class MostPlayedViewModel @Inject constructor(
         deleteMediaUseCase: DeleteMediaUseCase<SongWithPlayCount>,
         getIsFavouriteUseCase: GetIsFavouriteUseCase<SongWithPlayCount>,
         changeFavouriteUseCase: ChangeFavouriteUseCase<SongWithPlayCount>,
+        createShortcutUseCase: CreateShortcutUseCase<SongWithPlayCount>,
         private val schedulerProvider: SchedulerProvider,
         navigator: Navigator,
         eventLogger: EventLogger
@@ -50,6 +52,7 @@ class MostPlayedViewModel @Inject constructor(
         deleteMediaUseCase,
         getIsFavouriteUseCase,
         changeFavouriteUseCase,
+        createShortcutUseCase,
         schedulerProvider,
         navigator,
         eventLogger

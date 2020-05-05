@@ -159,4 +159,10 @@ public class SongWithPlayCountRepositoryImpl implements SongWithPlayCountReposit
     public Completable changeFavourite(SongWithPlayCount item) {
         return mDelegate.changeFavourite(item);
     }
+
+    @Override
+    public Completable createShortcut(SongWithPlayCount item) {
+        return mDelegate.createShortcut(item);
+    }
+
 }

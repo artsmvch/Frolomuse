@@ -148,4 +148,10 @@ public class PlaylistRepositoryImpl
     public Completable changeFavourite(Playlist item) {
         return Completable.error(new UnsupportedOperationException());
     }
+
+    @Override
+    public Completable createShortcut(Playlist item) {
+        return Shortcuts.createPlaylistShortcut(mContext, item);
+    }
+
 }
