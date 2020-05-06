@@ -104,18 +104,6 @@ abstract class UseCaseModule {
 
         @Provides
         @JvmStatic
-        fun provideGetFavouriteSongsUseCase(
-                schedulerProvider: SchedulerProvider,
-                repository: SongRepository
-        ): GetFavouriteSongsUseCase {
-            return GetFavouriteSongsUseCase(
-                    schedulerProvider,
-                    repository
-            )
-        }
-
-        @Provides
-        @JvmStatic
         fun provideGetRecentlyAddedSongUseCase(
                 schedulerProvider: SchedulerProvider,
                 repository: SongRepository,

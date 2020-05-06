@@ -20,6 +20,10 @@ public interface Song extends Media, Serializable {
 
     String getGenre();
 
+    /**
+     * Returns duration of the song in milliseconds.
+     * @return duration of the song in milliseconds
+     */
     int getDuration();
 
     int getYear();

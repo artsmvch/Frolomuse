@@ -2,16 +2,19 @@ package com.frolo.muse.interactor.media.get
 
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.model.menu.SortOrderMenu
+import com.frolo.muse.repository.Preferences
 import com.frolo.muse.repository.SongRepository
 import com.frolo.muse.rx.SchedulerProvider
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
+import javax.inject.Inject
 
 
-class GetFavouriteSongsUseCase constructor(
-        private val schedulerProvider: SchedulerProvider,
-        private val repository: SongRepository
+class GetFavouriteSongsUseCase @Inject constructor(
+    private val schedulerProvider: SchedulerProvider,
+    private val repository: SongRepository,
+    private val preferences: Preferences
 ): GetMediaUseCase<Song> {
 
     override fun getSortOrderMenu(): Single<SortOrderMenu> {
@@ -29,6 +32,7 @@ class GetFavouriteSongsUseCase constructor(
     override fun getMediaList(): Flowable<List<Song>> {
         return repository.allFavouriteItems
                 .subscribeOn(schedulerProvider.worker())
+                .excludeShortAudioFiles(preferences)
     }
 
 
