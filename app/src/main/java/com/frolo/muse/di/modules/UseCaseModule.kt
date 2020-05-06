@@ -9,7 +9,6 @@ import com.frolo.muse.interactor.media.get.*
 import com.frolo.muse.interactor.player.ControlPlayerUseCase
 import com.frolo.muse.interactor.player.RestorePlayerStateUseCase
 import com.frolo.muse.interactor.rate.RateUseCase
-import com.frolo.muse.model.Library
 import com.frolo.muse.model.media.*
 import com.frolo.muse.repository.*
 import com.frolo.muse.rx.SchedulerProvider
