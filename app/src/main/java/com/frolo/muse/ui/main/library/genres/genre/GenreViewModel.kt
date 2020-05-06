@@ -1,7 +1,7 @@
 package com.frolo.muse.ui.main.library.genres.genre
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import com.frolo.muse.arch.SingleLiveEvent
 import com.frolo.muse.arch.liveDataOf
 import com.frolo.muse.engine.Player
 import com.frolo.muse.navigator.Navigator
@@ -27,11 +27,12 @@ class GenreViewModel constructor(
         deleteMediaUseCase: DeleteMediaUseCase<Song>,
         getIsFavouriteUseCase: GetIsFavouriteUseCase<Song>,
         changeFavouriteUseCase: ChangeFavouriteUseCase<Song>,
-        createShortcutUseCase: CreateShortcutUseCase<Song>,
-        schedulerProvider: SchedulerProvider,
+        createSongShortcutUseCase: CreateShortcutUseCase<Song>,
+        private val createGenreShortcutUseCase: CreateShortcutUseCase<Genre>,
+        private val schedulerProvider: SchedulerProvider,
         navigator: Navigator,
         eventLogger: EventLogger,
-        genreArg: Genre
+        private val genreArg: Genre
 ): AbsSongCollectionViewModel<Song>(
         player,
         getGenreSongsUseCase,
@@ -42,7 +43,7 @@ class GenreViewModel constructor(
         deleteMediaUseCase,
         getIsFavouriteUseCase,
         changeFavouriteUseCase,
-        createShortcutUseCase,
+        createSongShortcutUseCase,
         schedulerProvider,
         navigator,
         eventLogger
@@ -50,9 +51,27 @@ class GenreViewModel constructor(
 
     val title: LiveData<String> = liveDataOf(genreArg.name)
 
+    private val _confirmGenreShortcutCreationEvent = SingleLiveEvent<Genre>()
+    val confirmGenreShortcutCreationEvent: LiveData<Genre>
+        get() = _confirmGenreShortcutCreationEvent
+
     fun onPlayButtonClicked() {
         val items = mediaList.value ?: emptyList()
         playMediaUseCase.play(items).subscribeFor {  }
+    }
+
+    /**
+     * Do not mess up with [onCreateShortcutOptionSelected] method.
+     * This method is intended to create a shortcut for the genre, not a song.
+     */
+    fun onCreateGenreShortcutActionSelected() {
+        _confirmGenreShortcutCreationEvent.value = genreArg
+    }
+
+    fun onCreateGenreShortcutActionConfirmed() {
+        createGenreShortcutUseCase.createShortcut(genreArg)
+                .observeOn(schedulerProvider.main())
+                .subscribeFor { dispatchShortcutCreated() }
     }
 
 }

@@ -42,7 +42,9 @@ class GenreVMFactory constructor(
     @Inject
     internal lateinit var changeFavouriteUseCase: ChangeFavouriteUseCase<Song>
     @Inject
-    internal lateinit var createShortcutUseCase: CreateShortcutUseCase<Song>
+    internal lateinit var createSongShortcutUseCase: CreateShortcutUseCase<Song>
+    @Inject
+    internal lateinit var createGenreShortcutUseCase: CreateShortcutUseCase<Genre>
     @Inject
     internal lateinit var schedulerProvider: SchedulerProvider
     @Inject
@@ -71,7 +73,8 @@ class GenreVMFactory constructor(
                 deleteMediaUseCase,
                 getIsFavouriteUseCase,
                 changeFavouriteUseCase,
-                createShortcutUseCase,
+                createSongShortcutUseCase,
+                createGenreShortcutUseCase,
                 schedulerProvider,
                 navigator,
                 eventLogger,

@@ -10,12 +10,14 @@ import com.bumptech.glide.Glide
 import com.frolo.muse.R
 import com.frolo.muse.StyleUtil
 import com.frolo.muse.arch.observe
+import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.dp2px
 import com.frolo.muse.model.media.Genre
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.ui.base.NoClipping
 import com.frolo.muse.ui.base.setupNavigation
 import com.frolo.muse.ui.base.withArg
+import com.frolo.muse.ui.main.confirmShortcutCreation
 import com.frolo.muse.ui.main.decorateAsLinear
 import com.frolo.muse.ui.main.library.base.AbsSongCollectionFragment
 import com.frolo.muse.ui.main.library.base.SongAdapter
@@ -72,9 +74,14 @@ class GenreFragment: AbsSongCollectionFragment<Song>(), NoClipping {
         tb_actions.apply {
             inflateMenu(R.menu.fragment_genre)
             setOnMenuItemClickListener { menuItem ->
+                if (menuItem.itemId == R.id.action_create_shortcut) {
+                    viewModel.onCreateGenreShortcutActionSelected()
+                }
+
                 if (menuItem.itemId == R.id.action_sort) {
                     viewModel.onSortOrderOptionSelected()
                 }
+
                 true
             }
         }
@@ -128,6 +135,12 @@ class GenreFragment: AbsSongCollectionFragment<Song>(), NoClipping {
 
         title.observe(owner) { title ->
             tv_genre_name.text = title
+        }
+
+        confirmGenreShortcutCreationEvent.observeNonNull(owner) { genre ->
+            context?.confirmShortcutCreation(genre) {
+                viewModel.onCreateGenreShortcutActionConfirmed()
+            }
         }
     }
 
