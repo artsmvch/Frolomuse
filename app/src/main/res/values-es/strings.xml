@@ -1,5 +1,6 @@
 <resources>
     <string name="ok">OK</string>
+    <string name="create">Crear</string>
     <string name="loading">Cargando…</string>
     <string name="cancel">Cancelar</string>
     <string name="save">Salvar</string>
@@ -292,4 +293,19 @@
     <string name="create_shortcut">Crear atajo</string>
     <string name="create_shortcut_on_home_screen">Crear atajo en la pantalla de inicio</string>
     <string name="shortcut_created">Atajo creado</string>
+    <string name="do_you_want_to_create_shortcut_for_s">
+        ¿Desea crear un atajo para %s en la pantalla de inicio?
+    </string>
+
+    <!--MinAudioFileDuration-->
+    <string name="min_audio_file_duration">Duración mínima del archivo de audio</string>
+    <string name="min_audio_file_duration_desc">
+        Todos los archivos de audio con una duración inferior a la especificada se excluyen de la búsqueda en la biblioteca
+    </string>
+    <string name="specify_min_audio_file_duration">
+        Especifique la duración mínima del archivo de audio. Todos los archivos de audio con una duración inferior a la especificada se excluyen de la búsqueda en la biblioteca.
+        Si estos valores están vacíos o 0:0, no se excluirán los archivos de audio.
+        \n\n<b>NOTA: si especifica esto, la biblioteca funcionará un poco más despacio (los álbumes, artistas, géneros se cargarán más lentamente).
+        Para eliminar el límite, simplemente ingrese 0:0</b>
+    </string>
 </resources>

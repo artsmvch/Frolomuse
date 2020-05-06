@@ -1,5 +1,6 @@
 <resources>
     <string name="ok">tamam</string>
+    <string name="create">Oluştur</string>
     <string name="loading">Yükleniyor…</string>
     <string name="cancel">İptal etmek</string>
     <string name="save">Kayıt etmek</string>
@@ -292,4 +293,19 @@
     <string name="create_shortcut">Kısayol oluştur</string>
     <string name="create_shortcut_on_home_screen">Ana ekranda kısayol oluşturma</string>
     <string name="shortcut_created">Kısayol oluşturuldu</string>
+    <string name="do_you_want_to_create_shortcut_for_s">
+        Ana ekranda %s için bir kısayol oluşturmak istiyor musunuz?
+    </string>
+
+    <!--MinAudioFileDuration-->
+    <string name="min_audio_file_duration">Minimum ses dosyası süresi</string>
+    <string name="min_audio_file_duration_desc">
+        Belirtilen süreden daha kısa süreye sahip tüm ses dosyaları kütüphane araması dışında bırakılır
+    </string>
+    <string name="specify_min_audio_file_duration">
+        Minimum ses dosyası süresini belirtin. Belirtilen süreden daha kısa süreye sahip tüm ses dosyaları kütüphane araması dışında bırakılır.
+        Bu değerler boşsa veya 0:0\'dan daha fazla ses dosyası hariç tutulmayacaktır.
+        \n\n<b>NOT: bunu belirtirseniz, kitaplık biraz daha yavaş çalışır (albümler, sanatçılar, türler daha yavaş yüklenir).
+        Sınırı kaldırmak için 0:0 girin</b>
+    </string>
 </resources>

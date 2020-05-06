@@ -1,5 +1,6 @@
 <resources>
     <string name="ok">Добре</string>
+    <string name="create">Створіть</string>
     <string name="loading">Завантаження…</string>
     <string name="cancel">Скасувати</string>
     <string name="save">Зберегти</string>
@@ -299,4 +300,19 @@
     <string name="create_shortcut">Створити ярлик</string>
     <string name="create_shortcut_on_home_screen">Створіть ярлик на головному екрані</string>
     <string name="shortcut_created">Ярлик створений</string>
+    <string name="do_you_want_to_create_shortcut_for_s">
+        Ви хочете створити ярлик для %s на головному екрані?
+    </string>
+
+    <!--MinAudioFileDuration-->
+    <string name="min_audio_file_duration">Мінімальна тривалість аудіофайлу</string>
+    <string name="min_audio_file_duration_desc">
+        Всі аудіофайли, тривалість яких менша за вказану, виключаються з пошуку в бібліотеці
+    </string>
+    <string name="specify_min_audio_file_duration">
+        Вкажіть мінімальну тривалість аудіофайлу. Усі аудіофайли, тривалість яких менша за вказану, виключаються з пошуку в бібліотеці.
+        Якщо ці значення порожні або 0:0, жодні аудіофайли не будуть виключені.
+        \n\n<b>ПРИМІТКА: якщо вказати це, бібліотека працюватиме трохи повільніше (альбоми, виконавці, жанри завантажуватимуться повільніше).
+        Щоб зняти ліміт, просто введіть 0:0</b>
+    </string>
 </resources>

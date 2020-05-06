@@ -1,5 +1,6 @@
 <resources>
     <string name="ok">확인</string>
+    <string name="create">창조하다</string>
     <string name="loading">로드 중…</string>
     <string name="cancel">취소</string>
     <string name="save">저장</string>
@@ -287,4 +288,19 @@
     <string name="create_shortcut">바로 가기 만들기</string>
     <string name="create_shortcut_on_home_screen">홈 화면에서 바로 가기 만들기</string>
     <string name="shortcut_created">바로 가기가 생성되었습니다</string>
+    <string name="do_you_want_to_create_shortcut_for_s">
+        홈 화면에서 %s 에 대한 바로 가기를 작성 하시겠습니까?
+    </string>
+
+    <!--MinAudioFileDuration-->
+    <string name="min_audio_file_duration">최소 오디오 파일 길이</string>
+    <string name="min_audio_file_duration_desc">
+        지속 시간이 지정된 모든 오디오 파일은 라이브러리 검색에서 제외됩니다
+    </string>
+    <string name="specify_min_audio_file_duration">
+        최소 오디오 파일 길이를 지정하십시오. 지속 시간이 지정된 모든 오디오 파일은 라이브러리 검색에서 제외됩니다.
+        이 값이 비어 있거나 0:0 이면 오디오 파일이 제외되지 않습니다.
+        \n\n<b>참고 :이 값을 지정하면 라이브러리가 약간 느려집니다 (앨범, 아티스트, 장르가 느리게로드 됨).
+        한도를 제거하려면 0:0 을 입력하십시오.</b>
+    </string>
 </resources>

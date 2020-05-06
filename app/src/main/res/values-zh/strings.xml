@@ -1,5 +1,6 @@
 <resources>
     <string name="ok">好</string>
+    <string name="create">創建</string>
     <string name="loading">載入中…</string>
     <string name="cancel">取消</string>
     <string name="save">保存</string>
@@ -285,4 +286,19 @@
     <string name="create_shortcut">建立捷徑</string>
     <string name="create_shortcut_on_home_screen">在主屏幕上創建快捷方式</string>
     <string name="shortcut_created">捷徑已建立</string>
+    <string name="do_you_want_to_create_shortcut_for_s">
+        您是否要在主屏幕上為 ％s 創建快捷方式？
+    </string>
+
+    <!--MinAudioFileDuration-->
+    <string name="min_audio_file_duration">最小音頻文件持續時間</string>
+    <string name="min_audio_file_duration_desc">
+        庫搜索中排除了所有持續時間短於指定時間的音頻文件
+    </string>
+    <string name="specify_min_audio_file_duration">
+        指定最小音頻文件持續時間。所有持續時間短於指定時間的音頻文件都將從庫搜索中排除。
+        如果這些值為空或0：0，則不會排除任何音頻文件。
+        \n\n<b>注意：如果您指定此選項，則該庫的運行速度會稍慢（專輯，藝術家，流派的加載速度會變慢）。
+        要刪除限制，只需輸入0：0</b>
+    </string>
 </resources>

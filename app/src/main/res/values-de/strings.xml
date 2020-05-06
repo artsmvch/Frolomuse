@@ -1,5 +1,6 @@
 <resources>
     <string name="ok">OK</string>
+    <string name="create">Erstellen</string>
     <string name="loading">Wird geladen…</string>
     <string name="cancel">Abbrechen</string>
     <string name="save">Speichern</string>
@@ -292,4 +293,19 @@
     <string name="create_shortcut">Verknüpfung erstellen</string>
     <string name="create_shortcut_on_home_screen">Verknüpfung auf dem Startbildschirm erstellen</string>
     <string name="shortcut_created">Verknüpfung wurde erstellt</string>
+    <string name="do_you_want_to_create_shortcut_for_s">
+        Möchten Sie eine Verknüpfung für %s auf dem Startbildschirm erstellen?
+    </string>
+
+    <!--MinAudioFileDuration-->
+    <string name="min_audio_file_duration">Minimale Dauer der Audiodatei</string>
+    <string name="min_audio_file_duration_desc">
+        Alle Audiodateien mit einer kürzeren Dauer als angegeben werden von der Bibliothekssuche ausgeschlossen
+    </string>
+    <string name="specify_min_audio_file_duration">
+        Geben Sie die Mindestdauer für Audiodateien an. Alle Audiodateien mit einer kürzeren Dauer als angegeben werden von der Bibliothekssuche ausgeschlossen.
+        Wenn diese Werte leer oder 0:0 sind, werden keine Audiodateien ausgeschlossen.
+        \n\n<b>HINWEIS: Wenn Sie dies angeben, arbeitet die Bibliothek etwas langsamer (Alben, Künstler und Genres werden langsamer geladen).
+        Um das Limit zu entfernen, geben Sie einfach 0:0 ein</b>
+    </string>
 </resources>

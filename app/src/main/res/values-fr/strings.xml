@@ -1,5 +1,6 @@
 <resources>
     <string name="ok">D\'accord</string>
+    <string name="create">Créer</string>
     <string name="loading">Chargement…</string>
     <string name="cancel">Annuler</string>
     <string name="save">Sauvegarder</string>
@@ -292,4 +293,19 @@
     <string name="create_shortcut">Créer un raccourci</string>
     <string name="create_shortcut_on_home_screen">Créer un raccourci sur l\'écran d\'accueil</string>
     <string name="shortcut_created">Raccourci créé</string>
+    <string name="do_you_want_to_create_shortcut_for_s">
+        Voulez-vous créer un raccourci pour %s sur l\'écran d\'accueil?
+    </string>
+
+    <!--MinAudioFileDuration-->
+    <string name="min_audio_file_duration">Durée minimale du fichier audio</string>
+    <string name="min_audio_file_duration_desc">
+        Tous les fichiers audio d\'une durée inférieure à celle spécifiée sont exclus de la recherche dans la bibliothèque
+    </string>
+    <string name="specify_min_audio_file_duration">
+        Spécifiez la durée minimale du fichier audio. Tous les fichiers audio d\'une durée inférieure à celle spécifiée sont exclus de la recherche dans la bibliothèque.
+        Si ces valeurs sont vides ou 0:0, aucun fichier audio ne sera exclu.
+        \n\n<b>REMARQUE: si vous le spécifiez, la bibliothèque fonctionnera un peu plus lentement (les albums, artistes, genres se chargeront plus lentement).
+        Pour supprimer la limite, entrez simplement 0:0</b>
+    </string>
 </resources>
