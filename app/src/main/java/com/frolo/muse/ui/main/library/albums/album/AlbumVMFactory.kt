@@ -41,7 +41,9 @@ class AlbumVMFactory constructor(
     @Inject
     internal lateinit var changeFavouriteUseCase: ChangeFavouriteUseCase<Song>
     @Inject
-    internal lateinit var createShortcutUseCase: CreateShortcutUseCase<Song>
+    internal lateinit var createSongShortcutUseCase: CreateShortcutUseCase<Song>
+    @Inject
+    internal lateinit var createAlbumShortcutUseCase: CreateShortcutUseCase<Album>
     @Inject
     internal lateinit var schedulerProvider: SchedulerProvider
     @Inject
@@ -68,7 +70,8 @@ class AlbumVMFactory constructor(
                 deleteMediaUseCase,
                 getIsFavouriteUseCase,
                 changeFavouriteUseCase,
-                createShortcutUseCase,
+                createSongShortcutUseCase,
+                createAlbumShortcutUseCase,
                 schedulerProvider,
                 navigator,
                 eventLogger,

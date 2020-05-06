@@ -19,6 +19,7 @@ import com.frolo.muse.dp2px
 import com.frolo.muse.ui.base.NoClipping
 import com.frolo.muse.ui.base.setupNavigation
 import com.frolo.muse.ui.base.withArg
+import com.frolo.muse.ui.main.confirmShortcutCreation
 import com.frolo.muse.ui.main.decorateAsLinear
 import com.frolo.muse.ui.main.library.base.AbsSongCollectionFragment
 import com.google.android.material.appbar.AppBarLayout
@@ -87,6 +88,11 @@ class AlbumFragment: AbsSongCollectionFragment<Song>(), NoClipping {
             setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
 
+                    R.id.action_create_shortcut -> {
+                        viewModel.onCreateAlbumShortcutActionSelected()
+                        true
+                    }
+
                     R.id.action_sort -> {
                         viewModel.onSortOrderOptionSelected()
                         true
@@ -146,6 +152,12 @@ class AlbumFragment: AbsSongCollectionFragment<Song>(), NoClipping {
 
         playButtonVisible.observeNonNull(owner) { isVisible ->
             if (isVisible) fab_play.show() else fab_play.hide()
+        }
+
+        confirmAlbumShortcutCreationEvent.observeNonNull(owner) { album ->
+            context?.confirmShortcutCreation(album) {
+                viewModel.onCreateAlbumShortcutActionConfirmed()
+            }
         }
     }
 

@@ -165,6 +165,10 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
         _askReadPermissionEvent.call()
     }
 
+    protected fun dispatchShortcutCreated() {
+        _shortcutCreatedEvent.call()
+    }
+
     /********************************
      ******* PERMISSION EVENTS ******
      *******************************/

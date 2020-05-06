@@ -2,6 +2,8 @@ package com.frolo.muse.ui.main.library.albums.album
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.frolo.muse.arch.SingleLiveEvent
+import com.frolo.muse.arch.call
 import com.frolo.muse.arch.liveDataOf
 import com.frolo.muse.arch.map
 import com.frolo.muse.engine.Player
@@ -28,8 +30,9 @@ class AlbumViewModel constructor(
         deleteMediaUseCase: DeleteMediaUseCase<Song>,
         getIsFavouriteUseCase: GetIsFavouriteUseCase<Song>,
         changeFavouriteUseCase: ChangeFavouriteUseCase<Song>,
-        createShortcutUseCase: CreateShortcutUseCase<Song>,
-        schedulerProvider: SchedulerProvider,
+        createSongShortcutUseCase: CreateShortcutUseCase<Song>,
+        private val createAlbumShortcutUseCase: CreateShortcutUseCase<Album>,
+        private val schedulerProvider: SchedulerProvider,
         private val navigator: Navigator,
         eventLogger: EventLogger,
         private val albumArg: Album
@@ -43,7 +46,7 @@ class AlbumViewModel constructor(
         deleteMediaUseCase,
         getIsFavouriteUseCase,
         changeFavouriteUseCase,
-        createShortcutUseCase,
+        createSongShortcutUseCase,
         schedulerProvider,
         navigator,
         eventLogger
@@ -61,6 +64,10 @@ class AlbumViewModel constructor(
             !list.isNullOrEmpty()
         }
 
+    private val _confirmAlbumShortcutCreationEvent = SingleLiveEvent<Album>()
+    val confirmAlbumShortcutCreationEvent: LiveData<Album>
+        get() = _confirmAlbumShortcutCreationEvent
+
     fun onAlbumArtClicked() {
         navigator.editAlbum(albumArg)
     }
@@ -68,6 +75,20 @@ class AlbumViewModel constructor(
     fun onPlayButtonClicked() {
         val snapshot = mediaList.value.orEmpty()
         playMediaUseCase.play(snapshot).subscribeFor {  }
+    }
+
+    /**
+     * Do not mess up with [onCreateShortcutOptionSelected] method.
+     * This method is intended to create a shortcut for the album, not a song.
+     */
+    fun onCreateAlbumShortcutActionSelected() {
+        _confirmAlbumShortcutCreationEvent.value = albumArg
+    }
+
+    fun onCreateAlbumShortcutActionConfirmed() {
+        createAlbumShortcutUseCase.createShortcut(albumArg)
+            .observeOn(schedulerProvider.main())
+            .subscribeFor { dispatchShortcutCreated() }
     }
 
 }
