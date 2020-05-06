@@ -107,6 +107,9 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
     private val _addedToQueue: MutableLiveData<Unit> = SingleLiveEvent()
     val addedToQueue: LiveData<Unit> = _addedToQueue
 
+    private val _confirmShortcutCreationEvent = SingleLiveEvent<E>()
+    val confirmShortcutCreationEvent: LiveData<E> get() = _confirmShortcutCreationEvent
+
     private val _shortcutCreatedEvent = SingleLiveEvent<Unit>()
     val shortcutCreatedEvent: LiveData<Unit> get() = _shortcutCreatedEvent
 
@@ -627,6 +630,10 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
         val event = _openOptionsMenuEvent.value ?: return
         _closeOptionsMenuEvent.value = event
         val item = event.item
+        _confirmShortcutCreationEvent.value = item
+    }
+
+    fun onCreateShortcutOptionConfirmed(item: E) {
         createShortcutUseCase.createShortcut(item)
                 .observeOn(schedulerProvider.main())
                 .subscribeFor { _shortcutCreatedEvent.call() }

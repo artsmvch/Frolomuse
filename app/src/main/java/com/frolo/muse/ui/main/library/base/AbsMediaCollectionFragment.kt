@@ -19,6 +19,7 @@ import com.frolo.muse.ui.base.BackPressHandler
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.getDeleteConfirmationMessage
 import com.frolo.muse.ui.main.confirmDeletion
+import com.frolo.muse.ui.main.confirmShortcutCreation
 
 
 abstract class AbsMediaCollectionFragment <E: Media>: BaseFragment(),
@@ -189,6 +190,12 @@ abstract class AbsMediaCollectionFragment <E: Media>: BaseFragment(),
 
         addedToQueue.observeNonNull(owner) {
             toastShortMessage(R.string.added_to_queue)
+        }
+
+        confirmShortcutCreationEvent.observeNonNull(owner) { item ->
+            context?.confirmShortcutCreation(item) {
+                viewModel.onCreateShortcutOptionConfirmed(item)
+            }
         }
 
         shortcutCreatedEvent.observeNonNull(owner) {
