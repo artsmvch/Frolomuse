@@ -308,5 +308,7 @@
     <string name="specify_min_audio_file_duration">
         Specify minimum audio file duration. All audio files with a duration shorter than specified are excluded from the library search.
         If these values are empty or 0:0 than no audio files will be excluded.
+        \n\n<b>NOTE: if you specify this, then the library will work a little slower (albums, artists, genres will load slower).
+        To remove the limit, just enter 0:0</b>
     </string>
 </resources>
