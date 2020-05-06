@@ -2,6 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -17,47 +18,35 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toTopOf="@id/layout_divider"
+            android:id="@+id/imv_root"
             android:scaleType="centerCrop"
             android:layout_margin="@dimen/root_file_img_padding"
             android:layout_width="@dimen/list_item_img_art_size"
             android:layout_height="@dimen/list_item_img_art_size"
             android:layout_gravity="center|start"
-            android:src="@drawable/ic_folder_parent"
-            android:id="@+id/imv_root"/>
+            android:src="@drawable/ic_folder_parent" />
 
         <androidx.appcompat.widget.AppCompatTextView
             app:layout_constraintStart_toEndOf="@id/imv_root"
             app:layout_constraintTop_toTopOf="@id/imv_root"
-            app:layout_constraintEnd_toStartOf="@id/pb_loading"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="@id/imv_root"
-            app:layout_goneMarginEnd="16dp"
-            android:maxLines="2"
-            android:padding="5dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="16dp"
-            android:textColor="?attr/android:textColorPrimary"
-            android:text="@string/placeholder_unknown"
-            android:textSize="15sp"
-            android:layout_gravity="center|start"
             android:id="@+id/tv_parent_file_name"
             android:layout_width="0dp"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:textAppearance="?textAppearanceBody1"
+            android:layout_gravity="center|start"
+            android:maxLines="2"
+            android:padding="4dp"
+            tools:text="This is the current root file"/>
 
-        <com.frolo.muse.views.progress.IBar
-            app:layout_constraintTop_toTopOf="@id/tv_parent_file_name"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="@id/tv_parent_file_name"
-            android:layout_marginEnd="20dp"
-            android:id="@+id/pb_loading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <include
+        <include layout="@layout/include_divider"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:id="@+id/layout_divider"
-            layout="@layout/include_divider"
             android:layout_width="0dp"
             android:layout_height="@dimen/vertical_divider_height"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -72,11 +61,18 @@
             android:layout_height="match_parent"/>
 
         <include layout="@layout/include_placeholder"
-            android:layout_gravity="center"
             android:id="@+id/layout_list_placeholder"
-            android:text="@string/nothing_to_show"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="invisible" />
+
+        <com.frolo.muse.views.progress.IBar
+            android:id="@+id/pb_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="invisible" />
     </FrameLayout>
 
 </LinearLayout>

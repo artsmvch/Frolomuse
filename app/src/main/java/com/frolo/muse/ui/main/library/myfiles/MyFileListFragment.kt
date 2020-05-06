@@ -23,11 +23,6 @@ class MyFileListFragment: AbsMediaCollectionFragment<MyFile>(),
         BackPressHandler,
         NoClipping {
 
-    companion object {
-        // Factory
-        fun newInstance() = MyFileListFragment()
-    }
-
     override val viewModel: MyFileListViewModel by viewModel()
 
     private val adapter: MyFileAdapter by lazy {
@@ -165,4 +160,12 @@ class MyFileListFragment: AbsMediaCollectionFragment<MyFile>(),
             }
         }
     }
+
+    companion object {
+
+        // Factory
+        fun newInstance() = MyFileListFragment()
+
+    }
+
 }

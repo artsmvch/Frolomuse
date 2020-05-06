@@ -55,7 +55,8 @@ class MyFileListViewModel @Inject constructor(
         createShortcutUseCase,
         schedulerProvider,
         navigator,
-        eventLogger) {
+        eventLogger
+) {
 
     private var browserSubscription: Subscription? = null
 
@@ -65,9 +66,11 @@ class MyFileListViewModel @Inject constructor(
         override fun onSongChanged(player: Player, song: Song?, positionInQueue: Int) {
             detectPlayingPosition(mediaList.value, song)
         }
+
         override fun onPlaybackStarted(player: Player) {
             _isPlaying.value = true
         }
+
         override fun onPlaybackPaused(player: Player) {
             _isPlaying.value = false
         }
@@ -145,7 +148,10 @@ class MyFileListViewModel @Inject constructor(
                     browserSubscription?.cancel()
                     browserSubscription = s
                     _root.value = myFile
+                    submitMediaList(emptyList())
+                    setLoading(true)
                 }
+                .doOnEach { setLoading(false) }
                 .subscribeFor { list -> submitMediaList(list) }
     }
 
