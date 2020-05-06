@@ -203,7 +203,6 @@
     <string name="share_this_app">Bu uygulamayı paylaş</string>
     <string name="share_this_app_if_you_want">Arkadaşlarınızla paylaşırsanız, bu uygulamanın büyümesine yardımcı olabilirsiniz</string>
     <string name="checkout_out">Yeni müzik çalar Frolomuse\'ye göz atın!</string>
-    <string name="hint_zero_time" translatable="false">00</string>
     <string name="help_with_translations">Çevirilerde Yardım</string>
     <string name="help_with_translations_desc">Çevirilerde yardımcı olmak istiyorsanız buraya dokunun</string>
     <string name="library_sections">Kütüphane bölümleri</string>
