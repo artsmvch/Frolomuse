@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?textAppearanceBody2"
+        android:text="@string/specify_min_audio_file_duration"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:gravity="center"
+            android:inputType="number"
+            android:textIsSelectable="false"
+            android:imeOptions="actionNext"
+            android:id="@+id/edt_minutes"
+            android:layout_margin="4dp"
+            android:padding="12dp"
+            android:hint="@string/hint_zero_time"
+            android:textSize="24sp"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/ic_dot_divider"
+            android:tint="?iconImageTint" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:gravity="center"
+            android:inputType="number"
+            android:textIsSelectable="false"
+            android:imeOptions="actionNext"
+            android:id="@+id/edt_seconds"
+            android:layout_margin="4dp"
+            android:padding="12dp"
+            android:hint="@string/hint_zero_time"
+            android:textSize="24sp"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <com.google.android.flexbox.FlexboxLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_gravity="end"
+        app:flexWrap="wrap"
+        app:alignItems="flex_end"
+        app:showDividerVertical="middle"
+        app:showDividerHorizontal="middle"
+        app:dividerDrawable="@drawable/divider_16dp_x_8dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_save"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/save" />
+    </com.google.android.flexbox.FlexboxLayout>
+
+</LinearLayout>

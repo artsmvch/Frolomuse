@@ -6,6 +6,7 @@ import com.frolo.muse.interactor.media.AddMediaToPlaylistUseCase
 import com.frolo.muse.interactor.media.AddSongToPlaylistUseCase
 import com.frolo.muse.interactor.media.get.*
 import com.frolo.muse.logger.EventLogger
+import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.ui.base.BaseActivity
 import com.frolo.muse.ui.main.audiofx.params.PlaybackParamsDialog
@@ -47,6 +48,7 @@ import javax.inject.Singleton
 )
 interface AppComponent {
 
+    fun provideNavigator(): Navigator
     fun providePreferences(): Preferences
     fun provideVMFactory(): ViewModelModule.ViewModelFactory
     fun provideEventLogger(): EventLogger

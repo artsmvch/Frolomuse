@@ -58,6 +58,11 @@
             android:summary="@string/hidden_files_desc"/>
 
         <Preference
+            android:key="min_audio_file_duration"
+            android:title="@string/min_audio_file_duration"
+            android:summary="@string/min_audio_file_duration_desc"/>
+
+        <Preference
             android:icon="@drawable/ic_scan_file"
             android:key="rescan_media_library"
             android:title="@string/rescan_media_library"

@@ -20,6 +20,7 @@ import com.frolo.muse.repository.Preferences
 import com.frolo.muse.sleeptimer.PlayerSleepTimer
 import com.frolo.muse.ui.goToStore
 import com.frolo.muse.ui.helpWithTranslations
+import com.frolo.muse.ui.main.settings.duration.MinAudioFileDurationDialog
 import com.frolo.muse.ui.main.settings.hidden.HiddenFilesDialog
 import com.frolo.muse.ui.main.settings.info.AppInfoDialog
 import com.frolo.muse.ui.main.settings.library.LibrarySectionsDialog
@@ -109,6 +110,13 @@ class SettingsFragment : PreferenceFragmentCompat(),
         findPreference("hidden_files").apply {
             onPreferenceClickListener = Preference.OnPreferenceClickListener {
                 showHiddenFilesDialog()
+                true
+            }
+        }
+
+        findPreference("min_audio_file_duration").apply {
+            onPreferenceClickListener = Preference.OnPreferenceClickListener {
+                showMinAudioFileDurationDialog()
                 true
             }
         }
@@ -306,6 +314,11 @@ class SettingsFragment : PreferenceFragmentCompat(),
             .show()
     }
 
+    private fun showMinAudioFileDurationDialog() {
+        val dialog = MinAudioFileDurationDialog.newInstance()
+        dialog.show(childFragmentManager, TAG_MIN_AUDIO_FILE_DURATION)
+    }
+
     private fun showLibrarySectionChooser() {
         val dialog = LibrarySectionsDialog.newInstance()
         dialog.show(childFragmentManager, TAG_LIBRARY_SECTION_CHOOSER)
@@ -330,6 +343,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
         private const val TAG_SLEEP_TIMER = "sleep_timer"
         private const val TAG_APP_INFO = "app_info"
         private const val TAG_HIDDEN_FILES = "hidden_files"
+        private const val TAG_MIN_AUDIO_FILE_DURATION = "min_audio_file_duration"
 
         // Factory
         fun newInstance() = SettingsFragment()

@@ -59,6 +59,8 @@ public class PreferencesImpl implements Preferences {
 
     private static final String KEY_VISUALIZER_RENDERER_TYPE = "visualizer_renderer_type";
 
+    private static final String KEY_MIN_AUDIO_FILE_DURATION = "min_audio_file_duration";
+
     private static final List<Integer> sDefaultLibrarySections;
     static {
         List<Integer> sections = new ArrayList<>(9);
@@ -553,6 +555,21 @@ public class PreferencesImpl implements Preferences {
             case 4:     return VisualizerRendererType.SPECTRUM;
             default:    return null;
         }
+    }
+
+    @Override
+    public Flowable<Integer> getMinAudioFileDuration() {
+        return RxPreference.ofInt(preferences, KEY_MIN_AUDIO_FILE_DURATION).get(0);
+    }
+
+    @Override
+    public Completable setMinAudioFileDuration(int minDuration) {
+        return Completable.fromAction(new Action() {
+            @Override
+            public void run() {
+                preferences.edit().putInt(KEY_MIN_AUDIO_FILE_DURATION, minDuration).apply();
+            }
+        });
     }
 
 }

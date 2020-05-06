@@ -101,4 +101,11 @@ public interface Preferences {
 
     Flowable<VisualizerRendererType> getVisualizerRendererType();
     Completable setVisualizerRendererType(VisualizerRendererType type);
+
+    /**
+     * All audio files with duration less than this value are excluded from the library search.
+     * NOTE: the duration is considered in seconds.
+     */
+    Flowable<Integer> getMinAudioFileDuration();
+    Completable setMinAudioFileDuration(int minDuration);
 }
