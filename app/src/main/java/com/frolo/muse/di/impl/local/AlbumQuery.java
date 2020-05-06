@@ -10,11 +10,13 @@ import android.provider.MediaStore;
 
 import com.frolo.muse.model.media.Album;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.functions.Action;
+import io.reactivex.functions.Function;
 
 
 final class AlbumQuery {
@@ -85,6 +87,43 @@ final class AlbumQuery {
                 sortOrder,
                 BUILDER
         );
+    }
+
+    /*package*/ static Flowable<List<Album>> queryAll(
+            final ContentResolver resolver,
+            final String sortOrder,
+            final int minSongDuration
+    ) {
+        String selection = null;
+        String[] selectionArgs = null;
+        return Query.query(
+                resolver,
+                URI,
+                PROJECTION,
+                selection,
+                selectionArgs,
+                sortOrder,
+                BUILDER
+        ).map(new Function<List<Album>, List<Album>>() {
+            @Override
+            public List<Album> apply(List<Album> albums) {
+                if (minSongDuration <= 0)
+                    return albums;
+
+                try {
+                    final List<Album> filtered = new ArrayList<>(albums.size());
+                    for (Album album : albums) {
+                        int maxSongDuration = SongQuery.getMaxSongDurationInAlbum(resolver, album);
+                        if (maxSongDuration / 1000 >= minSongDuration) {
+                            filtered.add(album);
+                        }
+                    }
+                    return filtered;
+                } catch (Throwable ignored) {
+                    return albums;
+                }
+            }
+        });
     }
 
     /*package*/ static Flowable<List<Album>> queryAll(

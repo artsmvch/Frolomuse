@@ -46,8 +46,11 @@ fun GetAllArtistsUseCase(
     schedulerProvider = schedulerProvider
 ) {
 
-    override fun getSortedCollection(sortOrder: String): Flowable<List<Artist>> =
-        repository.getAllItems(sortOrder)
+    override fun getSortedCollection(sortOrder: String): Flowable<List<Artist>> {
+        return preferences.minAudioFileDuration.flatMap { minSongDuration ->
+            repository.getAllItems(sortOrder, minSongDuration)
+        }
+    }
 
 }
 
@@ -62,8 +65,11 @@ fun GetAllAlbumsUseCase(
     schedulerProvider = schedulerProvider
 ) {
 
-    override fun getSortedCollection(sortOrder: String): Flowable<List<Album>> =
-        repository.getAllItems(sortOrder)
+    override fun getSortedCollection(sortOrder: String): Flowable<List<Album>> {
+        return preferences.minAudioFileDuration.flatMap { minSongDuration ->
+            repository.getAllItems(sortOrder, minSongDuration)
+        }
+    }
 
 }
 
@@ -78,8 +84,11 @@ fun GetAllGenresUseCase(
     schedulerProvider = schedulerProvider
 ) {
 
-    override fun getSortedCollection(sortOrder: String): Flowable<List<Genre>> =
-        repository.getAllItems(sortOrder)
+    override fun getSortedCollection(sortOrder: String): Flowable<List<Genre>> {
+        return preferences.minAudioFileDuration.flatMap { minSongDuration ->
+            repository.getAllItems(sortOrder, minSongDuration)
+        }
+    }
 
 }
 

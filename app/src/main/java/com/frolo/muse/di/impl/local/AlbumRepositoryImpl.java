@@ -63,6 +63,11 @@ public class AlbumRepositoryImpl implements AlbumRepository {
     }
 
     @Override
+    public Flowable<List<Album>> getAllItems(String sortOrder, int minSongDuration) {
+        return AlbumQuery.queryAll(mContext.getContentResolver(), sortOrder, minSongDuration);
+    }
+
+    @Override
     public Flowable<List<Album>> getFilteredItems(final String filter) {
         return AlbumQuery.queryAllFiltered(mContext.getContentResolver(), filter);
     }

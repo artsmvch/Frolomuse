@@ -68,6 +68,14 @@ public class ArtistRepositoryImpl implements ArtistRepository {
     }
 
     @Override
+    public Flowable<List<Artist>> getAllItems(String sortOrder, int minSongDuration) {
+        return ArtistQuery.queryAll(
+                mContext.getContentResolver(),
+                sortOrder,
+                minSongDuration);
+    }
+
+    @Override
     public Flowable<List<Artist>> getFilteredItems(final String filter) {
         return ArtistQuery.queryAllFiltered(
                 mContext.getContentResolver(),

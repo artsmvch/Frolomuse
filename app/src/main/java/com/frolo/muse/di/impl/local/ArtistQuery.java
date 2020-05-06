@@ -8,9 +8,11 @@ import android.provider.MediaStore;
 
 import com.frolo.muse.model.media.Artist;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Flowable;
+import io.reactivex.functions.Function;
 
 
 final class ArtistQuery {
@@ -60,6 +62,42 @@ final class ArtistQuery {
                 selectionArgs,
                 sortOrder,
                 BUILDER);
+    }
+
+    /*package*/ static Flowable<List<Artist>> queryAll(
+            final ContentResolver resolver,
+            final String sortOrder,
+            final int minSongDuration) {
+        final String selection = null;
+        final String[] selectionArgs = null;
+        return Query.query(
+                resolver,
+                URI,
+                PROJECTION,
+                selection,
+                selectionArgs,
+                sortOrder,
+                BUILDER
+        ).map(new Function<List<Artist>, List<Artist>>() {
+            @Override
+            public List<Artist> apply(List<Artist> artists) {
+                if (minSongDuration <= 0)
+                    return artists;
+
+                try {
+                    final List<Artist> filtered = new ArrayList<>(artists.size());
+                    for (Artist artist : artists) {
+                        int maxSongDuration = SongQuery.getMaxSongDurationInArtist(resolver, artist);
+                        if (maxSongDuration / 1000 >= minSongDuration) {
+                            filtered.add(artist);
+                        }
+                    }
+                    return filtered;
+                } catch (Throwable ignored) {
+                    return artists;
+                }
+            }
+        });
     }
 
     /*package*/ static Flowable<List<Artist>> queryAll(ContentResolver resolver) {

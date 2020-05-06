@@ -952,6 +952,98 @@ final class SongQuery {
     }
     //endregion
 
+    //region Blocking non-rx methods
+
+    // The first method, supposed to be more faster that the second one.
+    private static int getMaxSongDuration1(
+        ContentResolver resolver,
+        Uri uri,
+        String selection,
+        String[] selectionArgs
+    ) throws Exception {
+        final String[] projection = new String[] { "MAX(" + MediaStore.Audio.Media.DURATION + ")" };
+        final Cursor cursor = resolver.query(uri, projection, selection, selectionArgs, null);
+        if (cursor == null) {
+            throw Query.genNullCursorErr(uri);
+        }
+        try {
+            cursor.moveToFirst();
+            return cursor.getInt(0);
+        } finally {
+            cursor.close();
+        }
+    }
+
+    // The second method, supposed to be more slower that the first one.
+    private static int getMaxSongDuration2(
+        ContentResolver resolver,
+        Uri uri,
+        String selection,
+        String[] selectionArgs
+    ) throws Exception {
+        final String[] projection = new String[] { MediaStore.Audio.Media.DURATION };
+        final Cursor cursor = resolver.query(uri, projection, selection, selectionArgs, null);
+        if (cursor == null) {
+            throw Query.genNullCursorErr(uri);
+        }
+        int maxDuration = 0;
+        try {
+            if (cursor.moveToFirst()) {
+                do {
+                    final int duration = cursor.getInt(0);
+                    if (duration > maxDuration) {
+                        maxDuration = duration;
+                    }
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            cursor.close();
+        }
+        return maxDuration;
+    }
+
+    private static int getMaxSongDuration(
+        ContentResolver resolver,
+        Uri uri,
+        String selection,
+        String[] selectionArgs
+    ) throws Exception {
+        try {
+            return getMaxSongDuration1(resolver, uri, selection, selectionArgs);
+        } catch (Throwable ignored) {
+            return getMaxSongDuration2(resolver, uri, selection, selectionArgs);
+        }
+    }
+
+    static int getMaxSongDurationInAlbum(
+        ContentResolver resolver,
+        Album album
+    ) throws Exception {
+        final String selection = "is_music != 0 and album_id = " + album.getId();
+        final String[] selectionArgs = null;
+        return getMaxSongDuration(resolver, URI, selection, selectionArgs);
+    }
+
+    static int getMaxSongDurationInArtist(
+        ContentResolver resolver,
+        Artist artist
+    ) throws Exception {
+        final String selection = "is_music != 0 and artist_id = " + artist.getId();
+        final String[] selectionArgs = null;
+        return getMaxSongDuration(resolver, URI, selection, selectionArgs);
+    }
+
+    static int getMaxSongDurationInGenre(
+        ContentResolver resolver,
+        Genre genre
+    ) throws Exception {
+        Uri uri = MediaStore.Audio.Genres.Members
+                .getContentUri("external", genre.getId());
+        String selection = null;
+        String[] selectionArgs = null;
+        return getMaxSongDuration(resolver, uri, selection, selectionArgs);
+    }
+
     private SongQuery() {
     }
 

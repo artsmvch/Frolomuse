@@ -58,6 +58,11 @@ public class GenreRepositoryImpl implements GenreRepository {
     }
 
     @Override
+    public Flowable<List<Genre>> getAllItems(String sortOrder, int minSongDuration) {
+        return GenreQuery.queryAll(mContext.getContentResolver(), sortOrder, minSongDuration);
+    }
+
+    @Override
     public Flowable<List<Genre>> getFilteredItems(final String filter) {
         return GenreQuery.queryAllFiltered(mContext.getContentResolver(), filter);
     }

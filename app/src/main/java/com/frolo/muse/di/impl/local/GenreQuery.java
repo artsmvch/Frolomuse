@@ -7,6 +7,7 @@ import android.provider.MediaStore;
 
 import com.frolo.muse.model.media.Genre;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Flowable;
@@ -56,6 +57,43 @@ final class GenreQuery {
                 selectionArgs,
                 sortOrder,
                 BUILDER);
+    }
+
+    /*package*/ static Flowable<List<Genre>> queryAll(
+            ContentResolver resolver,
+            String sortOrder,
+            int minSongDuration
+    ) {
+        final String selection = null;
+        final String[] selectionArgs = null;
+        return Query.query(
+                resolver,
+                URI,
+                PROJECTION,
+                selection,
+                selectionArgs,
+                sortOrder,
+                BUILDER
+        ).map(new Function<List<Genre>, List<Genre>>() {
+            @Override
+            public List<Genre> apply(List<Genre> genres) {
+                if (minSongDuration <= 0)
+                    return genres;
+
+                try {
+                    final List<Genre> filtered = new ArrayList<>(genres.size());
+                    for (Genre genre : genres) {
+                        int maxSongDuration = SongQuery.getMaxSongDurationInGenre(resolver, genre);
+                        if (maxSongDuration / 1000 >= minSongDuration) {
+                            filtered.add(genre);
+                        }
+                    }
+                    return filtered;
+                } catch (Throwable ignored) {
+                    return genres;
+                }
+            }
+        });
     }
 
     /*package*/ static Flowable<List<Genre>> queryAll(
