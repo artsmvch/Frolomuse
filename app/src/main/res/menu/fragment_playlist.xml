@@ -2,6 +2,7 @@
 <menu
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <item
         android:id="@+id/action_edit"
         android:title="@string/edit"
@@ -10,9 +11,16 @@
         app:showAsAction="ifRoom"/>
 
     <item
+        android:id="@+id/action_create_shortcut"
+        android:title="@string/create_shortcut"
+        android:icon="@drawable/ic_shortcut_18dp"
+        app:iconTint="?colorOnPrimary"
+        app:showAsAction="ifRoom"/>
+
+    <item
         android:id="@+id/action_sort"
         android:title="@string/sort"
         android:icon="@drawable/ic_sort"
         app:iconTint="?colorOnPrimary"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="always"/>
 </menu>

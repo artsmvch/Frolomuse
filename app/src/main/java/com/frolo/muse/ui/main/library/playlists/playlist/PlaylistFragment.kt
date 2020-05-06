@@ -26,6 +26,7 @@ import com.frolo.muse.dp2px
 import com.frolo.muse.ui.base.NoClipping
 import com.frolo.muse.ui.base.setupNavigation
 import com.frolo.muse.ui.getDateAddedString
+import com.frolo.muse.ui.main.confirmShortcutCreation
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.shape.CornerFamily
 import com.google.android.material.shape.MaterialShapeDrawable
@@ -116,8 +117,14 @@ class PlaylistFragment: AbsSongCollectionFragment<Song>(), NoClipping {
             inflateMenu(R.menu.fragment_playlist)
             setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
-                    R.id.action_edit -> viewModel.onEditPlaylistOptionSelected()
-                    R.id.action_sort -> viewModel.onSortOrderOptionSelected()
+                    R.id.action_edit ->
+                        viewModel.onEditPlaylistOptionSelected()
+
+                    R.id.action_create_shortcut ->
+                        viewModel.onCreatePlaylistShortcutActionSelected()
+
+                    R.id.action_sort ->
+                        viewModel.onSortOrderOptionSelected()
                 }
                 return@setOnMenuItemClickListener true
             }
@@ -197,6 +204,12 @@ class PlaylistFragment: AbsSongCollectionFragment<Song>(), NoClipping {
                 } else {
                     DragSongAdapter.VIEW_TYPE_NORMAL
                 }
+            }
+        }
+
+        confirmPlaylistShortcutCreationEvent.observeNonNull(owner) { playlist ->
+            context?.confirmShortcutCreation(playlist) {
+                viewModel.onCreatePlaylistShortcutActionConfirmed()
             }
         }
     }

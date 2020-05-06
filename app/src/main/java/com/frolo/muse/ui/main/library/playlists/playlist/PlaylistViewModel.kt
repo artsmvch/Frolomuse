@@ -3,6 +3,7 @@ package com.frolo.muse.ui.main.library.playlists.playlist
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import com.frolo.muse.arch.SingleLiveEvent
 import com.frolo.muse.engine.Player
 import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.interactor.media.*
@@ -28,7 +29,8 @@ class PlaylistViewModel constructor(
         deleteMediaUseCase: DeleteMediaUseCase<Song>,
         getIsFavouriteUseCase: GetIsFavouriteUseCase<Song>,
         changeFavouriteUseCase: ChangeFavouriteUseCase<Song>,
-        createShortcutUseCase: CreateShortcutUseCase<Song>,
+        createSongShortcutUseCase: CreateShortcutUseCase<Song>,
+        private val createPlaylistShortcutUseCase: CreateShortcutUseCase<Playlist>,
         private val schedulerProvider: SchedulerProvider,
         private val navigator: Navigator,
         eventLogger: EventLogger
@@ -42,7 +44,7 @@ class PlaylistViewModel constructor(
         deleteMediaUseCase,
         getIsFavouriteUseCase,
         changeFavouriteUseCase,
-        createShortcutUseCase,
+        createSongShortcutUseCase,
         schedulerProvider,
         navigator,
         eventLogger
@@ -70,6 +72,10 @@ class PlaylistViewModel constructor(
         }
     }
     val isSwappingEnabled: LiveData<Boolean> get() = _isSwappingEnabled
+
+    private val _confirmPlaylistShortcutCreationEvent = SingleLiveEvent<Playlist>()
+    val confirmPlaylistShortcutCreationEvent: LiveData<Playlist>
+        get() = _confirmPlaylistShortcutCreationEvent
 
     fun onEditPlaylistOptionSelected() {
         getPlaylistUseCase.edit(playlist.value)
@@ -111,4 +117,21 @@ class PlaylistViewModel constructor(
     fun onDragEnded() {
         submitMediaList(mediaList.value ?: emptyList())
     }
+
+    /**
+     * Do not mess up with [onCreateShortcutOptionSelected] method.
+     * This method is intended to create a shortcut for the playlist, not a song.
+     */
+    fun onCreatePlaylistShortcutActionSelected() {
+        val targetPlaylist = playlist.value ?: return
+        _confirmPlaylistShortcutCreationEvent.value = targetPlaylist
+    }
+
+    fun onCreatePlaylistShortcutActionConfirmed() {
+        val targetPlaylist = playlist.value ?: return
+        createPlaylistShortcutUseCase.createShortcut(targetPlaylist)
+                .observeOn(schedulerProvider.main())
+                .subscribeFor { dispatchShortcutCreated() }
+    }
+
 }

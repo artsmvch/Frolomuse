@@ -42,7 +42,9 @@ class PlaylistVMFactory constructor(
     @Inject
     internal lateinit var changeFavouriteUseCase: ChangeFavouriteUseCase<Song>
     @Inject
-    internal lateinit var createShortcutUseCase: CreateShortcutUseCase<Song>
+    internal lateinit var createSongShortcutUseCase: CreateShortcutUseCase<Song>
+    @Inject
+    internal lateinit var createPlaylistShortcutUseCase: CreateShortcutUseCase<Playlist>
     @Inject
     internal lateinit var schedulerProvider: SchedulerProvider
     @Inject
@@ -71,7 +73,8 @@ class PlaylistVMFactory constructor(
                 deleteMediaUseCase,
                 getIsFavouriteUseCase,
                 changeFavouriteUseCase,
-                createShortcutUseCase,
+                createSongShortcutUseCase,
+                createPlaylistShortcutUseCase,
                 schedulerProvider,
                 navigator,
                 eventLogger
