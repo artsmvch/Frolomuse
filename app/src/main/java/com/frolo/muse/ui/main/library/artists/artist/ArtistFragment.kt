@@ -5,16 +5,19 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ViewModelProviders
 import com.frolo.muse.R
 import com.frolo.muse.StyleUtil
+import com.frolo.muse.arch.observe
+import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.dp2px
 import com.frolo.muse.model.media.Artist
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.base.serializableArg
 import com.frolo.muse.ui.base.setupNavigation
 import com.frolo.muse.ui.base.withArg
+import com.frolo.muse.ui.main.confirmShortcutCreation
 import com.frolo.muse.ui.main.library.artists.artist.albums.AlbumsOfArtistFragment
 import com.frolo.muse.ui.main.library.artists.artist.songs.SongsOfArtistFragment
 import com.google.android.material.appbar.AppBarLayout
@@ -46,7 +49,11 @@ class ArtistFragment: BaseFragment() {
 
     private val backdropCornerRadius: Float by lazy { 16f.dp2px(requireContext()) }
 
-    val toolbar: Toolbar? get() = view?.let { tb_actions }
+    private val viewModel: ArtistViewModel by lazy {
+        val artist = requireArguments().getSerializable(ARG_ARTIST) as Artist
+        val vmFactory = ArtistVMFactory(requireApp().appComponent, artist)
+        ViewModelProviders.of(this, vmFactory).get(ArtistViewModel::class.java)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -56,6 +63,23 @@ class ArtistFragment: BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupNavigation(tb_actions)
+
+        tb_actions.apply {
+            inflateMenu(R.menu.fragment_artist)
+            setOnMenuItemClickListener { menuItem ->
+                if (menuItem.itemId == R.id.action_create_shortcut) {
+                    viewModel.onCreateArtistShortcutActionSelected()
+                }
+
+                if (menuItem.itemId == R.id.action_sort) {
+                    val fragment =
+                            childFragmentManager.findFragmentByTag(TAG_SONGS_OF_ARTIST) as? SongsOfArtistFragment
+                    fragment?.onSortOrderActionSelected()
+                }
+
+                true
+            }
+        }
 
         val transaction = childFragmentManager.beginTransaction()
 
@@ -95,7 +119,16 @@ class ArtistFragment: BaseFragment() {
         super.onDestroyView()
     }
 
-    private fun observeViewModel(owner: LifecycleOwner) {
+    private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
+        confirmArtistShortcutCreationEvent.observeNonNull(owner) { artist ->
+            context?.confirmShortcutCreation(artist) {
+                viewModel.onCreateArtistShortcutActionConfirmed()
+            }
+        }
+
+        shortcutCreatedEvent.observe(owner) {
+            toastShortMessage(R.string.shortcut_created)
+        }
     }
 
     companion object {

@@ -14,6 +14,7 @@ import com.frolo.muse.ui.main.editor.album.AlbumEditorVMFactory
 import com.frolo.muse.ui.main.editor.playlist.PlaylistEditorVMFactory
 import com.frolo.muse.ui.main.editor.song.SongEditorVMFactory
 import com.frolo.muse.ui.main.library.albums.album.AlbumVMFactory
+import com.frolo.muse.ui.main.library.artists.artist.ArtistVMFactory
 import com.frolo.muse.ui.main.library.artists.artist.albums.AlbumsOfArtistVMFactory
 import com.frolo.muse.ui.main.library.artists.artist.songs.SongsOfArtistVMFactory
 import com.frolo.muse.ui.main.library.genres.genre.GenreVMFactory
@@ -58,6 +59,7 @@ interface AppComponent {
 
     // ViewModel factories
     fun inject(vmf: AlbumVMFactory)
+    fun inject(vmf: ArtistVMFactory)
     fun inject(vmf: SongsOfArtistVMFactory)
     fun inject(vmf: AlbumsOfArtistVMFactory)
     fun inject(vmf: PlaylistVMFactory)

@@ -10,10 +10,8 @@ import com.frolo.muse.R
 import com.frolo.muse.model.media.Artist
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.ui.base.NoClipping
-import com.frolo.muse.ui.base.castHost
 import com.frolo.muse.ui.base.withArg
 import com.frolo.muse.ui.main.decorateAsLinear
-import com.frolo.muse.ui.main.library.artists.artist.ArtistFragment
 import com.frolo.muse.ui.main.library.base.AbsSongCollectionFragment
 import com.frolo.muse.ui.main.library.base.SongAdapter
 import kotlinx.android.synthetic.main.fragment_base_list.*
@@ -46,16 +44,6 @@ class SongsOfArtistFragment: AbsSongCollectionFragment<Song>(), NoClipping {
             adapter = this@SongsOfArtistFragment.adapter
             decorateAsLinear()
         }
-
-        castHost<ArtistFragment>()?.toolbar?.apply {
-            inflateMenu(R.menu.fragment_artist)
-            setOnMenuItemClickListener { menuItem ->
-                if (menuItem.itemId == R.id.action_sort) {
-                    viewModel.onSortOrderOptionSelected()
-                }
-                true
-            }
-        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -86,6 +74,10 @@ class SongsOfArtistFragment: AbsSongCollectionFragment<Song>(), NoClipping {
                 safeView.clipToPadding = false
             }
         }
+    }
+
+    fun onSortOrderActionSelected() {
+        viewModel.onSortOrderOptionSelected()
     }
 
     companion object {
