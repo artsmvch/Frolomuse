@@ -79,7 +79,7 @@ interface AppComponent {
     // UseCase factories
     fun provideGetAlbumSongsUseCaseFactory(): GetAlbumSongsUseCase.Factory
     fun provideGetAlbumsOfArtistUseCaseFactory(): GetAlbumsOfArtistUseCase.Factory
-    fun provideGetSongsOfArtistUseCaseFactory(): GetSongsOfArtistUseCase.Factory
+    fun provideGetSongsOfArtistUseCaseFactory(): GetArtistSongsUseCase.Factory
     fun provideGetGenreSongsUseCaseFactory(): GetGenreSongsUseCase.Factory
     fun provideGetPlaylistSongsUseCaseFactory(): GetPlaylistUseCase.Factory
     fun provideAddMediaToPlaylistUseCaseFactory(): AddMediaToPlaylistUseCase.Factory

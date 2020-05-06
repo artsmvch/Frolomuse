@@ -11,7 +11,7 @@ import com.squareup.inject.assisted.AssistedInject
 import io.reactivex.Flowable
 
 
-class GetSongsOfArtistUseCase @AssistedInject constructor(
+class GetArtistSongsUseCase @AssistedInject constructor(
     private val schedulerProvider: SchedulerProvider,
     private val repository: ArtistChunkRepository,
     private val preferences: Preferences,
@@ -25,7 +25,7 @@ class GetSongsOfArtistUseCase @AssistedInject constructor(
 
     @AssistedInject.Factory
     interface Factory {
-        fun create(artist: Artist): GetSongsOfArtistUseCase
+        fun create(artist: Artist): GetArtistSongsUseCase
     }
 
 }

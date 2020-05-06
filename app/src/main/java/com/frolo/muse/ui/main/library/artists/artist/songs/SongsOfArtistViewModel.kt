@@ -5,7 +5,7 @@ import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.interactor.media.*
 import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
 import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
-import com.frolo.muse.interactor.media.get.GetSongsOfArtistUseCase
+import com.frolo.muse.interactor.media.get.GetArtistSongsUseCase
 import com.frolo.muse.interactor.media.shortcut.CreateShortcutUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.media.Song
@@ -15,7 +15,7 @@ import com.frolo.muse.ui.main.library.base.AbsSongCollectionViewModel
 
 class SongsOfArtistViewModel constructor(
         player: Player,
-        getSongsOfArtistUseCase: GetSongsOfArtistUseCase,
+        getArtistSongsUseCase: GetArtistSongsUseCase,
         getMediaMenuUseCase: GetMediaMenuUseCase<Song>,
         clickMediaUseCase: ClickMediaUseCase<Song>,
         playMediaUseCase: PlayMediaUseCase<Song>,
@@ -29,7 +29,7 @@ class SongsOfArtistViewModel constructor(
         eventLogger: EventLogger
 ): AbsSongCollectionViewModel<Song>(
         player,
-        getSongsOfArtistUseCase,
+        getArtistSongsUseCase,
         getMediaMenuUseCase,
         clickMediaUseCase,
         playMediaUseCase,

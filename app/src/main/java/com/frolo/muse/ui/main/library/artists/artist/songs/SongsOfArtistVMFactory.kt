@@ -8,7 +8,7 @@ import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.interactor.media.*
 import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
 import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
-import com.frolo.muse.interactor.media.get.GetSongsOfArtistUseCase
+import com.frolo.muse.interactor.media.get.GetArtistSongsUseCase
 import com.frolo.muse.interactor.media.shortcut.CreateShortcutUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.media.Artist
@@ -26,7 +26,7 @@ class SongsOfArtistVMFactory constructor(
     @Inject
     internal lateinit var player: Player
     /*assisted inject*/
-    internal lateinit var getSongsOfArtistUseCase: GetSongsOfArtistUseCase
+    internal lateinit var getArtistSongsUseCase: GetArtistSongsUseCase
     @Inject
     internal lateinit var getMediaMenuUseCase: GetMediaMenuUseCase<Song>
     @Inject
@@ -54,7 +54,7 @@ class SongsOfArtistVMFactory constructor(
 
     init {
         appComponent.inject(this)
-        getSongsOfArtistUseCase = appComponent
+        getArtistSongsUseCase = appComponent
                 .provideGetSongsOfArtistUseCaseFactory()
                 .create(artist)
     }
@@ -63,7 +63,7 @@ class SongsOfArtistVMFactory constructor(
         @Suppress("UNCHECKED_CAST")
         return SongsOfArtistViewModel(
                 player,
-                getSongsOfArtistUseCase,
+                getArtistSongsUseCase,
                 getMediaMenuUseCase,
                 clickMediaUseCase,
                 playMediaUseCase,
