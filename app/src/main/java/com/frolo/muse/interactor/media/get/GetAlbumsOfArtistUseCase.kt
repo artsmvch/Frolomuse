@@ -13,9 +13,9 @@ import io.reactivex.Single
 
 
 class GetAlbumsOfArtistUseCase @AssistedInject constructor(
-        private val repository: AlbumRepository,
-        private val schedulerProvider: SchedulerProvider,
-        @Assisted private val artist: Artist
+    private val repository: AlbumRepository,
+    private val schedulerProvider: SchedulerProvider,
+    @Assisted private val artist: Artist
 ): GetMediaUseCase<Album> {
 
     override fun getSortOrderMenu(): Single<SortOrderMenu> {

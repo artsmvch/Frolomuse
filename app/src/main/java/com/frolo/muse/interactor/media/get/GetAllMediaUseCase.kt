@@ -9,10 +9,10 @@ import io.reactivex.Flowable
 
 
 class GetAllMediaUseCase<E: Media> constructor(
-        @Library.Section section: Int,
-        schedulerProvider: SchedulerProvider,
-        private val repository: MediaRepository<E>,
-        preferences: Preferences
+    @Library.Section section: Int,
+    schedulerProvider: SchedulerProvider,
+    private val repository: MediaRepository<E>,
+    preferences: Preferences
 ): GetSectionedMediaUseCase<E>(section, schedulerProvider, repository, preferences) {
 
     override fun getSortedCollection(sortOrder: String): Flowable<List<E>> {

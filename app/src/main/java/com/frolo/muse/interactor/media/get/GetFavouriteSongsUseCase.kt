@@ -32,7 +32,7 @@ class GetFavouriteSongsUseCase @Inject constructor(
     override fun getMediaList(): Flowable<List<Song>> {
         return repository.allFavouriteItems
                 .subscribeOn(schedulerProvider.worker())
-                .excludeShortAudioFiles(preferences)
+                .excludeShortSongs(preferences)
     }
 
 

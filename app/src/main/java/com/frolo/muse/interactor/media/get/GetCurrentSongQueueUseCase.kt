@@ -6,10 +6,11 @@ import com.frolo.muse.model.menu.SortOrderMenu
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
+import javax.inject.Inject
 
 
-class GetCurrentSongQueueUseCase constructor(
-        private val player: Player
+class GetCurrentSongQueueUseCase @Inject constructor(
+    private val player: Player
 ): GetMediaUseCase<Song> {
 
     override fun getSortOrderMenu(): Single<SortOrderMenu> {

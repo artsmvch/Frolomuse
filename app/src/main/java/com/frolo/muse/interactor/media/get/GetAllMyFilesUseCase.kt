@@ -11,14 +11,14 @@ import javax.inject.Inject
 
 
 class GetAllMyFilesUseCase @Inject constructor(
-        schedulerProvider: SchedulerProvider,
-        private val repository: MyFileRepository,
-        private val preferences: Preferences
+    schedulerProvider: SchedulerProvider,
+    private val repository: MyFileRepository,
+    private val preferences: Preferences
 ): GetSectionedMediaUseCase<MyFile>(
-        Library.FOLDERS,
-        schedulerProvider,
-        repository,
-        preferences
+    Library.FOLDERS,
+    schedulerProvider,
+    repository,
+    preferences
 ) {
 
     data class GoBackResult constructor(

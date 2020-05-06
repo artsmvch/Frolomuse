@@ -104,32 +104,6 @@ abstract class UseCaseModule {
 
         @Provides
         @JvmStatic
-        fun provideGetRecentlyAddedSongUseCase(
-                schedulerProvider: SchedulerProvider,
-                repository: SongRepository,
-                preferences: Preferences
-        ): GetRecentlyAddedSongUseCase {
-            return GetRecentlyAddedSongUseCase(
-                    schedulerProvider,
-                    repository,
-                    preferences
-            )
-        }
-
-        @Provides
-        @JvmStatic
-        fun provideGetMostPlayedSongsUseCase(
-                schedulerProvider: SchedulerProvider,
-                repository: SongWithPlayCountRepository
-        ): GetMostPlayedSongsUseCase {
-            return GetMostPlayedSongsUseCase(
-                    schedulerProvider,
-                    repository
-            )
-        }
-
-        @Provides
-        @JvmStatic
         fun provideGetAllMyFilesUseCase(
                 schedulerProvider: SchedulerProvider,
                 repository: MyFileRepository,
@@ -851,28 +825,6 @@ abstract class UseCaseModule {
                     schedulerProvider,
                     repository
             )
-        }
-
-        /*search*/
-        @Provides
-        @JvmStatic
-        fun provideSearchMediaUseCase(
-                schedulerProvider: SchedulerProvider,
-                repository: GenericMediaRepository
-        ): SearchMediaUseCase {
-            return SearchMediaUseCase(
-                    schedulerProvider,
-                    repository
-            )
-        }
-
-        /*current song queue*/
-        @Provides
-        @JvmStatic
-        fun provideGetCurrentSongQueueUseCase(
-                player: Player
-        ): GetCurrentSongQueueUseCase {
-            return GetCurrentSongQueueUseCase(player)
         }
 
         /*rate*/

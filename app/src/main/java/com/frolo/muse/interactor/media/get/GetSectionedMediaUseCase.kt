@@ -14,10 +14,10 @@ import io.reactivex.functions.Function
 
 
 abstract class GetSectionedMediaUseCase <E: Media> constructor(
-        @Library.Section private val section: Int,
-        private val schedulerProvider: SchedulerProvider,
-        private val repository: MediaRepository<E>,
-        private val preferences: Preferences
+    @Library.Section private val section: Int,
+    private val schedulerProvider: SchedulerProvider,
+    private val repository: MediaRepository<E>,
+    private val preferences: Preferences
 ): GetMediaUseCase<E> {
 
     abstract fun getSortedCollection(sortOrder: String): Flowable<List<E>>

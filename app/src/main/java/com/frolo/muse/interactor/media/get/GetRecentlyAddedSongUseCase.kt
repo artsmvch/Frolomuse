@@ -11,12 +11,13 @@ import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
 
-class GetRecentlyAddedSongUseCase constructor(
-        private val schedulerProvider: SchedulerProvider,
-        private val repository: SongRepository,
-        private val preferences: Preferences
+class GetRecentlyAddedSongUseCase @Inject constructor(
+    private val schedulerProvider: SchedulerProvider,
+    private val repository: SongRepository,
+    private val preferences: Preferences
 ): GetMediaUseCase<Song> {
 
     // calculates timestamp in seconds
@@ -36,6 +37,7 @@ class GetRecentlyAddedSongUseCase constructor(
         return Single.fromCallable { calculatePeriodLastTimestamp(period) }
                 .flatMapPublisher { timestamp -> repository.getRecentlyAddedSongs(timestamp) }
                 .subscribeOn(schedulerProvider.worker())
+                .excludeShortSongs(preferences)
     }
 
     fun getRecentPeriodMenu(): Single<RecentPeriodMenu> {

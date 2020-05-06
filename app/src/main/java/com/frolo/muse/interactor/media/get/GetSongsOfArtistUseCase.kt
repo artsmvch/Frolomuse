@@ -12,14 +12,15 @@ import io.reactivex.Flowable
 
 
 class GetSongsOfArtistUseCase @AssistedInject constructor(
-        private val schedulerProvider: SchedulerProvider,
-        private val repository: ArtistChunkRepository,
-        private val preferences: Preferences,
-        @Assisted private val artist: Artist
+    private val schedulerProvider: SchedulerProvider,
+    private val repository: ArtistChunkRepository,
+    private val preferences: Preferences,
+    @Assisted private val artist: Artist
 ): GetSectionedMediaUseCase<Song>(Library.ARTIST, schedulerProvider, repository, preferences) {
 
     override fun getSortedCollection(sortOrder: String): Flowable<List<Song>> {
         return repository.getSongsFromArtist(artist, sortOrder)
+                .excludeShortSongs(preferences)
     }
 
     @AssistedInject.Factory
