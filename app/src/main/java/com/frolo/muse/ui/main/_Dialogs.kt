@@ -3,10 +3,8 @@ package com.frolo.muse.ui.main
 import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
-import android.graphics.Typeface
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.style.StyleSpan
+import android.os.Build
+import android.text.Html
 import com.frolo.muse.R
 import com.frolo.muse.model.media.Media
 import com.frolo.muse.ui.getName
@@ -36,14 +34,23 @@ fun Context.confirmShortcutCreation(media: Media, whenConfirmed: () -> Unit): Di
         getString(R.string.do_you_want_to_create_shortcut_for_s).let { str ->
             val param = media.getName()
 
-            val index = str.indexOf("%s")
-            val len = param.length
-            val resultStr = str.replace("%s", param)
+            // TODO: find out why isn't the bold spannable working in here
+//            val index = str.indexOf("%s")
+//            val len = param.length
+//            val resultStr = str.replace("%s", param)
+//
+//            val sp = SpannableString(resultStr)
+//            sp.setSpan(StyleSpan(Typeface.BOLD), index, index + len, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+//
+//            return@let resultStr
 
-            val sp = SpannableString(resultStr)
-            sp.setSpan(StyleSpan(Typeface.BOLD), index, index + len, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            val resultStr = str.replace("%s", "<b>$param</b>")
 
-            return@let resultStr
+            return@let if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                Html.fromHtml(resultStr, Html.FROM_HTML_MODE_LEGACY)
+            } else {
+                Html.fromHtml(resultStr)
+            }
         }
     } catch (ignored: Throwable) {
         getString(R.string.do_you_want_to_create_shortcut_for_s, media.getName())
