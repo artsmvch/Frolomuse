@@ -34,8 +34,7 @@ abstract class UseCaseModule {
                 repository: ArtistRepository,
                 preferences: Preferences
         ): GetAllMediaUseCase<Artist> {
-            return GetAllMediaUseCase(
-                    Library.ARTISTS,
+            return GetAllArtistsUseCase(
                     schedulerProvider,
                     repository,
                     preferences
@@ -49,8 +48,7 @@ abstract class UseCaseModule {
                 repository: GenreRepository,
                 preferences: Preferences
         ): GetAllMediaUseCase<Genre> {
-            return GetAllMediaUseCase(
-                    Library.GENRES,
+            return GetAllGenresUseCase(
                     schedulerProvider,
                     repository,
                     preferences
@@ -64,8 +62,7 @@ abstract class UseCaseModule {
                 repository: PlaylistRepository,
                 preferences: Preferences
         ): GetAllMediaUseCase<Playlist> {
-            return GetAllMediaUseCase(
-                    Library.PLAYLISTS,
+            return GetAllPlaylistsUseCase(
                     schedulerProvider,
                     repository,
                     preferences
@@ -79,8 +76,7 @@ abstract class UseCaseModule {
                 repository: AlbumRepository,
                 preferences: Preferences
         ): GetAllMediaUseCase<Album> {
-            return GetAllMediaUseCase(
-                    Library.ALBUMS,
+            return GetAllAlbumsUseCase(
                     schedulerProvider,
                     repository,
                     preferences
@@ -94,23 +90,7 @@ abstract class UseCaseModule {
                 repository: SongRepository,
                 preferences: Preferences
         ): GetAllMediaUseCase<Song> {
-            return GetAllMediaUseCase(
-                    Library.ALL_SONGS,
-                    schedulerProvider,
-                    repository,
-                    preferences
-            )
-        }
-
-        @Provides
-        @JvmStatic
-        fun provideGetAllMyFilesUseCase(
-                schedulerProvider: SchedulerProvider,
-                repository: MyFileRepository,
-                preferences: Preferences
-        ): GetAllMediaUseCase<MyFile> {
-            return GetAllMediaUseCase(
-                    Library.FOLDERS,
+            return GetAllSongsUseCase(
                     schedulerProvider,
                     repository,
                     preferences
