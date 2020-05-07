@@ -24,10 +24,21 @@
         android:layout_height="40dp"
         android:layout_margin="6dp"
         android:padding="12dp"
-        android:layout_gravity="bottom|start"
         android:tint="@color/md_white_1000"
         android:src="@drawable/ic_trash"
-        android:background="@drawable/bg_delete_art" />
+        android:background="@drawable/bg_album_art_action" />
+
+    <ImageView
+        app:layout_constraintEnd_toEndOf="@id/imv_album_art"
+        app:layout_constraintBottom_toBottomOf="@id/imv_album_art"
+        android:id="@+id/btn_pick_art"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_margin="6dp"
+        android:padding="12dp"
+        android:tint="@color/md_white_1000"
+        android:src="@drawable/ic_edit"
+        android:background="@drawable/bg_album_art_action" />
 
     <TextView
         app:layout_constraintStart_toStartOf="@id/imv_album_art"

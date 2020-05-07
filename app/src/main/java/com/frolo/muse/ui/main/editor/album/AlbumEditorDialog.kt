@@ -83,6 +83,10 @@ class AlbumEditorDialog : BaseDialogFragment() {
             pickImage()
         }
 
+        btn_pick_art.setOnClickListener {
+            pickImage()
+        }
+
         btn_delete_art.setOnClickListener {
             viewModel.onDeleteArtClicked()
         }
@@ -124,13 +128,19 @@ class AlbumEditorDialog : BaseDialogFragment() {
             }
         }
 
+        pickArtOptionVisible.observeNonNull(owner) { isVisible ->
+            dialog?.apply {
+                btn_pick_art.isVisible = isVisible
+            }
+        }
+
         deleteArtOptionVisible.observeNonNull(owner) { isVisible ->
             dialog?.apply {
                 btn_delete_art.isVisible = isVisible
             }
         }
 
-        artDeletionConfirmationVisible.observeNonNull(owner) { visible ->
+        artDeletionConfirmationVisible.observeNonNull(owner) { isVisible ->
             dialog?.apply {
                 if (isVisible) {
                     Anim.fadeIn(include_album_art_deletion_confirmation)
