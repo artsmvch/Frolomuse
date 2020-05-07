@@ -423,6 +423,7 @@ public class MediaScanService extends Service {
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentTitle(getString(R.string.preparing_files_to_scan))
                 .setCustomBigContentView(remoteViews)
+                .setStyle(new NotificationCompat.DecoratedCustomViewStyle())
                 .setSmallIcon(R.drawable.ic_scan_file)
                 .build();
     }
@@ -444,6 +445,7 @@ public class MediaScanService extends Service {
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentTitle(getString(R.string.scanning_media_storage))
                 .setCustomBigContentView(remoteViews)
+                .setStyle(new NotificationCompat.DecoratedCustomViewStyle())
                 .setSmallIcon(R.drawable.ic_scan_file)
                 .build();
     }
