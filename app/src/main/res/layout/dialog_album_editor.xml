@@ -61,9 +61,10 @@
         android:id="@+id/btn_placeholder_pick_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
+        android:padding="4dp"
         android:textAppearance="?textAppearanceButton"
-        android:textColor="?colorPrimary"
+        android:textColor="?colorAccent"
         android:text="@string/pick_new_album_art"/>
 
     <androidx.constraintlayout.widget.Group
