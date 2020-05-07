@@ -113,18 +113,19 @@ abstract class BaseFragment: Fragment() {
     }
 
     fun requestRxPermissions(
-            vararg permissions: String,
-            consumer: (granted: Boolean) -> Unit) {
+        vararg permissions: String,
+        consumer: (granted: Boolean) -> Unit
+    ) {
 
         val rxPermissions = rxPermissions
                 ?: throw IllegalStateException("Fragment not attached")
 
         rxPermissionDisposable?.dispose()
         rxPermissionDisposable = rxPermissions.request(*permissions)
-                .subscribe(consumer, { err ->
-                    Trace.e(err)
-                    toastError(err)
-                })
+            .subscribe(consumer, { err ->
+                Trace.e(err)
+                toastError(err)
+            })
     }
 
     // Checks READ_EXTERNAL_STORAGE permission.
@@ -133,12 +134,10 @@ abstract class BaseFragment: Fragment() {
     inline fun checkReadPermissionFor(crossinline action: () -> Unit) {
         val permission = Manifest.permission.READ_EXTERNAL_STORAGE
         if (isPermissionGranted(permission)) {
-            action()
+            action.invoke()
         } else {
-            requestRxPermissions(
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-            ) { granted ->
-                if (granted) action()
+            requestRxPermissions(Manifest.permission.READ_EXTERNAL_STORAGE) { granted ->
+                if (granted) action.invoke()
             }
         }
     }
@@ -149,12 +148,10 @@ abstract class BaseFragment: Fragment() {
     inline fun checkWritePermissionFor(crossinline action: () -> Unit) {
         val permission = Manifest.permission.WRITE_EXTERNAL_STORAGE
         if (isPermissionGranted(permission)) {
-            action()
+            action.invoke()
         } else {
-            requestRxPermissions(
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-            ) { granted ->
-                if (granted) action()
+            requestRxPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE) { granted ->
+                if (granted) action.invoke()
             }
         }
     }
@@ -164,10 +161,12 @@ abstract class BaseFragment: Fragment() {
     // Otherwise, the user will be prompt to grant permissions for the action.
     fun checkReadWritePermissionsFor(action: () -> Unit) {
         val permissions = arrayOf(
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
         )
-        requestRxPermissions(*permissions) { granted -> if (granted) action() }
+        requestRxPermissions(*permissions) { granted ->
+            if (granted) action.invoke()
+        }
     }
 
     fun toastShortMessage(message: String) {
