@@ -58,6 +58,7 @@
             android:summary="@string/hidden_files_desc"/>
 
         <Preference
+            android:icon="@drawable/ic_exclude_short_song"
             android:key="exclude_short_songs"
             android:title="@string/exclude_short_songs"
             android:summary="@string/exclude_short_songs_desc"/>
