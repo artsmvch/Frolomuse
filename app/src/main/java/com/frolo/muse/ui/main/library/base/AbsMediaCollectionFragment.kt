@@ -39,7 +39,7 @@ abstract class AbsMediaCollectionFragment <E: Media>: BaseFragment(),
         super.onCreate(savedInstanceState)
         context?.also { safeContext ->
             RESPermissionObserver.observe(safeContext, this) {
-                viewModel.onReadPermissionGranted()
+                viewModel.onReadPermissionGrantedSomewhere()
             }
         }
     }

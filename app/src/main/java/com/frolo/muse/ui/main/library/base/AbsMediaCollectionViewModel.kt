@@ -176,8 +176,22 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
      ******* PERMISSION EVENTS ******
      *******************************/
 
+    /**
+     * Called when the Read-External-Storage permission,
+     * that was requested by THIS UI component, is granted.
+     */
     fun onReadPermissionGranted() {
         doFetch()
+    }
+
+    /**
+     * Called when the Read-External-Storage permission,
+     * that was requested by a UI component OTHER THAN THIS, is granted.
+     */
+    fun onReadPermissionGrantedSomewhere() {
+        if (_activated && !_mediaListFetched) {
+            doFetch()
+        }
     }
 
     /********************************
