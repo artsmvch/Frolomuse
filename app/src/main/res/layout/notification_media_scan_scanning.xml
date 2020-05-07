@@ -2,17 +2,17 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp">
+    android:padding="8dp"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/tv_message"
-        android:text="@string/scanning_media_storage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?textAppearanceListItem"/>
+        android:textAppearance="@style/TextAppearance.MediaScan.Body"
+        android:text="@string/scanning_media_storage"/>
 
     <ProgressBar
         android:id="@+id/pb_progress"
@@ -31,15 +31,15 @@
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textAppearance="?textAppearanceListItem"
+            android:textAppearance="@style/TextAppearance.MediaScan.Body"
             tools:text="10/99"/>
 
         <TextView
             android:id="@+id/btn_cancel"
-            android:text="@string/cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?textAppearanceButton"/>
+            android:textAppearance="@style/TextAppearance.MediaScan.Button"
+            android:text="@string/cancel"/>
     </LinearLayout>
 
 </LinearLayout>
