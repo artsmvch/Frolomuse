@@ -3,7 +3,9 @@ package com.frolo.muse.ui.main.settings.hidden
 import android.app.Dialog
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.frolo.muse.R
 import com.frolo.muse.arch.observeNonNull
@@ -41,6 +43,11 @@ class HiddenFilesDialog : BaseDialogFragment() {
             layoutManager = LinearLayoutManager(context)
             adapter = HiddenFileAdapter {
                 viewModel.onRemoveClick(it)
+            }
+            ContextCompat.getDrawable(context, R.drawable.list_thin_divider_tinted)?.also { d ->
+                val decor = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
+                decor.setDrawable(d)
+                addItemDecoration(decor)
             }
         }
     }

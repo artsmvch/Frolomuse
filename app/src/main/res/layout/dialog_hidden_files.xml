@@ -27,8 +27,6 @@
 
         <com.frolo.muse.views.spring.SpringRecyclerView
             android:id="@+id/rv_files"
-            android:paddingTop="12dp"
-            android:paddingBottom="12dp"
             android:clipToPadding="false"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

@@ -1,30 +1,26 @@
 package com.frolo.muse.ui.main.settings.hidden
 
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.frolo.muse.R
+import com.frolo.muse.inflateChild
 import com.frolo.muse.model.media.MyFile
 import kotlinx.android.synthetic.main.item_hidden_file.view.*
 
 
 class HiddenFileAdapter constructor(
-        private val onRemoveClick: (item: MyFile) -> Unit
+    private val onRemoveClick: (item: MyFile) -> Unit
 ): ListAdapter<MyFile, HiddenFileAdapter.HiddenFileViewHolder>(HiddenFileItemCallback) {
 
     private fun getItemOrNull(position: Int): MyFile? {
         return if (position in 0 until itemCount) getItem(position) else null
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HiddenFileViewHolder {
-        val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_hidden_file, parent, false)
-
-        return HiddenFileViewHolder(view)
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HiddenFileViewHolder =
+            HiddenFileViewHolder(parent.inflateChild(R.layout.item_hidden_file))
 
     override fun onBindViewHolder(holder: HiddenFileViewHolder, position: Int) {
         holder.bind(getItem(position))
@@ -38,10 +34,8 @@ class HiddenFileAdapter constructor(
             itemView.btn_remove.setOnClickListener(this)
         }
 
-        fun bind(item: MyFile) {
-            with(itemView) {
-                tv_filename.text = item.javaFile.absolutePath
-            }
+        fun bind(item: MyFile) = with(itemView) {
+            tv_filename.text = item.javaFile.absolutePath
         }
 
         override fun onClick(v: View?) {
