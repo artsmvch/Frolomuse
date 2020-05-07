@@ -291,10 +291,8 @@
     </string>
 
     <!--MinAudioFileDuration-->
-    <string name="min_audio_file_duration">最小音頻文件持續時間</string>
-    <string name="min_audio_file_duration_desc">
-        庫搜索中排除了所有持續時間短於指定時間的音頻文件
-    </string>
+    <string name="exclude_short_songs">排除短歌</string>
+    <string name="exclude_short_songs_desc">從庫搜索中排除短歌</string>
     <string name="specify_min_audio_file_duration">
         指定最小音頻文件持續時間。所有持續時間短於指定時間的音頻文件都將從庫搜索中排除。
         如果這些值為空或0：0，則不會排除任何音頻文件。

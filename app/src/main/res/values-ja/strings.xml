@@ -292,10 +292,8 @@
     </string>
 
     <!--MinAudioFileDuration-->
-    <string name="min_audio_file_duration">オーディオファイルの最小時間</string>
-    <string name="min_audio_file_duration_desc">
-        オーディオファイルの最小時間
-    </string>
+    <string name="exclude_short_songs">短い曲を除外する</string>
+    <string name="exclude_short_songs_desc">ライブラリ検索から短い曲を除外する</string>
     <string name="specify_min_audio_file_duration">
         オーディオファイルの最小継続時間を指定します。指定されたよりも短い継続時間を持つすべてのオーディオファイルは、ライブラリ検索から除外されます。
         これらの値が空または0：0の場合、オーディオファイルは除外されません。

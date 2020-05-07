@@ -298,10 +298,8 @@
     </string>
 
     <!--MinAudioFileDuration-->
-    <string name="min_audio_file_duration">Minimum ses dosyası süresi</string>
-    <string name="min_audio_file_duration_desc">
-        Belirtilen süreden daha kısa süreye sahip tüm ses dosyaları kütüphane araması dışında bırakılır
-    </string>
+    <string name="exclude_short_songs">Kısa şarkıları hariç tut</string>
+    <string name="exclude_short_songs_desc">Kısa şarkıları kütüphane aramasından hariç tutma</string>
     <string name="specify_min_audio_file_duration">
         Minimum ses dosyası süresini belirtin. Belirtilen süreden daha kısa süreye sahip tüm ses dosyaları kütüphane araması dışında bırakılır.
         Bu değerler boşsa veya 0:0\'dan daha fazla ses dosyası hariç tutulmayacaktır.

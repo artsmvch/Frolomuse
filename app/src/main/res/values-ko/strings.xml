@@ -293,10 +293,8 @@
     </string>
 
     <!--MinAudioFileDuration-->
-    <string name="min_audio_file_duration">최소 오디오 파일 길이</string>
-    <string name="min_audio_file_duration_desc">
-        지속 시간이 지정된 모든 오디오 파일은 라이브러리 검색에서 제외됩니다
-    </string>
+    <string name="exclude_short_songs">짧은 노래 제외</string>
+    <string name="exclude_short_songs_desc">도서관 검색에서 짧은 노래 제외</string>
     <string name="specify_min_audio_file_duration">
         최소 오디오 파일 길이를 지정하십시오. 지속 시간이 지정된 모든 오디오 파일은 라이브러리 검색에서 제외됩니다.
         이 값이 비어 있거나 0:0 이면 오디오 파일이 제외되지 않습니다.

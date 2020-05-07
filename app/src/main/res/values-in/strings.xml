@@ -293,10 +293,8 @@
     </string>
 
     <!--MinAudioFileDuration-->
-    <string name="min_audio_file_duration">Durasi file audio minimum</string>
-    <string name="min_audio_file_duration_desc">
-        Semua file audio dengan durasi lebih pendek dari yang ditentukan dikecualikan dari pencarian perpustakaan
-    </string>
+    <string name="exclude_short_songs">Kecualikan lagu pendek</string>
+    <string name="exclude_short_songs_desc">Kecualikan lagu pendek dari pencarian perpustakaan</string>
     <string name="specify_min_audio_file_duration">
         Tentukan durasi file audio minimum. Semua file audio dengan durasi lebih pendek dari yang ditentukan dikecualikan dari pencarian perpustakaan.
         Jika nilai-nilai ini kosong atau 0:0 maka tidak ada file audio yang akan dikecualikan.

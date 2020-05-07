@@ -297,10 +297,8 @@
     </string>
 
     <!--MinAudioFileDuration-->
-    <string name="min_audio_file_duration">न्यूनतम ऑडियो फ़ाइल अवधि</string>
-    <string name="min_audio_file_duration_desc">
-        निर्दिष्ट अवधि से कम अवधि वाली सभी ऑडियो फ़ाइलों को लाइब्रेरी खोज से बाहर रखा गया है
-    </string>
+    <string name="exclude_short_songs">लघु गीतों को छोड़ दें</string>
+    <string name="exclude_short_songs_desc">पुस्तकालय खोज से लघु गीतों को छोड़ दें</string>
     <string name="specify_min_audio_file_duration">
         न्यूनतम ऑडियो फ़ाइल अवधि निर्दिष्ट करें। निर्दिष्ट अवधि से कम अवधि वाली सभी ऑडियो फ़ाइलों को लाइब्रेरी खोज से बाहर रखा गया है।
         यदि ये मान रिक्त हैं या 0:0 से अधिक नहीं ऑडियो फ़ाइलों को बाहर रखा जाएगा।

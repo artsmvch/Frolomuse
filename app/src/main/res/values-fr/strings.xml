@@ -298,10 +298,8 @@
     </string>
 
     <!--MinAudioFileDuration-->
-    <string name="min_audio_file_duration">Durée minimale du fichier audio</string>
-    <string name="min_audio_file_duration_desc">
-        Tous les fichiers audio d\'une durée inférieure à celle spécifiée sont exclus de la recherche dans la bibliothèque
-    </string>
+    <string name="exclude_short_songs">Exclure les chansons courtes</string>
+    <string name="exclude_short_songs_desc">Exclure les chansons courtes de la recherche dans la bibliothèque</string>
     <string name="specify_min_audio_file_duration">
         Spécifiez la durée minimale du fichier audio. Tous les fichiers audio d\'une durée inférieure à celle spécifiée sont exclus de la recherche dans la bibliothèque.
         Si ces valeurs sont vides ou 0:0, aucun fichier audio ne sera exclu.

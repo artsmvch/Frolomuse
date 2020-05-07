@@ -305,10 +305,8 @@
     </string>
 
     <!--MinAudioFileDuration-->
-    <string name="min_audio_file_duration">Мінімальна тривалість аудіофайлу</string>
-    <string name="min_audio_file_duration_desc">
-        Всі аудіофайли, тривалість яких менша за вказану, виключаються з пошуку в бібліотеці
-    </string>
+    <string name="exclude_short_songs">Виключіть короткі пісні</string>
+    <string name="exclude_short_songs_desc">Виключіть з пошуку бібліотеки короткі пісні</string>
     <string name="specify_min_audio_file_duration">
         Вкажіть мінімальну тривалість аудіофайлу. Усі аудіофайли, тривалість яких менша за вказану, виключаються з пошуку в бібліотеці.
         Якщо ці значення порожні або 0:0, жодні аудіофайли не будуть виключені.

@@ -58,9 +58,9 @@
             android:summary="@string/hidden_files_desc"/>
 
         <Preference
-            android:key="min_audio_file_duration"
-            android:title="@string/min_audio_file_duration"
-            android:summary="@string/min_audio_file_duration_desc"/>
+            android:key="exclude_short_songs"
+            android:title="@string/exclude_short_songs"
+            android:summary="@string/exclude_short_songs_desc"/>
 
         <Preference
             android:icon="@drawable/ic_scan_file"

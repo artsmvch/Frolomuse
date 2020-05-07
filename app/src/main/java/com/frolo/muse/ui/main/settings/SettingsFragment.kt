@@ -114,7 +114,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
             }
         }
 
-        findPreference("min_audio_file_duration").apply {
+        findPreference("exclude_short_songs").apply {
             onPreferenceClickListener = Preference.OnPreferenceClickListener {
                 showMinAudioFileDurationDialog()
                 true
