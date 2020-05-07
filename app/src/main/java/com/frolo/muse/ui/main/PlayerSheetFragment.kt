@@ -43,6 +43,10 @@ class PlayerSheetFragment : BaseFragment(),
             }
         }
 
+    // This is used to remember the slide offset of this sheet
+    // so we can properly configure widgets when onViewCreated is called.
+    private var currSheetSlideOffset: Float? = 0f
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -82,6 +86,14 @@ class PlayerSheetFragment : BaseFragment(),
         layout_hook.setOnClickListener {
             behavior.state = BottomSheetBehavior.STATE_EXPANDED
         }
+
+        imv_close.setOnClickListener {
+            playerSheetCallback?.requestCollapse()
+        }
+
+        currSheetSlideOffset?.also { safeSlideOffset ->
+            onSlideOffset(safeSlideOffset)
+        }
     }
 
     override fun onDestroyView() {
@@ -105,6 +117,13 @@ class PlayerSheetFragment : BaseFragment(),
     override fun onCloseIconClick(fragment: CurrSongQueueFragment) {
         BottomSheetBehavior.from(bottom_sheet_current_song_queue).apply {
             state = BottomSheetBehavior.STATE_COLLAPSED
+        }
+    }
+
+    fun onSlideOffset(offset: Float) {
+        currSheetSlideOffset = offset
+        view?.also {
+            imv_close?.alpha = offset * 4 - 3
         }
     }
 

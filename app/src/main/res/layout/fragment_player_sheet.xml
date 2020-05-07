@@ -5,11 +5,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <FrameLayout
-        android:id="@+id/container_player"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="?actionBarSize"/>
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize">
+
+            <ImageView
+                android:id="@+id/imv_close"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="16dp"
+                android:layout_gravity="start|center_vertical"
+                android:padding="8dp"
+                android:src="@drawable/ic_cross_48dp"
+                android:tint="?iconImageTint"/>
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/container_player"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
 
     <View
         android:id="@+id/view_dim_overlay"

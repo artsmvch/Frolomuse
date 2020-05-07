@@ -8,4 +8,6 @@ interface PlayerSheetCallback {
 
     fun setPlayerSheetDraggable(draggable: Boolean)
 
+    fun requestCollapse()
+
 }

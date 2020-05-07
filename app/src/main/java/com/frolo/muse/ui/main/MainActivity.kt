@@ -78,6 +78,8 @@ class MainActivity : PlayerHostActivity(),
             override fun onStateChanged(bottomSheet: View, newState: Int) = Unit
         }
 
+    private var playerSheetFragment: PlayerSheetFragment? = null
+
     @get:ColorInt
     private val colorPrimary: Int by lazy {
         StyleUtil.readColorAttrValue(this, R.attr.colorPrimary)
@@ -457,8 +459,13 @@ class MainActivity : PlayerHostActivity(),
             else -> R.id.nav_library
         }
 
+        // Initializing PlayerSheet and MiniPlayer
+        val newPlayerSheetFragment = PlayerSheetFragment()
+
+        playerSheetFragment = newPlayerSheetFragment
+
         supportFragmentManager.beginTransaction()
-            .replace(R.id.container_player, PlayerSheetFragment(), FRAG_TAG_PLAYER_SHEET)
+            .replace(R.id.container_player, newPlayerSheetFragment, FRAG_TAG_PLAYER_SHEET)
             .replace(R.id.mini_player_container, MiniPlayerFragment(), FRAG_TAG_MIN_PLAYER)
             .commit()
 
@@ -594,12 +601,18 @@ class MainActivity : PlayerHostActivity(),
             activeActionModes.forEach { it.finish() }
             activeActionModes.clear()
         }
+
+        playerSheetFragment?.onSlideOffset(slideOffset)
     }
 
     override fun setPlayerSheetDraggable(draggable: Boolean) {
         BottomSheetBehavior.from(sliding_player_layout).apply {
             isDraggable = draggable
         }
+    }
+
+    override fun requestCollapse() {
+        collapseSlidingPlayer()
     }
 
     override fun onSupportActionModeStarted(mode: ActionMode) {
