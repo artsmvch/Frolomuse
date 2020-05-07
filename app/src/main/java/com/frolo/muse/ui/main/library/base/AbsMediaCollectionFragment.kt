@@ -17,6 +17,7 @@ import com.frolo.muse.model.menu.OptionsMenu
 import com.frolo.muse.model.menu.SortOrderMenu
 import com.frolo.muse.ui.base.BackPressHandler
 import com.frolo.muse.ui.base.BaseFragment
+import com.frolo.muse.ui.base.RESPermissionObserver
 import com.frolo.muse.ui.getDeleteConfirmationMessage
 import com.frolo.muse.ui.main.confirmDeletion
 import com.frolo.muse.ui.main.confirmShortcutCreation
@@ -33,6 +34,15 @@ abstract class AbsMediaCollectionFragment <E: Media>: BaseFragment(),
     private var contextualProgressDialog: Dialog? = null
 
     abstract val viewModel: AbsMediaCollectionViewModel<E>
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        context?.also { safeContext ->
+            RESPermissionObserver.observe(safeContext, this) {
+                viewModel.onReadPermissionGranted()
+            }
+        }
+    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)

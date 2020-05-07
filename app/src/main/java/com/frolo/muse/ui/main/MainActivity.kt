@@ -29,10 +29,7 @@ import com.frolo.muse.engine.Player
 import com.frolo.muse.dp2px
 import com.frolo.muse.model.media.*
 import com.frolo.muse.ui.PlayerHostActivity
-import com.frolo.muse.ui.base.BackPressHandler
-import com.frolo.muse.ui.base.FragmentNavigator
-import com.frolo.muse.ui.base.NoClipping
-import com.frolo.muse.ui.base.ScanStatusObserver
+import com.frolo.muse.ui.base.*
 import com.frolo.muse.ui.main.audiofx.AudioFxFragment
 import com.frolo.muse.ui.main.library.LibraryFragment
 import com.frolo.muse.ui.main.library.search.SearchFragment
@@ -250,6 +247,7 @@ class MainActivity : PlayerHostActivity(),
             if (index >= 0) {
                 if (grantResults[index] == PackageManager.PERMISSION_GRANTED) {
                     viewModel.onReadStoragePermissionGranted()
+                    RESPermissionObserver.dispatchGranted(this)
                 } else {
                     viewModel.onReadStoragePermissionDenied()
                 }
