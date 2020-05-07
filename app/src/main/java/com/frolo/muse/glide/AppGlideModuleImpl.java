@@ -33,12 +33,12 @@ public final class AppGlideModuleImpl extends AppGlideModule {
 
     @Override
     public void registerComponents(@NonNull Context context, @NonNull Glide glide, @NonNull Registry registry) {
-        // It is important to prepend this ModelLoaderFactory.
+        // It is important to replace the default ModelLoaderFactory for Uri models.
         // By default, Glide loads thumbnails instead of original arts for Uris if the requested size is small.
         // The thumbnails differ from the original images and this may confuse users.
         // The usual case is the album arts in the Player screen (big image size) and list of songs (small image size).
-        // The requests to the same Uri may load different images.
-        registry.prepend(Uri.class, InputStream.class, new UriLoader.StreamFactory(context.getContentResolver()));
+        // So the correct solution is to load only the original album art by its Uri.
+        registry.replace(Uri.class, InputStream.class, new UriLoader.StreamFactory(context.getContentResolver()));
     }
 
     @Override
