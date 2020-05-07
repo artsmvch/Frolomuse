@@ -1,70 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingStart="8dp"
-        android:paddingTop="8dp"
-        android:paddingEnd="8dp"
-        android:paddingBottom="8dp">
+    <ImageView
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1"
+        android:layout_marginStart="@dimen/dialog_corner_radius"
+        android:scaleType="centerCrop"
+        android:id="@+id/imv_album_art"
+        android:layout_width="0dp"
+        android:layout_height="0dp" />
 
-        <ImageView
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintDimensionRatio="1"
-            android:layout_marginStart="12dp"
-            android:scaleType="centerCrop"
-            android:id="@+id/imv_album_art"
-            android:layout_width="0dp"
-            android:layout_height="0dp" />
+    <ImageView
+        app:layout_constraintStart_toStartOf="@id/imv_album_art"
+        app:layout_constraintBottom_toBottomOf="@id/imv_album_art"
+        android:id="@+id/btn_delete_art"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_margin="6dp"
+        android:padding="12dp"
+        android:layout_gravity="bottom|start"
+        android:tint="@color/md_white_1000"
+        android:src="@drawable/ic_trash"
+        android:background="@drawable/bg_delete_art" />
 
-        <ImageView
-            app:layout_constraintStart_toStartOf="@id/imv_album_art"
-            app:layout_constraintBottom_toBottomOf="@id/imv_album_art"
-            android:layout_margin="6dp"
-            android:background="@drawable/bg_delete_art"
-            android:id="@+id/btn_delete_art"
-            android:padding="12dp"
-            android:layout_gravity="bottom|start"
-            android:tint="?attr/iconImageTint"
-            android:src="@drawable/ic_trash"
-            android:layout_width="40dp"
-            android:layout_height="40dp" />
+    <TextView
+        app:layout_constraintStart_toStartOf="@id/imv_album_art"
+        app:layout_constraintTop_toTopOf="@id/imv_album_art"
+        app:layout_constraintEnd_toEndOf="@id/imv_album_art"
+        app:layout_constraintBottom_toTopOf="@id/btn_placeholder_pick_image"
+        app:layout_constraintVertical_chainStyle="packed"
+        android:id="@+id/tv_placeholder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?textAppearanceBody1"
+        android:text="@string/no_album_art"/>
 
-        <com.google.android.material.button.MaterialButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginEnd="6dp"
-            app:layout_constraintStart_toEndOf="@id/imv_album_art"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:id="@+id/btn_cancel"
-            android:text="@string/cancel"/>
+    <TextView
+        app:layout_constraintStart_toStartOf="@id/imv_album_art"
+        app:layout_constraintTop_toBottomOf="@id/tv_placeholder"
+        app:layout_constraintEnd_toEndOf="@id/imv_album_art"
+        app:layout_constraintBottom_toBottomOf="@id/imv_album_art"
+        android:id="@+id/btn_placeholder_pick_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textAppearance="?textAppearanceButton"
+        android:textColor="?colorPrimary"
+        android:text="@string/pick_new_album_art"/>
 
-        <com.google.android.material.button.MaterialButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="6dp"
-            app:layout_constraintStart_toEndOf="@id/btn_cancel"
-            app:layout_constraintTop_toTopOf="@id/btn_cancel"
-            app:layout_constraintBottom_toBottomOf="@id/btn_cancel"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:id="@+id/btn_save"
-            android:text="@string/save"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.Group
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/group_placeholder"
+        app:constraint_referenced_ids="tv_placeholder,btn_placeholder_pick_image"/>
 
-    <include
-        layout="@layout/include_progress_overlay"
-        android:id="@+id/inc_overlay"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone"/>
-</FrameLayout>
+    <View
+        app:layout_constraintStart_toEndOf="@id/imv_album_art"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/divider1"
+        android:layout_width="@dimen/app_divider_size"
+        android:layout_height="0dp"
+        android:background="?dividerTint"/>
+
+    <com.google.android.material.button.MaterialButton
+        app:layout_constraintStart_toEndOf="@id/divider1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/btn_save"
+        app:layout_constraintVertical_chainStyle="packed"
+        android:id="@+id/btn_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/cancel"/>
+
+    <com.google.android.material.button.MaterialButton
+        app:layout_constraintStart_toEndOf="@id/divider1"
+        app:layout_constraintTop_toBottomOf="@id/btn_cancel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/btn_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/save"/>
+
+    <include layout="@layout/include_album_art_deletion_confirmation"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/include_album_art_deletion_confirmation"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="invisible"/>
+
+    <include layout="@layout/include_progress_overlay"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/include_progress_overlay"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:visibility="invisible"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

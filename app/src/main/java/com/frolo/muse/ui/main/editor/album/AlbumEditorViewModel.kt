@@ -1,96 +1,156 @@
 package com.frolo.muse.ui.main.editor.album
 
+import android.graphics.Bitmap
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import com.bumptech.glide.Glide
+import com.frolo.muse.App
+import com.frolo.muse.arch.SingleLiveEvent
+import com.frolo.muse.arch.map
+import com.frolo.muse.glide.GlideAlbumArtHelper
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.media.Album
-import com.frolo.muse.model.media.AlbumArtConfig
 import com.frolo.muse.repository.AlbumRepository
 import com.frolo.muse.rx.SchedulerProvider
-import com.frolo.muse.ui.base.BaseViewModel
+import com.frolo.muse.ui.base.BaseAndroidViewModel
 import io.reactivex.Single
 
 
 class AlbumEditorViewModel constructor(
-        private val schedulerProvider: SchedulerProvider,
-        private val repository: AlbumRepository,
-        private val eventLogger: EventLogger,
-        private val albumArg: Album
-): BaseViewModel(eventLogger) {
+    private val app: App,
+    private val schedulerProvider: SchedulerProvider,
+    private val repository: AlbumRepository,
+    private val eventLogger: EventLogger,
+    private val albumArg: Album
+): BaseAndroidViewModel(app, eventLogger) {
 
-    data class UpdateEvent constructor(
-            val album: Album,
-            val artChanged: Boolean,
-            val newFilepath: String?)
+    /**
+     * A workaround for loading bitmaps with RxJava2.
+     * Unfortunately, RxJava2 does not support nullable values.
+     * So we can use this to wrap nullable bitmap and pass as a result.
+     */
+    private data class BitmapResult(val bitmap: Bitmap?)
 
-    //
     private var _activated: Boolean = false
 
-    private val _selectedFilepath: MutableLiveData<String> = MutableLiveData()
+    private val _pickedArtFilepath = MutableLiveData<String>(null)
 
-    // True if art was changed by selecting a new image or deleting the current one.
-    // False - if art wasn't changed.
-    private var _artWasChanged = false
-
-    private val _albumArtConfig: MutableLiveData<AlbumArtConfig> =
-            MediatorLiveData<AlbumArtConfig>().apply {
-                addSource(_selectedFilepath) { filepath ->
-                    value = AlbumArtConfig(null, filepath)
-                }
+    private val originalArt: LiveData<Bitmap> = MutableLiveData<Bitmap>().apply {
+        createAlbumArtSource(albumArg)
+                .doOnSuccess { value = it.bitmap }
+                .doOnError { value = null }
+                .subscribeFor { }
     }
-    val albumArtConfig: LiveData<AlbumArtConfig> get() = _albumArtConfig
 
-    private val _isLoadingUpdate: MutableLiveData<Boolean> = MutableLiveData()
-    val isLoadingUpdate: LiveData<Boolean> = _isLoadingUpdate
-
-    private val _updatedEvent: MutableLiveData<UpdateEvent> = MutableLiveData()
-    val updatedEvent: LiveData<UpdateEvent> = _updatedEvent
-
-    fun onActive() {
-        if (!_activated) {
-            _activated = true
-            _artWasChanged = false
-            _albumArtConfig.value = AlbumArtConfig(albumArg.id, null)
+    private val _art by lazy {
+        MediatorLiveData<Bitmap>().apply {
+            addSource(originalArt) { original ->
+                value = original
+            }
         }
     }
+    val art: LiveData<Bitmap> get() = _art
 
-    fun onFileSelected(filepath: String?) {
-        _artWasChanged = true
-        _selectedFilepath.value = filepath
+    val placeholderVisible: LiveData<Boolean> =
+            art.map(false) { art -> art == null }
+
+    val deleteArtOptionVisible: LiveData<Boolean> =
+            originalArt.map(false) { original -> original != null }
+
+    private val _saveArtOptionVisible = MutableLiveData<Boolean>(false)
+    val saveArtOptionVisible: LiveData<Boolean>
+        get() = _saveArtOptionVisible
+
+    private val _artDeletionConfirmationVisible = MutableLiveData<Boolean>(false)
+    val artDeletionConfirmationVisible: LiveData<Boolean>
+        get() = _artDeletionConfirmationVisible
+
+    private val _isSavingChanges = MutableLiveData<Boolean>(false)
+    val isSavingChanges: LiveData<Boolean> get() = _isSavingChanges
+
+    private val _artUpdatedEvent = SingleLiveEvent<Album>()
+    val artUpdatedEvent: LiveData<Album> get() = _artUpdatedEvent
+
+    fun onArtPicked(filepath: String?) {
+        _pickedArtFilepath.value = filepath
+        _saveArtOptionVisible.value = true
+        createFilepathSource(filepath)
+                .doOnSuccess { _art.value = it.bitmap }
+                .subscribeFor {  }
     }
 
-    fun onDeleteClicked() {
-        _artWasChanged = true
-        _selectedFilepath.value = null
+    fun onDeleteArtClicked() {
+        _artDeletionConfirmationVisible.value = true
+    }
+
+    fun onArtDeletionCanceled() {
+        _artDeletionConfirmationVisible.value = false
+    }
+
+    fun onArtDeletionConfirmed() {
+        doSaveChanges(null)
     }
 
     fun onSaveClicked() {
-        val operator = if (_artWasChanged) {
-            // Update the art ONLY if artWasChanged == true
-            val filepath = _selectedFilepath.value
+        val filepath = _pickedArtFilepath.value
+        doSaveChanges(filepath)
+    }
 
-            repository
-                    .updateArt(albumArg.id, filepath)
-                    .andThen(repository.getItem(albumArg.id))
-                    .firstOrError()
-                    .map { album ->
-                        UpdateEvent(album, true, filepath)
-                    }
-        } else {
-            Single.just(albumArg)
-                    .map { album ->
-                        UpdateEvent(album, false, null)
-                    }
-        }
-
-        operator
+    private fun doSaveChanges(newFilepath: String?) {
+        repository.updateArt(albumArg.id, newFilepath)
                 .subscribeOn(schedulerProvider.worker())
                 .observeOn(schedulerProvider.main())
-                .doOnSuccess { _isLoadingUpdate.value = true }
-                .doFinally { _isLoadingUpdate.value = false }
-                .subscribeFor { event ->
-                    _updatedEvent.value = event
+                .doOnComplete { _isSavingChanges.value = true }
+                .doFinally { _isSavingChanges.value = false }
+                .subscribeFor {
+                    // This is important to invalidate the key!
+                    // Fuckin' glide is not able to do it itself.
+                    GlideAlbumArtHelper.get().invalidate(albumArg.id)
+                    _artUpdatedEvent.value = albumArg
                 }
     }
+
+    private fun createAlbumArtSource(album: Album): Single<BitmapResult> {
+        val uri = GlideAlbumArtHelper.getUri(album.id)
+
+        val options = GlideAlbumArtHelper.get()
+                .makeRequestOptions(album.id)
+                .dontAnimate()
+                .centerCrop()
+
+        return Single.fromCallable {
+            try {
+                val bitmap = Glide.with(app)
+                        .asBitmap()
+                        .load(uri)
+                        .apply(options)
+                        .submit()
+                        .get()
+                BitmapResult(bitmap)
+            } catch (ignored: Throwable) {
+                BitmapResult(null)
+            }
+        }
+                .subscribeOn(schedulerProvider.worker())
+                .observeOn(schedulerProvider.main())
+    }
+
+    private fun createFilepathSource(filepath: String?): Single<BitmapResult> {
+        return Single.fromCallable {
+            try {
+                val bitmap = Glide.with(app)
+                        .asBitmap()
+                        .load(filepath)
+                        .submit()
+                        .get()
+                BitmapResult(bitmap)
+            } catch (ignored: Throwable) {
+                BitmapResult(null)
+            }
+        }
+                .subscribeOn(schedulerProvider.worker())
+                .observeOn(schedulerProvider.main())
+    }
+
 }

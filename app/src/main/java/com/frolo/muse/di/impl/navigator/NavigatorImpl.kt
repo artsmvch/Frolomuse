@@ -6,7 +6,7 @@ import com.frolo.muse.ui.*
 import com.frolo.muse.ui.main.MainActivity
 import com.frolo.muse.ui.main.audiofx.params.PlaybackParamsDialog
 import com.frolo.muse.ui.main.audiofx.preset.SavePresetDialog
-import com.frolo.muse.ui.main.editor.album.AlbumEditorFragment
+import com.frolo.muse.ui.main.editor.album.AlbumEditorDialog
 import com.frolo.muse.ui.main.editor.playlist.PlaylistEditorDialog
 import com.frolo.muse.ui.main.editor.song.SongEditorDialog
 import com.frolo.muse.ui.main.library.albums.album.AlbumFragment
@@ -95,7 +95,7 @@ class NavigatorImpl(private val root: MainActivity) : Navigator {
     }
 
     override fun editAlbum(album: Album) {
-        val fragment = AlbumEditorFragment.newInstance(album)
+        val fragment = AlbumEditorDialog.newInstance(album)
         root.pushDialog(fragment)
     }
 

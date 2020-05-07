@@ -9,9 +9,7 @@ public class AlbumArtConfig {
     private final Long id;
     private final String data;
 
-    public AlbumArtConfig(
-            @Nullable Long id,
-            @Nullable String data) {
+    public AlbumArtConfig(@Nullable Long id, @Nullable String data) {
         this.id = id;
         this.data = data;
     }

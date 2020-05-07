@@ -45,7 +45,7 @@ fun <T> liveDataOf(item: T?) = object : LiveData<T>(item) { }
  * This function does the same as [androidx.lifecycle.Transformations],
  * except that it allows to set [initialValue] for the returned live data.
  */
-fun <X, Y> LiveData<X>.map(initialValue: Y, mapFunction: (x: X) -> Y): LiveData<Y> {
+fun <X, Y> LiveData<X>.map(initialValue: Y, mapFunction: (x: X?) -> Y?): LiveData<Y> {
     val result = MediatorLiveData<Y>()
     result.value = initialValue
     result.addSource(this) { x -> result.setValue(mapFunction.invoke(x)) }
