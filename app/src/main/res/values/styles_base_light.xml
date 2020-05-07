@@ -71,7 +71,7 @@
 
     <style name="Base.AppTheme.Light.BottomNavigation" parent="Base.AppTheme.BottomNavigationView">
         <item name="android:background">@color/white</item>
-        <item name="itemIconTint">@color/nav_light</item>
+        <item name="itemIconTint">@color/nav_light_blue</item>
     </style>
 
     <style name="Base.AppTheme.Light.Toolbar" parent="Base.AppTheme.Toolbar">
