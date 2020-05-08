@@ -133,32 +133,9 @@
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <FrameLayout
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    <include layout="@layout/fragment_base_list_top_gravity"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <com.frolo.muse.views.spring.AppRecyclerView
-            android:id="@+id/rv_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
-        <include layout="@layout/include_placeholder"
-            android:id="@+id/layout_list_placeholder"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal|top"
-            android:layout_margin="48dp"
-            android:visibility="gone"
-            tools:visibility="visible" />
-
-        <include layout="@layout/include_loading"
-            android:id="@+id/pb_loading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal|top"
-            android:layout_margin="48dp"
-            android:visibility="gone" />
-    </FrameLayout>
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
