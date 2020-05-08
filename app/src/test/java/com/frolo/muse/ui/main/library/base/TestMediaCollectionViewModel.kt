@@ -5,6 +5,7 @@ import com.frolo.muse.interactor.media.*
 import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
 import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
 import com.frolo.muse.interactor.media.get.GetMediaUseCase
+import com.frolo.muse.interactor.media.shortcut.CreateShortcutUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.media.Media
 import com.frolo.muse.rx.SchedulerProvider
@@ -19,6 +20,7 @@ class TestMediaCollectionViewModel<T> constructor(
         deleteMediaUseCase: DeleteMediaUseCase<T>,
         getIsFavouriteUseCase: GetIsFavouriteUseCase<T>,
         changeFavouriteUseCase: ChangeFavouriteUseCase<T>,
+        createShortcutUseCase: CreateShortcutUseCase<T>,
         schedulerProvider: SchedulerProvider,
         navigator: Navigator,
         eventLogger: EventLogger
@@ -31,6 +33,7 @@ class TestMediaCollectionViewModel<T> constructor(
         deleteMediaUseCase,
         getIsFavouriteUseCase,
         changeFavouriteUseCase,
+        createShortcutUseCase,
         schedulerProvider,
         navigator,
         eventLogger

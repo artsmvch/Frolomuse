@@ -6,6 +6,7 @@ import com.frolo.muse.interactor.media.*
 import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
 import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
 import com.frolo.muse.interactor.media.get.GetMediaUseCase
+import com.frolo.muse.interactor.media.shortcut.CreateShortcutUseCase
 import com.frolo.muse.model.media.Media
 import com.frolo.muse.model.menu.ContextualMenu
 import com.frolo.muse.navigator.TestNavigator
@@ -49,6 +50,8 @@ class AbsMediaCollectionViewModelTest {
     private lateinit var getIsFavouriteUseCase: GetIsFavouriteUseCase<Media>
     @Mock
     private lateinit var changeFavouriteUseCase: ChangeFavouriteUseCase<Media>
+    @Mock
+    private lateinit var createShortcutUseCase: CreateShortcutUseCase<Media>
     private val schedulerProvider = TestSchedulerProvider.SHARED
     private val navigator = TestNavigator()
     private val eventLogger = TestEventLogger()
@@ -70,6 +73,7 @@ class AbsMediaCollectionViewModelTest {
                 deleteMediaUseCase,
                 getIsFavouriteUseCase,
                 changeFavouriteUseCase,
+                createShortcutUseCase,
                 schedulerProvider,
                 navigator,
                 eventLogger)
