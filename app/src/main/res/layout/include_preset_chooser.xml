@@ -19,7 +19,7 @@
         android:id="@+id/tv_hint"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="4dp"
         android:textAppearance="?textAppearanceCaption"
         android:text="@string/preset"/>
 
@@ -32,7 +32,8 @@
         app:layout_constraintHorizontal_bias="0.0"
         android:id="@+id/sp_presets"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_audio_fx_spinner"/>
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier1"

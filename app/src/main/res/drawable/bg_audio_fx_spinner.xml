@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <layer-list
+            android:paddingMode="stack"
+            android:paddingRight="24dp">
+
+            <item
+                android:right="12dp"
+                android:gravity="center_vertical|right"
+                android:drawable="@drawable/ic_arrow_drop_down_10dp">
+            </item>
+
+        </layer-list>
+    </item>
+</selector>
