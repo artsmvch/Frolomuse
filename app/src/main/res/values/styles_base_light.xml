@@ -15,7 +15,7 @@
         <item name="materialAlertDialogTheme">@style/Base.AppTheme.MaterialAlertDialog</item>
         <item name="bottomSheetDialogTheme">@style/Base.AppTheme.BottomSheet.Dialog.Light</item>
         <item name="bottomNavigationStyle">@style/Base.AppTheme.Light.BottomNavigation</item>
-        <item name="spinnerStyle">@style/Base.AppTheme.Spinner.Light</item>
+        <item name="spinnerStyle">@style/Base.AppTheme.Spinner</item>
         <item name="toolbarStyle">@style/Base.AppTheme.Light.Toolbar</item>
         <item name="tabStyle">@style/Base.AppTheme.TabLayout</item>
         <item name="android:textViewStyle">@style/Base.AppTheme.TextView</item>
@@ -96,10 +96,6 @@
     <style name="Switch.Light" parent="Widget.MaterialComponents.CompoundButton.Switch">
         <item name="trackTint">#DFDFDF</item>
         <item name="useMaterialThemeColors">false</item>
-    </style>
-
-    <style name="Base.AppTheme.Spinner.Light" parent="Widget.AppCompat.Spinner.Underlined">
-        <item name="android:backgroundTint">#AAAAAA</item>
     </style>
 
 </resources>

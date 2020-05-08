@@ -12,9 +12,9 @@
 
     <ImageView
         android:id="@+id/imv_preset_icon"
-        android:layout_width="28dp"
-        android:layout_height="28dp"
-        android:padding="4dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="8dp"
         tools:src="@drawable/png_normal" />
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -22,8 +22,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:paddingStart="4dp"
-        android:paddingEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
         android:gravity="start|center_vertical"
         android:textAppearance="?textAppearanceListItem"
         android:textSize="16sp"

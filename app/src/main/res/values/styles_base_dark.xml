@@ -16,6 +16,7 @@
         <item name="android:textViewStyle">@style/Base.AppTheme.TextView</item>
         <item name="recyclerViewStyle">@style/Base.AppTheme.RecyclerView</item>
         <item name="materialButtonStyle">@style/Base.AppTheme.Button.TextButton</item>
+        <item name="spinnerStyle">@style/Base.AppTheme.Spinner</item>
 
         <item name="actionBarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat</item>
