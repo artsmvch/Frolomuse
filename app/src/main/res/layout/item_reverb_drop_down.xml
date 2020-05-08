@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.AppCompatTextView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    style="?attr/spinnerDropDownItemStyle"
-    android:textColor="?attr/android:textColor"
-    android:gravity="start|center_vertical"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tv_preset_reverb_name"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minWidth="80dp"
+    android:minHeight="40dp"
     android:textSize="16sp"
     android:paddingStart="8dp"
     android:paddingEnd="8dp"
-    android:id="@+id/tv_preset_reverb_name"
-    android:text="@string/placeholder_unknown"
-    android:layout_width="match_parent"
-    android:layout_height="40dp" />
+    android:textAppearance="?textAppearanceListItem"
+    style="?attr/spinnerDropDownItemStyle"
+    tools:text="Unknown" />

@@ -1,6 +1,7 @@
-package com.frolo.muse.ui.main.player.mini;
+package com.frolo.muse.views.text;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Rect;
 import android.text.TextPaint;
 import android.text.TextUtils;
@@ -9,6 +10,8 @@ import android.util.TypedValue;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatTextView;
+
+import com.frolo.muse.R;
 
 
 /**
@@ -37,6 +40,15 @@ public class FitSingleLineTextView extends AppCompatTextView {
 
         super.setLines(1);
         super.setEllipsize(TextUtils.TruncateAt.END);
+
+        final TypedArray arr = context.getTheme().obtainStyledAttributes(
+                attrs, R.styleable.FitSingleLineTextView, 0, 0);
+
+        if (arr.hasValue(R.styleable.FitSingleLineTextView_maxTextSize)) {
+            setMaxTextSize((int) arr.getDimension(R.styleable.FitSingleLineTextView_maxTextSize, MAX_TEXT_SIZE_NOT_SET));
+        }
+
+        arr.recycle();
     }
 
     @Nullable
@@ -68,11 +80,11 @@ public class FitSingleLineTextView extends AppCompatTextView {
     }
 
     /**
-     * Limits the text size to a given value.
+     * Limits the text size to the given <code>maxTextSize</code>>.
      * NOTE: the value is set in pixels.
      * @param maxTextSize max text size in pixels
      */
-    void setMaxTextSize(int maxTextSize) {
+    public void setMaxTextSize(int maxTextSize) {
         if (mMaxTextSize != maxTextSize) {
             mMaxTextSize = maxTextSize;
             if (maxTextSize > 0) {

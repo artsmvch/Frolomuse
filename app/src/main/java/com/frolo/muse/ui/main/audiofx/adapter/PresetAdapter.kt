@@ -37,7 +37,7 @@ class PresetAdapter constructor(
 
         return view.apply {
             val preset = getItem(position)
-            bindView(this, preset)
+            bindView(this, preset, false)
         }
     }
 
@@ -49,16 +49,18 @@ class PresetAdapter constructor(
 
         return view.apply {
             val preset = getItem(position)
-            bindView(this, preset)
+            bindView(this, preset, true)
         }
     }
 
-    private fun bindView(itemView: View, preset: Preset) = itemView.apply {
+    private fun bindView(itemView: View, preset: Preset, isDropDownItem: Boolean) = itemView.apply {
         val name = preset.name
         if (preset is NativePreset) {
+            imv_preset_icon.visibility = View.VISIBLE
             imv_preset_icon.setImageResource(getDrawableIdForPreset(name))
             tv_preset_name.setText(getStringIdForPreset(name))
         } else {
+            imv_preset_icon.visibility = if (isDropDownItem) View.VISIBLE else View.GONE
             imv_preset_icon.setImageDrawable(null)
             tv_preset_name.text = name
         }
@@ -107,4 +109,5 @@ class PresetAdapter constructor(
             else -> R.string.preset_normal
         }
     }
+
 }

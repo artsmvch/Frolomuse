@@ -55,8 +55,7 @@ class ReverbAdapter constructor(
     override fun getItem(position: Int): Reverb = reverbs[position]
 
     override fun getItemId(position: Int): Long {
-        val item = getItem(position)
-        return when (item) {
+        return when (getItem(position)) {
             Reverb.NONE -> 1
             Reverb.LARGE_HALL -> 2
             Reverb.LARGE_ROOM -> 3

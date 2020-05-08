@@ -206,7 +206,7 @@ class AudioFxFragment: BaseFragment(), NoClipping {
 
         presets.observeNonNull(owner) { presets ->
             val adapter = PresetAdapter(presets) { item ->
-                onDeletePresetClicked(item)
+                viewModel.onDeletePresetClicked(item)
             }
 
             sp_presets.adapter = adapter
@@ -279,10 +279,9 @@ class AudioFxFragment: BaseFragment(), NoClipping {
     }
 
     override fun removeClipping(left: Int, top: Int, right: Int, bottom: Int) {
-        view?.also { safeView ->
-            if (safeView is ViewGroup) {
-                safeView.setPadding(left, top, right, bottom)
-                safeView.clipToPadding = false
+        view?.also {
+            layout_audio_fx_content?.also { safeContentLayout ->
+                safeContentLayout.setPadding(left, top, right, bottom)
             }
         }
     }

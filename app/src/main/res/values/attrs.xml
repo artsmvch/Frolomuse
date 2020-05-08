@@ -84,4 +84,9 @@
 
     <!--FastScroller-->
     <attr name="fastScrollerStyle" format="reference"/>
+
+    <!--FitSingleLineTextView-->
+    <declare-styleable name="FitSingleLineTextView">
+        <attr name="maxTextSize" format="dimension"/>
+    </declare-styleable>
 </resources>

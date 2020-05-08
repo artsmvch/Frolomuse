@@ -16,6 +16,7 @@ import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.sp2px
 import com.frolo.muse.ui.base.BaseFragment
+import com.frolo.muse.views.text.FitSingleLineTextView
 import kotlinx.android.synthetic.main.fragment_mini_player.*
 
 

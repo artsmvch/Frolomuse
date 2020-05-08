@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.AppCompatTextView
+<com.frolo.muse.views.text.FitSingleLineTextView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:textColor="?attr/android:textColor"
-    android:gravity="start|center_vertical"
-    android:textSize="16sp"
-    android:paddingStart="8dp"
-    android:paddingEnd="8dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/tv_preset_reverb_name"
-    android:text="@string/placeholder_unknown"
-    android:maxLines="1"
-    android:ellipsize="end"
     android:layout_width="match_parent"
-    android:layout_height="32dp" />
+    android:layout_height="28dp"
+    android:paddingStart="4dp"
+    android:paddingTop="4dp"
+    android:paddingEnd="4dp"
+    android:paddingBottom="4dp"
+    android:textAppearance="?textAppearanceListItem"
+    android:textSize="16sp"
+    app:maxTextSize="16sp"
+    tools:text="Unknown" />

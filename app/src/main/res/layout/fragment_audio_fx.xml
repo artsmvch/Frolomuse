@@ -11,13 +11,18 @@
         android:orientation="vertical"
         android:gravity="center">
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/tb_actions"
+        <com.google.android.material.appbar.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:minHeight="?attr/actionBarSize"
-            tools:title="Toolbar"
-            tools:subtitle="Subtitle"/>
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/tb_actions"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:background="?colorPrimaryDark"
+                tools:title="Toolbar"
+                tools:subtitle="Subtitle"/>
+        </com.google.android.material.appbar.AppBarLayout>
 
         <FrameLayout
             android:layout_width="match_parent"
