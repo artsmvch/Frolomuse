@@ -538,6 +538,11 @@ class MainActivity : PlayerHostActivity(),
                 }
             }
         }
+
+        // Check if we need to open the player screen
+        if (intent.getBooleanExtra(EXTRA_OPEN_PLAYER, false)) {
+            expandSlidingPlayer()
+        }
     }
 
     private fun requestReadStoragePermission() {
@@ -638,6 +643,7 @@ class MainActivity : PlayerHostActivity(),
 
         //private const val ACTION_NAV_MEDIA = "com.frolo.muse.ui.main.ACTION_NAV_MEDIA"
 
+        private const val EXTRA_OPEN_PLAYER = "open_player"
         private const val EXTRA_TAB_INDEX = "last_tab_index"
         private const val EXTRA_NAV_KIND_OF_MEDIA = "com.frolo.muse.ui.main.nav_kind_of_media"
         private const val EXTRA_NAV_MEDIA_ID = "com.frolo.muse.ui.main.nav_media_id"
@@ -657,6 +663,9 @@ class MainActivity : PlayerHostActivity(),
 
         fun newIntent(context: Context, tabIndex: Int = INDEX_LIBRARY): Intent =
                 Intent(context, MainActivity::class.java).putExtra(EXTRA_TAB_INDEX, tabIndex)
+
+        fun newIntent(context: Context, openPlayer: Boolean): Intent =
+                Intent(context, MainActivity::class.java).putExtra(EXTRA_OPEN_PLAYER, openPlayer)
 
         private fun newNavMediaIntent(context: Context, media: Media): Intent {
             return Intent(context, MainActivity::class.java)
