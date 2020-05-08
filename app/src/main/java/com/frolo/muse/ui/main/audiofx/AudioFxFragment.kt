@@ -1,8 +1,6 @@
 package com.frolo.muse.ui.main.audiofx
 
-import android.Manifest
 import android.content.Context
-import android.media.audiofx.Visualizer
 import android.os.Build
 import android.os.Bundle
 import android.view.*
@@ -13,10 +11,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.frolo.muse.R
 import com.frolo.muse.StyleUtil
-import com.frolo.muse.Trace
 import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.glide.GlideOptions.bitmapTransform
-import com.frolo.muse.model.VisualizerRendererType
 import com.frolo.muse.model.preset.Preset
 import com.frolo.muse.model.reverb.Reverb
 import com.frolo.muse.ui.Snapshots
@@ -25,12 +21,7 @@ import com.frolo.muse.ui.base.NoClipping
 import com.frolo.muse.ui.main.audiofx.adapter.PresetAdapter
 import com.frolo.muse.ui.main.audiofx.adapter.ReverbAdapter
 import com.frolo.muse.ui.main.audiofx.preset.PresetSavedEvent
-import com.frolo.muse.ui.main.audiofx.vrt.VisualizerRendererTypeAdapter
 import com.frolo.muse.views.observeSelection
-import com.frolo.muse.views.visualizer.CircleSpectrumRenderer
-import com.frolo.muse.views.visualizer.LineRenderer
-import com.frolo.muse.views.visualizer.LineSpectrumRenderer
-import com.frolo.muse.views.visualizer.SpectrumRenderer
 import jp.wasabeef.glide.transformations.BlurTransformation
 import kotlinx.android.synthetic.main.fragment_audio_fx.*
 import kotlinx.android.synthetic.main.include_audio_fx_content.*
@@ -44,16 +35,9 @@ import kotlinx.android.synthetic.main.include_seekbar_visualizer.*
 
 class AudioFxFragment: BaseFragment(), NoClipping {
 
-    companion object {
-
-        // Factory
-        fun newInstance() = AudioFxFragment()
-    }
-
     private val viewModel: AudioFxViewModel by viewModel()
 
     private var enableStatusSwitchView: CompoundButton? = null
-    private var visualizer: Visualizer? = null
 
     private lateinit var presetSaveEvent: PresetSavedEvent
 
@@ -111,17 +95,6 @@ class AudioFxFragment: BaseFragment(), NoClipping {
                 viewModel.onVirtStrengthChanged(value.toShort())
             }
         }
-
-        spinner_visualizer_renderer_type.adapter =
-                VisualizerRendererTypeAdapter(VisualizerRendererType.values())
-        spinner_visualizer_renderer_type.observeSelection { adapterView, position ->
-            (adapterView.adapter as? VisualizerRendererTypeAdapter)?.also { adapter ->
-                val selectedItem = adapter.getItem(position)
-                viewModel.onVisualizerRendererTypeSelected(selectedItem)
-            }
-        }
-
-        initVisualizer()
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -130,65 +103,9 @@ class AudioFxFragment: BaseFragment(), NoClipping {
         viewModel.onOpened()
     }
 
-    override fun onDestroyView() {
-        visualizer?.also { safeVisualizer ->
-            safeVisualizer
-                .runCatching { release() }
-                .onFailure { Trace.e(it) }
-        }
-        visualizer = null
-        super.onDestroyView()
-    }
-
     override fun onDetach() {
         presetSaveEvent.unregister(requireContext())
         super.onDetach()
-    }
-
-    private fun showWaveForm() {
-        visualizer_view.visibility = View.VISIBLE
-
-        runCatching {
-            if (visualizer == null) {
-                visualizer = viewModel.audioSessionId.value?.let { Visualizer(it) }
-            }
-        }.onFailure {
-            Trace.e(it)
-            toastError(it)
-        }
-
-        visualizer?.also { safeVisualizer ->
-            safeVisualizer.runCatching {
-                captureSize = Visualizer.getCaptureSizeRange()[0]
-                setDataCaptureListener(object : Visualizer.OnDataCaptureListener {
-                    override fun onFftDataCapture(visualizer: Visualizer?, fft: ByteArray?, samplingRate: Int) {
-                        // we ignore fft
-                    }
-                    override fun onWaveFormDataCapture(visualizer: Visualizer?, waveform: ByteArray?, samplingRate: Int) {
-                        visualizer_view?.setData(waveform)
-                    }
-                }, Visualizer.getMaxCaptureRate(), true, false)
-                enabled = true
-            }.onFailure {
-                Trace.e(it)
-            }
-        }
-    }
-
-    private fun initVisualizer() {
-        btn_show_visualizer.setOnClickListener {
-            requestRxPermissions(Manifest.permission.RECORD_AUDIO) { granted ->
-                if (granted) {
-                    btn_show_visualizer.visibility = View.GONE
-                    showWaveForm()
-                }
-            }
-        }
-
-        if (isPermissionGranted(Manifest.permission.RECORD_AUDIO)) {
-            btn_show_visualizer.visibility = View.GONE
-            showWaveForm()
-        }
     }
 
     private fun initPresetChooser() {
@@ -357,31 +274,6 @@ class AudioFxFragment: BaseFragment(), NoClipping {
             sp_reverbs.setTag(R.id.tag_spinner_selected_item, reverb)
         }
 
-        visualizerRendererType.observeNonNull(owner) { type ->
-            val renderer = when(type) {
-                VisualizerRendererType.CIRCLE -> CircleSpectrumRenderer()
-                VisualizerRendererType.CIRCLE_SPECTRUM -> CircleSpectrumRenderer()
-                VisualizerRendererType.LINE -> LineRenderer()
-                VisualizerRendererType.LINE_SPECTRUM -> LineSpectrumRenderer()
-                VisualizerRendererType.SPECTRUM -> SpectrumRenderer()
-                else -> null
-            }
-
-            visualizer_view.renderer = renderer?.apply {
-                color = StyleUtil.readColorAttrValue(visualizer_view.context, R.attr.colorSecondary)
-            }
-
-            val adapter = spinner_visualizer_renderer_type.adapter as? VisualizerRendererTypeAdapter
-            if (adapter != null) {
-                val position = adapter.indexOf(type)
-                if (position >= 0 && position < adapter.count) {
-                    spinner_visualizer_renderer_type.setSelection(position)
-                }
-            }
-
-            spinner_visualizer_renderer_type.setTag(R.id.tag_spinner_selected_item, type)
-        }
-
         selectVisualizerRendererTypeEvent.observeNonNull(owner) { currSelectedType ->
         }
     }
@@ -393,6 +285,13 @@ class AudioFxFragment: BaseFragment(), NoClipping {
                 safeView.clipToPadding = false
             }
         }
+    }
+
+    companion object {
+
+        // Factory
+        fun newInstance() = AudioFxFragment()
+
     }
 
 }

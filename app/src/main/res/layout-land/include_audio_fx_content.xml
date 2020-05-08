@@ -1,50 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.frolo.muse.views.TouchableLinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/layout_audio_fx_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/layout_audio_fx_content"
     android:orientation="horizontal"
     android:gravity="center">
 
-    <LinearLayout
-        android:orientation="vertical"
+    <com.frolo.muse.ui.main.audiofx.eq.EqualizerView
+        android:id="@+id/equalizer_view"
         android:layout_weight="1"
         android:layout_width="0dp"
-        android:layout_height="match_parent">
-
-        <com.frolo.muse.ui.main.audiofx.eq.EqualizerView
-            android:id="@+id/equalizer_view"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginEnd="12dp"
-            android:layout_marginBottom="4dp"
-            android:layout_gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="7"
-            android:orientation="horizontal"/>
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="2"
-            android:gravity="center">
-
-            <com.frolo.muse.views.visualizer.VisualizerView
-                android:id="@+id/visualizer_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="bottom" />
-            <com.google.android.material.button.MaterialButton
-                android:textSize="12sp"
-                android:text="@string/show_visualizer"
-                android:layout_gravity="center"
-                android:id="@+id/btn_show_visualizer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </FrameLayout>
-    </LinearLayout>
+        android:layout_height="match_parent"
+        android:layout_margin="16dp"/>
 
     <LinearLayout
         android:orientation="vertical"
@@ -52,28 +20,25 @@
         android:layout_width="0dp"
         android:layout_height="match_parent">
 
-        <include
+        <include layout="@layout/include_preset_reverb_chooser"
             android:layout_marginTop="8dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            layout="@layout/include_preset_reverb_chooser"/>
+            android:layout_height="wrap_content" />
 
-        <include
+        <include layout="@layout/include_preset_chooser"
             android:layout_marginTop="8dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            layout="@layout/include_preset_chooser"/>
+            android:layout_height="wrap_content" />
 
-        <include
+        <include layout="@layout/include_seekbar_bass_boost"
             android:layout_marginTop="12dp"
-            layout="@layout/include_seekbar_bass_boost"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"/>
 
-        <include
+        <include layout="@layout/include_seekbar_visualizer"
             android:layout_marginTop="8dp"
-            layout="@layout/include_seekbar_visualizer"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"/>
     </LinearLayout>
+
 </com.frolo.muse.views.TouchableLinearLayout>
