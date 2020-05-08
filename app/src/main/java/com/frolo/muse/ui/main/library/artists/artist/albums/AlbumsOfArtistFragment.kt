@@ -15,6 +15,8 @@ import com.frolo.muse.ui.base.withArg
 import com.frolo.muse.ui.main.library.base.AbsMediaCollectionFragment
 import com.frolo.muse.ui.main.library.base.BaseAdapter
 import com.frolo.muse.dp2px
+import com.frolo.muse.glide.GlideAlbumArtHelper
+import com.frolo.muse.glide.observe
 import kotlinx.android.synthetic.main.fragment_albums_of_artist.*
 
 
@@ -44,6 +46,13 @@ class AlbumsOfArtistFragment : AbsMediaCollectionFragment<Album>() {
 
         override fun onOptionsMenuClick(item: Album, position: Int) {
             viewModel.onOptionsMenuClicked(item)
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        GlideAlbumArtHelper.get().observe(this) {
+            adapter.forceResubmit()
         }
     }
 
