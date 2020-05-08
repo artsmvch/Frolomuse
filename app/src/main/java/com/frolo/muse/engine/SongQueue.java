@@ -231,8 +231,22 @@ public final class SongQueue implements Cloneable {
         invalidateSelf();
     }
 
+    /**
+     * Shuffles the queue.
+     */
     /*package*/ synchronized void shuffle() {
         Collections.shuffle(mSongs);
+        invalidateSelf();
+    }
+
+    /**
+     * Shuffles the queue and puts the given <code>putInFront</code> song in the front of the queue.
+     */
+    /*package*/ synchronized void shuffle(Song putInFront) {
+        Collections.shuffle(mSongs);
+        if (mSongs.remove(putInFront)) {
+            mSongs.add(0, putInFront);
+        }
         invalidateSelf();
     }
 
