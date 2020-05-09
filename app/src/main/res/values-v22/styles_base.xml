@@ -2,6 +2,6 @@
 <resources>
     <style name="Base.AppTheme.Spinner" parent="Widget.AppCompat.Spinner.Underlined">
         <item name="android:background">@drawable/bg_spinner</item>
-        <item name="android:popupBackground">?colorSurface</item>
+        <item name="android:popupBackground">@drawable/bg_spinner_popup</item>
     </style>
 </resources>
