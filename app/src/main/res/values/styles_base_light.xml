@@ -23,6 +23,7 @@
         <item name="materialButtonStyle">@style/Base.AppTheme.Button.TextButton</item>
         <item name="searchViewStyle">@style/Base.AppTheme.SearchView</item>
         <item name="fastScrollerStyle">@style/Base.AppTheme.FastScroller</item>
+        <item name="sliderStyle">@style/Base.AppTheme.Slider.Light</item>
 
         <item name="actionBarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
@@ -96,6 +97,15 @@
     <style name="Switch.Light" parent="Widget.MaterialComponents.CompoundButton.Switch">
         <item name="trackTint">#DFDFDF</item>
         <item name="useMaterialThemeColors">false</item>
+    </style>
+
+    <style name="Base.AppTheme.Slider.Light" parent="Widget.MaterialComponents.Slider">
+        <item name="haloColor">@color/color_secondary_alpha20</item>
+        <item name="haloRadius">20dp</item>
+        <item name="trackColorInactive">#E4E4E4</item>
+        <item name="trackColorActive">?colorSecondary</item>
+        <item name="thumbColor">?colorSecondary</item>
+        <item name="trackHeight">2dp</item>
     </style>
 
 </resources>

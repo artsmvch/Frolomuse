@@ -17,6 +17,7 @@
         <item name="recyclerViewStyle">@style/Base.AppTheme.RecyclerView</item>
         <item name="materialButtonStyle">@style/Base.AppTheme.Button.TextButton</item>
         <item name="spinnerStyle">@style/Base.AppTheme.Spinner</item>
+        <item name="sliderStyle">@style/Base.AppTheme.Slider.Dark</item>
 
         <item name="actionBarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat</item>
@@ -63,6 +64,15 @@
     <style name="Base.AppTheme.Switch.Dark" parent="Widget.MaterialComponents.CompoundButton.Switch">
         <item name="trackTint">#5E5E5E</item>
         <item name="useMaterialThemeColors">false</item>
+    </style>
+
+    <style name="Base.AppTheme.Slider.Dark" parent="Widget.MaterialComponents.Slider">
+        <item name="haloColor">@color/color_secondary_alpha20</item>
+        <item name="haloRadius">20dp</item>
+        <item name="trackColorInactive">#66959595</item>
+        <item name="trackColorActive">?colorSecondary</item>
+        <item name="thumbColor">?colorSecondary</item>
+        <item name="trackHeight">2dp</item>
     </style>
 
 </resources>
