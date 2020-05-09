@@ -22,6 +22,13 @@ public final class EqualizerView extends LinearLayout {
 
     private static final long DEBOUNCE_SET_BAND_LEVEL = 300L;
 
+    private static String getFrequencyLabel(int freq) {
+        if (freq > 1_000_000)
+            return (freq / 1_000_000) + "kkHz";
+
+        return (freq / 1000) + "kHz";
+    }
+
     /**
      * Special handler for delaying band level setting.
      * {@link Message#what} is used as band index.
@@ -157,11 +164,9 @@ public final class EqualizerView extends LinearLayout {
         int addedBandCount = 0;
         for (short bandIndex = 0; bandIndex < numberOfBands; bandIndex++) {
 
-            //final DbRange dbRange = audioFx.getDbRange(bandIndex);
-//            int[] arr = audioFx.getBandFreqRange(bandIndex.toShort())
-//            int min = arr.getOrNull(0) ?: 0
-//            int max = arr.getOrNull(1) ?: 0
             final int currentValue = audioFx.getBandLevel(bandIndex);
+
+            final int[] freqRange = audioFx.getBandFreqRange(bandIndex);
 
             final DbSlider slider;
             if (bandIndex >= container.getChildCount())  {
@@ -186,6 +191,11 @@ public final class EqualizerView extends LinearLayout {
 
             slider.setRange(minBandLevel, maxBandLevel);
             slider.setValue(currentValue, animate);
+
+            if (freqRange != null && freqRange.length == 2) {
+                final int max = freqRange[1];
+                slider.setTopLabel(getFrequencyLabel(max));
+            }
         }
 
         // removing views those weren't bounded to any band

@@ -6,7 +6,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center_horizontal"
-    android:padding="8dp"
+    android:paddingStart="4dp"
+    android:paddingTop="2dp"
+    android:paddingEnd="4dp"
+    android:paddingBottom="2dp"
     tools:parentTag="android.widget.LinearLayout">
 
     <TextView
@@ -14,9 +17,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?textAppearanceCaption"
+        android:textSize="9sp"
         android:lines="1"
         android:ellipsize="end"
-        tools:text="0 DB"/>
+        tools:text="0 DB"
+        tools:ignore="SmallSp" />
 
     <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper
         android:layout_width="wrap_content"
@@ -34,7 +39,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?textAppearanceCaption"
+        android:textSize="9sp"
         android:lines="1"
         android:ellipsize="end"
-        tools:text="100 hz"/>
+        tools:text="100 hz"
+        tools:ignore="SmallSp" />
+
 </merge>
