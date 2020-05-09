@@ -12,12 +12,8 @@ import com.frolo.muse.ui.base.NoClipping
 import kotlinx.android.synthetic.main.fragment_appbar_settings.*
 
 
-// Additional toolbar above settings fragment
+// Simple wrapper for the SettingsFragment, this only puts a Toolbar at the top of it.
 class AppBarSettingsFragment : BaseFragment(), NoClipping {
-
-    companion object {
-        fun newInstance() = AppBarSettingsFragment()
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,4 +36,9 @@ class AppBarSettingsFragment : BaseFragment(), NoClipping {
             }
         }
     }
+
+    companion object {
+        fun newInstance() = AppBarSettingsFragment()
+    }
+
 }
