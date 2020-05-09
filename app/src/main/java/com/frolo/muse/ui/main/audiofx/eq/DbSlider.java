@@ -12,7 +12,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.interpolator.view.animation.FastOutLinearInInterpolator;
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 
 import com.frolo.muse.BuildConfig;
 import com.frolo.muse.R;
@@ -31,9 +31,9 @@ public final class DbSlider extends LinearLayout {
 
     private static final String LOG_TAG = "DbSlider";
 
-    private static final long PROGRESS_ANIM_DURATION = 150L;
+    private static final long PROGRESS_ANIM_DURATION = 300L;
     private static final Interpolator sProgressAnimInterpolator =
-            new FastOutLinearInInterpolator();
+            new FastOutSlowInInterpolator();
 
     interface OnDbValueChangeListener {
         void onDbValueChange(DbSlider slider, int value, boolean fromUser);
@@ -48,7 +48,7 @@ public final class DbSlider extends LinearLayout {
     private int mMinValue = 0;
     private int mMaxValue = 1;
 
-    // Inner views
+    // Internal widgets
     private final TextView mTopLabelTextView;
     private final TextView mBottomLabelTextView;
     private final VerticalSeekBar mVerticalSeekBar;
