@@ -59,7 +59,7 @@ class CurrSongQueueViewModel @Inject constructor(
     private var currSongQueue: SongQueue? = null
 
     private val queueCallback = SongQueue.Callback { queue ->
-        submitMediaList(queue.makeList())
+        submitMediaList(queue.snapshot)
         _playingPosition.value = player.getCurrentPositionInQueue()
     }
 
@@ -112,7 +112,7 @@ class CurrSongQueueViewModel @Inject constructor(
         currSongQueue?.unregisterCallback(queueCallback)
         currSongQueue = queue
         queue?.registerCallback(queueCallback, mainThreadExecutor)
-        submitMediaList(queue?.makeList() ?: emptyList())
+        submitMediaList(queue?.snapshot ?: emptyList())
     }
 
     fun onStart() {

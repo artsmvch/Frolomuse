@@ -267,7 +267,8 @@ public final class SongQueue implements Cloneable {
         return new SongQueue(mType, mId, mName, clonedItems, mUnique);
     }
 
-    public synchronized List<Song> makeList() {
+    public synchronized List<Song> getSnapshot() {
         return new ArrayList<>(mSongs);
     }
+
 }

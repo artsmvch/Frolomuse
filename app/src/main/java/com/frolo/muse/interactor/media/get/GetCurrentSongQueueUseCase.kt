@@ -29,7 +29,7 @@ class GetCurrentSongQueueUseCase @Inject constructor(
         return Flowable.just(
                 player.getCurrentQueue().let { queue ->
                     if (queue != null) {
-                        queue.makeList()
+                        queue.snapshot
                     } else emptyList()
                 }
         )
