@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ll_preset_chooser"
     android:orientation="horizontal"
     android:layout_width="match_parent"
@@ -26,13 +27,14 @@
     <androidx.appcompat.widget.AppCompatSpinner
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_hint"
-        app:layout_constraintEnd_toStartOf="@id/btn_save_preset"
+        app:layout_constraintEnd_toStartOf="@id/barrier1"
         app:layout_constraintWidth_default="wrap"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintHorizontal_bias="0.0"
         android:id="@+id/sp_presets"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        tools:listitem="@layout/item_preset"/>
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier1"
@@ -46,6 +48,7 @@
         app:layout_constraintTop_toTopOf="@id/sp_presets"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="@id/sp_presets"
+        app:layout_constraintHorizontal_bias="0.0"
         android:id="@+id/btn_save_preset"
         android:layout_width="32dp"
         android:layout_height="32dp"
