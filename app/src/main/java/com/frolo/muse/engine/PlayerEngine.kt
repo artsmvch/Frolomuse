@@ -41,6 +41,7 @@ class PlayerEngine constructor(
     // Tokens for the engine handler
     private val tokenSkipTo = Any()
 
+    @Volatile
     private var engine: MediaPlayer = createEngine()
 
     private val audioFocusHandler = AudioFocusHandler(audioManager, this)
@@ -116,14 +117,18 @@ class PlayerEngine constructor(
     }
 
     private fun handleEngineErrorInternal(what: Int) {
+        ThreadStrictMode.assertBackground()
         val err = generateEngineError(what)
         Logger.e(LOG_TAG, err)
 
         if (what == MediaPlayer.MEDIA_ERROR_SERVER_DIED) {
             // It's a critical error
             if (isInDebugMode()) {
-                throw err
+                // TODO: why break it?
+                //throw err
             }
+
+            Logger.e(LOG_TAG, "A critical error occurred", err)
 
             try {
                 engine.release()
@@ -137,6 +142,7 @@ class PlayerEngine constructor(
             // in case the error is critical, do not start the playback
             isPlayingFlag = false
 
+            // TODO: try also to restore the playback position
             currentSong?.also { safeSong ->
                 engine.runCatching {
                     Logger.d(LOG_TAG, "Preparing: [src=${safeSong.source}")
@@ -154,7 +160,9 @@ class PlayerEngine constructor(
                     // applying audio fx
                     audioFxApplicable.apply(audioSessionId)
 
-                    observerRegistry.onPlaybackPaused(this@PlayerEngine)
+                    execOnEventThread {
+                        observerRegistry.onPlaybackPaused(this@PlayerEngine)
+                    }
                 }.onFailure { err ->
                     Logger.e(LOG_TAG, err)
                     execOnEventThread {
@@ -179,7 +187,9 @@ class PlayerEngine constructor(
                 setAudioAttributes(attrs)
             }
             setOnErrorListener { _, what, _ ->
-                handleEngineErrorInternal(what)
+                execOnEngineThread {
+                    handleEngineErrorInternal(what)
+                }
 
                 // [!] Always return true.
                 // Returning false may stop the playback.
