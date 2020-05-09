@@ -3,12 +3,14 @@ package com.frolo.muse.interactor.poster
 import android.content.ContentUris
 import android.content.Context
 import android.graphics.*
+import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.renderscript.RSRuntimeException
 import androidx.core.content.ContextCompat
 import com.frolo.muse.R
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.rx.SchedulerProvider
+import com.frolo.muse.util.BitmapUtil
 import io.reactivex.Single
 import jp.wasabeef.glide.transformations.internal.FastBlur
 import jp.wasabeef.glide.transformations.internal.RSBlur
@@ -98,10 +100,17 @@ class CreatePosterUseCase @Inject constructor(
                 albumTxtY.toFloat(),
                 paint)
 
-        ContextCompat.getDrawable(context, R.mipmap.ic_launcher_round)?.let {
-            it.setBounds(0, 0, iconSize, iconSize)
+        ContextCompat.getDrawable(context, R.mipmap.ic_launcher_round)?.let { d ->
+            val iconBitmap = BitmapUtil.getBitmap(d, iconSize, iconSize)
+            val roundedIconBitmap = BitmapUtil.createRoundedBitmap(iconBitmap, iconSize / 2f)
+            if (iconBitmap != roundedIconBitmap){
+                iconBitmap.recycle()
+            }
+            val roundedIconDrawable = BitmapDrawable(context.resources, roundedIconBitmap)
+
+            roundedIconDrawable.setBounds(0, 0, iconSize, iconSize)
             canvas.translate(283f, 35f)
-            it.draw(canvas)
+            roundedIconDrawable.draw(canvas)
             canvas.translate(-283f, -35f)
         }
 
