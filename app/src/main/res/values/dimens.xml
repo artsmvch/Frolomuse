@@ -75,5 +75,8 @@
 
     <!--FastScroller overrides-->
     <dimen name="fastscroll_scrollbar_padding_end">0dp</dimen>
+
+    <!--Slider-->
+    <dimen name="slider_preferred_height">32dp</dimen>
 </resources>
 

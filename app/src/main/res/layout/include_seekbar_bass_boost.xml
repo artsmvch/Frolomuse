@@ -2,22 +2,24 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/ll_bass_boost"
-    android:gravity="center"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingStart="12dp"
-    android:paddingEnd="4dp">
+    android:paddingStart="8dp"
+    android:paddingEnd="8dp"
+    android:orientation="vertical"
+    android:gravity="start|center_vertical">
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:layout_width="80dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?textAppearanceSubtitle1"
-        android:maxLines="1"
+        android:layout_marginStart="12dp"
+        android:textAppearance="?textAppearanceCaption"
+        android:lines="1"
         android:ellipsize="end"
         android:text="@string/bass"/>
 
     <com.google.android.material.slider.Slider
         android:id="@+id/slider_bass_boost"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="@dimen/slider_preferred_height" />
 </LinearLayout>
