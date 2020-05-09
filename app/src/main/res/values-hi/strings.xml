@@ -243,6 +243,11 @@
     <string name="album_name_layout">एल्बम</string>
     <string name="genre_name_layout">शैली</string>
     <string name="artist_name_layout">कलाकार</string>
+    <string name="delete_album_art_confirmation">
+        क्या आप इस एल्बम के कवर को हटाना चाहते हैं?
+    </string>
+    <string name="no_album_art">कोई एल्बम कवर नहीं</string>
+    <string name="pick_new_album_art">एक नया चुनें</string>
 
     <string name="app_theme">ऐप थीम</string>
     <string name="third_part_libs">तीसरे पक्ष के पुस्तकालयों</string>

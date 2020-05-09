@@ -256,6 +256,11 @@
     <string name="album_name_layout">Альбом</string>
     <string name="genre_name_layout">Жанр</string>
     <string name="artist_name_layout">Артист</string>
+    <string name="delete_album_art_confirmation">
+        Вы хотите удалить обложку этого альбома?
+    </string>
+    <string name="no_album_art">Нет обложки альбома</string>
+    <string name="pick_new_album_art">Выбрать новую</string>
 
     <string name="app_theme">Тема приложения</string>
     <string name="third_part_libs">Сторонние библиотеки</string>

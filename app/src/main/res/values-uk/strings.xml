@@ -251,6 +251,11 @@
     <string name="album_name_layout">Альбом</string>
     <string name="genre_name_layout">Жанр</string>
     <string name="artist_name_layout">Виконавця</string>
+    <string name="delete_album_art_confirmation">
+        Ви хочете видалити обкладинку цього альбому?
+    </string>
+    <string name="no_album_art">Немає обкладинки альбому</string>
+    <string name="pick_new_album_art">Виберіть нову</string>
 
     <string name="app_theme">Тема додатка</string>
     <string name="third_part_libs">Сторонні бібліотеки</string>

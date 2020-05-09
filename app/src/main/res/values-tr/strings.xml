@@ -244,6 +244,11 @@
     <string name="album_name_layout">Albüm</string>
     <string name="genre_name_layout">Tür</string>
     <string name="artist_name_layout">Sanatçı</string>
+    <string name="delete_album_art_confirmation">
+        Bu albümün kapağını silmek istiyor musunuz?
+    </string>
+    <string name="no_album_art">Albüm kapağı yok</string>
+    <string name="pick_new_album_art">Yeni bir tane seçin</string>
 
     <string name="app_theme">Uygulama Teması</string>
     <string name="third_part_libs">Üçüncü parti kütüphaneleri</string>

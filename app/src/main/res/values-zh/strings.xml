@@ -237,6 +237,11 @@
     <string name="album_name_layout">專輯</string>
     <string name="genre_name_layout">類型</string>
     <string name="artist_name_layout">藝術家</string>
+    <string name="delete_album_art_confirmation">
+        您要刪除此專輯的封面嗎？
+    </string>
+    <string name="no_album_art">無專輯封面</string>
+    <string name="pick_new_album_art">選擇一個新的</string>
 
     <string name="app_theme">應用主題</string>
     <string name="third_part_libs">第三方圖書館</string>

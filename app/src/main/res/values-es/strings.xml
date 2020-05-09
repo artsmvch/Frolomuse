@@ -244,6 +244,11 @@
     <string name="album_name_layout">Álbum</string>
     <string name="genre_name_layout">Género</string>
     <string name="artist_name_layout">Artista</string>
+    <string name="delete_album_art_confirmation">
+        ¿Quieres eliminar la portada de este álbum?
+    </string>
+    <string name="no_album_art">Sin portada del álbum</string>
+    <string name="pick_new_album_art">Elige uno nuevo</string>
 
     <string name="app_theme">Tema de la aplicación</string>
     <string name="third_part_libs">Bibliotecas de terceros</string>

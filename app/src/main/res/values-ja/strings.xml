@@ -238,6 +238,11 @@
     <string name="album_name_layout">アルバム</string>
     <string name="genre_name_layout">ジャンル</string>
     <string name="artist_name_layout">アーティスト</string>
+    <string name="delete_album_art_confirmation">
+        このアルバムのカバーを削除しますか？
+    </string>
+    <string name="no_album_art">アルバムカバーなし</string>
+    <string name="pick_new_album_art">新しいものを選ぶ</string>
 
     <string name="app_theme">アプリのテーマ</string>
     <string name="third_part_libs">サードパーティのライブラリ</string>

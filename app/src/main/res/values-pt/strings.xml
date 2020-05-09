@@ -245,6 +245,11 @@
     <string name="album_name_layout">Álbum</string>
     <string name="genre_name_layout">Gênero</string>
     <string name="artist_name_layout">Artista</string>
+    <string name="delete_album_art_confirmation">
+        Deseja excluir a capa desse álbum?
+    </string>
+    <string name="no_album_art">Sem capa do álbum</string>
+    <string name="pick_new_album_art">Escolha um novo</string>
 
     <string name="app_theme">App Theme</string>
     <string name="third_part_libs">Bibliotecas de terceiros</string>

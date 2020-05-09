@@ -239,6 +239,11 @@
     <string name="album_name_layout">앨범</string>
     <string name="genre_name_layout">장르</string>
     <string name="artist_name_layout">예술가</string>
+    <string name="delete_album_art_confirmation">
+        이 앨범의 표지를 삭제 하시겠습니까?
+    </string>
+    <string name="no_album_art">앨범 표지가 없습니다</string>
+    <string name="pick_new_album_art">새로운 것을 고르세요</string>
 
     <string name="app_theme">앱 테마</string>
     <string name="third_part_libs">타사 라이브러리</string>

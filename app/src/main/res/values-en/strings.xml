@@ -244,6 +244,11 @@
     <string name="album_name_layout">Album</string>
     <string name="genre_name_layout">Genre</string>
     <string name="artist_name_layout">Artist</string>
+    <string name="delete_album_art_confirmation">
+        Do you want to delete the cover of this album?
+    </string>
+    <string name="no_album_art">No album cover</string>
+    <string name="pick_new_album_art">Pick a new one</string>
 
     <string name="app_theme">App Theme</string>
     <string name="third_part_libs">Third-party libs</string>

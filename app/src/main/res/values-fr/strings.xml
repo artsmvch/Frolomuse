@@ -244,6 +244,11 @@
     <string name="album_name_layout">Album</string>
     <string name="genre_name_layout">Genre</string>
     <string name="artist_name_layout">Artiste</string>
+    <string name="delete_album_art_confirmation">
+        Voulez-vous supprimer la pochette de cet album?
+    </string>
+    <string name="no_album_art">Pas de pochette d\'album</string>
+    <string name="pick_new_album_art">Choisissez-en un nouveau</string>
 
     <string name="app_theme">Thème d\'application</string>
     <string name="third_part_libs">Bibliothèques tierces</string>

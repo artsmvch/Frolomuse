@@ -239,6 +239,11 @@
     <string name="album_name_layout">Album</string>
     <string name="genre_name_layout">Aliran</string>
     <string name="artist_name_layout">Artis</string>
+    <string name="delete_album_art_confirmation">
+        Apakah Anda ingin menghapus sampul album ini?
+    </string>
+    <string name="no_album_art">Tidak ada sampul album</string>
+    <string name="pick_new_album_art">Pilih yang baru</string>
 
     <string name="app_theme">Tema Aplikasi</string>
     <string name="third_part_libs">Perpustakaan pihak ketiga</string>
