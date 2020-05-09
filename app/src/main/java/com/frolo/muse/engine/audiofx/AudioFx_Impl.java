@@ -327,7 +327,9 @@ public class AudioFx_Impl implements AudioFxApplicable {
 
                     int numberOfBands = equalizer.getNumberOfBands();
                     for (short band = 0; band < numberOfBands; band++) {
-                        mObserverRegistry.dispatchBandLevelChanged(band, equalizer.getBandLevel(band));
+                        final short level = equalizer.getBandLevel(band);
+                        mPersistence.saveBandLevel(band, level);
+                        mObserverRegistry.dispatchBandLevelChanged(band, level);
                     }
                 }
             } catch (Throwable t) {
@@ -355,8 +357,10 @@ public class AudioFx_Impl implements AudioFxApplicable {
                     int numberOfBands = equalizer.getNumberOfBands();
                     int levelCount = levels != null ? levels.length : 0;
                     for (short band = 0; band < Math.min(numberOfBands, levelCount); band++) {
-                        equalizer.setBandLevel(band, levels[band]);
-                        mObserverRegistry.dispatchBandLevelChanged(band, levels[band]);
+                        final short level = levels[band];
+                        equalizer.setBandLevel(band, level);
+                        mPersistence.saveBandLevel(band, level);
+                        mObserverRegistry.dispatchBandLevelChanged(band, level);
                     }
                 }
             } catch (Throwable t) {

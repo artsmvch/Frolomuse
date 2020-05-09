@@ -3,6 +3,9 @@ package com.frolo.muse.ui.main.audiofx.eq;
 import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.os.Build;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
@@ -12,6 +15,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 
 import com.frolo.muse.BuildConfig;
@@ -45,8 +49,14 @@ public final class DbSlider extends LinearLayout {
         return value;
     }
 
+    // For internal use
+    private int mSliderIndex = -1;
+
+    // Range of possible values
     private int mMinValue = 0;
     private int mMaxValue = 1;
+    // The current value
+    private int mCurrValue = 0;
 
     // Internal widgets
     private final TextView mTopLabelTextView;
@@ -57,8 +67,8 @@ public final class DbSlider extends LinearLayout {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 int newValue = mMinValue + progress;
-                if (DEBUG) Log.d(LOG_TAG, "User changed the value to " + newValue);
-                DbSlider.this.setValueInternal(newValue, false, fromUser);
+                if (DEBUG) Log.d(LOG_TAG, "SeekBar value has changed to " + newValue + ", fromUser=" + fromUser);
+                DbSlider.this.setValueInternal(newValue, false, fromUser, false);
             }
 
             @Override
@@ -122,34 +132,51 @@ public final class DbSlider extends LinearLayout {
 
         this.mMinValue = newMin;
         this.mMaxValue = newMax;
+        this.mCurrValue = newValue;
 
         final int newRange = newMax - newMin;
         mVerticalSeekBar.setMax(newRange);
 
-        setValueInternal(newValue, false, false);
+        final int targetSeekBarValue = newValue - newMin;
+        mVerticalSeekBar.setProgress(targetSeekBarValue);
     }
 
     public int getValue() {
-        return mVerticalSeekBar.getProgress() + mMinValue;
+        return mCurrValue;
     }
 
     public void setValue(int value) {
-        setValueInternal(value, true, false);
+        setValueInternal(value, true, false, true);
     }
 
     public void setValue(int value, boolean animate) {
-        setValueInternal(value, animate, false);
+        setValueInternal(value, animate, false, true);
     }
 
-    private void setValueInternal(int value, boolean animate, boolean fromUser) {
-        int newValue = clamp(mMinValue, mMaxValue, value);
-        final int currValue = getValue();
-        if (newValue == currValue && !fromUser) {
+    /**
+     * Sets the current value to the given <code>value</code>.
+     * @param value new value
+     * @param animate if true, then the value change should be animated
+     * @param fromUser true, if this triggered by the user interaction
+     * @param fromOutside true, if this triggered outside the widget
+     */
+    private void setValueInternal(int value, boolean animate, boolean fromUser, boolean fromOutside) {
+        if (!fromUser && !fromOutside) {
             // No actions required
             return;
         }
 
-        if (DEBUG) Log.d(LOG_TAG, "Setting the value internal: new_value=" + newValue);
+        int newValue = clamp(mMinValue, mMaxValue, value);
+        final int currValue = getValue();
+
+        if (newValue == currValue) {
+            // No actions required
+            return;
+        }
+
+        if (DEBUG) Log.d(LOG_TAG, "Setting the value internal: slider_index=" + mSliderIndex + ", new_value=" + newValue);
+
+        mCurrValue = newValue;
 
         // Clear the previous animation, if any
         if (mProgressAnim != null) {
@@ -159,7 +186,7 @@ public final class DbSlider extends LinearLayout {
 
         dispatchDbValueChanged(newValue, fromUser);
 
-        // target progress value for the seek bar
+        // Target progress value for the seek bar
         final int seekBarTargetProgress = newValue - mMinValue;
 
         if (animate) {
@@ -184,6 +211,10 @@ public final class DbSlider extends LinearLayout {
         mBottomLabelTextView.setText(label);
     }
 
+    void setSliderIndex(int index) {
+        mSliderIndex = index;
+    }
+
     private void dispatchDbValueChanged(int newValue, boolean fromUser) {
         final OnDbValueChangeListener l = mListener;
         if (l != null) {
@@ -204,4 +235,61 @@ public final class DbSlider extends LinearLayout {
     public void setOrientation(int orientation) {
         throw new UnsupportedOperationException();
     }
+
+    @Override
+    protected void onRestoreInstanceState(Parcelable state) {
+        super.onRestoreInstanceState(state);
+
+        if (state instanceof SavedState) {
+            SavedState savedState = (SavedState) state;
+            setRange(savedState.minValue, savedState.maxValue);
+            setValue(savedState.currValue, false);
+        }
+    }
+
+    @Nullable
+    @Override
+    protected Parcelable onSaveInstanceState() {
+        final Parcelable superState = super.onSaveInstanceState();
+
+        SavedState savedState = new SavedState(superState);
+
+        savedState.minValue = mMinValue;
+        savedState.maxValue = mMaxValue;
+        savedState.currValue = mCurrValue;
+
+        return savedState;
+    }
+
+    private static class SavedState extends BaseSavedState {
+
+        int minValue;
+        int maxValue;
+        int currValue;
+
+        public SavedState(Parcel source) {
+            super(source);
+            minValue = source.readInt();
+            maxValue = source.readInt();
+            currValue = source.readInt();
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.N)
+        public SavedState(Parcel source, ClassLoader loader) {
+            super(source, loader);
+        }
+
+        public SavedState(Parcelable superState) {
+            super(superState);
+        }
+
+        @Override
+        public void writeToParcel(Parcel out, int flags) {
+            super.writeToParcel(out, flags);
+            out.writeInt(minValue);
+            out.writeInt(maxValue);
+            out.writeInt(currValue);
+        }
+    }
+
 }

@@ -201,6 +201,10 @@ class AudioFxViewModel @Inject constructor(
         loadPresets()
     }
 
+    fun onStopped() {
+        audioFx.save()
+    }
+
     fun onPresetSaved(preset: CustomPreset) {
         audioFx.usePreset(preset)
         loadPresets()

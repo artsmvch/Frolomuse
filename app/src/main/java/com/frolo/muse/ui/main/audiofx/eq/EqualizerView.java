@@ -180,6 +180,9 @@ public final class EqualizerView extends LinearLayout {
             addedBandCount++;
 
             final int finalBandIndex = bandIndex;
+            // Set it first, for debug purpose
+            slider.setSliderIndex(finalBandIndex);
+
             final DbSlider.OnDbValueChangeListener l =
                 new DbSlider.OnDbValueChangeListener() {
                     @Override

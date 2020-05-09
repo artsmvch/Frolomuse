@@ -103,6 +103,11 @@ class AudioFxFragment: BaseFragment(), NoClipping {
         viewModel.onOpened()
     }
 
+    override fun onStop() {
+        super.onStop()
+        viewModel.onStopped()
+    }
+
     override fun onDetach() {
         presetSaveEvent.unregister(requireContext())
         super.onDetach()
