@@ -56,10 +56,7 @@ class PlayerViewModel @Inject constructor(
         }
 
         override fun onQueueChanged(player: Player, queue: SongQueue) {
-            _songQueue.value?.unregisterCallback(queueCallback)
-            _songQueue.value = queue.apply {
-                registerCallback(queueCallback, mainThreadExecutor)
-            }
+            handleSongQueue(queue)
         }
 
         override fun onSongChanged(player: Player, song: Song?, positionInQueue: Int) {
