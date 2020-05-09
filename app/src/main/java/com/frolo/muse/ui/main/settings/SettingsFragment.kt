@@ -153,6 +153,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
         }
 
         findPreference("help_with_translations").apply {
+            isVisible = false
             onPreferenceClickListener = Preference.OnPreferenceClickListener {
                 activity?.helpWithTranslations()
                 true
