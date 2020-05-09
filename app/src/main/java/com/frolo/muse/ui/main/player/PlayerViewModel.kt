@@ -1,7 +1,6 @@
 package com.frolo.muse.ui.main.player
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.frolo.muse.arch.SingleLiveEvent
@@ -94,6 +93,7 @@ class PlayerViewModel @Inject constructor(
 
     private val queueCallback = SongQueue.Callback { queue ->
         _invalidateSongQueueEvent.value = queue
+        _songPosition.value = player.getCurrentPositionInQueue()
     }
 
     private val _songDeletedEvent = SingleLiveEvent<Song>()
@@ -133,13 +133,7 @@ class PlayerViewModel @Inject constructor(
         }
     private var resolveSoundSubscription: Subscription? = null
 
-    private val _songPosition = MediatorLiveData<Int>().apply {
-        value = player.getCurrentPositionInQueue()
-        // triggers
-        addSource(invalidateSongQueueEvent) {
-            value = player.getCurrentPositionInQueue()
-        }
-    }
+    private val _songPosition = MutableLiveData<Int>(player.getCurrentPositionInQueue())
     val songPosition: LiveData<Int> get() = _songPosition
 
     private val _showVolumeControlEvent = SingleLiveEvent<Unit>()
