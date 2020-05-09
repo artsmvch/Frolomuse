@@ -4,7 +4,7 @@ import android.media.AudioAttributes
 import android.media.AudioFocusRequest
 import android.media.AudioManager
 import android.os.Build
-import com.frolo.muse.Trace
+import com.frolo.muse.Logger
 
 
 class AudioFocusHandler constructor(
@@ -29,7 +29,7 @@ class AudioFocusHandler constructor(
                 // Pause playback because your Audio Focus was
                 // temporarily stolen, but will be back soon.
                 // i.e. for a phone call
-                Trace.d(LOG_TAG, "Audio focus change: TRANSIENT")
+                Logger.d(LOG_TAG, "Audio focus change: TRANSIENT")
                 wasPlaying = player.isPlaying()
                 player.pause()
             }
@@ -39,7 +39,7 @@ class AudioFocusHandler constructor(
                 // Remember to unregister your controls/buttons here.
                 // And release the kra — Audio Focus!
                 // You’re done.
-                Trace.d(LOG_TAG, "Audio focus change: LOSS")
+                Logger.d(LOG_TAG, "Audio focus change: LOSS")
                 wasPlaying = player.isPlaying()
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     audioFocusRequest?.let { request ->
@@ -56,7 +56,7 @@ class AudioFocusHandler constructor(
                 // i.e. for notifications or navigation directions
                 // Depending on your audio playback, you may prefer to
                 // pause playback here instead. You do you.
-                Trace.d(LOG_TAG, "Audio focus change: CAN_DUCK")
+                Logger.d(LOG_TAG, "Audio focus change: CAN_DUCK")
                 wasPlaying = player.isPlaying()
             }
             AudioManager.AUDIOFOCUS_GAIN -> {
@@ -66,7 +66,7 @@ class AudioFocusHandler constructor(
                 // are finished
                 // If you implement ducking and lower the volume, be
                 // sure to return it to normal here, as well.
-                Trace.d(LOG_TAG, "Audio focus change: GAIN")
+                Logger.d(LOG_TAG, "Audio focus change: GAIN")
                 if (wasPlaying) { // ok, the player was playing, we're good to resume playback
                     player.start()
                 }
@@ -78,7 +78,7 @@ class AudioFocusHandler constructor(
     fun requestAudioFocus(): Boolean {
         val manager = audioManager
         if (manager != null) {
-            Trace.d(LOG_TAG, "Requesting audio focus")
+            Logger.d(LOG_TAG, "Requesting audio focus")
             val focusRequest = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 val attrs = AudioAttributes.Builder()
                         .setUsage(AudioAttributes.USAGE_MEDIA)
@@ -97,17 +97,17 @@ class AudioFocusHandler constructor(
 
             return when(focusRequest) {
                 AudioManager.AUDIOFOCUS_REQUEST_FAILED -> { // don’t start playback
-                    Trace.d(LOG_TAG, "Audio focus NOT granted")
+                    Logger.d(LOG_TAG, "Audio focus NOT granted")
                     false
                 }
                 AudioManager.AUDIOFOCUS_REQUEST_GRANTED -> { // actually start playback
-                    Trace.d(LOG_TAG, "Audio focus granted")
+                    Logger.d(LOG_TAG, "Audio focus granted")
                     true
                 }
                 else -> true
             }
         } else {
-            Trace.d(LOG_TAG, "Cannot request audio focus: audio manager is null")
+            Logger.d(LOG_TAG, "Cannot request audio focus: audio manager is null")
             // audio manager is null, we can't request audio focus, it's supposed to be granted
             return true
         }

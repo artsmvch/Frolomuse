@@ -15,7 +15,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.frolo.muse.App
 import com.frolo.muse.R
-import com.frolo.muse.Trace
+import com.frolo.muse.Logger
 import com.frolo.muse.engine.*
 import com.frolo.muse.engine.audiofx.AudioFx_Impl
 import com.frolo.muse.engine.service.PlayerService.Companion.newIntent
@@ -94,24 +94,24 @@ class PlayerService: Service() {
 
     override fun onBind(intent: Intent?): IBinder {
         isBound = true
-        Trace.d(TAG, "Service gets bound")
+        Logger.d(TAG, "Service gets bound")
         return PlayerBinder(player)
     }
 
     override fun onRebind(intent: Intent?) {
         isBound = true
-        Trace.d(TAG, "Service gets rebound")
+        Logger.d(TAG, "Service gets rebound")
     }
 
     override fun onUnbind(intent: Intent?): Boolean {
         isBound = false
-        Trace.d(TAG, "Service gets unbound")
+        Logger.d(TAG, "Service gets unbound")
         if (notificationCancelled) {
             // Service is unbound and not in foreground. We don't know why it got unbound.
             // The user may have closed the app or the system killed activities due to low memory. Who knows.
             // Give it the last chance to be alive? NO!
 
-            Trace.w(TAG, "Service is not in foreground. STOP IT!")
+            Logger.w(TAG, "Service is not in foreground. STOP IT!")
             // The service is not in foreground. It may live only 60 seconds if it's Android API v26+
             // There is no sense to continue running at all: no bound clients and no notification.
             // Then STOP IT.
@@ -145,7 +145,7 @@ class PlayerService: Service() {
                 // Need to reset the current sleep timer because its pending intent is still retained,
                 // therefore the app settings may think that an alarm is still set.
                 PlayerSleepTimer.resetCurrentSleepTimer(context)
-                Trace.d(TAG, "Received sleep timer broadcast message. Pausing playback")
+                Logger.d(TAG, "Received sleep timer broadcast message. Pausing playback")
                 player.pause()
             }
         }
@@ -226,7 +226,7 @@ class PlayerService: Service() {
         player.registerObserver(PlayerStateObserver(preferences))
         player.registerObserver(SongPlayCountObserver(schedulerProvider, dispatchSongPlayedUseCase))
 
-        Trace.d(TAG, "Service created")
+        Logger.d(TAG, "Service created")
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -256,11 +256,11 @@ class PlayerService: Service() {
 
     override fun onTaskRemoved(rootIntent: Intent?) {
         super.onTaskRemoved(rootIntent)
-        Trace.d(TAG, "Task removed!")
+        Logger.d(TAG, "Task removed!")
     }
 
     override fun onDestroy() {
-        Trace.d(TAG, "Service died. Cleaning callbacks")
+        Logger.d(TAG, "Service died. Cleaning callbacks")
 
         // notifying observers that player is shutting down and removing them all
         player.shutdown()
@@ -283,10 +283,10 @@ class PlayerService: Service() {
                 as? NotificationManager
 
         if (manager != null) {
-            Trace.d(TAG, "Deleting old notification channel for playback")
+            Logger.d(TAG, "Deleting old notification channel for playback")
             manager.deleteNotificationChannel(CHANNEL_ID_PLAYBACK_OLD)
 
-            Trace.d(TAG, "Creating notification channel for playback")
+            Logger.d(TAG, "Creating notification channel for playback")
             val channelName = getString(R.string.playback_channel_name)
             val channelDesc = getString(R.string.playback_channel_desc)
             val channel = NotificationChannel(
@@ -312,10 +312,10 @@ class PlayerService: Service() {
     private fun cancelNotification() {
         notificationCancelled = true
         player.pause()
-        Trace.d(TAG, "Notification cancelled. Stopping foreground")
+        Logger.d(TAG, "Notification cancelled. Stopping foreground")
         stopForeground(true)
         if (isBound.not()) {
-            Trace.w(TAG, "No bound clients. STOP IT!")
+            Logger.w(TAG, "No bound clients. STOP IT!")
             // No clients bound to the service. It may live only 60 seconds if it's Android API v26+
             // It makes no sense to continue running at all: no bound clients and no notification.
             // Then STOP IT.
@@ -324,7 +324,7 @@ class PlayerService: Service() {
     }
 
     private fun showNotification() {
-        Trace.d(TAG, "Showing notification")
+        Logger.d(TAG, "Showing notification")
         notificationCancelled = false
         notifyAboutPlayback(false)
     }
@@ -435,20 +435,20 @@ class PlayerService: Service() {
             try {
                 buildPlaybackNotification(song, isPlaying)
             } catch (e: Throwable) {
-                Trace.e(TAG, e)
+                Logger.e(TAG, e)
                 null
             }
         } else buildPlaybackNotification(song, isPlaying)
 
         if (notification == null) {
-            Trace.w(TAG, "Failed to build notification.")
+            Logger.w(TAG, "Failed to build notification.")
             return
         }
 
         // We're about to post the notification. It's not cancelled now
         notificationCancelled = false
 
-        Trace.d(TAG, "Starting foreground by posting notification")
+        Logger.d(TAG, "Starting foreground by posting notification")
         startForeground(NOTIFICATION_ID_PLAYBACK, notification)
     }
 }

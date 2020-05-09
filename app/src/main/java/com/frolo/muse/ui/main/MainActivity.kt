@@ -23,7 +23,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProviders
 import com.frolo.muse.R
 import com.frolo.muse.StyleUtil
-import com.frolo.muse.Trace
+import com.frolo.muse.Logger
 import com.frolo.muse.arch.observe
 import com.frolo.muse.engine.Player
 import com.frolo.muse.dp2px
@@ -595,7 +595,7 @@ class MainActivity : PlayerHostActivity(),
             fillColor = ColorStateList.valueOf(blendedColor)
 
             val cornerRadius = 48f.dp2px(this@MainActivity) * (1 - slideOffset)
-            Trace.d("MainActivitySlide", "cornerRadius=$cornerRadius")
+            Logger.d("MainActivitySlide", "cornerRadius=$cornerRadius")
             this.shapeAppearanceModel = ShapeAppearanceModel.builder()
                 .setTopLeftCorner(CornerFamily.ROUNDED, cornerRadius)
                 .setTopRightCorner(CornerFamily.ROUNDED, cornerRadius)

@@ -23,7 +23,7 @@ import com.frolo.mediabutton.PlayButton
 import com.frolo.muse.BuildConfig
 import com.frolo.muse.R
 import com.frolo.muse.StyleUtil
-import com.frolo.muse.Trace
+import com.frolo.muse.Logger
 import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.engine.Player
@@ -80,7 +80,7 @@ class PlayerFragment: BaseFragment() {
 
     private val onPageChangeCallback = object : ViewPager2.OnPageChangeCallback() {
         override fun onPageSelected(position: Int) {
-            Trace.d(LOG_TAG, "Swiped to $position [by_user=$userScrolledAlbumViewPager]")
+            Logger.d(LOG_TAG, "Swiped to $position [by_user=$userScrolledAlbumViewPager]")
             if (userScrolledAlbumViewPager) {
                 viewModel.onSwipedToPosition(position)
             }
@@ -360,17 +360,17 @@ class PlayerFragment: BaseFragment() {
         }
 
         songQueue.observe(owner) { queue: SongQueue? ->
-            Trace.d(LOG_TAG, "SongQueue changed")
+            Logger.d(LOG_TAG, "SongQueue changed")
             (vp_album_art.adapter as? AlbumCardAdapter)?.submitQueue(queue)
         }
 
         invalidateSongQueueEvent.observeNonNull(owner) {
-            Trace.d(LOG_TAG, "InvalidateSongQueue event fired")
+            Logger.d(LOG_TAG, "InvalidateSongQueue event fired")
             vp_album_art.adapter?.notifyDataSetChanged()
         }
 
         song.observe(owner) { song: Song? ->
-            Trace.d(LOG_TAG, "Song changed")
+            Logger.d(LOG_TAG, "Song changed")
             if (song != null) {
                 tsw_song_name.setText(song.getNameString(resources))
                 tsw_artist_name.setText(song.getArtistString(resources))
@@ -423,7 +423,7 @@ class PlayerFragment: BaseFragment() {
         }
 
         songPosition.observeNonNull(owner) { position ->
-            Trace.d(LOG_TAG, "Song position changed to $position")
+            Logger.d(LOG_TAG, "Song position changed to $position")
 
             setCurrentItemCallback?.also { safeCallback ->
                 vp_album_art.removeCallbacks(safeCallback)

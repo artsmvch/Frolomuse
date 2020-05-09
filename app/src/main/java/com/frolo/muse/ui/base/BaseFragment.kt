@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
 import com.frolo.muse.App
 import com.frolo.muse.R
-import com.frolo.muse.Trace
+import com.frolo.muse.Logger
 import com.frolo.muse.di.modules.ViewModelModule
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.repository.Preferences
@@ -123,7 +123,7 @@ abstract class BaseFragment: Fragment() {
         rxPermissionDisposable?.dispose()
         rxPermissionDisposable = rxPermissions.request(*permissions)
             .subscribe(consumer, { err ->
-                Trace.e(err)
+                Logger.e(err)
                 toastError(err)
             })
     }

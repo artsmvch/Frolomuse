@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
 import androidx.viewpager.widget.ViewPager
-import com.frolo.muse.Trace
+import com.frolo.muse.Logger
 
 
 /**
@@ -21,7 +21,7 @@ class SafeViewPager @JvmOverloads constructor(
         return try {
             super.onInterceptTouchEvent(ev)
         } catch (e: Throwable) {
-            Trace.e(LOG_TAG, e)
+            Logger.e(LOG_TAG, e)
             false
         }
     }

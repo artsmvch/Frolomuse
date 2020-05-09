@@ -3,7 +3,6 @@ package com.frolo.muse
 import android.os.StrictMode
 import androidx.core.content.ContextCompat
 import androidx.multidex.MultiDexApplication
-import com.crashlytics.android.Crashlytics
 import com.frolo.muse.di.AppComponent
 import com.frolo.muse.di.DaggerAppComponent
 import com.frolo.muse.di.impl.navigator.NavigatorImpl
@@ -16,7 +15,6 @@ import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.ui.base.BaseActivity
 import com.frolo.muse.ui.base.FragmentNavigator
 import com.frolo.muse.ui.main.MainActivity
-import io.fabric.sdk.android.Fabric
 import io.reactivex.plugins.RxJavaPlugins
 
 
@@ -41,9 +39,6 @@ class App : MultiDexApplication() {
         registerActivityLifecycleCallbacks(lastStartedActivityCallback)
 
         setupStrictMode()
-
-        // consider initializing crashlytics in Release version only
-        Fabric.with(this, Crashlytics())
 
         // init Rx plugins
         RxJavaPlugins.setErrorHandler { err ->

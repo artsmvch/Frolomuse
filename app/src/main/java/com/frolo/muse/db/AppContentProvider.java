@@ -15,7 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.frolo.muse.BuildConfig;
-import com.frolo.muse.Trace;
+import com.frolo.muse.Logger;
 
 /**
  * Content Provider of this application
@@ -117,7 +117,7 @@ public class AppContentProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
-        Trace.d(TAG, "Creating");
+        Logger.d(TAG, "Creating");
         dbHelper = new DBHelperImpl(getContext());
         return true;
     }
@@ -129,7 +129,7 @@ public class AppContentProvider extends ContentProvider {
                         @Nullable String selection,
                         @Nullable String[] selectionArgs,
                         @Nullable String sortOrder) {
-        Trace.d(TAG, "Querying " + uri);
+        Logger.d(TAG, "Querying " + uri);
         String table;
         Uri observedUri;
         switch (URI_MATCHER.match(uri)) {
@@ -234,7 +234,7 @@ public class AppContentProvider extends ContentProvider {
     @Override
     public Uri insert(@NonNull Uri uri,
                       @Nullable ContentValues values) {
-        Trace.d(TAG, "Inserting " + uri);
+        Logger.d(TAG, "Inserting " + uri);
         if (URI_MATCHER.match(uri) == URI_FAVOURITE) {
             db = dbHelper.getWritableDatabase();
             long rowId = db.insert(AppMediaStore.Favourites.TABLE, null, values);
@@ -273,7 +273,7 @@ public class AppContentProvider extends ContentProvider {
     public int delete(@NonNull Uri uri,
                       @Nullable String selection,
                       @Nullable String[] selectionArgs) {
-        Trace.d(TAG, "Deleting " + uri);
+        Logger.d(TAG, "Deleting " + uri);
         String table;
         switch (URI_MATCHER.match(uri)) {
             case URI_FAVOURITE: table = AppMediaStore.Favourites.TABLE; break;
@@ -331,7 +331,7 @@ public class AppContentProvider extends ContentProvider {
                       @Nullable ContentValues values,
                       @Nullable String selection,
                       @Nullable String[] selectionArgs) {
-        Trace.d(TAG, "Updating " + uri);
+        Logger.d(TAG, "Updating " + uri);
         String table;
         switch (URI_MATCHER.match(uri)) {
             case URI_FAVOURITE: table = AppMediaStore.Favourites.TABLE; break;
@@ -385,7 +385,7 @@ public class AppContentProvider extends ContentProvider {
     }
 
     private void dumpTransaction(Uri uri) {
-        Trace.d(TAG, "Transaction URI: " + uri);
+        Logger.d(TAG, "Transaction URI: " + uri);
     }
 
     /**
@@ -397,7 +397,7 @@ public class AppContentProvider extends ContentProvider {
         }
         @Override
         public void onCreate(SQLiteDatabase db) {
-            Trace.d(TAG, "Creating " + this.getClass().getSimpleName());
+            Logger.d(TAG, "Creating " + this.getClass().getSimpleName());
             db.execSQL(SQL_CREATE_FAVOURITES);
             db.execSQL(SQL_CREATE_PRESETS);
             db.execSQL(SQL_CREATE_LYRICS);

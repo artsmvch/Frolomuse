@@ -11,7 +11,7 @@ import android.widget.RemoteViews;
 import androidx.annotation.Nullable;
 
 import com.frolo.muse.R;
-import com.frolo.muse.Trace;
+import com.frolo.muse.Logger;
 import com.frolo.muse.engine.Player;
 import com.frolo.muse.engine.service.PlayerService;
 import com.frolo.muse.model.media.Song;
@@ -45,12 +45,12 @@ public class PlayerWidget3Provider extends AppWidgetProvider {
 
     @Override
     public void onEnabled(Context context) {
-        Trace.d(TAG, "Widget enabled");
+        Logger.d(TAG, "Widget enabled");
     }
 
     @Override
     public void onDisabled(Context context) {
-        Trace.d(TAG, "Widget enabled");
+        Logger.d(TAG, "Widget enabled");
     }
 
     void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
@@ -146,16 +146,16 @@ public class PlayerWidget3Provider extends AppWidgetProvider {
 
 
     public static void update(final Context context, final Player player) {
-        Trace.d(TAG, "Checking if widget is enabled");
+        Logger.d(TAG, "Checking if widget is enabled");
         ComponentName widget = new ComponentName(context, PlayerWidget3Provider.class);
         AppWidgetManager manager = AppWidgetManager.getInstance(context);
         int ids[] = manager.getAppWidgetIds(widget);
         if (ids != null && ids.length > 0) {
-            Trace.d(TAG, "Updating widget");
+            Logger.d(TAG, "Updating widget");
             RemoteViews remoteViews = PlayerWidget3Provider.createWidgetLayout(context, player);
             manager.updateAppWidget(widget, remoteViews);
         } else {
-            Trace.d(TAG, "No need to update: widget is disabled");
+            Logger.d(TAG, "No need to update: widget is disabled");
         }
     }
 }

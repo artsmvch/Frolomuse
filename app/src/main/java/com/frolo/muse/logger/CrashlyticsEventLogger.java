@@ -2,31 +2,29 @@ package com.frolo.muse.logger;
 
 import android.content.Context;
 
-import com.crashlytics.android.Crashlytics;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 import java.util.Map;
-
-import io.fabric.sdk.android.Fabric;
 
 
 class CrashlyticsEventLogger implements EventLogger {
 
-    CrashlyticsEventLogger(Context context) {
-        Fabric.with(context, new Crashlytics());
+    CrashlyticsEventLogger(/*unused*/ Context context) {
     }
 
     @Override
     public void log(String event) {
-        Crashlytics.log(event);
+        FirebaseCrashlytics.getInstance().log(event);
     }
 
     @Override
-    public void log(String event, Map<String, String> params) {
-        Crashlytics.log(event);
+    public void log(String event, /*unused*/ Map<String, String> params) {
+        // TODO: compose the full message using the params
+        FirebaseCrashlytics.getInstance().log(event);
     }
 
     @Override
     public void log(Throwable err) {
-        Crashlytics.logException(err);
+        FirebaseCrashlytics.getInstance().recordException(err);
     }
 }

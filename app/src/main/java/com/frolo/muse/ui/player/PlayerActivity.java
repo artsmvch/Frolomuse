@@ -29,7 +29,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.frolo.mediabutton.PlayButton;
 import com.frolo.muse.BuildConfig;
 import com.frolo.muse.R;
-import com.frolo.muse.Trace;
+import com.frolo.muse.Logger;
 import com.frolo.muse.sounder.Sounder;
 
 import org.jetbrains.annotations.NotNull;
@@ -185,7 +185,7 @@ public class PlayerActivity extends AppCompatActivity {
                             updateProgress();
                         }
                         @Override public void onError(Sounder sounder, Throwable error) {
-                            Trace.e(error);
+                            Logger.e(error);
                             if (BuildConfig.DEBUG) {
                                 Context context = PlayerActivity.this;
                                 Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT)
@@ -197,7 +197,7 @@ public class PlayerActivity extends AppCompatActivity {
                     try {
                         pfd.close();
                     } catch (Throwable error) {
-                        Trace.e(error);
+                        Logger.e(error);
                     }
 
                     sounder.seekTo(pos);
@@ -213,7 +213,7 @@ public class PlayerActivity extends AppCompatActivity {
                     updatePlayButtonState();
                 } catch (Exception e) {
                     Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                    Trace.e(TAG, e);
+                    Logger.e(TAG, e);
                     finish();
                 }
             } else {
@@ -315,7 +315,7 @@ public class PlayerActivity extends AppCompatActivity {
                 else textTitle.setText(R.string.placeholder_unknown);
             }
         } catch (Exception e) {
-            Trace.e(e);
+            Logger.e(e);
             textTitle.setText(R.string.placeholder_unknown);
         }
 

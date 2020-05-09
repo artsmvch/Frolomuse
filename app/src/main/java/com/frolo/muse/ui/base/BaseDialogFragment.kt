@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
 import com.frolo.muse.App
 import com.frolo.muse.R
-import com.frolo.muse.Trace
+import com.frolo.muse.Logger
 import com.frolo.muse.di.modules.ViewModelModule
 import com.frolo.muse.repository.Preferences
 import com.tbruyelle.rxpermissions2.RxPermissions
@@ -114,7 +114,7 @@ abstract class BaseDialogFragment : AppCompatDialogFragment() {
     fun requestRxPermissions(vararg permissions: String, consumer: (granted: Boolean) -> Unit) {
         rxPermissionDisposable?.dispose()
         rxPermissionDisposable = rxPermissions.request(*permissions)?.subscribe(consumer, {
-            Trace.e(it)
+            Logger.e(it)
         })
     }
 

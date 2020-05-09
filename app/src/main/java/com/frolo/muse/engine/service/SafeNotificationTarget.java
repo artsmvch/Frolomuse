@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
 import com.bumptech.glide.request.target.NotificationTarget;
 import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.Transition;
-import com.frolo.muse.Trace;
+import com.frolo.muse.Logger;
 
 // This class provides a factory-method for creating a safe notification target.
 // Its purpose is to avoid crashes on API v21-22. See https://fabric.io/frolovs-projects/android/apps/com.frolo.musp/issues/5bdb530ff8b88c2963298876.
@@ -42,7 +42,7 @@ public final class SafeNotificationTarget {
                 // See https://fabric.io/frolovs-projects/android/apps/com.frolo.musp/issues/5bdb530ff8b88c2963298876
                 super.onResourceReady(resource, transition);
             } catch (Throwable e) {
-                Trace.e(TAG, e);
+                Logger.e(TAG, e);
             }
         }
     }

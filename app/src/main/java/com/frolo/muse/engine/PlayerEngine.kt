@@ -8,7 +8,7 @@ import android.os.Handler
 import androidx.annotation.RequiresApi
 import com.frolo.muse.BuildConfig
 import com.frolo.muse.ThreadStrictMode
-import com.frolo.muse.Trace
+import com.frolo.muse.Logger
 import com.frolo.muse.model.media.Song
 import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -117,7 +117,7 @@ class PlayerEngine constructor(
 
     private fun handleEngineErrorInternal(what: Int) {
         val err = generateEngineError(what)
-        Trace.e(LOG_TAG, err)
+        Logger.e(LOG_TAG, err)
 
         if (what == MediaPlayer.MEDIA_ERROR_SERVER_DIED) {
             // It's a critical error
@@ -128,7 +128,7 @@ class PlayerEngine constructor(
             try {
                 engine.release()
             } catch (e: Throwable) {
-                Trace.e(LOG_TAG, "Failed to release the engine", e)
+                Logger.e(LOG_TAG, "Failed to release the engine", e)
             }
 
             engine = createEngine()
@@ -139,7 +139,7 @@ class PlayerEngine constructor(
 
             currentSong?.also { safeSong ->
                 engine.runCatching {
-                    Trace.d(LOG_TAG, "Preparing: [src=${safeSong.source}")
+                    Logger.d(LOG_TAG, "Preparing: [src=${safeSong.source}")
 
                     reset()
                     setDataSource(safeSong.source)
@@ -156,7 +156,7 @@ class PlayerEngine constructor(
 
                     observerRegistry.onPlaybackPaused(this@PlayerEngine)
                 }.onFailure { err ->
-                    Trace.e(LOG_TAG, err)
+                    Logger.e(LOG_TAG, err)
                     execOnEventThread {
                         observerRegistry.onPlaybackPaused(this@PlayerEngine)
                     }
@@ -186,13 +186,13 @@ class PlayerEngine constructor(
                 true
             }
             setOnCompletionListener {
-                Trace.d(LOG_TAG, "Engine completed")
+                Logger.d(LOG_TAG, "Engine completed")
                 execOnEngineThread {
                     skipToNextInternal(byUser = false)
                 }
             }
             setOnPreparedListener {
-                Trace.d(LOG_TAG, "Engine prepared")
+                Logger.d(LOG_TAG, "Engine prepared")
                 // No action here!
                 // Because we use synchronized MediaPlayer.prepare() method
             }
@@ -269,7 +269,7 @@ class PlayerEngine constructor(
 
         if (song != null) {
             engine.runCatching {
-                Trace.d(LOG_TAG, "Preparing: [src=${song.source}, startPlating=$startPlaying]")
+                Logger.d(LOG_TAG, "Preparing: [src=${song.source}, startPlating=$startPlaying]")
                 isPreparedFlag = false
                 isPlayingFlag = startPlaying
 
@@ -298,7 +298,7 @@ class PlayerEngine constructor(
                     }
                 }
             }.onFailure { err ->
-                Trace.e(LOG_TAG, err)
+                Logger.e(LOG_TAG, err)
                 isPlayingFlag = false
                 execOnEventThread {
                     observerRegistry.onPlaybackPaused(this@PlayerEngine)
@@ -308,7 +308,7 @@ class PlayerEngine constructor(
             engine.runCatching {
                 reset()
             }.onFailure { err ->
-                Trace.e(LOG_TAG, err)
+                Logger.e(LOG_TAG, err)
             }
             execOnEventThread {
                 observerRegistry.onPlaybackPaused(this@PlayerEngine)
@@ -324,13 +324,13 @@ class PlayerEngine constructor(
                 observerRegistry.onSongChanged(this, currentSong, currentPositionInQueue)
             }
 
-            Trace.d(LOG_TAG, "Resetting")
+            Logger.d(LOG_TAG, "Resetting")
             engine.runCatching {
                 isPreparedFlag = false
                 isPlayingFlag = false
                 reset()
             }.onFailure { err ->
-                Trace.e(err)
+                Logger.e(err)
             }
 
             execOnEventThread {
@@ -342,7 +342,7 @@ class PlayerEngine constructor(
     private fun startInternal() {
         ThreadStrictMode.assertBackground()
         synchronized(lock) {
-            Trace.d(LOG_TAG, "Starting")
+            Logger.d(LOG_TAG, "Starting")
             engine.runCatching {
                 isPlayingFlag = true
                 if (isPreparedFlag) {
@@ -355,7 +355,7 @@ class PlayerEngine constructor(
                     }
                 }
             }.onFailure { err ->
-                Trace.e(LOG_TAG, err)
+                Logger.e(LOG_TAG, err)
             }
         }
     }
@@ -363,7 +363,7 @@ class PlayerEngine constructor(
     private fun pauseInternal() {
         ThreadStrictMode.assertBackground()
         synchronized(lock) {
-            Trace.d(LOG_TAG, "Pausing")
+            Logger.d(LOG_TAG, "Pausing")
             engine.runCatching {
                 isPlayingFlag = false
                 if (isPreparedFlag) {
@@ -373,7 +373,7 @@ class PlayerEngine constructor(
                     }
                 }
             }.onFailure { err ->
-                Trace.e(LOG_TAG, err)
+                Logger.e(LOG_TAG, err)
             }
         }
     }
@@ -381,7 +381,7 @@ class PlayerEngine constructor(
     private fun toggleInternal() {
         ThreadStrictMode.assertBackground()
         synchronized(lock) {
-            Trace.d(LOG_TAG, "Toggling")
+            Logger.d(LOG_TAG, "Toggling")
             engine.runCatching {
                 val wasPlaying = isPlayingFlag
                 isPlayingFlag = !wasPlaying
@@ -399,7 +399,7 @@ class PlayerEngine constructor(
                     }
                 }
             }.onFailure { err ->
-                Trace.e(LOG_TAG, err)
+                Logger.e(LOG_TAG, err)
             }
         }
     }
@@ -407,7 +407,7 @@ class PlayerEngine constructor(
     private fun skipToPreviousInternal(byUser: Boolean) {
         ThreadStrictMode.assertBackground()
         synchronized(lock) {
-            Trace.d(LOG_TAG, "Skipping to previous: [byUser=$byUser]")
+            Logger.d(LOG_TAG, "Skipping to previous: [byUser=$byUser]")
             if (!currentSongQueue.isEmpty) {
                 if (!byUser && repeatMode == Player.REPEAT_ONE) {
                     handleSwitchToSong(
@@ -438,7 +438,7 @@ class PlayerEngine constructor(
     private fun skipToNextInternal(byUser: Boolean) {
         ThreadStrictMode.assertBackground()
         synchronized(lock) {
-            Trace.d(LOG_TAG, "Skipping to next: [byUser=$byUser]")
+            Logger.d(LOG_TAG, "Skipping to next: [byUser=$byUser]")
             if (!currentSongQueue.isEmpty) {
                 if (!byUser && repeatMode == Player.REPEAT_ONE) {
                     handleSwitchToSong(
@@ -487,9 +487,9 @@ class PlayerEngine constructor(
             }
 
             if (position < 0) {
-                Trace.w(LOG_TAG, "Cannot skip to negative position: [position=$position]")
+                Logger.w(LOG_TAG, "Cannot skip to negative position: [position=$position]")
             } else {
-                Trace.d(LOG_TAG, "Skipping to: [position=$position, byUser=$byUser]")
+                Logger.d(LOG_TAG, "Skipping to: [position=$position, byUser=$byUser]")
                 if (position < currentSongQueue.length) {
                     currentPositionInQueue = position
                     currentSong = currentSongQueue.getItemAt(position)
@@ -505,7 +505,7 @@ class PlayerEngine constructor(
     private fun skipToInternal(song: Song, byUser: Boolean, forceStartPlaying: Boolean) {
         ThreadStrictMode.assertBackground()
         synchronized(lock) {
-            Trace.d(LOG_TAG, "Skipping to: [song=$song, byUser=$byUser]")
+            Logger.d(LOG_TAG, "Skipping to: [song=$song, byUser=$byUser]")
             val newPositionInQueue = currentSongQueue.indexOf(song)
             if (newPositionInQueue >= 0) {
                 currentPositionInQueue = newPositionInQueue
@@ -585,7 +585,7 @@ class PlayerEngine constructor(
             engine.runCatching {
                 release()
             }.onFailure { err ->
-                Trace.e(LOG_TAG, err)
+                Logger.e(LOG_TAG, err)
             }
 
             audioFxApplicable.save()
@@ -628,7 +628,7 @@ class PlayerEngine constructor(
         return engine.runCatching {
             audioSessionId
         }.onFailure { err ->
-            Trace.e(LOG_TAG, err)
+            Logger.e(LOG_TAG, err)
         }.getOrDefault(0)
     }
 
@@ -642,7 +642,7 @@ class PlayerEngine constructor(
         return engine.runCatching {
             if (isPreparedFlag) currentPosition else 0
         }.onFailure { err ->
-            Trace.e(LOG_TAG, err)
+            Logger.e(LOG_TAG, err)
         }.getOrDefault(0)
     }
 
@@ -655,7 +655,7 @@ class PlayerEngine constructor(
                 }
             }
         }.onFailure { err ->
-            Trace.e(LOG_TAG, err)
+            Logger.e(LOG_TAG, err)
         }
     }
 
@@ -663,7 +663,7 @@ class PlayerEngine constructor(
         return engine.runCatching {
             if (isPreparedFlag) duration else 0
         }.onFailure { err ->
-            Trace.e(LOG_TAG, err)
+            Logger.e(LOG_TAG, err)
         }.getOrDefault(0)
     }
 
@@ -964,7 +964,7 @@ class PlayerEngine constructor(
             val newPosition = currentPosition + interval
             seekTo(newPosition)
         }.onFailure { err ->
-            Trace.e(LOG_TAG, err)
+            Logger.e(LOG_TAG, err)
         }
     }
 
@@ -973,7 +973,7 @@ class PlayerEngine constructor(
             val newPosition = currentPosition - interval
             seekTo(newPosition)
         }.onFailure { err ->
-            Trace.e(LOG_TAG, err)
+            Logger.e(LOG_TAG, err)
         }
     }
 
@@ -982,7 +982,7 @@ class PlayerEngine constructor(
         return engine.runCatching {
             playbackParams.speed
         }.onFailure { err ->
-            Trace.e(LOG_TAG, err)
+            Logger.e(LOG_TAG, err)
         }.getOrDefault(Player.SPEED_NORMAL)
     }
 
@@ -993,7 +993,7 @@ class PlayerEngine constructor(
             params.speed = speed
             playbackParams = params
         }.onFailure { err ->
-            Trace.e(LOG_TAG, err)
+            Logger.e(LOG_TAG, err)
         }
     }
 
@@ -1002,7 +1002,7 @@ class PlayerEngine constructor(
         return engine.runCatching {
             playbackParams.pitch
         }.onFailure { err ->
-            Trace.e(LOG_TAG, err)
+            Logger.e(LOG_TAG, err)
         }.getOrDefault(Player.SPEED_NORMAL)
     }
 
@@ -1013,7 +1013,7 @@ class PlayerEngine constructor(
             params.pitch = pitch
             playbackParams = params
         }.onFailure { err ->
-            Trace.e(LOG_TAG, err)
+            Logger.e(LOG_TAG, err)
         }
     }
 
