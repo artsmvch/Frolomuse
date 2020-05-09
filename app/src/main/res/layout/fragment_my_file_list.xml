@@ -51,28 +51,8 @@
             android:layout_height="@dimen/vertical_divider_height"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <FrameLayout
+    <include layout="@layout/fragment_base_list_top_gravity"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <com.frolo.muse.views.spring.AppRecyclerView
-            android:id="@+id/rv_list"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
-        <include layout="@layout/include_placeholder"
-            android:id="@+id/layout_list_placeholder"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="invisible" />
-
-        <com.frolo.muse.views.progress.IBar
-            android:id="@+id/pb_loading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="invisible" />
-    </FrameLayout>
+        android:layout_height="match_parent" />
 
 </LinearLayout>

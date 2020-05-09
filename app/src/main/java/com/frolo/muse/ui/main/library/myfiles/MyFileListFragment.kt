@@ -16,6 +16,7 @@ import com.frolo.muse.ui.main.decorateAsLinear
 import com.frolo.muse.ui.main.library.base.AbsMediaCollectionFragment
 import com.frolo.muse.ui.main.library.base.BaseAdapter
 import com.frolo.muse.views.Anim
+import kotlinx.android.synthetic.main.fragment_base_list_top_gravity.*
 import kotlinx.android.synthetic.main.fragment_my_file_list.*
 
 
@@ -155,7 +156,8 @@ class MyFileListFragment: AbsMediaCollectionFragment<MyFile>(),
     override fun removeClipping(left: Int, top: Int, right: Int, bottom: Int) {
         view?.also { safeView ->
             if (safeView is ViewGroup) {
-                safeView.setPadding(left, top, right, bottom)
+                rv_list.setPadding(left, top, right, bottom)
+                rv_list.clipToPadding = false
                 safeView.clipToPadding = false
             }
         }
