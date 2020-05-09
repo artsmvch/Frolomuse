@@ -43,9 +43,9 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         app:layout_constraintStart_toEndOf="@id/barrier1"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@id/sp_presets"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/sp_presets"
         android:id="@+id/btn_save_preset"
         android:layout_width="32dp"
         android:layout_height="32dp"
