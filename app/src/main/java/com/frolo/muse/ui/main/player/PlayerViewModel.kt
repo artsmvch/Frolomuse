@@ -192,6 +192,16 @@ class PlayerViewModel @Inject constructor(
         onOpened()
     }
 
+    private fun handleSongQueue(queue: SongQueue?) {
+        val currSongQueueValue = _songQueue.value
+        if (currSongQueueValue != queue) {
+            currSongQueueValue?.unregisterCallback(queueCallback)
+            _songQueue.value = queue?.apply {
+                registerCallback(queueCallback, mainThreadExecutor)
+            }
+        }
+    }
+
     private fun startObservingPlaybackProgress() {
         playbackProgressDisposable?.dispose()
         playbackProgressDisposable = Observable.interval(1, TimeUnit.SECONDS)
@@ -206,7 +216,7 @@ class PlayerViewModel @Inject constructor(
     }
 
     fun onOpened() {
-        _songQueue.value = player.getCurrentQueue()
+        handleSongQueue(player.getCurrentQueue())
         _song.value = player.getCurrent()
         _playbackDuration.value = player.getDuration()
         _playbackProgress.value = player.getProgress()

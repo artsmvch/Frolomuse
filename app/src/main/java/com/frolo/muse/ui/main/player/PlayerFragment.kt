@@ -214,9 +214,7 @@ class PlayerFragment: BaseFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         observeViewModel(viewLifecycleOwner)
-        checkReadPermissionFor {
-            viewModel.onOpened()
-        }
+        viewModel.onOpened()
     }
 
     override fun onStart() {
