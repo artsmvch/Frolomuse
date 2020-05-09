@@ -5,6 +5,7 @@ import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
@@ -18,6 +19,7 @@ import com.frolo.muse.engine.service.PlayerService
 import com.frolo.muse.mediascan.MediaScanService
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.sleeptimer.PlayerSleepTimer
+import com.frolo.muse.ui.base.NoClipping
 import com.frolo.muse.ui.goToStore
 import com.frolo.muse.ui.helpWithTranslations
 import com.frolo.muse.ui.main.settings.duration.MinAudioFileDurationDialog
@@ -31,7 +33,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 
 class SettingsFragment : PreferenceFragmentCompat(),
-        SleepTimerDialog.OnTimeSelectedListener {
+        SleepTimerDialog.OnTimeSelectedListener,
+        NoClipping {
 
     private val preferences: Preferences by lazy {
         (requireContext().applicationContext as App)
@@ -332,6 +335,21 @@ class SettingsFragment : PreferenceFragmentCompat(),
     private fun showAppInfoDialog() {
         val dialog = AppInfoDialog.newInstance()
         dialog.show(childFragmentManager, TAG_APP_INFO)
+    }
+
+    override fun removeClipping(left: Int, top: Int, right: Int, bottom: Int) {
+        view?.also { safeView ->
+            val recyclerView = listView
+
+            // Try to set padding to the recycler view first, if there is one
+            if (recyclerView != null) {
+                recyclerView.setPadding(left, top, right, bottom)
+                recyclerView.clipToPadding = false
+            } else if (safeView is ViewGroup) {
+                safeView.setPadding(left, top, right, bottom)
+                safeView.clipToPadding = false
+            }
+        }
     }
 
     companion object {

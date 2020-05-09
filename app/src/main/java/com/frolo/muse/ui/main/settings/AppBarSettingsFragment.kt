@@ -8,12 +8,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.frolo.muse.R
 import com.frolo.muse.ui.base.BaseFragment
-import com.frolo.muse.ui.base.NoClipping
 import kotlinx.android.synthetic.main.fragment_appbar_settings.*
 
 
 // Simple wrapper for the SettingsFragment, this only puts a Toolbar at the top of it.
-class AppBarSettingsFragment : BaseFragment(), NoClipping {
+class AppBarSettingsFragment : BaseFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,17 +27,11 @@ class AppBarSettingsFragment : BaseFragment(), NoClipping {
         }
     }
 
-    override fun removeClipping(left: Int, top: Int, right: Int, bottom: Int) {
-        view?.also { safeView ->
-            if (safeView is ViewGroup) {
-                safeView.setPadding(left, top, right, bottom)
-                safeView.clipToPadding = false
-            }
-        }
-    }
-
     companion object {
+
+        // Factory
         fun newInstance() = AppBarSettingsFragment()
+
     }
 
 }
