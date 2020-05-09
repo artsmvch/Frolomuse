@@ -108,6 +108,7 @@ public final class DbSlider extends LinearLayout {
         inflate(context, R.layout.include_db_slider_content, this);
 
         mTopLabelTextView = findViewById(R.id.tv_top_label);
+        // TODO: Note that the visibility of the bottom label is set to GONE in xml
         mBottomLabelTextView = findViewById(R.id.tv_bottom_label);
         mVerticalSeekBar = findViewById(R.id.vertical_seek_bar);
 
