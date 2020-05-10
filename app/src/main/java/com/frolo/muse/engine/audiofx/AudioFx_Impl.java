@@ -32,11 +32,11 @@ public class AudioFx_Impl implements AudioFxApplicable {
     private static final boolean DEBUG = BuildConfig.DEBUG;
 
     /**
-     * If this flag is set to true, then the AudioFx checks if the audio session is changed when {@link AudioFxApplicable#apply(int)} is called.
-     * This is intended to omit the initialization of audio effects when the session does not actually change.
+     * If this flag is set to true, then, when {@link AudioFxApplicable#apply(int)} is called,
+     * the AudioFx can omit the initialization of all audio effects if the audio session does NOT change.
      *
-     * If this flag is set to false, then the current audio session is always considered as changed
-     * when {@link AudioFxApplicable#apply(int)} is called.
+     * If this flag is set to false, then the AudioFx initialize all audio effects
+     * every time {@link AudioFxApplicable#apply(int)} is called.
      *
      * Be careful by settings this to false, because it may be not an optimal solution.
      */
@@ -556,20 +556,15 @@ public class AudioFx_Impl implements AudioFxApplicable {
     public synchronized void apply(int audioSessionId) {
         final Integer currSessionId = mLastSessionId;
 
-        // If it doesn't change, then we can omit adjustment
-        final boolean sessionHasChanged;
-        if (OPTIMIZE_AUDIO_SESSION_CHANGE) {
-            // Optimization is enabled, check if the session is actually changed
-            sessionHasChanged = currSessionId == null || currSessionId != audioSessionId;
-        } else {
-            // Optimization is disabled, the session is always considered as changed
-            sessionHasChanged = true;
-        }
+        final boolean sessionHasChanged = currSessionId == null || currSessionId != audioSessionId;
+
+        // We can omit the initialization if and only if the optimization is enabled and the session has not changed
+        final boolean canOmitInitialization = OPTIMIZE_AUDIO_SESSION_CHANGE && !sessionHasChanged;
 
         final int priority = 0;
 
         // Re-set equalizer, if needed
-        if (sessionHasChanged || (mHasEqualizer && mEqualizer == null)) {
+        if (mHasEqualizer && (!canOmitInitialization || mEqualizer == null)) {
             try {
                 Equalizer oldEqualizer = mEqualizer;
                 if (oldEqualizer != null)
@@ -620,7 +615,7 @@ public class AudioFx_Impl implements AudioFxApplicable {
         }
 
         // Re-set bass boost, if needed
-        if (sessionHasChanged || (mHasBassBoost && mBassBoost == null)) {
+        if (mHasBassBoost && (!canOmitInitialization || mBassBoost == null)) {
             try {
                 BassBoost oldBassBoost = mBassBoost;
                 if (oldBassBoost != null)
@@ -642,7 +637,7 @@ public class AudioFx_Impl implements AudioFxApplicable {
         }
 
         // Re-set virtualizer, if needed
-        if (sessionHasChanged || (mHasVirtualizer && mVirtualizer == null)) {
+        if (mHasVirtualizer && (!canOmitInitialization || mVirtualizer == null)) {
             try {
                 Virtualizer oldVirtualizer = mVirtualizer;
                 if (oldVirtualizer != null)
@@ -664,7 +659,7 @@ public class AudioFx_Impl implements AudioFxApplicable {
         }
 
         // Re-set preset reverb, if needed
-        if (sessionHasChanged || (mHasPresetReverb && mPresetReverb == null)) {
+        if (mHasPresetReverb && (!canOmitInitialization || mPresetReverb == null)) {
             try {
                 PresetReverb oldPresetReverb = mPresetReverb;
                 if (oldPresetReverb != null)
