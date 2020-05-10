@@ -598,6 +598,7 @@ class PlayerEngine constructor(
                 Logger.e(LOG_TAG, err)
             }
 
+            audioFxApplicable.release()
             audioFxApplicable.save()
 
             // the last one we must do

@@ -706,4 +706,68 @@ public class AudioFx_Impl implements AudioFxApplicable {
 
         mLastSessionId = audioSessionId;
     }
+
+    /**
+     * This is a very important method that must be called when the player engine does not need the AudioFx anymore.
+     * If this is not called then it may fail applying audio effects in {@link AudioFxApplicable#apply(int)} method.
+     * For example, here are the steps to reproduce such a bug case:
+     * 1) open the app, play some songs and apply some audio fx settings => it works well.
+     * 2) close the app by pressing system back button and close the playback notification (but do not remove the app from recent).
+     * 3) open the app again, play some songs and try to apply some audio fx settings => the audio fx does not work.
+     * This is because we need to release all audio effects when they are not needed anymore,
+     * namely, when the player engine is shutdown.
+     */
+    @Override
+    public synchronized void release() {
+
+        if (DEBUG) {
+            Log.d(LOG_TAG, "Releasing");
+        }
+
+        try {
+            Equalizer equalizer = mEqualizer;
+            if (equalizer != null)
+                equalizer.release();
+
+            mEqualizer = null;
+        } catch (Throwable t) {
+            report(t);
+        }
+
+        try {
+            BassBoost bassBoost = mBassBoost;
+            if (bassBoost != null)
+                bassBoost.release();
+
+            mBassBoost = null;
+        } catch (Throwable t) {
+            report(t);
+        }
+
+        try {
+            Virtualizer virtualizer = mVirtualizer;
+            if (virtualizer != null)
+                virtualizer.release();
+
+            mVirtualizer = null;
+        } catch (Throwable t) {
+            report(t);
+        }
+
+        try {
+            PresetReverb presetReverb = mPresetReverb;
+            if (presetReverb != null)
+                presetReverb.release();
+
+            mPresetReverb = null;
+        } catch (Throwable t) {
+            report(t);
+        }
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        release();
+        super.finalize();
+    }
 }
