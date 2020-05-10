@@ -17,8 +17,7 @@
             app:layout_constraintDimensionRatio="1"
             android:id="@+id/imv_album_art"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:scaleType="centerCrop" />
+            android:layout_height="0dp" />
 
         <include layout="@layout/include_check"
             app:layout_constraintEnd_toEndOf="@id/imv_album_art"

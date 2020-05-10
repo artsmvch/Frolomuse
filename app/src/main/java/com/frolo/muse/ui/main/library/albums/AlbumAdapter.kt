@@ -67,7 +67,8 @@ class AlbumAdapter constructor(
                     requestManager.makeRequest(item.id)
                         .placeholder(R.drawable.ic_framed_album_48dp)
                         .error(R.drawable.ic_framed_album_48dp)
-                        .transition(DrawableTransitionOptions.withCrossFade())
+                        .transition(DrawableTransitionOptions.withCrossFade(200))
+                        .centerCrop()
                         .into(imageAlbumArt)
 
                     textAlbumName.text = item.name
@@ -82,7 +83,8 @@ class AlbumAdapter constructor(
                     requestManager.makeRequest(item.id)
                         .placeholder(R.drawable.ic_framed_album_48dp)
                         .error(R.drawable.ic_framed_album_48dp)
-                        .transition(DrawableTransitionOptions.withCrossFade())
+                        .transition(DrawableTransitionOptions.withCrossFade(200))
+                        .centerCrop()
                         .into(imageAlbumArt)
 
                     textAlbumName.text = item.name
