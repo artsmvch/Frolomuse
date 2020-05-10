@@ -197,7 +197,7 @@ class AudioFxFragment: BaseFragment(), NoClipping {
                     val asyncTask: AsyncTask<*, *, *> = Snapshots.makeAsync(view, windowBackground, backgroundColor) { result ->
                         Glide.with(this@AudioFxFragment)
                                 .load(result)
-                                .apply(bitmapTransform(BlurTransformation(5)))
+                                .apply(bitmapTransform(BlurTransformation(10)))
                                 .transition(DrawableTransitionOptions.withCrossFade(200))
                                 .into(imv_blurred_snapshot)
                     }
