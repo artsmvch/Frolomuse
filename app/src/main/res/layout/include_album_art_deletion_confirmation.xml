@@ -17,6 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?textAppearanceBody1"
+        android:gravity="center"
         android:text="@string/delete_album_art_confirmation"/>
 
     <com.google.android.flexbox.FlexboxLayout
