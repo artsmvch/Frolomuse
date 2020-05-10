@@ -31,6 +31,17 @@ public class AudioFx_Impl implements AudioFxApplicable {
 
     private static final boolean DEBUG = BuildConfig.DEBUG;
 
+    /**
+     * If this flag is set to true, then the AudioFx checks if the audio session is changed when {@link AudioFxApplicable#apply(int)} is called.
+     * This is intended to omit the initialization of audio effects when the session does not actually change.
+     *
+     * If this flag is set to false, then the current audio session is always considered as changed
+     * when {@link AudioFxApplicable#apply(int)} is called.
+     *
+     * Be careful by settings this to false, because it may be not an optimal solution.
+     */
+    private static final boolean OPTIMIZE_AUDIO_SESSION_CHANGE = true;
+
     public static AudioFx_Impl getInstance(Context context, String prefsName) {
         return new AudioFx_Impl(context, prefsName);
     }
@@ -546,7 +557,14 @@ public class AudioFx_Impl implements AudioFxApplicable {
         final Integer currSessionId = mLastSessionId;
 
         // If it doesn't change, then we can omit adjustment
-        final boolean sessionHasChanged = currSessionId == null || currSessionId != audioSessionId;
+        final boolean sessionHasChanged;
+        if (OPTIMIZE_AUDIO_SESSION_CHANGE) {
+            // Optimization is enabled, check if the session is actually changed
+            sessionHasChanged = currSessionId == null || currSessionId != audioSessionId;
+        } else {
+            // Optimization is disabled, the session is always considered as changed
+            sessionHasChanged = true;
+        }
 
         final int priority = 0;
 
