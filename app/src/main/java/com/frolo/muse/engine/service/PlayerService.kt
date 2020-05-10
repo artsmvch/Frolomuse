@@ -199,7 +199,7 @@ class PlayerService: Service() {
 
         // Creating eq impl
         val audioFxApplicable: AudioFxApplicable =
-                AudioFx_Impl.getInstance(this, "com.frolo.muse.audiofx.persistence")
+                AudioFx_Impl.getInstance(this, Const.AUDIO_FX_PREFERENCES)
 
         val observerRegistry = ObserverRegistry(this) { player, forceNotify ->
             notifyAboutPlayback(forceNotify)
