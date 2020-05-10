@@ -27,6 +27,7 @@ import com.frolo.muse.ui.base.NoClipping
 import com.frolo.muse.ui.base.setupNavigation
 import com.frolo.muse.ui.getDateAddedString
 import com.frolo.muse.ui.main.confirmShortcutCreation
+import com.frolo.muse.ui.toString
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.shape.CornerFamily
 import com.google.android.material.shape.MaterialShapeDrawable
@@ -189,12 +190,10 @@ class PlaylistFragment: AbsSongCollectionFragment<Song>(), NoClipping {
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
         playlist.observe(owner) { item ->
             tv_playlist_name.text = item?.name
-            tv_playlist_date_created.text =
-                    item?.getDateAddedString(tv_playlist_date_created.resources)
         }
 
-        mediaItemCount.observeNonNull(owner) { count ->
-            //tv_title.text = requireContext().resources.getQuantityString(R.plurals.s_songs, count, count)
+        songCountWithTotalDuration.observe(owner) { songCountWithTotalDuration ->
+            tv_playlist_info.text = songCountWithTotalDuration?.toString(resources)
         }
 
         isSwappingEnabled.observeNonNull(owner) { isSwappingEnabled ->
