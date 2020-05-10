@@ -1,6 +1,8 @@
 package com.frolo.muse.ui.main.audiofx
 
 import android.content.Context
+import android.graphics.drawable.Drawable
+import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
 import android.view.*
@@ -185,14 +187,22 @@ class AudioFxFragment: BaseFragment(), NoClipping {
                     .start()
             } else {
                 layout_audio_fx_content.doOnLayout { view ->
+
                     val backgroundColor: Int =
                             StyleUtil.readColorAttrValue(view.context, R.attr.colorSurface)
-                    val snapshot = Snapshots.make(view, backgroundColor)
-                    Glide.with(this@AudioFxFragment)
-                        .load(snapshot)
-                        .apply(bitmapTransform(BlurTransformation(5)))
-                        .transition(DrawableTransitionOptions.withCrossFade(200))
-                        .into(imv_blurred_snapshot)
+
+                    val windowBackground: Drawable? =
+                            StyleUtil.readDrawableAttrValue(view.context, android.R.attr.windowBackground)
+
+                    val asyncTask: AsyncTask<*, *, *> = Snapshots.makeAsync(view, windowBackground, backgroundColor) { result ->
+                        Glide.with(this@AudioFxFragment)
+                                .load(result)
+                                .apply(bitmapTransform(BlurTransformation(5)))
+                                .transition(DrawableTransitionOptions.withCrossFade(200))
+                                .into(imv_blurred_snapshot)
+                    }
+
+                    saveUIAsyncTask(asyncTask)
                 }
 
                 inc_audio_fx_content_lock.animate()
