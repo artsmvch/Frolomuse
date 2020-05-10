@@ -29,6 +29,8 @@ import java.util.Objects;
  */
 public class AudioFx_Impl implements AudioFxApplicable {
 
+    private static final String LOG_TAG = "AudioFx_Impl";
+
     private static final boolean DEBUG = BuildConfig.DEBUG;
 
     /**
@@ -109,10 +111,20 @@ public class AudioFx_Impl implements AudioFxApplicable {
         mPersistence = AudioFx_Persistence.create(context, prefsName);
 
         mObserverRegistry = AudioFx_ObserverRegistry.create(context, this);
+
+        if (DEBUG) {
+            String msg = new StringBuilder("Initialized:\n")
+                    .append("hasEqualizer=").append(mHasEqualizer).append("\n")
+                    .append("hasBassBoost=").append(mHasBassBoost).append("\n")
+                    .append("hasVirtualizer=").append(mHasVirtualizer).append("\n")
+                    .append("hasPresetReverb=").append(mHasPresetReverb).append("\n")
+                    .toString();
+            Log.d(LOG_TAG, msg);
+        }
     }
 
     private void report(Throwable t) {
-        Log.e("AudioFx_Impl", "A critical error occurred", t);
+        if (DEBUG) Log.e(LOG_TAG, "A critical error occurred", t);
     }
 
     @Override
@@ -562,6 +574,16 @@ public class AudioFx_Impl implements AudioFxApplicable {
         final boolean canOmitInitialization = OPTIMIZE_AUDIO_SESSION_CHANGE && !sessionHasChanged;
 
         final int priority = 0;
+
+        if (DEBUG) {
+            String msg = new StringBuilder("Applying:\n")
+                    .append("audioSessionId=").append(audioSessionId).append("\n")
+                    .append("sessionHasChanged=").append(sessionHasChanged).append("\n")
+                    .append("canOmitInitialization=").append(canOmitInitialization).append("\n")
+                    .append("priority=").append(priority).append("\n")
+                    .toString();
+            Log.d(LOG_TAG, msg);
+        }
 
         // Re-set equalizer, if needed
         if (mHasEqualizer && (!canOmitInitialization || mEqualizer == null)) {
