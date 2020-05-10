@@ -18,9 +18,11 @@ abstract class AbsSongCollectionFragment<T: Song> : AbsMediaCollectionFragment<T
         override fun onItemClick(item: T, position: Int) {
             viewModel.onItemClicked(item)
         }
+
         override fun onItemLongClick(item: T, position: Int) {
             viewModel.onItemLongClicked(item)
         }
+
         override fun onOptionsMenuClick(item: T, position: Int) {
             viewModel.onOptionsMenuClicked(item)
         }
@@ -56,16 +58,15 @@ abstract class AbsSongCollectionFragment<T: Song> : AbsMediaCollectionFragment<T
         adapter.submitSelection(selectedItems)
     }
 
-    private fun observerViewModel(owner: LifecycleOwner) {
-        viewModel.apply {
-            isPlaying.observeNonNull(owner) { isPlaying ->
-                adapter.setPlayingState(isPlaying)
-            }
+    private fun observerViewModel(owner: LifecycleOwner) = with(viewModel) {
+        isPlaying.observeNonNull(owner) { isPlaying ->
+            adapter.setPlayingState(isPlaying)
+        }
 
-            playingPosition.observeNonNull(owner) { playingPosition ->
-                val isPlaying = isPlaying.value ?: false
-                adapter.setPlayingPositionAndState(playingPosition, isPlaying)
-            }
+        playingPosition.observeNonNull(owner) { playingPosition ->
+            val isPlaying = isPlaying.value ?: false
+            adapter.setPlayingPositionAndState(playingPosition, isPlaying)
         }
     }
+
 }
