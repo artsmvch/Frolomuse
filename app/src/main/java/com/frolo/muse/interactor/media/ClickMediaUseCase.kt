@@ -31,51 +31,54 @@ class ClickMediaUseCase <E: Media> constructor(
         }
     }
 
-    fun click(item: E, fromCollection: Collection<E>): Completable {
-        return when(item.kind) {
-            Media.SONG -> {
-                return Single.fromCallable { fromCollection.filterIsInstance<Song>() }
-                        .subscribeOn(schedulerProvider.worker())
-                        .doOnSuccess { songs ->
-                            processPlay(item as Song, songs, true)
-                        }
-                        .ignoreElement()
-            }
-            Media.ALBUM -> {
-                Completable.complete()
-                        .doOnComplete {
-                            navigator.openAlbum(item as Album)
-                        }
-            }
-            Media.ARTIST -> {
-                Completable.complete()
-                        .doOnComplete {
-                            navigator.openArtist(item as Artist)
-                        }
-            }
-            Media.GENRE -> {
-                Completable.complete()
-                        .doOnComplete {
-                            navigator.openGenre(item as Genre)
-                        }
-            }
-            Media.PLAYLIST -> {
-                Completable.complete()
-                        .doOnComplete {
-                            navigator.openPlaylist(item as Playlist)
-                        }
-            }
-            Media.MY_FILE -> {
-                val myFile = item as MyFile
-                when {
-                    myFile.isDirectory -> Completable.complete()
-                            .doOnComplete {
-                                navigator.openMyFile(item as MyFile)
-                            }
+    fun click(item: E, fromCollection: Collection<E>): Completable = when(item.kind) {
+        Media.SONG -> {
+            Single.fromCallable { fromCollection.filterIsInstance<Song>() }
+                    .subscribeOn(schedulerProvider.computation())
+                    .doOnSuccess { songs ->
+                        processPlay(item as Song, songs, true)
+                    }
+                    .ignoreElement()
+        }
 
-                    myFile.isSongFile -> repository.collectSongs(myFile)
+        Media.ALBUM -> {
+            Single.fromCallable { item as Album }
+                    .observeOn(schedulerProvider.main())
+                    .doOnSuccess { navigator.openAlbum(it) }
+                    .ignoreElement()
+        }
+
+        Media.ARTIST -> {
+            Single.fromCallable { item as Artist }
+                    .observeOn(schedulerProvider.main())
+                    .doOnSuccess { navigator.openArtist(it) }
+                    .ignoreElement()
+        }
+
+        Media.GENRE -> {
+            Single.fromCallable { item as Genre }
+                    .observeOn(schedulerProvider.main())
+                    .doOnSuccess { navigator.openGenre(it) }
+                    .ignoreElement()
+        }
+
+        Media.PLAYLIST -> {
+            Single.fromCallable { item as Playlist }
+                    .observeOn(schedulerProvider.main())
+                    .doOnSuccess { navigator.openPlaylist(it) }
+                    .ignoreElement()
+        }
+
+        Media.MY_FILE -> {
+            Single.fromCallable { item as MyFile }
+                    .flatMapCompletable { myFile -> when {
+                        myFile.isDirectory -> Completable.complete()
+                                .observeOn(schedulerProvider.main())
+                                .doOnComplete { navigator.openMyFile(myFile) }
+
+                        myFile.isSongFile -> repository.collectSongs(myFile)
                             .subscribeOn(schedulerProvider.worker())
-                            // as the item is song file itself then we must get a collection of just 1 item
+                            // Since the item is a song file itself then we create a collection of just 1 item
                             .map { songs -> songs.first() }
                             .flatMap { targetSong ->
                                 val sources = fromCollection.filter { it is MyFile && it.isSongFile }
@@ -97,12 +100,11 @@ class ClickMediaUseCase <E: Media> constructor(
                             }
                             .ignoreElement()
 
-                    else -> Completable.complete()
-                }
-            }
-            else -> Completable.error(
-                    UnknownMediaException(item))
+                        else -> Completable.complete()
+                    } }
         }
+
+        else -> Completable.error(UnknownMediaException(item))
     }
 
 }
