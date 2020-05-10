@@ -64,7 +64,7 @@ class LibrarySectionsDialog : BaseDialogFragment(),
     private fun saveChanges() {
         val adapter = dialog?.rv_sections?.adapter as? LibrarySectionAdapter
         if (adapter != null) {
-            val sections = adapter.getSections()
+            val sections = adapter.getSnapshot()
             val enabledStatus = adapter.getEnabledStatus()
             preferences.librarySections = sections
             for (entry in enabledStatus.entries) {

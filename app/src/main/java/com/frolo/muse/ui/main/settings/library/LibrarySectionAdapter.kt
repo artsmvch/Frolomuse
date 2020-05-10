@@ -34,9 +34,6 @@ class LibrarySectionAdapter constructor(
         submit(sections)
     }
 
-    @Deprecated("getItems is deprecated")
-    fun getSections() = getItems()
-
     fun getEnabledStatus(): Map<@Library.Section Int, Boolean> = enabledStatus
 
     override fun onCreateBaseViewHolder(parent: ViewGroup, viewType: Int): LibrarySectionViewHolder {

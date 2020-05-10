@@ -27,8 +27,7 @@ abstract class BaseAdapter<E, VH> constructor(
     var listener: Listener<E>? = null
     private var nodes: MutableList<Node<E>> = mutableListOf()
 
-    @Deprecated("Avoid retrieving items with this method as this creates additional list")
-    protected fun getItems() = nodes.map { node -> node.item }
+    fun getSnapshot(): List<E> = nodes.map { node -> node.item }
 
     /**
      * Use this method carefully.

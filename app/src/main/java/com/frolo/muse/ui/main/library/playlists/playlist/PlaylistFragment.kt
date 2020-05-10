@@ -171,7 +171,8 @@ class PlaylistFragment: AbsSongCollectionFragment<Song>(), NoClipping {
 
     private fun dispatchItemMoved(fromPosition: Int, toPosition: Int) {
         checkWritePermissionFor {
-            viewModel.onItemMoved(fromPosition, toPosition)
+            val listSnapshot = adapter.getSnapshot()
+            viewModel.onItemMoved(fromPosition, toPosition, listSnapshot)
         }
     }
 
