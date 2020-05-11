@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!--Tint for all icons in the app including action icon, placeholders etc.-->
+    <!--Tint for all action icons in the app-->
     <attr name="iconImageTint" format="color"/>
+    <!--Tint for placeholder images in the app-->
+    <attr name="placeholderImageTint" format="color"/>
+    <!--Tint for dividers (list item dividers etc.)-->
     <attr name="dividerTint" format="color"/>
 
     <declare-styleable name="ControllerView">

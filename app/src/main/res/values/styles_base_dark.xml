@@ -39,6 +39,7 @@
 
         <!--Custom attrs-->
         <item name="iconImageTint">#FFFFFF</item>
+        <item name="placeholderImageTint">#FFFFFF</item>
         <item name="dividerTint">#ABABAB</item>
         <item name="iBarStyle">@style/Base.AppTheme.Dark.IBar</item>
         <item name="fastScrollerStyle">@style/Base.AppTheme.FastScroller</item>
