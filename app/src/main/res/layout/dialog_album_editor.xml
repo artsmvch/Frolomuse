@@ -67,11 +67,11 @@
         android:textColor="?colorAccent"
         android:text="@string/pick_new_album_art"/>
 
-    <androidx.constraintlayout.widget.Group
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/group_placeholder"
-        app:constraint_referenced_ids="tv_placeholder,btn_placeholder_pick_image"/>
+<!--    <androidx.constraintlayout.widget.Group-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:id="@+id/group_placeholder"-->
+<!--        app:constraint_referenced_ids="tv_placeholder,btn_placeholder_pick_image"/>-->
 
     <View
         app:layout_constraintStart_toStartOf="parent"

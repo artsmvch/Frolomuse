@@ -53,6 +53,9 @@ class AlbumEditorViewModel constructor(
     }
     val art: LiveData<Bitmap> get() = _art
 
+    val artVisible: LiveData<Boolean> =
+            art.map(true) { art -> art != null }
+
     val placeholderVisible: LiveData<Boolean> =
             art.map(false) { art -> art == null }
 

@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
+import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import androidx.core.view.isVisible
@@ -116,9 +117,18 @@ class AlbumEditorDialog : BaseDialogFragment() {
             postError(err)
         }
 
+        artVisible.observeNonNull(owner) { isVisible ->
+            dialog?.apply {
+                imv_album_art.visibility = if (isVisible) View.VISIBLE else View.INVISIBLE
+            }
+        }
+
         placeholderVisible.observeNonNull(owner) { isVisible ->
             dialog?.apply {
-                group_placeholder.isVisible = isVisible
+                // TODO: set the visibility via the group (after updating to ConstraintLayout 2.0, cause this does not work on 1.1.3)
+                tv_placeholder.isVisible = isVisible
+                btn_placeholder_pick_image.isVisible = isVisible
+                //group_placeholder.isVisible = isVisible
             }
         }
 
