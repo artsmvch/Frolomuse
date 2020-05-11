@@ -11,15 +11,12 @@ import com.frolo.muse.model.preset.CustomPreset
 import com.frolo.muse.model.preset.NativePreset
 import com.frolo.muse.model.preset.Preset
 import kotlinx.android.synthetic.main.item_preset_drop_down.view.*
-import java.lang.ref.WeakReference
 
 
 class PresetAdapter constructor(
     private val presets: List<Preset>,
-    onRemoveItem: ((item: CustomPreset) -> Unit)? = null
+    private val onRemoveItem: ((item: CustomPreset) -> Unit)? = null
 ) : BaseAdapter() {
-
-    private val onRemoveItemListener = WeakReference(onRemoveItem)
 
     fun indexOf(item: Preset) = presets.indexOf(item)
 
@@ -68,9 +65,7 @@ class PresetAdapter constructor(
             visibility = if (preset is CustomPreset) View.VISIBLE else View.GONE
             setOnClickListener {
                 (preset as? CustomPreset)?.let { item ->
-                    onRemoveItemListener.get()?.let { onRemoveItem ->
-                        onRemoveItem(item)
-                    }
+                    onRemoveItem?.invoke(item)
                 }
             }
         }
