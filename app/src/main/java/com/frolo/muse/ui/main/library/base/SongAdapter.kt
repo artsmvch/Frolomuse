@@ -100,8 +100,8 @@ open class SongAdapter<T: Song> constructor(
 
             val safeRequestManager = requestManager ?: Glide.with(this)
             safeRequestManager.makeRequest(item.albumId)
-                .placeholder(R.drawable.ic_framed_music_note_48dp)
-                .error(R.drawable.ic_framed_music_note_48dp)
+                .placeholder(R.drawable.ic_framed_music_note)
+                .error(R.drawable.ic_framed_music_note)
                 .circleCrop()
                 .into(imv_album_art)
 

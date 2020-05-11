@@ -47,8 +47,8 @@ class AlbumOfArtistAdapter constructor(
         tv_album_name.text = item.getNameString(resources)
 
         requestManager.makeRequest(item.id)
-            .placeholder(R.drawable.ic_framed_music_note_48dp)
-            .error(R.drawable.ic_framed_music_note_48dp)
+            .placeholder(R.drawable.ic_framed_music_note)
+            .error(R.drawable.ic_framed_music_note)
             .into(imv_album_art)
 
         imv_check.setChecked(selected, selectionChanged)

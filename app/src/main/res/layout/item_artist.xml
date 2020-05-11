@@ -36,7 +36,7 @@
         android:layout_margin="@dimen/list_item_img_art_padding"
         android:layout_width="@dimen/list_item_img_art_size"
         android:layout_height="@dimen/list_item_img_art_size"
-        android:src="@drawable/ic_framed_artist_48dp"/>
+        android:src="@drawable/ic_framed_artist"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         app:layout_constraintStart_toEndOf="@id/imv_artist_art"

@@ -27,7 +27,7 @@
             <de.hdodenhof.circleimageview.CircleImageView
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                android:src="@drawable/ic_framed_music_note_48dp"
+                android:src="@drawable/ic_framed_music_note"
                 android:id="@+id/imv_album_art"
                 android:layout_width="50dp"
                 android:layout_height="50dp" />

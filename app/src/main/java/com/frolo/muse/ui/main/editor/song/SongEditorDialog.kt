@@ -14,7 +14,6 @@ import com.frolo.muse.model.media.Song
 import com.frolo.muse.ui.base.BaseDialogFragment
 import com.frolo.muse.ui.base.serializableArg
 import com.frolo.muse.ui.base.withArg
-import com.frolo.muse.ui.getDurationString
 import com.frolo.muse.views.Anim
 import com.frolo.muse.views.getNonNullText
 import kotlinx.android.synthetic.main.dialog_song_editor.*
@@ -73,8 +72,8 @@ class SongEditorDialog: BaseDialogFragment() {
 
         Glide.with(this@SongEditorDialog)
             .makeRequest(song.albumId)
-            .placeholder(R.drawable.ic_framed_music_note_48dp)
-            .error(R.drawable.ic_framed_music_note_48dp)
+            .placeholder(R.drawable.ic_framed_music_note)
+            .error(R.drawable.ic_framed_music_note)
             .into(imv_album_art)
     }
 

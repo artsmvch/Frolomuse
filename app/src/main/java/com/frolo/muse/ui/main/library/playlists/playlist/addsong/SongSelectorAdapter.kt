@@ -45,7 +45,7 @@ class SongSelectorAdapter constructor(
 
         init {
             val drawable =
-                    ContextCompat.getDrawable(itemView.context, R.drawable.ic_framed_music_note_48dp)
+                    ContextCompat.getDrawable(itemView.context, R.drawable.ic_framed_music_note)
             itemView.chb_select_song.setImageDrawable(drawable)
         }
     }

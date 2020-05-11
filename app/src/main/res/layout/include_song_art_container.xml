@@ -12,7 +12,7 @@
         android:layout_gravity="center"
         android:layout_margin="1px"
         android:scaleType="centerCrop"
-        tools:src="@drawable/ic_framed_music_note_48dp"/>
+        tools:src="@drawable/ic_framed_music_note"/>
 
     <View
         android:id="@+id/view_song_art_overlay"

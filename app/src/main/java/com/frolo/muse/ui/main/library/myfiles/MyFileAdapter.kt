@@ -89,7 +89,7 @@ class MyFileAdapter: BaseAdapter<MyFile,
             tv_filename.text = item.getNameString()
             when {
                 item.isDirectory -> imv_file_art.setImageResource(R.drawable.ic_folder)
-                item.isSongFile -> imv_file_art.setImageResource(R.drawable.ic_framed_music_note_48dp)
+                item.isSongFile -> imv_file_art.setImageResource(R.drawable.ic_framed_music_note)
                 else -> imv_file_art.setImageDrawable(null)
             }
 

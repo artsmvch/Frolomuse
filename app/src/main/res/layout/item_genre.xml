@@ -16,7 +16,7 @@
         android:layout_width="@dimen/list_item_img_art_size"
         android:layout_height="@dimen/list_item_img_art_size"
         android:layout_margin="@dimen/list_item_img_art_padding"
-        android:src="@drawable/ic_framed_genre_48dp"/>
+        android:src="@drawable/ic_framed_genre"/>
 
     <include
         app:layout_constraintTop_toTopOf="parent"
