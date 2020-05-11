@@ -8,11 +8,13 @@ import android.view.View
 import androidx.lifecycle.LifecycleOwner
 import com.bumptech.glide.Glide
 import com.frolo.muse.R
+import com.frolo.muse.StyleUtil
 import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.glide.GlideAlbumArtHelper
 import com.frolo.muse.glide.observe
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.model.menu.RecentPeriodMenu
+import com.frolo.muse.setIconTint
 import com.frolo.muse.ui.main.library.base.SimpleMediaCollectionFragment
 import com.frolo.muse.ui.main.library.base.SongAdapter
 import com.frolo.muse.ui.main.library.base.showRecentPeriodPopup
@@ -46,6 +48,9 @@ class RecentlyAddedSongListFragment: SimpleMediaCollectionFragment<Song>() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.fragment_recently_added, menu)
+        context?.also { safeContext ->
+            menu.setIconTint(StyleUtil.readColorAttrValue(safeContext, R.attr.iconImageTint))
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
