@@ -61,7 +61,10 @@ class MyFileListFragment: AbsMediaCollectionFragment<MyFile>(),
             adapter = this@MyFileListFragment.adapter
             decorateAsLinear()
         }
-        cl_parent_file.setOnClickListener { viewModel.onRootClicked() }
+
+        cl_parent_file.setOnClickListener {
+            viewModel.onRootClicked()
+        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
