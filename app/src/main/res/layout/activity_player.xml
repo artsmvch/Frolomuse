@@ -24,7 +24,7 @@
             android:paddingTop="16dp"
             android:paddingBottom="24dp">
 
-            <de.hdodenhof.circleimageview.CircleImageView
+            <ImageView
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 android:src="@drawable/ic_framed_music_note"

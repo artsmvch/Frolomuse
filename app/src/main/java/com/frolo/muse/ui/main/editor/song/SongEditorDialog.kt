@@ -72,6 +72,7 @@ class SongEditorDialog: BaseDialogFragment() {
 
         Glide.with(this@SongEditorDialog)
             .makeRequest(song.albumId)
+            .circleCrop()
             .placeholder(R.drawable.ic_framed_music_note)
             .error(R.drawable.ic_framed_music_note)
             .into(imv_album_art)

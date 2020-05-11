@@ -23,7 +23,7 @@
             android:paddingEnd="16dp"
             android:paddingBottom="12dp">
 
-            <de.hdodenhof.circleimageview.CircleImageView
+            <ImageView
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:id="@+id/imv_album_art"

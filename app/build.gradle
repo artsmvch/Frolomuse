@@ -180,9 +180,6 @@ dependencies {
     // For runtime permissions
     implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
 
-    // circle image view
-    implementation 'de.hdodenhof:circleimageview:3.0.1'
-
     // music play button
     implementation project(':mediabutton')
 
