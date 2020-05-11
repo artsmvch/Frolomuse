@@ -20,11 +20,13 @@
             app:layout_constraintBottom_toTopOf="@id/layout_divider"
             android:id="@+id/imv_root"
             android:scaleType="centerCrop"
-            android:layout_margin="@dimen/root_file_img_padding"
+            android:layout_marginStart="10dp"
+            app:layout_goneMarginTop="4dp"
+            android:layout_marginBottom="4dp"
             android:layout_width="@dimen/list_item_img_art_size"
             android:layout_height="@dimen/list_item_img_art_size"
             android:layout_gravity="center|start"
-            android:src="@drawable/ic_folder_parent" />
+            android:src="@drawable/ic_framed_folder_up" />
 
         <androidx.appcompat.widget.AppCompatTextView
             app:layout_constraintStart_toEndOf="@id/imv_root"

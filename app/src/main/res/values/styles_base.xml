@@ -160,11 +160,11 @@
     </style>
 
     <style name="Base.AppTheme.TextAppearance.Toolbar.Title" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Title">
-        <item name="android:textSize">@dimen/toolbar_title</item>
+        <item name="android:textSize">18sp</item>
     </style>
 
     <style name="Base.AppTheme.TextAppearance.Toolbar.Subtitle" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Subtitle">
-        <item name="android:textSize">@dimen/toolbar_subtitle</item>
+        <item name="android:textSize">14sp</item>
     </style>
 
     <!--AppBarLayout-->

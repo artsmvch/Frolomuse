@@ -1,0 +1,13 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/ic_folder_48dp"
+        android:left="4dp"
+        android:top="4dp"
+        android:right="4dp"
+        android:bottom="4dp"/>
+
+    <item android:drawable="@drawable/ic_up_16dp"
+        android:left="18dp"
+        android:top="22dp"
+        android:right="18dp"
+        android:bottom="14dp"/>
+</layer-list>
