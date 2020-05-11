@@ -25,8 +25,8 @@ class AlbumViewHolder(itemView: View): MediaAdapter.MediaViewHolder(itemView) {
 
         with(itemView) {
             requestManager.makeRequest(item.id)
-                .placeholder(R.drawable.ic_album_72dp)
-                .error(R.drawable.ic_album_72dp)
+                .placeholder(R.drawable.ic_framed_album)
+                .error(R.drawable.ic_framed_album)
                 .into(imv_album_art)
 
             tv_album_name.text = item.getNameString(resources).highlight(query)
