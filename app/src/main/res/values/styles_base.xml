@@ -216,4 +216,16 @@
     <style name="Base.AppTheme.Button.TextButton" parent="Widget.MaterialComponents.Button.TextButton">
         <item name="cornerRadius">16dp</item>
     </style>
+
+    <!--CardView-->
+    <style name="Base.AppTheme.CardView" parent="Widget.MaterialComponents.CardView">
+        <item name="cornerRadius">8dp</item>
+        <item name="cardElevation">2.5dp</item>
+        <item name="cardMaxElevation">2.5dp</item>
+        <item name="shapeAppearance">@style/Base.AppTheme.ShapeAppearance.Card</item>
+    </style>
+
+    <style name="Base.AppTheme.ShapeAppearance.Card" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+        <item name="cornerSize">8dp</item>
+    </style>
 </resources>
