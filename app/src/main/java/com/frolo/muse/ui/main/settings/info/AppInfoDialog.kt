@@ -8,8 +8,6 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.view.animation.OvershootInterpolator
 import androidx.fragment.app.DialogFragment
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.frolo.muse.BuildConfig
 import com.frolo.muse.R
 import kotlinx.android.synthetic.main.dialog_app_info.*
@@ -40,18 +38,13 @@ class AppInfoDialog : DialogFragment() {
         imv_app_icon.setOnClickListener {
             it.startAnimation(anim)
         }
-
-        Glide.with(this@AppInfoDialog)
-            .asBitmap()
-            .load(R.drawable.ic_music_note_48dp)
-            .circleCrop()
-            .skipMemoryCache(true)
-            .diskCacheStrategy(DiskCacheStrategy.NONE)
-            .into(imv_app_icon)
     }
 
     companion object {
+
+        // Factory
         fun newInstance() = AppInfoDialog()
+
     }
 
 }
