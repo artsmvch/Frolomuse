@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:parentTag="android.widget.LinearLayout">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_label"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:maxLines="2"
+        android:gravity="center"
+        android:ellipsize="end"
+        android:textAppearance="?textAppearanceCaption"
+        tools:text="Unknown label. The label may be too big"/>
+
+    <androidx.appcompat.widget.AppCompatSeekBar
+        android:id="@+id/sb_controller"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</merge>

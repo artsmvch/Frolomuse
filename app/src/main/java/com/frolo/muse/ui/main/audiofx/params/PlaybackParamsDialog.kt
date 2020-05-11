@@ -17,12 +17,6 @@ import kotlinx.android.synthetic.main.dialog_playback_params.*
 @RequiresApi(Build.VERSION_CODES.M)
 class PlaybackParamsDialog : BaseDialogFragment() {
 
-    companion object {
-
-        // Factory
-        fun newInstance() = PlaybackParamsDialog()
-    }
-
     private val viewModel: PlaybackParamsViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,52 +32,61 @@ class PlaybackParamsDialog : BaseDialogFragment() {
             val width = resources.displayMetrics.widthPixels
             setupDialogSize(this, (width * 19) / 20, ViewGroup.LayoutParams.WRAP_CONTENT)
 
-            initUI(this)
+            loadUI(this)
         }
     }
 
-    private fun initUI(dialog: Dialog) {
-        dialog.apply {
-            cv_speed.apply {
-                // speed range 0..2, controller range 0...200
-                setMax(200)
-                observeProgress { progress ->
-                    val value = progress.toFloat() / 100
-                    viewModel.onSeekSpeed(value)
-                }
+    private fun loadUI(dialog: Dialog) = with(dialog) {
+        cv_speed.apply {
+            // speed range 0..2, controller range 0...200
+            setMax(200)
+            observeProgress { progress ->
+                val value = progress.toFloat() / 100
+                viewModel.onSeekSpeed(value)
             }
+        }
 
-            cv_pitch.apply {
-                // pitch range 0..2, controller range 0..200
-                setMax(200)
-                observeProgress { progress ->
-                    val value = progress.toFloat() / 100
-                    viewModel.onSeekPitch(value)
-                }
+        cv_pitch.apply {
+            // pitch range 0..2, controller range 0..200
+            setMax(200)
+            observeProgress { progress ->
+                val value = progress.toFloat() / 100
+                viewModel.onSeekPitch(value)
             }
+        }
 
-            btn_cancel.setOnClickListener { dismiss() }
-            btn_normalize.setOnClickListener { viewModel.onNormalizeButtonClicked() }
+        btn_cancel.setOnClickListener {
+            dismiss()
+        }
+
+        btn_normalize.setOnClickListener {
+            viewModel.onNormalizeButtonClicked()
         }
     }
 
-    private fun observeViewModel(owner: LifecycleOwner) {
-        viewModel.apply {
-            error.observeNonNull(owner) { err ->
-                postError(err)
-            }
+    private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
+        error.observeNonNull(owner) { err ->
+            postError(err)
+        }
 
-            speed.observeNonNull(owner) { speed ->
-                dialog?.apply {
-                    cv_speed.progress = (speed * 100).toInt()
-                }
+        speed.observeNonNull(owner) { speed ->
+            dialog?.apply {
+                cv_speed.progress = (speed * 100).toInt()
             }
+        }
 
-            pitch.observeNonNull(owner) { pitch ->
-                dialog?.apply {
-                    cv_pitch.progress = (pitch * 100).toInt()
-                }
+        pitch.observeNonNull(owner) { pitch ->
+            dialog?.apply {
+                cv_pitch.progress = (pitch * 100).toInt()
             }
         }
     }
+
+    companion object {
+
+        // Factory
+        fun newInstance() = PlaybackParamsDialog()
+
+    }
+
 }

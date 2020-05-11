@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingStart="16dp"
@@ -40,24 +41,33 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content" />
 
-    <com.google.android.material.button.MaterialButton
+    <com.google.android.flexbox.FlexboxLayout
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cv_pitch"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/normalize"
-        android:id="@+id/btn_normalize"
-        app:icon="@null"/>
+        android:gravity="center"
+        app:flexWrap="wrap"
+        app:justifyContent="center"
+        app:showDividerVertical="middle"
+        app:showDividerHorizontal="middle"
+        app:dividerDrawable="@drawable/divider_16dp_x_8dp">
 
-    <com.google.android.material.button.MaterialButton
-        app:layout_constraintTop_toTopOf="@id/btn_normalize"
-        app:layout_constraintEnd_toStartOf="@id/btn_normalize"
-        app:layout_constraintBottom_toBottomOf="@id/btn_normalize"
-        android:layout_marginEnd="12dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/cancel"
-        android:id="@+id/btn_cancel"/>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_normalize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/normalize"
+            tools:text="Normalize Normalize Normalize Normalize Normalize" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel" />
+    </com.google.android.flexbox.FlexboxLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

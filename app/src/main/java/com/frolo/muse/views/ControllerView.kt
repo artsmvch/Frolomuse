@@ -3,17 +3,18 @@ package com.frolo.muse.views
 import android.content.Context
 import android.os.Build
 import android.util.AttributeSet
+import android.view.Gravity
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.SeekBar
 
 import com.frolo.muse.R
 
-import kotlinx.android.synthetic.main.include_controller.view.*
+import kotlinx.android.synthetic.main.merge_controller.view.*
 
 
 class ControllerView @JvmOverloads constructor(
-        context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
+    context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ): LinearLayout(context, attrs, defStyleAttr) {
 
     var progress: Int
@@ -26,7 +27,8 @@ class ControllerView @JvmOverloads constructor(
 
     init {
         orientation = LinearLayout.HORIZONTAL
-        View.inflate(context, R.layout.include_controller, this)
+        View.inflate(context, R.layout.merge_controller, this)
+        gravity = Gravity.CENTER_VERTICAL
 
         val label: String?
         val ta = context.obtainStyledAttributes(attrs, R.styleable.ControllerView, 0, 0)
