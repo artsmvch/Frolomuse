@@ -2,6 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -59,9 +60,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:layout_gravity="end"
+        android:layout_gravity="center"
         app:flexWrap="wrap"
-        app:alignItems="flex_end"
+        app:justifyContent="center"
         app:showDividerVertical="middle"
         app:showDividerHorizontal="middle"
         app:dividerDrawable="@drawable/divider_16dp_x_8dp">
@@ -76,7 +77,8 @@
             android:id="@+id/btn_save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/save" />
+            android:text="@string/save"
+            tools:text="Save Save Save Save Save Save Save"/>
     </com.google.android.flexbox.FlexboxLayout>
 
 </LinearLayout>
