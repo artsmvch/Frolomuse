@@ -135,12 +135,12 @@
 
     <!--titles for main view pager-->
     <string name="all_songs">すべての音楽</string>
-    <string name="songs">曲</string>
-    <string name="artists">アーティスト</string>
+    <string name="songs">歌</string>
+    <string name="artists">出演者</string>
     <string name="genres">ジャンル</string>
     <string name="albums">アルバム</string>
     <string name="playlists">プレイリスト</string>
-    <string name="folders">フォルダ</string>
+    <string name="folders">ディレクトリ</string>
     <string name="recently_added">最近追加された</string>
     <string name="most_played">最もプレイされた</string>
 
