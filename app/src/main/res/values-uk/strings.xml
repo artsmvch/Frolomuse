@@ -56,7 +56,7 @@
     <string name="rate">Да я люблю його!</string>
 
     <string name="now_playing">Зараз грає</string>
-    <string name="queue">Чергу</string>
+    <string name="queue">Черга</string>
     <string name="current_song_queue">Поточна черга з піснями</string>
     <string name="save_as_playlist">Зберегти як список відтворення</string>
     <string name="no_songs_in_queue">У черзі немає пісень</string>
