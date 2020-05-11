@@ -134,7 +134,7 @@ class DragSongAdapter constructor(
                     width = dragIconSize
                     height = dragIconSize
                 }
-                setImageResource(R.drawable.ic_burger)
+                setImageResource(R.drawable.ic_drag_burger)
                 imageTintList =
                     ColorStateList.valueOf(StyleUtil.readColorAttrValue(context, R.attr.iconImageTint))
             }
