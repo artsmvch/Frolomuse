@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.LifecycleOwner
 import com.bumptech.glide.Glide
+import com.frolo.muse.Keyboards
 import com.frolo.muse.R
 import com.frolo.muse.arch.observe
 import com.frolo.muse.model.media.Media
@@ -90,6 +91,11 @@ class SearchFragment: AbsMediaCollectionFragment<Media>(), NoClipping {
     override fun onStop() {
         super.onStop()
         adapter.listener = null
+    }
+
+    override fun onDestroyView() {
+        Keyboards.closeFrom(this)
+        super.onDestroyView()
     }
 
     override fun onSetLoading(loading: Boolean) {
