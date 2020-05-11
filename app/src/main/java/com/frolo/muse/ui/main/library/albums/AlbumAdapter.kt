@@ -65,8 +65,8 @@ class AlbumAdapter constructor(
             is SmallItemViewHolder -> {
                 with(holder) {
                     requestManager.makeRequest(item.id)
-                        .placeholder(R.drawable.ic_framed_album_48dp)
-                        .error(R.drawable.ic_framed_album_48dp)
+                        .placeholder(R.drawable.ic_framed_album)
+                        .error(R.drawable.ic_framed_album)
                         .transition(DrawableTransitionOptions.withCrossFade(200))
                         .centerCrop()
                         .into(imageAlbumArt)
@@ -81,8 +81,8 @@ class AlbumAdapter constructor(
             is BigItemViewHolder -> {
                 with(holder) {
                     requestManager.makeRequest(item.id)
-                        .placeholder(R.drawable.ic_framed_album_48dp)
-                        .error(R.drawable.ic_framed_album_48dp)
+                        .placeholder(R.drawable.ic_framed_album)
+                        .error(R.drawable.ic_framed_album)
                         .transition(DrawableTransitionOptions.withCrossFade(200))
                         .centerCrop()
                         .into(imageAlbumArt)
