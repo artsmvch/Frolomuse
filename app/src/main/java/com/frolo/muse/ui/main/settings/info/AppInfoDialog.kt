@@ -43,7 +43,7 @@ class AppInfoDialog : DialogFragment() {
 
         Glide.with(this@AppInfoDialog)
             .asBitmap()
-            .load(R.drawable.png_note_512x512)
+            .load(R.drawable.ic_music_note_48dp)
             .circleCrop()
             .skipMemoryCache(true)
             .diskCacheStrategy(DiskCacheStrategy.NONE)

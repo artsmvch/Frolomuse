@@ -367,7 +367,7 @@ public class PlayerActivity extends AppCompatActivity {
                                     .load(bitmap)
                                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                                     .skipMemoryCache(true)
-                                    .error(Glide.with(PlayerActivity.this).load(R.drawable.png_note_256x256))
+                                    .error(Glide.with(PlayerActivity.this).load(R.drawable.ic_album_grey_72dp))
                                     .into(imageAlbumArt);
                         }
 
@@ -384,7 +384,7 @@ public class PlayerActivity extends AppCompatActivity {
 
     private void loadDefaultAlbumArt() {
         Glide.with(this)
-                .load(R.drawable.png_note_256x256)
+                .load(R.drawable.ic_album_grey_72dp)
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .skipMemoryCache(true)
                 .into(imageAlbumArt);

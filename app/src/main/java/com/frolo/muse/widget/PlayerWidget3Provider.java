@@ -81,9 +81,9 @@ public class PlayerWidget3Provider extends AppWidgetProvider {
         views.setImageViewResource(R.id.btn_play, isPlaying ? R.drawable.ic_cpause : R.drawable.ic_play);
         Song current;
         if (player != null && ((current = player.getCurrent()) != null)) {
-            views.setTextViewText(R.id.tsw_song_name, current.getTitle());
+            views.setTextViewText(R.id.tv_song_name, current.getTitle());
         } else {
-            views.setTextViewText(R.id.tsw_song_name, context.getString(R.string.placeholder_unknown));
+            views.setTextViewText(R.id.tv_song_name, context.getString(R.string.placeholder_unknown));
         }
 
         // play button
@@ -137,7 +137,7 @@ public class PlayerWidget3Provider extends AppWidgetProvider {
             }
         }
 
-        Intent appIntent = new Intent(context, MainActivity.class);
+        Intent appIntent = MainActivity.Companion.newIntent(context, true);
         PendingIntent appPi = PendingIntent.getActivity(context, RC_OPEN_PLAYER, appIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         views.setOnClickPendingIntent(R.id.ll_root, appPi);
 

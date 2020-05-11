@@ -91,9 +91,9 @@ public class PlayerWidget4Provider extends AppWidgetProvider {
         views.setImageViewResource(R.id.btn_play, isPlaying ? R.drawable.ic_cpause : R.drawable.ic_play);
         Song current;
         if (player != null && ((current = player.getCurrent()) != null)) {
-            views.setTextViewText(R.id.tsw_song_name, current.getTitle());
+            views.setTextViewText(R.id.tv_song_name, current.getTitle());
         } else {
-            views.setTextViewText(R.id.tsw_song_name, context.getString(R.string.placeholder_unknown));
+            views.setTextViewText(R.id.tv_song_name, context.getString(R.string.placeholder_unknown));
         }
 
         // play button
@@ -147,7 +147,7 @@ public class PlayerWidget4Provider extends AppWidgetProvider {
             }
         }
 
-        Intent appIntent = new Intent(context, MainActivity.class);
+        Intent appIntent = MainActivity.Companion.newIntent(context, true);
         PendingIntent appPi = PendingIntent.getActivity(context, RC_OPEN_PLAYER, appIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         views.setOnClickPendingIntent(R.id.ll_root, appPi);
 
@@ -180,14 +180,14 @@ public class PlayerWidget4Provider extends AppWidgetProvider {
         if (player != null && ((current = player.getCurrent()) != null)) {
             RequestBuilder<Bitmap> err = Glide.with(context)
                     .asBitmap()
-                    .load(R.drawable.png_note_circle_gray_256x256)
+                    .load(R.drawable.widget_album_art_placeholder)
                     .apply(commonRequestOptions);
 
             // overriding default request options
             final RequestOptions defaultRequestOptions = GlideAlbumArtHelper.get()
                     .makeRequestOptions(current.getAlbumId())
-                    .placeholder(R.drawable.png_note_circle_gray_256x256)
-                    .error(R.drawable.png_note_circle_gray_256x256);
+                    .placeholder(R.drawable.widget_album_art_placeholder)
+                    .error(R.drawable.widget_album_art_placeholder);
 
             final Uri uri = GlideAlbumArtHelper.getUri(current.getAlbumId());
 
@@ -200,7 +200,7 @@ public class PlayerWidget4Provider extends AppWidgetProvider {
         } else {
             Glide.with(context)
                     .asBitmap()
-                    .load(R.drawable.png_note_circle_gray_256x256)
+                    .load(R.drawable.widget_album_art_placeholder)
                     .apply(commonRequestOptions)
                     .into(widgetTarget);
         }
