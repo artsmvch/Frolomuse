@@ -51,7 +51,7 @@ android {
         manifestPlaceholders = [ fabricApiKey:"f2eef1e1cae51612a4a816a63743782d34cfa83d" ]
 
         ndk {
-            abiFilters "arm64_v8a", "armeabi", "armeabi-v7a", "x86", "x86_64"
+            abiFilters "arm64_v8a", "armeabi", "armeabi-v7a"
         }
     }
     buildTypes {
