@@ -48,8 +48,6 @@ android {
 
         resConfigs "de", "en", "es", "fr", "hi", "in", "ja", "pt", "ru", "tr", "zh", "uk", "ko"
 
-        manifestPlaceholders = [ fabricApiKey:"f2eef1e1cae51612a4a816a63743782d34cfa83d" ]
-
         ndk {
             abiFilters "arm64-v8a", "armeabi", "armeabi-v7a", "x86", "x86_64"
         }
