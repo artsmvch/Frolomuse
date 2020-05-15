@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <include layout="@layout/include_playback_progress"
@@ -29,8 +30,10 @@
         android:paddingRight="8dp"
         android:gravity="center"
         android:textColor="?attr/android:textColorSecondary"
+        android:letterSpacing="0.2"
         android:textStyle="bold"
-        android:textSize="17sp"
+        android:textSize="16dp"
         android:text="@string/ab"
-        android:visibility="visible" />
+        android:visibility="visible"
+        tools:ignore="SpUsage" />
 </LinearLayout>
