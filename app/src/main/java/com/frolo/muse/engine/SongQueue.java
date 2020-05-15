@@ -4,6 +4,7 @@ import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 
 import com.frolo.muse.model.media.Song;
+import com.frolo.muse.model.media.Songs;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -203,13 +204,14 @@ public final class SongQueue implements Cloneable {
      * @param song to replace with
      */
     /*package*/ synchronized void replaceAllWithSameId(Song song) {
+        if (song == null) return;
+
         boolean atLeastOneReplaced = false;
         for (int i = 0; i < mSongs.size(); i++) {
             final Song item = mSongs.get(i);
             if (item.getId() == song.getId()) {
                 // This item has the same ID
-                // TODO: maybe we need to use a copy of the song
-                mSongs.set(i, song);
+                mSongs.set(i, Songs.create(song));
                 atLeastOneReplaced = true;
             }
         }
