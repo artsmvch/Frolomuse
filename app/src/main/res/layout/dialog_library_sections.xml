@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_height="wrap_content">
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:layout_width="match_parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/divider1"
+        android:id="@+id/tv_title"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:minHeight="@dimen/dialog_header_min_height"
         android:padding="8dp"
@@ -15,15 +20,26 @@
         android:text="@string/nav_library"/>
 
     <include layout="@layout/include_divider"
-        android:layout_width="match_parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/rv_sections"
+        android:id="@+id/divider1"
+        android:layout_width="0dp"
         android:layout_height="@dimen/vertical_divider_height"/>
 
     <!--setting min height to be sure it's not like that gone-->
     <androidx.recyclerview.widget.RecyclerView
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/divider2"
+        app:layout_constraintHeight_default="wrap"
+        app:layout_constraintHeight_min="200dp"
         android:id="@+id/rv_sections"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="200dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:minHeight="120dp"
         android:paddingTop="12dp"
         android:paddingBottom="12dp"
         android:clipToPadding="false"
@@ -31,16 +47,25 @@
         android:fillViewport="true"/>
 
     <include layout="@layout/include_divider"
-        android:layout_width="match_parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rv_sections"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/btn_save"
+        android:id="@+id/divider2"
+        android:layout_width="0dp"
         android:layout_height="@dimen/vertical_divider_height"/>
 
     <TextView
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:id="@+id/btn_save"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:minHeight="@dimen/dialog_footer_min_height"
         android:gravity="center"
         android:text="@string/save"
         android:textAppearance="?textAppearanceButton"
         android:background="?selectableItemBackground" />
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
