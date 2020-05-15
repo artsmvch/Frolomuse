@@ -134,6 +134,16 @@ public class FitSingleLineTextView extends AppCompatTextView {
     }
 
     @Override
+    public void setTextSize(float size) {
+        // Just ignore this, because text size is automatically calculated
+    }
+
+    @Override
+    public void setTextSize(int unit, float size) {
+        // Just ignore this, because text size is automatically calculated
+    }
+
+    @Override
     public void setLines(int lines) {
         throw new UnsupportedOperationException();
     }
