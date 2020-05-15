@@ -183,6 +183,16 @@ public final class Songs {
         );
     }
 
+    /**
+     * Creates an instance of type Song fully copied from the given <code>src</code>.
+     * Actually, this simply delegates the call to {@link Songs#create(Song)}.
+     * @param src to copy fields from
+     * @return an instance of type Song fully copied from the given src param
+     */
+    public static Song copy(Song src) {
+        return create(src);
+    }
+
     private Songs() {
     }
 

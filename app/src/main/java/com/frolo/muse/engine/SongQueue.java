@@ -211,7 +211,7 @@ public final class SongQueue implements Cloneable {
             final Song item = mSongs.get(i);
             if (item.getId() == song.getId()) {
                 // This item has the same ID
-                mSongs.set(i, Songs.create(song));
+                mSongs.set(i, Songs.copy(song));
                 atLeastOneReplaced = true;
             }
         }
