@@ -29,6 +29,7 @@ import com.frolo.muse.engine.Player
 import com.frolo.muse.dp2px
 import com.frolo.muse.model.media.*
 import com.frolo.muse.ui.PlayerHostActivity
+import com.frolo.muse.ui.ThemeHandler
 import com.frolo.muse.ui.base.*
 import com.frolo.muse.ui.main.audiofx.AudioFxFragment
 import com.frolo.muse.ui.main.library.LibraryFragment
@@ -50,7 +51,8 @@ import kotlin.math.pow
 // TODO: show some splash until the player is connected and the fragment are loaded
 class MainActivity : PlayerHostActivity(),
         FragmentNavigator,
-        PlayerSheetCallback {
+        PlayerSheetCallback,
+        ThemeHandler {
 
     // Reference to the presentation layer
     private val viewModel: MainViewModel by lazy {
@@ -521,6 +523,11 @@ class MainActivity : PlayerHostActivity(),
         // Need to clean it to prevent double-handling
         notHandledIntent = null
 
+        if (intent.getBooleanExtra(EXTRA_INTENT_HANDLED, false)) {
+            // This intent has already been handled
+            return
+        }
+
         if (intent.hasExtra(EXTRA_NAV_KIND_OF_MEDIA) && intent.hasExtra(EXTRA_NAV_MEDIA_ID)) {
             val kindOfMedia = intent.getIntExtra(EXTRA_NAV_KIND_OF_MEDIA, Media.NONE)
             val mediaId = intent.getLongExtra(EXTRA_NAV_MEDIA_ID, Media.NO_ID)
@@ -543,6 +550,9 @@ class MainActivity : PlayerHostActivity(),
         if (intent.getBooleanExtra(EXTRA_OPEN_PLAYER, false)) {
             expandSlidingPlayer()
         }
+
+        // Mark this intent as handled
+        intent.putExtra(EXTRA_INTENT_HANDLED, true)
     }
 
     private fun requestReadStoragePermission() {
@@ -634,6 +644,14 @@ class MainActivity : PlayerHostActivity(),
         }
     }
 
+    override fun handleThemeChange() {
+        if (notHandledIntent != null) {
+            // Saving the not handled intent
+            intent = notHandledIntent
+        }
+        recreate()
+    }
+
     companion object {
         private const val RC_READ_STORAGE = 1043
 
@@ -643,10 +661,11 @@ class MainActivity : PlayerHostActivity(),
 
         //private const val ACTION_NAV_MEDIA = "com.frolo.muse.ui.main.ACTION_NAV_MEDIA"
 
-        private const val EXTRA_OPEN_PLAYER = "open_player"
-        private const val EXTRA_TAB_INDEX = "last_tab_index"
-        private const val EXTRA_NAV_KIND_OF_MEDIA = "com.frolo.muse.ui.main.nav_kind_of_media"
-        private const val EXTRA_NAV_MEDIA_ID = "com.frolo.muse.ui.main.nav_media_id"
+        private const val EXTRA_INTENT_HANDLED = "com.frolo.muse.ui.main.INTENT_HANDLED"
+        private const val EXTRA_OPEN_PLAYER = "com.frolo.muse.ui.main.OPEN_PLAYER"
+        private const val EXTRA_TAB_INDEX = "com.frolo.muse.ui.main.LAST_TAB_INDEX"
+        private const val EXTRA_NAV_KIND_OF_MEDIA = "com.frolo.muse.ui.main.NAV_KIND_OF_MEDIA"
+        private const val EXTRA_NAV_MEDIA_ID = "com.frolo.muse.ui.main.NAV_MEDIA_ID"
 
         const val INDEX_LIBRARY = FragNavController.TAB1
         const val INDEX_EQUALIZER = FragNavController.TAB2

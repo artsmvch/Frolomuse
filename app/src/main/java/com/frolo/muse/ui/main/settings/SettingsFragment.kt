@@ -19,6 +19,7 @@ import com.frolo.muse.engine.service.PlayerService
 import com.frolo.muse.mediascan.MediaScanService
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.sleeptimer.PlayerSleepTimer
+import com.frolo.muse.ui.ThemeHandler
 import com.frolo.muse.ui.base.NoClipping
 import com.frolo.muse.ui.goToStore
 import com.frolo.muse.ui.helpWithTranslations
@@ -312,7 +313,11 @@ class SettingsFragment : PreferenceFragmentCompat(),
                 }
                 if (selectedTheme != currentTheme) {
                     preferences.saveTheme(selectedTheme)
-                    activity.recreate()
+                    if (activity is ThemeHandler) {
+                        activity.handleThemeChange()
+                    } else {
+                        activity.recreate()
+                    }
                 }
             }
             .show()
