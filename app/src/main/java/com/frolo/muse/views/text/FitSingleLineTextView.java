@@ -31,6 +31,12 @@ public class FitSingleLineTextView extends AppCompatTextView {
 
     private int mMaxTextSize = MAX_TEXT_SIZE_NOT_SET;
 
+    /**
+     * The last calculated value of text size to be applied to this TextView.
+     * Int type is used for not exact, but approximate comparison of text sizes.
+     */
+    private int mCalculatedRawTextSize = -1;
+
     public FitSingleLineTextView(final Context context) {
         this(context, null);
     }
@@ -73,7 +79,8 @@ public class FitSingleLineTextView extends AppCompatTextView {
 
     @Override
     protected void onSizeChanged(final int w, final int h, final int oldw, final int oldh) {
-        if (w != oldw || h != oldh) {
+        final int currRawTextSize = (int) getPaint().getTextSize();
+        if (w != oldw || h != oldh || currRawTextSize != mCalculatedRawTextSize) {
             final int heightToFit = h - getPaddingTop() - getPaddingBottom();
             refitText(getCurrentTextString(), heightToFit);
         }
@@ -130,7 +137,9 @@ public class FitSingleLineTextView extends AppCompatTextView {
         final float resultTextSize =
                 mMaxTextSize > 0 ? Math.min(calculatedTextSize, mMaxTextSize) : lo;
 
-        this.setTextSize(TypedValue.COMPLEX_UNIT_PX, resultTextSize);
+        mCalculatedRawTextSize = (int) resultTextSize;
+
+        super.setTextSize(TypedValue.COMPLEX_UNIT_PX, resultTextSize);
     }
 
     @Override
