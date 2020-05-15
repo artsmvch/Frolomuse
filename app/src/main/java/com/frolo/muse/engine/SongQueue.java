@@ -198,6 +198,26 @@ public final class SongQueue implements Cloneable {
         invalidateSelf();
     }
 
+    /**
+     * Replaces all songs with the same ID as the given <code>song</code> with this <code>song</code>.
+     * @param song to replace with
+     */
+    /*package*/ synchronized void replaceAllWithSameId(Song song) {
+        boolean atLeastOneReplaced = false;
+        for (int i = 0; i < mSongs.size(); i++) {
+            final Song item = mSongs.get(i);
+            if (item.getId() == song.getId()) {
+                // This item has the same ID
+                // TODO: maybe we need to use a copy of the song
+                mSongs.set(i, song);
+                atLeastOneReplaced = true;
+            }
+        }
+        if (atLeastOneReplaced) {
+            invalidateSelf();
+        }
+    }
+
     /*package*/ synchronized void remove(Song song) {
         mSongs.remove(song);
         invalidateSelf();

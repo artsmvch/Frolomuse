@@ -698,18 +698,8 @@ class PlayerEngine constructor(
 
     override fun update(song: Song) {
         execOnEngineThread {
-            originSongQueue?.let { queue ->
-                val index = queue.indexOf(song)
-                if (index >= 0) {
-                    queue.setItemAt(index, song)
-                }
-            }
-            currentSongQueue.let { queue ->
-                val index = queue.indexOf(song)
-                if (index >= 0) {
-                    queue.setItemAt(index, song)
-                }
-            }
+            originSongQueue?.replaceAllWithSameId(song)
+            currentSongQueue.replaceAllWithSameId(song)
             if (currentSong?.source == song.source) {
                 currentSong = song
                 execOnEventThread {
