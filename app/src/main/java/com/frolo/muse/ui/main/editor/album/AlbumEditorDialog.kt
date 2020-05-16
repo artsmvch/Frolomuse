@@ -125,10 +125,7 @@ class AlbumEditorDialog : BaseDialogFragment() {
 
         placeholderVisible.observeNonNull(owner) { isVisible ->
             dialog?.apply {
-                // TODO: set the visibility via the group (after updating to ConstraintLayout 2.0, cause this does not work on 1.1.3)
-                tv_placeholder.isVisible = isVisible
-                btn_placeholder_pick_image.isVisible = isVisible
-                //group_placeholder.isVisible = isVisible
+                group_placeholder.isVisible = isVisible
             }
         }
 
