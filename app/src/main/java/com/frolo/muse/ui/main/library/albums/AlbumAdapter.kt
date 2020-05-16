@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.frolo.muse.R
-import com.frolo.muse.dp2px
 import com.frolo.muse.glide.makeRequest
 import com.frolo.muse.inflateChild
 import com.frolo.muse.model.media.Album
@@ -19,7 +18,6 @@ import com.frolo.muse.views.checkable.CheckView
 import com.frolo.muse.views.media.MediaConstraintLayout
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.imageview.ShapeableImageView
-import com.google.android.material.shape.ShapeAppearanceModel
 import com.l4digital.fastscroll.FastScroller
 
 
@@ -120,14 +118,6 @@ class AlbumAdapter constructor(
         val imageAlbumArt: ShapeableImageView = itemView.findViewById(R.id.imv_album_art)
         val imageCheck: CheckView = itemView.findViewById(R.id.imv_check)
         override val viewOptionsMenu: View = itemView.findViewById(R.id.view_options_menu)
-
-        init {
-            val cornerRadius = 16f.dp2px(itemView.context)
-            imageAlbumArt.shapeAppearanceModel =
-                ShapeAppearanceModel.builder()
-                    .setAllCornerSizes(cornerRadius)
-                    .build()
-        }
     }
 
     object AlbumItemCallback: DiffUtil.ItemCallback<Album>() {

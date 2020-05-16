@@ -228,4 +228,13 @@
     <style name="Base.AppTheme.ShapeAppearance.Card" parent="ShapeAppearance.MaterialComponents.MediumComponent">
         <item name="cornerSize">8dp</item>
     </style>
+
+    <!--ShapeableImageView-->
+    <style name="Base.AppTheme.ShapeableImageView.AlbumArt" parent="">
+        <item name="shapeAppearance">@style/Base.AppTheme.ShapeAppearance.AlbumArt</item>
+    </style>
+
+    <style name="Base.AppTheme.ShapeAppearance.AlbumArt" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+        <item name="cornerSize">16dp</item>
+    </style>
 </resources>
