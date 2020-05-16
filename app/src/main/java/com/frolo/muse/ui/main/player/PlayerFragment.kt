@@ -167,7 +167,7 @@ class PlayerFragment: BaseFragment() {
             adapter = AlbumCardAdapter(requestManager = Glide.with(this@PlayerFragment))
         }
 
-        initTextSwitcher(tsw_song_name, 18f, Typeface.DEFAULT_BOLD)
+        initTextSwitcher(tsw_song_name, 18f, Typeface.BOLD)
         initTextSwitcher(tsw_artist_name, 12f)
 
         btn_play.setOnClickListener {
@@ -246,13 +246,12 @@ class PlayerFragment: BaseFragment() {
     private fun initTextSwitcher(
         view: TextSwitcher,
         textSizeInSp: Float,
-        typeface: Typeface = Typeface.DEFAULT
+        typefaceStyle: Int = Typeface.NORMAL
     ) {
         view.setFactory {
             AppCompatTextView(context).apply {
                 setTextSize(TypedValue.COMPLEX_UNIT_SP, textSizeInSp)
                 gravity = Gravity.CENTER
-                //textView.setTypeface(MyApplication.getTypeface());
                 layoutParams = FrameLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT
@@ -262,7 +261,7 @@ class PlayerFragment: BaseFragment() {
 
                 maxLines = 1
                 ellipsize = TextUtils.TruncateAt.END
-                this.typeface = typeface
+                setTypeface(typeface, typefaceStyle)
             }
         }
         view.setInAnimation(context, R.anim.fade_in)
