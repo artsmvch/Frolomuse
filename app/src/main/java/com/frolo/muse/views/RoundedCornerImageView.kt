@@ -10,6 +10,10 @@ import androidx.appcompat.widget.AppCompatImageView
 import com.frolo.muse.R
 
 
+@Deprecated(
+    message = "The shape of this widget does not look smooth",
+    replaceWith = ReplaceWith("ShapeableImageView")
+)
 class RoundedCornerImageView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,

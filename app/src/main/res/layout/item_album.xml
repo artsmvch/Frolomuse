@@ -8,11 +8,10 @@
     android:minHeight="@dimen/preferred_item_height"
     android:background="@drawable/bg_item_media">
 
-    <com.frolo.muse.views.RoundedCornerImageView
+    <com.google.android.material.imageview.ShapeableImageView
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:imageCornerRadius="16dp"
         android:layout_marginStart="4dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="4dp"
@@ -20,7 +19,6 @@
         android:id="@+id/imv_album_art"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:adjustViewBounds="true"
         android:scaleType="centerCrop" />
 
     <include layout="@layout/include_check"
