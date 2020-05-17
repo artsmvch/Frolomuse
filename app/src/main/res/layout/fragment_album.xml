@@ -111,6 +111,7 @@
                     android:src="@drawable/ic_play"
                     app:fabSize="normal"
                     app:maxImageSize="12dp"
+                    android:visibility="invisible"
                     tools:ignore="RtlHardcoded" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

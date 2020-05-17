@@ -38,12 +38,7 @@ class AlbumFragment: AbsSongCollectionFragment<Song>(), NoClipping {
         AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
             val scrollFactor: Float = abs(verticalOffset.toFloat() / (view_backdrop.measuredHeight))
 
-            // TODO: this ignores the actual state of the Play button in the view model
-            if (scrollFactor < 0.3) {
-                if (!fab_play.isOrWillBeShown) fab_play.show()
-            } else {
-                if (!fab_play.isOrWillBeHidden) fab_play.hide()
-            }
+            viewModel.onHeaderScrolled(scrollFactor)
 
             (view_backdrop.background as? MaterialShapeDrawable)?.apply {
                 val poweredScrollFactor = scrollFactor.pow(2)
@@ -152,7 +147,11 @@ class AlbumFragment: AbsSongCollectionFragment<Song>(), NoClipping {
         }
 
         playButtonVisible.observeNonNull(owner) { isVisible ->
-            if (isVisible) fab_play.show() else fab_play.hide()
+            if (isVisible) {
+                if (!fab_play.isOrWillBeShown) fab_play.show()
+            } else {
+                if (!fab_play.isOrWillBeHidden) fab_play.hide()
+            }
         }
 
         confirmAlbumShortcutCreationEvent.observeNonNull(owner) { album ->

@@ -2,10 +2,7 @@ package com.frolo.muse.ui.main.library.albums.album
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.frolo.muse.arch.SingleLiveEvent
-import com.frolo.muse.arch.call
-import com.frolo.muse.arch.liveDataOf
-import com.frolo.muse.arch.map
+import com.frolo.muse.arch.*
 import com.frolo.muse.engine.Player
 import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.interactor.media.*
@@ -59,9 +56,16 @@ class AlbumViewModel constructor(
 
     val artistName: LiveData<String> = liveDataOf(albumArg.artist)
 
+    private val headerScrollFactor = MutableLiveData<Float>(0f)
+
     val playButtonVisible: LiveData<Boolean> =
-        mediaList.map(initialValue = false) { list ->
-            !list.isNullOrEmpty()
+        combine(headerScrollFactor, mediaList) { scrollFactor: Float?, list: List<*>? ->
+            if (scrollFactor == null || scrollFactor > 0.3f)
+                // If the scroll factor is more than 0.3 then the play button is always hidden
+                return@combine false
+
+            // The play button may be visible only if the media list is not empty
+            return@combine !list.isNullOrEmpty()
         }
 
     private val _confirmAlbumShortcutCreationEvent = SingleLiveEvent<Album>()
@@ -75,6 +79,15 @@ class AlbumViewModel constructor(
     fun onPlayButtonClicked() {
         val snapshot = mediaList.value.orEmpty()
         playMediaUseCase.play(snapshot).subscribeFor {  }
+    }
+
+    /**
+     * This method should be called when the album header scrolls with the given [scrollFactor].
+     * The scroll factor describes how much the header scrolls up.
+     * 0.0f means that the header is completely expanded and 1.0f means that the header is completely hidden.
+     */
+    fun onHeaderScrolled(scrollFactor: Float) {
+        headerScrollFactor.value = scrollFactor
     }
 
     /**
