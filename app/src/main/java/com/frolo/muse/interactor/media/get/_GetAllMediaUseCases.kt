@@ -78,7 +78,7 @@ fun GetAllGenresUseCase(
     repository: GenreRepository,
     preferences: Preferences
 ): GetAllMediaUseCase<Genre> = object : GetAllMediaUseCase<Genre>(
-    section = Library.GENRE,
+    section = Library.GENRES,
     preferences = preferences,
     repository = repository,
     schedulerProvider = schedulerProvider
