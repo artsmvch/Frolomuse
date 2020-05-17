@@ -46,4 +46,10 @@ public final class StyleUtil {
         return ContextCompat.getDrawable(context, typedValue.resourceId);
     }
 
+    public static boolean readBooleanAttrValue(@NonNull Context context, @AttrRes int attrId) {
+        final TypedValue typedValue = new TypedValue();
+        context.getTheme().resolveAttribute(attrId, typedValue, true);
+        return typedValue.data != 0;
+    }
+
 }
