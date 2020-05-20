@@ -60,16 +60,13 @@ android {
         debug {
             applicationIdSuffix ".dev"
             debuggable true
-        }
-        stage {
-            initWith(debug) // sign with debug configs
-            applicationIdSuffix ".dev"
             shrinkResources false
             minifyEnabled false
-            resValue "string", "app_name", "Stage Frolomuse"
+            resValue "string", "app_name", "Debug Frolomuse"
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            versionNameSuffix "-S"
+            versionNameSuffix "-D"
         }
+
         release {
             shrinkResources true
             minifyEnabled true
