@@ -16,8 +16,8 @@ public final class EventLoggers {
         return new CrashlyticsEventLogger(context);
     }
 
-    public static EventLogger createFirebase() {
-        return new FirebaseEventLogger();
+    public static EventLogger createFirebase(Context context) {
+        return new FirebaseEventLogger(context);
     }
 
     public static EventLogger createMute() {

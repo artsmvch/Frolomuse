@@ -16,6 +16,8 @@ import com.frolo.muse.App
 import com.frolo.muse.BuildConfig
 import com.frolo.muse.R
 import com.frolo.muse.engine.service.PlayerService
+import com.frolo.muse.logger.EventLogger
+import com.frolo.muse.logger.logThemeChanged
 import com.frolo.muse.mediascan.MediaScanService
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.sleeptimer.PlayerSleepTimer
@@ -41,6 +43,12 @@ class SettingsFragment : PreferenceFragmentCompat(),
         (requireContext().applicationContext as App)
                 .appComponent
                 .providePreferences()
+    }
+
+    private val eventLogger: EventLogger by lazy {
+        (requireContext().applicationContext as App)
+                .appComponent
+                .provideEventLogger()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -313,6 +321,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
                 }
                 if (selectedTheme != currentTheme) {
                     preferences.saveTheme(selectedTheme)
+                    eventLogger.logThemeChanged(selectedTheme)
                     if (activity is ThemeHandler) {
                         activity.handleThemeChange()
                     } else {

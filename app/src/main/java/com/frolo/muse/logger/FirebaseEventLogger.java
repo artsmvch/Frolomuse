@@ -1,52 +1,61 @@
 package com.frolo.muse.logger;
 
+import android.content.Context;
+import android.os.Build;
+import android.os.Bundle;
+
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
+
+import java.util.Collections;
 import java.util.Map;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
-class FirebaseEventLogger implements EventLogger {
-    private final Executor mExecutor = Executors.newSingleThreadExecutor();
 
-    private static class EventLogCallback implements Runnable {
-        final String event;
-        final Map<String, String> params;
+/**
+ * Implementation of {@link EventLogger} for sending events/errors to the Firebase Console.
+ */
+final class FirebaseEventLogger implements EventLogger {
 
-        EventLogCallback(String event, Map<String, String> params) {
-            this.event = event;
-            this.params = params;
-        }
-
-        @Override
-        public void run() {
-            // Logging here
-        }
+    /**
+     * Returns info about this device.
+     * E.g. Samsung Note 4 6.0 MARSHMALLOW, LGE LG-D410 4.4.2 KITKAT.
+     * @return info about this device
+     */
+    private static String getDeviceInfo() {
+        return Build.MANUFACTURER
+                + " " + Build.MODEL + " " + Build.VERSION.RELEASE
+                + " " + Build.VERSION_CODES.class.getFields()[android.os.Build.VERSION.SDK_INT].getName();
     }
 
-    private static class ErrLogCallback implements Runnable {
-        final Throwable err;
+    private final Context mContext;
 
-        ErrLogCallback(Throwable err) {
-            this.err = err;
-        }
-
-        @Override
-        public void run() {
-            // Logging here
-        }
+    FirebaseEventLogger(Context context) {
+        mContext = context;
     }
 
     @Override
     public void log(String event) {
-        mExecutor.execute(new EventLogCallback(event, null));
+        log(event, Collections.emptyMap());
     }
 
     @Override
     public void log(String event, Map<String, String> params) {
-        mExecutor.execute(new EventLogCallback(event, params));
+        final int paramsMapSize = params != null ? params.size() : 0;
+        final Bundle bundle = new Bundle(paramsMapSize + 1); // +1 for device info param
+        bundle.putString("device_info", getDeviceInfo());
+        if (params != null) {
+            for (final Map.Entry<String, String> entry : params.entrySet()) {
+                bundle.putString(entry.getKey(), entry.getValue());
+            }
+        }
+        FirebaseAnalytics.getInstance(mContext).logEvent(event, bundle);
     }
 
     @Override
     public void log(Throwable err) {
-        mExecutor.execute(new ErrLogCallback(err));
+        if (err != null) {
+            FirebaseCrashlytics.getInstance().recordException(err);
+        }
     }
+
 }

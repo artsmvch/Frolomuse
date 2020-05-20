@@ -16,14 +16,14 @@ class EventLoggerModule(private val debug: Boolean) {
     fun provideEventLogger(context: Context): EventLogger {
         return if (debug) {
             EventLoggers.compose(
-                    EventLoggers.createFirebase(),
+                    EventLoggers.createFirebase(context),
                     EventLoggers.createDroid()
             )
         } else {
             EventLoggers.compose(
                     EventLoggers.createFlurry(context),
                     EventLoggers.createCrashlytics(context),
-                    EventLoggers.createFirebase()
+                    EventLoggers.createFirebase(context)
             )
         }
     }

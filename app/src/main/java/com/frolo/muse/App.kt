@@ -11,7 +11,7 @@ import com.frolo.muse.engine.Player
 import com.frolo.muse.engine.PlayerWrapper
 import com.frolo.muse.engine.service.PlayerService
 import com.frolo.muse.navigator.NavigatorWrapper
-import com.frolo.muse.logger.EventLogger
+import com.frolo.muse.logger.logAppLaunched
 import com.frolo.muse.ui.base.BaseActivity
 import com.frolo.muse.ui.base.FragmentNavigator
 import com.frolo.muse.ui.main.MainActivity
@@ -90,12 +90,9 @@ class App : MultiDexApplication() {
     }
 
     private fun dispatchAppLaunched() {
-        preferences.openCount += 1
-        eventLogger.also { logger ->
-            val params: Map<String, String> =
-                mapOf(EventLogger.PARAM_COUNT to preferences.openCount.toString())
-            logger.log(EventLogger.EVENT_APP_LAUNCHED, params)
-        }
+        val totalLaunchCount = preferences.openCount + 1 // +1 for the current launch
+        preferences.openCount = totalLaunchCount
+        eventLogger.logAppLaunched(totalLaunchCount)
     }
 
     private fun startBackgroundPlayer() {
