@@ -58,11 +58,11 @@ android {
     }
     buildTypes {
         debug {
-            applicationIdSuffix ".dev"
+            applicationIdSuffix ".dbg"
             debuggable true
             shrinkResources false
             minifyEnabled false
-            resValue "string", "app_name", "Debug Frolomuse"
+            resValue "string", "app_name", "Dbg Frolomuse"
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             versionNameSuffix "-D"
         }
