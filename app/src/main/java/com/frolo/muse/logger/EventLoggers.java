@@ -4,16 +4,13 @@ import android.content.Context;
 
 import java.util.Arrays;
 
-// Factory
+
+// Factories
 public final class EventLoggers {
     private EventLoggers() { }
 
     public static EventLogger createFlurry(Context context) {
         return new FlurryEventLogger(context);
-    }
-
-    public static EventLogger createCrashlytics(Context context) {
-        return new CrashlyticsEventLogger(context);
     }
 
     public static EventLogger createFirebase(Context context) {

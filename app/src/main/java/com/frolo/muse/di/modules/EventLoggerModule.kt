@@ -22,7 +22,6 @@ class EventLoggerModule(private val debug: Boolean) {
         } else {
             EventLoggers.compose(
                     EventLoggers.createFlurry(context),
-                    EventLoggers.createCrashlytics(context),
                     EventLoggers.createFirebase(context)
             )
         }

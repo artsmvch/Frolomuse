@@ -16,6 +16,7 @@ class AndroidEventLogger implements EventLogger {
 
     @Override
     public void log(String event, Map<String, String> params) {
+        // TODO: params are not used, need to fix that
         Log.d(buildTag(), event);
     }
 
