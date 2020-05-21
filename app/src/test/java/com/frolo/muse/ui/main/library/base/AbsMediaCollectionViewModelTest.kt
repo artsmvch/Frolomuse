@@ -12,6 +12,7 @@ import com.frolo.muse.model.menu.ContextualMenu
 import com.frolo.muse.navigator.TestNavigator
 import com.frolo.muse.permission.PermissionChecker
 import com.nhaarman.mockitokotlin2.doReturn
+import com.nhaarman.mockitokotlin2.doThrow
 import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.Flowable
@@ -144,7 +145,71 @@ class AbsMediaCollectionViewModelTest {
     }
 
     @Test
-    fun test_fetchMediaList_PermissionNotGranted() {
+    fun test_fetchMediaList_PermissionNotGranted1() {
+        // The first time it throws an exception, the second time it returns OK
+        whenever(permissionChecker.requireQueryMediaContentPermission())
+                .doThrow(SecurityException())
+                .thenDoNothing()
+
+        whenever(getMediaUseCase.getMediaList())
+                .doReturn(Flowable.just(emptyList()))
+
+        viewModel.onActive()
+
+        viewModel.mediaList.value.let { value ->
+            assert(value.isNullOrEmpty())
+        }
+
+        viewModel.mediaItemCount.value.let { value ->
+            assert(value == 0)
+        }
+
+        viewModel.error.value.let { value ->
+            assert(value == null)
+        }
+
+        viewModel.placeholderVisible.value.let { value ->
+            assert(value == true)
+        }
+
+        viewModel.isLoading.value.let { value ->
+            assert(value == false)
+        }
+
+        viewModel.askReadPermissionEvent.value.let { value ->
+            assert(value != null)
+        }
+
+        // After that
+        whenever(getMediaUseCase.getMediaList())
+                .doReturn(Flowable.just(mockMediaList(size = 10, allowIdCollisions = false)))
+
+        // Assuming the user granted the permission
+        viewModel.onReadPermissionGranted()
+
+        viewModel.mediaList.value.let { value ->
+            assert(value != null && value.size == 10)
+        }
+
+        viewModel.mediaItemCount.value.let { value ->
+            assert(value == 10)
+        }
+
+        viewModel.error.value.let { value ->
+            assert(value == null)
+        }
+
+        viewModel.placeholderVisible.value.let { value ->
+            assert(value == false)
+        }
+
+        viewModel.isLoading.value.let { value ->
+            assert(value == false)
+        }
+    }
+
+    @Test
+    fun test_fetchMediaList_PermissionNotGranted2() {
         whenever(getMediaUseCase.getMediaList())
                 .doReturn(Flowable.error(SecurityException()))
 
