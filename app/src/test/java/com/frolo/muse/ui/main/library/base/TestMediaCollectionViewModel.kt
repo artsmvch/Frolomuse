@@ -8,10 +8,12 @@ import com.frolo.muse.interactor.media.get.GetMediaUseCase
 import com.frolo.muse.interactor.media.shortcut.CreateShortcutUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.media.Media
+import com.frolo.muse.permission.PermissionChecker
 import com.frolo.muse.rx.SchedulerProvider
 
 
 class TestMediaCollectionViewModel<T> constructor(
+        permissionChecker: PermissionChecker,
         getMediaUseCase: GetMediaUseCase<T>,
         getMediaMenuUseCase: GetMediaMenuUseCase<T>,
         clickMediaUseCase: ClickMediaUseCase<T>,
@@ -25,6 +27,7 @@ class TestMediaCollectionViewModel<T> constructor(
         navigator: Navigator,
         eventLogger: EventLogger
 ): AbsMediaCollectionViewModel<T>(
+        permissionChecker,
         getMediaUseCase,
         getMediaMenuUseCase,
         clickMediaUseCase,

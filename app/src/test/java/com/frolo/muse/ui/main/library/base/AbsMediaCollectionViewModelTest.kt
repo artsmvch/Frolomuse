@@ -10,6 +10,7 @@ import com.frolo.muse.interactor.media.shortcut.CreateShortcutUseCase
 import com.frolo.muse.model.media.Media
 import com.frolo.muse.model.menu.ContextualMenu
 import com.frolo.muse.navigator.TestNavigator
+import com.frolo.muse.permission.PermissionChecker
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.whenever
@@ -34,6 +35,8 @@ class AbsMediaCollectionViewModelTest {
     @get:Rule
     val immediateSchedulerRule = ImmediateSchedulerRule()
 
+    @Mock
+    private lateinit var permissionChecker: PermissionChecker
     @Mock
     private lateinit var getMediaUseCase: GetMediaUseCase<Media>
     @Mock
@@ -65,6 +68,7 @@ class AbsMediaCollectionViewModelTest {
         val navigator = TestNavigator()
         val eventLogger = TestEventLogger()
         viewModel = TestMediaCollectionViewModel(
+                permissionChecker,
                 getMediaUseCase,
                 getMediaMenuUseCase,
                 clickMediaUseCase,
