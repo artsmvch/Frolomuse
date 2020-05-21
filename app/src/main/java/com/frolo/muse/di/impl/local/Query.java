@@ -1,13 +1,20 @@
 package com.frolo.muse.di.impl.local;
 
+import android.Manifest;
 import android.content.ContentResolver;
 import android.content.ContentUris;
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.database.ContentObserver;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.provider.MediaStore;
+
+import androidx.annotation.NonNull;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -72,6 +79,41 @@ final class Query {
             return null;
         }
         return candidate;
+    }
+
+    /**
+     * Checks if {@link Manifest.permission#READ_EXTERNAL_STORAGE} is granted for the given <code>context</code>.
+     * If the permission is not granted, then {@link SecurityException} is thrown.
+     *
+     * NOTE: this only works for Android {@link Build.VERSION_CODES#Q}, because in this version of Android,
+     * SecurityException is not thrown when querying content through ContentResolver and the read-external-storage permission is not granted.
+     * This workaround helps achieve the same behaviour across all versions of the SDK.
+     *
+     * @param context context
+     */
+    static void requireReadExternalStoragePermission(@NonNull Context context) throws SecurityException {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            final String permission = Manifest.permission.READ_EXTERNAL_STORAGE;
+            int result = context.checkCallingOrSelfPermission(permission);
+            if (result != PackageManager.PERMISSION_GRANTED) {
+                throw new SecurityException();
+            }
+        }
+    }
+
+    /**
+     * Checks the security of the query to the given <code>uri</code> from <code>context</code>.
+     * If the read-external-storage permission is not granted for <code>context</code> then {@link SecurityException} is thrown.
+     * NOTE: This only works, if the uri represents content from {@link MediaStore}.
+     * Any other uri will be ignored.
+     * @param context context for query
+     * @param uri content uri
+     * @throws SecurityException if the permission is not granted
+     */
+    static void checkSecurityForMediaContentQuery(@NonNull Context context, @NonNull Uri uri) throws SecurityException {
+        if (MediaStore.AUTHORITY.equals(uri.getAuthority())) {
+            requireReadExternalStoragePermission(context);
+        }
     }
 
     /**
