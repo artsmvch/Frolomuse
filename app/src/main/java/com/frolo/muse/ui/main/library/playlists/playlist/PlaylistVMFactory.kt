@@ -13,6 +13,7 @@ import com.frolo.muse.interactor.media.shortcut.CreateShortcutUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.media.Playlist
 import com.frolo.muse.model.media.Song
+import com.frolo.muse.permission.PermissionChecker
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.rx.SchedulerProvider
 import javax.inject.Inject
@@ -25,6 +26,8 @@ class PlaylistVMFactory constructor(
 
     @Inject
     internal lateinit var player: Player
+    @Inject
+    internal lateinit var permissionChecker: PermissionChecker
     /*assisted inject*/
     internal lateinit var getPlaylistUseCase: GetPlaylistUseCase
     @Inject
@@ -65,6 +68,7 @@ class PlaylistVMFactory constructor(
         @Suppress("UNCHECKED_CAST")
         return PlaylistViewModel(
                 player,
+                permissionChecker,
                 getPlaylistUseCase,
                 getMediaMenuUseCase,
                 clickMediaUseCase,

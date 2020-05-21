@@ -12,6 +12,7 @@ import com.frolo.muse.interactor.media.shortcut.CreateShortcutUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.media.Album
 import com.frolo.muse.model.media.Artist
+import com.frolo.muse.permission.PermissionChecker
 import com.frolo.muse.rx.SchedulerProvider
 import javax.inject.Inject
 
@@ -21,6 +22,8 @@ class AlbumsOfArtistVMFactory constructor(
         artist: Artist
 ): ViewModelProvider.Factory {
 
+    @Inject
+    internal lateinit var permissionChecker: PermissionChecker
     /*assisted inject*/
     private lateinit var getAlbumsOfArtistUseCase: GetAlbumsOfArtistUseCase
     @Inject
@@ -56,6 +59,7 @@ class AlbumsOfArtistVMFactory constructor(
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         @Suppress("UNCHECKED_CAST")
         return AlbumsOfArtistViewModel(
+                permissionChecker,
                 getAlbumsOfArtistUseCase,
                 getMediaMenuUseCase,
                 clickMediaUseCase,

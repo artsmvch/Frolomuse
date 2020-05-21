@@ -17,6 +17,7 @@ import com.frolo.muse.interactor.media.shortcut.CreateShortcutUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.media.MyFile
 import com.frolo.muse.model.media.Song
+import com.frolo.muse.permission.PermissionChecker
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.main.library.base.AbsMediaCollectionViewModel
 import io.reactivex.Completable
@@ -29,6 +30,7 @@ import javax.inject.Inject
 
 class MyFileListViewModel @Inject constructor(
         private val player: Player,
+        permissionChecker: PermissionChecker,
         private val getAllMyFilesUseCase: GetAllMyFilesUseCase,
         getMediaMenuUseCase: GetMediaMenuUseCase<MyFile>,
         clickMediaUseCase: ClickMediaUseCase<MyFile>,
@@ -44,6 +46,7 @@ class MyFileListViewModel @Inject constructor(
         navigator: Navigator,
         eventLogger: EventLogger
 ): AbsMediaCollectionViewModel<MyFile>(
+        permissionChecker,
         getAllMyFilesUseCase,
         getMediaMenuUseCase,
         clickMediaUseCase,

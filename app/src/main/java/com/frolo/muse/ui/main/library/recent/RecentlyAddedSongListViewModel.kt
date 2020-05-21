@@ -14,6 +14,7 @@ import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.Recently
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.model.menu.RecentPeriodMenu
+import com.frolo.muse.permission.PermissionChecker
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.main.library.base.AbsSongCollectionViewModel
 import javax.inject.Inject
@@ -21,6 +22,7 @@ import javax.inject.Inject
 
 class RecentlyAddedSongListViewModel @Inject constructor(
         player: Player,
+        permissionChecker: PermissionChecker,
         private val getRecentlyAddedSongUseCase: GetRecentlyAddedSongUseCase,
         getMediaMenuUseCase: GetMediaMenuUseCase<Song>,
         clickMediaUseCase: ClickMediaUseCase<Song>,
@@ -35,6 +37,7 @@ class RecentlyAddedSongListViewModel @Inject constructor(
         eventLogger: EventLogger
 ): AbsSongCollectionViewModel<Song>(
         player,
+        permissionChecker,
         getRecentlyAddedSongUseCase,
         getMediaMenuUseCase,
         clickMediaUseCase,

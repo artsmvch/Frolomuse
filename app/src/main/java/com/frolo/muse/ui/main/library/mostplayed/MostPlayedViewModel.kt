@@ -9,6 +9,7 @@ import com.frolo.muse.interactor.media.shortcut.CreateShortcutUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.media.SongWithPlayCount
 import com.frolo.muse.navigator.Navigator
+import com.frolo.muse.permission.PermissionChecker
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.main.library.base.AbsSongCollectionViewModel
 import io.reactivex.Completable
@@ -30,6 +31,7 @@ import javax.inject.Inject
  */
 class MostPlayedViewModel @Inject constructor(
         player: Player,
+        permissionChecker: PermissionChecker,
         getMostPlayedUseCase: GetMostPlayedSongsUseCase,
         getMediaMenuUseCase: GetMediaMenuUseCase<SongWithPlayCount>,
         clickMediaUseCase: ClickMediaUseCase<SongWithPlayCount>,
@@ -44,6 +46,7 @@ class MostPlayedViewModel @Inject constructor(
         eventLogger: EventLogger
 ): AbsSongCollectionViewModel<SongWithPlayCount>(
         player,
+        permissionChecker,
         getMostPlayedUseCase,
         getMediaMenuUseCase,
         clickMediaUseCase,

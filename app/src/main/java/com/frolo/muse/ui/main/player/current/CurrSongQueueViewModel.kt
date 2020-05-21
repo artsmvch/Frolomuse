@@ -17,6 +17,7 @@ import com.frolo.muse.interactor.media.get.GetCurrentSongQueueUseCase
 import com.frolo.muse.interactor.media.shortcut.CreateShortcutUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.media.Song
+import com.frolo.muse.permission.PermissionChecker
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.main.library.base.AbsMediaCollectionViewModel
 import io.reactivex.Completable
@@ -29,6 +30,7 @@ import javax.inject.Inject
 class CurrSongQueueViewModel @Inject constructor(
         @Exec(Exec.Type.MAIN) private val mainThreadExecutor: Executor,
         private val player: Player,
+        permissionChecker: PermissionChecker,
         getCurrentSongQueueUseCase: GetCurrentSongQueueUseCase,
         getMediaMenuUseCase: GetMediaMenuUseCase<Song>,
         clickMediaUseCase: ClickMediaUseCase<Song>,
@@ -42,6 +44,7 @@ class CurrSongQueueViewModel @Inject constructor(
         private val navigator: Navigator,
         eventLogger: EventLogger
 ): AbsMediaCollectionViewModel<Song>(
+        permissionChecker,
         getCurrentSongQueueUseCase,
         getMediaMenuUseCase,
         clickMediaUseCase,

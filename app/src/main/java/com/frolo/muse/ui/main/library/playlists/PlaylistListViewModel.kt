@@ -8,12 +8,14 @@ import com.frolo.muse.interactor.media.get.GetAllMediaUseCase
 import com.frolo.muse.interactor.media.shortcut.CreateShortcutUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.media.Playlist
+import com.frolo.muse.permission.PermissionChecker
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.main.library.base.AbsMediaCollectionViewModel
 import javax.inject.Inject
 
 
 class PlaylistListViewModel @Inject constructor(
+        permissionChecker: PermissionChecker,
         getAllPlaylistsUseCase: GetAllMediaUseCase<Playlist>,
         getMediaMenuUseCase: GetMediaMenuUseCase<Playlist>,
         clickMediaUseCase: ClickMediaUseCase<Playlist>,
@@ -27,6 +29,7 @@ class PlaylistListViewModel @Inject constructor(
         private val navigator: Navigator,
         eventLogger: EventLogger
 ): AbsMediaCollectionViewModel<Playlist>(
+        permissionChecker,
         getAllPlaylistsUseCase,
         getMediaMenuUseCase,
         clickMediaUseCase,

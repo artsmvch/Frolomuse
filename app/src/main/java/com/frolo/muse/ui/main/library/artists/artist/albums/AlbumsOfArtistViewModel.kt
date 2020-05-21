@@ -8,11 +8,13 @@ import com.frolo.muse.interactor.media.get.GetAlbumsOfArtistUseCase
 import com.frolo.muse.interactor.media.shortcut.CreateShortcutUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.media.Album
+import com.frolo.muse.permission.PermissionChecker
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.main.library.base.AbsMediaCollectionViewModel
 
 
 class AlbumsOfArtistViewModel constructor(
+        permissionChecker: PermissionChecker,
         getAlbumsOfArtistUseCase: GetAlbumsOfArtistUseCase,
         getMediaMenuUseCase: GetMediaMenuUseCase<Album>,
         clickMediaUseCase: ClickMediaUseCase<Album>,
@@ -26,6 +28,7 @@ class AlbumsOfArtistViewModel constructor(
         navigator: Navigator,
         eventLogger: EventLogger
 ): AbsMediaCollectionViewModel<Album>(
+        permissionChecker,
         getAlbumsOfArtistUseCase,
         getMediaMenuUseCase,
         clickMediaUseCase,

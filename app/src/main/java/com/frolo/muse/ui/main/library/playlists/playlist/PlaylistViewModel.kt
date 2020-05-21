@@ -14,6 +14,7 @@ import com.frolo.muse.interactor.media.shortcut.CreateShortcutUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.media.Playlist
 import com.frolo.muse.model.media.Song
+import com.frolo.muse.permission.PermissionChecker
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.main.library.base.AbsSongCollectionViewModel
 import io.reactivex.Single
@@ -21,6 +22,7 @@ import io.reactivex.Single
 
 class PlaylistViewModel constructor(
         player: Player,
+        permissionChecker: PermissionChecker,
         private val getPlaylistUseCase: GetPlaylistUseCase,
         getMediaMenuUseCase: GetMediaMenuUseCase<Song>,
         clickMediaUseCase: ClickMediaUseCase<Song>,
@@ -36,6 +38,7 @@ class PlaylistViewModel constructor(
         eventLogger: EventLogger
 ): AbsSongCollectionViewModel<Song>(
         player,
+        permissionChecker,
         getPlaylistUseCase,
         getMediaMenuUseCase,
         clickMediaUseCase,

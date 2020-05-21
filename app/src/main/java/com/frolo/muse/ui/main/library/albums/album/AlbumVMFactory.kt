@@ -13,6 +13,7 @@ import com.frolo.muse.interactor.media.shortcut.CreateShortcutUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.media.Album
 import com.frolo.muse.model.media.Song
+import com.frolo.muse.permission.PermissionChecker
 import com.frolo.muse.rx.SchedulerProvider
 import javax.inject.Inject
 
@@ -24,6 +25,8 @@ class AlbumVMFactory constructor(
 
     @Inject
     internal lateinit var player: Player
+    @Inject
+    internal lateinit var permissionChecker: PermissionChecker
     /* Assisted inject */
     internal lateinit var getAlbumSongsUseCase: GetAlbumSongsUseCase
     @Inject
@@ -62,6 +65,7 @@ class AlbumVMFactory constructor(
         @Suppress("UNCHECKED_CAST")
         return AlbumViewModel(
                 player,
+                permissionChecker,
                 getAlbumSongsUseCase,
                 getMediaMenuUseCase,
                 clickMediaUseCase,

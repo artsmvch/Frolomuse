@@ -9,6 +9,7 @@ import com.frolo.muse.interactor.media.get.GetAllMediaUseCase
 import com.frolo.muse.interactor.media.shortcut.CreateShortcutUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.media.Song
+import com.frolo.muse.permission.PermissionChecker
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.main.library.base.AbsSongCollectionViewModel
 import javax.inject.Inject
@@ -16,6 +17,7 @@ import javax.inject.Inject
 
 class SongListViewModel @Inject constructor(
         player: Player,
+        permissionChecker: PermissionChecker,
         getAllSongsUseCase: GetAllMediaUseCase<Song>,
         getMediaMenuUseCase: GetMediaMenuUseCase<Song>,
         clickMediaUseCase: ClickMediaUseCase<Song>,
@@ -30,6 +32,7 @@ class SongListViewModel @Inject constructor(
         eventLogger: EventLogger
 ): AbsSongCollectionViewModel<Song>(
         player,
+        permissionChecker,
         getAllSongsUseCase,
         getMediaMenuUseCase,
         clickMediaUseCase,

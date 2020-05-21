@@ -10,6 +10,7 @@ import com.frolo.muse.interactor.media.get.SearchMediaUseCase
 import com.frolo.muse.interactor.media.shortcut.CreateShortcutUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.media.Media
+import com.frolo.muse.permission.PermissionChecker
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.main.library.base.AbsMediaCollectionViewModel
 import io.reactivex.processors.PublishProcessor
@@ -18,6 +19,7 @@ import javax.inject.Inject
 
 
 class SearchViewModel @Inject constructor(
+        permissionChecker: PermissionChecker,
         searchMediaUseCase: SearchMediaUseCase,
         getMediaMenuUseCase: GetMediaMenuUseCase<Media>,
         clickMediaUseCase: ClickMediaUseCase<Media>,
@@ -31,6 +33,7 @@ class SearchViewModel @Inject constructor(
         navigator: Navigator,
         eventLogger: EventLogger
 ): AbsMediaCollectionViewModel<Media>(
+        permissionChecker,
         searchMediaUseCase,
         getMediaMenuUseCase,
         clickMediaUseCase,

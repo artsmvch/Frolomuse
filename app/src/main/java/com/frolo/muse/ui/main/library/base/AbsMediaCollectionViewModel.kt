@@ -18,6 +18,7 @@ import com.frolo.muse.model.media.*
 import com.frolo.muse.model.menu.ContextualMenu
 import com.frolo.muse.model.menu.OptionsMenu
 import com.frolo.muse.model.menu.SortOrderMenu
+import com.frolo.muse.permission.PermissionChecker
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.base.BaseViewModel
 import io.reactivex.Completable
@@ -27,6 +28,7 @@ import org.reactivestreams.Subscription
 
 
 abstract class AbsMediaCollectionViewModel<E: Media> constructor(
+        private val permissionChecker: PermissionChecker,
         private val getMediaUseCase: GetMediaUseCase<E>,
         private val getMediaMenuUseCase: GetMediaMenuUseCase<E>,
         private val clickMediaUseCase: ClickMediaUseCase<E>,
@@ -231,7 +233,8 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
      * This properly dispatches subscription's events to other live data members.
      */
     private fun doFetch() {
-        getMediaUseCase.getMediaList()
+        Completable.fromAction { permissionChecker.requireQueryMediaContentPermission() }
+                .andThen(getMediaUseCase.getMediaList())
                 .observeOn(schedulerProvider.computation())
                 .doOnNext { list ->
                     openOptionsMenuEvent.value?.also { safeMenu ->

@@ -13,12 +13,14 @@ import com.frolo.muse.interactor.media.shortcut.CreateShortcutUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.media.Album
 import com.frolo.muse.model.media.Song
+import com.frolo.muse.permission.PermissionChecker
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.main.library.base.AbsSongCollectionViewModel
 
 
 class AlbumViewModel constructor(
         player: Player,
+        permissionChecker: PermissionChecker,
         getAlbumSongsUseCase: GetAlbumSongsUseCase,
         getMediaMenuUseCase: GetMediaMenuUseCase<Song>,
         clickMediaUseCase: ClickMediaUseCase<Song>,
@@ -35,6 +37,7 @@ class AlbumViewModel constructor(
         private val albumArg: Album
 ): AbsSongCollectionViewModel<Song>(
         player,
+        permissionChecker,
         getAlbumSongsUseCase,
         getMediaMenuUseCase,
         clickMediaUseCase,

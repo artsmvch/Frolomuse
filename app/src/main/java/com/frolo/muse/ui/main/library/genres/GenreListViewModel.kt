@@ -8,12 +8,14 @@ import com.frolo.muse.interactor.media.get.GetAllMediaUseCase
 import com.frolo.muse.interactor.media.shortcut.CreateShortcutUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.media.Genre
+import com.frolo.muse.permission.PermissionChecker
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.main.library.base.AbsMediaCollectionViewModel
 import javax.inject.Inject
 
 
 class GenreListViewModel @Inject constructor(
+        permissionChecker: PermissionChecker,
         getSortableMediaListUseCase: GetAllMediaUseCase<Genre>,
         getMediaMenuUseCase: GetMediaMenuUseCase<Genre>,
         clickMediaUseCase: ClickMediaUseCase<Genre>,
@@ -27,6 +29,7 @@ class GenreListViewModel @Inject constructor(
         navigator: Navigator,
         eventLogger: EventLogger
 ): AbsMediaCollectionViewModel<Genre>(
+        permissionChecker,
         getSortableMediaListUseCase,
         getMediaMenuUseCase,
         clickMediaUseCase,
