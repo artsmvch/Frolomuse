@@ -75,4 +75,12 @@ fun EventLogger.logRateDialogCancelled() {
 
 //endregion
 
+fun EventLogger.logAppRatedFromSettings() {
+    log("app_rated_from_settings")
+}
+
+fun EventLogger.logAppSharedFromSettings() {
+    log("app_shared_from_settings")
+}
+
 // TODO: add other main events

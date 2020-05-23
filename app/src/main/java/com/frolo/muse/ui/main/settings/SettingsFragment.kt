@@ -16,9 +16,7 @@ import com.frolo.muse.App
 import com.frolo.muse.BuildConfig
 import com.frolo.muse.R
 import com.frolo.muse.engine.service.PlayerService
-import com.frolo.muse.logger.EventLogger
-import com.frolo.muse.logger.logSleepTimerSet
-import com.frolo.muse.logger.logThemeChanged
+import com.frolo.muse.logger.*
 import com.frolo.muse.mediascan.MediaScanService
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.sleeptimer.PlayerSleepTimer
@@ -143,6 +141,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
 
         findPreference("rate_this_app").apply {
             onPreferenceClickListener = Preference.OnPreferenceClickListener {
+                eventLogger.logAppRatedFromSettings()
                 context?.goToStore()
                 true
             }
@@ -150,6 +149,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
 
         findPreference("share_this_app").apply {
             onPreferenceClickListener = Preference.OnPreferenceClickListener {
+                eventLogger.logAppSharedFromSettings()
                 context?.shareApp()
                 true
             }
