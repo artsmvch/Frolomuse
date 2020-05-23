@@ -34,4 +34,9 @@ fun EventLogger.logCustomPresetDeleted() {
     log("custom_preset_deleted")
 }
 
+fun EventLogger.logMinAudioFileDurationSet(durationInSeconds: Int) {
+    val params = mapOf("duration_in_seconds" to durationInSeconds.toString())
+    log("min_audio_file_duration_set", params)
+}
+
 // TODO: add other main events

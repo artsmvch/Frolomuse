@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.frolo.muse.arch.SingleLiveEvent
 import com.frolo.muse.arch.call
 import com.frolo.muse.logger.EventLogger
-import com.frolo.muse.navigator.Navigator
+import com.frolo.muse.logger.logMinAudioFileDurationSet
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.base.BaseViewModel
@@ -60,6 +60,7 @@ class MinAudioFileDurationViewModel @Inject constructor(
     fun onSaveClicked(typedMinutes: Int, typedSeconds: Int) {
         val newDuration = typedMinutes * 60 + typedSeconds
         preferences.setMinAudioFileDuration(newDuration)
+            .doOnComplete { eventLogger.logMinAudioFileDurationSet(newDuration) }
             .subscribeFor(schedulerProvider){
                 _goBackEvent.call()
             }
