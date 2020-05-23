@@ -17,6 +17,7 @@ import com.frolo.muse.BuildConfig
 import com.frolo.muse.R
 import com.frolo.muse.engine.service.PlayerService
 import com.frolo.muse.logger.EventLogger
+import com.frolo.muse.logger.logSleepTimerSet
 import com.frolo.muse.logger.logThemeChanged
 import com.frolo.muse.mediascan.MediaScanService
 import com.frolo.muse.repository.Preferences
@@ -188,6 +189,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
     override fun onTimeSelected(hours: Int, minutes: Int, seconds: Int) {
         val context = context ?: return
         if (PlayerSleepTimer.setAlarm(context, hours, minutes, seconds)) {
+            eventLogger.logSleepTimerSet(hours = hours, minutes = minutes, seconds = seconds)
             activity?.let { Toast.makeText(it, R.string.sleep_timer_is_set, Toast.LENGTH_SHORT).show() }
         }
     }

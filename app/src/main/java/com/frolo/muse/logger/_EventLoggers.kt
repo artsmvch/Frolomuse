@@ -39,4 +39,10 @@ fun EventLogger.logMinAudioFileDurationSet(durationInSeconds: Int) {
     log("min_audio_file_duration_set", params)
 }
 
+fun EventLogger.logSleepTimerSet(hours: Int, minutes: Int, seconds: Int) {
+    val durationInSeconds = hours * 60 * 60 + minutes * 60 + seconds
+    val params = mapOf("duration_in_seconds" to durationInSeconds.toString())
+    log("sleep_timer_set", params)
+}
+
 // TODO: add other main events
