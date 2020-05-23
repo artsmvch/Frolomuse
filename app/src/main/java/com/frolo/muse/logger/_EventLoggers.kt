@@ -70,7 +70,7 @@ fun EventLogger.logRateDialogCancelled() {
         "answer" to RATE_DIALOG_ANSWER_NULL,
         "cancelled" to true.toString()
     )
-    log("rate_dialog", params)
+    log("app_rate_dialog", params)
 }
 
 //endregion
