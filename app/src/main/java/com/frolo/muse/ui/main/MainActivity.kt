@@ -495,9 +495,11 @@ class MainActivity : PlayerHostActivity(),
         val dialog = RateDialog(this) { dialog, what ->
             dialog.dismiss()
             when (what) {
-                RateDialog.Button.NO -> viewModel.onDismissRate()
-                RateDialog.Button.REMIND_LATER -> viewModel.onWishingAskingLater()
-                RateDialog.Button.RATE -> viewModel.onApproveToRate()
+                RateDialog.Button.RATE -> viewModel.onRateDialogAnswerYes()
+
+                RateDialog.Button.NO -> viewModel.onRateDialogAnswerNo()
+
+                RateDialog.Button.REMIND_LATER -> viewModel.onRateDialogAnswerRemindLater()
             }
         }
 

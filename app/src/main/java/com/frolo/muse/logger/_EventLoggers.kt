@@ -1,5 +1,6 @@
 package com.frolo.muse.logger
 
+import androidx.annotation.StringDef
 import com.frolo.muse.repository.Preferences
 
 /**
@@ -44,5 +45,34 @@ fun EventLogger.logSleepTimerSet(hours: Int, minutes: Int, seconds: Int) {
     val params = mapOf("duration_in_seconds" to durationInSeconds.toString())
     log("sleep_timer_set", params)
 }
+
+//region Rate App Dialog
+
+@Retention(AnnotationRetention.SOURCE)
+@StringDef(RATE_DIALOG_ANSWER_YES, RATE_DIALOG_ANSWER_NO, RATE_DIALOG_ANSWER_REMIND_LATER, RATE_DIALOG_ANSWER_NULL)
+annotation class RateDialogAnswer
+
+@RateDialogAnswer const val RATE_DIALOG_ANSWER_YES = "yes"
+@RateDialogAnswer const val RATE_DIALOG_ANSWER_NO = "no"
+@RateDialogAnswer const val RATE_DIALOG_ANSWER_REMIND_LATER = "remind_later"
+@RateDialogAnswer const val RATE_DIALOG_ANSWER_NULL = "NULL"
+
+fun EventLogger.logRateDialogAnswered(@RateDialogAnswer answer: String) {
+    val params = mapOf(
+        "answer" to answer,
+        "cancelled" to false.toString()
+    )
+    log("rate_dialog", params)
+}
+
+fun EventLogger.logRateDialogCancelled() {
+    val params = mapOf(
+        "answer" to RATE_DIALOG_ANSWER_NULL,
+        "cancelled" to true.toString()
+    )
+    log("rate_dialog", params)
+}
+
+//endregion
 
 // TODO: add other main events

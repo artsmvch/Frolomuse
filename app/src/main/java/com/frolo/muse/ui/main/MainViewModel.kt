@@ -7,7 +7,7 @@ import com.frolo.muse.engine.Player
 import com.frolo.muse.interactor.media.shortcut.NavigateToMediaUseCase
 import com.frolo.muse.interactor.player.RestorePlayerStateUseCase
 import com.frolo.muse.interactor.rate.RateUseCase
-import com.frolo.muse.logger.EventLogger
+import com.frolo.muse.logger.*
 import com.frolo.muse.model.media.Media
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.base.BaseViewModel
@@ -90,20 +90,24 @@ class MainViewModel @Inject constructor(
         askToRateDisposable?.dispose()
     }
 
-    fun onDismissRate() {
+    fun onRateDialogAnswerYes() {
+        rateUseCase.rate()
+        eventLogger.logRateDialogAnswered(RATE_DIALOG_ANSWER_YES)
+    }
+
+    fun onRateDialogAnswerNo() {
         rateUseCase.dismissRate()
+        eventLogger.logRateDialogAnswered(RATE_DIALOG_ANSWER_NO)
     }
 
-    fun onApproveToRate() {
-        rateUseCase.approveRate()
-    }
-
-    fun onWishingAskingLater() {
+    fun onRateDialogAnswerRemindLater() {
         rateUseCase.askLater()
+        eventLogger.logRateDialogAnswered(RATE_DIALOG_ANSWER_REMIND_LATER)
     }
 
     fun onCancelledRateDialog() {
         rateUseCase.cancelRate()
+        eventLogger.logRateDialogCancelled()
     }
 
     fun onPlayerConnected(player: Player) {

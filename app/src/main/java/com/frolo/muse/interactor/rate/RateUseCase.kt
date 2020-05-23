@@ -36,21 +36,21 @@ class RateUseCase @Inject constructor(
         } else Single.just(false)
     }
 
+    fun rate() {
+        // Rated! Thanks
+        preferences.rated = true
+        navigator.goToStore()
+    }
+
     fun dismissRate() {
         // it must be a fucking PIG if he(she) doesn't want to rate my App but still using it
         val countToRate = preferences.openCount * 3 // ask again after 3x additional launches
         preferences.openCountToRate = countToRate
     }
 
-    fun approveRate() {
-        // Rated! Thanks
-        preferences.rated = true
-        navigator.goToStore()
-    }
-
     fun askLater() {
-        val c = preferences.openCount + 5 // ask again after 5 additional launches
-        preferences.openCountToRate = c
+        val nextCount = preferences.openCount + 5 // ask again after 5 additional launches
+        preferences.openCountToRate = nextCount
     }
 
     fun cancelRate() {
