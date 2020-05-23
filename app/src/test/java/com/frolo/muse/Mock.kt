@@ -1,26 +1,10 @@
 package com.frolo.muse
 
 import com.frolo.muse.model.media.Song
-import kotlin.random.Random
 import kotlin.reflect.KClass
 import kotlin.reflect.full.isSubclassOf
 import kotlin.reflect.jvm.isAccessible
 
-private val sharedRandom = Random
-
-private val mockChars by lazy {
-    ArrayList<Char>().also { list ->
-        var c = 'A'
-        while (c <= 'Z') {
-            list.add(c)
-            ++c
-        }
-    }
-}
-
-private fun randomChar(): Char {
-    return mockChars[sharedRandom.nextInt(mockChars.size)]
-}
 
 // Mocks a list of specified type with the given size
 fun <T: Any> mockListOf(clazz: KClass<T>, size: Int = 1): List<T> {
@@ -53,7 +37,7 @@ fun <T: Any> mockKT(clazz: KClass<T>): T {
             }
 
             @Suppress("UNCHECKED_CAST")
-            constants[sharedRandom.nextInt(constants.size)] as T
+            constants[randomInt(constants.size)] as T
         }
     }
 
@@ -83,16 +67,14 @@ fun <T: Any> mockKT(clazz: KClass<T>): T {
 
 inline fun <reified T: Any> mockKT(): T = mockKT(T::class)
 
-private fun mockPrimitiveOrNull(clazz: KClass<*>) = when(clazz) {
-    Int::class -> sharedRandom.nextInt()
-    Long::class -> sharedRandom.nextLong()
-    Double::class -> sharedRandom.nextDouble()
-    Float::class -> sharedRandom.nextFloat()
+private fun mockPrimitiveOrNull(clazz: KClass<*>): Any? = when(clazz) {
+    Int::class -> randomInt()
+    Long::class -> randomLong()
+    Double::class -> randomDouble()
+    Float::class -> randomFloat()
     Char::class -> randomChar()
 
-    String::class -> (1..sharedRandom.nextInt(10))
-            .map { randomChar() }
-            .joinToString(separator = "") { "$it" }
+    String::class -> randomString()
 
     //else -> throw IllegalArgumentException("The given clazz is not a primitive")
     else -> null
@@ -102,19 +84,7 @@ private fun mockPrimitiveOrNull(clazz: KClass<*>) = when(clazz) {
 private fun <T: Any> tryMockAbstract(clazz: KClass<T>): T {
     if (clazz == Song::class) {
         @Suppress("UNCHECKED_CAST")
-        return SongImpl(
-                mockKT(),
-                mockKT(),
-                mockKT(),
-                mockKT(),
-                mockKT(),
-                mockKT(),
-                mockKT(),
-                mockKT(),
-                mockKT(),
-                mockKT(),
-                mockKT()
-        ) as T
+        return mockSong() as T
     }
 
     error("Failed to instantiate interface/abstract class")

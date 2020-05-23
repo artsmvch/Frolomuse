@@ -2,12 +2,25 @@ package com.frolo.muse
 
 import com.frolo.muse.model.media.Media
 import com.frolo.muse.model.media.Song
+import com.frolo.muse.model.media.Songs
 import com.nhaarman.mockitokotlin2.mock
 
 
-fun mockMedia(): Media {
-    return TestMedia(0.toLong())
-}
+fun mockMedia(): Media = TestMedia(0.toLong())
+
+fun mockSong(
+    id: Long = randomLong(),
+    source: String = randomString(),
+    title: String = randomString(),
+    albumId: Long = randomLong(),
+    album: String = randomString(),
+    artistId: Long = randomLong(),
+    artist: String = randomString(),
+    genre: String = randomString(),
+    duration: Int = randomInt(),
+    year: Int = randomInt(),
+    trackNumber: Int = randomInt()
+): Song = Songs.create(id, source, title, albumId, album, artistId, artist, genre, duration, year, trackNumber)
 
 fun mockMediaList(size: Int = 1, allowIdCollisions: Boolean = false): List<Media> {
     val list = ArrayList<Media>(size)
@@ -26,21 +39,9 @@ fun mockSongList(size: Int = 1, allowIdCollisions: Boolean = false): List<Song> 
     val list = ArrayList<Song>(size)
     repeat(size) { index ->
         val item: Song = if (allowIdCollisions) {
-            mock()
+            mockSong()
         } else {
-            SongImpl(
-                    index.toLong(),
-                    mockKT(),
-                    mockKT(),
-                    mockKT(),
-                    mockKT(),
-                    mockKT(),
-                    mockKT(),
-                    mockKT(),
-                    mockKT(),
-                    mockKT(),
-                    mockKT()
-            )
+            mockSong(id = index.toLong())
         }
         list.add(item)
     }

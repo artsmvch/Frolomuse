@@ -3,9 +3,11 @@ package com.frolo.muse.interactor.media.get
 import com.frolo.muse.TestSchedulerProvider
 import com.frolo.muse.mockKT
 import com.frolo.muse.mockList
+import com.frolo.muse.mockSong
 import com.frolo.muse.model.Library
 import com.frolo.muse.model.media.Album
 import com.frolo.muse.model.media.Song
+import com.frolo.muse.model.media.Songs
 import com.frolo.muse.model.menu.SortOrderMenu
 import com.frolo.muse.repository.AlbumChunkRepository
 import com.frolo.muse.repository.Preferences
@@ -41,11 +43,19 @@ class GetAlbumSongsUseCaseTest {
 
     private val sortOrder1 = "sort_order_1"
     private val sortOrderName1 = "sort_order_name_1"
-    private val result1: List<Song> = mockList(size = 5)
+    private val result1: List<Song> = List(size = 5) { index ->
+        mockSong(
+            duration = (5 + 10 * index) * 1_000
+        )
+    }
 
     private val sortOrder2 = "sort_order_2"
     private val sortOrderName2 = "sort_order_name_2"
-    private val result2: List<Song> = mockList(size = 10)
+    private val result2: List<Song> = List(size = 10) { index ->
+        mockSong(
+            duration = (5 + 10 * index) * 1_000
+        )
+    }
 
     private val sortOrders: Map<String, String> = LinkedHashMap<String, String>().apply {
         put(sortOrder1, sortOrderName1)
@@ -74,7 +84,7 @@ class GetAlbumSongsUseCaseTest {
 
     @Test
     fun test_getMediaList_Success() {
-        // Test with sort order 1
+        // Test with sort order 1, no audio duration limit
         run {
             val subscriber = TestSubscriber.create<List<Song>>()
 
@@ -84,13 +94,37 @@ class GetAlbumSongsUseCaseTest {
             whenever(preferences.isSortOrderReversedForSection(eq(Library.ALBUM)))
                     .doReturn(Flowable.just(false))
 
+            whenever(preferences.minAudioFileDuration)
+                    .doReturn(Flowable.just(0))
+
             getAlbumSongsUseCase.getMediaList()
                     .subscribe(subscriber)
 
-            subscriber.assertResult(result1)
+            val expectedOutput = result1.toList()
+            subscriber.assertResult(expectedOutput)
         }
 
-        // Test with sort order 2
+        // Test with sort order 1, limited audio duration
+        run {
+            val subscriber = TestSubscriber.create<List<Song>>()
+
+            whenever(preferences.getSortOrderForSection(eq(Library.ALBUM)))
+                    .doReturn(Flowable.just(sortOrder1))
+
+            whenever(preferences.isSortOrderReversedForSection(eq(Library.ALBUM)))
+                    .doReturn(Flowable.just(false))
+
+            whenever(preferences.minAudioFileDuration)
+                    .doReturn(Flowable.just(10))
+
+            getAlbumSongsUseCase.getMediaList()
+                    .subscribe(subscriber)
+
+            val expectedOutput2 = result1.filter { it.duration >= 10_000 }
+            subscriber.assertResult(expectedOutput2)
+        }
+
+        // Test with sort order 2, no audio duration limit
         run {
             val subscriber = TestSubscriber.create<List<Song>>()
 
@@ -100,10 +134,34 @@ class GetAlbumSongsUseCaseTest {
             whenever(preferences.isSortOrderReversedForSection(eq(Library.ALBUM)))
                     .doReturn(Flowable.just(true))
 
+            whenever(preferences.minAudioFileDuration)
+                    .doReturn(Flowable.just(0))
+
             getAlbumSongsUseCase.getMediaList()
                     .subscribe(subscriber)
 
-            subscriber.assertResult(result2.reversed())
+            val expectedOutput = result2.reversed()
+            subscriber.assertResult(expectedOutput)
+        }
+
+        // Test with sort order 2, limited audio duration
+        run {
+            val subscriber = TestSubscriber.create<List<Song>>()
+
+            whenever(preferences.getSortOrderForSection(eq(Library.ALBUM)))
+                    .doReturn(Flowable.just(sortOrder2))
+
+            whenever(preferences.isSortOrderReversedForSection(eq(Library.ALBUM)))
+                    .doReturn(Flowable.just(true))
+
+            whenever(preferences.minAudioFileDuration)
+                    .doReturn(Flowable.just(20))
+
+            getAlbumSongsUseCase.getMediaList()
+                    .subscribe(subscriber)
+
+            val expectedOutput = result2.reversed().filter { it.duration >= 20_000 }
+            subscriber.assertResult(expectedOutput)
         }
     }
 
@@ -119,6 +177,9 @@ class GetAlbumSongsUseCaseTest {
 
         whenever(repository.getSongsFromAlbum(eq(album), eq(sortOrder1)))
                 .doReturn(Flowable.error(UnsupportedOperationException()))
+
+        whenever(preferences.minAudioFileDuration)
+                .doReturn(Flowable.just(0))
 
         getAlbumSongsUseCase.getMediaList()
                 .subscribe(subscriber)
