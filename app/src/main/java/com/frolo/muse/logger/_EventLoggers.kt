@@ -26,4 +26,12 @@ fun EventLogger.logThemeChanged(@Preferences.Theme theme: Int) {
     log("theme_changed", params)
 }
 
+fun EventLogger.logCustomPresetSaved() {
+    log("custom_preset_saved")
+}
+
+fun EventLogger.logCustomPresetDeleted() {
+    log("custom_preset_deleted")
+}
+
 // TODO: add other main events

@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.frolo.muse.arch.SingleLiveEvent
 import com.frolo.muse.logger.EventLogger
+import com.frolo.muse.logger.logCustomPresetSaved
 import com.frolo.muse.model.preset.CustomPreset
 import com.frolo.muse.repository.PresetRepository
 import com.frolo.muse.rx.SchedulerProvider
@@ -32,6 +33,7 @@ class SavePresetViewModel constructor(
                 .observeOn(schedulerProvider.main())
                 .doOnSubscribe { _isSavingPreset.value = true }
                 .doFinally { _isSavingPreset.value = false }
+                .doOnSuccess { eventLogger.logCustomPresetSaved() }
                 .subscribe { preset, err ->
                     if (preset != null) {
                         _presetSavedEvent.value = preset

@@ -8,6 +8,7 @@ import com.frolo.muse.engine.AudioFxObserver
 import com.frolo.muse.engine.Player
 import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.logger.EventLogger
+import com.frolo.muse.logger.logCustomPresetDeleted
 import com.frolo.muse.model.ShortRange
 import com.frolo.muse.model.VisualizerRendererType
 import com.frolo.muse.model.preset.CustomPreset
@@ -214,6 +215,7 @@ class AudioFxViewModel @Inject constructor(
         repository.delete(preset)
             .subscribeOn(schedulerProvider.worker())
             .observeOn(schedulerProvider.main())
+            .doOnComplete { eventLogger.logCustomPresetDeleted() }
             .subscribeFor(schedulerProvider) {
                 audioFx.unusePreset()
                 loadPresets()
