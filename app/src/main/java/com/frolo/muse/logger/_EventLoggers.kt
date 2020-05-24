@@ -76,6 +76,9 @@ fun EventLogger.logRateDialogCancelled() {
 
 //endregion
 
+
+//region Rate/Share App
+
 fun EventLogger.logAppRatedFromSettings() {
     log("app_rated_from_settings")
 }
@@ -83,6 +86,9 @@ fun EventLogger.logAppRatedFromSettings() {
 fun EventLogger.logAppSharedFromSettings() {
     log("app_shared_from_settings")
 }
+
+//endregion
+
 
 //region Playlist
 
