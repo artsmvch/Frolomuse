@@ -7,6 +7,7 @@ import com.frolo.muse.interactor.poster.CreatePosterUseCase
 import com.frolo.muse.interactor.poster.SavePosterUseCase
 import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.logger.EventLogger
+import com.frolo.muse.logger.logPosterShared
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.base.BaseViewModel
@@ -57,6 +58,7 @@ class PosterViewModel constructor(
                 .doOnSuccess { posterFile -> _posterFile.value = posterFile }
                 .subscribeFor { posterFile -> navigator.sharePoster(songArg, posterFile) }
         }
+        eventLogger.logPosterShared()
     }
 
     override fun onCleared() {

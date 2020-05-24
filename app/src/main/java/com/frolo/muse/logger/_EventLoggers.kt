@@ -171,4 +171,12 @@ fun EventLogger.logShortcutCreated(@Media.Kind kindOfMedia: Int) {
 
 //endregion
 
+//region Poster
+
+fun EventLogger.logPosterShared() {
+    log("poster_shared")
+}
+
+//endregion
+
 // TODO: add other main events
