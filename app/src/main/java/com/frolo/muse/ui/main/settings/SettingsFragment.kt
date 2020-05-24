@@ -279,6 +279,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
     private fun startScanningMedia() {
         context?.let { safeContext ->
             MediaScanService.start(safeContext)
+            eventLogger.logMediaLibraryScanned()
         }
     }
 

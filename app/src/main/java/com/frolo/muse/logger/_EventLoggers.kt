@@ -13,6 +13,8 @@ fun EventLogger.logAppLaunched(launchCount: Int) {
     log("app_launched", params)
 }
 
+//region Settings
+
 fun EventLogger.logThemeChanged(@Preferences.Theme theme: Int) {
     val paramValue = when (theme) {
         Preferences.THEME_DARK_BLUE ->          "dark_blue"
@@ -38,6 +40,12 @@ fun EventLogger.logSleepTimerSet(hours: Int, minutes: Int, seconds: Int) {
     val params = mapOf("duration_in_seconds" to durationInSeconds.toString())
     log("sleep_timer_set", params)
 }
+
+fun EventLogger.logMediaLibraryScanned() {
+    log("media_library_scanned")
+}
+
+//endregion
 
 //region Rate App Dialog
 
