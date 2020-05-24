@@ -73,10 +73,6 @@ class AddSongToPlaylistDialog: BaseDialogFragment() {
         }
 
         sv_query.apply {
-            setOnCloseListener {
-                viewModel.onCloseSearchViewButtonClicked()
-                true
-            }
             setIconifiedByDefault(false)
             isIconified = false
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {

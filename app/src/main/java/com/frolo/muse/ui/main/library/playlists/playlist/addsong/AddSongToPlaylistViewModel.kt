@@ -10,6 +10,7 @@ import com.frolo.muse.logger.logSongsAddedToPlaylist
 import com.frolo.muse.model.media.Playlist
 import com.frolo.muse.model.media.SelectableSongQuery
 import com.frolo.muse.model.media.Song
+import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.base.BaseViewModel
 import io.reactivex.Single
@@ -20,6 +21,7 @@ import java.util.concurrent.TimeUnit
 class AddSongToPlaylistViewModel constructor(
     private val addSongToPlaylistUseCase: AddSongToPlaylistUseCase,
     private val schedulerProvider: SchedulerProvider,
+    private val navigator: Navigator,
     private val eventLogger: EventLogger
 ): BaseViewModel(eventLogger) {
 
@@ -106,11 +108,8 @@ class AddSongToPlaylistViewModel constructor(
                 .doOnComplete { eventLogger.logSongsAddedToPlaylist(songCount = songs.count()) }
                 .subscribeFor {
                     _songsAddedToPlaylistEvent.value = Unit
+                    navigator.goBack()
                 }
-    }
-
-    fun onCloseSearchViewButtonClicked() {
-        addSongToPlaylistUseCase.goBack()
     }
 
 }

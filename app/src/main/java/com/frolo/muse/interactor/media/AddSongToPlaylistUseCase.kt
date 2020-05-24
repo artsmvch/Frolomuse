@@ -1,6 +1,5 @@
 package com.frolo.muse.interactor.media
 
-import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.model.media.Playlist
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.repository.PlaylistChunkRepository
@@ -17,7 +16,6 @@ class AddSongToPlaylistUseCase @AssistedInject constructor(
         private val schedulerProvider: SchedulerProvider,
         private val songRepository: SongRepository,
         private val playlistChunkRepository: PlaylistChunkRepository,
-        private val navigator: Navigator,
         @Assisted private val playlist: Playlist
 ) {
 
@@ -35,13 +33,6 @@ class AddSongToPlaylistUseCase @AssistedInject constructor(
                 .flatMapCompletable { selectedItems ->
                     playlistChunkRepository.addToPlaylist(playlist, selectedItems)
                 }
-                .doOnComplete {
-                    navigator.goBack()
-                }
-    }
-
-    fun goBack() {
-        navigator.goBack()
     }
 
     @AssistedInject.Factory
