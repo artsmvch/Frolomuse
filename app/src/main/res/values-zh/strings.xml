@@ -74,7 +74,7 @@
 
     <!--AddSongToPlaylist-->
     <string name="add_song_to_s_playlist_hint">
-        選擇要添加到\“％s\”播放列表中的歌曲，然後單擊\'添加到播放列表\'按鈕
+        選擇要添加到\“%s\”播放列表中的歌曲，然後單擊\'添加到播放列表\'按鈕
     </string>
 
     <!--Plurals-->
@@ -292,7 +292,7 @@
     <string name="create_shortcut_on_home_screen">在主屏幕上創建快捷方式</string>
     <string name="shortcut_created">捷徑已建立</string>
     <string name="do_you_want_to_create_shortcut_for_s">
-        您是否要在主屏幕上為 ％s 創建快捷方式？
+        您是否要在主屏幕上為 %s 創建快捷方式？
     </string>
 
     <!--MinAudioFileDuration-->

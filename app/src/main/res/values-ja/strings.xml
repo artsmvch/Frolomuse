@@ -74,7 +74,7 @@
 
     <!--AddSongToPlaylist-->
     <string name="add_song_to_s_playlist_hint">
-        「％s」プレイリストに追加する曲を選択して、「プレイリストに追加」ボタンをクリックします
+        「%s」プレイリストに追加する曲を選択して、「プレイリストに追加」ボタンをクリックします
     </string>
 
     <!--Plurals-->
@@ -293,7 +293,7 @@
     <string name="create_shortcut_on_home_screen">ホーム画面にショートカットを作成</string>
     <string name="shortcut_created">ショートカットが作成されました</string>
     <string name="do_you_want_to_create_shortcut_for_s">
-        ％s のショートカットをホーム画面に作成しますか？
+        %s のショートカットをホーム画面に作成しますか？
     </string>
 
     <!--MinAudioFileDuration-->
