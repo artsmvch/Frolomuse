@@ -17,7 +17,7 @@ fun EventLogger.logThemeChanged(@Preferences.Theme theme: Int) {
         Preferences.THEME_DARK_BLUE ->          "dark_blue"
         Preferences.THEME_DARK_BLUE_ESPECIAL -> "dark_blue_especial"
         Preferences.THEME_DARK_PURPLE ->        "dark_purple"
-        Preferences.THEME_DARK_YELLOW ->        "dark_yellow"
+        Preferences.THEME_DARK_ORANGE ->        "dark_orange"
         Preferences.THEME_LIGHT_BLUE ->         "light_blue"
         else ->                                 "unknown"
     }

@@ -303,7 +303,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
             Preferences.THEME_DARK_BLUE -> 1
             Preferences.THEME_DARK_BLUE_ESPECIAL -> 2
             Preferences.THEME_DARK_PURPLE -> 3
-            Preferences.THEME_DARK_YELLOW -> 4
+            Preferences.THEME_DARK_ORANGE -> 4
             else -> -1
         }
 
@@ -313,15 +313,16 @@ class SettingsFragment : PreferenceFragmentCompat(),
             .setSingleChoiceItems(themeNames, currentThemeIndex) { dialog, which ->
                 dialog.dismiss()
 
-                val selectedTheme = when (which) {
+                val selectedTheme: Int? = when (which) {
                     0 -> Preferences.THEME_LIGHT_BLUE
                     1 -> Preferences.THEME_DARK_BLUE
                     2 -> Preferences.THEME_DARK_BLUE_ESPECIAL
                     3 -> Preferences.THEME_DARK_PURPLE
-                    4 -> Preferences.THEME_DARK_YELLOW
-                    else -> Preferences.THEME_DARK_BLUE
+                    4 -> Preferences.THEME_DARK_ORANGE
+                    else -> null // That's an error
                 }
-                if (selectedTheme != currentTheme) {
+
+                if (selectedTheme != null && selectedTheme != currentTheme) {
                     preferences.saveTheme(selectedTheme)
                     eventLogger.logThemeChanged(selectedTheme)
                     if (activity is ThemeHandler) {

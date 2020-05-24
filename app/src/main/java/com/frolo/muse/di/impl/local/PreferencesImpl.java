@@ -166,17 +166,17 @@ public class PreferencesImpl implements Preferences {
     }
 
     public @Theme int getTheme() {
-        final int value = preferences.getInt(KEY_THEME, THEME_DARK_BLUE);
+        final int value = preferences.getInt(KEY_THEME, THEME_DARK_ORANGE);
         // check if the given int value is one of the available themes
         switch (value) {
             case THEME_LIGHT_BLUE:
             case THEME_DARK_BLUE:
             case THEME_DARK_BLUE_ESPECIAL:
             case THEME_DARK_PURPLE:
-            case THEME_DARK_YELLOW:
+            case THEME_DARK_ORANGE:
                 return value;
             // The value is not valid. Return default theme int
-            default: return THEME_DARK_BLUE;
+            default: return THEME_DARK_ORANGE;
         }
     }
 
