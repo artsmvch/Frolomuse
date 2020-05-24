@@ -15,6 +15,9 @@ import com.frolo.muse.interactor.media.get.GetAllMyFilesUseCase
 import com.frolo.muse.interactor.media.hidden.HideFilesUseCase
 import com.frolo.muse.interactor.media.shortcut.CreateShortcutUseCase
 import com.frolo.muse.logger.EventLogger
+import com.frolo.muse.logger.logFilesHidden
+import com.frolo.muse.logger.logFilesScanned
+import com.frolo.muse.logger.logFolderSetAsDefault
 import com.frolo.muse.model.media.MyFile
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.permission.PermissionChecker
@@ -44,7 +47,7 @@ class MyFileListViewModel @Inject constructor(
         private val hideFilesUseCase: HideFilesUseCase,
         private val schedulerProvider: SchedulerProvider,
         navigator: Navigator,
-        eventLogger: EventLogger
+        private val eventLogger: EventLogger
 ): AbsMediaCollectionViewModel<MyFile>(
         permissionChecker,
         getAllMyFilesUseCase,
@@ -172,6 +175,7 @@ class MyFileListViewModel @Inject constructor(
         return setFolderAsDefaultUseCase.setFolderAsDefault(item)
                 .observeOn(schedulerProvider.main())
                 .doOnComplete {
+                    eventLogger.logFolderSetAsDefault()
                     _showFolderSetDefaultMessageEvent.call()
                 }
     }
@@ -180,6 +184,7 @@ class MyFileListViewModel @Inject constructor(
         return hideFilesUseCase.hide(item)
                 .observeOn(schedulerProvider.main())
                 .doOnComplete {
+                    eventLogger.logFilesHidden(fileCount = 1)
                     _showFolderAddedToHiddenMessageEvent.value = 1
                 }
     }
@@ -188,6 +193,7 @@ class MyFileListViewModel @Inject constructor(
         return hideFilesUseCase.hide(items)
                 .observeOn(schedulerProvider.main())
                 .doOnComplete {
+                    eventLogger.logFilesHidden(fileCount = items.count())
                     _showFolderAddedToHiddenMessageEvent.value = items.size
                 }
     }
@@ -205,6 +211,7 @@ class MyFileListViewModel @Inject constructor(
             .subscribeOn(schedulerProvider.computation())
             .observeOn(schedulerProvider.main())
             .doOnSuccess { targetFiles ->
+                eventLogger.logFilesScanned(fileCount = items.count())
                 _scanFilesEvent.value = targetFiles
             }
             .ignoreElement()

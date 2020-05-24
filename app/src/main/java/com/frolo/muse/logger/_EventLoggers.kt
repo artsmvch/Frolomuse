@@ -110,4 +110,20 @@ fun EventLogger.logCustomPresetDeleted() {
 
 //endregion
 
+//region MyFile
+
+fun EventLogger.logFolderSetAsDefault() {
+    log("folder_set_as_default")
+}
+
+fun EventLogger.logFilesHidden(fileCount: Int) {
+    val params = mapOf("file_count" to fileCount.toString())
+    log("files_hidden", params)
+}
+
+fun EventLogger.logFilesScanned(fileCount: Int) {
+    val params = mapOf("file_count" to fileCount.toString())
+    log("files_scanned", params)
+}
+
 // TODO: add other main events
