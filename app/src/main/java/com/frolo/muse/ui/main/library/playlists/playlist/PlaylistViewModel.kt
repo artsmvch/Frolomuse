@@ -12,6 +12,8 @@ import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
 import com.frolo.muse.interactor.media.get.GetPlaylistUseCase
 import com.frolo.muse.interactor.media.shortcut.CreateShortcutUseCase
 import com.frolo.muse.logger.EventLogger
+import com.frolo.muse.logger.logShortcutCreated
+import com.frolo.muse.model.media.Media
 import com.frolo.muse.model.media.Playlist
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.permission.PermissionChecker
@@ -35,7 +37,7 @@ class PlaylistViewModel constructor(
         private val createPlaylistShortcutUseCase: CreateShortcutUseCase<Playlist>,
         private val schedulerProvider: SchedulerProvider,
         private val navigator: Navigator,
-        eventLogger: EventLogger
+        private val eventLogger: EventLogger
 ): AbsSongCollectionViewModel<Song>(
         player,
         permissionChecker,
@@ -137,6 +139,7 @@ class PlaylistViewModel constructor(
         val targetPlaylist = playlist.value ?: return
         createPlaylistShortcutUseCase.createShortcut(targetPlaylist)
                 .observeOn(schedulerProvider.main())
+                .doOnComplete { eventLogger.logShortcutCreated(Media.PLAYLIST) }
                 .subscribeFor { dispatchShortcutCreated() }
     }
 

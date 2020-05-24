@@ -11,7 +11,9 @@ import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
 import com.frolo.muse.interactor.media.get.GetAlbumSongsUseCase
 import com.frolo.muse.interactor.media.shortcut.CreateShortcutUseCase
 import com.frolo.muse.logger.EventLogger
+import com.frolo.muse.logger.logShortcutCreated
 import com.frolo.muse.model.media.Album
+import com.frolo.muse.model.media.Media
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.permission.PermissionChecker
 import com.frolo.muse.rx.SchedulerProvider
@@ -33,7 +35,7 @@ class AlbumViewModel constructor(
         private val createAlbumShortcutUseCase: CreateShortcutUseCase<Album>,
         private val schedulerProvider: SchedulerProvider,
         private val navigator: Navigator,
-        eventLogger: EventLogger,
+        private val eventLogger: EventLogger,
         private val albumArg: Album
 ): AbsSongCollectionViewModel<Song>(
         player,
@@ -104,6 +106,7 @@ class AlbumViewModel constructor(
     fun onCreateAlbumShortcutActionConfirmed() {
         createAlbumShortcutUseCase.createShortcut(albumArg)
             .observeOn(schedulerProvider.main())
+            .doOnComplete { eventLogger.logShortcutCreated(Media.ALBUM) }
             .subscribeFor { dispatchShortcutCreated() }
     }
 

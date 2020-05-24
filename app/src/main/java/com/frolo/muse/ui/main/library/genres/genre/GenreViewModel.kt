@@ -11,7 +11,9 @@ import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
 import com.frolo.muse.interactor.media.get.GetGenreSongsUseCase
 import com.frolo.muse.interactor.media.shortcut.CreateShortcutUseCase
 import com.frolo.muse.logger.EventLogger
+import com.frolo.muse.logger.logShortcutCreated
 import com.frolo.muse.model.media.Genre
+import com.frolo.muse.model.media.Media
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.permission.PermissionChecker
 import com.frolo.muse.rx.SchedulerProvider
@@ -33,7 +35,7 @@ class GenreViewModel constructor(
         private val createGenreShortcutUseCase: CreateShortcutUseCase<Genre>,
         private val schedulerProvider: SchedulerProvider,
         navigator: Navigator,
-        eventLogger: EventLogger,
+        private val eventLogger: EventLogger,
         private val genreArg: Genre
 ): AbsSongCollectionViewModel<Song>(
         player,
@@ -74,6 +76,7 @@ class GenreViewModel constructor(
     fun onCreateGenreShortcutActionConfirmed() {
         createGenreShortcutUseCase.createShortcut(genreArg)
                 .observeOn(schedulerProvider.main())
+                .doOnComplete { eventLogger.logShortcutCreated(Media.GENRE) }
                 .subscribeFor { dispatchShortcutCreated() }
     }
 

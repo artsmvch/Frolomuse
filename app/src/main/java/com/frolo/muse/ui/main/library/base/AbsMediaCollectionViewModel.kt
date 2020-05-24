@@ -14,6 +14,7 @@ import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
 import com.frolo.muse.interactor.media.get.GetMediaUseCase
 import com.frolo.muse.interactor.media.shortcut.CreateShortcutUseCase
 import com.frolo.muse.logger.EventLogger
+import com.frolo.muse.logger.logShortcutCreated
 import com.frolo.muse.model.media.*
 import com.frolo.muse.model.menu.ContextualMenu
 import com.frolo.muse.model.menu.OptionsMenu
@@ -653,6 +654,7 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
     fun onCreateShortcutOptionConfirmed(item: E) {
         createShortcutUseCase.createShortcut(item)
                 .observeOn(schedulerProvider.main())
+                .doOnComplete { eventLogger.logShortcutCreated(item.kind) }
                 .subscribeFor { _shortcutCreatedEvent.call() }
     }
 

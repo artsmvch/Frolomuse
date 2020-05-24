@@ -5,7 +5,9 @@ import com.frolo.muse.arch.SingleLiveEvent
 import com.frolo.muse.arch.call
 import com.frolo.muse.interactor.media.shortcut.CreateShortcutUseCase
 import com.frolo.muse.logger.EventLogger
+import com.frolo.muse.logger.logShortcutCreated
 import com.frolo.muse.model.media.Artist
+import com.frolo.muse.model.media.Media
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.base.BaseViewModel
 
@@ -31,6 +33,7 @@ class ArtistViewModel constructor(
     fun onCreateArtistShortcutActionConfirmed() {
         createArtistShortcutUseCase.createShortcut(artistArg)
                 .observeOn(schedulerProvider.main())
+                .doOnComplete { eventLogger.logShortcutCreated(Media.ARTIST) }
                 .subscribeFor { _shortcutCreatedEvent.call() }
     }
 

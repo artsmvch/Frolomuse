@@ -1,6 +1,7 @@
 package com.frolo.muse.logger
 
 import androidx.annotation.StringDef
+import com.frolo.muse.model.media.Media
 import com.frolo.muse.repository.Preferences
 
 /**
@@ -139,6 +140,25 @@ fun EventLogger.logFilesScanned(fileCount: Int) {
 fun EventLogger.logLibrarySectionsSaved(changed: Boolean) {
     val params = mapOf("changed" to changed.toString())
     log("library_sections_saved", params)
+}
+
+//endregion
+
+//region Shortcuts
+
+fun EventLogger.logShortcutCreated(@Media.Kind kindOfMedia: Int) {
+    val kindOfMediaValue = when (kindOfMedia) {
+        Media.ALBUM ->      "album"
+        Media.ARTIST ->     "artist"
+        Media.GENRE ->      "genre"
+        Media.MY_FILE ->    "my_file"
+        Media.PLAYLIST ->   "playlist"
+        Media.SONG ->       "song"
+        else ->             "NULL"
+    }
+
+    val params = mapOf("kind_of_media" to kindOfMediaValue)
+    log("shortcut_created", params)
 }
 
 //endregion
