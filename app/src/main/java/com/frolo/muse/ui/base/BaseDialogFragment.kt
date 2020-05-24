@@ -14,6 +14,7 @@ import com.frolo.muse.App
 import com.frolo.muse.R
 import com.frolo.muse.Logger
 import com.frolo.muse.di.modules.ViewModelModule
+import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.repository.Preferences
 import com.tbruyelle.rxpermissions2.RxPermissions
 import io.reactivex.disposables.Disposable
@@ -31,6 +32,7 @@ abstract class BaseDialogFragment : AppCompatDialogFragment() {
     // The following members are supposed to be injected
     private var prefs: Preferences? = null
     private var vmFactory: ViewModelModule.ViewModelFactory? = null
+    private var eventLogger: EventLogger? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -65,10 +67,19 @@ abstract class BaseDialogFragment : AppCompatDialogFragment() {
         }
 
         val factory = vmFactory ?:
-        throw IllegalStateException("Failed to viewModel vm factory")
+        throw IllegalStateException("Failed to inject view model factory")
 
         ViewModelProviders.of(this, factory)
                 .get(T::class.java)
+    }
+
+    internal fun eventLogger(): Lazy<EventLogger> = lazy {
+        if (eventLogger == null) {
+            eventLogger = requireApp().appComponent.provideEventLogger()
+        }
+
+        eventLogger ?:
+        throw IllegalStateException("Failed to inject event logger")
     }
     //</editor-fold>
 

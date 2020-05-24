@@ -89,7 +89,7 @@ abstract class BaseFragment: Fragment() {
         }
 
         val factory = vmFactory ?:
-        throw IllegalStateException("Failed to inject vm factory")
+        throw IllegalStateException("Failed to inject view model factory")
 
         ViewModelProviders.of(this, factory)
                 .get(T::class.java)

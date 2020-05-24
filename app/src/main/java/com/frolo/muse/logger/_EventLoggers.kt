@@ -131,4 +131,16 @@ fun EventLogger.logFilesScanned(fileCount: Int) {
     log("files_scanned", params)
 }
 
+//endregion
+
+
+//region Library Sections
+
+fun EventLogger.logLibrarySectionsSaved(changed: Boolean) {
+    val params = mapOf("changed" to changed.toString())
+    log("library_sections_saved", params)
+}
+
+//endregion
+
 // TODO: add other main events

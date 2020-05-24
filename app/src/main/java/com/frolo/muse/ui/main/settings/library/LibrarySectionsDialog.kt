@@ -7,6 +7,9 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.frolo.muse.R
+import com.frolo.muse.logger.EventLogger
+import com.frolo.muse.logger.logLibrarySectionsSaved
+import com.frolo.muse.model.Library
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.ui.base.BaseDialogFragment
 import com.frolo.muse.ui.base.adapter.SimpleItemTouchHelperCallback
@@ -17,6 +20,24 @@ class LibrarySectionsDialog : BaseDialogFragment(),
         LibrarySectionAdapter.OnDragListener {
 
     private val preferences: Preferences by prefs()
+
+    private val eventLogger: EventLogger by eventLogger()
+
+    /**
+     * The original sections of the library, currently saved in the preferences.
+     */
+    private val originalSections: List<@Library.Section Int>
+        get() {
+            return preferences.librarySections
+        }
+
+    /**
+     * The original enabled status of the library sections, currently saved in the preferences.
+     */
+    private val originalEnabledStatus: Map<@Library.Section Int, Boolean>
+        get() {
+            return originalSections.associateBy({ it }, { preferences.isLibrarySectionEnabled(it) })
+        }
 
     private var itemTouchHelper: ItemTouchHelper? = null
 
@@ -39,9 +60,11 @@ class LibrarySectionsDialog : BaseDialogFragment(),
 
     private fun loadUI(dialog: Dialog) = with(dialog) {
 
-        val sections = preferences.librarySections
-        val enabledStatus = sections.associateBy({ it }, { preferences.isLibrarySectionEnabled(it) })
-        val adapter = LibrarySectionAdapter(this@LibrarySectionsDialog, sections, enabledStatus)
+        val adapter = LibrarySectionAdapter(
+            onDragListener = this@LibrarySectionsDialog,
+            sections = originalSections,
+            enabledStatus = originalEnabledStatus
+        )
 
         rv_sections.layoutManager = LinearLayoutManager(context)
         rv_sections.adapter = adapter
@@ -64,11 +87,27 @@ class LibrarySectionsDialog : BaseDialogFragment(),
     private fun saveChanges() {
         val adapter = dialog?.rv_sections?.adapter as? LibrarySectionAdapter
         if (adapter != null) {
-            val sections = adapter.getSnapshot()
-            val enabledStatus = adapter.getEnabledStatus()
-            preferences.librarySections = sections
-            for (entry in enabledStatus.entries) {
-                preferences.setLibrarySectionEnabled(entry.key, entry.value)
+
+            val newSections = adapter.getSnapshot()
+            val newEnabledStatus = adapter.getEnabledStatusSnapshot()
+
+            // Need to check if it actually has been changed
+
+            val sectionsChanged = run {
+                newSections != originalSections
+            }
+
+            val enabledStatusChanged = run {
+                newEnabledStatus != originalEnabledStatus
+            }
+
+            if (sectionsChanged || enabledStatusChanged) {
+                preferences.librarySections = newSections
+                for (entry in newEnabledStatus.entries) {
+                    preferences.setLibrarySectionEnabled(entry.key, entry.value)
+                }
+
+                eventLogger.logLibrarySectionsSaved(changed = true)
             }
         }
     }

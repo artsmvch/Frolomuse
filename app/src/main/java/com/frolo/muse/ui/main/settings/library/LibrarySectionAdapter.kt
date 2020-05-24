@@ -34,7 +34,7 @@ class LibrarySectionAdapter constructor(
         submit(sections)
     }
 
-    fun getEnabledStatus(): Map<@Library.Section Int, Boolean> = enabledStatus
+    fun getEnabledStatusSnapshot(): Map<@Library.Section Int, Boolean> = enabledStatus.toMap()
 
     override fun onCreateBaseViewHolder(parent: ViewGroup, viewType: Int): LibrarySectionViewHolder {
         val view = LayoutInflater.from(parent.context)
