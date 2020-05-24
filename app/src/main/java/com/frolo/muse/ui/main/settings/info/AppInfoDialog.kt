@@ -7,15 +7,24 @@ import android.view.Window
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.view.animation.OvershootInterpolator
-import androidx.fragment.app.DialogFragment
 import com.frolo.muse.BuildConfig
 import com.frolo.muse.R
+import com.frolo.muse.logger.EventLogger
+import com.frolo.muse.logger.logEasterEggFound
+import com.frolo.muse.ui.base.BaseDialogFragment
 import kotlinx.android.synthetic.main.dialog_app_info.*
 
 
-class AppInfoDialog : DialogFragment() {
+class AppInfoDialog : BaseDialogFragment() {
+
+    private val eventLogger: EventLogger by eventLogger()
 
     private lateinit var anim: Animation
+
+    /**
+     * Indicates whether the app icon has been clicked at least once.
+     */
+    private var appIconClicked: Boolean = false
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -32,10 +41,16 @@ class AppInfoDialog : DialogFragment() {
         }
     }
 
+    override fun onDestroy() {
+        eventLogger.logEasterEggFound(clicked = appIconClicked)
+        super.onDestroy()
+    }
+
     private fun loadUI(dialog: Dialog) = with(dialog) {
         tv_version.text = BuildConfig.VERSION_NAME
 
         imv_app_icon.setOnClickListener {
+            appIconClicked = true
             it.startAnimation(anim)
         }
     }

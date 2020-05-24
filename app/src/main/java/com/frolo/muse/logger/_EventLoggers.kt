@@ -45,6 +45,11 @@ fun EventLogger.logMediaLibraryScanned() {
     log("media_library_scanned")
 }
 
+fun EventLogger.logEasterEggFound(clicked: Boolean) {
+    val params = mapOf("clicked" to clicked.toString())
+    log("easter_egg_found", params)
+}
+
 //endregion
 
 //region Rate App Dialog
