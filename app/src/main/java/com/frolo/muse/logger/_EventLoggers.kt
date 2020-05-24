@@ -90,6 +90,24 @@ fun EventLogger.logAppSharedFromSettings() {
 //endregion
 
 
+//region Song
+
+fun EventLogger.logSongUpdated() {
+    log("song_updated")
+}
+
+//endregion
+
+//region Album
+
+fun EventLogger.logAlbumUpdated(albumArtDeleted: Boolean) {
+    val params = mapOf("album_art_deleted" to albumArtDeleted.toString())
+    log("album_updated", params)
+}
+
+//endregion
+
+
 //region Playlist
 
 fun EventLogger.logPlaylistCreated(initialSongCount: Int) {

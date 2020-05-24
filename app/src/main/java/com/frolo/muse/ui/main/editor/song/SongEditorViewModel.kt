@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import com.frolo.muse.App
 import com.frolo.muse.engine.Player
 import com.frolo.muse.logger.EventLogger
+import com.frolo.muse.logger.logSongUpdated
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.repository.SongRepository
 import com.frolo.muse.rx.SchedulerProvider
@@ -54,7 +55,10 @@ class SongEditorViewModel constructor(
             .observeOn(schedulerProvider.main())
             .doOnSubscribe { _isLoadingUpdate.value = true }
             .doFinally { _isLoadingUpdate.value = false }
-            .doOnSuccess { updatedSong -> player.update(updatedSong) }
+            .doOnSuccess { updatedSong ->
+                player.update(updatedSong)
+                eventLogger.logSongUpdated()
+            }
             .subscribe { newSong: Song?, err: Throwable? ->
                 if (newSong != null) {
                     _updatedSong.value = newSong

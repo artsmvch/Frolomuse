@@ -11,6 +11,7 @@ import com.frolo.muse.arch.map
 import com.frolo.muse.glide.GlideAlbumArtHelper
 import com.frolo.muse.glide.makeRequestAsBitmap
 import com.frolo.muse.logger.EventLogger
+import com.frolo.muse.logger.logAlbumUpdated
 import com.frolo.muse.model.media.Album
 import com.frolo.muse.repository.AlbumRepository
 import com.frolo.muse.rx.SchedulerProvider
@@ -108,8 +109,9 @@ class AlbumEditorViewModel constructor(
         repository.updateArt(albumArg.id, newFilepath)
                 .subscribeOn(schedulerProvider.worker())
                 .observeOn(schedulerProvider.main())
-                .doOnComplete { _isSavingChanges.value = true }
+                .doOnSubscribe { _isSavingChanges.value = true }
                 .doFinally { _isSavingChanges.value = false }
+                .doOnComplete { eventLogger.logAlbumUpdated(albumArtDeleted = newFilepath == null) }
                 .subscribeFor {
                     // This is important to invalidate the key!
                     // Fuckin' glide is not able to do it itself.
