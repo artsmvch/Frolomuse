@@ -27,14 +27,6 @@ fun EventLogger.logThemeChanged(@Preferences.Theme theme: Int) {
     log("theme_changed", params)
 }
 
-fun EventLogger.logCustomPresetSaved() {
-    log("custom_preset_saved")
-}
-
-fun EventLogger.logCustomPresetDeleted() {
-    log("custom_preset_deleted")
-}
-
 fun EventLogger.logMinAudioFileDurationSet(durationInSeconds: Int) {
     val params = mapOf("duration_in_seconds" to durationInSeconds.toString())
     log("min_audio_file_duration_set", params)
@@ -82,5 +74,40 @@ fun EventLogger.logAppRatedFromSettings() {
 fun EventLogger.logAppSharedFromSettings() {
     log("app_shared_from_settings")
 }
+
+//region Playlist
+
+fun EventLogger.logPlaylistCreated(initialSongCount: Int) {
+    val params = mapOf("initial_song_count" to initialSongCount.toString())
+    log("playlist_created", params)
+}
+
+fun EventLogger.logPlaylistUpdated() {
+    log("playlist_updated")
+}
+
+fun EventLogger.logSongsAddedToPlaylist(songCount: Int) {
+    val params = mapOf("song_count" to songCount.toString())
+    log("songs_added_to_playlist", params)
+}
+
+fun EventLogger.logMediaAddedToPlaylist(mediaCount: Int) {
+    val params = mapOf("media_count" to mediaCount.toString())
+    log("media_added_to_playlist", params)
+}
+
+//endregion
+
+//region Custom Preset
+
+fun EventLogger.logCustomPresetSaved() {
+    log("custom_preset_saved")
+}
+
+fun EventLogger.logCustomPresetDeleted() {
+    log("custom_preset_deleted")
+}
+
+//endregion
 
 // TODO: add other main events

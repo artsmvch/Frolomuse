@@ -6,6 +6,7 @@ import androidx.lifecycle.Transformations
 import com.frolo.muse.arch.combine
 import com.frolo.muse.interactor.media.AddSongToPlaylistUseCase
 import com.frolo.muse.logger.EventLogger
+import com.frolo.muse.logger.logSongsAddedToPlaylist
 import com.frolo.muse.model.media.Playlist
 import com.frolo.muse.model.media.SelectableSongQuery
 import com.frolo.muse.model.media.Song
@@ -102,6 +103,7 @@ class AddSongToPlaylistViewModel constructor(
                 .observeOn(schedulerProvider.main())
                 .doOnSubscribe { _isAddingSongsToPlaylist.value = true }
                 .doFinally { _isAddingSongsToPlaylist.value = false }
+                .doOnComplete { eventLogger.logSongsAddedToPlaylist(songCount = songs.count()) }
                 .subscribeFor {
                     _songsAddedToPlaylistEvent.value = Unit
                 }

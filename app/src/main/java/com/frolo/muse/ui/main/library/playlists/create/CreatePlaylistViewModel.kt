@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.frolo.muse.arch.SingleLiveEvent
 import com.frolo.muse.logger.EventLogger
+import com.frolo.muse.logger.logPlaylistCreated
 import com.frolo.muse.model.media.Playlist
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.repository.PlaylistRepository
@@ -41,6 +42,7 @@ class CreatePlaylistViewModel constructor(
                 .observeOn(schedulerProvider.main())
                 .doOnSubscribe { _isLoading.value = true }
                 .doFinally { _isLoading.value = false }
+                .doOnSuccess { eventLogger.logPlaylistCreated(initialSongCount = songsToAdd.count()) }
                 .subscribe(
                         { playlist ->
                             _playlistCreatedEvent.value = playlist

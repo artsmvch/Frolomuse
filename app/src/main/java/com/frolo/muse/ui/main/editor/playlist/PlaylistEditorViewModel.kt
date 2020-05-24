@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.frolo.muse.arch.SingleLiveEvent
 import com.frolo.muse.logger.EventLogger
+import com.frolo.muse.logger.logPlaylistUpdated
 import com.frolo.muse.model.media.Playlist
 import com.frolo.muse.repository.PlaylistRepository
 import com.frolo.muse.rx.SchedulerProvider
@@ -32,6 +33,7 @@ class PlaylistEditorViewModel constructor(
                 .observeOn(schedulerProvider.main())
                 .doOnSubscribe { _isLoadingUpdate.value = true }
                 .doFinally { _isLoadingUpdate.value = false }
+                .doOnSuccess { eventLogger.logPlaylistUpdated() }
                 .subscribe{ playlist, err ->
                     if (playlist != null) {
                         _updatedPlaylist.value = playlist

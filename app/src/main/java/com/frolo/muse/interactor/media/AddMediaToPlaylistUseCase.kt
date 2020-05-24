@@ -9,6 +9,7 @@ import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import io.reactivex.Completable
 import io.reactivex.Flowable
+import io.reactivex.Single
 
 
 class AddMediaToPlaylistUseCase @AssistedInject constructor(
@@ -23,10 +24,14 @@ class AddMediaToPlaylistUseCase @AssistedInject constructor(
                 .subscribeOn(schedulerProvider.worker())
     }
 
-    fun addMediaToPlaylist(
-            playlist: Playlist): Completable {
+    /**
+     * Adds media [items] to the given [playlist].
+     * Returns the count of added media items.
+     */
+    fun addMediaToPlaylist(playlist: Playlist): Single<Int> {
         return genericMediaRepository.addToPlaylist(playlist.id, items)
                 .subscribeOn(schedulerProvider.worker())
+                .andThen(Single.just(items.count()))
     }
 
     @AssistedInject.Factory

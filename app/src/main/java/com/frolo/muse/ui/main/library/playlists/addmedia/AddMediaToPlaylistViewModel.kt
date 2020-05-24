@@ -6,6 +6,7 @@ import com.frolo.muse.arch.combine
 import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.interactor.media.AddMediaToPlaylistUseCase
 import com.frolo.muse.logger.EventLogger
+import com.frolo.muse.logger.logMediaAddedToPlaylist
 import com.frolo.muse.model.media.Playlist
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.base.BaseViewModel
@@ -15,7 +16,7 @@ class AddMediaToPlaylistViewModel constructor(
         private val addMediaToPlaylistUseCase: AddMediaToPlaylistUseCase,
         private val schedulerProvider: SchedulerProvider,
         private val navigator: Navigator,
-        eventLogger: EventLogger
+        private val eventLogger: EventLogger
 ) : BaseViewModel(eventLogger) {
 
     private val _isLoading: MutableLiveData<Boolean> = MutableLiveData()
@@ -47,6 +48,7 @@ class AddMediaToPlaylistViewModel constructor(
                 .observeOn(schedulerProvider.main())
                 .doOnSubscribe { _isAddingItemsToPlaylist.value = true }
                 .doFinally { _isAddingItemsToPlaylist.value = false }
+                .doOnSuccess { eventLogger.logMediaAddedToPlaylist(mediaCount = it) }
                 .subscribeFor { _itemsAddedToPlaylistEvent.value = Unit }
     }
 }
