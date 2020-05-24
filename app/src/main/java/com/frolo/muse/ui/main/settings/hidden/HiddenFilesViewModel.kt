@@ -6,6 +6,7 @@ import com.frolo.muse.arch.combine
 import com.frolo.muse.interactor.media.hidden.GetHiddenFilesUseCase
 import com.frolo.muse.interactor.media.hidden.RemoveFromHiddenUseCase
 import com.frolo.muse.logger.EventLogger
+import com.frolo.muse.logger.logFilesUnhidden
 import com.frolo.muse.model.media.MyFile
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.base.BaseViewModel
@@ -43,6 +44,7 @@ class HiddenFilesViewModel @Inject constructor(
     fun onRemoveClick(item: MyFile) {
         removeFromHiddenUseCase.removeFromHidden(item)
                 .observeOn(schedulerProvider.main())
+                .doOnComplete { eventLogger.logFilesUnhidden(fileCount = 1) }
                 .subscribeFor {
                 }
     }

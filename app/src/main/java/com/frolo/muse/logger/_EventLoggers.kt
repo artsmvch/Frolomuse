@@ -121,6 +121,11 @@ fun EventLogger.logFilesHidden(fileCount: Int) {
     log("files_hidden", params)
 }
 
+fun EventLogger.logFilesUnhidden(fileCount: Int) {
+    val params = mapOf("file_count" to fileCount.toString())
+    log("files_unhidden", params)
+}
+
 fun EventLogger.logFilesScanned(fileCount: Int) {
     val params = mapOf("file_count" to fileCount.toString())
     log("files_scanned", params)
