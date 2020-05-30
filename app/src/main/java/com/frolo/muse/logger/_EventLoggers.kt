@@ -208,4 +208,14 @@ fun EventLogger.logPosterShared() {
 
 //endregion
 
+
+//region Search
+
+fun EventLogger.logMediaSearchUsed(queryCount: Int) {
+    val params = mapOf("query_count" to queryCount.toString())
+    log("media_search_used", params)
+}
+
+//endregion
+
 // TODO: add other main events

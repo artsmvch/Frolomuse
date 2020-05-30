@@ -9,6 +9,7 @@ import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
 import com.frolo.muse.interactor.media.get.SearchMediaUseCase
 import com.frolo.muse.interactor.media.shortcut.CreateShortcutUseCase
 import com.frolo.muse.logger.EventLogger
+import com.frolo.muse.logger.logMediaSearchUsed
 import com.frolo.muse.model.media.Media
 import com.frolo.muse.permission.PermissionChecker
 import com.frolo.muse.rx.SchedulerProvider
@@ -31,7 +32,7 @@ class SearchViewModel @Inject constructor(
         createShortcutUseCase: CreateShortcutUseCase<Media>,
         schedulerProvider: SchedulerProvider,
         navigator: Navigator,
-        eventLogger: EventLogger
+        private val eventLogger: EventLogger
 ): AbsMediaCollectionViewModel<Media>(
         permissionChecker,
         searchMediaUseCase,
@@ -47,16 +48,20 @@ class SearchViewModel @Inject constructor(
         navigator,
         eventLogger) {
 
+    private var queryCount: Int = 0
+
     private val publisher: PublishProcessor<String> by lazy {
         PublishProcessor.create<String>().also { publisher ->
             publisher.debounce(200, TimeUnit.MILLISECONDS)
-                    .filter { query -> query.length >= 1 }
+                    .filter { query -> query.isNotEmpty() }
+                    .distinctUntilChanged()
                     .switchMap { query ->
                         searchMediaUseCase.search(query)
                                 .map { items -> query to items }
                     }
                     .observeOn(schedulerProvider.main())
                     .subscribeFor { pair ->
+                        queryCount++
                         _query.value = pair.first
                         submitMediaList(pair.second)
                     }
@@ -69,4 +74,16 @@ class SearchViewModel @Inject constructor(
     fun onQuerySubmitted(query: String) {
         publisher.onNext(query)
     }
+
+    fun onStart() {
+        // Every time the view model starts, [queryCount] is reset to 0.
+        queryCount = 0
+    }
+
+    fun onStop() {
+        queryCount.also { count ->
+            if (count > 0) eventLogger.logMediaSearchUsed(queryCount = count)
+        }
+    }
+
 }

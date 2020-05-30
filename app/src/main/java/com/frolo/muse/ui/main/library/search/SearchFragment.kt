@@ -41,11 +41,6 @@ class SearchFragment: AbsMediaCollectionFragment<Media>(), NoClipping {
             }
         }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        observerViewModel(viewLifecycleOwner)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -66,21 +61,28 @@ class SearchFragment: AbsMediaCollectionFragment<Media>(), NoClipping {
             isIconified = false
             setOnCloseListener { true } // do NOT allow to close
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(query: String) = false
-                override fun onQueryTextChange(query: String): Boolean {
-                    viewModel.onQuerySubmitted(query)
+                override fun onQueryTextSubmit(query: String?) = false
+
+                override fun onQueryTextChange(query: String?): Boolean {
+                    viewModel.onQuerySubmitted(query.orEmpty())
                     return true
                 }
             })
-            val query = savedInstanceState?.getString(EXTRA_QUERY)
-            setQuery(query, true)
+            val savedQuery = savedInstanceState?.getString(EXTRA_QUERY)
+            setQuery(savedQuery, true)
             clearFocus()
         }
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        observerViewModel(viewLifecycleOwner)
     }
 
     override fun onStart() {
         super.onStart()
         adapter.listener = adapterListener
+        viewModel.onStart()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -91,6 +93,7 @@ class SearchFragment: AbsMediaCollectionFragment<Media>(), NoClipping {
     override fun onStop() {
         super.onStop()
         adapter.listener = null
+        viewModel.onStop()
     }
 
     override fun onDestroyView() {
