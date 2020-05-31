@@ -2,6 +2,7 @@ package com.frolo.muse.ui;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -9,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.frolo.muse.BuildConfig;
 import com.frolo.muse.engine.Player;
 import com.frolo.muse.ui.base.BaseActivity;
 
@@ -17,6 +19,7 @@ abstract public class PlayerHostActivity
         extends BaseActivity
         implements PlayerHostFragment.PlayerConnectionHandler {
 
+    private static final boolean DEBUG = BuildConfig.DEBUG;
     private static final String LOG_TAG = "PlayerHostActivity";
 
     private static final String FRAG_TAG_PLAYER_HOLDER = "com.frolo.muse.ui.PlayerHolder";
@@ -53,6 +56,19 @@ abstract public class PlayerHostActivity
         super.onDestroy();
     }
 
+    /**
+     * The check for player holder cannot be proceeded if the activity state is saved already.
+     * See  {@link PlayerHostActivity#checkPlayerHolder()} method.
+     * Because of that, we need to post the checker every time the activity restarts,
+     * so we make sure that the check is passed and the player holder is added.
+     */
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        mHandler.removeCallbacks(mCheckPlayerHolderTask);
+        mHandler.post(mCheckPlayerHolderTask);
+    }
+
     @Nullable
     protected Bundle getLastSavedInstanceState() {
         return mLastSavedInstanceState;
@@ -76,6 +92,7 @@ abstract public class PlayerHostActivity
     public final void onPlayerConnected(@NonNull Player player) {
         mPlayer = player;
         playerDidConnect(player);
+        if (DEBUG) Log.d(LOG_TAG, "Player did connect");
     }
 
     @Override
@@ -85,6 +102,7 @@ abstract public class PlayerHostActivity
             playerDidDisconnect(player);
         }
         mPlayer = null;
+        if (DEBUG) Log.d(LOG_TAG, "Player did disconnect");
     }
 
     protected abstract void playerDidConnect(@NonNull Player player);
@@ -101,6 +119,7 @@ abstract public class PlayerHostActivity
     private void checkPlayerHolder() {
         final FragmentManager fm = getSupportFragmentManager();
         if (fm.isStateSaved()) {
+            if (DEBUG) Log.d(LOG_TAG, "Could not check PlayerHolder: the state is saved");
             return;
         }
 
@@ -110,6 +129,7 @@ abstract public class PlayerHostActivity
         if (frag != null && frag instanceof PlayerHostFragment) {
             // OK, the PlayerHost fragment is there
             mPlayer = ((PlayerHostFragment) frag).getPlayer();
+            if (DEBUG) Log.d(LOG_TAG, "Checked PlayerHolder: it was added already");
             return;
         }
 
@@ -138,6 +158,8 @@ abstract public class PlayerHostActivity
             .add(new PlayerHostFragment(), FRAG_TAG_PLAYER_HOLDER)
             .addToBackStack(null)
             .commit();
+
+        if (DEBUG) Log.d(LOG_TAG, "PlayerHolder has been added successfully");
     }
 
 }
