@@ -3,7 +3,6 @@ package com.frolo.muse.interactor.poster
 import android.content.ContentUris
 import android.content.Context
 import android.graphics.*
-import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.renderscript.RSRuntimeException
 import androidx.core.content.ContextCompat
@@ -15,6 +14,7 @@ import io.reactivex.Single
 import jp.wasabeef.glide.transformations.internal.FastBlur
 import jp.wasabeef.glide.transformations.internal.RSBlur
 import javax.inject.Inject
+import kotlin.math.max
 import kotlin.math.min
 
 
@@ -37,23 +37,26 @@ class CreatePosterUseCase @Inject constructor(
         val albumId = song.albumId
         val appName = res.getString(R.string.app_name)
         val songName = song.title
-        val album = song.album
+        val albumName = song.album
 
         val art = blockingGetArt(albumId)
 
         // preparing size for poster and its elements
+        val iconMarginLeft = 280f
+        val iconMarginTop = 35f
         val iconSize = 80
-        val posterMargin = 150 // and space for Title and Artist
+        val posterMargin = 150
         val artDesiredWidth = 650
         val artDesiredHeight = 650
         val posterWidth = artDesiredWidth + 2 * posterMargin
         val posterHeight = artDesiredHeight + 2 * posterMargin
-        val desiredTitleTextWidth = 800f
-        val desiredAlbumTextWidth = 600f
+        val desiredSongNameTextWidth = 800f
+        val desiredAlbumNameTextWidth = 600f
+        val desiredAppNameTextWidth = posterWidth - 2 * iconMarginLeft - iconSize - /*margin between app icon and app name*/ 10
 
         val bmpWidth = art.width - 1
         val bmpHeight = art.height - 1
-        val bmpSize = Math.min(bmpWidth, bmpHeight)
+        val bmpSize = min(bmpWidth, bmpHeight)
         val x = (bmpWidth - bmpSize) / 2
         val y = (bmpHeight - bmpSize) / 2
         val cropped = Bitmap.createBitmap(art, x, y, bmpSize, bmpSize)
@@ -62,60 +65,71 @@ class CreatePosterUseCase @Inject constructor(
         art.recycle()
         cropped.recycle()
 
-        val paint = Paint(Paint.ANTI_ALIAS_FLAG)
-        paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
-        paint.color = Color.WHITE
-        paint.strokeWidth = 5f
+        // Original paint
+        val originalPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+            xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
+            color = Color.WHITE
+            strokeWidth = 5f
+        }
 
-        val poster = applyBlurEffect(src, 25)
+        // Result bitmap
+        val poster = applyBlurEffect(src, 25)!!
 
-        //Bitmap blank = Bitmap.createBitmap(artDesiredWidth, artDesiredHeight, Bitmap.Config.ARGB_8888);
+        // Canvas
+        val canvas = Canvas(poster)
 
-        // the poster bmp as the base of canvas
-        val canvas = Canvas(poster!!)
+        // Overlay
+        ContextCompat.getColor(context, R.color.transparent_black).also { overlayColor ->
+            canvas.drawColor(overlayColor)
+        }
 
-        val overlayColor = ContextCompat.getColor(context, R.color.transparent_black)
-        canvas.drawColor(overlayColor)
+        // Not blurred art in the center
+        scaledSrc.also { bitmap ->
+            canvas.drawBitmap(bitmap, posterMargin.toFloat(), posterMargin.toFloat(), originalPaint)
+            bitmap.recycle()
+        }
 
-        canvas.drawBitmap(scaledSrc, posterMargin.toFloat(), posterMargin.toFloat(), paint)
-        scaledSrc.recycle()
+        // Song name
+        Paint(originalPaint).also { paint ->
+            paint.adjustTextSize(songName, desiredSongNameTextWidth, 52f)
+            val textBounds = Rect()
+            paint.getTextBounds(songName, 0, songName.length, textBounds)
+            val textX = (posterWidth - textBounds.width()) / 2f
+            val textY = artDesiredHeight + posterMargin * 1.34f + textBounds.height() / 2f
+            canvas.drawText(songName, textX, textY, paint)
+        }
 
-        paint.adjustTextSize(songName, desiredTitleTextWidth, 57f)
-        val textBounds = Rect()
-        paint.getTextBounds(songName, 0, Math.max(songName.length - 1, 0), textBounds)
-        val txtX = (posterWidth - textBounds.width()) / 2 - 15
-        val txtY = (artDesiredHeight.toDouble() + posterMargin * 1.27 + (textBounds.height() / 2).toDouble()).toInt()
-        canvas.drawText(songName,
-                txtX.toFloat(),
-                txtY.toFloat(),
-                paint)
+        // Album name
+        Paint(originalPaint).also { paint ->
+            paint.adjustTextSize(albumName, desiredAlbumNameTextWidth, 32f)
+            val textBounds = Rect()
+            paint.getTextBounds(albumName, 0, albumName.length, textBounds)
+            val textX = (posterWidth - textBounds.width()) / 2f
+            val textY = artDesiredHeight + posterMargin * 1.68f + textBounds.height() / 2f
+            canvas.drawText(albumName, textX, textY, paint)
+        }
 
-        paint.adjustTextSize(album, desiredAlbumTextWidth, 43f)
-        val albumTextBounds = Rect()
-        paint.getTextBounds(album, 0, album.length - 1, albumTextBounds)
-        val albumTxtX = (posterWidth - albumTextBounds.width()) / 2 - 15
-        val albumTxtY = (artDesiredHeight.toDouble() + posterMargin * 1.63 + (textBounds.height() / 2).toDouble()).toInt()
-        canvas.drawText(album,
-                albumTxtX.toFloat(),
-                albumTxtY.toFloat(),
-                paint)
-
-        ContextCompat.getDrawable(context, R.mipmap.ic_launcher_round)?.let { d ->
-            val iconBitmap = BitmapUtil.getBitmap(d, iconSize, iconSize)
+        // App brand icon
+        ContextCompat.getDrawable(context, R.mipmap.ic_launcher_round)?.also { drawable ->
+            val iconBitmap = BitmapUtil.getBitmap(drawable, iconSize, iconSize)
             val roundedIconBitmap = BitmapUtil.createRoundedBitmap(iconBitmap, iconSize / 2f)
             if (iconBitmap != roundedIconBitmap){
                 iconBitmap.recycle()
             }
-            val roundedIconDrawable = BitmapDrawable(context.resources, roundedIconBitmap)
-
-            roundedIconDrawable.setBounds(0, 0, iconSize, iconSize)
-            canvas.translate(283f, 35f)
-            roundedIconDrawable.draw(canvas)
-            canvas.translate(-283f, -35f)
+            canvas.drawBitmap(roundedIconBitmap, iconMarginLeft, iconMarginTop, null)
+            roundedIconBitmap.recycle()
         }
 
-        paint.textSize = 55f
-        canvas.drawText(appName, 385.3f, 95.5f, paint)
+        // App brand name
+        Paint(originalPaint).also { paint ->
+            paint.letterSpacing = 0.25f
+            paint.adjustTextSize(appName, desiredAppNameTextWidth, 48f)
+            val textBounds = Rect()
+            paint.getTextBounds(appName, 0, appName.length, textBounds)
+            val textX = iconMarginLeft + iconSize + 10 + max(0f, desiredAppNameTextWidth - textBounds.width()) / 2
+            val textY = iconMarginTop + iconSize / 2 + textBounds.height() / 2
+            canvas.drawText(appName, textX, textY, paint)
+        }
 
         return poster
     }
@@ -168,19 +182,27 @@ class CreatePosterUseCase @Inject constructor(
     /**
      * Adjusts [this] Paint's text size to make [text] fit [targetWidth].
      * The result text size will not exceed [maxTextSize] limit.
+     * The bpdy of the method copied from https://stackoverflow.com/a/7875656/9437681.
      */
-    private fun Paint.adjustTextSize(
-        text: String,
-        targetWidth: Float,
-        maxTextSize: Float
-    ) {
-        val bounds = Rect()
-        // stub size
-        val testTextSize = 48f
-        textSize = testTextSize
-        getTextBounds(text, 0, text.length, bounds)
-        val desiredTextSize = testTextSize * targetWidth / bounds.width()
-        textSize = min(desiredTextSize, maxTextSize)
+    private fun Paint.adjustTextSize(text: String, targetWidth: Float, maxTextSize: Float) {
+        if (targetWidth <= 0) return
+
+        var hi = 100f
+        var lo = 2f
+        val threshold = 0.5f // How close we have to be
+
+        val testPaint = Paint(this)
+
+        while (hi - lo > threshold) {
+            val size = (hi + lo) / 2
+            testPaint.textSize = size
+            if (testPaint.measureText(text) >= targetWidth) hi = size // too big
+            else lo = size // too small
+        }
+
+        // Use lo so that we undershoot rather than overshoot
+        // Use lo so that we undershoot rather than overshoot
+        textSize = min(lo, maxTextSize)
     }
 
     /**
