@@ -9,6 +9,8 @@ import androidx.core.content.ContextCompat
 import com.frolo.muse.R
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.rx.SchedulerProvider
+import com.frolo.muse.ui.getAlbumString
+import com.frolo.muse.ui.getNameString
 import com.frolo.muse.util.BitmapUtil
 import io.reactivex.Single
 import jp.wasabeef.glide.transformations.internal.FastBlur
@@ -36,8 +38,8 @@ class CreatePosterUseCase @Inject constructor(
 
         val albumId = song.albumId
         val appName = res.getString(R.string.app_name)
-        val songName = song.title
-        val albumName = song.album
+        val songName = song.getNameString(context.resources)
+        val albumName = song.getAlbumString(context.resources)
 
         val art = blockingGetArt(albumId)
 
