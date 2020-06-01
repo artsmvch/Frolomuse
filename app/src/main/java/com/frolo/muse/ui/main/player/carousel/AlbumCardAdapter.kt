@@ -3,7 +3,6 @@ package com.frolo.muse.ui.main.player.carousel
 import android.graphics.drawable.Drawable
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -74,13 +73,6 @@ class AlbumCardAdapter constructor(
         itemView: View
     ): RecyclerView.ViewHolder(itemView), RequestListener<Drawable> {
 
-        private val errorDrawable: Drawable? =
-            ContextCompat.getDrawable(itemView.context, R.drawable.art_placeholder_200dp)?.also { d ->
-                val isLightTheme = StyleUtil.readBooleanAttrValue(itemView.context, R.attr.isLightTheme)
-                // Applying transparency to the drawable (60% for light theme and 80% for dark theme)
-                d.alpha = if (isLightTheme) 153 else 204
-            }
-
         override fun onLoadFailed(
             e: GlideException?,
             model: Any?,
@@ -114,9 +106,14 @@ class AlbumCardAdapter constructor(
             pb_loading.visibility = View.VISIBLE
             cv_album_art.visibility = View.INVISIBLE
 
+            // The error drawable is a large PNG,
+            // so we need to load it through a split request
+            // in order to resize correctly and avoid OOM errors.
+            val errorRequest = requestManager.load(R.drawable.art_placeholder).skipMemoryCache(false)
+
             requestManager.makeRequest(item?.albumId ?: -1)
                 .placeholder(null)
-                .error(errorDrawable)
+                .error(errorRequest)
                 .addListener(this@AlbumArtViewHolder)
                 .transition(DrawableTransitionOptions().crossFade())
                 .into(imv_album_art)
