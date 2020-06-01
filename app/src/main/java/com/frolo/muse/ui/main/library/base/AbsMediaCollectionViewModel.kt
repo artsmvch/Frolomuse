@@ -156,7 +156,6 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
         _selectedItems.value = emptySet()
         _isProcessingOption.value = false
         _isProcessingContextual.value = false
-        _askReadPermissionEvent.call()
     }
 
     protected fun setLoading(isLoading: Boolean) {
@@ -235,47 +234,48 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
      */
     private fun doFetch() {
         Completable.fromAction { permissionChecker.requireQueryMediaContentPermission() }
-                .andThen(getMediaUseCase.getMediaList())
-                .observeOn(schedulerProvider.computation())
-                .doOnNext { list ->
-                    openOptionsMenuEvent.value?.also { safeMenu ->
-                        if (!list.contains(safeMenu.item)) {
-                            _closeOptionsMenuEvent.postValue(safeMenu)
-                        }
+            .andThen(getMediaUseCase.getMediaList())
+            .observeOn(schedulerProvider.computation())
+            .doOnNext { list ->
+                openOptionsMenuEvent.value?.also { safeMenu ->
+                    if (!list.contains(safeMenu.item)) {
+                        _closeOptionsMenuEvent.postValue(safeMenu)
                     }
                 }
-                .observeOn(schedulerProvider.main())
-                .doOnSubscribe { subscription ->
-                    mediaListSubscription?.cancel()
-                    mediaListSubscription = subscription
-                    if (_mediaList.value.isNullOrEmpty()) {
-                        _isLoading.value = true
+            }
+            .observeOn(schedulerProvider.main())
+            .doOnSubscribe { subscription ->
+                mediaListSubscription?.cancel()
+                mediaListSubscription = subscription
+                if (_mediaList.value.isNullOrEmpty()) {
+                    _isLoading.value = true
+                }
+            }
+            .doOnNext {
+                _mediaListFetched = true
+                _isLoading.value = false
+            }
+            .doOnTerminate {
+                _isLoading.value = false
+            }
+            .subscribe(
+                { list ->
+                    _mediaList.value = list
+                },
+                { err ->
+                    if (err is SecurityException) {
+                        // TODO: do we need to ask permission?
+                        askReadPermission()
+                    } else {
+                        logError(err)
                     }
-                }
-                .doOnNext {
-                    _mediaListFetched = true
-                    _isLoading.value = false
-                }
-                .doOnTerminate {
-                    _isLoading.value = false
-                }
-                .subscribe(
-                        { list ->
-                            _mediaList.value = list
-                        },
-                        { err ->
-                            if (err is SecurityException) {
-                                _askReadPermissionEvent.call()
-                            } else {
-                                logError(err)
-                            }
 
-                            if (_mediaList.value == null) {
-                                _mediaList.value = emptyList()
-                            }
-                        }
-                )
-                .save()
+                    if (_mediaList.value == null) {
+                        _mediaList.value = emptyList()
+                    }
+                }
+            )
+            .save()
     }
     //endregion
 
