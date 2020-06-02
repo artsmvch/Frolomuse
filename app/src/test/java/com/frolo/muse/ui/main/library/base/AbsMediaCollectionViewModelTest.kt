@@ -88,6 +88,9 @@ class AbsMediaCollectionViewModelTest {
 
     @Test
     fun test_fetchMediaList_Success() {
+        whenever(permissionChecker.isQueryMediaContentPermissionGranted)
+                .doReturn(true)
+
         whenever(getMediaUseCase.getMediaList())
                 .doReturn(Flowable.just(mockMediaList(size = 10, allowIdCollisions = false)))
 
@@ -117,6 +120,9 @@ class AbsMediaCollectionViewModelTest {
 
     @Test
     fun test_fetchMediaItems_Failure() {
+        whenever(permissionChecker.isQueryMediaContentPermissionGranted)
+                .doReturn(true)
+
         whenever(getMediaUseCase.getMediaList())
                 .doReturn(Flowable.error(RuntimeException()))
 
@@ -146,10 +152,9 @@ class AbsMediaCollectionViewModelTest {
 
     @Test
     fun test_fetchMediaList_PermissionNotGranted1() {
-        // The first time it throws an exception, the second time it returns OK
-        whenever(permissionChecker.requireQueryMediaContentPermission())
-                .doThrow(SecurityException())
-                .thenDoNothing()
+        // The first time it returns false, the second time it returns true
+        whenever(permissionChecker.isQueryMediaContentPermissionGranted)
+                .doReturn(false)
 
         whenever(getMediaUseCase.getMediaList())
                 .doReturn(Flowable.just(emptyList()))
@@ -181,6 +186,9 @@ class AbsMediaCollectionViewModelTest {
         }
 
         // After that
+        whenever(permissionChecker.isQueryMediaContentPermissionGranted)
+                .doReturn(true)
+
         whenever(getMediaUseCase.getMediaList())
                 .doReturn(Flowable.just(mockMediaList(size = 10, allowIdCollisions = false)))
 
@@ -210,6 +218,9 @@ class AbsMediaCollectionViewModelTest {
 
     @Test
     fun test_fetchMediaList_PermissionNotGranted2() {
+        whenever(permissionChecker.isQueryMediaContentPermissionGranted)
+                .doReturn(true)
+
         whenever(getMediaUseCase.getMediaList())
                 .doReturn(Flowable.error(SecurityException()))
 
@@ -269,6 +280,9 @@ class AbsMediaCollectionViewModelTest {
 
     @Test
     fun test_fetchMediaItems_Empty() {
+        whenever(permissionChecker.isQueryMediaContentPermissionGranted)
+                .doReturn(true)
+
         whenever(getMediaUseCase.getMediaList())
                 .doReturn(Flowable.just(mockMediaList(size = 0)))
 
@@ -311,6 +325,9 @@ class AbsMediaCollectionViewModelTest {
                 true,
                 true
                 )
+
+        whenever(permissionChecker.isQueryMediaContentPermissionGranted)
+                .doReturn(true)
 
         whenever(getMediaUseCase.getMediaList())
                 .doReturn(Flowable.just(mockList))

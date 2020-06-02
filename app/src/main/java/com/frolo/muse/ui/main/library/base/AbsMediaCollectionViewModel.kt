@@ -7,6 +7,7 @@ import androidx.lifecycle.Transformations
 import com.frolo.muse.arch.SingleLiveEvent
 import com.frolo.muse.arch.call
 import com.frolo.muse.arch.combine
+import com.frolo.muse.arch.map
 import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.interactor.media.*
 import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
@@ -78,7 +79,7 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
     val mediaList: LiveData<List<E>> get() = _mediaList
 
     val mediaItemCount: LiveData<Int> by lazy {
-        Transformations.map(mediaList) { list -> list?.count() ?: 0 }
+        mediaList.map(initialValue = 0) { list -> list?.count() ?: 0 }
     }
 
     val placeholderVisible: LiveData<Boolean> by lazy {
@@ -233,8 +234,12 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
      * This properly dispatches subscription's events to other live data members.
      */
     private fun doFetch() {
-        Completable.fromAction { permissionChecker.requireQueryMediaContentPermission() }
-            .andThen(getMediaUseCase.getMediaList())
+        if (!permissionChecker.isQueryMediaContentPermissionGranted) {
+            askReadPermission()
+            return
+        }
+
+        getMediaUseCase.getMediaList()
             .observeOn(schedulerProvider.computation())
             .doOnNext { list ->
                 openOptionsMenuEvent.value?.also { safeMenu ->

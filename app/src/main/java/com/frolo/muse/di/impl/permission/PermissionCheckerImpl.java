@@ -19,10 +19,15 @@ public final class PermissionCheckerImpl implements PermissionChecker {
     }
 
     @Override
-    public void requireQueryMediaContentPermission() throws SecurityException {
+    public boolean isQueryMediaContentPermissionGranted() {
         final String permission = Manifest.permission.READ_EXTERNAL_STORAGE;
         final int result = ContextCompat.checkSelfPermission(mContext, permission);
-        if (result != PackageManager.PERMISSION_GRANTED) {
+        return result == PackageManager.PERMISSION_GRANTED;
+    }
+
+    @Override
+    public void requireQueryMediaContentPermission() throws SecurityException {
+        if (!isQueryMediaContentPermissionGranted()) {
             throw new SecurityException();
         }
     }
