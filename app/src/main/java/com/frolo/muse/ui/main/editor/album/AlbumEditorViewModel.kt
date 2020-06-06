@@ -61,7 +61,7 @@ class AlbumEditorViewModel constructor(
             art.map(false) { art -> art == null }
 
     val pickArtOptionVisible: LiveData<Boolean> =
-            originalArt.map(false) { original -> original != null }
+            art.map(false) { art -> art != null }
 
     val deleteArtOptionVisible: LiveData<Boolean> =
             originalArt.map(false) { original -> original != null }
