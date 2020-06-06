@@ -15,38 +15,38 @@ public class PlaylistChunkRepositoryImplTest {
     public void test_validateSortOrder_Valid() {
         {
             String sortOrder = SongQuery.Sort.BY_DEFAULT;
-            String validated = PlaylistChunkRepositoryImpl.validateSortOrder(sortOrder);
+            String validated = PlaylistChunkRepositoryImpl.getSortOrderOrDefault(sortOrder);
             assertNotEquals(sortOrder, validated);
             assertEquals(SongQuery.Sort.BY_PLAY_ORDER, validated);
         }
 
         {
             String sortOrder = SongQuery.Sort.BY_TITLE;
-            String validated = PlaylistChunkRepositoryImpl.validateSortOrder(sortOrder);
+            String validated = PlaylistChunkRepositoryImpl.getSortOrderOrDefault(sortOrder);
             assertEquals(sortOrder, validated);
         }
 
         {
             String sortOrder = SongQuery.Sort.BY_ALBUM;
-            String validated = PlaylistChunkRepositoryImpl.validateSortOrder(sortOrder);
+            String validated = PlaylistChunkRepositoryImpl.getSortOrderOrDefault(sortOrder);
             assertEquals(sortOrder, validated);
         }
 
         {
             String sortOrder = SongQuery.Sort.BY_ARTIST;
-            String validated = PlaylistChunkRepositoryImpl.validateSortOrder(sortOrder);
+            String validated = PlaylistChunkRepositoryImpl.getSortOrderOrDefault(sortOrder);
             assertEquals(sortOrder, validated);
         }
 
         {
             String sortOrder = SongQuery.Sort.BY_PLAY_ORDER;
-            String validated = PlaylistChunkRepositoryImpl.validateSortOrder(sortOrder);
+            String validated = PlaylistChunkRepositoryImpl.getSortOrderOrDefault(sortOrder);
             assertEquals(sortOrder, validated);
         }
 
         {
             String sortOrder = SongQuery.Sort.BY_DURATION;
-            String validated = PlaylistChunkRepositoryImpl.validateSortOrder(sortOrder);
+            String validated = PlaylistChunkRepositoryImpl.getSortOrderOrDefault(sortOrder);
             assertEquals(sortOrder, validated);
         }
     }
@@ -55,21 +55,21 @@ public class PlaylistChunkRepositoryImplTest {
     public void test_validateSortOrder_Invalid() {
         {
             String sortOrder = null;
-            String validated = PlaylistChunkRepositoryImpl.validateSortOrder(sortOrder);
+            String validated = PlaylistChunkRepositoryImpl.getSortOrderOrDefault(sortOrder);
             assertNotEquals(sortOrder, validated);
             assertEquals(SongQuery.Sort.BY_PLAY_ORDER, validated);
         }
 
         {
             String sortOrder = SongQuery.Sort.BY_DEFAULT;
-            String validated = PlaylistChunkRepositoryImpl.validateSortOrder(sortOrder);
+            String validated = PlaylistChunkRepositoryImpl.getSortOrderOrDefault(sortOrder);
             assertNotEquals(sortOrder, validated);
             assertEquals(SongQuery.Sort.BY_PLAY_ORDER, validated);
         }
 
         {
             String sortOrder = "playlist sort order";
-            String validated = PlaylistChunkRepositoryImpl.validateSortOrder(sortOrder);
+            String validated = PlaylistChunkRepositoryImpl.getSortOrderOrDefault(sortOrder);
             assertNotEquals(sortOrder, validated);
             assertEquals(SongQuery.Sort.BY_PLAY_ORDER, validated);
         }

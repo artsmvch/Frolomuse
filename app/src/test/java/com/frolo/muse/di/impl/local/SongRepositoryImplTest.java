@@ -14,39 +14,39 @@ public class SongRepositoryImplTest {
     public void test_validateSortOrder_Valid() {
         {
             String sortOrder = SongQuery.Sort.BY_DEFAULT;
-            String validated = SongRepositoryImpl.validateSortOrder(sortOrder);
+            String validated = SongRepositoryImpl.getSortOrderOrDefault(sortOrder);
             assertNotEquals(sortOrder, validated);
             assertEquals(SongQuery.Sort.BY_TITLE, validated);
         }
 
         {
             String sortOrder = SongQuery.Sort.BY_TITLE;
-            String validated = SongRepositoryImpl.validateSortOrder(sortOrder);
+            String validated = SongRepositoryImpl.getSortOrderOrDefault(sortOrder);
             assertEquals(sortOrder, validated);
         }
 
         {
             String sortOrder = SongQuery.Sort.BY_ALBUM;
-            String validated = SongRepositoryImpl.validateSortOrder(sortOrder);
+            String validated = SongRepositoryImpl.getSortOrderOrDefault(sortOrder);
             assertEquals(sortOrder, validated);
         }
 
         {
             String sortOrder = SongQuery.Sort.BY_ARTIST;
-            String validated = SongRepositoryImpl.validateSortOrder(sortOrder);
+            String validated = SongRepositoryImpl.getSortOrderOrDefault(sortOrder);
             assertEquals(sortOrder, validated);
         }
 
         {
             String sortOrder = SongQuery.Sort.BY_PLAY_ORDER;
-            String validated = SongRepositoryImpl.validateSortOrder(sortOrder);
+            String validated = SongRepositoryImpl.getSortOrderOrDefault(sortOrder);
             assertNotEquals(sortOrder, validated);
             assertEquals(SongQuery.Sort.BY_TITLE, validated);
         }
 
         {
             String sortOrder = SongQuery.Sort.BY_DURATION;
-            String validated = SongRepositoryImpl.validateSortOrder(sortOrder);
+            String validated = SongRepositoryImpl.getSortOrderOrDefault(sortOrder);
             assertEquals(sortOrder, validated);
         }
     }
@@ -55,28 +55,28 @@ public class SongRepositoryImplTest {
     public void test_validateSortOrder_Invalid() {
         {
             String sortOrder = null;
-            String validated = SongRepositoryImpl.validateSortOrder(sortOrder);
+            String validated = SongRepositoryImpl.getSortOrderOrDefault(sortOrder);
             assertNotEquals(sortOrder, validated);
             assertEquals(SongQuery.Sort.BY_TITLE, validated);
         }
 
         {
             String sortOrder = SongQuery.Sort.BY_DEFAULT;
-            String validated = SongRepositoryImpl.validateSortOrder(sortOrder);
+            String validated = SongRepositoryImpl.getSortOrderOrDefault(sortOrder);
             assertNotEquals(sortOrder, validated);
             assertEquals(SongQuery.Sort.BY_TITLE, validated);
         }
 
         {
             String sortOrder = SongQuery.Sort.BY_PLAY_ORDER;
-            String validated = SongRepositoryImpl.validateSortOrder(sortOrder);
+            String validated = SongRepositoryImpl.getSortOrderOrDefault(sortOrder);
             assertNotEquals(sortOrder, validated);
             assertEquals(SongQuery.Sort.BY_TITLE, validated);
         }
 
         {
             String sortOrder = "qkwkopkscomfkwovek";
-            String validated = SongRepositoryImpl.validateSortOrder(sortOrder);
+            String validated = SongRepositoryImpl.getSortOrderOrDefault(sortOrder);
             assertNotEquals(sortOrder, validated);
             assertEquals(SongQuery.Sort.BY_TITLE, validated);
         }

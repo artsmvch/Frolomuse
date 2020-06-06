@@ -1,6 +1,7 @@
 package com.frolo.muse.interactor.media.get
 
 import com.frolo.muse.TestSchedulerProvider
+import com.frolo.muse.TestSortOrder
 import com.frolo.muse.mockMediaList
 import com.frolo.muse.model.Library
 import com.frolo.muse.model.media.Media
@@ -253,13 +254,13 @@ class GetSectionedMediaUseCaseTest {
             val observer = TestObserver.create<SortOrderMenu>()
 
             /*mocking*/
-            val sortOrders = mapOf(
-                    "sort_order_1" to "sort_order_name_1",
-                    "sort_order_2" to "sort_order_name_2",
-                    "sort_order_3" to "sort_order_name_3"
+            val sortOrders = listOf(
+                TestSortOrder("sort_order_1"),
+                TestSortOrder("sort_order_2"),
+                TestSortOrder("sort_order_3")
             )
 
-            val currSortOrder = sortOrders.entries.first().key
+            val currSortOrder = sortOrders.first()
             val reversed = true
 
             val testMenu = SortOrderMenu(
@@ -272,7 +273,7 @@ class GetSectionedMediaUseCaseTest {
                     .thenReturn(Single.just(sortOrders))
 
             whenever(preferences.getSortOrderForSection(eq(section)))
-                    .thenReturn(Flowable.just(currSortOrder))
+                    .thenReturn(Flowable.just(currSortOrder.key))
 
             whenever(preferences.isSortOrderReversedForSection(eq(section)))
                     .thenReturn(Flowable.just(reversed))
@@ -326,9 +327,9 @@ class GetSectionedMediaUseCaseTest {
         run {
             val observer = TestObserver.create<List<Media>>()
 
-            val targetSortOrder = "sort_order_1"
+            val targetSortOrder = TestSortOrder("sort_order_1")
 
-            whenever(preferences.saveSortOrderForSection(eq(section), eq(targetSortOrder)))
+            whenever(preferences.saveSortOrderForSection(eq(section), eq(targetSortOrder.key)))
                     .doReturn(Completable.complete())
 
             /*calling method*/
@@ -345,9 +346,9 @@ class GetSectionedMediaUseCaseTest {
         run {
             val observer = TestObserver.create<List<Media>>()
 
-            val targetSortOrder = "sort_order_1"
+            val targetSortOrder = TestSortOrder("sort_order_1")
 
-            whenever(preferences.saveSortOrderForSection(eq(section), eq(targetSortOrder)))
+            whenever(preferences.saveSortOrderForSection(eq(section), eq(targetSortOrder.key)))
                     .doReturn(Completable.error(UnsupportedOperationException()))
 
             /*calling method*/

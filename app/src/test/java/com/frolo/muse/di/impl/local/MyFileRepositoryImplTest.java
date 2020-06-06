@@ -14,7 +14,7 @@ public class MyFileRepositoryImplTest {
     public void test_validateSortOrder_Valid() {
         {
             String sortOrder = MyFileQuery.Sort.BY_FILENAME;
-            String validated = MyFileRepositoryImpl.validateSortOrder(sortOrder);
+            String validated = MyFileRepositoryImpl.getSortOrderOrDefault(sortOrder);
             assertEquals(sortOrder, validated);
         }
     }
@@ -23,21 +23,21 @@ public class MyFileRepositoryImplTest {
     public void test_validateSortOrder_Invalid() {
         {
             String sortOrder = null;
-            String validated = MyFileRepositoryImpl.validateSortOrder(sortOrder);
+            String validated = MyFileRepositoryImpl.getSortOrderOrDefault(sortOrder);
             assertNotEquals(sortOrder, validated);
             assertEquals(MyFileQuery.Sort.BY_FILENAME, validated);
         }
 
         {
             String sortOrder = MyFileQuery.Sort.BY_FILENAME + "_";
-            String validated = MyFileRepositoryImpl.validateSortOrder(sortOrder);
+            String validated = MyFileRepositoryImpl.getSortOrderOrDefault(sortOrder);
             assertNotEquals(sortOrder, validated);
             assertEquals(MyFileQuery.Sort.BY_FILENAME, validated);
         }
 
         {
             String sortOrder = "file";
-            String validated = MyFileRepositoryImpl.validateSortOrder(sortOrder);
+            String validated = MyFileRepositoryImpl.getSortOrderOrDefault(sortOrder);
             assertNotEquals(sortOrder, validated);
             assertEquals(MyFileQuery.Sort.BY_FILENAME, validated);
         }

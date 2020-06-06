@@ -15,38 +15,38 @@ public class GenreChunkRepositoryImplTest {
     public void test_validateSortOrder_Valid() {
         {
             String sortOrder = SongQuery.Sort.BY_DEFAULT;
-            String validated = GenreChunkRepositoryImpl.validateSortOrder(sortOrder);
+            String validated = GenreChunkRepositoryImpl.getSortOrderOrDefault(sortOrder);
             assertEquals(sortOrder, validated);
         }
 
         {
             String sortOrder = SongQuery.Sort.BY_TITLE;
-            String validated = GenreChunkRepositoryImpl.validateSortOrder(sortOrder);
+            String validated = GenreChunkRepositoryImpl.getSortOrderOrDefault(sortOrder);
             assertEquals(sortOrder, validated);
         }
 
         {
             String sortOrder = SongQuery.Sort.BY_ALBUM;
-            String validated = GenreChunkRepositoryImpl.validateSortOrder(sortOrder);
+            String validated = GenreChunkRepositoryImpl.getSortOrderOrDefault(sortOrder);
             assertEquals(sortOrder, validated);
         }
 
         {
             String sortOrder = SongQuery.Sort.BY_ARTIST;
-            String validated = GenreChunkRepositoryImpl.validateSortOrder(sortOrder);
+            String validated = GenreChunkRepositoryImpl.getSortOrderOrDefault(sortOrder);
             assertEquals(sortOrder, validated);
         }
 
         {
             String sortOrder = SongQuery.Sort.BY_PLAY_ORDER;
-            String validated = GenreChunkRepositoryImpl.validateSortOrder(sortOrder);
+            String validated = GenreChunkRepositoryImpl.getSortOrderOrDefault(sortOrder);
             assertNotEquals(sortOrder, validated);
             assertEquals(SongQuery.Sort.BY_DEFAULT, validated);
         }
 
         {
             String sortOrder = SongQuery.Sort.BY_DURATION;
-            String validated = GenreChunkRepositoryImpl.validateSortOrder(sortOrder);
+            String validated = GenreChunkRepositoryImpl.getSortOrderOrDefault(sortOrder);
             assertEquals(sortOrder, validated);
         }
     }
@@ -55,21 +55,21 @@ public class GenreChunkRepositoryImplTest {
     public void test_validateSortOrder_Invalid() {
         {
             String sortOrder = null;
-            String validated = GenreChunkRepositoryImpl.validateSortOrder(sortOrder);
+            String validated = GenreChunkRepositoryImpl.getSortOrderOrDefault(sortOrder);
             assertNotEquals(sortOrder, validated);
             assertEquals(SongQuery.Sort.BY_DEFAULT, validated);
         }
 
         {
             String sortOrder = SongQuery.Sort.BY_PLAY_ORDER;
-            String validated = GenreChunkRepositoryImpl.validateSortOrder(sortOrder);
+            String validated = GenreChunkRepositoryImpl.getSortOrderOrDefault(sortOrder);
             assertNotEquals(sortOrder, validated);
             assertEquals(SongQuery.Sort.BY_DEFAULT, validated);
         }
 
         {
             String sortOrder = "sortorderr123";
-            String validated = GenreChunkRepositoryImpl.validateSortOrder(sortOrder);
+            String validated = GenreChunkRepositoryImpl.getSortOrderOrDefault(sortOrder);
             assertNotEquals(sortOrder, validated);
             assertEquals(SongQuery.Sort.BY_DEFAULT, validated);
         }

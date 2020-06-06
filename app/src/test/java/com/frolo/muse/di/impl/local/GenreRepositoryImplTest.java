@@ -14,7 +14,7 @@ public class GenreRepositoryImplTest {
     public void test_validateSortOrder_Valid() {
         {
             String sortOrder = GenreQuery.Sort.BY_NAME;
-            String validated = GenreRepositoryImpl.validateSortOrder(sortOrder);
+            String validated = GenreRepositoryImpl.getSortOrderOrDefault(sortOrder);
             assertEquals(sortOrder, validated);
         }
     }
@@ -23,21 +23,21 @@ public class GenreRepositoryImplTest {
     public void test_validateSortOrder_Invalid() {
         {
             String sortOrder = null;
-            String validated = GenreRepositoryImpl.validateSortOrder(sortOrder);
+            String validated = GenreRepositoryImpl.getSortOrderOrDefault(sortOrder);
             assertNotEquals(sortOrder, validated);
             assertEquals(GenreQuery.Sort.BY_NAME, validated);
         }
 
         {
             String sortOrder = GenreQuery.Sort.BY_NAME + "1";
-            String validated = GenreRepositoryImpl.validateSortOrder(sortOrder);
+            String validated = GenreRepositoryImpl.getSortOrderOrDefault(sortOrder);
             assertNotEquals(sortOrder, validated);
             assertEquals(GenreQuery.Sort.BY_NAME, validated);
         }
 
         {
             String sortOrder = "aawd.v.wv;w";
-            String validated = GenreRepositoryImpl.validateSortOrder(sortOrder);
+            String validated = GenreRepositoryImpl.getSortOrderOrDefault(sortOrder);
             assertNotEquals(sortOrder, validated);
             assertEquals(GenreQuery.Sort.BY_NAME, validated);
         }

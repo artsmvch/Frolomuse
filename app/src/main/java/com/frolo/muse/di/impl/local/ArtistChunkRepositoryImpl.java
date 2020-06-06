@@ -14,6 +14,17 @@ import io.reactivex.Single;
 
 public class ArtistChunkRepositoryImpl extends SongRepositoryImpl implements ArtistChunkRepository {
 
+    private final static String[] SORT_ORDER_KEYS = {
+        SongQuery.Sort.BY_DEFAULT,
+        SongQuery.Sort.BY_TITLE,
+        SongQuery.Sort.BY_ALBUM,
+        SongQuery.Sort.BY_DURATION
+    };
+
+    static String getSortOrderOrDefault(String candidate) {
+        return Preconditions.takeIfNotNullAndListedOrDefault(candidate, SORT_ORDER_KEYS, SongQuery.Sort.BY_DEFAULT);
+    }
+
     private final List<SortOrder> mSortOrders;
 
     public ArtistChunkRepositoryImpl(final Context context) {

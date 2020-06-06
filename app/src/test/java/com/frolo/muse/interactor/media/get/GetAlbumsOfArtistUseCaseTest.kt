@@ -1,6 +1,7 @@
 package com.frolo.muse.interactor.media.get
 
 import com.frolo.muse.TestSchedulerProvider
+import com.frolo.muse.TestSortOrder
 import com.frolo.muse.mockKT
 import com.frolo.muse.mockList
 import com.frolo.muse.model.media.Album
@@ -57,7 +58,7 @@ class GetAlbumsOfArtistUseCaseTest {
     fun test_applySortOrder() {
         val observer = TestObserver.create<List<Media>>()
 
-        getAlbumsOfArtistUseCase.applySortOrder("test")
+        getAlbumsOfArtistUseCase.applySortOrder(TestSortOrder("test"))
                 .subscribe(observer)
 
         observer.assertError(UnsupportedOperationException::class.java)

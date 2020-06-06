@@ -14,13 +14,13 @@ public class AlbumRepositoryImplTest {
     public void test_validateSortOrder_Valid() {
         {
             String sortOrder = AlbumQuery.Sort.BY_ALBUM;
-            String validated = AlbumRepositoryImpl.validateSortOrder(sortOrder);
+            String validated = AlbumRepositoryImpl.getSortOrderOrDefault(sortOrder);
             assertEquals(sortOrder, validated);
         }
 
         {
             String sortOrder = AlbumQuery.Sort.BY_NUMBER_OF_SONGS;
-            String validated = AlbumRepositoryImpl.validateSortOrder(sortOrder);
+            String validated = AlbumRepositoryImpl.getSortOrderOrDefault(sortOrder);
             assertEquals(sortOrder, validated);
         }
     }
@@ -29,21 +29,21 @@ public class AlbumRepositoryImplTest {
     public void test_validateSortOrder_Invalid() {
         {
             String sortOrder = null;
-            String validated = AlbumRepositoryImpl.validateSortOrder(sortOrder);
+            String validated = AlbumRepositoryImpl.getSortOrderOrDefault(sortOrder);
             assertNotEquals(sortOrder, validated);
             assertEquals(AlbumQuery.Sort.BY_ALBUM, validated);
         }
 
         {
             String sortOrder = AlbumQuery.Sort.BY_ALBUM + "q";
-            String validated = AlbumRepositoryImpl.validateSortOrder(sortOrder);
+            String validated = AlbumRepositoryImpl.getSortOrderOrDefault(sortOrder);
             assertNotEquals(sortOrder, validated);
             assertEquals(AlbumQuery.Sort.BY_ALBUM, validated);
         }
 
         {
             String sortOrder = "aawd.v.wv;w";
-            String validated = AlbumRepositoryImpl.validateSortOrder(sortOrder);
+            String validated = AlbumRepositoryImpl.getSortOrderOrDefault(sortOrder);
             assertNotEquals(sortOrder, validated);
             assertEquals(AlbumQuery.Sort.BY_ALBUM, validated);
         }
