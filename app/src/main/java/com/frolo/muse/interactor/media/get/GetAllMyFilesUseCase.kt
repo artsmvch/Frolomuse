@@ -6,6 +6,7 @@ import com.frolo.muse.repository.MyFileRepository
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.rx.SchedulerProvider
 import io.reactivex.Flowable
+import io.reactivex.Single
 import io.reactivex.processors.BehaviorProcessor
 import javax.inject.Inject
 
@@ -21,28 +22,29 @@ class GetAllMyFilesUseCase @Inject constructor(
     preferences
 ) {
 
-    data class GoBackResult constructor(
-            val canGoBack: Boolean,
-            val toBrowse: MyFile?
-    )
+    data class GoBackResult constructor(val canGoBack: Boolean, val toBrowse: MyFile?)
 
     private val rootProcessor: BehaviorProcessor<MyFile> by lazy {
-        BehaviorProcessor.createDefault<MyFile>(
-                repository.defaultFolder.blockingGet())
+        BehaviorProcessor.createDefault<MyFile>(repository.defaultFolder.blockingGet())
     }
 
-    private fun browse(
-            myFile: MyFile,
-            checkForReversion: Boolean
-    ): Flowable<List<MyFile>> {
+    private fun browse(myFile: MyFile, checkForReversion: Boolean): Flowable<List<MyFile>> {
         rootProcessor.onNext(myFile)
-        return repository.browse(myFile)
-                .map { list ->
-                    if (checkForReversion
-                            && preferences.isSortOrderReversedForSection(Library.FOLDERS).blockingFirst()) {
-                        list.reversed()
-                    } else list
+
+        val section = Library.FOLDERS
+
+        return preferences.getSortOrderForSection(section)
+            .switchMap { sortOrderKey ->
+                val source = repository.browse(myFile, sortOrderKey)
+
+                if (!checkForReversion) return@switchMap source
+
+                return@switchMap source.switchMap { list ->
+                    preferences.isSortOrderReversedForSection(section).map { reversed ->
+                        if (reversed) list.reversed() else list
+                    }
                 }
+            }
     }
 
     fun getRoot(): Flowable<MyFile> {
@@ -50,13 +52,12 @@ class GetAllMyFilesUseCase @Inject constructor(
     }
 
     override fun getSortedCollection(sortOrder: String): Flowable<List<MyFile>> {
-        val currRoot = rootProcessor.value!!
+        val currRoot = rootProcessor.value
         // do not check for the reversion here, the caller of this method will do it itself
-        return browse(currRoot, false)
+        return Single.fromCallable { requireNotNull(currRoot) }
+                .flatMapPublisher { browse(it, false) }
     }
 
-    // Tries to find cached file list for the given [myFile].
-    // If not found, then force the repository force the given [myFile].
     fun browse(myFile: MyFile): Flowable<List<MyFile>> {
         return browse(myFile, true)
     }

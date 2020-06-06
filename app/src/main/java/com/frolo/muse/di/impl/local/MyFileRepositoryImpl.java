@@ -31,7 +31,8 @@ public class MyFileRepositoryImpl implements MyFileRepository {
     private static final String KEY_DEFAULT_FOLDER_PATH = "default_folder_path";
 
     private final static String[] SORT_ORDER_KEYS = {
-        MyFileQuery.Sort.BY_FILENAME
+        MyFileQuery.Sort.BY_FILENAME,
+        MyFileQuery.Sort.BY_DATE_MODIFIED
     };
 
     static String getSortOrderOrDefault(String candidate) {
@@ -45,8 +46,9 @@ public class MyFileRepositoryImpl implements MyFileRepository {
 
     public MyFileRepositoryImpl(Context context) {
         this.mContext = context;
-        mSortOrders = new ArrayList<SortOrder>(1) {{
+        mSortOrders = new ArrayList<SortOrder>(2) {{
             add(new SortOrderImpl(mContext, MyFileQuery.Sort.BY_FILENAME, R.string.sort_by_filename));
+            add(new SortOrderImpl(mContext, MyFileQuery.Sort.BY_DATE_MODIFIED, R.string.sort_by_date_modified));
         }};
 
         mPrefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
@@ -192,8 +194,8 @@ public class MyFileRepositoryImpl implements MyFileRepository {
     }
 
     @Override
-    public Flowable<List<MyFile>> browse(final MyFile myFile) {
-        return MyFileQuery.browse(mContext, myFile);
+    public Flowable<List<MyFile>> browse(final MyFile myFile, final String sortOrderKey) {
+        return MyFileQuery.browse(mContext, myFile, sortOrderKey);
     }
 
     @Override

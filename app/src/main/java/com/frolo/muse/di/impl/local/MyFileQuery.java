@@ -22,6 +22,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 import io.reactivex.BackpressureStrategy;
 import io.reactivex.Completable;
@@ -36,7 +37,38 @@ import io.reactivex.functions.Function;
 final class MyFileQuery {
 
     static final class Sort {
-        static final String BY_FILENAME = "";
+        static final String BY_FILENAME = "filename";
+        static final String BY_DATE_MODIFIED = "date_modified";
+
+        static final Comparator<MyFile> COMPARATOR_BY_FILENAME = new Comparator<MyFile>() {
+            @Override
+            public int compare(MyFile o1, MyFile o2) {
+                if (o1 == null && o2 == null) return 0;
+
+                if (o1 == null) return -1;
+
+                if (o2 == null) return 1;
+
+                return o1.getJavaFile().compareTo(o2.getJavaFile());
+            }
+        };
+
+        static final Comparator<MyFile> COMPARATOR_BY_DATE_MODIFIED = new Comparator<MyFile>() {
+            @Override
+            public int compare(MyFile o1, MyFile o2) {
+                if (o1 == null && o2 == null) return 0;
+
+                if (o1 == null) return -1;
+
+                if (o2 == null) return 1;
+
+                final long lastModified1 = o1.getJavaFile().lastModified();
+                final long lastModified2 = o2.getJavaFile().lastModified();
+
+                // TODO: does that truly sort files by date modified?
+                return Long.compare(lastModified1, lastModified2);
+            }
+        };
 
         private Sort() {
         }
@@ -293,7 +325,7 @@ final class MyFileQuery {
         }, BackpressureStrategy.LATEST);
     }
 
-    static Flowable<List<MyFile>> browse(final Context context, final MyFile myFile) {
+    static Flowable<List<MyFile>> browse(final Context context, final MyFile myFile, final String sortOrderKey) {
         List<Flowable<? extends List<? extends Serializable>>> sources = Arrays.asList(
                 browse_Internal(context, myFile),
                 getHiddenFiles(context.getContentResolver()),
@@ -329,7 +361,20 @@ final class MyFileQuery {
                         return result;
                     }
                 }
-        );
+        ).map(new Function<List<MyFile>, List<MyFile>>() {
+            @Override
+            public List<MyFile> apply(List<MyFile> myFiles) throws Exception {
+                if (Objects.equals(sortOrderKey, Sort.BY_FILENAME)) {
+                    Collections.sort(myFiles, Sort.COMPARATOR_BY_FILENAME);
+                }
+
+                if (Objects.equals(sortOrderKey, Sort.BY_DATE_MODIFIED)) {
+                    Collections.sort(myFiles, Sort.COMPARATOR_BY_DATE_MODIFIED);
+                }
+
+                return myFiles;
+            }
+        });
     }
 
     static Flowable<List<MyFile>> getHiddenFiles(ContentResolver resolver) {

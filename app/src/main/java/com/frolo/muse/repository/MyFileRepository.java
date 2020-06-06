@@ -24,9 +24,10 @@ public interface MyFileRepository extends MediaRepository<MyFile> {
      * Should be implemented in the most fast way and wrapped into {@link Flowable}
      * Observing is happening in a worker thread;
      * @param parent from what the method starts the search
+     * @param sortOrderKey to sort the list
      * @return only songs and folders that have songs inside themselves
      */
-    Flowable<List<MyFile>> browse(MyFile parent);
+    Flowable<List<MyFile>> browse(MyFile parent, String sortOrderKey);
 
     Flowable<List<MyFile>> getHiddenFiles();
 
