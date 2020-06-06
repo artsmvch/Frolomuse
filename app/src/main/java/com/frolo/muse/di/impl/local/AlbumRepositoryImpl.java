@@ -2,16 +2,18 @@ package com.frolo.muse.di.impl.local;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+
 import com.frolo.muse.R;
 import com.frolo.muse.model.media.Album;
 import com.frolo.muse.model.media.Artist;
 import com.frolo.muse.model.media.Song;
+import com.frolo.muse.model.sort.SortOrder;
 import com.frolo.muse.repository.AlbumRepository;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
@@ -21,34 +23,27 @@ import io.reactivex.Single;
 public class AlbumRepositoryImpl implements AlbumRepository {
 
     private final static String[] SORT_ORDER_KEYS = {
-            AlbumQuery.Sort.BY_ALBUM,
-            AlbumQuery.Sort.BY_NUMBER_OF_SONGS
+        AlbumQuery.Sort.BY_ALBUM,
+        AlbumQuery.Sort.BY_NUMBER_OF_SONGS
     };
 
-    // Returns sort order candidate if valid or default
-    static String validateSortOrder(String candidate) {
-        return Preconditions.takeIfNotNullAndListedOrDefault(
-                candidate,
-                SORT_ORDER_KEYS,
-                AlbumQuery.Sort.BY_ALBUM);
+    static String getSortOrderOrDefault(String candidate) {
+        return Preconditions.takeIfNotNullAndListedOrDefault(candidate, SORT_ORDER_KEYS, AlbumQuery.Sort.BY_ALBUM);
     }
 
     private final Context mContext;
-    private final Map<String, String> mSortOrders;
+    private final List<SortOrder> mSortOrders;
 
     public AlbumRepositoryImpl(final Context context) {
         this.mContext = context;
-        this.mSortOrders = new LinkedHashMap<String, String>(2, 1f) {{
-            put(AlbumQuery.Sort.BY_ALBUM,
-                    context.getString(R.string.sort_by_name));
-
-            put(AlbumQuery.Sort.BY_NUMBER_OF_SONGS,
-                    context.getString(R.string.sort_by_number_of_songs));
+        this.mSortOrders = new ArrayList<SortOrder>(2) {{
+            add(new SortOrderImpl(mContext, AlbumQuery.Sort.BY_ALBUM, R.string.sort_by_name));
+            add(new SortOrderImpl(mContext, AlbumQuery.Sort.BY_NUMBER_OF_SONGS, R.string.sort_by_number_of_songs));
         }};
     }
 
     @Override
-    public Single<Map<String, String>> getSortOrders() {
+    public Single<List<SortOrder>> getSortOrders() {
         return Single.just(mSortOrders);
     }
 

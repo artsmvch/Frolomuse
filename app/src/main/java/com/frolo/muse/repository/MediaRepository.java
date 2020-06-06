@@ -2,10 +2,10 @@ package com.frolo.muse.repository;
 
 import com.frolo.muse.model.media.Media;
 import com.frolo.muse.model.media.Song;
+import com.frolo.muse.model.sort.SortOrder;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
@@ -13,8 +13,13 @@ import io.reactivex.Single;
 
 public interface MediaRepository<E extends Media> {
 
-    // return Map(Sort name to Sort order)
-    Single<Map<String, String>> getSortOrders();
+    /**
+     * Returns the available sort orders for this repository.
+     * The priority of the sort orders goes down in the list.
+     * The default sort order is the first one in the list.
+     * @return available sort orders for this repository
+     */
+    Single<List<SortOrder>> getSortOrders();
 
     /* ********************************************
      * ********************************************

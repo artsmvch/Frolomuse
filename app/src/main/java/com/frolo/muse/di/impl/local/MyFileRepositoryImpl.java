@@ -8,13 +8,13 @@ import com.frolo.muse.BuildConfig;
 import com.frolo.muse.R;
 import com.frolo.muse.model.media.MyFile;
 import com.frolo.muse.model.media.Song;
+import com.frolo.muse.model.sort.SortOrder;
 import com.frolo.muse.repository.MyFileRepository;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.Callable;
 
 import io.reactivex.Completable;
@@ -31,32 +31,29 @@ public class MyFileRepositoryImpl implements MyFileRepository {
     private static final String KEY_DEFAULT_FOLDER_PATH = "default_folder_path";
 
     private final static String[] SORT_ORDER_KEYS = {
-            MyFileQuery.Sort.BY_FILENAME
+        MyFileQuery.Sort.BY_FILENAME
     };
 
-    // Returns sort order candidate if valid or default
-    static String validateSortOrder(String candidate) {
-        return Preconditions.takeIfNotNullAndListedOrDefault(
-                candidate,
-                SORT_ORDER_KEYS,
-                MyFileQuery.Sort.BY_FILENAME);
+    static String getSortOrderOrDefault(String candidate) {
+        return Preconditions.takeIfNotNullAndListedOrDefault(candidate, SORT_ORDER_KEYS, MyFileQuery.Sort.BY_FILENAME);
     }
 
     private final Context mContext;
-    private final Map<String, String> mSortOrders =
-            new LinkedHashMap<>(1, 1f);
+    private final List<SortOrder> mSortOrders;
 
     private final SharedPreferences mPrefs;
 
     public MyFileRepositoryImpl(Context context) {
         this.mContext = context;
-        mSortOrders.put(MyFileQuery.Sort.BY_FILENAME,
-                context.getString(R.string.sort_by_filename));
+        mSortOrders = new ArrayList<SortOrder>(1) {{
+            add(new SortOrderImpl(mContext, MyFileQuery.Sort.BY_FILENAME, R.string.sort_by_filename));
+        }};
+
         mPrefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
     }
 
     @Override
-    public Single<Map<String, String>> getSortOrders() {
+    public Single<List<SortOrder>> getSortOrders() {
         return Single.just(mSortOrders);
     }
 

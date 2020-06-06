@@ -14,6 +14,7 @@ import android.text.style.ForegroundColorSpan
 import android.text.SpannableString
 import android.view.MenuItem
 import androidx.core.content.ContextCompat
+import com.frolo.muse.model.sort.SortOrder
 
 
 private fun MenuItem.setEnabledCompat(enabled: Boolean, context: Context) {
@@ -26,7 +27,7 @@ private fun MenuItem.setEnabledCompat(enabled: Boolean, context: Context) {
 
 fun View.showSortOrderPopup(
     sortOrderMenu: SortOrderMenu,
-    sortOrderConsumer: (sortOrder: String) -> Unit,
+    sortOrderConsumer: (sortOrder: SortOrder) -> Unit,
     reversedConsumer: (reversed: Boolean) -> Unit
 ): PopupMenu {
 
@@ -39,17 +40,17 @@ fun View.showSortOrderPopup(
             setOnMenuItemClickListener { true }
         }
 
-        sortOrderMenu.sortOrders.entries.forEachIndexed { index, entry ->
-            val menuItem = menu.add(R.id.orders, Menu.NONE, index, entry.value)
+        sortOrderMenu.sortOrders.forEachIndexed { index, sortOrder ->
+            val menuItem = menu.add(R.id.orders, Menu.NONE, index, sortOrder.localizedName)
 
             menuItem.isCheckable = true
-            if (sortOrderMenu.selectedSortOrder == entry.key) {
+            if (SortOrder.areKeysTheSame(sortOrderMenu.selectedSortOrder, sortOrder)) {
                 menuItem.isChecked = true
             }
 
             menuItem.setOnMenuItemClickListener {
                 if (it.isChecked.not()) {
-                    sortOrderConsumer(entry.key)
+                    sortOrderConsumer(sortOrder)
                 }
                 false
             }

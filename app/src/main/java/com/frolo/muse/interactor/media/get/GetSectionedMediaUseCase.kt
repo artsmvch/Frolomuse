@@ -3,6 +3,7 @@ package com.frolo.muse.interactor.media.get
 import com.frolo.muse.model.Library
 import com.frolo.muse.model.media.Media
 import com.frolo.muse.model.menu.SortOrderMenu
+import com.frolo.muse.model.sort.SortOrder
 import com.frolo.muse.repository.MediaRepository
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.rx.SchedulerProvider
@@ -24,20 +25,24 @@ abstract class GetSectionedMediaUseCase <E: Media> constructor(
 
     override fun getSortOrderMenu(): Single<SortOrderMenu> {
         return repository.sortOrders
-            .flatMap {  sortOrders ->
+            .flatMap { sortOrders ->
                 Single.zip(
                     preferences.getSortOrderForSection(section).firstOrError(),
                     preferences.isSortOrderReversedForSection(section).firstOrError(),
                     BiFunction { savedSortOrder: String, isReversed: Boolean ->
-                        SortOrderMenu(sortOrders, savedSortOrder, isReversed)
+
+                        val selectedSortOrder: SortOrder? =
+                                SortOrder.pick(sortOrders, savedSortOrder) ?: sortOrders.firstOrNull()
+
+                        SortOrderMenu(sortOrders, selectedSortOrder, isReversed)
                     }
                 )
             }
             .subscribeOn(schedulerProvider.worker())
     }
 
-    override fun applySortOrder(sortOrder: String): Completable {
-        return preferences.saveSortOrderForSection(section, sortOrder)
+    override fun applySortOrder(sortOrder: SortOrder): Completable {
+        return preferences.saveSortOrderForSection(section, sortOrder.key)
                 .subscribeOn(schedulerProvider.worker())
     }
 

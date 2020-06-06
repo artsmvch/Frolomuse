@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.frolo.muse.model.media.Song;
 import com.frolo.muse.model.media.SongWithPlayCount;
+import com.frolo.muse.model.sort.SortOrder;
 import com.frolo.muse.repository.SongRepository;
 import com.frolo.muse.repository.SongWithPlayCountRepository;
 
@@ -13,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.Callable;
 
 import io.reactivex.Completable;
@@ -24,8 +24,6 @@ import io.reactivex.functions.Function;
 
 
 public class SongWithPlayCountRepositoryImpl implements SongWithPlayCountRepository {
-
-    private static final Map<String, String> SORT_ORDERS = Collections.emptyMap();
 
     private final Context mContext;
     private final SongRepository mDelegate;
@@ -75,8 +73,8 @@ public class SongWithPlayCountRepositoryImpl implements SongWithPlayCountReposit
     }
 
     @Override
-    public Single<Map<String, String>> getSortOrders() {
-        return Single.just(SORT_ORDERS);
+    public Single<List<SortOrder>> getSortOrders() {
+        return Single.just(Collections.emptyList());
     }
 
     @Override

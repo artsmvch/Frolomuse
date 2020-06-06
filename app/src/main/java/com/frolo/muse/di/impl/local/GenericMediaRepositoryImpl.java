@@ -11,6 +11,7 @@ import com.frolo.muse.model.media.MyFile;
 import com.frolo.muse.model.media.Playlist;
 import com.frolo.muse.model.media.Song;
 import com.frolo.muse.model.media.UnknownMediaException;
+import com.frolo.muse.model.sort.SortOrder;
 import com.frolo.muse.repository.AlbumRepository;
 import com.frolo.muse.repository.ArtistRepository;
 import com.frolo.muse.repository.GenericMediaRepository;
@@ -21,9 +22,8 @@ import com.frolo.muse.repository.SongRepository;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.Callable;
 
 import io.reactivex.Completable;
@@ -45,9 +45,6 @@ public class GenericMediaRepositoryImpl implements GenericMediaRepository {
     private GenreRepository mGenreRepo;
     private PlaylistRepository mPlaylistRepo;
     private MyFileRepository mMyFileRepo;
-
-    private final Map<String, String> mSortOrders =
-            new HashMap<>(0);
 
     public GenericMediaRepositoryImpl(
             Context context,
@@ -90,8 +87,8 @@ public class GenericMediaRepositoryImpl implements GenericMediaRepository {
     }
 
     @Override
-    public Single<Map<String, String>> getSortOrders() {
-        return Single.just(mSortOrders);
+    public Single<List<SortOrder>> getSortOrders() {
+        return Single.just(Collections.emptyList());
     }
 
     @Override

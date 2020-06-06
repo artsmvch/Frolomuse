@@ -2,29 +2,27 @@ package com.frolo.muse.model.menu;
 
 import androidx.annotation.Nullable;
 
-import java.util.Map;
+import com.frolo.muse.model.sort.SortOrder;
+
+import java.util.List;
 
 
 public final class SortOrderMenu {
-    private final Map<String, String> sortOrders;
-    private final String selectedSortOrder;
+    private final List<SortOrder> sortOrders;
+    private final SortOrder selectedSortOrder;
     private final boolean sortOrderReversed;
 
-    public SortOrderMenu(
-            Map<String, String> sortOrders,
-            String selectedSortOrder,
-            boolean sortOrderReversed) {
-
+    public SortOrderMenu(List<SortOrder> sortOrders, SortOrder selectedSortOrder, boolean sortOrderReversed) {
         this.sortOrders = sortOrders;
         this.selectedSortOrder = selectedSortOrder;
         this.sortOrderReversed = sortOrderReversed;
     }
 
-    public Map<String, String> getSortOrders() {
+    public List<SortOrder> getSortOrders() {
         return sortOrders;
     }
 
-    public String getSelectedSortOrder() {
+    public SortOrder getSelectedSortOrder() {
         return selectedSortOrder;
     }
 
@@ -55,22 +53,8 @@ public final class SortOrderMenu {
             return false;
         }
 
-        Map<String, String> otherSortOrders = other.sortOrders;
-        for (Map.Entry<String, String> e : sortOrders.entrySet()) {
-            String key = e.getKey();
-            String value = e.getValue();
-            if (value == null) {
-                if (!(otherSortOrders.get(key) == null
-                        && otherSortOrders.containsKey(key))) {
-                    return false;
-                }
-            } else {
-                if (!value.equals(otherSortOrders.get(key))) {
-                    return false;
-                }
-            }
-        }
+        final List<SortOrder> otherSortOrders = other.sortOrders;
 
-        return true;
+        return sortOrders.containsAll(otherSortOrders) && otherSortOrders.containsAll(sortOrders);
     }
 }

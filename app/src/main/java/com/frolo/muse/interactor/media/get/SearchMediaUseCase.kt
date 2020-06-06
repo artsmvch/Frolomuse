@@ -2,6 +2,7 @@ package com.frolo.muse.interactor.media.get
 
 import com.frolo.muse.model.media.Media
 import com.frolo.muse.model.menu.SortOrderMenu
+import com.frolo.muse.model.sort.SortOrder
 import com.frolo.muse.repository.GenericMediaRepository
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.rx.SchedulerProvider
@@ -21,7 +22,7 @@ class SearchMediaUseCase @Inject constructor(
         return Single.error(UnsupportedOperationException())
     }
 
-    override fun applySortOrder(sortOrder: String): Completable {
+    override fun applySortOrder(sortOrder: SortOrder): Completable {
         return Completable.error(UnsupportedOperationException())
     }
 

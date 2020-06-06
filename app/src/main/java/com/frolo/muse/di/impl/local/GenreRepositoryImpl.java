@@ -5,12 +5,12 @@ import android.content.Context;
 import com.frolo.muse.R;
 import com.frolo.muse.model.media.Genre;
 import com.frolo.muse.model.media.Song;
+import com.frolo.muse.model.sort.SortOrder;
 import com.frolo.muse.repository.GenreRepository;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
@@ -20,30 +20,25 @@ import io.reactivex.Single;
 public class GenreRepositoryImpl implements GenreRepository {
 
     private final static String[] SORT_ORDER_KEYS = {
-            GenreQuery.Sort.BY_NAME
+        GenreQuery.Sort.BY_NAME
     };
 
-    // Returns sort order candidate if valid or default
-    static String validateSortOrder(String candidate) {
-        return Preconditions.takeIfNotNullAndListedOrDefault(
-                candidate,
-                SORT_ORDER_KEYS,
-                GenreQuery.Sort.BY_NAME);
+    static String getSortOrderOrDefault(String candidate) {
+        return Preconditions.takeIfNotNullAndListedOrDefault(candidate, SORT_ORDER_KEYS, GenreQuery.Sort.BY_NAME);
     }
 
     private final Context mContext;
-    private final Map<String, String> mSortOrders;
+    private final List<SortOrder> mSortOrders;
 
     public GenreRepositoryImpl(final Context context) {
         this.mContext = context;
-        this.mSortOrders = new LinkedHashMap<String, String>(1, 1f) {{
-            put(GenreQuery.Sort.BY_NAME,
-                    context.getString(R.string.sort_by_name));
+        this.mSortOrders = new ArrayList<SortOrder>(1) {{
+            add(new SortOrderImpl(mContext, GenreQuery.Sort.BY_NAME, R.string.sort_by_name));
         }};
     }
 
     @Override
-    public Single<Map<String, String>> getSortOrders() {
+    public Single<List<SortOrder>> getSortOrders() {
         return Single.just(mSortOrders);
     }
 

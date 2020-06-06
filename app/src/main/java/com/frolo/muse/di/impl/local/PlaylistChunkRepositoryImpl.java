@@ -5,60 +5,34 @@ import android.content.Context;
 import com.frolo.muse.R;
 import com.frolo.muse.model.media.Playlist;
 import com.frolo.muse.model.media.Song;
+import com.frolo.muse.model.sort.SortOrder;
 import com.frolo.muse.repository.PlaylistChunkRepository;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.List;
 
 import io.reactivex.Completable;
 import io.reactivex.Single;
 
 
-public class PlaylistChunkRepositoryImpl
-        extends SongRepositoryImpl
-        implements PlaylistChunkRepository {
+public class PlaylistChunkRepositoryImpl extends SongRepositoryImpl implements PlaylistChunkRepository {
 
-    private final static String[] SORT_ORDER_KEYS = {
-            SongQuery.Sort.BY_PLAY_ORDER,
-            SongQuery.Sort.BY_TITLE,
-            SongQuery.Sort.BY_ALBUM,
-            SongQuery.Sort.BY_ARTIST,
-            SongQuery.Sort.BY_DURATION
-    };
-
-    // Returns sort order candidate if valid or default
-    static String validateSortOrder(String candidate) {
-        return Preconditions.takeIfNotNullAndListedOrDefault(
-                candidate,
-                SORT_ORDER_KEYS,
-                SongQuery.Sort.BY_PLAY_ORDER);
-    }
-
-    private final Map<String, String> mSortOrders;
+    private final List<SortOrder> mSortOrders;
 
     public PlaylistChunkRepositoryImpl(Context context) {
         super(context);
-        mSortOrders = new LinkedHashMap<String, String>(5, 1f) {{
-            put(SongQuery.Sort.BY_PLAY_ORDER,
-                    getContext().getString(R.string.sort_by_play_order));
-
-            put(SongQuery.Sort.BY_TITLE,
-                    getContext().getString(R.string.sort_by_name));
-
-            put(SongQuery.Sort.BY_ALBUM,
-                    getContext().getString(R.string.sort_by_album));
-
-            put(SongQuery.Sort.BY_ARTIST,
-                    getContext().getString(R.string.sort_by_artist));
-
-            put(SongQuery.Sort.BY_DURATION,
-                    getContext().getString(R.string.sort_by_duration));
+        mSortOrders = new ArrayList<SortOrder>(5) {{
+            add(new SortOrderImpl(getContext(), SongQuery.Sort.BY_PLAY_ORDER, R.string.sort_by_play_order));
+            add(new SortOrderImpl(getContext(), SongQuery.Sort.BY_TITLE, R.string.sort_by_name));
+            add(new SortOrderImpl(getContext(), SongQuery.Sort.BY_ALBUM, R.string.sort_by_album));
+            add(new SortOrderImpl(getContext(), SongQuery.Sort.BY_ARTIST, R.string.sort_by_artist));
+            add(new SortOrderImpl(getContext(), SongQuery.Sort.BY_DURATION, R.string.sort_by_duration));
         }};
     }
 
     @Override
-    public Single<Map<String, String>> getSortOrders() {
+    public Single<List<SortOrder>> getSortOrders() {
         return Single.just(mSortOrders);
     }
 

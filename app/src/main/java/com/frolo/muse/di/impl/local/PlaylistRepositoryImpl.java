@@ -5,54 +5,44 @@ import android.content.Context;
 import com.frolo.muse.R;
 import com.frolo.muse.model.media.Playlist;
 import com.frolo.muse.model.media.Song;
+import com.frolo.muse.model.sort.SortOrder;
 import com.frolo.muse.repository.PlaylistRepository;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 
 
-public class PlaylistRepositoryImpl
-        implements PlaylistRepository {
+public class PlaylistRepositoryImpl implements PlaylistRepository {
 
     private final static String[] SORT_ORDER_KEYS = {
-            PlaylistQuery.Sort.BY_NAME,
-            PlaylistQuery.Sort.BY_DATE_ADDED,
-            PlaylistQuery.Sort.BY_DATE_MODIFIED
+        PlaylistQuery.Sort.BY_NAME,
+        PlaylistQuery.Sort.BY_DATE_ADDED,
+        PlaylistQuery.Sort.BY_DATE_MODIFIED
     };
 
-    // Returns sort order candidate if valid or default
-    static String validateSortOrder(String candidate) {
-        return Preconditions.takeIfNotNullAndListedOrDefault(
-                candidate,
-                SORT_ORDER_KEYS,
-                PlaylistQuery.Sort.BY_NAME);
+    static String getSortOrderOrDefault(String candidate) {
+        return Preconditions.takeIfNotNullAndListedOrDefault(candidate, SORT_ORDER_KEYS, PlaylistQuery.Sort.BY_NAME);
     }
 
     private final Context mContext;
-    private final Map<String, String> mSortOrders;
+    private final List<SortOrder> mSortOrders;
 
     public PlaylistRepositoryImpl(final Context context) {
         this.mContext = context;
-        mSortOrders = new LinkedHashMap<String, String>(3, 1f) {{
-            put(PlaylistQuery.Sort.BY_NAME,
-                    context.getString(R.string.sort_by_name));
-
-            put(PlaylistQuery.Sort.BY_DATE_ADDED,
-                    context.getString(R.string.sort_by_date_added));
-
-            put(PlaylistQuery.Sort.BY_DATE_MODIFIED,
-                    context.getString(R.string.sort_by_date_modified));
+        mSortOrders = new ArrayList<SortOrder>(3) {{
+            add(new SortOrderImpl(mContext, PlaylistQuery.Sort.BY_NAME, R.string.sort_by_name));
+            add(new SortOrderImpl(mContext, PlaylistQuery.Sort.BY_DATE_ADDED, R.string.sort_by_date_added));
+            add(new SortOrderImpl(mContext, PlaylistQuery.Sort.BY_DATE_MODIFIED, R.string.sort_by_date_modified));
         }};
     }
 
     @Override
-    public Single<Map<String, String>> getSortOrders() {
+    public Single<List<SortOrder>> getSortOrders() {
         return Single.just(mSortOrders);
     }
 

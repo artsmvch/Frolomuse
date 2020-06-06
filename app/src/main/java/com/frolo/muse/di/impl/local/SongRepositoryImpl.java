@@ -8,55 +8,42 @@ import com.frolo.muse.model.media.Artist;
 import com.frolo.muse.model.media.Genre;
 import com.frolo.muse.model.media.Playlist;
 import com.frolo.muse.model.media.Song;
+import com.frolo.muse.model.sort.SortOrder;
 import com.frolo.muse.repository.SongRepository;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 
 
-public class SongRepositoryImpl
-        implements SongRepository {
+public class SongRepositoryImpl implements SongRepository {
 
     private final static String[] SORT_ORDER_KEYS = {
-            SongQuery.Sort.BY_TITLE,
-            SongQuery.Sort.BY_ALBUM,
-            SongQuery.Sort.BY_ARTIST,
-            SongQuery.Sort.BY_DURATION
+        SongQuery.Sort.BY_TITLE,
+        SongQuery.Sort.BY_ALBUM,
+        SongQuery.Sort.BY_ARTIST,
+        SongQuery.Sort.BY_DURATION
     };
 
-    // Returns sort order candidate if valid or default
-    static String validateSortOrder(String candidate) {
-        return Preconditions.takeIfNotNullAndListedOrDefault(
-                candidate,
-                SORT_ORDER_KEYS,
-                SongQuery.Sort.BY_TITLE);
+    static String getSortOrderOrDefault(String candidate) {
+        return Preconditions.takeIfNotNullAndListedOrDefault(candidate, SORT_ORDER_KEYS, SongQuery.Sort.BY_TITLE);
     }
 
     private final Context mContext;
-    private final Map<String, String> mSortOrders;
+    private final List<SortOrder> mSortOrders;
 
     public SongRepositoryImpl(final Context context) {
         this.mContext = context;
-        mSortOrders = new LinkedHashMap<String, String>(4, 1f) {{
-            put(SongQuery.Sort.BY_TITLE,
-                    context.getString(R.string.sort_by_name));
-
-            put(SongQuery.Sort.BY_ALBUM,
-                    context.getString(R.string.sort_by_album));
-
-            put(SongQuery.Sort.BY_ARTIST,
-                    context.getString(R.string.sort_by_artist));
-
-            put(SongQuery.Sort.BY_DURATION,
-                    context.getString(R.string.sort_by_duration));
+        mSortOrders = new ArrayList<SortOrder>(4) {{
+            add(new SortOrderImpl(mContext, SongQuery.Sort.BY_TITLE, R.string.sort_by_name));
+            add(new SortOrderImpl(mContext, SongQuery.Sort.BY_ALBUM, R.string.sort_by_album));
+            add(new SortOrderImpl(mContext, SongQuery.Sort.BY_ARTIST, R.string.sort_by_artist));
+            add(new SortOrderImpl(mContext, SongQuery.Sort.BY_DURATION, R.string.sort_by_duration));
         }};
     }
 
@@ -65,7 +52,7 @@ public class SongRepositoryImpl
     }
 
     @Override
-    public Single<Map<String, String>> getSortOrders() {
+    public Single<List<SortOrder>> getSortOrders() {
         return Single.just(mSortOrders);
     }
 

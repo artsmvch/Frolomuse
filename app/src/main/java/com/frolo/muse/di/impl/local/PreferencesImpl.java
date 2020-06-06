@@ -349,43 +349,41 @@ public class PreferencesImpl implements Preferences {
                         String order = preferences.getString(key, null);
                         switch (section) {
                             case Library.ALBUMS:
-                                return AlbumRepositoryImpl.validateSortOrder(order);
+                                return AlbumRepositoryImpl.getSortOrderOrDefault(order);
 
                             case Library.ARTISTS:
-                                return ArtistRepositoryImpl.validateSortOrder(order);
+                                return ArtistRepositoryImpl.getSortOrderOrDefault(order);
 
                             case Library.GENRES:
-                                return GenreRepositoryImpl.validateSortOrder(order);
+                                return GenreRepositoryImpl.getSortOrderOrDefault(order);
 
                             case Library.PLAYLISTS:
-                                return PlaylistRepositoryImpl.validateSortOrder(order);
+                                return PlaylistRepositoryImpl.getSortOrderOrDefault(order);
 
                             case Library.FAVOURITES:
                             case Library.RECENTLY_ADDED:
                             case Library.ALL_SONGS:
-                                return SongRepositoryImpl.validateSortOrder(order);
+                                return SongRepositoryImpl.getSortOrderOrDefault(order);
 
                             case Library.ALBUM:
-                                return AlbumChunkRepositoryImpl.validateSortOrder(order);
+                                return AlbumChunkRepositoryImpl.getSortOrderOrDefault(order);
 
                             case Library.ARTIST:
-                                return ArtistChunkRepositoryImpl.validateSortOrder(order);
+                                return ArtistChunkRepositoryImpl.getSortOrderOrDefault(order);
 
                             case Library.GENRE:
-                                return GenreChunkRepositoryImpl.validateSortOrder(order);
+                                return GenreChunkRepositoryImpl.getSortOrderOrDefault(order);
 
                             case Library.PLAYLIST:
-                                return PlaylistChunkRepositoryImpl.validateSortOrder(order);
+                                return PlaylistChunkRepositoryImpl.getSortOrderOrDefault(order);
 
                             case Library.FOLDERS: {
-                                return MyFileRepositoryImpl.validateSortOrder(order);
+                                return MyFileRepositoryImpl.getSortOrderOrDefault(order);
                             }
 
                             case Library.MIXED:
                             default:
-                                throw new IllegalArgumentException(
-                                        "Unsupported library section: " + section
-                                );
+                                throw new IllegalArgumentException("Unsupported library section: " + section);
                         }
                     }
                 }

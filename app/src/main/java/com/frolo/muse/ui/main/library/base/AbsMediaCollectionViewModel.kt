@@ -17,6 +17,7 @@ import com.frolo.muse.model.media.*
 import com.frolo.muse.model.menu.ContextualMenu
 import com.frolo.muse.model.menu.OptionsMenu
 import com.frolo.muse.model.menu.SortOrderMenu
+import com.frolo.muse.model.sort.SortOrder
 import com.frolo.muse.permission.PermissionChecker
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.base.BaseViewModel
@@ -205,7 +206,7 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
                 }
     }
 
-    fun onSortOrderSelected(sortOrder: String) {
+    fun onSortOrderSelected(sortOrder: SortOrder) {
         getMediaUseCase.applySortOrder(sortOrder)
                 .observeOn(schedulerProvider.main())
                 .subscribeFor {  }

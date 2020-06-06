@@ -5,12 +5,12 @@ import android.content.Context;
 import com.frolo.muse.R;
 import com.frolo.muse.model.media.Artist;
 import com.frolo.muse.model.media.Song;
+import com.frolo.muse.model.sort.SortOrder;
 import com.frolo.muse.repository.ArtistRepository;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
@@ -20,38 +20,29 @@ import io.reactivex.Single;
 public class ArtistRepositoryImpl implements ArtistRepository {
 
     private final static String[] SORT_ORDER_KEYS = {
-            ArtistQuery.Sort.BY_ARTIST,
-            ArtistQuery.Sort.BY_NUMBER_OF_ALBUMS,
-            ArtistQuery.Sort.BY_NUMBER_OF_TRACKS
+        ArtistQuery.Sort.BY_ARTIST,
+        ArtistQuery.Sort.BY_NUMBER_OF_ALBUMS,
+        ArtistQuery.Sort.BY_NUMBER_OF_TRACKS
     };
 
-    // Returns sort order candidate if valid or default
-    static String validateSortOrder(String candidate) {
-        return Preconditions.takeIfNotNullAndListedOrDefault(
-                candidate,
-                SORT_ORDER_KEYS,
-                ArtistQuery.Sort.BY_ARTIST);
+    static String getSortOrderOrDefault(String candidate) {
+        return Preconditions.takeIfNotNullAndListedOrDefault(candidate, SORT_ORDER_KEYS, ArtistQuery.Sort.BY_ARTIST);
     }
 
     private final Context mContext;
-    private final Map<String, String> mSortOrders;
+    private final List<SortOrder> mSortOrders;
 
     public ArtistRepositoryImpl(final Context context) {
         this.mContext = context;
-        this.mSortOrders = new LinkedHashMap<String, String>(3, 1f) {{
-            put(ArtistQuery.Sort.BY_ARTIST,
-                    context.getString(R.string.sort_by_name));
-
-            put(ArtistQuery.Sort.BY_NUMBER_OF_ALBUMS,
-                    context.getString(R.string.sort_by_number_of_albums));
-
-            put(ArtistQuery.Sort.BY_NUMBER_OF_TRACKS,
-                    context.getString(R.string.sort_by_number_of_tracks));
+        this.mSortOrders = new ArrayList<SortOrder>(3) {{
+            add(new SortOrderImpl(mContext, ArtistQuery.Sort.BY_ARTIST, R.string.sort_by_name));
+            add(new SortOrderImpl(mContext, ArtistQuery.Sort.BY_NUMBER_OF_ALBUMS, R.string.sort_by_number_of_albums));
+            add(new SortOrderImpl(mContext, ArtistQuery.Sort.BY_NUMBER_OF_TRACKS, R.string.sort_by_number_of_tracks));
         }};
     }
 
     @Override
-    public Single<Map<String, String>> getSortOrders() {
+    public Single<List<SortOrder>> getSortOrders() {
         return Single.just(mSortOrders);
     }
 

@@ -2,6 +2,7 @@ package com.frolo.muse.interactor.media.get
 
 import com.frolo.muse.model.media.Media
 import com.frolo.muse.model.menu.SortOrderMenu
+import com.frolo.muse.model.sort.SortOrder
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
@@ -18,7 +19,7 @@ interface GetMediaUseCase<E: Media> {
      * Saves the given [sortOrder] as preferred
      * and returns a new flowable that emits media list according the given sort order.
      */
-    fun applySortOrder(sortOrder: String): Completable
+    fun applySortOrder(sortOrder: SortOrder): Completable
 
     /**
      * Saved the given [isReversed] flag as preferred
