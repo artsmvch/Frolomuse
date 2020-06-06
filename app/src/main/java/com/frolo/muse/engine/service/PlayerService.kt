@@ -11,6 +11,7 @@ import android.support.v4.media.session.MediaSessionCompat
 import android.widget.RemoteViews
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.frolo.muse.App
@@ -80,6 +81,14 @@ class PlayerService: Service() {
         private const val CHANNEL_ID_PLAYBACK_OLD = "audio_playback"
         private const val CHANNEL_ID_PLAYBACK = "playback"
         private const val NOTIFICATION_ID_PLAYBACK = 1001
+
+        /**
+         * Starts the PlayerService in foreground.
+         */
+        @JvmStatic
+        fun start(context: Context) {
+            ContextCompat.startForegroundService(context, newIntent(context))
+        }
 
         @JvmStatic
         fun newIntent(context: Context): Intent = Intent(context, PlayerService::class.java)

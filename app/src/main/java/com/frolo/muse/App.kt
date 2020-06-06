@@ -1,7 +1,6 @@
 package com.frolo.muse
 
 import android.os.StrictMode
-import androidx.core.content.ContextCompat
 import androidx.multidex.MultiDexApplication
 import com.frolo.muse.di.AppComponent
 import com.frolo.muse.di.DaggerAppComponent
@@ -51,9 +50,12 @@ class App : MultiDexApplication() {
             }
         }
 
-        // Starting background player here, in the App class instance
-        // so that the service will be also in created state when the MainActivity binds to the service.
-        startBackgroundPlayer()
+        // Here, we start the player service so that
+        // the service will be also in the created state when the MainActivity binds to the service.
+        // This is important because we want the service to be in two states: created and bound.
+        // That way, if the MainActivity unbinds from the service (because the user closes the activity or something else)
+        // the service will be still alive and the music will continue to play.
+        PlayerService.start(this)
 
         dispatchAppLaunched()
     }
@@ -94,11 +96,6 @@ class App : MultiDexApplication() {
         val totalLaunchCount = preferences.openCount + 1 // +1 for the current launch
         preferences.openCount = totalLaunchCount
         eventLogger.logAppLaunched(totalLaunchCount)
-    }
-
-    private fun startBackgroundPlayer() {
-        val intent = PlayerService.newIntent(this)
-        ContextCompat.startForegroundService(this, intent)
     }
 
     fun onPlayerConnected(player: Player) {
