@@ -37,6 +37,7 @@ import com.frolo.muse.ui.main.library.search.SearchFragment
 import com.frolo.muse.ui.main.player.mini.MiniPlayerFragment
 import com.frolo.muse.ui.main.settings.AppBarSettingsFragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.shape.CornerFamily
 import com.google.android.material.shape.MaterialShapeDrawable
 import com.google.android.material.shape.ShapeAppearanceModel
@@ -67,6 +68,9 @@ class MainActivity : PlayerHostActivity(),
 
     // Rate Dialog
     private var rateDialog: Dialog? = null
+
+    // RES Permission Explanation
+    private var resPermissionExplanationDialog: Dialog? = null
 
     // Active support action mode
     private val activeActionModes = LinkedList<ActionMode>()
@@ -196,9 +200,12 @@ class MainActivity : PlayerHostActivity(),
 
     override fun onStart() {
         super.onStart()
+
         with(BottomSheetBehavior.from(sliding_player_layout)) {
             addBottomSheetCallback(bottomSheetCallback)
         }
+
+        viewModel.onStart()
     }
 
     override fun onResume() {
@@ -216,9 +223,12 @@ class MainActivity : PlayerHostActivity(),
             removeBottomSheetCallback(bottomSheetCallback)
         }
 
+        viewModel.onStop()
+
         if (isFinishing) {
             supportFragmentManager.unregisterFragmentLifecycleCallbacks(fragmentLifecycleCallbacks)
         }
+
         super.onStop()
     }
 
@@ -250,10 +260,10 @@ class MainActivity : PlayerHostActivity(),
             val index = permissions.indexOf(Manifest.permission.READ_EXTERNAL_STORAGE)
             if (index >= 0) {
                 if (grantResults[index] == PackageManager.PERMISSION_GRANTED) {
-                    viewModel.onReadStoragePermissionGranted()
+                    viewModel.onRESPermissionGranted()
                     RESPermissionObserver.dispatchGranted(this)
                 } else {
-                    viewModel.onReadStoragePermissionDenied()
+                    viewModel.onRESPermissionDenied()
                 }
             }
         }
@@ -489,26 +499,6 @@ class MainActivity : PlayerHostActivity(),
         return true
     }
 
-    private fun showRateDialog() {
-        rateDialog?.dismiss()
-
-        val dialog = RateDialog(this) { dialog, what ->
-            dialog.dismiss()
-            when (what) {
-                RateDialog.Button.RATE -> viewModel.onRateDialogAnswerYes()
-
-                RateDialog.Button.NO -> viewModel.onRateDialogAnswerNo()
-
-                RateDialog.Button.REMIND_LATER -> viewModel.onRateDialogAnswerRemindLater()
-            }
-        }
-
-        rateDialog = dialog.apply {
-            setOnCancelListener { viewModel.onCancelledRateDialog() }
-            show()
-        }
-    }
-
     /**
      * Handles the given [intent].
      * If the fragments are not initialized yet then this method does nothing
@@ -557,14 +547,49 @@ class MainActivity : PlayerHostActivity(),
         intent.putExtra(EXTRA_INTENT_HANDLED, true)
     }
 
-    private fun requestReadStoragePermission() {
+    private fun showRateDialog() {
+        rateDialog?.dismiss()
+
+        val dialog = RateDialog(this) { dialog, what ->
+            dialog.dismiss()
+            when (what) {
+                RateDialog.Button.RATE -> viewModel.onRateDialogAnswerYes()
+
+                RateDialog.Button.NO -> viewModel.onRateDialogAnswerNo()
+
+                RateDialog.Button.REMIND_LATER -> viewModel.onRateDialogAnswerRemindLater()
+            }
+        }
+
+        rateDialog = dialog.apply {
+            setOnCancelListener { viewModel.onCancelledRateDialog() }
+            show()
+        }
+    }
+
+    private fun requestRESPermission() {
         val permission = Manifest.permission.READ_EXTERNAL_STORAGE
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M
                 || ActivityCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED) {
-            viewModel.onReadStoragePermissionGranted()
+            viewModel.onRESPermissionGranted()
         } else {
             requestPermissions(arrayOf(permission), RC_READ_STORAGE)
         }
+    }
+
+    private fun explainNeedForRESPermission() {
+        resPermissionExplanationDialog?.cancel()
+
+        resPermissionExplanationDialog = MaterialAlertDialogBuilder(this)
+            .setMessage(R.string.need_for_res_permission_explanation)
+            .setCancelable(false)
+            .setNegativeButton(R.string.cancel) { _, _ ->
+                viewModel.onDeniedRESPermissionExplanation()
+            }
+            .setPositiveButton(R.string.grand_res_permission) { _, _ ->
+                viewModel.onAgreedWithRESPermissionExplanation()
+            }
+            .show()
     }
 
     private fun observerViewModel(owner: LifecycleOwner) = with(viewModel) {
@@ -572,8 +597,12 @@ class MainActivity : PlayerHostActivity(),
             showRateDialog()
         }
 
-        askReadStoragePermissionsEvent.observe(owner) {
-            requestReadStoragePermission()
+        askRESPermissionsEvent.observe(owner) {
+            requestRESPermission()
+        }
+
+        explainNeedForRESPermissionEvent.observe(owner) {
+            explainNeedForRESPermission()
         }
     }
 

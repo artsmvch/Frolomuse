@@ -314,4 +314,10 @@
         \n\n<b>NOTE: if you specify this, then the library will work a little slower (albums, artists, genres will load slower).
         To remove the limit, just enter 0:0</b>
     </string>
+
+    <!--RES permission-->
+    <string name="grand_res_permission">Grand permission</string>
+    <string name="need_for_res_permission_explanation">
+        Without this permission, the application cannot show you your media library and play local music.
+    </string>
 </resources>

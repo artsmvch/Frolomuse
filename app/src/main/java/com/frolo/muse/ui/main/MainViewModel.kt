@@ -10,83 +10,112 @@ import com.frolo.muse.interactor.player.RestorePlayerStateUseCase
 import com.frolo.muse.interactor.rate.RateUseCase
 import com.frolo.muse.logger.*
 import com.frolo.muse.model.media.Media
+import com.frolo.muse.permission.PermissionChecker
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.base.BaseViewModel
 import io.reactivex.disposables.Disposable
 import javax.inject.Inject
 
 
+/**
+ * The main view model associated to all screens in the app.
+ *
+ * The main purpose of this view model is:
+ * 1) aks to rate the app;
+ * 2) check the RES permission;
+ * 3) handle the player connections.
+ *
+ * P.S. RES stands for Read-External-Storage.
+ */
 class MainViewModel @Inject constructor(
      private val rateUseCase: RateUseCase,
      private val restorePlayerStateUseCase: RestorePlayerStateUseCase,
      private val navigateToMediaUseCase: NavigateToMediaUseCase,
      private val schedulerProvider: SchedulerProvider,
+     private val permissionChecker: PermissionChecker,
      private val eventLogger: EventLogger
 ): BaseViewModel(eventLogger) {
 
     // Internal
+    @Volatile
     private var _player: Player? = null
-    private var _permissionAsked: Boolean = false
-    private var _permissionGranted: Boolean = false
+
+    @Volatile
+    private var _pendingReadStoragePermissionResult: Boolean = false
 
     private var askToRateDisposable: Disposable? = null
 
-    private val _requireReadStoragePermissionsEvent by lazy { EventLiveData<Unit>().apply { call() } }
-    val askReadStoragePermissionsEvent: LiveData<Unit> get() = _requireReadStoragePermissionsEvent
+    private val _askRESPermissionsEvent = EventLiveData<Unit>()
+    val askRESPermissionsEvent: LiveData<Unit> get() = _askRESPermissionsEvent
+
+    private val _explainNeedForRESPermissionEvent = EventLiveData<Unit>()
+    val explainNeedForRESPermissionEvent: LiveData<Unit> get() = _explainNeedForRESPermissionEvent
 
     private val _askToRateEvent = SingleLiveEvent<Unit>()
     val askToRateEvent: LiveData<Unit> get() = _askToRateEvent
 
-    private fun checkPlayerAndPermission() {
-        _player?.also { safePlayer ->
-            _permissionGranted.also { granted ->
-                if (granted) {
-                    restorePlayerStateUseCase
-                            .restorePlayerStateIfNeeded(safePlayer)
-                            .observeOn(schedulerProvider.main())
-                            .subscribe(
-                                    {
-                                    },
-                                    { err ->
-                                        if (err is SecurityException) {
-                                            askPermissionIfNotAskedYet()
-                                        }
-                                    }
-                            )
-                            .save()
-                } else {
-                    // Permission not granted, ask for it then
-                    askPermissionIfNotAskedYet()
-                }
-            }
+    private fun tryRestorePlayerStateIfNeeded() {
+        val player: Player = _player ?: return
+
+        if (permissionChecker.isQueryMediaContentPermissionGranted) {
+            restorePlayerStateUseCase
+                .restorePlayerStateIfNeeded(player)
+                .observeOn(schedulerProvider.main())
+                .subscribe(
+                    { /* stub */ },
+                    { err ->
+                        if (err is SecurityException) {
+                            tryAksRESPermission()
+                        }
+                    }
+                )
+                .save()
+        } else {
+            tryAksRESPermission()
         }
     }
 
-    private fun askPermissionIfNotAskedYet() {
-        if (!_permissionAsked) {
-            _permissionAsked = true
-            _requireReadStoragePermissionsEvent.call()
+    /**
+     * The view model must call this method to ask the RES permission.
+     * It also checks if it's still pending for the result of RES permission asked earlier.
+     */
+    private fun tryAksRESPermission() {
+        if (!_pendingReadStoragePermissionResult) {
+            _askRESPermissionsEvent.call()
+            _pendingReadStoragePermissionResult = true
+        }
+    }
+
+    fun onStart() {
+        if (!permissionChecker.isQueryMediaContentPermissionGranted) {
+            tryAksRESPermission()
         }
     }
 
     fun onResume() {
         rateUseCase
-                .checkIfRateNeeded()
-                .observeOn(schedulerProvider.main())
-                .doOnSubscribe { d ->
-                    askToRateDisposable?.dispose()
-                    askToRateDisposable = d
+            .checkIfRateNeeded()
+            .observeOn(schedulerProvider.main())
+            .doOnSubscribe { d ->
+                askToRateDisposable?.dispose()
+                askToRateDisposable = d
+            }
+            .subscribeFor { needRate ->
+                if (needRate) {
+                    _askToRateEvent.call()
                 }
-                .subscribeFor { needRate ->
-                    if (needRate) {
-                        _askToRateEvent.call()
-                    }
-                }
+            }
     }
 
     fun onPause() {
         askToRateDisposable?.dispose()
     }
+
+    fun onStop() {
+        // no actions
+    }
+
+    //region Rate dialog
 
     fun onRateDialogAnswerYes() {
         rateUseCase.rate()
@@ -108,23 +137,44 @@ class MainViewModel @Inject constructor(
         eventLogger.logRateDialogCancelled()
     }
 
+    //endregion
+
+
+    //region Player
+
     fun onPlayerConnected(player: Player) {
         _player = player
-        checkPlayerAndPermission()
+        tryRestorePlayerStateIfNeeded()
     }
 
     fun onPlayerDisconnected() {
         _player = null
     }
 
-    fun onReadStoragePermissionGranted() {
-        _permissionGranted = true
-        checkPlayerAndPermission()
+    //endregion
+
+
+    //region Read Storage Permission
+
+    fun onRESPermissionGranted() {
+        _pendingReadStoragePermissionResult = false
+        tryRestorePlayerStateIfNeeded()
     }
 
-    fun onReadStoragePermissionDenied() {
-        _permissionGranted = false
+    fun onRESPermissionDenied() {
+        _pendingReadStoragePermissionResult = false
+        _explainNeedForRESPermissionEvent.call()
     }
+
+    fun onAgreedWithRESPermissionExplanation() {
+        tryAksRESPermission()
+    }
+
+    fun onDeniedRESPermissionExplanation() {
+        // TODO: do we need to respect this choice and don't ask the RES permission while this view model is alive?
+    }
+
+    //endregion
 
     fun onNavigateToMediaIntent(@Media.Kind kindOfMedia: Int, mediaId: Long) {
         navigateToMediaUseCase.navigate(kindOfMedia, mediaId)

@@ -70,6 +70,7 @@ class App : MultiDexApplication() {
             .miscModule(MiscModule())
             .build()
 
+    // TODO: check errors on M version SDK
     private fun setupStrictMode() {
         if (BuildConfig.DEBUG) {
 

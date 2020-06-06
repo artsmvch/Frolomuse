@@ -31,24 +31,21 @@ class RESPermissionObserver  private constructor(
         }
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_START)
-    fun onStarted() {
+    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
+    fun onCreated() {
         contextRef.get()?.also { safeContext ->
             LocalBroadcastManager.getInstance(safeContext)
                     .registerReceiver(this, intentFilter)
         }
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
-    fun onStopped() {
+    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+    fun onDestroyed() {
         contextRef.get()?.also { safeContext ->
             LocalBroadcastManager.getInstance(safeContext)
                     .unregisterReceiver(this)
         }
-    }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-    fun onDestroyed() {
         lifecycleOwner.lifecycle.removeObserver(this)
     }
 
@@ -66,6 +63,10 @@ class RESPermissionObserver  private constructor(
 
         private val intentFilter = IntentFilter(ACTION_RES_PERMISSION_GRANTED)
 
+        /**
+         * Observes the RES permission status.
+         * NOTE: the [onPermissionGranted] callback can be invoked in the created but not yet started state.
+         */
         fun observe(
             context: Context,
             lifecycleOwner: LifecycleOwner,

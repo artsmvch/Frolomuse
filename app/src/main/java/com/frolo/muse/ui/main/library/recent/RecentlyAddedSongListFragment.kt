@@ -41,9 +41,6 @@ class RecentlyAddedSongListFragment: SimpleMediaCollectionFragment<Song>() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         observeViewModel(viewLifecycleOwner)
-        checkReadPermissionFor {
-            //viewModel.onOpened()
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
