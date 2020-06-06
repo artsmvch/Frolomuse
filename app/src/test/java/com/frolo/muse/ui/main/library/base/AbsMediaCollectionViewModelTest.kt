@@ -181,9 +181,10 @@ class AbsMediaCollectionViewModelTest {
             assert(value == false)
         }
 
-        viewModel.askReadPermissionEvent.value.let { value ->
-            assert(value != null)
-        }
+        // Unused for now
+//        viewModel.askReadPermissionEvent.value.let { value ->
+//            assert(value != null)
+//        }
 
         // After that
         whenever(permissionChecker.isQueryMediaContentPermissionGranted)
@@ -246,9 +247,10 @@ class AbsMediaCollectionViewModelTest {
             assert(value == false)
         }
 
-        viewModel.askReadPermissionEvent.value.let { value ->
-            assert(value != null)
-        }
+        // Unused for now
+//        viewModel.askReadPermissionEvent.value.let { value ->
+//            assert(value != null)
+//        }
 
         // After that
         whenever(getMediaUseCase.getMediaList())

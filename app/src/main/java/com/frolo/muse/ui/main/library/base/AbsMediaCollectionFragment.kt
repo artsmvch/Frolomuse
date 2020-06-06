@@ -93,11 +93,12 @@ abstract class AbsMediaCollectionFragment <E: Media>: BaseFragment(),
 
     private fun observerViewModel(owner: LifecycleOwner) = with(viewModel) {
         // Permissions
-        askReadPermissionEvent.observe(owner) {
-            checkReadPermissionFor {
-                viewModel.onReadPermissionGranted()
-            }
-        }
+        // Unused for now
+//        askReadPermissionEvent.observe(owner) {
+//            checkReadPermissionFor {
+//                viewModel.onReadPermissionGranted()
+//            }
+//        }
 
         // Error
         error.observeNonNull(owner) { err ->

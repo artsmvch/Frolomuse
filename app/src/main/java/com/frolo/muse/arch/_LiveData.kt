@@ -39,6 +39,13 @@ fun SingleLiveEvent<Unit>.call() {
     value = Unit
 }
 
+/**
+ * Used for cases where T is Void, to make calls cleaner.
+ */
+fun EventLiveData<Unit>.call() {
+    setValue(Unit)
+}
+
 fun <T> liveDataOf(item: T?) = object : LiveData<T>(item) { }
 
 /**

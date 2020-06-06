@@ -1,6 +1,7 @@
 package com.frolo.muse.ui.main
 
 import androidx.lifecycle.LiveData
+import com.frolo.muse.arch.EventLiveData
 import com.frolo.muse.arch.SingleLiveEvent
 import com.frolo.muse.arch.call
 import com.frolo.muse.engine.Player
@@ -30,11 +31,8 @@ class MainViewModel @Inject constructor(
 
     private var askToRateDisposable: Disposable? = null
 
-    private val _askReadStoragePermissionsEvent by lazy {
-        SingleLiveEvent<Unit>().apply { call() }
-    }
-    val askReadStoragePermissionsEvent: LiveData<Unit>
-        get() = _askReadStoragePermissionsEvent
+    private val _requireReadStoragePermissionsEvent by lazy { EventLiveData<Unit>().apply { call() } }
+    val askReadStoragePermissionsEvent: LiveData<Unit> get() = _requireReadStoragePermissionsEvent
 
     private val _askToRateEvent = SingleLiveEvent<Unit>()
     val askToRateEvent: LiveData<Unit> get() = _askToRateEvent
@@ -67,7 +65,7 @@ class MainViewModel @Inject constructor(
     private fun askPermissionIfNotAskedYet() {
         if (!_permissionAsked) {
             _permissionAsked = true
-            _askReadStoragePermissionsEvent.call()
+            _requireReadStoragePermissionsEvent.call()
         }
     }
 

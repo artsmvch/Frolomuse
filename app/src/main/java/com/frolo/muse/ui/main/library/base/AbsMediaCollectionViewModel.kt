@@ -4,10 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import com.frolo.muse.arch.SingleLiveEvent
-import com.frolo.muse.arch.call
-import com.frolo.muse.arch.combine
-import com.frolo.muse.arch.map
+import com.frolo.muse.arch.*
 import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.interactor.media.*
 import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
@@ -60,8 +57,8 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
     private var lastContextualDisposable: Disposable? = null
 
     // Permission
-    private val _askReadPermissionEvent: SingleLiveEvent<Unit> = SingleLiveEvent()
-    val askReadPermissionEvent: LiveData<Unit> = _askReadPermissionEvent
+    private val _askReadPermissionEvent = EventLiveData<Unit>()
+    //val askReadPermissionEvent: LiveData<Unit> = _askReadPermissionEvent
 
     // Common
     private val _deletedItemsEvent: MutableLiveData<List<E>> = SingleLiveEvent()
