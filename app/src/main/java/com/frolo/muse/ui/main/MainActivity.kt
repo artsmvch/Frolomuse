@@ -581,12 +581,13 @@ class MainActivity : PlayerHostActivity(),
         resPermissionExplanationDialog?.cancel()
 
         resPermissionExplanationDialog = MaterialAlertDialogBuilder(this)
+            .setTitle(R.string.permission_denied)
             .setMessage(R.string.need_for_res_permission_explanation)
             .setCancelable(false)
             .setNegativeButton(R.string.cancel) { _, _ ->
                 viewModel.onDeniedRESPermissionExplanation()
             }
-            .setPositiveButton(R.string.grand_res_permission) { _, _ ->
+            .setPositiveButton(R.string.grant_res_permission) { _, _ ->
                 viewModel.onAgreedWithRESPermissionExplanation()
             }
             .show()

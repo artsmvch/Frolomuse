@@ -311,4 +311,11 @@
         \n\n<b>NOTA: si especifica esto, la biblioteca funcionará un poco más despacio (los álbumes, artistas, géneros se cargarán más lentamente).
         Para eliminar el límite, simplemente ingrese 0:0</b>
     </string>
+
+    <!--RES permission-->
+    <string name="permission_denied">Permiso denegado</string>
+    <string name="grant_res_permission">Conceder permiso</string>
+    <string name="need_for_res_permission_explanation">
+        Sin este permiso, la aplicación no podrá explorar la música desde su dispositivo. ¿Quieres otorgar el permiso?
+    </string>
 </resources>

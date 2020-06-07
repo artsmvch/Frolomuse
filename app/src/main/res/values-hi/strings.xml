@@ -310,4 +310,11 @@
         \n\n<b>नोट: यदि आप इसे निर्दिष्ट करते हैं, तो पुस्तकालय थोड़ा धीमा काम करेगा (एल्बम, कलाकार, शैलियाँ धीमी लोड होंगी)।
         सीमा हटाने के लिए, बस 0:0 दर्ज करें</b>
     </string>
+
+    <!--RES permission-->
+    <string name="permission_denied">अनुमति नहीं मिली</string>
+    <string name="grant_res_permission">अनुदान अनुमति</string>
+    <string name="need_for_res_permission_explanation">
+        इस अनुमति के बिना, एप्लिकेशन आपके डिवाइस से संगीत को ब्राउज़ करने में सक्षम नहीं होगा। क्या आप अनुमति देना चाहते हैं?
+    </string>
 </resources>

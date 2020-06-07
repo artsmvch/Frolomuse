@@ -306,4 +306,11 @@
         \n\n<b>참고 :이 값을 지정하면 라이브러리가 약간 느려집니다 (앨범, 아티스트, 장르가 느리게로드 됨).
         한도를 제거하려면 0:0 을 입력하십시오.</b>
     </string>
+
+    <!--RES permission-->
+    <string name="permission_denied">권한이 거부되었습니다</string>
+    <string name="grant_res_permission">허락하다</string>
+    <string name="need_for_res_permission_explanation">
+        이 권한이 없으면 응용 프로그램이 장치에서 음악을 탐색 할 수 없습니다. 권한을 부여 하시겠습니까?
+    </string>
 </resources>

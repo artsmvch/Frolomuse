@@ -311,4 +311,11 @@
         \n\n<b>NOT: bunu belirtirseniz, kitaplık biraz daha yavaş çalışır (albümler, sanatçılar, türler daha yavaş yüklenir).
         Sınırı kaldırmak için 0:0 girin</b>
     </string>
+
+    <!--RES permission-->
+    <string name="permission_denied">İzin reddedildi</string>
+    <string name="grant_res_permission">İzin ver</string>
+    <string name="need_for_res_permission_explanation">
+        Bu izin olmadan, uygulama cihazınızdan müziğe göz atamaz. İzin vermek istiyor musunuz?
+    </string>
 </resources>

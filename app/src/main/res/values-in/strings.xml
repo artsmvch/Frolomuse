@@ -306,4 +306,11 @@
         \n\n<b>CATATAN: jika Anda menentukan ini, maka perpustakaan akan bekerja sedikit lebih lambat (album, artis, genre akan memuat lebih lambat).
         Untuk menghapus batas, cukup masukkan 0:0</b>
     </string>
+
+    <!--RES permission-->
+    <string name="permission_denied">Izin ditolak</string>
+    <string name="grant_res_permission">Memberikan izin</string>
+    <string name="need_for_res_permission_explanation">
+        Tanpa izin ini, aplikasi tidak akan dapat menelusuri musik dari perangkat Anda. Apakah Anda ingin memberikan izin?
+    </string>
 </resources>

@@ -318,4 +318,11 @@
         \n\n<b>ПРИМІТКА: якщо вказати це, бібліотека працюватиме трохи повільніше (альбоми, виконавці, жанри завантажуватимуться повільніше).
         Щоб зняти ліміт, просто введіть 0:0</b>
     </string>
+
+    <!--RES permission-->
+    <string name="permission_denied">У дозволі відмовлено</string>
+    <string name="grant_res_permission">Надати дозвіл</string>
+    <string name="need_for_res_permission_explanation">
+        Без цього дозволу програма не може переглядати музику з вашого пристрою. Ви хочете надати дозвіл?
+    </string>
 </resources>

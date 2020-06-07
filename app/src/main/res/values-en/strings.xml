@@ -311,4 +311,11 @@
         \n\n<b>NOTE: if you specify this, then the library will work a little slower (albums, artists, genres will load slower).
         To remove the limit, just enter 0:0</b>
     </string>
+
+    <!--RES permission-->
+    <string name="permission_denied">Permission denied</string>
+    <string name="grant_res_permission">Grant permission</string>
+    <string name="need_for_res_permission_explanation">
+        Without this permission, the application will not be able to browse the music from your device. Do you want to grant the permission?
+    </string>
 </resources>

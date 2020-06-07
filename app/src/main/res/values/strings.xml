@@ -316,8 +316,9 @@
     </string>
 
     <!--RES permission-->
-    <string name="grand_res_permission">Grand permission</string>
+    <string name="permission_denied">Permission denied</string>
+    <string name="grant_res_permission">Grant permission</string>
     <string name="need_for_res_permission_explanation">
-        Without this permission, the application cannot show you your media library and play local music.
+        Without this permission, the application will not be able to browse the music from your device. Do you want to grant the permission?
     </string>
 </resources>

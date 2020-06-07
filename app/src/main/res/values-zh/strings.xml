@@ -304,4 +304,11 @@
         \n\n<b>注意：如果您指定此選項，則該庫的運行速度會稍慢（專輯，藝術家，流派的加載速度會變慢）。
         要刪除限制，只需輸入0：0</b>
     </string>
+
+    <!--RES permission-->
+    <string name="permission_denied">没有权限</string>
+    <string name="grant_res_permission">给予许可</string>
+    <string name="need_for_res_permission_explanation">
+        没有此许可，该应用程序将无法从您的设备浏览音乐。您要授予权限吗？
+    </string>
 </resources>

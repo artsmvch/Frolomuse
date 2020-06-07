@@ -305,4 +305,11 @@
         \n\n<b>注：これを指定すると、ライブラリの動作が少し遅くなります（アルバム、アーティスト、ジャンルの読み込みが遅くなります）。
         制限を解除するには、0：0と入力してください</b>
     </string>
+
+    <!--RES permission-->
+    <string name="permission_denied">アクセス拒否</string>
+    <string name="grant_res_permission">許可を与える</string>
+    <string name="need_for_res_permission_explanation">
+        この権限がないと、アプリケーションはデバイスから音楽を閲覧できません。許可を与えますか？
+    </string>
 </resources>
