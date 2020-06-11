@@ -1,17 +1,14 @@
 package com.frolo.muse.repository;
 
-import androidx.annotation.IntDef;
-
 import com.frolo.muse.engine.Player;
 import com.frolo.muse.engine.SongQueue;
 import com.frolo.muse.model.Library;
 import com.frolo.muse.model.Recently;
+import com.frolo.muse.model.Theme;
 import com.frolo.muse.model.VisualizerRendererType;
 import com.frolo.muse.model.media.Media;
 
 import java.io.PrintWriter;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.util.List;
 
 import io.reactivex.Completable;
@@ -19,19 +16,6 @@ import io.reactivex.Flowable;
 
 
 public interface Preferences {
-    @IntDef({THEME_LIGHT_BLUE, THEME_DARK_BLUE, THEME_DARK_BLUE_ESPECIAL, THEME_DARK_PURPLE, THEME_DARK_ORANGE})
-    @Retention(RetentionPolicy.SOURCE)
-    public @interface Theme { }
-    int THEME_BLACK_AND_BLUE = 1;
-    int THEME_NEBULA = 2;
-    // All new themes should be more than 10
-    int THEME_SEA_GREEN = 11;
-    // new evolution
-    int THEME_LIGHT_BLUE = 21;
-    int THEME_DARK_BLUE = 22;
-    int THEME_DARK_BLUE_ESPECIAL = 23;
-    int THEME_DARK_PURPLE = 24;
-    int THEME_DARK_ORANGE = 25;
 
     void dump(PrintWriter pw);
 
@@ -44,8 +28,8 @@ public interface Preferences {
     @Player.ShuffleMode int loadShuffleMode();
     void saveShuffleMode(@Player.ShuffleMode int mode);
 
-    void saveTheme(@Theme int theme);
-    @Theme int getTheme();
+    void saveTheme(Theme theme);
+    Theme getTheme();
 
     void saveLastMediaCollectionType(@SongQueue.QueueType int type);
     void saveLastMediaCollectionId(long id);

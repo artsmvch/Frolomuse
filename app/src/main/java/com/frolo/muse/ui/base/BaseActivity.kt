@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.frolo.muse.App
 import com.frolo.muse.R
+import com.frolo.muse.model.Theme
 import com.frolo.muse.repository.Preferences
 import javax.inject.Inject
 
@@ -25,11 +26,11 @@ abstract class BaseActivity: AppCompatActivity() {
 
     private fun applySavedTheme() {
         when(preferences.theme) {
-            Preferences.THEME_LIGHT_BLUE -> setTheme(R.style.AppTheme_Light_Blue)
-            Preferences.THEME_DARK_BLUE -> setTheme(R.style.Base_AppTheme_Dark_Blue)
-            Preferences.THEME_DARK_BLUE_ESPECIAL -> setTheme(R.style.Base_AppTheme_Dark_Blue_Especial)
-            Preferences.THEME_DARK_PURPLE -> setTheme(R.style.Base_AppTheme_Dark_Purple)
-            Preferences.THEME_DARK_ORANGE -> setTheme(R.style.Base_AppTheme_Dark_Yellow)
+            Theme.LIGHT_BLUE -> setTheme(R.style.AppTheme_Light_Blue)
+            Theme.DARK_BLUE -> setTheme(R.style.Base_AppTheme_Dark_Blue)
+            Theme.DARK_BLUE_ESPECIAL -> setTheme(R.style.Base_AppTheme_Dark_Blue_Especial)
+            Theme.DARK_PURPLE -> setTheme(R.style.Base_AppTheme_Dark_Purple)
+            Theme.DARK_ORANGE -> setTheme(R.style.Base_AppTheme_Dark_Yellow)
             else -> setTheme(R.style.Base_AppTheme_Dark_Yellow) // anyway we have to set up any theme
         }
     }

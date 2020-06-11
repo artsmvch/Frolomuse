@@ -18,6 +18,7 @@ import com.frolo.muse.R
 import com.frolo.muse.engine.service.PlayerService
 import com.frolo.muse.logger.*
 import com.frolo.muse.mediascan.MediaScanService
+import com.frolo.muse.model.Theme
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.sleeptimer.PlayerSleepTimer
 import com.frolo.muse.ui.ThemeHandler
@@ -286,7 +287,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
     private fun showThemeChooser() {
         val activity = activity ?: return
 
-        @Preferences.Theme val currentTheme = preferences.theme
+        val currentTheme: Theme? = preferences.theme
 
         val icon = ContextCompat.getDrawable(activity, R.drawable.ic_theme)
 
@@ -300,11 +301,11 @@ class SettingsFragment : PreferenceFragmentCompat(),
         )
 
         val currentThemeIndex = when(currentTheme) {
-            Preferences.THEME_LIGHT_BLUE -> 0
-            Preferences.THEME_DARK_BLUE -> 1
-            Preferences.THEME_DARK_BLUE_ESPECIAL -> 2
-            Preferences.THEME_DARK_PURPLE -> 3
-            Preferences.THEME_DARK_ORANGE -> 4
+            Theme.LIGHT_BLUE -> 0
+            Theme.DARK_BLUE -> 1
+            Theme.DARK_BLUE_ESPECIAL -> 2
+            Theme.DARK_PURPLE -> 3
+            Theme.DARK_ORANGE -> 4
             else -> -1
         }
 
@@ -314,12 +315,12 @@ class SettingsFragment : PreferenceFragmentCompat(),
             .setSingleChoiceItems(themeNames, currentThemeIndex) { dialog, which ->
                 dialog.dismiss()
 
-                val selectedTheme: Int? = when (which) {
-                    0 -> Preferences.THEME_LIGHT_BLUE
-                    1 -> Preferences.THEME_DARK_BLUE
-                    2 -> Preferences.THEME_DARK_BLUE_ESPECIAL
-                    3 -> Preferences.THEME_DARK_PURPLE
-                    4 -> Preferences.THEME_DARK_ORANGE
+                val selectedTheme: Theme? = when (which) {
+                    0 -> Theme.LIGHT_BLUE
+                    1 -> Theme.DARK_BLUE
+                    2 -> Theme.DARK_BLUE_ESPECIAL
+                    3 -> Theme.DARK_PURPLE
+                    4 -> Theme.DARK_ORANGE
                     else -> null // That's an error
                 }
 

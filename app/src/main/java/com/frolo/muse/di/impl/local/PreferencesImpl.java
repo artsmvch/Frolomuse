@@ -5,10 +5,12 @@ import android.content.SharedPreferences;
 
 import androidx.annotation.Nullable;
 
+import com.frolo.muse.BuildConfig;
 import com.frolo.muse.engine.Player;
 import com.frolo.muse.engine.SongQueue;
 import com.frolo.muse.model.Library;
 import com.frolo.muse.model.Recently;
+import com.frolo.muse.model.Theme;
 import com.frolo.muse.model.VisualizerRendererType;
 import com.frolo.muse.model.media.Media;
 import com.frolo.muse.repository.Preferences;
@@ -30,6 +32,8 @@ import io.reactivex.functions.Function;
 
 
 public class PreferencesImpl implements Preferences {
+
+    private static final boolean DEBUG = BuildConfig.DEBUG;
 
     private static final String STORAGE_NAME = "mp_shared_preferences";
 
@@ -161,22 +165,23 @@ public class PreferencesImpl implements Preferences {
         preferences.edit().putInt(KEY_PLAYBACK_SHUFFLE_MODE, mode).apply();
     }
 
-    public void saveTheme(@Theme int theme) {
-        preferences.edit().putInt(KEY_THEME, theme).apply();
+    public void saveTheme(Theme theme) {
+        try {
+            if (theme != null) {
+                preferences.edit().putInt(KEY_THEME, theme.getId()).apply();
+            }
+        } catch (Throwable err) {
+            if (DEBUG) throw err;
+        }
     }
 
-    public @Theme int getTheme() {
-        final int value = preferences.getInt(KEY_THEME, THEME_DARK_ORANGE);
-        // check if the given int value is one of the available themes
-        switch (value) {
-            case THEME_LIGHT_BLUE:
-            case THEME_DARK_BLUE:
-            case THEME_DARK_BLUE_ESPECIAL:
-            case THEME_DARK_PURPLE:
-            case THEME_DARK_ORANGE:
-                return value;
-            // The value is not valid. Return default theme int
-            default: return THEME_DARK_ORANGE;
+    public Theme getTheme() {
+        try {
+            final int id = preferences.getInt(KEY_THEME, Theme.DARK_ORANGE.getId());
+            return Theme.findByIdOrDefault(id, Theme.DARK_ORANGE);
+        } catch (Throwable err) {
+            if (DEBUG) throw err;
+            return Theme.DARK_ORANGE;
         }
     }
 
