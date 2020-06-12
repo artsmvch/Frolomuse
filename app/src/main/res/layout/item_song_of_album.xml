@@ -12,6 +12,7 @@
         android:id="@+id/fl_song_number_container"
         android:layout_width="@dimen/media_item_art_size"
         android:layout_height="@dimen/media_item_art_size"
+        android:layout_margin="@dimen/media_item_art_margin"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
