@@ -21,7 +21,7 @@ import io.reactivex.Flowable;
 import io.reactivex.Single;
 
 
-public class SongRepositoryImpl implements SongRepository {
+public class SongRepositoryImpl extends BaseMediaRepository<Song> implements SongRepository {
 
     private final static String[] SORT_ORDER_KEYS = {
         SongQuery.Sort.BY_TITLE,
@@ -34,66 +34,58 @@ public class SongRepositoryImpl implements SongRepository {
         return Preconditions.takeIfNotNullAndListedOrDefault(candidate, SORT_ORDER_KEYS, SongQuery.Sort.BY_TITLE);
     }
 
-    private final Context mContext;
-    private final List<SortOrder> mSortOrders;
-
-    public SongRepositoryImpl(final Context context) {
-        this.mContext = context;
-        mSortOrders = new ArrayList<SortOrder>(4) {{
-            add(new SortOrderImpl(mContext, SongQuery.Sort.BY_TITLE, R.string.sort_by_name));
-            add(new SortOrderImpl(mContext, SongQuery.Sort.BY_ALBUM, R.string.sort_by_album));
-            add(new SortOrderImpl(mContext, SongQuery.Sort.BY_ARTIST, R.string.sort_by_artist));
-            add(new SortOrderImpl(mContext, SongQuery.Sort.BY_DURATION, R.string.sort_by_duration));
-        }};
-    }
-
-    protected final Context getContext() {
-        return mContext;
+    public SongRepositoryImpl(Context context) {
+        super(context);
     }
 
     @Override
-    public Single<List<SortOrder>> getSortOrders() {
-        return Single.just(mSortOrders);
+    protected List<SortOrder> blockingGetSortOrders() {
+        return collectSortOrders(
+            createSortOrder(SongQuery.Sort.BY_TITLE, R.string.sort_by_name),
+            createSortOrder(SongQuery.Sort.BY_ALBUM, R.string.sort_by_album),
+            createSortOrder(SongQuery.Sort.BY_ARTIST, R.string.sort_by_artist),
+            createSortOrder(SongQuery.Sort.BY_DURATION, R.string.sort_by_duration)
+        );
     }
 
     @Override
     public Flowable<List<Song>> getAllItems() {
-        return SongQuery.queryAll(mContext.getContentResolver());
+        return SongQuery.queryAll(getContext().getContentResolver());
     }
 
     @Override
     public Flowable<List<Song>> getAllItems(final String sortOrder) {
-        return SongQuery.queryAll(mContext.getContentResolver(), sortOrder);
+        return SongQuery.queryAll(getContext().getContentResolver(), sortOrder);
     }
 
     @Override
     public Flowable<List<Song>> getFilteredItems(final String filter) {
-        return SongQuery.queryAllFiltered(mContext.getContentResolver(), filter);
+        return SongQuery.queryAllFiltered(getContext().getContentResolver(), filter);
     }
 
     @Override
     public Flowable<Song> getItem(final long id) {
-        return SongQuery.querySingle(mContext.getContentResolver(), id);
+        return SongQuery.querySingle(getContext().getContentResolver(), id);
     }
 
     @Override
     public Completable delete(Song item) {
         return Del.deleteSong(
-                mContext.getContentResolver(),
+                getContext().getContentResolver(),
                 item);
     }
 
     @Override
     public Completable delete(Collection<Song> items) {
         return Del.deleteSongs(
-                mContext.getContentResolver(),
+                getContext().getContentResolver(),
                 items);
     }
 
     @Override
     public Completable addToPlaylist(long playlistId, Song item) {
         return PlaylistHelper.addSongToPlaylist(
-                mContext.getContentResolver(),
+                getContext().getContentResolver(),
                 playlistId,
                 item.getId());
     }
@@ -101,7 +93,7 @@ public class SongRepositoryImpl implements SongRepository {
     @Override
     public Completable addToPlaylist(long playlistId, Collection<Song> items) {
         return PlaylistHelper.addItemsToPlaylist(
-                mContext.getContentResolver(),
+                getContext().getContentResolver(),
                 playlistId,
                 items);
     }
@@ -118,13 +110,13 @@ public class SongRepositoryImpl implements SongRepository {
 
     @Override
     public Flowable<List<Song>> getAllFavouriteItems() {
-        return SongQuery.queryAllFavourites(mContext.getContentResolver());
+        return SongQuery.queryAllFavourites(getContext().getContentResolver());
     }
 
     @Override
     public Single<Song> getSong(final String path) {
         return SongQuery.querySingleByPath(
-                mContext.getContentResolver(),
+                getContext().getContentResolver(),
                 path)
                 .firstOrError();
     }
@@ -138,7 +130,7 @@ public class SongRepositoryImpl implements SongRepository {
             final String newGenre) {
 
         return SongQuery.update(
-                mContext.getContentResolver(),
+                getContext().getContentResolver(),
                 song,
                 newTitle,
                 newAlbum,
@@ -150,52 +142,52 @@ public class SongRepositoryImpl implements SongRepository {
 
     @Override
     public Flowable<List<Song>> getSongsFromAlbum(final Album album, String sortOrder) {
-        return SongQuery.queryForAlbum(mContext.getContentResolver(), album, sortOrder);
+        return SongQuery.queryForAlbum(getContext().getContentResolver(), album, sortOrder);
     }
 
     @Override
     public Flowable<List<Song>> getSongsFromArtist(final Artist artist, String sortOrder) {
-        return SongQuery.queryForArtist(mContext.getContentResolver(), artist, sortOrder);
+        return SongQuery.queryForArtist(getContext().getContentResolver(), artist, sortOrder);
     }
 
     @Override
     public Flowable<List<Song>> getSongsFromGenre(final Genre genre, String sortOrder) {
-        return SongQuery.queryForGenre(mContext.getContentResolver(), genre, sortOrder);
+        return SongQuery.queryForGenre(getContext().getContentResolver(), genre, sortOrder);
     }
 
     @Override
     public Flowable<List<Song>> getSongsFromPlaylist(final Playlist playlist, String sortOrder) {
-        return SongQuery.queryForPlaylist(mContext.getContentResolver(), playlist, sortOrder);
+        return SongQuery.queryForPlaylist(getContext().getContentResolver(), playlist, sortOrder);
     }
 
     @Override
     public Flowable<List<Song>> getRecentlyAddedSongs(final long dateAdded) {
-        return SongQuery.queryRecentlyAdded(mContext.getContentResolver(), dateAdded);
+        return SongQuery.queryRecentlyAdded(getContext().getContentResolver(), dateAdded);
     }
 
     @Override
     public Flowable<Boolean> isFavourite(final Song item) {
-        return SongQuery.isFavourite(mContext.getContentResolver(), item);
+        return SongQuery.isFavourite(getContext().getContentResolver(), item);
     }
 
     @Override
     public Completable changeFavourite(final Song item) {
-        return SongQuery.changeFavourite(mContext.getContentResolver(), item);
+        return SongQuery.changeFavourite(getContext().getContentResolver(), item);
     }
 
     @Override
     public Completable addSongPlayCount(Song song, int delta) {
-        return SongQuery.addSongPlayCount(mContext.getContentResolver(), song, delta);
+        return SongQuery.addSongPlayCount(getContext().getContentResolver(), song, delta);
     }
 
     @Override
     public Single<Boolean> isShortcutSupported(Song item) {
-        return Shortcuts.isShortcutSupported(mContext, item);
+        return Shortcuts.isShortcutSupported(getContext(), item);
     }
 
     @Override
     public Completable createShortcut(Song item) {
-        return Shortcuts.createSongShortcut(mContext, item);
+        return Shortcuts.createSongShortcut(getContext(), item);
     }
 
 }

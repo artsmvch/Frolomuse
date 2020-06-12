@@ -12,7 +12,6 @@ import com.frolo.muse.model.sort.SortOrder;
 import com.frolo.muse.repository.MyFileRepository;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -23,7 +22,7 @@ import io.reactivex.Single;
 import io.reactivex.functions.Action;
 
 
-public class MyFileRepositoryImpl implements MyFileRepository {
+public class MyFileRepositoryImpl extends BaseMediaRepository<MyFile> implements MyFileRepository {
 
     /*Prefs*/
     private static final String PREFS_NAME = BuildConfig.APPLICATION_ID + ".file";
@@ -39,24 +38,19 @@ public class MyFileRepositoryImpl implements MyFileRepository {
         return Preconditions.takeIfNotNullAndListedOrDefault(candidate, SORT_ORDER_KEYS, MyFileQuery.Sort.BY_FILENAME);
     }
 
-    private final Context mContext;
-    private final List<SortOrder> mSortOrders;
-
     private final SharedPreferences mPrefs;
 
     public MyFileRepositoryImpl(Context context) {
-        this.mContext = context;
-        mSortOrders = new ArrayList<SortOrder>(2) {{
-            add(new SortOrderImpl(mContext, MyFileQuery.Sort.BY_FILENAME, R.string.sort_by_filename));
-            add(new SortOrderImpl(mContext, MyFileQuery.Sort.BY_DATE_MODIFIED, R.string.sort_by_date_modified));
-        }};
-
+        super(context);
         mPrefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
     }
 
     @Override
-    public Single<List<SortOrder>> getSortOrders() {
-        return Single.just(mSortOrders);
+    protected List<SortOrder> blockingGetSortOrders() {
+        return collectSortOrders(
+            createSortOrder(MyFileQuery.Sort.BY_FILENAME, R.string.sort_by_filename),
+            createSortOrder(MyFileQuery.Sort.BY_DATE_MODIFIED, R.string.sort_by_date_modified)
+        );
     }
 
     @Override
@@ -82,21 +76,21 @@ public class MyFileRepositoryImpl implements MyFileRepository {
     @Override
     public Completable delete(final MyFile item) {
         return Del.deleteMyFile(
-                mContext.getContentResolver(),
+                getContext().getContentResolver(),
                 item);
     }
 
     @Override
     public Completable delete(Collection<MyFile> items) {
         return Del.deleteMyFiles(
-                mContext.getContentResolver(),
+                getContext().getContentResolver(),
                 items);
     }
 
     @Override
     public Completable addToPlaylist(long playlistId, MyFile item) {
         return PlaylistHelper.addMyFileToPlaylist(
-                mContext.getContentResolver(),
+                getContext().getContentResolver(),
                 playlistId,
                 item);
     }
@@ -104,7 +98,7 @@ public class MyFileRepositoryImpl implements MyFileRepository {
     @Override
     public Completable addToPlaylist(long playlistId, Collection<MyFile> items) {
         return PlaylistHelper.addItemsToPlaylist(
-                mContext.getContentResolver(),
+                getContext().getContentResolver(),
                 playlistId,
                 items);
     }
@@ -112,7 +106,7 @@ public class MyFileRepositoryImpl implements MyFileRepository {
     @Override
     public Single<List<Song>> collectSongs(MyFile item) {
         return SongQuery.queryForMyFile(
-                mContext.getContentResolver(),
+                getContext().getContentResolver(),
                 item,
                 SongQuery.Sort.BY_TITLE)
                 .firstOrError();
@@ -121,7 +115,7 @@ public class MyFileRepositoryImpl implements MyFileRepository {
     @Override
     public Single<List<Song>> collectSongs(Collection<MyFile> items) {
         return SongQuery.queryForMyFiles(
-                mContext.getContentResolver(),
+                getContext().getContentResolver(),
                 items)
                 .firstOrError();
     }
@@ -195,18 +189,18 @@ public class MyFileRepositoryImpl implements MyFileRepository {
 
     @Override
     public Flowable<List<MyFile>> browse(final MyFile myFile, final String sortOrderKey) {
-        return MyFileQuery.browse(mContext, myFile, sortOrderKey);
+        return MyFileQuery.browse(getContext(), myFile, sortOrderKey);
     }
 
     @Override
     public Flowable<List<MyFile>> getHiddenFiles() {
-        return MyFileQuery.getHiddenFiles(mContext.getContentResolver());
+        return MyFileQuery.getHiddenFiles(getContext().getContentResolver());
     }
 
     @Override
     public Completable setFileHidden(MyFile item, boolean hidden) {
         return MyFileQuery.setFileHidden(
-                mContext.getContentResolver(),
+                getContext().getContentResolver(),
                 item,
                 hidden
         );
@@ -214,12 +208,12 @@ public class MyFileRepositoryImpl implements MyFileRepository {
 
     @Override
     public Single<Boolean> isShortcutSupported(MyFile item) {
-        return Shortcuts.isShortcutSupported(mContext, item);
+        return Shortcuts.isShortcutSupported(getContext(), item);
     }
 
     @Override
     public Completable createShortcut(MyFile item) {
-        return Shortcuts.createMyFileShortcut(mContext, item);
+        return Shortcuts.createMyFileShortcut(getContext(), item);
     }
 
 }

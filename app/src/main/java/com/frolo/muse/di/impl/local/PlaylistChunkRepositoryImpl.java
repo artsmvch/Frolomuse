@@ -8,7 +8,6 @@ import com.frolo.muse.model.media.Song;
 import com.frolo.muse.model.sort.SortOrder;
 import com.frolo.muse.repository.PlaylistChunkRepository;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -30,22 +29,19 @@ public class PlaylistChunkRepositoryImpl extends SongRepositoryImpl implements P
         return Preconditions.takeIfNotNullAndListedOrDefault(candidate, SORT_ORDER_KEYS, SongQuery.Sort.BY_PLAY_ORDER);
     }
 
-    private final List<SortOrder> mSortOrders;
-
     public PlaylistChunkRepositoryImpl(Context context) {
         super(context);
-        mSortOrders = new ArrayList<SortOrder>(5) {{
-            add(new SortOrderImpl(getContext(), SongQuery.Sort.BY_PLAY_ORDER, R.string.sort_by_play_order));
-            add(new SortOrderImpl(getContext(), SongQuery.Sort.BY_TITLE, R.string.sort_by_name));
-            add(new SortOrderImpl(getContext(), SongQuery.Sort.BY_ALBUM, R.string.sort_by_album));
-            add(new SortOrderImpl(getContext(), SongQuery.Sort.BY_ARTIST, R.string.sort_by_artist));
-            add(new SortOrderImpl(getContext(), SongQuery.Sort.BY_DURATION, R.string.sort_by_duration));
-        }};
     }
 
     @Override
-    public Single<List<SortOrder>> getSortOrders() {
-        return Single.just(mSortOrders);
+    protected List<SortOrder> blockingGetSortOrders() {
+        return collectSortOrders(
+            createSortOrder(SongQuery.Sort.BY_PLAY_ORDER, R.string.sort_by_play_order),
+            createSortOrder(SongQuery.Sort.BY_TITLE, R.string.sort_by_name),
+            createSortOrder(SongQuery.Sort.BY_ALBUM, R.string.sort_by_album),
+            createSortOrder(SongQuery.Sort.BY_ARTIST, R.string.sort_by_artist),
+            createSortOrder(SongQuery.Sort.BY_DURATION, R.string.sort_by_duration)
+        );
     }
 
     @Override

@@ -23,9 +23,8 @@ import io.reactivex.Single;
 import io.reactivex.functions.Function;
 
 
-public class SongWithPlayCountRepositoryImpl implements SongWithPlayCountRepository {
+public class SongWithPlayCountRepositoryImpl extends BaseMediaRepository<SongWithPlayCount> implements SongWithPlayCountRepository {
 
-    private final Context mContext;
     private final SongRepository mDelegate;
 
     private final Function<List<Song>, Publisher<List<SongWithPlayCount>>> MAPPER =
@@ -35,7 +34,7 @@ public class SongWithPlayCountRepositoryImpl implements SongWithPlayCountReposit
                 final List<Flowable<SongWithPlayCount>> sources = new ArrayList<>(songs.size());
                 for (final Song song : songs) {
                     Flowable<SongWithPlayCount> source =
-                            SongQuery.getSongWithPlayCount(mContext.getContentResolver(), song);
+                            SongQuery.getSongWithPlayCount(getContext().getContentResolver(), song);
 
                     sources.add(source);
                 }
@@ -57,8 +56,8 @@ public class SongWithPlayCountRepositoryImpl implements SongWithPlayCountReposit
         };
 
     public SongWithPlayCountRepositoryImpl(Context context, SongRepository delegate) {
-        this.mContext = context;
-        this.mDelegate = delegate;
+        super(context);
+        mDelegate = delegate;
     }
 
     private Single<List<Song>> map(final Collection<SongWithPlayCount> items) {
@@ -73,13 +72,13 @@ public class SongWithPlayCountRepositoryImpl implements SongWithPlayCountReposit
     }
 
     @Override
-    public Single<List<SortOrder>> getSortOrders() {
-        return Single.just(Collections.emptyList());
+    protected List<SortOrder> blockingGetSortOrders() {
+        return Collections.emptyList();
     }
 
     @Override
     public Flowable<List<SongWithPlayCount>> getAllItems() {
-        return SongQuery.querySongsWithPlayCount(mContext.getContentResolver(), 0);
+        return SongQuery.querySongsWithPlayCount(getContext().getContentResolver(), 0);
     }
 
     @Override
@@ -98,7 +97,7 @@ public class SongWithPlayCountRepositoryImpl implements SongWithPlayCountReposit
             .switchMap(new Function<Song, Publisher<SongWithPlayCount>>() {
                 @Override
                 public Publisher<SongWithPlayCount> apply(final Song song) {
-                    return SongQuery.getSongWithPlayCount(mContext.getContentResolver(), song);
+                    return SongQuery.getSongWithPlayCount(getContext().getContentResolver(), song);
                 }
             });
     }

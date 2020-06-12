@@ -2,8 +2,6 @@ package com.frolo.muse.di.impl.local;
 
 import android.content.Context;
 
-import androidx.annotation.NonNull;
-
 import com.frolo.muse.R;
 import com.frolo.muse.model.media.Album;
 import com.frolo.muse.model.media.Artist;
@@ -11,7 +9,6 @@ import com.frolo.muse.model.media.Song;
 import com.frolo.muse.model.sort.SortOrder;
 import com.frolo.muse.repository.AlbumRepository;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -20,7 +17,7 @@ import io.reactivex.Flowable;
 import io.reactivex.Single;
 
 
-public class AlbumRepositoryImpl implements AlbumRepository {
+public class AlbumRepositoryImpl extends BaseMediaRepository<Album> implements AlbumRepository {
 
     private final static String[] SORT_ORDER_KEYS = {
         AlbumQuery.Sort.BY_ALBUM,
@@ -31,65 +28,61 @@ public class AlbumRepositoryImpl implements AlbumRepository {
         return Preconditions.takeIfNotNullAndListedOrDefault(candidate, SORT_ORDER_KEYS, AlbumQuery.Sort.BY_ALBUM);
     }
 
-    private final Context mContext;
-    private final List<SortOrder> mSortOrders;
-
-    public AlbumRepositoryImpl(final Context context) {
-        this.mContext = context;
-        this.mSortOrders = new ArrayList<SortOrder>(2) {{
-            add(new SortOrderImpl(mContext, AlbumQuery.Sort.BY_ALBUM, R.string.sort_by_name));
-            add(new SortOrderImpl(mContext, AlbumQuery.Sort.BY_NUMBER_OF_SONGS, R.string.sort_by_number_of_songs));
-        }};
+    public AlbumRepositoryImpl(Context context) {
+        super(context);
     }
 
     @Override
-    public Single<List<SortOrder>> getSortOrders() {
-        return Single.just(mSortOrders);
+    protected List<SortOrder> blockingGetSortOrders() {
+        return collectSortOrders(
+            createSortOrder(AlbumQuery.Sort.BY_ALBUM, R.string.sort_by_name),
+            createSortOrder(AlbumQuery.Sort.BY_NUMBER_OF_SONGS, R.string.sort_by_number_of_songs)
+        );
     }
 
     @Override
     public Flowable<List<Album>> getAllItems() {
-        return AlbumQuery.queryAll(mContext.getContentResolver());
+        return AlbumQuery.queryAll(getContext().getContentResolver());
     }
 
     @Override
     public Flowable<List<Album>> getAllItems(final String sortOrder) {
-        return AlbumQuery.queryAll(mContext.getContentResolver(), sortOrder);
+        return AlbumQuery.queryAll(getContext().getContentResolver(), sortOrder);
     }
 
     @Override
     public Flowable<List<Album>> getAllItems(String sortOrder, int minSongDuration) {
-        return AlbumQuery.queryAll(mContext.getContentResolver(), sortOrder, minSongDuration);
+        return AlbumQuery.queryAll(getContext().getContentResolver(), sortOrder, minSongDuration);
     }
 
     @Override
     public Flowable<List<Album>> getFilteredItems(final String filter) {
-        return AlbumQuery.queryAllFiltered(mContext.getContentResolver(), filter);
+        return AlbumQuery.queryAllFiltered(getContext().getContentResolver(), filter);
     }
 
     @Override
     public Flowable<Album> getItem(final long id) {
-        return AlbumQuery.querySingle(mContext.getContentResolver(), id);
+        return AlbumQuery.querySingle(getContext().getContentResolver(), id);
     }
 
     @Override
     public Completable delete(Album item) {
         return Del.deleteAlbum(
-                mContext.getContentResolver(),
+                getContext().getContentResolver(),
                 item);
     }
 
     @Override
     public Completable delete(Collection<Album> items) {
         return Del.deleteAlbums(
-                mContext.getContentResolver(),
+                getContext().getContentResolver(),
                 items);
     }
 
     @Override
     public Completable addToPlaylist(long playlistId, Album item) {
         return PlaylistHelper.addAlbumToPlaylist(
-                mContext.getContentResolver(),
+                getContext().getContentResolver(),
                 playlistId,
                 item.getId());
     }
@@ -97,7 +90,7 @@ public class AlbumRepositoryImpl implements AlbumRepository {
     @Override
     public Completable addToPlaylist(long playlistId, Collection<Album> items) {
         return PlaylistHelper.addItemsToPlaylist(
-                mContext.getContentResolver(),
+                getContext().getContentResolver(),
                 playlistId,
                 items);
     }
@@ -105,7 +98,7 @@ public class AlbumRepositoryImpl implements AlbumRepository {
     @Override
     public Single<List<Song>> collectSongs(Album item) {
         return SongQuery.queryForAlbum(
-                mContext.getContentResolver(),
+                getContext().getContentResolver(),
                 item,
                 SongQuery.Sort.BY_TITLE)
                 .firstOrError();
@@ -114,7 +107,7 @@ public class AlbumRepositoryImpl implements AlbumRepository {
     @Override
     public Single<List<Song>> collectSongs(Collection<Album> items) {
         return SongQuery.queryForAlbums(
-                mContext.getContentResolver(),
+                getContext().getContentResolver(),
                 items)
                 .firstOrError();
     }
@@ -137,26 +130,26 @@ public class AlbumRepositoryImpl implements AlbumRepository {
     @Override
     public Flowable<List<Album>> getAlbumsOfArtist(final Artist artist) {
         return AlbumQuery.queryForArtist(
-                mContext.getContentResolver(),
+                getContext().getContentResolver(),
                 artist.getId());
     }
 
     @Override
     public Completable updateArt(final long albumId, final String filepath) {
         return AlbumQuery.updateAlbumArtPath(
-                mContext.getContentResolver(),
+                getContext().getContentResolver(),
                 albumId,
                 filepath);
     }
 
     @Override
     public Single<Boolean> isShortcutSupported(Album item) {
-        return Shortcuts.isShortcutSupported(mContext, item);
+        return Shortcuts.isShortcutSupported(getContext(), item);
     }
 
     @Override
     public Completable createShortcut(Album item) {
-        return Shortcuts.createAlbumShortcut(mContext, item);
+        return Shortcuts.createAlbumShortcut(getContext(), item);
     }
 
 }

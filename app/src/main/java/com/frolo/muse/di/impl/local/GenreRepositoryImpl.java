@@ -8,7 +8,6 @@ import com.frolo.muse.model.media.Song;
 import com.frolo.muse.model.sort.SortOrder;
 import com.frolo.muse.repository.GenreRepository;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -17,7 +16,7 @@ import io.reactivex.Flowable;
 import io.reactivex.Single;
 
 
-public class GenreRepositoryImpl implements GenreRepository {
+public class GenreRepositoryImpl extends BaseMediaRepository<Genre> implements GenreRepository {
 
     private final static String[] SORT_ORDER_KEYS = {
         GenreQuery.Sort.BY_NAME
@@ -27,50 +26,46 @@ public class GenreRepositoryImpl implements GenreRepository {
         return Preconditions.takeIfNotNullAndListedOrDefault(candidate, SORT_ORDER_KEYS, GenreQuery.Sort.BY_NAME);
     }
 
-    private final Context mContext;
-    private final List<SortOrder> mSortOrders;
-
-    public GenreRepositoryImpl(final Context context) {
-        this.mContext = context;
-        this.mSortOrders = new ArrayList<SortOrder>(1) {{
-            add(new SortOrderImpl(mContext, GenreQuery.Sort.BY_NAME, R.string.sort_by_name));
-        }};
+    public GenreRepositoryImpl(Context context) {
+        super(context);
     }
 
     @Override
-    public Single<List<SortOrder>> getSortOrders() {
-        return Single.just(mSortOrders);
+    protected List<SortOrder> blockingGetSortOrders() {
+        return collectSortOrders(
+            createSortOrder(GenreQuery.Sort.BY_NAME, R.string.sort_by_name)
+        );
     }
 
     @Override
     public Flowable<List<Genre>> getAllItems() {
-        return GenreQuery.queryAll(mContext.getContentResolver());
+        return GenreQuery.queryAll(getContext().getContentResolver());
     }
 
     @Override
     public Flowable<List<Genre>> getAllItems(final String sortOrder) {
-        return GenreQuery.queryAll(mContext.getContentResolver(), sortOrder);
+        return GenreQuery.queryAll(getContext().getContentResolver(), sortOrder);
     }
 
     @Override
     public Flowable<List<Genre>> getAllItems(String sortOrder, int minSongDuration) {
-        return GenreQuery.queryAll(mContext.getContentResolver(), sortOrder, minSongDuration);
+        return GenreQuery.queryAll(getContext().getContentResolver(), sortOrder, minSongDuration);
     }
 
     @Override
     public Flowable<List<Genre>> getFilteredItems(final String filter) {
-        return GenreQuery.queryAllFiltered(mContext.getContentResolver(), filter);
+        return GenreQuery.queryAllFiltered(getContext().getContentResolver(), filter);
     }
 
     @Override
     public Flowable<Genre> getItem(final long id) {
-        return GenreQuery.querySingle(mContext.getContentResolver(), id);
+        return GenreQuery.querySingle(getContext().getContentResolver(), id);
     }
 
     @Override
     public Single<Genre> findItemByName(final String name) {
         return GenreQuery.querySingleByName(
-                mContext.getContentResolver(),
+                getContext().getContentResolver(),
                 name)
                 .firstOrError();
     }
@@ -78,31 +73,31 @@ public class GenreRepositoryImpl implements GenreRepository {
     @Override
     public Completable delete(Genre item) {
         return Del.deleteGenre(
-                mContext.getContentResolver(),
+                getContext().getContentResolver(),
                 item);
     }
 
     @Override
     public Completable delete(Collection<Genre> items) {
         return Del.deleteGenres(
-                mContext.getContentResolver(),
+                getContext().getContentResolver(),
                 items);
     }
 
     @Override
     public Completable addToPlaylist(long playlistId, Genre item) {
-        return PlaylistHelper.addGenreToPlaylist(mContext.getContentResolver(), playlistId, item.getId());
+        return PlaylistHelper.addGenreToPlaylist(getContext().getContentResolver(), playlistId, item.getId());
     }
 
     @Override
     public Completable addToPlaylist(long playlistId, Collection<Genre> items) {
-        return PlaylistHelper.addItemsToPlaylist(mContext.getContentResolver(), playlistId, items);
+        return PlaylistHelper.addItemsToPlaylist(getContext().getContentResolver(), playlistId, items);
     }
 
     @Override
     public Single<List<Song>> collectSongs(Genre item) {
         return SongQuery.queryForGenre(
-                mContext.getContentResolver(),
+                getContext().getContentResolver(),
                 item,
                 SongQuery.Sort.BY_TITLE)
                 .firstOrError();
@@ -111,7 +106,7 @@ public class GenreRepositoryImpl implements GenreRepository {
     @Override
     public Single<List<Song>> collectSongs(Collection<Genre> items) {
         return SongQuery.queryForGenres(
-                mContext.getContentResolver(),
+                getContext().getContentResolver(),
                 items)
                 .firstOrError();
     }
@@ -133,12 +128,12 @@ public class GenreRepositoryImpl implements GenreRepository {
 
     @Override
     public Single<Boolean> isShortcutSupported(Genre item) {
-        return Shortcuts.isShortcutSupported(mContext, item);
+        return Shortcuts.isShortcutSupported(getContext(), item);
     }
 
     @Override
     public Completable createShortcut(Genre item) {
-        return Shortcuts.createGenreShortcut(mContext, item);
+        return Shortcuts.createGenreShortcut(getContext(), item);
     }
 
 }

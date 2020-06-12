@@ -8,7 +8,6 @@ import com.frolo.muse.model.media.Song;
 import com.frolo.muse.model.sort.SortOrder;
 import com.frolo.muse.repository.PlaylistRepository;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -17,7 +16,7 @@ import io.reactivex.Flowable;
 import io.reactivex.Single;
 
 
-public class PlaylistRepositoryImpl implements PlaylistRepository {
+public class PlaylistRepositoryImpl extends BaseMediaRepository<Playlist> implements PlaylistRepository {
 
     private final static String[] SORT_ORDER_KEYS = {
         PlaylistQuery.Sort.BY_NAME,
@@ -29,55 +28,47 @@ public class PlaylistRepositoryImpl implements PlaylistRepository {
         return Preconditions.takeIfNotNullAndListedOrDefault(candidate, SORT_ORDER_KEYS, PlaylistQuery.Sort.BY_NAME);
     }
 
-    private final Context mContext;
-    private final List<SortOrder> mSortOrders;
-
     public PlaylistRepositoryImpl(final Context context) {
-        this.mContext = context;
-        mSortOrders = new ArrayList<SortOrder>(3) {{
-            add(new SortOrderImpl(mContext, PlaylistQuery.Sort.BY_NAME, R.string.sort_by_name));
-            add(new SortOrderImpl(mContext, PlaylistQuery.Sort.BY_DATE_ADDED, R.string.sort_by_date_added));
-            add(new SortOrderImpl(mContext, PlaylistQuery.Sort.BY_DATE_MODIFIED, R.string.sort_by_date_modified));
-        }};
+        super(context);
     }
 
     @Override
-    public Single<List<SortOrder>> getSortOrders() {
-        return Single.just(mSortOrders);
+    protected List<SortOrder> blockingGetSortOrders() {
+        return collectSortOrders(
+            createSortOrder(PlaylistQuery.Sort.BY_NAME, R.string.sort_by_name),
+            createSortOrder(PlaylistQuery.Sort.BY_DATE_ADDED, R.string.sort_by_date_added),
+            createSortOrder(PlaylistQuery.Sort.BY_DATE_MODIFIED, R.string.sort_by_date_modified)
+        );
     }
 
     @Override
     public Flowable<List<Playlist>> getAllItems() {
-        return PlaylistQuery.queryAll(mContext.getContentResolver());
+        return PlaylistQuery.queryAll(getContext().getContentResolver());
     }
 
     @Override
     public Flowable<List<Playlist>> getAllItems(final String sortOrder) {
-        return PlaylistQuery.queryAll(mContext.getContentResolver(), sortOrder);
+        return PlaylistQuery.queryAll(getContext().getContentResolver(), sortOrder);
     }
 
     @Override
     public Flowable<List<Playlist>> getFilteredItems(final String filter) {
-        return PlaylistQuery.queryAllFiltered(mContext.getContentResolver(), filter);
+        return PlaylistQuery.queryAllFiltered(getContext().getContentResolver(), filter);
     }
 
     @Override
     public Flowable<Playlist> getItem(final long id) {
-        return PlaylistQuery.querySingle(mContext.getContentResolver(), id);
+        return PlaylistQuery.querySingle(getContext().getContentResolver(), id);
     }
 
     @Override
     public Completable delete(Playlist item) {
-        return Del.deletePlaylist(
-                mContext.getContentResolver(),
-                item);
+        return Del.deletePlaylist(getContext().getContentResolver(), item);
     }
 
     @Override
     public Completable delete(Collection<Playlist> items) {
-        return Del.deletePlaylists(
-                mContext.getContentResolver(),
-                items);
+        return Del.deletePlaylists(getContext().getContentResolver(), items);
     }
 
     @Override
@@ -93,7 +84,7 @@ public class PlaylistRepositoryImpl implements PlaylistRepository {
     @Override
     public Single<List<Song>> collectSongs(Playlist item) {
         return SongQuery.queryForPlaylist(
-                mContext.getContentResolver(),
+                getContext().getContentResolver(),
                 item,
                 SongQuery.Sort.BY_PLAY_ORDER)
                 .firstOrError();
@@ -102,7 +93,7 @@ public class PlaylistRepositoryImpl implements PlaylistRepository {
     @Override
     public Single<List<Song>> collectSongs(Collection<Playlist> items) {
         return SongQuery.queryForPlaylists(
-                mContext.getContentResolver(),
+                getContext().getContentResolver(),
                 items)
                 .firstOrError();
     }
@@ -110,16 +101,16 @@ public class PlaylistRepositoryImpl implements PlaylistRepository {
     @Override
     public Single<Playlist> create(final String name) {
         return PlaylistQuery.create(
-                mContext,
-                mContext.getContentResolver(),
+                getContext(),
+                getContext().getContentResolver(),
                 name);
     }
 
     @Override
     public Single<Playlist> update(final Playlist playlist, final String newName) {
         return PlaylistQuery.update(
-                mContext,
-                mContext.getContentResolver(),
+                getContext(),
+                getContext().getContentResolver(),
                 playlist,
                 newName);
     }
@@ -141,12 +132,12 @@ public class PlaylistRepositoryImpl implements PlaylistRepository {
 
     @Override
     public Single<Boolean> isShortcutSupported(Playlist item) {
-        return Shortcuts.isShortcutSupported(mContext, item);
+        return Shortcuts.isShortcutSupported(getContext(), item);
     }
 
     @Override
     public Completable createShortcut(Playlist item) {
-        return Shortcuts.createPlaylistShortcut(mContext, item);
+        return Shortcuts.createPlaylistShortcut(getContext(), item);
     }
 
 }

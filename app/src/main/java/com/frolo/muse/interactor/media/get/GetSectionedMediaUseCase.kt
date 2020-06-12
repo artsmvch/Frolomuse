@@ -25,6 +25,7 @@ abstract class GetSectionedMediaUseCase <E: Media> constructor(
 
     override fun getSortOrderMenu(): Single<SortOrderMenu> {
         return repository.sortOrders
+            .observeOn(schedulerProvider.worker())
             .flatMap { sortOrders ->
                 Single.zip(
                     preferences.getSortOrderForSection(section).firstOrError(),
@@ -38,7 +39,6 @@ abstract class GetSectionedMediaUseCase <E: Media> constructor(
                     }
                 )
             }
-            .subscribeOn(schedulerProvider.worker())
     }
 
     override fun applySortOrder(sortOrder: SortOrder): Completable {
