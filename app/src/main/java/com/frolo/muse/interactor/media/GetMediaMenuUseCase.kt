@@ -34,9 +34,9 @@ class GetMediaMenuUseCase<E: Media> constructor(
                     deleteOptionAvailable = true,
                     playOptionAvailable = true,
                     playNextOptionAvailable = true,
-                    addToPlaylistOptionAvailable = true,
+                    addToPlaylistOptionAvailable = item !is Playlist, // you can add everything to the playlist except the playlists themselves
                     editOptionAvailable = item is Song || item is Album || item is Playlist,
-                    addToQueueOptionAvailable = item !is Playlist,
+                    addToQueueOptionAvailable = true,
                     viewAlbumOptionAvailable = false,//item is Song,
                     viewArtistOptionAvailable = false,//item is Song || item is Album
                     setAsDefaultOptionAvailable = item is MyFile && item.isDirectory,
