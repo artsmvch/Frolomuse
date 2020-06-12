@@ -183,12 +183,15 @@
     <!--app preferences-->
     <string name="version">Uygulama sürümü</string>
     <string name="licenses">Lisanslar</string>
+
     <string name="choose_theme">Temayı Seç</string>
     <string name="light_theme">Parlak tema</string>
     <string name="dark_blue_theme">Koyu mavi tema</string>
     <string name="dark_especial_theme">Karanlık özel tema</string>
     <string name="dark_purple_theme">Koyu mor tema</string>
-    <string name="dark_yellow_theme">Koyu turuncu tema</string>
+    <string name="dark_orange_theme">Koyu turuncu tema</string>
+    <string name="dark_green_theme">Koyu yeşil tema</string>
+
     <string name="pause_playback">Oynatmayı duraklat</string>
     <string name="resume_playback">Çalmaya devam et</string>
     <string name="pause_on_unplugged">Kulaklıklıgı çıkardıktan sonra oynatmayı duraklat</string>

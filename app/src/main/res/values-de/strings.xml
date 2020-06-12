@@ -184,12 +184,15 @@
     <!--app preferences-->
     <string name="version">Anwendungsversion</string>
     <string name="licenses">Lizenzen</string>
+
     <string name="choose_theme">Thema wählen</string>
     <string name="light_theme">Helles Thema</string>
     <string name="dark_blue_theme">Dunkelblaues Thema</string>
     <string name="dark_especial_theme">Dunkles wolkiges Thema</string>
     <string name="dark_purple_theme">Dunkellila Thema</string>
-    <string name="dark_yellow_theme">Dunkeloranges Thema</string>
+    <string name="dark_orange_theme">Dunkeloranges Thema</string>
+    <string name="dark_green_theme">Dunkelgrünes Thema</string>
+
     <string name="pause_playback">Wiedergabe anhalten</string>
     <string name="resume_playback">Fortsetzen Wiedergabe</string>
     <string name="pause_on_unplugged">Wiedergabe nach dem Entfernen der Kopfhörer unterbrechen</string>

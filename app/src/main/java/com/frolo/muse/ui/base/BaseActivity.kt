@@ -31,6 +31,7 @@ abstract class BaseActivity: AppCompatActivity() {
             Theme.DARK_BLUE_ESPECIAL -> setTheme(R.style.Base_AppTheme_Dark_Blue_Especial)
             Theme.DARK_PURPLE -> setTheme(R.style.Base_AppTheme_Dark_Purple)
             Theme.DARK_ORANGE -> setTheme(R.style.Base_AppTheme_Dark_Yellow)
+            Theme.DARK_GREEN -> setTheme(R.style.Base_AppTheme_Dark_Green)
             else -> setTheme(R.style.Base_AppTheme_Dark_Yellow) // anyway we have to set up any theme
         }
     }

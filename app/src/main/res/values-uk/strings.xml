@@ -190,12 +190,15 @@
     <!--app preferences-->
     <string name="version">Версія програми</string>
     <string name="licenses">Ліцензії</string>
+
     <string name="choose_theme">Виберіть Тема</string>
     <string name="light_theme">Світла тема</string>
     <string name="dark_blue_theme">Темно-синя тема</string>
     <string name="dark_especial_theme">Темна особлива тема</string>
     <string name="dark_purple_theme">Темно-фіолетова тема</string>
-    <string name="dark_yellow_theme">Темно-помаранчева тема</string>
+    <string name="dark_orange_theme">Темно-помаранчева тема</string>
+    <string name="dark_green_theme">Темно-зелена тема</string>
+
     <string name="pause_playback">Призупинення відтворення</string>
     <string name="resume_playback">Відновити відтворення</string>
     <string name="pause_on_unplugged">Призупинити відтворення після відключення навушників</string>

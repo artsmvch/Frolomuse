@@ -177,12 +177,15 @@
     <!--app preferences-->
     <string name="version">응용 프로그램 버전</string>
     <string name="licenses">라이센스</string>
+
     <string name="choose_theme">테마를 선택하십시오</string>
     <string name="light_theme">가벼운 테마</string>
     <string name="dark_blue_theme">진한 파란색 테마</string>
     <string name="dark_especial_theme">어두운 특별한 테마</string>
     <string name="dark_purple_theme">어두운 자주색 테마</string>
-    <string name="dark_yellow_theme">다크 오렌지 테마</string>
+    <string name="dark_orange_theme">다크 오렌지 테마</string>
+    <string name="dark_green_theme">진한 녹색 테마</string>
+
     <string name="pause_playback">재생 일시 정지</string>
     <string name="resume_playback">재생 재개</string>
     <string name="pause_on_unplugged">이어폰을 뽑은 후 재생 일시 정지</string>

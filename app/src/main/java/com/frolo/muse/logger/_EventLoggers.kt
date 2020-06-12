@@ -21,8 +21,9 @@ fun EventLogger.logThemeChanged(theme: Theme?) {
         Theme.DARK_BLUE_ESPECIAL -> "dark_blue_especial"
         Theme.DARK_PURPLE ->        "dark_purple"
         Theme.DARK_ORANGE ->        "dark_orange"
+        Theme.DARK_GREEN ->         "dark_green"
         Theme.LIGHT_BLUE ->         "light_blue"
-        else ->                     "unknown"
+        null ->                     "null"
     }
 
     val params = mapOf("theme_value" to paramValue)

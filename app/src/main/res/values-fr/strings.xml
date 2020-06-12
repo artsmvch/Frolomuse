@@ -184,12 +184,15 @@
     <!--app preferences-->
     <string name="version">Version de l\'application</string>
     <string name="licenses">Licences</string>
+
     <string name="choose_theme">Choisir un thème</string>
     <string name="light_theme">Thème lumière</string>
     <string name="dark_blue_theme">Thème bleu foncé</string>
     <string name="dark_especial_theme">Thème spécial sombre</string>
     <string name="dark_purple_theme">Thème violet foncé</string>
-    <string name="dark_yellow_theme">Thème orange foncé</string>
+    <string name="dark_orange_theme">Thème orange foncé</string>
+    <string name="dark_green_theme">Thème vert foncé</string>
+
     <string name="pause_playback">Mettre la lecture en pause</string>
     <string name="resume_playback">Reprendre la lecture</string>
     <string name="pause_on_unplugged">Suspendre la lecture après que les écouteurs aient été débranchés</string>

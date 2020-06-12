@@ -184,12 +184,15 @@
     <!--app preferences-->
     <string name="version">Versión de la aplicación</string>
     <string name="licenses">Licencias</string>
+
     <string name="choose_theme">Escoge un tema</string>
     <string name="light_theme">Tema ligero</string>
     <string name="dark_blue_theme">Tema azul oscuro</string>
     <string name="dark_especial_theme">Tema especial oscuro</string>
     <string name="dark_purple_theme">Tema morado oscuro</string>
-    <string name="dark_yellow_theme">Tema naranja oscuro</string>
+    <string name="dark_orange_theme">Tema naranja oscuro</string>
+    <string name="dark_green_theme">Tema verde oscuro</string>
+
     <string name="pause_playback">Pausa la reproducción</string>
     <string name="resume_playback">Reanudar la reproducción</string>
     <string name="pause_on_unplugged">Pausa la reproducción después de desconectar los auriculares</string>

@@ -178,12 +178,15 @@
     <!--app preferences-->
     <string name="version">アプリケーションのバージョン</string>
     <string name="licenses">ライセンス</string>
+
     <string name="choose_theme">テーマを選択</string>
-    <string name="light_theme">光</string>
+    <string name="light_theme">ライトテーマ</string>
     <string name="dark_blue_theme">ダークブルーのテーマ</string>
     <string name="dark_especial_theme">ダーク特別テーマ</string>
     <string name="dark_purple_theme">濃い紫色のテーマ</string>
-    <string name="dark_yellow_theme">濃いオレンジのテーマ</string>
+    <string name="dark_orange_theme">濃いオレンジのテーマ</string>
+    <string name="dark_green_theme">濃い緑のテーマ</string>
+
     <string name="pause_playback">再生を一時停止する</string>
     <string name="resume_playback">再生を再開する</string>
     <string name="pause_on_unplugged">イヤホンを外した後に再生を一時停止する</string>

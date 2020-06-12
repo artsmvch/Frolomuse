@@ -297,7 +297,8 @@ class SettingsFragment : PreferenceFragmentCompat(),
             getString(R.string.dark_blue_theme),
             getString(R.string.dark_especial_theme),
             getString(R.string.dark_purple_theme),
-            getString(R.string.dark_yellow_theme)
+            getString(R.string.dark_orange_theme),
+            getString(R.string.dark_green_theme)
         )
 
         val currentThemeIndex = when(currentTheme) {
@@ -306,6 +307,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
             Theme.DARK_BLUE_ESPECIAL -> 2
             Theme.DARK_PURPLE -> 3
             Theme.DARK_ORANGE -> 4
+            Theme.DARK_GREEN -> 5
             else -> -1
         }
 
@@ -321,6 +323,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
                     2 -> Theme.DARK_BLUE_ESPECIAL
                     3 -> Theme.DARK_PURPLE
                     4 -> Theme.DARK_ORANGE
+                    5 -> Theme.DARK_GREEN
                     else -> null // That's an error
                 }
 

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--Dark green theme. All the styles are postfixed with .Dark.Green-->
+
+    <color name="app_dark_green_window_background">#161917</color>
+    <color name="app_dark_green_action_mode">#25A57C</color>
+    <color name="app_dark_green_primary">@color/app_dark_green_surface</color>
+    <color name="app_dark_green_primary_dark">@color/app_dark_green_surface</color>
+    <color name="app_dark_green_primary_variant">#2E3130</color>
+    <color name="app_dark_green_primary_surface">#25A57C</color>
+    <color name="app_dark_green_on_primary_surface">#FFFFFF</color>
+    <color name="app_dark_green_secondary">#1CAC9B</color>
+    <color name="app_dark_green_secondary_variant">#31D1D6</color>
+    <color name="app_dark_green_accent">@color/app_dark_green_secondary</color>
+    <color name="app_dark_green_surface">#2B2E2D</color>
+
+    <style name="AppTheme.Dialog.Dark.Green" parent="Base.AppTheme.Dark.Dialog">
+        <item name="colorPrimary">@color/app_dark_green_accent</item>
+        <item name="colorPrimaryDark">@color/app_dark_green_primary_dark</item>
+        <item name="colorAccent">@color/app_dark_green_accent</item>
+        <item name="colorPrimaryVariant">@color/app_dark_green_primary_variant</item>
+        <item name="colorOnPrimary">@color/md_white_1000</item>
+        <item name="colorSecondary">@color/app_dark_green_secondary</item>
+        <item name="colorSecondaryVariant">@color/app_dark_green_secondary_variant</item>
+        <item name="colorOnSecondary">@color/md_white_1000</item>
+        <item name="colorError">#FF9090</item>
+        <item name="colorSurface">@color/app_dark_green_surface</item>
+        <item name="colorOnSurface">@color/md_white_1000</item>
+
+        <item name="seekBarStyle">@style/AppTheme.SeekBar.Dark.Green</item>
+        <item name="switchStyle">@style/Base.AppTheme.Switch.Dark</item>
+        <item name="textInputStyle">@style/AppTheme.TextInputLayout.Dark.Green</item>
+
+        <item name="android:textColor">@color/md_white_1000</item>
+        <item name="android:textColorPrimary">@color/md_white_1000</item>
+        <item name="android:textColorSecondary">@color/md_grey_300</item>
+        <item name="android:textColorHint">@color/md_grey_300</item>
+    </style>
+
+    <style name="AppTheme.AlertDialog.Dark.Green" parent="Base.AppTheme.AlertDialog">
+        <item name="colorSurface">@color/app_dark_green_surface</item>
+        <item name="colorAccent">@color/app_dark_green_accent</item>
+        <item name="android:textColor">@color/md_white_1000</item>
+        <item name="android:textColorPrimary">@color/md_white_1000</item>
+        <item name="android:textColorSecondary">@color/md_white_1000</item>
+        <item name="textColorAlertDialogListItem">@color/md_white_1000</item>
+        <item name="colorControlNormal">@color/md_white_1000</item>
+        <item name="android:background">@color/app_dark_green_surface</item>
+    </style>
+
+    <style name="AppTheme.MaterialAlertDialog.Dark.Green" parent="Base.AppTheme.MaterialAlertDialog">
+        <item name="colorAccent">@color/app_dark_green_accent</item>
+        <item name="android:textColor">@color/md_white_1000</item>
+        <item name="android:textColorPrimary">@color/md_white_1000</item>
+        <item name="android:textColorSecondary">@color/md_white_1000</item>
+        <item name="textColorAlertDialogListItem">@color/md_white_1000</item>
+        <item name="colorControlNormal">@color/md_white_1000</item>
+        <item name="android:background">@color/app_dark_green_surface</item>
+    </style>
+
+    <style name="AppTheme.BottomSheetDialog.Dark.Green" parent="Base.AppTheme.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppTheme.BottomSheet.Dark.Green</item>
+    </style>
+
+    <style name="AppTheme.BottomSheet.Dark.Green" parent="@style/Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/bg_bottom_sheet_dark_green</item>
+    </style>
+
+    <style name="AppTheme.SeekBar.Dark.Green" parent="Base.AppTheme.SeekBar">
+        <item name="colorAccent">@color/app_dark_green_accent</item>
+        <item name="android:progressBackgroundTint">#5A5A5A</item>
+    </style>
+
+    <style name="AppTheme.TextInputLayout.Dark.Green" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeWidth">1.2dp</item>
+        <item name="boxStrokeWidthFocused">1.2dp</item>
+        <item name="hintTextColor">@color/app_dark_green_accent</item>
+        <item name="android:textColorHint">@color/app_dark_green_accent</item>
+    </style>
+
+    <style name="AppTheme.TabLayout.Dark.Green" parent="Widget.MaterialComponents.TabLayout.Colored">
+    </style>
+
+    <style name="AppTheme.BottomNavigationView.Dark.Green" parent="Base.AppTheme.BottomNavigationView">
+        <item name="itemIconTint">@color/nav_dark</item>
+        <item name="background">@color/app_dark_green_surface</item>
+        <item name="android:background">@color/app_dark_green_window_background</item>
+    </style>
+
+    <style name="AppTheme.MiniVisualizer.Dark.Green" parent="Base.AppTheme.MiniVisualizer">
+        <item name="barColor">@color/app_dark_green_secondary</item>
+    </style>
+
+    <style name="Base.AppTheme.Dark.Green" parent="Base.AppTheme.Dark">
+        <item name="colorPrimary">@color/app_dark_green_primary</item>
+        <item name="colorPrimaryDark">@color/app_dark_green_primary_dark</item>
+        <item name="colorAccent">@color/app_dark_green_accent</item>
+        <item name="colorPrimaryVariant">@color/app_dark_green_primary_variant</item>
+        <item name="colorOnPrimary">@color/md_white_1000</item>
+        <item name="colorPrimarySurface">@color/app_dark_green_primary_surface</item>
+        <item name="colorOnPrimarySurface">@color/app_dark_green_on_primary_surface</item>
+        <item name="colorSecondary">@color/app_dark_green_secondary</item>
+        <item name="colorSecondaryVariant">@color/app_dark_green_secondary_variant</item>
+        <item name="colorOnSecondary">@color/md_white_1000</item>
+        <item name="colorError">#FF9090</item>
+        <item name="colorSurface">@color/app_dark_green_surface</item>
+        <item name="colorOnSurface">@color/md_white_1000</item>
+
+        <item name="android:dialogTheme">@style/AppTheme.Dialog.Dark.Green</item>
+        <item name="dialogTheme">@style/AppTheme.Dialog.Dark.Green</item>
+        <item name="alertDialogTheme">@style/AppTheme.AlertDialog.Dark.Green</item>
+        <item name="materialAlertDialogTheme">@style/AppTheme.MaterialAlertDialog.Dark.Green</item>
+        <item name="bottomSheetDialogTheme">@style/AppTheme.BottomSheetDialog.Dark.Green</item>
+        <item name="textInputStyle">@style/AppTheme.TextInputLayout.Dark.Green</item>
+        <item name="bottomNavigationStyle">@style/AppTheme.BottomNavigationView.Dark.Green</item>
+        <item name="seekBarStyle">@style/AppTheme.SeekBar.Dark.Green</item>
+        <item name="tabStyle">@style/AppTheme.TabLayout.Dark.Green</item>
+        <item name="searchViewStyle">@style/Base.AppTheme.SearchView</item>
+        <item name="autoCompleteTextViewStyle">@style/Base.AppTheme.AutoCompleteTextView</item>
+
+        <item name="actionModeBackground">@color/app_dark_green_action_mode</item>
+
+        <item name="android:textColor">@color/md_white_1000</item>
+        <item name="android:textColorPrimary">@color/md_white_1000</item>
+        <item name="android:textColorSecondary">@color/md_grey_500</item>
+        <item name="android:textColorHint">@color/md_grey_500</item>
+
+        <item name="android:windowBackground">@color/app_dark_green_window_background</item>
+        <item name="android:navigationBarColor">@color/app_dark_green_primary</item>
+
+        <!--Custom attrs-->
+        <item name="iconImageTint">#EAEAEA</item>
+        <item name="dividerTint">#464A48</item>
+        <item name="iBarStyle">@style/Base.AppTheme.Dark.IBar</item>
+        <item name="miniVisualizerStyle">@style/AppTheme.MiniVisualizer.Dark.Green</item>
+    </style>
+
+</resources>

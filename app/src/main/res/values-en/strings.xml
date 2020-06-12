@@ -184,12 +184,15 @@
     <!--app preferences-->
     <string name="version">Application version</string>
     <string name="licenses">Licenses</string>
+
     <string name="choose_theme">Choose Theme</string>
     <string name="light_theme">Light theme</string>
     <string name="dark_blue_theme">Dark blue theme</string>
     <string name="dark_especial_theme">Dark especial theme</string>
     <string name="dark_purple_theme">Dark purple theme</string>
-    <string name="dark_yellow_theme">Dark orange theme</string>
+    <string name="dark_orange_theme">Dark orange theme</string>
+    <string name="dark_green_theme">Dark green theme</string>
+
     <string name="pause_playback">Pause playback</string>
     <string name="resume_playback">Resume playback</string>
     <string name="pause_on_unplugged">Pause playback after earphones unplugged</string>

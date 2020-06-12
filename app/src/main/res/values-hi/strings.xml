@@ -184,12 +184,15 @@
     <!--app preferences-->
     <string name="version">एप्लिकेशन वर्जन</string>
     <string name="licenses">लाइसेंस</string>
+
     <string name="choose_theme">थीम चुनें</string>
     <string name="light_theme">लाइट थीम</string>
     <string name="dark_blue_theme">डार्क ब्लू थीम</string>
     <string name="dark_especial_theme">डार्क विशिष्ट विषय</string>
     <string name="dark_purple_theme">डार्क पर्पल थीम</string>
-    <string name="dark_yellow_theme">डार्क ऑरेंज थीम</string>
+    <string name="dark_orange_theme">डार्क ऑरेंज थीम</string>
+    <string name="dark_green_theme">गहरे हरे रंग का विषय</string>
+
     <string name="pause_playback">प्लेबैक रोकें</string>
     <string name="resume_playback">प्लेबैक वापस चालू करें</string>
     <string name="pause_on_unplugged">इयरफ़ोन अनप्लग होने के बाद प्लेबैक रोकें</string>

@@ -178,12 +178,15 @@
     <!--app preferences-->
     <string name="version">Versi aplikasi</string>
     <string name="licenses">Lisensi</string>
+
     <string name="choose_theme">Pilih Tema</string>
     <string name="light_theme">Tema ringan</string>
     <string name="dark_blue_theme">Tema biru gelap</string>
     <string name="dark_especial_theme">Tema utama gelap</string>
     <string name="dark_purple_theme">Tema ungu gelap</string>
-    <string name="dark_yellow_theme">Tema oranye gelap</string>
+    <string name="dark_orange_theme">Tema oranye gelap</string>
+    <string name="dark_green_theme">Tema hijau gelap</string>
+
     <string name="pause_playback">Jeda pemutaran</string>
     <string name="resume_playback">Lanjutkan pemutaran</string>
     <string name="pause_on_unplugged">Jeda pemutaran setelah earphone dicabut</string>
