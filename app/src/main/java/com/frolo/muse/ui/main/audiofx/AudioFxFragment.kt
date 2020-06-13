@@ -2,15 +2,16 @@ package com.frolo.muse.ui.main.audiofx
 
 import android.content.Context
 import android.graphics.drawable.Drawable
-import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
+import android.util.Size
 import android.view.*
 import android.widget.CompoundButton
 import androidx.core.view.doOnLayout
 import androidx.lifecycle.LifecycleOwner
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.frolo.muse.Logger
 import com.frolo.muse.R
 import com.frolo.muse.StyleUtil
 import com.frolo.muse.arch.observeNonNull
@@ -24,6 +25,8 @@ import com.frolo.muse.ui.main.audiofx.adapter.PresetAdapter
 import com.frolo.muse.ui.main.audiofx.adapter.ReverbAdapter
 import com.frolo.muse.ui.main.audiofx.preset.PresetSavedEvent
 import com.frolo.muse.views.observeSelection
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 import jp.wasabeef.glide.transformations.BlurTransformation
 import kotlinx.android.synthetic.main.fragment_audio_fx.*
 import kotlinx.android.synthetic.main.include_audio_fx_content.*
@@ -42,6 +45,8 @@ class AudioFxFragment: BaseFragment(), NoClipping {
     private var enableStatusSwitchView: CompoundButton? = null
 
     private lateinit var presetSaveEvent: PresetSavedEvent
+
+    private var blurredSnapshotDisposable: Disposable? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -108,6 +113,11 @@ class AudioFxFragment: BaseFragment(), NoClipping {
     override fun onStop() {
         super.onStop()
         viewModel.onStopped()
+    }
+
+    override fun onDestroyView() {
+        blurredSnapshotDisposable?.dispose()
+        super.onDestroyView()
     }
 
     override fun onDetach() {
@@ -177,6 +187,9 @@ class AudioFxFragment: BaseFragment(), NoClipping {
 
             layout_audio_fx_content.isEnabled = enabled
 
+            // Always dispose old blurred snapshot source to prevent OOM errors
+            blurredSnapshotDisposable?.dispose()
+
             if (enabled) {
                 inc_audio_fx_content_lock.animate()
                     .alpha(0.0f)
@@ -186,6 +199,8 @@ class AudioFxFragment: BaseFragment(), NoClipping {
                     }
                     .start()
             } else {
+                imv_blurred_snapshot.setImageDrawable(null)
+
                 layout_audio_fx_content.doOnLayout { view ->
 
                     val backgroundColor: Int =
@@ -194,15 +209,27 @@ class AudioFxFragment: BaseFragment(), NoClipping {
                     val windowBackground: Drawable? =
                             StyleUtil.readDrawableAttrValue(view.context, android.R.attr.windowBackground)
 
-                    val asyncTask: AsyncTask<*, *, *> = Snapshots.makeAsync(view, windowBackground, backgroundColor) { result ->
-                        Glide.with(this@AudioFxFragment)
-                                .load(result)
-                                .apply(bitmapTransform(BlurTransformation(10)))
-                                .transition(DrawableTransitionOptions.withCrossFade(200))
-                                .into(imv_blurred_snapshot)
-                    }
+                    // Calculating optimal size for the snapshot
+                    // so it will be loaded faster and will consume not that much memory
+                    val targetWidth = 600
+                    val targetHeight = (targetWidth * (view.measuredHeight.toFloat() / view.measuredWidth)).toInt()
+                    val targetSize = Size(targetWidth, targetHeight)
 
-                    saveUIAsyncTask(asyncTask)
+                    blurredSnapshotDisposable = Snapshots.make(view, windowBackground, backgroundColor, targetSize)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(
+                            { result ->
+                                Glide.with(this@AudioFxFragment)
+                                    .load(result)
+                                    .apply(bitmapTransform(BlurTransformation(10)))
+                                    .transition(DrawableTransitionOptions.withCrossFade(200))
+                                    .into(imv_blurred_snapshot)
+                            },
+                            { err ->
+                                Logger.e(LOG_TAG, err)
+                            }
+                        )
+
                 }
 
                 inc_audio_fx_content_lock.animate()
@@ -302,6 +329,8 @@ class AudioFxFragment: BaseFragment(), NoClipping {
     }
 
     companion object {
+
+        private const val LOG_TAG = "AudioFxFragment"
 
         // Factory
         fun newInstance() = AudioFxFragment()
