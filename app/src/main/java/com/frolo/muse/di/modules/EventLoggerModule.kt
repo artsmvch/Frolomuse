@@ -14,17 +14,17 @@ class EventLoggerModule(private val debug: Boolean) {
     @Provides
     @Singleton
     fun provideEventLogger(context: Context): EventLogger {
-        return if (debug) {
-            EventLoggers.compose(
-                    EventLoggers.createFirebase(context),
-                    EventLoggers.createDroid()
-            )
-        } else {
-            EventLoggers.compose(
-                    EventLoggers.createFlurry(context),
-                    EventLoggers.createFirebase(context)
-            )
+        if (debug) {
+            // We do not want to send any analytics for debug builds.
+            // Debug builds are for developer, so Droid logger is on.
+            return EventLoggers.createDroid()
         }
+
+        // Currently, analytics is tracked using Firebase and Flurry (release builds only)
+        return EventLoggers.compose(
+            EventLoggers.createFlurry(context),
+            EventLoggers.createFirebase(context)
+        )
     }
 
 }
