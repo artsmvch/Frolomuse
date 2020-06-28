@@ -17,6 +17,16 @@
         app:tint="?iconImageTint"/>
 
     <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/btn_playback_params"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:padding="8dp"
+        android:src="@drawable/ic_speedometer"
+        app:tint="?iconImageTint"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/btn_like"
         android:layout_width="30dp"
         android:layout_height="30dp"
