@@ -1026,9 +1026,12 @@ class PlayerEngine constructor(
     @RequiresApi(Build.VERSION_CODES.M)
     override fun setPitch(pitch: Float) {
         engine.runCatching {
-            val params = playbackParams
-            params.pitch = pitch
-            playbackParams = params
+            // apply it only if the engine is playing
+            if (isPreparedFlag && isPlayingFlag) {
+                val params = playbackParams
+                params.pitch = pitch
+                playbackParams = params
+            }
         }.onFailure { err ->
             Logger.e(LOG_TAG, err)
         }.onSuccess {
