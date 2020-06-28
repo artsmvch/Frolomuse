@@ -114,10 +114,12 @@ class PlayerViewModel @Inject constructor(
 
     val sound: LiveData<Sound> =
         Transformations.switchMap(song) { song ->
-            if (song == null) liveDataOf<Sound>(null)
+            val source: String? = song?.source
+
+            if (source == null) liveDataOf<Sound>(null)
             else MutableLiveData<Sound>().apply {
                 value = null
-                resolveSoundUseCase.resolve(song.source)
+                resolveSoundUseCase.resolve(source)
                     .observeOn(schedulerProvider.main())
                     .doOnSubscribe { s ->
                         resolveSoundSubscription?.cancel()
