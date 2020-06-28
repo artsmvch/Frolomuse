@@ -1,18 +1,19 @@
 package com.frolo.muse.model.media;
 
-import androidx.annotation.NonNull;
-
 import java.io.Serializable;
 
 
 public class Playlist implements Media, Serializable {
+
     private final long id;
+    private final String source;
     private final String name;
     private final long dateAdded;
     private final long dateModified;
 
-    public Playlist(long id, String name, long dateAdded, long dateModified) {
+    public Playlist(long id, String source, String name, long dateAdded, long dateModified) {
         this.id = id;
+        this.source = name != null ? source : "";
         this.name = name != null ? name : "";
         this.dateAdded = dateAdded;
         this.dateModified = dateModified;
@@ -20,12 +21,20 @@ public class Playlist implements Media, Serializable {
 
     public Playlist(Playlist toCopy) {
         this.id = toCopy.id;
+        this.source = toCopy.source;
         this.name = toCopy.name;
         this.dateAdded = toCopy.dateAdded;
         this.dateModified = toCopy.dateModified;
     }
 
-    @NonNull
+    /**
+     * Returns playlist file.
+     * @return playlist file.
+     */
+    public String getSource() {
+        return source;
+    }
+
     public String getName() {
         return name;
     }

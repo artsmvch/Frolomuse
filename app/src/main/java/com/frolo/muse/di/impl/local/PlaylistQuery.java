@@ -1,6 +1,5 @@
 package com.frolo.muse.di.impl.local;
 
-
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -20,14 +19,15 @@ import io.reactivex.Single;
 
 final class PlaylistQuery {
 
-    private static final Uri URI =
-            MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI;
+    private static final Uri URI = MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI;
 
     private static final String[] PROJECTION = {
-            MediaStore.Audio.Playlists._ID,
-            MediaStore.Audio.Playlists.NAME,
-            MediaStore.Audio.Playlists.DATE_ADDED,
-            MediaStore.Audio.Playlists.DATE_MODIFIED };
+        MediaStore.Audio.Playlists._ID,
+        MediaStore.Audio.Playlists.DATA,
+        MediaStore.Audio.Playlists.NAME,
+        MediaStore.Audio.Playlists.DATE_ADDED,
+        MediaStore.Audio.Playlists.DATE_MODIFIED
+    };
 
     static final class Sort {
         // Sort orders are case-insensitive
@@ -50,17 +50,16 @@ final class PlaylistQuery {
                 @Override
                 public Playlist build(Cursor cursor, String[] projection) {
                     return new Playlist(
-                            cursor.getLong(cursor.getColumnIndex(PROJECTION[0])),
-                            cursor.getString(cursor.getColumnIndex(PROJECTION[1])),
-                            cursor.getLong(cursor.getColumnIndex(PROJECTION[2])),
-                            cursor.getLong(cursor.getColumnIndex(PROJECTION[3]))
+                        cursor.getLong(cursor.getColumnIndex(PROJECTION[0])),
+                        cursor.getString(cursor.getColumnIndex(PROJECTION[1])),
+                        cursor.getString(cursor.getColumnIndex(PROJECTION[2])),
+                        cursor.getLong(cursor.getColumnIndex(PROJECTION[3])),
+                        cursor.getLong(cursor.getColumnIndex(PROJECTION[4]))
                     );
                 }
             };
 
-    private static boolean checkPlaylistNameExists_Internal(
-            ContentResolver resolver,
-            String name) {
+    private static boolean checkPlaylistNameExists_Internal(ContentResolver resolver, String name) {
         boolean exists = false;
 
         String[] projection = new String[] { MediaStore.Audio.Playlists.NAME };
@@ -87,9 +86,7 @@ final class PlaylistQuery {
         return exists;
     }
 
-    private static long getPlaylistIdByName_Internal(
-            ContentResolver resolver,
-            String playlistName) {
+    private static long getPlaylistIdByName_Internal(ContentResolver resolver, String playlistName) {
         long id = -1;
 
         String[] projection = new String[] { MediaStore.Audio.Playlists._ID };
@@ -230,8 +227,10 @@ final class PlaylistQuery {
                     id = Long.parseLong(idString);
                 }
 
-                long now = System.currentTimeMillis() / 1000;
-                return new Playlist(id, name, now, now);
+                //long now = System.currentTimeMillis() / 1000;
+
+                // Simply querying the newly created playlist by its ID
+                return querySingle(resolver, id).blockingFirst();
             }
         });
     }
@@ -282,7 +281,7 @@ final class PlaylistQuery {
                 }
 
                 long now = System.currentTimeMillis() / 1000;
-                return new Playlist(item.getId(), newName, item.getDateAdded(), now);
+                return new Playlist(item.getId(), newName, item.getSource(), item.getDateAdded(), now);
             }
         });
     }
