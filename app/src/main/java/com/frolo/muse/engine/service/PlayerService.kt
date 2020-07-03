@@ -22,6 +22,7 @@ import com.frolo.muse.engine.audiofx.AudioFx_Impl
 import com.frolo.muse.engine.service.PlayerService.Companion.newIntent
 import com.frolo.muse.engine.service.PlayerService.PlayerBinder
 import com.frolo.muse.glide.GlideAlbumArtHelper
+import com.frolo.muse.headset.createHeadsetHandler
 import com.frolo.muse.interactor.media.DispatchSongPlayedUseCase
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.repository.Preferences
@@ -160,19 +161,22 @@ class PlayerService: Service() {
         }
     }
 
-    // Handling headset plug-state callbacks
-    private val headsetPlugHandler = object : HeadsetPlugHandler() {
-        override fun onHeadsetUnplugged(context: Context) {
-            if (preferences.shouldPauseOnUnplugged()) {
-                player.pause()
-            }
-        }
-        override fun onHeadsetPlugged(context: Context) {
+    // Handling for headsets
+    private val headsetHandler = createHeadsetHandler(
+        onConnected = {
             if (preferences.shouldResumeOnPluggedIn()) {
                 player.start()
             }
+        },
+        onDisconnected = {
+            if (preferences.shouldPauseOnUnplugged()) {
+                player.pause()
+            }
+        },
+        onBecomeWeird = {
+            // no actions
         }
-    }
+    )
 
     // Handling headset button actions
     private lateinit var mediaSession: MediaSessionCompat
@@ -217,7 +221,7 @@ class PlayerService: Service() {
         val audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager?
         player = PlayerEngine(engineHandler, eventHandler, audioFxApplicable, observerRegistry, audioManager)
 
-        registerReceiver(headsetPlugHandler, IntentFilter(Intent.ACTION_HEADSET_PLUG))
+        headsetHandler.subscribe(this)
         registerReceiver(sleepTimerHandler, IntentFilter(PlayerSleepTimer.ACTION_ALARM_TRIGGERED))
 
         mediaSession = MediaSessionCompat(applicationContext, packageName).apply {
@@ -274,7 +278,7 @@ class PlayerService: Service() {
         // notifying observers that player is shutting down and removing them all
         player.shutdown()
 
-        unregisterReceiver(headsetPlugHandler)
+        headsetHandler.dispose()
         unregisterReceiver(sleepTimerHandler)
 
         mediaSession.release()

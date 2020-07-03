@@ -1,11 +1,22 @@
-package com.frolo.muse.engine.service;
+package com.frolo.muse.headset;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 
 
-public class HeadsetPlugHandler extends BroadcastReceiver {
+/**
+ * This handles the change in state of the headset jack, namely:
+ * 1) when the headsets were plugged to the jack;
+ * 2) when the headsets were unplugged from the jack;
+ * 3) when the headsets become weird (unknown state).
+ */
+public class HeadsetJackHandler extends BroadcastReceiver {
+
+    public static IntentFilter createIntentFilter() {
+        return new IntentFilter(Intent.ACTION_HEADSET_PLUG);
+    }
 
     @Override
     public final void onReceive(Context context, Intent intent) {
