@@ -4,6 +4,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.media.AudioDeviceInfo;
+import android.media.AudioManager;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 
 /**
@@ -14,33 +19,73 @@ import android.content.IntentFilter;
  */
 public class HeadsetJackHandler extends BroadcastReceiver {
 
+    enum State {
+        PLUGGED, UNPLUGGED, WEIRD
+    }
+
     public static IntentFilter createIntentFilter() {
         return new IntentFilter(Intent.ACTION_HEADSET_PLUG);
     }
 
+    @Nullable
+    public static State getCurrentState(@NonNull Context context) {
+        try {
+            final AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+
+            if (audioManager == null) {
+                return null;
+            }
+
+            // deprecated solution
+            // audioManager.isWiredHeadsetOn();
+
+            final AudioDeviceInfo[] audioDevices = audioManager.getDevices(AudioManager.GET_DEVICES_ALL);
+            for (AudioDeviceInfo deviceInfo : audioDevices){
+                if(deviceInfo.getType() == AudioDeviceInfo.TYPE_WIRED_HEADPHONES
+                        || deviceInfo.getType() == AudioDeviceInfo.TYPE_WIRED_HEADSET){
+                    return State.PLUGGED;
+                }
+            }
+
+            return State.UNPLUGGED;
+        } catch (Throwable ignored) {
+            return null;
+        }
+    }
+
     @Override
     public final void onReceive(Context context, Intent intent) {
-        if (intent == null || intent.getAction() == null) return;
-        String action = intent.getAction();
-        if (action.equals(Intent.ACTION_HEADSET_PLUG)) {
-            int state = intent.getIntExtra("state", -1);
+        if (intent == null) {
+            return;
+        }
+
+        final String action = intent.getAction();
+
+        if (Intent.ACTION_HEADSET_PLUG.equals(action)) {
+
+            final int state = intent.getIntExtra("state", -1);
+
             switch (state) {
-                case 0: onHeadsetUnplugged(context); break;
-                case 1: onHeadsetPlugged(context); break;
-                default: onHeadsetBecomeWeird(context);
+                case 0: {
+                    onStateChanged(State.UNPLUGGED);
+                    break;
+                }
+
+                case 1: {
+                    onStateChanged(State.PLUGGED);
+                    break;
+                }
+
+                default: {
+                    onStateChanged(State.WEIRD);
+                    break;
+                }
             }
         }
     }
 
-    public void onHeadsetUnplugged(Context context) {
-        // to be implemented
+    public void onStateChanged(@NonNull State state) {
+        // to override
     }
 
-    public void onHeadsetPlugged(Context context) {
-        // to be implemented
-    }
-
-    public void onHeadsetBecomeWeird(Context context) {
-        // to be implemented
-    }
 }
