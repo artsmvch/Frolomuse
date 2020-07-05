@@ -88,6 +88,9 @@ class PlayerSheetFragment : BaseFragment(),
         }
 
         imv_close.setOnClickListener {
+            // First of all, we need to collapse the inner bottom sheet to avoid the case
+            // when the player sheet is collapsed itself, but the inner bottom sheet is not.
+            behavior.state = BottomSheetBehavior.STATE_COLLAPSED
             playerSheetCallback?.requestCollapse()
         }
 
