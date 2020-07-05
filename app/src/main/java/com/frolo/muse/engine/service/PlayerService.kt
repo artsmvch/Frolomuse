@@ -28,10 +28,7 @@ import com.frolo.muse.repository.PresetRepository
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.sleeptimer.PlayerSleepTimer
 import com.frolo.muse.ui.main.MainActivity
-import io.reactivex.Single
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 
@@ -452,12 +449,9 @@ class PlayerService: Service() {
         val song = player.getCurrent()
         val isPlaying = player.isPlaying()
 
-        // TODO: ensure getPlaybackArt returns not null
-        notificationDisposable = Single.fromCallable { Notifications.getPlaybackArt(this, song) }
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            //.doOnSubscribe { startForeground(NOTIFICATION_ID_PLAYBACK, buildPlaybackNotification(song, isPlaying, null)) }
+        notificationDisposable = Notifications.getPlaybackArt(this, song)
             .doOnSuccess { startForeground(NOTIFICATION_ID_PLAYBACK, buildPlaybackNotification(song, isPlaying, it)) }
+            .doOnError { startForeground(NOTIFICATION_ID_PLAYBACK, buildPlaybackNotification(song, isPlaying, null)) }
             .ignoreElement()
             .subscribe({ /*stub*/ }, { /*stub*/ })
 
