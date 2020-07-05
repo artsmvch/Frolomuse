@@ -14,6 +14,9 @@
 
     <!--Notification-->
     <color name="notification_bg_black">#333333</color>
+    <color name="notification_grad_overlay_1">#333333</color>
+    <color name="notification_grad_overlay_2">#99333333</color>
+    <color name="notification_grad_overlay_3">#1E333333</color>
     <color name="notification_accent">@color/md_light_blue_600</color>
 
     <!--Widget-->

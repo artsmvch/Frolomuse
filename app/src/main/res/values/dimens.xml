@@ -20,7 +20,8 @@
 
     <dimen name="list_item_check_size">24dp</dimen>
 
-    <dimen name="notify_controller_size">40dp</dimen>
+    <dimen name="ntf_playback_button_size">40dp</dimen>
+    <dimen name="ntf_playback_button_padding">13dp</dimen>
 
     <dimen name="widget_margin">6dp</dimen>
 

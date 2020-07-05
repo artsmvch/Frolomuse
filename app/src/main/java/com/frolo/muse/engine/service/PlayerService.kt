@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.graphics.Bitmap
 import android.media.AudioManager
 import android.os.*
 import android.support.v4.media.session.MediaSessionCompat
@@ -12,16 +13,13 @@ import android.widget.RemoteViews
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.frolo.muse.App
-import com.frolo.muse.R
 import com.frolo.muse.Logger
+import com.frolo.muse.R
 import com.frolo.muse.engine.*
 import com.frolo.muse.engine.audiofx.AudioFx_Impl
 import com.frolo.muse.engine.service.PlayerService.Companion.newIntent
 import com.frolo.muse.engine.service.PlayerService.PlayerBinder
-import com.frolo.muse.glide.GlideAlbumArtHelper
 import com.frolo.muse.headset.createHeadsetHandler
 import com.frolo.muse.interactor.media.DispatchSongPlayedUseCase
 import com.frolo.muse.model.media.Song
@@ -30,6 +28,10 @@ import com.frolo.muse.repository.PresetRepository
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.sleeptimer.PlayerSleepTimer
 import com.frolo.muse.ui.main.MainActivity
+import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 
@@ -82,6 +84,7 @@ class PlayerService: Service() {
         private const val CHANNEL_ID_PLAYBACK_OLD = "audio_playback"
         private const val CHANNEL_ID_PLAYBACK = "playback"
         private const val NOTIFICATION_ID_PLAYBACK = 1001
+        private val MODERN_PLAYBACK_NOTIFICATION = true //Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
 
         /**
          * Starts the PlayerService in foreground.
@@ -94,6 +97,7 @@ class PlayerService: Service() {
         @JvmStatic
         fun newIntent(context: Context): Intent = Intent(context, PlayerService::class.java)
 
+        @JvmStatic
         fun newIntent(context: Context, command: Int): Intent = Intent(context, PlayerService::class.java)
                 .putExtra(EXTRA_COMMAND, command)
 
@@ -134,6 +138,7 @@ class PlayerService: Service() {
     private val serviceName = "com.frolo.muse.engine.service.PlayerService"
     private var isBound = false // indicates whether the service is bound or not
     private var notificationCancelled = false
+    private var notificationDisposable: Disposable? = null
 
     private lateinit var player: Player
 
@@ -193,6 +198,12 @@ class PlayerService: Service() {
         super.onCreate()
         (application as App).appComponent.inject(this)
 
+        mediaSession = MediaSessionCompat(applicationContext, packageName).apply {
+            setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS)
+            isActive = true
+            setCallback(mediaSessionCallback)
+        }
+
         // This is the first what we have to do.
         // Why? Because initialization may take some time.
         // And I want to be sure that it will not crash due to the Foreground service policy.
@@ -223,12 +234,6 @@ class PlayerService: Service() {
 
         headsetHandler.subscribe(this)
         registerReceiver(sleepTimerHandler, IntentFilter(PlayerSleepTimer.ACTION_ALARM_TRIGGERED))
-
-        mediaSession = MediaSessionCompat(applicationContext, packageName).apply {
-            setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS)
-            isActive = true
-            setCallback(mediaSessionCallback)
-        }
 
         // setting up modes after preferences initialized
         preferences.apply {
@@ -282,6 +287,8 @@ class PlayerService: Service() {
         unregisterReceiver(sleepTimerHandler)
 
         mediaSession.release()
+
+        notificationDisposable?.dispose()
 
         super.onDestroy()
     }
@@ -343,99 +350,101 @@ class PlayerService: Service() {
     }
 
     private fun buildPromiseNotification(): Notification {
-        return buildPlaybackNotification(null, false)
+        return buildPlaybackNotification(null, false, null)
     }
 
-    private fun buildPlaybackNotification(song: Song?, isPlaying: Boolean): Notification {
-        // building notification
-        val remoteViews = RemoteViews(packageName, R.layout.notification_playback).apply {
-            setTextViewText(R.id.tv_song_name, song?.title ?: "")
-            setTextViewText(R.id.tv_artist_name, song?.artist ?: "")
-            setImageViewResource(R.id.btn_play, if (isPlaying) R.drawable.ic_cpause else R.drawable.ic_play)
+    private fun buildPlaybackNotification(song: Song?, isPlaying: Boolean, art: Bitmap?): Notification {
 
-            val context = this@PlayerService
+        val context = this@PlayerService
 
-            newIntent(context, COMMAND_CANCEL_NOTIFICATION).also { intent ->
-                setOnClickPendingIntent(R.id.btn_close,
-                        PendingIntent.getService(
-                                context,
-                                RC_CANCEL_NOTIFICATION,
-                                intent,
-                                PendingIntent.FLAG_UPDATE_CURRENT))
-            }
-
-            newIntent(context, COMMAND_SKIP_TO_PREVIOUS).also { intent ->
-                setOnClickPendingIntent(R.id.btn_skip_to_previous,
-                        PendingIntent.getService(
-                                context,
-                                RC_COMMAND_SKIP_TO_PREVIOUS,
-                                intent,
-                                PendingIntent.FLAG_UPDATE_CURRENT))
-            }
-
-            newIntent(context, COMMAND_TOGGLE).also { intent ->
-                setOnClickPendingIntent(R.id.btn_play,
-                        PendingIntent.getService(
-                                context,
-                                RC_COMMAND_TOGGLE,
-                                intent,
-                                PendingIntent.FLAG_UPDATE_CURRENT))
-            }
-
-            newIntent(context, COMMAND_SKIP_TO_NEXT).also { intent ->
-                setOnClickPendingIntent(R.id.btn_skip_to_next,
-                        PendingIntent.getService(
-                                context,
-                                RC_COMMAND_SKIP_TO_NEXT,
-                                intent,
-                                PendingIntent.FLAG_UPDATE_CURRENT))
-            }
-
-            MainActivity.newIntent(context = context, openPlayer = true).also { intent ->
-                setOnClickPendingIntent(R.id.ll_root,
-                        PendingIntent.getActivity(
-                                context,
-                                RC_OPEN_PLAYER,
-                                intent,
-                                PendingIntent.FLAG_UPDATE_CURRENT))
-            }
+        val cancelPendingIntent = newIntent(context, COMMAND_CANCEL_NOTIFICATION).let { intent ->
+            PendingIntent.getService(context, RC_CANCEL_NOTIFICATION, intent, PendingIntent.FLAG_UPDATE_CURRENT)
         }
 
-        val notification = NotificationCompat.Builder(this, CHANNEL_ID_PLAYBACK)
-                .setSmallIcon(R.drawable.ic_app_brand)
-                //.setAutoCancel(false)
-                .setCustomContentView(remoteViews)
-                .setCustomBigContentView(remoteViews)
-                .setPriority(NotificationCompat.PRIORITY_LOW)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .build()
+        val previousPendingIntent = newIntent(context, COMMAND_SKIP_TO_PREVIOUS).let { intent ->
+            PendingIntent.getService(context, RC_COMMAND_SKIP_TO_PREVIOUS, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        }
 
-        //region Load image
-        val target = SafeNotificationTarget.create(
-                this, R.id.imv_album_art, remoteViews, notification, NOTIFICATION_ID_PLAYBACK)
-        val error = Glide.with(this)
-                .asBitmap()
-                .load(R.drawable.notification_album_art_placeholder)
-                .skipMemoryCache(true)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-        val options = GlideAlbumArtHelper.get()
-                .makeRequestOptions(song?.albumId ?: -1)
-                .placeholder(R.drawable.notification_album_art_placeholder)
-                .error(R.drawable.notification_album_art_placeholder)
-        val uri = GlideAlbumArtHelper.getUri(song?.albumId ?: -1)
-        Glide.with(this)
-                .asBitmap()
-                .load(uri)
-                .apply(options)
-                .error(error)
-                .into(target)
-        //endregion
+        val togglePendingIntent = newIntent(context, COMMAND_TOGGLE).let { intent ->
+            PendingIntent.getService(context, RC_COMMAND_TOGGLE, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        }
 
-        return notification
+        val nextPendingIntent = newIntent(context, COMMAND_SKIP_TO_NEXT).let { intent ->
+            PendingIntent.getService(context, RC_COMMAND_SKIP_TO_NEXT, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        }
+
+        val openPendingIntent = MainActivity.newIntent(context = context, openPlayer = true).let { intent ->
+            PendingIntent.getActivity(context, RC_OPEN_PLAYER, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        }
+
+        val notificationBuilder = NotificationCompat.Builder(this, CHANNEL_ID_PLAYBACK).apply {
+            setSmallIcon(R.drawable.ic_app_brand)
+
+            setContentTitle(song?.title.orEmpty())
+            setContentText(song?.artist.orEmpty())
+
+            setContentIntent(openPendingIntent)
+
+            setPriority(NotificationCompat.PRIORITY_LOW)
+            setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+        }
+
+        if (MODERN_PLAYBACK_NOTIFICATION) {
+
+            notificationBuilder.apply {
+                addAction(R.drawable.ntf_ic_previous, "Previous", previousPendingIntent)
+                if (isPlaying) {
+                    addAction(R.drawable.ntf_ic_pause, "Pause", togglePendingIntent)
+                } else {
+                    addAction(R.drawable.ntf_ic_play, "Play", togglePendingIntent)
+                }
+                addAction(R.drawable.ntf_ic_next, "Next", nextPendingIntent)
+                addAction(R.drawable.ntf_ic_cancel, "Cancel", cancelPendingIntent)
+
+                setStyle(
+                    androidx.media.app.NotificationCompat.MediaStyle()
+                        .setShowActionsInCompactView(0, 1, 2)
+                        .setMediaSession(mediaSession.sessionToken)
+                        .setShowCancelButton(false)
+                )
+
+                setLargeIcon(art)
+            }
+
+        } else {
+
+            val remoteViews = RemoteViews(context.packageName, R.layout.notification_playback).apply {
+                setTextViewText(R.id.tv_song_name, song?.title ?: "")
+                setTextViewText(R.id.tv_artist_name, song?.artist ?: "")
+                setImageViewResource(R.id.btn_play, if (isPlaying) R.drawable.ic_cpause else R.drawable.ic_play)
+                setImageViewBitmap(R.id.imv_album_art, art)
+
+                setOnClickPendingIntent(R.id.btn_cancel, cancelPendingIntent)
+                setOnClickPendingIntent(R.id.btn_skip_to_previous, previousPendingIntent)
+                setOnClickPendingIntent(R.id.btn_play, togglePendingIntent)
+                setOnClickPendingIntent(R.id.btn_skip_to_next, nextPendingIntent)
+                setOnClickPendingIntent(R.id.root_container, openPendingIntent)
+            }
+
+            notificationBuilder.apply {
+                //setStyle(NotificationCompat.DecoratedCustomViewStyle())
+                //setCustomContentView(remoteViews)
+                setCustomBigContentView(remoteViews)
+                setStyle(
+                    androidx.media.app.NotificationCompat.MediaStyle()
+                        .setMediaSession(mediaSession.sessionToken)
+                )
+            }
+
+        }
+
+        return notificationBuilder.build()
     }
 
-    //@MainThread
     private fun notifyAboutPlayback(forceNotify: Boolean) {
+        notificationDisposable?.dispose()
+        notificationDisposable = null
+
         if (notificationCancelled && !forceNotify) {
             return
         }
@@ -443,26 +452,16 @@ class PlayerService: Service() {
         val song = player.getCurrent()
         val isPlaying = player.isPlaying()
 
-        val notification = if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP_MR1) {
-            // It's necessary to wrap building notification in try-catch for SDK version <= LOLLIPOP_MR1.
-            // See https://fabric.io/frolovs-projects/android/apps/com.frolo.musp/issues/52dcccd58785f4ffa06d11c944cc982c
-            try {
-                buildPlaybackNotification(song, isPlaying)
-            } catch (e: Throwable) {
-                Logger.e(TAG, e)
-                null
-            }
-        } else buildPlaybackNotification(song, isPlaying)
-
-        if (notification == null) {
-            Logger.w(TAG, "Failed to build notification.")
-            return
-        }
+        // TODO: ensure getPlaybackArt returns not null
+        notificationDisposable = Single.fromCallable { Notifications.getPlaybackArt(this, song) }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            //.doOnSubscribe { startForeground(NOTIFICATION_ID_PLAYBACK, buildPlaybackNotification(song, isPlaying, null)) }
+            .doOnSuccess { startForeground(NOTIFICATION_ID_PLAYBACK, buildPlaybackNotification(song, isPlaying, it)) }
+            .ignoreElement()
+            .subscribe({ /*stub*/ }, { /*stub*/ })
 
         // We're about to post the notification. It's not cancelled now
         notificationCancelled = false
-
-        Logger.d(TAG, "Starting foreground by posting notification")
-        startForeground(NOTIFICATION_ID_PLAYBACK, notification)
     }
 }

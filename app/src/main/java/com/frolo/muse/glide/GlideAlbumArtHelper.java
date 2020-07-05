@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 
+import androidx.annotation.AnyThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.UiThread;
 import androidx.collection.LongSparseArray;
@@ -55,6 +56,7 @@ public final class GlideAlbumArtHelper {
      * @param albumId for which to create a uri
      * @return uri
      */
+    @AnyThread
     public static Uri getUri(long albumId) {
         return ContentUris.withAppendedId(sAlbumArtUri, albumId);
     }
