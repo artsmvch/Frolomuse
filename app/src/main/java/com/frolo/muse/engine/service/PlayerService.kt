@@ -7,7 +7,9 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Bitmap
 import android.media.AudioManager
+import android.media.MediaMetadata
 import android.os.*
+import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaSessionCompat
 import android.widget.RemoteViews
 import androidx.annotation.RequiresApi
@@ -81,6 +83,10 @@ class PlayerService: Service() {
         private const val CHANNEL_ID_PLAYBACK_OLD = "audio_playback"
         private const val CHANNEL_ID_PLAYBACK = "playback"
         private const val NOTIFICATION_ID_PLAYBACK = 1001
+
+        // For now, we'd better use the modern playback notification,
+        // because it is correctly shown on the lock screen.
+        // Our custom notification has some issues and is not shown on the lock screen for some devices.
         private val MODERN_PLAYBACK_NOTIFICATION = true //Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
 
         /**
@@ -163,7 +169,7 @@ class PlayerService: Service() {
         }
     }
 
-    // Handling for headsets
+    // HeadsetHandler is used to handle the status of the headset (connected, disconnected, etc.)
     private val headsetHandler = createHeadsetHandler(
         onConnected = {
             if (preferences.shouldResumeOnPluggedIn()) {
@@ -180,12 +186,20 @@ class PlayerService: Service() {
         }
     )
 
-    // Handling headset button actions
+    // MediaSession is used to control buttons clicks from headsets and playback notifications.
     private lateinit var mediaSession: MediaSessionCompat
     private val mediaSessionCallback = object : MediaSessionCallback() {
-        override fun onTogglePlayback() = player.toggle()
-        override fun onSkipToNext() = player.skipToNext()
-        override fun onSkipToPrevious() = player.skipToPrevious()
+        override fun onTogglePlayback() {
+            player.toggle()
+        }
+
+        override fun onSkipToNext() {
+            player.skipToNext()
+        }
+
+        override fun onSkipToPrevious() {
+            player.skipToPrevious()
+        }
     }
 
     /**
@@ -199,6 +213,12 @@ class PlayerService: Service() {
             setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS)
             isActive = true
             setCallback(mediaSessionCallback)
+
+            // This hides progress bar from the Playback notification.
+            val mediaMetadata = MediaMetadata.Builder()
+                    .putLong(MediaMetadata.METADATA_KEY_DURATION, -1L)
+                    .build()
+            setMetadata(MediaMetadataCompat.fromMediaMetadata(mediaMetadata))
         }
 
         // This is the first what we have to do.
