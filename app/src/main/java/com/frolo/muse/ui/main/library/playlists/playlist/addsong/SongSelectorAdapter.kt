@@ -7,16 +7,14 @@ import com.bumptech.glide.RequestManager
 import com.frolo.muse.R
 import com.frolo.muse.inflateChild
 import com.frolo.muse.model.media.Song
-import com.frolo.muse.ui.getAlbumString
+import com.frolo.muse.ui.getArtistString
 import com.frolo.muse.ui.getDurationString
 import com.frolo.muse.ui.getNameString
 import com.frolo.muse.ui.main.library.base.SongAdapter
 import kotlinx.android.synthetic.main.item_select_song.view.*
 
 
-class SongSelectorAdapter constructor(
-        requestManager: RequestManager
-): SongAdapter<Song>(requestManager) {
+class SongSelectorAdapter(requestManager: RequestManager): SongAdapter<Song>(requestManager) {
 
     override fun onCreateBaseViewHolder(parent: ViewGroup, viewType: Int) =
             SongSelectorViewHolder(parent.inflateChild(R.layout.item_select_song))
@@ -31,7 +29,7 @@ class SongSelectorAdapter constructor(
         with(selectorViewHolder.itemView) {
             val res = resources
             tv_song_name.text = item.getNameString(res)
-            tv_album_name.text = item.getAlbumString(res)
+            tv_artist_name.text = item.getArtistString(res)
             tv_duration.text = item.getDurationString()
 
             chb_select_song.setChecked(checked = selected, animate = selectionChanged)

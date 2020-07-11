@@ -51,13 +51,13 @@
             tools:text="Song name"/>
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_album_name"
+            android:id="@+id/tv_artist_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?textAppearanceListItemSecondary"
             android:lines="1"
             android:ellipsize="end"
-            tools:text="Album name"/>
+            tools:text="Artist name"/>
     </LinearLayout>
 
 </RelativeLayout>
