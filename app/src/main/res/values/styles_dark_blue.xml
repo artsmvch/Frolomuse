@@ -94,6 +94,11 @@
         <item name="boxStrokeColor">@color/app_dark_blue_accent_ultra</item>
         <item name="hintTextColor">@color/app_dark_blue_accent_ultra</item>
         <item name="android:textColorHint">@color/app_dark_blue_accent_ultra</item>
+        <item name="materialThemeOverlay">@style/AppTheme.TextInputEditText.Dark.Blue</item>
+    </style>
+
+    <style name="AppTheme.TextInputEditText.Dark.Blue" parent="ThemeOverlay.MaterialComponents.TextInputEditText.OutlinedBox">
+        <item name="colorControlActivated">@color/app_dark_blue_accent_ultra</item>
     </style>
 
     <style name="AppTheme.TabLayout.Dark.Blue" parent="Widget.MaterialComponents.TabLayout.Colored">
