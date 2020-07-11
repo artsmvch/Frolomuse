@@ -3,7 +3,10 @@ package com.frolo.muse.ui.main.player
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import com.frolo.muse.arch.*
+import com.frolo.muse.arch.SingleLiveEvent
+import com.frolo.muse.arch.combine
+import com.frolo.muse.arch.liveDataOf
+import com.frolo.muse.arch.map
 import com.frolo.muse.di.Exec
 import com.frolo.muse.engine.*
 import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
@@ -133,10 +136,8 @@ class PlayerViewModel @Inject constructor(
     val songPosition: LiveData<Int> get() = _songPosition
 
     private val _showVolumeControlEvent = SingleLiveEvent<Unit>()
-    val showVolumeControlEvent: LiveData<Unit> get() = _showVolumeControlEvent
-
-    private val _showPlaybackParamsEvent = SingleLiveEvent<Unit>()
-    val showPlaybackParamsEvent: LiveData<Unit> get() = _showPlaybackParamsEvent
+    val showVolumeControlEvent: LiveData<Unit>
+        get() = _showVolumeControlEvent
 
     val isFavourite: LiveData<Boolean> =
         Transformations.switchMap(song) { song: Song? ->
@@ -234,11 +235,7 @@ class PlayerViewModel @Inject constructor(
     }
 
     fun onVolumeControlClicked() {
-        _showVolumeControlEvent.call()
-    }
-
-    fun onPlaybackParamsClicked() {
-        _showPlaybackParamsEvent.call()
+        _showVolumeControlEvent.value = Unit
     }
 
     fun onSeekProgressToPercent(percent: Float) {

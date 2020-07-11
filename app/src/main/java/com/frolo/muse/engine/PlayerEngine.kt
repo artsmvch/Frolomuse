@@ -85,12 +85,6 @@ class PlayerEngine constructor(
 
     private var disposableAB: Disposable? = null
 
-    // Speed and pitch
-    @Volatile
-    private var speed: Float = Player.SPEED_NORMAL
-    @Volatile
-    private var pitch: Float = Player.PITCH_NORMAL
-
     /****************************
      ****** HELPER METHODS ******
      ***************************/
@@ -332,21 +326,6 @@ class PlayerEngine constructor(
         }
     }
 
-    /**
-     * Safely applies playback params to the engine.
-     * This method should be called only when the engine is about to start.
-     * Otherwise, this may lead to an unexpected result:
-     * e.i. if the engine is in paused state then setting a positive speed value automatically starts the playback.
-     */
-    private fun tryApplyPlaybackParamsBeforeStart() {
-        engine.runCatching {
-            val params = playbackParams
-            params.speed = speed
-            params.pitch = pitch
-            playbackParams = params
-        }
-    }
-
     private fun resetInternal() {
         ThreadStrictMode.assertBackground()
         synchronized(lock) {
@@ -378,7 +357,6 @@ class PlayerEngine constructor(
                 isPlayingFlag = true
                 if (isPreparedFlag) {
                     if (audioFocusHandler.requestAudioFocus()) {
-                        tryApplyPlaybackParamsBeforeStart()
                         start()
                         // dispatch always!
                         execOnEventThread {
@@ -424,7 +402,6 @@ class PlayerEngine constructor(
                             observerRegistry.onPlaybackPaused(this@PlayerEngine)
                         }
                     } else if (audioFocusHandler.requestAudioFocus()) {
-                        tryApplyPlaybackParamsBeforeStart()
                         start()
                         execOnEventThread {
                             observerRegistry.onPlaybackStarted(this@PlayerEngine)
@@ -1002,40 +979,42 @@ class PlayerEngine constructor(
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    override fun getSpeed(): Float = speed
+    override fun getSpeed(): Float {
+        return engine.runCatching {
+            playbackParams.speed
+        }.onFailure { err ->
+            Logger.e(LOG_TAG, err)
+        }.getOrDefault(Player.SPEED_NORMAL)
+    }
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun setSpeed(speed: Float) {
         engine.runCatching {
-            // apply it only if the engine is playing
-            if (isPreparedFlag && isPlayingFlag) {
-                val params = playbackParams
-                params.speed = speed
-                playbackParams = params
-            }
+            val params = playbackParams
+            params.speed = speed
+            playbackParams = params
         }.onFailure { err ->
             Logger.e(LOG_TAG, err)
-        }.onSuccess {
-            this.speed = speed
         }
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
-    override fun getPitch(): Float = pitch
+    override fun getPitch(): Float {
+        return engine.runCatching {
+            playbackParams.pitch
+        }.onFailure { err ->
+            Logger.e(LOG_TAG, err)
+        }.getOrDefault(Player.SPEED_NORMAL)
+    }
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun setPitch(pitch: Float) {
         engine.runCatching {
-            // apply it only if the engine is playing
-            if (isPreparedFlag && isPlayingFlag) {
-                val params = playbackParams
-                params.pitch = pitch
-                playbackParams = params
-            }
+            val params = playbackParams
+            params.pitch = pitch
+            playbackParams = params
         }.onFailure { err ->
             Logger.e(LOG_TAG, err)
-        }.onSuccess {
-            this.pitch = pitch
         }
     }
 

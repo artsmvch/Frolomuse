@@ -35,7 +35,6 @@ import com.frolo.muse.ui.asDurationInMs
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.getArtistString
 import com.frolo.muse.ui.getNameString
-import com.frolo.muse.ui.main.audiofx.params.PlaybackParamsDialog
 import com.frolo.muse.ui.main.confirmDeletion
 import com.frolo.muse.ui.main.player.carousel.AlbumCardCarouselHelper
 import com.frolo.muse.ui.main.player.carousel.AlbumCardAdapter
@@ -209,10 +208,6 @@ class PlayerFragment: BaseFragment() {
 
         btn_volume.setOnClickListener {
             viewModel.onVolumeControlClicked()
-        }
-
-        btn_playback_params.setOnClickListener {
-            viewModel.onPlaybackParamsClicked()
         }
     }
 
@@ -443,18 +438,6 @@ class PlayerFragment: BaseFragment() {
             context?.showVolumeControl()
         }
 
-        showPlaybackParamsEvent.observe(owner) {
-            val taggedFrag = childFragmentManager.findFragmentByTag(FRAG_TAG_PLAYBACK_PARAMS)
-            if (taggedFrag is PlaybackParamsDialog) {
-                // dismissing the previous one
-                taggedFrag.dismiss()
-            }
-
-            // showing the new one
-            val dialog = PlaybackParamsDialog.newInstance()
-            dialog.show(childFragmentManager, FRAG_TAG_PLAYBACK_PARAMS)
-        }
-
         playbackDuration.observeNonNull(owner) { duration ->
             tv_duration.text = duration.asDurationInMs()
         }
@@ -498,8 +481,6 @@ class PlayerFragment: BaseFragment() {
 
     companion object {
         private const val LOG_TAG = "PlayerFragment"
-
-        private const val FRAG_TAG_PLAYBACK_PARAMS = "playback_params"
 
         private fun View.markControllerEnabled(enabled: Boolean) {
             isEnabled = enabled
