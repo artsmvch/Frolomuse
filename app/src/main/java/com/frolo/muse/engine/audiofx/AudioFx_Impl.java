@@ -1,12 +1,15 @@
 package com.frolo.muse.engine.audiofx;
 
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.media.audiofx.AudioEffect;
 import android.media.audiofx.BassBoost;
 import android.media.audiofx.Equalizer;
 import android.media.audiofx.PresetReverb;
 import android.media.audiofx.Virtualizer;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import com.frolo.muse.BuildConfig;
 import com.frolo.muse.engine.AudioFxApplicable;
@@ -34,11 +37,11 @@ public class AudioFx_Impl implements AudioFxApplicable {
     private static final boolean DEBUG = BuildConfig.DEBUG;
 
     /**
-     * If this flag is set to true, then, when {@link AudioFxApplicable#apply(int)} is called,
+     * If this flag is set to true, then, when {@link AudioFxApplicable#apply(MediaPlayer)} is called,
      * the AudioFx can omit the initialization of all audio effects if the audio session does NOT change.
      *
      * If this flag is set to false, then the AudioFx initialize all audio effects
-     * every time {@link AudioFxApplicable#apply(int)} is called.
+     * every time {@link AudioFxApplicable#apply(MediaPlayer)} is called.
      *
      * Be careful by settings this to false, because it may be not an optimal solution.
      */
@@ -57,7 +60,7 @@ public class AudioFx_Impl implements AudioFxApplicable {
     private final Context mContext;
 
     /**
-     * Remember the last session ID so we can compare it later when {@link AudioFxApplicable#apply(int)} method gets called.
+     * Remember the last session ID so we can compare it later when {@link AudioFxApplicable#apply(MediaPlayer)} method gets called.
      * If the audio session ID doesn't change then we can omit AudioFx adjustment to that session ID.
      */
     private volatile Integer mLastSessionId = null;
@@ -565,7 +568,9 @@ public class AudioFx_Impl implements AudioFxApplicable {
     }
 
     @Override
-    public synchronized void apply(int audioSessionId) {
+    public synchronized void apply(@NonNull MediaPlayer engine) {
+        final int audioSessionId = engine.getAudioSessionId();
+
         final Integer currSessionId = mLastSessionId;
 
         final boolean sessionHasChanged = currSessionId == null || currSessionId != audioSessionId;
@@ -680,8 +685,9 @@ public class AudioFx_Impl implements AudioFxApplicable {
             }
         }
 
-        // Re-set preset reverb, if needed
-        if (mHasPresetReverb && (!canOmitInitialization || mPresetReverb == null)) {
+        // In this method, we always set up the preset reverb (if the device has such an audio effect).
+        // Always, because it is applied directly to the media player and not to its audio session ID.
+        if (mHasPresetReverb) {
             try {
                 PresetReverb oldPresetReverb = mPresetReverb;
                 if (oldPresetReverb != null)
@@ -691,7 +697,13 @@ public class AudioFx_Impl implements AudioFxApplicable {
             }
 
             try {
-                PresetReverb newPresetReverb = new PresetReverb(priority, audioSessionId);
+
+                // Since PresetReverb is an auxiliary effect,
+                // we need to apply it to audio session 0
+                // and attach to the given media player.
+                // Otherwise, the effect will not work for some devices.
+                // See https://stackoverflow.com/a/10412949/9437681
+                PresetReverb newPresetReverb = new PresetReverb(priority, 0);
 
                 mPresetReverb = newPresetReverb;
 
@@ -699,6 +711,9 @@ public class AudioFx_Impl implements AudioFxApplicable {
 
                 final short presetReverbIndex = getPresetReverbIndex(mPersistence.getReverb());
                 newPresetReverb.setPreset(presetReverbIndex);
+
+                engine.attachAuxEffect(newPresetReverb.getId());
+                engine.setAuxEffectSendLevel(1.0f);
             } catch (Throwable t) {
                 report(t);
             }
@@ -709,7 +724,7 @@ public class AudioFx_Impl implements AudioFxApplicable {
 
     /**
      * This is a very important method that must be called when the player engine does not need the AudioFx anymore.
-     * If this is not called then it may fail applying audio effects in {@link AudioFxApplicable#apply(int)} method.
+     * If this is not called then it may fail applying audio effects in {@link AudioFxApplicable#apply(MediaPlayer)} method.
      * For example, here are the steps to reproduce such a bug case:
      * 1) open the app, play some songs and apply some audio fx settings => it works well.
      * 2) close the app by pressing system back button and close the playback notification (but do not remove the app from recent).

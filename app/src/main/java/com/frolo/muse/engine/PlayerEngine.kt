@@ -24,11 +24,11 @@ import kotlin.math.min
  * All event operations are performed on the event thread using [eventHandler].
  */
 class PlayerEngine constructor(
-        private val engineHandler: Handler,
-        private val eventHandler: Handler,
-        private val audioFxApplicable: AudioFxApplicable,
-        private val observerRegistry: ObserverRegistry,
-        audioManager: AudioManager?
+    private val engineHandler: Handler,
+    private val eventHandler: Handler,
+    private val audioFxApplicable: AudioFxApplicable,
+    private val observerRegistry: ObserverRegistry,
+    audioManager: AudioManager?
 ): Player {
 
     companion object {
@@ -158,7 +158,7 @@ class PlayerEngine constructor(
                     }
 
                     // applying audio fx
-                    audioFxApplicable.apply(audioSessionId)
+                    audioFxApplicable.apply(this)
 
                     execOnEventThread {
                         observerRegistry.onPlaybackPaused(this@PlayerEngine)
@@ -295,7 +295,7 @@ class PlayerEngine constructor(
                 }
 
                 // applying audio fx
-                audioFxApplicable.apply(audioSessionId)
+                audioFxApplicable.apply(this)
 
                 // seeking to the given position
                 seekTo(min(playbackPosition, duration))
