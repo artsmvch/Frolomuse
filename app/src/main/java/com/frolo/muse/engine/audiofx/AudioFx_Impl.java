@@ -12,6 +12,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.frolo.muse.BuildConfig;
+import com.frolo.muse.ManufacturerUtils;
 import com.frolo.muse.engine.AudioFxApplicable;
 import com.frolo.muse.engine.AudioFxObserver;
 import com.frolo.muse.model.preset.CustomPreset;
@@ -687,6 +688,8 @@ public class AudioFx_Impl implements AudioFxApplicable {
 
         // In this method, we always set up the preset reverb (if the device has such an audio effect).
         // Always, because it is applied directly to the media player and not to its audio session ID.
+        // NOTE: For Xiaomi devices, the preset reverb is applied directly to the audio session ID.
+        // In any case, we'd better re-setup it (release the old, create a new one).
         if (mHasPresetReverb) {
             try {
                 PresetReverb oldPresetReverb = mPresetReverb;
@@ -698,22 +701,33 @@ public class AudioFx_Impl implements AudioFxApplicable {
 
             try {
 
-                // Since PresetReverb is an auxiliary effect,
-                // we need to apply it to audio session 0
-                // and attach to the given media player.
-                // Otherwise, the effect will not work for some devices.
-                // See https://stackoverflow.com/a/10412949/9437681
-                PresetReverb newPresetReverb = new PresetReverb(priority, 0);
+                final PresetReverb newPresetReverb;
 
-                mPresetReverb = newPresetReverb;
+                if (ManufacturerUtils.isXiaomiDevice()) {
+
+                    // Only works for Xiaomi
+                    newPresetReverb = new PresetReverb(priority, audioSessionId);
+
+                } else {
+
+                    // Since PresetReverb is an auxiliary effect,
+                    // we need to apply it to audio session 0
+                    // and attach to the given media player.
+                    // Otherwise, the effect will not work for some devices.
+                    // See https://stackoverflow.com/a/10412949/9437681
+                    newPresetReverb = new PresetReverb(priority, 0);
+
+                    engine.attachAuxEffect(newPresetReverb.getId());
+                    engine.setAuxEffectSendLevel(1.0f);
+
+                }
 
                 newPresetReverb.setEnabled(mPersistence.isEnabled());
 
                 final short presetReverbIndex = getPresetReverbIndex(mPersistence.getReverb());
                 newPresetReverb.setPreset(presetReverbIndex);
 
-                engine.attachAuxEffect(newPresetReverb.getId());
-                engine.setAuxEffectSendLevel(1.0f);
+                mPresetReverb = newPresetReverb;
             } catch (Throwable t) {
                 report(t);
             }
