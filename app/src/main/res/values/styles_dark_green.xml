@@ -77,6 +77,11 @@
         <item name="boxStrokeWidthFocused">1.2dp</item>
         <item name="hintTextColor">@color/app_dark_green_accent</item>
         <item name="android:textColorHint">@color/app_dark_green_accent</item>
+        <item name="materialThemeOverlay">@style/AppTheme.TextInputEditText.Dark.Green</item>
+    </style>
+
+    <style name="AppTheme.TextInputEditText.Dark.Green" parent="ThemeOverlay.MaterialComponents.TextInputEditText.OutlinedBox">
+        <item name="colorControlActivated">@color/app_dark_green_accent</item>
     </style>
 
     <style name="AppTheme.TabLayout.Dark.Green" parent="Widget.MaterialComponents.TabLayout.Colored">
