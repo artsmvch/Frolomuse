@@ -42,6 +42,7 @@
         <item name="alertDialogTheme">@style/AppTheme.AlertDialog.Light.Blue</item>
         <item name="materialAlertDialogTheme">@style/AppTheme.MaterialAlertDialog.Light.Blue</item>
 
+        <item name="textInputStyle">@style/AppTheme.TextInputLayout.Light.Blue</item>
         <item name="seekBarStyle">@style/AppTheme.SeekBar.Light.Blue</item>
     </style>
 
@@ -59,6 +60,9 @@
         <item name="colorError">@color/md_red_500</item>
         <item name="colorSurface">@color/app_blue_surface</item>
         <item name="colorOnSurface">@color/app_blue_on_surface</item>
+
+        <item name="textInputStyle">@style/AppTheme.TextInputLayout.Light.Blue</item>
+        <item name="seekBarStyle">@style/AppTheme.SeekBar.Light.Blue</item>
     </style>
 
     <style name="AppTheme.AlertDialog.Light.Blue" parent="Base.AppTheme.AlertDialog">
@@ -122,10 +126,19 @@
     <style name="AppTheme.TextInputLayout.Light.Blue" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="boxStrokeWidth">1.2dp</item>
         <item name="boxStrokeWidthFocused">1.6dp</item>
+        <item name="materialThemeOverlay">@style/AppTheme.TextInputEditText.Light.Blue</item>
+    </style>
+
+    <style name="AppTheme.TextInputEditText.Light.Blue" parent="ThemeOverlay.MaterialComponents.TextInputEditText.OutlinedBox">
+        <item name="colorControlActivated">@color/app_blue_primary</item>
     </style>
 
     <style name="AppTheme.Button.TextButton.Dialog.Light.Blue" parent="Base.AppTheme.Button.TextButton.Dialog">
         <item name="rippleColor">@color/app_blue_primary</item>
         <item name="android:textColor">@color/app_blue_primary</item>
+    </style>
+
+    <style name="AppTheme.SeekBar.Light.Blue" parent="Base.AppTheme.SeekBar">
+        <item name="android:progressDrawable">@drawable/bg_progress_light</item>
     </style>
 </resources>

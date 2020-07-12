@@ -60,9 +60,7 @@
 
         <item name="textAppearanceButton">@style/Base.AppTheme.TextAppearance.Button</item>
 
-        <item name="textInputStyle">@style/AppTheme.TextInputLayout.Light.Blue</item>
         <item name="materialButtonStyle">@style/Base.AppTheme.Button.TextButton</item>
-        <item name="seekBarStyle">@style/AppTheme.SeekBar.Light.Blue</item>
         <item name="switchStyle">@style/Switch.Light</item>
         <item name="searchViewStyle">@style/Base.AppTheme.SearchView</item>
         <item name="autoCompleteTextViewStyle">@style/Base.AppTheme.AutoCompleteTextView</item>
@@ -91,10 +89,6 @@
 
     <style name="AppTheme.BottomSheet.Light" parent="@style/Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/bg_bottom_dialog_light</item>
-    </style>
-
-    <style name="AppTheme.SeekBar.Light.Blue" parent="Base.AppTheme.SeekBar">
-        <item name="android:progressDrawable">@drawable/bg_progress_light</item>
     </style>
 
     <style name="Switch.Light" parent="Widget.MaterialComponents.CompoundButton.Switch">
