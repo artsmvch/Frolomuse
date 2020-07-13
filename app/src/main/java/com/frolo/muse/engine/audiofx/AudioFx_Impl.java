@@ -581,12 +581,15 @@ public class AudioFx_Impl implements AudioFxApplicable {
 
         final int priority = 0;
 
+        final boolean enabled = mPersistence.isEnabled();
+
         if (DEBUG) {
             String msg = new StringBuilder("Applying:\n")
                     .append("audioSessionId=").append(audioSessionId).append("\n")
                     .append("sessionHasChanged=").append(sessionHasChanged).append("\n")
                     .append("canOmitInitialization=").append(canOmitInitialization).append("\n")
                     .append("priority=").append(priority).append("\n")
+                    .append("enabled=").append(enabled).append("\n")
                     .toString();
             Log.d(LOG_TAG, msg);
         }
@@ -606,7 +609,7 @@ public class AudioFx_Impl implements AudioFxApplicable {
 
                 mEqualizer = newEqualizer;
 
-                newEqualizer.setEnabled(mPersistence.isEnabled());
+                newEqualizer.setEnabled(enabled);
 
                 final int eqUseFlag = mPersistence.getEqUseFlag();
                 final boolean adjustBandLevels;
@@ -657,7 +660,7 @@ public class AudioFx_Impl implements AudioFxApplicable {
 
                 mBassBoost = newBassBoost;
 
-                newBassBoost.setEnabled(mPersistence.isEnabled());
+                newBassBoost.setEnabled(enabled);
                 newBassBoost.setStrength(mPersistence.getBassStrength());
             } catch (Throwable t) {
                 report(t);
@@ -679,7 +682,7 @@ public class AudioFx_Impl implements AudioFxApplicable {
 
                 mVirtualizer = newVirtualizer;
 
-                newVirtualizer.setEnabled(mPersistence.isEnabled());
+                newVirtualizer.setEnabled(enabled);
                 newVirtualizer.setStrength(mPersistence.getVirtualizerStrength());
             } catch (Throwable t) {
                 report(t);
@@ -722,7 +725,7 @@ public class AudioFx_Impl implements AudioFxApplicable {
 
                 }
 
-                newPresetReverb.setEnabled(mPersistence.isEnabled());
+                newPresetReverb.setEnabled(enabled);
 
                 final short presetReverbIndex = getPresetReverbIndex(mPersistence.getReverb());
                 newPresetReverb.setPreset(presetReverbIndex);
