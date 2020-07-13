@@ -44,6 +44,14 @@ class AudioFxFragment: BaseFragment(), NoClipping {
 
     private var enableStatusSwitchView: CompoundButton? = null
 
+    /**
+     * Listener for [enableStatusSwitchView].
+     */
+    private val onStatusCheckedChangeListener: CompoundButton.OnCheckedChangeListener =
+        CompoundButton.OnCheckedChangeListener { _, isChecked ->
+            viewModel.onEnableStatusChanged(isChecked)
+        }
+
     private lateinit var presetSaveEvent: PresetSavedEvent
 
     private var blurredSnapshotDisposable: Disposable? = null
@@ -80,9 +88,17 @@ class AudioFxFragment: BaseFragment(), NoClipping {
 
             menu.findItem(R.id.action_switch_audio_fx)?.also { safeMenuItem ->
                 val switchView = safeMenuItem.actionView as CompoundButton
-                switchView.setOnCheckedChangeListener { _, isChecked ->
-                    viewModel.onEnableStatusChanged(isChecked)
-                }
+
+                // Here, we configure the switch.
+
+                // The listener
+                switchView.setOnCheckedChangeListener(onStatusCheckedChangeListener)
+
+                // The next line disables the save-restore mechanism for this switch view.
+                // So that, [onStatusCheckedChangeListener] callback will not be fired
+                // when restoring views in this fragment.
+                switchView.isSaveEnabled = false
+
                 enableStatusSwitchView = switchView
             }
         }
@@ -183,7 +199,16 @@ class AudioFxFragment: BaseFragment(), NoClipping {
         }
 
         audioFxEnabled.observeNonNull(owner) { enabled ->
-            enableStatusSwitchView?.isChecked = enabled
+
+            enableStatusSwitchView?.apply {
+                // Before setting the check flag, we need to set the listener to null.
+                // Then set the needed checked flag.
+                // Finally, set the actual listener back.
+                // Thus, we avoid dispatching unnecessary events about checked flag changes.
+                setOnCheckedChangeListener(null)
+                isChecked = enabled
+                setOnCheckedChangeListener(onStatusCheckedChangeListener)
+            }
 
             layout_audio_fx_content.isEnabled = enabled
 
