@@ -129,6 +129,7 @@ abstract public class PlayerHostActivity
         if (frag != null && frag instanceof PlayerHostFragment) {
             // OK, the PlayerHost fragment is there
             mPlayer = ((PlayerHostFragment) frag).getPlayer();
+            // TODO: find out if we need to call onPlayerDidConnect here
             if (DEBUG) Log.d(LOG_TAG, "Checked PlayerHolder: it was added already");
             return;
         }
