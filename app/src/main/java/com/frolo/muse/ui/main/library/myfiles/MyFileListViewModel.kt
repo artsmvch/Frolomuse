@@ -5,6 +5,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import com.frolo.muse.arch.SingleLiveEvent
 import com.frolo.muse.arch.call
+import com.frolo.muse.engine.AudioSource
 import com.frolo.muse.engine.Player
 import com.frolo.muse.engine.SimplePlayerObserver
 import com.frolo.muse.navigator.Navigator
@@ -19,7 +20,6 @@ import com.frolo.muse.logger.logFilesHidden
 import com.frolo.muse.logger.logFilesScanned
 import com.frolo.muse.logger.logFolderSetAsDefault
 import com.frolo.muse.model.media.MyFile
-import com.frolo.muse.model.media.Song
 import com.frolo.muse.permission.PermissionChecker
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.main.library.base.AbsMediaCollectionViewModel
@@ -69,8 +69,8 @@ class MyFileListViewModel @Inject constructor(
     private var playingPositionDisposable: Disposable? = null
 
     private val playerObserver = object : SimplePlayerObserver() {
-        override fun onSongChanged(player: Player, song: Song?, positionInQueue: Int) {
-            detectPlayingPosition(mediaList.value, song)
+        override fun onAudioSourceChanged(player: Player, item: AudioSource?, positionInQueue: Int) {
+            detectPlayingPosition(mediaList.value, item)
         }
 
         override fun onPlaybackStarted(player: Player) {
@@ -124,10 +124,10 @@ class MyFileListViewModel @Inject constructor(
         _isPlaying.value = player.isPlaying()
     }
 
-    private fun detectPlayingPosition(myFileList: List<MyFile>?, song: Song?) {
+    private fun detectPlayingPosition(myFileList: List<MyFile>?, item: AudioSource?) {
         Single.fromCallable {
             myFileList?.indexOfFirst { myFile ->
-                myFile.isSongFile && myFile.javaFile.absolutePath == song?.source
+                myFile.isSongFile && myFile.javaFile.absolutePath == item?.source
             } ?: -1
         }
                 .subscribeOn(schedulerProvider.computation())

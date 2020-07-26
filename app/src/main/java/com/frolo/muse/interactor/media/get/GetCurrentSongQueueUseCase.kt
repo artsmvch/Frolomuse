@@ -1,9 +1,11 @@
 package com.frolo.muse.interactor.media.get
 
+import com.frolo.muse.common.toSongs
 import com.frolo.muse.engine.Player
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.model.menu.SortOrderMenu
 import com.frolo.muse.model.sort.SortOrder
+import com.frolo.muse.rx.SchedulerProvider
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
@@ -11,6 +13,7 @@ import javax.inject.Inject
 
 
 class GetCurrentSongQueueUseCase @Inject constructor(
+    private val schedulerProvider: SchedulerProvider,
     private val player: Player
 ): GetMediaUseCase<Song> {
 
@@ -27,13 +30,9 @@ class GetCurrentSongQueueUseCase @Inject constructor(
     }
 
     override fun getMediaList(): Flowable<List<Song>> {
-        return Flowable.just(
-                player.getCurrentQueue().let { queue ->
-                    if (queue != null) {
-                        queue.snapshot
-                    } else emptyList()
-                }
-        )
+        return Single.fromCallable { player.getCurrentQueue()?.snapshot?.toSongs().orEmpty() }
+                .subscribeOn(schedulerProvider.computation())
+                .toFlowable()
     }
 
 }

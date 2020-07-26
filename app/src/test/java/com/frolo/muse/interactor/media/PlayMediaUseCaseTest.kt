@@ -2,8 +2,10 @@ package com.frolo.muse.interactor.media
 
 import com.frolo.muse.*
 import com.frolo.muse.engine.Player
-import com.frolo.muse.engine.SongQueue
-import com.frolo.muse.engine.SongQueueFactory
+import com.frolo.muse.engine.AudioSourceQueue
+import com.frolo.muse.common.AudioSourceQueueFactory
+import com.frolo.muse.common.toAudioSource
+import com.frolo.muse.common.toAudioSources
 import com.frolo.muse.model.media.Media
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.repository.MediaRepository
@@ -30,7 +32,7 @@ class PlayMediaUseCaseTest {
     @Mock
     private lateinit var player: Player
     @Mock
-    private lateinit var songQueueFactory: SongQueueFactory
+    private lateinit var audioSourceQueueFactory: AudioSourceQueueFactory
 
     private lateinit var playMediaUseCase: PlayMediaUseCase<Media>
 
@@ -43,7 +45,7 @@ class PlayMediaUseCaseTest {
                 repository,
                 preferences,
                 player,
-                songQueueFactory
+                audioSourceQueueFactory
         )
     }
 
@@ -55,11 +57,11 @@ class PlayMediaUseCaseTest {
 
         val targetSong = songs.first()
 
-        val songQueue = SongQueue.create(
-                SongQueue.CHUNK,
-                SongQueue.NO_ID,
+        val songQueue = AudioSourceQueue.create(
+                AudioSourceQueue.CHUNK,
+                AudioSourceQueue.NO_ID,
                 "SongQueue",
-                songs)
+                songs.toAudioSources())
 
         whenever(repository.collectSongs(eq(items)))
                 .thenReturn(Single.just(songs))
@@ -73,7 +75,7 @@ class PlayMediaUseCaseTest {
         whenever(preferences.saveLastSongId(any()))
                 .thenDoNothing()
 
-        whenever(songQueueFactory.create(eq(items), eq(songs)))
+        whenever(audioSourceQueueFactory.create(eq(items), eq(songs)))
                 .thenReturn(songQueue)
 
         whenever(player.prepare(any(), any(), any(), any()))
@@ -83,7 +85,7 @@ class PlayMediaUseCaseTest {
                 .subscribe()
 
         verify(player, times(1))
-                .prepare(songQueue, targetSong, true)
+                .prepare(songQueue, targetSong.toAudioSource(), true)
     }
 
     @Test
@@ -94,11 +96,11 @@ class PlayMediaUseCaseTest {
 
         val targetSong = songs.first()
 
-        val songQueue = SongQueue.create(
-                SongQueue.CHUNK,
-                SongQueue.NO_ID,
+        val songQueue = AudioSourceQueue.create(
+                AudioSourceQueue.CHUNK,
+                AudioSourceQueue.NO_ID,
                 "SongQueue",
-                songs)
+                songs.toAudioSources())
 
         whenever(repository.collectSongs(eq(item)))
                 .thenReturn(Single.just(songs))
@@ -115,7 +117,7 @@ class PlayMediaUseCaseTest {
         whenever(preferences.saveLastSongId(any()))
                 .thenDoNothing()
 
-        whenever(songQueueFactory.create(eq(listOf(item)), eq(songs)))
+        whenever(audioSourceQueueFactory.create(eq(listOf(item)), eq(songs)))
                 .thenReturn(songQueue)
 
         whenever(player.prepare(any(), any(), any(), any()))
@@ -125,7 +127,7 @@ class PlayMediaUseCaseTest {
                 .subscribe()
 
         verify(player, times(1))
-                .prepare(songQueue, targetSong, true)
+                .prepare(songQueue, targetSong.toAudioSource(), true)
     }
 
     @Test
@@ -144,7 +146,7 @@ class PlayMediaUseCaseTest {
                 .subscribe()
 
         verify(player, times(1))
-                .addAllNext(songs)
+                .addAllNext(songs.toAudioSources())
     }
 
     @Test
@@ -163,7 +165,7 @@ class PlayMediaUseCaseTest {
                 .subscribe()
 
         verify(player, times(1))
-                .addAllNext(songs)
+                .addAllNext(songs.toAudioSources())
     }
 
     @Test
@@ -182,7 +184,7 @@ class PlayMediaUseCaseTest {
                 .subscribe()
 
         verify(player, times(1))
-                .addAll(songs)
+                .addAll(songs.toAudioSources())
     }
 
     @Test
@@ -201,6 +203,6 @@ class PlayMediaUseCaseTest {
                 .subscribe()
 
         verify(player, times(1))
-                .addAll(songs)
+                .addAll(songs.toAudioSources())
     }
 }

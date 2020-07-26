@@ -1,10 +1,11 @@
 package com.frolo.muse.interactor.player
 
+import com.frolo.muse.common.albumId
+import com.frolo.muse.common.artistId
 import com.frolo.muse.engine.Player
 import com.frolo.muse.model.media.Album
 import com.frolo.muse.model.media.Artist
 import com.frolo.muse.model.media.Genre
-import com.frolo.muse.model.media.Song
 import com.frolo.muse.repository.AlbumRepository
 import com.frolo.muse.repository.ArtistRepository
 import com.frolo.muse.rx.SchedulerProvider

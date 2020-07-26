@@ -1,7 +1,9 @@
 package com.frolo.muse.di.impl.engine;
 
-import com.frolo.muse.engine.SongQueue;
-import com.frolo.muse.engine.SongQueueFactory;
+import com.frolo.muse.common.AudioSourceQueueFactory;
+import com.frolo.muse.common.Util;
+import com.frolo.muse.engine.AudioSource;
+import com.frolo.muse.engine.AudioSourceQueue;
 import com.frolo.muse.model.media.Album;
 import com.frolo.muse.model.media.Artist;
 import com.frolo.muse.model.media.Genre;
@@ -13,60 +15,63 @@ import com.frolo.muse.model.media.Song;
 import java.util.List;
 
 
-public class DefaultSongQueueFactory extends SongQueueFactory {
+public final class DefaultAudioSourceQueueFactory extends AudioSourceQueueFactory {
 
     @Override
-    public SongQueue create(List<? extends Media> targets, List<Song> songs) {
+    public AudioSourceQueue create(List<? extends Media> targets, List<Song> songs) {
+
+        final List<AudioSource> audioSources = Util.createAudioSourceList(songs);
+
         if (targets.size() == 1) {
             Media target = targets.get(0);
 
-            @SongQueue.QueueType
+            @AudioSourceQueue.QueueType
             final int type;
             final long id;
             final String name;
 
             switch (target.getKind()) {
                 case Media.ALBUM:
-                    type = SongQueue.ALBUM;
+                    type = AudioSourceQueue.ALBUM;
                     id = target.getId();
                     name = ((Album) target).getName();
                     break;
                 case Media.ARTIST:
-                    type = SongQueue.ARTIST;
+                    type = AudioSourceQueue.ARTIST;
                     id = target.getId();
                     name = ((Artist) target).getName();
                     break;
                 case Media.GENRE:
-                    type = SongQueue.GENRE;
+                    type = AudioSourceQueue.GENRE;
                     id = target.getId();
                     name = ((Genre) target).getName();
                     break;
                 case Media.MY_FILE:
-                    type = SongQueue.FOLDER;
+                    type = AudioSourceQueue.FOLDER;
                     id = target.getId();
                     name = ((MyFile) target).getJavaFile().getName();
                     break;
                 case Media.PLAYLIST:
-                    type = SongQueue.PLAYLIST;
+                    type = AudioSourceQueue.PLAYLIST;
                     name = ((Playlist) target).getName();
                     id = target.getId();
                     break;
                 case Media.SONG:
-                    type = SongQueue.SINGLE;
+                    type = AudioSourceQueue.SINGLE;
                     name = ((Song) target).getTitle();
                     id = target.getId();
                     break;
                 default:
-                    type = SongQueue.CHUNK;
-                    id = SongQueue.NO_ID;
+                    type = AudioSourceQueue.CHUNK;
+                    id = AudioSourceQueue.NO_ID;
                     name = "";
                     break;
             }
 
-            return SongQueue.create(type, id, name, songs);
+            return AudioSourceQueue.create(type, id, name, audioSources);
         }
 
-        return SongQueue.create(SongQueue.CHUNK, SongQueue.NO_ID, "", songs);
+        return AudioSourceQueue.create(AudioSourceQueue.CHUNK, AudioSourceQueue.NO_ID, "", audioSources);
     }
 
 }

@@ -1,7 +1,7 @@
 package com.frolo.muse.repository;
 
 import com.frolo.muse.engine.Player;
-import com.frolo.muse.engine.SongQueue;
+import com.frolo.muse.engine.AudioSourceQueue;
 import com.frolo.muse.model.Library;
 import com.frolo.muse.model.Recently;
 import com.frolo.muse.model.Theme;
@@ -31,12 +31,12 @@ public interface Preferences {
     void saveTheme(Theme theme);
     Theme getTheme();
 
-    void saveLastMediaCollectionType(@SongQueue.QueueType int type);
+    void saveLastMediaCollectionType(@AudioSourceQueue.QueueType int type);
     void saveLastMediaCollectionId(long id);
     void saveLastSongId(long id);
     void saveLastPlaybackPosition(int position);
 
-    @SongQueue.QueueType int getLastMediaCollectionType();
+    @AudioSourceQueue.QueueType int getLastMediaCollectionType();
     long getLastMediaCollectionId();
     long getLastSongId();
     int getLastPlaybackPosition();

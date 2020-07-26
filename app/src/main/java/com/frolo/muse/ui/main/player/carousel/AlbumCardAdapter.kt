@@ -13,9 +13,10 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.frolo.muse.*
-import com.frolo.muse.engine.SongQueue
+import com.frolo.muse.common.albumId
+import com.frolo.muse.engine.AudioSource
+import com.frolo.muse.engine.AudioSourceQueue
 import com.frolo.muse.glide.makeRequest
-import com.frolo.muse.model.media.Song
 import kotlinx.android.synthetic.main.include_square_album_art.view.*
 import kotlin.math.max
 
@@ -24,9 +25,9 @@ class AlbumCardAdapter constructor(
     private val requestManager: RequestManager
 ): RecyclerView.Adapter<AlbumCardAdapter.AlbumArtViewHolder>() {
 
-    private var queue: SongQueue? = null
+    private var queue: AudioSourceQueue? = null
 
-    fun submitQueue(queue: SongQueue?) {
+    fun submitQueue(queue: AudioSourceQueue?) {
         val callback = SongQueueCallback(this.queue, queue)
         val diffResult = DiffUtil.calculateDiff(callback)
         this.queue = queue
@@ -102,7 +103,7 @@ class AlbumCardAdapter constructor(
             return false
         }
 
-        fun bind(item: Song?) = with(itemView) {
+        fun bind(item: AudioSource?) = with(itemView) {
             pb_loading.visibility = View.VISIBLE
             cv_album_art.visibility = View.INVISIBLE
 
@@ -121,8 +122,8 @@ class AlbumCardAdapter constructor(
     }
 
     private class SongQueueCallback constructor(
-        private val oldQueue: SongQueue?,
-        private val newQueue: SongQueue?
+        private val oldQueue: AudioSourceQueue?,
+        private val newQueue: AudioSourceQueue?
     ) : DiffUtil.Callback() {
 
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {

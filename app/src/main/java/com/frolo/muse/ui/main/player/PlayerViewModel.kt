@@ -7,6 +7,10 @@ import com.frolo.muse.arch.SingleLiveEvent
 import com.frolo.muse.arch.combine
 import com.frolo.muse.arch.liveDataOf
 import com.frolo.muse.arch.map
+import com.frolo.muse.common.pointNextABPoint
+import com.frolo.muse.common.switchToNextRepeatMode
+import com.frolo.muse.common.switchToNextShuffleMode
+import com.frolo.muse.common.toSong
 import com.frolo.muse.di.Exec
 import com.frolo.muse.engine.*
 import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
@@ -55,12 +59,12 @@ class PlayerViewModel @Inject constructor(
             _playbackProgress.value = position
         }
 
-        override fun onQueueChanged(player: Player, queue: SongQueue) {
+        override fun onQueueChanged(player: Player, queue: AudioSourceQueue) {
             handleSongQueue(queue)
         }
 
-        override fun onSongChanged(player: Player, song: Song?, positionInQueue: Int) {
-            _song.value = song
+        override fun onAudioSourceChanged(player: Player, item: AudioSource?, positionInQueue: Int) {
+            _song.value = item?.toSong()
             _songPosition.value = positionInQueue
             if (player.isPrepared()) {
                 _playbackProgress.value = player.getProgress()
@@ -88,7 +92,7 @@ class PlayerViewModel @Inject constructor(
         }
     }
 
-    private val queueCallback = SongQueue.Callback { queue ->
+    private val queueCallback = AudioSourceQueue.Callback { queue ->
         _invalidateSongQueueEvent.value = queue
         _songPosition.value = player.getCurrentPositionInQueue()
     }
@@ -96,11 +100,11 @@ class PlayerViewModel @Inject constructor(
     private val _songDeletedEvent = SingleLiveEvent<Song>()
     val songDeletedEvent: LiveData<Song> get() = _songDeletedEvent
 
-    private val _songQueue = MutableLiveData<SongQueue>()
-    val songQueue: LiveData<SongQueue> get() = _songQueue
+    private val _songQueue = MutableLiveData<AudioSourceQueue>()
+    val songQueue: LiveData<AudioSourceQueue> get() = _songQueue
 
-    private val _invalidateSongQueueEvent = SingleLiveEvent<SongQueue>()
-    val invalidateSongQueueEvent: LiveData<SongQueue>
+    private val _invalidateSongQueueEvent = SingleLiveEvent<AudioSourceQueue>()
+    val invalidateSongQueueEvent: LiveData<AudioSourceQueue>
         get() = _invalidateSongQueueEvent
 
     private val _song = MutableLiveData<Song>(null)
@@ -191,7 +195,7 @@ class PlayerViewModel @Inject constructor(
         onOpened()
     }
 
-    private fun handleSongQueue(queue: SongQueue?) {
+    private fun handleSongQueue(queue: AudioSourceQueue?) {
         val currSongQueueValue = _songQueue.value
         if (currSongQueueValue != queue) {
             currSongQueueValue?.unregisterCallback(queueCallback)
@@ -216,7 +220,7 @@ class PlayerViewModel @Inject constructor(
 
     fun onOpened() {
         handleSongQueue(player.getCurrentQueue())
-        _song.value = player.getCurrent()
+        _song.value = player.getCurrent()?.toSong()
         _playbackDuration.value = player.getDuration()
         _playbackProgress.value = player.getProgress()
         _isPlaying.value = player.isPlaying()

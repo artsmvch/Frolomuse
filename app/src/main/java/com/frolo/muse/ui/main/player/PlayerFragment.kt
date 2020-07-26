@@ -27,7 +27,7 @@ import com.frolo.muse.Logger
 import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.engine.Player
-import com.frolo.muse.engine.SongQueue
+import com.frolo.muse.engine.AudioSourceQueue
 import com.frolo.muse.glide.GlideAlbumArtHelper
 import com.frolo.muse.glide.observe
 import com.frolo.muse.model.media.Song
@@ -356,7 +356,7 @@ class PlayerFragment: BaseFragment() {
             updateFavouriteIcon(isFavourite, animate = true)
         }
 
-        songQueue.observe(owner) { queue: SongQueue? ->
+        songQueue.observe(owner) { queue: AudioSourceQueue? ->
             Logger.d(LOG_TAG, "SongQueue changed")
             (vp_album_art.adapter as? AlbumCardAdapter)?.submitQueue(queue)
         }

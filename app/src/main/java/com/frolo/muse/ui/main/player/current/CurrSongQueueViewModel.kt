@@ -3,12 +3,14 @@ package com.frolo.muse.ui.main.player.current
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.frolo.muse.arch.SingleLiveEvent
-import com.frolo.muse.arch.call
 import com.frolo.muse.arch.map
+import com.frolo.muse.common.toSong
+import com.frolo.muse.common.toSongs
 import com.frolo.muse.di.Exec
+import com.frolo.muse.engine.AudioSource
 import com.frolo.muse.engine.Player
+import com.frolo.muse.engine.AudioSourceQueue
 import com.frolo.muse.engine.SimplePlayerObserver
-import com.frolo.muse.engine.SongQueue
 import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.interactor.media.*
 import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
@@ -21,6 +23,7 @@ import com.frolo.muse.permission.PermissionChecker
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.main.library.base.AbsMediaCollectionViewModel
 import io.reactivex.Completable
+import io.reactivex.Single
 import io.reactivex.disposables.Disposable
 import java.util.concurrent.Executor
 import java.util.concurrent.TimeUnit
@@ -59,23 +62,26 @@ class CurrSongQueueViewModel @Inject constructor(
         eventLogger
 ) {
 
-    private var currSongQueue: SongQueue? = null
+    private var currQueue: AudioSourceQueue? = null
 
-    private val queueCallback = SongQueue.Callback { queue ->
-        submitMediaList(queue.snapshot)
+    private val queueCallback = AudioSourceQueue.Callback { queue ->
+        handleQueue(queue)
         _playingPosition.value = player.getCurrentPositionInQueue()
     }
 
     private val playerObserver = object : SimplePlayerObserver() {
-        override fun onSongChanged(player: Player, song: Song?, positionInQueue: Int) {
+        override fun onAudioSourceChanged(player: Player, item: AudioSource?, positionInQueue: Int) {
             _playingPosition.value = positionInQueue
         }
-        override fun onQueueChanged(player: Player, queue: SongQueue) {
+
+        override fun onQueueChanged(player: Player, queue: AudioSourceQueue) {
             handleQueue(queue)
         }
+
         override fun onPlaybackStarted(player: Player) {
             _isPlaying.value = true
         }
+
         override fun onPlaybackPaused(player: Player) {
             _isPlaying.value = false
         }
@@ -105,17 +111,29 @@ class CurrSongQueueViewModel @Inject constructor(
 
     private var hideScrollToPositionButtonDisposable: Disposable? = null
 
+    private var mapQueueDisposable: Disposable? = null
+
     init {
         player.registerObserver(playerObserver)
         _isPlaying.value = player.isPlaying()
         _playingPosition.value = player.getCurrentPositionInQueue()
     }
 
-    private fun handleQueue(queue: SongQueue?) {
-        currSongQueue?.unregisterCallback(queueCallback)
-        currSongQueue = queue
-        queue?.registerCallback(queueCallback, mainThreadExecutor)
-        submitMediaList(queue?.snapshot ?: emptyList())
+    private fun handleQueue(queue: AudioSourceQueue?) {
+        if (currQueue !== queue) {
+            currQueue?.unregisterCallback(queueCallback)
+            currQueue = queue
+            queue?.registerCallback(queueCallback, mainThreadExecutor)
+        }
+
+        Single.fromCallable { queue?.snapshot?.toSongs().orEmpty() }
+            .subscribeOn(schedulerProvider.computation())
+            .observeOn(schedulerProvider.main())
+            .doOnSubscribe {
+                mapQueueDisposable?.dispose()
+                mapQueueDisposable = it
+            }
+            .subscribeFor { list -> submitMediaList(list) }
     }
 
     fun onStart() {

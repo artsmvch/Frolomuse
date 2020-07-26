@@ -1,7 +1,8 @@
 package com.frolo.muse.interactor.media.shortcut
 
 import com.frolo.muse.engine.Player
-import com.frolo.muse.engine.SongQueueFactory
+import com.frolo.muse.common.AudioSourceQueueFactory
+import com.frolo.muse.common.toAudioSource
 import com.frolo.muse.model.media.Media
 import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.repository.*
@@ -19,7 +20,7 @@ class NavigateToMediaUseCase @Inject constructor(
     private val myFileRepository: MyFileRepository,
     private val schedulerProvider: SchedulerProvider,
     private val navigator: Navigator,
-    private val songQueueFactory: SongQueueFactory,
+    private val audioSourceQueueFactory: AudioSourceQueueFactory,
     private val player: Player
 ) {
 
@@ -71,8 +72,8 @@ class NavigateToMediaUseCase @Inject constructor(
                 .observeOn(schedulerProvider.main())
                 .firstOrError()
                 .doOnSuccess { song ->
-                    val songQueue = songQueueFactory.create(listOf(song), listOf(song))
-                    player.prepare(songQueue, song, true)
+                    val songQueue = audioSourceQueueFactory.create(listOf(song), listOf(song))
+                    player.prepare(songQueue, song.toAudioSource(), true)
                     navigator.openPlayer()
                 }
                 .ignoreElement()

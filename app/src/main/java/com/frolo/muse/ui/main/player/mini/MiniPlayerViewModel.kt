@@ -3,6 +3,8 @@ package com.frolo.muse.ui.main.player.mini
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.frolo.muse.arch.map
+import com.frolo.muse.common.toSong
+import com.frolo.muse.engine.AudioSource
 import com.frolo.muse.engine.Player
 import com.frolo.muse.engine.SimplePlayerObserver
 import com.frolo.muse.logger.EventLogger
@@ -20,7 +22,7 @@ class MiniPlayerViewModel @Inject constructor(
     private val eventLogger: EventLogger
 ): BaseViewModel(eventLogger) {
 
-    private val _currentSong = MutableLiveData<Song>(player.getCurrent())
+    private val _currentSong = MutableLiveData<Song>(player.getCurrent()?.toSong())
     val currentSong: LiveData<Song> get() = _currentSong
 
     val playerControllersEnabled: LiveData<Boolean> =
@@ -36,8 +38,8 @@ class MiniPlayerViewModel @Inject constructor(
     val progress: LiveData<Int> get() = _progress
 
     private val playerObserver = object : SimplePlayerObserver() {
-        override fun onSongChanged(player: Player, song: Song?, positionInQueue: Int) {
-            _currentSong.value = song
+        override fun onAudioSourceChanged(player: Player, item: AudioSource?, positionInQueue: Int) {
+            _currentSong.value = item?.toSong()
         }
 
         override fun onPrepared(player: Player) {

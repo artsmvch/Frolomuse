@@ -9,7 +9,6 @@ import androidx.annotation.RequiresApi
 import com.frolo.muse.BuildConfig
 import com.frolo.muse.ThreadStrictMode
 import com.frolo.muse.Logger
-import com.frolo.muse.model.media.Song
 import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -49,16 +48,16 @@ class PlayerEngine constructor(
     private val lock = Any()
 
     @Volatile
-    private var originSongQueue: SongQueue? = null
+    private var originQueue: AudioSourceQueue? = null
 
     @Volatile
-    private var currentSongQueue: SongQueue = SongQueue.empty()
+    private var currentQueue: AudioSourceQueue = AudioSourceQueue.empty()
 
     @Volatile
     private var currentPositionInQueue = -1
 
     @Volatile
-    private var currentSong: Song? = null
+    private var currentItem: AudioSource? = null
 
     @Volatile
     @Player.ShuffleMode
@@ -80,9 +79,12 @@ class PlayerEngine constructor(
     private var isPlayingFlag: Boolean = false
 
     // AB
+    @Volatile
     private var pointA: Int? = null
+    @Volatile
     private var pointB: Int? = null
 
+    @Volatile
     private var disposableAB: Disposable? = null
 
     /****************************
@@ -143,12 +145,12 @@ class PlayerEngine constructor(
             isPlayingFlag = false
 
             // TODO: try also to restore the playback position
-            currentSong?.also { safeSong ->
+            currentItem?.also { safeItem ->
                 engine.runCatching {
-                    Logger.d(LOG_TAG, "Preparing: [src=${safeSong.source}")
+                    Logger.d(LOG_TAG, "Preparing: [src=${safeItem.source}")
 
                     reset()
-                    setDataSource(safeSong.source)
+                    setDataSource(safeItem.source)
                     prepare()
                     // assumed prepared
                     isPreparedFlag = true
@@ -248,43 +250,44 @@ class PlayerEngine constructor(
      ***************************/
 
     /**
-     * Just call this method in case the current song was set to null,
+     * Just call this method in case the current item was set to null,
      * but it was supposed to be resolved normally.
      */
     private fun resolveUndefinedStateInternal(startPlaying: Boolean) {
         ThreadStrictMode.assertBackground()
-        if (currentSongQueue.isEmpty) {
+        if (currentQueue.isEmpty) {
             currentPositionInQueue = -1
-            currentSong = null
+            currentItem = null
             resetInternal()
         } else {
             if (currentPositionInQueue < 0) {
                 currentPositionInQueue = 0
-            } else if (currentPositionInQueue >= currentSongQueue.length) {
-                currentPositionInQueue = currentSongQueue.length - 1
+            } else if (currentPositionInQueue >= currentQueue.length) {
+                currentPositionInQueue = currentQueue.length - 1
             }
 
-            currentSong = currentSongQueue.getItemAt(currentPositionInQueue)
-            handleSwitchToSong(currentSong, 0, startPlaying)
+            currentItem = currentQueue.getItemAt(currentPositionInQueue).also {
+                handleSwitchToItem(it, 0, startPlaying)
+            }
         }
     }
 
-    private fun handleSwitchToSong(song: Song?, playbackPosition: Int, startPlaying: Boolean) {
+    private fun handleSwitchToItem(item: AudioSource?, playbackPosition: Int, startPlaying: Boolean) {
         ThreadStrictMode.assertBackground()
 
         execOnEventThread {
             resetABInternal()
-            observerRegistry.onSongChanged(this, song, currentPositionInQueue)
+            observerRegistry.onAudioSourceChanged(this, item, currentPositionInQueue)
         }
 
-        if (song != null) {
+        if (item != null) {
             engine.runCatching {
-                Logger.d(LOG_TAG, "Preparing: [src=${song.source}, startPlating=$startPlaying]")
+                Logger.d(LOG_TAG, "Preparing: [src=${item.source}, startPlating=$startPlaying]")
                 isPreparedFlag = false
                 isPlayingFlag = startPlaying
 
                 reset()
-                setDataSource(song.source)
+                setDataSource(item.source)
                 //engine.prepareAsync()
                 prepare()
                 // assumed prepared
@@ -331,7 +334,7 @@ class PlayerEngine constructor(
         synchronized(lock) {
             execOnEventThread {
                 resetABInternal()
-                observerRegistry.onSongChanged(this, currentSong, currentPositionInQueue)
+                observerRegistry.onAudioSourceChanged(this, currentItem, currentPositionInQueue)
             }
 
             Logger.d(LOG_TAG, "Resetting")
@@ -418,28 +421,31 @@ class PlayerEngine constructor(
         ThreadStrictMode.assertBackground()
         synchronized(lock) {
             Logger.d(LOG_TAG, "Skipping to previous: [byUser=$byUser]")
-            if (!currentSongQueue.isEmpty) {
+            if (!currentQueue.isEmpty) {
                 if (!byUser && repeatMode == Player.REPEAT_ONE) {
-                    handleSwitchToSong(
-                            song = currentSong,
-                            playbackPosition = 0,
-                            startPlaying = isPlayingFlag)
+                    handleSwitchToItem(
+                        item = currentItem,
+                        playbackPosition = 0,
+                        startPlaying = isPlayingFlag
+                    )
                 } else {
                     currentPositionInQueue--
                     val newPositionInQueue = when {
-                        currentPositionInQueue < 0 -> currentSongQueue.length - 1
+                        currentPositionInQueue < 0 -> currentQueue.length - 1
                         else -> currentPositionInQueue
                     }
                     currentPositionInQueue = newPositionInQueue
-                    currentSong = if (newPositionInQueue >= 0) {
-                        currentSongQueue.getItemAt(newPositionInQueue)
+                    currentItem = if (newPositionInQueue >= 0) {
+                        currentQueue.getItemAt(newPositionInQueue)
                     } else {
                         null
                     }
-                    handleSwitchToSong(
-                            song = currentSong,
-                            playbackPosition = 0,
-                            startPlaying = isPlayingFlag)
+
+                    handleSwitchToItem(
+                        item = currentItem,
+                        playbackPosition = 0,
+                        startPlaying = isPlayingFlag
+                    )
                 }
             }
         }
@@ -449,39 +455,44 @@ class PlayerEngine constructor(
         ThreadStrictMode.assertBackground()
         synchronized(lock) {
             Logger.d(LOG_TAG, "Skipping to next: [byUser=$byUser]")
-            if (!currentSongQueue.isEmpty) {
+            if (!currentQueue.isEmpty) {
                 if (!byUser && repeatMode == Player.REPEAT_ONE) {
-                    handleSwitchToSong(
-                            song = currentSong,
-                            playbackPosition = 0,
-                            startPlaying = isPlayingFlag)
+
+                    handleSwitchToItem(
+                        item = currentItem,
+                        playbackPosition = 0,
+                        startPlaying = isPlayingFlag
+                    )
+
                 } else {
                     currentPositionInQueue++
                     when {
-                        currentPositionInQueue >= currentSongQueue.length -> {
+                        currentPositionInQueue >= currentQueue.length -> {
                             currentPositionInQueue = 0
-                            currentSong = if (currentPositionInQueue >= 0) {
-                                currentSongQueue.getItemAt(currentPositionInQueue)
+                            currentItem = if (currentPositionInQueue >= 0) {
+                                currentQueue.getItemAt(currentPositionInQueue)
                             } else {
                                 null
                             }
 
-                            handleSwitchToSong(
-                                    song = currentSong,
-                                    playbackPosition = 0,
-                                    startPlaying = (isPlayingFlag && byUser) || (isPlayingFlag && repeatMode == Player.REPEAT_PLAYLIST))
+                            handleSwitchToItem(
+                                item = currentItem,
+                                playbackPosition = 0,
+                                startPlaying = (isPlayingFlag && byUser) || (isPlayingFlag && repeatMode == Player.REPEAT_PLAYLIST)
+                            )
                         }
                         else -> {
-                            currentSong = if (currentPositionInQueue >= 0) {
-                                currentSongQueue.getItemAt(currentPositionInQueue)
+                            currentItem = if (currentPositionInQueue >= 0) {
+                                currentQueue.getItemAt(currentPositionInQueue)
                             } else {
                                 null
                             }
 
-                            handleSwitchToSong(
-                                    song = currentSong,
-                                    playbackPosition = 0,
-                                    startPlaying = isPlayingFlag)
+                            handleSwitchToItem(
+                                item = currentItem,
+                                playbackPosition = 0,
+                                startPlaying = isPlayingFlag
+                            )
                         }
                     }
                 }
@@ -500,30 +511,34 @@ class PlayerEngine constructor(
                 Logger.w(LOG_TAG, "Cannot skip to negative position: [position=$position]")
             } else {
                 Logger.d(LOG_TAG, "Skipping to: [position=$position, byUser=$byUser]")
-                if (position < currentSongQueue.length) {
+                if (position < currentQueue.length) {
                     currentPositionInQueue = position
-                    currentSong = currentSongQueue.getItemAt(position)
-                    handleSwitchToSong(
-                            song = currentSong,
-                            playbackPosition = 0,
-                            startPlaying = isPlayingFlag || forceStartPlaying)
+                    currentItem = currentQueue.getItemAt(position)
+
+                    handleSwitchToItem(
+                        item = currentItem,
+                        playbackPosition = 0,
+                        startPlaying = isPlayingFlag || forceStartPlaying
+                    )
                 }
             }
         }
     }
 
-    private fun skipToInternal(song: Song, byUser: Boolean, forceStartPlaying: Boolean) {
+    private fun skipToInternal(item: AudioSource, byUser: Boolean, forceStartPlaying: Boolean) {
         ThreadStrictMode.assertBackground()
         synchronized(lock) {
-            Logger.d(LOG_TAG, "Skipping to: [song=$song, byUser=$byUser]")
-            val newPositionInQueue = currentSongQueue.indexOf(song)
+            Logger.d(LOG_TAG, "Skipping to: [item=$item, byUser=$byUser]")
+            val newPositionInQueue = currentQueue.indexOf(item)
             if (newPositionInQueue >= 0) {
                 currentPositionInQueue = newPositionInQueue
-                currentSong = song
-                handleSwitchToSong(
-                        song = currentSong,
-                        playbackPosition = 0,
-                        startPlaying = isPlayingFlag || forceStartPlaying)
+                currentItem = item
+
+                handleSwitchToItem(
+                    item = item,
+                    playbackPosition = 0,
+                    startPlaying = isPlayingFlag || forceStartPlaying
+                )
             }
         }
     }
@@ -544,40 +559,41 @@ class PlayerEngine constructor(
         }
     }
 
-    override fun prepare(queue: SongQueue, song: Song, startPlaying: Boolean) {
-        prepare(queue, song, 0, startPlaying)
+    override fun prepare(queue: AudioSourceQueue, item: AudioSource, startPlaying: Boolean) {
+        prepare(queue, item, 0, startPlaying)
     }
 
-    override fun prepare(queue: SongQueue, song: Song, playbackPosition: Int, startPlaying: Boolean) {
+    override fun prepare(queue: AudioSourceQueue, item: AudioSource, playbackPosition: Int, startPlaying: Boolean) {
         execOnEngineThread {
             synchronized(lock) {
                 // attach origin first
-                originSongQueue = queue
+                originQueue = queue
 
                 val newQueue = queue.clone().apply {
                     if (shuffleMode == Player.SHUFFLE_ON) {
-                        shuffleWithSongInFront(song)
+                        shuffleWithAudioSourceInFront(item)
                     }
                 }
-                currentSongQueue = newQueue
+                currentQueue = newQueue
 
                 execOnEventThread {
                     observerRegistry.onQueueChanged(this, newQueue)
                 }
 
-                // Queue attached. Now we need to setup current song and its position in the queue
-                val positionInQueue = newQueue.indexOf(song)
+                // Queue attached. Now we need to setup current item and its position in the queue
+                val positionInQueue = newQueue.indexOf(item)
                 currentPositionInQueue = positionInQueue
-                currentSong = if (positionInQueue >= 0) song else null
+                currentItem = if (positionInQueue >= 0) item else null
 
-                currentSong.let { song ->
-                    if (song == null) {
+                currentItem.let { item ->
+                    if (item == null) {
                         resetInternal()
                     } else {
-                        handleSwitchToSong(
-                                song = currentSong,
-                                playbackPosition = playbackPosition,
-                                startPlaying = startPlaying)
+                        handleSwitchToItem(
+                            item = item,
+                            playbackPosition = playbackPosition,
+                            startPlaying = startPlaying
+                        )
                     }
                 }
 
@@ -625,9 +641,9 @@ class PlayerEngine constructor(
         }
     }
 
-    override fun skipTo(song: Song, forceStartPlaying: Boolean) {
+    override fun skipTo(item: AudioSource, forceStartPlaying: Boolean) {
         execOnEngineThread(clearAllPending = true, token = tokenSkipTo) {
-            skipToInternal(song, true, forceStartPlaying)
+            skipToInternal(item, true, forceStartPlaying)
         }
     }
 
@@ -643,11 +659,11 @@ class PlayerEngine constructor(
         }.getOrDefault(0)
     }
 
-    override fun getCurrent(): Song? = currentSong
+    override fun getCurrent(): AudioSource? = currentItem
 
     override fun getCurrentPositionInQueue(): Int = currentPositionInQueue
 
-    override fun getCurrentQueue(): SongQueue? = currentSongQueue
+    override fun getCurrentQueue(): AudioSourceQueue? = currentQueue
 
     override fun getProgress(): Int {
         return engine.runCatching {
@@ -696,14 +712,14 @@ class PlayerEngine constructor(
         }
     }
 
-    override fun update(song: Song) {
+    override fun update(item: AudioSource) {
         execOnEngineThread {
-            originSongQueue?.replaceAllWithSameId(song)
-            currentSongQueue.replaceAllWithSameId(song)
-            if (currentSong?.source == song.source) {
-                currentSong = song
+            originQueue?.replaceAllWithSameId(item)
+            currentQueue.replaceAllWithSameId(item)
+            if (currentItem?.source == item.source) {
+                currentItem = item
                 execOnEventThread {
-                    observerRegistry.onSongChanged(this, song, currentPositionInQueue)
+                    observerRegistry.onAudioSourceChanged(this, item, currentPositionInQueue)
                 }
             }
         }
@@ -712,15 +728,10 @@ class PlayerEngine constructor(
     override fun remove(position: Int) {
         execOnEngineThread {
             synchronized(lock) {
-                val targetSong = currentSongQueue.getItemAt(position)
+                val targetItem = currentQueue.getItemAt(position)
 
-                originSongQueue?.let { queue ->
-                    queue.remove(targetSong)
-                }
-
-                currentSongQueue.let { queue ->
-                    queue.removeAt(position)
-                }
+                originQueue?.remove(targetItem)
+                currentQueue.removeAt(position)
 
                 when {
                     position < currentPositionInQueue -> {
@@ -728,7 +739,7 @@ class PlayerEngine constructor(
                     }
 
                     position == currentPositionInQueue -> {
-                        currentSong = null
+                        currentItem = null
                         resolveUndefinedStateInternal(isPlayingFlag)
                     }
 
@@ -738,73 +749,75 @@ class PlayerEngine constructor(
         }
     }
 
-    override fun removeAll(songs: Collection<Song>) {
+    override fun removeAll(items: Collection<AudioSource>) {
         execOnEngineThread {
             synchronized(lock) {
-                songs.forEach { song ->
-                    val position = songs.indexOf(song)
+                items.forEach { item ->
+                    val position = items.indexOf(item)
                     if (position <= currentPositionInQueue) {
                         currentPositionInQueue--
                     }
-                    originSongQueue?.remove(song)
-                    currentSongQueue.remove(song)
+                    originQueue?.remove(item)
+                    currentQueue.remove(item)
                 }
 
-                if (currentSongQueue.isEmpty || songs.contains(currentSong)) {
-                    currentSong = null
+                if (currentQueue.isEmpty || items.contains(currentItem)) {
+                    currentItem = null
                     resolveUndefinedStateInternal(isPlayingFlag)
                 }
             }
         }
     }
 
-    override fun add(song: Song) {
-        addAll(listOf(song))
+    override fun add(item: AudioSource) {
+        addAll(listOf(item))
     }
 
-    override fun addAll(songs: List<Song>) {
+    override fun addAll(items: List<AudioSource>) {
         execOnEngineThread {
             synchronized(lock) {
-                originSongQueue?.addAll(songs)
+                originQueue?.addAll(items)
 
-                currentSongQueue.addAll(songs)
+                currentQueue.addAll(items)
 
-                if (currentSong == null && !currentSongQueue.isEmpty) {
+                if (currentItem == null && !currentQueue.isEmpty) {
                     currentPositionInQueue = 0
-                    currentSong = currentSongQueue.getItemAt(currentPositionInQueue)
+                    currentItem = currentQueue.getItemAt(currentPositionInQueue)
 
-                    handleSwitchToSong(
-                            song = currentSong,
-                            playbackPosition = 0,
-                            startPlaying = false)
+                    handleSwitchToItem(
+                        item = currentItem,
+                        playbackPosition = 0,
+                        startPlaying = false
+                    )
                 }
             }
         }
     }
 
-    override fun addNext(song: Song) {
-        addAllNext(listOf(song))
+    override fun addNext(item: AudioSource) {
+        addAllNext(listOf(item))
     }
 
-    override fun addAllNext(songs: List<Song>) {
+    override fun addAllNext(items: List<AudioSource>) {
         execOnEngineThread {
             synchronized(lock) {
                 max(0, currentPositionInQueue).let { targetPosition ->
-                    originSongQueue?.also { queue ->
-                        queue.addAll(targetPosition + 1, songs)
+                    originQueue?.also { queue ->
+                        queue.addAll(targetPosition + 1, items)
                     }
 
-                    currentSongQueue.addAll(targetPosition + 1, songs)
+                    currentQueue.addAll(targetPosition + 1, items)
                 }
 
-                if (currentSong == null && !currentSongQueue.isEmpty) {
+                if (currentItem == null && !currentQueue.isEmpty) {
                     currentPositionInQueue = 0
-                    currentSong = currentSongQueue.getItemAt(currentPositionInQueue)
+                    currentItem = currentQueue.getItemAt(currentPositionInQueue)
 
-                    handleSwitchToSong(
-                            song = currentSong,
-                            playbackPosition = 0,
-                            startPlaying = false)
+                    handleSwitchToItem(
+                        item = currentItem,
+                        playbackPosition = 0,
+                        startPlaying = false
+                    )
                 }
             }
         }
@@ -813,7 +826,7 @@ class PlayerEngine constructor(
     override fun moveItem(fromPosition: Int, toPosition: Int) {
         execOnEngineThread {
             synchronized(lock) {
-                originSongQueue?.let { queue ->
+                originQueue?.let { queue ->
                     if (fromPosition >= 0 && toPosition >= 0) {
                         queue.moveItem(fromPosition, toPosition)
                     }
@@ -835,9 +848,9 @@ class PlayerEngine constructor(
                     }
                 }
 
-                currentSongQueue.also { songQueue ->
+                currentQueue.also { queue ->
                     if (fromPosition >= 0 && toPosition >= 0) {
-                        songQueue.moveItem(fromPosition, toPosition)
+                        queue.moveItem(fromPosition, toPosition)
                     }
                 }
             }
@@ -1025,11 +1038,11 @@ class PlayerEngine constructor(
             synchronized(lock) {
                 shuffleMode = mode
                 if (mode == Player.SHUFFLE_OFF) {
-                    currentSongQueue.copyItemsFrom(originSongQueue ?: SongQueue.empty())
+                    currentQueue.copyItemsFrom(originQueue ?: AudioSourceQueue.empty())
                 } else {
-                    currentSongQueue.shuffleWithSongInFront(currentSong)
+                    currentQueue.shuffleWithAudioSourceInFront(currentItem)
                 }
-                currentPositionInQueue = currentSongQueue.indexOf(currentSong)
+                currentPositionInQueue = currentQueue.indexOf(currentItem)
 
                 execOnEventThread {
                     observerRegistry.onShuffleModeChanged(this, mode)

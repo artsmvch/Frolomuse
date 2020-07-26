@@ -2,8 +2,10 @@ package com.frolo.muse.interactor.player
 
 import com.frolo.muse.TestSchedulerProvider
 import com.frolo.muse.engine.Player
-import com.frolo.muse.engine.SongQueue
-import com.frolo.muse.engine.SongQueueFactory
+import com.frolo.muse.engine.AudioSourceQueue
+import com.frolo.muse.common.AudioSourceQueueFactory
+import com.frolo.muse.common.toAudioSource
+import com.frolo.muse.common.toAudioSources
 import com.frolo.muse.mockKT
 import com.frolo.muse.mockList
 import com.frolo.muse.mockSongList
@@ -40,7 +42,7 @@ class RestorePlayerStateUseCaseTest {
     @Mock
     private lateinit var preferences: Preferences
     @Mock
-    private lateinit var songQueueFactory: SongQueueFactory
+    private lateinit var audioSourceQueueFactory: AudioSourceQueueFactory
 
     private lateinit var restorePlayerStateUseCase: RestorePlayerStateUseCase
 
@@ -58,18 +60,18 @@ class RestorePlayerStateUseCaseTest {
                 genreRepository,
                 playlistRepository,
                 preferences,
-                songQueueFactory
+                audioSourceQueueFactory
         )
     }
 
     @Test
     fun test_restoreState_Success() {
-        val type = SongQueue.ALBUM
+        val type = AudioSourceQueue.ALBUM
         val id = 1L
         val album = Album(id, "album", "artist", 10)
         val songs = mockSongList(size = 10, allowIdCollisions = false)
         val targetSong = songs.first()
-        val songQueue = SongQueue.create(type, album.id, album.name, songs)
+        val songQueue = AudioSourceQueue.create(type, album.id, album.name, songs.toAudioSources())
         val playbackPosition = 1337
 
         whenever(preferences.lastMediaCollectionType)
@@ -84,7 +86,7 @@ class RestorePlayerStateUseCaseTest {
         whenever(albumRepository.collectSongs(eq(album)))
                 .thenReturn(Single.just(songs))
 
-        whenever(songQueueFactory.create(
+        whenever(audioSourceQueueFactory.create(
                 eq(type),
                 eq(id),
                 eq(album.name),
@@ -111,12 +113,12 @@ class RestorePlayerStateUseCaseTest {
         observer.assertComplete()
 
         verify(player, times(1))
-                .prepare(songQueue, targetSong, playbackPosition, false)
+                .prepare(songQueue, targetSong.toAudioSource(), playbackPosition, false)
     }
 
     @Test
     fun test_restoreState_SuccessDefault() {
-        val type = SongQueue.ALBUM
+        val type = AudioSourceQueue.ALBUM
         val id = 1L
         val album = Album(id, "album", "artist", 10)
         val songs = mockSongList(size = 0, allowIdCollisions = false)
@@ -124,10 +126,10 @@ class RestorePlayerStateUseCaseTest {
         val playbackPosition = 1337
         val allSongs = mockSongList(size = 100, allowIdCollisions = false)
         val defaultTargetSong = allSongs.first()
-        val songQueue = SongQueue.create(
-                type, album.id, album.name, songs)
-        val defaultSongQueue = SongQueue.create(
-                SongQueue.CHUNK, SongQueue.NO_ID, "", allSongs)
+        val songQueue = AudioSourceQueue.create(
+                type, album.id, album.name, songs.toAudioSources())
+        val defaultSongQueue = AudioSourceQueue.create(
+                AudioSourceQueue.CHUNK, AudioSourceQueue.NO_ID, "", allSongs.toAudioSources())
 
         whenever(preferences.lastMediaCollectionType)
                 .thenReturn(type)
@@ -141,16 +143,16 @@ class RestorePlayerStateUseCaseTest {
         whenever(albumRepository.collectSongs(eq(album)))
                 .thenReturn(Single.just(songs))
 
-        whenever(songQueueFactory.create(
+        whenever(audioSourceQueueFactory.create(
                 eq(type),
                 eq(id),
                 eq(album.name),
                 eq(songs)
         )).thenReturn(songQueue)
 
-        whenever(songQueueFactory.create(
-                eq(SongQueue.CHUNK),
-                eq(SongQueue.NO_ID),
+        whenever(audioSourceQueueFactory.create(
+                eq(AudioSourceQueue.CHUNK),
+                eq(AudioSourceQueue.NO_ID),
                 eq(""),
                 eq(allSongs)
         )).thenReturn(defaultSongQueue)
@@ -175,19 +177,19 @@ class RestorePlayerStateUseCaseTest {
         observer.assertComplete()
 
         verify(player, times(1))
-                .prepare(defaultSongQueue, defaultTargetSong, 0, false)
+                .prepare(defaultSongQueue, defaultTargetSong.toAudioSource(), 0, false)
     }
 
     @Test
     fun test_restoreState_Failure() {
-        val type = SongQueue.ALBUM
+        val type = AudioSourceQueue.ALBUM
         val id = 1L
         val album = Album(id, "album", "artist", 10)
         val songs = mockSongList(size = 0, allowIdCollisions = false)
         val targetSong = mockKT<Song>()
         val playbackPosition = 1337
         val allSongs = mockSongList(size = 0, allowIdCollisions = false)
-        val songQueue = SongQueue.create(type, album.id, album.name, allSongs)
+        val songQueue = AudioSourceQueue.create(type, album.id, album.name, allSongs.toAudioSources())
 
         whenever(preferences.lastMediaCollectionType)
                 .thenReturn(type)
@@ -201,16 +203,16 @@ class RestorePlayerStateUseCaseTest {
         whenever(albumRepository.collectSongs(eq(album)))
                 .thenReturn(Single.just(songs))
 
-        whenever(songQueueFactory.create(
+        whenever(audioSourceQueueFactory.create(
                 eq(type),
                 eq(id),
                 eq(album.name),
                 eq(allSongs)
         )).thenReturn(songQueue)
 
-        whenever(songQueueFactory.create(
-                eq(SongQueue.CHUNK),
-                eq(SongQueue.NO_ID),
+        whenever(audioSourceQueueFactory.create(
+                eq(AudioSourceQueue.CHUNK),
+                eq(AudioSourceQueue.NO_ID),
                 eq(""),
                 eq(songs)
         )).thenReturn(songQueue)

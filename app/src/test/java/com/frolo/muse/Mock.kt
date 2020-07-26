@@ -1,5 +1,6 @@
 package com.frolo.muse
 
+import com.frolo.muse.engine.AudioSource
 import com.frolo.muse.model.media.Song
 import kotlin.reflect.KClass
 import kotlin.reflect.full.isSubclassOf
@@ -85,6 +86,11 @@ private fun <T: Any> tryMockAbstract(clazz: KClass<T>): T {
     if (clazz == Song::class) {
         @Suppress("UNCHECKED_CAST")
         return mockSong() as T
+    }
+
+    if (clazz == AudioSource::class) {
+        @Suppress("UNCHECKED_CAST")
+        return mockAudioSource() as T
     }
 
     error("Failed to instantiate interface/abstract class")

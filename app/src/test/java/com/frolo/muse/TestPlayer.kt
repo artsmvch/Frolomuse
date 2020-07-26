@@ -1,41 +1,37 @@
 package com.frolo.muse
 
-import com.frolo.muse.engine.AudioFx
-import com.frolo.muse.engine.Player
-import com.frolo.muse.engine.PlayerObserver
-import com.frolo.muse.engine.SongQueue
-import com.frolo.muse.model.media.Song
+import com.frolo.muse.engine.*
 
 
 class TestPlayer: Player {
     override fun registerObserver(observer: PlayerObserver) = Unit
     override fun unregisterObserver(observer: PlayerObserver) = Unit
-    override fun prepare(queue: SongQueue, song: Song, startPlaying: Boolean) = Unit
-    override fun prepare(queue: SongQueue, song: Song, playbackPosition: Int, startPlaying: Boolean) = Unit
+    override fun prepare(queue: AudioSourceQueue, item: AudioSource, startPlaying: Boolean) = Unit
+    override fun prepare(queue: AudioSourceQueue, item: AudioSource, playbackPosition: Int, startPlaying: Boolean) = Unit
     override fun shutdown() = Unit
     override fun skipToPrevious() = Unit
     override fun skipToNext() = Unit
     override fun skipTo(position: Int, forceStartPlaying: Boolean) = Unit
-    override fun skipTo(song: Song, forceStartPlaying: Boolean) = Unit
+    override fun skipTo(item: AudioSource, forceStartPlaying: Boolean) = Unit
     override fun isPrepared(): Boolean = false
     override fun isPlaying(): Boolean = false
     override fun getAudiSessionId(): Int = 0
-    override fun getCurrent(): Song? = null
+    override fun getCurrent(): AudioSource? = null
     override fun getCurrentPositionInQueue(): Int = -1
-    override fun getCurrentQueue(): SongQueue? = null
+    override fun getCurrentQueue(): AudioSourceQueue? = null
     override fun getProgress(): Int = 0
     override fun seekTo(position: Int) = Unit
     override fun getDuration(): Int = 0
     override fun start() = Unit
     override fun pause() = Unit
     override fun toggle() = Unit
-    override fun update(song: Song) = Unit
+    override fun update(item: AudioSource) = Unit
     override fun remove(position: Int) = Unit
-    override fun removeAll(songs: Collection<Song>) = Unit
-    override fun add(song: Song) = Unit
-    override fun addAll(songs: List<Song>) = Unit
-    override fun addNext(song: Song) = Unit
-    override fun addAllNext(songs: List<Song>) = Unit
+    override fun removeAll(items: Collection<AudioSource>) = Unit
+    override fun add(item: AudioSource) = Unit
+    override fun addAll(items: List<AudioSource>) = Unit
+    override fun addNext(item: AudioSource) = Unit
+    override fun addAllNext(items: List<AudioSource>) = Unit
     override fun moveItem(fromPosition: Int, toPosition: Int) = Unit
     override fun getAudioFx(): AudioFx = TestAudioFx()
     override fun isAPointed(): Boolean = false

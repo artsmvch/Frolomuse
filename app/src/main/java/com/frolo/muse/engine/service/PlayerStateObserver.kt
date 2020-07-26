@@ -1,9 +1,9 @@
 package com.frolo.muse.engine.service
 
+import com.frolo.muse.engine.AudioSource
 import com.frolo.muse.engine.Player
 import com.frolo.muse.engine.SimplePlayerObserver
-import com.frolo.muse.engine.SongQueue
-import com.frolo.muse.model.media.Song
+import com.frolo.muse.engine.AudioSourceQueue
 import com.frolo.muse.repository.Preferences
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
@@ -12,16 +12,16 @@ import java.util.concurrent.TimeUnit
 
 
 class PlayerStateObserver constructor(
-        private val preferences: Preferences
+    private val preferences: Preferences
 ): SimplePlayerObserver() {
 
     private var positionObserverDisposable: Disposable? = null
 
-    override fun onQueueChanged(player: Player, queue: SongQueue) {
+    override fun onQueueChanged(player: Player, queue: AudioSourceQueue) {
         saveLastSongQueue(player)
     }
 
-    override fun onSongChanged(player: Player, song: Song?, positionInQueue: Int) {
+    override fun onAudioSourceChanged(player: Player, item: AudioSource?, positionInQueue: Int) {
         saveLastSong(player)
     }
 

@@ -1,9 +1,10 @@
 package com.frolo.muse.engine.service
 
+import com.frolo.muse.common.toSong
+import com.frolo.muse.engine.AudioSource
 import com.frolo.muse.engine.Player
 import com.frolo.muse.engine.SimplePlayerObserver
 import com.frolo.muse.interactor.media.DispatchSongPlayedUseCase
-import com.frolo.muse.model.media.Song
 import com.frolo.muse.rx.SchedulerProvider
 import io.reactivex.disposables.CompositeDisposable
 
@@ -11,13 +12,13 @@ import io.reactivex.disposables.CompositeDisposable
 /**
  * The logic of counting song plays is implemented here.
  * A song is considered played if:
- * -the player performed it entirely without shifting the playback progress;
- * -the player performed one or several chunks of the song and in summary, the duration of these chunks is at least [MIN_VALUABLE_DURATION] milliseconds;
+ * 1) the player performed it entirely without shifting the playback progress;
+ * 2) the player performed one or several chunks of the song and in summary, the duration of these chunks is at least [MIN_VALUABLE_DURATION] milliseconds;
  * NOTE: If song's duration is less than [MIN_VALUABLE_DURATION] then it's enough to perform 90% of the song.
  */
 class SongPlayCountObserver constructor(
-        private val schedulerProvider: SchedulerProvider,
-        private val dispatchSongPlayedUseCase: DispatchSongPlayedUseCase
+    private val schedulerProvider: SchedulerProvider,
+    private val dispatchSongPlayedUseCase: DispatchSongPlayedUseCase
 ): SimplePlayerObserver() {
 
     private companion object {
@@ -32,8 +33,8 @@ class SongPlayCountObserver constructor(
 
     private val disposables = CompositeDisposable()
 
-    private var currentSong: Song? = null
-    private var currentSongDuration: Int = 0
+    private var currentItem: AudioSource? = null
+    private var currentItemDuration: Int = 0
     private var isPrepared: Boolean = false
     private var isPlaying: Boolean = false
     // Remembers the last timestamp when the playback started
@@ -43,7 +44,7 @@ class SongPlayCountObserver constructor(
 
     private fun now(): Long = System.currentTimeMillis()
 
-    override fun onSongChanged(player: Player, song: Song?, positionInQueue: Int) {
+    override fun onAudioSourceChanged(player: Player, item: AudioSource?, positionInQueue: Int) {
         if (isPlaying) {
             // it was playing
             val performed = now() - lastTimePlaybackStarted
@@ -54,30 +55,30 @@ class SongPlayCountObserver constructor(
             // If it wasn't even prepared then do not consider it as played
             !isPrepared -> false
 
-            // If song's duration is so negligible then ignore it
-            currentSongDuration < NEGLIGIBLE_DURATION -> false
+            // If audio's duration is so negligible then ignore it
+            currentItemDuration < NEGLIGIBLE_DURATION -> false
 
-            currentSongDuration < MIN_VALUABLE_DURATION -> {
-                performanceDuration >= currentSongDuration * 0.9 // 90% of song's duration
+            currentItemDuration < MIN_VALUABLE_DURATION -> {
+                performanceDuration >= currentItemDuration * 0.9 // 90% of audio's duration
             }
 
             else -> {
-                val percent = performanceDuration.toFloat() / currentSongDuration
+                val percent = performanceDuration.toFloat() / currentItemDuration
                 percent >= MIN_VALUABLE_PERCENT_OF_DURATION && performanceDuration >= MIN_VALUABLE_DURATION * 0.9
             }
         }
 
         if (isPerformed) {
-            currentSong?.also { safeSong ->
-                dispatchSongPlayedUseCase.dispatchSongPlayed(safeSong)
+            currentItem?.also { safeItem ->
+                dispatchSongPlayedUseCase.dispatchSongPlayed(safeItem.toSong())
                         .observeOn(schedulerProvider.main())
                         .subscribe({ }, { })
                         .also { d -> disposables.add(d) }
             }
         }
 
-        currentSong = song
-        currentSongDuration = 0
+        currentItem = item
+        currentItemDuration = 0
         isPrepared = player.isPrepared()
         isPlaying = player.isPlaying()
 
@@ -87,7 +88,7 @@ class SongPlayCountObserver constructor(
 
     override fun onPrepared(player: Player) {
         isPrepared = true
-        currentSongDuration = player.getDuration()
+        currentItemDuration = player.getDuration()
     }
 
     override fun onPlaybackPaused(player: Player) {

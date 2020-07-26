@@ -12,9 +12,9 @@ import androidx.annotation.Nullable;
 
 import com.frolo.muse.R;
 import com.frolo.muse.Logger;
+import com.frolo.muse.engine.AudioSource;
 import com.frolo.muse.engine.Player;
 import com.frolo.muse.engine.service.PlayerService;
-import com.frolo.muse.model.media.Song;
 import com.frolo.muse.ui.main.MainActivity;
 
 import static com.frolo.muse.widget.Helper.RC_COMMAND_SKIP_TO_NEXT;
@@ -24,6 +24,7 @@ import static com.frolo.muse.widget.Helper.RC_COMMAND_SWITCH_TO_NEXT_SHUFFLE_MOD
 import static com.frolo.muse.widget.Helper.RC_COMMAND_TOGGLE;
 import static com.frolo.muse.widget.Helper.RC_OPEN_PLAYER;
 import static com.frolo.muse.widget.Helper.getPendingIntent;
+
 
 public class PlayerWidget3Provider extends AppWidgetProvider {
     private static final String TAG = PlayerWidget3Provider.class.getSimpleName();
@@ -79,9 +80,9 @@ public class PlayerWidget3Provider extends AppWidgetProvider {
 
         boolean isPlaying = (player != null && player.isPlaying());
         views.setImageViewResource(R.id.btn_play, isPlaying ? R.drawable.ic_cpause : R.drawable.ic_play);
-        Song current;
+        AudioSource current;
         if (player != null && ((current = player.getCurrent()) != null)) {
-            views.setTextViewText(R.id.tv_song_name, current.getTitle());
+            views.setTextViewText(R.id.tv_song_name, current.getMetadata().getTitle());
         } else {
             views.setTextViewText(R.id.tv_song_name, context.getString(R.string.placeholder_unknown));
         }

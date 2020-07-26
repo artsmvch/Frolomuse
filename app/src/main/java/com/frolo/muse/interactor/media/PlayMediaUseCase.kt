@@ -1,7 +1,9 @@
 package com.frolo.muse.interactor.media
 
 import com.frolo.muse.engine.Player
-import com.frolo.muse.engine.SongQueueFactory
+import com.frolo.muse.common.AudioSourceQueueFactory
+import com.frolo.muse.common.toAudioSources
+import com.frolo.muse.engine.AudioSource
 import com.frolo.muse.model.media.Media
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.repository.MediaRepository
@@ -15,7 +17,7 @@ class PlayMediaUseCase<E: Media> constructor(
         private val repository: MediaRepository<E>,
         private val preferences: Preferences,
         private val player: Player,
-        private val songQueueFactory: SongQueueFactory
+        private val audioSourceQueueFactory: AudioSourceQueueFactory
 ) {
 
     private fun processPlay(targets: Collection<E>, songs: List<Song>) {
@@ -26,8 +28,8 @@ class PlayMediaUseCase<E: Media> constructor(
             }
         }
 
-        val songQueue = songQueueFactory.create(targets.toList(), songs)
-        val first: Song? = songQueue.let { queue ->
+        val songQueue = audioSourceQueueFactory.create(targets.toList(), songs)
+        val first: AudioSource? = songQueue.let { queue ->
             if (queue.isEmpty) null
             else queue.getItemAt(0)
         }
@@ -55,9 +57,9 @@ class PlayMediaUseCase<E: Media> constructor(
     fun playNext(items: Collection<E>): Completable {
         return repository.collectSongs(items)
                 .subscribeOn(schedulerProvider.worker())
-                .doOnSuccess { songs ->
-                    player.addAllNext(songs)
-                }
+                .observeOn(schedulerProvider.computation())
+                .map { songs -> songs.toAudioSources() }
+                .doOnSuccess { audioSources -> player.addAllNext(audioSources) }
                 .ignoreElement()
     }
 
@@ -68,9 +70,9 @@ class PlayMediaUseCase<E: Media> constructor(
     fun addToQueue(items: Collection<E>): Completable {
         return repository.collectSongs(items)
                 .subscribeOn(schedulerProvider.worker())
-                .doOnSuccess { songs ->
-                    player.addAll(songs)
-                }
+                .observeOn(schedulerProvider.computation())
+                .map { songs -> songs.toAudioSources() }
+                .doOnSuccess { audioSources -> player.addAll(audioSources) }
                 .ignoreElement()
     }
 

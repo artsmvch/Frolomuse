@@ -1,7 +1,8 @@
 package com.frolo.muse.interactor.media
 
 import com.frolo.muse.engine.Player
-import com.frolo.muse.engine.SongQueueFactory
+import com.frolo.muse.common.AudioSourceQueueFactory
+import com.frolo.muse.common.toAudioSource
 import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.model.media.*
 import com.frolo.muse.repository.GenericMediaRepository
@@ -16,18 +17,18 @@ class ClickMediaUseCase <E: Media> constructor(
         private val player: Player,
         private val repository: GenericMediaRepository,
         private val navigator: Navigator,
-        private val songQueueFactory: SongQueueFactory
+        private val audioSourceQueueFactory: AudioSourceQueueFactory
 ) {
 
     private fun processPlay(target: Song, songs: List<Song>, toggleIfSameSong: Boolean) {
-        val currentSong = player.getCurrent()
-        if (toggleIfSameSong && currentSong?.id == target.id) {
+        val currentAudioSource = player.getCurrent()
+        if (toggleIfSameSong && currentAudioSource?.id == target.id) {
             // if we've chosen the same song that is currently being played then toggle the playback
             player.toggle()
         } else {
-            // otherwise, create new song queue and start playing it
-            val songQueue = songQueueFactory.create(listOf(target), songs)
-            player.prepare(songQueue, target, true)
+            // otherwise, create a new audio source queue and start playing it
+            val queue = audioSourceQueueFactory.create(listOf(target), songs)
+            player.prepare(queue, target.toAudioSource(), true)
         }
     }
 

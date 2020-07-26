@@ -5,6 +5,7 @@ import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.frolo.muse.App
+import com.frolo.muse.common.toAudioSource
 import com.frolo.muse.engine.Player
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.logSongUpdated
@@ -56,7 +57,7 @@ class SongEditorViewModel constructor(
             .doOnSubscribe { _isLoadingUpdate.value = true }
             .doFinally { _isLoadingUpdate.value = false }
             .doOnSuccess { updatedSong ->
-                player.update(updatedSong)
+                player.update(updatedSong.toAudioSource())
                 eventLogger.logSongUpdated()
             }
             .subscribe { newSong: Song?, err: Throwable? ->

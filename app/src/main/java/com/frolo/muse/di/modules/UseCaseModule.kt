@@ -1,7 +1,7 @@
 package com.frolo.muse.di.modules
 
 import com.frolo.muse.engine.Player
-import com.frolo.muse.engine.SongQueueFactory
+import com.frolo.muse.common.AudioSourceQueueFactory
 import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.interactor.media.*
 import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
@@ -201,14 +201,14 @@ abstract class UseCaseModule {
                 player: Player,
                 repository: GenericMediaRepository,
                 navigator: Navigator,
-                songQueueFactory: SongQueueFactory
+                audioSourceQueueFactory: AudioSourceQueueFactory
         ): ClickMediaUseCase<Media> {
             return ClickMediaUseCase<Media>(
                     schedulerProvider,
                     player,
                     repository,
                     navigator,
-                    songQueueFactory
+                    audioSourceQueueFactory
             )
         }
 
@@ -219,14 +219,14 @@ abstract class UseCaseModule {
                 player: Player,
                 repository: GenericMediaRepository,
                 navigator: Navigator,
-                songQueueFactory: SongQueueFactory
+                audioSourceQueueFactory: AudioSourceQueueFactory
         ): ClickMediaUseCase<Artist> {
             return ClickMediaUseCase<Artist>(
                     schedulerProvider,
                     player,
                     repository,
                     navigator,
-                    songQueueFactory
+                    audioSourceQueueFactory
             )
         }
 
@@ -237,14 +237,14 @@ abstract class UseCaseModule {
                 player: Player,
                 repository: GenericMediaRepository,
                 navigator: Navigator,
-                songQueueFactory: SongQueueFactory
+                audioSourceQueueFactory: AudioSourceQueueFactory
         ): ClickMediaUseCase<Album> {
             return ClickMediaUseCase<Album>(
                     schedulerProvider,
                     player,
                     repository,
                     navigator,
-                    songQueueFactory
+                    audioSourceQueueFactory
             )
         }
 
@@ -255,14 +255,14 @@ abstract class UseCaseModule {
                 player: Player,
                 repository: GenericMediaRepository,
                 navigator: Navigator,
-                songQueueFactory: SongQueueFactory
+                audioSourceQueueFactory: AudioSourceQueueFactory
         ): ClickMediaUseCase<Genre> {
             return ClickMediaUseCase<Genre>(
                     schedulerProvider,
                     player,
                     repository,
                     navigator,
-                    songQueueFactory
+                    audioSourceQueueFactory
             )
         }
 
@@ -273,14 +273,14 @@ abstract class UseCaseModule {
                 player: Player,
                 repository: GenericMediaRepository,
                 navigator: Navigator,
-                songQueueFactory: SongQueueFactory
+                audioSourceQueueFactory: AudioSourceQueueFactory
         ): ClickMediaUseCase<Playlist> {
             return ClickMediaUseCase<Playlist>(
                     schedulerProvider,
                     player,
                     repository,
                     navigator,
-                    songQueueFactory
+                    audioSourceQueueFactory
             )
         }
 
@@ -291,14 +291,14 @@ abstract class UseCaseModule {
                 player: Player,
                 repository: GenericMediaRepository,
                 navigator: Navigator,
-                songQueueFactory: SongQueueFactory
+                audioSourceQueueFactory: AudioSourceQueueFactory
         ): ClickMediaUseCase<Song> {
             return ClickMediaUseCase<Song>(
                     schedulerProvider,
                     player,
                     repository,
                     navigator,
-                    songQueueFactory
+                    audioSourceQueueFactory
             )
         }
 
@@ -309,14 +309,14 @@ abstract class UseCaseModule {
                 player: Player,
                 repository: GenericMediaRepository,
                 navigator: Navigator,
-                songQueueFactory: SongQueueFactory
+                audioSourceQueueFactory: AudioSourceQueueFactory
         ): ClickMediaUseCase<SongWithPlayCount> {
             return ClickMediaUseCase<SongWithPlayCount>(
                     schedulerProvider,
                     player,
                     repository,
                     navigator,
-                    songQueueFactory
+                    audioSourceQueueFactory
             )
         }
 
@@ -327,14 +327,14 @@ abstract class UseCaseModule {
                 player: Player,
                 repository: GenericMediaRepository,
                 navigator: Navigator,
-                songQueueFactory: SongQueueFactory
+                audioSourceQueueFactory: AudioSourceQueueFactory
         ): ClickMediaUseCase<MyFile> {
             return ClickMediaUseCase<MyFile>(
                     schedulerProvider,
                     player,
                     repository,
                     navigator,
-                    songQueueFactory
+                    audioSourceQueueFactory
             )
         }
 
@@ -346,14 +346,14 @@ abstract class UseCaseModule {
                 repository: GenericMediaRepository,
                 preferences: Preferences,
                 player: Player,
-                songQueueFactory: SongQueueFactory
+                audioSourceQueueFactory: AudioSourceQueueFactory
         ): PlayMediaUseCase<Media> {
             return PlayMediaUseCase<Media>(
                     schedulerProvider,
                     repository,
                     preferences,
                     player,
-                    songQueueFactory
+                    audioSourceQueueFactory
             )
         }
 
@@ -364,14 +364,14 @@ abstract class UseCaseModule {
                 repository: ArtistRepository,
                 preferences: Preferences,
                 player: Player,
-                songQueueFactory: SongQueueFactory
+                audioSourceQueueFactory: AudioSourceQueueFactory
         ): PlayMediaUseCase<Artist> {
             return PlayMediaUseCase<Artist>(
                     schedulerProvider,
                     repository,
                     preferences,
                     player,
-                    songQueueFactory
+                    audioSourceQueueFactory
             )
         }
 
@@ -382,14 +382,14 @@ abstract class UseCaseModule {
                 repository: AlbumRepository,
                 preferences: Preferences,
                 player: Player,
-                songQueueFactory: SongQueueFactory
+                audioSourceQueueFactory: AudioSourceQueueFactory
         ): PlayMediaUseCase<Album> {
             return PlayMediaUseCase<Album>(
                     schedulerProvider,
                     repository,
                     preferences,
                     player,
-                    songQueueFactory
+                    audioSourceQueueFactory
             )
         }
 
@@ -400,14 +400,14 @@ abstract class UseCaseModule {
                 repository: GenreRepository,
                 preferences: Preferences,
                 player: Player,
-                songQueueFactory: SongQueueFactory
+                audioSourceQueueFactory: AudioSourceQueueFactory
         ): PlayMediaUseCase<Genre> {
             return PlayMediaUseCase<Genre>(
                     schedulerProvider,
                     repository,
                     preferences,
                     player,
-                    songQueueFactory
+                    audioSourceQueueFactory
             )
         }
 
@@ -418,14 +418,14 @@ abstract class UseCaseModule {
                 repository: PlaylistRepository,
                 preferences: Preferences,
                 player: Player,
-                songQueueFactory: SongQueueFactory
+                audioSourceQueueFactory: AudioSourceQueueFactory
         ): PlayMediaUseCase<Playlist> {
             return PlayMediaUseCase<Playlist>(
                     schedulerProvider,
                     repository,
                     preferences,
                     player,
-                    songQueueFactory
+                    audioSourceQueueFactory
             )
         }
 
@@ -436,14 +436,14 @@ abstract class UseCaseModule {
                 repository: SongRepository,
                 preferences: Preferences,
                 player: Player,
-                songQueueFactory: SongQueueFactory
+                audioSourceQueueFactory: AudioSourceQueueFactory
         ): PlayMediaUseCase<Song> {
             return PlayMediaUseCase<Song>(
                     schedulerProvider,
                     repository,
                     preferences,
                     player,
-                    songQueueFactory
+                    audioSourceQueueFactory
             )
         }
 
@@ -454,14 +454,14 @@ abstract class UseCaseModule {
                 repository: SongWithPlayCountRepository,
                 preferences: Preferences,
                 player: Player,
-                songQueueFactory: SongQueueFactory
+                audioSourceQueueFactory: AudioSourceQueueFactory
         ): PlayMediaUseCase<SongWithPlayCount> {
             return PlayMediaUseCase<SongWithPlayCount>(
                     schedulerProvider,
                     repository,
                     preferences,
                     player,
-                    songQueueFactory
+                    audioSourceQueueFactory
             )
         }
 
@@ -472,14 +472,14 @@ abstract class UseCaseModule {
                 repository: MyFileRepository,
                 preferences: Preferences,
                 player: Player,
-                songQueueFactory: SongQueueFactory
+                audioSourceQueueFactory: AudioSourceQueueFactory
         ): PlayMediaUseCase<MyFile> {
             return PlayMediaUseCase<MyFile>(
                     schedulerProvider,
                     repository,
                     preferences,
                     player,
-                    songQueueFactory
+                    audioSourceQueueFactory
             )
         }
 
@@ -833,7 +833,7 @@ abstract class UseCaseModule {
                 genreRepository: GenreRepository,
                 playlistRepository: PlaylistRepository,
                 preferences: Preferences,
-                songQueueFactory: SongQueueFactory
+                audioSourceQueueFactory: AudioSourceQueueFactory
         ): RestorePlayerStateUseCase {
             return RestorePlayerStateUseCase(
                     schedulerProvider,
@@ -843,7 +843,7 @@ abstract class UseCaseModule {
                     genreRepository,
                     playlistRepository,
                     preferences,
-                    songQueueFactory)
+                    audioSourceQueueFactory)
         }
 
         /*control player*/

@@ -2,8 +2,10 @@ package com.frolo.muse.interactor.media
 
 import com.frolo.muse.*
 import com.frolo.muse.engine.Player
-import com.frolo.muse.engine.SongQueue
-import com.frolo.muse.engine.SongQueueFactory
+import com.frolo.muse.engine.AudioSourceQueue
+import com.frolo.muse.common.AudioSourceQueueFactory
+import com.frolo.muse.common.toAudioSource
+import com.frolo.muse.common.toAudioSources
 import com.frolo.muse.model.media.*
 import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.repository.GenericMediaRepository
@@ -28,7 +30,7 @@ class ClickMediaUseCaseTest {
     @Mock
     private lateinit var repository: GenericMediaRepository
     @Mock
-    private lateinit var songQueueFactory: SongQueueFactory
+    private lateinit var audioSourceQueueFactory: AudioSourceQueueFactory
     @Mock
     private lateinit var navigator: Navigator
 
@@ -41,35 +43,35 @@ class ClickMediaUseCaseTest {
                 player,
                 repository,
                 navigator,
-                songQueueFactory
+                audioSourceQueueFactory
         )
     }
 
     @Test
     fun test_clickOnSong_Play() {
-        val collection = mockList<Song>(size = 10)
+        val songs = mockList<Song>(size = 10)
         val song = mockKT<Song>()
 
-        val songQueue = SongQueue.create(SongQueue.CHUNK, SongQueue.NO_ID, "test", collection)
+        val songQueue = AudioSourceQueue.create(AudioSourceQueue.CHUNK, AudioSourceQueue.NO_ID, "test", songs.toAudioSources())
 
         val testObserver = TestObserver.create<Unit>()
 
         whenever(player.getCurrent())
                 .thenReturn(null)
 
-        whenever(songQueueFactory.create(eq(listOf(song)), eq(collection)))
+        whenever(audioSourceQueueFactory.create(eq(listOf(song)), eq(songs)))
                 .thenReturn(songQueue)
 
-        whenever(player.prepare(eq(songQueue), eq(song), eq(true)))
+        whenever(player.prepare(eq(songQueue), eq(song.toAudioSource()), eq(true)))
                 .thenDoNothing()
 
-        clickMediaUseCase.click(song, collection)
+        clickMediaUseCase.click(song, songs)
                 .subscribe(testObserver)
 
         testObserver.assertComplete()
 
         verify(player, times(1))
-                .prepare(songQueue, song, true)
+                .prepare(songQueue, song.toAudioSource(), true)
     }
 
     @Test
@@ -80,7 +82,7 @@ class ClickMediaUseCaseTest {
         val testObserver = TestObserver.create<Unit>()
 
         whenever(player.getCurrent())
-                .thenReturn(song)
+                .thenReturn(song.toAudioSource())
 
         whenever(player.toggle())
                 .thenDoNothing()
@@ -237,7 +239,7 @@ class ClickMediaUseCaseTest {
         val song = mockKT<Song>()
         val songsFromMyFile = listOf(song)
         val allSongs = songsFromMyFile + songsFromMyFile
-        val songQueue = SongQueue.create(SongQueue.FOLDER, SongQueue.NO_ID, "test", allSongs)
+        val songQueue = AudioSourceQueue.create(AudioSourceQueue.FOLDER, AudioSourceQueue.NO_ID, "test", allSongs.toAudioSources())
 
         whenever(myFile.kind).thenReturn(Media.MY_FILE)
 
@@ -251,9 +253,9 @@ class ClickMediaUseCaseTest {
 
         whenever(player.getCurrent()).thenReturn(null)
 
-        whenever(songQueueFactory.create(eq(listOf(song)), eq(allSongs))).thenReturn(songQueue)
+        whenever(audioSourceQueueFactory.create(eq(listOf(song)), eq(allSongs))).thenReturn(songQueue)
 
-        whenever(player.prepare(eq(songQueue), eq(song), eq(true))).thenDoNothing()
+        whenever(player.prepare(eq(songQueue), eq(song.toAudioSource()), eq(true))).thenDoNothing()
 
         clickMediaUseCase.click(myFile, collection)
                 .subscribe(testObserver)
@@ -261,7 +263,7 @@ class ClickMediaUseCaseTest {
         testObserver.assertComplete()
 
         verify(player, times(1))
-                .prepare(songQueue, song, true)
+                .prepare(songQueue, song.toAudioSource(), true)
     }
 
     @Test

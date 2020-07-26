@@ -5,6 +5,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.frolo.muse.arch.liveDataOf
+import com.frolo.muse.engine.AudioSource
 import com.frolo.muse.engine.Player
 import com.frolo.muse.engine.SimplePlayerObserver
 import com.frolo.muse.navigator.Navigator
@@ -57,8 +58,8 @@ abstract class AbsSongCollectionViewModel<T: Song> constructor(
     private var playingPositionDisposable: Disposable? = null
 
     private val playerObserver = object : SimplePlayerObserver() {
-        override fun onSongChanged(player: Player, song: Song?, positionInQueue: Int) {
-            detectPlayingPosition(mediaList.value, song)
+        override fun onAudioSourceChanged(player: Player, item: AudioSource?, positionInQueue: Int) {
+            detectPlayingPosition(mediaList.value, item)
         }
         override fun onPlaybackStarted(player: Player) {
             _isPlaying.value = true
@@ -107,8 +108,8 @@ abstract class AbsSongCollectionViewModel<T: Song> constructor(
         _isPlaying.value = player.isPlaying()
     }
 
-    private fun detectPlayingPosition(songList: List<Song>?, song: Song?) {
-        Single.fromCallable { songList?.indexOfFirst { it.id == song?.id } ?: -1 }
+    private fun detectPlayingPosition(songList: List<Song>?, item: AudioSource?) {
+        Single.fromCallable { songList?.indexOfFirst { it.id == item?.id } ?: -1 }
                 .subscribeOn(schedulerProvider.computation())
                 .observeOn(schedulerProvider.main())
                 .subscribe(object : SingleObserver<Int> {

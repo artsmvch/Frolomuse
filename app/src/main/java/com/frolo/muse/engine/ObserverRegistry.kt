@@ -3,15 +3,14 @@ package com.frolo.muse.engine
 import android.content.Context
 import androidx.annotation.MainThread
 import com.frolo.muse.ThreadStrictMode
-import com.frolo.muse.model.media.Song
 import com.frolo.muse.widget.PlayerWidget3Provider
 import com.frolo.muse.widget.PlayerWidget4Provider
 
 
 @MainThread
 class ObserverRegistry constructor(
-        private val serviceContext: Context,
-        private val notificationSender: (player: Player, forceNotify: Boolean) -> Unit
+    private val serviceContext: Context,
+    private val notificationSender: (player: Player, forceNotify: Boolean) -> Unit
 ) : PlayerObserver {
 
     private val observers = LinkedHashSet<PlayerObserver>(4)
@@ -85,16 +84,16 @@ class ObserverRegistry constructor(
         notifyObservers { it.onSoughtTo(player, position) }
     }
 
-    override fun onQueueChanged(player: Player, queue: SongQueue) {
+    override fun onQueueChanged(player: Player, queue: AudioSourceQueue) {
         checkThread()
         notifyObservers { it.onQueueChanged(player, queue) }
     }
 
-    override fun onSongChanged(player: Player, song: Song?, positionInQueue: Int) {
+    override fun onAudioSourceChanged(player: Player, item: AudioSource?, positionInQueue: Int) {
         checkThread()
         updateWidgets(player)
         postNotification(player, false)
-        notifyObservers { it.onSongChanged(player, song, positionInQueue) }
+        notifyObservers { it.onAudioSourceChanged(player, item, positionInQueue) }
     }
 
     override fun onShuffleModeChanged(player: Player, mode: Int) {

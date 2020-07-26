@@ -1,10 +1,6 @@
 package com.frolo.muse.ui.base
 
-import com.frolo.muse.engine.Player
-import com.frolo.muse.engine.PlayerObserver
-import com.frolo.muse.engine.SimplePlayerObserver
-import com.frolo.muse.engine.SongQueue
-import com.frolo.muse.model.media.Song
+import com.frolo.muse.engine.*
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
 import io.reactivex.FlowableOnSubscribe
@@ -22,11 +18,11 @@ private fun Player.observe(flags: Int): Flowable<Player> {
     val flowableOnSubscribe = FlowableOnSubscribe<Player> { emitter ->
         if (!emitter.isCancelled) {
             val observer: PlayerObserver = object : SimplePlayerObserver() {
-                override fun onQueueChanged(player: Player, queue: SongQueue) {
+                override fun onQueueChanged(player: Player, queue: AudioSourceQueue) {
                     if (flags == OBSERVE_CURR_QUEUE) emitter.onNext(player)
                 }
 
-                override fun onSongChanged(player: Player, song: Song?, positionInQueue: Int) {
+                override fun onAudioSourceChanged(player: Player, item: AudioSource?, positionInQueue: Int) {
                     if (flags == OBSERVE_CURR_SONG) emitter.onNext(player)
                 }
             }
@@ -46,5 +42,5 @@ private fun Player.observe(flags: Int): Flowable<Player> {
     return Flowable.create(flowableOnSubscribe, BackpressureStrategy.LATEST)
 }
 
-fun Player.observeQueue(onChanged: (queue: SongQueue?) -> Unit): Disposable =
+fun Player.observeQueue(onChanged: (queue: AudioSourceQueue?) -> Unit): Disposable =
     observe(OBSERVE_CURR_QUEUE).forEach { onChanged.invoke(it.getCurrentQueue()) }

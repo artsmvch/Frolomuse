@@ -7,7 +7,6 @@ import com.frolo.muse.engine.Player.Companion.REPEAT_OFF
 import com.frolo.muse.engine.Player.Companion.SHUFFLE_OFF
 import com.frolo.muse.engine.Player.Companion.SPEED_NORMAL
 import com.frolo.muse.engine.stub.AudioFxStub
-import com.frolo.muse.model.media.Song
 
 
 class PlayerWrapper : Player {
@@ -30,12 +29,12 @@ class PlayerWrapper : Player {
         origin?.unregisterObserver(observer)
     }
 
-    override fun prepare(queue: SongQueue, song: Song, startPlaying: Boolean) {
-        origin?.prepare(queue, song, startPlaying)
+    override fun prepare(queue: AudioSourceQueue, item: AudioSource, startPlaying: Boolean) {
+        origin?.prepare(queue, item, startPlaying)
     }
 
-    override fun prepare(queue: SongQueue, song: Song, playbackPosition: Int, startPlaying: Boolean) {
-        origin?.prepare(queue, song, playbackPosition, startPlaying)
+    override fun prepare(queue: AudioSourceQueue, item: AudioSource, playbackPosition: Int, startPlaying: Boolean) {
+        origin?.prepare(queue, item, playbackPosition, startPlaying)
     }
 
     override fun shutdown() {
@@ -54,8 +53,8 @@ class PlayerWrapper : Player {
         origin?.skipTo(position, forceStartPlaying)
     }
 
-    override fun skipTo(song: Song, forceStartPlaying: Boolean) {
-        origin?.skipTo(song, forceStartPlaying)
+    override fun skipTo(item: AudioSource, forceStartPlaying: Boolean) {
+        origin?.skipTo(item, forceStartPlaying)
     }
 
     override fun isPrepared(): Boolean {
@@ -70,7 +69,7 @@ class PlayerWrapper : Player {
         return origin?.getAudiSessionId() ?: -1
     }
 
-    override fun getCurrent(): Song? {
+    override fun getCurrent(): AudioSource? {
         return origin?.getCurrent()
     }
 
@@ -78,7 +77,7 @@ class PlayerWrapper : Player {
         return origin?.getCurrentPositionInQueue() ?: -1
     }
 
-    override fun getCurrentQueue(): SongQueue? {
+    override fun getCurrentQueue(): AudioSourceQueue? {
         return origin?.getCurrentQueue()
     }
 
@@ -106,32 +105,32 @@ class PlayerWrapper : Player {
         origin?.toggle()
     }
 
-    override fun update(song: Song) {
-        origin?.update(song)
+    override fun update(item: AudioSource) {
+        origin?.update(item)
     }
 
     override fun remove(position: Int) {
         origin?.remove(position)
     }
 
-    override fun removeAll(songs: Collection<Song>) {
-        origin?.removeAll(songs)
+    override fun removeAll(items: Collection<AudioSource>) {
+        origin?.removeAll(items)
     }
 
-    override fun add(song: Song) {
-        origin?.add(song)
+    override fun add(item: AudioSource) {
+        origin?.add(item)
     }
 
-    override fun addAll(songs: List<Song>) {
-        origin?.addAll(songs)
+    override fun addAll(items: List<AudioSource>) {
+        origin?.addAll(items)
     }
 
-    override fun addNext(song: Song) {
-        origin?.addNext(song)
+    override fun addNext(item: AudioSource) {
+        origin?.addNext(item)
     }
 
-    override fun addAllNext(songs: List<Song>) {
-        origin?.addAllNext(songs)
+    override fun addAllNext(items: List<AudioSource>) {
+        origin?.addAllNext(items)
     }
 
     override fun moveItem(fromPosition: Int, toPosition: Int) {

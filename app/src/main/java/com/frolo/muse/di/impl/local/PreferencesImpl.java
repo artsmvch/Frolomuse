@@ -7,7 +7,7 @@ import androidx.annotation.Nullable;
 
 import com.frolo.muse.BuildConfig;
 import com.frolo.muse.engine.Player;
-import com.frolo.muse.engine.SongQueue;
+import com.frolo.muse.engine.AudioSourceQueue;
 import com.frolo.muse.model.Library;
 import com.frolo.muse.model.Recently;
 import com.frolo.muse.model.Theme;
@@ -185,7 +185,7 @@ public class PreferencesImpl implements Preferences {
         }
     }
 
-    public void saveLastMediaCollectionType(@SongQueue.QueueType int type) {
+    public void saveLastMediaCollectionType(@AudioSourceQueue.QueueType int type) {
         preferences.edit().putInt(KEY_LAST_MEDIA_COLLECTION_TYPE, type).apply();
     }
 
@@ -203,9 +203,9 @@ public class PreferencesImpl implements Preferences {
         preferences.edit().putInt(KEY_LAST_PLAYBACK_POSITION, position).apply();
     }
 
-    public @SongQueue.QueueType
+    public @AudioSourceQueue.QueueType
     int getLastMediaCollectionType() {
-        return preferences.getInt(KEY_LAST_MEDIA_COLLECTION_TYPE, SongQueue.CHUNK);
+        return preferences.getInt(KEY_LAST_MEDIA_COLLECTION_TYPE, AudioSourceQueue.CHUNK);
     }
 
     public long getLastMediaCollectionId() {

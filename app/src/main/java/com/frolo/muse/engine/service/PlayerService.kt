@@ -18,6 +18,9 @@ import androidx.core.content.ContextCompat
 import com.frolo.muse.App
 import com.frolo.muse.Logger
 import com.frolo.muse.R
+import com.frolo.muse.common.switchToNextRepeatMode
+import com.frolo.muse.common.switchToNextShuffleMode
+import com.frolo.muse.common.toSong
 import com.frolo.muse.engine.*
 import com.frolo.muse.engine.audiofx.AudioFx_Impl
 import com.frolo.muse.engine.service.PlayerService.Companion.newIntent
@@ -466,7 +469,7 @@ class PlayerService: Service() {
             return
         }
 
-        val song = player.getCurrent()
+        val song = player.getCurrent()?.toSong()
         val isPlaying = player.isPlaying()
 
         notificationDisposable = Notifications.getPlaybackArt(this, song)

@@ -1,5 +1,6 @@
 package com.frolo.muse.interactor.media
 
+import com.frolo.muse.common.toAudioSources
 import com.frolo.muse.engine.Player
 import com.frolo.muse.model.media.Media
 import com.frolo.muse.model.media.Playlist
@@ -25,7 +26,8 @@ class DeleteMediaUseCase <E: Media> constructor(
                     .flatMapCompletable { songsRelatedToItem ->
                         repository.delete(item)
                                 .doOnComplete {
-                                    player.removeAll(songsRelatedToItem)
+                                    val audioSources = songsRelatedToItem.toAudioSources()
+                                    player.removeAll(audioSources)
                                 }
                     }
         }
@@ -48,7 +50,7 @@ class DeleteMediaUseCase <E: Media> constructor(
         }
 
         return removeFromPlaylist
-                .doOnSuccess { songs -> player.removeAll(songs) }
+                .doOnSuccess { songs -> player.removeAll(songs.toAudioSources()) }
                 .flatMapCompletable { repository.delete(items) }
                 .subscribeOn(schedulerProvider.worker())
     }

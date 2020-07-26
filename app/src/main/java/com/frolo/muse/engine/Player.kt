@@ -3,38 +3,37 @@ package com.frolo.muse.engine
 import android.os.Build
 import androidx.annotation.IntDef
 import androidx.annotation.RequiresApi
-import com.frolo.muse.model.media.Song
 
 
 interface Player {
     fun registerObserver(observer: PlayerObserver)
     fun unregisterObserver(observer: PlayerObserver)
-    fun prepare(queue: SongQueue, song: Song, startPlaying: Boolean)
-    fun prepare(queue: SongQueue, song: Song, playbackPosition: Int, startPlaying: Boolean)
+    fun prepare(queue: AudioSourceQueue, item: AudioSource, startPlaying: Boolean)
+    fun prepare(queue: AudioSourceQueue, item: AudioSource, playbackPosition: Int, startPlaying: Boolean)
     fun shutdown()
     fun skipToPrevious()
     fun skipToNext()
     fun skipTo(position: Int, forceStartPlaying: Boolean)
-    fun skipTo(song: Song, forceStartPlaying: Boolean)
+    fun skipTo(item: AudioSource, forceStartPlaying: Boolean)
     fun isPrepared(): Boolean
     fun isPlaying(): Boolean
     fun getAudiSessionId(): Int
-    fun getCurrent(): Song?
+    fun getCurrent(): AudioSource?
     fun getCurrentPositionInQueue(): Int
-    fun getCurrentQueue(): SongQueue?
+    fun getCurrentQueue(): AudioSourceQueue?
     fun getProgress(): Int
     fun seekTo(position: Int)
     fun getDuration(): Int
     fun start()
     fun pause()
     fun toggle()
-    fun update(song: Song)
+    fun update(item: AudioSource)
     fun remove(position: Int)
-    fun removeAll(songs: Collection<Song>)
-    fun add(song: Song)
-    fun addAll(songs: List<Song>)
-    fun addNext(song: Song)
-    fun addAllNext(songs: List<Song>)
+    fun removeAll(items: Collection<AudioSource>)
+    fun add(item: AudioSource)
+    fun addAll(items: List<AudioSource>)
+    fun addNext(item: AudioSource)
+    fun addAllNext(items: List<AudioSource>)
     fun moveItem(fromPosition: Int, toPosition: Int)
     fun getAudioFx(): AudioFx
     // AB functionality
