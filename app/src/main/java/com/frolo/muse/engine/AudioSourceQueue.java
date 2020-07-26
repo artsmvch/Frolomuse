@@ -255,7 +255,7 @@ public final class AudioSourceQueue implements Cloneable {
      * Shuffles the queue and puts the given <code>putInFront</code> audio source in the front of the queue.
      * This puts the given audio source in the front only if the queue contains it.
      */
-    /*package*/ synchronized void shuffleWithAudioSourceInFront(AudioSource putInFront) {
+    /*package*/ synchronized void shuffleWithItemInFront(AudioSource putInFront) {
         Collections.shuffle(mItems);
         if (mItems.remove(putInFront)) {
             mItems.add(0, putInFront);

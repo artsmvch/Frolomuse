@@ -571,7 +571,7 @@ class PlayerEngine constructor(
 
                 val newQueue = queue.clone().apply {
                     if (shuffleMode == Player.SHUFFLE_ON) {
-                        shuffleWithAudioSourceInFront(item)
+                        shuffleWithItemInFront(item)
                     }
                 }
                 currentQueue = newQueue
@@ -1040,7 +1040,7 @@ class PlayerEngine constructor(
                 if (mode == Player.SHUFFLE_OFF) {
                     currentQueue.copyItemsFrom(originQueue ?: AudioSourceQueue.empty())
                 } else {
-                    currentQueue.shuffleWithAudioSourceInFront(currentItem)
+                    currentQueue.shuffleWithItemInFront(currentItem)
                 }
                 currentPositionInQueue = currentQueue.indexOf(currentItem)
 
