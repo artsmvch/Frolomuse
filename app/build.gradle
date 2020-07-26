@@ -14,7 +14,7 @@ ext.loadProperties = { filepath ->
 }
 
 def versionMajor = 5
-def versionMinor = 3
+def versionMinor = 4
 def versionPatch = 0
 
 android {
@@ -34,7 +34,7 @@ android {
         applicationId "com.frolo.musp"
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 86
+        versionCode 87
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         setProperty("archivesBaseName", applicationId + "-v" + versionCode + "(" + versionName + ")")
