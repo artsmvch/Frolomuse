@@ -220,4 +220,7 @@ public final class Util {
         return items;
     }
 
+    private Util() {
+    }
+
 }
