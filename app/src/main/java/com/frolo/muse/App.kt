@@ -99,20 +99,19 @@ class App : MultiDexApplication() {
     }
 
     fun onPlayerConnected(player: Player) {
-        playerWrapper.attachOrigin(player)
+        playerWrapper.attachBase(player)
     }
 
     fun onPlayerDisconnected() {
-        playerWrapper.detachOrigin()
+        playerWrapper.detachBase()
     }
 
     fun onFragmentNavigatorCreated(fragmentNavigator: FragmentNavigator) {
-        navigatorWrapper.attachOrigin(
-                NavigatorImpl(fragmentNavigator as MainActivity))
+        navigatorWrapper.attachBase(NavigatorImpl(fragmentNavigator as MainActivity))
     }
 
     fun onFragmentNavigatorDestroyed() {
-        navigatorWrapper.detachOrigin()
+        navigatorWrapper.detachBase()
     }
 
 }

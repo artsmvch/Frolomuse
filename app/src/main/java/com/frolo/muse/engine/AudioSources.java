@@ -179,4 +179,9 @@ public final class AudioSources {
             metadata.getTrackNumber()
         );
     }
+
+    public static boolean areSourcesTheSame(@NotNull AudioSource item1, @NotNull AudioSource item2) {
+        return Objects.equals(item1.getSource(), item2.getSource());
+    }
+
 }

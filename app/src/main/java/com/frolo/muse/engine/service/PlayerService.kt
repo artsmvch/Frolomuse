@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Bitmap
-import android.media.AudioManager
 import android.media.MediaMetadata
 import android.os.*
 import android.support.v4.media.MediaMetadataCompat
@@ -25,6 +24,10 @@ import com.frolo.muse.engine.*
 import com.frolo.muse.engine.audiofx.AudioFx_Impl
 import com.frolo.muse.engine.service.PlayerService.Companion.newIntent
 import com.frolo.muse.engine.service.PlayerService.PlayerBinder
+import com.frolo.muse.engine.service.observers.PlaybackNotifier
+import com.frolo.muse.engine.service.observers.PlayerStateSaver
+import com.frolo.muse.engine.service.observers.SongPlayCounter
+import com.frolo.muse.engine.service.observers.WidgetUpdater
 import com.frolo.muse.headset.createHeadsetHandler
 import com.frolo.muse.interactor.media.DispatchSongPlayedUseCase
 import com.frolo.muse.model.media.Song
@@ -237,32 +240,26 @@ class PlayerService: Service() {
         val thread = HandlerThread("Service[$serviceName]", Process.THREAD_PRIORITY_URGENT_AUDIO)
         thread.start()
 
-        // Handlers
-        val engineHandler = Handler(thread.looper)
-        val eventHandler = Handler(Looper.getMainLooper())
-
-        // Creating eq impl
+        // Creating AudioFx
         val audioFxApplicable: AudioFxApplicable =
                 AudioFx_Impl.getInstance(this, Const.AUDIO_FX_PREFERENCES)
 
-        val observerRegistry = ObserverRegistry(this) { player, forceNotify ->
-            notifyAboutPlayback(forceNotify)
-        }
-
-        val audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager?
-        player = PlayerEngine(engineHandler, eventHandler, audioFxApplicable, observerRegistry, audioManager)
+        player = PlayerImpl.create(this, audioFxApplicable)
 
         headsetHandler.subscribe(this)
         registerReceiver(sleepTimerHandler, IntentFilter(PlayerSleepTimer.ACTION_ALARM_TRIGGERED))
 
-        // setting up modes after preferences initialized
+        // Setting up the modes after the preferences instance gets initialized
         preferences.apply {
             player.setRepeatMode(loadRepeatMode())
             player.setShuffleMode(loadShuffleMode())
         }
 
-        player.registerObserver(PlayerStateObserver(preferences))
-        player.registerObserver(SongPlayCountObserver(schedulerProvider, dispatchSongPlayedUseCase))
+        // Registering all the necessary observers
+        player.registerObserver(PlayerStateSaver(preferences))
+        player.registerObserver(SongPlayCounter(schedulerProvider, dispatchSongPlayedUseCase))
+        player.registerObserver(WidgetUpdater(this))
+        player.registerObserver(PlaybackNotifier { _, force -> notifyAboutPlayback(force) })
 
         Logger.d(TAG, "Service created")
     }
@@ -461,11 +458,11 @@ class PlayerService: Service() {
         return notificationBuilder.build()
     }
 
-    private fun notifyAboutPlayback(forceNotify: Boolean) {
+    private fun notifyAboutPlayback(force: Boolean) {
         notificationDisposable?.dispose()
         notificationDisposable = null
 
-        if (notificationCancelled && !forceNotify) {
+        if (notificationCancelled && !force) {
             return
         }
 

@@ -7,202 +7,207 @@ import com.frolo.muse.engine.Player.Companion.REPEAT_OFF
 import com.frolo.muse.engine.Player.Companion.SHUFFLE_OFF
 import com.frolo.muse.engine.Player.Companion.SPEED_NORMAL
 import com.frolo.muse.engine.stub.AudioFxStub
+import java.util.concurrent.atomic.AtomicReference
 
 
+/**
+ * Thread-safe wrapper for [Player] that delegates all method calls to [delegate].
+ * The delegate can be attached using [attachBase] method and detached using [detachBase] method.
+ */
 class PlayerWrapper : Player {
 
-    private var origin: Player? = null
+    private val delegate = AtomicReference<Player>()
 
-    fun attachOrigin(origin: Player) {
-        this.origin = origin
+    fun attachBase(player: Player) {
+        delegate.set(player)
     }
 
-    fun detachOrigin() {
-        this.origin = null
+    fun detachBase() {
+        delegate.set(null)
     }
 
     override fun registerObserver(observer: PlayerObserver) {
-        origin?.registerObserver(observer)
+        delegate.get()?.registerObserver(observer)
     }
 
     override fun unregisterObserver(observer: PlayerObserver) {
-        origin?.unregisterObserver(observer)
+        delegate.get()?.unregisterObserver(observer)
     }
 
     override fun prepare(queue: AudioSourceQueue, item: AudioSource, startPlaying: Boolean) {
-        origin?.prepare(queue, item, startPlaying)
+        delegate.get()?.prepare(queue, item, startPlaying)
     }
 
     override fun prepare(queue: AudioSourceQueue, item: AudioSource, playbackPosition: Int, startPlaying: Boolean) {
-        origin?.prepare(queue, item, playbackPosition, startPlaying)
+        delegate.get()?.prepare(queue, item, playbackPosition, startPlaying)
     }
 
     override fun shutdown() {
-        origin?.shutdown()
+        delegate.get()?.shutdown()
     }
 
     override fun skipToPrevious() {
-        origin?.skipToPrevious()
+        delegate.get()?.skipToPrevious()
     }
 
     override fun skipToNext() {
-        origin?.skipToNext()
+        delegate.get()?.skipToNext()
     }
 
     override fun skipTo(position: Int, forceStartPlaying: Boolean) {
-        origin?.skipTo(position, forceStartPlaying)
+        delegate.get()?.skipTo(position, forceStartPlaying)
     }
 
     override fun skipTo(item: AudioSource, forceStartPlaying: Boolean) {
-        origin?.skipTo(item, forceStartPlaying)
+        delegate.get()?.skipTo(item, forceStartPlaying)
     }
 
     override fun isPrepared(): Boolean {
-        return origin?.isPrepared() ?: false
+        return delegate.get()?.isPrepared() ?: false
     }
 
     override fun isPlaying(): Boolean {
-        return origin?.isPlaying() ?: false
+        return delegate.get()?.isPlaying() ?: false
     }
 
     override fun getAudiSessionId(): Int {
-        return origin?.getAudiSessionId() ?: -1
+        return delegate.get()?.getAudiSessionId() ?: -1
     }
 
     override fun getCurrent(): AudioSource? {
-        return origin?.getCurrent()
+        return delegate.get()?.getCurrent()
     }
 
     override fun getCurrentPositionInQueue(): Int {
-        return origin?.getCurrentPositionInQueue() ?: -1
+        return delegate.get()?.getCurrentPositionInQueue() ?: -1
     }
 
     override fun getCurrentQueue(): AudioSourceQueue? {
-        return origin?.getCurrentQueue()
+        return delegate.get()?.getCurrentQueue()
     }
 
     override fun getProgress(): Int {
-        return origin?.getProgress() ?: 0
+        return delegate.get()?.getProgress() ?: 0
     }
 
     override fun seekTo(position: Int) {
-        origin?.seekTo(position)
+        delegate.get()?.seekTo(position)
     }
 
     override fun getDuration(): Int {
-        return origin?.getDuration() ?: 0
+        return delegate.get()?.getDuration() ?: 0
     }
 
     override fun start() {
-        origin?.start()
+        delegate.get()?.start()
     }
 
     override fun pause() {
-        origin?.pause()
+        delegate.get()?.pause()
     }
 
     override fun toggle() {
-        origin?.toggle()
+        delegate.get()?.toggle()
     }
 
     override fun update(item: AudioSource) {
-        origin?.update(item)
+        delegate.get()?.update(item)
     }
 
     override fun remove(position: Int) {
-        origin?.remove(position)
+        delegate.get()?.remove(position)
     }
 
     override fun removeAll(items: Collection<AudioSource>) {
-        origin?.removeAll(items)
+        delegate.get()?.removeAll(items)
     }
 
     override fun add(item: AudioSource) {
-        origin?.add(item)
+        delegate.get()?.add(item)
     }
 
     override fun addAll(items: List<AudioSource>) {
-        origin?.addAll(items)
+        delegate.get()?.addAll(items)
     }
 
     override fun addNext(item: AudioSource) {
-        origin?.addNext(item)
+        delegate.get()?.addNext(item)
     }
 
     override fun addAllNext(items: List<AudioSource>) {
-        origin?.addAllNext(items)
+        delegate.get()?.addAllNext(items)
     }
 
     override fun moveItem(fromPosition: Int, toPosition: Int) {
-        origin?.moveItem(fromPosition, toPosition)
+        delegate.get()?.moveItem(fromPosition, toPosition)
     }
 
     override fun getAudioFx(): AudioFx {
-        return origin?.getAudioFx() ?: AudioFxStub
+        return delegate.get()?.getAudioFx() ?: AudioFxStub
     }
 
     override fun isAPointed(): Boolean {
-        return origin?.isAPointed() ?: false
+        return delegate.get()?.isAPointed() ?: false
     }
 
     override fun isBPointed(): Boolean {
-        return origin?.isBPointed() ?: false
+        return delegate.get()?.isBPointed() ?: false
     }
 
     override fun pointA(position: Int) {
-        origin?.pointA(position)
+        delegate.get()?.pointA(position)
     }
 
     override fun pointB(position: Int) {
-        origin?.pointB(position)
+        delegate.get()?.pointB(position)
     }
 
     override fun resetAB() {
-        origin?.resetAB()
+        delegate.get()?.resetAB()
     }
 
     override fun rewindForward(interval: Int) {
-        origin?.rewindForward(interval)
+        delegate.get()?.rewindForward(interval)
     }
 
     override fun rewindBackward(interval: Int) {
-        origin?.rewindBackward(interval)
+        delegate.get()?.rewindBackward(interval)
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun getSpeed(): Float {
-        return origin?.getSpeed() ?: SPEED_NORMAL
+        return delegate.get()?.getSpeed() ?: SPEED_NORMAL
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun setSpeed(speed: Float) {
-        origin?.setSpeed(speed)
+        delegate.get()?.setSpeed(speed)
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun getPitch(): Float {
-        return origin?.getPitch() ?: PITCH_NORMAL
+        return delegate.get()?.getPitch() ?: PITCH_NORMAL
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun setPitch(pitch: Float) {
-        origin?.setPitch(pitch)
+        delegate.get()?.setPitch(pitch)
     }
 
     override fun getShuffleMode(): Int {
-        return origin?.getShuffleMode() ?: SHUFFLE_OFF
+        return delegate.get()?.getShuffleMode() ?: SHUFFLE_OFF
     }
 
     override fun setShuffleMode(mode: Int) {
-        origin?.setShuffleMode(mode)
+        delegate.get()?.setShuffleMode(mode)
     }
 
     override fun getRepeatMode(): Int {
-        return origin?.getRepeatMode() ?: REPEAT_OFF
+        return delegate.get()?.getRepeatMode() ?: REPEAT_OFF
     }
 
     override fun setRepeatMode(mode: Int) {
-        origin?.setRepeatMode(mode)
+        delegate.get()?.setRepeatMode(mode)
     }
 
 }

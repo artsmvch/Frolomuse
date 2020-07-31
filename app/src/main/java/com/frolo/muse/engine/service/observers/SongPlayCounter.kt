@@ -1,4 +1,4 @@
-package com.frolo.muse.engine.service
+package com.frolo.muse.engine.service.observers
 
 import com.frolo.muse.common.toSong
 import com.frolo.muse.engine.AudioSource
@@ -16,7 +16,7 @@ import io.reactivex.disposables.CompositeDisposable
  * 2) the player performed one or several chunks of the song and in summary, the duration of these chunks is at least [MIN_VALUABLE_DURATION] milliseconds;
  * NOTE: If song's duration is less than [MIN_VALUABLE_DURATION] then it's enough to perform 90% of the song.
  */
-class SongPlayCountObserver constructor(
+class SongPlayCounter constructor(
     private val schedulerProvider: SchedulerProvider,
     private val dispatchSongPlayedUseCase: DispatchSongPlayedUseCase
 ): SimplePlayerObserver() {

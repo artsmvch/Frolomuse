@@ -1,4 +1,4 @@
-package com.frolo.muse.engine.service
+package com.frolo.muse.engine.service.observers
 
 import com.frolo.muse.engine.AudioSource
 import com.frolo.muse.engine.Player
@@ -11,18 +11,23 @@ import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 
 
-class PlayerStateObserver constructor(
+/**
+ * Observes the state of the player state and saves its changes to the current queue,
+ * current item, shuffle and repeat modes in [preferences],
+ * thus, the state can be restored for the player later.
+ */
+class PlayerStateSaver constructor(
     private val preferences: Preferences
 ): SimplePlayerObserver() {
 
     private var positionObserverDisposable: Disposable? = null
 
     override fun onQueueChanged(player: Player, queue: AudioSourceQueue) {
-        saveLastSongQueue(player)
+        saveLastQueue(queue)
     }
 
     override fun onAudioSourceChanged(player: Player, item: AudioSource?, positionInQueue: Int) {
-        saveLastSong(player)
+        saveLastAudioSource(item)
     }
 
     override fun onPlaybackStarted(player: Player) {
@@ -52,9 +57,8 @@ class PlayerStateObserver constructor(
         positionObserverDisposable?.dispose()
     }
 
-    private fun saveLastSongQueue(player: Player) {
-        // Save it every time a queue attached
-        player.getCurrentQueue()?.let { queue ->
+    private fun saveLastQueue(queue: AudioSourceQueue?) {
+        if (queue != null) {
             preferences.apply {
                 saveLastMediaCollectionType(queue.type)
                 saveLastMediaCollectionId(queue.id)
@@ -62,10 +66,9 @@ class PlayerStateObserver constructor(
         }
     }
 
-    private fun saveLastSong(player: Player) {
-        // Save it every time a song changed
-        player.getCurrent()?.let { song ->
-            preferences.saveLastSongId(song.id)
+    private fun saveLastAudioSource(item: AudioSource?) {
+        if (item != null) {
+            preferences.saveLastSongId(item.id)
         }
     }
 

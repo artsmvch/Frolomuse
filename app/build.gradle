@@ -75,6 +75,14 @@ android {
             versionNameSuffix "-R"
             signingConfig signingConfigs.release
         }
+
+        android.applicationVariants.all { variant ->
+            variant.outputs.all {
+                def date = new Date()
+                def formattedDate = date.format('yyyyMMddHHmmss')
+                outputFileName = "Frolomuse-${variant.name}-${versionMajor}.${versionMinor}.${versionPatch}-${formattedDate}.apk"
+            }
+        }
     }
     productFlavors {
     }

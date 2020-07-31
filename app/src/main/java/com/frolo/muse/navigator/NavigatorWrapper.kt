@@ -5,126 +5,127 @@ import java.io.File
 
 
 class NavigatorWrapper : Navigator {
-    private var origin: Navigator? = null
 
-    fun attachOrigin(origin: Navigator) {
-        this.origin = origin
+    private var delegate: Navigator? = null
+
+    fun attachBase(navigator: Navigator) {
+        this.delegate = navigator
     }
 
-    fun detachOrigin() {
-        this.origin = null
+    fun detachBase() {
+        this.delegate = null
     }
 
     override fun goToStore() {
-        origin?.goToStore()
+        delegate?.goToStore()
     }
 
     override fun helpWithTranslations() {
-        origin?.helpWithTranslations()
+        delegate?.helpWithTranslations()
     }
 
     override fun contactDeveloper() {
-        origin?.contactDeveloper()
+        delegate?.contactDeveloper()
     }
 
     override fun shareSongs(songs: List<Song>) {
-        origin?.shareSongs(songs)
+        delegate?.shareSongs(songs)
     }
 
     override fun openSong(song: Song) {
-        origin?.openSong(song)
+        delegate?.openSong(song)
     }
 
     override fun openAlbum(album: Album) {
-        origin?.openAlbum(album)
+        delegate?.openAlbum(album)
     }
 
     override fun openArtist(artist: Artist) {
-        origin?.openArtist(artist)
+        delegate?.openArtist(artist)
     }
 
     override fun openGenre(genre: Genre) {
-        origin?.openGenre(genre)
+        delegate?.openGenre(genre)
     }
 
     override fun openPlaylist(playlist: Playlist) {
-        origin?.openPlaylist(playlist)
+        delegate?.openPlaylist(playlist)
     }
 
     override fun openMyFile(myFile: MyFile) {
-        origin?.openMyFile(myFile)
+        delegate?.openMyFile(myFile)
     }
 
     override fun viewLyrics(song: Song) {
-        origin?.viewLyrics(song)
+        delegate?.viewLyrics(song)
     }
 
     override fun viewPoster(song: Song) {
-        origin?.viewPoster(song)
+        delegate?.viewPoster(song)
     }
 
     override fun sharePoster(song: Song, file: File) {
-        origin?.sharePoster(song, file)
+        delegate?.sharePoster(song, file)
     }
 
     override fun openRingCutter(song: Song) {
-        origin?.openRingCutter(song)
+        delegate?.openRingCutter(song)
     }
 
     override fun editSong(song: Song) {
-        origin?.editSong(song)
+        delegate?.editSong(song)
     }
 
     override fun editAlbum(album: Album) {
-        origin?.editAlbum(album)
+        delegate?.editAlbum(album)
     }
 
     override fun editPlaylist(playlist: Playlist) {
-        origin?.editPlaylist(playlist)
+        delegate?.editPlaylist(playlist)
     }
 
     override fun addMediaItemsToPlaylist(items: ArrayList<out Media>) {
-        origin?.addMediaItemsToPlaylist(items)
+        delegate?.addMediaItemsToPlaylist(items)
     }
 
     override fun addSongsToPlaylist(playlist: Playlist) {
-        origin?.addSongsToPlaylist(playlist)
+        delegate?.addSongsToPlaylist(playlist)
     }
 
     override fun createPlaylist() {
-        origin?.createPlaylist()
+        delegate?.createPlaylist()
     }
 
     override fun createPlaylist(songs: ArrayList<Song>) {
-        origin?.createPlaylist(songs)
+        delegate?.createPlaylist(songs)
     }
 
     override fun openCurrentPlaying() {
-        origin?.openCurrentPlaying()
+        delegate?.openCurrentPlaying()
     }
 
     override fun openPlayer() {
-        origin?.openPlayer()
+        delegate?.openPlayer()
     }
 
     override fun openAudioFx() {
-        origin?.openAudioFx()
+        delegate?.openAudioFx()
     }
 
     override fun openPlaybackParams() {
-        origin?.openPlaybackParams()
+        delegate?.openPlaybackParams()
     }
 
     override fun savePreset(bandLevels: ShortArray) {
-        origin?.savePreset(bandLevels)
+        delegate?.savePreset(bandLevels)
     }
 
     override fun openSettings() {
-        origin?.openSettings()
+        delegate?.openSettings()
     }
 
     override fun goBack() {
-        origin?.goBack()
+        delegate?.goBack()
     }
 
 }
