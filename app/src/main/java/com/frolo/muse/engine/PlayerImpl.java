@@ -204,12 +204,18 @@ public final class PlayerImpl implements Player {
     @NotNull
     private final ABEngine mABEngine = new ABEngine();
 
+    // Cross-Fade
+    @Nullable
+    private volatile CrossFadeStrategy mCrossFadeStrategy;
+    private volatile Timer mCrossFadeTimer;
+
     private PlayerImpl(@NotNull Context context, @NotNull AudioFxApplicable audioFx) {
         mContext = context;
         mAudioFx = audioFx;
         mEngineHandler = createEngineHandler();
         mObserverRegistry = PlayerObserverRegistry.create(context, this);
         mAudioFocusRequester = AudioFocusRequesterImpl.create(context, this);
+        startCrossFadeTimer();
     }
 
     /**
@@ -557,6 +563,7 @@ public final class PlayerImpl implements Player {
                         if (startPlaying && tryRequestAudioFocus()) {
                             isPlayingFlag = true;
                             engine.start();
+                            maybeAdjustVolume();
                             mObserverRegistry.dispatchPlaybackStarted();
                         } else {
                             isPlayingFlag = false;
@@ -867,6 +874,7 @@ public final class PlayerImpl implements Player {
                         mIsPlayingFlag = true;
                         try {
                             engine.start();
+                            maybeAdjustVolume();
                             mObserverRegistry.dispatchPlaybackStarted();
                         } catch (Throwable error) {
                             report(error);
@@ -936,6 +944,7 @@ public final class PlayerImpl implements Player {
                                 // Only if the focus is granted
                                 if (tryRequestAudioFocus()) {
                                     engine.start();
+                                    maybeAdjustVolume();
                                     mObserverRegistry.dispatchPlaybackStarted();
                                 }
 
@@ -1282,16 +1291,86 @@ public final class PlayerImpl implements Player {
         tryRewind(-interval);
     }
 
+    public void setVolume(float level) {
+        final MediaPlayer engine = maybeGetEngine();
+        try {
+            if (engine != null) {
+                engine.setVolume(level, level);
+            }
+        } catch (Throwable error) {
+            report(error);
+        }
+    }
+
+    private void startCrossFadeTimer() {
+        if (isShutdown()) return;
+
+        final Timer oldTimer = mCrossFadeTimer;
+        if (oldTimer != null) {
+            oldTimer.purge();
+            oldTimer.cancel();
+        }
+
+        final TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                while (!isShutdown()) {
+
+                    maybeAdjustVolume();
+
+                    try {
+                        // Sleeping a little until the next volume adjustment
+                        Thread.sleep(100);
+                    } catch (InterruptedException error) {
+                        return;
+                    }
+                }
+            }
+        };
+
+        final Timer newTimer = new Timer("CrossFadeTimer");
+
+        newTimer.schedule(task, 0);
+
+        mCrossFadeTimer = newTimer;
+    }
+
+    private void maybeAdjustVolume() {
+        final CrossFadeStrategy strategy = mCrossFadeStrategy;
+        if (strategy == null) {
+            // No strategy - no cross fade
+            return;
+        }
+
+        synchronized (mStateLock) {
+            final MediaPlayer engine = maybeGetEngine();
+            try {
+                if (engine != null && mIsPreparedFlag) {
+                    final int progress = engine.getCurrentPosition();
+                    final int duration = engine.getDuration();
+
+                    float level = strategy.calculateLevel(progress, duration);
+                    // TODO: how to manipulate the level
+                    level = (float) Math.pow(level, 2);
+
+                    engine.setVolume(level, level);
+                }
+            } catch (Throwable error) {
+                report(error);
+            }
+        }
+    }
+
     @Nullable
     @Override
     public CrossFadeStrategy getCrossFadeStrategy() {
-        // TODO: implement
-        return null;
+        return mCrossFadeStrategy;
     }
 
     @Override
     public void setCrossFadeStrategy(@Nullable CrossFadeStrategy strategy) {
-        // TODO: implement
+        mCrossFadeStrategy = strategy;
+        maybeAdjustVolume();
     }
 
     @Nullable
@@ -1421,6 +1500,13 @@ public final class PlayerImpl implements Player {
         if (mShutdown.getAndSet(true)) return;
 
         mABEngine.reset();
+
+        final Timer oldTimer = mCrossFadeTimer;
+        if (oldTimer != null) {
+            oldTimer.purge();
+            oldTimer.cancel();
+        }
+        mCrossFadeTimer = null;
 
         mIsPreparedFlag = false;
         mIsPlayingFlag = false;
