@@ -174,6 +174,14 @@ class PlayerWrapper : Player {
         delegate.get()?.rewindBackward(interval)
     }
 
+    override fun getCrossFadeStrategy(): CrossFadeStrategy? {
+        return delegate.get()?.getCrossFadeStrategy()
+    }
+
+    override fun setCrossFadeStrategy(strategy: CrossFadeStrategy?) {
+        delegate.get()?.setCrossFadeStrategy(strategy)
+    }
+
     @RequiresApi(Build.VERSION_CODES.M)
     override fun getSpeed(): Float {
         return delegate.get()?.getSpeed() ?: SPEED_NORMAL

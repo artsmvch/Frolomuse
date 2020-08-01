@@ -253,6 +253,7 @@ class PlayerService: Service() {
         preferences.apply {
             player.setRepeatMode(loadRepeatMode())
             player.setShuffleMode(loadShuffleMode())
+            player.setCrossFadeStrategy(CrossFadeStrategy.withSmartStaticInterval(5_000))
         }
 
         // Registering all the necessary observers

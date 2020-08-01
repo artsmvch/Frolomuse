@@ -45,6 +45,9 @@ interface Player {
     // Rewind
     fun rewindForward(interval: Int)
     fun rewindBackward(interval: Int)
+    // Cross-Fade
+    fun getCrossFadeStrategy(): CrossFadeStrategy?
+    fun setCrossFadeStrategy(strategy: CrossFadeStrategy?)
 
     @RequiresApi(Build.VERSION_CODES.M)
     fun getSpeed(): Float

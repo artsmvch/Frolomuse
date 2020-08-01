@@ -39,21 +39,8 @@ public final class PlayerImpl implements Player {
 
     private static final int NO_POSITION_IN_QUEUE = -1;
 
-    private static final Range SPEED_RANGE = new Range(0f, 2f);
-    private static final Range PITCH_RANGE = new Range(0f, 2f);
-
-    /**
-     * Represents a range of float values.
-     */
-    private static class Range {
-        final float min;
-        final float max;
-
-        Range(float min, float max) {
-            this.min = Math.min(min, max);
-            this.max = Math.max(min, max);
-        }
-    }
+    private static final MathUtil.Range SPEED_RANGE = new MathUtil.Range(0f, 2f);
+    private static final MathUtil.Range PITCH_RANGE = new MathUtil.Range(0f, 2f);
 
     public static class PlayerException extends RuntimeException {
         public PlayerException(String message) {
@@ -113,18 +100,6 @@ public final class PlayerImpl implements Player {
     @NotNull
     static Handler createEventHandler() {
         return new Handler(Looper.getMainLooper());
-    }
-
-    private static float clamp(float min, float max, float value) {
-        if (value < min) return min;
-        if (value > max) return max;
-        return value;
-    }
-
-    private static float clamp(Range range, float value) {
-        if (value < range.min) return range.min;
-        if (value > range.max) return range.max;
-        return value;
     }
 
     /**
@@ -1308,6 +1283,18 @@ public final class PlayerImpl implements Player {
     }
 
     @Nullable
+    @Override
+    public CrossFadeStrategy getCrossFadeStrategy() {
+        // TODO: implement
+        return null;
+    }
+
+    @Override
+    public void setCrossFadeStrategy(@Nullable CrossFadeStrategy strategy) {
+        // TODO: implement
+    }
+
+    @Nullable
     private PlaybackParams tryGetPlaybackParams() {
         if (isShutdown()) return null;
 
@@ -1342,7 +1329,7 @@ public final class PlayerImpl implements Player {
 
         try {
             final PlaybackParams params = engine.getPlaybackParams();
-            params.setSpeed(clamp(SPEED_RANGE, speed));
+            params.setSpeed(MathUtil.clamp(SPEED_RANGE, speed));
             engine.setPlaybackParams(params);
         } catch (Throwable error) {
             report(error);
@@ -1369,7 +1356,7 @@ public final class PlayerImpl implements Player {
 
         try {
             final PlaybackParams params = engine.getPlaybackParams();
-            params.setPitch(clamp(PITCH_RANGE, pitch));
+            params.setPitch(MathUtil.clamp(PITCH_RANGE, pitch));
             engine.setPlaybackParams(params);
         } catch (Throwable error) {
             report(error);
