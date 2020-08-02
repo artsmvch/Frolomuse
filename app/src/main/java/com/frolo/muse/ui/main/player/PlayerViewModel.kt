@@ -66,9 +66,7 @@ class PlayerViewModel @Inject constructor(
         override fun onAudioSourceChanged(player: Player, item: AudioSource?, positionInQueue: Int) {
             _song.value = item?.toSong()
             _songPosition.value = positionInQueue
-            if (player.isPrepared()) {
-                _playbackProgress.value = player.getProgress()
-            }
+            _playbackProgress.value = player.getProgress()
         }
 
         override fun onPlaybackStarted(player: Player) {
