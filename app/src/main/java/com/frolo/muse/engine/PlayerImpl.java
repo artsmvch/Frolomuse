@@ -873,6 +873,7 @@ public final class PlayerImpl implements Player {
 
             try {
                 engine.seekTo(position);
+                mObserverRegistry.dispatchSoughtTo(position);
             } catch (Throwable error) {
                 report(error);
             }
