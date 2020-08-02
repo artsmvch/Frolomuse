@@ -155,7 +155,7 @@ final class PlayerObserverRegistry {
             return;
         }
 
-        mObservers.add(observer);
+        mObservers.add(MeasuredPlayerObserver.wrap(observer));
     }
 
     void unregister(PlayerObserver observer) {
@@ -163,7 +163,7 @@ final class PlayerObserverRegistry {
             return;
         }
 
-        mObservers.remove(observer);
+        mObservers.remove(MeasuredPlayerObserver.wrap(observer));
     }
 
     void clear() {
