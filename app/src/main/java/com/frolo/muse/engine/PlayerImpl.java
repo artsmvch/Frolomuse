@@ -10,6 +10,8 @@ import android.os.HandlerThread;
 import android.os.Looper;
 import android.util.Log;
 
+import androidx.annotation.GuardedBy;
+
 import com.frolo.muse.BuildConfig;
 
 import org.jetbrains.annotations.NotNull;
@@ -23,6 +25,7 @@ import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 
+// TODO: fix locks: Engine must be guarded everywhere
 /**
  * Android-specific thread-safe implementation of {@link Player}.
  * Methods prefixed with '_' are of type Runnable and must be processed with
@@ -38,6 +41,11 @@ public final class PlayerImpl implements Player {
     private static final int NO_AUDIO_SESSION = 0;
 
     private static final int NO_POSITION_IN_QUEUE = -1;
+
+    /**
+     * This value describes how often the volume should be adjusted to fade in/out smoothly.
+     */
+    private static final long VOLUME_ADJUSTMENT_INTERVAL = 100L;
 
     private static final MathUtil.Range SPEED_RANGE = new MathUtil.Range(0f, 2f);
     private static final MathUtil.Range PITCH_RANGE = new MathUtil.Range(0f, 2f);
@@ -103,6 +111,18 @@ public final class PlayerImpl implements Player {
     }
 
     /**
+     * Checks if the error described by <code>what</code> and <code>extra</code> is critical for {@link MediaPlayer}.
+     * If the error is critical, then the media player should no longer be used.
+     * The last action to take is release the instance and let the GC collect it.
+     * @param what kind of error
+     * @param extra extra error info
+     * @return true if the error is critical and the media player should be released, false - otherwise
+     */
+    private static boolean isCriticalEngineError(int what, /* unused */ int extra) {
+        return what == MediaPlayer.MEDIA_ERROR_SERVER_DIED;
+    }
+
+    /**
      * Maps error codes of {@link MediaPlayer} to String.
      * @param what error code
      * @param extra error extra
@@ -130,8 +150,6 @@ public final class PlayerImpl implements Player {
         }
     }
 
-    // Guard for internal state including mCurrentQueue, mCurrentItem, mCurrentPositionInQueue
-    private final Object mStateLock = new Object();
     // Guard for mEngine
     private final Object mEngineLock = new Object();
 
@@ -157,6 +175,7 @@ public final class PlayerImpl implements Player {
     private final PlayerObserverRegistry mObserverRegistry;
 
     // Engine
+    @GuardedBy("mEngineLock")
     @Nullable
     private volatile MediaPlayer mEngine;
 
@@ -192,6 +211,7 @@ public final class PlayerImpl implements Player {
     private volatile AudioSource mCurrentItem = null;
     private volatile int mCurrentPositionInQueue = NO_POSITION_IN_QUEUE;
 
+    @GuardedBy("mEngineLock")
     private volatile boolean mIsPreparedFlag = false;
     private volatile boolean mIsPlayingFlag = false;
 
@@ -316,40 +336,9 @@ public final class PlayerImpl implements Player {
     }
 
     /**
-     * Returns the current instance of the player engine.
-     * Unlike {@link PlayerImpl#getEngine()} this does not create a new instance if the current one is null.
-     * This may be useful when we need to do something with the engine, but only if it has been created.
-     * @return the current engine instance, nullable
-     */
-    @Nullable
-    private MediaPlayer maybeGetEngine() {
-        return mEngine;
-    }
-
-    /**
-     * Returns the current instance of the player engine.
-     * Unlike {@link PlayerImpl#maybeGetEngine()} if the current instance is null, then a new one will be created and returned.
-     * Use this method if you want to get a non-null instantiated engine.
-     * @return the current engine instance, not null
-     */
-    @NotNull
-    private MediaPlayer getEngine() {
-        MediaPlayer engine = mEngine;
-
-        if (engine == null) {
-            synchronized (mEngineLock) {
-                engine = mEngine;
-                if (engine == null) {
-                    mEngine = engine = createEngine();
-                }
-            }
-        }
-
-        return engine;
-    }
-
-    /**
      * Creates an new instance of {@link MediaPlayer}.
+     * {@link PlayerImpl#mOnErrorListener} is used as the error handler and
+     * {@link PlayerImpl#mOnCompletionListener} is used as the completion handler.
      * @return an new instance of {@link MediaPlayer}.
      */
     @NotNull
@@ -372,52 +361,74 @@ public final class PlayerImpl implements Player {
         return engine;
     }
 
-    private Runnable _handleEngineError(final MediaPlayer engine, final int what, final int extra) {
+    private Runnable _handleEngineError(final MediaPlayer mp, final int what, final int extra) {
         return new Runnable() {
             @Override
             public void run() {
-                // Always reporting errors to better understand what problems users do experience
-                report(new PlayerException(getEngineErrorMessage(what, extra)));
 
-                // Critical error, the engine is not valid anymore.
-                // In this case, the current engine instance should be released and gc-ed.
-                if (what == MediaPlayer.MEDIA_ERROR_SERVER_DIED) {
+                synchronized (mEngineLock) {
 
-                    synchronized (mStateLock) {
+                    final MediaPlayer currentEngine = mEngine;
+                    if (currentEngine != mp) {
+                        // This is not our engine.
+                        // We don't deal with this.
+                        return;
+                    }
+
+                    // Always reporting errors to better understand what problems users do experience
+                    report(new PlayerException(getEngineErrorMessage(what, extra)));
+
+                    // If it's a critical error, then the engine is not valid anymore.
+                    // In this case, the current engine instance should be released and gc-ed.
+                    if (isCriticalEngineError(what, extra)) {
+
+                        // Resetting internal flags
+                        mIsPreparedFlag = false;
+                        mIsPreparedFlag = false;
 
                         try {
-                            engine.release();
+                            // Trying to release the instance
+                            if (currentEngine != null) currentEngine.release();
                         } catch (Throwable error) {
                             report(error);
                         }
 
+                        // Let it be gc-ed
                         mEngine = null;
 
-                        mIsPreparedFlag = false;
-                        mIsPreparedFlag = false;
+                        // Fine. The old engine instance has been released.
+                        // Now we need to check if there is an audio source set as the current item.
+                        // If so, we will create a new engine instance and prepare it for this audio source.
 
                         final AudioSource currentItem = mCurrentItem;
 
-                        // TODO: try also to restore the playback position
                         if (currentItem != null) {
-                            // This creates a new instance
-                            final MediaPlayer engine = getEngine();
 
+                            // OK, there is an audio source. Gotta prepare a new engine for it.
+
+                            final MediaPlayer newEngine = createEngine();
+
+                            mEngine = newEngine;
+
+                            // TODO: try also to restore the playback position
                             try {
-                                engine.reset();
-                                engine.setDataSource(currentItem.getSource());
-                                engine.prepare();
+                                newEngine.reset();
+                                newEngine.setDataSource(currentItem.getSource());
+                                newEngine.prepare();
                                 mIsPreparedFlag = true;
+                                mAudioFx.apply(newEngine);
                                 mObserverRegistry.dispatchPrepared();
-                                mAudioFx.apply(engine);
                             } catch (Throwable error) {
                                 report(error);
                             }
+
                         }
 
                         mObserverRegistry.dispatchPlaybackPaused();
+
                     }
                 }
+
             }
         };
     }
@@ -428,15 +439,17 @@ public final class PlayerImpl implements Player {
             @Override
             public void run() {
 
-                // Guarded access to internal state
-                synchronized (mStateLock) {
+                // We reset everything here
 
-                    // We reset everything here
+                mABEngine.reset();
 
-                    mABEngine.reset();
+                synchronized (mEngineLock) {
 
-                    final MediaPlayer engine = maybeGetEngine();
+                    mIsPreparedFlag = false;
+                    mIsPlayingFlag = false;
 
+                    final MediaPlayer engine = mEngine;
+                    // Trying to reset the engine, if it's not null
                     if (engine != null) {
                         try {
                             engine.reset();
@@ -444,15 +457,14 @@ public final class PlayerImpl implements Player {
                             report(error);
                         }
                     }
-
-                    mCurrentItem = null;
-                    mCurrentPositionInQueue = NO_POSITION_IN_QUEUE;
-                    mIsPreparedFlag = false;
-                    mIsPlayingFlag = false;
-
-                    mObserverRegistry.dispatchAudioSourceChanged(null, NO_POSITION_IN_QUEUE);
-                    mObserverRegistry.dispatchPlaybackPaused();
                 }
+
+                mCurrentItem = null;
+                mCurrentPositionInQueue = NO_POSITION_IN_QUEUE;
+
+                mObserverRegistry.dispatchAudioSourceChanged(null, NO_POSITION_IN_QUEUE);
+                mObserverRegistry.dispatchPlaybackPaused();
+
             }
         };
     }
@@ -463,49 +475,47 @@ public final class PlayerImpl implements Player {
             @Override
             public void run() {
 
-                // Guarded access to internal state
-                synchronized (mStateLock) {
-                    final AudioSourceQueue queue = mCurrentQueue;
-                    AudioSource currentItem = mCurrentItem;
-                    final @RepeatMode int repeatMode = mRepeatMode;
-                    final @ShuffleMode int shuffleMode = mShuffleMode;
-                    int currentPositionInQueue = mCurrentPositionInQueue;
-                    boolean startPlaying = mIsPlayingFlag;
+                final AudioSourceQueue queue = mCurrentQueue;
+                AudioSource currentItem = mCurrentItem;
+                final @RepeatMode int repeatMode = mRepeatMode;
+                final @ShuffleMode int shuffleMode = mShuffleMode;
+                int currentPositionInQueue = mCurrentPositionInQueue;
+                boolean startPlaying = mIsPlayingFlag;
 
-                    if (queue.isEmpty()) {
-                        // How is it possible?
-                        _reset().run();
-                        return;
-                    }
+                if (queue.isEmpty()) {
+                    // How is it possible?
+                    _reset().run();
+                    return;
+                }
 
-                    if (!byUser && repeatMode == Player.REPEAT_ONE) {
-                        // everything remains the same
+                if (!byUser && repeatMode == Player.REPEAT_ONE) {
+                    // everything remains the same
+                } else {
+                    // the next position is the current one + 1
+                    currentPositionInQueue++;
+
+                    if (currentPositionInQueue >= queue.getLength()) {
+                        // We've reached the end of the queue => so we get to the start of the queue
+                        currentPositionInQueue = 0;
+                        currentItem = queue.getItemAt(0);
+                        // Since we've reached the end of the queue, we need to check ifr we need to start playing
+                        startPlaying = (mIsPlayingFlag && byUser)
+                                || (mIsPlayingFlag && repeatMode == Player.REPEAT_PLAYLIST);
                     } else {
-                        // the next position is the current one + 1
-                        currentPositionInQueue++;
-
-                        if (currentPositionInQueue >= queue.getLength()) {
-                            // We've reached the end of the queue => so we get to the start of the queue
-                            currentPositionInQueue = 0;
-                            currentItem = queue.getItemAt(0);
-                            // Since we've reached the end of the queue, we need to check ifr we need to start playing
-                            startPlaying = (mIsPlayingFlag && byUser)
-                                    || (mIsPlayingFlag && repeatMode == Player.REPEAT_PLAYLIST);
+                        if (currentPositionInQueue >= 0) {
+                            // The position is valid
+                            currentItem = queue.getItemAt(currentPositionInQueue);
                         } else {
-                            if (currentPositionInQueue >= 0) {
-                                // The position is valid
-                                currentItem = queue.getItemAt(currentPositionInQueue);
-                            } else {
-                                // Undefined state, in fact
-                                currentItem = null;
-                            }
+                            // Undefined state, in fact
+                            currentItem = null;
                         }
                     }
-
-                    mCurrentItem = currentItem;
-                    mCurrentPositionInQueue = currentPositionInQueue;
-                    _handleSource(currentItem, 0, startPlaying).run();
                 }
+
+                mCurrentItem = currentItem;
+                mCurrentPositionInQueue = currentPositionInQueue;
+                _handleSource(currentItem, 0, startPlaying).run();
+
             }
         };
     }
@@ -516,67 +526,79 @@ public final class PlayerImpl implements Player {
             @Override
             public void run() {
 
-                // Guarded access to internal state
-                synchronized (mStateLock) {
-                    // The current audio source is changed => gotta reset A-B
-                    mABEngine.reset();
+                // The current audio source is changed => gotta reset A-B
+                mABEngine.reset();
 
-                    mObserverRegistry.dispatchAudioSourceChanged(item, mCurrentPositionInQueue);
+                mObserverRegistry.dispatchAudioSourceChanged(item, mCurrentPositionInQueue);
 
-                    if (item == null) {
-                        // If the source is null, then we only need to reset the engine (of course, if the engine is not null)
-                        final MediaPlayer engine = maybeGetEngine();
+                if (item == null) {
 
-                        try {
-                            if (engine != null) {
-                                engine.reset();
-                            }
-                        } catch (Throwable error) {
-                            report(error);
-                        }
+                    // The source is null, so we need to reset the engine (of course, if the engine is not null)
+
+                    synchronized (mEngineLock) {
 
                         mIsPreparedFlag = false;
+                        mIsPlayingFlag = false;
 
-                        mObserverRegistry.dispatchPlaybackPaused();
-                        return;
+                        final MediaPlayer engine = mEngine;
+                        if (engine != null) {
+                            try {
+                                engine.reset();
+                            } catch (Throwable error) {
+                                report(error);
+                            }
+                        }
                     }
 
-                    boolean isPreparedFlag = false;
-                    boolean isPlayingFlag = startPlaying;
+                    // It's better to dispatch that the playback is paused,
+                    // because we don't know about its state before calling this method.
+                    mObserverRegistry.dispatchPlaybackPaused();
+                    return;
+                }
+
+                synchronized (mEngineLock) {
+
+                    mIsPreparedFlag = false;
+                    mIsPlayingFlag = startPlaying;
+
+                    MediaPlayer engine = mEngine;
+                    if (engine == null) {
+                        // Creating a new engine, if the current is null
+                        mEngine = engine = createEngine();
+                    }
 
                     try {
-                        final MediaPlayer engine = getEngine();
                         engine.reset();
                         engine.setDataSource(item.getSource());
                         engine.prepare();
 
-                        isPreparedFlag = true;
-
-                        mObserverRegistry.dispatchPrepared();
+                        mIsPreparedFlag = true;
 
                         mAudioFx.apply(engine);
+
+                        // Dispatch that it's prepared after the audio fx is applied
+                        mObserverRegistry.dispatchPrepared();
 
                         if (playbackPosition > 0) {
                             engine.seekTo(playbackPosition);
                         }
 
                         if (startPlaying && tryRequestAudioFocus()) {
-                            isPlayingFlag = true;
+                            mIsPlayingFlag = true;
                             engine.start();
                             maybeAdjustVolume();
                             mObserverRegistry.dispatchPlaybackStarted();
                         } else {
-                            isPlayingFlag = false;
+                            mIsPlayingFlag = false;
                             mObserverRegistry.dispatchPlaybackPaused();
                         }
                     } catch (Throwable error) {
                         report(error);
+                        mIsPlayingFlag = false;
                         mObserverRegistry.dispatchPlaybackPaused();
                     }
-
-                    mIsPreparedFlag = isPreparedFlag;
-                    mIsPlayingFlag = isPlayingFlag;
                 }
+
             }
         };
     }
@@ -606,36 +628,33 @@ public final class PlayerImpl implements Player {
             @Override
             public void run() {
 
-                // Guarded access to internal state
-                synchronized (mStateLock) {
-                    // First, saving the original queue
-                    mOriginQueue = queue;
+                // First, saving the original queue
+                mOriginQueue = queue;
 
-                    // The current queue will be cloned from the original
-                    final AudioSourceQueue currentQueue = queue.clone();
-                    // Then, we need to configure the new queue according to the current shuffle mode
-                    if (mShuffleMode == Player.SHUFFLE_ON) {
-                        currentQueue.shuffleWithItemInFront(item);
-                    }
-                    mCurrentQueue = currentQueue;
-
-                    mObserverRegistry.dispatchQueueChanged(currentQueue);
-
-                    // Now we need to define the current item and its position in the queue
-                    int positionInQueue = currentQueue.indexOf(item);
-                    AudioSource currentItem = positionInQueue >= 0 ? item : null;
-                    if (currentItem == null && !queue.isEmpty()) {
-                        // Actually, this should not happen
-                        positionInQueue = 0;
-                        currentItem = queue.getItemAt(0);
-                    }
-
-                    mCurrentPositionInQueue = positionInQueue;
-                    mCurrentItem = currentItem;
-
-                    _handleSource(currentItem, playbackPosition, startPlaying).run();
-
+                // The current queue will be cloned from the original
+                final AudioSourceQueue currentQueue = queue.clone();
+                // Then, we need to configure the new queue according to the current shuffle mode
+                if (mShuffleMode == Player.SHUFFLE_ON) {
+                    currentQueue.shuffleWithItemInFront(item);
                 }
+                mCurrentQueue = currentQueue;
+
+                mObserverRegistry.dispatchQueueChanged(currentQueue);
+
+                // Now we need to define the current item and its position in the queue
+                int positionInQueue = currentQueue.indexOf(item);
+                AudioSource currentItem = positionInQueue >= 0 ? item : null;
+                if (currentItem == null && !queue.isEmpty()) {
+                    // Actually, this should not happen
+                    positionInQueue = 0;
+                    currentItem = queue.getItemAt(0);
+                }
+
+                mCurrentPositionInQueue = positionInQueue;
+                mCurrentItem = currentItem;
+
+                _handleSource(currentItem, playbackPosition, startPlaying).run();
+
             }
         };
 
@@ -652,44 +671,41 @@ public final class PlayerImpl implements Player {
 
                 final boolean byUser = true;
 
-                // Guarded access to internal state
-                synchronized (mStateLock) {
+                final AudioSourceQueue queue = mCurrentQueue;
+                final @RepeatMode int repeatMode = mRepeatMode;
+                int positionInQueue = mCurrentPositionInQueue;
+                AudioSource item = mCurrentItem;
 
-                    final AudioSourceQueue queue = mCurrentQueue;
-                    final @RepeatMode int repeatMode = mRepeatMode;
-                    int positionInQueue = mCurrentPositionInQueue;
-                    AudioSource item = mCurrentItem;
-
-                    if (queue.isEmpty()) {
-                        // How is it possible?
-                        return;
-                    }
-
-                    if (!byUser && repeatMode == Player.REPEAT_ONE) {
-                        // everything remains the same
-                    } else {
-                        // The previous position is the current one - 1
-                        positionInQueue--;
-
-                        if (positionInQueue < 0) {
-                            // We've reached the start of the queue => so we get to the ned of the queue
-                            positionInQueue = queue.getLength() - 1;;
-                        }
-
-                        if (positionInQueue >= 0) {
-                            // The position is valid
-                            item = queue.getItemAt(positionInQueue);
-                        } else {
-                            // Undefined state, in fact
-                            item = null;
-                        }
-                    }
-
-                    mCurrentPositionInQueue = positionInQueue;
-                    mCurrentItem = item;
-
-                    _handleSource(item, 0, mIsPlayingFlag).run();
+                if (queue.isEmpty()) {
+                    // How is it possible?
+                    return;
                 }
+
+                if (!byUser && repeatMode == Player.REPEAT_ONE) {
+                    // everything remains the same
+                } else {
+                    // The previous position is the current one - 1
+                    positionInQueue--;
+
+                    if (positionInQueue < 0) {
+                        // We've reached the start of the queue => so we get to the ned of the queue
+                        positionInQueue = queue.getLength() - 1;;
+                    }
+
+                    if (positionInQueue >= 0) {
+                        // The position is valid
+                        item = queue.getItemAt(positionInQueue);
+                    } else {
+                        // Undefined state, in fact
+                        item = null;
+                    }
+                }
+
+                mCurrentPositionInQueue = positionInQueue;
+                mCurrentItem = item;
+
+                _handleSource(item, 0, mIsPlayingFlag).run();
+
             }
         };
 
@@ -711,30 +727,27 @@ public final class PlayerImpl implements Player {
             @Override
             public void run() {
 
-                // Guarded access to internal state
-                synchronized (mStateLock) {
+                final AudioSourceQueue queue = mCurrentQueue;
 
-                    final AudioSourceQueue queue = mCurrentQueue;
+                final int currentPositionInQueue = mCurrentPositionInQueue;
 
-                    final int currentPositionInQueue = mCurrentPositionInQueue;
-
-                    if (position == currentPositionInQueue) {
-                        // Good, we're at this position already
-                        return;
-                    }
-
-                    if (position < 0 || position >= queue.getLength()) {
-                        // No sir, it won't work
-                        return;
-                    }
-
-                    final AudioSource item = queue.getItemAt(position);
-
-                    mCurrentPositionInQueue = position;
-                    mCurrentItem = item;
-
-                    _handleSource(item, 0, mIsPlayingFlag || forceStartPlaying).run();
+                if (position == currentPositionInQueue) {
+                    // Good, we're at this position already
+                    return;
                 }
+
+                if (position < 0 || position >= queue.getLength()) {
+                    // No sir, it won't work
+                    return;
+                }
+
+                final AudioSource item = queue.getItemAt(position);
+
+                mCurrentPositionInQueue = position;
+                mCurrentItem = item;
+
+                _handleSource(item, 0, mIsPlayingFlag || forceStartPlaying).run();
+
             }
         };
 
@@ -749,18 +762,16 @@ public final class PlayerImpl implements Player {
             @Override
             public void run() {
 
-                // Guarded access to internal state
-                synchronized (mStateLock) {
-                    final AudioSourceQueue queue = mCurrentQueue;
+                final AudioSourceQueue queue = mCurrentQueue;
 
-                    final int newPositionInQueue = queue.indexOf(item);
-                    // OK, the queue contains the given item
-                    if (newPositionInQueue >= 0) {
-                        mCurrentPositionInQueue = newPositionInQueue;
-                        mCurrentItem = item;
-                        _handleSource(item, 0, mIsPlayingFlag || forceStartPlaying).run();
-                    }
+                final int newPositionInQueue = queue.indexOf(item);
+                // OK, the queue contains the given item
+                if (newPositionInQueue >= 0) {
+                    mCurrentPositionInQueue = newPositionInQueue;
+                    mCurrentItem = item;
+                    _handleSource(item, 0, mIsPlayingFlag || forceStartPlaying).run();
                 }
+
             }
         };
 
@@ -769,21 +780,32 @@ public final class PlayerImpl implements Player {
 
     @Override
     public boolean isPrepared() {
-        return mIsPreparedFlag;
+        // TODO: should we guard access here?
+        synchronized (mEngineLock) {
+            return mIsPreparedFlag;
+        }
     }
 
     /**
      * Checks if the player is actually playing now.
-     * Delegates the call to the engine.
+     * Delegates the call to the engine. If the engine is null, then it's considered not playing.
+     * The engine must also be prepared, if not, then it's considered not playing.
      * @return true if the player is actually playing now, false - otherwise.
      */
     public boolean isActuallyPlaying() {
-        final MediaPlayer engine = maybeGetEngine();
-        try {
-            return engine != null && engine.isPlaying();
-        } catch (Throwable error) {
-            report(error);
-            return false;
+        synchronized (mEngineLock) {
+
+            if (!mIsPreparedFlag) return false;
+
+            final MediaPlayer engine = mEngine;
+            if (engine == null) return false;
+
+            try {
+                return engine.isPlaying();
+            } catch (Throwable error) {
+                report(error);
+                return false;
+            }
         }
     }
 
@@ -796,12 +818,17 @@ public final class PlayerImpl implements Player {
     @Override
     public int getAudiSessionId() {
         if (isShutdown()) return NO_AUDIO_SESSION;
-        final MediaPlayer engine = maybeGetEngine();
-        try {
-            return engine != null ? engine.getAudioSessionId() : NO_AUDIO_SESSION;
-        } catch (Throwable error) {
-            report(error);
-            return NO_AUDIO_SESSION;
+
+        synchronized (mEngineLock) {
+            final MediaPlayer engine = mEngine;
+            if (engine == null) return NO_AUDIO_SESSION;
+
+            try {
+                return engine.getAudioSessionId();
+            } catch (Throwable error) {
+                report(error);
+                return NO_AUDIO_SESSION;
+            }
         }
     }
 
@@ -824,35 +851,54 @@ public final class PlayerImpl implements Player {
 
     @Override
     public int getProgress() {
-        final MediaPlayer engine = maybeGetEngine();
-        try {
-            return engine != null ? engine.getCurrentPosition() : 0;
-        } catch (Throwable error) {
-            report(error);
-            return 0;
+        synchronized (mEngineLock) {
+
+            if (!mIsPreparedFlag) return 0;
+
+            final MediaPlayer engine = mEngine;
+            if (engine == null) return 0;
+
+            try {
+                return engine.getCurrentPosition();
+            } catch (Throwable error) {
+                report(error);
+                return 0;
+            }
         }
     }
 
     @Override
     public void seekTo(int position) {
-        final MediaPlayer engine = maybeGetEngine();
-        try {
-            if (engine != null) {
+        synchronized (mEngineLock) {
+
+            if (!mIsPreparedFlag) return;
+
+            final MediaPlayer engine = mEngine;
+            if (engine == null) return;
+
+            try {
                 engine.seekTo(position);
+            } catch (Throwable error) {
+                report(error);
             }
-        } catch (Throwable error) {
-            report(error);
         }
     }
 
     @Override
     public int getDuration() {
-        final MediaPlayer engine = maybeGetEngine();
-        try {
-            return engine != null ? engine.getDuration() : 0;
-        } catch (Throwable error) {
-            report(error);
-            return 0;
+        synchronized (mEngineLock) {
+
+            if (!mIsPreparedFlag) return 0;
+
+            final MediaPlayer engine = mEngine;
+            if (engine == null) return 0;
+
+            try {
+                return engine.getDuration();
+            } catch (Throwable error) {
+                report(error);
+                return 0;
+            }
         }
     }
 
@@ -862,16 +908,18 @@ public final class PlayerImpl implements Player {
             @Override
             public void run() {
 
-                // Guarded access to internal state
-                synchronized (mStateLock) {
-                    final MediaPlayer engine = maybeGetEngine();
-                    if (engine == null) {
-                        return;
-                    }
+                synchronized (mEngineLock) {
+
+                    if (!mIsPreparedFlag) return;
+
+                    final MediaPlayer engine = mEngine;
+                    if (engine == null) return;
 
                     // The focus should be granted as well
-                    if (mIsPreparedFlag && tryRequestAudioFocus()) {
+                    if (tryRequestAudioFocus()) {
+
                         mIsPlayingFlag = true;
+
                         try {
                             engine.start();
                             maybeAdjustVolume();
@@ -879,8 +927,10 @@ public final class PlayerImpl implements Player {
                         } catch (Throwable error) {
                             report(error);
                         }
+
                     }
                 }
+
             }
         };
 
@@ -895,23 +945,23 @@ public final class PlayerImpl implements Player {
             @Override
             public void run() {
 
-                // Guarded access to internal state
-                synchronized (mStateLock) {
-                    final MediaPlayer engine = maybeGetEngine();
-                    if (engine == null) {
-                        return;
-                    }
+                synchronized (mEngineLock) {
 
-                    if (mIsPreparedFlag) {
-                        mIsPlayingFlag = false;
-                        try {
-                            engine.pause();
-                            mObserverRegistry.dispatchPlaybackPaused();
-                        } catch (Throwable error) {
-                            report(error);
-                        }
+                    if (!mIsPreparedFlag) return;
+
+                    final MediaPlayer engine = mEngine;
+                    if (engine == null) return;
+
+                    mIsPlayingFlag = false;
+
+                    try {
+                        engine.pause();
+                        mObserverRegistry.dispatchPlaybackPaused();
+                    } catch (Throwable error) {
+                        report(error);
                     }
                 }
+
             }
         };
 
@@ -926,38 +976,38 @@ public final class PlayerImpl implements Player {
             @Override
             public void run() {
 
-                // Guarded access to internal state
-                synchronized (mStateLock) {
-                    final MediaPlayer engine = maybeGetEngine();
-                    if (engine == null) {
-                        return;
-                    }
+                synchronized (mEngineLock) {
 
-                    final boolean wasPlaying = mIsPlayingFlag;
-                    final boolean nextPlayingFlag = !wasPlaying;
+                    if (!mIsPreparedFlag) return;
 
-                    if (mIsPreparedFlag) {
-                        mIsPlayingFlag = nextPlayingFlag;
-                        try {
-                            if (nextPlayingFlag) {
+                    final MediaPlayer engine = mEngine;
+                    if (engine == null) return;
 
-                                // Only if the focus is granted
-                                if (tryRequestAudioFocus()) {
-                                    engine.start();
-                                    maybeAdjustVolume();
-                                    mObserverRegistry.dispatchPlaybackStarted();
-                                }
+                    final boolean oldIsPlayingFlag = mIsPlayingFlag;
+                    final boolean newIsPlayingFlag = !oldIsPlayingFlag;
 
-                            } else {
-                                engine.pause();
-                                mObserverRegistry.dispatchPlaybackPaused();
+                    try {
+                        if (newIsPlayingFlag) {
+
+                            // Only if the focus is granted
+                            if (tryRequestAudioFocus()) {
+                                mIsPlayingFlag = true;
+                                engine.start();
+                                maybeAdjustVolume();
+                                mObserverRegistry.dispatchPlaybackStarted();
                             }
 
-                        } catch (Throwable error) {
-                            report(error);
+                        } else {
+                            mIsPlayingFlag = false;
+                            engine.pause();
+                            mObserverRegistry.dispatchPlaybackPaused();
                         }
+
+                    } catch (Throwable error) {
+                        report(error);
                     }
                 }
+
             }
         };
 
@@ -972,23 +1022,21 @@ public final class PlayerImpl implements Player {
             @Override
             public void run() {
 
-                // Guarded access to internal state
-                synchronized (mStateLock) {
-                    final AudioSourceQueue originQueue = mOriginQueue;
-                    final AudioSourceQueue currentQueue = mCurrentQueue;
-                    final AudioSource currentItem = mCurrentItem;
+                final AudioSourceQueue originQueue = mOriginQueue;
+                final AudioSourceQueue currentQueue = mCurrentQueue;
+                final AudioSource currentItem = mCurrentItem;
 
-                    if (originQueue != null) {
-                        originQueue.replaceAllWithSameId(item);
-                    }
-
-                    currentQueue.replaceAllWithSameId(item);
-
-                    if (currentItem != null && AudioSources.areSourcesTheSame(currentItem, item)) {
-                        mCurrentItem = item;
-                        mObserverRegistry.dispatchAudioSourceChanged(item, mCurrentPositionInQueue);
-                    }
+                if (originQueue != null) {
+                    originQueue.replaceAllWithSameId(item);
                 }
+
+                currentQueue.replaceAllWithSameId(item);
+
+                if (currentItem != null && AudioSources.areSourcesTheSame(currentItem, item)) {
+                    mCurrentItem = item;
+                    mObserverRegistry.dispatchAudioSourceChanged(item, mCurrentPositionInQueue);
+                }
+
             }
         };
 
@@ -1000,31 +1048,29 @@ public final class PlayerImpl implements Player {
             @Override
             public void run() {
 
-                // Guarded access to internal state
-                synchronized (mStateLock) {
-                    final AudioSourceQueue currentQueue = mCurrentQueue;
-                    int currentPositionInQueue = mCurrentPositionInQueue;
-                    AudioSource currentItem = mCurrentItem;
+                final AudioSourceQueue currentQueue = mCurrentQueue;
+                int currentPositionInQueue = mCurrentPositionInQueue;
+                AudioSource currentItem = mCurrentItem;
 
-                    if (currentQueue.isEmpty()) {
-                        mCurrentPositionInQueue = NO_POSITION_IN_QUEUE;
-                        mCurrentItem = null;
-                        _reset().run();
-                    } else {
-                        if (currentPositionInQueue < 0) {
-                            currentPositionInQueue = 0;
-                        } else if (currentPositionInQueue >= currentQueue.getLength()) {
-                            currentPositionInQueue = currentQueue.getLength() - 1;
-                        }
-
-                        currentItem = currentQueue.getItemAt(currentPositionInQueue);
-
-                        mCurrentItem = currentItem;
-                        mCurrentPositionInQueue = currentPositionInQueue;
-
-                        _handleSource(currentItem,0, startPlaying).run();
+                if (currentQueue.isEmpty()) {
+                    mCurrentPositionInQueue = NO_POSITION_IN_QUEUE;
+                    mCurrentItem = null;
+                    _reset().run();
+                } else {
+                    if (currentPositionInQueue < 0) {
+                        currentPositionInQueue = 0;
+                    } else if (currentPositionInQueue >= currentQueue.getLength()) {
+                        currentPositionInQueue = currentQueue.getLength() - 1;
                     }
+
+                    currentItem = currentQueue.getItemAt(currentPositionInQueue);
+
+                    mCurrentItem = currentItem;
+                    mCurrentPositionInQueue = currentPositionInQueue;
+
+                    _handleSource(currentItem,0, startPlaying).run();
                 }
+
             }
         };
     }
@@ -1037,27 +1083,24 @@ public final class PlayerImpl implements Player {
             @Override
             public void run() {
 
-                // Guarded access to internal state
-                synchronized (mStateLock) {
-                    final AudioSourceQueue originQueue = mOriginQueue;
-                    final AudioSourceQueue currentQueue = mCurrentQueue;
-                    final AudioSource targetItem = currentQueue.getItemAt(position);
-                    int currentPositionInQueue = mCurrentPositionInQueue;
+                final AudioSourceQueue originQueue = mOriginQueue;
+                final AudioSourceQueue currentQueue = mCurrentQueue;
+                final AudioSource targetItem = currentQueue.getItemAt(position);
+                int currentPositionInQueue = mCurrentPositionInQueue;
 
-                    if (originQueue != null) {
-                        originQueue.remove(targetItem);
-                    }
-                    currentQueue.removeAt(position);
-
-                    if (position < currentPositionInQueue) {
-                        currentPositionInQueue--;
-                        mCurrentPositionInQueue = currentPositionInQueue;
-                    } else if (position == currentPositionInQueue) {
-                        mCurrentItem = null;
-                        _resolveUndefinedState(mIsPlayingFlag).run();
-                    }
-
+                if (originQueue != null) {
+                    originQueue.remove(targetItem);
                 }
+                currentQueue.removeAt(position);
+
+                if (position < currentPositionInQueue) {
+                    currentPositionInQueue--;
+                    mCurrentPositionInQueue = currentPositionInQueue;
+                } else if (position == currentPositionInQueue) {
+                    mCurrentItem = null;
+                    _resolveUndefinedState(mIsPlayingFlag).run();
+                }
+
             }
         };
 
@@ -1072,32 +1115,30 @@ public final class PlayerImpl implements Player {
             @Override
             public void run() {
 
-                // Guarded access to internal state
-                synchronized (mStateLock) {
-                    final AudioSourceQueue originQueue = mOriginQueue;
-                    final AudioSourceQueue currentQueue = mCurrentQueue;
-                    int currentPositionInQueue = mCurrentPositionInQueue;
+                final AudioSourceQueue originQueue = mOriginQueue;
+                final AudioSourceQueue currentQueue = mCurrentQueue;
+                int currentPositionInQueue = mCurrentPositionInQueue;
 
-                    for (AudioSource item : items) {
+                for (AudioSource item : items) {
 
-                        final int position = mCurrentQueue.indexOf(item);
+                    final int position = mCurrentQueue.indexOf(item);
 
-                        if (position <= currentPositionInQueue) {
-                            currentPositionInQueue--;
-                        }
-
-                        if (originQueue != null) {
-                            originQueue.remove(item);
-                        }
-                        currentQueue.remove(item);
-
+                    if (position <= currentPositionInQueue) {
+                        currentPositionInQueue--;
                     }
 
-                    if (currentQueue.isEmpty() || items.contains(mCurrentItem)) {
-                        mCurrentItem = null;
-                        _resolveUndefinedState(mIsPlayingFlag).run();
+                    if (originQueue != null) {
+                        originQueue.remove(item);
                     }
+                    currentQueue.remove(item);
+
                 }
+
+                if (currentQueue.isEmpty() || items.contains(mCurrentItem)) {
+                    mCurrentItem = null;
+                    _resolveUndefinedState(mIsPlayingFlag).run();
+                }
+
             }
         };
 
@@ -1117,26 +1158,24 @@ public final class PlayerImpl implements Player {
             @Override
             public void run() {
 
-                // Guarded access to internal state
-                synchronized (mStateLock) {
-                    final AudioSourceQueue originQueue = mOriginQueue;
-                    final AudioSourceQueue currentQueue = mCurrentQueue;
+                final AudioSourceQueue originQueue = mOriginQueue;
+                final AudioSourceQueue currentQueue = mCurrentQueue;
 
-                    if (originQueue != null) {
-                        originQueue.addAll(items);
-                    }
-                    currentQueue.addAll(items);
-
-                    if (mCurrentItem == null && !currentQueue.isEmpty()) {
-                        final int currentPositionInQueue = 0;
-                        final AudioSource currentItem = currentQueue.getItemAt(currentPositionInQueue);
-
-                        mCurrentItem = currentItem;
-                        mCurrentPositionInQueue = currentPositionInQueue;
-
-                        _handleSource(currentItem, 0, false).run();
-                    }
+                if (originQueue != null) {
+                    originQueue.addAll(items);
                 }
+                currentQueue.addAll(items);
+
+                if (mCurrentItem == null && !currentQueue.isEmpty()) {
+                    final int currentPositionInQueue = 0;
+                    final AudioSource currentItem = currentQueue.getItemAt(currentPositionInQueue);
+
+                    mCurrentItem = currentItem;
+                    mCurrentPositionInQueue = currentPositionInQueue;
+
+                    _handleSource(currentItem, 0, false).run();
+                }
+
             }
         };
 
@@ -1156,30 +1195,28 @@ public final class PlayerImpl implements Player {
             @Override
             public void run() {
 
-                // Guarded access to internal state
-                synchronized (mStateLock) {
-                    final AudioSourceQueue originQueue = mOriginQueue;
-                    final AudioSourceQueue currentQueue = mCurrentQueue;
-                    int currentPositionInQueue = mCurrentPositionInQueue;
-                    AudioSource currentItem = mCurrentItem;
+                final AudioSourceQueue originQueue = mOriginQueue;
+                final AudioSourceQueue currentQueue = mCurrentQueue;
+                int currentPositionInQueue = mCurrentPositionInQueue;
+                AudioSource currentItem = mCurrentItem;
 
-                    final int targetPosition = Math.max(0, currentPositionInQueue);
+                final int targetPosition = Math.max(0, currentPositionInQueue);
 
-                    if (originQueue != null) {
-                        originQueue.addAll(targetPosition + 1, items);
-                    }
-                    currentQueue.addAll(targetPosition + 1, items);
-
-                    if (currentItem == null && !currentQueue.isEmpty()) {
-                        currentPositionInQueue = 0;
-                        currentItem = currentQueue.getItemAt(currentPositionInQueue);
-
-                        mCurrentPositionInQueue = currentPositionInQueue;
-                        mCurrentItem = currentItem;
-
-                        _handleSource(currentItem, 0, false).run();
-                    }
+                if (originQueue != null) {
+                    originQueue.addAll(targetPosition + 1, items);
                 }
+                currentQueue.addAll(targetPosition + 1, items);
+
+                if (currentItem == null && !currentQueue.isEmpty()) {
+                    currentPositionInQueue = 0;
+                    currentItem = currentQueue.getItemAt(currentPositionInQueue);
+
+                    mCurrentPositionInQueue = currentPositionInQueue;
+                    mCurrentItem = currentItem;
+
+                    _handleSource(currentItem, 0, false).run();
+                }
+
             }
         };
 
@@ -1194,42 +1231,40 @@ public final class PlayerImpl implements Player {
             @Override
             public void run() {
 
-                // Guarded access to internal state
-                synchronized (mStateLock) {
-                    final AudioSourceQueue originQueue = mOriginQueue;
-                    final AudioSourceQueue currentQueue = mCurrentQueue;
-                    int currentPositionInQueue = mCurrentPositionInQueue;
-                    //AudioSource currentItem = mCurrentItem;
+                final AudioSourceQueue originQueue = mOriginQueue;
+                final AudioSourceQueue currentQueue = mCurrentQueue;
+                int currentPositionInQueue = mCurrentPositionInQueue;
+                //AudioSource currentItem = mCurrentItem;
 
-                    if (originQueue != null) {
-                        if (fromPosition >= 0 && toPosition >= 0) {
-                            originQueue.moveItem(fromPosition, toPosition);
-                        }
-                    }
-
-                    // Finding out what the current position will be
-                    if (currentPositionInQueue == fromPosition) {
-                        currentPositionInQueue = toPosition;
-                    } else if (currentPositionInQueue < fromPosition) {
-                        if (currentPositionInQueue < toPosition) {
-                            // no changes
-                        } else {
-                            currentPositionInQueue++;
-                        }
-                    } else if (currentPositionInQueue > fromPosition) {
-                        if (currentPositionInQueue > toPosition) {
-                            // no changes
-                        } else {
-                            currentPositionInQueue--;
-                        }
-                    }
-
-                    mCurrentPositionInQueue = currentPositionInQueue;
-
+                if (originQueue != null) {
                     if (fromPosition >= 0 && toPosition >= 0) {
-                        currentQueue.moveItem(fromPosition, toPosition);
+                        originQueue.moveItem(fromPosition, toPosition);
                     }
                 }
+
+                // Finding out what the current position will be
+                if (currentPositionInQueue == fromPosition) {
+                    currentPositionInQueue = toPosition;
+                } else if (currentPositionInQueue < fromPosition) {
+                    if (currentPositionInQueue < toPosition) {
+                        // no changes
+                    } else {
+                        currentPositionInQueue++;
+                    }
+                } else if (currentPositionInQueue > fromPosition) {
+                    if (currentPositionInQueue > toPosition) {
+                        // no changes
+                    } else {
+                        currentPositionInQueue--;
+                    }
+                }
+
+                mCurrentPositionInQueue = currentPositionInQueue;
+
+                if (fromPosition >= 0 && toPosition >= 0) {
+                    currentQueue.moveItem(fromPosition, toPosition);
+                }
+
             }
         };
 
@@ -1270,14 +1305,20 @@ public final class PlayerImpl implements Player {
     private void tryRewind(int intervalValue) {
         if (isShutdown()) return;
 
-        final MediaPlayer engine = maybeGetEngine();
-        if (engine == null) return;
+        synchronized (mEngineLock) {
 
-        try {
-            final int newPosition = engine.getCurrentPosition() + intervalValue;
-            engine.seekTo(newPosition);
-        } catch (Throwable error) {
-            report(error);
+            if (!mIsPreparedFlag) return;
+
+            final MediaPlayer engine = mEngine;
+            if (engine == null) return;
+
+            try {
+                final int newPosition = engine.getCurrentPosition() + intervalValue;
+                engine.seekTo(newPosition);
+            } catch (Throwable error) {
+                report(error);
+            }
+
         }
     }
 
@@ -1292,16 +1333,24 @@ public final class PlayerImpl implements Player {
     }
 
     public void setVolume(float level) {
-        final MediaPlayer engine = maybeGetEngine();
-        try {
-            if (engine != null) {
+        synchronized (mEngineLock) {
+            final MediaPlayer engine = mEngine;
+            if (engine == null) return;
+
+            try {
                 engine.setVolume(level, level);
+            } catch (Throwable error) {
+                report(error);
             }
-        } catch (Throwable error) {
-            report(error);
         }
     }
 
+    /**
+     * Starts {@link Timer}, which will adjust the volume for smooth cross-fading.
+     * This method should be called once during the player's life.
+     * It is better to make the method call lazy.
+     * TODO: consider making the call lazy instead of doing the call in the constructor
+     */
     private void startCrossFadeTimer() {
         if (isShutdown()) return;
 
@@ -1319,8 +1368,8 @@ public final class PlayerImpl implements Player {
                     maybeAdjustVolume();
 
                     try {
-                        // Sleeping a little until the next volume adjustment
-                        Thread.sleep(100);
+                        // Sleeping until the next volume adjustment
+                        Thread.sleep(VOLUME_ADJUSTMENT_INTERVAL);
                     } catch (InterruptedException error) {
                         return;
                     }
@@ -1335,6 +1384,11 @@ public final class PlayerImpl implements Player {
         mCrossFadeTimer = newTimer;
     }
 
+    /**
+     * Adjusts the volume level according to the current {@link CrossFadeStrategy}.
+     * The method should be called constantly throughout the player's life.
+     * There is also a need to call this method every time the engine is started.
+     */
     private void maybeAdjustVolume() {
         final CrossFadeStrategy strategy = mCrossFadeStrategy;
         if (strategy == null) {
@@ -1342,23 +1396,29 @@ public final class PlayerImpl implements Player {
             return;
         }
 
-        synchronized (mStateLock) {
-            final MediaPlayer engine = maybeGetEngine();
+        synchronized (mEngineLock) {
+
+            if (!mIsPreparedFlag) return;
+
+            final MediaPlayer engine = mEngine;
+            if (engine == null) return;
+
             try {
-                if (engine != null && mIsPreparedFlag) {
-                    final int progress = engine.getCurrentPosition();
-                    final int duration = engine.getDuration();
 
-                    float level = strategy.calculateLevel(progress, duration);
-                    // TODO: how to manipulate the level
-                    level = (float) Math.pow(level, 2);
+                final int progress = engine.getCurrentPosition();
+                final int duration = engine.getDuration();
 
-                    engine.setVolume(level, level);
-                }
+                // This is where the strategy works
+                float level = strategy.calculateLevel(progress, duration);
+                // TODO: how to manipulate the level
+                level = (float) Math.pow(level, 2);
+
+                engine.setVolume(level, level);
             } catch (Throwable error) {
                 report(error);
             }
         }
+
     }
 
     @Nullable
@@ -1373,29 +1433,25 @@ public final class PlayerImpl implements Player {
         maybeAdjustVolume();
     }
 
-    @Nullable
-    private PlaybackParams tryGetPlaybackParams() {
-        if (isShutdown()) return null;
-
-        final MediaPlayer engine = maybeGetEngine();
-        if (engine == null) return null;
-
-        try {
-            return engine.getPlaybackParams();
-        } catch (Throwable error) {
-            report(error);
-            return null;
-        }
-    }
-
     @Override
     public float getSpeed() {
-        final PlaybackParams params = tryGetPlaybackParams();
-        try {
-            return params != null ? params.getSpeed() : SPEED_NORMAL;
-        } catch (Throwable error) {
-            report(error);
-            return SPEED_NORMAL;
+        if (isShutdown()) return SPEED_NORMAL;
+
+        synchronized (mEngineLock) {
+
+            if (!mIsPreparedFlag) return SPEED_NORMAL;
+
+            final MediaPlayer engine = mEngine;
+            // If the engine is null, then the speed is considered normal
+            if (engine == null) return SPEED_NORMAL;
+
+            try {
+                final PlaybackParams params = engine.getPlaybackParams();
+                return params != null ? params.getSpeed() : SPEED_NORMAL;
+            } catch (Throwable error) {
+                report(error);
+                return SPEED_NORMAL;
+            }
         }
     }
 
@@ -1403,26 +1459,42 @@ public final class PlayerImpl implements Player {
     public void setSpeed(float speed) {
         if (isShutdown()) return;
 
-        final MediaPlayer engine = maybeGetEngine();
-        if (engine == null) return;
+        synchronized (mEngineLock) {
 
-        try {
-            final PlaybackParams params = engine.getPlaybackParams();
-            params.setSpeed(MathUtil.clamp(SPEED_RANGE, speed));
-            engine.setPlaybackParams(params);
-        } catch (Throwable error) {
-            report(error);
+            if (!mIsPreparedFlag) return;
+
+            final MediaPlayer engine = mEngine;
+            if (engine == null) return;
+
+            try {
+                final PlaybackParams params = engine.getPlaybackParams();
+                params.setSpeed(MathUtil.clamp(SPEED_RANGE, speed));
+                engine.setPlaybackParams(params);
+            } catch (Throwable error) {
+                report(error);
+            }
         }
     }
 
     @Override
     public float getPitch() {
-        final PlaybackParams params = tryGetPlaybackParams();
-        try {
-            return params != null ? params.getPitch() : PITCH_NORMAL;
-        } catch (Throwable error) {
-            report(error);
-            return PITCH_NORMAL;
+        if (isShutdown()) return PITCH_NORMAL;
+
+        synchronized (mEngineLock) {
+
+            if (!mIsPreparedFlag) return PITCH_NORMAL;
+
+            final MediaPlayer engine = mEngine;
+            // If the engine is null, then the pitch is considered normal
+            if (engine == null) return PITCH_NORMAL;
+
+            try {
+                final PlaybackParams params = engine.getPlaybackParams();
+                return params != null ? params.getPitch() : PITCH_NORMAL;
+            } catch (Throwable error) {
+                report(error);
+                return PITCH_NORMAL;
+            }
         }
     }
 
@@ -1430,15 +1502,20 @@ public final class PlayerImpl implements Player {
     public void setPitch(float pitch) {
         if (isShutdown()) return;
 
-        final MediaPlayer engine = maybeGetEngine();
-        if (engine == null) return;
+        synchronized (mEngineLock) {
 
-        try {
-            final PlaybackParams params = engine.getPlaybackParams();
-            params.setPitch(MathUtil.clamp(PITCH_RANGE, pitch));
-            engine.setPlaybackParams(params);
-        } catch (Throwable error) {
-            report(error);
+            if (!mIsPreparedFlag) return;
+
+            final MediaPlayer engine = mEngine;
+            if (engine == null) return;
+
+            try {
+                final PlaybackParams params = engine.getPlaybackParams();
+                params.setPitch(MathUtil.clamp(PITCH_RANGE, pitch));
+                engine.setPlaybackParams(params);
+            } catch (Throwable error) {
+                report(error);
+            }
         }
     }
 
@@ -1455,27 +1532,25 @@ public final class PlayerImpl implements Player {
             @Override
             public void run() {
 
-                // Guarded access to internal state
-                synchronized (mStateLock) {
-                    mShuffleMode = mode;
+                mShuffleMode = mode;
 
-                    final AudioSourceQueue originQueue = mOriginQueue;
-                    final AudioSourceQueue currentQueue = mCurrentQueue;
-                    final AudioSource currentItem = mCurrentItem;
+                final AudioSourceQueue originQueue = mOriginQueue;
+                final AudioSourceQueue currentQueue = mCurrentQueue;
+                final AudioSource currentItem = mCurrentItem;
 
-                    if (mode == Player.SHUFFLE_OFF) {
-                        final AudioSourceQueue targetQueue =
-                                originQueue != null ? originQueue : AudioSourceQueue.empty();
+                if (mode == Player.SHUFFLE_OFF) {
+                    final AudioSourceQueue targetQueue =
+                            originQueue != null ? originQueue : AudioSourceQueue.empty();
 
-                        currentQueue.copyItemsFrom(targetQueue);
-                    } else {
-                        currentQueue.shuffleWithItemInFront(currentItem);
-                    }
-
-                    mCurrentPositionInQueue = currentQueue.indexOf(currentItem);
-
-                    mObserverRegistry.dispatchShuffleModeChanged(mode);
+                    currentQueue.copyItemsFrom(targetQueue);
+                } else {
+                    currentQueue.shuffleWithItemInFront(currentItem);
                 }
+
+                mCurrentPositionInQueue = currentQueue.indexOf(currentItem);
+
+                mObserverRegistry.dispatchShuffleModeChanged(mode);
+
             }
         };
 
@@ -1499,8 +1574,10 @@ public final class PlayerImpl implements Player {
     public void shutdown() {
         if (mShutdown.getAndSet(true)) return;
 
+        // Resetting the A-B engine
         mABEngine.reset();
 
+        // Resetting the cross-fade timer
         final Timer oldTimer = mCrossFadeTimer;
         if (oldTimer != null) {
             oldTimer.purge();
@@ -1508,23 +1585,29 @@ public final class PlayerImpl implements Player {
         }
         mCrossFadeTimer = null;
 
-        mIsPreparedFlag = false;
-        mIsPlayingFlag = false;
+        // Resetting the engine and internal flags
+        synchronized (mEngineLock) {
 
+            mIsPreparedFlag = false;
+            mIsPlayingFlag = false;
+
+            final MediaPlayer engine = mEngine;
+            if (engine != null) {
+                try {
+                    engine.release();
+                } catch (Throwable error) {
+                    report(error);
+                }
+            }
+            mEngine = null;
+        }
+
+        // Resetting internal state
         mOriginQueue = null;
         mCurrentItem = null;
         mCurrentPositionInQueue = NO_POSITION_IN_QUEUE;
 
-        final MediaPlayer engine = mEngine;
-        if (engine != null) {
-            try {
-                engine.release();
-            } catch (Throwable error) {
-                report(error);
-            }
-        }
-        mEngine = null;
-
+        // Finally, notifying about the shutdown
         mObserverRegistry.dispatchShutdown();
     }
 
@@ -1610,6 +1693,8 @@ public final class PlayerImpl implements Player {
         }
 
         private synchronized void _start() {
+
+            // TODO: make sure only one timer is running
 
             // Canceling the previous timer, if any.
             // Cause we don't want two timers doing the A-B job.
