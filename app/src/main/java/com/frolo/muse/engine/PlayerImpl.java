@@ -211,7 +211,6 @@ public final class PlayerImpl implements Player {
     private volatile AudioSource mCurrentItem = null;
     private volatile int mCurrentPositionInQueue = NO_POSITION_IN_QUEUE;
 
-    @GuardedBy("mEngineLock")
     private volatile boolean mIsPreparedFlag = false;
     private volatile boolean mIsPlayingFlag = false;
 
@@ -780,10 +779,7 @@ public final class PlayerImpl implements Player {
 
     @Override
     public boolean isPrepared() {
-        // TODO: should we guard access here?
-        synchronized (mEngineLock) {
-            return mIsPreparedFlag;
-        }
+        return mIsPreparedFlag;
     }
 
     /**
@@ -811,8 +807,7 @@ public final class PlayerImpl implements Player {
 
     @Override
     public boolean isPlaying() {
-        // TODO: should we return mIsPlayingFlag instead?
-        return isActuallyPlaying();
+        return mIsPlayingFlag;
     }
 
     @Override
