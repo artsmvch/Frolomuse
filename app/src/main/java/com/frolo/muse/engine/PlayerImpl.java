@@ -1426,7 +1426,18 @@ public final class PlayerImpl implements Player {
     @Override
     public void setCrossFadeStrategy(@Nullable CrossFadeStrategy strategy) {
         mCrossFadeStrategy = strategy;
-        maybeAdjustVolume();
+
+        // It's better to adjust the volume on the engine thread,
+        // as this method is synchronized on the engine,
+        // so there might be blocking.
+        final Runnable task = new Runnable() {
+            @Override
+            public void run() {
+                maybeAdjustVolume();
+            }
+        };
+
+        processEngineTask(task);
     }
 
     @Override
