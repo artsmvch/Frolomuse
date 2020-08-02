@@ -11,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
 public abstract class SimplePlayerObserver implements PlayerObserver {
 
     @Override
-    public void onPrepared(@NotNull Player player) {
+    public void onPrepared(@NotNull Player player, int duration, int progress) {
     }
 
     @Override

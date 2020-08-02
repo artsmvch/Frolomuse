@@ -86,9 +86,9 @@ class SongPlayCounter constructor(
         performanceDuration = 0
     }
 
-    override fun onPrepared(player: Player) {
+    override fun onPrepared(player: Player, duration: Int, progress: Int) {
         isPrepared = true
-        currentItemDuration = player.getDuration()
+        currentItemDuration = duration
     }
 
     override fun onPlaybackPaused(player: Player) {

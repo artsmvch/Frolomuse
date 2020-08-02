@@ -416,7 +416,7 @@ public final class PlayerImpl implements Player {
                                 newEngine.prepare();
                                 mIsPreparedFlag = true;
                                 mAudioFx.apply(newEngine);
-                                mObserverRegistry.dispatchPrepared();
+                                mObserverRegistry.dispatchPrepared(newEngine.getDuration(), 0);
                             } catch (Throwable error) {
                                 report(error);
                             }
@@ -575,12 +575,12 @@ public final class PlayerImpl implements Player {
 
                         mAudioFx.apply(engine);
 
-                        // Dispatch that it's prepared after the audio fx is applied
-                        mObserverRegistry.dispatchPrepared();
-
                         if (playbackPosition > 0) {
                             engine.seekTo(playbackPosition);
                         }
+
+                        // Dispatch that it's prepared after the audio fx is applied and the progress is sought
+                        mObserverRegistry.dispatchPrepared(engine.getDuration(), engine.getCurrentPosition());
 
                         if (startPlaying && tryRequestAudioFocus()) {
                             mIsPlayingFlag = true;

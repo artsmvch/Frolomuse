@@ -11,8 +11,10 @@ public interface PlayerObserver {
      * From this point until {@link PlayerObserver#onAudioSourceChanged(Player, AudioSource, int)} method is called,
      * calling the {@link Player#getProgress()}, {@link Player#getDuration()}, {@link Player#isPlaying()} methods really makes sense.
      * @param player player that is prepared
+     * @param duration duration of the current audio source
+     * @param progress current playback progress
      */
-    void onPrepared(@NotNull Player player);
+    void onPrepared(@NotNull Player player, int duration, int progress);
 
     /**
      * Called when <code>player</code> starts playing.

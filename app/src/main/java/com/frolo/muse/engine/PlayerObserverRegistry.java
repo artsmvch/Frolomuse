@@ -53,8 +53,10 @@ final class PlayerObserverRegistry {
 
             switch (msg.what) {
                 case MSG_PREPARED: {
+                    final int duration = msg.arg1;
+                    final int progress = msg.arg2;
                     for (PlayerObserver observer : mObservers) {
-                        observer.onPrepared(getPlayer());
+                        observer.onPrepared(getPlayer(), duration, progress);
                     }
                     break;
                 }
@@ -187,12 +189,12 @@ final class PlayerObserverRegistry {
 //        }
     }
 
-    synchronized void dispatchPrepared() {
+    synchronized void dispatchPrepared(int duration, int progress) {
         mHandler.removeMessages(DispatcherHandler.MSG_PREPARED);
         mHandler.removeMessages(DispatcherHandler.MSG_PLAYBACK_STARTED);
         mHandler.removeMessages(DispatcherHandler.MSG_PLAYBACK_PAUSED);
 
-        final Message message = mHandler.obtainMessage(DispatcherHandler.MSG_PREPARED);
+        final Message message = mHandler.obtainMessage(DispatcherHandler.MSG_PREPARED, duration, progress);
         dispatch(message);
     }
 

@@ -50,9 +50,9 @@ class PlayerViewModel @Inject constructor(
     private var playbackProgressDisposable: Disposable? = null
 
     private val playerObserver = object : SimplePlayerObserver() {
-        override fun onPrepared(player: Player) {
-            _playbackDuration.value = player.getDuration()
-            _playbackProgress.value = 0
+        override fun onPrepared(player: Player, duration: Int, progress: Int) {
+            _playbackDuration.value = duration
+            _playbackProgress.value = progress
         }
 
         override fun onSoughtTo(player: Player, position: Int) {
@@ -66,7 +66,7 @@ class PlayerViewModel @Inject constructor(
         override fun onAudioSourceChanged(player: Player, item: AudioSource?, positionInQueue: Int) {
             _song.value = item?.toSong()
             _songPosition.value = positionInQueue
-            _playbackProgress.value = player.getProgress()
+            _playbackProgress.value = 0
         }
 
         override fun onPlaybackStarted(player: Player) {

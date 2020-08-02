@@ -42,8 +42,8 @@ class MiniPlayerViewModel @Inject constructor(
             _currentSong.value = item?.toSong()
         }
 
-        override fun onPrepared(player: Player) {
-            _maxProgress.value = player.getDuration()
+        override fun onPrepared(player: Player, duration: Int, progress: Int) {
+            _maxProgress.value = duration
         }
 
         override fun onPlaybackPaused(player: Player) {

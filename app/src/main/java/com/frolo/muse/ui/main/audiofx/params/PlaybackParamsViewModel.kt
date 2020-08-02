@@ -53,7 +53,7 @@ class PlaybackParamsViewModel @Inject constructor(
     }
 
     private val playerObserver = object : SimplePlayerObserver() {
-        override fun onPrepared(player: Player) {
+        override fun onPrepared(player: Player, duration: Int, progress: Int) {
             _speed.value = player.getSpeed()
             _pitch.value = player.getPitch()
         }

@@ -80,9 +80,9 @@ final class MeasuredPlayerObserver implements PlayerObserver {
     }
 
     @Override
-    public void onPrepared(@NotNull Player player) {
+    public void onPrepared(@NotNull Player player, int duration, int progress) {
         final Measurement m = start("onPrepared");
-        mDelegate.onPrepared(player);
+        mDelegate.onPrepared(player, duration, progress);
         end(m);
     }
 
