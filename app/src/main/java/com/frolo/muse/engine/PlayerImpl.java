@@ -1387,12 +1387,6 @@ public final class PlayerImpl implements Player {
      * There is also a need to call this method every time the engine is started.
      */
     private void maybeAdjustVolume() {
-        final CrossFadeStrategy strategy = mCrossFadeStrategy;
-        if (strategy == null) {
-            // No strategy - no cross fade
-            return;
-        }
-
         synchronized (mEngineLock) {
 
             if (!mIsPreparedFlag) return;
@@ -1402,13 +1396,20 @@ public final class PlayerImpl implements Player {
 
             try {
 
-                final int progress = engine.getCurrentPosition();
-                final int duration = engine.getDuration();
+                final CrossFadeStrategy strategy = mCrossFadeStrategy;
 
-                // This is where the strategy works
-                float level = strategy.calculateLevel(progress, duration);
-                // TODO: how to manipulate the level
-                level = (float) Math.pow(level, 2);
+                final float level;
+                if (strategy == null) {
+                    // No strategy - no cross fade
+                    level = CrossFadeStrategy.NORMAL_LEVEL;
+                } else {
+                    final int progress = engine.getCurrentPosition();
+                    final int duration = engine.getDuration();
+                    // This is where the strategy works
+                    float l = strategy.calculateLevel(progress, duration);
+                    // TODO: how to manipulate the level
+                    level = (float) Math.pow(l, 2);
+                }
 
                 engine.setVolume(level, level);
             } catch (Throwable error) {
