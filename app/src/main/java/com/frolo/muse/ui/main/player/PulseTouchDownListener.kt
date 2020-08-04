@@ -73,3 +73,7 @@ class PulseTouchDownListener constructor(
         }
     }
 }
+
+fun View.doOnPulseTouchDown(delay: Long = 500, period: Long = 750, action: () -> Unit) {
+    setOnTouchListener(PulseTouchDownListener(delay, period, action))
+}

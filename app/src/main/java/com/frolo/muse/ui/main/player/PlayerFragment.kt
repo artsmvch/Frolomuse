@@ -178,17 +178,17 @@ class PlayerFragment: BaseFragment() {
             viewModel.onSkipToPreviousButtonClicked()
         }
 
-        btn_skip_to_previous.setOnTouchListener(PulseTouchDownListener(500, 750) {
+        btn_skip_to_previous.doOnPulseTouchDown {
             viewModel.onSkipToPreviousButtonLongClicked()
-        })
+        }
 
         btn_skip_to_next.setOnClickListener {
             viewModel.onSkipToNextButtonClicked()
         }
 
-        btn_skip_to_next.setOnTouchListener(PulseTouchDownListener(500, 750) {
+        btn_skip_to_next.doOnPulseTouchDown {
             viewModel.onSkipToNextButtonLongClicked()
-        })
+        }
 
         btn_repeat_mode.setOnClickListener {
             viewModel.onRepeatModeButtonClicked()
