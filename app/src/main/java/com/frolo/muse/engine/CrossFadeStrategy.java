@@ -14,6 +14,25 @@ public abstract class CrossFadeStrategy {
     public static final float MAX_LEVEL = 1f;
     public static final float NORMAL_LEVEL = 1f;
 
+    /**
+     * Gets cross-fade interval for the given <code>strategy</code>
+     * @deprecated only some strategies have actual interval
+     * @param strategy to get cross-fade interval from
+     * @return cross-fade interval
+     */
+    @Deprecated
+    public static int getInterval(@NotNull CrossFadeStrategy strategy) {
+        if (strategy instanceof StaticIntervalCrossFade) {
+            return ((StaticIntervalCrossFade) strategy).mInterval;
+        }
+
+        if (strategy instanceof SmartStaticIntervalCrossFade) {
+            return ((SmartStaticIntervalCrossFade) strategy).mTargetInterval;
+        }
+
+        return 0;
+    }
+
     @NotNull
     public static CrossFadeStrategy none() {
         return new NoneCrossFade();

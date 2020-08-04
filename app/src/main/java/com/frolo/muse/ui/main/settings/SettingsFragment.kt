@@ -25,6 +25,7 @@ import com.frolo.muse.ui.ThemeHandler
 import com.frolo.muse.ui.base.NoClipping
 import com.frolo.muse.ui.goToStore
 import com.frolo.muse.ui.helpWithTranslations
+import com.frolo.muse.ui.main.settings.crossfade.CrossFadeDialog
 import com.frolo.muse.ui.main.settings.duration.MinAudioFileDurationDialog
 import com.frolo.muse.ui.main.settings.hidden.HiddenFilesDialog
 import com.frolo.muse.ui.main.settings.info.AppInfoDialog
@@ -70,6 +71,13 @@ class SettingsFragment : PreferenceFragmentCompat(),
         findPreference("show_notification").apply {
             onPreferenceClickListener = Preference.OnPreferenceClickListener {
                 processShowPlayerNotification()
+                true
+            }
+        }
+
+        findPreference("cross_fade").apply {
+            onPreferenceClickListener = Preference.OnPreferenceClickListener {
+                showCrossFadeDialog()
                 true
             }
         }
@@ -185,6 +193,11 @@ class SettingsFragment : PreferenceFragmentCompat(),
         val intent = PlayerService.newIntent(host, PlayerService.COMMAND_SHOW_NOTIFICATION)
         host.startService(intent)
         Toast.makeText(host, R.string.shown, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showCrossFadeDialog() {
+        val dialog = CrossFadeDialog.newInstance()
+        dialog.show(childFragmentManager, TAG_CROSS_FADE)
     }
 
     override fun onTimeSelected(hours: Int, minutes: Int, seconds: Int) {
@@ -385,6 +398,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
         private const val TAG_APP_INFO = "app_info"
         private const val TAG_HIDDEN_FILES = "hidden_files"
         private const val TAG_MIN_AUDIO_FILE_DURATION = "min_audio_file_duration"
+        private const val TAG_CROSS_FADE = "cross_fade"
 
         // Factory
         fun newInstance() = SettingsFragment()

@@ -19,6 +19,7 @@ import com.frolo.muse.ui.main.library.songs.SongListViewModel
 import com.frolo.muse.ui.main.player.PlayerViewModel
 import com.frolo.muse.ui.main.player.current.CurrSongQueueViewModel
 import com.frolo.muse.ui.main.player.mini.MiniPlayerViewModel
+import com.frolo.muse.ui.main.settings.crossfade.CrossFadeViewModel
 import com.frolo.muse.ui.main.settings.duration.MinAudioFileDurationViewModel
 import com.frolo.muse.ui.main.settings.hidden.HiddenFilesViewModel
 import dagger.Binds
@@ -146,4 +147,10 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(MinAudioFileDurationViewModel::class)
     abstract fun bindMinAudioFileDurationViewModel(viewModel: MinAudioFileDurationViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(CrossFadeViewModel::class)
+    abstract fun bindCrossFadeViewModel(viewModel: CrossFadeViewModel): ViewModel
+
 }

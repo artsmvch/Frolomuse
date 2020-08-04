@@ -26,6 +26,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 
 // TODO: fix locks: Engine must be guarded everywhere
+// TODO: try using VolumeShaper for cross-fade
 /**
  * Android-specific thread-safe implementation of {@link Player}.
  * Methods prefixed with '_' are of type Runnable and must be processed with
