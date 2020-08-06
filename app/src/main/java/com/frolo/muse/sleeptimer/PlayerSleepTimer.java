@@ -2,8 +2,10 @@ package com.frolo.muse.sleeptimer;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 
 import androidx.annotation.NonNull;
 
@@ -94,4 +96,31 @@ public final class PlayerSleepTimer {
         }
         return false;
     }
+
+    @NonNull
+    public static BroadcastReceiver createBroadcastReceiver(@NonNull final Runnable onAlarmTriggered) {
+        return new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (intent == null) {
+                    return;
+                }
+
+                final String action = intent.getAction();
+                if (action != null && action.equals(PlayerSleepTimer.ACTION_ALARM_TRIGGERED)) {
+                    // Need to reset the current sleep timer because its pending intent is still retained,
+                    // therefore the app settings may think that an alarm is still set.
+                    PlayerSleepTimer.resetCurrentSleepTimer(context);
+                    // Running the callback
+                    onAlarmTriggered.run();
+                }
+            }
+        };
+    }
+
+    @NonNull
+    public static IntentFilter createIntentFilter() {
+        return new IntentFilter(PlayerSleepTimer.ACTION_ALARM_TRIGGERED);
+    }
+
 }

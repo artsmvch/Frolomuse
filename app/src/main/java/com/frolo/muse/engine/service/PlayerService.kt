@@ -1,10 +1,8 @@
 package com.frolo.muse.engine.service
 
 import android.app.*
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.graphics.Bitmap
 import android.media.MediaMetadata
 import android.os.*
@@ -161,21 +159,6 @@ class PlayerService: Service() {
     @Inject
     lateinit var dispatchSongPlayedUseCase: DispatchSongPlayedUseCase
 
-    // You may be interested, why we use broadcast receiver (PendingIntent.getBroadcast) instead of simply starting service (PendingIntent.getService).
-    // Well, this receiver is registered only while the service is running, so it will not receive any intent if the service is destroyed.
-    // On the other hand, if we use PendingIntent.getService, the service will be started even the app is not running.
-    private val sleepTimerHandler = object : BroadcastReceiver() {
-        override fun onReceive(context: Context, intent: Intent?) {
-            if (intent != null && intent.action == PlayerSleepTimer.ACTION_ALARM_TRIGGERED) {
-                // Need to reset the current sleep timer because its pending intent is still retained,
-                // therefore the app settings may think that an alarm is still set.
-                PlayerSleepTimer.resetCurrentSleepTimer(context)
-                Logger.d(TAG, "Received sleep timer broadcast message. Pausing playback")
-                player.pause()
-            }
-        }
-    }
-
     // HeadsetHandler is used to handle the status of the headset (connected, disconnected, etc.)
     private val headsetHandler = createHeadsetHandler(
         onConnected = {
@@ -192,6 +175,12 @@ class PlayerService: Service() {
             // no actions
         }
     )
+
+    // Handler for Sleep Timer
+    private val sleepTimerHandler = PlayerSleepTimer.createBroadcastReceiver {
+        Logger.d(TAG, "Sleep Timer triggered: pausing the playback")
+        player.pause()
+    }
 
     // MediaSession is used to control buttons clicks from headsets and playback notifications.
     private lateinit var mediaSession: MediaSessionCompat
@@ -243,8 +232,11 @@ class PlayerService: Service() {
 
         player = PlayerImpl.create(this, audioFxApplicable)
 
+        // Subscribing on the headset status changes
         headsetHandler.subscribe(this)
-        registerReceiver(sleepTimerHandler, IntentFilter(PlayerSleepTimer.ACTION_ALARM_TRIGGERED))
+
+        // Subscribing on the Sleep Timer
+        registerReceiver(sleepTimerHandler, PlayerSleepTimer.createIntentFilter())
 
         // Setting up the modes after the preferences instance gets initialized
         preferences.apply {
@@ -303,10 +295,11 @@ class PlayerService: Service() {
         // notifying observers that player is shutting down and removing them all
         player.shutdown()
 
-        headsetHandler.dispose()
-        unregisterReceiver(sleepTimerHandler)
-
         mediaSession.release()
+
+        headsetHandler.dispose()
+
+        unregisterReceiver(sleepTimerHandler)
 
         notificationDisposable?.dispose()
 
