@@ -61,89 +61,9 @@ import javax.inject.Inject
  * See https://stackoverflow.com/a/17883828/9437681
  */
 class PlayerService: Service() {
-    companion object {
-        private const val TAG = "PlayerService"
-
-        private const val RC_COMMAND_SKIP_TO_PREVIOUS = 151
-        private const val RC_COMMAND_TOGGLE = 152
-        private const val RC_COMMAND_SKIP_TO_NEXT = 153
-        private const val RC_OPEN_PLAYER = 157
-        private const val RC_CANCEL_NOTIFICATION = 159
-
-        private const val EXTRA_COMMAND = "command"
-
-        // commands
-        const val COMMAND_EMPTY = 10
-        const val COMMAND_SKIP_TO_PREVIOUS = 11
-        const val COMMAND_SKIP_TO_NEXT = 12
-        const val COMMAND_TOGGLE = 13
-        const val COMMAND_SWITCH_TO_NEXT_REPEAT_MODE = 14
-        const val COMMAND_SWITCH_TO_NEXT_SHUFFLE_MODE = 15
-        const val COMMAND_STOP = 18
-        const val COMMAND_CANCEL_NOTIFICATION = 19
-        const val COMMAND_SHOW_NOTIFICATION = 20
-
-        // notification
-        @Deprecated("Use CHANNEL_ID_PLAYBACK instead")
-        private const val CHANNEL_ID_PLAYBACK_OLD = "audio_playback"
-        private const val CHANNEL_ID_PLAYBACK = "playback"
-        private const val NOTIFICATION_ID_PLAYBACK = 1001
-
-        // For now, we'd better use the modern playback notification,
-        // because it is correctly shown on the lock screen.
-        // Our custom notification has some issues and is not shown on the lock screen for some devices.
-        private val MODERN_PLAYBACK_NOTIFICATION = true //Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-
-        /**
-         * Starts the PlayerService in foreground.
-         */
-        @JvmStatic
-        fun start(context: Context) {
-            ContextCompat.startForegroundService(context, newIntent(context))
-        }
-
-        @JvmStatic
-        fun newIntent(context: Context): Intent = Intent(context, PlayerService::class.java)
-
-        @JvmStatic
-        fun newIntent(context: Context, command: Int): Intent = Intent(context, PlayerService::class.java)
-                .putExtra(EXTRA_COMMAND, command)
-
-        private fun getCommandExtra(intent: Intent) = intent.getIntExtra(EXTRA_COMMAND, COMMAND_EMPTY)
-    }
 
     class PlayerBinder constructor(val service: Player): Binder()
 
-    override fun onBind(intent: Intent?): IBinder {
-        isBound = true
-        Logger.d(TAG, "Service gets bound")
-        return PlayerBinder(player)
-    }
-
-    override fun onRebind(intent: Intent?) {
-        isBound = true
-        Logger.d(TAG, "Service gets rebound")
-    }
-
-    override fun onUnbind(intent: Intent?): Boolean {
-        isBound = false
-        Logger.d(TAG, "Service gets unbound")
-        if (notificationCancelled) {
-            // Service is unbound and not in foreground. We don't know why it got unbound.
-            // The user may have closed the app or the system killed activities due to low memory. Who knows.
-            // Give it the last chance to be alive? NO!
-
-            Logger.w(TAG, "Service is not in foreground. STOP IT!")
-            // The service is not in foreground. It may live only 60 seconds if it's Android API v26+
-            // There is no sense to continue running at all: no bound clients and no notification.
-            // Then STOP IT.
-            stopSelf()
-        }
-        // return true to get onRebind called later
-        return true
-    }
-
-    private val serviceName = "com.frolo.muse.engine.service.PlayerService"
     private var isBound = false // indicates whether the service is bound or not
     private var notificationCancelled = false
     private var notificationDisposable: Disposable? = null
@@ -197,6 +117,39 @@ class PlayerService: Service() {
             player.skipToPrevious()
         }
     }
+
+    //region Service binding
+
+    override fun onBind(intent: Intent?): IBinder {
+        isBound = true
+        Logger.d(TAG, "Service gets bound")
+        return PlayerBinder(player)
+    }
+
+    override fun onRebind(intent: Intent?) {
+        isBound = true
+        Logger.d(TAG, "Service gets rebound")
+    }
+
+    override fun onUnbind(intent: Intent?): Boolean {
+        isBound = false
+        Logger.d(TAG, "Service gets unbound")
+        if (notificationCancelled) {
+            // Service is unbound and not in foreground. We don't know why it got unbound.
+            // The user may have closed the app or the system killed activities due to low memory. Who knows.
+            // Give it the last chance to be alive? NO!
+
+            Logger.w(TAG, "Service is not in foreground. STOP IT!")
+            // The service is not in foreground. It may live only 60 seconds if it's Android API v26+
+            // There is no sense to continue running at all: no bound clients and no notification.
+            // Then STOP IT.
+            stopSelf()
+        }
+        // return true to get onRebind called later
+        return true
+    }
+
+    //endregion
 
     /**
      * Initializing all resources here
@@ -260,28 +213,33 @@ class PlayerService: Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        return if (intent != null) {
-            when(getCommandExtra(intent)) {
-                COMMAND_SKIP_TO_PREVIOUS -> player.skipToPrevious()
 
-                COMMAND_SKIP_TO_NEXT -> player.skipToNext()
+        // TODO: which flag is better to return?
 
-                COMMAND_TOGGLE -> player.toggle()
+        if (intent == null) return START_STICKY
 
-                COMMAND_SWITCH_TO_NEXT_REPEAT_MODE ->
-                    player.switchToNextRepeatMode()
+        // Checking which command was the given to the player
+        when (intent.getIntExtra(EXTRA_COMMAND, COMMAND_EMPTY)) {
+            COMMAND_SKIP_TO_PREVIOUS -> player.skipToPrevious()
 
-                COMMAND_SWITCH_TO_NEXT_SHUFFLE_MODE ->
-                    player.switchToNextShuffleMode()
+            COMMAND_SKIP_TO_NEXT -> player.skipToNext()
 
-                COMMAND_CANCEL_NOTIFICATION -> cancelNotification()
+            COMMAND_TOGGLE -> player.toggle()
 
-                COMMAND_STOP -> player.pause()
+            COMMAND_SWITCH_TO_NEXT_REPEAT_MODE ->
+                player.switchToNextRepeatMode()
 
-                COMMAND_SHOW_NOTIFICATION -> showNotification()
-            }
-            START_STICKY
-        } else START_STICKY
+            COMMAND_SWITCH_TO_NEXT_SHUFFLE_MODE ->
+                player.switchToNextShuffleMode()
+
+            COMMAND_CANCEL_NOTIFICATION -> cancelNotification()
+
+            COMMAND_STOP -> player.pause()
+
+            COMMAND_SHOW_NOTIFICATION -> showNotification()
+        }
+
+        return START_STICKY
     }
 
     override fun onTaskRemoved(rootIntent: Intent?) {
@@ -474,4 +432,56 @@ class PlayerService: Service() {
         // We're about to post the notification. It's not cancelled now
         notificationCancelled = false
     }
+
+    companion object {
+
+        private const val TAG = "PlayerService"
+
+        private const val RC_COMMAND_SKIP_TO_PREVIOUS = 151
+        private const val RC_COMMAND_TOGGLE = 152
+        private const val RC_COMMAND_SKIP_TO_NEXT = 153
+        private const val RC_OPEN_PLAYER = 157
+        private const val RC_CANCEL_NOTIFICATION = 159
+
+        private const val EXTRA_COMMAND = "command"
+
+        // commands
+        const val COMMAND_EMPTY = 10
+        const val COMMAND_SKIP_TO_PREVIOUS = 11
+        const val COMMAND_SKIP_TO_NEXT = 12
+        const val COMMAND_TOGGLE = 13
+        const val COMMAND_SWITCH_TO_NEXT_REPEAT_MODE = 14
+        const val COMMAND_SWITCH_TO_NEXT_SHUFFLE_MODE = 15
+        const val COMMAND_STOP = 18
+        const val COMMAND_CANCEL_NOTIFICATION = 19
+        const val COMMAND_SHOW_NOTIFICATION = 20
+
+        // notification
+        @Deprecated("Use CHANNEL_ID_PLAYBACK instead")
+        private const val CHANNEL_ID_PLAYBACK_OLD = "audio_playback"
+        private const val CHANNEL_ID_PLAYBACK = "playback"
+        private const val NOTIFICATION_ID_PLAYBACK = 1001
+
+        // For now, we'd better use the modern playback notification,
+        // because it is correctly shown on the lock screen.
+        // Our custom notification has some issues and is not shown on the lock screen for some devices.
+        private val MODERN_PLAYBACK_NOTIFICATION = true //Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+
+        /**
+         * Starts the PlayerService in foreground.
+         */
+        @JvmStatic
+        fun start(context: Context) {
+            ContextCompat.startForegroundService(context, newIntent(context))
+        }
+
+        @JvmStatic
+        fun newIntent(context: Context): Intent = Intent(context, PlayerService::class.java)
+
+        @JvmStatic
+        fun newIntent(context: Context, command: Int): Intent = Intent(context, PlayerService::class.java)
+                .putExtra(EXTRA_COMMAND, command)
+
+    }
+
 }
