@@ -13,18 +13,11 @@
         android:textAppearance="?textAppearanceHeadline5"
         android:text="@string/cross_fade"/>
 
-    <com.google.android.material.checkbox.MaterialCheckBox
-        android:id="@+id/chb_enable_cross_fade"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="@string/enable_cross_fade"/>
-
     <TextView
         android:id="@+id/tv_cross_fade_duration_desc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
         android:textAppearance="?textAppearanceCaption"
         android:text="@string/cross_fade_duration_desc"/>
 

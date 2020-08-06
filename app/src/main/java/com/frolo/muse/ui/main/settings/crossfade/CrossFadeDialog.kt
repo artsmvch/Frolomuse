@@ -7,6 +7,7 @@ import androidx.lifecycle.LifecycleOwner
 import com.frolo.muse.R
 import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.ui.base.BaseDialogFragment
+import com.google.android.material.slider.Slider
 import kotlinx.android.synthetic.main.dialog_cross_fade.*
 
 
@@ -29,19 +30,21 @@ class CrossFadeDialog : BaseDialogFragment() {
 
     private fun loadUI(dialog: Dialog) = with(dialog) {
 
-        chb_enable_cross_fade.setOnCheckedChangeListener { _, isChecked ->
-            if (isChecked) {
-                viewModel.onEnableCrossFadeChecked()
-            } else {
-                viewModel.onEnableCrossFadeUnchecked()
-            }
-        }
-
         slider_cross_fade_duration.addOnChangeListener { _, value, fromUser ->
             if (fromUser) {
                 viewModel.onChangedCrossFadeDuration(value.toInt())
             }
         }
+
+        slider_cross_fade_duration.addOnSliderTouchListener(
+            object : Slider.OnSliderTouchListener {
+                override fun onStartTrackingTouch(slider: Slider) = Unit
+
+                override fun onStopTrackingTouch(slider: Slider) {
+                    viewModel.onStoppedChangingCrossFadeDuration()
+                }
+            }
+        )
 
         btn_save.setOnClickListener {
             dismiss()
@@ -50,14 +53,6 @@ class CrossFadeDialog : BaseDialogFragment() {
     }
 
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
-        crossFadeEnabled.observeNonNull(owner) { enabled ->
-            dialog?.apply {
-                chb_enable_cross_fade.isChecked = enabled
-
-                tv_cross_fade_duration_desc.alpha = if (enabled) 1f else 0.5f
-                slider_cross_fade_duration.isEnabled = enabled
-            }
-        }
 
         crossFadeDurationRange.observeNonNull(owner) { range ->
             dialog?.apply {
@@ -73,6 +68,7 @@ class CrossFadeDialog : BaseDialogFragment() {
                 slider_cross_fade_duration.value = MathUtils.clamp(value, min, max)
             }
         }
+
     }
 
     companion object {
