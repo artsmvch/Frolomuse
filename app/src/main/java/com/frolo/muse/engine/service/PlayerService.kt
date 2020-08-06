@@ -30,6 +30,7 @@ import com.frolo.muse.engine.service.observers.SongPlayCounter
 import com.frolo.muse.engine.service.observers.WidgetUpdater
 import com.frolo.muse.headset.createHeadsetHandler
 import com.frolo.muse.interactor.media.DispatchSongPlayedUseCase
+import com.frolo.muse.model.crossfade.CrossFadeParams
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.repository.PresetRepository
@@ -253,7 +254,12 @@ class PlayerService: Service() {
         preferences.apply {
             player.setRepeatMode(loadRepeatMode())
             player.setShuffleMode(loadShuffleMode())
-            player.setCrossFadeStrategy(CrossFadeStrategy.withSmartStaticInterval(5_000))
+
+            // Safely restoring the cross-fade
+            runCatching { crossFadeParams.blockingFirst(CrossFadeParams.none()) }.onSuccess { params ->
+                val strategy = CrossFadeStrategy.withSmartStaticInterval(params.interval)
+                player.setCrossFadeStrategy(strategy)
+            }
         }
 
         // Registering all the necessary observers
