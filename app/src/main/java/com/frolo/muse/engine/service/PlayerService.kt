@@ -250,7 +250,9 @@ class PlayerService: Service() {
     override fun onDestroy() {
         Logger.d(TAG, "Service died. Cleaning callbacks")
 
-        // notifying observers that player is shutting down and removing them all
+        // Shutting down the player and disposing all the resources.
+        // The player shutdown call should clear its observers by itself.
+
         player.shutdown()
 
         mediaSession.release()
