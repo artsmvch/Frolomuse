@@ -237,10 +237,6 @@ class PlayerService: Service() {
             postPromiseNotification()
         }
 
-        // Creating engine and ui handlers
-        val thread = HandlerThread("Service[$serviceName]", Process.THREAD_PRIORITY_URGENT_AUDIO)
-        thread.start()
-
         // Creating AudioFx
         val audioFxApplicable: AudioFxApplicable =
                 AudioFx_Impl.getInstance(this, Const.AUDIO_FX_PREFERENCES)
