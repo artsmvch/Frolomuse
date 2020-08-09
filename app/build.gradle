@@ -16,6 +16,7 @@ ext.loadProperties = { filepath ->
 def versionMajor = 5
 def versionMinor = 4
 def versionPatch = 0
+def versionBuild = 1
 
 android {
     signingConfigs {
@@ -35,7 +36,7 @@ android {
         minSdkVersion 23
         targetSdkVersion 29
         versionCode 87
-        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
+        versionName "${versionMajor}.${versionMinor}.${versionPatch}.${versionBuild}"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         setProperty("archivesBaseName", applicationId + "-v" + versionCode + "(" + versionName + ")")
         multiDexEnabled true
