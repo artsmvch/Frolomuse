@@ -1,26 +1,26 @@
-package com.frolo.muse.model.crossfade;
+package com.frolo.muse.model.playback;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
 
-public final class CrossFadeParams {
+public final class PlaybackFadingParams {
 
     @NotNull
-    public static CrossFadeParams none() {
-        return new CrossFadeParams(0, false);
+    public static PlaybackFadingParams none() {
+        return new PlaybackFadingParams(0, false);
     }
 
     @NotNull
-    public static CrossFadeParams create(int interval, boolean smartInterval) {
-        return new CrossFadeParams(interval, smartInterval);
+    public static PlaybackFadingParams create(int interval, boolean smartInterval) {
+        return new PlaybackFadingParams(interval, smartInterval);
     }
 
     private final int mInterval;
     private final boolean mSmartInterval;
 
-    private CrossFadeParams(int interval, boolean smartInterval) {
+    private PlaybackFadingParams(int interval, boolean smartInterval) {
         mInterval = interval;
         mSmartInterval = smartInterval;
     }
@@ -39,7 +39,7 @@ public final class CrossFadeParams {
 
     @Override
     public String toString() {
-        return "CrossFadeParams{" +
+        return "PlaybackFadingParams{" +
                 "interval=" + mInterval +
                 ", smartInterval=" + mSmartInterval +
                 '}';
@@ -49,9 +49,9 @@ public final class CrossFadeParams {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null) return false;
-        if (!(o instanceof CrossFadeParams)) return false;
+        if (!(o instanceof PlaybackFadingParams)) return false;
 
-        final CrossFadeParams other = (CrossFadeParams) o;
+        final PlaybackFadingParams other = (PlaybackFadingParams) o;
         return mInterval == other.mInterval && mSmartInterval == other.mSmartInterval;
     }
 

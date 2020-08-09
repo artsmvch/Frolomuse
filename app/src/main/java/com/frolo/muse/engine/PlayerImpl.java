@@ -25,7 +25,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 
 // TODO: fix locks: Engine must be guarded everywhere
-// TODO: try using VolumeShaper for cross-fade
+// TODO: try using VolumeShaper for playback fading
 /**
  * Android-specific thread-safe implementation of {@link Player}.
  * Methods prefixed with '_' are of type Runnable and must be processed with
@@ -223,10 +223,10 @@ public final class PlayerImpl implements Player {
     @NotNull
     private final ABEngine mABEngine = new ABEngine();
 
-    // Cross-Fade
+    // Playback Fading
     @Nullable
-    private volatile CrossFadeStrategy mCrossFadeStrategy;
-    private volatile Timer mCrossFadeTimer;
+    private volatile PlaybackFadingStrategy mPlaybackFadingStrategy;
+    private volatile Timer mPlaybackFadingTimer;
 
     private PlayerImpl(@NotNull Context context, @NotNull AudioFxApplicable audioFx) {
         mContext = context;
@@ -234,7 +234,7 @@ public final class PlayerImpl implements Player {
         mEngineHandler = createEngineHandler();
         mObserverRegistry = PlayerObserverRegistry.create(context, this);
         mAudioFocusRequester = AudioFocusRequesterImpl.create(context, this);
-        startCrossFadeTimer();
+        startPlaybackFadingTimer();
     }
 
     /**
@@ -1342,15 +1342,15 @@ public final class PlayerImpl implements Player {
     }
 
     /**
-     * Starts {@link Timer}, which will adjust the volume for smooth cross-fading.
+     * Starts {@link Timer}, which will adjust the volume for smooth playback fading.
      * This method should be called once during the player's life.
      * It is better to make the method call lazy.
      * TODO: consider making the call lazy instead of doing the call in the constructor
      */
-    private void startCrossFadeTimer() {
+    private void startPlaybackFadingTimer() {
         if (isShutdown()) return;
 
-        final Timer oldTimer = mCrossFadeTimer;
+        final Timer oldTimer = mPlaybackFadingTimer;
         if (oldTimer != null) {
             oldTimer.purge();
             oldTimer.cancel();
@@ -1373,15 +1373,15 @@ public final class PlayerImpl implements Player {
             }
         };
 
-        final Timer newTimer = new Timer("CrossFadeTimer");
+        final Timer newTimer = new Timer("PlaybackFadingTimer");
 
         newTimer.schedule(task, 0);
 
-        mCrossFadeTimer = newTimer;
+        mPlaybackFadingTimer = newTimer;
     }
 
     /**
-     * Adjusts the volume level according to the current {@link CrossFadeStrategy}.
+     * Adjusts the volume level according to the current {@link PlaybackFadingStrategy}.
      * The method should be called constantly throughout the player's life.
      * There is also a need to call this method every time the engine is started.
      */
@@ -1395,12 +1395,12 @@ public final class PlayerImpl implements Player {
 
             try {
 
-                final CrossFadeStrategy strategy = mCrossFadeStrategy;
+                final PlaybackFadingStrategy strategy = mPlaybackFadingStrategy;
 
                 final float level;
                 if (strategy == null) {
-                    // No strategy - no cross fade
-                    level = CrossFadeStrategy.NORMAL_LEVEL;
+                    // No strategy - no fading
+                    level = PlaybackFadingStrategy.NORMAL_LEVEL;
                 } else {
                     final int progress = engine.getCurrentPosition();
                     final int duration = engine.getDuration();
@@ -1420,13 +1420,13 @@ public final class PlayerImpl implements Player {
 
     @Nullable
     @Override
-    public CrossFadeStrategy getCrossFadeStrategy() {
-        return mCrossFadeStrategy;
+    public PlaybackFadingStrategy getPlaybackFadingStrategy() {
+        return mPlaybackFadingStrategy;
     }
 
     @Override
-    public void setCrossFadeStrategy(@Nullable CrossFadeStrategy strategy) {
-        mCrossFadeStrategy = strategy;
+    public void setPlaybackFadingStrategy(@Nullable PlaybackFadingStrategy strategy) {
+        mPlaybackFadingStrategy = strategy;
 
         // It's better to adjust the volume on the engine thread,
         // as this method is synchronized on the engine,
@@ -1585,13 +1585,13 @@ public final class PlayerImpl implements Player {
         // Resetting the A-B engine
         mABEngine.reset();
 
-        // Resetting the cross-fade timer
-        final Timer oldTimer = mCrossFadeTimer;
+        // Resetting the playback fading timer
+        final Timer oldTimer = mPlaybackFadingTimer;
         if (oldTimer != null) {
             oldTimer.purge();
             oldTimer.cancel();
         }
-        mCrossFadeTimer = null;
+        mPlaybackFadingTimer = null;
 
         // Resetting the engine and internal flags
         synchronized (mEngineLock) {

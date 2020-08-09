@@ -41,8 +41,8 @@ object PlayerStub: Player {
     override fun resetAB() = Unit
     override fun rewindForward(interval: Int) = Unit
     override fun rewindBackward(interval: Int) = Unit
-    override fun getCrossFadeStrategy(): CrossFadeStrategy? = null
-    override fun setCrossFadeStrategy(strategy: CrossFadeStrategy?) = Unit
+    override fun getPlaybackFadingStrategy(): PlaybackFadingStrategy? = null
+    override fun setPlaybackFadingStrategy(strategy: PlaybackFadingStrategy?) = Unit
     override fun getSpeed(): Float = 0f
     override fun setSpeed(speed: Float) = Unit
     override fun getPitch(): Float = 0f

@@ -12,7 +12,7 @@ import com.frolo.muse.model.Library;
 import com.frolo.muse.model.Recently;
 import com.frolo.muse.model.Theme;
 import com.frolo.muse.model.VisualizerRendererType;
-import com.frolo.muse.model.crossfade.CrossFadeParams;
+import com.frolo.muse.model.playback.PlaybackFadingParams;
 import com.frolo.muse.model.media.Media;
 import com.frolo.muse.repository.Preferences;
 import com.frolo.rxpreference.RxOptional;
@@ -66,8 +66,8 @@ public class PreferencesImpl implements Preferences {
 
     private static final String KEY_MIN_AUDIO_FILE_DURATION = "min_audio_file_duration";
 
-    // Cross-fade parameters
-    private static final String KEY_CROSS_FADE_PARAMS = "cross_fade_params";
+    // Playback Fading parameters
+    private static final String KEY_PLAYBACK_FADING_PARAMS = "playback_fading_params";
 
     private static final List<Integer> sDefaultLibrarySections;
     static {
@@ -580,27 +580,27 @@ public class PreferencesImpl implements Preferences {
     }
 
     @Override
-    public Flowable<CrossFadeParams> getCrossFadeParams() {
-        return RxPreference.ofString(preferences, KEY_CROSS_FADE_PARAMS)
+    public Flowable<PlaybackFadingParams> getPlaybackFadingParams() {
+        return RxPreference.ofString(preferences, KEY_PLAYBACK_FADING_PARAMS)
                 .get()
-                .map(new Function<RxOptional<String>, CrossFadeParams>() {
+                .map(new Function<RxOptional<String>, PlaybackFadingParams>() {
                     @Override
-                    public CrossFadeParams apply(RxOptional<String> optional) throws Exception {
+                    public PlaybackFadingParams apply(RxOptional<String> optional) throws Exception {
                         final String value = optional.isPresent() ? optional.get() : null;
-                        final CrossFadeParams deserialized =
-                                PreferencesSerialization.tryDeserializeCrossFadeParams(value);
-                        return deserialized != null ? deserialized : CrossFadeParams.none();
+                        final PlaybackFadingParams deserialized =
+                                PreferencesSerialization.tryDeserializePlaybackFadingParams(value);
+                        return deserialized != null ? deserialized : PlaybackFadingParams.none();
                     }
                 });
     }
 
     @Override
-    public Completable setCrossFadeParams(CrossFadeParams params) {
+    public Completable setPlaybackFadingParams(PlaybackFadingParams params) {
         return Completable.fromAction(new Action() {
             @Override
             public void run() throws Exception {
-                final String value = PreferencesSerialization.trySerializeCrossFadeParams(params);
-                preferences.edit().putString(KEY_CROSS_FADE_PARAMS, value).apply();
+                final String value = PreferencesSerialization.trySerializePlaybackFadingParams(params);
+                preferences.edit().putString(KEY_PLAYBACK_FADING_PARAMS, value).apply();
             }
         });
     }

@@ -175,12 +175,12 @@ class PlayerWrapper : Player {
         delegate?.rewindBackward(interval)
     }
 
-    override fun getCrossFadeStrategy(): CrossFadeStrategy? {
-        return delegate?.getCrossFadeStrategy()
+    override fun getPlaybackFadingStrategy(): PlaybackFadingStrategy? {
+        return delegate?.getPlaybackFadingStrategy()
     }
 
-    override fun setCrossFadeStrategy(strategy: CrossFadeStrategy?) {
-        delegate?.setCrossFadeStrategy(strategy)
+    override fun setPlaybackFadingStrategy(strategy: PlaybackFadingStrategy?) {
+        delegate?.setPlaybackFadingStrategy(strategy)
     }
 
     @RequiresApi(Build.VERSION_CODES.M)

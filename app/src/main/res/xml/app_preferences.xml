@@ -12,9 +12,9 @@
             android:summary="@string/show_notification_desc"/>
 
         <Preference
-            android:key="cross_fade"
-            android:title="@string/cross_fade"
-            android:summary="@string/cross_fade_desc"/>
+            android:key="playback_fading"
+            android:title="@string/playback_fading"
+            android:summary="@string/playback_fading_desc"/>
 
         <CheckBoxPreference
             android:icon="@drawable/ic_notes"

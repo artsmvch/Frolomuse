@@ -4,59 +4,59 @@ import org.jetbrains.annotations.NotNull;
 
 
 /**
- * CrossFadeStrategy describes how the playback should be cross-faded.
- * {@link CrossFadeStrategy#calculateLevel(int, int)} calculates the volume level for a specific progress position of the playback.
+ * PlaybackFadingStrategy describes how the playback should fade in and out.
+ * {@link PlaybackFadingStrategy#calculateLevel(int, int)} calculates the volume level for a specific progress position of the playback.
  * There are several factory methods for creating strategies.
  */
-public abstract class CrossFadeStrategy {
+public abstract class PlaybackFadingStrategy {
 
     public static final float MIN_LEVEL = 0f;
     public static final float MAX_LEVEL = 1f;
     public static final float NORMAL_LEVEL = 1f;
 
     /**
-     * Gets cross-fade interval for the given <code>strategy</code>
+     * Gets fading interval for the given <code>strategy</code>
      * @deprecated only some strategies have actual interval
-     * @param strategy to get cross-fade interval from
-     * @return cross-fade interval
+     * @param strategy to get fading interval from
+     * @return fading interval
      */
     @Deprecated
-    public static int getInterval(@NotNull CrossFadeStrategy strategy) {
-        if (strategy instanceof StaticIntervalCrossFade) {
-            return ((StaticIntervalCrossFade) strategy).mInterval;
+    public static int getInterval(@NotNull PlaybackFadingStrategy strategy) {
+        if (strategy instanceof StaticIntervalPlaybackFading) {
+            return ((StaticIntervalPlaybackFading) strategy).mInterval;
         }
 
-        if (strategy instanceof SmartStaticIntervalCrossFade) {
-            return ((SmartStaticIntervalCrossFade) strategy).mTargetInterval;
+        if (strategy instanceof SmartStaticIntervalPlaybackFading) {
+            return ((SmartStaticIntervalPlaybackFading) strategy).mTargetInterval;
         }
 
         return 0;
     }
 
     @NotNull
-    public static CrossFadeStrategy none() {
-        return new NoneCrossFade();
+    public static PlaybackFadingStrategy none() {
+        return new NonePlaybackFading();
     }
 
     @NotNull
-    public static CrossFadeStrategy withStaticInterval(int interval) {
-        return new StaticIntervalCrossFade(interval);
+    public static PlaybackFadingStrategy withStaticInterval(int interval) {
+        return new StaticIntervalPlaybackFading(interval);
     }
 
     @NotNull
-    public static CrossFadeStrategy withPercentInterval(float percent) {
-        return new PercentIntervalCrossFade(percent);
+    public static PlaybackFadingStrategy withPercentInterval(float percent) {
+        return new PercentIntervalPlaybackFading(percent);
     }
 
     @NotNull
-    public static CrossFadeStrategy withSmartStaticInterval(int targetInterval) {
-        return new SmartStaticIntervalCrossFade(targetInterval);
+    public static PlaybackFadingStrategy withSmartStaticInterval(int targetInterval) {
+        return new SmartStaticIntervalPlaybackFading(targetInterval);
     }
 
     /**
-     * This is a no-cross-fade strategy.
+     * This is a no-fading strategy.
      */
-    private static final class NoneCrossFade extends CrossFadeStrategy {
+    private static final class NonePlaybackFading extends PlaybackFadingStrategy {
 
         @Override
         public float calculateLevel(int progress, int duration) {
@@ -64,7 +64,7 @@ public abstract class CrossFadeStrategy {
         }
     }
 
-    private static abstract class IntervalCrossFade extends CrossFadeStrategy {
+    private static abstract class IntervalPlaybackFading extends PlaybackFadingStrategy {
 
         abstract int getInterval(int duration);
 
@@ -87,13 +87,13 @@ public abstract class CrossFadeStrategy {
     }
 
     /**
-     * This uses a constant interval for cross-fading.
+     * This uses a constant interval for fading.
      */
-    private static final class StaticIntervalCrossFade extends IntervalCrossFade {
+    private static final class StaticIntervalPlaybackFading extends IntervalPlaybackFading {
 
         final int mInterval;
 
-        StaticIntervalCrossFade(int interval) {
+        StaticIntervalPlaybackFading(int interval) {
             mInterval = interval;
         }
 
@@ -106,10 +106,10 @@ public abstract class CrossFadeStrategy {
     /**
      * For this strategy, the interval is calculated by multiplying the duration by a percent.
      */
-    private static final class PercentIntervalCrossFade extends IntervalCrossFade {
+    private static final class PercentIntervalPlaybackFading extends IntervalPlaybackFading {
         final float mPercent;
 
-        PercentIntervalCrossFade(float percent) {
+        PercentIntervalPlaybackFading(float percent) {
             mPercent = percent;
         }
 
@@ -120,16 +120,16 @@ public abstract class CrossFadeStrategy {
     }
 
     /**
-     * {@link SmartStaticIntervalCrossFade} is similar to {@link StaticIntervalCrossFade}
+     * {@link SmartStaticIntervalPlaybackFading} is similar to {@link StaticIntervalPlaybackFading}
      * but also accounts for short audio sources.
-     * If {@link SmartStaticIntervalCrossFade#mTargetInterval} is more than half the duration
+     * If {@link SmartStaticIntervalPlaybackFading#mTargetInterval} is more than half the duration
      * then half the duration is used.
      * This is the best choice when you want to avoid muted playback of short audio sources.
      */
-    private static final class SmartStaticIntervalCrossFade extends IntervalCrossFade {
+    private static final class SmartStaticIntervalPlaybackFading extends IntervalPlaybackFading {
         final int mTargetInterval;
 
-        SmartStaticIntervalCrossFade(int targetInterval) {
+        SmartStaticIntervalPlaybackFading(int targetInterval) {
             mTargetInterval = targetInterval;
         }
 

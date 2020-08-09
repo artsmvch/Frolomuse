@@ -220,11 +220,11 @@ fun EventLogger.logMediaSearchUsed(queryCount: Int) {
 //endregion
 
 
-//region Search
+//region Playback Fading
 
-fun EventLogger.logCrossFadeConfigured(seconds: Int) {
-    val params = mapOf("seconds" to seconds.toString())
-    log("cross_fade_configured", params)
+fun EventLogger.logPlaybackFadingConfigured(seconds: Int) {
+    val params = mapOf("duration" to seconds.toString())
+    log("playback_fading_configured", params)
 }
 
 //endregion

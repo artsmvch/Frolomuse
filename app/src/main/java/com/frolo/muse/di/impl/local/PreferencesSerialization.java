@@ -1,6 +1,6 @@
 package com.frolo.muse.di.impl.local;
 
-import com.frolo.muse.model.crossfade.CrossFadeParams;
+import com.frolo.muse.model.playback.PlaybackFadingParams;
 
 import org.jetbrains.annotations.Nullable;
 import org.json.JSONException;
@@ -10,7 +10,7 @@ import org.json.JSONObject;
 final class PreferencesSerialization {
 
     @Nullable
-    static String trySerializeCrossFadeParams(@Nullable CrossFadeParams params) {
+    static String trySerializePlaybackFadingParams(@Nullable PlaybackFadingParams params) {
         if (params == null) {
             return null;
         }
@@ -26,7 +26,7 @@ final class PreferencesSerialization {
     }
 
     @Nullable
-    static CrossFadeParams tryDeserializeCrossFadeParams(@Nullable String value) {
+    static PlaybackFadingParams tryDeserializePlaybackFadingParams(@Nullable String value) {
         if (value == null) {
             return null;
         }
@@ -35,7 +35,7 @@ final class PreferencesSerialization {
             final JSONObject jsonObject = new JSONObject(value);
             final int interval = jsonObject.getInt("interval");
             final boolean smartInterval = jsonObject.getBoolean("smart_interval");
-            return CrossFadeParams.create(interval, smartInterval);
+            return PlaybackFadingParams.create(interval, smartInterval);
         } catch (JSONException e) {
             return null;
         }

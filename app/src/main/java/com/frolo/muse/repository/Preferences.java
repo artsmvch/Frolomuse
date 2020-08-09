@@ -6,7 +6,7 @@ import com.frolo.muse.model.Library;
 import com.frolo.muse.model.Recently;
 import com.frolo.muse.model.Theme;
 import com.frolo.muse.model.VisualizerRendererType;
-import com.frolo.muse.model.crossfade.CrossFadeParams;
+import com.frolo.muse.model.playback.PlaybackFadingParams;
 import com.frolo.muse.model.media.Media;
 
 import java.io.PrintWriter;
@@ -94,6 +94,6 @@ public interface Preferences {
     Flowable<Integer> getMinAudioFileDuration();
     Completable setMinAudioFileDuration(int minDuration);
 
-    Flowable<CrossFadeParams> getCrossFadeParams();
-    Completable setCrossFadeParams(CrossFadeParams params);
+    Flowable<PlaybackFadingParams> getPlaybackFadingParams();
+    Completable setPlaybackFadingParams(PlaybackFadingParams params);
 }

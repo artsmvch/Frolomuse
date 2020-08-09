@@ -1,4 +1,4 @@
-package com.frolo.muse.ui.main.settings.crossfade
+package com.frolo.muse.ui.main.settings.playback
 
 import android.app.Dialog
 import android.os.Bundle
@@ -8,12 +8,12 @@ import com.frolo.muse.R
 import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.ui.base.BaseDialogFragment
 import com.google.android.material.slider.Slider
-import kotlinx.android.synthetic.main.dialog_cross_fade.*
+import kotlinx.android.synthetic.main.dialog_playback_fading.*
 
 
-class CrossFadeDialog : BaseDialogFragment() {
+class PlaybackFadingDialog : BaseDialogFragment() {
 
-    private val viewModel: CrossFadeViewModel by viewModel()
+    private val viewModel: PlaybackFadingViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,7 +22,7 @@ class CrossFadeDialog : BaseDialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return super.onCreateDialog(savedInstanceState).apply {
-            setContentView(R.layout.dialog_cross_fade)
+            setContentView(R.layout.dialog_playback_fading)
             setupDialogSizeByDefault(this)
             loadUI(this)
         }
@@ -30,18 +30,18 @@ class CrossFadeDialog : BaseDialogFragment() {
 
     private fun loadUI(dialog: Dialog) = with(dialog) {
 
-        slider_cross_fade_duration.addOnChangeListener { _, value, fromUser ->
+        slider_playback_fading_duration.addOnChangeListener { _, value, fromUser ->
             if (fromUser) {
-                viewModel.onChangedCrossFadeDuration(value.toInt())
+                viewModel.onChangedPlaybackFadingDuration(value.toInt())
             }
         }
 
-        slider_cross_fade_duration.addOnSliderTouchListener(
+        slider_playback_fading_duration.addOnSliderTouchListener(
             object : Slider.OnSliderTouchListener {
                 override fun onStartTrackingTouch(slider: Slider) = Unit
 
                 override fun onStopTrackingTouch(slider: Slider) {
-                    viewModel.onStoppedChangingCrossFadeDuration()
+                    viewModel.onStoppedChangingPlaybackFadingDuration()
                 }
             }
         )
@@ -54,18 +54,18 @@ class CrossFadeDialog : BaseDialogFragment() {
 
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
 
-        crossFadeDurationRange.observeNonNull(owner) { range ->
+        playbackFadingDurationRange.observeNonNull(owner) { range ->
             dialog?.apply {
-                slider_cross_fade_duration.valueFrom = range.min
-                slider_cross_fade_duration.valueTo = range.max
+                slider_playback_fading_duration.valueFrom = range.min
+                slider_playback_fading_duration.valueTo = range.max
             }
         }
 
-        crossFadeDuration.observeNonNull(owner) { value ->
+        playbackFadingDuration.observeNonNull(owner) { value ->
             dialog?.apply {
-                val min = slider_cross_fade_duration.valueFrom
-                val max = slider_cross_fade_duration.valueTo
-                slider_cross_fade_duration.value = MathUtils.clamp(value, min, max)
+                val min = slider_playback_fading_duration.valueFrom
+                val max = slider_playback_fading_duration.valueTo
+                slider_playback_fading_duration.value = MathUtils.clamp(value, min, max)
             }
         }
 
@@ -73,7 +73,7 @@ class CrossFadeDialog : BaseDialogFragment() {
 
     companion object {
 
-        fun newInstance() = CrossFadeDialog()
+        fun newInstance() = PlaybackFadingDialog()
 
     }
 

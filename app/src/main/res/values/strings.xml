@@ -221,11 +221,14 @@
     <string name="sleep_timer_is_set">Sleep Timer is set</string>
     <string name="sleep_timer_is_off">Sleep Timer is off</string>
     <string name="rescan_media_library_desc">Scanning media library helps the app find new audio files</string>
-    <!--Cross-Fade-->
-    <string name="cross_fade">Crossfade</string>
-    <string name="cross_fade_desc">Control how playback should be crossfade</string>
-    <string name="enable_cross_fade">Enable crossfade</string>
-    <string name="cross_fade_duration_desc">Duration</string>
+    <!--Playback fading-->
+    <string name="playback_fading">Playback fading</string>
+    <string name="playback_fading_desc">Control how the playback should fade in and out</string>
+    <string name="playback_fading_full_desc">
+        Here you control how the playback should fade in and out.
+        You can set a suitable duration using the slider below. Duration "0" means that there will be no fading.
+    </string>
+    <string name="playback_fading_duration">Duration</string>
 
     <!--create and edit playlist-->
     <string name="save_playlist">Save playlist</string>
