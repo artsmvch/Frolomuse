@@ -43,6 +43,7 @@ final class PlayerObserverRegistry {
         static final int MSG_REPEAT_MODE_CHANGED = 7;
         static final int MSG_SHUTDOWN = 8;
         static final int MSG_AB_CHANGED = 9;
+        static final int MSG_INTERNAL_ERROR_OCCURRED = 10;
 
         DispatcherHandler(Looper looper) {
             super(looper);
@@ -128,6 +129,14 @@ final class PlayerObserverRegistry {
                     final boolean bPointed = msg.arg2 == 0;
                     for (PlayerObserver observer : mObservers) {
                         observer.onABChanged(getPlayer(), aPointed, bPointed);
+                    }
+                    break;
+                }
+
+                case MSG_INTERNAL_ERROR_OCCURRED: {
+                    final Throwable error = (Throwable) msg.obj;
+                    for (PlayerObserver observer : mObservers) {
+                        observer.onInternalErrorOccurred(getPlayer(), error);
                     }
                     break;
                 }
@@ -276,6 +285,12 @@ final class PlayerObserverRegistry {
 
         final Message message =
                 mHandler.obtainMessage(DispatcherHandler.MSG_AB_CHANGED, aPointed ? 0 : 1, bPointed ? 0 : 1);
+        dispatch(message);
+    }
+
+    synchronized void dispatchInternalErrorOccurred(@NotNull Throwable error) {
+        final Message message =
+                mHandler.obtainMessage(DispatcherHandler.MSG_INTERNAL_ERROR_OCCURRED, error);
         dispatch(message);
     }
 

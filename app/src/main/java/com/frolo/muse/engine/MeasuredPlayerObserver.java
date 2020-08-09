@@ -150,6 +150,13 @@ final class MeasuredPlayerObserver implements PlayerObserver {
     }
 
     @Override
+    public void onInternalErrorOccurred(@NotNull Player player, @NotNull Throwable error) {
+        final Measurement m = start("onInternalErrorOccurred");
+        mDelegate.onInternalErrorOccurred(player, error);
+        end(m);
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null) return false;

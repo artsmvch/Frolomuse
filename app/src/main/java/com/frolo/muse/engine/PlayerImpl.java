@@ -8,7 +8,6 @@ import android.media.PlaybackParams;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
-import android.util.Log;
 
 import androidx.annotation.GuardedBy;
 
@@ -260,7 +259,7 @@ public final class PlayerImpl implements Player {
         final PlayerException playerException = error instanceof PlayerException
                 ? (PlayerException) error
                 : new PlayerException(error);
-        Log.e("PlayerImpl", "Error", playerException);
+        mObserverRegistry.dispatchInternalErrorOccurred(playerException);
     }
 
     /**

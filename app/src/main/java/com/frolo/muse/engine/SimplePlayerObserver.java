@@ -50,4 +50,8 @@ public abstract class SimplePlayerObserver implements PlayerObserver {
     public void onABChanged(@NotNull Player player, boolean aPointed, boolean bPointed) {
     }
 
+    @Override
+    public void onInternalErrorOccurred(@NotNull Player player, @NotNull Throwable error) {
+    }
+
 }

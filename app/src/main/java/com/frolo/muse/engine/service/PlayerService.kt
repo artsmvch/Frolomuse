@@ -22,10 +22,7 @@ import com.frolo.muse.engine.*
 import com.frolo.muse.engine.audiofx.AudioFx_Impl
 import com.frolo.muse.engine.service.PlayerService.Companion.newIntent
 import com.frolo.muse.engine.service.PlayerService.PlayerBinder
-import com.frolo.muse.engine.service.observers.PlaybackNotifier
-import com.frolo.muse.engine.service.observers.PlayerStateSaver
-import com.frolo.muse.engine.service.observers.SongPlayCounter
-import com.frolo.muse.engine.service.observers.WidgetUpdater
+import com.frolo.muse.engine.service.observers.*
 import com.frolo.muse.headset.createHeadsetHandler
 import com.frolo.muse.interactor.media.DispatchSongPlayedUseCase
 import com.frolo.muse.model.crossfade.CrossFadeParams
@@ -204,6 +201,7 @@ class PlayerService: Service() {
         }
 
         // Registering all the necessary observers
+        player.registerObserver(InternalErrorHandler(this))
         player.registerObserver(PlayerStateSaver(preferences))
         player.registerObserver(SongPlayCounter(schedulerProvider, dispatchSongPlayedUseCase))
         player.registerObserver(WidgetUpdater(this))

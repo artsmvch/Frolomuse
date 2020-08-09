@@ -80,4 +80,12 @@ public interface PlayerObserver {
      */
     void onABChanged(@NotNull Player player, boolean aPointed, boolean bPointed);
 
+    /**
+     * Called when an internal error has occurred in the given <code>player</code>.
+     * This is not a terminate state, it is only a notification that something went wrong.
+     * @param player with an internal error
+     * @param error internal error
+     */
+    void onInternalErrorOccurred(@NotNull Player player, @NotNull Throwable error);
+
 }
