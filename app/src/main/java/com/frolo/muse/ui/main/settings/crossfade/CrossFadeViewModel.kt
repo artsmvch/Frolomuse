@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.frolo.muse.arch.combine
 import com.frolo.muse.interactor.player.CrossFadeUseCase
 import com.frolo.muse.logger.EventLogger
+import com.frolo.muse.logger.logCrossFadeConfigured
 import com.frolo.muse.model.FloatRange
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.base.BaseViewModel
@@ -55,7 +56,7 @@ class CrossFadeViewModel @Inject constructor(
         crossFadeUseCase
             .applyAndSaveCrossFadeDuration(milliseconds)
             .observeOn(schedulerProvider.main())
-            .doOnComplete { /* TODO: send an event that the user changed the cross fade params */ }
+            .doOnComplete { eventLogger.logCrossFadeConfigured(seconds.toInt()) }
             .subscribeFor {  }
     }
 

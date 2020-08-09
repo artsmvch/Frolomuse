@@ -219,4 +219,14 @@ fun EventLogger.logMediaSearchUsed(queryCount: Int) {
 
 //endregion
 
+
+//region Search
+
+fun EventLogger.logCrossFadeConfigured(seconds: Int) {
+    val params = mapOf("seconds" to seconds.toString())
+    log("cross_fade_configured", params)
+}
+
+//endregion
+
 // TODO: add other main events
