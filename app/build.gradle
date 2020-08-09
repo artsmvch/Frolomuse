@@ -81,7 +81,7 @@ android {
             variant.outputs.all {
                 def date = new Date()
                 def formattedDate = date.format('yyyyMMddHHmmss')
-                outputFileName = "Frolomuse-${variant.name}-${versionMajor}.${versionMinor}.${versionPatch}-${formattedDate}.apk"
+                outputFileName = "Frolomuse-${variant.name}-${versionMajor}.${versionMinor}.${versionPatch}.${versionBuild}-${formattedDate}.apk"
             }
         }
     }
