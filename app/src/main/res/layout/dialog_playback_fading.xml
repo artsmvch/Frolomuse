@@ -17,14 +17,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
+        android:gravity="center"
         android:textAppearance="?textAppearanceBody1"
         android:text="@string/playback_fading_full_desc"/>
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:textAppearance="?textAppearanceCaption"
+        android:layout_marginTop="36dp"
+        android:gravity="center"
+        android:textAppearance="?textAppearanceBody1"
         android:text="@string/playback_fading_duration"/>
 
     <com.google.android.material.slider.Slider
