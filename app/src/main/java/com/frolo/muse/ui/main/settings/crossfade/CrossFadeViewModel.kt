@@ -45,6 +45,7 @@ class CrossFadeViewModel @Inject constructor(
         val milliseconds = seconds * 1000
         crossFadeUseCase
             .applyCrossFadeDuration(milliseconds)
+            .observeOn(schedulerProvider.main())
             .subscribeFor {  }
     }
 
@@ -53,6 +54,7 @@ class CrossFadeViewModel @Inject constructor(
         val milliseconds = (seconds * 1000).toInt()
         crossFadeUseCase
             .applyAndSaveCrossFadeDuration(milliseconds)
+            .observeOn(schedulerProvider.main())
             .doOnComplete { /* TODO: send an event that the user changed the cross fade params */ }
             .subscribeFor {  }
     }

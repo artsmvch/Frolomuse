@@ -20,7 +20,8 @@ class CrossFadeUseCase @Inject constructor(
 
     fun getCrossFadeRange(): Single<FloatRange> = Single.just(FloatRange.of(0f, 30f))
 
-    fun getCurrentCrossFadeParams(): Flowable<CrossFadeParams> = preferences.crossFadeParams
+    fun getCurrentCrossFadeParams(): Flowable<CrossFadeParams> =
+            preferences.crossFadeParams.subscribeOn(schedulerProvider.worker())
 
     fun applyCrossFadeDuration(duration: Int): Completable {
         return Completable.fromAction {
@@ -33,7 +34,7 @@ class CrossFadeUseCase @Inject constructor(
         return applyCrossFadeDuration(duration)
             .andThen(Completable.defer {
                 val params = CrossFadeParams.create(duration, true)
-                preferences.setCrossFadeParams(params)
+                preferences.setCrossFadeParams(params).subscribeOn(schedulerProvider.worker())
             })
     }
 
