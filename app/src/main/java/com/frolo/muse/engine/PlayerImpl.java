@@ -1405,12 +1405,12 @@ public final class PlayerImpl implements Player {
                     final int progress = engine.getCurrentPosition();
                     final int duration = engine.getDuration();
                     // This is where the strategy works
-                    float l = strategy.calculateLevel(progress, duration);
-                    // TODO: how to manipulate the level
-                    level = (float) Math.pow(l, 2);
+                    level = strategy.calculateLevel(progress, duration);
                 }
 
-                engine.setVolume(level, level);
+                final float volume = VolumeHelper.computeVolume(level);
+
+                engine.setVolume(volume, volume);
             } catch (Throwable error) {
                 report(error);
             }
