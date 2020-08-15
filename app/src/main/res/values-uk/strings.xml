@@ -218,9 +218,7 @@
     <string name="help_with_translations_desc">Торкніться тут, якщо ви хочете допомогти з перекладами</string>
     <string name="library_sections">Розділи бібліотеки</string>
     <string name="library_sections_desc">Розділи бібліотеки, які ви хочете побачити, та їх порядок</string>
-    <string name="show_notification">Показати сповіщення</string>
-    <string name="show_notification_desc">Показати сповіщення про пісню, яка зараз відтворюється</string>
-    <string name="shown">Показано</string>
+    <!--Sleep Timer-->
     <string name="sleep_timer_is_set">Встановлено таймер сну</string>
     <string name="sleep_timer_is_off">Таймер сну вимкнено</string>
     <string name="rescan_media_library_desc">Сканування медіатеки допомагає додатку знаходити нові аудіофайли</string>

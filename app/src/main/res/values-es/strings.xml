@@ -212,9 +212,7 @@
     <string name="help_with_translations_desc">Pulsa aquí si quieres ayudar con las traducciones</string>
     <string name="library_sections">Secciones de la biblioteca</string>
     <string name="library_sections_desc">Secciones de la biblioteca que desea ver y su orden</string>
-    <string name="show_notification">Muestra la notificación</string>
-    <string name="show_notification_desc">Mostrar notificación de la canción que se está reproduciendo actualmente</string>
-    <string name="shown">Mostrado</string>
+    <!--Sleep Timer-->
     <string name="sleep_timer_is_set">El temporizador de apagado está configurado</string>
     <string name="sleep_timer_is_off">El temporizador de apagado esta apagado</string>
     <string name="rescan_media_library_desc">El escaneo de la biblioteca de medios ayuda a la aplicación a encontrar nuevos archivos de audio</string>

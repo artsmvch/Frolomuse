@@ -206,9 +206,7 @@
     <string name="help_with_translations_desc">번역에 도움을 받으려면 여기를 클릭하십시오</string>
     <string name="library_sections">도서관 섹션</string>
     <string name="library_sections_desc">보고 싶은 도서관 섹션과 순서</string>
-    <string name="show_notification">알림 표시</string>
-    <string name="show_notification_desc">현재 재생중인 노래의 알림 표시</string>
-    <string name="shown">보여왔다</string>
+    <!--Sleep Timer-->
     <string name="sleep_timer_is_set">슬립 타이머가 설정되었습니다</string>
     <string name="sleep_timer_is_off">슬립 타이머가 꺼져 있습니다</string>
     <string name="rescan_media_library_desc">스캔 미디어 라이브러리는 앱이 새로운 오디오 파일을 찾는 데 도움을줍니다</string>

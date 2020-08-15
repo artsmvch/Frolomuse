@@ -212,9 +212,7 @@
     <string name="help_with_translations_desc">Appuyez ici si vous voulez aider avec les traductions</string>
     <string name="library_sections">Secciones de la biblioteca</string>
     <string name="library_sections_desc">Secciones de la biblioteca que desea ver y su orden</string>
-    <string name="show_notification">Montrer les notifications</string>
-    <string name="show_notification_desc">Montrer la notification de la chanson en cours de lecture</string>
-    <string name="shown">Montré</string>
+    <!--Sleep Timer-->
     <string name="sleep_timer_is_set">La minuterie de sommeil est réglée</string>
     <string name="sleep_timer_is_off">La minuterie de sommeil est éteinte</string>
     <string name="rescan_media_library_desc">L\'analyse de la bibliothèque multimédia aide l\'application à trouver de nouveaux fichiers audio</string>

@@ -212,9 +212,7 @@
     <string name="help_with_translations_desc">Toque aqui se você quiser ajudar com traduções</string>
     <string name="library_sections">Seções da biblioteca</string>
     <string name="library_sections_desc">Seções da biblioteca que você deseja ver e seu pedido</string>
-    <string name="show_notification">Mostrar notificação</string>
-    <string name="show_notification_desc">Mostrar notificação da música atualmente sendo reproduzida</string>
-    <string name="shown">Mostrando</string>
+    <!--Sleep Timer-->
     <string name="sleep_timer_is_set">Temporizador do sono está definido</string>
     <string name="sleep_timer_is_off">Temporizador do sono está desligado</string>
     <string name="rescan_media_library_desc">A biblioteca de mídia de digitalização ajuda o aplicativo a encontrar novos arquivos de áudio</string>

@@ -211,9 +211,7 @@
     <string name="help_with_translations_desc">Çevirilerde yardımcı olmak istiyorsanız buraya dokunun</string>
     <string name="library_sections">Kütüphane bölümleri</string>
     <string name="library_sections_desc">Görmek istediğiniz kütüphane bölümleri ve sırası</string>
-    <string name="show_notification">Bildirimleri göster</string>
-    <string name="show_notification_desc">Çalmakta olan şarkının bildirimini göster</string>
-    <string name="shown">Gösterilen</string>
+    <!--Sleep Timer-->
     <string name="sleep_timer_is_set">Uyku Zamanlayıcısı ayarlandı</string>
     <string name="sleep_timer_is_off">Uyku Zamanlayıcısı kapalı</string>
     <string name="rescan_media_library_desc">Medya kitaplığını taramak, uygulamanın yeni ses dosyaları bulmasına yardımcı olur</string>

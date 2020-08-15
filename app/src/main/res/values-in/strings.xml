@@ -206,9 +206,7 @@
     <string name="help_with_translations_desc">Ketuk di sini jika Anda ingin membantu dengan terjemahan</string>
     <string name="library_sections">Bagian perpustakaan</string>
     <string name="library_sections_desc">Bagian perpustakaan yang ingin Anda lihat dan urutannya</string>
-    <string name="show_notification">Tunjukkan notifikasi</string>
-    <string name="show_notification_desc">Tampilkan notifikasi lagu yang sedang diputar</string>
-    <string name="shown">Tampil</string>
+    <!--Sleep Timer-->
     <string name="sleep_timer_is_set">Sleep Timer diatur</string>
     <string name="sleep_timer_is_off">Sleep Timer tidak aktif</string>
     <string name="rescan_media_library_desc">Memindai perpustakaan media membantu aplikasi menemukan file audio baru</string>

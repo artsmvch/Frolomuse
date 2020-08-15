@@ -205,9 +205,7 @@
     <string name="help_with_translations_desc">翻訳を手助けしたい場合は、ここをタップしてください。</string>
     <string name="library_sections">ライブラリ項目</string>
     <string name="library_sections_desc">見たいライブラリ項目とその順番</string>
-    <string name="show_notification">通知を表示</string>
-    <string name="show_notification_desc">現在再生中の曲の通知を表示</string>
-    <string name="shown">示されている</string>
+    <!--Sleep Timer-->
     <string name="sleep_timer_is_set">スリープタイマーが設定されている</string>
     <string name="sleep_timer_is_off">スリープタイマーはオフです</string>
     <string name="rescan_media_library_desc">メディアライブラリをスキャンすると、アプリが新しいオーディオファイルを見つけるのに役立ちます</string>

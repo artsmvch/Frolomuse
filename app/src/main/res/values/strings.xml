@@ -215,9 +215,7 @@
     <string name="help_with_translations_desc">Tap here if You want to help with translations</string>
     <string name="library_sections">Library sections</string>
     <string name="library_sections_desc">Library sections you want to see and their order</string>
-    <string name="show_notification">Show notification</string>
-    <string name="show_notification_desc">Show notification of the currently playing song</string>
-    <string name="shown">Shown</string>
+    <!--Sleep Timer-->
     <string name="sleep_timer_is_set">Sleep Timer is set</string>
     <string name="sleep_timer_is_off">Sleep Timer is off</string>
     <string name="rescan_media_library_desc">Scanning media library helps the app find new audio files</string>

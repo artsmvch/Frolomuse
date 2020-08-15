@@ -15,7 +15,6 @@ import androidx.preference.PreferenceFragmentCompat
 import com.frolo.muse.App
 import com.frolo.muse.BuildConfig
 import com.frolo.muse.R
-import com.frolo.muse.engine.service.PlayerService
 import com.frolo.muse.logger.*
 import com.frolo.muse.mediascan.MediaScanService
 import com.frolo.muse.model.Theme
@@ -68,12 +67,6 @@ class SettingsFragment : PreferenceFragmentCompat(),
     }
 
     private fun setupPreferences() {
-        findPreference("show_notification").apply {
-            onPreferenceClickListener = Preference.OnPreferenceClickListener {
-                processShowPlayerNotification()
-                true
-            }
-        }
 
         findPreference("playback_fading").apply {
             onPreferenceClickListener = Preference.OnPreferenceClickListener {
@@ -188,16 +181,9 @@ class SettingsFragment : PreferenceFragmentCompat(),
         }
     }
 
-    private fun processShowPlayerNotification() {
-        val host = context ?: return
-        val intent = PlayerService.newIntent(host, PlayerService.COMMAND_SHOW_NOTIFICATION)
-        host.startService(intent)
-        Toast.makeText(host, R.string.shown, Toast.LENGTH_SHORT).show()
-    }
-
     private fun showPlaybackFadingDialog() {
         val dialog = PlaybackFadingDialog.newInstance()
-        dialog.show(childFragmentManager, TAG_PlAYBACK_FADING)
+        dialog.show(childFragmentManager, TAG_PLAYBACK_FADING)
     }
 
     override fun onTimeSelected(hours: Int, minutes: Int, seconds: Int) {
@@ -398,7 +384,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
         private const val TAG_APP_INFO = "app_info"
         private const val TAG_HIDDEN_FILES = "hidden_files"
         private const val TAG_MIN_AUDIO_FILE_DURATION = "min_audio_file_duration"
-        private const val TAG_PlAYBACK_FADING = "playback_fading"
+        private const val TAG_PLAYBACK_FADING = "playback_fading"
 
         // Factory
         fun newInstance() = SettingsFragment()

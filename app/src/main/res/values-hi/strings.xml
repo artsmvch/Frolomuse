@@ -211,9 +211,7 @@
     <string name="help_with_translations_desc">यदि आप अनुवाद में मदद करना चाहते हैं तो यहां टैप करें</string>
     <string name="library_sections">पुस्तकालय अनुभाग</string>
     <string name="library_sections_desc">लाइब्रेरी अनुभाग जिन्हें आप देखना चाहते हैं और उनका क्रम</string>
-    <string name="show_notification">अधिसूचना दिखाएं</string>
-    <string name="show_notification_desc">वर्तमान में चल रहे गाने की सूचना दिखाएं</string>
-    <string name="shown">दिखाया गया है</string>
+    <!--Sleep Timer-->
     <string name="sleep_timer_is_set">स्लीप टाइमर सेट है</string>
     <string name="sleep_timer_is_off">स्लीप टाइमर बंद है</string>
     <string name="rescan_media_library_desc">मीडिया लाइब्रेरी को स्कैन करने से ऐप को नई ऑडियो फ़ाइलों को खोजने में मदद मिलती है</string>

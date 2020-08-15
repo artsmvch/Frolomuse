@@ -205,9 +205,7 @@
     <string name="help_with_translations_desc">如果您想幫助翻譯，請點擊此處</string>
     <string name="library_sections">圖書館部分</string>
     <string name="library_sections_desc">您要查看的圖書館部分及其順序</string>
-    <string name="show_notification">顯示通知</string>
-    <string name="show_notification_desc">顯示當前播放歌曲的通知</string>
-    <string name="shown">顯示</string>
+    <!--Sleep Timer-->
     <string name="sleep_timer_is_set">睡眠定時器已設定</string>
     <string name="sleep_timer_is_off">睡眠定時器關閉</string>
     <string name="rescan_media_library_desc">掃描媒體庫可幫助應用找到新的音頻文件</string>

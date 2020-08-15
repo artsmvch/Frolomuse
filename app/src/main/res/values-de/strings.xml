@@ -212,9 +212,7 @@
     <string name="help_with_translations_desc">Tippen Sie hier, wenn Sie bei Übersetzungen helfen möchten</string>
     <string name="library_sections">Bibliothek Abschnitte</string>
     <string name="library_sections_desc">Bibliotheksabschnitte, die Sie sehen möchten, und deren Reihenfolge</string>
-    <string name="show_notification">Benachrichtigung anzeigen</string>
-    <string name="show_notification_desc">Benachrichtigung über das aktuell abgespielte Lied anzeigen</string>
-    <string name="shown">Gezeigt</string>
+    <!--Sleep Timer-->
     <string name="sleep_timer_is_set">Schlaf-Timer ist eingestellt</string>
     <string name="sleep_timer_is_off">Schlaf-Timer ist ausgeschaltet</string>
     <string name="rescan_media_library_desc">Durch das Scannen der Medienbibliothek kann die App neue Audiodateien finden</string>
