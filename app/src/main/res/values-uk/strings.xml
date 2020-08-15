@@ -224,7 +224,13 @@
     <string name="sleep_timer_is_set">Встановлено таймер сну</string>
     <string name="sleep_timer_is_off">Таймер сну вимкнено</string>
     <string name="rescan_media_library_desc">Сканування медіатеки допомагає додатку знаходити нові аудіофайли</string>
-
+    <!--Playback fading-->
+    <string name="playback_fading">Послаблення відтворення музики</string>
+    <string name="playback_fading_desc">Контролюйте, як відтворення музики має затухати і з\'являтися</string>
+    <string name="playback_fading_full_desc">
+        Тут ви керуєте тим, як відтворення має затухати і з\'являтися. Ви можете встановити відповідну тривалість за допомогою повзунка нижче. Тривалість "0" означає, що не буде завмирання.
+    </string>
+    <string name="playback_fading_duration">Тривалість</string>
 
     <!--create and edit playlist-->
     <string name="save_playlist">Зберегти список відтворення</string>

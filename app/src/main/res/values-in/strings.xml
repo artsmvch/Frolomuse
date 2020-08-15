@@ -212,7 +212,13 @@
     <string name="sleep_timer_is_set">Sleep Timer diatur</string>
     <string name="sleep_timer_is_off">Sleep Timer tidak aktif</string>
     <string name="rescan_media_library_desc">Memindai perpustakaan media membantu aplikasi menemukan file audio baru</string>
-
+    <!--Playback fading-->
+    <string name="playback_fading">Pemutaran musik yang memudar</string>
+    <string name="playback_fading_desc">Kendalikan bagaimana pemutaran akan memudar masuk dan keluar</string>
+    <string name="playback_fading_full_desc">
+        Di sini Anda mengontrol bagaimana pemutaran harus masuk dan keluar. Anda dapat mengatur durasi yang sesuai menggunakan penggeser di bawah ini. Durasi "0" berarti tidak akan ada pemudaran.
+    </string>
+    <string name="playback_fading_duration">Durasi</string>
 
     <!--create and edit playlist-->
     <string name="save_playlist">Simpan daftar putar</string>

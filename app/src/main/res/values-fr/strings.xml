@@ -218,6 +218,13 @@
     <string name="sleep_timer_is_set">La minuterie de sommeil est réglée</string>
     <string name="sleep_timer_is_off">La minuterie de sommeil est éteinte</string>
     <string name="rescan_media_library_desc">L\'analyse de la bibliothèque multimédia aide l\'application à trouver de nouveaux fichiers audio</string>
+    <!--Playback fading-->
+    <string name="playback_fading">Fondu de la lecture de musique</string>
+    <string name="playback_fading_desc">Contrôlez comment la lecture doit s\'effacer</string>
+    <string name="playback_fading_full_desc">
+        Ici, vous contrôlez la façon dont la lecture de la musique doit s\'effacer. Vous pouvez définir une durée appropriée à l\'aide du curseur ci-dessous. La durée "0" signifie qu\'il n\'y aura pas de fondu.
+    </string>
+    <string name="playback_fading_duration">Durée</string>
 
     <!--create playlist-->
     <string name="save_playlist">Enregistrer la playlist</string>

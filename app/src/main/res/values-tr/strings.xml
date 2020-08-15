@@ -217,7 +217,13 @@
     <string name="sleep_timer_is_set">Uyku Zamanlayıcısı ayarlandı</string>
     <string name="sleep_timer_is_off">Uyku Zamanlayıcısı kapalı</string>
     <string name="rescan_media_library_desc">Medya kitaplığını taramak, uygulamanın yeni ses dosyaları bulmasına yardımcı olur</string>
-
+    <!--Playback fading-->
+    <string name="playback_fading">Müzik çalmanın solması</string>
+    <string name="playback_fading_desc">Müzik çalmanın nasıl açılıp kapanacağını kontrol eder</string>
+    <string name="playback_fading_full_desc">
+        Burada oynatmanın nasıl açılıp kapanacağını kontrol edersiniz. Aşağıdaki kaydırıcıyı kullanarak uygun bir süre ayarlayabilirsiniz. Süre "0", solma olmayacağı anlamına gelir.
+    </string>
+    <string name="playback_fading_duration">Süre</string>
 
     <!--create and edit playlist-->
     <string name="save_playlist">Oynatma listesini kaydet</string>

@@ -211,6 +211,13 @@
     <string name="sleep_timer_is_set">睡眠定時器已設定</string>
     <string name="sleep_timer_is_off">睡眠定時器關閉</string>
     <string name="rescan_media_library_desc">掃描媒體庫可幫助應用找到新的音頻文件</string>
+    <!--Playback fading-->
+    <string name="playback_fading">音樂播放淡出</string>
+    <string name="playback_fading_desc">控製播放應如何淡入和淡出</string>
+    <string name="playback_fading_full_desc">
+        在這裡，您可以控製播放的淡入和淡出方式。您可以使用下面的滑塊設置合適的持續時間。持續時間“ 0”表示不會衰減。
+    </string>
+    <string name="playback_fading_duration">持續時間</string>
 
     <!--create playlist-->
     <string name="save_playlist">保存播放列表</string>

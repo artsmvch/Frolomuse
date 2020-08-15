@@ -212,7 +212,13 @@
     <string name="sleep_timer_is_set">슬립 타이머가 설정되었습니다</string>
     <string name="sleep_timer_is_off">슬립 타이머가 꺼져 있습니다</string>
     <string name="rescan_media_library_desc">스캔 미디어 라이브러리는 앱이 새로운 오디오 파일을 찾는 데 도움을줍니다</string>
-
+    <!--Playback fading-->
+    <string name="playback_fading">음악 재생 페이드</string>
+    <string name="playback_fading_desc">재생 페이드 인 및 아웃 방법 제어</string>
+    <string name="playback_fading_full_desc">
+        여기에서 재생 페이드 인 및 페이드 아웃 방법을 제어합니다. 아래 슬라이더를 사용하여 적절한 기간을 설정할 수 있습니다. 기간 "0"은 페이딩이 없음을 의미합니다.
+    </string>
+    <string name="playback_fading_duration">지속</string>
 
     <!--create and edit playlist-->
     <string name="save_playlist">재생 목록 저장</string>

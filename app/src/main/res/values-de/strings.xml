@@ -218,6 +218,13 @@
     <string name="sleep_timer_is_set">Schlaf-Timer ist eingestellt</string>
     <string name="sleep_timer_is_off">Schlaf-Timer ist ausgeschaltet</string>
     <string name="rescan_media_library_desc">Durch das Scannen der Medienbibliothek kann die App neue Audiodateien finden</string>
+    <!--Playback fading-->
+    <string name="playback_fading">Verblassen der Musikwiedergabe</string>
+    <string name="playback_fading_desc">Steuern Sie, wie die Wiedergabe ein- und ausgeblendet werden soll</string>
+    <string name="playback_fading_full_desc">
+        Hier steuern Sie, wie die Wiedergabe ein- und ausgeblendet werden soll. Sie können eine geeignete Dauer mit dem Schieberegler unten einstellen. Dauer "0" bedeutet, dass es kein Ausbleichen gibt.
+    </string>
+    <string name="playback_fading_duration">Dauer</string>
 
     <!--create playlist-->
     <string name="save_playlist">Wiedergabeliste speichern</string>

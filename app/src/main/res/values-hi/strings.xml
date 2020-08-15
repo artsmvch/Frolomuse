@@ -217,6 +217,13 @@
     <string name="sleep_timer_is_set">स्लीप टाइमर सेट है</string>
     <string name="sleep_timer_is_off">स्लीप टाइमर बंद है</string>
     <string name="rescan_media_library_desc">मीडिया लाइब्रेरी को स्कैन करने से ऐप को नई ऑडियो फ़ाइलों को खोजने में मदद मिलती है</string>
+    <!--Playback fading-->
+    <string name="playback_fading">संगीत प्लेबैक के फीका</string>
+    <string name="playback_fading_desc">नियंत्रित करें कि प्लेबैक को कैसे और अंदर फीका होना चाहिए</string>
+    <string name="playback_fading_full_desc">
+        यहां आप यह नियंत्रित करते हैं कि प्लेबैक कैसे अंदर और बाहर फीका होना चाहिए। आप नीचे स्लाइडर का उपयोग करके एक उपयुक्त अवधि निर्धारित कर सकते हैं। अवधि "0" का मतलब है कि कोई लुप्त होती नहीं होगी।
+    </string>
+    <string name="playback_fading_duration">समयांतराल</string>
 
     <!--create playlist-->
     <string name="save_playlist">प्लेलिस्ट सहेजें</string>

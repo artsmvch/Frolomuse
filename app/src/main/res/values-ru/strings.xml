@@ -230,6 +230,13 @@
     <string name="sleep_timer_is_set">Таймер сна установлен</string>
     <string name="sleep_timer_is_off">Таймер сна выключен</string>
     <string name="rescan_media_library_desc">Сканирование медиа-библиотеки помогает приложению находить новые аудиофайлы</string>
+    <!--Playback fading-->
+    <string name="playback_fading">Затухание воспроизведения</string>
+    <string name="playback_fading_desc">Управляйте тем, как воспроизведение должно появляться и исчезать</string>
+    <string name="playback_fading_full_desc">
+        Здесь вы управляете тем, как воспроизведение должно появляться и исчезать. Вы можете установить подходящую продолжительность с помощью ползунка ниже. Длительность «0» означает, что затухания не будет.
+    </string>
+    <string name="playback_fading_duration">Продолжительность</string>
 
     <!-- create playlist-->
     <string name="save_playlist">Сохранить плейлист</string>
