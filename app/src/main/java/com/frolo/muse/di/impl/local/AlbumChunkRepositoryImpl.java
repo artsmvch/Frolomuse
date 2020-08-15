@@ -15,7 +15,8 @@ public class AlbumChunkRepositoryImpl extends SongRepositoryImpl implements Albu
         SongQuery.Sort.BY_DEFAULT,
         SongQuery.Sort.BY_TITLE,
         SongQuery.Sort.BY_ARTIST,
-        SongQuery.Sort.BY_DURATION
+        SongQuery.Sort.BY_DURATION,
+        SongQuery.Sort.BY_DATE_ADDED
     };
 
     static String getSortOrderOrDefault(String candidate) {
@@ -32,7 +33,8 @@ public class AlbumChunkRepositoryImpl extends SongRepositoryImpl implements Albu
             createSortOrder(SongQuery.Sort.BY_DEFAULT, R.string.sort_by_default),
             createSortOrder(SongQuery.Sort.BY_TITLE, R.string.sort_by_name),
             createSortOrder(SongQuery.Sort.BY_ARTIST, R.string.sort_by_artist),
-            createSortOrder(SongQuery.Sort.BY_DURATION, R.string.sort_by_duration)
+            createSortOrder(SongQuery.Sort.BY_DURATION, R.string.sort_by_duration),
+            createSortOrder(SongQuery.Sort.BY_DATE_ADDED, R.string.sort_by_date_added)
         );
     }
 

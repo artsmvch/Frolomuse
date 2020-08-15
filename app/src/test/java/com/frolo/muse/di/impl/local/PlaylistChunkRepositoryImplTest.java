@@ -49,6 +49,12 @@ public class PlaylistChunkRepositoryImplTest {
             String validated = PlaylistChunkRepositoryImpl.getSortOrderOrDefault(sortOrder);
             assertEquals(sortOrder, validated);
         }
+
+        {
+            String sortOrder = SongQuery.Sort.BY_DATE_ADDED;
+            String validated = PlaylistChunkRepositoryImpl.getSortOrderOrDefault(sortOrder);
+            assertEquals(sortOrder, validated);
+        }
     }
 
     @Test

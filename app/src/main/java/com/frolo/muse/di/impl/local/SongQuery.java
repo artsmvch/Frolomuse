@@ -56,6 +56,9 @@ final class SongQuery {
         static final String BY_ARTIST =
                 MediaStore.Audio.Media.ARTIST + " COLLATE NOCASE ASC";
 
+        static final String BY_DATE_ADDED =
+                MediaStore.Audio.Media.DATE_ADDED + " ASC";
+
         // For playlist only
         static final String BY_PLAY_ORDER =
                 MediaStore.Audio.Playlists.Members.PLAY_ORDER + " ASC";

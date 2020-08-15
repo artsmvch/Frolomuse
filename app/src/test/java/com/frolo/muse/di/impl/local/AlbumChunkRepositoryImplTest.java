@@ -50,6 +50,12 @@ public class AlbumChunkRepositoryImplTest {
             String validated = AlbumChunkRepositoryImpl.getSortOrderOrDefault(sortOrder);
             assertEquals(sortOrder, validated);
         }
+
+        {
+            String sortOrder = SongQuery.Sort.BY_DATE_ADDED;
+            String validated = AlbumChunkRepositoryImpl.getSortOrderOrDefault(sortOrder);
+            assertEquals(sortOrder, validated);
+        }
     }
 
     @Test

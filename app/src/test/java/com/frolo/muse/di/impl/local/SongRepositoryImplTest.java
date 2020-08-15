@@ -49,6 +49,12 @@ public class SongRepositoryImplTest {
             String validated = SongRepositoryImpl.getSortOrderOrDefault(sortOrder);
             assertEquals(sortOrder, validated);
         }
+
+        {
+            String sortOrder = SongQuery.Sort.BY_DATE_ADDED;
+            String validated = SongRepositoryImpl.getSortOrderOrDefault(sortOrder);
+            assertEquals(sortOrder, validated);
+        }
     }
 
     @Test
