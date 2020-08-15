@@ -187,10 +187,16 @@
     <string name="dark_orange_theme">濃いオレンジのテーマ</string>
     <string name="dark_green_theme">濃い緑のテーマ</string>
 
+    <!--Headphones settings-->
     <string name="pause_playback">再生を一時停止する</string>
     <string name="resume_playback">再生を再開する</string>
-    <string name="pause_on_unplugged">イヤホンを外した後に再生を一時停止する</string>
-    <string name="resume_on_plugged_in">イヤホンを差し込んだ後に再生を再開する</string>
+    <string name="pause_when_headphones_are_disconnected">
+        ヘッドフォンが接続されていないときに再生を一時停止します
+    </string>
+    <string name="resume_when_headphones_are_connected">
+        ヘッドフォンが接続されているときに再生を再開します
+    </string>
+
     <string name="sleep_timer">目覚まし時計</string>
     <string name="sleep_time_description">再生を停止するタイマーを設定する</string>
     <string name="you_have_already_set_up_sleep_timer">既にタイマーを設定しています。 現在のタイマーをリセットするか、新しいタイマーを設定しますか？</string>

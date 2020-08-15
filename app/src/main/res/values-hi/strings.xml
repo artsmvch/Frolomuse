@@ -193,10 +193,16 @@
     <string name="dark_orange_theme">डार्क ऑरेंज थीम</string>
     <string name="dark_green_theme">गहरे हरे रंग का विषय</string>
 
+    <!--Headphones settings-->
     <string name="pause_playback">प्लेबैक रोकें</string>
     <string name="resume_playback">प्लेबैक वापस चालू करें</string>
-    <string name="pause_on_unplugged">इयरफ़ोन अनप्लग होने के बाद प्लेबैक रोकें</string>
-    <string name="resume_on_plugged_in">इयरफ़ोन प्लग इन करने के बाद प्लेबैक फिर से शुरू करें</string>
+    <string name="pause_when_headphones_are_disconnected">
+        जब हेडफोन काट दिया जाता है तो प्लेबैक को रोकें
+    </string>
+    <string name="resume_when_headphones_are_connected">
+        हेडफोन कनेक्ट होने पर प्लेबैक फिर से शुरू करें
+    </string>
+
     <string name="sleep_timer">सोने का टाइमर</string>
     <string name="sleep_time_description">प्लेबैक रोकने के लिए टाइमर सेट करें</string>
     <string name="you_have_already_set_up_sleep_timer">आप पहले से ही टाइमर सेट कर चुके हैं। क्या आप वर्तमान टाइमर को रीसेट करना चाहते हैं या एक नया सेट अप करना चाहते हैं?</string>

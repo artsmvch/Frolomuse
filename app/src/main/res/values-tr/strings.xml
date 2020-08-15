@@ -192,10 +192,16 @@
     <string name="dark_orange_theme">Koyu turuncu tema</string>
     <string name="dark_green_theme">Koyu yeşil tema</string>
 
+    <!--Headphones settings-->
     <string name="pause_playback">Oynatmayı duraklat</string>
-    <string name="resume_playback">Çalmaya devam et</string>
-    <string name="pause_on_unplugged">Kulaklıklıgı çıkardıktan sonra oynatmayı duraklat</string>
-    <string name="resume_on_plugged_in">Kulaklık takılı olduktan sonra oynatmaya devam et</string>
+    <string name="resume_playback">Oynatmayı başlat</string>
+    <string name="pause_when_headphones_are_disconnected">
+        Kulaklık bağlantısı kesildiğinde çalmayı duraklatın
+    </string>
+    <string name="resume_when_headphones_are_connected">
+        Kulaklık bağlandığında çalmayı başlatın
+    </string>
+
     <string name="sleep_timer">Uyku zamanlayıcısı</string>
     <string name="sleep_time_description">Çalmayı durdurmak için bir zamanlayıcı ayarlayın</string>
     <string name="you_have_already_set_up_sleep_timer">Zaten bir zamanlayıcı ayarladınız.

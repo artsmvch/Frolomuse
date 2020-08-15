@@ -193,10 +193,16 @@
     <string name="dark_orange_theme">Tema naranja oscuro</string>
     <string name="dark_green_theme">Tema verde oscuro</string>
 
-    <string name="pause_playback">Pausa la reproducción</string>
+    <!--Headphones settings-->
+    <string name="pause_playback">Pausar la reproducción</string>
     <string name="resume_playback">Reanudar la reproducción</string>
-    <string name="pause_on_unplugged">Pausa la reproducción después de desconectar los auriculares</string>
-    <string name="resume_on_plugged_in">Reanudar la reproducción después de que los auriculares estén enchufados</string>
+    <string name="pause_when_headphones_are_disconnected">
+        Pausar la reproducción cuando los auriculares están desconectados
+    </string>
+    <string name="resume_when_headphones_are_connected">
+        Reanudar la reproducción cuando los auriculares están conectados
+    </string>
+
     <string name="sleep_timer">Tiempo de dormir</string>
     <string name="sleep_time_description">Establecer un temporizador para detener la reproducción</string>
     <string name="you_have_already_set_up_sleep_timer">Ya has configurado un temporizador.

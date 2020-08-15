@@ -193,10 +193,16 @@
     <string name="dark_orange_theme">Dunkeloranges Thema</string>
     <string name="dark_green_theme">Dunkelgrünes Thema</string>
 
+    <!--Headphones setting-->
     <string name="pause_playback">Wiedergabe anhalten</string>
-    <string name="resume_playback">Fortsetzen Wiedergabe</string>
-    <string name="pause_on_unplugged">Wiedergabe nach dem Entfernen der Kopfhörer unterbrechen</string>
-    <string name="resume_on_plugged_in">Wiedergabe nach dem Anschließen der Kopfhörer fortsetzen</string>
+    <string name="resume_playback">Wiedergabe fortsetzen</string>
+    <string name="pause_when_headphones_are_disconnected">
+        Wiedergabe anhalten, wenn Kopfhörer nicht angeschlossen sind
+    </string>
+    <string name="resume_when_headphones_are_connected">
+        Wiedergabe fortsetzen, wenn Kopfhörer angeschlossen sind
+    </string>
+
     <string name="sleep_timer">Schlaf-Timer</string>
     <string name="sleep_time_description">Stellen Sie einen Timer ein, um die Wiedergabe zu stoppen</string>
     <string name="you_have_already_set_up_sleep_timer">Sie haben bereits einen Timer eingerichtet.

@@ -195,10 +195,16 @@
     <string name="dark_orange_theme">Dark orange theme</string>
     <string name="dark_green_theme">Dark green theme</string>
 
+    <!--Headphones settings-->
     <string name="pause_playback">Pause playback</string>
     <string name="resume_playback">Resume playback</string>
-    <string name="pause_on_unplugged">Pause playback after earphones unplugged</string>
-    <string name="resume_on_plugged_in">Resume playback after earphones plugged in</string>
+    <string name="pause_when_headphones_are_disconnected">
+        Pause playback when headphones are disconnected
+    </string>
+    <string name="resume_when_headphones_are_connected">
+        Resume playback when headphones are connected
+    </string>
+
     <string name="sleep_timer">Sleep timer</string>
     <string name="sleep_time_description">Set a timer to stop playing</string>
     <string name="you_have_already_set_up_sleep_timer">You have already set up a timer.

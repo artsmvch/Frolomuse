@@ -187,10 +187,16 @@
     <string name="dark_orange_theme">Tema oranye gelap</string>
     <string name="dark_green_theme">Tema hijau gelap</string>
 
+    <!--Headphone settings-->
     <string name="pause_playback">Jeda pemutaran</string>
     <string name="resume_playback">Lanjutkan pemutaran</string>
-    <string name="pause_on_unplugged">Jeda pemutaran setelah earphone dicabut</string>
-    <string name="resume_on_plugged_in">Lanjutkan pemutaran setelah earphone terpasang</string>
+    <string name="pause_when_headphones_are_disconnected">
+        Jeda pemutaran saat headphone dicabut
+    </string>
+    <string name="resume_when_headphones_are_connected">
+        Lanjutkan pemutaran saat headphone terhubung
+    </string>
+
     <string name="sleep_timer">Timer tidur</string>
     <string name="sleep_time_description">Atur timer untuk berhenti bermain</string>
     <string name="you_have_already_set_up_sleep_timer">Anda sudah mengatur penghitung waktu.\n

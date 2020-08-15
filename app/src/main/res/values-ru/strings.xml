@@ -205,10 +205,16 @@
     <string name="dark_orange_theme">Темно-оранжевая тема</string>
     <string name="dark_green_theme">Темно-зеленая тема</string>
 
+    <!--Headphones settings-->
     <string name="pause_playback">Приостановить воспроизведение</string>
-    <string name="resume_playback">Продолжить воспроизведение</string>
-    <string name="pause_on_unplugged">Перестать играть после отсоединения наушников</string>
-    <string name="resume_on_plugged_in">Начать играть после присоединения наушников</string>
+    <string name="resume_playback">Возобновить воспроизведение</string>
+    <string name="pause_when_headphones_are_disconnected">
+        Приостановить воспроизведение при отключении наушников
+    </string>
+    <string name="resume_when_headphones_are_connected">
+        Возобновить воспроизведения при подключении наушников
+    </string>
+
     <string name="sleep_timer">Таймер сна</string>
     <string name="sleep_time_description">Установить таймер, чтобы остановить воспроизведение</string>
     <string name="you_have_already_set_up_sleep_timer">Вы уже настроили таймер.

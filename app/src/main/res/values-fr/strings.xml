@@ -193,10 +193,16 @@
     <string name="dark_orange_theme">Thème orange foncé</string>
     <string name="dark_green_theme">Thème vert foncé</string>
 
-    <string name="pause_playback">Mettre la lecture en pause</string>
+    <!--Headphone settings-->
+    <string name="pause_playback">Interrompre la lecture</string>
     <string name="resume_playback">Reprendre la lecture</string>
-    <string name="pause_on_unplugged">Suspendre la lecture après que les écouteurs aient été débranchés</string>
-    <string name="resume_on_plugged_in">Reprendre la lecture après la connexion des écouteurs</string>
+    <string name="pause_when_headphones_are_disconnected">
+        Interrompre la lecture lorsque le casque est déconnecté
+    </string>
+    <string name="resume_when_headphones_are_connected">
+        Reprendre la lecture lorsque le casque est connecté
+    </string>
+
     <string name="sleep_timer">Minuteur de veille</string>
     <string name="sleep_time_description">Définir une minuterie pour arrêter la lecture</string>
     <string name="you_have_already_set_up_sleep_timer">Vous avez déjà configuré une minuterie.

@@ -199,10 +199,16 @@
     <string name="dark_orange_theme">Темно-помаранчева тема</string>
     <string name="dark_green_theme">Темно-зелена тема</string>
 
+    <!--Headphones settings-->
     <string name="pause_playback">Призупинення відтворення</string>
     <string name="resume_playback">Відновити відтворення</string>
-    <string name="pause_on_unplugged">Призупинити відтворення після відключення навушників</string>
-    <string name="resume_on_plugged_in">Відновити відтворення після підключення навушників</string>
+    <string name="pause_when_headphones_are_disconnected">
+        Призупинення відтворення, коли відключені навушники
+    </string>
+    <string name="resume_when_headphones_are_connected">
+        Відновити відтворення, коли підключені навушники
+    </string>
+
     <string name="sleep_timer">Таймер сну</string>
     <string name="sleep_time_description">Встановіть таймер для припинення відтворення</string>
     <string name="you_have_already_set_up_sleep_timer">Ви вже налаштували таймер.

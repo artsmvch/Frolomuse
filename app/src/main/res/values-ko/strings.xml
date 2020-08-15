@@ -186,10 +186,16 @@
     <string name="dark_orange_theme">다크 오렌지 테마</string>
     <string name="dark_green_theme">진한 녹색 테마</string>
 
+    <!--Headphones settings-->
     <string name="pause_playback">재생 일시 정지</string>
-    <string name="resume_playback">재생 재개</string>
-    <string name="pause_on_unplugged">이어폰을 뽑은 후 재생 일시 정지</string>
-    <string name="resume_on_plugged_in">이어폰을 꽂을 때 재생 재개</string>
+    <string name="resume_playback">재생 다시 시작</string>
+    <string name="pause_when_headphones_are_disconnected">
+        헤드폰이 분리되면 재생 일시 중지
+    </string>
+    <string name="resume_when_headphones_are_connected">
+        헤드폰이 연결되면 재생 다시 시작
+    </string>
+
     <string name="sleep_timer">수면 타이머</string>
     <string name="sleep_time_description">재생을 중지하도록 타이머 설정</string>
     <string name="you_have_already_set_up_sleep_timer">
