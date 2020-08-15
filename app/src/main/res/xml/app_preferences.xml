@@ -13,14 +13,14 @@
             android:summary="@string/playback_fading_desc"/>
 
         <CheckBoxPreference
-            android:icon="@drawable/ic_notes"
+            android:icon="@drawable/ic_headphones_pause"
             android:key="pause_playback"
             android:title="@string/pause_playback"
             android:summary="@string/pause_on_unplugged"
             android:defaultValue="false"/>
 
         <CheckBoxPreference
-            android:icon="@drawable/ic_notes"
+            android:icon="@drawable/ic_headphones_play"
             android:key="resume_playback"
             android:title="@string/resume_playback"
             android:summary="@string/resume_on_plugged_in"
