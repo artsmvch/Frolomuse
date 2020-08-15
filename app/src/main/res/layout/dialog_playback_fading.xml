@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:gravity="center"
-        android:textAppearance="?textAppearanceBody1"
+        android:textAppearance="?textAppearanceBody2"
         android:text="@string/playback_fading_full_desc"/>
 
     <TextView
@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
         android:gravity="center"
-        android:textAppearance="?textAppearanceBody1"
+        android:textAppearance="?textAppearanceBody2"
         android:text="@string/playback_fading_duration"/>
 
     <com.google.android.material.slider.Slider
