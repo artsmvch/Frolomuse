@@ -79,6 +79,7 @@ class SongPlayCounter constructor(
 
         currentItem = item
         currentItemDuration = 0
+        // TODO: currently isPrepared() can return true, if the current song was only updated (not changed), but this behavior can be changed in the future
         isPrepared = player.isPrepared()
         isPlaying = player.isPlaying()
 
