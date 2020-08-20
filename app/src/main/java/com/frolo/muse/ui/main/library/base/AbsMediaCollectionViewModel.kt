@@ -680,6 +680,15 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
                 }
     }
 
+    fun onRemoveFromCurrentQueueOptionSelected() {
+        val event = _openOptionsMenuEvent.value ?: return
+        _closeOptionsMenuEvent.value = event
+        val item = event.item
+        getMediaMenuUseCase.removeFromCurrentQueue(item)
+                .observeOn(schedulerProvider.main())
+                .subscribeFor { }
+    }
+
     protected fun closeOptionsMenu() {
         val event = _openOptionsMenuEvent.value ?: return
         _closeOptionsMenuEvent.value = event

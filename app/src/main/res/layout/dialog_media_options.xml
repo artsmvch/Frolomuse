@@ -149,6 +149,12 @@
                 app:optionIcon="@drawable/ic_option_add_to_queue_48dp"/>
 
             <com.frolo.muse.views.text.OptionTextView
+                android:id="@+id/btn_remove_from_queue"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:optionTitle="@string/remove_from_queue"/>
+
+            <com.frolo.muse.views.text.OptionTextView
                 android:id="@+id/btn_view_album"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

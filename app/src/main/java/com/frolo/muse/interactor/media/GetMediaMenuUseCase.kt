@@ -1,17 +1,21 @@
 package com.frolo.muse.interactor.media
 
+import com.frolo.muse.common.toAudioSource
+import com.frolo.muse.engine.Player
 import com.frolo.muse.model.media.*
 import com.frolo.muse.model.menu.ContextualMenu
 import com.frolo.muse.model.menu.OptionsMenu
 import com.frolo.muse.repository.MediaRepository
 import com.frolo.muse.rx.SchedulerProvider
+import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction
 
 
 class GetMediaMenuUseCase<E: Media> constructor(
     private val schedulerProvider: SchedulerProvider,
-    private val repository: MediaRepository<E>
+    private val repository: MediaRepository<E>,
+    private val player: Player
 ) {
 
     fun getOptionsMenu(item: E): Single<OptionsMenu<E>> {
@@ -42,7 +46,8 @@ class GetMediaMenuUseCase<E: Media> constructor(
                     setAsDefaultOptionAvailable = item is MyFile && item.isDirectory,
                     addToHiddenOptionAvailable = item is MyFile,
                     scanFilesOptionAvailable = item is MyFile && item.isDirectory,
-                    shortcutOptionAvailable = isShortcutSupported
+                    shortcutOptionAvailable = isShortcutSupported,
+                    removeFromCurrentQueue = item is Song && player.getCurrentQueue()?.contains(item.toAudioSource()) ?: false
                 )
             }
 
@@ -68,5 +73,12 @@ class GetMediaMenuUseCase<E: Media> constructor(
             )
         )
     }
+
+    fun removeFromCurrentQueue(item: E): Completable = Completable.fromAction {
+        if (item is Song) {
+            val audioSource = item.toAudioSource()
+            player.removeAll(listOf(audioSource))
+        }
+    }.subscribeOn(schedulerProvider.worker())
 
 }

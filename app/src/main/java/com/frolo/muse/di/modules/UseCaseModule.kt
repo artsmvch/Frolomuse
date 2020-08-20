@@ -101,11 +101,13 @@ abstract class UseCaseModule {
         @JvmStatic
         fun provideGetMediaMenuUseCase(
                 schedulerProvider: SchedulerProvider,
-                repository: GenericMediaRepository
+                repository: GenericMediaRepository,
+                player: Player
         ): GetMediaMenuUseCase<Media> {
             return GetMediaMenuUseCase<Media>(
                     schedulerProvider,
-                    repository
+                    repository,
+                    player
             )
         }
 
@@ -113,11 +115,13 @@ abstract class UseCaseModule {
         @JvmStatic
         fun provideGetArtistMenuUseCase(
                 schedulerProvider: SchedulerProvider,
-                repository: ArtistRepository
+                repository: ArtistRepository,
+                player: Player
         ): GetMediaMenuUseCase<Artist> {
             return GetMediaMenuUseCase<Artist>(
                     schedulerProvider,
-                    repository
+                    repository,
+                    player
             )
         }
 
@@ -125,11 +129,13 @@ abstract class UseCaseModule {
         @JvmStatic
         fun provideGetAlbumMenuUseCase(
                 schedulerProvider: SchedulerProvider,
-                repository: AlbumRepository
+                repository: AlbumRepository,
+                player: Player
         ): GetMediaMenuUseCase<Album> {
             return GetMediaMenuUseCase<Album>(
                     schedulerProvider,
-                    repository
+                    repository,
+                    player
             )
         }
 
@@ -137,11 +143,13 @@ abstract class UseCaseModule {
         @JvmStatic
         fun provideGetGenreMenuUseCase(
                 schedulerProvider: SchedulerProvider,
-                repository: GenreRepository
+                repository: GenreRepository,
+                player: Player
         ): GetMediaMenuUseCase<Genre> {
             return GetMediaMenuUseCase<Genre>(
                     schedulerProvider,
-                    repository
+                    repository,
+                    player
             )
         }
 
@@ -149,11 +157,13 @@ abstract class UseCaseModule {
         @JvmStatic
         fun provideGetPlaylistMenuUseCase(
                 schedulerProvider: SchedulerProvider,
-                repository: PlaylistRepository
+                repository: PlaylistRepository,
+                player: Player
         ): GetMediaMenuUseCase<Playlist> {
             return GetMediaMenuUseCase<Playlist>(
                     schedulerProvider,
-                    repository
+                    repository,
+                    player
             )
         }
 
@@ -161,11 +171,13 @@ abstract class UseCaseModule {
         @JvmStatic
         fun provideGetSongMenuUseCase(
                 schedulerProvider: SchedulerProvider,
-                repository: SongRepository
+                repository: SongRepository,
+                player: Player
         ): GetMediaMenuUseCase<Song> {
             return GetMediaMenuUseCase<Song>(
                     schedulerProvider,
-                    repository
+                    repository,
+                    player
             )
         }
 
@@ -173,11 +185,13 @@ abstract class UseCaseModule {
         @JvmStatic
         fun provideGetSongWithPlayCountMenuUseCase(
                 schedulerProvider: SchedulerProvider,
-                repository: SongWithPlayCountRepository
+                repository: SongWithPlayCountRepository,
+                player: Player
         ): GetMediaMenuUseCase<SongWithPlayCount> {
             return GetMediaMenuUseCase<SongWithPlayCount>(
                     schedulerProvider,
-                    repository
+                    repository,
+                    player
             )
         }
 
@@ -185,11 +199,13 @@ abstract class UseCaseModule {
         @JvmStatic
         fun provideGetMyFileMenuUseCase(
                 schedulerProvider: SchedulerProvider,
-                repository: MyFileRepository
+                repository: MyFileRepository,
+                player: Player
         ): GetMediaMenuUseCase<MyFile> {
             return GetMediaMenuUseCase<MyFile>(
                     schedulerProvider,
-                    repository
+                    repository,
+                    player
             )
         }
 

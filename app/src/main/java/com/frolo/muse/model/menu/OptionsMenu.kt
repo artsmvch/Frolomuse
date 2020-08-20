@@ -18,5 +18,6 @@ data class OptionsMenu<E : Media> constructor(
     val setAsDefaultOptionAvailable: Boolean,
     val addToHiddenOptionAvailable: Boolean,
     val scanFilesOptionAvailable: Boolean,
-    val shortcutOptionAvailable: Boolean
+    val shortcutOptionAvailable: Boolean,
+    val removeFromCurrentQueue: Boolean
 )
