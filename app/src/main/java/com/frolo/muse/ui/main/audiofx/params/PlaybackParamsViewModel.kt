@@ -78,7 +78,8 @@ class PlaybackParamsViewModel @Inject constructor(
             player.setSpeed(Player.SPEED_NORMAL)
             player.setPitch(Player.PITCH_NORMAL)
         }
-                .subscribeFor(schedulerProvider) {
+                .observeOn(schedulerProvider.main())
+                .subscribeFor {
                     _speed.value = Player.SPEED_NORMAL
                     _pitch.value = Player.PITCH_NORMAL
                 }

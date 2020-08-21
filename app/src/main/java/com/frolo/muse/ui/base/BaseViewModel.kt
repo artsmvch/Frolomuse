@@ -1,114 +1,122 @@
 package com.frolo.muse.ui.base
 
-import androidx.arch.core.executor.ArchTaskExecutor
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.frolo.muse.arch.SingleLiveEvent
 import com.frolo.muse.logger.EventLogger
-import com.frolo.muse.rx.SchedulerProvider
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import org.reactivestreams.Subscription
+import java.util.concurrent.ConcurrentHashMap
 
 
 abstract class BaseViewModel constructor(
     private val eventLogger: EventLogger
 ): ViewModel() {
 
+    // Container for any disposables that need to be disposed when the view model is cleared
     private val disposables = CompositeDisposable()
 
-    // common error stream
-    private val _error: MutableLiveData<Throwable> = SingleLiveEvent()
+    // Container for keyed disposables that need to be disposed when the view model is cleared
+    private val keyedDisposables: MutableMap<String, Disposable> = ConcurrentHashMap<String, Disposable>()
+    // Container for keyed subscription that need to be cancelled when the view model is cleared
+    private val keyedSubscriptions: MutableMap<String, Subscription> = ConcurrentHashMap<String, Subscription>()
+
+    // Common error stream
+    private val _error = SingleLiveEvent<Throwable>()
     val error: LiveData<Throwable> get() = _error
 
     protected fun logError(err: Throwable) {
         eventLogger.log(err)
-        if (ArchTaskExecutor.getInstance().isMainThread) {
-            _error.value = err
-        } else {
-            _error.postValue(err)
-        }
+        _error.postValue(err)
     }
 
     /**
-     * Subscribe for (without schedulers)
+     * Subscribes to [this] Flowable source and saves the result subscription for cleanup when the view model is cleared.
+     * [onNext] will be called every time the source emits a new element.
+     * The result subscription can be associated with the given [key].
+     * If the [key] is not null, then any previous subscription associated with it will be cancelled.
+     * This may be useful when only one unit of a particular task can be performed at a time.
      */
-    fun <T> Flowable<T>.subscribeFor(consumer: (T) -> Unit) {
+    fun <T> Flowable<T>.subscribeFor(key: String? = null, onNext: (T) -> Unit) {
         this
-                .subscribe({ consumer(it) }, { err -> logError(err) })
-                .save()
-    }
-
-    fun <T> Observable<T>.subscribeFor(consumer: (T) -> Unit) {
-        this
-                .subscribe({ consumer(it) }, { err -> logError(err) })
-                .save()
-    }
-
-    fun <T> Single<T>.subscribeFor(consumer: (T) -> Unit) {
-        this
-                .subscribe({ consumer(it) }, { err -> logError(err) })
-                .save()
-    }
-
-    fun Completable.subscribeFor(consumer: () -> Unit) {
-        this
-                .subscribe({ consumer() }, { err -> logError(err) })
-                .save()
+            .doOnSubscribe { subscription ->
+                if (key != null) {
+                    keyedSubscriptions.put(key, subscription)?.cancel()
+                }
+            }
+            .subscribe(onNext, ::logError)
+            .save()
     }
 
     /**
-     * Subscribe for (with schedulers)
+     * Subscribes to [this] Observable source and saves the result disposable for cleanup when the view model is cleared.
+     * [onNext] will be called every time the source emits a new element.
+     * The result disposable can be associated with the given [key].
+     * If the [key] is not null, then any previous disposable associated with it will be disposed.
+     * This may be useful when only one unit of a particular task can be performed at a time.
      */
-    fun <T> Flowable<T>.subscribeFor(schedulersProvider: SchedulerProvider, consumer: (T) -> Unit) {
+    protected fun <T> Observable<T>.subscribeFor(key: String? = null, onNext: (T) -> Unit) {
         this
-                .testable()
-                .observeOn(schedulersProvider.main())
-                .subscribeOn(schedulersProvider.worker())
-                .subscribeFor(consumer)
-    }
-
-    fun <T> Single<T>.subscribeFor(schedulersProvider: SchedulerProvider, consumer: (T) -> Unit) {
-        this
-                .testable()
-                .observeOn(schedulersProvider.main())
-                .subscribeOn(schedulersProvider.worker())
-                .subscribeFor(consumer)
-    }
-
-    fun Completable.subscribeFor(schedulersProvider: SchedulerProvider, consumer: () -> Unit) {
-        this
-                .testable()
-                .observeOn(schedulersProvider.main())
-                .subscribeOn(schedulersProvider.worker())
-                .subscribeFor(consumer)
+            .doOnSubscribe { disposable ->
+                if (key != null) {
+                    keyedDisposables.put(key, disposable)?.dispose()
+                }
+            }
+            .subscribe(onNext, ::logError)
+            .save()
     }
 
     /**
-     * Testable (additional actions in test mode)
+     * Subscribes to [this] Single source and saves the result disposable for cleanup when the view model is cleared.
+     * [onSuccess] will be called when the source completes successfully with a result.
+     * The result disposable can be associated with the given [key].
+     * If the [key] is not null, then any previous disposable associated with it will be disposed.
+     * This may be useful when only one unit of a particular task can be performed at a time.
      */
-    private fun <T> Single<T>.testable(): Single<T> {
-        return this
+    protected fun <T> Single<T>.subscribeFor(key: String? = null, onSuccess: (T) -> Unit) {
+        this
+            .doOnSubscribe { disposable ->
+                if (key != null) {
+                    keyedDisposables.put(key, disposable)?.dispose()
+                }
+            }
+            .subscribe(onSuccess, ::logError)
+            .save()
     }
 
-    private fun <T> Flowable<T>.testable(): Flowable<T> {
-        return this
+    /**
+     * Subscribes to [this] Completable source and saves the result disposable for cleanup when the view model is cleared.
+     * [onComplete] will be called when the source completes successfully.
+     * The result disposable can be associated with the given [key].
+     * If the [key] is not null, then any previous disposable associated with it will be disposed.
+     * This may be useful when only one unit of a particular task can be performed at a time.
+     */
+    protected fun Completable.subscribeFor(key: String? = null, onComplete: () -> Unit) {
+        this
+            .doOnSubscribe { disposable ->
+                if (key != null) {
+                    keyedDisposables.put(key, disposable)?.dispose()
+                }
+            }
+            .subscribe(onComplete, ::logError)
+            .save()
     }
 
-    private fun Completable.testable(): Completable {
-        return this
-    }
-
-    fun Disposable.save() {
+    /**
+     * Saves [this] disposable to be disposed when the view model is cleared.
+     */
+    protected fun Disposable.save() {
         disposables.add(this)
     }
 
     override fun onCleared() {
-        super.onCleared()
         disposables.clear()
+        super.onCleared()
     }
+
 }

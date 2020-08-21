@@ -144,7 +144,7 @@ class AudioFxViewModel @Inject constructor(
         MutableLiveData<VisualizerRendererType>().apply {
             preferences.visualizerRendererType
                 .observeOn(schedulerProvider.main())
-                .subscribeFor {  type -> value = type }
+                .subscribeFor { type -> value = type }
         }
     }
 
@@ -167,9 +167,8 @@ class AudioFxViewModel @Inject constructor(
                 val nativePresets = audioFx.nativePresets
                 return@map listOf(voidPreset) + nativePresets + customPresets
             }
-            .subscribeFor(schedulerProvider) { presets ->
-                _presets.value = presets
-            }
+            .observeOn(schedulerProvider.main())
+            .subscribeFor { presets -> _presets.value = presets }
     }
 
     fun onOpened() {
@@ -216,7 +215,7 @@ class AudioFxViewModel @Inject constructor(
             .subscribeOn(schedulerProvider.worker())
             .observeOn(schedulerProvider.main())
             .doOnComplete { eventLogger.logCustomPresetDeleted() }
-            .subscribeFor(schedulerProvider) {
+            .subscribeFor {
                 audioFx.unusePreset()
                 loadPresets()
             }
@@ -260,7 +259,9 @@ class AudioFxViewModel @Inject constructor(
 
     fun onVisualizerRendererTypeSelected(type: VisualizerRendererType) {
         preferences.setVisualizerRendererType(type)
-            .subscribeFor(schedulerProvider) {
+            .subscribeOn(schedulerProvider.worker())
+            .observeOn(schedulerProvider.main())
+            .subscribeFor {
             }
     }
 

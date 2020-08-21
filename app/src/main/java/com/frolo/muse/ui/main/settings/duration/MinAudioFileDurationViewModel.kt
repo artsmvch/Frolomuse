@@ -60,8 +60,10 @@ class MinAudioFileDurationViewModel @Inject constructor(
     fun onSaveClicked(typedMinutes: Int, typedSeconds: Int) {
         val newDuration = typedMinutes * 60 + typedSeconds
         preferences.setMinAudioFileDuration(newDuration)
+            .subscribeOn(schedulerProvider.worker())
+            .observeOn(schedulerProvider.main())
             .doOnComplete { eventLogger.logMinAudioFileDurationSet(newDuration) }
-            .subscribeFor(schedulerProvider){
+            .subscribeFor {
                 _goBackEvent.call()
             }
     }

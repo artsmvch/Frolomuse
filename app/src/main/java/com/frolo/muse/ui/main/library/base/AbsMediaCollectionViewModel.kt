@@ -201,7 +201,8 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
 
     fun onSortOrderOptionSelected() {
         getMediaUseCase.getSortOrderMenu()
-                .subscribeFor(schedulerProvider) { sortOrderMenu ->
+                .observeOn(schedulerProvider.main())
+                .subscribeFor { sortOrderMenu ->
                     _openSortOrderMenuEvent.value = sortOrderMenu
                 }
     }
@@ -501,7 +502,8 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
 
         getMediaMenuUseCase
                 .getOptionsMenu(item)
-                .subscribeFor(schedulerProvider) { optionsMenu ->
+                .observeOn(schedulerProvider.main())
+                .subscribeFor { optionsMenu ->
                     _openOptionsMenuEvent.value = optionsMenu
                 }
     }
@@ -642,7 +644,8 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
         _closeOptionsMenuEvent.value = event
         val item = event.item
         Single.fromCallable { ArrayList(listOf(item)) }
-                .subscribeFor(schedulerProvider) { items ->
+                .observeOn(schedulerProvider.main())
+                .subscribeFor { items ->
                     navigator.addMediaItemsToPlaylist(items)
                 }
     }
