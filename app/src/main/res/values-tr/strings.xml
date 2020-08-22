@@ -125,6 +125,7 @@
     <string name="play_next">Sonrakini çal</string>
     <string name="cut_ringtone">Zil sesini kes</string>
     <string name="add_song">Şarkı ekle</string>
+    <string name="remove_from_queue">Mevcut kuyruktan kaldır</string>
 
     <!--deletion confirmation-->
     <string name="confirmation">Onayla</string>

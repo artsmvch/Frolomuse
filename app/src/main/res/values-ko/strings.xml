@@ -120,6 +120,7 @@
     <string name="play_next">다음에 플레이</string>
     <string name="cut_ringtone">컷 벨소리</string>
     <string name="add_song">노래 추가</string>
+    <string name="remove_from_queue">현재 대기열에서 제거</string>
 
     <!--deletion confirmation-->
     <string name="confirmation">확인</string>

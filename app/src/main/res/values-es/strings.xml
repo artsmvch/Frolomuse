@@ -126,6 +126,7 @@
     <string name="play_next">Jugar siguiente</string>
     <string name="cut_ringtone">Cortar tono de llamada</string>
     <string name="add_song">Agregar canción</string>
+    <string name="remove_from_queue">Eliminar de la cola actual</string>
 
     <!--deletion confirmation-->
     <string name="confirmation">Confirmación</string>

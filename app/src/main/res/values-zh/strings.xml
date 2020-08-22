@@ -121,6 +121,7 @@
     <string name="play_next">接下來玩</string>
     <string name="cut_ringtone">切鈴聲</string>
     <string name="add_song">添加歌曲</string>
+    <string name="remove_from_queue">從當前隊列中刪除</string>
 
     <!--deletion confirmation-->
     <string name="confirmation">確認</string>

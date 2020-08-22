@@ -117,7 +117,7 @@
     <string name="add_to_playlist">Ajouter à la playlist</string>
     <string name="share">Partager</string>
     <string name="playlist">Playlist</string>
-    <string name="add_to_queue">Ajouter à la liste</string>
+    <string name="add_to_queue">Ajouter à la file d\'attente actuelle</string>
     <string name="edit_song_tags">Modifier les tags de chanson</string>
     <string name="edit_album_cover">Modifier la couverture de l\'album</string>
     <string name="view_album">Voir l\'album</string>
@@ -126,6 +126,7 @@
     <string name="play_next">Joue ensuite</string>
     <string name="cut_ringtone">Sonnerie coupée</string>
     <string name="add_song">Ajouter une chanson</string>
+    <string name="remove_from_queue">Supprimer de la file d\'attente actuelle</string>
 
     <!--deletion confirmation-->
     <string name="confirmation">Confirmation</string>

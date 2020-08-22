@@ -136,6 +136,7 @@
     <string name="play_next">Воспроизвести следующим</string>
     <string name="cut_ringtone">Вырезать рингтон</string>
     <string name="add_song">Добавить песню</string>
+    <string name="remove_from_queue">Удалить из текущей очереди</string>
 
     <!--deletion confirmation-->
     <string name="confirmation">Подтверждение</string>

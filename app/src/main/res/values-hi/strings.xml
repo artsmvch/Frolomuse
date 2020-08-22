@@ -126,6 +126,7 @@
     <string name="play_next">आगे खेलें</string>
     <string name="cut_ringtone">रिंगटोन को काटें</string>
     <string name="add_song">गीत जोड़ें</string>
+    <string name="remove_from_queue">वर्तमान कतार से निकाले</string>
 
     <!--deletion confirmation-->
     <string name="confirmation">पुष्टीकरण</string>

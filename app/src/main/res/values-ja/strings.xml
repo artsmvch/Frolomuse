@@ -121,6 +121,7 @@
     <string name="play_next">次に遊ぶ</string>
     <string name="cut_ringtone">着信音をカット</string>
     <string name="add_song">曲を追加</string>
+    <string name="remove_from_queue">現在のキューから削除</string>
 
     <!--deletion confirmation-->
     <string name="confirmation">確認</string>

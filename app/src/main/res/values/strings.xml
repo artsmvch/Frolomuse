@@ -120,7 +120,6 @@
     <string name="share">Share</string>
     <string name="playlist">Playlist</string>
     <string name="add_to_queue">Add to queue</string>
-    <string name="remove_from_queue">Remove from current queue</string>
     <string name="edit_song_tags">Edit song tags</string>
     <string name="edit_album_cover">Edit album cover</string>
     <string name="view_album">View album</string>
@@ -129,6 +128,7 @@
     <string name="play_next">Play next</string>
     <string name="cut_ringtone">Cut ringtone</string>
     <string name="add_song">Add song</string>
+    <string name="remove_from_queue">Remove from current queue</string>
 
     <!--deletion confirmation-->
     <string name="confirmation">Confirmation</string>

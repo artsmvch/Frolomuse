@@ -121,6 +121,7 @@
     <string name="play_next">Mainkan selanjutnya</string>
     <string name="cut_ringtone">Potong nada dering</string>
     <string name="add_song">Tambahkan lagu</string>
+    <string name="remove_from_queue">Hapus dari antrian saat ini</string>
 
     <!--deletion confirmation-->
     <string name="confirmation">Konfirmasi</string>

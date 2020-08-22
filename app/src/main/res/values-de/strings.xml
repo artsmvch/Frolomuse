@@ -126,6 +126,7 @@
     <string name="play_next">Als nächstes spielen</string>
     <string name="cut_ringtone">Klingelton ausschneiden</string>
     <string name="add_song">Lied hinzufügen</string>
+    <string name="remove_from_queue">Aus der aktuellen Warteschlange entfernen</string>
 
     <!--deletion confirmation-->
     <string name="confirmation">Bestätigung</string>

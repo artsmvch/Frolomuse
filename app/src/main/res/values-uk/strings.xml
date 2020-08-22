@@ -130,6 +130,7 @@
     <string name="play_next">Грайте далі</string>
     <string name="cut_ringtone">Вирізати рінгтон</string>
     <string name="add_song">Додати пісню</string>
+    <string name="remove_from_queue">Видалити з поточної черги</string>
 
     <!--deletion confirmation-->
     <string name="confirmation">Підтвердження</string>

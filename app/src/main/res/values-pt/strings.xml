@@ -126,6 +126,7 @@
     <string name="play_next">Reproduzir música ao lado</string>
     <string name="cut_ringtone">Cortar ringtone</string>
     <string name="add_song">Adicionar música</string>
+    <string name="remove_from_queue">Remover da fila atual</string>
 
     <!--deletion confirmation-->
     <string name="confirmation">Confirmação</string>
