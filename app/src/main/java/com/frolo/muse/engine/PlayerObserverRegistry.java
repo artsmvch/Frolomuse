@@ -39,11 +39,12 @@ final class PlayerObserverRegistry {
         static final int MSG_SOUGHT_TO = 3;
         static final int MSG_QUEUE_CHANGED = 4;
         static final int MSG_CURRENT_ITEM_CHANGED = 5;
-        static final int MSG_SHUFFLE_MODE_CHANGED = 6;
-        static final int MSG_REPEAT_MODE_CHANGED = 7;
-        static final int MSG_SHUTDOWN = 8;
-        static final int MSG_AB_CHANGED = 9;
-        static final int MSG_INTERNAL_ERROR_OCCURRED = 10;
+        static final int MSG_CURRENT_POSITION_CHANGED = 6;
+        static final int MSG_SHUFFLE_MODE_CHANGED = 7;
+        static final int MSG_REPEAT_MODE_CHANGED = 8;
+        static final int MSG_SHUTDOWN = 9;
+        static final int MSG_AB_CHANGED = 10;
+        static final int MSG_INTERNAL_ERROR_OCCURRED = 11;
 
         DispatcherHandler(Looper looper) {
             super(looper);
@@ -97,6 +98,14 @@ final class PlayerObserverRegistry {
                     final int positionInQueue = msg.arg1;
                     for (PlayerObserver observer : mObservers) {
                         observer.onAudioSourceChanged(getPlayer(), item, positionInQueue);
+                    }
+                    break;
+                }
+
+                case MSG_CURRENT_POSITION_CHANGED: {
+                    final int positionInQueue = msg.arg1;
+                    for (PlayerObserver observer : mObservers) {
+                        observer.onPositionInQueueChanged(getPlayer(), positionInQueue);
                     }
                     break;
                 }
@@ -244,6 +253,14 @@ final class PlayerObserverRegistry {
 
         final Message message =
                 mHandler.obtainMessage(DispatcherHandler.MSG_CURRENT_ITEM_CHANGED, positionInQueue, ARG_NOTHING, item);
+        dispatch(message);
+    }
+
+    synchronized void dispatchPositionInQueueChanged(int positionInQueue) {
+        mHandler.removeMessages(DispatcherHandler.MSG_CURRENT_POSITION_CHANGED);
+
+        final Message message =
+                mHandler.obtainMessage(DispatcherHandler.MSG_CURRENT_POSITION_CHANGED, positionInQueue, ARG_NOTHING);
         dispatch(message);
     }
 

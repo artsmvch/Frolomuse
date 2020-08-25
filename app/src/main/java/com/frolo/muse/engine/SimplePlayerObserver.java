@@ -35,6 +35,10 @@ public abstract class SimplePlayerObserver implements PlayerObserver {
     }
 
     @Override
+    public void onPositionInQueueChanged(@NotNull Player player, int positionInQueue) {
+    }
+
+    @Override
     public void onShuffleModeChanged(@NotNull Player player, @Player.ShuffleMode int mode) {
     }
 

@@ -69,6 +69,10 @@ class PlayerViewModel @Inject constructor(
             _playbackProgress.value = 0
         }
 
+        override fun onPositionInQueueChanged(player: Player, positionInQueue: Int) {
+            _songPosition.value = positionInQueue
+        }
+
         override fun onPlaybackStarted(player: Player) {
             _isPlaying.value = true
         }
@@ -92,7 +96,6 @@ class PlayerViewModel @Inject constructor(
 
     private val queueCallback = AudioSourceQueue.Callback { queue ->
         _invalidateSongQueueEvent.value = queue
-        _songPosition.value = player.getCurrentPositionInQueue()
     }
 
     private val _songDeletedEvent = SingleLiveEvent<Song>()

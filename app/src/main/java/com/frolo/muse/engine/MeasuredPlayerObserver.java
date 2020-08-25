@@ -122,6 +122,13 @@ final class MeasuredPlayerObserver implements PlayerObserver {
     }
 
     @Override
+    public void onPositionInQueueChanged(@NotNull Player player, int positionInQueue) {
+        final Measurement m = start("onPositionInQueueChanged");
+        mDelegate.onPositionInQueueChanged(player, positionInQueue);
+        end(m);
+    }
+
+    @Override
     public void onShuffleModeChanged(@NotNull Player player, int mode) {
         final Measurement m = start("onShuffleModeChanged");
         mDelegate.onShuffleModeChanged(player, mode);

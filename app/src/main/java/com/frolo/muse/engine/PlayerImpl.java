@@ -1092,8 +1092,8 @@ public final class PlayerImpl implements Player {
                 if (position < currentPositionInQueue) {
                     currentPositionInQueue--;
                     mCurrentPositionInQueue = currentPositionInQueue;
+                    mObserverRegistry.dispatchPositionInQueueChanged(currentPositionInQueue);
                 } else if (position == currentPositionInQueue) {
-                    mCurrentItem = null;
                     _resolveUndefinedState(mIsPlayingFlag).run();
                 }
 
@@ -1131,8 +1131,10 @@ public final class PlayerImpl implements Player {
                 }
 
                 if (currentQueue.isEmpty() || items.contains(mCurrentItem)) {
-                    mCurrentItem = null;
                     _resolveUndefinedState(mIsPlayingFlag).run();
+                } else {
+                    mCurrentPositionInQueue = currentPositionInQueue;
+                    mObserverRegistry.dispatchPositionInQueueChanged(currentPositionInQueue);
                 }
 
             }
@@ -1255,11 +1257,12 @@ public final class PlayerImpl implements Player {
                     }
                 }
 
-                mCurrentPositionInQueue = currentPositionInQueue;
-
                 if (fromPosition >= 0 && toPosition >= 0) {
                     currentQueue.moveItem(fromPosition, toPosition);
                 }
+
+                mCurrentPositionInQueue = currentPositionInQueue;
+                mObserverRegistry.dispatchPositionInQueueChanged(currentPositionInQueue);
 
             }
         };
@@ -1555,7 +1558,9 @@ public final class PlayerImpl implements Player {
                     currentQueue.shuffleWithItemInFront(currentItem);
                 }
 
-                mCurrentPositionInQueue = currentQueue.indexOf(currentItem);
+                final int position = currentQueue.indexOf(currentItem);
+                mCurrentPositionInQueue = position;
+                mObserverRegistry.dispatchPositionInQueueChanged(position);
 
                 mObserverRegistry.dispatchShuffleModeChanged(mode);
 

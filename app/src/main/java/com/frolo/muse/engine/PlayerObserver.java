@@ -51,6 +51,13 @@ public interface PlayerObserver {
     void onAudioSourceChanged(@NotNull Player player, @Nullable AudioSource item, int positionInQueue);
 
     /**
+     * Called when the position of the current audio source in queue gets changed for the given <code>player</code>.
+     * @param player for which the current audio source is changed
+     * @param positionInQueue new position of the current audio source in the queue
+     */
+    void onPositionInQueueChanged(@NotNull Player player, int positionInQueue);
+
+    /**
      * Called when the current shuffle mode gets changed for the given <code>player</code>.
      * @param player for which the current shuffle mode is changed
      * @param mode new shuffle mode

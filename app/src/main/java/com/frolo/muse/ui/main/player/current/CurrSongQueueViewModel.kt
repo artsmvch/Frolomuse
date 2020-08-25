@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.frolo.muse.arch.SingleLiveEvent
 import com.frolo.muse.arch.map
-import com.frolo.muse.common.toSong
 import com.frolo.muse.common.toSongs
 import com.frolo.muse.di.Exec
 import com.frolo.muse.engine.AudioSource
@@ -66,11 +65,14 @@ class CurrSongQueueViewModel @Inject constructor(
 
     private val queueCallback = AudioSourceQueue.Callback { queue ->
         handleQueue(queue)
-        _playingPosition.value = player.getCurrentPositionInQueue()
     }
 
     private val playerObserver = object : SimplePlayerObserver() {
         override fun onAudioSourceChanged(player: Player, item: AudioSource?, positionInQueue: Int) {
+            _playingPosition.value = positionInQueue
+        }
+
+        override fun onPositionInQueueChanged(player: Player, positionInQueue: Int) {
             _playingPosition.value = positionInQueue
         }
 
@@ -87,10 +89,10 @@ class CurrSongQueueViewModel @Inject constructor(
         }
     }
 
-    private val _isPlaying = MutableLiveData<Boolean>()
+    private val _isPlaying = MutableLiveData<Boolean>(player.isPlaying())
     val isPlaying: LiveData<Boolean> get() = _isPlaying
 
-    private val _playingPosition = MutableLiveData<Int>()
+    private val _playingPosition = MutableLiveData<Int>(player.getCurrentPositionInQueue())
     val playingPosition: LiveData<Int> get() = _playingPosition
 
     val saveAsPlaylistOptionEnabled: LiveData<Boolean> =
@@ -115,8 +117,6 @@ class CurrSongQueueViewModel @Inject constructor(
 
     init {
         player.registerObserver(playerObserver)
-        _isPlaying.value = player.isPlaying()
-        _playingPosition.value = player.getCurrentPositionInQueue()
     }
 
     private fun handleQueue(queue: AudioSourceQueue?) {
