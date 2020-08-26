@@ -126,6 +126,10 @@ public final class AudioSourceQueue implements Cloneable {
         return mId;
     }
 
+    public String getName() {
+        return mName;
+    }
+
     public boolean isUnique() {
         return mUnique;
     }

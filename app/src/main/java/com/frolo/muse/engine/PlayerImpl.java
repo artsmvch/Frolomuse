@@ -274,12 +274,9 @@ public final class PlayerImpl implements Player {
             mEngineHandler.removeCallbacksAndMessages(null);
         }
 
-        final Runnable wrapped = new EngineTaskWrapper(task);
-        if (mEngineHandler.getLooper().isCurrentThread()) {
-            wrapped.run();
-        } else {
-            mEngineHandler.post(wrapped);
-        }
+        final Runnable wrapper = new EngineTaskWrapper(task);
+        // We always post it to avoid unexpected wrong order of tasks
+        mEngineHandler.post(wrapper);
     }
 
     /**
@@ -299,6 +296,26 @@ public final class PlayerImpl implements Player {
      */
     public void postOnEngineThread(@NotNull Runnable action) {
         mEngineHandler.post(action);
+    }
+
+    /**
+     * Executes <code>action</code> on the event thread.
+     * The execution can be delayed until all pending and potential event tasks are performed.
+     * @param action to execute on the event thread
+     * @param delayed true if the action should executed at the very end after all pending and potential event tasks
+     */
+    public void postOnEventThread(@NotNull Runnable action, boolean delayed) {
+        if (delayed) {
+            final Runnable task = new Runnable() {
+                @Override
+                public void run() {
+                    mObserverRegistry.post(action);
+                }
+            };
+            processEngineTask(task);
+        } else {
+            mObserverRegistry.post(action);
+        }
     }
 
     /**

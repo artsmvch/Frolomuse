@@ -100,6 +100,14 @@ android {
             jni.srcDirs = ['src/main/jniLibs']
             jniLibs.srcDir 'src/main/jniLibs'
         }
+
+        test {
+            java.srcDirs += "$projectDir/src/testShared"
+        }
+
+        androidTest {
+            java.srcDirs += "$projectDir/src/testShared"
+        }
     }
 
     compileOptions {
@@ -117,6 +125,12 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+
+    // Instrumentation tests
+    androidTestImplementation "com.android.support.test:runner:1.0.2"
+    androidTestImplementation 'org.mockito:mockito-core:2.23.0'
+    androidTestImplementation 'org.mockito:mockito-android:2.23.0'
+    androidTestImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0"
 
     // Unit tests
     testImplementation 'junit:junit:4.12'

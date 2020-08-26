@@ -1,13 +1,14 @@
 package com.frolo.muse.engine.stub
 
-import com.frolo.muse.engine.AudioFx
+import android.media.MediaPlayer
+import com.frolo.muse.engine.AudioFxApplicable
 import com.frolo.muse.engine.AudioFxObserver
 import com.frolo.muse.model.preset.NativePreset
 import com.frolo.muse.model.preset.Preset
 import com.frolo.muse.model.reverb.Reverb
 
 
-object AudioFxStub: AudioFx {
+object AudioFxStub: AudioFxApplicable {
     override fun save() = Unit
     override fun registerObserver(observer: AudioFxObserver) = Unit
     override fun unregisterObserver(observer: AudioFxObserver) = Unit
@@ -39,4 +40,6 @@ object AudioFxStub: AudioFx {
     override fun getMaxVirtualizerStrength(): Short = 0
     override fun getVirtualizerStrength(): Short = 0
     override fun setVirtualizerStrength(strength: Short) = Unit
+    override fun apply(engine: MediaPlayer) = Unit
+    override fun release() = Unit
 }

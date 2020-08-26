@@ -311,4 +311,8 @@ final class PlayerObserverRegistry {
         dispatch(message);
     }
 
+    synchronized void post(@NotNull Runnable r) {
+        mHandler.post(r);
+    }
+
 }
