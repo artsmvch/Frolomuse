@@ -96,4 +96,58 @@ class PlayerImplTest {
 
     }
 
+    @Test
+    fun test_shuffle() {
+
+        val player = getPlayerImpl()
+
+        val testObserver = mock<TestPlayerObserver>()
+
+        player.registerObserver(testObserver)
+
+        val queue = AudioSourceQueue.create(
+            AudioSourceQueue.NONE,
+            randomLong(),
+            randomString(),
+            getAudioSources()
+        )
+
+        if (queue.isEmpty) {
+            // it's undefined state
+            throw IllegalStateException()
+        }
+
+        val position = queue.length / 2 // somewhere in the middle
+        val item = queue.getItemAt(position)
+
+        // Prepare
+        player.prepare(queue, item, false)
+
+        player.doAfterAllEvents {
+            verify(testObserver, times(1)).onQueueChanged(same(player), argThat(AudioSourceQueueEquals(queue)))
+            verify(testObserver, times(1)).onAudioSourceChanged(same(player), eq(item), eq(position))
+            verify(testObserver, times(1)).onPlaybackPaused(same(player))
+        }
+
+        // Shuffle
+        player.setShuffleMode(Player.SHUFFLE_ON)
+
+        player.doAfterAllEvents {
+            val p = player.getCurrentQueue()?.indexOf(item) ?: -1
+            verify(testObserver, times(1)).onPositionInQueueChanged(same(player), eq(p))
+            verify(testObserver, times(1)).onShuffleModeChanged(same(player), eq(Player.SHUFFLE_ON))
+        }
+
+        // Un-shuffle
+        val pBefore = player.getCurrentPositionInQueue()
+        player.setShuffleMode(Player.SHUFFLE_OFF)
+
+        player.doAfterAllEvents {
+            val p = player.getCurrentQueue()?.indexOf(item) ?: -1
+            verify(testObserver, times(if (p == pBefore) 2 else 1)).onPositionInQueueChanged(same(player), eq(p))
+            verify(testObserver, times(1)).onShuffleModeChanged(same(player), eq(Player.SHUFFLE_OFF))
+        }
+
+    }
+
 }
