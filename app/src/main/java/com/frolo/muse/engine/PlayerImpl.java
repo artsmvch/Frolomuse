@@ -192,6 +192,8 @@ public final class PlayerImpl implements Player {
         }
     };
 
+    private final Object mOnCompletionWaiter = new Object();
+
     /**
      * Completion handler for {@link MediaPlayer}.
      */
@@ -199,6 +201,11 @@ public final class PlayerImpl implements Player {
         @Override
         public void onCompletion(MediaPlayer mp) {
             processEngineTask(_skipToNext(false));
+
+            // Notifying all threads that the playback is complete
+            synchronized (mOnCompletionWaiter) {
+                mOnCompletionWaiter.notifyAll();
+            }
         }
     };
 
@@ -315,6 +322,19 @@ public final class PlayerImpl implements Player {
             processEngineTask(task);
         } else {
             mObserverRegistry.post(action);
+        }
+    }
+
+    /**
+     * Awaits until the playback is complete, i.e. the playback reaches the end.
+     * NOTE: be careful with calling this method: it waits even if the engine is not playing at the moment.
+     */
+    public void awaitPlaybackCompletion() {
+        synchronized (mOnCompletionWaiter) {
+            try {
+                mOnCompletionWaiter.wait();
+            } catch (InterruptedException ignored) {
+            }
         }
     }
 
