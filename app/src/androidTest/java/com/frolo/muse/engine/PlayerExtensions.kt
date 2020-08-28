@@ -1,6 +1,7 @@
 package com.frolo.muse.engine
 
 import java.util.concurrent.CountDownLatch
+import kotlin.math.max
 
 
 /**
@@ -22,4 +23,14 @@ fun PlayerImpl.doAfterAllEvents(action: () -> Unit) {
     }
     postOnEventThread(actionWrapper, true)
     countDownLatch.await()
+}
+
+/**
+ * Simulates complete playback, i.e. rewinds the playback position to the end and waits its completion.
+ */
+fun PlayerImpl.simulateCompletePlayback() {
+    // As the target position [duration - 100 ms] is taken
+    val playbackPosition = max(0, getDuration() - 100)
+    seekTo(playbackPosition)
+    awaitPlaybackCompletion()
 }

@@ -213,8 +213,7 @@ class PlayerImplTest {
         }
 
         // Rewind to the end
-        player.seekTo(player.getDuration())
-        player.awaitPlaybackCompletion()
+        player.simulateCompletePlayback()
 
         player.doAfterAllEvents {
             verify(testObserver, times(2)).onAudioSourceChanged(same(player), eq(item), eq(position))
@@ -228,8 +227,7 @@ class PlayerImplTest {
         }
 
         // Rewind to the end
-        player.seekTo(player.getDuration())
-        player.awaitPlaybackCompletion()
+        player.simulateCompletePlayback()
 
         player.doAfterAllEvents {
             if (queue.length == 1) {
