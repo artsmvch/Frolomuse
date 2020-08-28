@@ -12,6 +12,7 @@ import junit.framework.Assert.assertFalse
 import junit.framework.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
+import kotlin.math.absoluteValue
 
 
 @RunWith(AndroidJUnit4::class)
@@ -35,7 +36,7 @@ class PlayerImplTest {
         return songs.map { it.toAudioSource() }
     }
 
-    private fun createNonEmptyAudioSourceQueue(): AudioSourceQueue {
+    private fun createNonEmptyAudioSourceQueue(minSize: Int = 1): AudioSourceQueue {
         val queue = AudioSourceQueue.create(
             AudioSourceQueue.NONE,
             randomLong(),
@@ -43,9 +44,9 @@ class PlayerImplTest {
             getAudioSources()
         )
 
-        if (queue.isEmpty) {
+        if (queue.length < minSize) {
             // it's undefined state
-            throw IllegalStateException("There are no songs in the device")
+            throw IllegalStateException("There are no enough songs in the device, requested at least $minSize but found only ${queue.length}")
         }
 
         return queue
@@ -245,6 +246,142 @@ class PlayerImplTest {
             verify(testObserver, times(1)).onRepeatModeChanged(same(player), eq(Player.REPEAT_OFF))
         }
 
+    }
+
+    @Test
+    fun test_remove1() = doOnPlayerImpl { player ->
+        // Test case 1: remove an audio source that comes before the current one in the queue
+
+        val testObserver = mock<TestPlayerObserver>()
+        player.registerObserver(testObserver)
+
+        val queue = createNonEmptyAudioSourceQueue(minSize = 2)
+        val originalSize = queue.length
+
+        val position = queue.length - 1
+
+        val item = queue.getItemAt(position)
+
+        // Prepare
+        player.prepare(queue, item, false)
+
+        val firstItem = queue.getItemAt(0)
+
+        player.removeAll(listOf(firstItem))
+
+        player.doAfterAllEvents {
+            verify(testObserver, times(1)).onPositionInQueueChanged(same(player), eq(position - 1))
+            assertTrue(player.getCurrentQueue()!!.length == originalSize - 1)
+        }
+    }
+
+    @Test
+    fun test_remove2() = doOnPlayerImpl { player ->
+        // Test case 2: remove an audio source that is current one (which is being played in the player)
+
+        val testObserver = mock<TestPlayerObserver>()
+        player.registerObserver(testObserver)
+
+        val queue = createNonEmptyAudioSourceQueue(minSize = 2)
+        val originalSize = queue.length
+
+        val position = 0
+
+        val item = queue.getItemAt(position)
+
+        // Prepare
+        player.prepare(queue, item, false)
+
+        player.removeAll(listOf(item))
+
+        player.doAfterAllEvents {
+            verify(testObserver, times(1)).onAudioSourceChanged(same(player), eq(queue.getItemAt(position)), eq(position))
+            assertTrue(player.getCurrentQueue()!!.length == originalSize - 1)
+        }
+    }
+
+    @Test
+    fun test_remove3() = doOnPlayerImpl { player ->
+        // Test case 3: remove an audio source after shuffling the queue in the player
+
+        val testObserver = mock<TestPlayerObserver>()
+        player.registerObserver(testObserver)
+
+        val queue = createNonEmptyAudioSourceQueue(minSize = 2)
+        val originalSize = queue.length
+
+        val position = 0
+
+        val item = queue.getItemAt(position)
+
+        // Prepare
+        player.prepare(queue, item, false)
+
+        player.setShuffleMode(Player.SHUFFLE_ON)
+
+        player.waitUntilAllEventsAreOver()
+
+        val currentQueue = player.getCurrentQueue()!!
+        val currentPositionInQueue = player.getCurrentPositionInQueue()
+
+        val victim = currentQueue.getItemAt(0)
+
+        player.removeAll(listOf(victim))
+
+        // Check if the victim is the current playing item
+        if (item == victim) {
+            player.doAfterAllEvents {
+                verify(testObserver, times(1)).onAudioSourceChanged(same(player), eq(currentQueue.getItemAt(currentPositionInQueue)), eq(position))
+                assertTrue(player.getCurrentQueue()!!.length == originalSize - 1)
+            }
+        } else {
+            player.doAfterAllEvents {
+                verify(testObserver, times(1)).onPositionInQueueChanged(same(player), eq(currentPositionInQueue))
+                assertTrue(player.getCurrentQueue()!!.length == originalSize - 1)
+            }
+        }
+    }
+
+    @Test
+    fun test_remove4() = doOnPlayerImpl { player ->
+        // Test case 4: remove an audio source which has copies in the queue
+
+        val testObserver = mock<TestPlayerObserver>()
+        player.registerObserver(testObserver)
+
+        val list = getAudioSources()
+
+        val someItem = list[list.size - 1]
+        val otherItem = list[list.size - 2]
+
+        val newList = ArrayList<AudioSource>().apply {
+            add(someItem)
+            addAll(list)
+            add(someItem)
+        }
+
+        val queue = AudioSourceQueue.create(
+            AudioSourceQueue.NONE,
+            randomLong().absoluteValue,
+            randomString(),
+            newList
+        )
+        val originalSize = queue.length
+
+        val position = 0
+
+        // item == someItem
+        val item = queue.getItemAt(position)
+
+        // Prepare
+        player.prepare(queue, item, false)
+
+        player.removeAll(listOf(someItem))
+
+        player.doAfterAllEvents {
+            verify(testObserver, times(1)).onAudioSourceChanged(same(player), eq(otherItem), eq(position))
+            assertTrue(player.getCurrentQueue()!!.length == originalSize - 3)
+        }
     }
 
 }

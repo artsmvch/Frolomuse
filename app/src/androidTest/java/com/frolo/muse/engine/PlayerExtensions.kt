@@ -26,6 +26,11 @@ fun PlayerImpl.doAfterAllEvents(action: () -> Unit) {
 }
 
 /**
+ * Convenient method for waiting until all events are over in the player.
+ */
+fun PlayerImpl.waitUntilAllEventsAreOver(): Unit = doAfterAllEvents {  }
+
+/**
  * Simulates complete playback, i.e. rewinds the playback position to the end and waits its completion.
  */
 fun PlayerImpl.simulateCompletePlayback() {

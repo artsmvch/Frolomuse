@@ -1155,17 +1155,19 @@ public final class PlayerImpl implements Player {
 
                 for (AudioSource item : items) {
 
-                    final int position = mCurrentQueue.indexOf(item);
+                    int position = -1;
+                    while ((position = mCurrentQueue.indexOf(item)) != -1) {
+                        if (position <= currentPositionInQueue) {
+                            currentPositionInQueue--;
+                        }
 
-                    if (position <= currentPositionInQueue) {
-                        currentPositionInQueue--;
+                        currentQueue.removeAt(position);
                     }
 
-                    if (originQueue != null) {
-                        originQueue.remove(item);
-                    }
-                    currentQueue.remove(item);
+                }
 
+                if (originQueue != null) {
+                    originQueue.removeAll(items);
                 }
 
                 if (currentQueue.isEmpty() || items.contains(mCurrentItem)) {
