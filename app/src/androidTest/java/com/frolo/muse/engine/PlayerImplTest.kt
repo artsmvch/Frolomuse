@@ -68,12 +68,9 @@ class PlayerImplTest {
     }
 
     @Test
-    fun test_prepare() {
-
-        val player = createPlayerImpl()
+    fun test_prepare() = doOnPlayerImpl { player ->
 
         val testObserver = mock<TestPlayerObserver>()
-
         player.registerObserver(testObserver)
 
         val queue = AudioSourceQueue.create(
@@ -131,12 +128,9 @@ class PlayerImplTest {
     }
 
     @Test
-    fun test_shuffle() {
-
-        val player = createPlayerImpl()
+    fun test_shuffle() = doOnPlayerImpl { player ->
 
         val testObserver = mock<TestPlayerObserver>()
-
         player.registerObserver(testObserver)
 
         val queue = AudioSourceQueue.create(
