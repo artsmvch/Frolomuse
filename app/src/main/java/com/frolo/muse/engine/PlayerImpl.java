@@ -1109,6 +1109,7 @@ public final class PlayerImpl implements Player {
         };
     }
 
+    // TODO: rename the method to 'removeAt'
     @Override
     public void remove(final int position) {
         if (isShutdown()) return;

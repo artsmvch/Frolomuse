@@ -249,7 +249,7 @@ class PlayerImplTest {
     }
 
     @Test
-    fun test_remove1() = doOnPlayerImpl { player ->
+    fun test_removeAll1() = doOnPlayerImpl { player ->
         // Test case 1: remove an audio source that comes before the current one in the queue
 
         val testObserver = mock<TestPlayerObserver>()
@@ -276,7 +276,7 @@ class PlayerImplTest {
     }
 
     @Test
-    fun test_remove2() = doOnPlayerImpl { player ->
+    fun test_removeAll2() = doOnPlayerImpl { player ->
         // Test case 2: remove an audio source that is current one (which is being played in the player)
 
         val testObserver = mock<TestPlayerObserver>()
@@ -301,7 +301,7 @@ class PlayerImplTest {
     }
 
     @Test
-    fun test_remove3() = doOnPlayerImpl { player ->
+    fun test_removeAll3() = doOnPlayerImpl { player ->
         // Test case 3: remove an audio source after shuffling the queue in the player
 
         val testObserver = mock<TestPlayerObserver>()
@@ -343,7 +343,7 @@ class PlayerImplTest {
     }
 
     @Test
-    fun test_remove4() = doOnPlayerImpl { player ->
+    fun test_removeAll4() = doOnPlayerImpl { player ->
         // Test case 4: remove an audio source which has copies in the queue
 
         val testObserver = mock<TestPlayerObserver>()
@@ -381,6 +381,85 @@ class PlayerImplTest {
         player.doAfterAllEvents {
             verify(testObserver, times(1)).onAudioSourceChanged(same(player), eq(otherItem), eq(position))
             assertTrue(player.getCurrentQueue()!!.length == originalSize - 3)
+        }
+    }
+
+    @Test
+    fun test_remove1() = doOnPlayerImpl { player ->
+        // Test case 1: remove item at the current playing position
+
+        val testObserver = mock<TestPlayerObserver>()
+        player.registerObserver(testObserver)
+
+        val originalQueue = createNonEmptyAudioSourceQueue(minSize = 2)
+        val queue = originalQueue.clone()
+        val originalSize = queue.length
+
+        val position = 0
+
+        val item = queue.getItemAt(position)
+
+        // Prepare
+        player.prepare(queue, item, false)
+
+        player.remove(position)
+
+        player.doAfterAllEvents {
+            verify(testObserver, times(1)).onAudioSourceChanged(same(player), eq(originalQueue.getItemAt(position + 1)), eq(position))
+            assertTrue(player.getCurrentQueue()!!.length == originalSize - 1)
+        }
+    }
+
+    @Test
+    fun test_remove2() = doOnPlayerImpl { player ->
+        // Test case 2: remove item at a position that comes before the current playing position
+
+        val testObserver = mock<TestPlayerObserver>()
+        player.registerObserver(testObserver)
+
+        val originalQueue = createNonEmptyAudioSourceQueue(minSize = 2)
+        val queue = originalQueue.clone()
+        val originalSize = queue.length
+
+        val position = 1
+
+        val item = queue.getItemAt(position)
+
+        // Prepare
+        player.prepare(queue, item, false)
+
+        player.remove(0)
+
+        player.doAfterAllEvents {
+            verify(testObserver, times(1)).onPositionInQueueChanged(same(player), eq(0))
+            assertTrue(player.getCurrentQueue()!!.length == originalSize - 1)
+        }
+    }
+
+    @Test
+    fun test_remove3() = doOnPlayerImpl { player ->
+        // Test case 3: remove item at a position that comes after the current playing position
+
+        val testObserver = mock<TestPlayerObserver>()
+        player.registerObserver(testObserver)
+
+        val originalQueue = createNonEmptyAudioSourceQueue(minSize = 2)
+        val queue = originalQueue.clone()
+        val originalSize = queue.length
+
+        val position = 0
+
+        val item = queue.getItemAt(position)
+
+        // Prepare
+        player.prepare(queue, item, false)
+
+        player.remove(1)
+
+        player.doAfterAllEvents {
+            verify(testObserver, times(1)).onAudioSourceChanged(same(player), eq(item), eq(0))
+            verify(testObserver, never()).onPositionInQueueChanged(same(player), any())
+            assertTrue(player.getCurrentQueue()!!.length == originalSize - 1)
         }
     }
 
