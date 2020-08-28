@@ -385,7 +385,7 @@ class PlayerImplTest {
     }
 
     @Test
-    fun test_remove1() = doOnPlayerImpl { player ->
+    fun test_removeAt1() = doOnPlayerImpl { player ->
         // Test case 1: remove item at the current playing position
 
         val testObserver = mock<TestPlayerObserver>()
@@ -402,7 +402,7 @@ class PlayerImplTest {
         // Prepare
         player.prepare(queue, item, false)
 
-        player.remove(position)
+        player.removeAt(position)
 
         player.doAfterAllEvents {
             verify(testObserver, times(1)).onAudioSourceChanged(same(player), eq(originalQueue.getItemAt(position + 1)), eq(position))
@@ -411,7 +411,7 @@ class PlayerImplTest {
     }
 
     @Test
-    fun test_remove2() = doOnPlayerImpl { player ->
+    fun test_removeAt2() = doOnPlayerImpl { player ->
         // Test case 2: remove item at a position that comes before the current playing position
 
         val testObserver = mock<TestPlayerObserver>()
@@ -428,7 +428,7 @@ class PlayerImplTest {
         // Prepare
         player.prepare(queue, item, false)
 
-        player.remove(0)
+        player.removeAt(0)
 
         player.doAfterAllEvents {
             verify(testObserver, times(1)).onPositionInQueueChanged(same(player), eq(0))
@@ -437,7 +437,7 @@ class PlayerImplTest {
     }
 
     @Test
-    fun test_remove3() = doOnPlayerImpl { player ->
+    fun test_removeAt3() = doOnPlayerImpl { player ->
         // Test case 3: remove item at a position that comes after the current playing position
 
         val testObserver = mock<TestPlayerObserver>()
@@ -454,7 +454,7 @@ class PlayerImplTest {
         // Prepare
         player.prepare(queue, item, false)
 
-        player.remove(1)
+        player.removeAt(1)
 
         player.doAfterAllEvents {
             verify(testObserver, times(1)).onAudioSourceChanged(same(player), eq(item), eq(0))

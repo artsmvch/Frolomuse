@@ -115,8 +115,8 @@ class PlayerWrapper : Player {
         delegate?.update(item)
     }
 
-    override fun remove(position: Int) {
-        delegate?.remove(position)
+    override fun removeAt(position: Int) {
+        delegate?.removeAt(position)
     }
 
     override fun removeAll(items: Collection<AudioSource>) {

@@ -203,7 +203,7 @@ class CurrSongQueueViewModel @Inject constructor(
     }
 
     fun onItemPositionDismissed(item: Song, position: Int) {
-        player.remove(position)
+        player.removeAt(position)
     }
 
     fun onItemMoved(fromPosition: Int, toPosition: Int) {

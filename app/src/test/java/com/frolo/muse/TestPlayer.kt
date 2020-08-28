@@ -26,7 +26,7 @@ class TestPlayer: Player {
     override fun pause() = Unit
     override fun toggle() = Unit
     override fun update(item: AudioSource) = Unit
-    override fun remove(position: Int) = Unit
+    override fun removeAt(position: Int) = Unit
     override fun removeAll(items: Collection<AudioSource>) = Unit
     override fun add(item: AudioSource) = Unit
     override fun addAll(items: List<AudioSource>) = Unit

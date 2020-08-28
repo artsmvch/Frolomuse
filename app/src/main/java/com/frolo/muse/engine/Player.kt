@@ -28,7 +28,7 @@ interface Player {
     fun pause()
     fun toggle()
     fun update(item: AudioSource)
-    fun remove(position: Int)
+    fun removeAt(position: Int)
     fun removeAll(items: Collection<AudioSource>)
     fun add(item: AudioSource)
     fun addAll(items: List<AudioSource>)
