@@ -328,8 +328,9 @@ public final class PlayerImpl implements Player {
     /**
      * Awaits until the playback is complete, i.e. the playback reaches the end.
      * NOTE: be careful with calling this method: it waits even if the engine is not playing at the moment.
+     * This method should only be used for testing.
      */
-    public void awaitPlaybackCompletion() {
+    final void awaitPlaybackCompletion() {
         synchronized (mOnCompletionWaiter) {
             try {
                 mOnCompletionWaiter.wait();
