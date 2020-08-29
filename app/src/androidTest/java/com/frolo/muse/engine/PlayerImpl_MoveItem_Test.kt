@@ -40,7 +40,7 @@ class PlayerImpl_MoveItem_Test : PlayerImpl_Base_Test() {
         val item = queue.getItemAt(position)
 
         // Prepare
-        player.prepare(queue, position, 0, false)
+        player.prepareByPosition(queue, position, 0, false)
 
         player.waitUntilAllEventsAreOver()
 
@@ -80,7 +80,7 @@ class PlayerImpl_MoveItem_Test : PlayerImpl_Base_Test() {
         val item = queue.getItemAt(position)
 
         // Prepare
-        player.prepare(queue, position, 0, false)
+        player.prepareByPosition(queue, position, 0, false)
 
         player.waitUntilAllEventsAreOver()
 
@@ -120,7 +120,7 @@ class PlayerImpl_MoveItem_Test : PlayerImpl_Base_Test() {
         val item = queue.getItemAt(position)
 
         // Prepare
-        player.prepare(queue, position, 0, false)
+        player.prepareByPosition(queue, position, 0, false)
 
         player.waitUntilAllEventsAreOver()
 
@@ -161,7 +161,7 @@ class PlayerImpl_MoveItem_Test : PlayerImpl_Base_Test() {
         val item = queue.getItemAt(position)
 
         // Prepare
-        player.prepare(queue, position, 0, false)
+        player.prepareByPosition(queue, position, 0, false)
 
         player.waitUntilAllEventsAreOver()
 
@@ -202,7 +202,7 @@ class PlayerImpl_MoveItem_Test : PlayerImpl_Base_Test() {
         val item = queue.getItemAt(position)
 
         // Prepare
-        player.prepare(queue, position, 0, false)
+        player.prepareByPosition(queue, position, 0, false)
 
         player.waitUntilAllEventsAreOver()
 

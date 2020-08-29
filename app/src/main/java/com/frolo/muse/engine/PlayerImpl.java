@@ -657,7 +657,7 @@ public final class PlayerImpl implements Player {
         prepare(queue, item, 0, startPlaying);
     }
 
-    private Runnable _prepare(@NotNull AudioSourceQueue queue, int positionInQueue, int playbackPosition, boolean startPlaying) {
+    private Runnable _prepareByPosition(@NotNull AudioSourceQueue queue, int positionInQueue, int playbackPosition, boolean startPlaying) {
         return new Runnable() {
             @Override
             public void run() {
@@ -712,7 +712,7 @@ public final class PlayerImpl implements Player {
             @Override
             public void run() {
                 final int positionInQueue = queue.indexOf(item);
-                _prepare(queue, positionInQueue, playbackPosition, startPlaying).run();
+                _prepareByPosition(queue, positionInQueue, playbackPosition, startPlaying).run();
             }
         };
 
@@ -720,10 +720,10 @@ public final class PlayerImpl implements Player {
     }
 
     @Override
-    public void prepare(@NotNull AudioSourceQueue queue, int positionInQueue, int playbackPosition, boolean startPlaying) {
+    public void prepareByPosition(@NotNull AudioSourceQueue queue, int positionInQueue, int playbackPosition, boolean startPlaying) {
         if (isShutdown()) return;
 
-        processEngineTask(true, _prepare(queue, positionInQueue, playbackPosition, startPlaying));
+        processEngineTask(true, _prepareByPosition(queue, positionInQueue, playbackPosition, startPlaying));
     }
 
     @Override

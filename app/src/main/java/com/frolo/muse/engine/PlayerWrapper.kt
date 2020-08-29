@@ -43,8 +43,8 @@ class PlayerWrapper : Player {
         delegate?.prepare(queue, item, playbackPosition, startPlaying)
     }
 
-    override fun prepare(queue: AudioSourceQueue, positionInQueue: Int, playbackPosition: Int, startPlaying: Boolean) {
-        delegate?.prepare(queue, positionInQueue, playbackPosition, startPlaying)
+    override fun prepareByPosition(queue: AudioSourceQueue, positionInQueue: Int, playbackPosition: Int, startPlaying: Boolean) {
+        delegate?.prepareByPosition(queue, positionInQueue, playbackPosition, startPlaying)
     }
 
     override fun shutdown() {
