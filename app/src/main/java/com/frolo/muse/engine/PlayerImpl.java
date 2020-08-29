@@ -746,7 +746,7 @@ public final class PlayerImpl implements Player {
             }
         };
 
-        processEngineTask(true, task);
+        processEngineTask(task);
     }
 
     @Override
@@ -788,7 +788,7 @@ public final class PlayerImpl implements Player {
             }
         };
 
-        processEngineTask(true, task);
+        processEngineTask(task);
     }
 
     @Override
@@ -902,20 +902,29 @@ public final class PlayerImpl implements Player {
 
     @Override
     public void seekTo(int position) {
-        synchronized (mEngineLock) {
+        if (isShutdown()) return;
 
-            if (!mIsPreparedFlag) return;
+        final Runnable task = new Runnable() {
+            @Override
+            public void run() {
+                synchronized (mEngineLock) {
 
-            final MediaPlayer engine = mEngine;
-            if (engine == null) return;
+                    if (!mIsPreparedFlag) return;
 
-            try {
-                engine.seekTo(position);
-                mObserverRegistry.dispatchSoughtTo(position);
-            } catch (Throwable error) {
-                report(error);
+                    final MediaPlayer engine = mEngine;
+                    if (engine == null) return;
+
+                    try {
+                        engine.seekTo(position);
+                        mObserverRegistry.dispatchSoughtTo(position);
+                    } catch (Throwable error) {
+                        report(error);
+                    }
+                }
             }
-        }
+        };
+
+        processEngineTask(task);
     }
 
     @Override

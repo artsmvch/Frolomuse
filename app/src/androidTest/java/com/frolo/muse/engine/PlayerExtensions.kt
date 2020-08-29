@@ -34,6 +34,9 @@ fun PlayerImpl.waitUntilAllEventsAreOver(): Unit = doAfterAllEvents {  }
  * Simulates complete playback, i.e. rewinds the playback position to the end and waits its completion.
  */
 fun PlayerImpl.simulateCompletePlayback() {
+    // First, waiting until all events are over,
+    // to make sure the player is prepared, if [prepare] method was called earlier
+    waitUntilAllEventsAreOver()
     // As the target position [duration - 100 ms] is taken
     val playbackPosition = max(0, getDuration() - 100)
     seekTo(playbackPosition)
