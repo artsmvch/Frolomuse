@@ -770,6 +770,9 @@ public final class PlayerImpl implements Player {
 
                 if (position == currentPositionInQueue) {
                     // Good, we're at this position already
+                    if (forceStartPlaying) {
+                        _start().run();
+                    }
                     return;
                 }
 
@@ -945,9 +948,9 @@ public final class PlayerImpl implements Player {
         }
     }
 
-    @Override
-    public void start() {
-        final Runnable task = new Runnable() {
+    @NotNull
+    private Runnable _start() {
+        return new Runnable() {
             @Override
             public void run() {
 
@@ -976,8 +979,11 @@ public final class PlayerImpl implements Player {
 
             }
         };
+    }
 
-        processEngineTask(task);
+    @Override
+    public void start() {
+        processEngineTask(_start());
     }
 
     @Override
