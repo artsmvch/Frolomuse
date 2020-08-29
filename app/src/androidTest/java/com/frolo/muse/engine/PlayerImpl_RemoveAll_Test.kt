@@ -1,6 +1,7 @@
 package com.frolo.muse.engine
 
 import androidx.test.runner.AndroidJUnit4
+import com.frolo.muse.common.prepareByTarget
 import com.frolo.muse.randomLong
 import com.frolo.muse.randomString
 import com.nhaarman.mockitokotlin2.*
@@ -32,7 +33,7 @@ class PlayerImpl_RemoveAll_Test : PlayerImpl_Base_Test() {
         val item = queue.getItemAt(position)
 
         // Prepare
-        player.prepare(queue, item, false)
+        player.prepareByTarget(queue, item, false)
 
         val firstItem = queue.getItemAt(0)
 
@@ -59,7 +60,7 @@ class PlayerImpl_RemoveAll_Test : PlayerImpl_Base_Test() {
         val item = queue.getItemAt(position)
 
         // Prepare
-        player.prepare(queue, item, false)
+        player.prepareByTarget(queue, item, false)
 
         player.removeAll(listOf(item))
 
@@ -84,7 +85,7 @@ class PlayerImpl_RemoveAll_Test : PlayerImpl_Base_Test() {
         val item = queue.getItemAt(position)
 
         // Prepare
-        player.prepare(queue, item, false)
+        player.prepareByTarget(queue, item, false)
 
         player.setShuffleMode(Player.SHUFFLE_ON)
 
@@ -143,7 +144,7 @@ class PlayerImpl_RemoveAll_Test : PlayerImpl_Base_Test() {
         val item = queue.getItemAt(position)
 
         // Prepare
-        player.prepare(queue, item, false)
+        player.prepareByTarget(queue, item, false)
 
         player.removeAll(listOf(someItem))
 

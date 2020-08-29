@@ -4,6 +4,7 @@ import com.frolo.muse.*
 import com.frolo.muse.engine.Player
 import com.frolo.muse.engine.AudioSourceQueue
 import com.frolo.muse.common.AudioSourceQueueFactory
+import com.frolo.muse.common.prepareByTarget
 import com.frolo.muse.common.toAudioSource
 import com.frolo.muse.common.toAudioSources
 import com.frolo.muse.model.media.*
@@ -62,7 +63,7 @@ class ClickMediaUseCaseTest {
         whenever(audioSourceQueueFactory.create(eq(listOf(song)), eq(songs)))
                 .thenReturn(songQueue)
 
-        whenever(player.prepare(eq(songQueue), eq(song.toAudioSource()), eq(true)))
+        whenever(player.prepareByTarget(eq(songQueue), eq(song.toAudioSource()), eq(true), eq(0)))
                 .thenDoNothing()
 
         clickMediaUseCase.click(song, songs)
@@ -71,7 +72,7 @@ class ClickMediaUseCaseTest {
         testObserver.assertComplete()
 
         verify(player, times(1))
-                .prepare(songQueue, song.toAudioSource(), true)
+                .prepareByTarget(songQueue, song.toAudioSource(), true, 0)
     }
 
     @Test
@@ -255,7 +256,7 @@ class ClickMediaUseCaseTest {
 
         whenever(audioSourceQueueFactory.create(eq(listOf(song)), eq(allSongs))).thenReturn(songQueue)
 
-        whenever(player.prepare(eq(songQueue), eq(song.toAudioSource()), eq(true))).thenDoNothing()
+        whenever(player.prepareByTarget(eq(songQueue), eq(song.toAudioSource()), eq(true), eq(0))).thenDoNothing()
 
         clickMediaUseCase.click(myFile, collection)
                 .subscribe(testObserver)
@@ -263,7 +264,7 @@ class ClickMediaUseCaseTest {
         testObserver.assertComplete()
 
         verify(player, times(1))
-                .prepare(songQueue, song.toAudioSource(), true)
+                .prepareByTarget(songQueue, song.toAudioSource(), true, 0)
     }
 
     @Test

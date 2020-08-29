@@ -1,6 +1,7 @@
 package com.frolo.muse.engine
 
 import androidx.test.runner.AndroidJUnit4
+import com.frolo.muse.common.prepareByTarget
 import com.nhaarman.mockitokotlin2.*
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
@@ -30,7 +31,7 @@ class PlayerImpl_AddAll_Test : PlayerImpl_Base_Test() {
         val item = queue.getItemAt(position)
 
         // Prepare
-        player.prepare(queue, item, false)
+        player.prepareByTarget(queue, item, false)
 
         // Wait until all events are over to make sure [onAudioSourceChanged] is called after the preparation
         player.waitUntilAllEventsAreOver()
@@ -69,7 +70,7 @@ class PlayerImpl_AddAll_Test : PlayerImpl_Base_Test() {
         }
 
         // Prepare
-        player.prepare(queue, listToAdd.first(), false)
+        player.prepareByTarget(queue, listToAdd.first(), false)
 
         // Wait until all events are over to make sure [onAudioSourceChanged] is called after the preparation
         player.waitUntilAllEventsAreOver()

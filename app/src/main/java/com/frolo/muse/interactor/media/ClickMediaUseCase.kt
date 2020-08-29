@@ -2,6 +2,7 @@ package com.frolo.muse.interactor.media
 
 import com.frolo.muse.engine.Player
 import com.frolo.muse.common.AudioSourceQueueFactory
+import com.frolo.muse.common.prepareByTarget
 import com.frolo.muse.common.toAudioSource
 import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.model.media.*
@@ -28,7 +29,7 @@ class ClickMediaUseCase <E: Media> constructor(
         } else {
             // otherwise, create a new audio source queue and start playing it
             val queue = audioSourceQueueFactory.create(listOf(target), songs)
-            player.prepare(queue, target.toAudioSource(), true)
+            player.prepareByTarget(queue, target.toAudioSource(), true)
         }
     }
 

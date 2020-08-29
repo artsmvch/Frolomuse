@@ -35,16 +35,12 @@ class PlayerWrapper : Player {
         delegate?.unregisterObserver(observer)
     }
 
-    override fun prepare(queue: AudioSourceQueue, item: AudioSource, startPlaying: Boolean) {
-        delegate?.prepare(queue, item, startPlaying)
+    override fun prepareByTarget(queue: AudioSourceQueue, target: AudioSource, startPlaying: Boolean, playbackPosition: Int) {
+        delegate?.prepareByTarget(queue, target, startPlaying, playbackPosition)
     }
 
-    override fun prepare(queue: AudioSourceQueue, item: AudioSource, playbackPosition: Int, startPlaying: Boolean) {
-        delegate?.prepare(queue, item, playbackPosition, startPlaying)
-    }
-
-    override fun prepareByPosition(queue: AudioSourceQueue, positionInQueue: Int, playbackPosition: Int, startPlaying: Boolean) {
-        delegate?.prepareByPosition(queue, positionInQueue, playbackPosition, startPlaying)
+    override fun prepareByPosition(queue: AudioSourceQueue, positionInQueue: Int, startPlaying: Boolean, playbackPosition: Int) {
+        delegate?.prepareByPosition(queue, positionInQueue, startPlaying, playbackPosition)
     }
 
     override fun shutdown() {

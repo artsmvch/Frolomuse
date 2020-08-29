@@ -1,6 +1,7 @@
 package com.frolo.muse.engine
 
 import androidx.test.runner.AndroidJUnit4
+import com.frolo.muse.common.prepareByTarget
 import com.nhaarman.mockitokotlin2.*
 import junit.framework.TestCase.assertTrue
 import org.junit.Test
@@ -26,7 +27,7 @@ class PlayerImpl_SkipTo_Test : PlayerImpl_Base_Test() {
         val position = 0
         val item = queue.getItemAt(position)
 
-        player.prepare(queue, item, false)
+        player.prepareByTarget(queue, item, false)
 
         player.skipTo(position + 1, true)
 
@@ -53,7 +54,7 @@ class PlayerImpl_SkipTo_Test : PlayerImpl_Base_Test() {
         val position = queue.length - 1
         val item = queue.getItemAt(position)
 
-        player.prepare(queue, item, false)
+        player.prepareByTarget(queue, item, false)
 
         player.skipTo(position, true)
 

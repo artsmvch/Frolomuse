@@ -1,6 +1,7 @@
 package com.frolo.muse.engine
 
 import androidx.test.runner.AndroidJUnit4
+import com.frolo.muse.common.prepareByTarget
 import com.nhaarman.mockitokotlin2.*
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -30,7 +31,7 @@ class PlayerImpl_RemoveAt_Test : PlayerImpl_Base_Test() {
         val item = queue.getItemAt(position)
 
         // Prepare
-        player.prepare(queue, item, false)
+        player.prepareByTarget(queue, item, false)
 
         player.removeAt(position)
 
@@ -56,7 +57,7 @@ class PlayerImpl_RemoveAt_Test : PlayerImpl_Base_Test() {
         val item = queue.getItemAt(position)
 
         // Prepare
-        player.prepare(queue, item, false)
+        player.prepareByTarget(queue, item, false)
 
         player.removeAt(0)
 
@@ -82,7 +83,7 @@ class PlayerImpl_RemoveAt_Test : PlayerImpl_Base_Test() {
         val item = queue.getItemAt(position)
 
         // Prepare
-        player.prepare(queue, item, false)
+        player.prepareByTarget(queue, item, false)
 
         player.removeAt(1)
 

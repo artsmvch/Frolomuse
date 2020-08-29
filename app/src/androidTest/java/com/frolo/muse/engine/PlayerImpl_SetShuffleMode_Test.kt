@@ -1,6 +1,7 @@
 package com.frolo.muse.engine
 
 import androidx.test.runner.AndroidJUnit4
+import com.frolo.muse.common.prepareByTarget
 import com.frolo.muse.randomLong
 import com.frolo.muse.randomString
 import com.nhaarman.mockitokotlin2.*
@@ -38,7 +39,7 @@ class PlayerImpl_SetShuffleMode_Test : PlayerImpl_Base_Test() {
         val item = queue.getItemAt(position)
 
         // Prepare
-        player.prepare(queue, item, false)
+        player.prepareByTarget(queue, item, false)
 
         player.doAfterAllEvents {
             verify(testObserver, times(1)).onQueueChanged(same(player), argThat(AudioSourceQueueEquals(queue)))

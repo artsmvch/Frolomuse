@@ -6,9 +6,8 @@ import com.frolo.muse.engine.*
 object PlayerStub: Player {
     override fun registerObserver(observer: PlayerObserver) = Unit
     override fun unregisterObserver(observer: PlayerObserver) = Unit
-    override fun prepare(queue: AudioSourceQueue, item: AudioSource, startPlaying: Boolean) = Unit
-    override fun prepare(queue: AudioSourceQueue, item: AudioSource, playbackPosition: Int, startPlaying: Boolean) = Unit
-    override fun prepareByPosition(queue: AudioSourceQueue, positionInQueue: Int, playbackPosition: Int, startPlaying: Boolean) = Unit
+    override fun prepareByTarget(queue: AudioSourceQueue, target: AudioSource, startPlaying: Boolean, playbackPosition: Int) = Unit
+    override fun prepareByPosition(queue: AudioSourceQueue, positionInQueue: Int, startPlaying: Boolean, playbackPosition: Int) = Unit
     override fun shutdown() = Unit
     override fun skipToPrevious() = Unit
     override fun skipToNext() = Unit

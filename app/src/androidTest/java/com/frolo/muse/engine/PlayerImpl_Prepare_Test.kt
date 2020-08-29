@@ -1,6 +1,7 @@
 package com.frolo.muse.engine
 
 import androidx.test.runner.AndroidJUnit4
+import com.frolo.muse.common.prepareByTarget
 import com.frolo.muse.randomLong
 import com.frolo.muse.randomString
 import com.nhaarman.mockitokotlin2.*
@@ -9,7 +10,7 @@ import org.junit.runner.RunWith
 
 
 /**
- * Here are methods for testing [PlayerImpl.prepare].
+ * Here are methods for testing [PlayerImpl.prepareByTarget].
  */
 @Suppress("ClassName")
 @RunWith(AndroidJUnit4::class)
@@ -37,7 +38,7 @@ class PlayerImpl_Prepare_Test : PlayerImpl_Base_Test() {
         val item = queue.getItemAt(position)
 
         // Prepare
-        player.prepare(queue, item, false)
+        player.prepareByTarget(queue, item, false)
 
         player.doAfterAllEvents {
             verify(testObserver, times(1)).onQueueChanged(same(player), argThat(AudioSourceQueueEquals(queue)))

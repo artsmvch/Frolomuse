@@ -113,7 +113,7 @@ class RestorePlayerStateUseCaseTest {
         observer.assertComplete()
 
         verify(player, times(1))
-                .prepare(songQueue, targetSong.toAudioSource(), playbackPosition, false)
+                .prepareByTarget(songQueue, targetSong.toAudioSource(), false, playbackPosition)
     }
 
     @Test
@@ -177,7 +177,7 @@ class RestorePlayerStateUseCaseTest {
         observer.assertComplete()
 
         verify(player, times(1))
-                .prepare(defaultSongQueue, defaultTargetSong.toAudioSource(), 0, false)
+                .prepareByTarget(defaultSongQueue, defaultTargetSong.toAudioSource(), false, 0)
     }
 
     @Test
@@ -237,7 +237,7 @@ class RestorePlayerStateUseCaseTest {
         observer.assertError(IndexOutOfBoundsException::class.java)
 
         verify(player, never())
-                .prepare(any(), any(), any(), any())
+                .prepareByTarget(any(), any(), any(), any())
     }
 
 }

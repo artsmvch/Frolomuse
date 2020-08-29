@@ -1,6 +1,7 @@
 package com.frolo.muse.engine
 
 import androidx.test.runner.AndroidJUnit4
+import com.frolo.muse.common.prepareByPosition
 import com.frolo.muse.randomLong
 import com.frolo.muse.randomString
 import com.nhaarman.mockitokotlin2.*
@@ -40,7 +41,7 @@ class PlayerImpl_MoveItem_Test : PlayerImpl_Base_Test() {
         val item = queue.getItemAt(position)
 
         // Prepare
-        player.prepareByPosition(queue, position, 0, false)
+        player.prepareByPosition(queue, position, false)
 
         player.waitUntilAllEventsAreOver()
 
@@ -80,7 +81,7 @@ class PlayerImpl_MoveItem_Test : PlayerImpl_Base_Test() {
         val item = queue.getItemAt(position)
 
         // Prepare
-        player.prepareByPosition(queue, position, 0, false)
+        player.prepareByPosition(queue, position, false)
 
         player.waitUntilAllEventsAreOver()
 
@@ -120,7 +121,7 @@ class PlayerImpl_MoveItem_Test : PlayerImpl_Base_Test() {
         val item = queue.getItemAt(position)
 
         // Prepare
-        player.prepareByPosition(queue, position, 0, false)
+        player.prepareByPosition(queue, position, false)
 
         player.waitUntilAllEventsAreOver()
 
@@ -161,7 +162,7 @@ class PlayerImpl_MoveItem_Test : PlayerImpl_Base_Test() {
         val item = queue.getItemAt(position)
 
         // Prepare
-        player.prepareByPosition(queue, position, 0, false)
+        player.prepareByPosition(queue, position, false)
 
         player.waitUntilAllEventsAreOver()
 
@@ -202,7 +203,7 @@ class PlayerImpl_MoveItem_Test : PlayerImpl_Base_Test() {
         val item = queue.getItemAt(position)
 
         // Prepare
-        player.prepareByPosition(queue, position, 0, false)
+        player.prepareByPosition(queue, position, false)
 
         player.waitUntilAllEventsAreOver()
 

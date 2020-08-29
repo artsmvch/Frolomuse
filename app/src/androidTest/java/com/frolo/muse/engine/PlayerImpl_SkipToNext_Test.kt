@@ -1,6 +1,7 @@
 package com.frolo.muse.engine
 
 import androidx.test.runner.AndroidJUnit4
+import com.frolo.muse.common.prepareByTarget
 import com.nhaarman.mockitokotlin2.*
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -25,7 +26,7 @@ class PlayerImpl_SkipToNext_Test : PlayerImpl_Base_Test() {
         val position = 0
         val item = queue.getItemAt(position)
 
-        player.prepare(queue, item, false)
+        player.prepareByTarget(queue, item, false)
 
         player.skipToNext()
 
@@ -49,7 +50,7 @@ class PlayerImpl_SkipToNext_Test : PlayerImpl_Base_Test() {
         val position = queue.length - 1
         val item = queue.getItemAt(position)
 
-        player.prepare(queue, item, false)
+        player.prepareByTarget(queue, item, false)
 
         player.skipToNext()
 
@@ -73,7 +74,7 @@ class PlayerImpl_SkipToNext_Test : PlayerImpl_Base_Test() {
         val position = 0
         val item = queue.getItemAt(position)
 
-        player.prepare(queue, item, false)
+        player.prepareByTarget(queue, item, false)
 
         player.setShuffleMode(Player.SHUFFLE_ON)
 

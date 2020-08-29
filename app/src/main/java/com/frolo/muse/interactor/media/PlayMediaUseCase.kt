@@ -2,6 +2,7 @@ package com.frolo.muse.interactor.media
 
 import com.frolo.muse.engine.Player
 import com.frolo.muse.common.AudioSourceQueueFactory
+import com.frolo.muse.common.prepareByTarget
 import com.frolo.muse.common.toAudioSources
 import com.frolo.muse.engine.AudioSource
 import com.frolo.muse.model.media.Media
@@ -35,7 +36,7 @@ class PlayMediaUseCase<E: Media> constructor(
         }
         if (first != null) {
             preferences.saveLastSongId(first.id)
-            player.prepare(songQueue, first, true)
+            player.prepareByTarget(songQueue, first, true)
         }
     }
 

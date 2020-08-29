@@ -8,9 +8,8 @@ import androidx.annotation.RequiresApi
 interface Player {
     fun registerObserver(observer: PlayerObserver)
     fun unregisterObserver(observer: PlayerObserver)
-    fun prepare(queue: AudioSourceQueue, item: AudioSource, startPlaying: Boolean)
-    fun prepare(queue: AudioSourceQueue, item: AudioSource, playbackPosition: Int, startPlaying: Boolean)
-    fun prepareByPosition(queue: AudioSourceQueue, positionInQueue: Int, playbackPosition: Int, startPlaying: Boolean)
+    fun prepareByTarget(queue: AudioSourceQueue, target: AudioSource, startPlaying: Boolean, playbackPosition: Int)
+    fun prepareByPosition(queue: AudioSourceQueue, positionInQueue: Int, startPlaying: Boolean, playbackPosition: Int)
     fun shutdown()
     fun skipToPrevious()
     fun skipToNext()

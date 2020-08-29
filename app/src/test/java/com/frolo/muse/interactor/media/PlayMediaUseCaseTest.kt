@@ -4,6 +4,7 @@ import com.frolo.muse.*
 import com.frolo.muse.engine.Player
 import com.frolo.muse.engine.AudioSourceQueue
 import com.frolo.muse.common.AudioSourceQueueFactory
+import com.frolo.muse.common.prepareByTarget
 import com.frolo.muse.common.toAudioSource
 import com.frolo.muse.common.toAudioSources
 import com.frolo.muse.model.media.Media
@@ -78,14 +79,14 @@ class PlayMediaUseCaseTest {
         whenever(audioSourceQueueFactory.create(eq(items), eq(songs)))
                 .thenReturn(songQueue)
 
-        whenever(player.prepare(any(), any(), any(), any()))
+        whenever(player.prepareByTarget(any(), any(), any(), any()))
                 .thenDoNothing()
 
         playMediaUseCase.play(items)
                 .subscribe()
 
         verify(player, times(1))
-                .prepare(songQueue, targetSong.toAudioSource(), true)
+                .prepareByTarget(songQueue, targetSong.toAudioSource(), true, 0)
     }
 
     @Test
@@ -120,14 +121,14 @@ class PlayMediaUseCaseTest {
         whenever(audioSourceQueueFactory.create(eq(listOf(item)), eq(songs)))
                 .thenReturn(songQueue)
 
-        whenever(player.prepare(any(), any(), any(), any()))
+        whenever(player.prepareByTarget(any(), any(), any(), any()))
                 .thenDoNothing()
 
         playMediaUseCase.play(item)
                 .subscribe()
 
         verify(player, times(1))
-                .prepare(songQueue, targetSong.toAudioSource(), true)
+                .prepareByTarget(songQueue, targetSong.toAudioSource(), true, 0)
     }
 
     @Test

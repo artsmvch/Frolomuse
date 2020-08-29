@@ -1,6 +1,7 @@
 package com.frolo.muse.engine
 
 import androidx.test.runner.AndroidJUnit4
+import com.frolo.muse.common.prepareByTarget
 import com.nhaarman.mockitokotlin2.*
 import junit.framework.TestCase
 import org.junit.Test
@@ -28,7 +29,7 @@ class PlayerImpl_SetRepeatMode_Test : PlayerImpl_Base_Test() {
         val item = queue.getItemAt(position)
 
         // Prepare
-        player.prepare(queue, item, true)
+        player.prepareByTarget(queue, item, true)
 
         player.doAfterAllEvents {
             verify(testObserver, times(1)).onQueueChanged(same(player), argThat(AudioSourceQueueEquals(queue)))

@@ -652,12 +652,7 @@ public final class PlayerImpl implements Player {
         mObserverRegistry.unregister(observer);
     }
 
-    @Override
-    public void prepare(@NotNull AudioSourceQueue queue, @NotNull AudioSource item, boolean startPlaying) {
-        prepare(queue, item, 0, startPlaying);
-    }
-
-    private Runnable _prepareByPosition(@NotNull AudioSourceQueue queue, int positionInQueue, int playbackPosition, boolean startPlaying) {
+    private Runnable _prepareByPosition(@NotNull AudioSourceQueue queue, int positionInQueue, boolean startPlaying, int playbackPosition) {
         return new Runnable() {
             @Override
             public void run() {
@@ -705,14 +700,14 @@ public final class PlayerImpl implements Player {
     }
 
     @Override
-    public void prepare(@NotNull final AudioSourceQueue queue, @NotNull final AudioSource item, final int playbackPosition, final boolean startPlaying) {
+    public void prepareByTarget(@NotNull final AudioSourceQueue queue, @NotNull final AudioSource target, final boolean startPlaying, final int playbackPosition) {
         if (isShutdown()) return;
 
         final Runnable task = new Runnable() {
             @Override
             public void run() {
-                final int positionInQueue = queue.indexOf(item);
-                _prepareByPosition(queue, positionInQueue, playbackPosition, startPlaying).run();
+                final int positionInQueue = queue.indexOf(target);
+                _prepareByPosition(queue, positionInQueue, startPlaying, playbackPosition).run();
             }
         };
 
@@ -720,10 +715,10 @@ public final class PlayerImpl implements Player {
     }
 
     @Override
-    public void prepareByPosition(@NotNull AudioSourceQueue queue, int positionInQueue, int playbackPosition, boolean startPlaying) {
+    public void prepareByPosition(@NotNull AudioSourceQueue queue, int positionInQueue, boolean startPlaying, int playbackPosition) {
         if (isShutdown()) return;
 
-        processEngineTask(true, _prepareByPosition(queue, positionInQueue, playbackPosition, startPlaying));
+        processEngineTask(true, _prepareByPosition(queue, positionInQueue, startPlaying, playbackPosition));
     }
 
     @Override

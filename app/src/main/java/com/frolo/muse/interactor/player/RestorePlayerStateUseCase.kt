@@ -27,10 +27,10 @@ class RestorePlayerStateUseCase @Inject constructor(
 ) {
 
     private data class PlayerState constructor(
-            val queue: AudioSourceQueue,
-            val targetSong: Song,
-            val playbackPosition: Int,
-            val startPlaying: Boolean = false
+        val queue: AudioSourceQueue,
+        val targetSong: Song,
+        val startPlaying: Boolean,
+        val playbackPosition: Int
     )
 
     private fun getDefaultPlayerState(): Single<PlayerState> {
@@ -41,7 +41,12 @@ class RestorePlayerStateUseCase @Inject constructor(
                 }
                 .map { queue ->
                     val first = queue.getItemAt(0).toSong()
-                    PlayerState(queue, first, 0, false)
+                    PlayerState(
+                        queue = queue,
+                        targetSong = first,
+                        startPlaying = false,
+                        playbackPosition = 0
+                    )
                 }
     }
 
@@ -101,16 +106,18 @@ class RestorePlayerStateUseCase @Inject constructor(
                     PlayerState(
                         queue = songQueue,
                         targetSong = targetAudioSource.toSong(),
+                        startPlaying = false,
                         playbackPosition = preferences.lastPlaybackPosition
                     )
                 }
                 .onErrorResumeNext(getDefaultPlayerState())
                 .doOnSuccess { playerState ->
-                    player.prepare(
-                            playerState.queue,
-                            playerState.targetSong.toAudioSource(),
-                            playerState.playbackPosition,
-                            playerState.startPlaying)
+                    player.prepareByTarget(
+                        playerState.queue,
+                        playerState.targetSong.toAudioSource(),
+                        playerState.startPlaying,
+                        playerState.playbackPosition
+                    )
                 }
                 .ignoreElement()
                 .subscribeOn(schedulerProvider.worker())
