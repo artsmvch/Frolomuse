@@ -657,6 +657,53 @@ public final class PlayerImpl implements Player {
         prepare(queue, item, 0, startPlaying);
     }
 
+    private Runnable _prepare(@NotNull AudioSourceQueue queue, int positionInQueue, int playbackPosition, boolean startPlaying) {
+        return new Runnable() {
+            @Override
+            public void run() {
+
+                // First, saving the original queue
+                mOriginQueue = queue;
+
+                // Defining the target item
+                @Nullable
+                final AudioSource targetItem;
+                if (positionInQueue >= 0 && positionInQueue < queue.getLength()) {
+                    targetItem = queue.getItemAt(positionInQueue);
+                } else if (!queue.isEmpty()) {
+                    targetItem = queue.getItemAt(positionInQueue);
+                } else {
+                    targetItem = null;
+                }
+
+                // The current queue will be cloned from the original
+                final AudioSourceQueue currentQueue = queue.clone();
+
+                // Then, we need to configure the new queue according to the current shuffle mode
+                // and define the position of the target item in the result queue
+                final int targetPosition;
+                if (mShuffleMode == Player.SHUFFLE_ON) {
+                    if (targetItem != null) {
+                        currentQueue.shuffleWithItemInFront(targetItem);
+                    } else {
+                        currentQueue.shuffle();
+                    }
+                    targetPosition = currentQueue.indexOf(targetItem);
+                } else {
+                    targetPosition = positionInQueue;
+                }
+                mCurrentQueue = currentQueue;
+
+                mObserverRegistry.dispatchQueueChanged(currentQueue);
+
+                mCurrentPositionInQueue = targetPosition;
+                mCurrentItem = targetItem;
+
+                _handleSource(targetItem, playbackPosition, startPlaying).run();
+            }
+        };
+    }
+
     @Override
     public void prepare(@NotNull final AudioSourceQueue queue, @NotNull final AudioSource item, final int playbackPosition, final boolean startPlaying) {
         if (isShutdown()) return;
@@ -664,38 +711,19 @@ public final class PlayerImpl implements Player {
         final Runnable task = new Runnable() {
             @Override
             public void run() {
-
-                // First, saving the original queue
-                mOriginQueue = queue;
-
-                // The current queue will be cloned from the original
-                final AudioSourceQueue currentQueue = queue.clone();
-                // Then, we need to configure the new queue according to the current shuffle mode
-                if (mShuffleMode == Player.SHUFFLE_ON) {
-                    currentQueue.shuffleWithItemInFront(item);
-                }
-                mCurrentQueue = currentQueue;
-
-                mObserverRegistry.dispatchQueueChanged(currentQueue);
-
-                // Now we need to define the current item and its position in the queue
-                int positionInQueue = currentQueue.indexOf(item);
-                AudioSource currentItem = positionInQueue >= 0 ? item : null;
-                if (currentItem == null && !queue.isEmpty()) {
-                    // Actually, this should not happen
-                    positionInQueue = 0;
-                    currentItem = queue.getItemAt(0);
-                }
-
-                mCurrentPositionInQueue = positionInQueue;
-                mCurrentItem = currentItem;
-
-                _handleSource(currentItem, playbackPosition, startPlaying).run();
-
+                final int positionInQueue = queue.indexOf(item);
+                _prepare(queue, positionInQueue, playbackPosition, startPlaying).run();
             }
         };
 
         processEngineTask(true, task);
+    }
+
+    @Override
+    public void prepare(@NotNull AudioSourceQueue queue, int positionInQueue, int playbackPosition, boolean startPlaying) {
+        if (isShutdown()) return;
+
+        processEngineTask(true, _prepare(queue, positionInQueue, playbackPosition, startPlaying));
     }
 
     @Override
@@ -1280,6 +1308,8 @@ public final class PlayerImpl implements Player {
     public void moveItem(final int fromPosition, final int toPosition) {
         if (isShutdown()) return;
 
+        if (fromPosition == toPosition) return;
+
         final Runnable task = new Runnable() {
             @Override
             public void run() {
@@ -1316,8 +1346,10 @@ public final class PlayerImpl implements Player {
                     currentQueue.moveItem(fromPosition, toPosition);
                 }
 
-                mCurrentPositionInQueue = currentPositionInQueue;
-                mObserverRegistry.dispatchPositionInQueueChanged(currentPositionInQueue);
+                if (mCurrentPositionInQueue != currentPositionInQueue) {
+                    mCurrentPositionInQueue = currentPositionInQueue;
+                    mObserverRegistry.dispatchPositionInQueueChanged(currentPositionInQueue);
+                }
 
             }
         };
