@@ -16,7 +16,7 @@ ext.loadProperties = { filepath ->
 def versionMajor = 5
 def versionMinor = 4
 def versionPatch = 0
-def versionBuild = 11
+def versionBuild = 12
 
 android {
     signingConfigs {
