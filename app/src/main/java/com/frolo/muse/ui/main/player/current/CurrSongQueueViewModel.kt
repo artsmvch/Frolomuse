@@ -2,6 +2,7 @@ package com.frolo.muse.ui.main.player.current
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import com.frolo.muse.arch.SingleLiveEvent
 import com.frolo.muse.arch.map
 import com.frolo.muse.common.toSongs
@@ -65,6 +66,7 @@ class CurrSongQueueViewModel @Inject constructor(
 
     private val queueCallback = AudioSourceQueue.Callback { queue ->
         handleQueue(queue)
+        _playingPosition.value = player.getCurrentPositionInQueue()
     }
 
     private val playerObserver = object : SimplePlayerObserver() {
@@ -93,7 +95,7 @@ class CurrSongQueueViewModel @Inject constructor(
     val isPlaying: LiveData<Boolean> get() = _isPlaying
 
     private val _playingPosition = MutableLiveData<Int>(player.getCurrentPositionInQueue())
-    val playingPosition: LiveData<Int> get() = _playingPosition
+    val playingPosition: LiveData<Int> = Transformations.distinctUntilChanged(_playingPosition)
 
     val saveAsPlaylistOptionEnabled: LiveData<Boolean> =
         mediaList.map(false) { list: List<*>? -> !list.isNullOrEmpty() }

@@ -96,6 +96,7 @@ class PlayerViewModel @Inject constructor(
 
     private val queueCallback = AudioSourceQueue.Callback { queue ->
         _invalidateSongQueueEvent.value = queue
+        _songPosition.value = player.getCurrentPositionInQueue()
     }
 
     private val _songDeletedEvent = SingleLiveEvent<Song>()
@@ -138,7 +139,7 @@ class PlayerViewModel @Inject constructor(
     private var resolveSoundSubscription: Subscription? = null
 
     private val _songPosition = MutableLiveData<Int>(player.getCurrentPositionInQueue())
-    val songPosition: LiveData<Int> get() = _songPosition
+    val songPosition: LiveData<Int> = Transformations.distinctUntilChanged(_songPosition)
 
     private val _showVolumeControlEvent = SingleLiveEvent<Unit>()
     val showVolumeControlEvent: LiveData<Unit>

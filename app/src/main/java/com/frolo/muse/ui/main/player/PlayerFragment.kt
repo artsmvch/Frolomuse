@@ -347,6 +347,22 @@ class PlayerFragment: BaseFragment() {
         popup.show()
     }
 
+    /**
+     * Scrolls the album art pager to the given [position].
+     */
+    private fun scrollToPosition(position: Int) {
+        setCurrentItemCallback?.also { safeCallback ->
+            vp_album_art.removeCallbacks(safeCallback)
+        }
+
+        // There is an issue with setting current item in ViewPager2:
+        // If we set current item to 1 and then in some near future set item to 2
+        // Then the final item position will be 1. WTF?
+        setCurrentItemCallback = SetViewPagerPosition(vp_album_art, position)
+
+        vp_album_art.postDelayed(setCurrentItemCallback, 150)
+    }
+
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
         songDeletedEvent.observeNonNull(owner) {
             toastShortMessage(R.string.deleted)
@@ -359,11 +375,18 @@ class PlayerFragment: BaseFragment() {
         songQueue.observe(owner) { queue: AudioSourceQueue? ->
             Logger.d(LOG_TAG, "SongQueue changed")
             (vp_album_art.adapter as? AlbumCardAdapter)?.submitQueue(queue)
+            songPosition.value?.let { scrollToPosition(it) }
         }
 
         invalidateSongQueueEvent.observeNonNull(owner) {
             Logger.d(LOG_TAG, "InvalidateSongQueue event fired")
             vp_album_art.adapter?.notifyDataSetChanged()
+            songPosition.value?.let { scrollToPosition(it) }
+        }
+
+        songPosition.observeNonNull(owner) { position ->
+            Logger.d(LOG_TAG, "Song position changed to $position")
+            scrollToPosition(position)
         }
 
         song.observe(owner) { song: Song? ->
@@ -417,21 +440,6 @@ class PlayerFragment: BaseFragment() {
                 val waveform = StaticWaveform(BuildConfig.SOUND_FRAME_GAIN_COUNT, 1, 10)
                 waveform_seek_bar.setWaveform(waveform, false)
             }
-        }
-
-        songPosition.observeNonNull(owner) { position ->
-            Logger.d(LOG_TAG, "Song position changed to $position")
-
-            setCurrentItemCallback?.also { safeCallback ->
-                vp_album_art.removeCallbacks(safeCallback)
-            }
-
-            // There is an issue with setting current item in ViewPager2:
-            // If we set current item to 1 and then in some near future set item to 2
-            // Then the final item position will be 1. WTF?
-            setCurrentItemCallback = SetViewPagerPosition(vp_album_art, position)
-
-            vp_album_art.postDelayed(setCurrentItemCallback, 150)
         }
 
         showVolumeControlEvent.observe(owner) {
