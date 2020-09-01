@@ -60,9 +60,11 @@ class MiniPlayerViewModel @Inject constructor(
 
         // For observing player's progress
         Observable.interval(1, TimeUnit.SECONDS)
+            .observeOn(schedulerProvider.worker())
+            .map { player.getProgress() }
             .observeOn(schedulerProvider.main())
-            .subscribeFor {
-                _progress.value = player.getProgress()
+            .subscribeFor(key = "observing_playback_progress") { progress ->
+                _progress.value = progress
             }
     }
 

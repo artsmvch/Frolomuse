@@ -27,7 +27,6 @@ import com.frolo.muse.model.sound.Sound
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.base.BaseViewModel
 import io.reactivex.Observable
-import io.reactivex.disposables.Disposable
 import org.reactivestreams.Subscription
 import java.util.concurrent.Executor
 import java.util.concurrent.TimeUnit
@@ -46,8 +45,6 @@ class PlayerViewModel @Inject constructor(
     private val navigator: Navigator,
     private val eventLogger: EventLogger
 ): BaseViewModel(eventLogger) {
-
-    private var playbackProgressDisposable: Disposable? = null
 
     private val playerObserver = object : SimplePlayerObserver() {
         override fun onPrepared(player: Player, duration: Int, progress: Int) {
@@ -208,16 +205,15 @@ class PlayerViewModel @Inject constructor(
     }
 
     private fun startObservingPlaybackProgress() {
-        playbackProgressDisposable?.dispose()
-        playbackProgressDisposable = Observable.interval(1, TimeUnit.SECONDS)
-                .timeInterval()
-                //.takeWhile { player.isPlaying() }
-                .observeOn(schedulerProvider.main())
-                .subscribe { _playbackProgress.value = player.getProgress() }
-    }
-
-    private fun stopObservingPlaybackProgress() {
-        playbackProgressDisposable?.dispose()
+        Observable.interval(1, TimeUnit.SECONDS)
+            .timeInterval()
+            .observeOn(schedulerProvider.worker())
+            .map { player.getProgress() }
+            //.takeWhile { player.isPlaying() }
+            .observeOn(schedulerProvider.main())
+            .subscribeFor(key = "observing_playback_progress") { progress ->
+                _playbackProgress.value = progress
+            }
     }
 
     fun onOpened() {
@@ -373,6 +369,5 @@ class PlayerViewModel @Inject constructor(
         super.onCleared()
         player.unregisterObserver(playerObserver)
         player.getCurrentQueue()?.unregisterCallback(queueCallback)
-        stopObservingPlaybackProgress()
     }
 }
