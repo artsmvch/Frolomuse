@@ -45,7 +45,7 @@ public final class PlayerImpl implements Player {
     /**
      * This value describes how often the volume should be adjusted to fade in/out smoothly.
      */
-    private static final long VOLUME_ADJUSTMENT_INTERVAL = 100L;
+    private static final long VOLUME_ADJUSTMENT_INTERVAL = 50L;
 
     private static final MathUtil.Range SPEED_RANGE = new MathUtil.Range(0f, 2f);
     private static final MathUtil.Range PITCH_RANGE = new MathUtil.Range(0f, 2f);
