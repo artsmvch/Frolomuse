@@ -10,7 +10,6 @@ import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
-import org.reactivestreams.Subscription
 import java.util.concurrent.ConcurrentHashMap
 
 
@@ -23,8 +22,6 @@ abstract class BaseViewModel constructor(
 
     // Container for keyed disposables that need to be disposed when the view model is cleared
     private val keyedDisposables: MutableMap<String, Disposable> = ConcurrentHashMap<String, Disposable>()
-    // Container for keyed subscription that need to be cancelled when the view model is cleared
-    private val keyedSubscriptions: MutableMap<String, Subscription> = ConcurrentHashMap<String, Subscription>()
 
     // Common error stream
     private val _error = SingleLiveEvent<Throwable>()
@@ -36,21 +33,16 @@ abstract class BaseViewModel constructor(
     }
 
     /**
-     * Subscribes to [this] Flowable source and saves the result subscription for cleanup when the view model is cleared.
+     * Subscribes to [this] Flowable source and saves the result disposable for cleanup when the view model is cleared.
      * [onNext] will be called every time the source emits a new element.
-     * The result subscription can be associated with the given [key].
-     * If the [key] is not null, then any previous subscription associated with it will be cancelled.
+     * The result disposable can be associated with the given [key].
+     * If the [key] is not null, then any previous disposable associated with it will be disposed.
      * This may be useful when only one unit of a particular task can be performed at a time.
      */
     fun <T> Flowable<T>.subscribeFor(key: String? = null, onNext: (T) -> Unit) {
         this
-            .doOnSubscribe { subscription ->
-                if (key != null) {
-                    keyedSubscriptions.put(key, subscription)?.cancel()
-                }
-            }
             .subscribe(onNext, ::logError)
-            .save()
+            .save(key = key)
     }
 
     /**
@@ -62,13 +54,8 @@ abstract class BaseViewModel constructor(
      */
     protected fun <T> Observable<T>.subscribeFor(key: String? = null, onNext: (T) -> Unit) {
         this
-            .doOnSubscribe { disposable ->
-                if (key != null) {
-                    keyedDisposables.put(key, disposable)?.dispose()
-                }
-            }
             .subscribe(onNext, ::logError)
-            .save()
+            .save(key = key)
     }
 
     /**
@@ -80,13 +67,8 @@ abstract class BaseViewModel constructor(
      */
     protected fun <T> Single<T>.subscribeFor(key: String? = null, onSuccess: (T) -> Unit) {
         this
-            .doOnSubscribe { disposable ->
-                if (key != null) {
-                    keyedDisposables.put(key, disposable)?.dispose()
-                }
-            }
             .subscribe(onSuccess, ::logError)
-            .save()
+            .save(key = key)
     }
 
     /**
@@ -98,20 +80,24 @@ abstract class BaseViewModel constructor(
      */
     protected fun Completable.subscribeFor(key: String? = null, onComplete: () -> Unit) {
         this
-            .doOnSubscribe { disposable ->
-                if (key != null) {
-                    keyedDisposables.put(key, disposable)?.dispose()
-                }
-            }
             .subscribe(onComplete, ::logError)
-            .save()
+            .save(key = key)
     }
 
     /**
      * Saves [this] disposable to be disposed when the view model is cleared.
+     * A disposable can be associated with [key],
+     * so calling this method again with the same key will dispose the previous disposable.
+     * This may be useful when only one unit of a particular task can be performed at a time.
      */
-    protected fun Disposable.save() {
+    protected fun Disposable.save(key: String? = null) {
         disposables.add(this)
+
+        // If the key is not null, then this disposable gets associated with the key,
+        // and the old one is disposed, if any.
+        if (key != null) {
+            keyedDisposables.put(key, this)?.dispose()
+        }
     }
 
     override fun onCleared() {
