@@ -46,8 +46,8 @@ fun EventLogger.logMediaLibraryScanned() {
     log("media_library_scanned")
 }
 
-fun EventLogger.logEasterEggFound(clicked: Boolean) {
-    val params = mapOf("clicked" to clicked.toString())
+fun EventLogger.logEasterEggFound(clickCount: Int) {
+    val params = mapOf("click_count" to clickCount.toString())
     log("easter_egg_found", params)
 }
 

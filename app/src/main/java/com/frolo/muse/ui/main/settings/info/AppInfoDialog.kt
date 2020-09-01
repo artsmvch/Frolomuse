@@ -7,6 +7,7 @@ import android.view.Window
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.view.animation.OvershootInterpolator
+import android.widget.TextView
 import com.frolo.muse.BuildConfig
 import com.frolo.muse.R
 import com.frolo.muse.logger.EventLogger
@@ -22,9 +23,9 @@ class AppInfoDialog : BaseDialogFragment() {
     private lateinit var anim: Animation
 
     /**
-     * Indicates whether the app icon has been clicked at least once.
+     * The count of clicks on the app icon.
      */
-    private var appIconClicked: Boolean = false
+    private var appIconClickCount: Int = 0
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -42,16 +43,29 @@ class AppInfoDialog : BaseDialogFragment() {
     }
 
     override fun onDestroy() {
-        eventLogger.logEasterEggFound(clicked = appIconClicked)
+        eventLogger.logEasterEggFound(clickCount = appIconClickCount)
         super.onDestroy()
     }
 
     private fun loadUI(dialog: Dialog) = with(dialog) {
-        tv_version.text = BuildConfig.VERSION_NAME
+        ts_version.apply {
+            ts_version.setFactory { TextView(context) }
+            setInAnimation(context, R.anim.fade_in)
+            setOutAnimation(context, R.anim.fade_out)
+            ts_version.setText(BuildConfig.VERSION_NAME)
+        }
 
-        imv_app_icon.setOnClickListener {
-            appIconClicked = true
-            it.startAnimation(anim)
+        imv_app_icon.setOnClickListener { view ->
+            appIconClickCount++
+            view.startAnimation(anim)
+            maybeShowFullBuildVersion()
+        }
+    }
+
+    private fun maybeShowFullBuildVersion() = dialog?.apply {
+        if (BuildConfig.DEBUG && appIconClickCount >= 10) {
+            val fullBuildVersion = "${BuildConfig.VERSION_NAME}(${BuildConfig.BUILD_TIME})"
+            ts_version.setText(fullBuildVersion)
         }
     }
 
