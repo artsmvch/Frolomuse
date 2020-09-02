@@ -1,5 +1,6 @@
 package com.frolo.muse.ui.main.player
 
+import android.content.Context
 import android.graphics.Typeface
 import android.graphics.drawable.AnimatedVectorDrawable
 import android.os.Bundle
@@ -243,6 +244,7 @@ class PlayerFragment: BaseFragment() {
         textSizeInSp: Float,
         typefaceStyle: Int = Typeface.NORMAL
     ) {
+        val context: Context = view.context
         view.setFactory {
             AppCompatTextView(context).apply {
                 setTextSize(TypedValue.COMPLEX_UNIT_SP, textSizeInSp)
