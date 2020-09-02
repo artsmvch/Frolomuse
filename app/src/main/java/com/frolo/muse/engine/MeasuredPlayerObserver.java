@@ -173,4 +173,9 @@ final class MeasuredPlayerObserver implements PlayerObserver {
         return Objects.equals(mDelegate, other.mDelegate);
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(mDelegate, mDelegateName);
+    }
+
 }
