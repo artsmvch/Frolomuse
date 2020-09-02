@@ -63,7 +63,7 @@ class AppInfoDialog : BaseDialogFragment() {
     }
 
     private fun maybeShowFullBuildVersion() = dialog?.apply {
-        if (BuildConfig.DEBUG && appIconClickCount >= 10) {
+        if (appIconClickCount >= 15) {
             val fullBuildVersion = "${BuildConfig.VERSION_NAME}(${BuildConfig.BUILD_TIME})"
             ts_version.setText(fullBuildVersion)
         }
