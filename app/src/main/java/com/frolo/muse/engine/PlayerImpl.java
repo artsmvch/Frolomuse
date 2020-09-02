@@ -29,7 +29,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 /**
  * Android-specific thread-safe implementation of {@link Player}.
  * Methods prefixed with '_' are of type Runnable and must be processed with
- * {@link PlayerImpl#processEngineTask(boolean, Runnable)} or {@link PlayerImpl#processEngineTask(Runnable)} methods.
+ * {@link PlayerImpl#processEngineTask(Runnable, Object, boolean)} or {@link PlayerImpl#processEngineTask(Runnable)} methods.
  * All public methods are non-blocking and can be called from any thread.
  * Events are dispatched on the main thread using {@link PlayerObserverRegistry}.
  * The implementation uses {@link MediaPlayer} as the engine and uses {@link AudioFxApplicable} as the AudioFx.
@@ -41,6 +41,12 @@ public final class PlayerImpl implements Player {
     private static final int NO_AUDIO_SESSION = 0;
 
     private static final int NO_POSITION_IN_QUEUE = -1;
+
+    /**
+     * Token for engine tasks that are responsible for skipping the playing position to any other.
+     * Such tasks include: skipToPrevious, skipToNext, skipToPosition, skipToItem.
+     */
+    private static final Object TOKEN_SKIP_TO = new Object();
 
     /**
      * This value describes how often the volume should be adjusted to fade in/out smoothly.
@@ -161,6 +167,7 @@ public final class PlayerImpl implements Player {
 
     // Handlers
     private final Handler mEngineHandler;
+    private final Object mEngineTasksLock = new Object();
 
     // Audio Focus Requester
     @NotNull
@@ -270,29 +277,34 @@ public final class PlayerImpl implements Player {
     }
 
     /**
-     * Processes the given <code>task</code> cancelling all previous ones if necessary.
-     * If the call occurs on the engine thread, then the task is processed immediately.
-     * Otherwise the task is posted to the engine thread through the appropriate handler.
-     * @param cancelPreviousTasks if true, then all posted tasks are cancelled in the engine handler
+     * Posting the given <code>task</code> to the engine thread through the appropriate handler.
+     * The task can be associated with <code>token</code>. The token may be null.
+     * If <code>cancelPrevious</code> is true, then all pending tasks associated with the <code>token</code> will be cancelled.
+     * To cancel ALL pending tasks the token should be <code>null</code>.
      * @param task to process
+     * @param token to associate the task with
+     * @param cancelPrevious if true, then all pending tasks associated with the given token will be cancelled
      */
-    private void processEngineTask(boolean cancelPreviousTasks, @NotNull Runnable task) {
-        if (cancelPreviousTasks) {
-            mEngineHandler.removeCallbacksAndMessages(null);
-        }
+    private void processEngineTask(@NotNull Runnable task, @Nullable Object token, boolean cancelPrevious) {
+        synchronized (mEngineTasksLock) {
+            if (cancelPrevious) {
+                // Cancelling all the pending tasks associated with the token.
+                // If the token is null, then all tasks will be cancelled.
+                mEngineHandler.removeCallbacksAndMessages(token);
+            }
 
-        final Runnable wrapper = new EngineTaskWrapper(task);
-        // We always post it to avoid unexpected wrong order of tasks
-        mEngineHandler.post(wrapper);
+            final Runnable wrapper = new EngineTaskWrapper(task);
+            mEngineHandler.postAtTime(wrapper, token, 0);
+        }
     }
 
     /**
-     * Does the same as {@link PlayerImpl#processEngineTask(boolean, Runnable)}
-     * but without cancelling previously posted tasks.
+     * Posting the given <code>task</code> to the engine thread through the appropriate handler.
+     * This does not cancel any pending task, it only queues the given task for processing.
      * @param task to process
      */
     private void processEngineTask(@NotNull Runnable task) {
-        processEngineTask(false, task);
+        processEngineTask(task, null, false);
     }
 
     /**
@@ -700,7 +712,12 @@ public final class PlayerImpl implements Player {
     }
 
     @Override
-    public void prepareByTarget(@NotNull final AudioSourceQueue queue, @NotNull final AudioSource target, final boolean startPlaying, final int playbackPosition) {
+    public void prepareByTarget(
+            @NotNull final AudioSourceQueue queue,
+            @NotNull final AudioSource target,
+            final boolean startPlaying,
+            final int playbackPosition) {
+
         if (isShutdown()) return;
 
         final Runnable task = new Runnable() {
@@ -711,14 +728,20 @@ public final class PlayerImpl implements Player {
             }
         };
 
-        processEngineTask(true, task);
+        processEngineTask(task, null, true);
     }
 
     @Override
-    public void prepareByPosition(@NotNull AudioSourceQueue queue, int positionInQueue, boolean startPlaying, int playbackPosition) {
+    public void prepareByPosition(
+            @NotNull AudioSourceQueue queue,
+            int positionInQueue,
+            boolean startPlaying,
+            int playbackPosition) {
+
         if (isShutdown()) return;
 
-        processEngineTask(true, _prepareByPosition(queue, positionInQueue, startPlaying, playbackPosition));
+        final Runnable task = _prepareByPosition(queue, positionInQueue, startPlaying, playbackPosition);
+        processEngineTask(task, null, true);
     }
 
     @Override
@@ -769,14 +792,19 @@ public final class PlayerImpl implements Player {
             }
         };
 
-        processEngineTask(task);
+        // Associating the task with TOKEN_SKIP_TO, but not cancelling the pending ones,
+        // because it's OK to process multiple skipToPrevious and skipToNext tasks in a row.
+        processEngineTask(task, TOKEN_SKIP_TO, false);
     }
 
     @Override
     public void skipToNext() {
         if (isShutdown()) return;
 
-        processEngineTask(_skipToNext(true));
+        final Runnable task = _skipToNext(true);
+        // Associating the task with TOKEN_SKIP_TO, but not cancelling the pending ones,
+        // because it's OK to process multiple skipToPrevious and skipToNext tasks in a row.
+        processEngineTask(task, TOKEN_SKIP_TO, false);
     }
 
     @Override
@@ -814,7 +842,8 @@ public final class PlayerImpl implements Player {
             }
         };
 
-        processEngineTask(task);
+        // Associating the task with TOKEN_SKIP_TO and cancelling the pending ones.
+        processEngineTask(task, TOKEN_SKIP_TO, true);
     }
 
     @Override
@@ -838,7 +867,8 @@ public final class PlayerImpl implements Player {
             }
         };
 
-        processEngineTask(task);
+        // Associating the task with TOKEN_SKIP_TO and cancelling the pending ones.
+        processEngineTask(task, TOKEN_SKIP_TO, true);
     }
 
     @Override
