@@ -156,14 +156,14 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel:2.1.0'
     kapt "android.arch.lifecycle:compiler:1.1.1"
 
-    // Support
-    implementation 'androidx.appcompat:appcompat:1.1.0'
+    // Compat support and Material design
+    implementation 'androidx.appcompat:appcompat:1.2.0'
     // Do not use v1.1.1 for preferences: it messes with image tinting
     implementation 'androidx.preference:preference:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'androidx.cardview:cardview:1.0.0'
-    implementation 'com.google.android.material:material:1.2.0-alpha06'
-    implementation "androidx.constraintlayout:constraintlayout:2.0.0-beta6"
+    implementation 'com.google.android.material:material:1.2.0'
+    implementation "androidx.constraintlayout:constraintlayout:2.0.1"
     implementation 'androidx.dynamicanimation:dynamicanimation:1.0.0'
     implementation "androidx.viewpager2:viewpager2:1.0.0"
     implementation 'com.google.android:flexbox:2.0.1'
