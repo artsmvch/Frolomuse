@@ -313,9 +313,11 @@ public final class PlayerImpl implements Player {
      * Posting is async in the sense that if the call occurs on the engine thread,
      * the execution will not be performed immediately, but in the near future.
      * @param action to execute on the engine thread
+     * @deprecated the action can be cancelled by calling {@link PlayerImpl#processEngineTask(Runnable, Object, boolean)} method
      */
+    @Deprecated
     public void postOnEngineThread(@NotNull Runnable action) {
-        mEngineHandler.post(action);
+        processEngineTask(action);
     }
 
     /**
