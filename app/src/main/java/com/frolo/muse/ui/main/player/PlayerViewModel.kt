@@ -27,7 +27,6 @@ import com.frolo.muse.model.sound.Sound
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.base.BaseViewModel
 import io.reactivex.Observable
-import org.reactivestreams.Subscription
 import java.util.concurrent.Executor
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -122,20 +121,14 @@ class PlayerViewModel @Inject constructor(
             val source: String? = song?.source
 
             if (source == null) liveDataOf<Sound>(null)
-            else MutableLiveData<Sound>().apply {
-                value = null
+            else MutableLiveData<Sound>(null).apply {
                 resolveSoundUseCase.resolve(source)
                     .observeOn(schedulerProvider.main())
-                    .doOnSubscribe { s ->
-                        resolveSoundSubscription?.cancel()
-                        resolveSoundSubscription = s
-                    }
-                    .subscribeFor { sound ->
+                    .subscribeFor(key = "resolve_sound") { sound ->
                         value = sound
                     }
             }
         }
-    private var resolveSoundSubscription: Subscription? = null
 
     private val _currPosition = MutableLiveData<Int>(player.getCurrentPositionInQueue())
     val currPosition: LiveData<Int> = Transformations.distinctUntilChanged(_currPosition)
@@ -151,16 +144,12 @@ class PlayerViewModel @Inject constructor(
                     getIsFavouriteUseCase.isFavourite(song)
                         .onErrorReturnItem(false)
                         .observeOn(schedulerProvider.main())
-                        .doOnSubscribe {
-                            isFavouriteSubscription?.cancel()
-                            isFavouriteSubscription = it
+                        .subscribeFor(key = "is_favourite") {
+                            value = it
                         }
-                        .subscribeFor { value = it }
                 }
             } else liveDataOf(false)
         }
-    // Keep reference to the current GetIsFavourite flow subscription so we can always cancel it
-    private var isFavouriteSubscription: Subscription? = null
 
     private val _playbackDuration = MutableLiveData<Int>()
     val playbackDuration: LiveData<Int> get() = _playbackDuration
