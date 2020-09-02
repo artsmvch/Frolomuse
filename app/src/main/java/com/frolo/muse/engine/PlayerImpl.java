@@ -8,6 +8,7 @@ import android.media.PlaybackParams;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
+import android.os.SystemClock;
 
 import androidx.annotation.GuardedBy;
 
@@ -277,7 +278,7 @@ public final class PlayerImpl implements Player {
     }
 
     /**
-     * Posting the given <code>task</code> to the engine thread through the appropriate handler.
+     * Posts the given <code>task</code> to the engine thread through the appropriate handler.
      * The task can be associated with <code>token</code>. The token may be null.
      * If <code>cancelPrevious</code> is true, then all pending tasks associated with the <code>token</code> will be cancelled.
      * To cancel ALL pending tasks the token should be <code>null</code>.
@@ -294,12 +295,12 @@ public final class PlayerImpl implements Player {
             }
 
             final Runnable wrapper = new EngineTaskWrapper(task);
-            mEngineHandler.postAtTime(wrapper, token, 0);
+            mEngineHandler.postAtTime(wrapper, token, SystemClock.uptimeMillis());
         }
     }
 
     /**
-     * Posting the given <code>task</code> to the engine thread through the appropriate handler.
+     * Posts the given <code>task</code> to the engine thread through the appropriate handler.
      * This does not cancel any pending task, it only queues the given task for processing.
      * @param task to process
      */
