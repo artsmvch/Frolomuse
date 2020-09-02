@@ -28,27 +28,31 @@ abstract class PlayerImpl_Base_Test {
     /**
      * Queries all audio sources from the device.
      */
-    protected fun getAudioSources(): List<AudioSource> {
+    protected fun getAudioSources(size: Int? = null): List<AudioSource> {
+        if (size != null && size < 0) {
+            throw IllegalArgumentException("Invalid size = $size")
+        }
         val context = InstrumentationRegistry.getTargetContext()
         val repository = SongRepositoryImpl(context)
         val songs = repository.allItems.blockingFirst()
-        return songs.map { it.toAudioSource() }
+        val audioSources = songs.map { it.toAudioSource() }
+        if (size != null) {
+            if (size > audioSources.size) {
+                // it's undefined state
+                throw IllegalStateException("There are no enough songs in the device, requested $size but found only ${audioSources.size}")
+            }
+            return audioSources.subList(0, size)
+        }
+        return audioSources
     }
 
-    protected fun createNonEmptyAudioSourceQueue(minSize: Int = 1): AudioSourceQueue {
-        val queue = AudioSourceQueue.create(
+    protected fun createNonEmptyAudioSourceQueue(size: Int? = null): AudioSourceQueue {
+        return AudioSourceQueue.create(
             AudioSourceQueue.NONE,
             randomLong(),
             randomString(),
-            getAudioSources()
+            getAudioSources(size)
         )
-
-        if (queue.length < minSize) {
-            // it's undefined state
-            throw IllegalStateException("There are no enough songs in the device, requested at least $minSize but found only ${queue.length}")
-        }
-
-        return queue
     }
 
     protected fun doOnPlayerImpl(block: (instance: PlayerImpl) -> Unit) {

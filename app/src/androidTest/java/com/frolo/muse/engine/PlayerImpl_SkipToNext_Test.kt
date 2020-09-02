@@ -22,7 +22,7 @@ class PlayerImpl_SkipToNext_Test : PlayerImpl_Base_Test() {
         val testObserver = mock<TestPlayerObserver>()
         player.registerObserver(testObserver)
 
-        val queue = createNonEmptyAudioSourceQueue(minSize = 2)
+        val queue = createNonEmptyAudioSourceQueue(size = 2)
         val position = 0
         val item = queue.getItemAt(position)
 
@@ -46,7 +46,7 @@ class PlayerImpl_SkipToNext_Test : PlayerImpl_Base_Test() {
         val testObserver = mock<TestPlayerObserver>()
         player.registerObserver(testObserver)
 
-        val queue = createNonEmptyAudioSourceQueue(minSize = 2)
+        val queue = createNonEmptyAudioSourceQueue(size = 2)
         val position = queue.length - 1
         val item = queue.getItemAt(position)
 
@@ -70,7 +70,7 @@ class PlayerImpl_SkipToNext_Test : PlayerImpl_Base_Test() {
         val testObserver = mock<TestPlayerObserver>()
         player.registerObserver(testObserver)
 
-        val queue = createNonEmptyAudioSourceQueue(minSize = 2)
+        val queue = createNonEmptyAudioSourceQueue(size = 2)
         val position = 0
         val item = queue.getItemAt(position)
 

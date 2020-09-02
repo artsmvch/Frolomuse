@@ -23,7 +23,7 @@ class PlayerImpl_AddAllNext_Test : PlayerImpl_Base_Test() {
         val testObserver = mock<TestPlayerObserver>()
         player.registerObserver(testObserver)
 
-        val queue = createNonEmptyAudioSourceQueue(minSize = 2)
+        val queue = createNonEmptyAudioSourceQueue(size = 2)
         val originalSize = queue.length
 
         val position = queue.length - 1

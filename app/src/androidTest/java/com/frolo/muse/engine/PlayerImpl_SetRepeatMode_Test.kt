@@ -22,7 +22,7 @@ class PlayerImpl_SetRepeatMode_Test : PlayerImpl_Base_Test() {
 
         player.registerObserver(testObserver)
 
-        val queue = createNonEmptyAudioSourceQueue()
+        val queue = createNonEmptyAudioSourceQueue(size = 2)
 
         val position = queue.length - 1
 
