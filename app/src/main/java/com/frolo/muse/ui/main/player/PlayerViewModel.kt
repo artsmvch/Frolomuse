@@ -57,17 +57,17 @@ class PlayerViewModel @Inject constructor(
         }
 
         override fun onQueueChanged(player: Player, queue: AudioSourceQueue) {
-            handleSongQueue(queue)
+            handleQueue(queue)
         }
 
         override fun onAudioSourceChanged(player: Player, item: AudioSource?, positionInQueue: Int) {
             _song.value = item?.toSong()
-            _songPosition.value = positionInQueue
+            _currPosition.value = positionInQueue
             _playbackProgress.value = 0
         }
 
         override fun onPositionInQueueChanged(player: Player, positionInQueue: Int) {
-            _songPosition.value = positionInQueue
+            _currPosition.value = positionInQueue
         }
 
         override fun onPlaybackStarted(player: Player) {
@@ -92,19 +92,21 @@ class PlayerViewModel @Inject constructor(
     }
 
     private val queueCallback = AudioSourceQueue.Callback { queue ->
-        _invalidateSongQueueEvent.value = queue
-        _songPosition.value = player.getCurrentPositionInQueue()
+        _invalidateAudioSourceQueueEvent.value = queue
+        _currPosition.value = player.getCurrentPositionInQueue()
     }
 
     private val _songDeletedEvent = SingleLiveEvent<Song>()
     val songDeletedEvent: LiveData<Song> get() = _songDeletedEvent
 
-    private val _songQueue = MutableLiveData<AudioSourceQueue>()
-    val songQueue: LiveData<AudioSourceQueue> get() = _songQueue
+    private val _audioSourceQueue = MutableLiveData<AudioSourceQueue>()
 
-    private val _invalidateSongQueueEvent = SingleLiveEvent<AudioSourceQueue>()
-    val invalidateSongQueueEvent: LiveData<AudioSourceQueue>
-        get() = _invalidateSongQueueEvent
+    val audioSourceList: LiveData<List<AudioSource>> =
+        Transformations.map(_audioSourceQueue) { queue -> queue.snapshot }
+
+    private val _invalidateAudioSourceQueueEvent = SingleLiveEvent<AudioSourceQueue>()
+    val invalidateAudioSourceListEvent: LiveData<List<AudioSource>> =
+        Transformations.map(_invalidateAudioSourceQueueEvent) { queue -> queue.snapshot }
 
     private val _song = MutableLiveData<Song>(null)
     val song: LiveData<Song> get() = _song
@@ -135,8 +137,8 @@ class PlayerViewModel @Inject constructor(
         }
     private var resolveSoundSubscription: Subscription? = null
 
-    private val _songPosition = MutableLiveData<Int>(player.getCurrentPositionInQueue())
-    val songPosition: LiveData<Int> = Transformations.distinctUntilChanged(_songPosition)
+    private val _currPosition = MutableLiveData<Int>(player.getCurrentPositionInQueue())
+    val currPosition: LiveData<Int> = Transformations.distinctUntilChanged(_currPosition)
 
     private val _showVolumeControlEvent = SingleLiveEvent<Unit>()
     val showVolumeControlEvent: LiveData<Unit>
@@ -194,11 +196,11 @@ class PlayerViewModel @Inject constructor(
         onOpened()
     }
 
-    private fun handleSongQueue(queue: AudioSourceQueue?) {
-        val currSongQueueValue = _songQueue.value
-        if (currSongQueueValue != queue) {
-            currSongQueueValue?.unregisterCallback(queueCallback)
-            _songQueue.value = queue?.apply {
+    private fun handleQueue(queue: AudioSourceQueue?) {
+        val currQueueValue = _audioSourceQueue.value
+        if (currQueueValue !== queue) {
+            currQueueValue?.unregisterCallback(queueCallback)
+            _audioSourceQueue.value = queue?.apply {
                 registerCallback(queueCallback, mainThreadExecutor)
             }
         }
@@ -217,7 +219,7 @@ class PlayerViewModel @Inject constructor(
     }
 
     fun onOpened() {
-        handleSongQueue(player.getCurrentQueue())
+        handleQueue(player.getCurrentQueue())
         _song.value = player.getCurrent()?.toSong()
         _playbackDuration.value = player.getDuration()
         _playbackProgress.value = player.getProgress()

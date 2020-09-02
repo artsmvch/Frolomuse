@@ -23,11 +23,10 @@ import com.frolo.mediabutton.PlayButton
 import com.frolo.muse.BuildConfig
 import com.frolo.muse.R
 import com.frolo.muse.StyleUtil
-import com.frolo.muse.Logger
 import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
+import com.frolo.muse.engine.AudioSource
 import com.frolo.muse.engine.Player
-import com.frolo.muse.engine.AudioSourceQueue
 import com.frolo.muse.glide.GlideAlbumArtHelper
 import com.frolo.muse.glide.observe
 import com.frolo.muse.model.media.Song
@@ -53,20 +52,6 @@ import kotlinx.android.synthetic.main.include_player_tool_panel.*
 
 class PlayerFragment: BaseFragment() {
 
-    private class SetViewPagerPosition constructor(
-        val pager: ViewPager2,
-        val position: Int
-    ): Runnable {
-
-        override fun run() {
-            pager.setCurrentItem(position, true)
-        }
-
-        override fun equals(other: Any?): Boolean {
-            return this === other
-        }
-    }
-
     private val viewModel: PlayerViewModel by viewModel()
 
     // The state of album view pager
@@ -74,13 +59,21 @@ class PlayerFragment: BaseFragment() {
     // This flag indicates whether the user is scrolling the album view pager
     private var userScrolledAlbumViewPager = false
 
-    // View pager callbacks
+    /**
+     * AlbumArt pager state and callbacks.
+     */
+
+    // Runnable callback that is responsible for requesting AlbumArt page transformation
     private var requestTransformCallback: Runnable? = null
-    private var setCurrentItemCallback: Runnable? = null
+    // Indicates whether a list is being submitted to the adapter at the moment
+    private var isSubmittingList: Boolean = false
+    // Indicates the pending position, to which the pager should scroll when a list is submitted
+    private var pendingPosition: Int? = null
+    // Runnable callback that is responsible for scrolling AlbumArt pager
+    private var scrollToPositionCallback: Runnable? = null
 
     private val onPageChangeCallback = object : ViewPager2.OnPageChangeCallback() {
         override fun onPageSelected(position: Int) {
-            Logger.d(LOG_TAG, "Swiped to $position [by_user=$userScrolledAlbumViewPager]")
             if (userScrolledAlbumViewPager) {
                 viewModel.onSwipedToPosition(position)
             }
@@ -154,6 +147,8 @@ class PlayerFragment: BaseFragment() {
         albumViewPagerState = ViewPager2.SCROLL_STATE_IDLE
         userScrolledAlbumViewPager = false
         isTrackingProgress = false
+        isSubmittingList = false
+        pendingPosition = null
 
         // Intercepting all touches to prevent their processing in the lower view layers
         view.setOnTouchListener { _, _ -> true }
@@ -232,7 +227,7 @@ class PlayerFragment: BaseFragment() {
     override fun onDestroyView() {
         vp_album_art.apply {
             removeCallbacks(requestTransformCallback)
-            removeCallbacks(setCurrentItemCallback)
+            removeCallbacks(scrollToPositionCallback)
         }
 
         super.onDestroyView()
@@ -348,19 +343,57 @@ class PlayerFragment: BaseFragment() {
     }
 
     /**
-     * Scrolls the album art pager to the given [position].
+     * Submits [list] to the current AlbumCardAdapter.
+     * When the submitting is complete, a callback is posted to scroll to the pending position.
      */
-    private fun scrollToPosition(position: Int) {
-        setCurrentItemCallback?.also { safeCallback ->
-            vp_album_art.removeCallbacks(safeCallback)
+    private fun submitList(list: List<AudioSource>?) {
+        val adapter = vp_album_art.adapter as AlbumCardAdapter
+
+        isSubmittingList = true
+        adapter.submitList(list) {
+            isSubmittingList = false
+            postScrollToPendingPosition()
+        }
+    }
+
+    /**
+     * Posts a callback to scroll to the pending position, if any.
+     * The old callback is removed from the AlbumArt pager.
+     */
+    private fun postScrollToPendingPosition() {
+        val callback = Runnable {
+            if (!isSubmittingList) {
+                pendingPosition?.also { safePosition ->
+                    vp_album_art.setCurrentItem(safePosition, true)
+                }
+                pendingPosition = null
+            }
         }
 
-        // There is an issue with setting current item in ViewPager2:
-        // If we set current item to 1 and then in some near future set item to 2
-        // Then the final item position will be 1. WTF?
-        setCurrentItemCallback = SetViewPagerPosition(vp_album_art, position)
+        scrollToPositionCallback?.also { oldCallback ->
+            vp_album_art.removeCallbacks(oldCallback)
+        }
+        scrollToPositionCallback = callback
 
-        vp_album_art.postDelayed(setCurrentItemCallback, 150)
+        vp_album_art.post(callback)
+    }
+
+    /**
+     * Scrolls the AlbumArt pager to [position].
+     * If a list is currently being submitted to the adapter
+     * or the position is outside the range of the current list,
+     * then the position is stored as pending for later scrolling.
+     */
+    private fun scrollToPosition(position: Int) {
+        val adapter = vp_album_art.adapter as AlbumCardAdapter
+        val currentList: List<AudioSource> = adapter.currentList
+
+        if (isSubmittingList || (position >= currentList.size)) {
+            pendingPosition = position
+        } else {
+            pendingPosition = null
+            vp_album_art.setCurrentItem(position, true)
+        }
     }
 
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
@@ -372,25 +405,19 @@ class PlayerFragment: BaseFragment() {
             updateFavouriteIcon(isFavourite, animate = true)
         }
 
-        songQueue.observe(owner) { queue: AudioSourceQueue? ->
-            Logger.d(LOG_TAG, "SongQueue changed")
-            (vp_album_art.adapter as? AlbumCardAdapter)?.submitQueue(queue)
-            songPosition.value?.let { scrollToPosition(it) }
+        audioSourceList.observe(owner) { list ->
+            submitList(list)
         }
 
-        invalidateSongQueueEvent.observeNonNull(owner) {
-            Logger.d(LOG_TAG, "InvalidateSongQueue event fired")
-            vp_album_art.adapter?.notifyDataSetChanged()
-            songPosition.value?.let { scrollToPosition(it) }
+        invalidateAudioSourceListEvent.observeNonNull(owner) { list ->
+            submitList(list)
         }
 
-        songPosition.observeNonNull(owner) { position ->
-            Logger.d(LOG_TAG, "Song position changed to $position")
+        currPosition.observeNonNull(owner) { position ->
             scrollToPosition(position)
         }
 
         song.observe(owner) { song: Song? ->
-            Logger.d(LOG_TAG, "Song changed")
             if (song != null) {
                 tsw_song_name.setText(song.getNameString(resources))
                 tsw_artist_name.setText(song.getArtistString(resources))

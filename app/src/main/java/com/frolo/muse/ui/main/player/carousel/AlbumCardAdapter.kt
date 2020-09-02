@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.bumptech.glide.load.DataSource
@@ -15,7 +16,6 @@ import com.bumptech.glide.request.target.Target
 import com.frolo.muse.*
 import com.frolo.muse.common.albumId
 import com.frolo.muse.engine.AudioSource
-import com.frolo.muse.engine.AudioSourceQueue
 import com.frolo.muse.glide.makeRequest
 import kotlinx.android.synthetic.main.include_square_album_art.view.*
 import kotlin.math.max
@@ -23,18 +23,7 @@ import kotlin.math.max
 
 class AlbumCardAdapter constructor(
     private val requestManager: RequestManager
-): RecyclerView.Adapter<AlbumCardAdapter.AlbumArtViewHolder>() {
-
-    private var queue: AudioSourceQueue? = null
-
-    fun submitQueue(queue: AudioSourceQueue?) {
-        val callback = SongQueueCallback(this.queue, queue)
-        val diffResult = DiffUtil.calculateDiff(callback)
-        this.queue = queue
-        diffResult.dispatchUpdatesTo(this)
-    }
-
-    fun getItemAt(position: Int) = queue?.getItemAt(position)
+): ListAdapter<AudioSource, AlbumCardAdapter.AlbumArtViewHolder>(ItemDiffCallback) {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -63,10 +52,8 @@ class AlbumCardAdapter constructor(
         return AlbumArtViewHolder(itemView)
     }
 
-    override fun getItemCount(): Int = queue?.length ?: 0
-
     override fun onBindViewHolder(holder: AlbumArtViewHolder, position: Int) {
-        val item = getItemAt(position)
+        val item = getItem(position)
         holder.bind(item)
     }
 
@@ -121,24 +108,15 @@ class AlbumCardAdapter constructor(
         }
     }
 
-    private class SongQueueCallback constructor(
-        private val oldQueue: AudioSourceQueue?,
-        private val newQueue: AudioSourceQueue?
-    ) : DiffUtil.Callback() {
+    object ItemDiffCallback : DiffUtil.ItemCallback<AudioSource>() {
 
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return oldQueue!!.getItemAt(oldItemPosition).id ==
-                    newQueue!!.getItemAt(newItemPosition).id
+        override fun areItemsTheSame(oldItem: AudioSource, newItem: AudioSource): Boolean {
+            return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return oldQueue!!.getItemAt(oldItemPosition).albumId ==
-                    newQueue!!.getItemAt(newItemPosition).albumId
+        override fun areContentsTheSame(oldItem: AudioSource, newItem: AudioSource): Boolean {
+            return oldItem.albumId == newItem.albumId
         }
-
-        override fun getOldListSize() = oldQueue?.length ?: 0
-
-        override fun getNewListSize() = newQueue?.length ?: 0
 
     }
 }
