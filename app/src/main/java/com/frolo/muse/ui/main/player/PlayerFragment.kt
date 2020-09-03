@@ -340,11 +340,19 @@ class PlayerFragment: BaseFragment() {
     }
 
     /**
-     * Submits [list] to the current AlbumCardAdapter.
-     * When the submitting is complete, a callback is posted to scroll to the pending position.
+     * Submits the given [list] to the adapter of the AlbumArt pager.
+     * When the submitting is complete, two callbacks are posted:
+     * a callback that is responsible for requesting page transform
+     * and a callback that is responsible for scrolling the pager to the pending position.
+     * Before submitting, if the pending position is null, it is assigned the current pager position.
+     * This is to prevent the pager from scrolling automatically when the adapter notifies about changes.
      */
     private fun submitList(list: List<AudioSource>?) {
         val adapter = vp_album_art.adapter as AlbumCardAdapter
+
+        if (pendingPosition == null) {
+            pendingPosition = vp_album_art.currentItem
+        }
 
         isSubmittingList = true
         adapter.submitList(list) {
@@ -352,6 +360,15 @@ class PlayerFragment: BaseFragment() {
             postRequestPageTransform()
             postScrollToPendingPosition()
         }
+    }
+
+    /**
+     * Scrolls the AlbumArt pager to the given [position]. The scrolling is async in the sense
+     * that [position] is stored as pending scrolling in the near future.
+     */
+    private fun scrollToPosition(position: Int) {
+        pendingPosition = position
+        postScrollToPendingPosition()
     }
 
     /**
@@ -374,24 +391,6 @@ class PlayerFragment: BaseFragment() {
         scrollToPositionCallback = callback
 
         vp_album_art.post(callback)
-    }
-
-    /**
-     * Scrolls the AlbumArt pager to [position].
-     * If a list is currently being submitted to the adapter
-     * or the position is outside the range of the current list,
-     * then the position is stored as pending for later scrolling.
-     */
-    private fun scrollToPosition(position: Int) {
-        val adapter = vp_album_art.adapter as AlbumCardAdapter
-        val currentList: List<AudioSource> = adapter.currentList
-
-        if (isSubmittingList || (position >= currentList.size)) {
-            pendingPosition = position
-        } else {
-            pendingPosition = null
-            vp_album_art.setCurrentItem(position, true)
-        }
     }
 
     /**
