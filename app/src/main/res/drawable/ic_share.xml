@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="18dp"
-    android:height="18dp"
     android:viewportWidth="473.932"
-    android:viewportHeight="473.932">
+    android:viewportHeight="473.932"
+    android:width="@dimen/preference_icon_size"
+    android:height="@dimen/preference_icon_size">
+
+    <group
+        android:scaleX="0.9"
+        android:scaleY="0.9"
+        android:pivotX="236.966"
+        android:pivotY="236.966">
 
     <path
         android:fillColor="#FFFFFF"
@@ -14,4 +20,5 @@ c0,7.809,1.381,15.229,3.322,22.412L155.892,183.74c-15.833-20.039-40.079-33.154-6
 c-47.715,0-86.326,38.676-86.326,86.369s38.612,86.348,86.326,86.348c28.236,0,53.043-13.719,68.832-34.664l145.948,74.656
 c-2.287,7.744-3.947,15.79-3.947,24.289c0,47.693,38.676,86.348,86.326,86.348c47.758,0,86.391-38.655,86.391-86.348
 C471.904,339.848,433.271,301.214,385.513,301.214z" />
+    </group>
 </vector>
