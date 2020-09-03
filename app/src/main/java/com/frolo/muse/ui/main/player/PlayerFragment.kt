@@ -64,14 +64,14 @@ class PlayerFragment: BaseFragment() {
      * AlbumArt pager state and callbacks.
      */
 
-    // Runnable callback that is responsible for requesting AlbumArt page transformation
-    private var requestTransformCallback: Runnable? = null
     // Indicates whether a list is being submitted to the adapter at the moment
     private var isSubmittingList: Boolean = false
     // Indicates the pending position, to which the pager should scroll when a list is submitted
     private var pendingPosition: Int? = null
     // Runnable callback that is responsible for scrolling AlbumArt pager
     private var scrollToPositionCallback: Runnable? = null
+    // Runnable callback that is responsible for requesting transform on AlbumArt pager
+    private var requestTransformCallback: Runnable? = null
 
     private val onPageChangeCallback = object : ViewPager2.OnPageChangeCallback() {
         override fun onPageSelected(position: Int) {
@@ -128,12 +128,7 @@ class PlayerFragment: BaseFragment() {
         super.onCreate(savedInstanceState)
         GlideAlbumArtHelper.get().observe(this) {
             (vp_album_art.adapter as? AlbumCardAdapter)?.notifyDataSetChanged()
-
-            vp_album_art.removeCallbacks(requestTransformCallback)
-            requestTransformCallback = Runnable {
-                vp_album_art.requestTransform()
-            }
-            vp_album_art.post(requestTransformCallback)
+            postRequestPageTransform()
         }
     }
 
@@ -354,6 +349,7 @@ class PlayerFragment: BaseFragment() {
         isSubmittingList = true
         adapter.submitList(list) {
             isSubmittingList = false
+            postRequestPageTransform()
             postScrollToPendingPosition()
         }
     }
@@ -396,6 +392,23 @@ class PlayerFragment: BaseFragment() {
             pendingPosition = null
             vp_album_art.setCurrentItem(position, true)
         }
+    }
+
+    /**
+     * Posts a callback to request page transform.
+     * The old callback is removed from the AlbumArt pager.
+     */
+    private fun postRequestPageTransform() {
+        val callback = Runnable {
+            vp_album_art.requestTransform()
+        }
+
+        requestTransformCallback?.also { oldCallback ->
+            vp_album_art.removeCallbacks(oldCallback)
+        }
+        requestTransformCallback = callback
+
+        vp_album_art.post(callback)
     }
 
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
