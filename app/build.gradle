@@ -38,7 +38,7 @@ android {
         applicationId "com.frolo.musp"
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 87
+        versionCode 88
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         setProperty("archivesBaseName", applicationId + "-v" + versionCode + "(" + versionName + ")")
