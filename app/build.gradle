@@ -19,7 +19,7 @@ static def getDate() {
 
 def versionMajor = 5
 def versionMinor = 4
-def versionPatch = 0
+def versionPatch = 1
 
 android {
     signingConfigs {
