@@ -325,7 +325,9 @@ public final class PlayerImpl implements Player {
      * The execution can be delayed until all pending and potential event tasks are performed.
      * @param action to execute on the event thread
      * @param delayed true if the action should executed at the very end after all pending and potential event tasks
+     * @deprecated if delayed, the action can be cancelled by calling {@link PlayerImpl#processEngineTask(Runnable, Object, boolean)} method
      */
+    @Deprecated
     public void postOnEventThread(@NotNull Runnable action, boolean delayed) {
         if (delayed) {
             final Runnable task = new Runnable() {
