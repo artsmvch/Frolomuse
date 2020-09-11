@@ -212,6 +212,10 @@ final class PlaylistQuery {
 
                     Uri uri = resolver.insert(URI, values);
 
+                    // Need to notify the content resolver about the insertion,
+                    // because it does not automatically receive notifications in some Android APIs (i.e. 30)
+                    resolver.notifyChange(uri != null ? uri : URI, null);
+
                     if (uri == null) {
                         // The docs say it may be null
                         throw new Exception(
