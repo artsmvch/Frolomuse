@@ -62,6 +62,7 @@ final class Del {
 
             int deletedCount = resolver
                     .delete(uri, opDeleteSelection, null);
+            resolver.notifyChange(uri, null);
 
             // TODO: check deletedCount
         }
@@ -152,6 +153,7 @@ final class Del {
 
         int deletedCount = resolver
                 .delete(URI_SONG, opDeleteSelection, null);
+        resolver.notifyChange(uri, null);
 
         // TODO: check deletedCount
     }
