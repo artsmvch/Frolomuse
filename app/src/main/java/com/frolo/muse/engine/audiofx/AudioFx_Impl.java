@@ -609,8 +609,6 @@ public class AudioFx_Impl implements AudioFxApplicable {
 
                 mEqualizer = newEqualizer;
 
-                newEqualizer.setEnabled(enabled);
-
                 final int eqUseFlag = mPersistence.getEqUseFlag();
                 final boolean adjustBandLevels;
                 if (eqUseFlag == AudioFx_Persistence.FLAG_EQ_USE_NO_PRESET) {
@@ -640,6 +638,8 @@ public class AudioFx_Impl implements AudioFxApplicable {
                         newEqualizer.setBandLevel((short) i, bandLevels[i]);
                     }
                 }
+
+                newEqualizer.setEnabled(enabled);
             } catch (Throwable t) {
                 report(t);
             }
@@ -660,8 +660,8 @@ public class AudioFx_Impl implements AudioFxApplicable {
 
                 mBassBoost = newBassBoost;
 
-                newBassBoost.setEnabled(enabled);
                 newBassBoost.setStrength(mPersistence.getBassStrength());
+                newBassBoost.setEnabled(enabled);
             } catch (Throwable t) {
                 report(t);
             }
@@ -682,8 +682,8 @@ public class AudioFx_Impl implements AudioFxApplicable {
 
                 mVirtualizer = newVirtualizer;
 
-                newVirtualizer.setEnabled(enabled);
                 newVirtualizer.setStrength(mPersistence.getVirtualizerStrength());
+                newVirtualizer.setEnabled(enabled);
             } catch (Throwable t) {
                 report(t);
             }
@@ -725,10 +725,10 @@ public class AudioFx_Impl implements AudioFxApplicable {
 
                 }
 
-                newPresetReverb.setEnabled(enabled);
-
                 final short presetReverbIndex = getPresetReverbIndex(mPersistence.getReverb());
                 newPresetReverb.setPreset(presetReverbIndex);
+
+                newPresetReverb.setEnabled(enabled);
 
                 mPresetReverb = newPresetReverb;
             } catch (Throwable t) {
