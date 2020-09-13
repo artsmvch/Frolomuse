@@ -1,4 +1,4 @@
-package com.frolo.muse.engine.service;
+package com.frolo.muse.engine.service.observers;
 
 import android.content.Context;
 import android.graphics.Bitmap;

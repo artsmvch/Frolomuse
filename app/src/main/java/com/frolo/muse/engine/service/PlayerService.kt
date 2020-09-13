@@ -3,7 +3,6 @@ package com.frolo.muse.engine.service
 import android.app.*
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
 import android.media.MediaMetadata
 import android.os.*
 import android.support.v4.media.MediaMetadataCompat
@@ -15,9 +14,10 @@ import androidx.core.content.ContextCompat
 import com.frolo.muse.App
 import com.frolo.muse.Logger
 import com.frolo.muse.R
+import com.frolo.muse.common.artist
 import com.frolo.muse.common.switchToNextRepeatMode
 import com.frolo.muse.common.switchToNextShuffleMode
-import com.frolo.muse.common.toSong
+import com.frolo.muse.common.title
 import com.frolo.muse.engine.*
 import com.frolo.muse.engine.audiofx.AudioFx_Impl
 import com.frolo.muse.engine.service.PlayerService.Companion.newIntent
@@ -26,13 +26,11 @@ import com.frolo.muse.engine.service.observers.*
 import com.frolo.muse.headset.createHeadsetHandler
 import com.frolo.muse.interactor.media.DispatchSongPlayedUseCase
 import com.frolo.muse.model.playback.PlaybackFadingParams
-import com.frolo.muse.model.media.Song
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.repository.PresetRepository
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.sleeptimer.PlayerSleepTimer
 import com.frolo.muse.ui.main.MainActivity
-import io.reactivex.disposables.Disposable
 import javax.inject.Inject
 
 
@@ -63,7 +61,6 @@ class PlayerService: Service() {
 
     private var isBound = false // indicates whether the service is bound or not
     private var notificationCancelled = false
-    private var notificationDisposable: Disposable? = null
 
     private lateinit var player: Player
 
@@ -205,7 +202,7 @@ class PlayerService: Service() {
         player.registerObserver(PlayerStateSaver(preferences))
         player.registerObserver(SongPlayCounter(schedulerProvider, dispatchSongPlayedUseCase))
         player.registerObserver(WidgetUpdater(this))
-        player.registerObserver(PlaybackNotifier { _, force -> notifyAboutPlayback(force) })
+        player.registerObserver(PlayerNotifier(this) { playerNtf, force -> postPlayerNotification(playerNtf, force) })
 
         Logger.d(TAG, "Service created")
     }
@@ -233,8 +230,6 @@ class PlayerService: Service() {
             COMMAND_CANCEL_NOTIFICATION -> cancelNotification()
 
             COMMAND_STOP -> player.pause()
-
-            COMMAND_SHOW_NOTIFICATION -> showNotification()
         }
 
         return START_STICKY
@@ -258,8 +253,6 @@ class PlayerService: Service() {
         headsetHandler.dispose()
 
         unregisterReceiver(sleepTimerHandler)
-
-        notificationDisposable?.dispose()
 
         super.onDestroy()
     }
@@ -314,17 +307,15 @@ class PlayerService: Service() {
         }
     }
 
-    private fun showNotification() {
-        Logger.d(TAG, "Showing notification")
-        notificationCancelled = false
-        notifyAboutPlayback(false)
-    }
-
     private fun buildPromiseNotification(): Notification {
-        return buildPlaybackNotification(null, false, null)
+        return buildPlayerNotification(PlayerNtf.NONE)
     }
 
-    private fun buildPlaybackNotification(song: Song?, isPlaying: Boolean, art: Bitmap?): Notification {
+    private fun buildPlayerNotification(playerNtf: PlayerNtf): Notification {
+
+        val item = playerNtf.item
+        val art = playerNtf.art
+        val isPlaying = playerNtf.isPlaying
 
         val context = this@PlayerService
 
@@ -351,8 +342,8 @@ class PlayerService: Service() {
         val notificationBuilder = NotificationCompat.Builder(this, CHANNEL_ID_PLAYBACK).apply {
             setSmallIcon(R.drawable.ic_app_brand)
 
-            setContentTitle(song?.title.orEmpty())
-            setContentText(song?.artist.orEmpty())
+            setContentTitle(item?.title.orEmpty())
+            setContentText(item?.artist.orEmpty())
 
             setContentIntent(openPendingIntent)
 
@@ -385,8 +376,8 @@ class PlayerService: Service() {
         } else {
 
             val remoteViews = RemoteViews(context.packageName, R.layout.notification_playback).apply {
-                setTextViewText(R.id.tv_song_name, song?.title ?: "")
-                setTextViewText(R.id.tv_artist_name, song?.artist ?: "")
+                setTextViewText(R.id.tv_song_name, item?.title ?: "")
+                setTextViewText(R.id.tv_artist_name, item?.artist ?: "")
                 setImageViewResource(R.id.btn_play, if (isPlaying) R.drawable.ic_cpause else R.drawable.ic_play)
                 setImageViewBitmap(R.id.imv_album_art, art)
 
@@ -412,22 +403,13 @@ class PlayerService: Service() {
         return notificationBuilder.build()
     }
 
-    private fun notifyAboutPlayback(force: Boolean) {
-        notificationDisposable?.dispose()
-        notificationDisposable = null
+    private fun postPlayerNotification(playerNtf: PlayerNtf, force: Boolean) {
 
         if (notificationCancelled && !force) {
             return
         }
 
-        val song = player.getCurrent()?.toSong()
-        val isPlaying = player.isPlaying()
-
-        notificationDisposable = Notifications.getPlaybackArt(this, song)
-            .doOnSuccess { startForeground(NOTIFICATION_ID_PLAYBACK, buildPlaybackNotification(song, isPlaying, it)) }
-            .doOnError { startForeground(NOTIFICATION_ID_PLAYBACK, buildPlaybackNotification(song, isPlaying, null)) }
-            .ignoreElement()
-            .subscribe({ /*stub*/ }, { /*stub*/ })
+        startForeground(NOTIFICATION_ID_PLAYBACK, buildPlayerNotification(playerNtf))
 
         // We're about to post the notification. It's not cancelled now
         notificationCancelled = false
@@ -454,7 +436,6 @@ class PlayerService: Service() {
         const val COMMAND_SWITCH_TO_NEXT_SHUFFLE_MODE = 15
         const val COMMAND_STOP = 18
         const val COMMAND_CANCEL_NOTIFICATION = 19
-        const val COMMAND_SHOW_NOTIFICATION = 20
 
         // notification
         @Deprecated("Use CHANNEL_ID_PLAYBACK instead")
