@@ -77,7 +77,7 @@ class PlayerNotifier constructor(
     }
 
     override fun onAudioSourceChanged(player: Player, item: AudioSource?, positionInQueue: Int) {
-        notify(item = item, isPlaying = player.isPlaying(), force = true)
+        notify(item = item, isPlaying = player.isPlaying(), force = false)
     }
 
     override fun onShutdown(player: Player) {
