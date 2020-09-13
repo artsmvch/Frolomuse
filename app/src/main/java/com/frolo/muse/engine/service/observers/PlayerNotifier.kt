@@ -6,6 +6,10 @@ import com.frolo.muse.engine.AudioSource
 import com.frolo.muse.engine.Player
 import com.frolo.muse.engine.SimplePlayerObserver
 import com.frolo.muse.engine.service.PlayerNtf
+import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
+import com.frolo.muse.model.media.Song
+import io.reactivex.Flowable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 
 
@@ -17,6 +21,7 @@ import io.reactivex.disposables.Disposable
  */
 class PlayerNotifier constructor(
     private val context: Context,
+    private val getIsFavouriteUseCase: GetIsFavouriteUseCase<Song>,
     private val notify: (player: PlayerNtf, force: Boolean) -> Unit
 ): SimplePlayerObserver() {
 
@@ -25,24 +30,41 @@ class PlayerNotifier constructor(
     private fun notify(item: AudioSource?, isPlaying: Boolean, force: Boolean) {
         notificationDisposable?.dispose()
 
+        val song = item?.toSong()
+
         // The default notification that is posted first,
         // because the album art has not been loaded yet.
-        val defaultPlayerNtf = PlayerNtf(item = item, art = null, isPlaying = isPlaying)
+        val defaultPlayerNtf = PlayerNtf(
+            item = item,
+            art = null,
+            isPlaying = isPlaying,
+            isFavourite = false
+        )
 
-        notificationDisposable = Notifications.getPlaybackArt(context, item?.toSong())
-            .map { art -> defaultPlayerNtf.copy(art = art) }
-            //.onErrorReturnItem(defaultPlayerNtf)
+        notificationDisposable = Notifications.getPlaybackArt(context, song)
             .doOnSubscribe {
                 // When subscribed, the default notification is posted
                 notify.invoke(defaultPlayerNtf, force)
             }
-            .doOnSuccess { playerNtf ->
-                // If successful, the result notification is posted without forcing,
+            .map { art -> defaultPlayerNtf.copy(art = art) }
+            .onErrorReturnItem(defaultPlayerNtf)
+            .flatMapPublisher { playerNtf ->
+                if (song != null) {
+                    getIsFavouriteUseCase.isFavourite(song)
+                        .map { isFav -> playerNtf.copy(isFavourite = isFav) }
+                } else {
+                    // If the song is null, then it's obviously not favourite
+                    Flowable.just(playerNtf.copy(isFavourite = false))
+                }
+            }
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnNext { playerNtf ->
+                // Each next notification is posted without forcing,
                 // since the default notification was posted when subscribed,
                 // and from that point, the notification can be cancelled by the user.
                 notify.invoke(playerNtf, false)
             }
-            .ignoreElement()
+            .ignoreElements()
             .subscribe({ /*stub*/ }, { /*stub*/ })
     }
 

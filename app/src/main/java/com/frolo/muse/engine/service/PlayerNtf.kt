@@ -12,12 +12,13 @@ import com.frolo.muse.engine.AudioSource
 data class PlayerNtf(
     val item: AudioSource?,
     val art: Bitmap?,
-    val isPlaying: Boolean
+    val isPlaying: Boolean,
+    val isFavourite: Boolean
 ) {
 
     companion object {
 
-        val NONE = PlayerNtf(item = null, art = null, isPlaying = false)
+        val NONE = PlayerNtf(item = null, art = null, isPlaying = false, isFavourite = false)
 
     }
 

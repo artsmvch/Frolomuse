@@ -14,10 +14,7 @@ import androidx.core.content.ContextCompat
 import com.frolo.muse.App
 import com.frolo.muse.Logger
 import com.frolo.muse.R
-import com.frolo.muse.common.artist
-import com.frolo.muse.common.switchToNextRepeatMode
-import com.frolo.muse.common.switchToNextShuffleMode
-import com.frolo.muse.common.title
+import com.frolo.muse.common.*
 import com.frolo.muse.engine.*
 import com.frolo.muse.engine.audiofx.AudioFx_Impl
 import com.frolo.muse.engine.service.PlayerService.Companion.newIntent
@@ -25,6 +22,9 @@ import com.frolo.muse.engine.service.PlayerService.PlayerBinder
 import com.frolo.muse.engine.service.observers.*
 import com.frolo.muse.headset.createHeadsetHandler
 import com.frolo.muse.interactor.media.DispatchSongPlayedUseCase
+import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
+import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
+import com.frolo.muse.model.media.Song
 import com.frolo.muse.model.playback.PlaybackFadingParams
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.repository.PresetRepository
@@ -72,6 +72,10 @@ class PlayerService: Service() {
     lateinit var schedulerProvider: SchedulerProvider
     @Inject
     lateinit var dispatchSongPlayedUseCase: DispatchSongPlayedUseCase
+    @Inject
+    lateinit var getIsFavouriteUseCase: GetIsFavouriteUseCase<Song>
+    @Inject
+    lateinit var changeFavouriteUseCase: ChangeFavouriteUseCase<Song>
 
     // HeadsetHandler is used to handle the status of the headset (connected, disconnected, etc.)
     private val headsetHandler = createHeadsetHandler(
@@ -202,7 +206,11 @@ class PlayerService: Service() {
         player.registerObserver(PlayerStateSaver(preferences))
         player.registerObserver(SongPlayCounter(schedulerProvider, dispatchSongPlayedUseCase))
         player.registerObserver(WidgetUpdater(this))
-        player.registerObserver(PlayerNotifier(this) { playerNtf, force -> postPlayerNotification(playerNtf, force) })
+        player.registerObserver(
+            PlayerNotifier(this, getIsFavouriteUseCase) { playerNtf, force ->
+                postPlayerNotification(playerNtf, force)
+            }
+        )
 
         Logger.d(TAG, "Service created")
     }
@@ -230,6 +238,13 @@ class PlayerService: Service() {
             COMMAND_CANCEL_NOTIFICATION -> cancelNotification()
 
             COMMAND_STOP -> player.pause()
+
+            COMMAND_CHANGE_FAV -> {
+                (intent.getSerializableExtra(EXTRA_SONG) as? Song)?.also { safeSong ->
+                    // TODO: save the disposable
+                    changeFavouriteUseCase.changeFavourite(safeSong).subscribe()
+                }
+            }
         }
 
         return START_STICKY
@@ -316,11 +331,17 @@ class PlayerService: Service() {
         val item = playerNtf.item
         val art = playerNtf.art
         val isPlaying = playerNtf.isPlaying
+        val isFav = playerNtf.isFavourite
 
         val context = this@PlayerService
 
         val cancelPendingIntent = newIntent(context, COMMAND_CANCEL_NOTIFICATION).let { intent ->
             PendingIntent.getService(context, RC_CANCEL_NOTIFICATION, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        }
+
+        val changeFavPendingIntent = newIntent(context, COMMAND_CHANGE_FAV).let { intent ->
+            intent.putExtra(EXTRA_SONG, item?.toSong())
+            PendingIntent.getService(context, RC_CHANGE_FAV, intent, PendingIntent.FLAG_UPDATE_CURRENT)
         }
 
         val previousPendingIntent = newIntent(context, COMMAND_SKIP_TO_PREVIOUS).let { intent ->
@@ -354,6 +375,7 @@ class PlayerService: Service() {
         if (MODERN_PLAYBACK_NOTIFICATION) {
 
             notificationBuilder.apply {
+                addAction(if (isFav) R.drawable.ntf_ic_liked else R.drawable.ntf_ic_not_liked, "Change_Fav", changeFavPendingIntent)
                 addAction(R.drawable.ntf_ic_previous, "Previous", previousPendingIntent)
                 if (isPlaying) {
                     addAction(R.drawable.ntf_ic_pause, "Pause", togglePendingIntent)
@@ -422,10 +444,12 @@ class PlayerService: Service() {
         private const val RC_COMMAND_SKIP_TO_PREVIOUS = 151
         private const val RC_COMMAND_TOGGLE = 152
         private const val RC_COMMAND_SKIP_TO_NEXT = 153
+        private const val RC_CHANGE_FAV = 155
         private const val RC_OPEN_PLAYER = 157
         private const val RC_CANCEL_NOTIFICATION = 159
 
         private const val EXTRA_COMMAND = "command"
+        private const val EXTRA_SONG = "song"
 
         // commands
         const val COMMAND_EMPTY = 10
@@ -434,6 +458,7 @@ class PlayerService: Service() {
         const val COMMAND_TOGGLE = 13
         const val COMMAND_SWITCH_TO_NEXT_REPEAT_MODE = 14
         const val COMMAND_SWITCH_TO_NEXT_SHUFFLE_MODE = 15
+        const val COMMAND_CHANGE_FAV = 17
         const val COMMAND_STOP = 18
         const val COMMAND_CANCEL_NOTIFICATION = 19
 
