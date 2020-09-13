@@ -11,26 +11,42 @@ import com.frolo.muse.model.media.Song
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import java.util.concurrent.atomic.AtomicReference
 
 
 /**
- * Invokes [notify] when the user should be notified about the playback and other player-related stuff.
- * The [notify] lambda takes two params: a player notification model and a 'force' flag
+ * Invokes [onNotify] when the user should be notified about the playback and other player-related stuff.
+ * The [onNotify] lambda takes two params: a player notification model and a 'force' flag
  * that indicates whether the user should be forced to receive notification.
  * The client can do anything in the lambda, like show a notification in UI.
  */
 class PlayerNotifier constructor(
     private val context: Context,
     private val getIsFavouriteUseCase: GetIsFavouriteUseCase<Song>,
-    private val notify: (player: PlayerNtf, force: Boolean) -> Unit
+    private val onNotify: (player: PlayerNtf, force: Boolean) -> Unit
 ): SimplePlayerObserver() {
 
     private var notificationDisposable: Disposable? = null
 
+    private val lastPlayerNtfRef = AtomicReference<PlayerNtf>(null)
+
+    private fun notify(playerNtf: PlayerNtf, force: Boolean) {
+        lastPlayerNtfRef.set(playerNtf)
+        onNotify.invoke(playerNtf, force)
+    }
+
     private fun notify(item: AudioSource?, isPlaying: Boolean, force: Boolean) {
         notificationDisposable?.dispose()
 
-        val song = item?.toSong()
+        val song: Song? = item?.toSong()
+
+        val isFav: Boolean = lastPlayerNtfRef.get().let { lastPlayerNtf ->
+            // If the audio source item in the last player notification is equal to the new one,
+            // then we assume that its favourite flag remains the same.
+            // Otherwise, the favourite flag is false.
+            val lastItem = lastPlayerNtf?.item
+            if (item != null && item.source == lastItem?.source) lastPlayerNtf.isFavourite else false
+        }
 
         // The default notification that is posted first,
         // because the album art has not been loaded yet.
@@ -38,13 +54,13 @@ class PlayerNotifier constructor(
             item = item,
             art = null,
             isPlaying = isPlaying,
-            isFavourite = false
+            isFavourite = isFav
         )
 
         notificationDisposable = Arts.getPlaybackArt(context, song)
             .doOnSubscribe {
                 // When subscribed, the default notification is posted
-                notify.invoke(defaultPlayerNtf, force)
+                notify(defaultPlayerNtf, force)
             }
             .map { art -> defaultPlayerNtf.copy(art = art) }
             .onErrorReturnItem(defaultPlayerNtf)
@@ -53,16 +69,17 @@ class PlayerNotifier constructor(
                     getIsFavouriteUseCase.isFavourite(song)
                         .map { isFav -> playerNtf.copy(isFavourite = isFav) }
                 } else {
-                    // If the song is null, then it's obviously not favourite
-                    Flowable.just(playerNtf.copy(isFavourite = false))
+                    // If the song is null, then we use the default notification
+                    Flowable.just(playerNtf)
                 }
             }
+            .distinctUntilChanged()
             .observeOn(AndroidSchedulers.mainThread())
             .doOnNext { playerNtf ->
                 // Each next notification is posted without forcing,
                 // since the default notification was posted when subscribed,
                 // and from that point, the notification can be cancelled by the user.
-                notify.invoke(playerNtf, false)
+                notify(playerNtf, false)
             }
             .ignoreElements()
             .subscribe({ /*stub*/ }, { /*stub*/ })
