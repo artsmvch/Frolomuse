@@ -3,9 +3,7 @@ package com.frolo.muse.engine.service
 import android.app.*
 import android.content.Context
 import android.content.Intent
-import android.media.MediaMetadata
 import android.os.*
-import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaSessionCompat
 import android.widget.RemoteViews
 import androidx.annotation.RequiresApi
@@ -161,12 +159,7 @@ class PlayerService: RxService() {
             setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS)
             isActive = true
             setCallback(mediaSessionCallback)
-
-            // This hides progress bar from the Playback notification.
-            val mediaMetadata = MediaMetadata.Builder()
-                    .putLong(MediaMetadata.METADATA_KEY_DURATION, -1L)
-                    .build()
-            setMetadata(MediaMetadataCompat.fromMediaMetadata(mediaMetadata))
+            setEmptyMetadata()
         }
 
         // This is the first what we have to do.
@@ -212,6 +205,7 @@ class PlayerService: RxService() {
                 postPlayerNotification(playerNtf, force)
             }
         )
+        player.registerObserver(MediaSessionObserver(this, mediaSession))
 
         Logger.d(TAG, "Service created")
     }

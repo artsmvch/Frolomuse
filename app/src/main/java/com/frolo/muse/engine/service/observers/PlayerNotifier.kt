@@ -41,7 +41,7 @@ class PlayerNotifier constructor(
             isFavourite = false
         )
 
-        notificationDisposable = Notifications.getPlaybackArt(context, song)
+        notificationDisposable = Arts.getPlaybackArt(context, song)
             .doOnSubscribe {
                 // When subscribed, the default notification is posted
                 notify.invoke(defaultPlayerNtf, force)

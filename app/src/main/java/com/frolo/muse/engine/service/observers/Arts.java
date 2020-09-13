@@ -22,7 +22,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 
-final class Notifications {
+final class Arts {
 
     private static final Bitmap EMPTY_BITMAP =
             Bitmap.createBitmap(1, 1, Bitmap.Config.ALPHA_8);
@@ -31,7 +31,7 @@ final class Notifications {
         return dp * ((float) context.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
     }
 
-    private Notifications() {
+    private Arts() {
     }
 
     @MainThread
