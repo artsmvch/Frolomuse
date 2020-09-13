@@ -28,6 +28,7 @@ import com.frolo.muse.model.media.Song
 import com.frolo.muse.model.playback.PlaybackFadingParams
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.repository.PresetRepository
+import com.frolo.muse.rx.RxService
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.sleeptimer.PlayerSleepTimer
 import com.frolo.muse.ui.main.MainActivity
@@ -55,7 +56,7 @@ import javax.inject.Inject
  * So to be working as long as needed, the service must be at least foreground or bound.
  * See https://stackoverflow.com/a/17883828/9437681
  */
-class PlayerService: Service() {
+class PlayerService: RxService() {
 
     class PlayerBinder constructor(val service: Player): Binder()
 
@@ -241,8 +242,7 @@ class PlayerService: Service() {
 
             COMMAND_CHANGE_FAV -> {
                 (intent.getSerializableExtra(EXTRA_SONG) as? Song)?.also { safeSong ->
-                    // TODO: save the disposable
-                    changeFavouriteUseCase.changeFavourite(safeSong).subscribe()
+                    changeFavouriteUseCase.changeFavourite(safeSong).subscribeSafely()
                 }
             }
         }
