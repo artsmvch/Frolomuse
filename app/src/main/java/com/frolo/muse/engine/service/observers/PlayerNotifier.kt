@@ -1,6 +1,7 @@
 package com.frolo.muse.engine.service.observers
 
 import android.content.Context
+import android.graphics.Bitmap
 import com.frolo.muse.common.toSong
 import com.frolo.muse.engine.AudioSource
 import com.frolo.muse.engine.Player
@@ -40,19 +41,27 @@ class PlayerNotifier constructor(
 
         val song: Song? = item?.toSong()
 
-        val isFav: Boolean = lastPlayerNtfRef.get().let { lastPlayerNtf ->
+        val lastPlayerNtf = lastPlayerNtfRef.get()
+
+        val art: Bitmap?
+        val isFav: Boolean
+
+        if (lastPlayerNtf != null && item != null && item.source == lastPlayerNtf.item?.source) {
             // If the audio source item in the last player notification is equal to the new one,
-            // then we assume that its favourite flag remains the same.
-            // Otherwise, the favourite flag is false.
-            val lastItem = lastPlayerNtf?.item
-            if (item != null && item.source == lastItem?.source) lastPlayerNtf.isFavourite else false
+            // then we assume that its art and favourite flag remain the same.
+            art = lastPlayerNtf.art
+            isFav = lastPlayerNtf.isFavourite
+        } else {
+            // Otherwise, then the art is the default one and the favourite flag is false.
+            art = Arts.getDefaultArt()
+            isFav = false
         }
 
         // The default notification that is posted first,
         // because the album art has not been loaded yet.
         val defaultPlayerNtf = PlayerNtf(
             item = item,
-            art = null,
+            art = art,
             isPlaying = isPlaying,
             isFavourite = isFav
         )
@@ -62,7 +71,7 @@ class PlayerNotifier constructor(
                 // When subscribed, the default notification is posted
                 notify(defaultPlayerNtf, force)
             }
-            .map { art -> defaultPlayerNtf.copy(art = art) }
+            .map { resultArt -> defaultPlayerNtf.copy(art = resultArt) }
             .onErrorReturnItem(defaultPlayerNtf)
             .flatMapPublisher { playerNtf ->
                 if (song != null) {

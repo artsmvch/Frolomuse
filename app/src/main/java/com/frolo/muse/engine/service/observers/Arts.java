@@ -13,6 +13,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.frolo.muse.R;
 import com.frolo.muse.ThreadStrictMode;
 import com.frolo.muse.glide.GlideAlbumArtHelper;
+import com.frolo.muse.glide.SimpleRequestListener;
 import com.frolo.muse.model.media.Song;
 
 import java.util.concurrent.Future;
@@ -27,8 +28,16 @@ final class Arts {
     private static final Bitmap EMPTY_BITMAP =
             Bitmap.createBitmap(1, 1, Bitmap.Config.ALPHA_8);
 
+    @Nullable
+    private static volatile Bitmap sDefaultArt = null;
+
     private static float dp2px(@NonNull Context context, float dp) {
         return dp * ((float) context.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+    }
+
+    @Nullable
+    public static Bitmap getDefaultArt() {
+        return sDefaultArt;
     }
 
     private Arts() {
@@ -53,6 +62,12 @@ final class Arts {
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .load(R.drawable.art_playback_notification)
                 .override(targetArtWidth, targetArtHeight)
+                .listener(new SimpleRequestListener<Bitmap>() {
+                    @Override
+                    public void doWhenReady(final Bitmap resource) {
+                        if (resource != null) sDefaultArt = resource;
+                    }
+                })
                 .submit();
 
         return Single.fromFuture(artFuture, Schedulers.io())
