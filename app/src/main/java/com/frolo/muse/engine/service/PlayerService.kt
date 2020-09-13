@@ -238,8 +238,6 @@ class PlayerService: RxService() {
 
             COMMAND_CANCEL_NOTIFICATION -> cancelNotification()
 
-            COMMAND_STOP -> player.pause()
-
             COMMAND_CHANGE_FAV -> {
                 (intent.getSerializableExtra(EXTRA_SONG) as? Song)?.also { safeSong ->
                     changeFavouriteUseCase.changeFavourite(safeSong).subscribeSafely()
@@ -459,7 +457,6 @@ class PlayerService: RxService() {
         const val COMMAND_SWITCH_TO_NEXT_REPEAT_MODE = 14
         const val COMMAND_SWITCH_TO_NEXT_SHUFFLE_MODE = 15
         const val COMMAND_CHANGE_FAV = 17
-        const val COMMAND_STOP = 18
         const val COMMAND_CANCEL_NOTIFICATION = 19
 
         // notification
