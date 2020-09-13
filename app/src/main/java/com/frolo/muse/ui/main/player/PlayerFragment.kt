@@ -357,8 +357,11 @@ class PlayerFragment: BaseFragment() {
         isSubmittingList = true
         adapter.submitList(list) {
             isSubmittingList = false
-            postRequestPageTransform()
-            postScrollToPendingPosition()
+            if (view != null) {
+                // We do this only if the fragment has a UI
+                postRequestPageTransform()
+                postScrollToPendingPosition()
+            }
         }
     }
 
