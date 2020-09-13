@@ -379,7 +379,7 @@ class PlayerService: RxService() {
 
                 setStyle(
                     androidx.media.app.NotificationCompat.MediaStyle()
-                        .setShowActionsInCompactView(0, 1, 2)
+                        .setShowActionsInCompactView(1, 2, 3)
                         .setMediaSession(mediaSession.sessionToken)
                         .setShowCancelButton(false)
                 )
