@@ -14,22 +14,23 @@ import com.frolo.muse.model.media.Song
 fun buildMediaMetadata(song: Song?, art: Bitmap?): MediaMetadata {
     val builder = MediaMetadata.Builder()
 
-    // This hides the progress bar in media-styled notifications
-    builder.putLong(MediaMetadata.METADATA_KEY_DURATION, -1L)
-
     if (song != null) {
         builder.apply {
             putString(MediaMetadata.METADATA_KEY_TITLE, song.title)
             putString(MediaMetadata.METADATA_KEY_ARTIST, song.artist)
             putString(MediaMetadata.METADATA_KEY_ALBUM, song.album)
             putString(MediaMetadata.METADATA_KEY_GENRE, song.genre)
-            putLong(MediaMetadata.METADATA_KEY_DURATION, song.duration.toLong())
             putLong(MediaMetadata.METADATA_KEY_YEAR, song.year.toLong())
             putLong(MediaMetadata.METADATA_KEY_TRACK_NUMBER, song.trackNumber.toLong())
             // We set the art only if the song is not null
             putBitmap(MediaMetadata.METADATA_KEY_ALBUM_ART, art)
         }
     }
+
+    // [!] Never put the actual duration value in the metadata,
+    // because this causes a progress bar to appear in the notification.
+    // The following line hides the progress bar in media-styled notifications.
+    builder.putLong(MediaMetadata.METADATA_KEY_DURATION, -1L)
 
     return builder.build()
 }
