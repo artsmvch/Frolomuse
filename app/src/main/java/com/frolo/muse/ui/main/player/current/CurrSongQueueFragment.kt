@@ -12,7 +12,6 @@ import com.bumptech.glide.Glide
 import com.frolo.muse.R
 import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.model.media.Song
-import com.frolo.muse.removeCallbacksSafely
 import com.frolo.muse.ui.base.adapter.SimpleItemTouchHelperCallback
 import com.frolo.muse.ui.main.decorateAsLinear
 import com.frolo.muse.ui.main.library.base.AbsMediaCollectionFragment
@@ -58,12 +57,10 @@ class CurrSongQueueFragment: AbsMediaCollectionFragment<Song>() {
         }
 
         override fun onItemMoved(fromPosition: Int, toPosition: Int) {
-            view?.apply {
-                removeCallbacksSafely(onDragEndedCallback)
-                val callback = Runnable { viewModel.onItemMoved(fromPosition, toPosition) }
-                post(callback)
-                onDragEndedCallback = callback
+            val callback = Runnable {
+                viewModel.onItemMoved(fromPosition, toPosition)
             }
+            postOnUi("dispatch_item_moved", callback)
         }
 
         override fun onItemDismissed(position: Int) {
@@ -90,11 +87,7 @@ class CurrSongQueueFragment: AbsMediaCollectionFragment<Song>() {
         }
     }
 
-    private var onDragEndedCallback: Runnable? = null
-
     private lateinit var playlistCreateEvent: PlaylistCreateEvent
-
-    private var scrollToPositionCallback: Runnable? = null
 
     private val onCloseIconClickListener: OnCloseIconClickListener?
         get() = parentFragment as? OnCloseIconClickListener
@@ -172,14 +165,6 @@ class CurrSongQueueFragment: AbsMediaCollectionFragment<Song>() {
         super.onStop()
     }
 
-    override fun onDestroyView() {
-        view?.removeCallbacksSafely(onDragEndedCallback)
-        onDragEndedCallback = null
-        view?.removeCallbacksSafely(scrollToPositionCallback)
-        scrollToPositionCallback = null
-        super.onDestroyView()
-    }
-
     override fun onDetach() {
         playlistCreateEvent.unregister(requireContext())
         super.onDetach()
@@ -252,11 +237,10 @@ class CurrSongQueueFragment: AbsMediaCollectionFragment<Song>() {
     }
 
     private fun postScrollToPosition(position: Int) {
-        val safeView = view ?: return
-        safeView.removeCallbacks(scrollToPositionCallback)
-        val r = Runnable { scrollToPosition(position) }
-        scrollToPositionCallback = r
-        safeView.post(r)
+        val callback = Runnable {
+            scrollToPosition(position)
+        }
+        postOnUi("scroll_to_position", callback)
     }
 
     private fun postScrollToPositionIfNotVisibleToUser(position: Int) {
