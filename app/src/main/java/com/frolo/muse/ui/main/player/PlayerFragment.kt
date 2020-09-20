@@ -68,10 +68,6 @@ class PlayerFragment: BaseFragment() {
     private var isSubmittingList: Boolean = false
     // Indicates the pending position, to which the pager should scroll when a list is submitted
     private var pendingPosition: Int? = null
-    // Runnable callback that is responsible for scrolling AlbumArt pager
-    private var scrollToPositionCallback: Runnable? = null
-    // Runnable callback that is responsible for requesting transform on AlbumArt pager
-    private var requestTransformCallback: Runnable? = null
 
     private val onPageChangeCallback = object : ViewPager2.OnPageChangeCallback() {
         override fun onPageSelected(position: Int) {
@@ -218,15 +214,6 @@ class PlayerFragment: BaseFragment() {
         super.onStop()
         vp_album_art.unregisterOnPageChangeCallback(onPageChangeCallback)
         waveform_seek_bar.setOnSeekBarChangeListener(null)
-    }
-
-    override fun onDestroyView() {
-        vp_album_art.apply {
-            removeCallbacks(requestTransformCallback)
-            removeCallbacks(scrollToPositionCallback)
-        }
-
-        super.onDestroyView()
     }
 
     /********************************
@@ -388,12 +375,7 @@ class PlayerFragment: BaseFragment() {
             }
         }
 
-        scrollToPositionCallback?.also { oldCallback ->
-            vp_album_art.removeCallbacks(oldCallback)
-        }
-        scrollToPositionCallback = callback
-
-        vp_album_art.post(callback)
+        postOnUi("scroll_to_pending_position", callback)
     }
 
     /**
@@ -405,12 +387,7 @@ class PlayerFragment: BaseFragment() {
             vp_album_art.requestTransform()
         }
 
-        requestTransformCallback?.also { oldCallback ->
-            vp_album_art.removeCallbacks(oldCallback)
-        }
-        requestTransformCallback = callback
-
-        vp_album_art.post(callback)
+        postOnUi("request_page_transform", callback)
     }
 
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
