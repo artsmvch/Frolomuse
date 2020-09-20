@@ -28,6 +28,7 @@ import io.reactivex.disposables.Disposable
 import java.util.concurrent.Executor
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
+import kotlin.math.max
 
 
 class CurrSongQueueViewModel @Inject constructor(
@@ -66,16 +67,20 @@ class CurrSongQueueViewModel @Inject constructor(
 
     private val queueCallback = AudioSourceQueue.Callback { queue ->
         handleQueue(queue)
-        _playingPosition.value = player.getCurrentPositionInQueue()
+        val positionInQueue = player.getCurrentPositionInQueue()
+        _playingPosition.value = positionInQueue
+        _scrollToPositionIfNotVisibleToUserEvent.value = getPositionToScroll(positionInQueue)
     }
 
     private val playerObserver = object : SimplePlayerObserver() {
         override fun onAudioSourceChanged(player: Player, item: AudioSource?, positionInQueue: Int) {
             _playingPosition.value = positionInQueue
+            _scrollToPositionIfNotVisibleToUserEvent.value = getPositionToScroll(positionInQueue)
         }
 
         override fun onPositionInQueueChanged(player: Player, positionInQueue: Int) {
             _playingPosition.value = positionInQueue
+            _scrollToPositionIfNotVisibleToUserEvent.value = getPositionToScroll(positionInQueue)
         }
 
         override fun onQueueChanged(player: Player, queue: AudioSourceQueue) {
@@ -112,6 +117,10 @@ class CurrSongQueueViewModel @Inject constructor(
 
     private val _scrollToPositionEvent = SingleLiveEvent<Int>()
     val scrollToPositionEvent: LiveData<Int> get() = _scrollToPositionEvent
+
+    private val _scrollToPositionIfNotVisibleToUserEvent = SingleLiveEvent<Int>()
+    val scrollToPositionIfNotVisibleToUserEvent: LiveData<Int>
+        get() = _scrollToPositionIfNotVisibleToUserEvent
 
     private var hideScrollToPositionButtonDisposable: Disposable? = null
 
@@ -228,6 +237,11 @@ class CurrSongQueueViewModel @Inject constructor(
 
     companion object {
         private const val SCROLL_BUTTON_VISIBLE_TIMEOUT = 3_000L
+
+        /**
+         * Determines the position in the list to scroll according to the current playing [positionInQueue].
+         */
+        fun getPositionToScroll(positionInQueue: Int): Int = max(0, positionInQueue - 2)
     }
 
 }
