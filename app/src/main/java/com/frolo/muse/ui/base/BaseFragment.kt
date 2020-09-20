@@ -7,6 +7,7 @@ import android.os.AsyncTask
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.StringRes
+import androidx.annotation.UiThread
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
@@ -17,11 +18,7 @@ import com.frolo.muse.di.modules.ViewModelModule
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.repository.Preferences
 import com.tbruyelle.rxpermissions2.RxPermissions
-import io.reactivex.Completable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
-import java.util.concurrent.TimeUnit
 
 
 abstract class BaseFragment: Fragment() {
@@ -30,8 +27,8 @@ abstract class BaseFragment: Fragment() {
     private var rxPermissions: RxPermissions? = null
     private var rxPermissionDisposable: Disposable? = null
 
-    // UI operations
-    private val uiDisposables = CompositeDisposable()
+    // Container for keyed UI actions
+    private val keyedUiActions = HashMap<String, Runnable>()
 
     // UI Tasks
     private val uiAsyncTasks = ArrayList<AsyncTask<*, *, *>>(3)
@@ -55,6 +52,10 @@ abstract class BaseFragment: Fragment() {
     override fun onDestroyView() {
         progressDialog?.cancel()
 
+        // Disposing UI actions
+        keyedUiActions.values.forEach { view?.removeCallbacks(it) }
+        keyedUiActions.clear()
+
         // Disposing UI async tasks
         uiAsyncTasks.forEach { it.cancel(true) }
         uiAsyncTasks.clear()
@@ -69,7 +70,6 @@ abstract class BaseFragment: Fragment() {
 
     override fun onStop() {
         super.onStop()
-        uiDisposables.clear()
         rxPermissionDisposable?.dispose()
     }
 
@@ -218,17 +218,43 @@ abstract class BaseFragment: Fragment() {
     }
 
     /**
-     * Performs an action on UI thread with a delay;
-     * NOTE: the timer will be disposed if activity's state becomes STOP
-     * @param action to perform
-     * @param delay to postpone the action
+     * Posts [action] for deferred execution on the UI thread. The action will be executed
+     * only if the fragment has a non-null view. The action is associated with [key],
+     * so the method cancels the previously posted action associated with that key.
      */
-    fun runDelayedOnUI(action: () -> Unit, delay: Long) {
-        val d = Completable
-                .timer(delay, TimeUnit.MILLISECONDS)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(action)
-        uiDisposables.add(d)
+    @UiThread
+    protected fun postOnUi(key: String, action: Runnable) {
+        if (view == null) {
+            // there is no view
+            return
+        }
+
+        // Wrapping the action to make sure the fragment has a view before executing the action
+        val actionWrapper = object : Runnable {
+
+            override fun run() {
+                val r: Runnable = this
+                // The action is getting fired, we no longer need to store it
+                if (keyedUiActions[key] == r) {
+                    keyedUiActions.remove(key)
+                }
+
+                if (view != null) {
+                    action.run()
+                } else {
+                    // That's an error
+                    Logger.e(IllegalStateException("$this wanted to run a UI action, but its view was destroyed"))
+                }
+            }
+
+        }
+
+        // Saving the new action, and removing the old one, if any
+        keyedUiActions.put(key, actionWrapper)?.also { oldAction ->
+            view?.removeCallbacks(oldAction)
+        }
+        // Posting the new action
+        view?.post(actionWrapper)
     }
 
     protected fun invalidateOptionsMenu() {
