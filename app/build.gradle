@@ -19,7 +19,7 @@ static def getDate() {
 
 def versionMajor = 5
 def versionMinor = 5
-def versionPatch = 1
+def versionPatch = 2
 
 android {
     signingConfigs {
@@ -38,7 +38,7 @@ android {
         applicationId "com.frolo.musp"
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 90
+        versionCode 91
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         setProperty("archivesBaseName", applicationId + "-v" + versionCode + "(" + versionName + ")")
