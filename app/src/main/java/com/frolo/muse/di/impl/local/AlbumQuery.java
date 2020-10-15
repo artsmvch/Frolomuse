@@ -170,9 +170,9 @@ final class AlbumQuery {
                 .getContentUri("external", artistId);
         final String selection = null;
         final String[] selectionArgs = null;
-        final String sortOrder = MediaStore.MediaColumns.TITLE + " COLLATE NOCASE ASC";
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            final String sortOrder = MediaStore.Audio.Artists.Albums.ALBUM + " COLLATE NOCASE ASC";
             return Query.query(
                     resolver,
                     uri,
@@ -183,6 +183,7 @@ final class AlbumQuery {
                     BUILDER_ARTIST_MEMBER
             );
         } else {
+            final String sortOrder = MediaStore.Audio.Albums.ALBUM + " COLLATE NOCASE ASC";
             return Query.query(
                     resolver,
                     uri,
