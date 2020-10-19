@@ -74,5 +74,8 @@
 
     <!--Slider-->
     <dimen name="slider_preferred_height">32dp</dimen>
+
+    <!--Notifications: common-->
+    <dimen name="ntf_small_icon_size">24dp</dimen>
 </resources>
 

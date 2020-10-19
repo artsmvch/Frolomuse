@@ -353,7 +353,7 @@ class PlayerService: RxService() {
         }
 
         val notificationBuilder = NotificationCompat.Builder(this, CHANNEL_ID_PLAYBACK).apply {
-            setSmallIcon(R.drawable.ic_app_brand)
+            setSmallIcon(R.drawable.ic_player_notification_small)
 
             setContentTitle(item?.title.orEmpty())
             setContentText(item?.artist.orEmpty())
