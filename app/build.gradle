@@ -209,8 +209,9 @@ dependencies {
     implementation project(':mediabutton')
 
     // Firebase
-    implementation 'com.google.firebase:firebase-core:17.5.1'
-    implementation 'com.google.firebase:firebase-crashlytics:17.2.2'
+    implementation platform('com.google.firebase:firebase-bom:25.12.0')
+    implementation 'com.google.firebase:firebase-core'
+    implementation 'com.google.firebase:firebase-crashlytics'
 
     // DI
     implementation "com.google.dagger:dagger:2.23.2"
