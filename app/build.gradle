@@ -212,6 +212,7 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:25.12.0')
     implementation 'com.google.firebase:firebase-core'
     implementation 'com.google.firebase:firebase-crashlytics'
+    implementation 'com.google.firebase:firebase-config-ktx'
 
     // DI
     implementation "com.google.dagger:dagger:2.23.2"
@@ -235,6 +236,9 @@ dependencies {
 
     // Gesture Image View
     implementation 'com.alexvasilkov:gesture-views:2.6.0'
+
+    // AdMob
+    implementation 'com.google.android.gms:play-services-ads:19.5.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

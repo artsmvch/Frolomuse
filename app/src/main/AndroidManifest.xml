@@ -25,6 +25,11 @@
         android:requestLegacyExternalStorage="true"
         tools:replace="android:allowBackup">
 
+        <!--AdMob-->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="@string/ad_mob_app_id"/>
+
         <!--SERVICES-->
         <service
             android:stopWithTask="false"

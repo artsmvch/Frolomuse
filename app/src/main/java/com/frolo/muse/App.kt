@@ -9,11 +9,14 @@ import com.frolo.muse.di.modules.*
 import com.frolo.muse.engine.Player
 import com.frolo.muse.engine.PlayerWrapper
 import com.frolo.muse.engine.service.PlayerService
-import com.frolo.muse.navigator.NavigatorWrapper
 import com.frolo.muse.logger.logAppLaunched
+import com.frolo.muse.navigator.NavigatorWrapper
 import com.frolo.muse.ui.base.BaseActivity
 import com.frolo.muse.ui.base.FragmentNavigator
 import com.frolo.muse.ui.main.MainActivity
+import com.google.android.gms.ads.MobileAds
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import io.reactivex.plugins.RxJavaPlugins
 
 
@@ -57,6 +60,10 @@ class App : MultiDexApplication() {
         // the service will be still alive and the music will continue to play.
         PlayerService.start(this)
 
+        setupFirebaseRemoteConfigs()
+
+        initAdMob()
+
         dispatchAppLaunched()
     }
 
@@ -89,6 +96,19 @@ class App : MultiDexApplication() {
                 .penaltyLog()
                 .penaltyDeath()
                 .build())
+        }
+    }
+
+    private fun setupFirebaseRemoteConfigs() {
+        val instance = FirebaseRemoteConfig.getInstance()
+        val configSettings = FirebaseRemoteConfigSettings.Builder()
+            .setMinimumFetchIntervalInSeconds(60 * 60 * 24) // 24 hours
+            .build()
+        instance.setConfigSettingsAsync(configSettings)
+    }
+
+    private fun initAdMob() {
+        MobileAds.initialize(this) {
         }
     }
 

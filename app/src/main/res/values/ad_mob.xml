@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string translatable="false" name="ad_mob_app_id">
+        ca-app-pub-6141750985066080~4136924080
+    </string>
+    <string translatable="false" name="ad_mob_test_unit_id">
+        ca-app-pub-3940256099942544/6300978111
+    </string>
+    <string translatable="false" name="ad_mob_library_unit_id">
+        ca-app-pub-6141750985066080/5258434067
+    </string>
+</resources>

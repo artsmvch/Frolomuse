@@ -6,6 +6,7 @@ import com.frolo.muse.di.ViewModelKey
 import com.frolo.muse.ui.main.MainViewModel
 import com.frolo.muse.ui.main.audiofx.AudioFxViewModel
 import com.frolo.muse.ui.main.audiofx.params.PlaybackParamsViewModel
+import com.frolo.muse.ui.main.library.LibraryViewModel
 import com.frolo.muse.ui.main.library.albums.AlbumListViewModel
 import com.frolo.muse.ui.main.library.artists.ArtistListViewModel
 import com.frolo.muse.ui.main.library.favourites.FavouriteSongListViewModel
@@ -72,6 +73,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(MiniPlayerViewModel::class)
     abstract fun bindMiniPlayerViewModel(viewModel: MiniPlayerViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(LibraryViewModel::class)
+    abstract fun bindLibraryViewModel(viewModel: LibraryViewModel): ViewModel
 
     @Binds
     @IntoMap

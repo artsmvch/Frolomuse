@@ -49,6 +49,11 @@ abstract class BaseFragment: Fragment() {
         rxPermissions = RxPermissions(this)
     }
 
+    override fun onStop() {
+        super.onStop()
+        rxPermissionDisposable?.dispose()
+    }
+
     override fun onDestroyView() {
         progressDialog?.cancel()
 
@@ -66,11 +71,6 @@ abstract class BaseFragment: Fragment() {
     override fun onDetach() {
         super.onDetach()
         rxPermissions = null
-    }
-
-    override fun onStop() {
-        super.onStop()
-        rxPermissionDisposable?.dispose()
     }
 
     //<editor-fold desc="Injectors">

@@ -35,12 +35,21 @@
             android:id="@+id/tl_sections"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:tabMode="scrollable"/>
+            app:tabMode="scrollable"
+            app:layout_scrollFlags="scroll|enterAlways|snap"/>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/app_thin_divider_size"
-            android:background="?dividerTint"/>
+            android:background="?dividerTint"
+            app:layout_scrollFlags="scroll|enterAlways"/>
+
+        <FrameLayout
+            android:id="@+id/ad_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_scrollFlags="scroll|enterAlways|snap"
+            android:background="@null"/>
     </com.google.android.material.appbar.AppBarLayout>
 
     <com.frolo.muse.views.viewpager.SafeViewPager
