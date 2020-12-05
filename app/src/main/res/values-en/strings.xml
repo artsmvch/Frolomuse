@@ -120,6 +120,7 @@
     <string name="add_to_queue">Add to queue</string>
     <string name="edit_song_tags">Edit song tags</string>
     <string name="edit_album_cover">Edit album cover</string>
+    <string name="view_album_cover">View album cover</string>
     <string name="view_album">View album</string>
     <string name="view_artist">View artist</string>
     <string name="create_poster">Create poster</string>

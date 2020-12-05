@@ -115,6 +115,7 @@
     <string name="add_to_queue">Tambahkan ke antrian</string>
     <string name="edit_song_tags">Edit tag lagu</string>
     <string name="edit_album_cover">Edit sampul album</string>
+    <string name="view_album_cover">Lihat sampul album</string>
     <string name="view_album">Lihat album</string>
     <string name="view_artist">Lihat artis</string>
     <string name="create_poster">Buat poster</string>

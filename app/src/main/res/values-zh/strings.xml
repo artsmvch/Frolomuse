@@ -115,6 +115,7 @@
     <string name="add_to_queue">添加到隊列</string>
     <string name="edit_song_tags">編輯歌曲標籤</string>
     <string name="edit_album_cover">編輯專輯封面</string>
+    <string name="view_album_cover">查看專輯封面</string>
     <string name="view_album">查看相冊</string>
     <string name="view_artist">查看藝術家</string>
     <string name="create_poster">製作海報</string>

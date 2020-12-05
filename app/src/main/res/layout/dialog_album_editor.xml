@@ -80,7 +80,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/group_placeholder"
-        app:constraint_referenced_ids="tv_placeholder,btn_placeholder_pick_image,divider1"/>
+        app:constraint_referenced_ids="tv_placeholder,divider1"/>
 
     <com.google.android.flexbox.FlexboxLayout
         app:layout_constraintStart_toStartOf="parent"

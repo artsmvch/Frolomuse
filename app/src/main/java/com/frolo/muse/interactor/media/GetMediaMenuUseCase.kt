@@ -1,5 +1,6 @@
 package com.frolo.muse.interactor.media
 
+import com.frolo.muse.Features
 import com.frolo.muse.common.toAudioSource
 import com.frolo.muse.engine.Player
 import com.frolo.muse.model.media.*
@@ -30,6 +31,8 @@ class GetMediaMenuUseCase<E: Media> constructor(
 
         val zipper: BiFunction<Pair<Boolean, Boolean>, Boolean, OptionsMenu<E>> =
             BiFunction { favouriteOption, isShortcutSupported ->
+                val editOptionAvailable = item is Song || item is Playlist
+                        || (item is Album && Features.isAlbumEditorFeatureAvailable())
                 OptionsMenu(
                     item = item,
                     favouriteOptionAvailable = favouriteOption.first,
@@ -39,7 +42,7 @@ class GetMediaMenuUseCase<E: Media> constructor(
                     playOptionAvailable = true,
                     playNextOptionAvailable = true,
                     addToPlaylistOptionAvailable = item !is Playlist, // you can add everything to the playlist except the playlists themselves
-                    editOptionAvailable = item is Song || item is Album || item is Playlist,
+                    editOptionAvailable = editOptionAvailable,
                     addToQueueOptionAvailable = true,
                     viewAlbumOptionAvailable = false,//item is Song,
                     viewArtistOptionAvailable = false,//item is Song || item is Album

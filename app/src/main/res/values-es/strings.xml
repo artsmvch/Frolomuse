@@ -120,6 +120,7 @@
     <string name="add_to_queue">Añadir a la cola</string>
     <string name="edit_song_tags">Editar etiquetas de canciones</string>
     <string name="edit_album_cover">Editar portada del álbum</string>
+    <string name="view_album_cover">Ver portada del álbum</string>
     <string name="view_album">Ver álbum</string>
     <string name="view_artist">Ver artista</string>
     <string name="create_poster">Crear cartel</string>

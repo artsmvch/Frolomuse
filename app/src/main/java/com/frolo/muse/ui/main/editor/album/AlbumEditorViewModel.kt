@@ -6,7 +6,9 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import com.bumptech.glide.Glide
 import com.frolo.muse.App
+import com.frolo.muse.Features
 import com.frolo.muse.arch.SingleLiveEvent
+import com.frolo.muse.arch.call
 import com.frolo.muse.arch.map
 import com.frolo.muse.glide.GlideAlbumArtHelper
 import com.frolo.muse.glide.makeRequestAsBitmap
@@ -27,6 +29,8 @@ class AlbumEditorViewModel constructor(
     private val albumArg: Album
 ): BaseAndroidViewModel(app, eventLogger) {
 
+    private val isEditorOptionAvailable = Features.isAlbumEditorFeatureAvailable()
+
     /**
      * A workaround for loading bitmaps with RxJava2.
      * Unfortunately, RxJava2 does not support nullable values.
@@ -45,6 +49,9 @@ class AlbumEditorViewModel constructor(
                 .subscribeFor { }
     }
 
+    private val _pickArtEvent = SingleLiveEvent<Unit>()
+    val pickArtEvent: LiveData<Unit> get() = _pickArtEvent
+
     private val _art by lazy {
         MediatorLiveData<Bitmap>().apply {
             addSource(originalArt) { original ->
@@ -60,11 +67,17 @@ class AlbumEditorViewModel constructor(
     val placeholderVisible: LiveData<Boolean> =
             art.map(false) { art -> art == null }
 
-    val pickArtOptionVisible: LiveData<Boolean> =
-            art.map(false) { art -> art != null }
+    val placeholderPickArtOptionVisible: LiveData<Boolean> = placeholderVisible.map(false) { placeholderVisible ->
+        isEditorOptionAvailable && placeholderVisible == true
+    }
 
-    val deleteArtOptionVisible: LiveData<Boolean> =
-            originalArt.map(false) { original -> original != null }
+    val pickArtOptionVisible: LiveData<Boolean> = art.map(false) { art ->
+        isEditorOptionAvailable && art != null
+    }
+
+    val deleteArtOptionVisible: LiveData<Boolean> = originalArt.map(false) { original ->
+        isEditorOptionAvailable && original != null
+    }
 
     private val _saveArtOptionVisible = MutableLiveData<Boolean>(false)
     val saveArtOptionVisible: LiveData<Boolean>
@@ -79,6 +92,12 @@ class AlbumEditorViewModel constructor(
 
     private val _artUpdatedEvent = SingleLiveEvent<Album>()
     val artUpdatedEvent: LiveData<Album> get() = _artUpdatedEvent
+
+    fun onPickArtOptionClicked() {
+        if (isEditorOptionAvailable) {
+            _pickArtEvent.call()
+        }
+    }
 
     fun onArtPicked(filepath: String?) {
         _pickedArtFilepath.value = filepath

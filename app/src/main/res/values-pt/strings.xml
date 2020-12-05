@@ -120,6 +120,7 @@
     <string name="add_to_queue">Adicionar à fila</string>
     <string name="edit_song_tags">Editar tags de músicas</string>
     <string name="edit_album_cover">Editar capa do álbum</string>
+    <string name="view_album_cover">Ver capa do álbum</string>
     <string name="view_album">Visualizar álbum</string>
     <string name="view_artist">Visualizar artista</string>
     <string name="create_poster">Criar pôster</string>

@@ -33,6 +33,7 @@ import com.frolo.muse.glide.observe
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.ui.asDurationInMs
 import com.frolo.muse.ui.base.BaseFragment
+import com.frolo.muse.ui.getAlbumEditorOptionText
 import com.frolo.muse.ui.getArtistString
 import com.frolo.muse.ui.getNameString
 import com.frolo.muse.ui.main.confirmDeletion
@@ -307,6 +308,8 @@ class PlayerFragment: BaseFragment() {
         val popup = PopupMenu(anchorView.context, anchorView)
 
         popup.inflate(R.menu.fragment_player)
+        popup.menu.findItem(R.id.action_edit_album_cover)?.title =
+                anchorView.context.getAlbumEditorOptionText()
 
         popup.setOnMenuItemClickListener { menuItem ->
             when(menuItem.itemId) {

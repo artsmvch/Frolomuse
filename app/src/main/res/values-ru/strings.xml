@@ -130,6 +130,7 @@
     <string name="add_to_queue">Добавить в очередь</string>
     <string name="edit_song_tags">Редактировать теги песни</string>
     <string name="edit_album_cover">Изменить обложку альбома</string>
+    <string name="view_album_cover">Посмотреть обложку альбома</string>
     <string name="view_album">Посмотреть альбом</string>
     <string name="view_artist">Посмотреть артиста</string>
     <string name="create_poster">Создать постер</string>

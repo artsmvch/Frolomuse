@@ -120,6 +120,7 @@
     <string name="add_to_queue">क़तार में जोड़ें</string>
     <string name="edit_song_tags">गीत टैग संपादित करें</string>
     <string name="edit_album_cover">एल्बम कवर संपादित करें</string>
+    <string name="view_album_cover">एल्बम कवर देखें</string>
     <string name="view_album">एल्बम देखें</string>
     <string name="view_artist">कलाकार देखें</string>
     <string name="create_poster">पोस्टर बनाएं</string>

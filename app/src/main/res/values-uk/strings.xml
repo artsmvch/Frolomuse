@@ -124,6 +124,7 @@
     <string name="add_to_queue">Додати в чергу</string>
     <string name="edit_song_tags">Редагування тегів пісень</string>
     <string name="edit_album_cover">Редагуйте обкладинку альбому</string>
+    <string name="view_album_cover">Переглянути обкладинку альбому</string>
     <string name="view_album">Переглянути альбом</string>
     <string name="view_artist">Переглянути виконавця</string>
     <string name="create_poster">Створіть плакат</string>

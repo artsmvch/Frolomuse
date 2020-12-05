@@ -77,15 +77,15 @@ class AlbumEditorDialog : BaseDialogFragment() {
         }
 
         btn_placeholder_pick_image.setOnClickListener {
-            pickImage()
+            viewModel.onPickArtOptionClicked()
         }
 
         imv_album_art.setOnClickListener {
-            pickImage()
+            viewModel.onPickArtOptionClicked()
         }
 
         btn_pick_art.setOnClickListener {
-            pickImage()
+            viewModel.onPickArtOptionClicked()
         }
 
         btn_delete_art.setOnClickListener {
@@ -117,6 +117,10 @@ class AlbumEditorDialog : BaseDialogFragment() {
             postError(err)
         }
 
+        pickArtEvent.observe(owner) {
+            pickImage()
+        }
+
         artVisible.observeNonNull(owner) { isVisible ->
             dialog?.apply {
                 imv_album_art.visibility = if (isVisible) View.VISIBLE else View.INVISIBLE
@@ -126,6 +130,12 @@ class AlbumEditorDialog : BaseDialogFragment() {
         placeholderVisible.observeNonNull(owner) { isVisible ->
             dialog?.apply {
                 group_placeholder.isVisible = isVisible
+            }
+        }
+
+        placeholderPickArtOptionVisible.observeNonNull(owner) { isVisible ->
+            dialog?.apply {
+                btn_placeholder_pick_image.isVisible = isVisible
             }
         }
 

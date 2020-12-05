@@ -114,6 +114,7 @@
     <string name="add_to_queue">현재 대기열에 추가</string>
     <string name="edit_song_tags">노래 태그 편집</string>
     <string name="edit_album_cover">앨범 표지 편집</string>
+    <string name="view_album_cover">앨범 표지보기</string>
     <string name="view_album">앨범보기</string>
     <string name="view_artist">아티스트보기</string>
     <string name="create_poster">포스터 만들기</string>

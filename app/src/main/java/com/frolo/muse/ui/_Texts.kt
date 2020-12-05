@@ -3,6 +3,8 @@ package com.frolo.muse.ui
 import android.content.Context
 import android.content.res.Resources
 import android.text.format.DateUtils
+import androidx.annotation.StringRes
+import com.frolo.muse.Features
 import com.frolo.muse.R
 import com.frolo.muse.model.Library
 import com.frolo.muse.model.media.*
@@ -227,4 +229,14 @@ fun Context.getDeleteConfirmationMessage(items: List<Media>): String {
     else R.string.confirmation_delete_items
 
     return getString(msgResId)
+}
+
+fun Context.getAlbumEditorOptionText(): String {
+    @StringRes
+    val stringResId = if (Features.isAlbumEditorFeatureAvailable()) {
+        R.string.edit_album_cover
+    } else {
+        R.string.view_album_cover
+    }
+    return getString(stringResId)
 }

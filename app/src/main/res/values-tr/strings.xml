@@ -119,6 +119,7 @@
     <string name="add_to_queue">Sıraya ekle</string>
     <string name="edit_song_tags">Şarkı etiketlerini düzenleme</string>
     <string name="edit_album_cover">Albüm kapağını düzenle</string>
+    <string name="view_album_cover">Albüm kapağını görüntüle</string>
     <string name="view_album">Albümü görüntüle</string>
     <string name="view_artist">Sanatçıyı görüntüle</string>
     <string name="create_poster">Poster oluştur</string>

@@ -120,6 +120,7 @@
     <string name="add_to_queue">Zur Warteschlange hinzufügen</string>
     <string name="edit_song_tags">Song-Tags bearbeiten</string>
     <string name="edit_album_cover">Albumcover bearbeiten</string>
+    <string name="view_album_cover">Albumcover anzeigen</string>
     <string name="view_album">Album ansehen</string>
     <string name="view_artist">Künstler ansehen</string>
     <string name="create_poster">Plakat erstellen</string>

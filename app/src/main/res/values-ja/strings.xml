@@ -115,6 +115,7 @@
     <string name="add_to_queue">キューに追加する</string>
     <string name="edit_song_tags">曲のタグを編集する</string>
     <string name="edit_album_cover">アルバムカバーを編集</string>
+    <string name="view_album_cover">アルバムカバーを見る</string>
     <string name="view_album">アルバムを見る</string>
     <string name="view_artist">アーティストを見る</string>
     <string name="create_poster">ポスターを作成</string>
