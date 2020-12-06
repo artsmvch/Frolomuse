@@ -706,7 +706,7 @@ class MainActivity : PlayerHostActivity(),
 
         private const val TAB_INDEX_DEFAULT = 0
 
-        private fun FragNavController.doIfStateNotSaved(block: FragNavController.() -> Unit) {
+        private inline fun FragNavController.doIfStateNotSaved(block: FragNavController.() -> Unit) {
             if (!isStateSaved) block.invoke(this)
         }
 

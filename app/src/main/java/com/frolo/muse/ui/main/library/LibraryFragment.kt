@@ -139,8 +139,9 @@ class LibraryFragment: BaseFragment(),
         val context = requireContext()
         val adView = AdView(context)
         adView.adListener = adListener
-        val preferredAdHeight = 24f.dp2px(context).toInt()
-        adView.adSize = AdSize(AdSize.FULL_WIDTH, preferredAdHeight)
+//        val preferredAdHeight = 24f.dp2px(context).toInt()
+//        AdSize(AdSize.FULL_WIDTH, preferredAdHeight)
+        adView.adSize = AdSize.SMART_BANNER
         adView.adUnitId = context.getString(adUnitIdResId)
 
         // The AD request
