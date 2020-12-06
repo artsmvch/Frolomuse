@@ -7,6 +7,7 @@
     android:gravity="center">
 
     <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imv_placeholder_icon"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:src="@drawable/ic_empty_folder"

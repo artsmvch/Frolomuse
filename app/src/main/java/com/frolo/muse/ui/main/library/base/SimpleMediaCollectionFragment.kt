@@ -44,6 +44,8 @@ abstract class SimpleMediaCollectionFragment <E: Media>:
         super.onViewCreated(view, savedInstanceState)
         // Setting up the list
         onDecorateList(rv_list)
+        // Setting up the placeholder
+        onDecoratePlaceholder(layout_list_placeholder)
     }
 
     protected fun requireList(): RecyclerView {
@@ -54,6 +56,9 @@ abstract class SimpleMediaCollectionFragment <E: Media>:
         list.adapter = adapter
         list.layoutManager = LinearLayoutManager(context)
         list.decorateAsLinear()
+    }
+
+    protected open fun onDecoratePlaceholder(list: View) {
     }
 
     override fun onStart() {

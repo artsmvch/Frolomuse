@@ -2,11 +2,13 @@ package com.frolo.muse.ui.main.library.myfiles
 
 import android.os.Bundle
 import android.view.*
+import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.frolo.muse.R
 import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
+import com.frolo.muse.dp2px
 import com.frolo.muse.mediascan.MediaScanService
 import com.frolo.muse.model.media.MyFile
 import com.frolo.muse.ui.base.BackPressHandler
@@ -16,7 +18,7 @@ import com.frolo.muse.ui.main.decorateAsLinear
 import com.frolo.muse.ui.main.library.base.AbsMediaCollectionFragment
 import com.frolo.muse.ui.main.library.base.BaseAdapter
 import com.frolo.muse.views.Anim
-import kotlinx.android.synthetic.main.fragment_base_list_top_gravity.*
+import kotlinx.android.synthetic.main.fragment_base_list.*
 import kotlinx.android.synthetic.main.fragment_my_file_list.*
 
 
@@ -60,6 +62,11 @@ class MyFileListFragment: AbsMediaCollectionFragment<MyFile>(),
             layoutManager = LinearLayoutManager(context)
             adapter = this@MyFileListFragment.adapter
             decorateAsLinear()
+        }
+
+        layout_list_placeholder.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+            // + half height of the parent file layout, so it is centered like on other media collection screens
+            topMargin -= 36f.dp2px(view.context).toInt()
         }
 
         cl_parent_file.setOnClickListener {

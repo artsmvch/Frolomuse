@@ -53,7 +53,7 @@
             android:layout_height="@dimen/vertical_divider_height"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <include layout="@layout/fragment_base_list_top_gravity"
+    <include layout="@layout/fragment_base_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
