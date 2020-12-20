@@ -95,7 +95,7 @@ final class SongQuery {
             MediaStore.Audio.Media.ARTIST,
             MediaStore.Audio.Media.DURATION,
             MediaStore.Audio.Media.YEAR,
-            MediaStore.Audio.Playlists.Members.TRACK
+            MediaStore.Audio.Media.TRACK
     };
 
     private static final String[] PROJECTION_PLAYLIST_MEMBER = new String[] {
