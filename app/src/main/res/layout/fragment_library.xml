@@ -7,6 +7,7 @@
     android:layout_height="match_parent">
 
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/transparent"
@@ -20,16 +21,7 @@
             android:background="?colorSurface"
             android:elevation="0dp"
             app:layout_scrollFlags="scroll|enterAlways|snap"
-            tools:title="Library">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="start|center_vertical"
-                android:textAppearance="?textAppearanceHeadline5"
-                android:textColor="?colorOnSurface"
-                android:text="@string/nav_library"/>
-        </com.google.android.material.appbar.MaterialToolbar>
+            tools:title="Library"/>
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tl_sections"
