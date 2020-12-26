@@ -69,6 +69,9 @@ public class PreferencesImpl implements Preferences {
     // Playback Fading parameters
     private static final String KEY_PLAYBACK_FADING_PARAMS = "playback_fading_params";
 
+    // Greetings
+    private static final String KEY_GREETINGS_SHOWN = "greetings_show";
+
     private static final List<Integer> sDefaultLibrarySections;
     static {
         List<Integer> sections = new ArrayList<>(9);
@@ -605,4 +608,25 @@ public class PreferencesImpl implements Preferences {
         });
     }
 
+    @Override
+    public Flowable<Boolean> shouldShowGreetings() {
+        return RxPreference.ofBoolean(preferences, KEY_GREETINGS_SHOWN)
+            .get(false)
+            .map(new Function<Boolean, Boolean>() {
+                @Override
+                public Boolean apply(Boolean value) throws Exception {
+                    return !value;
+                }
+            });
+    }
+
+    @Override
+    public Completable markGreetingsShown() {
+        return Completable.fromAction(new Action() {
+            @Override
+            public void run() throws Exception {
+                preferences.edit().putBoolean(KEY_GREETINGS_SHOWN, true).apply();
+            }
+        });
+    }
 }

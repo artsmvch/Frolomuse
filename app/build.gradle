@@ -237,6 +237,9 @@ dependencies {
     // Gesture Image View
     implementation 'com.alexvasilkov:gesture-views:2.6.0'
 
+    // ViewPager2 indicator
+    implementation 'com.github.zhpanvip:viewpagerindicator:1.0.7'
+
     // AdMob
     implementation 'com.google.android.gms:play-services-ads:19.5.0'
 }

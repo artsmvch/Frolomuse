@@ -82,13 +82,17 @@
         <!--ACTIVITIES-->
         <activity
             android:name="com.frolo.muse.ui.main.MainActivity"
-            android:launchMode="singleInstance"
+            android:launchMode="singleTask"
             android:windowSoftInputMode="adjustNothing">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".ui.main.greeting.GreetingsActivity"
+            android:launchMode="singleTask"/>
 
         <activity
             android:name=".ui.player.PlayerActivity"

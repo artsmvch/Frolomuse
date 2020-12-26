@@ -28,12 +28,15 @@ import com.frolo.muse.arch.observe
 import com.frolo.muse.engine.Player
 import com.frolo.muse.dp2px
 import com.frolo.muse.model.media.*
+import com.frolo.muse.rx.disposeOnDestroyOf
+import com.frolo.muse.rx.subscribeSafely
 import com.frolo.muse.ui.PlayerHostActivity
 import com.frolo.muse.ui.ThemeHandler
 import com.frolo.muse.ui.base.*
 import com.frolo.muse.ui.main.audiofx.AudioFxFragment
 import com.frolo.muse.ui.main.library.LibraryFragment
 import com.frolo.muse.ui.main.library.search.SearchFragment
+import com.frolo.muse.ui.main.greeting.GreetingsActivity
 import com.frolo.muse.ui.main.player.mini.MiniPlayerFragment
 import com.frolo.muse.ui.main.settings.AppBarSettingsFragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -43,6 +46,7 @@ import com.google.android.material.shape.MaterialShapeDrawable
 import com.google.android.material.shape.ShapeAppearanceModel
 import com.ncapdevi.fragnav.FragNavController
 import com.ncapdevi.fragnav.FragNavTransactionOptions
+import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 import kotlin.math.max
@@ -149,6 +153,17 @@ class MainActivity : PlayerHostActivity(),
 
         // TODO: need to postpone the handling of the intent cause fragments may not be initialized
         handleIntent(intent)
+
+        maybeShowGreetings()
+    }
+
+    private fun maybeShowGreetings() {
+        preferences.shouldShowGreetings()
+            .first(false)
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSuccess { shouldShow -> if (shouldShow) GreetingsActivity.show(this) }
+            .subscribeSafely()
+            .disposeOnDestroyOf(this)
     }
 
     private fun loadUI() {

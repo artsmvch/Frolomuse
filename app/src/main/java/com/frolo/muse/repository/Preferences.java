@@ -96,4 +96,7 @@ public interface Preferences {
 
     Flowable<PlaybackFadingParams> getPlaybackFadingParams();
     Completable setPlaybackFadingParams(PlaybackFadingParams params);
+
+    Flowable<Boolean> shouldShowGreetings();
+    Completable markGreetingsShown();
 }
