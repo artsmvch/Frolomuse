@@ -212,9 +212,7 @@ class PlayerService: RxService() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
-        // TODO: which flag is better to return?
-
-        if (intent == null) return START_STICKY
+        if (intent == null) return START_NOT_STICKY
 
         // Checking which command was the given to the player
         when (intent.getIntExtra(EXTRA_COMMAND, COMMAND_EMPTY)) {
@@ -239,7 +237,7 @@ class PlayerService: RxService() {
             }
         }
 
-        return START_STICKY
+        return START_NOT_STICKY
     }
 
     override fun onTaskRemoved(rootIntent: Intent?) {
