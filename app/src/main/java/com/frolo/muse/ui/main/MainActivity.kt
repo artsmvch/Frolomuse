@@ -735,9 +735,11 @@ class MainActivity : PlayerHostActivity(),
 
         //region Intent factories
 
+        @JvmStatic
         fun newIntent(context: Context, tabIndex: Int = INDEX_LIBRARY): Intent =
                 Intent(context, MainActivity::class.java).putExtra(EXTRA_TAB_INDEX, tabIndex)
 
+        @JvmStatic
         fun newIntent(context: Context, openPlayer: Boolean): Intent =
                 Intent(context, MainActivity::class.java).putExtra(EXTRA_OPEN_PLAYER, openPlayer)
 
