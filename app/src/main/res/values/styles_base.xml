@@ -123,7 +123,10 @@
         <item name="tabMode">scrollable</item>
         <item name="tabPaddingStart">16dp</item>
         <item name="tabPaddingEnd">16dp</item>
+        <item name="tabTextAppearance">@style/Base.AppTheme.TextAppearance.Design.Tab</item>
     </style>
+
+    <style name="Base.AppTheme.TextAppearance.Design.Tab" parent="TextAppearance.Design.Tab"/>
 
     <!--TextView-->
     <style name="Base.AppTheme.TextView" parent="Widget.MaterialComponents.TextView">
@@ -167,7 +170,11 @@
     </style>
 
     <style name="Base.AppTheme.TextAppearance.Toolbar.Title" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Title">
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">20sp</item>
+    </style>
+
+    <style name="Base.AppTheme.TextAppearance.Toolbar.Title.Library" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:textSize">23sp</item>
     </style>
 
     <style name="Base.AppTheme.TextAppearance.Toolbar.Subtitle" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Subtitle">

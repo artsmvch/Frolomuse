@@ -20,6 +20,8 @@
             android:layout_height="?actionBarSize"
             android:background="?colorSurface"
             android:elevation="0dp"
+            app:titleTextAppearance="@style/Base.AppTheme.TextAppearance.Toolbar.Title.Library"
+            app:titleTextColor="?colorOnSurface"
             app:layout_scrollFlags="scroll|enterAlways|snap"
             tools:title="Library"/>
 
