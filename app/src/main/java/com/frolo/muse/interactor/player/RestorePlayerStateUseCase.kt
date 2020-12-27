@@ -1,12 +1,10 @@
 package com.frolo.muse.interactor.player
 
+import com.frolo.muse.common.*
 import com.frolo.muse.engine.Player
 import com.frolo.muse.engine.AudioSourceQueue
-import com.frolo.muse.common.AudioSourceQueueFactory
-import com.frolo.muse.common.toAudioSource
-import com.frolo.muse.common.toSong
-import com.frolo.muse.common.find
-import com.frolo.muse.model.media.Song
+import com.frolo.muse.engine.AudioSource
+import com.frolo.muse.interactor.media.get.excludeShortAudioSources
 import com.frolo.muse.repository.*
 import com.frolo.muse.rx.SchedulerProvider
 import io.reactivex.Completable
@@ -28,7 +26,7 @@ class RestorePlayerStateUseCase @Inject constructor(
 
     private data class PlayerState constructor(
         val queue: AudioSourceQueue,
-        val targetSong: Song,
+        val targetItem: AudioSource,
         val startPlaying: Boolean,
         val playbackPosition: Int
     )
@@ -40,10 +38,10 @@ class RestorePlayerStateUseCase @Inject constructor(
                     audioSourceQueueFactory.create(AudioSourceQueue.CHUNK, AudioSourceQueue.NO_ID, "", songs)
                 }
                 .map { queue ->
-                    val first = queue.getItemAt(0).toSong()
+                    val first = queue.getItemAt(0)
                     PlayerState(
                         queue = queue,
-                        targetSong = first,
+                        targetItem = first,
                         startPlaying = false,
                         playbackPosition = 0
                     )
@@ -55,36 +53,36 @@ class RestorePlayerStateUseCase @Inject constructor(
 
         val songQueueSource: Flowable<AudioSourceQueue> = when (type) {
             AudioSourceQueue.ALBUM -> albumRepository.getItem(preferences.lastMediaCollectionId)
-                    .flatMapSingle { album ->
-                        albumRepository.collectSongs(album)
-                                .map { songs ->
-                                    audioSourceQueueFactory.create(type, album.id, album.name, songs)
-                                }
-                    }
+                .flatMapSingle { album ->
+                    albumRepository.collectSongs(album)
+                        .map { songs ->
+                            audioSourceQueueFactory.create(type, album.id, album.name, songs)
+                        }
+                }
 
             AudioSourceQueue.ARTIST -> artistRepository.getItem(preferences.lastMediaCollectionId)
-                    .flatMapSingle { artist ->
-                        artistRepository.collectSongs(artist)
-                                .map { songs ->
-                                    audioSourceQueueFactory.create(type, artist.id, artist.name, songs)
-                                }
-                    }
+                .flatMapSingle { artist ->
+                    artistRepository.collectSongs(artist)
+                        .map { songs ->
+                            audioSourceQueueFactory.create(type, artist.id, artist.name, songs)
+                        }
+                }
 
             AudioSourceQueue.GENRE -> genreRepository.getItem(preferences.lastMediaCollectionId)
-                    .flatMapSingle { genre ->
-                        genreRepository.collectSongs(genre)
-                                .map { songs ->
-                                    audioSourceQueueFactory.create(type, genre.id, genre.name, songs)
-                                }
-                    }
+                .flatMapSingle { genre ->
+                    genreRepository.collectSongs(genre)
+                        .map { songs ->
+                            audioSourceQueueFactory.create(type, genre.id, genre.name, songs)
+                        }
+                }
 
             AudioSourceQueue.PLAYLIST -> playlistRepository.getItem(preferences.lastMediaCollectionId)
-                    .flatMapSingle { playlist ->
-                        playlistRepository.collectSongs(playlist)
-                                .map { songs ->
-                                    audioSourceQueueFactory.create(type, playlist.id, playlist.name, songs)
-                                }
-                    }
+                .flatMapSingle { playlist ->
+                    playlistRepository.collectSongs(playlist)
+                        .map { songs ->
+                            audioSourceQueueFactory.create(type, playlist.id, playlist.name, songs)
+                        }
+                }
 
             AudioSourceQueue.FAVOURITES -> songRepository.allFavouriteItems.map { songs ->
                 audioSourceQueueFactory.create(type, AudioSourceQueue.NO_ID, "", songs)
@@ -98,14 +96,20 @@ class RestorePlayerStateUseCase @Inject constructor(
         // check for result. if the returned queue is empty then fetch default one
         return songQueueSource
                 .firstOrError()
-                .map { songQueue ->
+                .flatMap { queue ->
+                    preferences.minAudioFileDuration
+                        .first(0)
+                        .map { queue.excludeShortAudioSources(it) }
+                }
+                .map { queue ->
 
-                    val targetAudioSource = songQueue.find { item ->
-                        item.id == preferences.lastSongId }
+                    val targetItem = queue.findFirstOrNull { item ->
+                        item.id == preferences.lastSongId
+                    } ?: queue.getItemAt(0)
 
                     PlayerState(
-                        queue = songQueue,
-                        targetSong = targetAudioSource.toSong(),
+                        queue = queue,
+                        targetItem = targetItem,
                         startPlaying = false,
                         playbackPosition = preferences.lastPlaybackPosition
                     )
@@ -119,7 +123,7 @@ class RestorePlayerStateUseCase @Inject constructor(
                     }
                     player.prepareByTarget(
                         playerState.queue,
-                        playerState.targetSong.toAudioSource(),
+                        playerState.targetItem,
                         playerState.startPlaying,
                         playerState.playbackPosition
                     )

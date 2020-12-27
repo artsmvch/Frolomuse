@@ -31,7 +31,7 @@ fun GetAllSongsUseCase(
 
     override fun getSortedCollection(sortOrder: String): Flowable<List<Song>> =
         repository.getAllItems(sortOrder)
-            .excludeShortAudioFiles(preferences)
+            .excludeShortSongs(preferences)
 
 }
 

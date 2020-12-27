@@ -5,6 +5,8 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import com.frolo.muse.arch.SingleLiveEvent
 import com.frolo.muse.arch.call
+import com.frolo.muse.engine.Player
+import com.frolo.muse.interactor.media.get.removeShortAudioSources
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.logMinAudioFileDurationSet
 import com.frolo.muse.repository.Preferences
@@ -14,6 +16,7 @@ import javax.inject.Inject
 
 
 class MinAudioFileDurationViewModel @Inject constructor(
+    private val player: Player,
     private val preferences: Preferences,
     private val schedulerProvider: SchedulerProvider,
     private val eventLogger: EventLogger
@@ -60,6 +63,7 @@ class MinAudioFileDurationViewModel @Inject constructor(
     fun onSaveClicked(typedMinutes: Int, typedSeconds: Int) {
         val newDuration = typedMinutes * 60 + typedSeconds
         preferences.setMinAudioFileDuration(newDuration)
+            .doOnComplete { player.removeShortAudioSources(newDuration) }
             .subscribeOn(schedulerProvider.worker())
             .observeOn(schedulerProvider.main())
             .doOnComplete { eventLogger.logMinAudioFileDurationSet(newDuration) }

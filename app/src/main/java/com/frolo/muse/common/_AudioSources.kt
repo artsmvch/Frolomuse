@@ -22,6 +22,8 @@ val AudioSource.year: Int get() = metadata.year
 
 val AudioSource.trackNumber: Int get() = metadata.trackNumber
 
+val AudioSource.durationInSeconds: Int get() = duration / 1000
+
 fun AudioSource.toSong(): Song {
     return if (this is Song) this
     else Util.createSong(this)
