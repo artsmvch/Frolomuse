@@ -4,4 +4,7 @@
     <integer name="fragment_animation_duration">350</integer>
 
     <integer name="layout_anim_duration">220</integer>
+
+    <!--default period for widget updates is 1 hour-->
+    <integer name="default_widget_update_period_millis">3600000</integer>
 </resources>
