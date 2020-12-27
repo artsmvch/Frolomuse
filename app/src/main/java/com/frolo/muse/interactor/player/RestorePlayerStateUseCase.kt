@@ -112,6 +112,11 @@ class RestorePlayerStateUseCase @Inject constructor(
                 }
                 .onErrorResumeNext(getDefaultPlayerState())
                 .doOnSuccess { playerState ->
+                    val queue = player.getCurrentQueue()
+                    if (queue != null && !queue.isEmpty) {
+                        // no need to set the new queue, the player already has a non-empty one
+                        return@doOnSuccess
+                    }
                     player.prepareByTarget(
                         playerState.queue,
                         playerState.targetSong.toAudioSource(),

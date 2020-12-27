@@ -2,6 +2,7 @@ package com.frolo.muse.ui.main
 
 import android.Manifest
 import android.app.Dialog
+import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -21,12 +22,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProviders
+import com.frolo.muse.Logger
 import com.frolo.muse.R
 import com.frolo.muse.StyleUtil
-import com.frolo.muse.Logger
 import com.frolo.muse.arch.observe
-import com.frolo.muse.engine.Player
 import com.frolo.muse.dp2px
+import com.frolo.muse.engine.Player
 import com.frolo.muse.model.media.*
 import com.frolo.muse.rx.disposeOnDestroyOf
 import com.frolo.muse.rx.subscribeSafely
@@ -34,9 +35,9 @@ import com.frolo.muse.ui.PlayerHostActivity
 import com.frolo.muse.ui.ThemeHandler
 import com.frolo.muse.ui.base.*
 import com.frolo.muse.ui.main.audiofx.AudioFxFragment
+import com.frolo.muse.ui.main.greeting.GreetingsActivity
 import com.frolo.muse.ui.main.library.LibraryFragment
 import com.frolo.muse.ui.main.library.search.SearchFragment
-import com.frolo.muse.ui.main.greeting.GreetingsActivity
 import com.frolo.muse.ui.main.player.mini.MiniPlayerFragment
 import com.frolo.muse.ui.main.settings.AppBarSettingsFragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -556,6 +557,13 @@ class MainActivity : PlayerHostActivity(),
         // Check if we need to open the player screen
         if (intent.getBooleanExtra(EXTRA_OPEN_PLAYER, false)) {
             expandSlidingPlayer()
+        }
+
+        // Check if we need to open an audio source
+        val uri = intent.data
+        val action = intent.action
+        if (action == Intent.ACTION_VIEW && uri?.scheme == ContentResolver.SCHEME_FILE) {
+            uri.path?.apply { viewModel.onOpenAudioSourceIntent(this) }
         }
 
         // Mark this intent as handled

@@ -6,6 +6,7 @@ import com.frolo.muse.arch.SingleLiveEvent
 import com.frolo.muse.arch.call
 import com.frolo.muse.engine.Player
 import com.frolo.muse.interactor.media.shortcut.NavigateToMediaUseCase
+import com.frolo.muse.interactor.player.OpenAudioSourceUseCase
 import com.frolo.muse.interactor.player.RestorePlayerStateUseCase
 import com.frolo.muse.interactor.rate.RateUseCase
 import com.frolo.muse.logger.*
@@ -28,12 +29,13 @@ import javax.inject.Inject
  * P.S. RES stands for Read-External-Storage.
  */
 class MainViewModel @Inject constructor(
-     private val rateUseCase: RateUseCase,
-     private val restorePlayerStateUseCase: RestorePlayerStateUseCase,
-     private val navigateToMediaUseCase: NavigateToMediaUseCase,
-     private val schedulerProvider: SchedulerProvider,
-     private val permissionChecker: PermissionChecker,
-     private val eventLogger: EventLogger
+    private val rateUseCase: RateUseCase,
+    private val restorePlayerStateUseCase: RestorePlayerStateUseCase,
+    private val openAudioSourceUseCase: OpenAudioSourceUseCase,
+    private val navigateToMediaUseCase: NavigateToMediaUseCase,
+    private val schedulerProvider: SchedulerProvider,
+    private val permissionChecker: PermissionChecker,
+    private val eventLogger: EventLogger
 ): BaseViewModel(eventLogger) {
 
     // Internal
@@ -42,6 +44,8 @@ class MainViewModel @Inject constructor(
 
     @Volatile
     private var _pendingReadStoragePermissionResult: Boolean = false
+
+    private var _pendingAudioSourceIntent: String? = null
 
     private var askToRateDisposable: Disposable? = null
 
@@ -70,6 +74,19 @@ class MainViewModel @Inject constructor(
                     }
                 )
                 .save()
+        } else {
+            tryAksRESPermission()
+        }
+    }
+
+    private fun tryHandlePendingAudioSourceIntentIfNeeded() {
+        val source: String = _pendingAudioSourceIntent ?: return
+        val player: Player = _player ?: return
+
+        if (permissionChecker.isQueryMediaContentPermissionGranted) {
+            openAudioSourceUseCase.openAudioSource(player, source)
+                .observeOn(schedulerProvider.main())
+                .subscribeFor { _pendingAudioSourceIntent = null }
         } else {
             tryAksRESPermission()
         }
@@ -159,6 +176,7 @@ class MainViewModel @Inject constructor(
     fun onRESPermissionGranted() {
         _pendingReadStoragePermissionResult = false
         tryRestorePlayerStateIfNeeded()
+        tryHandlePendingAudioSourceIntentIfNeeded()
     }
 
     fun onRESPermissionDenied() {
@@ -180,6 +198,11 @@ class MainViewModel @Inject constructor(
         navigateToMediaUseCase.navigate(kindOfMedia, mediaId)
             .observeOn(schedulerProvider.main())
             .subscribeFor {  }
+    }
+
+    fun onOpenAudioSourceIntent(source: String) {
+        _pendingAudioSourceIntent = source
+        tryHandlePendingAudioSourceIntentIfNeeded()
     }
 
     override fun onCleared() {
