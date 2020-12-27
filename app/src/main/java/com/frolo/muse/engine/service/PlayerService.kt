@@ -22,6 +22,7 @@ import com.frolo.muse.headset.createHeadsetHandler
 import com.frolo.muse.interactor.media.DispatchSongPlayedUseCase
 import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
 import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
+import com.frolo.muse.interactor.player.RestorePlayerStateUseCase
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.model.playback.PlaybackFadingParams
 import com.frolo.muse.repository.Preferences
@@ -75,6 +76,8 @@ class PlayerService: RxService() {
     lateinit var getIsFavouriteUseCase: GetIsFavouriteUseCase<Song>
     @Inject
     lateinit var changeFavouriteUseCase: ChangeFavouriteUseCase<Song>
+    @Inject
+    lateinit var restorePlayerStateUseCase: RestorePlayerStateUseCase
 
     // HeadsetHandler is used to handle the status of the headset (connected, disconnected, etc.)
     private val headsetHandler = createHeadsetHandler(
@@ -214,19 +217,29 @@ class PlayerService: RxService() {
 
         if (intent == null) return START_NOT_STICKY
 
+        val calledFromWidget = intent.getBooleanExtra(EXTRA_CALLED_FROM_WIDGET, false)
+
         // Checking which command was the given to the player
         when (intent.getIntExtra(EXTRA_COMMAND, COMMAND_EMPTY)) {
-            COMMAND_SKIP_TO_PREVIOUS -> player.skipToPrevious()
+            COMMAND_SKIP_TO_PREVIOUS -> {
+                player.performIntentAction(calledFromWidget) { skipToPrevious() }
+            }
 
-            COMMAND_SKIP_TO_NEXT -> player.skipToNext()
+            COMMAND_SKIP_TO_NEXT -> {
+                player.performIntentAction(calledFromWidget) { skipToNext() }
+            }
 
-            COMMAND_TOGGLE -> player.toggle()
+            COMMAND_TOGGLE -> {
+                player.performIntentAction(calledFromWidget) { toggle() }
+            }
 
-            COMMAND_SWITCH_TO_NEXT_REPEAT_MODE ->
-                player.switchToNextRepeatMode()
+            COMMAND_SWITCH_TO_NEXT_REPEAT_MODE -> {
+                player.performIntentAction(false) { switchToNextRepeatMode() }
+            }
 
-            COMMAND_SWITCH_TO_NEXT_SHUFFLE_MODE ->
-                player.switchToNextShuffleMode()
+            COMMAND_SWITCH_TO_NEXT_SHUFFLE_MODE -> {
+                player.performIntentAction(false) { switchToNextShuffleMode() }
+            }
 
             COMMAND_CANCEL_NOTIFICATION -> cancelNotification()
 
@@ -260,6 +273,18 @@ class PlayerService: RxService() {
         unregisterReceiver(sleepTimerHandler)
 
         super.onDestroy()
+    }
+
+    private fun Player.performIntentAction(requireNonEmptyQueue: Boolean, action: Player.() -> Unit) {
+        val queue = getCurrentQueue()
+        if (requireNonEmptyQueue && queue.isNullOrEmpty()) {
+            restorePlayerStateUseCase
+                .restorePlayerStateIfNeeded(this)
+                .doOnComplete { this.action() }
+                .subscribeSafely()
+        } else {
+            this.action()
+        }
     }
 
     /********************************
@@ -440,6 +465,7 @@ class PlayerService: RxService() {
 
         private const val EXTRA_COMMAND = "command"
         private const val EXTRA_SONG = "song"
+        private const val EXTRA_CALLED_FROM_WIDGET = "called_from_widget"
 
         // commands
         const val COMMAND_EMPTY = 10
@@ -476,6 +502,14 @@ class PlayerService: RxService() {
         @JvmStatic
         fun newIntent(context: Context, command: Int): Intent = Intent(context, PlayerService::class.java)
                 .putExtra(EXTRA_COMMAND, command)
+
+        /**
+         * A variant for [newIntent], which specifies that the intent will be called from the app widget.
+         */
+        @JvmStatic
+        fun newIntentFromWidget(context: Context, command: Int): Intent = Intent(context, PlayerService::class.java)
+                .putExtra(EXTRA_COMMAND, command)
+                .putExtra(EXTRA_CALLED_FROM_WIDGET, true)
 
     }
 

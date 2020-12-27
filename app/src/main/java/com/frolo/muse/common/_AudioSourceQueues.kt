@@ -3,6 +3,9 @@ package com.frolo.muse.common
 import com.frolo.muse.engine.AudioSource
 import com.frolo.muse.engine.AudioSourceQueue
 
+fun AudioSourceQueue?.isNullOrEmpty(): Boolean {
+    return this == null || isEmpty
+}
 
 fun AudioSourceQueue.indexOf(predicate: (item: AudioSource) -> Boolean): Int {
     for (i in 0 until length) {

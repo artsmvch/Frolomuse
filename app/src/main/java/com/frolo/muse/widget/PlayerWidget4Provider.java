@@ -97,22 +97,22 @@ public class PlayerWidget4Provider extends AppWidgetProvider {
         }
 
         // play button
-        Intent toggleIntent = PlayerService.newIntent(context, PlayerService.COMMAND_TOGGLE);
+        Intent toggleIntent = PlayerService.newIntentFromWidget(context, PlayerService.COMMAND_TOGGLE);
         PendingIntent togglePi = getPendingIntent(context, RC_COMMAND_TOGGLE, toggleIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         views.setOnClickPendingIntent(R.id.btn_play, togglePi);
 
         //previous button
-        Intent previousIntent = PlayerService.newIntent(context, PlayerService.COMMAND_SKIP_TO_PREVIOUS);
+        Intent previousIntent = PlayerService.newIntentFromWidget(context, PlayerService.COMMAND_SKIP_TO_PREVIOUS);
         PendingIntent previousPi = getPendingIntent(context, RC_COMMAND_SKIP_TO_PREVIOUS, previousIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         views.setOnClickPendingIntent(R.id.btn_skip_to_previous, previousPi);
 
         //next button
-        Intent nextIntent = PlayerService.newIntent(context, PlayerService.COMMAND_SKIP_TO_NEXT);
+        Intent nextIntent = PlayerService.newIntentFromWidget(context, PlayerService.COMMAND_SKIP_TO_NEXT);
         PendingIntent nextPi = getPendingIntent(context, RC_COMMAND_SKIP_TO_NEXT, nextIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         views.setOnClickPendingIntent(R.id.btn_skip_to_next, nextPi);
 
         //repeat mode
-        Intent repeatModeIntent = PlayerService.newIntent(context, PlayerService.COMMAND_SWITCH_TO_NEXT_REPEAT_MODE);
+        Intent repeatModeIntent = PlayerService.newIntentFromWidget(context, PlayerService.COMMAND_SWITCH_TO_NEXT_REPEAT_MODE);
         PendingIntent repeatModePi = getPendingIntent(context, RC_COMMAND_SWITCH_TO_NEXT_REPEAT_MODE, repeatModeIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         views.setOnClickPendingIntent(R.id.btn_repeat_mode, repeatModePi);
         @Player.RepeatMode int repeatMode = player != null ? player.getRepeatMode() : Player.REPEAT_OFF;
@@ -132,7 +132,7 @@ public class PlayerWidget4Provider extends AppWidgetProvider {
         }
 
         //shuffle mode
-        Intent shuffleModeIntent = PlayerService.newIntent(context, PlayerService.COMMAND_SWITCH_TO_NEXT_SHUFFLE_MODE);
+        Intent shuffleModeIntent = PlayerService.newIntentFromWidget(context, PlayerService.COMMAND_SWITCH_TO_NEXT_SHUFFLE_MODE);
         PendingIntent shuffleModePi = getPendingIntent(context, RC_COMMAND_SWITCH_TO_NEXT_SHUFFLE_MODE, shuffleModeIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         views.setOnClickPendingIntent(R.id.btn_shuffle_mode, shuffleModePi);
         @Player.ShuffleMode int shuffleMode = player != null ? player.getShuffleMode() : Player.SHUFFLE_OFF;
