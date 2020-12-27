@@ -229,4 +229,13 @@ fun EventLogger.logPlaybackFadingConfigured(seconds: Int) {
 
 //endregion
 
+
+//region Advertising
+
+fun EventLogger.logBannerShown() {
+    log("banner_shown")
+}
+
+//endregion
+
 // TODO: add other main events

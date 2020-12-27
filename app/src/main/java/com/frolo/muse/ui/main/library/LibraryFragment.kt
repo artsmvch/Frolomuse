@@ -13,7 +13,6 @@ import com.frolo.muse.BuildConfig
 import com.frolo.muse.R
 import com.frolo.muse.admob.LoggingAdListener
 import com.frolo.muse.arch.observe
-import com.frolo.muse.dp2px
 import com.frolo.muse.model.Library
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.ui.base.BackPressHandler
@@ -110,14 +109,14 @@ class LibraryFragment: BaseFragment(),
      * The ad view will be added to the ad container.
      * A reference to the newly created AdView is stored to manage its lifecycle.
      */
-    private fun setupAdMobBanner(isEnabled: Boolean) {
+    private fun setupAdMobBanner(canShow: Boolean) {
 
-        if (isEnabled && adView != null) {
+        if (canShow && adView != null) {
             // it's already set up
             return
         }
 
-        if (!isEnabled) {
+        if (!canShow) {
             // we don't have to show the ad
             ad_container.removeAllViews()
             adView = null
@@ -203,8 +202,8 @@ class LibraryFragment: BaseFragment(),
     }
 
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
-        isAdMobEnabled.observe(owner) { isEnabled: Boolean? ->
-            setupAdMobBanner(isEnabled == true)
+        canShowBanner.observe(owner) { canShow: Boolean? ->
+            setupAdMobBanner(canShow == true)
         }
     }
 

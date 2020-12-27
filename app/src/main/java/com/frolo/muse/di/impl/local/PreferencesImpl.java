@@ -610,6 +610,10 @@ public class PreferencesImpl implements Preferences {
 
     @Override
     public Flowable<Boolean> shouldShowGreetings() {
+        if (getOpenCount() > 0) {
+            // the app was opened before
+            return Flowable.just(false);
+        }
         return RxPreference.ofBoolean(preferences, KEY_GREETINGS_SHOWN)
             .get(false)
             .map(new Function<Boolean, Boolean>() {
