@@ -39,14 +39,7 @@ public final class PlayerHostFragment extends Fragment {
     private final ServiceConnection mConn = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            mPlayerServiceBound = true;
-            if (service != null && service instanceof PlayerService.PlayerBinder) {
-                Player playerInstance = ((PlayerService.PlayerBinder) service).getService();
-                mPlayer = playerInstance;
-                if (mConnHandler != null) {
-                    mConnHandler.onPlayerConnected(playerInstance);
-                }
-            }
+            noteServiceConnected(service);
         }
 
         @Override
@@ -60,6 +53,17 @@ public final class PlayerHostFragment extends Fragment {
         // This will help avoid binding to the player service on every configuration changes etc.
         // because onCreate will be called only once (except the cases when the app was killed by the system).
         super.setRetainInstance(true);
+    }
+
+    private void noteServiceConnected(IBinder service) {
+        if (service != null && service instanceof PlayerService.PlayerBinder) {
+            mPlayerServiceBound = true;
+            Player playerInstance = ((PlayerService.PlayerBinder) service).getService();
+            mPlayer = playerInstance;
+            if (mConnHandler != null) {
+                mConnHandler.onPlayerConnected(playerInstance);
+            }
+        }
     }
 
     private void noteServiceDisconnected() {
@@ -86,6 +90,15 @@ public final class PlayerHostFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (savedInstanceState == null) {
+            // Here, we start the player service so that
+            // the service will be also in the created state when this host fragment binds to the service.
+            // This is important because we want the service to be in two states: created and bound.
+            // That way, if the host fragment unbinds from the service (because the user closes the activity or something else)
+            // the service will be still alive and the music will continue to play.
+            PlayerService.start(requireContext());
+        }
 
         // Do we need to check isBound value?
         final Player playerInstance = mPlayer;

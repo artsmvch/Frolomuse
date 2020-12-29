@@ -8,7 +8,6 @@ import com.frolo.muse.di.impl.navigator.NavigatorImpl
 import com.frolo.muse.di.modules.*
 import com.frolo.muse.engine.Player
 import com.frolo.muse.engine.PlayerWrapper
-import com.frolo.muse.engine.service.PlayerService
 import com.frolo.muse.logger.logAppLaunched
 import com.frolo.muse.navigator.NavigatorWrapper
 import com.frolo.muse.ui.base.BaseActivity
@@ -52,13 +51,6 @@ class App : MultiDexApplication() {
                 }
             }
         }
-
-        // Here, we start the player service so that
-        // the service will be also in the created state when the MainActivity binds to the service.
-        // This is important because we want the service to be in two states: created and bound.
-        // That way, if the MainActivity unbinds from the service (because the user closes the activity or something else)
-        // the service will be still alive and the music will continue to play.
-        PlayerService.start(this)
 
         setupFirebaseRemoteConfigs()
 
