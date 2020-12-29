@@ -99,6 +99,9 @@ class RestorePlayerStateUseCaseTest {
         whenever(preferences.lastPlaybackPosition)
                 .thenReturn(playbackPosition)
 
+        whenever(preferences.minAudioFileDuration)
+                .thenReturn(Flowable.just(0))
+
         whenever(songRepository.allItems)
                 .thenReturn(Flowable.just(mockList(size = 100)))
 
@@ -112,8 +115,12 @@ class RestorePlayerStateUseCaseTest {
 
         observer.assertComplete()
 
-        verify(player, times(1))
-                .prepareByTarget(songQueue, targetSong.toAudioSource(), false, playbackPosition)
+        verify(player, times(1)).prepareByTarget(
+            queue = argThat { deepEquals(songQueue) },
+            target = eq(targetSong.toAudioSource()),
+            startPlaying = eq(false),
+            playbackPosition = eq(playbackPosition)
+        )
     }
 
     @Test

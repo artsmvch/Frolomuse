@@ -3,6 +3,8 @@ package com.frolo.muse.engine;
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 
+import com.frolo.muse.util.CollectionUtil;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -13,6 +15,7 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.WeakHashMap;
 import java.util.concurrent.Executor;
 
@@ -286,6 +289,25 @@ public final class AudioSourceQueue implements Cloneable {
 
     public synchronized List<AudioSource> getSnapshot() {
         return new ArrayList<>(mItems);
+    }
+
+    @Deprecated
+    public synchronized boolean deepEquals(AudioSourceQueue other) {
+        if (other == null) {
+            return false;
+        }
+        synchronized (other) {
+            if (mType != other.mType) {
+                return false;
+            }
+            if (mId != other.mId) {
+                return false;
+            }
+            if (!Objects.equals(mName, other.mName)) {
+                return false;
+            }
+            return CollectionUtil.areListContentsEqual(this.mItems, other.mItems);
+        }
     }
 
 }
