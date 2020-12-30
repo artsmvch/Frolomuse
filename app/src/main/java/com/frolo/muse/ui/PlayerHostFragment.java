@@ -109,7 +109,8 @@ public final class PlayerHostFragment extends Fragment {
             Context hostContext = requireContext();
             Context appContext = hostContext.getApplicationContext();
             Intent intent = PlayerService.newIntent(hostContext);
-            appContext.bindService(intent, mConn, Context.BIND_IMPORTANT | Context.BIND_AUTO_CREATE);
+            int bindFlags = Context.BIND_AUTO_CREATE | Context.BIND_IMPORTANT | Context.BIND_ABOVE_CLIENT;
+            appContext.bindService(intent, mConn, bindFlags);
         }
     }
 
