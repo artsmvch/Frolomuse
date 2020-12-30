@@ -148,8 +148,8 @@
     <string name="albums">Albums</string>
     <string name="playlists">Playlists</string>
     <string name="folders">Dossiers</string>
-    <string name="recently_added">Recientemente añadido</string>
-    <string name="most_played">Le plus joué</string>
+    <string name="recently_added">Récemment ajoutées</string>
+    <string name="most_played">Les plus jouées</string>
 
     <!--counting tracks, albums, genres and etc.-->
     <string name="number_of_albums">%d albums</string>
@@ -181,7 +181,7 @@
     <string name="nav_equalizer">Egaliseur</string>
     <string name="nav_settings">Paramètres</string>
     <string name="nav_search">Chercher</string>
-    <string name="nav_favourite">Préféré</string>
+    <string name="nav_favourite">Préférées</string>
 
     <!--app preferences-->
     <string name="version">Version de l\'application</string>
@@ -218,8 +218,8 @@
     <string name="checkout_out">Découvrez le nouveau lecteur de musique Frolomuse!</string>
     <string name="help_with_translations">Aide à la traduction</string>
     <string name="help_with_translations_desc">Appuyez ici si vous voulez aider avec les traductions</string>
-    <string name="library_sections">Secciones de la biblioteca</string>
-    <string name="library_sections_desc">Secciones de la biblioteca que desea ver y su orden</string>
+    <string name="library_sections">Sections de la bibliothèque</string>
+    <string name="library_sections_desc">Sections de la bibliothèque qui seront affichées et leur ordre</string>
     <!--Sleep Timer-->
     <string name="sleep_timer_is_set">La minuterie de sommeil est réglée</string>
     <string name="sleep_timer_is_off">La minuterie de sommeil est éteinte</string>
@@ -251,12 +251,12 @@
     <string name="show_visualizer">Afficher le visualiseur</string>
     <!--playback params-->
     <string name="playback_params">Paramètres de lecture</string>
-    <string name="speed">La vitesse</string>
+    <string name="speed">Vitesse</string>
     <string name="pitch">Ton</string>
     <string name="normalize">Normaliser</string>
 
     <!--media file editor-->
-    <string name="song_name_layout">Prénom</string>
+    <string name="song_name_layout">Nom</string>
     <string name="album_name_layout">Album</string>
     <string name="genre_name_layout">Genre</string>
     <string name="artist_name_layout">Artiste</string>
