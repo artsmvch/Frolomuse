@@ -751,21 +751,27 @@ class MainActivity : PlayerHostActivity(),
                     .putExtra(EXTRA_NAV_MEDIA_ID, media.id)
         }
 
+        @JvmStatic
         fun newSongIntent(context: Context, song: Song): Intent =
                 newNavMediaIntent(context, song)
 
+        @JvmStatic
         fun newAlbumIntent(context: Context, album: Album): Intent =
                 newNavMediaIntent(context, album)
 
+        @JvmStatic
         fun newArtistIntent(context: Context, artist: Artist): Intent =
                 newNavMediaIntent(context, artist)
 
+        @JvmStatic
         fun newGenreIntent(context: Context, genre: Genre): Intent =
                 newNavMediaIntent(context, genre)
 
+        @JvmStatic
         fun newPlaylistIntent(context: Context, playlist: Playlist): Intent =
                 newNavMediaIntent(context, playlist)
 
+        @JvmStatic
         fun newMyFileIntent(context: Context, myFile: MyFile): Intent =
                 newNavMediaIntent(context, myFile)
 

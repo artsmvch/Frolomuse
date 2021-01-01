@@ -207,27 +207,27 @@ final class Shortcuts {
     ) throws UnknownMediaException {
 
         if (media.getKind() == Media.SONG) {
-            return MainActivity.Companion.newSongIntent(context, (Song) media);
+            return MainActivity.newSongIntent(context, (Song) media);
         }
 
         if (media.getKind() == Media.ALBUM) {
-            return MainActivity.Companion.newAlbumIntent(context, (Album) media);
+            return MainActivity.newAlbumIntent(context, (Album) media);
         }
 
         if (media.getKind() == Media.ARTIST) {
-            return MainActivity.Companion.newArtistIntent(context, (Artist) media);
+            return MainActivity.newArtistIntent(context, (Artist) media);
         }
 
         if (media.getKind() == Media.GENRE) {
-            return MainActivity.Companion.newGenreIntent(context, (Genre) media);
+            return MainActivity.newGenreIntent(context, (Genre) media);
         }
 
         if (media.getKind() == Media.PLAYLIST) {
-            return MainActivity.Companion.newPlaylistIntent(context, (Playlist) media);
+            return MainActivity.newPlaylistIntent(context, (Playlist) media);
         }
 
         if (media.getKind() == Media.MY_FILE) {
-            return MainActivity.Companion.newMyFileIntent(context, (MyFile) media);
+            return MainActivity.newMyFileIntent(context, (MyFile) media);
         }
 
         throw new UnknownMediaException(media);
