@@ -8,6 +8,7 @@ import com.frolo.muse.interactor.media.get.*
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.repository.Preferences
+import com.frolo.muse.repository.SongRepository
 import com.frolo.muse.ui.base.BaseActivity
 import com.frolo.muse.ui.main.audiofx.params.PlaybackParamsDialog
 import com.frolo.muse.ui.main.audiofx.preset.SavePresetVMFactory
@@ -52,6 +53,7 @@ interface AppComponent {
     fun providePreferences(): Preferences
     fun provideVMFactory(): ViewModelModule.ViewModelFactory
     fun provideEventLogger(): EventLogger
+    fun provideSongRepository(): SongRepository
 
     fun inject(service: PlayerService)
 

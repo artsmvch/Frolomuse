@@ -59,24 +59,24 @@
             android:exported="false" />
 
         <!--RECEIVERS-->
-        <receiver android:name="com.frolo.muse.widget.PlayerWidget3Provider">
+        <receiver android:name="com.frolo.muse.widget.PlayerWidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/player_widget_3_info" />
+                android:resource="@xml/widget_player" />
         </receiver>
 
-        <receiver android:name="com.frolo.muse.widget.PlayerWidget4Provider">
+        <receiver android:name="com.frolo.muse.widget.PlayerWithArtWidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/player_widget_4_info" />
+                android:resource="@xml/widget_player_with_art" />
         </receiver>
 
         <!--ACTIVITIES-->

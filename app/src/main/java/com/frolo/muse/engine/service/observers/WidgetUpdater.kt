@@ -5,25 +5,22 @@ import com.frolo.muse.ThreadStrictMode
 import com.frolo.muse.engine.AudioSource
 import com.frolo.muse.engine.Player
 import com.frolo.muse.engine.SimplePlayerObserver
-import com.frolo.muse.widget.PlayerWidget3Provider
-import com.frolo.muse.widget.PlayerWidget4Provider
-import java.lang.ref.WeakReference
+import com.frolo.muse.widget.PlayerWidgetProvider
+import com.frolo.muse.widget.PlayerWithArtWidgetProvider
 
 
 /**
  * Observes the state of the player and updates the player widgets,
- * namely [PlayerWidget3Provider] and [PlayerWidget4Provider], as needed.
+ * namely [PlayerWidgetProvider] and [PlayerWithArtWidgetProvider], as needed.
  */
-class WidgetUpdater constructor(context: Context): SimplePlayerObserver() {
-
-    private val contextRef = WeakReference(context)
+class WidgetUpdater constructor(
+    private val context: Context
+): SimplePlayerObserver() {
 
     private fun updateWidgets(player: Player) {
         ThreadStrictMode.assertMain()
-        contextRef.get()?.also { safeContext ->
-            PlayerWidget3Provider.update(safeContext, player)
-            PlayerWidget4Provider.update(safeContext, player)
-        }
+        PlayerWidgetProvider.update(context, player)
+        PlayerWithArtWidgetProvider.update(context, player)
     }
 
     override fun onPlaybackStarted(player: Player) {

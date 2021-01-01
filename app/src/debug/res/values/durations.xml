@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--debug period for widget updates is half an hour-->
+    <integer name="default_widget_update_period_millis">1800000</integer>
+</resources>

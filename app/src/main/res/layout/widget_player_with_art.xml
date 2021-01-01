@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/widget_4_layout_width"
+    android:layout_height="@dimen/widget_4_layout_height"
+    android:padding="@dimen/widget_margin">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/bg_widget"/>
+
+    <LinearLayout
+        android:id="@+id/root_view"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/imv_album_art"
+            android:layout_margin="6dp"
+            android:layout_width="@dimen/widget_art_size"
+            android:layout_height="@dimen/widget_art_size" />
+
+        <include layout="@layout/include_player_widget_content"/>
+
+    </LinearLayout>
+
+</FrameLayout>
