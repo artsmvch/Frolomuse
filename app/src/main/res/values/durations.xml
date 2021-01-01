@@ -6,5 +6,5 @@
     <integer name="layout_anim_duration">220</integer>
 
     <!--default period for widget updates is 1 hour-->
-    <integer name="default_widget_update_period_millis">3600000</integer>
+    <integer name="default_widget_update_period_millis">86400000</integer>
 </resources>
