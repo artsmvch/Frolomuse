@@ -8,10 +8,12 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.LifecycleOwner
+import androidx.transition.AutoTransition
+import androidx.transition.TransitionManager
 import androidx.viewpager.widget.ViewPager
 import com.frolo.muse.BuildConfig
 import com.frolo.muse.R
-import com.frolo.muse.admob.LoggingAdListener
+import com.frolo.muse.admob.AdListenerBuilder
 import com.frolo.muse.arch.observe
 import com.frolo.muse.model.Library
 import com.frolo.muse.repository.Preferences
@@ -123,9 +125,6 @@ class LibraryFragment: BaseFragment(),
             return
         }
 
-        // The logging listener
-        val adListener = LoggingAdListener.createDefault(LOG_TAG)
-
         @StringRes
         val adUnitIdResId: Int = if (BuildConfig.DEBUG) {
             // Test unit ID for debug builds
@@ -137,11 +136,20 @@ class LibraryFragment: BaseFragment(),
 
         val context = requireContext()
         val adView = AdView(context)
-        adView.adListener = adListener
 //        val preferredAdHeight = 24f.dp2px(context).toInt()
 //        AdSize(AdSize.FULL_WIDTH, preferredAdHeight)
         adView.adSize = AdSize.SMART_BANNER
         adView.adUnitId = context.getString(adUnitIdResId)
+
+        AdListenerBuilder()
+            .doDefaultLogging(LOG_TAG)
+            .doWhenAdLoaded {
+                setAdContainerVisible(isVisible = true, animate = true)
+            }
+            .doWhenAdFailedToLoad {
+                setAdContainerVisible(isVisible = false, animate = true)
+            }
+            .buildAndSetIn(adView)
 
         // The AD request
         val adRequest = AdRequest.Builder().build()
@@ -152,7 +160,27 @@ class LibraryFragment: BaseFragment(),
         // adding the AdView to the container
         ad_container.addView(adView)
 
+        setAdContainerVisible(isVisible = false, animate = true)
+
         this.adView = adView
+    }
+
+    private fun setAdContainerVisible(isVisible: Boolean, animate: Boolean) {
+        val targetVisibility = if (isVisible) View.VISIBLE else View.GONE
+
+        if (ad_container.visibility == targetVisibility) {
+            return
+        }
+
+        val rootView = view
+        if (animate && rootView is ViewGroup) {
+            // use the transition mechanism to animate layout changes
+            val transition = AutoTransition().apply {
+                duration = 200L
+            }
+            TransitionManager.beginDelayedTransition(rootView, transition)
+        }
+        ad_container.visibility = targetVisibility
     }
 
     override fun onResume() {
