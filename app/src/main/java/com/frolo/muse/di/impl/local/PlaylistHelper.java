@@ -171,6 +171,17 @@ final class PlaylistHelper {
         return hasAudioMember;
     }
 
+    private static void insertAndNotify_Internal(
+        ContentResolver resolver,
+        Uri uri,
+        ContentValues values
+    ) {
+        // TODO: check the result uri somehow
+        Uri resultUri = resolver.insert(uri, values);
+        // notify listeners
+        resolver.notifyChange(uri, null);
+    }
+
     private static void addAudioToPlaylist_Internal(
         ContentResolver resolver,
         long playlistId,
@@ -188,9 +199,7 @@ final class PlaylistHelper {
         values.put(MediaStore.Audio.Playlists.Members.PLAY_ORDER, base + audioId);
         values.put(MediaStore.Audio.Playlists.Members.AUDIO_ID, audioId);
 
-        Uri resultUri = resolver.insert(uri, values);
-
-        // TODO: check resultUri somehow
+        insertAndNotify_Internal(resolver, uri, values);
     }
 
     private static void addAudioQueryToPlaylist_Internal(
@@ -228,8 +237,7 @@ final class PlaylistHelper {
                     values.put(MediaStore.Audio.Playlists.Members.PLAY_ORDER, base + audioId);
                     values.put(MediaStore.Audio.Playlists.Members.AUDIO_ID, audioId);
 
-                    Uri resultUri = resolver.insert(playlistUri, values);
-                    // TODO: check resultUri
+                    insertAndNotify_Internal(resolver, playlistUri, values);
                 } while (audioCursor.moveToNext());
             }
         } finally {
@@ -305,8 +313,7 @@ final class PlaylistHelper {
                     values.put(MediaStore.Audio.Playlists.Members.PLAY_ORDER, base + audioId);
                     values.put(MediaStore.Audio.Playlists.Members.AUDIO_ID, audioId);
 
-                    Uri resultUri = resolver.insert(playlistUri, values);
-                    // TODO: check resultUri
+                    insertAndNotify_Internal(resolver, playlistUri, values);
                 } while (genreCursor.moveToNext());
             }
         } finally {
