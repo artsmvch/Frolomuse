@@ -1,6 +1,7 @@
 package com.frolo.muse.ui.main.library
 
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,7 @@ import androidx.viewpager.widget.ViewPager
 import com.frolo.muse.BuildConfig
 import com.frolo.muse.R
 import com.frolo.muse.admob.AdListenerBuilder
+import com.frolo.muse.android.displayCompat
 import com.frolo.muse.arch.observe
 import com.frolo.muse.model.Library
 import com.frolo.muse.repository.Preferences
@@ -21,7 +23,9 @@ import com.frolo.muse.ui.base.BackPressHandler
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.base.NoClipping
 import com.frolo.muse.ui.main.removeAllFragmentsNow
-import com.google.android.gms.ads.*
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdView
 import kotlinx.android.synthetic.main.fragment_library.*
 
 
@@ -136,9 +140,7 @@ class LibraryFragment: BaseFragment(),
 
         val context = requireContext()
         val adView = AdView(context)
-//        val preferredAdHeight = 24f.dp2px(context).toInt()
-//        AdSize(AdSize.FULL_WIDTH, preferredAdHeight)
-        adView.adSize = AdSize.SMART_BANNER
+        adView.adSize = getAdSize()
         adView.adUnitId = context.getString(adUnitIdResId)
 
         AdListenerBuilder()
@@ -163,6 +165,15 @@ class LibraryFragment: BaseFragment(),
         setAdContainerVisible(isVisible = false, animate = true)
 
         this.adView = adView
+    }
+
+    private fun getAdSize(): AdSize {
+        val context = requireContext()
+        val display = context.displayCompat ?: return AdSize.SMART_BANNER
+        val outMetrics = DisplayMetrics()
+        display.getMetrics(outMetrics)
+        val adWidth = (outMetrics.widthPixels / outMetrics.density).toInt()
+        return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(context, adWidth)
     }
 
     private fun setAdContainerVisible(isVisible: Boolean, animate: Boolean) {

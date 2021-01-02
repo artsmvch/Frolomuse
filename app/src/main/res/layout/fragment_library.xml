@@ -40,8 +40,9 @@
 
         <FrameLayout
             android:id="@+id/ad_container"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             app:layout_scrollFlags="scroll|enterAlways|snap"
             android:background="@null"/>
     </com.google.android.material.appbar.AppBarLayout>
