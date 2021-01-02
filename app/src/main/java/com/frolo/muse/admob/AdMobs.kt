@@ -2,6 +2,7 @@ package com.frolo.muse.admob
 
 import com.google.android.gms.tasks.SuccessContinuation
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.firebase.remoteconfig.ktx.get
 import io.reactivex.Single
 import java.util.concurrent.Executors
 
@@ -12,6 +13,8 @@ import java.util.concurrent.Executors
 object AdMobs {
 
     private const val KEY_AD_MOB_ENABLED = "ad_mob_enabled"
+    private const val KEY_AD_MOB_THRESHOLD_INSTALL_TIME = "ad_mob_threshold_install_time"
+    private const val KEY_AD_MOB_THRESHOLD_OPEN_COUNT = "ad_mob_threshold_open_count"
 
     private val executor = Executors.newFixedThreadPool(2)
 
@@ -44,16 +47,46 @@ object AdMobs {
         }
     }
 
+    @Deprecated("Use getAdMobRemoteConfigs method")
     fun isAdMobEnabled(minimumFetchIntervalInSeconds: Long? = null): Single<Boolean> {
+        return getAdMobRemoteConfigs(minimumFetchIntervalInSeconds).map { it.isEnabled }
+    }
+
+    fun getAdMobRemoteConfigs(minimumFetchIntervalInSeconds: Long? = null): Single<AdMobRemoteConfigs> {
         return fetchAndActivate(minimumFetchIntervalInSeconds)
             .map { activated ->
                 // TODO: the activation result is always false, what we gon do?
-                FirebaseRemoteConfig.getInstance()
-                    .getValue(KEY_AD_MOB_ENABLED)
-                    .let { configValue ->
-                        configValue.asString() == "true"
+
+                val remoteConfigInstance = FirebaseRemoteConfig.getInstance()
+
+                val isEnabled = remoteConfigInstance[KEY_AD_MOB_ENABLED].asString() == "true"
+                val thresholdInstallTime = remoteConfigInstance[KEY_AD_MOB_THRESHOLD_INSTALL_TIME].asString().let { stringValue ->
+                    try {
+                        stringValue.toLong()
+                    } catch (ignored: Throwable) {
+                        null
                     }
+                }
+                val thresholdOpenCount = remoteConfigInstance[KEY_AD_MOB_THRESHOLD_OPEN_COUNT].asString().let { stringValue ->
+                    try {
+                        stringValue.toInt()
+                    } catch (ignored: Throwable) {
+                        null
+                    }
+                }
+
+                AdMobRemoteConfigs(
+                    isEnabled = isEnabled,
+                    thresholdInstallTime = thresholdInstallTime,
+                    thresholdOpenCount = thresholdOpenCount
+                )
             }
     }
+
+    data class AdMobRemoteConfigs(
+        val isEnabled: Boolean,
+        val thresholdInstallTime: Long?,
+        val thresholdOpenCount: Int?
+    )
 
 }
