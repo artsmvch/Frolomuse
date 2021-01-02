@@ -5,6 +5,9 @@ import android.appwidget.AppWidgetManager
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.os.Bundle
+import android.util.TypedValue
+import android.view.View
 import android.widget.RemoteViews
 import androidx.annotation.IntDef
 import com.bumptech.glide.Glide
@@ -12,6 +15,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.AppWidgetTarget
 import com.frolo.muse.App
 import com.frolo.muse.R
+import com.frolo.muse.common.albumId
 import com.frolo.muse.common.title
 import com.frolo.muse.common.toAudioSource
 import com.frolo.muse.engine.AudioSource
@@ -34,12 +38,12 @@ import java.util.concurrent.TimeUnit
 @Target(AnnotationTarget.FIELD, AnnotationTarget.VALUE_PARAMETER, AnnotationTarget.FUNCTION, AnnotationTarget.LOCAL_VARIABLE)
 private annotation class RequestCode
 
-const val RC_COMMAND_TOGGLE = 123
-const val RC_COMMAND_SKIP_TO_PREVIOUS = 124
-const val RC_COMMAND_SKIP_TO_NEXT = 125
-const val RC_COMMAND_SWITCH_TO_NEXT_REPEAT_MODE = 126
-const val RC_COMMAND_SWITCH_TO_NEXT_SHUFFLE_MODE = 127
-const val RC_OPEN_PLAYER = 128
+private const val RC_COMMAND_TOGGLE = 123
+private const val RC_COMMAND_SKIP_TO_PREVIOUS = 124
+private const val RC_COMMAND_SKIP_TO_NEXT = 125
+private const val RC_COMMAND_SWITCH_TO_NEXT_REPEAT_MODE = 126
+private const val RC_COMMAND_SWITCH_TO_NEXT_SHUFFLE_MODE = 127
+private const val RC_OPEN_PLAYER = 128
 
 @Suppress("FunctionName")
 private fun PendingIntent(context: Context, @RequestCode requestCode: Int, intent: Intent, flags: Int): PendingIntent {
@@ -53,7 +57,6 @@ private fun PendingIntent(context: Context, @RequestCode requestCode: Int, inten
 fun AppWidgetManager.updatePlayerWidget(
     context: Context,
     player: Player?,
-    withAlbumArt: Boolean,
     vararg widgetIds: Int
 ) {
 
@@ -96,25 +99,43 @@ fun AppWidgetManager.updatePlayerWidget(
         }
     }
 
-    val remoteViews = PlayerRemoteViews(
-        context = context,
-        currItemTitle = currItem?.title,
-        isPlaying = isPlaying,
-        repeatMode = repeatMode,
-        shuffleMode = shuffleMode,
-        withAlbumArt = withAlbumArt
-    )
+    widgetIds.forEach { widgetId ->
+        val widgetOptions: Bundle? = this.getAppWidgetOptions(widgetId)
 
-    this.updateAppWidget(widgetIds, remoteViews)
+        val minWidth: Int? = widgetOptions?.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH)
+        val minHeight: Int? = widgetOptions?.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT)
 
-    if (withAlbumArt) {
-        loadArt(
+        val remoteViews = PlayerRemoteViews(
             context = context,
-            albumArtId = currItem?.id,
-            remoteViews = remoteViews,
-            widgetIds = *widgetIds
+            currItemTitle = currItem?.title,
+            isPlaying = isPlaying,
+            repeatMode = repeatMode,
+            shuffleMode = shuffleMode,
+            minWidth = minWidth,
+            minHeight = minHeight
         )
+
+        this.updateAppWidget(widgetIds, remoteViews)
+
+        if (hasRoomForAlbumArt(minWidth, minHeight)) {
+            loadArt(
+                context = context,
+                albumArtId = currItem?.albumId,
+                remoteViews = remoteViews,
+                widgetIds = *widgetIds
+            )
+        }
     }
+}
+
+private fun hasRoomForAlbumArt(minWidth: Int?, minHeight: Int?): Boolean {
+    val horizontalCells = getCellsForSize(minWidth ?: 0)
+    return horizontalCells >= 4
+}
+
+private fun hasRoomForRepeatAndShuffleModes(minWidth: Int?, minHeight: Int?): Boolean {
+    val horizontalCells = getCellsForSize(minWidth ?: 0)
+    return horizontalCells >= 3
 }
 
 @Suppress("FunctionName")
@@ -124,16 +145,28 @@ fun PlayerRemoteViews(
     isPlaying: Boolean,
     @Player.RepeatMode repeatMode: Int,
     @Player.ShuffleMode shuffleMode: Int,
-    withAlbumArt: Boolean
+    minWidth: Int?,
+    minHeight: Int?
 ): RemoteViews {
-    val layoutId = if (withAlbumArt) R.layout.widget_player_with_art else R.layout.widget_player
+
+    val layoutId = R.layout.widget_player
     val remoteView = RemoteViews(context.packageName, layoutId)
+
+    val hasRoomForRepeatAndShuffleModes = hasRoomForRepeatAndShuffleModes(minWidth, minHeight)
 
     // the play button image
     remoteView.setImageViewResource(R.id.btn_play, if (isPlaying) R.drawable.ic_cpause else R.drawable.ic_play)
 
     // the current item title
     remoteView.setTextViewText(R.id.tv_song_name, currItemTitle)
+    val horizontalCells = getCellsForSize(size = minWidth ?: 0)
+    val songNameTextSizeInSp = when {
+        horizontalCells >= 4 -> 13.5f
+        horizontalCells >= 3 -> 12.8f
+        horizontalCells >= 2 -> 12f
+        else -> 12f
+    }
+    remoteView.setTextViewTextSize(R.id.tv_song_name, TypedValue.COMPLEX_UNIT_SP, songNameTextSizeInSp)
 
     // the play button
     val toggleIntent = newIntentFromWidget(context, PlayerService.COMMAND_TOGGLE)
@@ -150,32 +183,44 @@ fun PlayerRemoteViews(
     val nextPi = PendingIntent(context, RC_COMMAND_SKIP_TO_NEXT, nextIntent, PendingIntent.FLAG_UPDATE_CURRENT)
     remoteView.setOnClickPendingIntent(R.id.btn_skip_to_next, nextPi)
 
-    // the repeat mode
-    val repeatModeIntent = newIntentFromWidget(context, PlayerService.COMMAND_SWITCH_TO_NEXT_REPEAT_MODE)
-    val repeatModePi = PendingIntent(context, RC_COMMAND_SWITCH_TO_NEXT_REPEAT_MODE, repeatModeIntent, PendingIntent.FLAG_UPDATE_CURRENT)
-    remoteView.setOnClickPendingIntent(R.id.btn_repeat_mode, repeatModePi)
-    val repeatModeIconRes = when(repeatMode) {
-        Player.REPEAT_OFF -> R.drawable.ic_repeat_disabled
-        Player.REPEAT_PLAYLIST -> R.drawable.ic_repeat_all_enabled
-        Player.REPEAT_ONE -> R.drawable.ic_repeat_one_enabled
-        else -> R.drawable.ic_repeat_disabled
-    }
-    remoteView.setImageViewResource(R.id.btn_repeat_mode, repeatModeIconRes)
+    if (hasRoomForRepeatAndShuffleModes) {
+        // the repeat mode
+        val repeatModeIntent = newIntentFromWidget(context, PlayerService.COMMAND_SWITCH_TO_NEXT_REPEAT_MODE)
+        val repeatModePi = PendingIntent(context, RC_COMMAND_SWITCH_TO_NEXT_REPEAT_MODE, repeatModeIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        remoteView.setOnClickPendingIntent(R.id.btn_repeat_mode, repeatModePi)
+        val repeatModeIconRes = when (repeatMode) {
+            Player.REPEAT_OFF -> R.drawable.ic_repeat_disabled
+            Player.REPEAT_PLAYLIST -> R.drawable.ic_repeat_all_enabled
+            Player.REPEAT_ONE -> R.drawable.ic_repeat_one_enabled
+            else -> R.drawable.ic_repeat_disabled
+        }
+        remoteView.setImageViewResource(R.id.btn_repeat_mode, repeatModeIconRes)
+        remoteView.setViewVisibility(R.id.btn_repeat_mode, View.VISIBLE)
 
-    // the shuffle mode
-    val shuffleModeIntent = newIntentFromWidget(context, PlayerService.COMMAND_SWITCH_TO_NEXT_SHUFFLE_MODE)
-    val shuffleModePi = PendingIntent(context, RC_COMMAND_SWITCH_TO_NEXT_SHUFFLE_MODE, shuffleModeIntent, PendingIntent.FLAG_UPDATE_CURRENT)
-    remoteView.setOnClickPendingIntent(R.id.btn_shuffle_mode, shuffleModePi)
-    val shuffleModeIconRes = when (shuffleMode) {
-        Player.SHUFFLE_OFF -> R.drawable.ic_shuffle_disabled
-        Player.SHUFFLE_ON -> R.drawable.ic_shuffle_enabled
-        else -> R.drawable.ic_shuffle_disabled
+        // the shuffle mode
+        val shuffleModeIntent = newIntentFromWidget(context, PlayerService.COMMAND_SWITCH_TO_NEXT_SHUFFLE_MODE)
+        val shuffleModePi = PendingIntent(context, RC_COMMAND_SWITCH_TO_NEXT_SHUFFLE_MODE, shuffleModeIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        remoteView.setOnClickPendingIntent(R.id.btn_shuffle_mode, shuffleModePi)
+        val shuffleModeIconRes = when (shuffleMode) {
+            Player.SHUFFLE_OFF -> R.drawable.ic_shuffle_disabled
+            Player.SHUFFLE_ON -> R.drawable.ic_shuffle_enabled
+            else -> R.drawable.ic_shuffle_disabled
+        }
+        remoteView.setImageViewResource(R.id.btn_shuffle_mode, shuffleModeIconRes)
+        remoteView.setViewVisibility(R.id.btn_shuffle_mode, View.VISIBLE)
+    } else {
+        remoteView.setViewVisibility(R.id.btn_repeat_mode, View.GONE)
+        remoteView.setViewVisibility(R.id.btn_shuffle_mode, View.GONE)
     }
-    remoteView.setImageViewResource(R.id.btn_shuffle_mode, shuffleModeIconRes)
 
+    // the root layout
     val appIntent = newIntent(context, true)
     val appPi = PendingIntent.getActivity(context, RC_OPEN_PLAYER, appIntent, PendingIntent.FLAG_UPDATE_CURRENT)
     remoteView.setOnClickPendingIntent(R.id.root_view, appPi)
+
+    // the album art
+    val albumArtVisibility = if (hasRoomForAlbumArt(minWidth, minHeight)) View.VISIBLE else View.GONE
+    remoteView.setViewVisibility(R.id.imv_album_art, albumArtVisibility)
 
     return remoteView
 }
@@ -208,4 +253,15 @@ private fun loadArt(context: Context, albumArtId: Long?, remoteViews: RemoteView
             .apply(requestOptions)
             .into(target)
     }
+}
+
+/**
+ * Calculates number of cells needed for the given size of the widget.
+ */
+private fun getCellsForSize(size: Int): Int {
+    var n = 2
+    while (70 * n - 30 < size) {
+        ++n
+    }
+    return n - 1
 }

@@ -6,12 +6,10 @@ import com.frolo.muse.engine.AudioSource
 import com.frolo.muse.engine.Player
 import com.frolo.muse.engine.SimplePlayerObserver
 import com.frolo.muse.widget.PlayerWidgetProvider
-import com.frolo.muse.widget.PlayerWithArtWidgetProvider
 
 
 /**
- * Observes the state of the player and updates the player widgets,
- * namely [PlayerWidgetProvider] and [PlayerWithArtWidgetProvider], as needed.
+ * Observes the state of the player and updates the player widgets, namely [PlayerWidgetProvider], as needed.
  */
 class WidgetUpdater constructor(
     private val context: Context
@@ -20,7 +18,6 @@ class WidgetUpdater constructor(
     private fun updateWidgets(player: Player) {
         ThreadStrictMode.assertMain()
         PlayerWidgetProvider.update(context, player)
-        PlayerWithArtWidgetProvider.update(context, player)
     }
 
     override fun onPlaybackStarted(player: Player) {
