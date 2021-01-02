@@ -25,7 +25,6 @@ import com.frolo.muse.ui.main.library.base.SongAdapter
 import com.frolo.muse.dp2px
 import com.frolo.muse.ui.base.NoClipping
 import com.frolo.muse.ui.base.setupNavigation
-import com.frolo.muse.ui.getDateAddedString
 import com.frolo.muse.ui.main.confirmShortcutCreation
 import com.frolo.muse.ui.toString
 import com.google.android.material.appbar.AppBarLayout
@@ -33,7 +32,7 @@ import com.google.android.material.shape.CornerFamily
 import com.google.android.material.shape.MaterialShapeDrawable
 import com.google.android.material.shape.ShapeAppearanceModel
 import kotlinx.android.synthetic.main.fragment_playlist.*
-import kotlinx.android.synthetic.main.fragment_base_list_top_gravity.*
+import kotlinx.android.synthetic.main.fragment_base_list.*
 import kotlin.math.abs
 import kotlin.math.pow
 

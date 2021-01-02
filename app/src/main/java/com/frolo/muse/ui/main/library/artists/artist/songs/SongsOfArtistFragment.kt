@@ -14,7 +14,7 @@ import com.frolo.muse.ui.base.withArg
 import com.frolo.muse.ui.main.decorateAsLinear
 import com.frolo.muse.ui.main.library.base.AbsSongCollectionFragment
 import com.frolo.muse.ui.main.library.base.SongAdapter
-import kotlinx.android.synthetic.main.fragment_base_list_top_gravity.*
+import kotlinx.android.synthetic.main.fragment_base_list.*
 
 
 class SongsOfArtistFragment: AbsSongCollectionFragment<Song>(), NoClipping {
@@ -36,7 +36,7 @@ class SongsOfArtistFragment: AbsSongCollectionFragment<Song>(), NoClipping {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = inflater.inflate(R.layout.fragment_base_list_top_gravity, container, false)
+    ): View = inflater.inflate(R.layout.fragment_base_list, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         rv_list.apply {
