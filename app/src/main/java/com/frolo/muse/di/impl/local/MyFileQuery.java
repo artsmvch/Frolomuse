@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.os.FileObserver;
 import android.provider.MediaStore;
@@ -183,8 +184,19 @@ final class MyFileQuery {
         return false;
     }
 
+    /**
+     * Returns the filepath to the root file according to the version of OS the app is running on.
+     * @return the filepath to the root file
+     */
+    static String getRootFilePath() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            return PATH_EMULATED_0_ROOT;
+        }
+        return PATH_STORAGE_ROOT;
+    }
+
     static MyFile getRootFile() {
-        return new MyFile(new File(PATH_STORAGE_ROOT), false);
+        return new MyFile(new File(getRootFilePath()), false);
     }
 
     static List<MyFile> getRootFiles(Context context) {
