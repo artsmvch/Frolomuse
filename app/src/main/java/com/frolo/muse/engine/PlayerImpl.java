@@ -380,6 +380,7 @@ public final class PlayerImpl implements Player {
      * If so, then the instance can no longer be used and any method calls should be ignored.
      * @return true if the player is shutdown, false - otherwise
      */
+    @Override
     public boolean isShutdown() {
         return mShutdown.get();
     }

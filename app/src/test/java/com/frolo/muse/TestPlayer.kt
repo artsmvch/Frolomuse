@@ -8,6 +8,7 @@ class TestPlayer: Player {
     override fun unregisterObserver(observer: PlayerObserver) = Unit
     override fun prepareByTarget(queue: AudioSourceQueue, target: AudioSource, startPlaying: Boolean, playbackPosition: Int) = Unit
     override fun prepareByPosition(queue: AudioSourceQueue, positionInQueue: Int, startPlaying: Boolean, playbackPosition: Int) = Unit
+    override fun isShutdown(): Boolean = true
     override fun shutdown() = Unit
     override fun skipToPrevious() = Unit
     override fun skipToNext() = Unit

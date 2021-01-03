@@ -10,6 +10,7 @@ interface Player {
     fun unregisterObserver(observer: PlayerObserver)
     fun prepareByTarget(queue: AudioSourceQueue, target: AudioSource, startPlaying: Boolean, playbackPosition: Int)
     fun prepareByPosition(queue: AudioSourceQueue, positionInQueue: Int, startPlaying: Boolean, playbackPosition: Int)
+    fun isShutdown(): Boolean
     fun shutdown()
     fun skipToPrevious()
     fun skipToNext()

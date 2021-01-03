@@ -64,7 +64,7 @@ fun AppWidgetManager.updatePlayerWidget(
     val isPlaying: Boolean
     @Player.RepeatMode val repeatMode: Int
     @Player.ShuffleMode val shuffleMode: Int
-    if (player != null) {
+    if (player != null && !player.isShutdown()) {
         currItem = player.getCurrent()
         isPlaying = player.isPlaying()
         repeatMode = player.getRepeatMode()

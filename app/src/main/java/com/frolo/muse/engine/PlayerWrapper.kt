@@ -43,6 +43,10 @@ class PlayerWrapper : Player {
         delegate?.prepareByPosition(queue, positionInQueue, startPlaying, playbackPosition)
     }
 
+    override fun isShutdown(): Boolean {
+        return delegate?.isShutdown() ?: true
+    }
+
     override fun shutdown() {
         delegate?.shutdown()
     }
