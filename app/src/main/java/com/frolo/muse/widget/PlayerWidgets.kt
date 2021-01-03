@@ -150,15 +150,15 @@ fun PlayerRemoteViews(
 ): RemoteViews {
 
     val layoutId = R.layout.widget_player
-    val remoteView = RemoteViews(context.packageName, layoutId)
+    val remoteViews = RemoteViews(context.packageName, layoutId)
 
     val hasRoomForRepeatAndShuffleModes = hasRoomForRepeatAndShuffleModes(minWidth, minHeight)
 
     // the play button image
-    remoteView.setImageViewResource(R.id.btn_play, if (isPlaying) R.drawable.ic_cpause else R.drawable.ic_play)
+    remoteViews.setImageViewResource(R.id.btn_play, if (isPlaying) R.drawable.ic_cpause else R.drawable.ic_play)
 
     // the current item title
-    remoteView.setTextViewText(R.id.tv_song_name, currItemTitle)
+    remoteViews.setTextViewText(R.id.tv_song_name, currItemTitle)
     val horizontalCells = getCellsForSize(size = minWidth ?: 0)
     val songNameTextSizeInSp = when {
         horizontalCells >= 4 -> 13.5f
@@ -166,63 +166,63 @@ fun PlayerRemoteViews(
         horizontalCells >= 2 -> 12f
         else -> 12f
     }
-    remoteView.setTextViewTextSize(R.id.tv_song_name, TypedValue.COMPLEX_UNIT_SP, songNameTextSizeInSp)
+    remoteViews.setTextViewTextSize(R.id.tv_song_name, TypedValue.COMPLEX_UNIT_SP, songNameTextSizeInSp)
 
     // the play button
     val toggleIntent = newIntentFromWidget(context, PlayerService.COMMAND_TOGGLE)
     val togglePi = PendingIntent(context, RC_COMMAND_TOGGLE, toggleIntent, PendingIntent.FLAG_UPDATE_CURRENT)
-    remoteView.setOnClickPendingIntent(R.id.btn_play, togglePi)
+    remoteViews.setOnClickPendingIntent(R.id.btn_play, togglePi)
 
     // the previous button
     val previousIntent = newIntentFromWidget(context, PlayerService.COMMAND_SKIP_TO_PREVIOUS)
     val previousPi = PendingIntent(context, RC_COMMAND_SKIP_TO_PREVIOUS, previousIntent, PendingIntent.FLAG_UPDATE_CURRENT)
-    remoteView.setOnClickPendingIntent(R.id.btn_skip_to_previous, previousPi)
+    remoteViews.setOnClickPendingIntent(R.id.btn_skip_to_previous, previousPi)
 
     // the next button
     val nextIntent = newIntentFromWidget(context, PlayerService.COMMAND_SKIP_TO_NEXT)
     val nextPi = PendingIntent(context, RC_COMMAND_SKIP_TO_NEXT, nextIntent, PendingIntent.FLAG_UPDATE_CURRENT)
-    remoteView.setOnClickPendingIntent(R.id.btn_skip_to_next, nextPi)
+    remoteViews.setOnClickPendingIntent(R.id.btn_skip_to_next, nextPi)
 
     if (hasRoomForRepeatAndShuffleModes) {
         // the repeat mode
         val repeatModeIntent = newIntentFromWidget(context, PlayerService.COMMAND_SWITCH_TO_NEXT_REPEAT_MODE)
         val repeatModePi = PendingIntent(context, RC_COMMAND_SWITCH_TO_NEXT_REPEAT_MODE, repeatModeIntent, PendingIntent.FLAG_UPDATE_CURRENT)
-        remoteView.setOnClickPendingIntent(R.id.btn_repeat_mode, repeatModePi)
+        remoteViews.setOnClickPendingIntent(R.id.btn_repeat_mode, repeatModePi)
         val repeatModeIconRes = when (repeatMode) {
             Player.REPEAT_OFF -> R.drawable.ic_repeat_disabled
             Player.REPEAT_PLAYLIST -> R.drawable.ic_repeat_all_enabled
             Player.REPEAT_ONE -> R.drawable.ic_repeat_one_enabled
             else -> R.drawable.ic_repeat_disabled
         }
-        remoteView.setImageViewResource(R.id.btn_repeat_mode, repeatModeIconRes)
-        remoteView.setViewVisibility(R.id.btn_repeat_mode, View.VISIBLE)
+        remoteViews.setImageViewResource(R.id.btn_repeat_mode, repeatModeIconRes)
+        remoteViews.setViewVisibility(R.id.btn_repeat_mode, View.VISIBLE)
 
         // the shuffle mode
         val shuffleModeIntent = newIntentFromWidget(context, PlayerService.COMMAND_SWITCH_TO_NEXT_SHUFFLE_MODE)
         val shuffleModePi = PendingIntent(context, RC_COMMAND_SWITCH_TO_NEXT_SHUFFLE_MODE, shuffleModeIntent, PendingIntent.FLAG_UPDATE_CURRENT)
-        remoteView.setOnClickPendingIntent(R.id.btn_shuffle_mode, shuffleModePi)
+        remoteViews.setOnClickPendingIntent(R.id.btn_shuffle_mode, shuffleModePi)
         val shuffleModeIconRes = when (shuffleMode) {
             Player.SHUFFLE_OFF -> R.drawable.ic_shuffle_disabled
             Player.SHUFFLE_ON -> R.drawable.ic_shuffle_enabled
             else -> R.drawable.ic_shuffle_disabled
         }
-        remoteView.setImageViewResource(R.id.btn_shuffle_mode, shuffleModeIconRes)
-        remoteView.setViewVisibility(R.id.btn_shuffle_mode, View.VISIBLE)
+        remoteViews.setImageViewResource(R.id.btn_shuffle_mode, shuffleModeIconRes)
+        remoteViews.setViewVisibility(R.id.btn_shuffle_mode, View.VISIBLE)
     } else {
-        remoteView.setViewVisibility(R.id.btn_repeat_mode, View.GONE)
-        remoteView.setViewVisibility(R.id.btn_shuffle_mode, View.GONE)
+        remoteViews.setViewVisibility(R.id.btn_repeat_mode, View.GONE)
+        remoteViews.setViewVisibility(R.id.btn_shuffle_mode, View.GONE)
     }
 
     // the root layout
     val appIntent = newIntent(context, true)
     val appPi = PendingIntent.getActivity(context, RC_OPEN_PLAYER, appIntent, PendingIntent.FLAG_UPDATE_CURRENT)
-    remoteView.setOnClickPendingIntent(R.id.root_view, appPi)
+    remoteViews.setOnClickPendingIntent(R.id.root_view, appPi)
 
     // the album art
     val albumArtVisibility = if (hasRoomForAlbumArt(minWidth, minHeight)) View.VISIBLE else View.GONE
-    remoteView.setViewVisibility(R.id.imv_album_art, albumArtVisibility)
+    remoteViews.setViewVisibility(R.id.imv_album_art, albumArtVisibility)
 
-    return remoteView
+    return remoteViews
 }
 
 private fun loadArt(context: Context, albumArtId: Long?, remoteViews: RemoteViews, vararg widgetIds: Int) {
