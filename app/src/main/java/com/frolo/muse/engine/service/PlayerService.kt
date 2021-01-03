@@ -215,7 +215,7 @@ class PlayerService: RxService() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
-        if (intent == null) return START_NOT_STICKY
+        if (intent == null) return START_STICKY
 
         val calledFromWidget = intent.getBooleanExtra(EXTRA_CALLED_FROM_WIDGET, false)
 
@@ -250,7 +250,7 @@ class PlayerService: RxService() {
             }
         }
 
-        return START_NOT_STICKY
+        return START_STICKY
     }
 
     override fun onTaskRemoved(rootIntent: Intent?) {
