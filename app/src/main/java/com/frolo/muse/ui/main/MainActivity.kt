@@ -155,7 +155,8 @@ class MainActivity : PlayerHostActivity(),
         // TODO: need to postpone the handling of the intent cause fragments may not be initialized
         handleIntent(intent)
 
-        maybeShowGreetings()
+        // TODO: uncomment this when you need to show the greetings
+        //maybeShowGreetings()
     }
 
     private fun maybeShowGreetings() {
