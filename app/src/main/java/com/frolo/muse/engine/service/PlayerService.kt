@@ -415,7 +415,7 @@ class PlayerService: RxService() {
             val remoteViews = RemoteViews(context.packageName, R.layout.notification_playback).apply {
                 setTextViewText(R.id.tv_song_name, item?.title ?: "")
                 setTextViewText(R.id.tv_artist_name, item?.artist ?: "")
-                setImageViewResource(R.id.btn_play, if (isPlaying) R.drawable.ic_cpause else R.drawable.ic_play)
+                setImageViewResource(R.id.btn_play, if (isPlaying) R.drawable.ic_pause_18dp else R.drawable.ic_play_18dp)
                 setImageViewBitmap(R.id.imv_album_art, art)
 
                 setOnClickPendingIntent(R.id.btn_cancel, cancelPendingIntent)

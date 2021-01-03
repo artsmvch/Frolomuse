@@ -108,7 +108,7 @@
                     android:layout_marginStart="48dp"
                     android:paddingBottom="48dp"
                     android:elevation="4dp"
-                    android:src="@drawable/ic_play"
+                    android:src="@drawable/ic_play_18dp"
                     app:fabSize="normal"
                     app:maxImageSize="12dp"
                     android:visibility="invisible"

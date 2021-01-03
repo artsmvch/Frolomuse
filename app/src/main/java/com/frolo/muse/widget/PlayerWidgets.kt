@@ -155,7 +155,7 @@ fun PlayerRemoteViews(
     val hasRoomForRepeatAndShuffleModes = hasRoomForRepeatAndShuffleModes(minWidth, minHeight)
 
     // the play button image
-    remoteViews.setImageViewResource(R.id.btn_play, if (isPlaying) R.drawable.ic_cpause else R.drawable.ic_play)
+    remoteViews.setImageViewResource(R.id.btn_play, if (isPlaying) R.drawable.ic_pause_18dp else R.drawable.ic_play_18dp)
 
     // the current item title
     remoteViews.setTextViewText(R.id.tv_song_name, currItemTitle)

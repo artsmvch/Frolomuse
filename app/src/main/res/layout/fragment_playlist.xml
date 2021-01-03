@@ -96,7 +96,7 @@
                         android:text="@string/play"
                         app:backgroundTint="?colorOnPrimary"
                         app:strokeColor="?colorOnPrimary"
-                        app:icon="@drawable/ic_play"
+                        app:icon="@drawable/ic_play_18dp"
                         app:iconSize="10dp"
                         app:iconPadding="8dp"
                         app:iconTint="?colorPrimary"
