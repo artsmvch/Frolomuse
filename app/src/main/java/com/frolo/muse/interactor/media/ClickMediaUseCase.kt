@@ -1,5 +1,6 @@
 package com.frolo.muse.interactor.media
 
+import com.frolo.muse.common.AudioSourceQueue
 import com.frolo.muse.engine.Player
 import com.frolo.muse.common.AudioSourceQueueFactory
 import com.frolo.muse.common.prepareByTarget
@@ -21,24 +22,24 @@ class ClickMediaUseCase <E: Media> constructor(
         private val audioSourceQueueFactory: AudioSourceQueueFactory
 ) {
 
-    private fun processPlay(target: Song, songs: List<Song>, toggleIfSameSong: Boolean) {
+    private fun processPlay(target: Song, songs: List<Song>, toggleIfSameSong: Boolean, associatedMediaItem: Media?) {
         val currentAudioSource = player.getCurrent()
         if (toggleIfSameSong && currentAudioSource?.id == target.id) {
             // if we've chosen the same song that is currently being played then toggle the playback
             player.toggle()
         } else {
             // otherwise, create a new audio source queue and start playing it
-            val queue = audioSourceQueueFactory.create(listOf(target), songs)
+            val queue = AudioSourceQueue(songs, associatedMediaItem)
             player.prepareByTarget(queue, target.toAudioSource(), true)
         }
     }
 
-    fun click(item: E, fromCollection: Collection<E>): Completable = when(item.kind) {
+    fun click(item: E, fromCollection: Collection<E>, associatedMediaItem: Media? = null): Completable = when(item.kind) {
         Media.SONG -> {
             Single.fromCallable { fromCollection.filterIsInstance<Song>() }
                     .subscribeOn(schedulerProvider.computation())
                     .doOnSuccess { songs ->
-                        processPlay(item as Song, songs, true)
+                        processPlay(item as Song, songs, true, associatedMediaItem)
                     }
                     .ignoreElement()
         }
@@ -98,7 +99,7 @@ class ClickMediaUseCase <E: Media> constructor(
                                         .map { songs -> targetSong to songs }
                             }
                             .doOnSuccess { pair ->
-                                processPlay(pair.first, pair.second, true)
+                                processPlay(pair.first, pair.second, true, associatedMediaItem)
                             }
                             .ignoreElement()
 

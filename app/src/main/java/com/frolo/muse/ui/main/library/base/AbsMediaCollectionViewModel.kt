@@ -326,7 +326,8 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
 
     protected open fun handleItemClick(item: E) {
         val list = _mediaList.value ?: emptyList()
-        clickMediaUseCase.click(item, list)
+        val associatedMediaItem = (this as? AssociatedWithMediaItem)?.associatedMediaItem
+        clickMediaUseCase.click(item, list, associatedMediaItem)
                 .observeOn(schedulerProvider.main())
                 .subscribeFor {
                 }
@@ -412,7 +413,8 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
 
     fun onPlayContextualOptionSelected() {
         val selectedItems = selectedItems.value ?: return
-        playMediaUseCase.play(selectedItems)
+        val associatedMediaItem = (this as? AssociatedWithMediaItem)?.associatedMediaItem
+        playMediaUseCase.play(selectedItems, associatedMediaItem)
                 .observeOn(schedulerProvider.main())
                 .doOnSubscribe { disposable ->
                     lastContextualDisposable = disposable
@@ -567,7 +569,8 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
     fun onPlayOptionSelected() {
         val event = _openOptionsMenuEvent.value ?: return
         _closeOptionsMenuEvent.value = event
-        playMediaUseCase.play(event.item)
+        val associatedMediaItem = (this as? AssociatedWithMediaItem)?.associatedMediaItem
+        playMediaUseCase.play(event.item, associatedMediaItem)
                 .observeOn(schedulerProvider.main())
                 .doOnSubscribe { _isProcessingOption.value = true }
                 .doFinally { _isProcessingOption.value = false }

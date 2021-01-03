@@ -360,16 +360,12 @@ abstract class UseCaseModule {
         fun providePlayMediaUseCase(
                 schedulerProvider: SchedulerProvider,
                 repository: GenericMediaRepository,
-                preferences: Preferences,
-                player: Player,
-                audioSourceQueueFactory: AudioSourceQueueFactory
+                player: Player
         ): PlayMediaUseCase<Media> {
             return PlayMediaUseCase<Media>(
                     schedulerProvider,
                     repository,
-                    preferences,
-                    player,
-                    audioSourceQueueFactory
+                    player
             )
         }
 
@@ -378,16 +374,12 @@ abstract class UseCaseModule {
         fun providePlayArtistUseCase(
                 schedulerProvider: SchedulerProvider,
                 repository: ArtistRepository,
-                preferences: Preferences,
-                player: Player,
-                audioSourceQueueFactory: AudioSourceQueueFactory
+                player: Player
         ): PlayMediaUseCase<Artist> {
             return PlayMediaUseCase<Artist>(
                     schedulerProvider,
                     repository,
-                    preferences,
-                    player,
-                    audioSourceQueueFactory
+                    player
             )
         }
 
@@ -396,16 +388,12 @@ abstract class UseCaseModule {
         fun providePlayAlbumUseCase(
                 schedulerProvider: SchedulerProvider,
                 repository: AlbumRepository,
-                preferences: Preferences,
-                player: Player,
-                audioSourceQueueFactory: AudioSourceQueueFactory
+                player: Player
         ): PlayMediaUseCase<Album> {
             return PlayMediaUseCase<Album>(
                     schedulerProvider,
                     repository,
-                    preferences,
-                    player,
-                    audioSourceQueueFactory
+                    player
             )
         }
 
@@ -414,16 +402,12 @@ abstract class UseCaseModule {
         fun providePlayGenreUseCase(
                 schedulerProvider: SchedulerProvider,
                 repository: GenreRepository,
-                preferences: Preferences,
-                player: Player,
-                audioSourceQueueFactory: AudioSourceQueueFactory
+                player: Player
         ): PlayMediaUseCase<Genre> {
             return PlayMediaUseCase<Genre>(
                     schedulerProvider,
                     repository,
-                    preferences,
-                    player,
-                    audioSourceQueueFactory
+                    player
             )
         }
 
@@ -432,16 +416,12 @@ abstract class UseCaseModule {
         fun providePlayPlaylistUseCase(
                 schedulerProvider: SchedulerProvider,
                 repository: PlaylistRepository,
-                preferences: Preferences,
-                player: Player,
-                audioSourceQueueFactory: AudioSourceQueueFactory
+                player: Player
         ): PlayMediaUseCase<Playlist> {
             return PlayMediaUseCase<Playlist>(
                     schedulerProvider,
                     repository,
-                    preferences,
-                    player,
-                    audioSourceQueueFactory
+                    player
             )
         }
 
@@ -450,16 +430,12 @@ abstract class UseCaseModule {
         fun providePlaySongUseCase(
                 schedulerProvider: SchedulerProvider,
                 repository: SongRepository,
-                preferences: Preferences,
-                player: Player,
-                audioSourceQueueFactory: AudioSourceQueueFactory
+                player: Player
         ): PlayMediaUseCase<Song> {
             return PlayMediaUseCase<Song>(
                     schedulerProvider,
                     repository,
-                    preferences,
-                    player,
-                    audioSourceQueueFactory
+                    player
             )
         }
 
@@ -468,16 +444,12 @@ abstract class UseCaseModule {
         fun providePlaySongWithPlayCountUseCase(
                 schedulerProvider: SchedulerProvider,
                 repository: SongWithPlayCountRepository,
-                preferences: Preferences,
-                player: Player,
-                audioSourceQueueFactory: AudioSourceQueueFactory
+                player: Player
         ): PlayMediaUseCase<SongWithPlayCount> {
             return PlayMediaUseCase<SongWithPlayCount>(
                     schedulerProvider,
                     repository,
-                    preferences,
-                    player,
-                    audioSourceQueueFactory
+                    player
             )
         }
 
@@ -486,16 +458,12 @@ abstract class UseCaseModule {
         fun providePlayMyFileUseCase(
                 schedulerProvider: SchedulerProvider,
                 repository: MyFileRepository,
-                preferences: Preferences,
-                player: Player,
-                audioSourceQueueFactory: AudioSourceQueueFactory
+                player: Player
         ): PlayMediaUseCase<MyFile> {
             return PlayMediaUseCase<MyFile>(
                     schedulerProvider,
                     repository,
-                    preferences,
-                    player,
-                    audioSourceQueueFactory
+                    player
             )
         }
 

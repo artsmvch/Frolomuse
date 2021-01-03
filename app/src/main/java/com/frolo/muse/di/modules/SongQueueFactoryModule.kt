@@ -1,6 +1,6 @@
 package com.frolo.muse.di.modules
 
-import com.frolo.muse.di.impl.engine.DefaultAudioSourceQueueFactory
+import com.frolo.muse.common.DefaultAudioSourceQueueFactory
 import com.frolo.muse.common.AudioSourceQueueFactory
 import dagger.Module
 import dagger.Provides
@@ -11,7 +11,7 @@ class SongQueueFactoryModule {
 
     @Provides
     fun provideSongQueueFactory() : AudioSourceQueueFactory {
-        return DefaultAudioSourceQueueFactory()
+        return DefaultAudioSourceQueueFactory.getInstance()
     }
 
 }

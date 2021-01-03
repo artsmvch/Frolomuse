@@ -1,7 +1,5 @@
-package com.frolo.muse.di.impl.engine;
+package com.frolo.muse.common;
 
-import com.frolo.muse.common.AudioSourceQueueFactory;
-import com.frolo.muse.common.Util;
 import com.frolo.muse.engine.AudioSource;
 import com.frolo.muse.engine.AudioSourceQueue;
 import com.frolo.muse.model.media.Album;
@@ -12,11 +10,25 @@ import com.frolo.muse.model.media.MyFile;
 import com.frolo.muse.model.media.Playlist;
 import com.frolo.muse.model.media.Song;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 
+@Deprecated
 public final class DefaultAudioSourceQueueFactory extends AudioSourceQueueFactory {
 
+    private static final DefaultAudioSourceQueueFactory sInstance = new DefaultAudioSourceQueueFactory();
+
+    @NotNull
+    public static DefaultAudioSourceQueueFactory getInstance() {
+        return sInstance;
+    }
+
+    private DefaultAudioSourceQueueFactory() {
+    }
+
+    @Deprecated
     @Override
     public AudioSourceQueue create(List<? extends Media> targets, List<Song> songs) {
 

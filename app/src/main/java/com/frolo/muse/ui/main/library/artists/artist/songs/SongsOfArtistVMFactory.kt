@@ -21,7 +21,7 @@ import javax.inject.Inject
 
 class SongsOfArtistVMFactory constructor(
         appComponent: AppComponent,
-        artist: Artist
+        private val artist: Artist
 ): ViewModelProvider.Factory {
 
     @Inject
@@ -78,7 +78,8 @@ class SongsOfArtistVMFactory constructor(
                 createShortcutUseCase,
                 schedulerProvider,
                 navigator,
-                eventLogger
+                eventLogger,
+                artist
         ) as T
     }
 

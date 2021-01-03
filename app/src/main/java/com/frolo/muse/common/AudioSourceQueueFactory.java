@@ -10,8 +10,10 @@ import java.util.Collections;
 import java.util.List;
 
 
+@Deprecated
 public abstract class AudioSourceQueueFactory {
 
+    @Deprecated
     public abstract AudioSourceQueue create(List<?extends Media> targets, List<Song> songs);
 
     public AudioSourceQueue create(@AudioSourceQueue.QueueType int type, long id, String name, List<Song> songs) {

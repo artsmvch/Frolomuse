@@ -18,6 +18,7 @@ import com.frolo.muse.model.media.Song
 import com.frolo.muse.permission.PermissionChecker
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.main.library.base.AbsSongCollectionViewModel
+import com.frolo.muse.ui.main.library.base.AssociatedWithMediaItem
 
 
 class GenreViewModel constructor(
@@ -52,7 +53,7 @@ class GenreViewModel constructor(
         schedulerProvider,
         navigator,
         eventLogger
-) {
+), AssociatedWithMediaItem by AssociatedWithMediaItem(genreArg) {
 
     val title: LiveData<String> = liveDataOf(genreArg.name)
 
@@ -62,7 +63,7 @@ class GenreViewModel constructor(
 
     fun onPlayButtonClicked() {
         val items = mediaList.value ?: emptyList()
-        playMediaUseCase.play(items).subscribeFor {  }
+        playMediaUseCase.play(items, associatedMediaItem).subscribeFor {  }
     }
 
     /**

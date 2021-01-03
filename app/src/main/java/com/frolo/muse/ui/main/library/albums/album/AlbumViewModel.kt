@@ -18,6 +18,7 @@ import com.frolo.muse.model.media.Song
 import com.frolo.muse.permission.PermissionChecker
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.main.library.base.AbsSongCollectionViewModel
+import com.frolo.muse.ui.main.library.base.AssociatedWithMediaItem
 
 
 class AlbumViewModel constructor(
@@ -52,7 +53,7 @@ class AlbumViewModel constructor(
         schedulerProvider,
         navigator,
         eventLogger
-) {
+), AssociatedWithMediaItem by AssociatedWithMediaItem(albumArg) {
 
     private val _albumId: MutableLiveData<Long> = MutableLiveData(albumArg.id)
     val albumId: LiveData<Long> get() = _albumId
@@ -83,7 +84,7 @@ class AlbumViewModel constructor(
 
     fun onPlayButtonClicked() {
         val snapshot = mediaList.value.orEmpty()
-        playMediaUseCase.play(snapshot).subscribeFor {  }
+        playMediaUseCase.play(snapshot, associatedMediaItem).subscribeFor {  }
     }
 
     /**

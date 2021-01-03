@@ -8,10 +8,12 @@ import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
 import com.frolo.muse.interactor.media.get.GetArtistSongsUseCase
 import com.frolo.muse.interactor.media.shortcut.CreateShortcutUseCase
 import com.frolo.muse.logger.EventLogger
+import com.frolo.muse.model.media.Artist
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.permission.PermissionChecker
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.main.library.base.AbsSongCollectionViewModel
+import com.frolo.muse.ui.main.library.base.AssociatedWithMediaItem
 
 
 class SongsOfArtistViewModel constructor(
@@ -28,7 +30,8 @@ class SongsOfArtistViewModel constructor(
         createShortcutUseCase: CreateShortcutUseCase<Song>,
         schedulerProvider: SchedulerProvider,
         navigator: Navigator,
-        eventLogger: EventLogger
+        eventLogger: EventLogger,
+        private val artistArg: Artist
 ): AbsSongCollectionViewModel<Song>(
         player,
         permissionChecker,
@@ -43,4 +46,5 @@ class SongsOfArtistViewModel constructor(
         createShortcutUseCase,
         schedulerProvider,
         navigator,
-        eventLogger)
+        eventLogger
+), AssociatedWithMediaItem by AssociatedWithMediaItem(artistArg)

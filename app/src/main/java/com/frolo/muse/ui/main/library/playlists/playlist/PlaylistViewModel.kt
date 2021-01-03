@@ -19,6 +19,7 @@ import com.frolo.muse.model.media.Song
 import com.frolo.muse.permission.PermissionChecker
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.main.library.base.AbsSongCollectionViewModel
+import com.frolo.muse.ui.main.library.base.AssociatedWithMediaItem
 import io.reactivex.Single
 
 
@@ -53,7 +54,7 @@ class PlaylistViewModel constructor(
         schedulerProvider,
         navigator,
         eventLogger
-) {
+), AssociatedWithMediaItem {
 
     private val _playlist: MutableLiveData<Playlist> by lazy {
         MutableLiveData<Playlist>().apply {
@@ -82,6 +83,8 @@ class PlaylistViewModel constructor(
     val confirmPlaylistShortcutCreationEvent: LiveData<Playlist>
         get() = _confirmPlaylistShortcutCreationEvent
 
+    override val associatedMediaItem: Media? get() = playlist.value
+
     fun onEditPlaylistOptionSelected() {
         getPlaylistUseCase.edit(playlist.value)
     }
@@ -92,7 +95,7 @@ class PlaylistViewModel constructor(
 
     fun onPlayButtonClicked() {
         val snapshot = mediaList.value.orEmpty()
-        playMediaUseCase.play(snapshot).subscribeFor {  }
+        playMediaUseCase.play(snapshot, associatedMediaItem).subscribeFor {  }
     }
 
     fun onItemRemoved(item: Song) {
