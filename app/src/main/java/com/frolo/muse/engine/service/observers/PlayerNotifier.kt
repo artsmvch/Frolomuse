@@ -9,9 +9,13 @@ import com.frolo.muse.engine.SimplePlayerObserver
 import com.frolo.muse.engine.service.PlayerNtf
 import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
 import com.frolo.muse.model.media.Song
+import com.frolo.muse.rx.flowable.doOnNextIndexed
+import com.frolo.muse.rx.flowable.withDefaultItemDelayed
+import com.frolo.muse.rx.subscribeSafely
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicReference
 
 
@@ -67,10 +71,6 @@ class PlayerNotifier constructor(
         )
 
         notificationDisposable = Arts.getPlaybackArt(context, song)
-            .doOnSubscribe {
-                // When subscribed, the default notification is posted
-                notify(defaultPlayerNtf, force)
-            }
             .map { resultArt -> defaultPlayerNtf.copy(art = resultArt) }
             .onErrorReturnItem(defaultPlayerNtf)
             .flatMapPublisher { playerNtf ->
@@ -82,16 +82,19 @@ class PlayerNotifier constructor(
                     Flowable.just(playerNtf)
                 }
             }
+            // Give 100 ms to load the album art and the fav status.
+            // If the delay timed out, then emit the default item.
+            .withDefaultItemDelayed(defaultPlayerNtf, 100, TimeUnit.MILLISECONDS)
             .distinctUntilChanged()
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnNext { playerNtf ->
-                // Each next notification is posted without forcing,
-                // since the default notification was posted when subscribed,
-                // and from that point, the notification can be cancelled by the user.
-                notify(playerNtf, false)
+            .onBackpressureLatest()
+            .doOnNextIndexed { index, playerNtf ->
+                val isFirstItem = index == 0
+                // we can only force notify about the first item
+                notify(playerNtf, force && isFirstItem)
             }
             .ignoreElements()
-            .subscribe({ /*stub*/ }, { /*stub*/ })
+            .subscribeSafely()
     }
 
     override fun onPlaybackStarted(player: Player) {
