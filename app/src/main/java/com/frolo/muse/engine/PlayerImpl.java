@@ -1716,6 +1716,9 @@ public final class PlayerImpl implements Player {
         }
         mPlaybackFadingTimer = null;
 
+        // Releasing the audio fx
+        mAudioFx.release();
+
         // Resetting the engine and internal flags
         synchronized (mEngineLock) {
 
