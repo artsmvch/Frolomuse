@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--Cell formula??? (cells * 70) - 30-->
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-    android:minWidth="110dp"
+    android:minWidth="250dp"
     android:minHeight="40dp"
+    android:minResizeWidth="110dp"
+    android:minResizeHeight="40dp"
     android:updatePeriodMillis="@integer/default_widget_update_period_millis"
     android:previewImage="@drawable/png_widget_player_preview"
     android:initialLayout="@layout/widget_player"
