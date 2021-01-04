@@ -13,19 +13,16 @@ import com.frolo.muse.engine.service.PlayerService
 class PlayerWidgetProvider : AppWidgetProvider() {
 
     override fun onUpdate(context: Context, appWidgetManager: AppWidgetManager, appWidgetIds: IntArray) {
-        appWidgetIds.forEach { widgetId ->
-            updateAppWidget(context, appWidgetManager, widgetId)
-        }
+        appWidgetManager.updatePlayerWidgets(context, peekPlayer(context), *appWidgetIds)
     }
 
     override fun onAppWidgetOptionsChanged(context: Context, appWidgetManager: AppWidgetManager, appWidgetId: Int, newOptions: Bundle?) {
-        updateAppWidget(context, appWidgetManager, appWidgetId)
+        appWidgetManager.updatePlayerWidget(context, peekPlayer(context), appWidgetId, newOptions)
     }
 
-    private fun updateAppWidget(context: Context, appWidgetManager: AppWidgetManager, appWidgetId: Int) {
+    private fun peekPlayer(context: Context): Player? {
         val binder = peekService(context, Intent(context, PlayerService::class.java))
-        val player = (binder as? PlayerService.PlayerBinder)?.service
-        appWidgetManager.updatePlayerWidget(context, player, appWidgetId)
+        return (binder as? PlayerService.PlayerBinder)?.service as? Player
     }
 
     companion object {
@@ -36,7 +33,7 @@ class PlayerWidgetProvider : AppWidgetProvider() {
             val widgetManager = AppWidgetManager.getInstance(context)
             val widgetIds = widgetManager.getAppWidgetIds(widget)
             if (widgetIds != null && widgetIds.isNotEmpty()) {
-                widgetManager.updatePlayerWidget(context, player, *widgetIds)
+                widgetManager.updatePlayerWidgets(context, player, *widgetIds)
             }
         }
     }
