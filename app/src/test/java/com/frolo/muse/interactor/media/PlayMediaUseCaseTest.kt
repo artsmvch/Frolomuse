@@ -44,9 +44,7 @@ class PlayMediaUseCaseTest {
         playMediaUseCase = PlayMediaUseCase(
                 schedulerProvider,
                 repository,
-                preferences,
-                player,
-                audioSourceQueueFactory
+                player
         )
     }
 
