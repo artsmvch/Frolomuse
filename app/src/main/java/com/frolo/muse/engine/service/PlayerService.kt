@@ -234,11 +234,11 @@ class PlayerService: RxService() {
             }
 
             COMMAND_SWITCH_TO_NEXT_REPEAT_MODE -> {
-                player.performIntentAction(false) { switchToNextRepeatMode() }
+                player.performIntentAction(calledFromWidget) { switchToNextRepeatMode() }
             }
 
             COMMAND_SWITCH_TO_NEXT_SHUFFLE_MODE -> {
-                player.performIntentAction(false) { switchToNextShuffleMode() }
+                player.performIntentAction(calledFromWidget) { switchToNextShuffleMode() }
             }
 
             COMMAND_CANCEL_NOTIFICATION -> cancelNotification()

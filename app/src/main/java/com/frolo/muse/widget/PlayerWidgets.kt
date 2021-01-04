@@ -193,7 +193,7 @@ private fun PlayerRemoteViews(
     val hasRoomForRepeatAndShuffleModes = hasRoomForRepeatAndShuffleModes(widgetOptions)
 
     // the play button image
-    remoteViews.setImageViewResource(R.id.btn_play, if (params.isPlaying) R.drawable.ic_pause_18dp else R.drawable.ic_play_18dp)
+    remoteViews.setImageViewResource(R.id.btn_play, if (params.isPlaying) R.drawable.wgt_ic_pause else R.drawable.wgt_ic_play)
 
     // the current item title
     remoteViews.setTextViewText(R.id.tv_song_name, params.currItem?.title.orEmpty())
@@ -227,10 +227,10 @@ private fun PlayerRemoteViews(
         val repeatModePi = PendingIntent(context, RC_COMMAND_SWITCH_TO_NEXT_REPEAT_MODE, repeatModeIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         remoteViews.setOnClickPendingIntent(R.id.btn_repeat_mode, repeatModePi)
         val repeatModeIconRes = when (params.repeatMode) {
-            Player.REPEAT_OFF -> R.drawable.ic_repeat_disabled
-            Player.REPEAT_PLAYLIST -> R.drawable.ic_repeat_all_enabled
-            Player.REPEAT_ONE -> R.drawable.ic_repeat_one_enabled
-            else -> R.drawable.ic_repeat_disabled
+            Player.REPEAT_OFF -> R.drawable.wgt_ic_repeat_disabled
+            Player.REPEAT_PLAYLIST -> R.drawable.wgt_ic_repeat_all_enabled
+            Player.REPEAT_ONE -> R.drawable.wgt_ic_repeat_one_enabled
+            else -> R.drawable.wgt_ic_repeat_disabled
         }
         remoteViews.setImageViewResource(R.id.btn_repeat_mode, repeatModeIconRes)
         remoteViews.setViewVisibility(R.id.btn_repeat_mode, View.VISIBLE)
@@ -240,9 +240,9 @@ private fun PlayerRemoteViews(
         val shuffleModePi = PendingIntent(context, RC_COMMAND_SWITCH_TO_NEXT_SHUFFLE_MODE, shuffleModeIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         remoteViews.setOnClickPendingIntent(R.id.btn_shuffle_mode, shuffleModePi)
         val shuffleModeIconRes = when (params.shuffleMode) {
-            Player.SHUFFLE_OFF -> R.drawable.ic_shuffle_disabled
-            Player.SHUFFLE_ON -> R.drawable.ic_shuffle_enabled
-            else -> R.drawable.ic_shuffle_disabled
+            Player.SHUFFLE_OFF -> R.drawable.wgt_ic_shuffle_disabled
+            Player.SHUFFLE_ON -> R.drawable.wgt_ic_shuffle_enabled
+            else -> R.drawable.wgt_ic_shuffle_disabled
         }
         remoteViews.setImageViewResource(R.id.btn_shuffle_mode, shuffleModeIconRes)
         remoteViews.setViewVisibility(R.id.btn_shuffle_mode, View.VISIBLE)
