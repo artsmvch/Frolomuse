@@ -67,7 +67,7 @@ abstract class PlayerImpl_Base_Test {
         }
         assertFalse(player.isPrepared())
         assertFalse(player.isPlaying())
-        assertTrue(player.isShutdown)
+        assertTrue(player.isShutdown())
     }
 
 }
