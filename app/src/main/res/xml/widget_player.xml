@@ -4,7 +4,7 @@
     android:minWidth="110dp"
     android:minHeight="40dp"
     android:updatePeriodMillis="@integer/default_widget_update_period_millis"
-    android:previewImage="@drawable/ic_app"
+    android:previewImage="@drawable/png_widget_player_preview"
     android:initialLayout="@layout/widget_player"
     android:resizeMode="horizontal|vertical"
     android:widgetCategory="home_screen">
