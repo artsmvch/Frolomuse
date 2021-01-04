@@ -196,7 +196,7 @@ private fun PlayerRemoteViews(
     remoteViews.setImageViewResource(R.id.btn_play, if (params.isPlaying) R.drawable.ic_pause_18dp else R.drawable.ic_play_18dp)
 
     // the current item title
-    remoteViews.setTextViewText(R.id.tv_song_name, params.currItem?.source.orEmpty())
+    remoteViews.setTextViewText(R.id.tv_song_name, params.currItem?.title.orEmpty())
     val horizontalCells = getCellsForSize(size = widgetOptions?.minWidth ?: 0)
     val songNameTextSizeInSp = when {
         horizontalCells >= 4 -> 13.5f
