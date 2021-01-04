@@ -4,7 +4,6 @@ import com.frolo.muse.*
 import com.frolo.muse.engine.Player
 import com.frolo.muse.engine.AudioSourceQueue
 import com.frolo.muse.common.AudioSourceQueueFactory
-import com.frolo.muse.common.prepareByTarget
 import com.frolo.muse.common.toAudioSource
 import com.frolo.muse.common.toAudioSources
 import com.frolo.muse.model.media.*
@@ -53,7 +52,7 @@ class ClickMediaUseCaseTest {
         val songs = mockList<Song>(size = 10)
         val song = mockKT<Song>()
 
-        val songQueue = AudioSourceQueue.create(AudioSourceQueue.CHUNK, AudioSourceQueue.NO_ID, "test", songs.toAudioSources())
+        val songQueue = AudioSourceQueue.create(AudioSourceQueue.CHUNK, AudioSourceQueue.NO_ID, "", songs.toAudioSources())
 
         val testObserver = TestObserver.create<Unit>()
 
@@ -72,7 +71,7 @@ class ClickMediaUseCaseTest {
         testObserver.assertComplete()
 
         verify(player, times(1))
-                .prepareByTarget(songQueue, song.toAudioSource(), true, 0)
+                .prepareByTarget(argThat { deepEquals(songQueue) }, eq(song.toAudioSource()), eq(true), eq(0))
     }
 
     @Test
@@ -240,7 +239,7 @@ class ClickMediaUseCaseTest {
         val song = mockKT<Song>()
         val songsFromMyFile = listOf(song)
         val allSongs = songsFromMyFile + songsFromMyFile
-        val songQueue = AudioSourceQueue.create(AudioSourceQueue.FOLDER, AudioSourceQueue.NO_ID, "test", allSongs.toAudioSources())
+        val songQueue = AudioSourceQueue.create(AudioSourceQueue.CHUNK, AudioSourceQueue.NO_ID, "", allSongs.toAudioSources())
 
         whenever(myFile.kind).thenReturn(Media.MY_FILE)
 
@@ -264,7 +263,7 @@ class ClickMediaUseCaseTest {
         testObserver.assertComplete()
 
         verify(player, times(1))
-                .prepareByTarget(songQueue, song.toAudioSource(), true, 0)
+                .prepareByTarget(argThat { deepEquals(songQueue) }, eq(song.toAudioSource()), eq(true), eq(0))
     }
 
     @Test
