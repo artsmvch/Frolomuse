@@ -238,4 +238,17 @@ fun EventLogger.logBannerShown() {
 
 //endregion
 
+
+//region Player Widget
+
+fun EventLogger.logPlayerWidgetEnabled() {
+    log("player_widget_enabled")
+}
+
+fun EventLogger.logPlayerWidgetDisabled() {
+    log("player_widget_disabled")
+}
+
+//endregion
+
 // TODO: add other main events
