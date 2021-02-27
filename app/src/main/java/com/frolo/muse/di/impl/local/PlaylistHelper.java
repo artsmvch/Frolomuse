@@ -182,6 +182,15 @@ final class PlaylistHelper {
         resolver.notifyChange(uri, null);
     }
 
+    /**
+     * Returns the insertion position for a new audio member according to the playlist base count.
+     * @param baseCount member count in the target playlist
+     * @return the insertion position for a new audio member
+     */
+    private static int getInsertionPositionForNewMember(int baseCount) {
+        return baseCount;
+    }
+
     private static void addAudioToPlaylist_Internal(
         ContentResolver resolver,
         long playlistId,
@@ -196,7 +205,7 @@ final class PlaylistHelper {
         final int base = countRows_Internal(resolver, uri);
 
         ContentValues values = new ContentValues();
-        values.put(MediaStore.Audio.Playlists.Members.PLAY_ORDER, base + audioId);
+        values.put(MediaStore.Audio.Playlists.Members.PLAY_ORDER, getInsertionPositionForNewMember(base));
         values.put(MediaStore.Audio.Playlists.Members.AUDIO_ID, audioId);
 
         insertAndNotify_Internal(resolver, uri, values);
@@ -234,7 +243,7 @@ final class PlaylistHelper {
                     }
 
                     ContentValues values = new ContentValues();
-                    values.put(MediaStore.Audio.Playlists.Members.PLAY_ORDER, base + audioId);
+                    values.put(MediaStore.Audio.Playlists.Members.PLAY_ORDER, getInsertionPositionForNewMember(base));
                     values.put(MediaStore.Audio.Playlists.Members.AUDIO_ID, audioId);
 
                     insertAndNotify_Internal(resolver, playlistUri, values);
@@ -310,7 +319,7 @@ final class PlaylistHelper {
                     }
 
                     ContentValues values = new ContentValues();
-                    values.put(MediaStore.Audio.Playlists.Members.PLAY_ORDER, base + audioId);
+                    values.put(MediaStore.Audio.Playlists.Members.PLAY_ORDER, getInsertionPositionForNewMember(base));
                     values.put(MediaStore.Audio.Playlists.Members.AUDIO_ID, audioId);
 
                     insertAndNotify_Internal(resolver, playlistUri, values);
