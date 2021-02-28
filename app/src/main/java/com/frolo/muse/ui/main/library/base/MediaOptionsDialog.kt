@@ -4,9 +4,7 @@ import android.content.Context
 import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import com.frolo.muse.R
 import com.frolo.muse.StyleUtil
@@ -47,16 +45,12 @@ class MediaOptionsDialog<E: Media> constructor(
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupOptionsMenu(optionsMenu)
-        setupSize()
     }
 
     private fun setupOptionsMenu(optionsMenu: OptionsMenu<E>) {
-        val item = optionsMenu.item
+        val item: E = optionsMenu.item
 
-        val rootView = LayoutInflater.from(context)
-                .inflate(R.layout.dialog_media_options, null, false)
-
-        setContentView(rootView)
+        setContentView(R.layout.dialog_media_options)
 
         with(this) {
             btn_set_as_default.setOnClickListener { onOptionSelected(item, Option.SET_AS_DEFAULT) }
@@ -102,7 +96,4 @@ class MediaOptionsDialog<E: Media> constructor(
         }
     }
 
-    private fun setupSize() {
-        window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-    }
 }

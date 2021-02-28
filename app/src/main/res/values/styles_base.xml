@@ -66,7 +66,13 @@
     </style>
 
     <!--BottomSheetDialog-->
-    <style name="Base.AppTheme.BottomSheetDialog" parent="Theme.MaterialComponents.BottomSheetDialog">
+    <style name="Base.AppTheme.BottomSheetDialog" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="paddingBottomSystemWindowInsets">true</item>
+        <item name="paddingLeftSystemWindowInsets">true</item>
+        <item name="paddingRightSystemWindowInsets">true</item>
     </style>
 
     <!--OptionTextView-->
