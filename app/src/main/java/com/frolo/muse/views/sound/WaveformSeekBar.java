@@ -189,8 +189,6 @@ public class WaveformSeekBar extends View {
 
         calculateWaveDimensions(getWaveCount());
 
-        setProgressInPercentageInternal(0.0f, false);
-
         if (!animate) {
             invalidate();
         } else {
