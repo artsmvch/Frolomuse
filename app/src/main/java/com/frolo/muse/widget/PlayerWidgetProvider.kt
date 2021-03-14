@@ -37,7 +37,11 @@ class PlayerWidgetProvider : AppWidgetProvider() {
 
     override fun onDeleted(context: Context, appWidgetIds: IntArray?) {
         super.onDeleted(context, appWidgetIds)
-        getEventLogger(context)?.logPlayerWidgetDeleted()
+        appWidgetIds?.size?.also { count ->
+            if (count > 0) {
+                getEventLogger(context)?.logPlayerWidgetDeleted(count = count)
+            }
+        }
     }
 
     override fun onDisabled(context: Context) {

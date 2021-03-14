@@ -245,8 +245,9 @@ fun EventLogger.logPlayerWidgetEnabled() {
     log("player_widget_enabled")
 }
 
-fun EventLogger.logPlayerWidgetDeleted() {
-    log("player_widget_deleted")
+fun EventLogger.logPlayerWidgetDeleted(count: Int) {
+    val params = mapOf("count" to count.toString())
+    log("player_widget_deleted", params)
 }
 
 fun EventLogger.logPlayerWidgetDisabled() {
