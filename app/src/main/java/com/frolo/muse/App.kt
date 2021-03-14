@@ -2,6 +2,7 @@ package com.frolo.muse
 
 import android.os.StrictMode
 import androidx.multidex.MultiDexApplication
+import com.frolo.muse.admob.AdMobs
 import com.frolo.muse.di.AppComponent
 import com.frolo.muse.di.DaggerAppComponent
 import com.frolo.muse.di.impl.navigator.NavigatorImpl
@@ -100,7 +101,8 @@ class App : MultiDexApplication() {
     }
 
     private fun initAdMob() {
-        MobileAds.initialize(this) {
+        if (AdMobs.shouldInitializeOnColdStart()) {
+            MobileAds.initialize(this)
         }
     }
 

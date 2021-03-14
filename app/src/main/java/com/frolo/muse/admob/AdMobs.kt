@@ -12,6 +12,7 @@ import java.util.concurrent.Executors
  */
 object AdMobs {
 
+    private const val KEY_AD_MOB_INIT_ON_COLD_START = "ad_mob_init_on_cold_start"
     private const val KEY_AD_MOB_ENABLED = "ad_mob_enabled"
     private const val KEY_AD_MOB_THRESHOLD_INSTALL_TIME = "ad_mob_threshold_install_time"
     private const val KEY_AD_MOB_THRESHOLD_OPEN_COUNT = "ad_mob_threshold_open_count"
@@ -81,6 +82,15 @@ object AdMobs {
                     thresholdOpenCount = thresholdOpenCount
                 )
             }
+    }
+
+    fun shouldInitializeOnColdStart(): Boolean {
+        return try {
+            val remoteConfigInstance = FirebaseRemoteConfig.getInstance()
+            remoteConfigInstance.getBoolean(KEY_AD_MOB_INIT_ON_COLD_START)
+        } catch (ignored: Throwable) {
+            false
+        }
     }
 
     data class AdMobRemoteConfigs(
