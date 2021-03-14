@@ -93,7 +93,9 @@ class AlbumEditorDialog : BaseDialogFragment() {
         }
 
         btn_confirm_art_deletion.setOnClickListener {
-            viewModel.onArtDeletionConfirmed()
+            checkWritePermissionFor {
+                viewModel.onArtDeletionConfirmed()
+            }
         }
 
         btn_cancel_art_deletion.setOnClickListener {
