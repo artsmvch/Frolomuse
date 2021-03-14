@@ -8,7 +8,9 @@ import com.frolo.muse.di.DaggerAppComponent
 import com.frolo.muse.di.impl.navigator.NavigatorImpl
 import com.frolo.muse.di.modules.*
 import com.frolo.muse.engine.Player
+import com.frolo.muse.engine.PlayerImpl
 import com.frolo.muse.engine.PlayerWrapper
+import com.frolo.muse.engine.audiofx.AudioFx_Impl
 import com.frolo.muse.logger.logAppLaunched
 import com.frolo.muse.navigator.NavigatorWrapper
 import com.frolo.muse.ui.base.BaseActivity
@@ -87,6 +89,8 @@ class App : MultiDexApplication() {
                 .detectLeakedSqlLiteObjects()
                 .detectLeakedClosableObjects()
                 .detectLeakedRegistrationObjects()
+                .setClassInstanceLimit(PlayerImpl::class.java, 1)
+                .setClassInstanceLimit(AudioFx_Impl::class.java, 1)
                 .penaltyLog()
                 .penaltyDeath()
                 .build())
