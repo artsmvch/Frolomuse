@@ -10,6 +10,7 @@ import com.frolo.muse.App
 import com.frolo.muse.engine.Player
 import com.frolo.muse.engine.service.PlayerService
 import com.frolo.muse.logger.EventLogger
+import com.frolo.muse.logger.logPlayerWidgetDeleted
 import com.frolo.muse.logger.logPlayerWidgetDisabled
 import com.frolo.muse.logger.logPlayerWidgetEnabled
 
@@ -32,6 +33,11 @@ class PlayerWidgetProvider : AppWidgetProvider() {
     override fun onEnabled(context: Context) {
         super.onEnabled(context)
         getEventLogger(context)?.logPlayerWidgetEnabled()
+    }
+
+    override fun onDeleted(context: Context, appWidgetIds: IntArray?) {
+        super.onDeleted(context, appWidgetIds)
+        getEventLogger(context)?.logPlayerWidgetDeleted()
     }
 
     override fun onDisabled(context: Context) {
