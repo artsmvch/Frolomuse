@@ -321,6 +321,7 @@ class PlayerFragment: BaseFragment() {
                 R.id.action_view_album -> viewModel.onViewAlbumOptionSelected()
                 R.id.action_view_artist -> viewModel.onViewArtistOptionSelected()
                 R.id.action_create_poster -> viewModel.onViewPosterOptionSelected()
+                R.id.action_add_to_playlist -> viewModel.onAddToPlaylistOptionSelected()
                 //R.id.action_view_lyrics -> viewModel.onViewLyricsOptionSelected()
             }
             return@setOnMenuItemClickListener true

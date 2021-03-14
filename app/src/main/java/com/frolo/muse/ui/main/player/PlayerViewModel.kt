@@ -22,6 +22,7 @@ import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.ABState
 import com.frolo.muse.model.media.Album
+import com.frolo.muse.model.media.Media
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.model.sound.Sound
 import com.frolo.muse.rx.SchedulerProvider
@@ -328,6 +329,12 @@ class PlayerViewModel @Inject constructor(
         val song = song.value ?: return
         val songs = listOf(song)
         navigator.shareSongs(songs)
+    }
+
+    fun onAddToPlaylistOptionSelected() {
+        val song = song.value ?: return
+        val items = arrayListOf<Media>(song)
+        navigator.addMediaItemsToPlaylist(items)
     }
 
     fun onViewLyricsOptionSelected() {
