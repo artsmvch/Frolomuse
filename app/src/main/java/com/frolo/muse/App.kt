@@ -86,6 +86,7 @@ class App : MultiDexApplication() {
             StrictMode.setVmPolicy(StrictMode.VmPolicy.Builder()
                 .detectLeakedSqlLiteObjects()
                 .detectLeakedClosableObjects()
+                .detectLeakedRegistrationObjects()
                 .penaltyLog()
                 .penaltyDeath()
                 .build())
