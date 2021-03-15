@@ -42,9 +42,40 @@
 
     </LinearLayout>
 
-    <include layout="@layout/include_message"
-        android:id="@+id/layout_player_placeholder"
+    <FrameLayout
+        android:id="@+id/fl_overlay"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="invisible"/>
+        android:layout_height="match_parent">
+
+        <View
+            android:alpha="0.85"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?colorSurface"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="24dp"
+            android:gravity="center">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_overlay_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                style="?textAppearanceHeadline6"
+                tools:text="AudioFx Overlay Message"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tv_overlay_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:gravity="center"
+                style="?textAppearanceBody2"
+                tools:text="AudioFx Overlay Description"/>
+        </LinearLayout>
+    </FrameLayout>
 </FrameLayout>

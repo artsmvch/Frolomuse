@@ -242,6 +242,16 @@
     <string name="name_is_empty">The name must be non-empty</string>
     <string name="such_name_already_exists">Such name already exists</string>
 
+    <!--AudioFx-->
+    <string name="no_audio_effects_available">No audio effects</string>
+    <string name="no_audio_effects_available_desc">
+        We could not find any audio effect available. Please enable the default equalizer provided by Android OS.
+    </string>
+    <string name="no_audio_is_playing_now">No audio is playing now</string>
+    <string name="no_audio_is_playing_now_desc">
+        You need to start playing a song to be able to adjust the sound.
+    </string>
+
     <!--create preset-->
     <string name="save_preset">Save preset</string>
     <string name="preset_name">Preset name</string>

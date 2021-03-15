@@ -8,12 +8,16 @@ import android.util.Size
 import android.view.*
 import android.widget.CompoundButton
 import androidx.core.view.doOnLayout
+import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
+import androidx.transition.AutoTransition
+import androidx.transition.TransitionManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.frolo.muse.Logger
 import com.frolo.muse.R
 import com.frolo.muse.StyleUtil
+import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.glide.GlideOptions.bitmapTransform
 import com.frolo.muse.model.preset.Preset
@@ -31,7 +35,6 @@ import jp.wasabeef.glide.transformations.BlurTransformation
 import kotlinx.android.synthetic.main.fragment_audio_fx.*
 import kotlinx.android.synthetic.main.include_audio_fx_content.*
 import kotlinx.android.synthetic.main.include_audio_fx_content_lock.*
-import kotlinx.android.synthetic.main.include_message.*
 import kotlinx.android.synthetic.main.include_preset_chooser.*
 import kotlinx.android.synthetic.main.include_preset_reverb_chooser.*
 import kotlinx.android.synthetic.main.include_seekbar_bass_boost.*
@@ -118,6 +121,9 @@ class AudioFxFragment: BaseFragment(), NoClipping {
                 viewModel.onVirtStrengthChanged(value.toShort())
             }
         }
+
+        // making the content under the overlay not clickable
+        fl_overlay.setOnClickListener { /* no-op */ }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -171,13 +177,28 @@ class AudioFxFragment: BaseFragment(), NoClipping {
             toastError(err)
         }
 
-        audioFxAvailable.observeNonNull(owner) { available ->
-            if (available) {
-                layout_player_placeholder.visibility = View.GONE
-            } else {
-                tv_message.setText(R.string.current_playlist_is_empty)
-                layout_player_placeholder.setOnClickListener { } // to make all view under overlay non-clickable
-                layout_player_placeholder.visibility = View.VISIBLE
+        screenState.observe(owner) { state ->
+            (view as? ViewGroup)?.also { viewGroup ->
+                val transition = AutoTransition().apply {
+                    duration = 200L
+                    addTarget(fl_overlay)
+                }
+                TransitionManager.beginDelayedTransition(viewGroup, transition)
+            }
+            when (state) {
+                AudioFxViewModel.ScreenState.NO_EFFECTS -> {
+                    fl_overlay.isVisible = true
+                    tv_overlay_text.setText(R.string.no_audio_effects_available)
+                    tv_overlay_description.setText(R.string.no_audio_effects_available_desc)
+                }
+                AudioFxViewModel.ScreenState.NO_AUDIO -> {
+                    fl_overlay.isVisible = true
+                    tv_overlay_text.setText(R.string.no_audio_is_playing_now)
+                    tv_overlay_description.setText(R.string.no_audio_is_playing_now_desc)
+                }
+                AudioFxViewModel.ScreenState.NORMAL, null -> {
+                    fl_overlay.isVisible = false
+                }
             }
         }
 

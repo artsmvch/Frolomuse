@@ -1,9 +1,6 @@
 package com.frolo.muse.arch
 
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.Observer
+import androidx.lifecycle.*
 
 fun <T,R,U> combine(first: LiveData<R>, second: LiveData<U>, combiner: (R?, U?) -> T): LiveData<T> {
     return MediatorLiveData<T>().apply {
@@ -57,4 +54,24 @@ fun <X, Y> LiveData<X>.map(initialValue: Y, mapFunction: (x: X?) -> Y?): LiveDat
     result.value = initialValue
     result.addSource(this) { x -> result.setValue(mapFunction.invoke(x)) }
     return result
+}
+
+fun <T> LiveData<T>.distinctUntilChanged(): LiveData<T> = Transformations.distinctUntilChanged(this)
+
+fun <T, R> combineMultiple(vararg liveData: LiveData<T>, combiner: (values: List<T?>) -> R?): LiveData<R> {
+    val mediator = MediatorLiveData<R>()
+    liveData.forEach { source ->
+        mediator.addSource(source) { sourceValue ->
+            val values = List<T?>(liveData.size) { index ->
+                val targetLiveData = liveData[index]
+                if (targetLiveData == source) {
+                    sourceValue
+                } else {
+                    targetLiveData.value
+                }
+            }
+            mediator.value = combiner.invoke(values)
+        }
+    }
+    return mediator
 }

@@ -2,10 +2,8 @@ package com.frolo.muse.ui.main.audiofx
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.frolo.muse.arch.SingleLiveEvent
-import com.frolo.muse.engine.AudioFx
-import com.frolo.muse.engine.AudioFxObserver
-import com.frolo.muse.engine.Player
+import com.frolo.muse.arch.*
+import com.frolo.muse.engine.*
 import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.logCustomPresetDeleted
@@ -65,6 +63,12 @@ class AudioFxViewModel @Inject constructor(
         }
     }
 
+    private val playerObserver = object : SimplePlayerObserver() {
+        override fun onAudioSourceChanged(player: Player, item: AudioSource?, positionInQueue: Int) {
+            _currentAudioSource.value = item
+        }
+    }
+
     private val audioFxObserver = object : AudioFxObserver {
         override fun onEnabled(audioFx: AudioFx) {
             _audioFxEnabled.value = true
@@ -94,21 +98,39 @@ class AudioFxViewModel @Inject constructor(
     private val _audioSessionId = MutableLiveData<Int>()
     val audioSessionId: LiveData<Int> get() = _audioSessionId
 
-    // Available status
-    private val _audioFxAvailable = MutableLiveData<Boolean>()
-    val audioFxAvailable: LiveData<Boolean> get() = _audioFxAvailable
+    private val _currentAudioSource = MutableLiveData<AudioSource>(player.getCurrent())
 
-    private val _equalizerAvailable = MutableLiveData<Boolean>()
+    // Available status
+    private val _equalizerAvailable = MutableLiveData<Boolean>(audioFx.hasEqualizer())
     val equalizerAvailable: LiveData<Boolean> get() = _equalizerAvailable
 
-    private val _bassBoostAvailable = MutableLiveData<Boolean>()
+    private val _bassBoostAvailable = MutableLiveData<Boolean>(audioFx.hasBassBoost())
     val bassBoostAvailable: LiveData<Boolean> get() = _bassBoostAvailable
 
-    private val _virtualizerAvailable = MutableLiveData<Boolean>()
+    private val _virtualizerAvailable = MutableLiveData<Boolean>(audioFx.hasVirtualizer())
     val virtualizerAvailable: LiveData<Boolean> get() = _virtualizerAvailable
 
-    private val _presetReverbAvailable = MutableLiveData<Boolean>()
+    private val _presetReverbAvailable = MutableLiveData<Boolean>(audioFx.hasPresetReverbEffect())
     val presetReverbAvailable: LiveData<Boolean> get() = _presetReverbAvailable
+
+    private val atLeastOneEffectAvailable: LiveData<Boolean> = combineMultiple(
+        equalizerAvailable,
+        bassBoostAvailable,
+        virtualizerAvailable,
+        presetReverbAvailable
+    ) { values ->
+        values.indexOfFirst { available -> available == true } >= 0
+    }
+
+    val screenState: LiveData<ScreenState> =
+        combine(_currentAudioSource, atLeastOneEffectAvailable) { currentAudioSource, atLeastOneEffectAvailable ->
+            when {
+                atLeastOneEffectAvailable == false -> ScreenState.NO_EFFECTS
+                currentAudioSource == null -> ScreenState.NO_AUDIO
+                else -> ScreenState.NORMAL
+            }
+        }
+        .distinctUntilChanged()
 
     private val _audioFxEnabled = MutableLiveData<Boolean>()
     val audioFxEnabled: LiveData<Boolean> get() = _audioFxEnabled
@@ -155,6 +177,7 @@ class AudioFxViewModel @Inject constructor(
     //endregion
 
     init {
+        player.registerObserver(playerObserver)
         audioFx.registerObserver(audioFxObserver)
         onOpened()
     }
@@ -175,7 +198,6 @@ class AudioFxViewModel @Inject constructor(
         // audio session
         _audioSessionId.value = player.getAudiSessionId()
         // available status
-        _audioFxAvailable.value = player.getCurrent() != null
         _equalizerAvailable.value = audioFx.hasEqualizer()
         _bassBoostAvailable.value = audioFx.hasBassBoost()
         _virtualizerAvailable.value = audioFx.hasVirtualizer()
@@ -267,8 +289,13 @@ class AudioFxViewModel @Inject constructor(
 
     override fun onCleared() {
         super.onCleared()
+        player.unregisterObserver(playerObserver)
         audioFx.unregisterObserver(audioFxObserver)
         audioFx.save()
+    }
+
+    enum class ScreenState {
+        NORMAL, NO_AUDIO, NO_EFFECTS
     }
 
 }
