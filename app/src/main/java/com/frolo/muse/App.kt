@@ -1,5 +1,6 @@
 package com.frolo.muse
 
+import android.os.Build
 import android.os.StrictMode
 import androidx.multidex.MultiDexApplication
 import com.frolo.muse.admob.AdMobs
@@ -74,26 +75,37 @@ class App : MultiDexApplication() {
             .miscModule(MiscModule())
             .build()
 
-    // TODO: check errors on M version SDK
     private fun setupStrictMode() {
         if (BuildConfig.DEBUG) {
 
-            StrictMode.setThreadPolicy(StrictMode.ThreadPolicy.Builder()
+            StrictMode.ThreadPolicy.Builder()
                 .detectDiskReads()
                 .detectDiskWrites()
                 .detectNetwork()
                 .penaltyLog()
-                .build())
+                .apply {
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+                        penaltyDeath()
+                    }
+                }
+                .build()
+                .also { StrictMode.setThreadPolicy(it) }
 
-            StrictMode.setVmPolicy(StrictMode.VmPolicy.Builder()
+            StrictMode.VmPolicy.Builder()
+                .detectActivityLeaks()
                 .detectLeakedSqlLiteObjects()
                 .detectLeakedClosableObjects()
                 .detectLeakedRegistrationObjects()
                 .setClassInstanceLimit(PlayerImpl::class.java, 1)
                 .setClassInstanceLimit(AudioFx_Impl::class.java, 1)
                 .penaltyLog()
-                .penaltyDeath()
-                .build())
+                .apply {
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
+                        penaltyDeath()
+                    }
+                }
+                .build()
+                .also { StrictMode.setVmPolicy(it) }
         }
     }
 
