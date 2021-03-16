@@ -11,7 +11,5 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?textAppearanceBody2"
-        android:textSize="13sp"
-        android:fontFamily="sans-serif-medium"
         android:textColor="?iconImageTint"/>
 </FrameLayout>
