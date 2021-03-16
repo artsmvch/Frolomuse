@@ -17,7 +17,7 @@ static def getDate() {
     return new Date().format('yyyyMMddHHmmss')
 }
 
-def version_code = 94
+def version_code = 95
 def version_major = 5
 def version_minor = 5
 def version_patch = 5
