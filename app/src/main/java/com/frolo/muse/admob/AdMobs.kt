@@ -17,6 +17,8 @@ object AdMobs {
     private const val KEY_AD_MOB_THRESHOLD_INSTALL_TIME = "ad_mob_threshold_install_time"
     private const val KEY_AD_MOB_THRESHOLD_OPEN_COUNT = "ad_mob_threshold_open_count"
 
+    private const val INIT_ON_COLD_START_DEFAULT = true
+
     private val executor = Executors.newFixedThreadPool(2)
 
     fun fetchAndActivate(minimumFetchIntervalInSeconds: Long? = null): Single<Boolean> {
@@ -89,7 +91,7 @@ object AdMobs {
             val remoteConfigInstance = FirebaseRemoteConfig.getInstance()
             remoteConfigInstance.getBoolean(KEY_AD_MOB_INIT_ON_COLD_START)
         } catch (ignored: Throwable) {
-            false
+            INIT_ON_COLD_START_DEFAULT
         }
     }
 

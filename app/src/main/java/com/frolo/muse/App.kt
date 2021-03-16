@@ -115,6 +115,7 @@ class App : MultiDexApplication() {
             .setMinimumFetchIntervalInSeconds(60 * 60 * 24) // 24 hours
             .build()
         instance.setConfigSettingsAsync(configSettings)
+        instance.setDefaultsAsync(R.xml.firebase_remote_config_default)
     }
 
     private fun initAdMob() {
