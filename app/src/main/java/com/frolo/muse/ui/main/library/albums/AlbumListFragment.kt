@@ -14,10 +14,10 @@ import com.frolo.muse.glide.GlideAlbumArtHelper
 import com.frolo.muse.glide.observe
 import com.frolo.muse.model.media.Album
 import com.frolo.muse.repository.Preferences
+import com.frolo.muse.ui.ShotLayoutAnimationController
 import com.frolo.muse.ui.main.decorateAsGrid
 import com.frolo.muse.ui.main.decorateAsLinear
 import com.frolo.muse.ui.main.library.base.SimpleMediaCollectionFragment
-import kotlinx.android.synthetic.main.fragment_base_list.*
 
 
 class AlbumListFragment: SimpleMediaCollectionFragment<Album>() {
@@ -69,11 +69,12 @@ class AlbumListFragment: SimpleMediaCollectionFragment<Album>() {
 
         if (gridEnabled) {
             list.layoutManager = GridLayoutManager(context, 3)
-            rv_list.decorateAsGrid()
+            list.decorateAsGrid()
         } else {
             list.layoutManager = LinearLayoutManager(context)
-            rv_list.decorateAsLinear()
+            list.decorateAsLinear()
         }
+        list.layoutAnimation = ShotLayoutAnimationController()
     }
 
     private fun observeViewModel(owner: LifecycleOwner) {

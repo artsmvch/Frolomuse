@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.frolo.muse.R
 import com.frolo.muse.model.media.Media
+import com.frolo.muse.ui.ShotLayoutAnimationController
 import com.frolo.muse.ui.base.NoClipping
 import com.frolo.muse.ui.main.decorateAsLinear
 import kotlinx.android.synthetic.main.fragment_base_list.*
@@ -56,6 +57,7 @@ abstract class SimpleMediaCollectionFragment <E: Media>:
         list.adapter = adapter
         list.layoutManager = LinearLayoutManager(context)
         list.decorateAsLinear()
+        list.layoutAnimation = ShotLayoutAnimationController()
     }
 
     protected open fun onDecoratePlaceholder(list: View) {

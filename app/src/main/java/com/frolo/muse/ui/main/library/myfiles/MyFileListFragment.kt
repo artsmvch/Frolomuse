@@ -11,6 +11,7 @@ import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.dp2px
 import com.frolo.muse.mediascan.MediaScanService
 import com.frolo.muse.model.media.MyFile
+import com.frolo.muse.ui.ShotLayoutAnimationController
 import com.frolo.muse.ui.base.BackPressHandler
 import com.frolo.muse.ui.base.NoClipping
 import com.frolo.muse.ui.getNameAsRootString
@@ -62,6 +63,7 @@ class MyFileListFragment: AbsMediaCollectionFragment<MyFile>(),
             layoutManager = LinearLayoutManager(context)
             adapter = this@MyFileListFragment.adapter
             decorateAsLinear()
+            layoutAnimation = ShotLayoutAnimationController()
         }
 
         layout_list_placeholder.updateLayoutParams<ViewGroup.MarginLayoutParams> {

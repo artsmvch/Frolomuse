@@ -22,7 +22,7 @@ import com.frolo.muse.repository.Preferences
 import com.frolo.muse.ui.base.BackPressHandler
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.base.NoClipping
-import com.frolo.muse.ui.main.removeAllFragmentsNow
+import com.frolo.muse.ui.removeAllFragmentsNow
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView

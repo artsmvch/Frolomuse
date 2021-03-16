@@ -198,7 +198,6 @@
     <!--RecyclerView-->
     <style name="Base.AppTheme.RecyclerView" parent="">
         <item name="android:overScrollMode">always</item>
-        <item name="android:layoutAnimation">@anim/list_layout_animation</item>
     </style>
 
     <!--FastScroller-->
