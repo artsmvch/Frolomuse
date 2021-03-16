@@ -245,6 +245,16 @@
     <string name="name_is_empty">Ім\'я має бути не порожнім</string>
     <string name="such_name_already_exists">Така назва вже існує</string>
 
+    <!--AudioFx-->
+    <string name="no_audio_effects_available">Звукові ефекти не знайдені</string>
+    <string name="no_audio_effects_available_desc">
+        Ми не змогли знайти жодного доступного звукового ефекту. Увімкніть еквалайзер за замовчуванням, який надає ОС Android
+    </string>
+    <string name="no_audio_is_playing_now">Зараз звук не відтворюється</string>
+    <string name="no_audio_is_playing_now_desc">
+        Потрібно розпочати відтворення пісні, щоб мати можливість регулювати звук
+    </string>
+
     <!--create preset-->
     <string name="save_preset">Збережіть пресет</string>
     <string name="preset_name">Назва пресету</string>

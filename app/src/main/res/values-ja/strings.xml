@@ -232,6 +232,16 @@
     <string name="name_is_empty">名前は空でなければならない</string>
     <string name="such_name_already_exists">そのような名前は既に存在します</string>
 
+    <!--AudioFx-->
+    <string name="no_audio_effects_available">オーディオエフェクトなし</string>
+    <string name="no_audio_effects_available_desc">
+        利用可能なオーディオエフェクトが見つかりませんでした。 Androidオペレーティングシステムが提供するデフォルトのイコライザーを有効にしてください
+    </string>
+    <string name="no_audio_is_playing_now">現在、音声は再生されていません</string>
+    <string name="no_audio_is_playing_now_desc">
+        サウンドを調整できるようにするには、曲の再生を開始する必要があります
+    </string>
+
     <!--create preset-->
     <string name="save_preset">プリセットを保存</string>
     <string name="preset_name">プリセット名</string>

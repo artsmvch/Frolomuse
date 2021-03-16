@@ -239,6 +239,16 @@
     <string name="name_is_empty">O nome deve estar não vazio</string>
     <string name="such_name_already_exists">Tal nome já existe</string>
 
+    <!--AudioFx-->
+    <string name="no_audio_effects_available">Sem efeitos de áudio</string>
+    <string name="no_audio_effects_available_desc">
+        Não encontramos nenhum efeito de áudio disponível. Habilite o equalizador padrão fornecido pelo sistema operacional Android
+    </string>
+    <string name="no_audio_is_playing_now">Nenhum áudio está tocando agora</string>
+    <string name="no_audio_is_playing_now_desc">
+        Você precisa começar a tocar uma música para poder ajustar o som
+    </string>
+
     <!--create preset-->
     <string name="save_preset">Salvar predefinição</string>
     <string name="preset_name">Nome predefinição</string>

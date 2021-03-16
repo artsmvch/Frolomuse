@@ -239,6 +239,16 @@
     <string name="name_is_empty">Der Name darf nicht leer sein</string>
     <string name="such_name_already_exists">Ein solcher Name existiert bereits</string>
 
+    <!--AudioFx-->
+    <string name="no_audio_effects_available">Keine Audioeffekte</string>
+    <string name="no_audio_effects_available_desc">
+        Wir konnten keinen Audioeffekt finden. Bitte aktivieren Sie den vom Android-Betriebssystem bereitgestellten Standard-Equalizer
+    </string>
+    <string name="no_audio_is_playing_now">Derzeit wird kein Audio abgespielt</string>
+    <string name="no_audio_is_playing_now_desc">
+        Sie müssen mit der Wiedergabe eines Songs beginnen, um den Sound anpassen zu können
+    </string>
+
     <!--create preset-->
     <string name="save_preset">Preset speichern</string>
     <string name="preset_name">Name des Presets</string>

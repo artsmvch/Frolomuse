@@ -238,6 +238,16 @@
     <string name="name_is_empty">नाम खाली नहीं होना चाहिए</string>
     <string name="such_name_already_exists">ऐसा नाम पहले से मौजूद है</string>
 
+    <!--AudioFx-->
+    <string name="no_audio_effects_available">कोई ऑडियो प्रभाव नहीं</string>
+    <string name="no_audio_effects_available_desc">
+        हमें कोई ऑडियो प्रभाव उपलब्ध नहीं मिला। कृपया Android ऑपरेटिंग सिस्टम द्वारा प्रदान किए गए डिफ़ॉल्ट तुल्यकारक को सक्षम करें
+    </string>
+    <string name="no_audio_is_playing_now">अब कोई ऑडियो नहीं चल रहा है</string>
+    <string name="no_audio_is_playing_now_desc">
+        ध्वनि को समायोजित करने में सक्षम होने के लिए आपको एक गाना बजाना शुरू करना होगा
+    </string>
+
     <!--create preset-->
     <string name="save_preset">प्रीसेट सेव करें</string>
     <string name="preset_name">प्रीसेट नाम</string>

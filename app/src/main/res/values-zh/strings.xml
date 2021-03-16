@@ -232,6 +232,16 @@
     <string name="name_is_empty">名稱必須為非空</string>
     <string name="such_name_already_exists">這樣的名字已經存在</string>
 
+    <!--AudioFx-->
+    <string name="no_audio_effects_available">沒有音效</string>
+    <string name="no_audio_effects_available_desc">
+        我們找不到任何可用的音頻效果。 請啟用Android操作系統提供的默認均衡器
+    </string>
+    <string name="no_audio_is_playing_now">現在沒有聲音在播放</string>
+    <string name="no_audio_is_playing_now_desc">
+        您需要開始播放歌曲才能調整聲音
+    </string>
+
     <!--create preset-->
     <string name="save_preset">保存預設</string>
     <string name="preset_name">預設名稱</string>

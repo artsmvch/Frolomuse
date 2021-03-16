@@ -238,6 +238,16 @@
     <string name="name_is_empty">İsim boş olmamalıdır</string>
     <string name="such_name_already_exists">Böyle bir isim zaten var</string>
 
+    <!--AudioFx-->
+    <string name="no_audio_effects_available">Ses efekti yok</string>
+    <string name="no_audio_effects_available_desc">
+        Kullanılabilir herhangi bir ses efekti bulamadık. Lütfen Android işletim sistemi tarafından sağlanan varsayılan ekolayzırı etkinleştirin
+    </string>
+    <string name="no_audio_is_playing_now">Şu anda çalınan şarkı yok</string>
+    <string name="no_audio_is_playing_now_desc">
+        Sesi ayarlayabilmek için bir şarkı çalmaya başlamalısınız
+    </string>
+
     <!--create preset-->
     <string name="save_preset">Hazır ayarı kaydet</string>
     <string name="preset_name">Ön ayar adı</string>
