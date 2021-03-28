@@ -6,13 +6,15 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_label"
-        android:layout_width="70dp"
+        android:layout_width="68dp"
         android:layout_height="wrap_content"
         android:maxLines="2"
         android:gravity="center"
         android:ellipsize="end"
         android:textAppearance="?textAppearanceCaption"
-        tools:text="Unknown label. The label may be too big"/>
+        android:textSize="11dp"
+        tools:text="Unknown label. The label may be too big"
+        tools:ignore="SpUsage" />
 
     <androidx.appcompat.widget.AppCompatSeekBar
         android:id="@+id/sb_controller"
