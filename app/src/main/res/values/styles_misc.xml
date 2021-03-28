@@ -42,4 +42,10 @@
         <item name="iconTint">?iconImageTint</item>
         <item name="android:background">@drawable/bg_main_play_button</item>
     </style>
+
+    <!--Equalizer-->
+    <style name="EqualizerView.Default" parent="">
+        <item name="gridTint">#3EBDBDBD</item>
+        <item name="gridLineThickness">1dp</item>
+    </style>
 </resources>

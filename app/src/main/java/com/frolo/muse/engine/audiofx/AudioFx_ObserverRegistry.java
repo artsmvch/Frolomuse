@@ -147,7 +147,6 @@ final class AudioFx_ObserverRegistry {
     }
 
     synchronized void dispatchBandLevelChanged(short band, short level) {
-        mHandler.removeMessages(DispatcherHandler.MSG_BAND_LEVEL_CHANGED);
         final Message message =
                 mHandler.obtainMessage(DispatcherHandler.MSG_BAND_LEVEL_CHANGED, band, level);
         message.sendToTarget();

@@ -3,17 +3,22 @@ package com.frolo.muse.ui.main.audiofx.eq;
 import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 import android.view.animation.Interpolator;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import androidx.annotation.ColorInt;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
@@ -29,7 +34,7 @@ import com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBar;
  * The value is set using {@link DbSlider#setValue(int, boolean)} and {@link DbSlider#setValue(int)} methods.
  * Clients may observe value changes with {@link DbSlider.OnDbValueChangeListener}.
  */
-public final class DbSlider extends LinearLayout {
+final class DbSlider extends LinearLayout {
 
     private static final boolean DEBUG = BuildConfig.DEBUG;
 
@@ -41,6 +46,10 @@ public final class DbSlider extends LinearLayout {
 
     interface OnDbValueChangeListener {
         void onDbValueChange(DbSlider slider, int value, boolean fromUser);
+    }
+
+    interface OnDbValueAnimatedListener {
+        void onDbValueAnimated(DbSlider slider, int animatedValue);
     }
 
     private static int clamp(int min, int max, int value) {
@@ -61,6 +70,7 @@ public final class DbSlider extends LinearLayout {
     // Internal widgets
     private final TextView mTopLabelTextView;
     private final TextView mBottomLabelTextView;
+    private final View mVerticalSeekBarWrapper;
     private final VerticalSeekBar mVerticalSeekBar;
     private final SeekBar.OnSeekBarChangeListener mSeekBarListener =
         new SeekBar.OnSeekBarChangeListener() {
@@ -86,10 +96,14 @@ public final class DbSlider extends LinearLayout {
             public void onAnimationUpdate(ValueAnimator animation) {
                 final int progress = (int) animation.getAnimatedValue();
                 mVerticalSeekBar.setProgress(progress);
+                if (mOnValueAnimatedListener != null) {
+                    mOnValueAnimatedListener.onDbValueAnimated(DbSlider.this, mMinValue + progress);
+                }
             }
         };
 
     private OnDbValueChangeListener mListener;
+    private OnDbValueAnimatedListener mOnValueAnimatedListener;
 
     public DbSlider(Context context) {
         this(context, null);
@@ -110,6 +124,7 @@ public final class DbSlider extends LinearLayout {
         mTopLabelTextView = findViewById(R.id.tv_top_label);
         // TODO: Note that the visibility of the bottom label is set to GONE in xml
         mBottomLabelTextView = findViewById(R.id.tv_bottom_label);
+        mVerticalSeekBarWrapper = findViewById(R.id.vertical_seek_bar_wrapper);
         mVerticalSeekBar = findViewById(R.id.vertical_seek_bar);
 
         mVerticalSeekBar.setRotationAngle(VerticalSeekBar.ROTATION_ANGLE_CW_270);
@@ -118,6 +133,10 @@ public final class DbSlider extends LinearLayout {
 
     public void setOnDbValueChangeListener(@Nullable OnDbValueChangeListener l) {
         this.mListener = l;
+    }
+
+    public void setOnDbValueAnimatedListener(@Nullable OnDbValueAnimatedListener l) {
+        this.mOnValueAnimatedListener = l;
     }
 
     public void setRange(int min, int max) {
@@ -235,6 +254,59 @@ public final class DbSlider extends LinearLayout {
     @Override
     public void setOrientation(int orientation) {
         throw new UnsupportedOperationException();
+    }
+
+    void setTrackTint(@ColorInt int color) {
+        ColorStateList colorStateList = ColorStateList.valueOf(color);
+        PorterDuff.Mode mode = PorterDuff.Mode.SRC;
+
+        mVerticalSeekBar.setProgressBackgroundTintList(colorStateList);
+        mVerticalSeekBar.setProgressBackgroundTintMode(mode);
+
+        mVerticalSeekBar.setProgressTintList(colorStateList);
+        mVerticalSeekBar.setProgressTintMode(mode);
+
+        mVerticalSeekBar.setSecondaryProgressTintList(colorStateList);
+        mVerticalSeekBar.setSecondaryProgressTintMode(mode);
+    }
+
+    /**
+     * Returns the x of the center position of the thumb relative to the bounds of this view.
+     * @return the x of the center position of the thumb
+     */
+    int getThumbCenterX() {
+        int width = mVerticalSeekBarWrapper.getMeasuredWidth()
+                - mVerticalSeekBarWrapper.getPaddingLeft()
+                - mVerticalSeekBarWrapper.getPaddingRight();
+        return mVerticalSeekBarWrapper.getLeft() + mVerticalSeekBarWrapper.getPaddingLeft() + width / 2;
+    }
+
+    /**
+     * Returns the y of the center position of the thumb relative to the bounds of this view.
+     * @return the y of the center position of the thumb
+     */
+    int getThumbCenterY() {
+        float progressPercentage = ((float) (mVerticalSeekBar.getMax() - mVerticalSeekBar.getProgress())) / mVerticalSeekBar.getMax();
+        return getYForProgress(progressPercentage);
+    }
+
+    int getCenterY() {
+        return getYForProgress(0.5f);
+    }
+
+    private int getYForProgress(float progressPercentage) {
+        Drawable thumb = mVerticalSeekBar.getThumb();
+        int thumbSize = thumb != null ? thumb.getIntrinsicWidth() : 0;
+        int trackHeight = mVerticalSeekBar.getMeasuredWidth()
+                - mVerticalSeekBar.getPaddingLeft()
+                - mVerticalSeekBar.getPaddingRight()
+                - thumbSize
+                + 2 * mVerticalSeekBar.getThumbOffset();
+        int progressedTrackHeight = (int) (trackHeight * progressPercentage);
+        return mVerticalSeekBarWrapper.getTop()
+                + mVerticalSeekBar.getTop() + mVerticalSeekBar.getPaddingTop()
+                + mVerticalSeekBar.getThumbOffset() * 2
+                + progressedTrackHeight;
     }
 
     @Override

@@ -24,6 +24,7 @@
         tools:ignore="SmallSp" />
 
     <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper
+        android:id="@+id/vertical_seek_bar_wrapper"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_weight="1">
@@ -31,7 +32,8 @@
         <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBar
             android:id="@+id/vertical_seek_bar"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:progressDrawable="@drawable/bg_equalizer_slider"/>
     </com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper>
 
     <TextView

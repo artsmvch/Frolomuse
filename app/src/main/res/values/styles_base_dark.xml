@@ -27,6 +27,8 @@
         <item name="actionOverflowMenuStyle">@style/Base.AppTheme.PopupMenu.Overflow</item>
         <item name="popupMenuStyle">@style/Base.AppTheme.PopupMenu</item>
 
+        <item name="equalizerViewStyle">@style/Base.AppTheme.EqualizerView.Dark</item>
+
         <item name="android:textColor">@color/md_white_1000</item>
         <item name="android:textColorPrimary">@color/md_white_1000</item>
         <item name="android:textColorSecondary">@color/md_white_1000</item>
@@ -76,6 +78,11 @@
         <item name="trackColorActive">?colorSecondary</item>
         <item name="thumbColor">?colorSecondary</item>
         <item name="trackHeight">2dp</item>
+    </style>
+
+    <style name="Base.AppTheme.EqualizerView.Dark" parent="">
+        <item name="gridTint">#393939</item>
+        <item name="gridLineThickness">1dp</item>
     </style>
 
 </resources>
