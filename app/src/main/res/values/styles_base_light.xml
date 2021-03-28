@@ -114,7 +114,6 @@
         <item name="gridColor">#DFDFDF</item>
         <item name="gridLineThickness">1dp</item>
         <item name="levelColor">?colorAccent</item>
-        <item name="android:background">#0FC3C3C3</item>
     </style>
 
 </resources>
