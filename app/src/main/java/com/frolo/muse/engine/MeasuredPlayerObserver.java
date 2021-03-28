@@ -22,6 +22,7 @@ final class MeasuredPlayerObserver implements PlayerObserver {
 
     private static final String LOG_TAG = "MeasuredPlayerObserver";
 
+    private static final long UNACCEPTABLE_TIME = 50L;
     private static final long CRITICAL_TIME = 10L;
 
     @NotNull
@@ -72,6 +73,13 @@ final class MeasuredPlayerObserver implements PlayerObserver {
     }
 
     private void handle(String eventName, long time) {
+        if (time >= UNACCEPTABLE_TIME) {
+            if (DEBUG) {
+                String msg = mDelegateName + " took " + time + " ms to execute " + eventName + ". It's unacceptable";
+                throw new IllegalStateException(msg);
+            }
+        }
+
         if (time >= CRITICAL_TIME) {
             Log.e(LOG_TAG, mDelegateName + " took " + time + " ms to execute " + eventName + ". Consider optimization for this");
         } else {
