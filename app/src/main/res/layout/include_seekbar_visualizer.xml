@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/ll_virtualizer"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -21,5 +21,8 @@
     <com.google.android.material.slider.Slider
         android:id="@+id/slider_virtualizer"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/slider_preferred_height" />
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/slider_preferred_height"
+        app:thumbRadius="6dp"
+        app:haloRadius="16dp"/>
 </LinearLayout>
