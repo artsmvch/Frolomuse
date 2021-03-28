@@ -81,7 +81,7 @@ class AudioFxViewModel @Inject constructor(
         }
         override fun onPresetUsed(audioFx: AudioFx, preset: Preset) {
             _currentPreset.value = preset
-            _bandLevels.value = audioFx
+            _bandLevelsUpdate.value = BandLevelsUpdate(audioFx, true)
         }
         override fun onBassStrengthChanged(audioFx: AudioFx, strength: Short) {
             _bassStrength.value = strength
@@ -135,8 +135,8 @@ class AudioFxViewModel @Inject constructor(
     private val _audioFxEnabled = MutableLiveData<Boolean>()
     val audioFxEnabled: LiveData<Boolean> get() = _audioFxEnabled
 
-    private val _bandLevels = MutableLiveData<AudioFx>()
-    val bandLevels: LiveData<AudioFx> get() = _bandLevels
+    private val _bandLevelsUpdate = MutableLiveData<BandLevelsUpdate>()
+    val bandLevelsUpdate: LiveData<BandLevelsUpdate> get() = _bandLevelsUpdate
 
     private val _presets = MutableLiveData<List<Preset>>()
     val presets: LiveData<List<Preset>> get() = _presets
@@ -205,7 +205,7 @@ class AudioFxViewModel @Inject constructor(
         // enabled status
         _audioFxEnabled.value = audioFx.isEnabled
         // equalizer
-        _bandLevels.value = audioFx
+        _bandLevelsUpdate.value = BandLevelsUpdate(audioFx, false)
         // preset
         _currentPreset.value = audioFx.currentPreset ?: voidPreset
         // bass
@@ -297,5 +297,7 @@ class AudioFxViewModel @Inject constructor(
     enum class ScreenState {
         NORMAL, NO_AUDIO, NO_EFFECTS
     }
+
+    class BandLevelsUpdate(val audioFx: AudioFx, val animate: Boolean)
 
 }

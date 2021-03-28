@@ -288,8 +288,8 @@ class AudioFxFragment: BaseFragment(), NoClipping {
             }
         }
 
-        bandLevels.observeNonNull(owner) { audioFx ->
-            equalizer_view.setup(audioFx, true)
+        bandLevelsUpdate.observeNonNull(owner) { bandLevelsUpdate ->
+            equalizer_view.setup(bandLevelsUpdate.audioFx, bandLevelsUpdate.animate)
         }
 
         presets.observeNonNull(owner) { presets ->
