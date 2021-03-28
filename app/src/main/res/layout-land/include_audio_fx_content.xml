@@ -7,28 +7,16 @@
     android:orientation="horizontal"
     android:gravity="center">
 
-    <LinearLayout
+    <com.frolo.muse.ui.main.audiofx.customview.impl.SeekBarEqualizerView
+        android:id="@+id/equalizer_view"
         android:layout_weight="1"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <com.frolo.muse.ui.main.audiofx.customview.impl.SeekBarEqualizerView
-            android:id="@+id/equalizer_view"
-            android:layout_weight="1"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:paddingTop="0dp"
-            android:paddingBottom="12dp"/>
-
-        <include layout="@layout/include_seekbar_bass_boost"
-            android:layout_marginTop="4dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-    </LinearLayout>
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="16dp"
+        android:paddingTop="0dp"
+        android:paddingBottom="8dp"/>
 
     <LinearLayout
         android:layout_weight="1"
@@ -51,10 +39,22 @@
             android:layout_height="0dp"
             android:layout_weight="1"/>
 
-        <include layout="@layout/include_seekbar_visualizer"
-            android:layout_marginTop="4dp"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:orientation="horizontal">
+
+            <include layout="@layout/include_seekbar_bass_boost"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"/>
+
+            <include layout="@layout/include_seekbar_visualizer"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
     </LinearLayout>
 
 </com.frolo.muse.views.TouchableLinearLayout>
