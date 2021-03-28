@@ -17,12 +17,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <com.frolo.muse.ui.main.audiofx.eq.EqualizerView
+    <com.frolo.muse.ui.main.audiofx.customview.impl.SeekBarEqualizerView
         android:id="@+id/equalizer_view"
-        android:layout_marginTop="28dp"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="5"/>
+        android:layout_weight="5"
+        android:layout_marginTop="8dp"
+        android:paddingTop="0dp"
+        android:paddingBottom="12dp"/>
 
     <include layout="@layout/include_seekbar_bass_boost"
         android:layout_marginTop="12dp"

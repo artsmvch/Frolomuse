@@ -45,7 +45,9 @@
 
     <!--Equalizer-->
     <style name="EqualizerView.Default" parent="">
-        <item name="gridTint">#3EBDBDBD</item>
+        <item name="drawVisuals">true</item>
+        <item name="gridColor">#3EBDBDBD</item>
         <item name="gridLineThickness">1dp</item>
+        <item name="levelColor">?colorAccent</item>
     </style>
 </resources>

@@ -81,8 +81,11 @@
     </style>
 
     <style name="Base.AppTheme.EqualizerView.Dark" parent="">
-        <item name="gridTint">#393939</item>
+        <item name="drawVisuals">true</item>
+        <item name="gridColor">#393939</item>
         <item name="gridLineThickness">1dp</item>
+        <item name="levelColor">?colorAccent</item>
+        <item name="android:background">#0F393939</item>
     </style>
 
 </resources>
