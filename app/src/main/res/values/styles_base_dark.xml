@@ -59,6 +59,7 @@
         <item name="materialButtonStyle">@style/Base.AppTheme.Button.TextButton</item>
         <item name="searchViewStyle">@style/Base.AppTheme.SearchView</item>
         <item name="autoCompleteTextViewStyle">@style/Base.AppTheme.AutoCompleteTextView</item>
+        <item name="sliderStyle">@style/Base.AppTheme.Slider.Dark</item>
     </style>
 
     <style name="Base.AppTheme.Dark.IBar" parent="android:style/Widget">
@@ -72,8 +73,9 @@
     </style>
 
     <style name="Base.AppTheme.Slider.Dark" parent="Widget.MaterialComponents.Slider">
+        <item name="thumbRadius">6dp</item>
         <item name="haloColor">@color/color_secondary_alpha20</item>
-        <item name="haloRadius">20dp</item>
+        <item name="haloRadius">16dp</item>
         <item name="trackColorInactive">#66959595</item>
         <item name="trackColorActive">?colorSecondary</item>
         <item name="thumbColor">?colorSecondary</item>

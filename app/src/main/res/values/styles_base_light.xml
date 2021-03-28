@@ -66,6 +66,7 @@
         <item name="switchStyle">@style/Switch.Light</item>
         <item name="searchViewStyle">@style/Base.AppTheme.SearchView</item>
         <item name="autoCompleteTextViewStyle">@style/Base.AppTheme.AutoCompleteTextView</item>
+        <item name="sliderStyle">@style/Base.AppTheme.Slider.Light</item>
 
         <item name="android:textColor">@color/text_primary_dark</item>
         <item name="android:textColorPrimary">@color/text_primary_dark</item>
@@ -99,8 +100,9 @@
     </style>
 
     <style name="Base.AppTheme.Slider.Light" parent="Widget.MaterialComponents.Slider">
+        <item name="thumbRadius">6dp</item>
         <item name="haloColor">@color/color_secondary_alpha20</item>
-        <item name="haloRadius">20dp</item>
+        <item name="haloRadius">16dp</item>
         <item name="trackColorInactive">#E4E4E4</item>
         <item name="trackColorActive">?colorSecondary</item>
         <item name="thumbColor">?colorSecondary</item>
