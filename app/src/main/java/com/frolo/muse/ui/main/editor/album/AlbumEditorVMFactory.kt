@@ -2,7 +2,7 @@ package com.frolo.muse.ui.main.editor.album
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.frolo.muse.App
+import com.frolo.muse.FrolomuseApp
 import com.frolo.muse.di.AppComponent
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.media.Album
@@ -17,7 +17,7 @@ class AlbumEditorVMFactory constructor(
 ): ViewModelProvider.Factory {
 
     @Inject
-    internal lateinit var app: App
+    internal lateinit var frolomuseApp: FrolomuseApp
     @Inject
     internal lateinit var schedulerProvider: SchedulerProvider
     @Inject
@@ -32,7 +32,7 @@ class AlbumEditorVMFactory constructor(
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         @Suppress("UNCHECKED_CAST")
         return AlbumEditorViewModel(
-            app,
+            frolomuseApp,
             schedulerProvider,
             repository,
             eventLogger,

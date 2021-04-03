@@ -28,7 +28,7 @@ class SavePresetDialog : AbsInputNameDialog() {
 
     private val viewModel: SavePresetViewModel by lazy {
         val bandLevels = getLevelsArg(requireArguments())
-        val vmFactory = SavePresetVMFactory(requireApp().appComponent, bandLevels)
+        val vmFactory = SavePresetVMFactory(requireFrolomuseApp().appComponent, bandLevels)
         ViewModelProviders.of(this, vmFactory)
                 .get(SavePresetViewModel::class.java)
     }

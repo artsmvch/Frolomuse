@@ -14,7 +14,7 @@ import com.frolo.muse.ui.main.library.base.inputname.AbsInputNameDialog
 class PlaylistEditorDialog : AbsInputNameDialog() {
 
     private val viewModel: PlaylistEditorViewModel by lazy {
-        val vmFactory = PlaylistEditorVMFactory(requireApp().appComponent, playlist)
+        val vmFactory = PlaylistEditorVMFactory(requireFrolomuseApp().appComponent, playlist)
         ViewModelProviders.of(this, vmFactory)
                 .get(PlaylistEditorViewModel::class.java)
     }

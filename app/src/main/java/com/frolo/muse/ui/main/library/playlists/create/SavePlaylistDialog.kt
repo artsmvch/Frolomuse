@@ -24,7 +24,7 @@ class SavePlaylistDialog : AbsInputNameDialog() {
     private val viewModel: CreatePlaylistViewModel by lazy {
         @Suppress("UNCHECKED_CAST")
         val songsToAdd = requireArguments().getSerializable(ARG_SONGS) as? List<Song>
-        val vmFactory = CreatePlaylistVMFactory(requireApp().appComponent, songsToAdd)
+        val vmFactory = CreatePlaylistVMFactory(requireFrolomuseApp().appComponent, songsToAdd)
         ViewModelProviders.of(this, vmFactory)
                 .get(CreatePlaylistViewModel::class.java)
     }

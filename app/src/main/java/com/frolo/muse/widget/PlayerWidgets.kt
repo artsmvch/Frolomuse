@@ -13,7 +13,7 @@ import androidx.annotation.IntDef
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.AppWidgetTarget
-import com.frolo.muse.App
+import com.frolo.muse.FrolomuseApp
 import com.frolo.muse.R
 import com.frolo.muse.common.albumId
 import com.frolo.muse.common.title
@@ -78,9 +78,9 @@ private fun getPlayerWidgetParams(context: Context, player: Player?): PlayerWidg
         shuffleMode = player.getShuffleMode()
     } else {
         // There is no active player
-        val app = context.applicationContext as? App
-        if (app != null) {
-            val appComponent = app.appComponent
+        val frolomuseApp = context.applicationContext as? FrolomuseApp
+        if (frolomuseApp != null) {
+            val appComponent = frolomuseApp.appComponent
             val preferences = appComponent.providePreferences()
             val songRepository = appComponent.provideSongRepository()
             currItem = try {

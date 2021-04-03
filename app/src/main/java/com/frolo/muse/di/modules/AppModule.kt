@@ -1,7 +1,7 @@
 package com.frolo.muse.di.modules
 
 import android.content.Context
-import com.frolo.muse.App
+import com.frolo.muse.FrolomuseApp
 import com.frolo.muse.di.impl.rx.SchedulerProviderImpl
 import com.frolo.muse.rx.SchedulerProvider
 import dagger.Module
@@ -10,12 +10,12 @@ import javax.inject.Singleton
 
 
 @Module
-class AppModule(private val app: App) {
+class AppModule(private val frolomuseApp: FrolomuseApp) {
     @Provides
-    fun provideApp(): App = app
+    fun provideApp(): FrolomuseApp = frolomuseApp
 
     @Provides
-    fun provideContext(): Context = app
+    fun provideContext(): Context = frolomuseApp
 
     @Singleton
     @Provides

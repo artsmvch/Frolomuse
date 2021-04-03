@@ -4,7 +4,7 @@ import android.media.MediaScannerConnection
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.frolo.muse.App
+import com.frolo.muse.FrolomuseApp
 import com.frolo.muse.common.toAudioSource
 import com.frolo.muse.engine.Player
 import com.frolo.muse.logger.EventLogger
@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit
 
 
 class SongEditorViewModel constructor(
-    application: App,
+    application: FrolomuseApp,
     private val player: Player,
     private val schedulerProvider: SchedulerProvider,
     private val repository: SongRepository,
@@ -102,7 +102,7 @@ class SongEditorViewModel constructor(
     @WorkerThread
     private fun scanSync(file: File) {
         val countDownLatch = CountDownLatch(1)
-        val context = getApplication<App>()
+        val context = getApplication<FrolomuseApp>()
         val paths = arrayOf(file.absolutePath)
         MediaScannerConnection.scanFile(context, paths, null) { _, _ ->
             // Scan completed, counting down the latch

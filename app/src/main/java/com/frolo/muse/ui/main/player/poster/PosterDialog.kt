@@ -2,14 +2,12 @@ package com.frolo.muse.ui.main.player.poster
 
 import android.app.Dialog
 import android.content.res.Configuration
-import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.ViewGroup
 import android.view.Window
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProviders
-import com.alexvasilkov.gestures.views.GestureImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
@@ -29,7 +27,7 @@ class PosterDialog: BaseDialogFragment() {
 
     private val viewModel: PosterViewModel by lazy {
         val song = requireArguments().getSerializable(ARG_SONG) as Song
-        val vmFactory = requireApp()
+        val vmFactory = requireFrolomuseApp()
             .appComponent
             .providePosterVMFactoryCreator()
             .create(song)

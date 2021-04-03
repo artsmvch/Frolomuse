@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.content.ClipData
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.frolo.muse.App
+import com.frolo.muse.FrolomuseApp
 import com.frolo.muse.R
 import com.frolo.muse.ThrowableUtils
 import com.frolo.muse.android.SendTextFileIntent
@@ -29,11 +29,11 @@ import kotlin.NullPointerException
 
 
 class PlayerJournalViewModel @Inject constructor(
-    app: App,
+    frolomuseApp: FrolomuseApp,
     private val playerJournal: PlayerJournal,
     private val schedulerProvider: SchedulerProvider,
     private val eventLogger: EventLogger
-): BaseAndroidViewModel(app, eventLogger) {
+): BaseAndroidViewModel(frolomuseApp, eventLogger) {
 
     private var copyLogsToClipboardDisposable: Disposable? = null
 

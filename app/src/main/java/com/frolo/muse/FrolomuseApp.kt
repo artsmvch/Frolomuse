@@ -23,7 +23,7 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import io.reactivex.plugins.RxJavaPlugins
 
 
-class App : MultiDexApplication() {
+class FrolomuseApp : MultiDexApplication() {
 
     lateinit var appComponent: AppComponent
         private set

@@ -12,7 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.preference.CheckBoxPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import com.frolo.muse.App
+import com.frolo.muse.FrolomuseApp
 import com.frolo.muse.BuildConfig
 import com.frolo.muse.R
 import com.frolo.muse.logger.*
@@ -41,13 +41,13 @@ class SettingsFragment : PreferenceFragmentCompat(),
         NoClipping {
 
     private val preferences: Preferences by lazy {
-        (requireContext().applicationContext as App)
+        (requireContext().applicationContext as FrolomuseApp)
                 .appComponent
                 .providePreferences()
     }
 
     private val eventLogger: EventLogger by lazy {
-        (requireContext().applicationContext as App)
+        (requireContext().applicationContext as FrolomuseApp)
                 .appComponent
                 .provideEventLogger()
     }

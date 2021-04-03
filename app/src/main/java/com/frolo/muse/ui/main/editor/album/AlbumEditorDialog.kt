@@ -32,7 +32,7 @@ class AlbumEditorDialog : BaseDialogFragment() {
 
     private val viewModel: AlbumEditorViewModel by lazy {
         val album = requireArguments().getSerializable(ARG_ALBUM) as Album
-        val vmFactory = AlbumEditorVMFactory(requireApp().appComponent, album)
+        val vmFactory = AlbumEditorVMFactory(requireFrolomuseApp().appComponent, album)
         ViewModelProviders.of(this, vmFactory)
                 .get(AlbumEditorViewModel::class.java)
     }

@@ -62,7 +62,7 @@ class MainActivity : PlayerHostActivity(),
 
     // Reference to the presentation layer
     private val viewModel: MainViewModel by lazy {
-        val vmFactory = requireApp().appComponent.provideVMFactory()
+        val vmFactory = requireFrolomuseApp().appComponent.provideVMFactory()
         ViewModelProviders.of(this, vmFactory).get(MainViewModel::class.java)
     }
 
@@ -142,7 +142,7 @@ class MainActivity : PlayerHostActivity(),
             intent?.getIntExtra(EXTRA_TAB_INDEX, TAB_INDEX_DEFAULT) ?: TAB_INDEX_DEFAULT
         }
 
-        requireApp().onFragmentNavigatorCreated(this)
+        requireFrolomuseApp().onFragmentNavigatorCreated(this)
 
         observerViewModel(this)
 
@@ -252,7 +252,7 @@ class MainActivity : PlayerHostActivity(),
     override fun onDestroy() {
         super.onDestroy()
         supportFragmentManager.unregisterFragmentLifecycleCallbacks(fragmentLifecycleCallbacks)
-        requireApp().onFragmentNavigatorDestroyed()
+        requireFrolomuseApp().onFragmentNavigatorDestroyed()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -389,14 +389,14 @@ class MainActivity : PlayerHostActivity(),
     }
 
     override fun playerDidConnect(player: Player) {
-        requireApp().onPlayerConnected(player)
+        requireFrolomuseApp().onPlayerConnected(player)
         viewModel.onPlayerConnected(player)
         maybeInitializeFragments(player, lastSavedInstanceState)
     }
 
     override fun playerDidDisconnect(player: Player) {
         viewModel.onPlayerDisconnected()
-        requireApp().onPlayerDisconnected()
+        requireFrolomuseApp().onPlayerDisconnected()
         finish()
     }
 

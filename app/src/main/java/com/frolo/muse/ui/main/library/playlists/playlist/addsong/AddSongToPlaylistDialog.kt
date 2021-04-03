@@ -24,7 +24,7 @@ class AddSongToPlaylistDialog: BaseDialogFragment() {
 
     private val viewModel: AddSongToPlaylistViewModel by lazy {
         val playlist = requireArguments().getSerializable(ARG_PLAYLIST) as Playlist
-        val vmFactory = AddSongToPlaylistVMFactory(requireApp().appComponent, playlist)
+        val vmFactory = AddSongToPlaylistVMFactory(requireFrolomuseApp().appComponent, playlist)
         ViewModelProviders.of(this, vmFactory)
                 .get(AddSongToPlaylistViewModel::class.java)
     }

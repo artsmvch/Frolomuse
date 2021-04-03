@@ -28,7 +28,7 @@ class AddMediaToPlaylistDialog : BaseDialogFragment() {
         @Suppress("UNCHECKED_CAST")
         val mediaList = requireArguments()
                 .getSerializable(ARG_MEDIA_LIST) as ArrayList<Media>
-        val vmFactory = AddMediaToPlaylistVMFactory(requireApp().appComponent, mediaList)
+        val vmFactory = AddMediaToPlaylistVMFactory(requireFrolomuseApp().appComponent, mediaList)
         ViewModelProviders.of(this, vmFactory)
                 .get(AddMediaToPlaylistViewModel::class.java)
     }

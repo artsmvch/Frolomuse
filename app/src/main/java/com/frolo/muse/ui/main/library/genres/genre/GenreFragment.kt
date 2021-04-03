@@ -36,7 +36,7 @@ class GenreFragment: AbsSongCollectionFragment<Song>(), NoClipping {
 
     override val viewModel: GenreViewModel by lazy {
         val genre = requireArguments().getSerializable(ARG_GENRE) as Genre
-        val vmFactory = GenreVMFactory(requireApp().appComponent, genre)
+        val vmFactory = GenreVMFactory(requireFrolomuseApp().appComponent, genre)
         ViewModelProviders.of(this, vmFactory)
                 .get(GenreViewModel::class.java)
     }

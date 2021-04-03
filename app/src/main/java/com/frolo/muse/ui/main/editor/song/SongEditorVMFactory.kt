@@ -2,7 +2,7 @@ package com.frolo.muse.ui.main.editor.song
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.frolo.muse.App
+import com.frolo.muse.FrolomuseApp
 import com.frolo.muse.di.AppComponent
 import com.frolo.muse.engine.Player
 import com.frolo.muse.logger.EventLogger
@@ -13,9 +13,9 @@ import javax.inject.Inject
 
 
 class SongEditorVMFactory constructor(
-        private val app: App,
-        appComponent: AppComponent,
-        private val song: Song
+    private val frolomuseApp: FrolomuseApp,
+    appComponent: AppComponent,
+    private val song: Song
 ): ViewModelProvider.Factory {
 
     @Inject
@@ -34,7 +34,7 @@ class SongEditorVMFactory constructor(
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         @Suppress("UNCHECKED_CAST")
         return SongEditorViewModel(
-                app,
+                frolomuseApp,
                 player,
                 schedulerProvider,
                 repository,

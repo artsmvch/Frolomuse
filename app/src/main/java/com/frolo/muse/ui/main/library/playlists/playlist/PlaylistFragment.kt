@@ -41,7 +41,7 @@ class PlaylistFragment: AbsSongCollectionFragment<Song>(), NoClipping {
 
     override val viewModel: PlaylistViewModel by lazy {
         val playlist = requireArguments().getSerializable(ARG_PLAYLIST) as Playlist
-        val vmFactory = PlaylistVMFactory(requireApp().appComponent, playlist)
+        val vmFactory = PlaylistVMFactory(requireFrolomuseApp().appComponent, playlist)
         ViewModelProviders.of(this, vmFactory)
                 .get(PlaylistViewModel::class.java)
     }

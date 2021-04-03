@@ -11,7 +11,7 @@ import androidx.annotation.UiThread
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
-import com.frolo.muse.App
+import com.frolo.muse.FrolomuseApp
 import com.frolo.muse.R
 import com.frolo.muse.Logger
 import com.frolo.muse.di.modules.ViewModelModule
@@ -76,7 +76,7 @@ abstract class BaseFragment: Fragment() {
     //<editor-fold desc="Injectors">
     internal fun prefs(): Lazy<Preferences> = lazy {
         if (prefs == null) {
-            prefs = requireApp().appComponent.providePreferences()
+            prefs = requireFrolomuseApp().appComponent.providePreferences()
         }
 
         prefs ?:
@@ -85,7 +85,7 @@ abstract class BaseFragment: Fragment() {
 
     internal inline fun <reified T : ViewModel> viewModel(): Lazy<T> = lazy {
         if (vmFactory == null) {
-            vmFactory = requireApp().appComponent.provideVMFactory()
+            vmFactory = requireFrolomuseApp().appComponent.provideVMFactory()
         }
 
         val factory = vmFactory ?:
@@ -97,7 +97,7 @@ abstract class BaseFragment: Fragment() {
 
     internal fun eventLogger(): Lazy<EventLogger> = lazy {
         if (eventLogger == null) {
-            eventLogger = requireApp().appComponent.provideEventLogger()
+            eventLogger = requireFrolomuseApp().appComponent.provideEventLogger()
         }
 
         eventLogger ?:
@@ -105,7 +105,7 @@ abstract class BaseFragment: Fragment() {
     }
     //</editor-fold>
 
-    fun requireApp() = requireActivity().application as App
+    fun requireFrolomuseApp() = requireActivity().application as FrolomuseApp
 
     fun isPermissionGranted(permission: String): Boolean {
         return rxPermissions?.isGranted(permission)

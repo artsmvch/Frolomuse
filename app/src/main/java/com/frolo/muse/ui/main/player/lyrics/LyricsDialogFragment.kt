@@ -30,7 +30,7 @@ class LyricsDialogFragment: BaseDialogFragment() {
 
     private val viewModel: LyricsViewModel by lazy {
         val song = requireArguments().getSerializable(ARG_SONG) as Song
-        val vmFactory = LyricsVMFactory(requireApp().appComponent, song)
+        val vmFactory = LyricsVMFactory(requireFrolomuseApp().appComponent, song)
         ViewModelProviders.of(this, vmFactory)
                 .get(LyricsViewModel::class.java)
     }

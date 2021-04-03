@@ -24,7 +24,7 @@ class AlbumsOfArtistFragment : AbsMediaCollectionFragment<Album>() {
 
     override val viewModel: AlbumsOfArtistViewModel by lazy {
         val artist = requireArguments().getSerializable(ARG_ARTIST) as Artist
-        val vmFactory = AlbumsOfArtistVMFactory(requireApp().appComponent, artist)
+        val vmFactory = AlbumsOfArtistVMFactory(requireFrolomuseApp().appComponent, artist)
         ViewModelProviders.of(this, vmFactory)
                 .get(AlbumsOfArtistViewModel::class.java)
     }

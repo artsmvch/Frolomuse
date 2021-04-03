@@ -9,7 +9,7 @@ import android.widget.RemoteViews
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
-import com.frolo.muse.App
+import com.frolo.muse.FrolomuseApp
 import com.frolo.muse.Logger
 import com.frolo.muse.R
 import com.frolo.muse.common.*
@@ -158,7 +158,7 @@ class PlayerService: RxService() {
      */
     override fun onCreate() {
         super.onCreate()
-        (application as App).appComponent.inject(this)
+        (application as FrolomuseApp).appComponent.inject(this)
 
         mediaSession = MediaSessionCompat(applicationContext, packageName).apply {
             setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS)

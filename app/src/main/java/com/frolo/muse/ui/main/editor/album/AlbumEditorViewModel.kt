@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import com.bumptech.glide.Glide
-import com.frolo.muse.App
+import com.frolo.muse.FrolomuseApp
 import com.frolo.muse.Features
 import com.frolo.muse.arch.SingleLiveEvent
 import com.frolo.muse.arch.call
@@ -22,12 +22,12 @@ import io.reactivex.Single
 
 
 class AlbumEditorViewModel constructor(
-    private val app: App,
+    private val frolomuseApp: FrolomuseApp,
     private val schedulerProvider: SchedulerProvider,
     private val repository: AlbumRepository,
     private val eventLogger: EventLogger,
     private val albumArg: Album
-): BaseAndroidViewModel(app, eventLogger) {
+): BaseAndroidViewModel(frolomuseApp, eventLogger) {
 
     private val isEditorOptionAvailable = Features.isAlbumEditorFeatureAvailable()
 
@@ -140,7 +140,7 @@ class AlbumEditorViewModel constructor(
     }
 
     private fun createAlbumArtSource(album: Album): Single<BitmapResult> {
-        val request = Glide.with(app).makeRequestAsBitmap(album.id)
+        val request = Glide.with(frolomuseApp).makeRequestAsBitmap(album.id)
         return Single.fromCallable {
             try {
                 val bitmap = request.submit().get()
@@ -156,7 +156,7 @@ class AlbumEditorViewModel constructor(
     private fun createFilepathSource(filepath: String?): Single<BitmapResult> {
         return Single.fromCallable {
             try {
-                val bitmap = Glide.with(app)
+                val bitmap = Glide.with(frolomuseApp)
                         .asBitmap()
                         .load(filepath)
                         .submit()

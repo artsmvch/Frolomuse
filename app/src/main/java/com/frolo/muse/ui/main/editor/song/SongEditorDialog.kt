@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.dialog_song_editor.*
 class SongEditorDialog: BaseDialogFragment() {
 
     private val viewModel: SongEditorViewModel by lazy {
-        val app = requireApp()
+        val app = requireFrolomuseApp()
         val vmFactory = SongEditorVMFactory(app, app.appComponent, song)
         ViewModelProviders.of(this, vmFactory)
                 .get(SongEditorViewModel::class.java)

@@ -3,7 +3,7 @@ package com.frolo.muse.ui.base
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.frolo.muse.App
+import com.frolo.muse.FrolomuseApp
 import com.frolo.muse.R
 import com.frolo.muse.model.Theme
 import com.frolo.muse.repository.Preferences
@@ -16,10 +16,10 @@ abstract class BaseActivity: AppCompatActivity() {
 
     private var errorToast: Toast? = null
 
-    fun requireApp() = application as App
+    fun requireFrolomuseApp() = application as FrolomuseApp
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        requireApp().appComponent.inject(this)
+        requireFrolomuseApp().appComponent.inject(this)
         applySavedTheme()
         super.onCreate(savedInstanceState)
     }

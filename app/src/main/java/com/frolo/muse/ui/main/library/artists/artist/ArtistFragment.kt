@@ -51,7 +51,7 @@ class ArtistFragment: BaseFragment() {
 
     private val viewModel: ArtistViewModel by lazy {
         val artist = requireArguments().getSerializable(ARG_ARTIST) as Artist
-        val vmFactory = ArtistVMFactory(requireApp().appComponent, artist)
+        val vmFactory = ArtistVMFactory(requireFrolomuseApp().appComponent, artist)
         ViewModelProviders.of(this, vmFactory).get(ArtistViewModel::class.java)
     }
 
