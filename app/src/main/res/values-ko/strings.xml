@@ -170,7 +170,7 @@
     </plurals>
 
     <!--navigation drawer menu-->
-    <string name="nav_library">도서관</string>
+    <string name="nav_library">라이브러리</string>
     <string name="nav_equalizer">평형 장치</string>
     <string name="nav_settings">설정</string>
     <string name="nav_search">검색</string>
@@ -212,8 +212,8 @@
     <string name="checkout_out">새로운 뮤직 플레이어 Frolomuse를 확인하십시오!</string>
     <string name="help_with_translations">번역 도움말</string>
     <string name="help_with_translations_desc">번역에 도움을 받으려면 여기를 클릭하십시오</string>
-    <string name="library_sections">도서관 섹션</string>
-    <string name="library_sections_desc">보고 싶은 도서관 섹션과 순서</string>
+    <string name="library_sections">라이브러리 섹션</string>
+    <string name="library_sections_desc">보고 싶은 라이브러리 섹션과 순서</string>
     <!--Sleep Timer-->
     <string name="sleep_timer_is_set">슬립 타이머가 설정되었습니다</string>
     <string name="sleep_timer_is_off">슬립 타이머가 꺼져 있습니다</string>
@@ -324,7 +324,7 @@
 
     <!--MinAudioFileDuration-->
     <string name="exclude_short_songs">짧은 노래 제외</string>
-    <string name="exclude_short_songs_desc">도서관 검색에서 짧은 노래 제외</string>
+    <string name="exclude_short_songs_desc">라이브러리 검색에서 짧은 노래 제외</string>
     <string name="specify_min_audio_file_duration">
         최소 오디오 파일 길이를 지정하십시오. 지속 시간이 지정된 모든 오디오 파일은 라이브러리 검색에서 제외됩니다.
         이 값이 비어 있거나 0:0 이면 오디오 파일이 제외되지 않습니다.
