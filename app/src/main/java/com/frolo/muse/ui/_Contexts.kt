@@ -7,25 +7,15 @@ import android.content.res.Configuration
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
-import androidx.core.content.FileProvider
 import com.frolo.muse.BuildConfig
+import com.frolo.muse.OS
 import com.frolo.muse.R
+import com.frolo.muse.android.resolveUri
 import com.frolo.muse.model.media.Song
 import java.io.File
 
+
 private fun Context.getLinkToAppInStore() = "https://play.google.com/store/apps/details?id=$packageName"
-
-private fun isAndroidN7OrHigher(): Boolean {
-    return Build.VERSION.SDK_INT >= Build.VERSION_CODES.N
-}
-
-private fun Context.getUri(file: File): Uri {
-    return if (isAndroidN7OrHigher()){
-        FileProvider.getUriForFile(this, this.packageName + ".fileprovider", file)
-    } else{
-        Uri.fromFile(file)
-    }
-}
 
 // Checks if the package manager can resolve the given intent before starting activity
 private fun Context.safelyStartActivity(intent: Intent) {
@@ -41,7 +31,7 @@ fun Context.isInLandscapeMode(): Boolean {
 
 fun Context.share(uri: Uri, title: String) {
     val intent = Intent(Intent.ACTION_SEND)
-    if (isAndroidN7OrHigher()) {
+    if (OS.isAtLeastN()) {
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
     }
     intent.type = "audio/*"
@@ -58,7 +48,7 @@ fun Context.share(uris: List<Uri>, title: String) {
         return
     }
     val intent = Intent(Intent.ACTION_SEND_MULTIPLE)
-    if (isAndroidN7OrHigher()) {
+    if (OS.isAtLeastN()) {
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
     }
     intent.type = "audio/*"
@@ -100,7 +90,7 @@ fun Context.sharePoster(song: Song, file: File) {
     val intent = Intent(Intent.ACTION_SEND).apply {
         flags = Intent.FLAG_ACTIVITY_NEW_TASK
         type = "image/png"
-        putExtra(Intent.EXTRA_STREAM, getUri(file))
+        putExtra(Intent.EXTRA_STREAM, resolveUri(file))
         addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
         addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
     }

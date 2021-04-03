@@ -96,8 +96,8 @@ public final class PlayerImpl implements Player {
      * @param audioFx audioFx
      * @return a new implementation
      */
-    public static Player create(@NotNull Context context, @NotNull AudioFxApplicable audioFx) {
-        return new PlayerImpl(context, audioFx);
+    public static Player create(@NotNull Context context, @NotNull AudioFxApplicable audioFx, @Nullable PlayerJournal journal) {
+        return new PlayerImpl(context, audioFx, journal);
     }
 
     /**
@@ -115,6 +115,24 @@ public final class PlayerImpl implements Player {
     @NotNull
     static Handler createEventHandler() {
         return new Handler(Looper.getMainLooper());
+    }
+
+    @NotNull
+    private static String info(@Nullable AudioSourceQueue queue) {
+        if (queue == null) {
+            return "Queue[null]";
+        }
+
+        return "Queue[name=" + queue.getName() + ", length=" + queue.getLength() + "]";
+    }
+
+    @NotNull
+    private static String info(@Nullable AudioSource audioSource) {
+        if (audioSource == null) {
+            return "AudioSource[null]";
+        }
+
+        return "AudioSource[source=" + audioSource.getSource() + "]";
     }
 
     /**
@@ -169,6 +187,10 @@ public final class PlayerImpl implements Player {
     // Handlers
     private final Handler mEngineHandler;
     private final Object mEngineTasksLock = new Object();
+
+    // Player journal
+    @NotNull
+    private final PlayerJournal mPlayerJournal;
 
     // Audio Focus Requester
     @NotNull
@@ -243,12 +265,13 @@ public final class PlayerImpl implements Player {
     private volatile PlaybackFadingStrategy mPlaybackFadingStrategy;
     private volatile Timer mPlaybackFadingTimer;
 
-    private PlayerImpl(@NotNull Context context, @NotNull AudioFxApplicable audioFx) {
+    private PlayerImpl(@NotNull Context context, @NotNull AudioFxApplicable audioFx, @Nullable PlayerJournal journal) {
         mContext = context;
         mAudioFx = audioFx;
         mEngineHandler = createEngineHandler();
         mObserverRegistry = PlayerObserverRegistry.create(context, this);
         mAudioFocusRequester = AudioFocusRequesterImpl.create(context, this);
+        mPlayerJournal = journal != null ? journal : PlayerJournal.EMPTY;
         startPlaybackFadingTimer();
     }
 
@@ -363,10 +386,12 @@ public final class PlayerImpl implements Player {
      */
     private boolean tryRequestAudioFocus() {
         try {
-            return mAudioFocusRequester.requestAudioFocus();
+            boolean result = mAudioFocusRequester.requestAudioFocus();
+            mPlayerJournal.logMessage("Request audio focus: result=" + result);
+            return result;
         } catch (Throwable error) {
             report(error);
-            // TODO: return true ?
+            mPlayerJournal.logError("Failed to request audio focus", error);
             return true;
         }
     }
@@ -421,6 +446,8 @@ public final class PlayerImpl implements Player {
             @Override
             public void run() {
 
+                mPlayerJournal.logMessage("Handle engine error: what=" + what + ", extra=" + extra);
+
                 synchronized (mEngineLock) {
 
                     final MediaPlayer currentEngine = mEngine;
@@ -437,6 +464,8 @@ public final class PlayerImpl implements Player {
                     // In this case, the current engine instance should be released and gc-ed.
                     if (isCriticalEngineError(what, extra)) {
 
+                        mPlayerJournal.logMessage("[!] Critical engine error");
+
                         // Resetting internal flags
                         mIsPreparedFlag = false;
                         mIsPreparedFlag = false;
@@ -446,6 +475,7 @@ public final class PlayerImpl implements Player {
                             if (currentEngine != null) currentEngine.release();
                         } catch (Throwable error) {
                             report(error);
+                            mPlayerJournal.logError("Failed to release the broken engine", error);
                         }
 
                         // Let it be gc-ed
@@ -460,6 +490,7 @@ public final class PlayerImpl implements Player {
                         if (currentItem != null) {
 
                             // OK, there is an audio source. Gotta prepare a new engine for it.
+                            mPlayerJournal.logMessage("Create new engine");
 
                             final MediaPlayer newEngine = createEngine();
 
@@ -475,6 +506,7 @@ public final class PlayerImpl implements Player {
                                 mObserverRegistry.dispatchPrepared(newEngine.getDuration(), 0);
                             } catch (Throwable error) {
                                 report(error);
+                                mPlayerJournal.logMessage("Failed to set up the new engine");
                             }
 
                         }
@@ -494,6 +526,8 @@ public final class PlayerImpl implements Player {
             @Override
             public void run() {
 
+                mPlayerJournal.logMessage("Reset");
+
                 // We reset everything here
 
                 mABEngine.reset();
@@ -510,6 +544,7 @@ public final class PlayerImpl implements Player {
                             engine.reset();
                         } catch (Throwable error) {
                             report(error);
+                            mPlayerJournal.logMessage("Failed to reset the current engine");
                         }
                     }
                 }
@@ -529,6 +564,8 @@ public final class PlayerImpl implements Player {
         return new Runnable() {
             @Override
             public void run() {
+
+                mPlayerJournal.logMessage("Skip to next");
 
                 final AudioSourceQueue queue = mCurrentQueue;
                 AudioSource currentItem = mCurrentItem;
@@ -581,6 +618,8 @@ public final class PlayerImpl implements Player {
             @Override
             public void run() {
 
+                mPlayerJournal.logMessage("Handle source: " + info(item) + ", seek_pos=" + playbackPosition + ", play=" + startPlaying);
+
                 // The current audio source is changed => gotta reset A-B
                 mABEngine.reset();
 
@@ -601,6 +640,7 @@ public final class PlayerImpl implements Player {
                                 engine.reset();
                             } catch (Throwable error) {
                                 report(error);
+                                mPlayerJournal.logMessage("Failed to reset the current engine");
                             }
                         }
                     }
@@ -649,6 +689,7 @@ public final class PlayerImpl implements Player {
                         }
                     } catch (Throwable error) {
                         report(error);
+                        mPlayerJournal.logError("Failed to set up the current engine", error);
                         mIsPlayingFlag = false;
                         mObserverRegistry.dispatchPlaybackPaused();
                     }
@@ -674,6 +715,11 @@ public final class PlayerImpl implements Player {
         return new Runnable() {
             @Override
             public void run() {
+
+                mPlayerJournal.logMessage("Prepare by position: " + info(queue)
+                        + ", pos_in_queue=" + positionInQueue
+                        + ", play=" + startPlaying
+                        + ", seek_pos=" + playbackPosition);
 
                 // First, saving the original queue
                 mOriginQueue = queue;
@@ -758,6 +804,8 @@ public final class PlayerImpl implements Player {
             @Override
             public void run() {
 
+                mPlayerJournal.logMessage("Skip to previous");
+
                 final boolean byUser = true;
 
                 final AudioSourceQueue queue = mCurrentQueue;
@@ -821,6 +869,8 @@ public final class PlayerImpl implements Player {
             @Override
             public void run() {
 
+                mPlayerJournal.logMessage("Skip to: pos_in_queue=" + position + ", force_play=" + forceStartPlaying);
+
                 final AudioSourceQueue queue = mCurrentQueue;
 
                 final int currentPositionInQueue = mCurrentPositionInQueue;
@@ -859,6 +909,8 @@ public final class PlayerImpl implements Player {
         final Runnable task = new Runnable() {
             @Override
             public void run() {
+
+                mPlayerJournal.logMessage("Skip to: " + info(item));
 
                 final AudioSourceQueue queue = mCurrentQueue;
 
@@ -922,6 +974,7 @@ public final class PlayerImpl implements Player {
                 return engine.getAudioSessionId();
             } catch (Throwable error) {
                 report(error);
+                mPlayerJournal.logError("Failed to get audio session ID", error);
                 return NO_AUDIO_SESSION;
             }
         }
@@ -957,6 +1010,7 @@ public final class PlayerImpl implements Player {
                 return engine.getCurrentPosition();
             } catch (Throwable error) {
                 report(error);
+                mPlayerJournal.logError("Failed to get progress", error);
                 return 0;
             }
         }
@@ -976,11 +1030,14 @@ public final class PlayerImpl implements Player {
                     final MediaPlayer engine = mEngine;
                     if (engine == null) return;
 
+                    mPlayerJournal.logMessage("Seek to: " + position);
+
                     try {
                         engine.seekTo(position);
                         mObserverRegistry.dispatchSoughtTo(position);
                     } catch (Throwable error) {
                         report(error);
+                        mPlayerJournal.logError("Failed to seek", error);
                     }
                 }
             }
@@ -1002,6 +1059,7 @@ public final class PlayerImpl implements Player {
                 return engine.getDuration();
             } catch (Throwable error) {
                 report(error);
+                mPlayerJournal.logError("Failed to get duration", error);
                 return 0;
             }
         }
@@ -1020,6 +1078,8 @@ public final class PlayerImpl implements Player {
                     final MediaPlayer engine = mEngine;
                     if (engine == null) return;
 
+                    mPlayerJournal.logMessage("Start");
+
                     // The focus should be granted as well
                     if (tryRequestAudioFocus()) {
 
@@ -1031,6 +1091,7 @@ public final class PlayerImpl implements Player {
                             mObserverRegistry.dispatchPlaybackStarted();
                         } catch (Throwable error) {
                             report(error);
+                            mPlayerJournal.logError("Failed to start", error);
                         }
 
                     }
@@ -1062,11 +1123,14 @@ public final class PlayerImpl implements Player {
 
                     mIsPlayingFlag = false;
 
+                    mPlayerJournal.logMessage("Pause");
+
                     try {
                         engine.pause();
                         mObserverRegistry.dispatchPlaybackPaused();
                     } catch (Throwable error) {
                         report(error);
+                        mPlayerJournal.logError("Failed to pause", error);
                     }
                 }
 
@@ -1094,6 +1158,8 @@ public final class PlayerImpl implements Player {
                     final boolean oldIsPlayingFlag = mIsPlayingFlag;
                     final boolean newIsPlayingFlag = !oldIsPlayingFlag;
 
+                    mPlayerJournal.logMessage("Toggle");
+
                     try {
                         if (newIsPlayingFlag) {
 
@@ -1113,6 +1179,7 @@ public final class PlayerImpl implements Player {
 
                     } catch (Throwable error) {
                         report(error);
+                        mPlayerJournal.logError("Failed to toggle", error);
                     }
                 }
 
@@ -1129,6 +1196,8 @@ public final class PlayerImpl implements Player {
         final Runnable task = new Runnable() {
             @Override
             public void run() {
+
+                mPlayerJournal.logMessage("Update audio source: " + info(item));
 
                 final AudioSourceQueue originQueue = mOriginQueue;
                 final AudioSourceQueue currentQueue = mCurrentQueue;
@@ -1155,6 +1224,8 @@ public final class PlayerImpl implements Player {
         return new Runnable() {
             @Override
             public void run() {
+
+                mPlayerJournal.logMessage("Resolve undefined state");
 
                 final AudioSourceQueue currentQueue = mCurrentQueue;
                 int currentPositionInQueue = mCurrentPositionInQueue;
@@ -1191,6 +1262,8 @@ public final class PlayerImpl implements Player {
             @Override
             public void run() {
 
+                mPlayerJournal.logMessage("Remove item at: pos_in_queue" + position);
+
                 final AudioSourceQueue originQueue = mOriginQueue;
                 final AudioSourceQueue currentQueue = mCurrentQueue;
                 final AudioSource targetItem = currentQueue.getItemAt(position);
@@ -1222,6 +1295,8 @@ public final class PlayerImpl implements Player {
         final Runnable task = new Runnable() {
             @Override
             public void run() {
+
+                mPlayerJournal.logMessage("Remove items: count=" + items.size());
 
                 final AudioSourceQueue originQueue = mOriginQueue;
                 final AudioSourceQueue currentQueue = mCurrentQueue;
@@ -1270,6 +1345,8 @@ public final class PlayerImpl implements Player {
             @Override
             public void run() {
 
+                mPlayerJournal.logMessage("Add items: count=" + items.size());
+
                 final AudioSourceQueue originQueue = mOriginQueue;
                 final AudioSourceQueue currentQueue = mCurrentQueue;
 
@@ -1306,6 +1383,8 @@ public final class PlayerImpl implements Player {
         final Runnable task = new Runnable() {
             @Override
             public void run() {
+
+                mPlayerJournal.logMessage("Add item next: count=" + items.size());
 
                 final AudioSourceQueue originQueue = mOriginQueue;
                 final AudioSourceQueue currentQueue = mCurrentQueue;
@@ -1344,6 +1423,8 @@ public final class PlayerImpl implements Player {
         final Runnable task = new Runnable() {
             @Override
             public void run() {
+
+                mPlayerJournal.logMessage("Move item: from=" + fromPosition + ", to=" + toPosition);
 
                 final AudioSourceQueue originQueue = mOriginQueue;
                 final AudioSourceQueue currentQueue = mCurrentQueue;
@@ -1429,11 +1510,14 @@ public final class PlayerImpl implements Player {
             final MediaPlayer engine = mEngine;
             if (engine == null) return;
 
+            mPlayerJournal.logMessage("Rewind: interval=" + intervalValue);
+
             try {
                 final int newPosition = engine.getCurrentPosition() + intervalValue;
                 engine.seekTo(newPosition);
             } catch (Throwable error) {
                 report(error);
+                mPlayerJournal.logError("Failed to rewind", error);
             }
 
         }
@@ -1454,10 +1538,13 @@ public final class PlayerImpl implements Player {
             final MediaPlayer engine = mEngine;
             if (engine == null) return;
 
+            mPlayerJournal.logMessage("Set volume");
+
             try {
                 engine.setVolume(level, level);
             } catch (Throwable error) {
                 report(error);
+                mPlayerJournal.logError("Failed to set volume", error);
             }
         }
     }
@@ -1516,6 +1603,8 @@ public final class PlayerImpl implements Player {
 
             try {
 
+                // Do NOT log here, otherwise the journal will overflow
+
                 final PlaybackFadingStrategy strategy = mPlaybackFadingStrategy;
 
                 final float level;
@@ -1534,6 +1623,7 @@ public final class PlayerImpl implements Player {
                 engine.setVolume(volume, volume);
             } catch (Throwable error) {
                 report(error);
+                mPlayerJournal.logError("Failed to adjust volume", error);
             }
         }
 
@@ -1547,6 +1637,8 @@ public final class PlayerImpl implements Player {
 
     @Override
     public void setPlaybackFadingStrategy(@Nullable PlaybackFadingStrategy strategy) {
+        mPlayerJournal.logMessage("Set playback fading strategy");
+
         mPlaybackFadingStrategy = strategy;
 
         // It's better to adjust the volume on the engine thread,
@@ -1574,11 +1666,14 @@ public final class PlayerImpl implements Player {
             // If the engine is null, then the speed is considered normal
             if (engine == null) return SPEED_NORMAL;
 
+            mPlayerJournal.logMessage("Get speed");
+
             try {
                 final PlaybackParams params = engine.getPlaybackParams();
                 return params != null ? params.getSpeed() : SPEED_NORMAL;
             } catch (Throwable error) {
                 report(error);
+                mPlayerJournal.logError("Failed to get speed", error);
                 return SPEED_NORMAL;
             }
         }
@@ -1595,12 +1690,15 @@ public final class PlayerImpl implements Player {
             final MediaPlayer engine = mEngine;
             if (engine == null) return;
 
+            mPlayerJournal.logMessage("Set speed: " + speed);
+
             try {
                 final PlaybackParams params = engine.getPlaybackParams();
                 params.setSpeed(MathUtil.clamp(SPEED_RANGE, speed));
                 engine.setPlaybackParams(params);
             } catch (Throwable error) {
                 report(error);
+                mPlayerJournal.logError("Failed to set speed", error);
             }
         }
     }
@@ -1617,11 +1715,14 @@ public final class PlayerImpl implements Player {
             // If the engine is null, then the pitch is considered normal
             if (engine == null) return PITCH_NORMAL;
 
+            mPlayerJournal.logMessage("Get pitch");
+
             try {
                 final PlaybackParams params = engine.getPlaybackParams();
                 return params != null ? params.getPitch() : PITCH_NORMAL;
             } catch (Throwable error) {
                 report(error);
+                mPlayerJournal.logError("Failed to get pitch", error);
                 return PITCH_NORMAL;
             }
         }
@@ -1638,12 +1739,15 @@ public final class PlayerImpl implements Player {
             final MediaPlayer engine = mEngine;
             if (engine == null) return;
 
+            mPlayerJournal.logMessage("Set pitch");
+
             try {
                 final PlaybackParams params = engine.getPlaybackParams();
                 params.setPitch(MathUtil.clamp(PITCH_RANGE, pitch));
                 engine.setPlaybackParams(params);
             } catch (Throwable error) {
                 report(error);
+                mPlayerJournal.logError("Failed to set pitch", error);
             }
         }
     }
@@ -1660,6 +1764,8 @@ public final class PlayerImpl implements Player {
         final Runnable task = new Runnable() {
             @Override
             public void run() {
+
+                mPlayerJournal.logMessage("Set shuffle mode: " + mode);
 
                 mShuffleMode = mode;
 
@@ -1697,6 +1803,8 @@ public final class PlayerImpl implements Player {
     public void setRepeatMode(int mode) {
         if (isShutdown()) return;
 
+        mPlayerJournal.logMessage("Set repeat mode: " + mode);
+
         mRepeatMode = mode;
         mObserverRegistry.dispatchRepeatModeChanged(mode);
     }
@@ -1704,6 +1812,8 @@ public final class PlayerImpl implements Player {
     @Override
     public void shutdown() {
         if (mShutdown.getAndSet(true)) return;
+
+        mPlayerJournal.logMessage("Shutdown");
 
         // Resetting the A-B engine
         mABEngine.reset();
@@ -1770,6 +1880,8 @@ public final class PlayerImpl implements Player {
         }
 
         synchronized void pointA(int position) {
+            mPlayerJournal.logMessage("Point A: pos=" + position);
+
             final int duration = getDuration();
 
             int validAPoint = position;
@@ -1792,6 +1904,8 @@ public final class PlayerImpl implements Player {
         }
 
         synchronized void pointB(int position) {
+            mPlayerJournal.logMessage("Point B: pos=" + position);
+
             int validBPoint = position;
             if (validBPoint < 0) {
                 validBPoint = 0;
@@ -1813,6 +1927,8 @@ public final class PlayerImpl implements Player {
         }
 
         synchronized void reset() {
+            mPlayerJournal.logMessage("Reset A-B");
+
             mAPoint = null;
             mBPoint = null;
 
@@ -1884,6 +2000,9 @@ public final class PlayerImpl implements Player {
 
                         } catch (InterruptedException error) {
                             break;
+                        } catch (Throwable error) {
+                            mPlayerJournal.logMessage("Failed to seek for A-B");
+                            throw error;
                         }
                     }
                 }

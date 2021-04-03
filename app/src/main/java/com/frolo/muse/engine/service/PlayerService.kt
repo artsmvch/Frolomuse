@@ -65,6 +65,8 @@ class PlayerService: RxService() {
     private lateinit var player: Player
 
     @Inject
+    lateinit var playerJournal: PlayerJournal
+    @Inject
     lateinit var preferences: Preferences
     @Inject
     lateinit var presetRepository: PresetRepository
@@ -178,7 +180,7 @@ class PlayerService: RxService() {
         val audioFxApplicable: AudioFxApplicable =
                 AudioFx_Impl.getInstance(this, Const.AUDIO_FX_PREFERENCES)
 
-        player = PlayerImpl.create(this, audioFxApplicable)
+        player = PlayerImpl.create(this, audioFxApplicable, playerJournal)
 
         // Subscribing on the headset status changes
         headsetHandler.subscribe(this)

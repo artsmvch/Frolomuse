@@ -23,6 +23,7 @@ import com.frolo.muse.ui.main.player.mini.MiniPlayerViewModel
 import com.frolo.muse.ui.main.settings.playback.PlaybackFadingViewModel
 import com.frolo.muse.ui.main.settings.duration.MinAudioFileDurationViewModel
 import com.frolo.muse.ui.main.settings.hidden.HiddenFilesViewModel
+import com.frolo.muse.ui.main.settings.journal.PlayerJournalViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -158,5 +159,10 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(PlaybackFadingViewModel::class)
     abstract fun bindPlaybackFadingViewModel(viewModel: PlaybackFadingViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(PlayerJournalViewModel::class)
+    abstract fun bindPlayerJournalViewModel(viewModel: PlayerJournalViewModel): ViewModel
 
 }

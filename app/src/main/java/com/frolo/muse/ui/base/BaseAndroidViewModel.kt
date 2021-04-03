@@ -25,6 +25,8 @@ abstract class BaseAndroidViewModel constructor(
     private val _error: MutableLiveData<Throwable> = SingleLiveEvent()
     val error: LiveData<Throwable> = _error
 
+    protected val justApplication: Application get() = getApplication()
+
     private fun logError(err: Throwable) {
         eventLogger.log(err)
         if (ArchTaskExecutor.getInstance().isMainThread) {
@@ -82,6 +84,6 @@ abstract class BaseAndroidViewModel constructor(
 
     override fun onCleared() {
         super.onCleared()
-        disposables.clear()
+        disposables.dispose()
     }
 }

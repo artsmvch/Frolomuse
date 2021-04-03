@@ -348,6 +348,15 @@
         Without this permission, the application will not be able to browse the music from your device. Do you want to grant the permission?
     </string>
 
+    <!--PlayerJournal-->
+    <string name="player_journal">Player journal</string>
+    <string name="player_journal_desc">Display all messages from the player journal</string>
+    <string name="send_player_logs">Send</string>
+    <string name="send_player_logs_title">Send player logs</string>
+    <string name="copy_player_logs_to_clipboard">Copy</string>
+    <string name="player_logs">Player logs</string>
+    <string name="copied">Copied</string>
+
     <!--Onboarding-->
     <string name="skip">Skip</string>
     <string name="done">Done</string>

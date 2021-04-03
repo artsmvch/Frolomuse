@@ -32,6 +32,7 @@
     <dimen name="album_art_rounded_corner_radius">12dp</dimen>
 
     <dimen name="vertical_divider_height">1dp</dimen>
+    <dimen name="horizontal_divider_height">1dp</dimen>
 
     <dimen name="dialog_corner_radius">24dp</dimen>
     <dimen name="bottom_sheet_corner_radius">24dp</dimen>

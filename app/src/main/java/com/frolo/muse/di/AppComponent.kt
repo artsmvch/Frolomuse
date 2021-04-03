@@ -1,6 +1,7 @@
 package com.frolo.muse.di
 
 import com.frolo.muse.di.modules.*
+import com.frolo.muse.engine.PlayerJournal
 import com.frolo.muse.engine.service.PlayerService
 import com.frolo.muse.interactor.media.AddMediaToPlaylistUseCase
 import com.frolo.muse.interactor.media.AddSongToPlaylistUseCase
@@ -53,6 +54,7 @@ interface AppComponent {
     fun providePreferences(): Preferences
     fun provideVMFactory(): ViewModelModule.ViewModelFactory
     fun provideEventLogger(): EventLogger
+    fun providePlayerJournal(): PlayerJournal
     fun provideSongRepository(): SongRepository
 
     fun inject(service: PlayerService)

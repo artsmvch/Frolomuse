@@ -24,6 +24,7 @@ import com.frolo.muse.ui.ThemeHandler
 import com.frolo.muse.ui.base.NoClipping
 import com.frolo.muse.ui.goToStore
 import com.frolo.muse.ui.helpWithTranslations
+import com.frolo.muse.ui.main.settings.journal.PlayerJournalDialog
 import com.frolo.muse.ui.main.settings.playback.PlaybackFadingDialog
 import com.frolo.muse.ui.main.settings.duration.MinAudioFileDurationDialog
 import com.frolo.muse.ui.main.settings.hidden.HiddenFilesDialog
@@ -176,6 +177,18 @@ class SettingsFragment : PreferenceFragmentCompat(),
             summary = BuildConfig.VERSION_NAME
             onPreferenceClickListener = Preference.OnPreferenceClickListener {
                 showAppInfoDialog()
+                true
+            }
+        }
+
+        // Debug
+        findPreference("debug").apply {
+            isVisible = BuildConfig.DEBUG
+        }
+
+        findPreference("player_journal").apply {
+            setOnPreferenceClickListener {
+                showPlayerJournal()
                 true
             }
         }
@@ -359,6 +372,11 @@ class SettingsFragment : PreferenceFragmentCompat(),
         dialog.show(childFragmentManager, TAG_APP_INFO)
     }
 
+    private fun showPlayerJournal() {
+        val dialog = PlayerJournalDialog.newInstance()
+        dialog.show(childFragmentManager, TAG_PLAYER_JOURNAL)
+    }
+
     override fun removeClipping(left: Int, top: Int, right: Int, bottom: Int) {
         view?.also { safeView ->
             val recyclerView = listView
@@ -385,6 +403,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
         private const val TAG_HIDDEN_FILES = "hidden_files"
         private const val TAG_MIN_AUDIO_FILE_DURATION = "min_audio_file_duration"
         private const val TAG_PLAYBACK_FADING = "playback_fading"
+        private const val TAG_PLAYER_JOURNAL = "player_journal"
 
         // Factory
         fun newInstance() = SettingsFragment()

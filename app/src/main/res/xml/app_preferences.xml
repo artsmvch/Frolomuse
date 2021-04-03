@@ -105,4 +105,15 @@
             android:title="@string/version"
             android:defaultValue="false"/>
     </androidx.preference.PreferenceCategory>
+
+    <androidx.preference.PreferenceCategory
+        android:key="debug"
+        android:title="Debug">
+
+        <Preference
+            android:icon="@drawable/ic_journal_20"
+            android:key="player_journal"
+            android:title="@string/player_journal"
+            android:summary="@string/player_journal_desc"/>
+    </androidx.preference.PreferenceCategory>
 </androidx.preference.PreferenceScreen>

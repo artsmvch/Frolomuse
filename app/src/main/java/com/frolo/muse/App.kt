@@ -66,7 +66,7 @@ class App : MultiDexApplication() {
     private fun buildAppComponent(): AppComponent =
         DaggerAppComponent.builder()
             .appModule(AppModule(this))
-            .playerModule(PlayerModule(playerWrapper))
+            .playerModule(PlayerModule(playerWrapper, BuildConfig.DEBUG))
             .localDataModule(LocalDataModule())
             .remoteDataModule(RemoteDataModule())
             .navigationModule(NavigationModule(navigatorWrapper))
