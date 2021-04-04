@@ -462,6 +462,8 @@ final class PlaylistHelper {
                 String where = MediaStore.Audio.Playlists.Members.AUDIO_ID + " = " + song.getId();
                 int deletedCount = resolver.delete(uri, where, null);
 
+                resolver.notifyChange(uri, null);
+
                 // TODO: check deletedCount
             }
         });

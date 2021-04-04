@@ -101,8 +101,8 @@ abstract class BaseViewModel constructor(
     }
 
     override fun onCleared() {
-        disposables.clear()
         super.onCleared()
+        disposables.dispose()
     }
 
 }

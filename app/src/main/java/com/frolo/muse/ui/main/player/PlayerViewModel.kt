@@ -21,6 +21,8 @@ import com.frolo.muse.interactor.player.ResolveSoundUseCase
 import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.ABState
+import com.frolo.muse.model.event.DeletionConfirmation
+import com.frolo.muse.model.event.DeletionType
 import com.frolo.muse.model.media.Album
 import com.frolo.muse.model.media.Media
 import com.frolo.muse.model.media.Song
@@ -190,8 +192,8 @@ class PlayerViewModel @Inject constructor(
     val repeatMode: LiveData<Int> get() = _repeatMode
 
     // Confirmation
-    private val _confirmDeletionEvent = SingleLiveEvent<Song>()
-    val confirmDeletionEvent: LiveData<Song> get() = _confirmDeletionEvent
+    private val _confirmDeletionEvent = SingleLiveEvent<DeletionConfirmation<Song>>()
+    val confirmDeletionEvent: LiveData<DeletionConfirmation<Song>> get() = _confirmDeletionEvent
 
     init {
         player.registerObserver(playerObserver)
@@ -366,11 +368,11 @@ class PlayerViewModel @Inject constructor(
 
     fun onDeleteOptionSelected() {
         val song = song.value ?: return
-        _confirmDeletionEvent.value = song
+        _confirmDeletionEvent.value = DeletionConfirmation(song, null)
     }
 
-    fun onConfirmedDeletion(song: Song) {
-        deleteMediaUseCase.delete(song)
+    fun onConfirmedDeletion(song: Song, type: DeletionType) {
+        deleteMediaUseCase.delete(song, type)
             .observeOn(schedulerProvider.main())
             .subscribeFor { _songDeletedEvent.value = song }
     }

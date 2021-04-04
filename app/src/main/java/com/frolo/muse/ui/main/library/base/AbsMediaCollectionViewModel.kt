@@ -13,6 +13,9 @@ import com.frolo.muse.interactor.media.get.GetMediaUseCase
 import com.frolo.muse.interactor.media.shortcut.CreateShortcutUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.logShortcutCreated
+import com.frolo.muse.model.event.DeletionConfirmation
+import com.frolo.muse.model.event.DeletionType
+import com.frolo.muse.model.event.MultipleDeletionConfirmation
 import com.frolo.muse.model.media.*
 import com.frolo.muse.model.menu.ContextualMenu
 import com.frolo.muse.model.menu.OptionsMenu
@@ -144,11 +147,11 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
     val isProcessingContextual: LiveData<Boolean> = _isProcessingContextual
 
     // Deletion confirmation
-    private val _confirmDeletionEvent: MutableLiveData<E> = SingleLiveEvent()
-    val confirmDeletionEvent: LiveData<E> = _confirmDeletionEvent
+    private val _confirmDeletionEvent: MutableLiveData<DeletionConfirmation<E>> = SingleLiveEvent()
+    val confirmDeletionEvent: LiveData<DeletionConfirmation<E>> = _confirmDeletionEvent
 
-    private val _confirmMultipleDeletionEvent: MutableLiveData<List<E>> = SingleLiveEvent()
-    val confirmMultipleDeletionEvent: LiveData<List<E>> = _confirmMultipleDeletionEvent
+    private val _confirmMultipleDeletionEvent: MutableLiveData<MultipleDeletionConfirmation<E>> = SingleLiveEvent()
+    val confirmMultipleDeletionEvent: LiveData<MultipleDeletionConfirmation<E>> = _confirmMultipleDeletionEvent
 
     init {
         _isLoading.value = false
@@ -156,6 +159,8 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
         _isProcessingOption.value = false
         _isProcessingContextual.value = false
     }
+
+    private fun findAssociatedMediaItem(): Media? = (this as? AssociatedWithMediaItem)?.associatedMediaItem
 
     protected fun setLoading(isLoading: Boolean) {
         _isLoading.value = isLoading
@@ -326,8 +331,7 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
 
     protected open fun handleItemClick(item: E) {
         val list = _mediaList.value ?: emptyList()
-        val associatedMediaItem = (this as? AssociatedWithMediaItem)?.associatedMediaItem
-        clickMediaUseCase.click(item, list, associatedMediaItem)
+        clickMediaUseCase.click(item, list, findAssociatedMediaItem())
                 .observeOn(schedulerProvider.main())
                 .subscribeFor {
                 }
@@ -413,8 +417,7 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
 
     fun onPlayContextualOptionSelected() {
         val selectedItems = selectedItems.value ?: return
-        val associatedMediaItem = (this as? AssociatedWithMediaItem)?.associatedMediaItem
-        playMediaUseCase.play(selectedItems, associatedMediaItem)
+        playMediaUseCase.play(selectedItems, findAssociatedMediaItem())
                 .observeOn(schedulerProvider.main())
                 .doOnSubscribe { disposable ->
                     lastContextualDisposable = disposable
@@ -459,7 +462,10 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
 
     fun onDeleteContextualOptionSelected() {
         val items = _selectedItems.value ?: return
-        _confirmMultipleDeletionEvent.value = items.toList()
+        _confirmMultipleDeletionEvent.value = MultipleDeletionConfirmation(
+            mediaItems = items.toList(),
+            associatedMediaItem = findAssociatedMediaItem()
+        )
     }
 
     fun onShareContextualOptionSelected() {
@@ -563,14 +569,16 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
     fun onDeleteOptionSelected() {
         val event = _openOptionsMenuEvent.value ?: return
         _closeOptionsMenuEvent.value = event
-        _confirmDeletionEvent.value = event.item
+        _confirmDeletionEvent.value = DeletionConfirmation(
+            mediaItem = event.item,
+            associatedMediaItem = findAssociatedMediaItem()
+        )
     }
 
     fun onPlayOptionSelected() {
         val event = _openOptionsMenuEvent.value ?: return
         _closeOptionsMenuEvent.value = event
-        val associatedMediaItem = (this as? AssociatedWithMediaItem)?.associatedMediaItem
-        playMediaUseCase.play(event.item, associatedMediaItem)
+        playMediaUseCase.play(event.item, findAssociatedMediaItem())
                 .observeOn(schedulerProvider.main())
                 .doOnSubscribe { _isProcessingOption.value = true }
                 .doFinally { _isProcessingOption.value = false }
@@ -667,16 +675,16 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
                 .subscribeFor { _shortcutCreatedEvent.call() }
     }
 
-    fun onConfirmedDeletion(item: E) {
-        return deleteMediaUseCase.delete(item)
+    fun onConfirmedDeletion(item: E, type: DeletionType) {
+        return deleteMediaUseCase.delete(item, type)
                 .observeOn(schedulerProvider.main())
                 .doOnSubscribe { _isProcessingOption.value = true }
                 .doFinally { _isProcessingOption.value = false }
                 .subscribeFor { _deletedItemsEvent.value = listOf(item) }
     }
 
-    fun onConfirmedMultipleDeletion(items: List<E>) {
-        return deleteMediaUseCase.delete(items)
+    fun onConfirmedMultipleDeletion(items: List<E>, type: DeletionType) {
+        return deleteMediaUseCase.delete(items, type)
                 .observeOn(schedulerProvider.main())
                 .doOnSubscribe { _isProcessingContextual.value = true }
                 .doFinally { _isProcessingContextual.value = false }

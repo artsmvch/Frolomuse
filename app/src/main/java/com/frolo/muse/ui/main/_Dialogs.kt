@@ -6,22 +6,93 @@ import android.content.DialogInterface
 import android.os.Build
 import android.text.Html
 import com.frolo.muse.R
+import com.frolo.muse.model.event.DeletionConfirmation
+import com.frolo.muse.model.event.DeletionType
+import com.frolo.muse.model.event.MultipleDeletionConfirmation
 import com.frolo.muse.model.media.Media
+import com.frolo.muse.model.media.Playlist
+import com.frolo.muse.model.media.Song
+import com.frolo.muse.ui.getDeletionConfirmationMessage
 import com.frolo.muse.ui.getName
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 
-fun Context.confirmDeletion(message: String, whenConfirmed: () -> Unit): Dialog {
-    val listener = DialogInterface.OnClickListener { _, i ->
-        if (i == DialogInterface.BUTTON_POSITIVE) whenConfirmed.invoke()
-    }
-    return MaterialAlertDialogBuilder(this)
+fun <E: Media> Context.confirmDeletion(
+    confirmation: DeletionConfirmation<E>,
+    onConfirmed: (DeletionType) -> Unit
+): Dialog {
+
+    val item = confirmation.mediaItem
+    val associatedMedia = confirmation.associatedMediaItem
+
+    val message = getDeletionConfirmationMessage(item)
+
+    val builder = MaterialAlertDialogBuilder(this)
         .setMessage(message)
         .setTitle(R.string.confirmation)
         .setIcon(R.drawable.ic_warning)
-        .setPositiveButton(R.string.delete, listener)
-        .setNegativeButton(R.string.cancel, listener)
-        .show()
+
+    if (item is Song && associatedMedia is Playlist) {
+        val listener = DialogInterface.OnClickListener { _, i ->
+            if (i == DialogInterface.BUTTON_POSITIVE) {
+                onConfirmed.invoke(DeletionType.FromAssociatedMedia(associatedMedia))
+            } else if (i == DialogInterface.BUTTON_NEGATIVE) {
+                onConfirmed.invoke(DeletionType.FromDevice)
+            }
+        }
+        builder.setPositiveButton(R.string.delete_from_playlist, listener)
+            .setNegativeButton(R.string.delete_from_device, listener)
+            .setNeutralButton(R.string.cancel, listener)
+    } else {
+        val listener = DialogInterface.OnClickListener { _, i ->
+            if (i == DialogInterface.BUTTON_POSITIVE) {
+                onConfirmed.invoke(DeletionType.FromDevice)
+            }
+        }
+        builder.setPositiveButton(R.string.delete, listener)
+            .setNegativeButton(R.string.cancel, listener)
+    }
+
+    return builder.show()
+}
+
+fun <E: Media> Context.confirmDeletion(
+    confirmation: MultipleDeletionConfirmation<E>,
+    onConfirmed: (DeletionType) -> Unit
+): Dialog {
+
+    val items = confirmation.mediaItems
+    val associatedMedia = confirmation.associatedMediaItem
+
+    val message = getDeletionConfirmationMessage(items)
+
+    val builder = MaterialAlertDialogBuilder(this)
+        .setMessage(message)
+        .setTitle(R.string.confirmation)
+        .setIcon(R.drawable.ic_warning)
+
+    if (items.all { item -> item is Song } && associatedMedia is Playlist) {
+        val listener = DialogInterface.OnClickListener { _, i ->
+            if (i == DialogInterface.BUTTON_POSITIVE) {
+                onConfirmed.invoke(DeletionType.FromAssociatedMedia(associatedMedia))
+            } else if (i == DialogInterface.BUTTON_NEGATIVE) {
+                onConfirmed.invoke(DeletionType.FromDevice)
+            }
+        }
+        builder.setPositiveButton(R.string.delete_from_playlist, listener)
+            .setNegativeButton(R.string.delete_from_device, listener)
+            .setNeutralButton(R.string.cancel, listener)
+    } else {
+        val listener = DialogInterface.OnClickListener { _, i ->
+            if (i == DialogInterface.BUTTON_POSITIVE) {
+                onConfirmed.invoke(DeletionType.FromDevice)
+            }
+        }
+        builder.setPositiveButton(R.string.delete, listener)
+            .setNegativeButton(R.string.cancel, listener)
+    }
+
+    return builder.show()
 }
 
 fun Context.confirmShortcutCreation(media: Media, whenConfirmed: () -> Unit): Dialog {

@@ -211,7 +211,7 @@ fun Media.mayHaveSeveralRelatedSongs(): Boolean {
     }
 }
 
-fun Context.getDeleteConfirmationMessage(item: Media): String {
+fun Context.getDeletionConfirmationMessage(item: Media): String {
     val msgResId = if (item.mayHaveSeveralRelatedSongs()
             && item.kind != Media.PLAYLIST) // Since we don't delete songs when deleting playlists
         R.string.confirmation_delete_item_and_related_song_files
@@ -220,7 +220,7 @@ fun Context.getDeleteConfirmationMessage(item: Media): String {
     return getString(msgResId)
 }
 
-fun Context.getDeleteConfirmationMessage(items: List<Media>): String {
+fun Context.getDeletionConfirmationMessage(items: List<Media>): String {
     val firstItem = items.firstOrNull() ?: return getString(R.string.confirmation_delete_items)
 
     val msgResId = if (firstItem.mayHaveSeveralRelatedSongs()

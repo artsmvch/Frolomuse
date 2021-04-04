@@ -584,112 +584,128 @@ abstract class UseCaseModule {
         @Provides
         @JvmStatic
         fun provideDeleteMediaUseCase(
-                schedulerProvider: SchedulerProvider,
-                repository: GenericMediaRepository,
-                player: Player
+            schedulerProvider: SchedulerProvider,
+            repository: GenericMediaRepository,
+            playlistChunkRepository: PlaylistChunkRepository,
+            player: Player
         ): DeleteMediaUseCase<Media> {
             return DeleteMediaUseCase<Media>(
-                    schedulerProvider,
-                    repository,
-                    player
+                schedulerProvider,
+                repository,
+                playlistChunkRepository,
+                player
             )
         }
 
         @Provides
         @JvmStatic
         fun provideDeleteArtistUseCase(
-                schedulerProvider: SchedulerProvider,
-                repository: ArtistRepository,
-                player: Player
+            schedulerProvider: SchedulerProvider,
+            repository: ArtistRepository,
+            playlistChunkRepository: PlaylistChunkRepository,
+            player: Player
         ): DeleteMediaUseCase<Artist> {
             return DeleteMediaUseCase<Artist>(
-                    schedulerProvider,
-                    repository,
-                    player
+                schedulerProvider,
+                repository,
+                playlistChunkRepository,
+                player
             )
         }
 
         @Provides
         @JvmStatic
         fun provideDeleteAlbumUseCase(
-                schedulerProvider: SchedulerProvider,
-                repository: AlbumRepository,
-                player: Player
+            schedulerProvider: SchedulerProvider,
+            repository: AlbumRepository,
+            playlistChunkRepository: PlaylistChunkRepository,
+            player: Player
         ): DeleteMediaUseCase<Album> {
             return DeleteMediaUseCase<Album>(
-                    schedulerProvider,
-                    repository,
-                    player
+                schedulerProvider,
+                repository,
+                playlistChunkRepository,
+                player
             )
         }
 
         @Provides
         @JvmStatic
         fun provideDeleteGenreUseCase(
-                schedulerProvider: SchedulerProvider,
-                repository: GenreRepository,
-                player: Player
+            schedulerProvider: SchedulerProvider,
+            repository: GenreRepository,
+            playlistChunkRepository: PlaylistChunkRepository,
+            player: Player
         ): DeleteMediaUseCase<Genre> {
             return DeleteMediaUseCase<Genre>(
-                    schedulerProvider,
-                    repository,
-                    player
+                schedulerProvider,
+                repository,
+                playlistChunkRepository,
+                player
             )
         }
 
         @Provides
         @JvmStatic
         fun provideDeletePlaylistUseCase(
-                schedulerProvider: SchedulerProvider,
-                repository: PlaylistRepository,
-                player: Player
+            schedulerProvider: SchedulerProvider,
+            repository: PlaylistRepository,
+            playlistChunkRepository: PlaylistChunkRepository,
+            player: Player
         ): DeleteMediaUseCase<Playlist> {
             return DeleteMediaUseCase<Playlist>(
-                    schedulerProvider,
-                    repository,
-                    player
+                schedulerProvider,
+                repository,
+                playlistChunkRepository,
+                player
             )
         }
 
         @Provides
         @JvmStatic
         fun provideDeleteSongUseCase(
-                schedulerProvider: SchedulerProvider,
-                repository: SongRepository,
-                player: Player
+            schedulerProvider: SchedulerProvider,
+            repository: SongRepository,
+            playlistChunkRepository: PlaylistChunkRepository,
+            player: Player
         ): DeleteMediaUseCase<Song> {
             return DeleteMediaUseCase<Song>(
-                    schedulerProvider,
-                    repository,
-                    player
+                schedulerProvider,
+                repository,
+                playlistChunkRepository,
+                player
             )
         }
 
         @Provides
         @JvmStatic
         fun provideDeleteSongWithPlayCountUseCase(
-                schedulerProvider: SchedulerProvider,
-                repository: SongWithPlayCountRepository,
-                player: Player
+            schedulerProvider: SchedulerProvider,
+            repository: SongWithPlayCountRepository,
+            playlistChunkRepository: PlaylistChunkRepository,
+            player: Player
         ): DeleteMediaUseCase<SongWithPlayCount> {
             return DeleteMediaUseCase<SongWithPlayCount>(
-                    schedulerProvider,
-                    repository,
-                    player
+                schedulerProvider,
+                repository,
+                playlistChunkRepository,
+                player
             )
         }
 
         @Provides
         @JvmStatic
         fun provideDeleteMyFileUseCase(
-                schedulerProvider: SchedulerProvider,
-                repository: MyFileRepository,
-                player: Player
+            schedulerProvider: SchedulerProvider,
+            repository: MyFileRepository,
+            playlistChunkRepository: PlaylistChunkRepository,
+            player: Player
         ): DeleteMediaUseCase<MyFile> {
             return DeleteMediaUseCase<MyFile>(
-                    schedulerProvider,
-                    repository,
-                    player
+                schedulerProvider,
+                repository,
+                playlistChunkRepository,
+                player
             )
         }
 

@@ -9,7 +9,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.lifecycle.LifecycleOwner
 import com.frolo.muse.R
-import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.model.media.*
 import com.frolo.muse.model.menu.ContextualMenu
@@ -18,7 +17,6 @@ import com.frolo.muse.model.menu.SortOrderMenu
 import com.frolo.muse.ui.base.BackPressHandler
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.base.RESPermissionObserver
-import com.frolo.muse.ui.getDeleteConfirmationMessage
 import com.frolo.muse.ui.main.confirmDeletion
 import com.frolo.muse.ui.main.confirmShortcutCreation
 
@@ -174,22 +172,18 @@ abstract class AbsMediaCollectionFragment <E: Media>: BaseFragment(),
         }
 
         // Deletion confirmation
-        confirmDeletionEvent.observeNonNull(owner) { item ->
-            context?.also { safeContext ->
-                val msg = safeContext.getDeleteConfirmationMessage(item)
-
-                safeContext.confirmDeletion(msg) {
-                    checkReadWritePermissionsFor { viewModel.onConfirmedDeletion(item) }
+        confirmDeletionEvent.observeNonNull(owner) { confirmation ->
+            context?.confirmDeletion(confirmation) { type ->
+                checkReadWritePermissionsFor {
+                    viewModel.onConfirmedDeletion(confirmation.mediaItem, type)
                 }
             }
         }
 
-        confirmMultipleDeletionEvent.observeNonNull(owner) { items ->
-            context?.also { safeContext ->
-                val msg = safeContext.getDeleteConfirmationMessage(items)
-
-                safeContext.confirmDeletion(msg) {
-                    checkReadWritePermissionsFor { viewModel.onConfirmedMultipleDeletion(items) }
+        confirmMultipleDeletionEvent.observeNonNull(owner) { confirmation ->
+            context?.confirmDeletion(confirmation) { type ->
+                checkReadWritePermissionsFor {
+                    viewModel.onConfirmedMultipleDeletion(confirmation.mediaItems, type)
                 }
             }
         }

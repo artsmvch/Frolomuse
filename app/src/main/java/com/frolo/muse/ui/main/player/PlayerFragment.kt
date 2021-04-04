@@ -508,11 +508,10 @@ class PlayerFragment: BaseFragment() {
         }
 
         // Confirmation
-        confirmDeletionEvent.observeNonNull(owner) { song ->
-            val msg = getString(R.string.confirmation_delete_item)
-            activity?.confirmDeletion(msg) {
+        confirmDeletionEvent.observeNonNull(owner) { confirmation ->
+            context?.confirmDeletion(confirmation) { type ->
                 checkWritePermissionFor {
-                    viewModel.onConfirmedDeletion(song)
+                    viewModel.onConfirmedDeletion(confirmation.mediaItem, type)
                 }
             }
         }
