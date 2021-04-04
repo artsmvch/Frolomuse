@@ -278,14 +278,16 @@ class PlayerFragment: BaseFragment() {
         btn_shuffle_mode.setColorFilter(colorFilter, android.graphics.PorterDuff.Mode.SRC_IN)
     }
 
-    private fun updateFavouriteIcon(favourite: Boolean, animate: Boolean) {
+    private fun updateFavouriteIcon(favourite: Boolean) {
         if (favourite) {
             btn_like.setImageResource(R.drawable.ic_filled_heart)
-            if (animate) Anim.like(btn_like)
         } else {
             btn_like.setImageResource(R.drawable.ic_heart)
-            if (animate) Anim.unlike(btn_like)
         }
+    }
+
+    private fun animateFavouriteIcon(favourite: Boolean) {
+        if (favourite) Anim.like(btn_like) else Anim.unlike(btn_like)
     }
 
     private fun updatePlayButton(isPlaying: Boolean) {
@@ -399,8 +401,12 @@ class PlayerFragment: BaseFragment() {
             toastShortMessage(R.string.deleted)
         }
 
+        animateFavouriteEvent.observeNonNull(owner) { isFavourite ->
+            animateFavouriteIcon(isFavourite)
+        }
+
         isFavourite.observeNonNull(owner) { isFavourite ->
-            updateFavouriteIcon(isFavourite, animate = true)
+            updateFavouriteIcon(isFavourite)
         }
 
         audioSourceList.observe(owner) { list ->

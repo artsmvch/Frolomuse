@@ -26,6 +26,7 @@ import com.frolo.muse.model.media.Media
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.model.sound.Sound
 import com.frolo.muse.rx.SchedulerProvider
+import com.frolo.muse.rx.flowable.doOnNextIndexed
 import com.frolo.muse.ui.base.BaseViewModel
 import io.reactivex.Observable
 import java.util.concurrent.Executor
@@ -138,6 +139,9 @@ class PlayerViewModel @Inject constructor(
     val showVolumeControlEvent: LiveData<Unit>
         get() = _showVolumeControlEvent
 
+    private val _animateFavouriteEvent = SingleLiveEvent<Boolean>()
+    val animateFavouriteEvent: LiveData<Boolean> get() = _animateFavouriteEvent
+
     val isFavourite: LiveData<Boolean> =
         Transformations.switchMap(song) { song: Song? ->
             if (song != null) {
@@ -145,6 +149,14 @@ class PlayerViewModel @Inject constructor(
                     getIsFavouriteUseCase.isFavourite(song)
                         .onErrorReturnItem(false)
                         .observeOn(schedulerProvider.main())
+                        .doOnNextIndexed { index, value ->
+                            if (index >= 1) {
+                                // If the index is greater than or equal to 1, it means that
+                                // the change of the favourite status was triggered by the user,
+                                // and we can animate this change.
+                                _animateFavouriteEvent.value = value
+                            }
+                        }
                         .subscribeFor(key = "is_favourite") {
                             value = it
                         }
