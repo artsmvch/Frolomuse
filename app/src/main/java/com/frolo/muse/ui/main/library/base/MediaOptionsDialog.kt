@@ -92,7 +92,7 @@ class MediaOptionsDialog<E: Media> constructor(
     fun setLiked(favourite: Boolean) {
         with(btn_like) {
             setImageDrawable(if (favourite) drawableFilledHeart else drawableHeart)
-            Anim.like(this)
+            if (favourite) Anim.like(this) else Anim.unlike(this)
         }
     }
 

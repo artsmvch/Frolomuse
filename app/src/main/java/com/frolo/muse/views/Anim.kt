@@ -2,6 +2,7 @@ package com.frolo.muse.views
 
 import android.animation.*
 import android.view.View
+import android.view.animation.OvershootInterpolator
 
 
 object Anim {
@@ -54,16 +55,17 @@ object Anim {
             .start()
     }
 
-    fun like(like: View, duration: Long = 200) {
-        val anim = ObjectAnimator.ofPropertyValuesHolder(like,
-                PropertyValuesHolder.ofFloat("scaleX", 0.65f, 0.88f, 1.0f, 1.12f, 1.20f, 1.25f, 1.20f, 1.12f, 1.0f),
-                PropertyValuesHolder.ofFloat("scaleY", 0.5f, 0.85f, 1.0f, 1.12f, 1.20f, 1.25f, 1.20f, 1.12f, 1.0f))
-        anim.duration = duration
-        anim.start()
+    fun like(view: View, duration: Long = 180L) {
+        val scaleX = PropertyValuesHolder.ofFloat("scaleX", 0.65f, 1f)
+        val scaleY = PropertyValuesHolder.ofFloat("scaleY", 0.65f, 1f)
+        val animator = ObjectAnimator.ofPropertyValuesHolder(view, scaleX, scaleY)
+        animator.duration = duration
+        animator.interpolator = OvershootInterpolator(8f)
+        animator.start()
     }
 
-    fun unlike(like: View, duration: Long = 200) {
-        like(like, duration)
+    fun unlike(view: View, duration: Long = 180L) {
+        like(view, duration)
     }
 
 }
