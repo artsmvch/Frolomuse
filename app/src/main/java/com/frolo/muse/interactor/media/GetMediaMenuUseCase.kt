@@ -33,6 +33,8 @@ class GetMediaMenuUseCase<E: Media> constructor(
             BiFunction { favouriteOption, isShortcutSupported ->
                 val editOptionAvailable = item is Song || item is Playlist
                         || (item is Album && Features.isAlbumEditorFeatureAvailable())
+                val removeFromQueueOptionAvailable = item is Song
+                        && player.getCurrentQueue()?.contains(item.toAudioSource()) ?: false
                 OptionsMenu(
                     item = item,
                     favouriteOptionAvailable = favouriteOption.first,
@@ -50,7 +52,7 @@ class GetMediaMenuUseCase<E: Media> constructor(
                     addToHiddenOptionAvailable = item is MyFile,
                     scanFilesOptionAvailable = item is MyFile && item.isDirectory,
                     shortcutOptionAvailable = isShortcutSupported,
-                    removeFromCurrentQueue = item is Song && player.getCurrentQueue()?.contains(item.toAudioSource()) ?: false
+                    removeFromQueueOptionAvailable = removeFromQueueOptionAvailable
                 )
             }
 

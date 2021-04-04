@@ -78,7 +78,7 @@ class MediaOptionsDialog<E: Media> constructor(
             btn_view_artist.visibility = if (optionsMenu.viewArtistOptionAvailable) View.VISIBLE else View.GONE
             btn_edit.visibility = if (optionsMenu.editOptionAvailable) View.VISIBLE else View.GONE
             btn_add_to_playlist.visibility = if (optionsMenu.addToPlaylistOptionAvailable) View.VISIBLE else View.GONE
-            btn_remove_from_queue.visibility = if (optionsMenu.removeFromCurrentQueue) View.VISIBLE else View.GONE
+            btn_remove_from_queue.visibility = if (optionsMenu.removeFromQueueOptionAvailable) View.VISIBLE else View.GONE
             btn_set_as_default.visibility = if (optionsMenu.setAsDefaultOptionAvailable) View.VISIBLE else View.GONE
             btn_add_to_hidden.visibility = if (optionsMenu.addToHiddenOptionAvailable) View.VISIBLE else View.GONE
             btn_scan_files.visibility = if (optionsMenu.scanFilesOptionAvailable) View.VISIBLE else View.GONE
