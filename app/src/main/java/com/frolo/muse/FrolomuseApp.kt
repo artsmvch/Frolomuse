@@ -12,7 +12,6 @@ import com.frolo.muse.engine.Player
 import com.frolo.muse.engine.PlayerImpl
 import com.frolo.muse.engine.PlayerWrapper
 import com.frolo.muse.engine.audiofx.AudioFx_Impl
-import com.frolo.muse.logger.logAppLaunched
 import com.frolo.muse.navigator.NavigatorWrapper
 import com.frolo.muse.ui.base.BaseActivity
 import com.frolo.muse.ui.base.FragmentNavigator
@@ -28,10 +27,12 @@ class FrolomuseApp : MultiDexApplication() {
     lateinit var appComponent: AppComponent
         private set
 
-    private val lastStartedActivityCallback = LastStartedActivityWatcher()
-
     private val preferences by lazy { appComponent.providePreferences() }
     private val eventLogger by lazy { appComponent.provideEventLogger() }
+
+    private val activityWatcher by lazy {
+        FrolomuseActivityWatcher(preferences, eventLogger)
+    }
 
     private val playerWrapper = PlayerWrapper()
     private val navigatorWrapper = NavigatorWrapper()
@@ -41,26 +42,15 @@ class FrolomuseApp : MultiDexApplication() {
 
         appComponent = buildAppComponent()
 
-        registerActivityLifecycleCallbacks(lastStartedActivityCallback)
+        registerActivityLifecycleCallbacks(activityWatcher)
 
         setupStrictMode()
 
-        // init Rx plugins
-        RxJavaPlugins.setErrorHandler { err ->
-            // Default error consumer
-            eventLogger.log(err)
-            (lastStartedActivityCallback.currentLast as? BaseActivity)?.let { activity ->
-                activity.runOnUiThread {
-                    activity.postError(err)
-                }
-            }
-        }
+        setupRxPlugins()
 
         setupFirebaseRemoteConfigs()
 
         initAdMob()
-
-        dispatchAppLaunched()
     }
 
     private fun buildAppComponent(): AppComponent =
@@ -109,6 +99,18 @@ class FrolomuseApp : MultiDexApplication() {
         }
     }
 
+    private fun setupRxPlugins() {
+        RxJavaPlugins.setErrorHandler { err ->
+            // Default error consumer
+            eventLogger.log(err)
+            (activityWatcher.foregroundActivity as? BaseActivity)?.let { activity ->
+                activity.runOnUiThread {
+                    activity.postError(err)
+                }
+            }
+        }
+    }
+
     private fun setupFirebaseRemoteConfigs() {
         val instance = FirebaseRemoteConfig.getInstance()
         val configSettings = FirebaseRemoteConfigSettings.Builder()
@@ -122,12 +124,6 @@ class FrolomuseApp : MultiDexApplication() {
         if (AdMobs.shouldInitializeOnColdStart()) {
             MobileAds.initialize(this)
         }
-    }
-
-    private fun dispatchAppLaunched() {
-        val totalLaunchCount = preferences.openCount + 1 // +1 for the current launch
-        preferences.openCount = totalLaunchCount
-        eventLogger.logAppLaunched(totalLaunchCount)
     }
 
     fun onPlayerConnected(player: Player) {
