@@ -11,8 +11,9 @@ import javax.inject.Singleton
 
 @Module
 class AppModule(private val frolomuseApp: FrolomuseApp) {
+
     @Provides
-    fun provideApp(): FrolomuseApp = frolomuseApp
+    fun provideFrolomuseApp(): FrolomuseApp = frolomuseApp
 
     @Provides
     fun provideContext(): Context = frolomuseApp
@@ -22,4 +23,5 @@ class AppModule(private val frolomuseApp: FrolomuseApp) {
     fun provideSchedulers(): SchedulerProvider {
         return SchedulerProviderImpl()
     }
+
 }
