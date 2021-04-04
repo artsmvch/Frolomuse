@@ -73,6 +73,12 @@
         <item name="paddingBottomSystemWindowInsets">true</item>
         <item name="paddingLeftSystemWindowInsets">true</item>
         <item name="paddingRightSystemWindowInsets">true</item>
+        <item name="android:windowAnimationStyle">@style/Base.AppTheme.Animation.BottomSheetDialog</item>
+    </style>
+
+    <style name="Base.AppTheme.Animation.BottomSheetDialog" parent="@style/Animation.MaterialComponents.BottomSheetDialog">
+        <item name="android:windowEnterAnimation">@anim/bottom_sheet_slide_in</item>
+        <item name="android:windowExitAnimation">@anim/bottom_sheet_slide_out</item>
     </style>
 
     <!--OptionTextView-->
