@@ -10,6 +10,8 @@ import android.os.Environment;
 import android.os.FileObserver;
 import android.provider.MediaStore;
 
+import androidx.annotation.NonNull;
+
 import com.frolo.muse.BuildConfig;
 import com.frolo.muse.db.AppMediaStore;
 import com.frolo.muse.model.media.MyFile;
@@ -41,6 +43,21 @@ final class MyFileQuery {
         static final String BY_FILENAME = "filename";
         static final String BY_DATE_MODIFIED = "date_modified";
 
+        // The default comparison rule is: regular files go first, then directories. 0 is returned
+        // if both the java files are either regular files or directories at the same time.
+        static int compareDefault(@NonNull MyFile myFile1, @NonNull MyFile myFile2) {
+            File javaFile1 = myFile1.getJavaFile();
+            File javaFile2 = myFile2.getJavaFile();
+            if (javaFile1.isFile() && javaFile2.isDirectory()) {
+                return 1;
+            }
+            if (javaFile1.isDirectory() && javaFile2.isFile()) {
+                return -1;
+            }
+            return 0;
+        }
+
+
         static final Comparator<MyFile> COMPARATOR_BY_FILENAME = new Comparator<MyFile>() {
             @Override
             public int compare(MyFile o1, MyFile o2) {
@@ -49,6 +66,11 @@ final class MyFileQuery {
                 if (o1 == null) return -1;
 
                 if (o2 == null) return 1;
+
+                int comparedDefault = compareDefault(o1, o2);
+                if (comparedDefault != 0) {
+                    return comparedDefault;
+                }
 
                 return o1.getJavaFile().compareTo(o2.getJavaFile());
             }
@@ -62,6 +84,11 @@ final class MyFileQuery {
                 if (o1 == null) return -1;
 
                 if (o2 == null) return 1;
+
+                int comparedDefault = compareDefault(o1, o2);
+                if (comparedDefault != 0) {
+                    return comparedDefault;
+                }
 
                 final long lastModified1 = o1.getJavaFile().lastModified();
                 final long lastModified2 = o2.getJavaFile().lastModified();
