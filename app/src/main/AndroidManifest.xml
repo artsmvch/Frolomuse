@@ -34,6 +34,7 @@
         <service
             android:stopWithTask="false"
             android:name="com.frolo.muse.engine.service.PlayerService"
+            android:foregroundServiceType="mediaPlayback"
             android:exported="false" />
 
         <service
