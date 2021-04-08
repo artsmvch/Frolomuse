@@ -10,7 +10,6 @@ import com.frolo.muse.repository.MediaRepository
 import com.frolo.muse.repository.PlaylistChunkRepository
 import com.frolo.muse.rx.SchedulerProvider
 import io.reactivex.Completable
-import io.reactivex.Single
 
 
 class DeleteMediaUseCase <E: Media> constructor(
@@ -43,9 +42,24 @@ class DeleteMediaUseCase <E: Media> constructor(
     }
 
     fun delete(items: Collection<E>, type: DeletionType): Completable {
-        return Single.fromCallable { items.map { delete(it, type) } }
-            .subscribeOn(schedulerProvider.computation())
-            .flatMapCompletable { Completable.concat(it) }
+        return Completable.defer {
+            val completable = if (type is DeletionType.FromAssociatedMedia && type.media is Playlist) {
+                val op1 = kotlin.run {
+                    // Batch remove op
+                    val songs = items.filterIsInstance<Song>()
+                    playlistChunkRepository.removeFromPlaylist(type.media, songs)
+                }
+                val op2 = kotlin.run {
+                    // Batch delete op
+                    val nonSongs = items.filterNot { it is Song }
+                    repository.delete(nonSongs)
+                }
+                Completable.concat(listOf(op1, op2))
+            } else {
+                repository.delete(items)
+            }
+            completable.subscribeOn(schedulerProvider.worker())
+        }.subscribeOn(schedulerProvider.computation())
     }
 
 }

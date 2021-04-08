@@ -25,5 +25,7 @@ public interface PlaylistChunkRepository extends SongRepository {
 
     Completable removeFromPlaylist(Playlist playlist, Song item);
 
+    Completable removeFromPlaylist(Playlist playlist, Collection<Song> items);
+
     Completable moveItemInPlaylist(Playlist playlist, int fromPos, int toPos);
 }

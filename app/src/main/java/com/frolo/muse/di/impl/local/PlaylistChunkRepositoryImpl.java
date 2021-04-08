@@ -68,6 +68,14 @@ public class PlaylistChunkRepositoryImpl extends SongRepositoryImpl implements P
     }
 
     @Override
+    public Completable removeFromPlaylist(Playlist playlist, Collection<Song> items) {
+        return PlaylistHelper.removeFromPlaylist(
+                getContext().getContentResolver(),
+                playlist.getId(),
+                items);
+    }
+
+    @Override
     public Completable moveItemInPlaylist(Playlist playlist, int fromPos, int toPos) {
         return PlaylistHelper.moveItemInPlaylist(
                 getContext().getContentResolver(),

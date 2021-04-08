@@ -469,6 +469,43 @@ final class PlaylistHelper {
         });
     }
 
+    /*package*/ static Completable removeFromPlaylist(
+        final ContentResolver resolver,
+        final long playlistId,
+        final Collection<Song> songs
+    ) {
+        return wrap(new Action() {
+            @Override
+            public void run() throws Exception {
+                Uri uri = MediaStore.Audio.Playlists.Members.
+                        getContentUri("external", playlistId);
+
+                // Removing entities in one batch
+                StringBuilder opRemoveSelectionBuilder =
+                        new StringBuilder(MediaStore.Audio.Playlists.Members.AUDIO_ID + " IN (");
+
+                boolean firstLooped = false;
+                for (Song song : songs) {
+                    if (firstLooped) {
+                        opRemoveSelectionBuilder.append(',');
+                    }
+                    opRemoveSelectionBuilder.append(song.getId());
+
+                    firstLooped = true;
+                }
+                opRemoveSelectionBuilder.append(')');
+
+                String opRemoveSelection = opRemoveSelectionBuilder.toString();
+
+                int deletedCount = resolver.delete(uri, opRemoveSelection, null);
+
+                // TODO: check deletedCount
+
+                resolver.notifyChange(uri, null);
+            }
+        });
+    }
+
     /*package*/ static Completable moveItemInPlaylist(
         final ContentResolver resolver,
         final long playlistId,

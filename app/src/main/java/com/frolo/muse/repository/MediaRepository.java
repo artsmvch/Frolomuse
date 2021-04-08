@@ -73,7 +73,6 @@ public interface MediaRepository<E extends Media> {
      * @param item to delete
      * @return true if deletion succeeded, false - otherwise
      */
-    @Deprecated
     Completable delete(E item);
 
     /**
