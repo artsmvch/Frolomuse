@@ -2,13 +2,11 @@ package com.frolo.muse.ui.main.library.myfiles
 
 import android.os.Bundle
 import android.view.*
-import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.frolo.muse.R
 import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
-import com.frolo.muse.dp2px
 import com.frolo.muse.mediascan.MediaScanService
 import com.frolo.muse.model.media.MyFile
 import com.frolo.muse.ui.ShotLayoutAnimationController
@@ -64,11 +62,6 @@ class MyFileListFragment: AbsMediaCollectionFragment<MyFile>(),
             adapter = this@MyFileListFragment.adapter
             decorateAsLinear()
             layoutAnimation = ShotLayoutAnimationController()
-        }
-
-        layout_list_placeholder.updateLayoutParams<ViewGroup.MarginLayoutParams> {
-            // + half height of the parent file layout, so it is centered like on other media collection screens
-            topMargin -= 36f.dp2px(view.context).toInt()
         }
 
         cl_parent_file.setOnClickListener {
