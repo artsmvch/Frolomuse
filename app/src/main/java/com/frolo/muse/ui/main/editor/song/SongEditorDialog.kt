@@ -1,6 +1,10 @@
 package com.frolo.muse.ui.main.editor.song
 
+import android.app.Activity
 import android.app.Dialog
+import android.app.RecoverableSecurityException
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.ViewGroup
 import android.view.Window
@@ -84,7 +88,7 @@ class SongEditorDialog: BaseDialogFragment() {
         }
 
         updateError.observeNonNull(owner) { err ->
-            onDisplayError(err)
+            onHandleError(err)
         }
 
         updatedSong.observeNonNull(owner) { newSong ->
@@ -102,7 +106,17 @@ class SongEditorDialog: BaseDialogFragment() {
         }
     }
 
-    private fun onDisplayError(err: Throwable) {
+    private fun onHandleError(err: Throwable) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && err is RecoverableSecurityException) {
+            val intentSender = err.userAction.actionIntent.intentSender
+            if (intentSender != null) {
+                // Let's try asking the user to grant us the write permission in order to save the changes
+                startIntentSenderForResult(intentSender, RC_REQUEST_WRITE_PERMISSION,
+                        null, 0, 0, 0, null)
+                return
+            }
+        }
+
         postError(err)
         dismiss()
     }
@@ -111,8 +125,28 @@ class SongEditorDialog: BaseDialogFragment() {
         dismiss()
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == RC_REQUEST_WRITE_PERMISSION) {
+            if (resultCode == Activity.RESULT_OK) {
+                dialog?.apply {
+                    viewModel.onUserGrantedWritePermission(
+                        title = edt_song_name.getNonNullText(),
+                        album = edt_album_name.getNonNullText(),
+                        artist = edt_artist_name.getNonNullText(),
+                        genre = edt_genre_name.getNonNullText()
+                    )
+                }
+            } else {
+                dismiss()
+            }
+        }
+    }
+
     companion object {
         private const val ARG_SONG = "song"
+
+        private const val RC_REQUEST_WRITE_PERMISSION = 8001
 
         // Factory
         fun newInstance(item: Song) = SongEditorDialog()

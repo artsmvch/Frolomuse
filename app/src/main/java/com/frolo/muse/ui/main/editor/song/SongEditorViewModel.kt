@@ -70,6 +70,15 @@ class SongEditorViewModel constructor(
             .save()
     }
 
+    fun onUserGrantedWritePermission(
+        title: String,
+        album: String,
+        artist: String,
+        genre: String
+    ) {
+        onSaveClicked(title = title, album = album, artist = artist, genre = genre)
+    }
+
     @WorkerThread
     @Throws(Exception::class)
     private fun updateTagsInternal(
