@@ -9,9 +9,9 @@
 
     <include layout="@layout/include_song_art_container"
         android:id="@+id/include_song_art_container"
-        android:layout_width="@dimen/media_item_art_size"
-        android:layout_height="@dimen/media_item_art_size"
-        android:layout_margin="@dimen/media_item_art_margin"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_margin="6dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
