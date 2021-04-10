@@ -42,8 +42,14 @@
         <item name="alertDialogTheme">@style/AppTheme.AlertDialog.Light.Blue</item>
         <item name="materialAlertDialogTheme">@style/AppTheme.MaterialAlertDialog.Light.Blue</item>
 
+        <item name="bottomNavigationStyle">@style/Base.AppTheme.BottomNavigation.Light.Blue</item>
         <item name="textInputStyle">@style/AppTheme.TextInputLayout.Light.Blue</item>
         <item name="seekBarStyle">@style/AppTheme.SeekBar.Light.Blue</item>
+    </style>
+
+    <style name="Base.AppTheme.BottomNavigation.Light.Blue" parent="Base.AppTheme.BottomNavigationView">
+        <item name="android:background">@color/white</item>
+        <item name="itemIconTint">@color/nav_light_blue</item>
     </style>
 
     <style name="AppTheme.Dialog.Light.Blue" parent="Base.AppTheme.Dialog.Light">

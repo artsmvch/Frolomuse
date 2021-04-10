@@ -27,6 +27,7 @@ abstract class BaseActivity: AppCompatActivity() {
     private fun applySavedTheme() {
         when(preferences.theme) {
             Theme.LIGHT_BLUE -> setTheme(R.style.AppTheme_Light_Blue)
+            Theme.LIGHT_PINK -> setTheme(R.style.AppTheme_Light_Pink)
             Theme.DARK_BLUE -> setTheme(R.style.Base_AppTheme_Dark_Blue)
             Theme.DARK_BLUE_ESPECIAL -> setTheme(R.style.Base_AppTheme_Dark_Blue_Especial)
             Theme.DARK_PURPLE -> setTheme(R.style.Base_AppTheme_Dark_Purple)

@@ -23,6 +23,7 @@ fun EventLogger.logThemeChanged(theme: Theme?) {
         Theme.DARK_ORANGE ->        "dark_orange"
         Theme.DARK_GREEN ->         "dark_green"
         Theme.LIGHT_BLUE ->         "light_blue"
+        Theme.LIGHT_PINK ->         "light_pink"
         null ->                     "null"
     }
 

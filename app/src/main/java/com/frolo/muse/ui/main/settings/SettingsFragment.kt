@@ -305,7 +305,8 @@ class SettingsFragment : PreferenceFragmentCompat(),
 
         // The order is really important
         val themeNames = arrayOf(
-            getString(R.string.light_theme),
+            getString(R.string.light_blue_theme),
+            getString(R.string.light_pink_theme),
             getString(R.string.dark_blue_theme),
             getString(R.string.dark_especial_theme),
             getString(R.string.dark_purple_theme),
@@ -315,11 +316,12 @@ class SettingsFragment : PreferenceFragmentCompat(),
 
         val currentThemeIndex = when(currentTheme) {
             Theme.LIGHT_BLUE -> 0
-            Theme.DARK_BLUE -> 1
-            Theme.DARK_BLUE_ESPECIAL -> 2
-            Theme.DARK_PURPLE -> 3
-            Theme.DARK_ORANGE -> 4
-            Theme.DARK_GREEN -> 5
+            Theme.LIGHT_PINK -> 1
+            Theme.DARK_BLUE -> 2
+            Theme.DARK_BLUE_ESPECIAL -> 3
+            Theme.DARK_PURPLE -> 4
+            Theme.DARK_ORANGE -> 5
+            Theme.DARK_GREEN -> 6
             else -> -1
         }
 
@@ -331,11 +333,12 @@ class SettingsFragment : PreferenceFragmentCompat(),
 
                 val selectedTheme: Theme? = when (which) {
                     0 -> Theme.LIGHT_BLUE
-                    1 -> Theme.DARK_BLUE
-                    2 -> Theme.DARK_BLUE_ESPECIAL
-                    3 -> Theme.DARK_PURPLE
-                    4 -> Theme.DARK_ORANGE
-                    5 -> Theme.DARK_GREEN
+                    1 -> Theme.LIGHT_PINK
+                    2 -> Theme.DARK_BLUE
+                    3 -> Theme.DARK_BLUE_ESPECIAL
+                    4 -> Theme.DARK_PURPLE
+                    5 -> Theme.DARK_ORANGE
+                    6 -> Theme.DARK_GREEN
                     else -> null // That's an error
                 }
 

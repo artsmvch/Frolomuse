@@ -192,7 +192,8 @@
     <string name="licenses">Licenses</string>
 
     <string name="choose_theme">Choose Theme</string>
-    <string name="light_theme">Light theme</string>
+    <string name="light_blue_theme">Light blue theme</string>
+    <string name="light_pink_theme">Light pink theme</string>
     <string name="dark_blue_theme">Dark blue theme</string>
     <string name="dark_especial_theme">Dark especial theme</string>
     <string name="dark_purple_theme">Dark purple theme</string>
