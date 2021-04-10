@@ -20,6 +20,12 @@ class LocalDataModule {
         return PreferencesImpl(context)
     }
 
+    @Singleton
+    @Provides
+    fun provideFirebasePreferences(context: Context): FirebasePreferences {
+        return FirebasePreferencesImpl(context)
+    }
+
     //region Generic media repositories
     @Provides
     fun provideSongMediaRepository(repository: SongRepository): MediaRepository<Song> {

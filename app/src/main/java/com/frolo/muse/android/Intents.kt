@@ -5,6 +5,7 @@ package com.frolo.muse.android
 import android.content.Context
 import android.content.Intent
 import android.media.audiofx.AudioEffect
+import android.net.Uri
 import com.frolo.muse.OS
 import java.io.File
 
@@ -26,4 +27,38 @@ fun SendTextFileIntent(context: Context, file: File): Intent {
     intent.type = "text/*"
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
     return intent
+}
+
+fun getLinkToAppPageInPlayStore(packageName: String): String {
+    return "http://play.google.com/store/apps/details?id=$packageName"
+}
+
+fun ViewAppInPlayStoreIntent(context: Context): Intent {
+    val link = getLinkToAppPageInPlayStore(context.packageName)
+    val uri = Uri.parse(link)
+    return Intent(Intent.ACTION_VIEW, uri).apply {
+        addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY or Intent.FLAG_ACTIVITY_NEW_TASK)
+        addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT)
+    }
+}
+
+fun ViewAppInDefaultStore(context: Context): Intent {
+    val packageName = context.packageName
+    val uri = Uri.parse("market://details?id=$packageName")
+    return Intent(Intent.ACTION_VIEW, uri).apply {
+        addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY or Intent.FLAG_ACTIVITY_NEW_TASK)
+        addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT)
+    }
+}
+
+fun ViewAppInStoreIntent(context: Context): Intent {
+    val viewAppInPlayStoreIntent = ViewAppInPlayStoreIntent(context)
+    // At first we want to view it in PlayStore
+    return if (context.canStartActivity(viewAppInPlayStoreIntent)) {
+        viewAppInPlayStoreIntent
+    } else {
+        // If we cannot view it in PlayStore,
+        // then we search for default app market.
+        ViewAppInDefaultStore(context)
+    }
 }

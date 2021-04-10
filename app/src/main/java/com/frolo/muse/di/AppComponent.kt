@@ -3,6 +3,7 @@ package com.frolo.muse.di
 import com.frolo.muse.di.modules.*
 import com.frolo.muse.engine.PlayerJournal
 import com.frolo.muse.engine.service.PlayerService
+import com.frolo.muse.firebase.SimpleFirebaseMessagingService
 import com.frolo.muse.interactor.media.AddMediaToPlaylistUseCase
 import com.frolo.muse.interactor.media.AddSongToPlaylistUseCase
 import com.frolo.muse.interactor.media.get.*
@@ -58,6 +59,8 @@ interface AppComponent {
     fun provideSongRepository(): SongRepository
 
     fun inject(service: PlayerService)
+
+    fun inject(service: SimpleFirebaseMessagingService)
 
     fun inject(activity: BaseActivity)
 

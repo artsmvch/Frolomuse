@@ -359,6 +359,10 @@
     <string name="player_logs">Player logs</string>
     <string name="copied">Copied</string>
 
+    <!--Push notifications-->
+    <string name="push_notifications_channel_name">Push notifications</string>
+    <string name="push_notifications_channel_desc">Contains useful information about news and app updates</string>
+
     <!--Onboarding-->
     <string name="skip">Skip</string>
     <string name="done">Done</string>

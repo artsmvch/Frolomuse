@@ -5,11 +5,11 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.net.Uri
-import android.os.Build
 import android.provider.MediaStore
 import com.frolo.muse.BuildConfig
 import com.frolo.muse.OS
 import com.frolo.muse.R
+import com.frolo.muse.android.ViewAppInStoreIntent
 import com.frolo.muse.android.resolveUri
 import com.frolo.muse.model.media.Song
 import java.io.File
@@ -102,22 +102,7 @@ fun Context.sharePoster(song: Song, file: File) {
 }
 
 fun Context.goToStore() {
-    val googlePlayIntent = Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=$packageName"))
-
-    // At first we want Google Play to handle this intent
-    val intent: Intent = if (googlePlayIntent.resolveActivity(packageManager) != null) {
-        googlePlayIntent
-    } else { // If Google PLay is not installed (almost impossible) search for other Market App
-        val uri = Uri.parse("market://details?id=$packageName")
-        Intent(Intent.ACTION_VIEW, uri)
-    }
-
-    intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY or Intent.FLAG_ACTIVITY_NEW_TASK)
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT)
-    }
-
-    safelyStartActivity(intent)
+    ViewAppInStoreIntent(this).also(::safelyStartActivity)
 }
 
 fun Context.contactDeveloper() {

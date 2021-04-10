@@ -157,6 +157,10 @@ class MainActivity : PlayerHostActivity(),
 
         // TODO: uncomment this when you need to show the greetings
         //maybeShowGreetings()
+
+        if (savedInstanceState == null) {
+            viewModel.onFirstCreate()
+        }
     }
 
     private fun maybeShowGreetings() {

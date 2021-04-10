@@ -5,6 +5,7 @@ import com.frolo.muse.arch.EventLiveData
 import com.frolo.muse.arch.SingleLiveEvent
 import com.frolo.muse.arch.call
 import com.frolo.muse.engine.Player
+import com.frolo.muse.interactor.firebase.SyncFirebaseMessagingTokenUseCase
 import com.frolo.muse.interactor.media.shortcut.NavigateToMediaUseCase
 import com.frolo.muse.interactor.player.OpenAudioSourceUseCase
 import com.frolo.muse.interactor.player.RestorePlayerStateUseCase
@@ -33,6 +34,7 @@ class MainViewModel @Inject constructor(
     private val restorePlayerStateUseCase: RestorePlayerStateUseCase,
     private val openAudioSourceUseCase: OpenAudioSourceUseCase,
     private val navigateToMediaUseCase: NavigateToMediaUseCase,
+    private val syncFirebaseMessagingTokenUseCase: SyncFirebaseMessagingTokenUseCase,
     private val schedulerProvider: SchedulerProvider,
     private val permissionChecker: PermissionChecker,
     private val eventLogger: EventLogger
@@ -101,6 +103,10 @@ class MainViewModel @Inject constructor(
             _askRESPermissionsEvent.call()
             _pendingReadStoragePermissionResult = true
         }
+    }
+
+    fun onFirstCreate() {
+        syncFirebaseMessagingTokenUseCase.sync().subscribeFor {  }
     }
 
     fun onStart() {
