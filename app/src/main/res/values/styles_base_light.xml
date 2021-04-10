@@ -9,6 +9,8 @@
         <item name="actionBarSize">@dimen/default_bar_size</item>
         <item name="android:actionBarSize">@dimen/default_bar_size</item>
         <item name="actionModeCloseDrawable">@drawable/ic_action_close</item>
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:navigationBarColor">@color/white</item>
 
         <item name="dialogTheme">@style/Base.AppTheme.Dialog.Light</item>
         <item name="android:dialogTheme">@style/Base.AppTheme.Dialog.Light</item>
