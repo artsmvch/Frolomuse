@@ -7,16 +7,14 @@
     android:minHeight="@dimen/preferred_item_height"
     android:background="@drawable/bg_item_media">
 
-    <ImageView
+    <include layout="@layout/include_song_art_container"
+        android:id="@+id/include_song_art_container"
+        android:layout_width="@dimen/media_item_art_size"
+        android:layout_height="@dimen/media_item_art_size"
+        android:layout_margin="@dimen/media_item_art_margin"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:scaleType="centerCrop"
-        android:layout_margin="@dimen/list_item_img_art_padding"
-        android:layout_width="@dimen/list_item_img_art_size"
-        android:layout_height="@dimen/list_item_img_art_size"
-        android:layout_gravity="center|start"
-        android:id="@+id/imv_file_art"/>
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
     <include layout="@layout/include_options_menu"
         app:layout_constraintEnd_toEndOf="parent"
@@ -26,24 +24,14 @@
         android:layout_width="@dimen/options_menu_width"
         android:layout_height="40dp"/>
 
-    <com.frolo.muse.views.MiniVisualizer
-        android:id="@+id/mini_visualizer"
-        android:layout_width="25dp"
-        android:layout_height="19.1dp"
-        android:layout_marginBottom="5dp"
-        app:layout_constraintEnd_toStartOf="@id/view_options_menu"
-        app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginEnd="5.5dp" />
-
     <androidx.appcompat.widget.AppCompatTextView
-        app:layout_constraintStart_toEndOf="@id/imv_file_art"
-        app:layout_constraintTop_toTopOf="@id/imv_file_art"
+        app:layout_constraintStart_toEndOf="@id/include_song_art_container"
+        app:layout_constraintTop_toTopOf="@id/include_song_art_container"
         app:layout_constraintEnd_toStartOf="@id/view_options_menu"
-        app:layout_constraintBottom_toBottomOf="@id/imv_file_art"
+        app:layout_constraintBottom_toBottomOf="@id/include_song_art_container"
         android:maxLines="2"
         android:padding="5dp"
         android:layout_marginStart="8dp"
-        android:layout_marginEnd="16dp"
         android:textColor="?attr/android:textColorPrimary"
         android:text="@string/placeholder_unknown"
         android:textSize="15sp"
@@ -56,6 +44,6 @@
         layout="@layout/include_check"
         android:layout_width="@dimen/list_item_check_size"
         android:layout_height="@dimen/list_item_check_size"
-        app:layout_constraintEnd_toEndOf="@id/imv_file_art"
-        app:layout_constraintBottom_toBottomOf="@id/imv_file_art"/>
+        app:layout_constraintEnd_toEndOf="@id/include_song_art_container"
+        app:layout_constraintBottom_toBottomOf="@id/include_song_art_container"/>
 </com.frolo.muse.views.media.MediaConstraintLayout>
