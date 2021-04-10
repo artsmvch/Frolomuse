@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <integer name="fragment_animation_duration">350</integer>
+    <integer name="fade_animation_duration">350</integer>
+
+    <integer name="screen_animation_duration">10</integer>
 
     <integer name="layout_anim_duration">220</integer>
 

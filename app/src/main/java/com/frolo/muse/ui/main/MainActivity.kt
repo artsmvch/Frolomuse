@@ -424,7 +424,7 @@ class MainActivity : PlayerHostActivity(),
         fragNavController = FragNavController(fragmentManager, R.id.container).apply {
             defaultTransactionOptions = FragNavTransactionOptions
                 .newBuilder()
-                .customAnimations(R.anim.fade_in, R.anim.fade_out, R.anim.fade_in, R.anim.fade_out)
+                .customAnimations(R.anim.screen_fade_in, R.anim.screen_fade_out, R.anim.screen_fade_in, R.anim.screen_fade_out)
                 .build()
 
             rootFragmentListener = object : FragNavController.RootFragmentListener {
