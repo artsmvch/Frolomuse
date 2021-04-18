@@ -14,7 +14,7 @@ import com.frolo.muse.model.media.Playlist
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.ui.base.BaseDialogFragment
 import com.frolo.muse.ui.base.withArg
-import com.frolo.muse.ui.main.decorateAsLinear
+import com.frolo.muse.ui.main.addLinearItemMargins
 import com.frolo.muse.ui.main.library.base.BaseAdapter
 import com.frolo.muse.views.Anim
 import kotlinx.android.synthetic.main.dialog_add_song_to_playlist.*
@@ -63,7 +63,7 @@ class AddSongToPlaylistDialog: BaseDialogFragment() {
         rv_list.apply {
             adapter = this@AddSongToPlaylistDialog.adapter
             layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
-            decorateAsLinear()
+            addLinearItemMargins()
         }
 
         btn_add_to_playlist.setOnClickListener {

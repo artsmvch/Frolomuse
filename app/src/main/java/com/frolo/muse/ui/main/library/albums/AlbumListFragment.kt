@@ -15,8 +15,8 @@ import com.frolo.muse.glide.observe
 import com.frolo.muse.model.media.Album
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.ui.ShotLayoutAnimationController
-import com.frolo.muse.ui.main.decorateAsGrid
-import com.frolo.muse.ui.main.decorateAsLinear
+import com.frolo.muse.ui.main.addGridItemMargins
+import com.frolo.muse.ui.main.addLinearItemMargins
 import com.frolo.muse.ui.main.library.base.SimpleMediaCollectionFragment
 
 
@@ -69,10 +69,10 @@ class AlbumListFragment: SimpleMediaCollectionFragment<Album>() {
 
         if (gridEnabled) {
             list.layoutManager = GridLayoutManager(context, 3)
-            list.decorateAsGrid()
+            list.addGridItemMargins()
         } else {
             list.layoutManager = LinearLayoutManager(context)
-            list.decorateAsLinear()
+            list.addLinearItemMargins()
         }
         list.layoutAnimation = ShotLayoutAnimationController()
     }

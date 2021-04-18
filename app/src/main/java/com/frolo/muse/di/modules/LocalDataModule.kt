@@ -1,14 +1,18 @@
 package com.frolo.muse.di.modules
 
 import android.content.Context
+import android.os.Build
 import com.frolo.muse.BuildConfig
+import com.frolo.muse.di.Exec
 import com.frolo.muse.di.Repo
 import com.frolo.muse.di.impl.local.*
 import com.frolo.muse.di.impl.sound.bass.BASSSoundResolverImpl
+import com.frolo.muse.di.impl.stub.MediaFileRepositoryStub
 import com.frolo.muse.model.media.*
 import com.frolo.muse.repository.*
 import dagger.Module
 import dagger.Provides
+import java.util.concurrent.Executor
 import javax.inject.Singleton
 
 
@@ -61,6 +65,11 @@ class LocalDataModule {
 
     @Provides
     fun provideMyFileMediaRepository(repository: MyFileRepository): MediaRepository<MyFile> {
+        return repository
+    }
+
+    @Provides
+    fun provideMediaFileMediaRepository(repository: MediaFileRepository): MediaRepository<MediaFile> {
         return repository
     }
 
@@ -140,6 +149,20 @@ class LocalDataModule {
 
     @Singleton
     @Provides
+    fun provideMediaFileRepository(context: Context, @Exec(Exec.Type.QUERY) executor: Executor, songRepository: SongRepository): MediaFileRepository {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            MediaFileRepositoryImpl(context, executor, songRepository)
+        } else {
+            if (BuildConfig.DEBUG) {
+                throw IllegalStateException("MediaFileRepository should not be requested on Android < Q")
+            } else {
+                MediaFileRepositoryStub()
+            }
+        }
+    }
+
+    @Singleton
+    @Provides
     @Repo(Repo.Source.LOCAL)
     fun provideLyricsRepository(context: Context): LyricsRepository {
         return LyricsRepositoryImpl(context)
@@ -148,21 +171,25 @@ class LocalDataModule {
     @Singleton
     @Provides
     fun provideGenericMediaRepository(
-            context: Context,
-            songRepository: SongRepository,
-            artistRepository: ArtistRepository,
-            albumRepository: AlbumRepository,
-            genreRepository: GenreRepository,
-            playlistRepository: PlaylistRepository,
-            myFileRepository: MyFileRepository): GenericMediaRepository {
+        context: Context,
+        songRepository: SongRepository,
+        artistRepository: ArtistRepository,
+        albumRepository: AlbumRepository,
+        genreRepository: GenreRepository,
+        playlistRepository: PlaylistRepository,
+        myFileRepository: MyFileRepository,
+        mediaFileRepository: MediaFileRepository
+    ): GenericMediaRepository {
         return GenericMediaRepositoryImpl(
-                context,
-                songRepository,
-                artistRepository,
-                albumRepository,
-                genreRepository,
-                playlistRepository,
-                myFileRepository)
+            context,
+            songRepository,
+            artistRepository,
+            albumRepository,
+            genreRepository,
+            playlistRepository,
+            myFileRepository,
+            mediaFileRepository
+        )
     }
 
     @Singleton

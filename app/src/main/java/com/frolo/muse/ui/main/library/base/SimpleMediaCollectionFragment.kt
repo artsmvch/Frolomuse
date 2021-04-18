@@ -10,7 +10,7 @@ import com.frolo.muse.R
 import com.frolo.muse.model.media.Media
 import com.frolo.muse.ui.ShotLayoutAnimationController
 import com.frolo.muse.ui.base.NoClipping
-import com.frolo.muse.ui.main.decorateAsLinear
+import com.frolo.muse.ui.main.addLinearItemMargins
 import kotlinx.android.synthetic.main.fragment_base_list.*
 
 
@@ -56,7 +56,7 @@ abstract class SimpleMediaCollectionFragment <E: Media>:
     protected open fun onDecorateList(list: RecyclerView) {
         list.adapter = adapter
         list.layoutManager = LinearLayoutManager(context)
-        list.decorateAsLinear()
+        list.addLinearItemMargins()
         list.layoutAnimation = ShotLayoutAnimationController()
     }
 

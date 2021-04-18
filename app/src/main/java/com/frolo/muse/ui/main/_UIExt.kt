@@ -7,14 +7,18 @@ import com.frolo.muse.dp2px
 import com.frolo.muse.views.MarginItemDecoration
 
 
-fun RecyclerView.decorateAsLinear(
-        margin: Int = 2f.dp2px(context).toInt()) {
-    addItemDecoration(MarginItemDecoration.createLinear(2 * margin, margin))
+fun RecyclerView.addLinearItemMargins(
+    horizontalMargin: Int = 0,
+    verticalMargin: Int = 2f.dp2px(context).toInt()
+) {
+    addItemDecoration(MarginItemDecoration.createLinear(horizontalMargin, verticalMargin))
 }
 
-fun RecyclerView.decorateAsGrid(
-        margin: Int = 2f.dp2px(context).toInt()) {
-    addItemDecoration(MarginItemDecoration.createGrid(margin, margin))
+fun RecyclerView.addGridItemMargins(
+    horizontalMargin: Int = 2f.dp2px(context).toInt(),
+    verticalMargin: Int = 2f.dp2px(context).toInt()
+) {
+    addItemDecoration(MarginItemDecoration.createGrid(horizontalMargin, verticalMargin))
 }
 
 fun Context.showVolumeControl() {

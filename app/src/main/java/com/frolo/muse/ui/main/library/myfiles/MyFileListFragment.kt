@@ -13,7 +13,7 @@ import com.frolo.muse.ui.ShotLayoutAnimationController
 import com.frolo.muse.ui.base.BackPressHandler
 import com.frolo.muse.ui.base.NoClipping
 import com.frolo.muse.ui.getNameAsRootString
-import com.frolo.muse.ui.main.decorateAsLinear
+import com.frolo.muse.ui.main.addLinearItemMargins
 import com.frolo.muse.ui.main.library.base.AbsMediaCollectionFragment
 import com.frolo.muse.ui.main.library.base.BaseAdapter
 import com.frolo.muse.views.Anim
@@ -21,6 +21,10 @@ import kotlinx.android.synthetic.main.fragment_base_list.*
 import kotlinx.android.synthetic.main.fragment_my_file_list.*
 
 
+@Deprecated(
+    message = "MyFile is replaced with MediaFile",
+    replaceWith = ReplaceWith("AudioBucketListFragment")
+)
 class MyFileListFragment: AbsMediaCollectionFragment<MyFile>(),
         BackPressHandler,
         NoClipping {
@@ -60,7 +64,7 @@ class MyFileListFragment: AbsMediaCollectionFragment<MyFile>(),
         rv_list.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = this@MyFileListFragment.adapter
-            decorateAsLinear()
+            addLinearItemMargins()
             layoutAnimation = ShotLayoutAnimationController()
         }
 

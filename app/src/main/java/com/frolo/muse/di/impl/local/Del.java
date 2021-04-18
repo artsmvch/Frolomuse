@@ -12,6 +12,7 @@ import com.frolo.muse.model.media.Album;
 import com.frolo.muse.model.media.Artist;
 import com.frolo.muse.model.media.Genre;
 import com.frolo.muse.model.media.Media;
+import com.frolo.muse.model.media.MediaFile;
 import com.frolo.muse.model.media.MyFile;
 import com.frolo.muse.model.media.Playlist;
 import com.frolo.muse.model.media.Song;
@@ -256,6 +257,20 @@ final class Del {
         // TODO: Do we need to delete the file/folder as well?
     }
 
+    private static void deleteMediaFiles_Internal(
+            ContentResolver resolver,
+            Collection<MediaFile> mediaFiles) throws Exception {
+
+        Collection<Song> songs = SongQuery.queryForMediaFiles(resolver, mediaFiles)
+                .firstOrError()
+                .blockingGet();
+
+        deleteMediaItems_Internal(
+                resolver,
+                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+                songs);
+    }
+
     /*package*/ static Completable deleteSongs(
             final ContentResolver resolver,
             final Collection<Song> items) {
@@ -322,6 +337,17 @@ final class Del {
         });
     }
 
+    /*package*/ static Completable deleteMediaFiles(
+            final ContentResolver resolver,
+            final Collection<MediaFile> items) {
+        return Completable.fromAction(new Action() {
+            @Override
+            public void run() throws Exception {
+                deleteMediaFiles_Internal(resolver, items);
+            }
+        });
+    }
+
     /*package*/ static Completable deleteSong(
             final ContentResolver resolver,
             final Song item) {
@@ -356,6 +382,12 @@ final class Del {
             final ContentResolver resolver,
             final MyFile item) {
         return deleteMyFiles(resolver, Collections.singleton(item));
+    }
+
+    /*package*/ static Completable deleteMediaFile(
+            final ContentResolver resolver,
+            final MediaFile item) {
+        return deleteMediaFiles(resolver, Collections.singleton(item));
     }
 
     private Del() {

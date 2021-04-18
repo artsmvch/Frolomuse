@@ -3,7 +3,7 @@ package com.frolo.muse.ui.main.library.base
 import com.frolo.muse.util.CharSequences
 
 
-fun <T> BaseAdapter<T, *>.sectionIndexAt(position: Int, onProvideName: T.() -> String?): CharSequence {
+inline fun <T> BaseAdapter<T, *>.sectionIndexAt(position: Int, onProvideName: T.() -> String?): CharSequence {
     if (position < 0 || position >= itemCount)
         return CharSequences.empty()
 

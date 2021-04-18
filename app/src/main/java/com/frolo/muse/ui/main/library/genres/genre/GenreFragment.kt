@@ -18,7 +18,7 @@ import com.frolo.muse.ui.base.NoClipping
 import com.frolo.muse.ui.base.setupNavigation
 import com.frolo.muse.ui.base.withArg
 import com.frolo.muse.ui.main.confirmShortcutCreation
-import com.frolo.muse.ui.main.decorateAsLinear
+import com.frolo.muse.ui.main.addLinearItemMargins
 import com.frolo.muse.ui.main.library.base.AbsSongCollectionFragment
 import com.frolo.muse.ui.main.library.base.SongAdapter
 import com.frolo.muse.ui.toString
@@ -89,7 +89,7 @@ class GenreFragment: AbsSongCollectionFragment<Song>(), NoClipping {
         rv_list.apply {
             layoutManager = LinearLayoutManager(context)
             this.adapter = this@GenreFragment.adapter
-            decorateAsLinear()
+            addLinearItemMargins()
         }
 
         btn_play.setOnClickListener {

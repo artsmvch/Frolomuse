@@ -117,6 +117,10 @@ fun MyFile.getNameAsRootString(): String {
     return "..." + (javaFile?.name ?: "")
 }
 
+fun MediaFile.getNameString(): String {
+    return this.name.orEmpty()
+}
+
 fun Song.getDurationString(): String {
     return duration.asDurationInMs()
 }

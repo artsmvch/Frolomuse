@@ -11,6 +11,7 @@ import com.frolo.muse.db.AppMediaStore;
 import com.frolo.muse.model.media.Album;
 import com.frolo.muse.model.media.Artist;
 import com.frolo.muse.model.media.Genre;
+import com.frolo.muse.model.media.MediaFile;
 import com.frolo.muse.model.media.MyFile;
 import com.frolo.muse.model.media.Playlist;
 import com.frolo.muse.model.media.Song;
@@ -462,6 +463,23 @@ final class SongQuery {
         List<Flowable<List<Song>>> sources = new ArrayList<>(myFiles.size());
         for (MyFile myFile : myFiles) {
             sources.add(queryForMyFile(resolver, myFile, Sort.BY_TITLE));
+        }
+        return Flowable.combineLatest(sources, COMBINER);
+    }
+
+    /*package*/ static Flowable<List<Song>> queryForMediaFiles(
+            final ContentResolver resolver,
+            final Collection<MediaFile> mediaFiles) {
+        List<Flowable<List<Song>>> sources = new ArrayList<>(mediaFiles.size());
+        for (MediaFile mediaFile : mediaFiles) {
+            Flowable<List<Song>> source = querySingle(resolver, mediaFile.getId())
+                .map(new Function<Song, List<Song>>() {
+                    @Override
+                    public List<Song> apply(Song song) throws Exception {
+                        return Collections.singletonList(song);
+                    }
+                });
+            sources.add(source);
         }
         return Flowable.combineLatest(sources, COMBINER);
     }

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_current_bucket"
+        android:background="?attr/selectableItemBackground"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:minHeight="@dimen/preferred_item_height">
+
+        <ImageView
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:id="@+id/imv_current_bucket_icon"
+            android:scaleType="centerCrop"
+            android:layout_marginStart="4dp"
+            android:layout_width="@dimen/list_item_img_art_size"
+            android:layout_height="@dimen/list_item_img_art_size"
+            android:layout_gravity="center|start"
+            android:src="@drawable/ic_framed_folder_up" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            app:layout_constraintStart_toEndOf="@id/imv_current_bucket_icon"
+            app:layout_constraintTop_toTopOf="@id/imv_current_bucket_icon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/imv_current_bucket_icon"
+            android:id="@+id/tv_current_bucket_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:textAppearance="?textAppearanceListItem"
+            android:layout_gravity="center|start"
+            android:maxLines="2"
+            tools:text="This is the current root file"/>
+
+        <include layout="@layout/include_divider"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:id="@+id/layout_divider"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/vertical_divider_height"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <include layout="@layout/fragment_base_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</LinearLayout>

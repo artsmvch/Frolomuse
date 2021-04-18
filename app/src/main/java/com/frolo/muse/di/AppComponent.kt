@@ -21,6 +21,7 @@ import com.frolo.muse.ui.main.library.albums.album.AlbumVMFactory
 import com.frolo.muse.ui.main.library.artists.artist.ArtistVMFactory
 import com.frolo.muse.ui.main.library.artists.artist.albums.AlbumsOfArtistVMFactory
 import com.frolo.muse.ui.main.library.artists.artist.songs.SongsOfArtistVMFactory
+import com.frolo.muse.ui.main.library.buckets.files.AudioBucketVMFactory
 import com.frolo.muse.ui.main.library.genres.genre.GenreVMFactory
 import com.frolo.muse.ui.main.library.playlists.addmedia.AddMediaToPlaylistVMFactory
 import com.frolo.muse.ui.main.library.playlists.create.CreatePlaylistVMFactory
@@ -82,6 +83,7 @@ interface AppComponent {
     fun inject(vmf: SavePresetVMFactory)
     fun inject(vmf: LyricsVMFactory)
     fun inject(vmf: CreatePlaylistVMFactory)
+    fun inject(vmf: AudioBucketVMFactory)
 
     // UseCase factories
     fun provideGetAlbumSongsUseCaseFactory(): GetAlbumSongsUseCase.Factory
@@ -91,6 +93,7 @@ interface AppComponent {
     fun provideGetPlaylistSongsUseCaseFactory(): GetPlaylistUseCase.Factory
     fun provideAddMediaToPlaylistUseCaseFactory(): AddMediaToPlaylistUseCase.Factory
     fun provideAddSongToPlaylistUseCaseFactory(): AddSongToPlaylistUseCase.Factory
+    fun provideExploreMediaBucketUseCaseFactory(): ExploreMediaBucketUseCase.Factory
 
     // ViewModel factory creators
     fun providePosterVMFactoryCreator(): PosterVMFactory.Creator

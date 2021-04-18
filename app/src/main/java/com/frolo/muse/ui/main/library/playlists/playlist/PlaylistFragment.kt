@@ -19,7 +19,7 @@ import com.frolo.muse.removeCallbacksSafely
 import com.frolo.muse.ui.base.adapter.SimpleItemTouchHelperCallback
 import com.frolo.muse.ui.base.withArg
 import com.frolo.muse.ui.main.library.base.DragSongAdapter
-import com.frolo.muse.ui.main.decorateAsLinear
+import com.frolo.muse.ui.main.addLinearItemMargins
 import com.frolo.muse.ui.main.library.base.AbsSongCollectionFragment
 import com.frolo.muse.ui.main.library.base.SongAdapter
 import com.frolo.muse.dp2px
@@ -110,7 +110,7 @@ class PlaylistFragment: AbsSongCollectionFragment<Song>(), NoClipping {
 
             adapter = this@PlaylistFragment.adapter
 
-            decorateAsLinear()
+            addLinearItemMargins()
         }
 
         tb_actions.apply {

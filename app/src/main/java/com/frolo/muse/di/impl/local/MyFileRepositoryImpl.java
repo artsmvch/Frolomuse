@@ -22,6 +22,7 @@ import io.reactivex.Single;
 import io.reactivex.functions.Action;
 
 
+@Deprecated
 public class MyFileRepositoryImpl extends BaseMediaRepository<MyFile> implements MyFileRepository {
 
     /*Prefs*/

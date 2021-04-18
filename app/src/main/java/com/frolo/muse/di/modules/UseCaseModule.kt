@@ -209,6 +209,20 @@ abstract class UseCaseModule {
             )
         }
 
+        @Provides
+        @JvmStatic
+        fun provideGetMediaFileMenuUseCase(
+                schedulerProvider: SchedulerProvider,
+                repository: MediaFileRepository,
+                player: Player
+        ): GetMediaMenuUseCase<MediaFile> {
+            return GetMediaMenuUseCase<MediaFile>(
+                    schedulerProvider,
+                    repository,
+                    player
+            )
+        }
+
         /*ClickMediaUseCase*/
         @Provides
         @JvmStatic
@@ -354,6 +368,24 @@ abstract class UseCaseModule {
             )
         }
 
+        @Provides
+        @JvmStatic
+        fun provideClickMediaFileUseCase(
+                schedulerProvider: SchedulerProvider,
+                player: Player,
+                repository: GenericMediaRepository,
+                navigator: Navigator,
+                audioSourceQueueFactory: AudioSourceQueueFactory
+        ): ClickMediaUseCase<MediaFile> {
+            return ClickMediaUseCase<MediaFile>(
+                    schedulerProvider,
+                    player,
+                    repository,
+                    navigator,
+                    audioSourceQueueFactory
+            )
+        }
+
         /*PlayMediaUseCase*/
         @Provides
         @JvmStatic
@@ -467,6 +499,20 @@ abstract class UseCaseModule {
             )
         }
 
+        @Provides
+        @JvmStatic
+        fun providePlayMediaFileUseCase(
+                schedulerProvider: SchedulerProvider,
+                repository: MediaFileRepository,
+                player: Player
+        ): PlayMediaUseCase<MediaFile> {
+            return PlayMediaUseCase<MediaFile>(
+                    schedulerProvider,
+                    repository,
+                    player
+            )
+        }
+
         /*ShareMediaUseCase*/
         @Provides
         @JvmStatic
@@ -574,6 +620,20 @@ abstract class UseCaseModule {
                 navigator: Navigator
         ): ShareMediaUseCase<MyFile> {
             return ShareMediaUseCase<MyFile>(
+                    schedulerProvider,
+                    repository,
+                    navigator
+            )
+        }
+
+        @Provides
+        @JvmStatic
+        fun provideShareMediaFileUseCase(
+                schedulerProvider: SchedulerProvider,
+                repository: MediaFileRepository,
+                navigator: Navigator
+        ): ShareMediaUseCase<MediaFile> {
+            return ShareMediaUseCase<MediaFile>(
                     schedulerProvider,
                     repository,
                     navigator
@@ -709,6 +769,22 @@ abstract class UseCaseModule {
             )
         }
 
+        @Provides
+        @JvmStatic
+        fun provideDeleteMediaFileUseCase(
+                schedulerProvider: SchedulerProvider,
+                repository: MediaFileRepository,
+                playlistChunkRepository: PlaylistChunkRepository,
+                player: Player
+        ): DeleteMediaUseCase<MediaFile> {
+            return DeleteMediaUseCase<MediaFile>(
+                    schedulerProvider,
+                    repository,
+                    playlistChunkRepository,
+                    player
+            )
+        }
+
         /*ChangeFavouriteUseCase*/
         @Provides
         @JvmStatic
@@ -800,6 +876,18 @@ abstract class UseCaseModule {
                 schedulerProvider: SchedulerProvider,
                 repository: MyFileRepository
         ): ChangeFavouriteUseCase<MyFile> {
+            return ChangeFavouriteUseCase(
+                    schedulerProvider,
+                    repository
+            )
+        }
+
+        @Provides
+        @JvmStatic
+        fun provideChangeFavouriteMediaFileUseCase(
+                schedulerProvider: SchedulerProvider,
+                repository: MediaFileRepository
+        ): ChangeFavouriteUseCase<MediaFile> {
             return ChangeFavouriteUseCase(
                     schedulerProvider,
                     repository

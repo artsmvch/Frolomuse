@@ -37,6 +37,7 @@ import io.reactivex.functions.Action;
 import io.reactivex.functions.Function;
 
 
+@Deprecated
 final class MyFileQuery {
 
     static final class Sort {

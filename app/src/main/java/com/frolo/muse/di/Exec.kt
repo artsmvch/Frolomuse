@@ -6,6 +6,6 @@ import javax.inject.Qualifier
 @kotlin.annotation.Retention(AnnotationRetention.RUNTIME)
 annotation class Exec(val value: Type) {
     enum class Type {
-        MAIN, BACKGROUND
+        MAIN, QUERY
     }
 }

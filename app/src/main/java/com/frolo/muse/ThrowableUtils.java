@@ -13,6 +13,10 @@ public final class ThrowableUtils {
         return sw.toString();
     }
 
+    public static Throwable notImplementedError() {
+        return new UnsupportedOperationException("Not implemented yet");
+    }
+
     private ThrowableUtils() {
     }
 }

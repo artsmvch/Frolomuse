@@ -398,7 +398,8 @@ final class PlaylistHelper {
         return wrap(new Action() {
             @Override public void run() throws Exception {
                 switch (item.getKind()) {
-                    case Media.SONG: {
+                    case Media.SONG:
+                    case Media.MEDIA_FILE: {
                         addAudioToPlaylist_Internal(resolver, playlistId, item.getId());
                         break;
                     }

@@ -7,10 +7,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.PagerAdapter
+import com.frolo.muse.Features
 import com.frolo.muse.model.Library
 import com.frolo.muse.ui.getSectionName
 import com.frolo.muse.ui.main.library.albums.AlbumListFragment
 import com.frolo.muse.ui.main.library.artists.ArtistListFragment
+import com.frolo.muse.ui.main.library.buckets.AudioBucketListFragment
 import com.frolo.muse.ui.main.library.favourites.FavouriteSongListFragment
 import com.frolo.muse.ui.main.library.genres.GenreListFragment
 import com.frolo.muse.ui.main.library.mostplayed.MostPlayedFragment
@@ -21,10 +23,9 @@ import com.frolo.muse.ui.main.library.songs.SongListFragment
 import java.lang.ref.WeakReference
 
 
-// TO_DO: Investigate import androidx.fragment.app.FragmentStatePagerAdapter
-class LibraryPageAdapter constructor(
-        fragmentManager: FragmentManager,
-        context: Context
+class LibraryPageAdapter(
+    fragmentManager: FragmentManager,
+    context: Context
 ): FragmentPagerAdapter(fragmentManager, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     private val context = WeakReference(context)
@@ -35,7 +36,7 @@ class LibraryPageAdapter constructor(
             notifyDataSetChanged()
         }
 
-    // holding initiated fragments
+    // Holding instantiated fragments
     private val fragments = SparseArray<Fragment>()
 
     override fun getItem(position: Int): Fragment {
@@ -45,7 +46,13 @@ class LibraryPageAdapter constructor(
             Library.ALBUMS -> AlbumListFragment()
             Library.GENRES -> GenreListFragment()
             Library.PLAYLISTS -> PlaylistListFragment()
-            Library.FOLDERS -> MyFileListFragment()
+            Library.FOLDERS -> {
+                if (Features.isPlainOldFileExplorerFeatureAvailable()) {
+                    MyFileListFragment()
+                } else {
+                    AudioBucketListFragment()
+                }
+            }
             Library.FAVOURITES -> FavouriteSongListFragment()
             Library.RECENTLY_ADDED -> RecentlyAddedSongListFragment()
             Library.MOST_PLAYED -> MostPlayedFragment()

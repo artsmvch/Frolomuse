@@ -1,14 +1,14 @@
 package com.frolo.muse.model.media;
 
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.io.File;
 import java.io.Serializable;
 
+
+@Deprecated
 public class MyFile implements Media, Serializable {
-    private final long id = NO_ID;
     private /*non-null*/ final File file;
     private final boolean isSongFile;
 
@@ -39,7 +39,7 @@ public class MyFile implements Media, Serializable {
 
     @Override
     public long getId() {
-        return id;
+        return NO_ID;
     }
 
     @Override

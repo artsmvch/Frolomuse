@@ -11,6 +11,10 @@ import io.reactivex.processors.BehaviorProcessor
 import javax.inject.Inject
 
 
+@Deprecated(
+    message = "MyFile is replaced with MediaFile",
+    replaceWith = ReplaceWith("GetMediaFileTreeUseCase")
+)
 class GetAllMyFilesUseCase @Inject constructor(
     schedulerProvider: SchedulerProvider,
     private val repository: MyFileRepository,

@@ -11,15 +11,16 @@ import com.frolo.muse.repository.GenericMediaRepository
 import com.frolo.muse.rx.SchedulerProvider
 import io.reactivex.Completable
 import io.reactivex.Single
+import io.reactivex.functions.BiFunction
 import io.reactivex.functions.Function
 
 
 class ClickMediaUseCase <E: Media> constructor(
-        private val schedulerProvider: SchedulerProvider,
-        private val player: Player,
-        private val repository: GenericMediaRepository,
-        private val navigator: Navigator,
-        private val audioSourceQueueFactory: AudioSourceQueueFactory
+    private val schedulerProvider: SchedulerProvider,
+    private val player: Player,
+    private val genericMediaRepository: GenericMediaRepository,
+    private val navigator: Navigator,
+    private val audioSourceQueueFactory: AudioSourceQueueFactory
 ) {
 
     private fun processPlay(target: Song, songs: List<Song>, toggleIfSameSong: Boolean, associatedMediaItem: Media?) {
@@ -79,14 +80,14 @@ class ClickMediaUseCase <E: Media> constructor(
                                 .observeOn(schedulerProvider.main())
                                 .doOnComplete { navigator.openMyFile(myFile) }
 
-                        myFile.isSongFile -> repository.collectSongs(myFile)
+                        myFile.isSongFile -> genericMediaRepository.collectSongs(myFile)
                             .subscribeOn(schedulerProvider.worker())
                             // Since the item is a song file itself then we create a collection of just 1 item
                             .map { songs -> songs.first() }
                             .flatMap { targetSong ->
                                 val sources = fromCollection.filter { it is MyFile && it.isSongFile }
                                         .map { myFile ->
-                                            repository.collectSongs(myFile).onErrorReturnItem(emptyList())
+                                            genericMediaRepository.collectSongs(myFile).onErrorReturnItem(emptyList())
                                         }
 
                                 Single.zip(
@@ -105,6 +106,24 @@ class ClickMediaUseCase <E: Media> constructor(
 
                         else -> Completable.complete()
                     } }
+        }
+
+        Media.MEDIA_FILE -> {
+            val source1 = Single.fromCallable { item as MediaFile }
+                .flatMap { genericMediaRepository.collectSongs(it) }
+                .map { it.first() }
+                .subscribeOn(schedulerProvider.worker())
+            val source2 = Single.fromCallable { fromCollection.map { it as MediaFile } }
+                .flatMap { genericMediaRepository.collectSongs(it) }
+                .subscribeOn(schedulerProvider.worker())
+            val zipper = BiFunction<Song, List<Song>, Pair<Song, List<Song>>> { song, songList ->
+                song to songList
+            }
+            Single.zip(source1, source2, zipper)
+                .doOnSuccess { pair ->
+                    processPlay(pair.first, pair.second, true, associatedMediaItem)
+                }
+                .ignoreElement()
         }
 
         else -> Completable.error(UnknownMediaException(item))

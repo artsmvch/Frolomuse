@@ -8,6 +8,7 @@ import com.frolo.muse.permission.PermissionChecker
 import dagger.Module
 import dagger.Provides
 import java.util.concurrent.Executor
+import java.util.concurrent.Executors
 import javax.inject.Singleton
 
 
@@ -19,6 +20,13 @@ class MiscModule {
     @Exec(Exec.Type.MAIN)
     fun provideMainExecutor(): Executor {
         return MainExecutor()
+    }
+
+    @Singleton
+    @Provides
+    @Exec(Exec.Type.QUERY)
+    fun provideQueryExecutor(): Executor {
+        return Executors.newCachedThreadPool()
     }
 
     @Singleton

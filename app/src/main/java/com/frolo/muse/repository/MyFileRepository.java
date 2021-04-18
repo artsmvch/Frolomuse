@@ -8,6 +8,7 @@ import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 
+@Deprecated
 public interface MyFileRepository extends MediaRepository<MyFile> {
     /**
      * Depends on the environment so we need to split it from implementation;

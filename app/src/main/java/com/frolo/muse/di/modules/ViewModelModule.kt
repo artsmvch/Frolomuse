@@ -9,6 +9,7 @@ import com.frolo.muse.ui.main.audiofx.params.PlaybackParamsViewModel
 import com.frolo.muse.ui.main.library.LibraryViewModel
 import com.frolo.muse.ui.main.library.albums.AlbumListViewModel
 import com.frolo.muse.ui.main.library.artists.ArtistListViewModel
+import com.frolo.muse.ui.main.library.buckets.AudioBucketListViewModel
 import com.frolo.muse.ui.main.library.favourites.FavouriteSongListViewModel
 import com.frolo.muse.ui.main.library.genres.GenreListViewModel
 import com.frolo.muse.ui.main.library.mostplayed.MostPlayedViewModel
@@ -114,6 +115,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(MyFileListViewModel::class)
     abstract fun bindMyFileListViewModel(viewModel: MyFileListViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(AudioBucketListViewModel::class)
+    abstract fun bindAudioBucketListViewModel(viewModel: AudioBucketListViewModel): ViewModel
 
     @Binds
     @IntoMap

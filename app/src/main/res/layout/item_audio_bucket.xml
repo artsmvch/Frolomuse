@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="4dp"
+    android:gravity="start|center_vertical"
+    android:minHeight="@dimen/preferred_item_height"
+    android:background="?selectableItemBackground">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:srcCompat="@drawable/ic_framed_folder"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_bucket_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:gravity="start|center_vertical"
+        android:textAppearance="?textAppearanceListItem"
+        android:maxLines="2"
+        tools:text="Bucket"/>
+</LinearLayout>

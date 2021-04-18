@@ -13,7 +13,7 @@ import com.frolo.muse.R
 import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.ui.base.adapter.SimpleItemTouchHelperCallback
-import com.frolo.muse.ui.main.decorateAsLinear
+import com.frolo.muse.ui.main.addLinearItemMargins
 import com.frolo.muse.ui.main.library.base.AbsMediaCollectionFragment
 import com.frolo.muse.ui.main.library.base.BaseAdapter
 import com.frolo.muse.ui.main.library.base.DragSongAdapter
@@ -120,7 +120,7 @@ class CurrSongQueueFragment: AbsMediaCollectionFragment<Song>() {
         rv_list.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = this@CurrSongQueueFragment.adapter
-            decorateAsLinear()
+            addLinearItemMargins()
         }
 
         itemTouchHelper = SimpleItemTouchHelperCallback(

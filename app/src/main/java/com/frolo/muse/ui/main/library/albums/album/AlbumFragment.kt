@@ -20,7 +20,7 @@ import com.frolo.muse.ui.base.NoClipping
 import com.frolo.muse.ui.base.setupNavigation
 import com.frolo.muse.ui.base.withArg
 import com.frolo.muse.ui.main.confirmShortcutCreation
-import com.frolo.muse.ui.main.decorateAsLinear
+import com.frolo.muse.ui.main.addLinearItemMargins
 import com.frolo.muse.ui.main.library.base.AbsSongCollectionFragment
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.shape.CornerFamily
@@ -76,7 +76,7 @@ class AlbumFragment: AbsSongCollectionFragment<Song>(), NoClipping {
         rv_list.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = this@AlbumFragment.adapter
-            decorateAsLinear()
+            addLinearItemMargins()
         }
 
         tb_actions.apply {

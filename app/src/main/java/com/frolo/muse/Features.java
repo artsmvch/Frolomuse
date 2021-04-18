@@ -18,6 +18,10 @@ public final class Features {
         return Build.VERSION.SDK_INT <= Build.VERSION_CODES.P;
     }
 
+    public static boolean isPlainOldFileExplorerFeatureAvailable() {
+        return Build.VERSION.SDK_INT <= Build.VERSION_CODES.P;
+    }
+
     private Features() {
     }
 }

@@ -11,7 +11,7 @@ import com.frolo.muse.model.media.Artist
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.ui.base.NoClipping
 import com.frolo.muse.ui.base.withArg
-import com.frolo.muse.ui.main.decorateAsLinear
+import com.frolo.muse.ui.main.addLinearItemMargins
 import com.frolo.muse.ui.main.library.base.AbsSongCollectionFragment
 import com.frolo.muse.ui.main.library.base.SongAdapter
 import kotlinx.android.synthetic.main.fragment_base_list.*
@@ -42,7 +42,7 @@ class SongsOfArtistFragment: AbsSongCollectionFragment<Song>(), NoClipping {
         rv_list.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = this@SongsOfArtistFragment.adapter
-            decorateAsLinear()
+            addLinearItemMargins()
         }
     }
 

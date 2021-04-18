@@ -7,6 +7,7 @@ import com.frolo.muse.model.media.Album;
 import com.frolo.muse.model.media.Artist;
 import com.frolo.muse.model.media.Genre;
 import com.frolo.muse.model.media.Media;
+import com.frolo.muse.model.media.MediaFile;
 import com.frolo.muse.model.media.MyFile;
 import com.frolo.muse.model.media.Playlist;
 import com.frolo.muse.model.media.Song;
@@ -16,6 +17,7 @@ import com.frolo.muse.repository.AlbumRepository;
 import com.frolo.muse.repository.ArtistRepository;
 import com.frolo.muse.repository.GenericMediaRepository;
 import com.frolo.muse.repository.GenreRepository;
+import com.frolo.muse.repository.MediaFileRepository;
 import com.frolo.muse.repository.MyFileRepository;
 import com.frolo.muse.repository.PlaylistRepository;
 import com.frolo.muse.repository.SongRepository;
@@ -38,22 +40,25 @@ import io.reactivex.functions.Function5;
 
 public class GenericMediaRepositoryImpl implements GenericMediaRepository {
 
-    private Context mContext;
-    private SongRepository mSongRepo;
-    private ArtistRepository mArtistRepo;
-    private AlbumRepository mAlbumRepo;
-    private GenreRepository mGenreRepo;
-    private PlaylistRepository mPlaylistRepo;
-    private MyFileRepository mMyFileRepo;
+    private final Context mContext;
+    private final SongRepository mSongRepo;
+    private final ArtistRepository mArtistRepo;
+    private final AlbumRepository mAlbumRepo;
+    private final GenreRepository mGenreRepo;
+    private final PlaylistRepository mPlaylistRepo;
+    private final MyFileRepository mMyFileRepo;
+    private final MediaFileRepository mMediaFileRepo;
 
     public GenericMediaRepositoryImpl(
-            Context context,
-            SongRepository songRepo,
-            ArtistRepository artistRepo,
-            AlbumRepository albumRepo,
-            GenreRepository genreRepo,
-            PlaylistRepository playlistRepo,
-            MyFileRepository myFileRepo) {
+        Context context,
+        SongRepository songRepo,
+        ArtistRepository artistRepo,
+        AlbumRepository albumRepo,
+        GenreRepository genreRepo,
+        PlaylistRepository playlistRepo,
+        MyFileRepository myFileRepo,
+        MediaFileRepository mediaFileRepo
+    ) {
 
         this.mContext = context;
         this.mSongRepo = songRepo;
@@ -62,6 +67,7 @@ public class GenericMediaRepositoryImpl implements GenericMediaRepository {
         this.mGenreRepo = genreRepo;
         this.mPlaylistRepo = playlistRepo;
         this.mMyFileRepo = myFileRepo;
+        this.mMediaFileRepo = mediaFileRepo;
     }
 
     private Function5<List<Song>, List<Album>, List<Artist>, List<Genre>, List<Playlist>, List<Media>> createCombiner() {
@@ -147,6 +153,9 @@ public class GenericMediaRepositoryImpl implements GenericMediaRepository {
             case Media.PLAYLIST:
                 return mPlaylistRepo.delete((Playlist) item);
 
+            case Media.MEDIA_FILE:
+                return mMediaFileRepo.delete((MediaFile) item);
+
             case Media.MY_FILE:
             default:
                 return Completable.error(new UnknownMediaException(item));
@@ -205,6 +214,10 @@ public class GenericMediaRepositoryImpl implements GenericMediaRepository {
 
             case Media.MY_FILE: {
                 return mMyFileRepo.collectSongs((MyFile) item);
+            }
+
+            case Media.MEDIA_FILE: {
+                return mMediaFileRepo.collectSongs((MediaFile) item);
             }
 
             default: {
@@ -330,6 +343,10 @@ public class GenericMediaRepositoryImpl implements GenericMediaRepository {
                         return mMyFileRepo.isShortcutSupported((MyFile) item);
                     }
 
+                    case Media.MEDIA_FILE: {
+                        return mMediaFileRepo.isShortcutSupported((MediaFile) item);
+                    }
+
                     default: {
                         return Single.error(new UnknownMediaException(item));
                     }
@@ -366,6 +383,10 @@ public class GenericMediaRepositoryImpl implements GenericMediaRepository {
 
                     case Media.MY_FILE: {
                         return mMyFileRepo.createShortcut((MyFile) item);
+                    }
+
+                    case Media.MEDIA_FILE: {
+                        return mMediaFileRepo.createShortcut((MediaFile) item);
                     }
 
                     default: {
