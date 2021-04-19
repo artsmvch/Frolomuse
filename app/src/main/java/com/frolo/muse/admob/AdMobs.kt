@@ -16,6 +16,7 @@ object AdMobs {
     private const val KEY_AD_MOB_ENABLED = "ad_mob_enabled"
     private const val KEY_AD_MOB_THRESHOLD_INSTALL_TIME = "ad_mob_threshold_install_time"
     private const val KEY_AD_MOB_THRESHOLD_OPEN_COUNT = "ad_mob_threshold_open_count"
+    private const val KEY_AD_MOB_LIBRARY_BANNER_ID = "ad_mob_library_banner_id"
 
     private const val INIT_ON_COLD_START_DEFAULT = true
 
@@ -62,17 +63,30 @@ object AdMobs {
 
                 val remoteConfigInstance = FirebaseRemoteConfig.getInstance()
 
-                val isEnabled = remoteConfigInstance[KEY_AD_MOB_ENABLED].asString() == "true"
-                val thresholdInstallTime = remoteConfigInstance[KEY_AD_MOB_THRESHOLD_INSTALL_TIME].asString().let { stringValue ->
+                val isEnabled = remoteConfigInstance[KEY_AD_MOB_ENABLED].let { value ->
                     try {
-                        stringValue.toLong()
+                        value.asString() == "true"
+                    } catch (ignored: Throwable) {
+                        false
+                    }
+                }
+                val thresholdInstallTime = remoteConfigInstance[KEY_AD_MOB_THRESHOLD_INSTALL_TIME].let { value ->
+                    try {
+                        value.asString().toLong()
                     } catch (ignored: Throwable) {
                         null
                     }
                 }
-                val thresholdOpenCount = remoteConfigInstance[KEY_AD_MOB_THRESHOLD_OPEN_COUNT].asString().let { stringValue ->
+                val thresholdOpenCount = remoteConfigInstance[KEY_AD_MOB_THRESHOLD_OPEN_COUNT].let { value ->
                     try {
-                        stringValue.toInt()
+                        value.asString().toInt()
+                    } catch (ignored: Throwable) {
+                        null
+                    }
+                }
+                val libraryBannerId = remoteConfigInstance[KEY_AD_MOB_LIBRARY_BANNER_ID].let { value ->
+                    try {
+                        value.asString()
                     } catch (ignored: Throwable) {
                         null
                     }
@@ -81,7 +95,8 @@ object AdMobs {
                 AdMobRemoteConfigs(
                     isEnabled = isEnabled,
                     thresholdInstallTime = thresholdInstallTime,
-                    thresholdOpenCount = thresholdOpenCount
+                    thresholdOpenCount = thresholdOpenCount,
+                    libraryBannerId = libraryBannerId
                 )
             }
     }
@@ -98,7 +113,8 @@ object AdMobs {
     data class AdMobRemoteConfigs(
         val isEnabled: Boolean,
         val thresholdInstallTime: Long?,
-        val thresholdOpenCount: Int?
+        val thresholdOpenCount: Int?,
+        val libraryBannerId: String?
     )
 
 }

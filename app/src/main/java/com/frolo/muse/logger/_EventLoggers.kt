@@ -233,8 +233,8 @@ fun EventLogger.logPlaybackFadingConfigured(seconds: Int) {
 
 //region Advertising
 
-fun EventLogger.logBannerShown() {
-    log("banner_shown")
+fun EventLogger.logBannerCanBeShown() {
+    log("banner_can_be_shown")
 }
 
 //endregion

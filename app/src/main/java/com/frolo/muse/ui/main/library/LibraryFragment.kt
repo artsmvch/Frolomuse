@@ -5,16 +5,15 @@ import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.updateLayoutParams
 import androidx.lifecycle.LifecycleOwner
 import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
 import androidx.viewpager.widget.ViewPager
-import com.frolo.muse.BuildConfig
 import com.frolo.muse.R
 import com.frolo.muse.admob.AdListenerBuilder
+import com.frolo.muse.admob.BannerState
 import com.frolo.muse.android.displayCompat
 import com.frolo.muse.arch.observe
 import com.frolo.muse.model.Library
@@ -115,33 +114,24 @@ class LibraryFragment: BaseFragment(),
      * The ad view will be added to the ad container.
      * A reference to the newly created AdView is stored to manage its lifecycle.
      */
-    private fun setupAdMobBanner(canShow: Boolean) {
+    private fun setupAdMobBanner(state: BannerState?) {
 
-        if (canShow && adView != null) {
+        if (state?.canBeShown == true && adView != null) {
             // it's already set up
             return
         }
 
-        if (!canShow) {
+        if (state == null || !state.canBeShown) {
             // we don't have to show the ad
             ad_container.removeAllViews()
             adView = null
             return
         }
 
-        @StringRes
-        val adUnitIdResId: Int = if (BuildConfig.DEBUG) {
-            // Test unit ID for debug builds
-            R.string.ad_mob_test_unit_id
-        } else {
-            // Prod unit ID
-            R.string.ad_mob_library_unit_id
-        }
-
         val context = requireContext()
         val adView = AdView(context)
         adView.adSize = getAdSize()
-        adView.adUnitId = context.getString(adUnitIdResId)
+        adView.adUnitId = state.bannerId
 
         AdListenerBuilder()
             .doDefaultLogging(LOG_TAG)
@@ -241,8 +231,8 @@ class LibraryFragment: BaseFragment(),
     }
 
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
-        canShowBanner.observe(owner) { canShow: Boolean? ->
-            setupAdMobBanner(canShow == true)
+        bannerState.observe(owner) { state ->
+            setupAdMobBanner(state)
         }
     }
 
