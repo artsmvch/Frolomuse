@@ -13,6 +13,7 @@ import com.frolo.muse.common.switchToNextShuffleMode
 import com.frolo.muse.common.toSong
 import com.frolo.muse.di.Exec
 import com.frolo.muse.engine.*
+import com.frolo.muse.interactor.feature.FeaturesUseCase
 import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
 import com.frolo.muse.interactor.media.DeleteMediaUseCase
 import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
@@ -20,6 +21,7 @@ import com.frolo.muse.interactor.player.ControlPlayerUseCase
 import com.frolo.muse.interactor.player.ResolveSoundUseCase
 import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.logger.EventLogger
+import com.frolo.muse.logger.logPlayerOptionsMenuShown
 import com.frolo.muse.model.ABState
 import com.frolo.muse.model.event.DeletionConfirmation
 import com.frolo.muse.model.event.DeletionType
@@ -45,6 +47,7 @@ class PlayerViewModel @Inject constructor(
     private val deleteMediaUseCase: DeleteMediaUseCase<Song>,
     private val controlPlayerUseCase: ControlPlayerUseCase,
     private val resolveSoundUseCase: ResolveSoundUseCase,
+    private val featuresUseCase: FeaturesUseCase,
     private val navigator: Navigator,
     private val eventLogger: EventLogger
 ): BaseViewModel(eventLogger) {
@@ -194,6 +197,10 @@ class PlayerViewModel @Inject constructor(
     // Confirmation
     private val _confirmDeletionEvent = SingleLiveEvent<DeletionConfirmation<Song>>()
     val confirmDeletionEvent: LiveData<DeletionConfirmation<Song>> get() = _confirmDeletionEvent
+
+    // Menu options
+    private val _showMenuOptionsEvent = SingleLiveEvent<PlayerOptionsMenu>()
+    val showOptionsMenuEvent: LiveData<PlayerOptionsMenu> get() = _showMenuOptionsEvent
 
     init {
         player.registerObserver(playerObserver)
@@ -375,6 +382,21 @@ class PlayerViewModel @Inject constructor(
         deleteMediaUseCase.delete(song, type)
             .observeOn(schedulerProvider.main())
             .subscribeFor { _songDeletedEvent.value = song }
+    }
+
+    fun onOptionsMenuClicked() {
+        featuresUseCase.isLyricsViewerEnabled()
+            .map { isEnabled ->
+                PlayerOptionsMenu(
+                    isLyricsViewerEnabled = isEnabled
+                )
+            }
+            .onErrorReturnItem(PlayerOptionsMenu())
+            .observeOn(schedulerProvider.main())
+            .doOnSuccess { eventLogger.logPlayerOptionsMenuShown() }
+            .subscribeFor(key = "check_features_for_options_menu") { menuOptions ->
+                _showMenuOptionsEvent.value = menuOptions
+            }
     }
 
     override fun onCleared() {

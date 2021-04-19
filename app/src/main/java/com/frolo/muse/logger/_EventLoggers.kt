@@ -3,6 +3,7 @@ package com.frolo.muse.logger
 import androidx.annotation.StringDef
 import com.frolo.muse.model.Theme
 import com.frolo.muse.model.media.Media
+import com.frolo.muse.model.media.Song
 
 /**
  * Convenient methods for logging main events in the App.
@@ -257,4 +258,36 @@ fun EventLogger.logPlayerWidgetDisabled() {
 
 //endregion
 
-// TODO: add other main events
+
+//region Lyrics
+
+fun EventLogger.logLyricsViewed() {
+    log("lyrics_viewed")
+}
+
+fun EventLogger.logFailedToGetLyrics(song: Song, err: Throwable) {
+    val params = mapOf(
+        "artist_name" to song.artist,
+        "song_name" to song.title,
+        "error" to err.toString()
+    )
+    log("failed_to_get_lyrics", params)
+}
+
+fun EventLogger.logLyricsSaved(edited: Boolean) {
+    val params = mapOf(
+        "edited" to edited.toString()
+    )
+    log("lyrics_saved", params)
+}
+
+//endregion
+
+
+//region Player screen
+
+fun EventLogger.logPlayerOptionsMenuShown() {
+    log("player_options_menu_shown")
+}
+
+//endregion

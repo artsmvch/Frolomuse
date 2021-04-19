@@ -1,5 +1,4 @@
-package com.frolo.muse.di.impl.remote;
-
+package com.frolo.muse.di.impl.remote.lyrics;
 
 import androidx.annotation.WorkerThread;
 
@@ -19,14 +18,17 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
-final class GetLyricsApi {
+
+// This API is currently not available
+@Deprecated
+final class OrionLyricsApi implements LyricsApi {
 
     private final static String BASE_URL = "https://orion.apiseeds.com/api/music/lyric";
     private final static String PARAM_API_KEY = "apikey";
 
     private final String apiKey;
 
-    GetLyricsApi(String apiKey) {
+    OrionLyricsApi(String apiKey) {
         this.apiKey = apiKey;
     }
 
@@ -58,8 +60,9 @@ final class GetLyricsApi {
         return new Lyrics(text);
     }
 
+    @Override
     @WorkerThread
-    Lyrics getLyrics(String artist, String songName) throws Exception {
+    public Lyrics getLyrics(String artist, String songName) throws Exception {
         String urlPath = buildUrl(artist, songName, apiKey);
         URL url = new URL(urlPath);
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();

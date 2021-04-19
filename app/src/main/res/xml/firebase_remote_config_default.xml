@@ -8,4 +8,8 @@
         <key>library_banner_ad_mob_id</key>
         <value>ca-app-pub-6141750985066080/5258434067</value>
     </entry>
+    <entry>
+        <key>lyrics_viewer_enabled</key>
+        <value>true</value>
+    </entry>
 </defaultsMap>

@@ -163,9 +163,8 @@ class LocalDataModule {
 
     @Singleton
     @Provides
-    @Repo(Repo.Source.LOCAL)
-    fun provideLyricsRepository(context: Context): LyricsRepository {
-        return LyricsRepositoryImpl(context)
+    fun provideLyricsLocalRepository(context: Context): LyricsLocalRepository {
+        return LyricsLocalRepositoryImpl(context)
     }
 
     @Singleton

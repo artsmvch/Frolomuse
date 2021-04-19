@@ -5,16 +5,19 @@ import android.os.Bundle
 import android.text.InputType
 import android.view.View
 import android.view.Window
+import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
+import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProviders
+import com.frolo.muse.BuildConfig
 import com.frolo.muse.R
 import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
-import com.frolo.muse.model.lyrics.Lyrics
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.ui.base.BaseDialogFragment
 import com.frolo.muse.ui.base.withArg
+import com.frolo.muse.ui.main.settings.updateText
 import kotlinx.android.synthetic.main.dialog_lyrics.*
 
 
@@ -43,75 +46,80 @@ class LyricsDialogFragment: BaseDialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return super.onCreateDialog(savedInstanceState).apply {
             requestWindowFeature(Window.FEATURE_NO_TITLE)
+            window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+
             setContentView(R.layout.dialog_lyrics)
 
-            val metrics = resources.displayMetrics
-            val width = metrics.widthPixels
-            val height = metrics.heightPixels
-            setupDialogSize(this, 6 * width / 7, 3 * height / 4)
+            setupDialogSizeRelativelyToScreen(this, widthPercent = 19f / 20f)
 
-            imv_close.setOnClickListener { dismiss() }
-
-            btn_save.setOnClickListener {
-                val text = tv_lyrics.text?.toString() ?: ""
-                viewModel.onSaveButtonClicked(text)
+            imv_close.setOnClickListener {
+                dismiss()
             }
 
+            edt_lyrics.doOnTextChanged { text, _, _, _ ->
+                viewModel.onLyricsEdited(text?.toString())
+            }
+            edt_lyrics.clearFocus()
 
+            btn_save.setOnClickListener {
+                viewModel.onSaveButtonClicked()
+            }
         }
     }
 
-    private fun observeViewModel(owner: LifecycleOwner) {
-        viewModel.apply {
-            error.observeNonNull(owner) { err ->
-                onDisplayError(err)
-            }
+    private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
+        error.observeNonNull(owner) { err ->
+            onDisplayError(err)
+        }
 
-            isEditable.observeNonNull(owner) { isEditable ->
-                onSetEditable(isEditable)
-            }
+        isEditable.observeNonNull(owner) { isEditable ->
+            onSetEditable(isEditable)
+        }
 
-            isLoadingLyrics.observeNonNull(owner) { isLoading ->
-                onSetLoadingLyrics(isLoading)
-            }
+        isLoadingLyrics.observeNonNull(owner) { isLoading ->
+            onSetLoadingLyrics(isLoading)
+        }
 
-            isSavingLyrics.observeNonNull(owner) { isSaving ->
-                onSetSavingLyrics(isSaving)
-            }
+        isLyricsVisible.observeNonNull(owner) { isVisible ->
+            onSetLyricsVisibility(isVisible)
+        }
 
-            lyrics.observeNonNull(owner) { lyrics ->
-                onDisplayLyrics(lyrics)
-            }
+        isSavingLyrics.observeNonNull(owner) { isSaving ->
+            onSetSavingLyrics(isSaving)
+        }
 
-            lyricsSavedEvent.observe(owner) {
-                onLyricsSaved()
-            }
+        lyricsText.observeNonNull(owner) { text ->
+            onDisplayLyricsText(text)
+        }
 
-            songName.observeNonNull(owner) { songName ->
-                onDisplaySongName(songName)
-            }
+        lyricsSavedEvent.observe(owner) {
+            onLyricsSaved()
+        }
+
+        songName.observeNonNull(owner) { songName ->
+            onDisplaySongName(songName)
         }
     }
 
     private fun onDisplayError(err: Throwable) {
-        dialog?.apply {
-            tv_error.text = err.message
+        if (BuildConfig.DEBUG) {
+            postError(err)
         }
     }
 
     private fun onSetEditable(isEditable: Boolean) {
         dialog?.apply {
-            tv_lyrics.isEnabled = isEditable
+            edt_lyrics.isEnabled = isEditable
             if (isEditable) {
-                tv_lyrics.inputType =
+                edt_lyrics.inputType =
                         InputType.TYPE_CLASS_TEXT or
                                 InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS or
                                 InputType.TYPE_TEXT_FLAG_IME_MULTI_LINE
 
-                tv_lyrics.isSingleLine = false
-                tv_lyrics.imeOptions = EditorInfo.IME_FLAG_NO_ENTER_ACTION
+                edt_lyrics.isSingleLine = false
+                edt_lyrics.imeOptions = EditorInfo.IME_FLAG_NO_ENTER_ACTION
             } else {
-                tv_lyrics.inputType = InputType.TYPE_NULL
+                edt_lyrics.inputType = InputType.TYPE_NULL
             }
         }
     }
@@ -122,14 +130,20 @@ class LyricsDialogFragment: BaseDialogFragment() {
         }
     }
 
+    private fun onSetLyricsVisibility(isVisible: Boolean) {
+        dialog?.apply {
+            edt_lyrics.visibility = if (isVisible) View.VISIBLE else View.INVISIBLE
+        }
+    }
+
     private fun onSetSavingLyrics(isSaving: Boolean) {
         dialog?.apply {
         }
     }
 
-    private fun onDisplayLyrics(lyrics: Lyrics) {
+    private fun onDisplayLyricsText(lyricsText: String) {
         dialog?.apply {
-            tv_lyrics.setText(lyrics.text)
+            edt_lyrics.updateText(lyricsText)
         }
     }
 

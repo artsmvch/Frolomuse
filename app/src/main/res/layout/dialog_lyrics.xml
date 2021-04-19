@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -10,23 +11,27 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:minHeight="@dimen/default_bar_size"
-        android:gravity="center_vertical|top">
+        android:gravity="center_vertical">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_song_name"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textAppearance="?textAppearanceHeadline5"/>
+            android:layout_marginStart="40dp"
+            android:gravity="center"
+            android:textSize="18sp"
+            android:textAppearance="?textAppearanceHeadline6"
+            android:maxLines="1"
+            android:ellipsize="end"/>
 
         <ImageView
-            android:background="?attr/selectableItemBackground"
             android:id="@+id/imv_close"
-            android:tint="?attr/iconImageTint"
-            android:src="@drawable/ic_cross"
-            android:padding="15dp"
-            android:layout_width="45dp"
-            android:layout_height="45dp" />
+            android:padding="12dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:srcCompat="@drawable/ic_cross"
+            app:tint="?attr/iconImageTint" />
     </LinearLayout>
 
     <include
@@ -39,26 +44,28 @@
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nsv_lyrics"
             android:overScrollMode="never"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fillViewport="true">
+            android:clipToPadding="false"
+            android:fillViewport="true"
+            android:scrollbars="vertical">
 
             <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/tv_lyrics"
+                android:id="@+id/edt_lyrics"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-        </ScrollView>
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tv_error"
-            android:maxLines="10"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:textAppearance="?textAppearanceBody1"/>
+                android:layout_height="wrap_content"
+                android:paddingStart="4dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="4dp"
+                android:paddingBottom="8dp"
+                android:gravity="center"
+                android:textAppearance="@style/TextAppearance.Lyrics.Text"
+                android:background="@null"
+                android:hint="@string/lyrics_not_tap_to_write"/>
+        </androidx.core.widget.NestedScrollView>
 
         <com.frolo.muse.views.progress.IBar
             android:layout_gravity="center"
@@ -72,10 +79,13 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/vertical_divider_height"/>
 
-    <com.google.android.material.button.MaterialButton
+    <TextView
         android:id="@+id/btn_save"
-        android:text="@string/save"
-        android:layout_gravity="center_horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/dialog_footer_min_height"
+        android:textAppearance="?textAppearanceButton"
+        android:background="?selectableItemBackground"
+        android:gravity="center"
+        android:text="@string/save"/>
 </LinearLayout>

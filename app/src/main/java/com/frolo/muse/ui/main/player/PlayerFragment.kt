@@ -147,7 +147,7 @@ class PlayerFragment: BaseFragment() {
         view.setOnTouchListener { _, _ -> true }
 
         btn_options_menu.setOnClickListener { v ->
-            showOptionsMenu(v)
+            viewModel.onOptionsMenuClicked()
         }
 
         vp_album_art.apply {
@@ -306,12 +306,16 @@ class PlayerFragment: BaseFragment() {
         btn_ab.text = ss
     }
 
-    private fun showOptionsMenu(anchorView: View) {
-        val popup = PopupMenu(anchorView.context, anchorView)
+    private fun showOptionsMenu(optionsMenu: PlayerOptionsMenu) {
+        val anchorView: View = btn_options_menu
+        val context = anchorView.context
+        val popup = PopupMenu(context, anchorView)
 
         popup.inflate(R.menu.fragment_player)
-        popup.menu.findItem(R.id.action_edit_album_cover)?.title =
-                anchorView.context.getAlbumEditorOptionText()
+
+        val menu: Menu = popup.menu
+        menu.findItem(R.id.action_edit_album_cover)?.title = context.getAlbumEditorOptionText()
+        menu.findItem(R.id.action_view_lyrics)?.isVisible = optionsMenu.isLyricsViewerEnabled
 
         popup.setOnMenuItemClickListener { menuItem ->
             when(menuItem.itemId) {
@@ -324,7 +328,7 @@ class PlayerFragment: BaseFragment() {
                 R.id.action_view_artist -> viewModel.onViewArtistOptionSelected()
                 R.id.action_create_poster -> viewModel.onViewPosterOptionSelected()
                 R.id.action_add_to_playlist -> viewModel.onAddToPlaylistOptionSelected()
-                //R.id.action_view_lyrics -> viewModel.onViewLyricsOptionSelected()
+                R.id.action_view_lyrics -> viewModel.onViewLyricsOptionSelected()
             }
             return@setOnMenuItemClickListener true
         }
@@ -514,6 +518,11 @@ class PlayerFragment: BaseFragment() {
                     viewModel.onConfirmedDeletion(confirmation.mediaItem, type)
                 }
             }
+        }
+
+        // Options menu
+        showOptionsMenuEvent.observeNonNull(owner) { optionsMenu ->
+            showOptionsMenu(optionsMenu)
         }
     }
 

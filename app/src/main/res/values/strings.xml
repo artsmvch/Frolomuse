@@ -364,6 +364,10 @@
     <string name="push_notifications_channel_name">Push notifications</string>
     <string name="push_notifications_channel_desc">Contains useful information about news and app updates</string>
 
+    <!--Lyrics-->
+    <string name="view_lyrics">View lyrics</string>
+    <string name="lyrics_not_tap_to_write">Text not found, click here to write it yourself</string>
+
     <!--Onboarding-->
     <string name="skip">Skip</string>
     <string name="done">Done</string>

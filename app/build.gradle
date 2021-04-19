@@ -49,7 +49,6 @@ android {
 
         buildConfigField "String", "BUILD_TIME", "\"${getDate()}\""
 
-        buildConfigField "String", "GET_LYRICS_API_KEY", "\"ECsJ0RFHA0yHj1JME1lTHUniLV97ON7qMD57grtuqmIUylJNvz7LlFR4NcgdinnI\""
         buildConfigField "String", "FLURRY_KEY", "\"P5FNPGFXNB6WGXP8RWND\""
         buildConfigField "String", "DEVELOPER_EMAIL", "\"alexei.artsimovich@gmail.com\""
 
@@ -244,6 +243,9 @@ dependencies {
 
     // AdMob
     implementation 'com.google.android.gms:play-services-ads:19.5.0'
+
+    // Jsoup
+    implementation 'org.jsoup:jsoup:1.10.3'
 }
 
 apply plugin: 'com.google.gms.google-services'

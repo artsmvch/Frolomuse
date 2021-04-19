@@ -2,6 +2,7 @@ package com.frolo.muse.di.modules
 
 import com.frolo.muse.engine.Player
 import com.frolo.muse.common.AudioSourceQueueFactory
+import com.frolo.muse.interactor.feature.FeaturesUseCase
 import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.interactor.media.*
 import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
@@ -962,6 +963,17 @@ abstract class UseCaseModule {
             return DispatchSongPlayedUseCase(
                     schedulerProvider,
                     songRepository)
+        }
+
+        @Provides
+        @Singleton
+        @JvmStatic
+        fun provideFeaturesUseCase(
+            remoteConfigRepository: RemoteConfigRepository,
+            lyricsRemoteRepository: LyricsRemoteRepository,
+            schedulerProvider: SchedulerProvider
+        ): FeaturesUseCase {
+            return FeaturesUseCase(remoteConfigRepository, lyricsRemoteRepository, schedulerProvider)
         }
     }
 

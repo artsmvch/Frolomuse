@@ -6,8 +6,8 @@ import com.frolo.muse.model.media.Song;
 import io.reactivex.Completable;
 import io.reactivex.Single;
 
-public interface LyricsRepository {
-    Single<Lyrics> getLyrics(Song song);
 
+public interface LyricsLocalRepository {
+    Single<Lyrics> getLyrics(Song song);
     Completable setLyrics(Song song, Lyrics lyrics);
 }

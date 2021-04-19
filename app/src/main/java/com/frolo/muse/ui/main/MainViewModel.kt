@@ -5,6 +5,7 @@ import com.frolo.muse.arch.EventLiveData
 import com.frolo.muse.arch.SingleLiveEvent
 import com.frolo.muse.arch.call
 import com.frolo.muse.engine.Player
+import com.frolo.muse.interactor.feature.FeaturesUseCase
 import com.frolo.muse.interactor.firebase.SyncFirebaseMessagingTokenUseCase
 import com.frolo.muse.interactor.media.shortcut.NavigateToMediaUseCase
 import com.frolo.muse.interactor.player.OpenAudioSourceUseCase
@@ -35,6 +36,7 @@ class MainViewModel @Inject constructor(
     private val openAudioSourceUseCase: OpenAudioSourceUseCase,
     private val navigateToMediaUseCase: NavigateToMediaUseCase,
     private val syncFirebaseMessagingTokenUseCase: SyncFirebaseMessagingTokenUseCase,
+    private val featuresUseCase: FeaturesUseCase,
     private val schedulerProvider: SchedulerProvider,
     private val permissionChecker: PermissionChecker,
     private val eventLogger: EventLogger
@@ -106,7 +108,14 @@ class MainViewModel @Inject constructor(
     }
 
     fun onFirstCreate() {
-        syncFirebaseMessagingTokenUseCase.sync().subscribeFor {  }
+        // Syncing Firebase CM
+        syncFirebaseMessagingTokenUseCase.sync()
+            .observeOn(schedulerProvider.main())
+            .subscribeFor {  }
+        // Syncing features
+        featuresUseCase.sync()
+            .observeOn(schedulerProvider.main())
+            .subscribeFor {  }
     }
 
     fun onStart() {

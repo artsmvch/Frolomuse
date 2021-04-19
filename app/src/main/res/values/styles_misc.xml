@@ -50,4 +50,15 @@
         <item name="gridLineThickness">1dp</item>
         <item name="levelColor">?colorAccent</item>
     </style>
+
+    <!--Lyrics-->
+    <style name="TextAppearance.Lyrics.Text" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:lineSpacingExtra">2sp</item>
+        <item name="android:textSize">12.5sp</item>
+    </style>
+
+    <style name="TextAppearance.Lyrics.TextLine" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:lineSpacingExtra">0sp</item>
+        <item name="android:textSize">12.5sp</item>
+    </style>
 </resources>

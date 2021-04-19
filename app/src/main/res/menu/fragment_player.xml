@@ -15,12 +15,11 @@
         android:name="@string/add_to_playlist"
         app:showAsAction="never"/>
 
-    <!--<item-->
-        <!--android:id="@+id/action_view_lyrics"-->
-        <!--android:title="@string/view_lyrics"-->
-        <!--android:name="@string/view_lyrics"-->
-        <!--android:visible="false"-->
-        <!--app:showAsAction="never"/>-->
+    <item
+        android:id="@+id/action_view_lyrics"
+        android:title="@string/view_lyrics"
+        android:name="@string/view_lyrics"
+        app:showAsAction="never"/>
 
     <item
         android:id="@+id/action_create_poster"
