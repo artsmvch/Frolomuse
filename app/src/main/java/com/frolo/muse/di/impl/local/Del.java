@@ -116,6 +116,8 @@ final class Del {
             throw Query.genNullCursorErr(URI_SONG);
         }
 
+        List<String> filepathList = new ArrayList<>(cursor.getCount());
+
         StringBuilder opDeleteSelectionBuilder =
                 new StringBuilder(MediaStore.Audio.Media._ID + " IN (");
 
@@ -128,13 +130,7 @@ final class Del {
                     String filepath = cursor.getString(
                             cursor.getColumnIndex(PROJECTION_SONG[1]));
 
-                    try {
-                        // Delete file from the disk
-                        File file = new File(filepath);
-                        boolean deletedResult = file.delete();
-                        // TODO: check deletedResult
-                    } catch (Throwable ignored) {
-                    }
+                    filepathList.add(filepath);
 
                     if (firstLooped) {
                         opDeleteSelectionBuilder.append(',');
@@ -150,13 +146,23 @@ final class Del {
             cursor.close();
         }
 
+        for (String filepath : filepathList) {
+            try {
+                // Delete file from the disk
+                File file = new File(filepath);
+                boolean deletionResult = file.delete();
+                if (deletionResult) {
+                    //throw new IllegalStateException("Failed to delete song file: " + filepath);
+                }
+            } catch (Throwable ignored) {
+            }
+        }
+
         String opDeleteSelection = opDeleteSelectionBuilder.toString();
 
         int deletedCount = resolver
                 .delete(URI_SONG, opDeleteSelection, null);
         resolver.notifyChange(uri, null);
-
-        // TODO: check deletedCount
     }
 
     private static void deleteSongs_Internal(
