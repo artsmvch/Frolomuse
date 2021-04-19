@@ -8,12 +8,14 @@ import com.frolo.muse.arch.combine
 import com.frolo.muse.interactor.media.get.GetAudioBucketsUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.media.MediaBucket
+import com.frolo.muse.permission.PermissionChecker
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.base.BaseViewModel
 import javax.inject.Inject
 
 
 class AudioBucketListViewModel @Inject constructor(
+    private val permissionChecker: PermissionChecker,
     private val getAudioBucketsUseCase: GetAudioBucketsUseCase,
     private val schedulerProvider: SchedulerProvider,
     private val eventLogger: EventLogger
@@ -43,6 +45,11 @@ class AudioBucketListViewModel @Inject constructor(
     val openBucketEvent: LiveData<MediaBucket> get() = _openBucketEvent
 
     private fun doFetch() {
+        if (!permissionChecker.isQueryMediaContentPermissionGranted) {
+            _requestRESPermissionEvent.call()
+            return
+        }
+
         getAudioBucketsUseCase.getBuckets()
             .observeOn(schedulerProvider.main())
             .doOnSubscribe {
