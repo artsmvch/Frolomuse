@@ -14,6 +14,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.frolo.muse.FrolomuseApp
 import com.frolo.muse.BuildConfig
+import com.frolo.muse.Features
 import com.frolo.muse.R
 import com.frolo.muse.logger.*
 import com.frolo.muse.mediascan.MediaScanService
@@ -122,6 +123,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
         }
 
         findPreference("hidden_files").apply {
+            isVisible = Features.isPlainOldFileExplorerFeatureAvailable()
             onPreferenceClickListener = Preference.OnPreferenceClickListener {
                 showHiddenFilesDialog()
                 true
