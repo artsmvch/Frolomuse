@@ -1,7 +1,12 @@
 package com.frolo.muse.common;
 
+import android.content.ContentUris;
+import android.net.Uri;
+import android.provider.MediaStore;
+
 import com.frolo.muse.engine.AudioMetadata;
 import com.frolo.muse.engine.AudioSource;
+import com.frolo.muse.engine.MediaStoreRow;
 import com.frolo.muse.model.media.Media;
 import com.frolo.muse.model.media.Song;
 
@@ -15,8 +20,10 @@ import java.util.Objects;
 
 public final class Util {
 
+    private static final Uri CONTENT_URI = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+
     private static final class AudioSourceFromSongDelegate
-            implements Song, Media, AudioSource, AudioMetadata {
+            implements Song, Media, AudioSource, AudioMetadata, MediaStoreRow {
 
         private final Song mDelegate;
 
@@ -90,6 +97,12 @@ public final class Util {
             return mDelegate.getKind();
         }
 
+        @NotNull
+        @Override
+        public Uri getUri() {
+            return ContentUris.withAppendedId(CONTENT_URI, mDelegate.getId());
+        }
+
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
@@ -102,7 +115,7 @@ public final class Util {
     }
 
     private static final class SongFromAudioSourceDelegate
-            implements Song, Media, AudioSource, AudioMetadata {
+            implements Song, Media, AudioSource, AudioMetadata, MediaStoreRow {
 
         private final AudioSource mDelegate;
 
@@ -174,6 +187,12 @@ public final class Util {
         @Override
         public int getKind() {
             return Song.SONG;
+        }
+
+        @NotNull
+        @Override
+        public Uri getUri() {
+            return ContentUris.withAppendedId(CONTENT_URI, mDelegate.getId());
         }
 
         @Override

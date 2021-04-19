@@ -22,7 +22,6 @@
         android:allowBackup="false"
         android:theme="@style/Base.AppTheme.Launch"
         android:largeHeap="true"
-        android:requestLegacyExternalStorage="true"
         tools:replace="android:allowBackup">
 
         <!--AdMob-->

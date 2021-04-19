@@ -5,6 +5,7 @@ import android.media.AudioAttributes;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.PlaybackParams;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
@@ -664,7 +665,15 @@ public final class PlayerImpl implements Player {
 
                     try {
                         engine.reset();
-                        engine.setDataSource(item.getSource());
+                        if (item instanceof MediaStoreRow) {
+                            Uri uri = ((MediaStoreRow) item).getUri();
+                            mPlayerJournal.logMessage("Set data source from uri: " + uri.toString());
+                            engine.setDataSource(mContext, uri);
+                        } else {
+                            String path = item.getSource();
+                            mPlayerJournal.logMessage("Set data source from path: " + path);
+                            engine.setDataSource(path);
+                        }
                         engine.prepare();
 
                         mIsPreparedFlag = true;

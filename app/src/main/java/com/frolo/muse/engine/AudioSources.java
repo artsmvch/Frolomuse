@@ -1,13 +1,17 @@
 package com.frolo.muse.engine;
 
+import android.content.ContentUris;
+import android.net.Uri;
+import android.provider.MediaStore;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
 
 public final class AudioSources {
-    private AudioSources() {
-    }
+
+    private static final Uri CONTENT_URI = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
 
     private static final class SimpleAudioMetadata implements AudioMetadata {
 
@@ -99,7 +103,7 @@ public final class AudioSources {
         }
     }
 
-    private static final class SimpleAudioSource implements AudioSource {
+    private static final class SimpleAudioSource implements AudioSource, MediaStoreRow {
 
         final long id;
         final String source;
@@ -125,6 +129,12 @@ public final class AudioSources {
         @Override
         public AudioMetadata getMetadata() {
             return metadata;
+        }
+
+        @NotNull
+        @Override
+        public Uri getUri() {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
         }
 
         @Override
@@ -182,6 +192,9 @@ public final class AudioSources {
 
     public static boolean areSourcesTheSame(@NotNull AudioSource item1, @NotNull AudioSource item2) {
         return Objects.equals(item1.getSource(), item2.getSource());
+    }
+
+    private AudioSources() {
     }
 
 }
