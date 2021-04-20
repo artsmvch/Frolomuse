@@ -3,6 +3,8 @@ package com.frolo.muse
 import android.app.Activity
 import android.os.Build
 import android.os.StrictMode
+import android.os.strictmode.Violation
+import android.widget.Toast
 import androidx.multidex.MultiDexApplication
 import com.frolo.muse.admob.AdMobs
 import com.frolo.muse.di.AppComponent
@@ -76,9 +78,15 @@ class FrolomuseApp : MultiDexApplication() {
                 .detectDiskWrites()
                 .detectNetwork()
                 .penaltyLog()
-                .apply {
-                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
-                        penaltyDeath()
+                .run {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                        val executor = HandlerExecutor(mainLooper)
+                        val listener = StrictMode.OnThreadViolationListener { violation ->
+                            showViolation(violation)
+                        }
+                        penaltyListener(executor, listener)
+                    } else {
+                        this
                     }
                 }
                 .build()
@@ -92,13 +100,27 @@ class FrolomuseApp : MultiDexApplication() {
                 .setClassInstanceLimit(PlayerImpl::class.java, 1)
                 .setClassInstanceLimit(AudioFx_Impl::class.java, 1)
                 .penaltyLog()
-                .apply {
-                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
-                        penaltyDeath()
+                .run {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                        val executor = HandlerExecutor(mainLooper)
+                        val listener = StrictMode.OnVmViolationListener { violation ->
+                            showViolation(violation)
+                        }
+                        penaltyListener(executor, listener)
+                    } else {
+                        this
                     }
                 }
                 .build()
                 .also { StrictMode.setVmPolicy(it) }
+        }
+    }
+
+    private fun showViolation(violation: Violation?) {
+        if (BuildConfig.DEBUG) {
+            foregroundActivity?.also { context ->
+                Toast.makeText(context, violation?.toString().orEmpty(), Toast.LENGTH_LONG).show()
+            }
         }
     }
 
