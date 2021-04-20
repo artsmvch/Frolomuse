@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Build
 import com.frolo.muse.BuildConfig
 import com.frolo.muse.di.Exec
-import com.frolo.muse.di.Repo
 import com.frolo.muse.di.impl.local.*
 import com.frolo.muse.di.impl.sound.bass.BASSSoundResolverImpl
 import com.frolo.muse.di.impl.stub.MediaFileRepositoryStub
@@ -153,11 +152,7 @@ class LocalDataModule {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             MediaFileRepositoryImpl(context, executor, songRepository)
         } else {
-            if (BuildConfig.DEBUG) {
-                throw IllegalStateException("MediaFileRepository should not be requested on Android < Q")
-            } else {
-                MediaFileRepositoryStub()
-            }
+            MediaFileRepositoryStub()
         }
     }
 
