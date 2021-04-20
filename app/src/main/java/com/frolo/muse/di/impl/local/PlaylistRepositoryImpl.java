@@ -63,12 +63,12 @@ public class PlaylistRepositoryImpl extends BaseMediaRepository<Playlist> implem
 
     @Override
     public Completable delete(Playlist item) {
-        return Del.deletePlaylist(getContext().getContentResolver(), item);
+        return Del.deletePlaylist(getContext(), item);
     }
 
     @Override
     public Completable delete(Collection<Playlist> items) {
-        return Del.deletePlaylists(getContext().getContentResolver(), items);
+        return Del.deletePlaylists(getContext(), items);
     }
 
     @Override

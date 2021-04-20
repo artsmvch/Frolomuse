@@ -72,16 +72,12 @@ public class SongRepositoryImpl extends BaseMediaRepository<Song> implements Son
 
     @Override
     public Completable delete(Song item) {
-        return Del.deleteSong(
-                getContext().getContentResolver(),
-                item);
+        return Del.deleteSong(getContext(), item);
     }
 
     @Override
     public Completable delete(Collection<Song> items) {
-        return Del.deleteSongs(
-                getContext().getContentResolver(),
-                items);
+        return Del.deleteSongs(getContext(), items);
     }
 
     @Override

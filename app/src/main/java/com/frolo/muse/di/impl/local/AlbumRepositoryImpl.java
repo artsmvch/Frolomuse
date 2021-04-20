@@ -67,16 +67,12 @@ public class AlbumRepositoryImpl extends BaseMediaRepository<Album> implements A
 
     @Override
     public Completable delete(Album item) {
-        return Del.deleteAlbum(
-                getContext().getContentResolver(),
-                item);
+        return Del.deleteAlbum(getContext(), item);
     }
 
     @Override
     public Completable delete(Collection<Album> items) {
-        return Del.deleteAlbums(
-                getContext().getContentResolver(),
-                items);
+        return Del.deleteAlbums(getContext(), items);
     }
 
     @Override

@@ -76,16 +76,12 @@ public class MyFileRepositoryImpl extends BaseMediaRepository<MyFile> implements
 
     @Override
     public Completable delete(final MyFile item) {
-        return Del.deleteMyFile(
-                getContext().getContentResolver(),
-                item);
+        return Del.deleteMyFile(getContext(), item);
     }
 
     @Override
     public Completable delete(Collection<MyFile> items) {
-        return Del.deleteMyFiles(
-                getContext().getContentResolver(),
-                items);
+        return Del.deleteMyFiles(getContext(), items);
     }
 
     @Override

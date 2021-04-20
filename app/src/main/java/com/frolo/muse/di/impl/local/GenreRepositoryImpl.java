@@ -72,16 +72,12 @@ public class GenreRepositoryImpl extends BaseMediaRepository<Genre> implements G
 
     @Override
     public Completable delete(Genre item) {
-        return Del.deleteGenre(
-                getContext().getContentResolver(),
-                item);
+        return Del.deleteGenre(getContext(), item);
     }
 
     @Override
     public Completable delete(Collection<Genre> items) {
-        return Del.deleteGenres(
-                getContext().getContentResolver(),
-                items);
+        return Del.deleteGenres(getContext(), items);
     }
 
     @Override

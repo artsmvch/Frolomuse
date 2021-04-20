@@ -1,5 +1,6 @@
 package com.frolo.muse
 
+import android.app.Activity
 import android.os.Build
 import android.os.StrictMode
 import androidx.multidex.MultiDexApplication
@@ -36,6 +37,8 @@ class FrolomuseApp : MultiDexApplication() {
 
     private val playerWrapper = PlayerWrapper()
     private val navigatorWrapper = NavigatorWrapper()
+
+    val foregroundActivity: Activity? get() = activityWatcher.foregroundActivity
 
     override fun onCreate() {
         super.onCreate()

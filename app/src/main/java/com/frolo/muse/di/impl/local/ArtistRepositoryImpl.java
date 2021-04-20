@@ -75,14 +75,12 @@ public class ArtistRepositoryImpl extends BaseMediaRepository<Artist> implements
 
     @Override
     public Completable delete(Artist item) {
-        return Del.deleteArtist(getContext().getContentResolver(), item);
+        return Del.deleteArtist(getContext(), item);
     }
 
     @Override
     public Completable delete(Collection<Artist> items) {
-        return Del.deleteArtists(
-                getContext().getContentResolver(),
-                items);
+        return Del.deleteArtists(getContext(), items);
     }
 
     @Override

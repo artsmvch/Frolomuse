@@ -77,11 +77,11 @@ internal class MediaFileRepositoryImpl(
     }
 
     override fun delete(item: MediaFile): Completable {
-        return Del.deleteMediaFile(contentResolver, item)
+        return Del.deleteMediaFile(context, item)
     }
 
     override fun delete(items: Collection<MediaFile>): Completable {
-        return Del.deleteMediaFiles(contentResolver, items)
+        return Del.deleteMediaFiles(context, items)
     }
 
     override fun addToPlaylist(playlistId: Long, item: MediaFile): Completable {

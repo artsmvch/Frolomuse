@@ -1,13 +1,23 @@
 package com.frolo.muse.di.impl.local;
 
+import android.app.Activity;
+import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.ContentUris;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Binder;
+import android.os.Build;
 import android.provider.BaseColumns;
 import android.provider.MediaStore;
 
+import androidx.annotation.RequiresApi;
+
 import com.frolo.muse.BuildConfig;
+import com.frolo.muse.FrolomuseApp;
 import com.frolo.muse.model.media.Album;
 import com.frolo.muse.model.media.Artist;
 import com.frolo.muse.model.media.Genre;
@@ -30,18 +40,16 @@ import io.reactivex.functions.Action;
 final class Del {
     private static final boolean DEBUG = BuildConfig.DEBUG;
 
-    private static final Uri URI_SONG =
-            MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+    private static final Uri URI_SONG = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
 
     private static final String[] PROJECTION_SONG = new String[] {
-            MediaStore.Audio.Media._ID,
-            MediaStore.Audio.Media.DATA
+        MediaStore.Audio.Media._ID,
+        MediaStore.Audio.Media.DATA
     };
 
-    private static void deleteMediaItems_Internal(
-            final ContentResolver resolver,
-            final Uri uri,
-            final Collection<?extends Media> items) throws Exception {
+    private static final int RC_DELETE_MEDIA = 5037;
+
+    private static void deleteMediaItems_Internal(ContentResolver resolver, Uri uri, Collection<? extends Media> items) {
 
         // Step 1: delete media items from the Media Store DB
         {
@@ -92,9 +100,7 @@ final class Del {
                 boolean result = f.delete();
                 if (!result) {
                     if (DEBUG) {
-                        throw new RuntimeException(
-                                "Failed to delete file " + f.getAbsolutePath()
-                        );
+                        throw new RuntimeException("Failed to delete file: " + f.getAbsolutePath());
                     }
                 }
             }
@@ -104,10 +110,7 @@ final class Del {
     }
 
     private static void deleteSongFilesFromQuery_Internal(
-            final ContentResolver resolver,
-            final Uri uri,
-            final String selection,
-            final String[] selectionArgs) throws Exception {
+            ContentResolver resolver, Uri uri, String selection, String[] selectionArgs) throws Exception {
 
         Cursor cursor = resolver.query(
                 uri, PROJECTION_SONG, selection, selectionArgs, null);
@@ -165,235 +168,214 @@ final class Del {
         resolver.notifyChange(uri, null);
     }
 
-    private static void deleteSongs_Internal(
-            ContentResolver resolver,
-            Collection<Song> songs) throws Exception {
+    private static List<Uri> filterUrisForDeletion(Context context, Collection<Uri> uris) {
+        List<Uri> filteredUris = new ArrayList<>(uris.size());
+        for (Uri uri : uris) {
+            if (context.checkUriPermission(uri, Binder.getCallingPid(), Binder.getCallingUid(),
+                    Intent.FLAG_GRANT_WRITE_URI_PERMISSION) != PackageManager.PERMISSION_GRANTED) {
+                filteredUris.add(uri);
+            }
+        }
+        return filteredUris;
+    }
 
-        for (Song song : songs) {
-            Uri uri = ContentUris.withAppendedId(
-                    URI_SONG, song.getId());
-
-            deleteSongFilesFromQuery_Internal(
-                    resolver, uri, null, null);
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    private static void deleteUris_API30(Context context, Collection<Uri> uris) throws Exception {
+        PendingIntent pendingIntent =
+                MediaStore.createDeleteRequest(context.getContentResolver(), filterUrisForDeletion(context, uris));
+        FrolomuseApp frolomuseApp = (FrolomuseApp) context.getApplicationContext();
+        Activity activity = frolomuseApp.getForegroundActivity();
+        if (activity != null) {
+            activity.startIntentSenderForResult(pendingIntent.getIntentSender(),
+                    RC_DELETE_MEDIA, null, 0, 0, 0);
         }
     }
 
-    private static void deleteGenres_Internal(
-            ContentResolver resolver,
-            Collection<Genre> genres) throws Exception {
+    @RequiresApi(api = Build.VERSION_CODES.R)
+    private static void deleteSongs_API30(Context context, Collection<? extends Song> songs) throws Exception {
+        List<Uri> uris = new ArrayList<>(songs.size());
+        for (Song song : songs) uris.add(ContentUris.withAppendedId(URI_SONG, song.getId()));
+        deleteUris_API30(context, uris);
+    }
+
+    private static void deleteSongs_Internal(Context context, Collection<Song> songs) throws Exception {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            deleteSongs_API30(context, songs);
+        } else {
+            for (Song song : songs) {
+                Uri uri = ContentUris.withAppendedId(URI_SONG, song.getId());
+                deleteSongFilesFromQuery_Internal(context.getContentResolver(), uri, null, null);
+            }
+        }
+    }
+
+    private static void deleteGenres_Internal(Context context, Collection<Genre> genres) throws Exception {
+        ContentResolver resolver = context.getContentResolver();
 
         Collection<Song> songs = SongQuery.queryForGenres(resolver, genres)
                 .firstOrError()
                 .blockingGet();
 
-        deleteMediaItems_Internal(
-                resolver,
-                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                songs);
-
-        deleteMediaItems_Internal(
-                resolver,
-                MediaStore.Audio.Genres.EXTERNAL_CONTENT_URI,
-                genres);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            deleteSongs_API30(context, songs);
+        } else {
+            deleteMediaItems_Internal(resolver, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, songs);
+            deleteMediaItems_Internal(resolver, MediaStore.Audio.Genres.EXTERNAL_CONTENT_URI, genres);
+        }
     }
 
-    private static void deleteArtists_Internal(
-            ContentResolver resolver,
-            Collection<Artist> artists) throws Exception {
+    private static void deleteArtists_Internal(Context context, Collection<Artist> artists) throws Exception {
+        ContentResolver resolver = context.getContentResolver();
 
         Collection<Song> songs = SongQuery.queryForArtists(resolver, artists)
                 .firstOrError()
                 .blockingGet();
 
-        deleteMediaItems_Internal(
-                resolver,
-                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                songs);
-
-        deleteMediaItems_Internal(
-                resolver,
-                MediaStore.Audio.Genres.EXTERNAL_CONTENT_URI,
-                artists);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            deleteSongs_API30(context, songs);
+        } else {
+            deleteMediaItems_Internal(resolver, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, songs);
+            deleteMediaItems_Internal(resolver, MediaStore.Audio.Artists.EXTERNAL_CONTENT_URI, artists);
+        }
     }
 
-    private static void deleteAlbums_Internal(
-            ContentResolver resolver,
-            Collection<Album> albums) throws Exception {
+    private static void deleteAlbums_Internal(Context context, Collection<Album> albums) throws Exception {
+        ContentResolver resolver = context.getContentResolver();
 
         Collection<Song> songs = SongQuery.queryForAlbums(resolver, albums)
                 .firstOrError()
                 .blockingGet();
 
-        deleteMediaItems_Internal(
-                resolver,
-                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                songs);
-
-        deleteMediaItems_Internal(
-                resolver,
-                MediaStore.Audio.Genres.EXTERNAL_CONTENT_URI,
-                albums);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            deleteSongs_API30(context, songs);
+        } else {
+            deleteMediaItems_Internal(resolver, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, songs);
+            deleteMediaItems_Internal(resolver, MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI, albums);
+        }
     }
 
-    private static void deletePlaylists_Internal(
-            ContentResolver resolver,
-            Collection<Playlist> playlists) throws Exception {
-
+    private static void deletePlaylists_Internal(Context context, Collection<Playlist> playlists) throws Exception {
         // Delete only playlist entities from the MediaStore
-
-        deleteMediaItems_Internal(
-                resolver,
-                MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI,
-                playlists);
+        deleteMediaItems_Internal(context.getContentResolver(), MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI, playlists);
     }
 
-    private static void deleteMyFiles_Internal(
-            ContentResolver resolver,
-            Collection<MyFile> myFiles) throws Exception {
+    private static void deleteMyFiles_Internal(Context context, Collection<MyFile> myFiles) throws Exception {
+        ContentResolver resolver = context.getContentResolver();
 
         Collection<Song> songs = SongQuery.queryForMyFiles(resolver, myFiles)
                 .firstOrError()
                 .blockingGet();
 
-        deleteMediaItems_Internal(
-                resolver,
-                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                songs);
-
-        // TODO: Do we need to delete the file/folder as well?
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            deleteSongs_API30(context, songs);
+        } else {
+            deleteMediaItems_Internal(resolver, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, songs);
+        }
     }
 
-    private static void deleteMediaFiles_Internal(
-            ContentResolver resolver,
-            Collection<MediaFile> mediaFiles) throws Exception {
+    private static void deleteMediaFiles_Internal(Context context, Collection<MediaFile> mediaFiles) throws Exception {
+        ContentResolver resolver = context.getContentResolver();
 
         Collection<Song> songs = SongQuery.queryForMediaFiles(resolver, mediaFiles)
                 .firstOrError()
                 .blockingGet();
 
-        deleteMediaItems_Internal(
-                resolver,
-                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                songs);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            deleteSongs_API30(context, songs);
+        } else {
+            deleteMediaItems_Internal(resolver, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, songs);
+        }
     }
 
-    /*package*/ static Completable deleteSongs(
-            final ContentResolver resolver,
-            final Collection<Song> items) {
+    /*package*/ static Completable deleteSongs(final Context context, final Collection<Song> items) {
         return Completable.fromAction(new Action() {
             @Override
             public void run() throws Exception {
-                deleteSongs_Internal(resolver, items);
+                deleteSongs_Internal(context, items);
             }
         });
     }
 
-    /*package*/ static Completable deleteAlbums(
-            final ContentResolver resolver,
-            final Collection<Album> items) {
+    /*package*/ static Completable deleteAlbums(final Context context, final Collection<Album> items) {
         return Completable.fromAction(new Action() {
             @Override
             public void run() throws Exception {
-                deleteAlbums_Internal(resolver, items);
+                deleteAlbums_Internal(context, items);
             }
         });
     }
 
-    /*package*/ static Completable deleteArtists(
-            final ContentResolver resolver,
-            final Collection<Artist> items) {
+    /*package*/ static Completable deleteArtists(final Context context, final Collection<Artist> items) {
         return Completable.fromAction(new Action() {
             @Override
             public void run() throws Exception {
-                deleteArtists_Internal(resolver, items);
+                deleteArtists_Internal(context, items);
             }
         });
     }
 
-    /*package*/ static Completable deleteGenres(
-            final ContentResolver resolver,
-            final Collection<Genre> items) {
+    /*package*/ static Completable deleteGenres(final Context context, final Collection<Genre> items) {
         return Completable.fromAction(new Action() {
             @Override
             public void run() throws Exception {
-                deleteGenres_Internal(resolver, items);
+                deleteGenres_Internal(context, items);
             }
         });
     }
 
-    /*package*/ static Completable deletePlaylists(
-            final ContentResolver resolver,
-            final Collection<Playlist> items) {
+    /*package*/ static Completable deletePlaylists(final Context context, final Collection<Playlist> items) {
         return Completable.fromAction(new Action() {
             @Override
             public void run() throws Exception {
-                deletePlaylists_Internal(resolver, items);
+                deletePlaylists_Internal(context, items);
             }
         });
     }
 
-    /*package*/ static Completable deleteMyFiles(
-            final ContentResolver resolver,
-            final Collection<MyFile> items) {
+    /*package*/ static Completable deleteMyFiles(final Context context, final Collection<MyFile> items) {
         return Completable.fromAction(new Action() {
             @Override
             public void run() throws Exception {
-                deleteMyFiles_Internal(resolver, items);
+                deleteMyFiles_Internal(context, items);
             }
         });
     }
 
-    /*package*/ static Completable deleteMediaFiles(
-            final ContentResolver resolver,
-            final Collection<MediaFile> items) {
+    /*package*/ static Completable deleteMediaFiles(final Context context, final Collection<MediaFile> items) {
         return Completable.fromAction(new Action() {
             @Override
             public void run() throws Exception {
-                deleteMediaFiles_Internal(resolver, items);
+                deleteMediaFiles_Internal(context, items);
             }
         });
     }
 
-    /*package*/ static Completable deleteSong(
-            final ContentResolver resolver,
-            final Song item) {
-        return deleteSongs(resolver, Collections.singleton(item));
+    /*package*/ static Completable deleteSong(Context context, Song item) {
+        return deleteSongs(context, Collections.singleton(item));
     }
 
-    /*package*/ static Completable deleteAlbum(
-            final ContentResolver resolver,
-            final Album item) {
-        return deleteAlbums(resolver, Collections.singleton(item));
+    /*package*/ static Completable deleteAlbum(Context context, Album item) {
+        return deleteAlbums(context, Collections.singleton(item));
     }
 
-    /*package*/ static Completable deleteArtist(
-            final ContentResolver resolver,
-            final Artist item) {
-        return deleteArtists(resolver, Collections.singleton(item));
+    /*package*/ static Completable deleteArtist(Context context, Artist item) {
+        return deleteArtists(context, Collections.singleton(item));
     }
 
-    /*package*/ static Completable deleteGenre(
-            final ContentResolver resolver,
-            final Genre item) {
-        return deleteGenres(resolver, Collections.singleton(item));
+    /*package*/ static Completable deleteGenre(Context context, Genre item) {
+        return deleteGenres(context, Collections.singleton(item));
     }
 
-    /*package*/ static Completable deletePlaylist(
-            final ContentResolver resolver,
-            final Playlist item) {
-        return deletePlaylists(resolver, Collections.singleton(item));
+    /*package*/ static Completable deletePlaylist(Context context, Playlist item) {
+        return deletePlaylists(context, Collections.singleton(item));
     }
 
-    /*package*/ static Completable deleteMyFile(
-            final ContentResolver resolver,
-            final MyFile item) {
-        return deleteMyFiles(resolver, Collections.singleton(item));
+    /*package*/ static Completable deleteMyFile(Context context, MyFile item) {
+        return deleteMyFiles(context, Collections.singleton(item));
     }
 
-    /*package*/ static Completable deleteMediaFile(
-            final ContentResolver resolver,
-            final MediaFile item) {
-        return deleteMediaFiles(resolver, Collections.singleton(item));
+    /*package*/ static Completable deleteMediaFile(Context context, MediaFile item) {
+        return deleteMediaFiles(context, Collections.singleton(item));
     }
 
     private Del() {
