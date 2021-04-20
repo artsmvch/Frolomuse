@@ -87,6 +87,9 @@ final class Del {
                     file = new File(src);
                 } else if (media.getKind() == Media.MY_FILE) {
                     file = ((MyFile) media).getJavaFile();
+                } else if (media.getKind() == Media.PLAYLIST) {
+                    String filepath = ((Playlist) media).getSource();
+                    file = new File(filepath);
                 } else {
                     file = null;
                 }
@@ -255,8 +258,18 @@ final class Del {
     }
 
     private static void deletePlaylists_Internal(Context context, Collection<Playlist> playlists) throws Exception {
-        // Delete only playlist entities from the MediaStore
-        deleteMediaItems_Internal(context.getContentResolver(), MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI, playlists);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            Uri playlistsUri = MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI;
+            List<Uri> uris = new ArrayList<>(playlists.size());
+            for (Playlist playlist : playlists) {
+                Uri uri = ContentUris.withAppendedId(playlistsUri, playlist.getId());
+                uris.add(uri);
+            }
+            deleteUris_API30(context, uris);
+        } else {
+            // We only delete playlist entities from the MediaStore, the songs in them remain intact
+            deleteMediaItems_Internal(context.getContentResolver(), MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI, playlists);
+        }
     }
 
     private static void deleteMyFiles_Internal(Context context, Collection<MyFile> myFiles) throws Exception {
