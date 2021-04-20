@@ -585,6 +585,15 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
                 .subscribeFor { }
     }
 
+    fun onViewLyricsOptionSelected() {
+        val event = _openOptionsMenuEvent.value ?: return
+        _closeOptionsMenuEvent.value = event
+        val item = event.item
+        if (item is Song) {
+            navigator.viewLyrics(item)
+        }
+    }
+
     fun onViewAlbumOptionSelected() {
         val event = _openOptionsMenuEvent.value ?: return
         _closeOptionsMenuEvent.value = event

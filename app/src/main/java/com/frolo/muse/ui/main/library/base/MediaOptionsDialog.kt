@@ -26,7 +26,7 @@ class MediaOptionsDialog<E: Media> constructor(
 
     enum class Option {
         SHARE, DELETE, LIKE, PLAY, PLAY_NEXT, ADD_TO_QUEUE, REMOVE_FROM_QUEUE,
-        EDIT, ADD_TO_PLAYLIST, VIEW_ALBUM, VIEW_ARTIST,
+        EDIT, ADD_TO_PLAYLIST, VIEW_LYRICS, VIEW_ALBUM, VIEW_ARTIST,
         VIEW_GENRE, SET_AS_DEFAULT, HIDE, SCAN_FILES, CREATE_SHORTCUT
     }
 
@@ -63,6 +63,7 @@ class MediaOptionsDialog<E: Media> constructor(
             btn_add_to_queue.setOnClickListener { onOptionSelected(item, Option.ADD_TO_QUEUE) }
             btn_play_next.setOnClickListener { onOptionSelected(item, Option.PLAY_NEXT) }
             btn_remove_from_queue.setOnClickListener { onOptionSelected(item, Option.REMOVE_FROM_QUEUE) }
+            btn_view_lyrics.setOnClickListener { onOptionSelected(item, Option.VIEW_LYRICS) }
             btn_view_album.setOnClickListener { onOptionSelected(item, Option.VIEW_ALBUM) }
             btn_view_artist.setOnClickListener { onOptionSelected(item, Option.VIEW_ARTIST) }
             btn_edit.setOnClickListener { onOptionSelected(item, Option.EDIT) }
@@ -74,6 +75,7 @@ class MediaOptionsDialog<E: Media> constructor(
                 setImageDrawable(if (optionsMenu.isFavourite) drawableFilledHeart else drawableHeart)
             }
 
+            btn_view_lyrics.visibility = if (optionsMenu.viewLyricsOptionAvailable) View.VISIBLE else View.GONE
             btn_view_album.visibility = if (optionsMenu.viewAlbumOptionAvailable) View.VISIBLE else View.GONE
             btn_view_artist.visibility = if (optionsMenu.viewArtistOptionAvailable) View.VISIBLE else View.GONE
             btn_edit.visibility = if (optionsMenu.editOptionAvailable) View.VISIBLE else View.GONE

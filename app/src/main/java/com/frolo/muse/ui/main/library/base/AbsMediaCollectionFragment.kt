@@ -223,6 +223,7 @@ abstract class AbsMediaCollectionFragment <E: Media>: BaseFragment(),
                 MediaOptionsDialog.Option.REMOVE_FROM_QUEUE -> viewModel.onRemoveFromCurrentQueueOptionSelected()
                 MediaOptionsDialog.Option.EDIT -> viewModel.onEditOptionSelected()
                 MediaOptionsDialog.Option.ADD_TO_PLAYLIST -> viewModel.onAddToPlaylistOptionSelected()
+                MediaOptionsDialog.Option.VIEW_LYRICS -> viewModel.onViewLyricsOptionSelected()
                 MediaOptionsDialog.Option.VIEW_ALBUM -> viewModel.onViewAlbumOptionSelected()
                 MediaOptionsDialog.Option.VIEW_ARTIST -> viewModel.onViewArtistOptionSelected()
                 MediaOptionsDialog.Option.VIEW_GENRE -> viewModel.onViewGenreOptionSelected()

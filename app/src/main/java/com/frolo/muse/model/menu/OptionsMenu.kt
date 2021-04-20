@@ -13,6 +13,7 @@ data class OptionsMenu<E : Media> constructor(
     val addToQueueOptionAvailable: Boolean,
     val editOptionAvailable: Boolean,
     val addToPlaylistOptionAvailable: Boolean,
+    val viewLyricsOptionAvailable: Boolean,
     val viewAlbumOptionAvailable: Boolean,
     val viewArtistOptionAvailable: Boolean,
     val setAsDefaultOptionAvailable: Boolean,

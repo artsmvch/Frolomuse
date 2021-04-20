@@ -7,30 +7,51 @@ import com.frolo.muse.model.media.*
 import com.frolo.muse.model.menu.ContextualMenu
 import com.frolo.muse.model.menu.OptionsMenu
 import com.frolo.muse.repository.MediaRepository
+import com.frolo.muse.repository.RemoteConfigRepository
 import com.frolo.muse.rx.SchedulerProvider
 import io.reactivex.Completable
 import io.reactivex.Single
-import io.reactivex.functions.BiFunction
+import io.reactivex.functions.Function
+import java.util.concurrent.TimeUnit
 
 
 class GetMediaMenuUseCase<E: Media> constructor(
     private val schedulerProvider: SchedulerProvider,
-    private val repository: MediaRepository<E>,
+    private val mediaRepository: MediaRepository<E>,
+    private val remoteConfigRepository: RemoteConfigRepository,
     private val player: Player
 ) {
 
     fun getOptionsMenu(item: E): Single<OptionsMenu<E>> {
         // First check if the item can be favourite and if so then check if it is favourite
-        val favouriteOptionOperator = if (item is Song) {
-            repository.isFavourite(item)
+        val favouriteOptionSource = if (item is Song) {
+            mediaRepository.isFavourite(item)
                 .firstOrError()
                 .map { isFavourite -> true to isFavourite }
+                .subscribeOn(schedulerProvider.worker())
+                .onErrorReturn { true to false }
         } else {
             Single.just(false to false)
         }
 
-        val zipper: BiFunction<Pair<Boolean, Boolean>, Boolean, OptionsMenu<E>> =
-            BiFunction { favouriteOption, isShortcutSupported ->
+        val isLyricsSupportedSource = if (item is Song) {
+            remoteConfigRepository.isLyricsViewerEnabled()
+                .timeout(500L, TimeUnit.MILLISECONDS, Single.just(false))
+                .subscribeOn(schedulerProvider.worker())
+                .onErrorReturn { false }
+        } else {
+            Single.just(false)
+        }
+
+        val isShortcutSupportedSource = mediaRepository.isShortcutSupported(item)
+                .onErrorReturn { false }
+
+        val zipper: Function<Array<*>, OptionsMenu<E>> =
+            Function { arr ->
+                val favouriteOption = arr[0] as Pair<Boolean, Boolean>
+                val isLyricsSupported = arr[1] as Boolean
+                val isShortcutSupported = arr[2] as Boolean
+
                 val editOptionAvailable = item is Song || item is Playlist
                         || (item is Album && Features.isAlbumEditorFeatureAvailable())
                 val removeFromQueueOptionAvailable = item is Song
@@ -46,6 +67,7 @@ class GetMediaMenuUseCase<E: Media> constructor(
                     addToPlaylistOptionAvailable = item !is Playlist, // you can add everything to the playlist except the playlists themselves
                     editOptionAvailable = editOptionAvailable,
                     addToQueueOptionAvailable = true,
+                    viewLyricsOptionAvailable = isLyricsSupported,
                     viewAlbumOptionAvailable = false,//item is Song,
                     viewArtistOptionAvailable = false,//item is Song || item is Album
                     setAsDefaultOptionAvailable = item is MyFile && item.isDirectory,
@@ -56,10 +78,8 @@ class GetMediaMenuUseCase<E: Media> constructor(
                 )
             }
 
-        return favouriteOptionOperator
-            .zipWith(repository.isShortcutSupported(item), zipper)
-            .subscribeOn(schedulerProvider.worker())
-            .observeOn(schedulerProvider.main())
+        return Single.zip(listOf(favouriteOptionSource, isLyricsSupportedSource, isShortcutSupportedSource), zipper)
+                .observeOn(schedulerProvider.main())
     }
 
     fun getContextualMenu(initiator: E): Single<ContextualMenu<E>> {

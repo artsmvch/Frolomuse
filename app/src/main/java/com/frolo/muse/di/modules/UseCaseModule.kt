@@ -101,126 +101,144 @@ abstract class UseCaseModule {
         @Provides
         @JvmStatic
         fun provideGetMediaMenuUseCase(
-                schedulerProvider: SchedulerProvider,
-                repository: GenericMediaRepository,
-                player: Player
+            schedulerProvider: SchedulerProvider,
+            genericMediaRepository: GenericMediaRepository,
+            remoteConfigRepository: RemoteConfigRepository,
+            player: Player
         ): GetMediaMenuUseCase<Media> {
             return GetMediaMenuUseCase<Media>(
-                    schedulerProvider,
-                    repository,
-                    player
+                schedulerProvider,
+                genericMediaRepository,
+                remoteConfigRepository,
+                player
             )
         }
 
         @Provides
         @JvmStatic
         fun provideGetArtistMenuUseCase(
-                schedulerProvider: SchedulerProvider,
-                repository: ArtistRepository,
-                player: Player
+            schedulerProvider: SchedulerProvider,
+            artistRepository: ArtistRepository,
+            remoteConfigRepository: RemoteConfigRepository,
+            player: Player
         ): GetMediaMenuUseCase<Artist> {
             return GetMediaMenuUseCase<Artist>(
-                    schedulerProvider,
-                    repository,
-                    player
+                schedulerProvider,
+                artistRepository,
+                remoteConfigRepository,
+                player
             )
         }
 
         @Provides
         @JvmStatic
         fun provideGetAlbumMenuUseCase(
-                schedulerProvider: SchedulerProvider,
-                repository: AlbumRepository,
-                player: Player
+            schedulerProvider: SchedulerProvider,
+            albumRepository: AlbumRepository,
+            remoteConfigRepository: RemoteConfigRepository,
+            player: Player
         ): GetMediaMenuUseCase<Album> {
             return GetMediaMenuUseCase<Album>(
-                    schedulerProvider,
-                    repository,
-                    player
+                schedulerProvider,
+                albumRepository,
+                remoteConfigRepository,
+                player
             )
         }
 
         @Provides
         @JvmStatic
         fun provideGetGenreMenuUseCase(
-                schedulerProvider: SchedulerProvider,
-                repository: GenreRepository,
-                player: Player
+            schedulerProvider: SchedulerProvider,
+            genreRepository: GenreRepository,
+            remoteConfigRepository: RemoteConfigRepository,
+            player: Player
         ): GetMediaMenuUseCase<Genre> {
             return GetMediaMenuUseCase<Genre>(
-                    schedulerProvider,
-                    repository,
-                    player
+                schedulerProvider,
+                genreRepository,
+                remoteConfigRepository,
+                player
             )
         }
 
         @Provides
         @JvmStatic
         fun provideGetPlaylistMenuUseCase(
-                schedulerProvider: SchedulerProvider,
-                repository: PlaylistRepository,
-                player: Player
+            schedulerProvider: SchedulerProvider,
+            playlistRepository: PlaylistRepository,
+            remoteConfigRepository: RemoteConfigRepository,
+            player: Player
         ): GetMediaMenuUseCase<Playlist> {
             return GetMediaMenuUseCase<Playlist>(
-                    schedulerProvider,
-                    repository,
-                    player
+                schedulerProvider,
+                playlistRepository,
+                remoteConfigRepository,
+                player
             )
         }
 
         @Provides
         @JvmStatic
         fun provideGetSongMenuUseCase(
-                schedulerProvider: SchedulerProvider,
-                repository: SongRepository,
-                player: Player
+            schedulerProvider: SchedulerProvider,
+            songRepository: SongRepository,
+            remoteConfigRepository: RemoteConfigRepository,
+            player: Player
         ): GetMediaMenuUseCase<Song> {
             return GetMediaMenuUseCase<Song>(
-                    schedulerProvider,
-                    repository,
-                    player
+                schedulerProvider,
+                songRepository,
+                remoteConfigRepository,
+                player
             )
         }
 
         @Provides
         @JvmStatic
         fun provideGetSongWithPlayCountMenuUseCase(
-                schedulerProvider: SchedulerProvider,
-                repository: SongWithPlayCountRepository,
-                player: Player
+            schedulerProvider: SchedulerProvider,
+            dongWithPlayCountRepository: SongWithPlayCountRepository,
+            remoteConfigRepository: RemoteConfigRepository,
+            player: Player
         ): GetMediaMenuUseCase<SongWithPlayCount> {
             return GetMediaMenuUseCase<SongWithPlayCount>(
-                    schedulerProvider,
-                    repository,
-                    player
+                schedulerProvider,
+                dongWithPlayCountRepository,
+                remoteConfigRepository,
+                player
             )
         }
 
         @Provides
         @JvmStatic
         fun provideGetMyFileMenuUseCase(
-                schedulerProvider: SchedulerProvider,
-                repository: MyFileRepository,
-                player: Player
+            schedulerProvider: SchedulerProvider,
+            myFileRepository: MyFileRepository,
+            remoteConfigRepository: RemoteConfigRepository,
+            player: Player
         ): GetMediaMenuUseCase<MyFile> {
             return GetMediaMenuUseCase<MyFile>(
-                    schedulerProvider,
-                    repository,
-                    player
+                schedulerProvider,
+                myFileRepository,
+                remoteConfigRepository,
+                player
             )
         }
 
         @Provides
         @JvmStatic
         fun provideGetMediaFileMenuUseCase(
-                schedulerProvider: SchedulerProvider,
-                repository: MediaFileRepository,
-                player: Player
+            schedulerProvider: SchedulerProvider,
+            mediaFileRepository: MediaFileRepository,
+            remoteConfigRepository: RemoteConfigRepository,
+            player: Player
         ): GetMediaMenuUseCase<MediaFile> {
             return GetMediaMenuUseCase<MediaFile>(
-                    schedulerProvider,
-                    repository,
-                    player
+                schedulerProvider,
+                mediaFileRepository,
+                remoteConfigRepository,
+                player
             )
         }
 
