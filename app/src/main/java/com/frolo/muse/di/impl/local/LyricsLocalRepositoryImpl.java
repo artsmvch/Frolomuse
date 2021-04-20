@@ -64,15 +64,17 @@ public final class LyricsLocalRepositoryImpl implements LyricsLocalRepository {
                 values.put(AppMediaStore.Lyrics.TEXT, lyrics.getText());
                 values.put(AppMediaStore.Lyrics.TIME_ADDED, System.currentTimeMillis());
                 final boolean entityExists;
-                try (Cursor cursor = resolver.query(uri, EMPTY_PROJECTION, null, null, null)) {
+                long itemId = song.getId();
+                Uri itemUri = ContentUris.withAppendedId(uri, itemId);
+                try (Cursor cursor = resolver.query(itemUri, EMPTY_PROJECTION, null, null, null)) {
                     entityExists = cursor != null && cursor.moveToFirst();
                 }
                 if (entityExists) {
                     String selection = AppMediaStore.Lyrics._ID + " = ?";
-                    String[] selectionArgs = new String[] { String.valueOf(song.getId()) };
+                    String[] selectionArgs = new String[] { String.valueOf(itemId) };
                     resolver.update(uri, values, selection, selectionArgs);
                 } else {
-                    values.put(AppMediaStore.Lyrics._ID, song.getId());
+                    values.put(AppMediaStore.Lyrics._ID, itemId);
                     resolver.insert(uri, values);
                 }
             }
