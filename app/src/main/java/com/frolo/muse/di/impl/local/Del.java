@@ -53,27 +53,33 @@ final class Del {
 
         // Step 1: delete media items from the Media Store DB
         {
-            StringBuilder opDeleteSelectionBuilder =
-                    new StringBuilder(BaseColumns._ID + " IN (");
+            try {
+                StringBuilder opDeleteSelectionBuilder = new StringBuilder(BaseColumns._ID + " IN (");
 
-            boolean firstLooped = false;
-            for (Media media : items) {
-                if (firstLooped) {
-                    opDeleteSelectionBuilder.append(',');
+                boolean firstLooped = false;
+                for (Media media : items) {
+                    if (firstLooped) {
+                        opDeleteSelectionBuilder.append(',');
+                    }
+                    opDeleteSelectionBuilder.append(media.getId());
+
+                    firstLooped = true;
                 }
-                opDeleteSelectionBuilder.append(media.getId());
+                opDeleteSelectionBuilder.append(')');
 
-                firstLooped = true;
+                String opDeleteSelection = opDeleteSelectionBuilder.toString();
+
+                int deletedCount = resolver.delete(uri, opDeleteSelection, null);
+                resolver.notifyChange(uri, null);
+
+            } catch (Throwable error) {
+                for (Media item : items) {
+                    String selection = BaseColumns._ID + " = ?";
+                    String[] selectionArgs = new String[] { String.valueOf(item.getId()) };
+                    int deletedCount = resolver.delete(uri, selection, selectionArgs);
+                    resolver.notifyChange(uri, null);
+                }
             }
-            opDeleteSelectionBuilder.append(')');
-
-            String opDeleteSelection = opDeleteSelectionBuilder.toString();
-
-            int deletedCount = resolver
-                    .delete(uri, opDeleteSelection, null);
-            resolver.notifyChange(uri, null);
-
-            // TODO: check deletedCount
         }
 
         // Step 2: delete files that belongs to the media items
