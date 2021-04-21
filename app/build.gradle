@@ -38,7 +38,7 @@ android {
     defaultConfig {
         applicationId "com.frolo.musp"
         minSdkVersion 23
-        targetSdkVersion 30
+        targetSdkVersion 29
         versionCode version_code
         versionName "${version_major}.${version_minor}.${version_patch}"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -225,6 +225,7 @@ dependencies {
 
     // MP3 tags editor
     implementation project(path: ':MyID3_for_Android')
+    //implementation group: 'org', name: 'jaudiotagger', version: '2.0.3' // https://mvnrepository.com/artifact/org/jaudiotagger
 
 //    def media2_version = "1.0.0"
 //    implementation "androidx.media2:media2-player:$media2_version"

@@ -3,23 +3,27 @@ package com.frolo.muse.ui.main.editor.song
 import android.app.Activity
 import android.app.Dialog
 import android.app.RecoverableSecurityException
+import android.content.ContentUris
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.ViewGroup
 import android.view.Window
+import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
 import com.frolo.muse.R
+import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.glide.makeRequest
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.ui.base.BaseDialogFragment
 import com.frolo.muse.ui.base.serializableArg
 import com.frolo.muse.ui.base.withArg
+import com.frolo.muse.ui.main.settings.updateText
 import com.frolo.muse.views.Anim
-import com.frolo.muse.views.getNonNullText
 import kotlinx.android.synthetic.main.dialog_song_editor.*
 
 
@@ -58,19 +62,24 @@ class SongEditorDialog: BaseDialogFragment() {
         }
 
         btn_save.setOnClickListener {
-            checkWritePermissionFor {
-                val title = edt_song_name.getNonNullText()
-                val album = edt_album_name.getNonNullText()
-                val artist = edt_artist_name.getNonNullText()
-                val genre = edt_genre_name.getNonNullText()
-                viewModel.onSaveClicked(title, album, artist, genre)
-            }
+            viewModel.onSaveClicked()
         }
 
-        edt_song_name.setText(song.title)
-        edt_album_name.setText(song.album)
-        edt_artist_name.setText(song.artist)
-        edt_genre_name.setText(song.genre)
+        edt_song_name.doAfterTextChanged {
+            viewModel.onTitleChanged(it?.toString())
+        }
+
+        edt_album_name.doAfterTextChanged {
+            viewModel.onAlbumChanged(it?.toString())
+        }
+
+        edt_artist_name.doAfterTextChanged {
+            viewModel.onArtistChanged(it?.toString())
+        }
+
+        edt_genre_name.doAfterTextChanged {
+            viewModel.onGenreChanged(it?.toString())
+        }
 
         tv_filepath.text = song.source
 
@@ -83,6 +92,44 @@ class SongEditorDialog: BaseDialogFragment() {
     }
 
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
+        title.observe(owner) { text ->
+            dialog?.apply {
+                edt_song_name.updateText(text)
+            }
+        }
+
+        album.observe(owner) { text ->
+            dialog?.apply {
+                edt_album_name.updateText(text)
+            }
+        }
+
+        artist.observe(owner) { text ->
+            dialog?.apply {
+                edt_artist_name.updateText(text)
+            }
+        }
+
+        genre.observe(owner) { text ->
+            dialog?.apply {
+                edt_genre_name.updateText(text)
+            }
+        }
+
+        handleWriteRequestEvent.observeNonNull(owner) { song ->
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                val contentResolver = requireContext().contentResolver
+                val songUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI.let { ContentUris.withAppendedId(it, song.id) }
+                val pendingIntent = MediaStore.createWriteRequest(contentResolver, listOf(songUri))
+                startIntentSenderForResult(pendingIntent.intentSender,
+                        RC_REQUEST_WRITE_PERMISSION, null, 0, 0, 0, null)
+            } else {
+                checkWritePermissionFor {
+                    viewModel.onUserHandledWriteRequest()
+                }
+            }
+        }
+
         isLoadingUpdate.observeNonNull(owner) { isLoading ->
             onSetLoading(isLoading)
         }
@@ -129,14 +176,7 @@ class SongEditorDialog: BaseDialogFragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == RC_REQUEST_WRITE_PERMISSION) {
             if (resultCode == Activity.RESULT_OK) {
-                dialog?.apply {
-                    viewModel.onUserGrantedWritePermission(
-                        title = edt_song_name.getNonNullText(),
-                        album = edt_album_name.getNonNullText(),
-                        artist = edt_artist_name.getNonNullText(),
-                        genre = edt_genre_name.getNonNullText()
-                    )
-                }
+                viewModel.onUserHandledWriteRequest()
             } else {
                 dismiss()
             }
