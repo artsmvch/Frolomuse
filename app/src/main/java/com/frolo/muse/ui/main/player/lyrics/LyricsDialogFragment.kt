@@ -46,7 +46,8 @@ class LyricsDialogFragment: BaseDialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return super.onCreateDialog(savedInstanceState).apply {
             requestWindowFeature(Window.FEATURE_NO_TITLE)
-            window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+            window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
+                    or WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
 
             setContentView(R.layout.dialog_lyrics)
 
@@ -133,6 +134,7 @@ class LyricsDialogFragment: BaseDialogFragment() {
     private fun onSetLyricsVisibility(isVisible: Boolean) {
         dialog?.apply {
             edt_lyrics.visibility = if (isVisible) View.VISIBLE else View.INVISIBLE
+            edt_lyrics.clearFocus()
         }
     }
 
