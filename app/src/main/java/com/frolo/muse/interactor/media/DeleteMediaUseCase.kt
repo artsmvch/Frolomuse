@@ -29,14 +29,7 @@ class DeleteMediaUseCase <E: Media> constructor(
         } else {
             // Otherwise, we collect all related to this item songs and remove those songs from the player.
             // After that, we delete the item.
-            repository.collectSongs(item)
-                .flatMapCompletable { songsRelatedToItem ->
-                    repository.delete(item)
-                        .doOnComplete {
-                            val audioSources = songsRelatedToItem.toAudioSources()
-                            player.removeAll(audioSources)
-                        }
-                }
+            deleteMediaItemAndRemoveItFromPlayerQueue(item)
         }
         return completable.subscribeOn(schedulerProvider.worker())
     }
@@ -52,14 +45,29 @@ class DeleteMediaUseCase <E: Media> constructor(
                 val op2 = kotlin.run {
                     // Batch delete op
                     val nonSongs = items.filterNot { it is Song }
-                    repository.delete(nonSongs)
+                    deleteMediaItemsAndRemoveThemFromPlayerQueue(nonSongs)
                 }
                 Completable.concat(listOf(op1, op2))
             } else {
-                repository.delete(items)
+                deleteMediaItemsAndRemoveThemFromPlayerQueue(items)
             }
             completable.subscribeOn(schedulerProvider.worker())
         }.subscribeOn(schedulerProvider.computation())
+    }
+
+    private fun deleteMediaItemAndRemoveItFromPlayerQueue(item: E): Completable {
+        return deleteMediaItemsAndRemoveThemFromPlayerQueue(listOf(item))
+    }
+
+    private fun deleteMediaItemsAndRemoveThemFromPlayerQueue(items: Collection<E>): Completable {
+        return repository.collectSongs(items)
+            .flatMapCompletable { songsRelatedToItems ->
+                repository.delete(items)
+                    .doOnComplete {
+                        val audioSources = songsRelatedToItems.toAudioSources()
+                        player.removeAll(audioSources)
+                    }
+            }
     }
 
 }
