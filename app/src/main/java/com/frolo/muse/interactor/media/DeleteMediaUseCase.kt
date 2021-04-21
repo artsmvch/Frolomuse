@@ -2,6 +2,7 @@ package com.frolo.muse.interactor.media
 
 import com.frolo.muse.common.toAudioSources
 import com.frolo.muse.engine.Player
+import com.frolo.muse.kotlin.containsInstanceOf
 import com.frolo.muse.model.event.DeletionType
 import com.frolo.muse.model.media.Media
 import com.frolo.muse.model.media.Playlist
@@ -48,6 +49,9 @@ class DeleteMediaUseCase <E: Media> constructor(
                     deleteMediaItemsAndRemoveThemFromPlayerQueue(nonSongs)
                 }
                 Completable.concat(listOf(op1, op2))
+            } else if (items.containsInstanceOf<Playlist>()) {
+                // There are playlists in the collection, just delete them without removing them from the player queue
+                repository.delete(items)
             } else {
                 deleteMediaItemsAndRemoveThemFromPlayerQueue(items)
             }
