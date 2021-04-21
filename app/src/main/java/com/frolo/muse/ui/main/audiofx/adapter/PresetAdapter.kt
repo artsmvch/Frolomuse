@@ -6,7 +6,10 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.core.view.isVisible
+import androidx.core.view.updatePadding
 import com.frolo.muse.R
+import com.frolo.muse.dp2px
 import com.frolo.muse.model.preset.CustomPreset
 import com.frolo.muse.model.preset.NativePreset
 import com.frolo.muse.model.preset.Preset
@@ -53,11 +56,11 @@ class PresetAdapter constructor(
     private fun bindView(itemView: View, preset: Preset, isDropDownItem: Boolean) = itemView.apply {
         val name = preset.name
         if (preset is NativePreset) {
-            imv_preset_icon.visibility = View.VISIBLE
+            imv_preset_icon.isVisible = false
             imv_preset_icon.setImageResource(getDrawableIdForPreset(name))
             tv_preset_name.setText(getStringIdForPreset(name))
         } else {
-            imv_preset_icon.visibility = if (isDropDownItem) View.VISIBLE else View.GONE
+            imv_preset_icon.isVisible = false
             imv_preset_icon.setImageDrawable(null)
             tv_preset_name.text = name
         }
@@ -68,6 +71,15 @@ class PresetAdapter constructor(
                     onRemoveItem?.invoke(item)
                 }
             }
+        }
+        if (isDropDownItem) {
+            val context = itemView.context
+            val paddingLeft = if (imv_preset_icon.isVisible) 0 else 8f.dp2px(context).toInt()
+            val paddingRight = if (btn_remove?.isVisible == true) 0 else 16f.dp2px(context).toInt()
+            tv_preset_name.updatePadding(
+                left = paddingLeft,
+                right = paddingRight
+            )
         }
     }
 

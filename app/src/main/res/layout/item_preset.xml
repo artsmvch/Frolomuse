@@ -5,6 +5,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="32dp"
+    android:paddingStart="8dp"
+    android:paddingEnd="8dp"
     android:orientation="horizontal"
     android:gravity="start|center_vertical">
 
@@ -13,14 +15,13 @@
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         tools:src="@drawable/png_normal" />
 
     <com.frolo.muse.views.text.FitSingleLineTextView
         android:id="@+id/tv_preset_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="16dp"
         android:gravity="start|center_vertical"
         android:textAppearance="?textAppearanceListItem"
         android:textSize="16sp"
