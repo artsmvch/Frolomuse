@@ -7,14 +7,13 @@ import com.frolo.muse.engine.Player
 import com.frolo.muse.engine.SimplePlayerObserver
 import com.frolo.muse.engine.AudioSourceQueue
 import com.frolo.muse.repository.Preferences
+import com.frolo.muse.rx.newSingleThreadScheduler
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import java.util.concurrent.Executors
-import java.util.concurrent.ThreadFactory
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicReference
 
@@ -29,9 +28,7 @@ class PlayerStateSaver constructor(
 ): SimplePlayerObserver() {
 
     private val workerScheduler: Scheduler by lazy {
-        val threadFactory = ThreadFactory { r -> Thread(r).apply { name = "PlayerStateSaver" } }
-        val executor = Executors.newSingleThreadExecutor(threadFactory)
-        Schedulers.from(executor)
+        newSingleThreadScheduler("PlayerStateSaver")
     }
 
     private val disposables = CompositeDisposable()
