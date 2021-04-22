@@ -171,7 +171,8 @@ fun Media.getName(): String {
         is Artist -> name
         is Genre -> name
         is Playlist -> name
-        is MyFile -> javaFile?.name ?: ""
+        is MyFile -> javaFile?.name.orEmpty()
+        is MediaFile -> name.orEmpty()
         else -> ""
     }
 }
@@ -184,6 +185,7 @@ fun Media.getTypeName(res: Resources): String {
         Media.GENRE -> res.getString(R.string.genre)
         Media.PLAYLIST -> res.getString(R.string.playlist)
         Media.MY_FILE -> res.getString(R.string.file)
+        Media.MEDIA_FILE -> res.getString(R.string.file)
         else -> res.getString(R.string.placeholder_unknown)
     }
 }
