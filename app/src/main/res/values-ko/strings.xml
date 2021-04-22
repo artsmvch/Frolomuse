@@ -108,6 +108,8 @@
     <string name="play">플레이</string>
     <string name="edit">편집하다</string>
     <string name="delete">지우다</string>
+    <string name="delete_from_playlist">재생 목록에서 삭제</string>
+    <string name="delete_from_device">전화에서 삭제</string>
     <string name="add_to_playlist">재생 목록에 추가</string>
     <string name="share">공유</string>
     <string name="playlist">재생 목록</string>
@@ -181,6 +183,8 @@
     <string name="licenses">라이센스</string>
 
     <string name="choose_theme">테마를 선택하십시오</string>
+    <string name="light_blue_theme">밝은 파란색 테마</string>
+    <string name="light_pink_theme">라이트 핑크 테마</string>
     <string name="dark_blue_theme">진한 파란색 테마</string>
     <string name="dark_especial_theme">어두운 특별한 테마</string>
     <string name="dark_purple_theme">어두운 자주색 테마</string>
@@ -337,4 +341,20 @@
     <string name="need_for_res_permission_explanation">
         이 권한이 없으면 응용 프로그램이 장치에서 음악을 탐색 할 수 없습니다. 권한을 부여 하시겠습니까?
     </string>
+
+    <!--PlayerJournal-->
+    <string name="player_journal">음악 플레이어 로그</string>
+    <string name="player_journal_desc">음악 플레이어 로그의 모든 메시지 표시</string>
+    <string name="send_player_logs">보내다</string>
+    <string name="copy_player_logs_to_clipboard">클립 보드에 복사</string>
+    <string name="player_logs">음악 플레이어 로그</string>
+    <string name="copied">복사 됨</string>
+
+    <!--Push notifications-->
+    <string name="push_notifications_channel_name">푸시 알림</string>
+    <string name="push_notifications_channel_desc">뉴스 및 앱 업데이트에 대한 유용한 정보를 포함합니다</string>
+
+    <!--Lyrics-->
+    <string name="view_lyrics">가사보기</string>
+    <string name="lyrics_not_tap_to_write">텍스트를 찾을 수 없습니다. 직접 작성하려면 여기를 클릭하세요</string>
 </resources>

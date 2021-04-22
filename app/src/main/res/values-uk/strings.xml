@@ -118,6 +118,8 @@
     <string name="play">Грати</string>
     <string name="edit">Редагувати</string>
     <string name="delete">Видалити</string>
+    <string name="delete_from_playlist">Видалити зі списку відтворення</string>
+    <string name="delete_from_device">Видалити з телефону</string>
     <string name="add_to_playlist">Додати до плейлиста</string>
     <string name="share">Поділитися</string>
     <string name="playlist">Плейлист</string>
@@ -194,6 +196,8 @@
     <string name="licenses">Ліцензії</string>
 
     <string name="choose_theme">Виберіть Тема</string>
+    <string name="light_blue_theme">Світло-блакитна тема</string>
+    <string name="light_pink_theme">Світло-рожева тема</string>
     <string name="dark_blue_theme">Темно-синя тема</string>
     <string name="dark_especial_theme">Темна особлива тема</string>
     <string name="dark_purple_theme">Темно-фіолетова тема</string>
@@ -349,4 +353,20 @@
     <string name="need_for_res_permission_explanation">
         Без цього дозволу програма не може переглядати музику з вашого пристрою. Ви хочете надати дозвіл?
     </string>
+
+    <!--PlayerJournal-->
+    <string name="player_journal">Журнал музичного плеєра</string>
+    <string name="player_journal_desc">Відобразити всі повідомлення з журналу музичного плеєра</string>
+    <string name="send_player_logs">Надіслати</string>
+    <string name="copy_player_logs_to_clipboard">Копіювати</string>
+    <string name="player_logs">Журнал музичного плеєра</string>
+    <string name="copied">Скопійовано</string>
+
+    <!--Push notifications-->
+    <string name="push_notifications_channel_name">Push-сповіщення</string>
+    <string name="push_notifications_channel_desc">Містить корисну інформацію про новини та оновлення додатків</string>
+
+    <!--Lyrics-->
+    <string name="view_lyrics">Переглянути тексти пісень</string>
+    <string name="lyrics_not_tap_to_write">Тексту не знайдено, натисніть тут, щоб написати його самостійно</string>
 </resources>

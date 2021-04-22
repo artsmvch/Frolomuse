@@ -113,6 +113,8 @@
     <string name="play">Oyna</string>
     <string name="edit">Düzenle</string>
     <string name="delete">Silmek</string>
+    <string name="delete_from_playlist">Oynatma listesinden sil</string>
+    <string name="delete_from_device">Telefondan sil</string>
     <string name="add_to_playlist">Oynatma listesine ekle</string>
     <string name="share">Paylaş</string>
     <string name="playlist">Oynatma Listesi</string>
@@ -187,6 +189,8 @@
     <string name="licenses">Lisanslar</string>
 
     <string name="choose_theme">Temayı Seç</string>
+    <string name="light_blue_theme">Açık mavi tema</string>
+    <string name="light_pink_theme">Açık pembe tema</string>
     <string name="dark_blue_theme">Koyu mavi tema</string>
     <string name="dark_especial_theme">Karanlık özel tema</string>
     <string name="dark_purple_theme">Koyu mor tema</string>
@@ -342,4 +346,20 @@
     <string name="need_for_res_permission_explanation">
         Bu izin olmadan, uygulama cihazınızdan müziğe göz atamaz. İzin vermek istiyor musunuz?
     </string>
+
+    <!--PlayerJournal-->
+    <string name="player_journal">Müzik çalar günlükleri</string>
+    <string name="player_journal_desc">Müzik çalar günlüğündeki tüm mesajları görüntüle</string>
+    <string name="send_player_logs">Gönder</string>
+    <string name="copy_player_logs_to_clipboard">Kopyala</string>
+    <string name="player_logs">Müzik çalar günlükleri</string>
+    <string name="copied">Kopyalandı</string>
+
+    <!--Push notifications-->
+    <string name="push_notifications_channel_name">Push bildirimleri</string>
+    <string name="push_notifications_channel_desc">Haberler ve uygulama güncellemeleri hakkında faydalı bilgiler içerir</string>
+
+    <!--Lyrics-->
+    <string name="view_lyrics">Şarkı sözlerini görüntüle</string>
+    <string name="lyrics_not_tap_to_write">Metin bulunamadı, kendiniz yazmak için burayı tıklayın</string>
 </resources>

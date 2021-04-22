@@ -109,6 +109,8 @@
     <string name="play">Mainkan</string>
     <string name="edit">Sunting</string>
     <string name="delete">Menghapus</string>
+    <string name="delete_from_playlist">Hapus dari playlist</string>
+    <string name="delete_from_device">Hapus dari ponsel</string>
     <string name="add_to_playlist">Tambahkan ke Daftar Putar</string>
     <string name="share">Bagikan</string>
     <string name="playlist">Daftar putart</string>
@@ -182,6 +184,8 @@
     <string name="licenses">Lisensi</string>
 
     <string name="choose_theme">Pilih Tema</string>
+    <string name="light_blue_theme">Tema biru muda</string>
+    <string name="light_pink_theme">Tema merah muda terang</string>
     <string name="dark_blue_theme">Tema biru gelap</string>
     <string name="dark_especial_theme">Tema utama gelap</string>
     <string name="dark_purple_theme">Tema ungu gelap</string>
@@ -337,4 +341,20 @@
     <string name="need_for_res_permission_explanation">
         Tanpa izin ini, aplikasi tidak akan dapat menelusuri musik dari perangkat Anda. Apakah Anda ingin memberikan izin?
     </string>
+
+    <!--PlayerJournal-->
+    <string name="player_journal">Jurnal pemutar musik</string>
+    <string name="player_journal_desc">Tampilkan semua pesan dari jurnal pemutar musik</string>
+    <string name="send_player_logs">Kirim</string>
+    <string name="copy_player_logs_to_clipboard">Salinan</string>
+    <string name="player_logs">Log pemutar musik</string>
+    <string name="copied">Disalin</string>
+
+    <!--Push notifications-->
+    <string name="push_notifications_channel_name">Pemberitahuan push</string>
+    <string name="push_notifications_channel_desc">Berisi informasi berguna tentang berita dan pembaruan aplikasi</string>
+
+    <!--Lyrics-->
+    <string name="view_lyrics">Lihat lirik</string>
+    <string name="lyrics_not_tap_to_write">Teks tidak ditemukan, klik di sini untuk menulisnya sendiri</string>
 </resources>

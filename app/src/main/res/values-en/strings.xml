@@ -114,6 +114,8 @@
     <string name="play">Play</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
+    <string name="delete_from_playlist">Delete from playlist</string>
+    <string name="delete_from_device">Delete from phone</string>
     <string name="add_to_playlist">Add to playlist</string>
     <string name="share">Share</string>
     <string name="playlist">Playlist</string>
@@ -188,6 +190,8 @@
     <string name="licenses">Licenses</string>
 
     <string name="choose_theme">Choose Theme</string>
+    <string name="light_blue_theme">Light blue theme</string>
+    <string name="light_pink_theme">Light pink theme</string>
     <string name="dark_blue_theme">Dark blue theme</string>
     <string name="dark_especial_theme">Dark especial theme</string>
     <string name="dark_purple_theme">Dark purple theme</string>
@@ -343,4 +347,20 @@
     <string name="need_for_res_permission_explanation">
         Without this permission, the application will not be able to browse the music from your device. Do you want to grant the permission?
     </string>
+
+    <!--PlayerJournal-->
+    <string name="player_journal">Player journal</string>
+    <string name="player_journal_desc">Display all messages from the player journal</string>
+    <string name="send_player_logs">Send</string>
+    <string name="copy_player_logs_to_clipboard">Copy</string>
+    <string name="player_logs">Player logs</string>
+    <string name="copied">Copied</string>
+
+    <!--Push notifications-->
+    <string name="push_notifications_channel_name">Push notifications</string>
+    <string name="push_notifications_channel_desc">Contains useful information about news and app updates</string>
+
+    <!--Lyrics-->
+    <string name="view_lyrics">View lyrics</string>
+    <string name="lyrics_not_tap_to_write">Text not found, click here to write it yourself</string>
 </resources>

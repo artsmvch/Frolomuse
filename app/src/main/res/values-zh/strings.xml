@@ -109,6 +109,8 @@
     <string name="play">玩</string>
     <string name="edit">編輯</string>
     <string name="delete">刪除</string>
+    <string name="delete_from_playlist">從播放列表中刪除</string>
+    <string name="delete_from_device">從手機中刪除</string>
     <string name="add_to_playlist">添加到播放列表</string>
     <string name="share">分享</string>
     <string name="playlist">播放列表</string>
@@ -182,6 +184,8 @@
     <string name="licenses">許可證</string>
 
     <string name="choose_theme">選擇主題</string>
+    <string name="light_blue_theme">淺藍色主題</string>
+    <string name="light_pink_theme">淺粉紅色主題</string>
     <string name="dark_blue_theme">深藍色主題</string>
     <string name="dark_especial_theme">黑暗的特殊主題</string>
     <string name="dark_purple_theme">深紫色主題</string>
@@ -336,4 +340,21 @@
     <string name="need_for_res_permission_explanation">
         没有此许可，该应用程序将无法从您的设备浏览音乐。您要授予权限吗？
     </string>
+
+    <!--PlayerJournal-->
+    <string name="player_journal">音樂播放器日誌</string>
+    <string name="player_journal_desc">顯示音樂播放器日誌中的所有消息</string>
+    <string name="send_player_logs">發送</string>
+    <string name="copy_player_logs_to_clipboard">複製</string>
+    <string name="player_logs">音樂播放器日誌</string>
+    <string name="copied">複製的</string>
+
+    <!--Push notifications-->
+    <string name="push_notifications_channel_name">推送通知</string>
+    <string name="push_notifications_channel_desc">包含有關新聞和應用程序更新的有用信息</string>
+
+    <!--Lyrics-->
+    <string name="view_lyrics">查看歌詞</string>
+    <string name="lyrics_not_tap_to_write">找不到文字，請點擊此處自行撰寫</string>
+
 </resources>

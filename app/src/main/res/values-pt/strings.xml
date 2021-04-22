@@ -114,6 +114,8 @@
     <string name="play">Toque</string>
     <string name="edit">Editar</string>
     <string name="delete">Excluir</string>
+    <string name="delete_from_playlist">Excluir da lista</string>
+    <string name="delete_from_device">Excluir do telefone</string>
     <string name="add_to_playlist">Adicionar à Playlist</string>
     <string name="share">Compartilhar</string>
     <string name="playlist">Lista de reprodução</string>
@@ -188,6 +190,8 @@
     <string name="licenses">Licenças</string>
 
     <string name="choose_theme">Escolha o tema</string>
+    <string name="light_blue_theme">Tema azul claro</string>
+    <string name="light_pink_theme">Tema rosa claro</string>
     <string name="dark_blue_theme">Tema azul escuro</string>
     <string name="dark_especial_theme">Tema especial escuro</string>
     <string name="dark_purple_theme">Tema roxo escuro</string>
@@ -343,4 +347,20 @@
     <string name="need_for_res_permission_explanation">
         Sem essa permissão, o aplicativo não pode navegar pelas músicas do seu dispositivo. Deseja conceder a permissão?
     </string>
+
+    <!--PlayerJournal-->
+    <string name="player_journal">Registros do reprodutor de música</string>
+    <string name="player_journal_desc">Exibir todas as mensagens dos registros do reprodutor de música</string>
+    <string name="send_player_logs">Mandar</string>
+    <string name="copy_player_logs_to_clipboard">Copiar</string>
+    <string name="player_logs">Registros do reprodutor de música</string>
+    <string name="copied">Copiado</string>
+
+    <!--Push notifications-->
+    <string name="push_notifications_channel_name">Notificações via push</string>
+    <string name="push_notifications_channel_desc">Contém informações úteis sobre notícias e atualizações de aplicativos</string>
+
+    <!--Lyrics-->
+    <string name="view_lyrics">Ver letras</string>
+    <string name="lyrics_not_tap_to_write">Texto não encontrado, clique aqui para escrevê-lo você mesmo</string>
 </resources>

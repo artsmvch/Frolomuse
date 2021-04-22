@@ -117,7 +117,7 @@
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
     <string name="delete_from_playlist">Delete from playlist</string>
-    <string name="delete_from_device">Delete from device</string>
+    <string name="delete_from_device">Delete from phone</string>
     <string name="add_to_playlist">Add to playlist</string>
     <string name="share">Share</string>
     <string name="playlist">Playlist</string>
@@ -352,12 +352,11 @@
     </string>
 
     <!--PlayerJournal-->
-    <string name="player_journal">Player journal</string>
-    <string name="player_journal_desc">Display all messages from the player journal</string>
+    <string name="player_journal">Player log</string>
+    <string name="player_journal_desc">Display all messages from the player log</string>
     <string name="send_player_logs">Send</string>
-    <string name="send_player_logs_title">Send player logs</string>
     <string name="copy_player_logs_to_clipboard">Copy</string>
-    <string name="player_logs">Player logs</string>
+    <string name="player_logs">Player log</string>
     <string name="copied">Copied</string>
 
     <!--Push notifications-->

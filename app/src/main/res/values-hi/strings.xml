@@ -114,6 +114,8 @@
     <string name="play">प्ले</string>
     <string name="edit">संपादित करें</string>
     <string name="delete">हटाना</string>
+    <string name="delete_from_playlist">प्लेलिस्ट से हटाए</string>
+    <string name="delete_from_device">फोन से डिलीट करें</string>
     <string name="add_to_playlist">प्लेलिस्ट में जोड़ें</string>
     <string name="share">शेयर</string>
     <string name="playlist">प्लेलिस्ट</string>
@@ -188,6 +190,8 @@
     <string name="licenses">लाइसेंस</string>
 
     <string name="choose_theme">थीम चुनें</string>
+    <string name="light_blue_theme">हल्का नीला विषय</string>
+    <string name="light_pink_theme">हल्का गुलाबी विषय</string>
     <string name="dark_blue_theme">डार्क ब्लू थीम</string>
     <string name="dark_especial_theme">डार्क विशिष्ट विषय</string>
     <string name="dark_purple_theme">डार्क पर्पल थीम</string>
@@ -342,4 +346,20 @@
     <string name="need_for_res_permission_explanation">
         इस अनुमति के बिना, एप्लिकेशन आपके डिवाइस से संगीत को ब्राउज़ करने में सक्षम नहीं होगा। क्या आप अनुमति देना चाहते हैं?
     </string>
+
+    <!--PlayerJournal-->
+    <string name="player_journal">संगीत खिलाड़ी लॉग</string>
+    <string name="player_journal_desc">संगीत प्लेयर लॉग से सभी संदेश प्रदर्शित करें</string>
+    <string name="send_player_logs">संदेश</string>
+    <string name="copy_player_logs_to_clipboard">प्रतिलिपि</string>
+    <string name="player_logs">संगीत खिलाड़ी लॉग</string>
+    <string name="copied">कॉपी किया गया</string>
+
+    <!--Push notifications-->
+    <string name="push_notifications_channel_name">पुश सूचनाएँ</string>
+    <string name="push_notifications_channel_desc">समाचार और ऐप अपडेट के बारे में उपयोगी जानकारी रखता है</string>
+
+    <!--Lyrics-->
+    <string name="view_lyrics">देखें गाने के बोल</string>
+    <string name="lyrics_not_tap_to_write">पाठ नहीं मिला, इसे स्वयं लिखने के लिए यहां क्लिक करें</string>
 </resources>

@@ -109,6 +109,8 @@
     <string name="play">遊びます</string>
     <string name="edit">編集</string>
     <string name="delete">削除</string>
+    <string name="delete_from_playlist">プレイリストから削除する</string>
+    <string name="delete_from_device">電話から削除</string>
     <string name="add_to_playlist">プレイリストに追加する</string>
     <string name="share">シェア</string>
     <string name="playlist">プレイリスト</string>
@@ -182,6 +184,8 @@
     <string name="licenses">ライセンス</string>
 
     <string name="choose_theme">テーマを選択</string>
+    <string name="light_blue_theme">水色のテーマ</string>
+    <string name="light_pink_theme">淡いピンクのテーマ</string>
     <string name="dark_blue_theme">ダークブルーのテーマ</string>
     <string name="dark_especial_theme">ダーク特別テーマ</string>
     <string name="dark_purple_theme">濃い紫色のテーマ</string>
@@ -336,4 +340,20 @@
     <string name="need_for_res_permission_explanation">
         この権限がないと、アプリケーションはデバイスから音楽を閲覧できません。許可を与えますか？
     </string>
+
+    <!--PlayerJournal-->
+    <string name="player_journal">音楽プレーヤーログ</string>
+    <string name="player_journal_desc">音楽プレーヤーログからのすべてのメッセージを表示します</string>
+    <string name="send_player_logs">送信</string>
+    <string name="copy_player_logs_to_clipboard">コピー</string>
+    <string name="player_logs">音楽プレーヤーログ</string>
+    <string name="copied">クリップボードにコピー</string>
+
+    <!--Push notifications-->
+    <string name="push_notifications_channel_name">プッシュ通知</string>
+    <string name="push_notifications_channel_desc">ニュースやアプリのアップデートに関する役立つ情報が含まれています</string>
+
+    <!--Lyrics-->
+    <string name="view_lyrics">歌詞を見る</string>
+    <string name="lyrics_not_tap_to_write">テキストが見つかりません。ここをクリックして自分で書いてください</string>
 </resources>

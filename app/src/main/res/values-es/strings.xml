@@ -114,6 +114,8 @@
     <string name="play">Jugar</string>
     <string name="edit">Editar</string>
     <string name="delete">Borrar</string>
+    <string name="delete_from_playlist">Eliminar de la lista</string>
+    <string name="delete_from_device">Eliminar del teléfono</string>
     <string name="add_to_playlist">Agregar a la lista de reproducción</string>
     <string name="share">Compartir</string>
     <string name="playlist">Lista de reproducción</string>
@@ -188,6 +190,8 @@
     <string name="licenses">Licencias</string>
 
     <string name="choose_theme">Escoge un tema</string>
+    <string name="light_blue_theme">Tema azul claro</string>
+    <string name="light_pink_theme">Tema rosa claro</string>
     <string name="dark_blue_theme">Tema azul oscuro</string>
     <string name="dark_especial_theme">Tema especial oscuro</string>
     <string name="dark_purple_theme">Tema morado oscuro</string>
@@ -343,4 +347,20 @@
     <string name="need_for_res_permission_explanation">
         Sin este permiso, la aplicación no podrá explorar la música desde su dispositivo. ¿Quieres otorgar el permiso?
     </string>
+
+    <!--PlayerJournal-->
+    <string name="player_journal">Registros de jugadores</string>
+    <string name="player_journal_desc">Mostrar todos los mensajes de los registros del jugador</string>
+    <string name="send_player_logs">Enviar</string>
+    <string name="copy_player_logs_to_clipboard">Copiar</string>
+    <string name="player_logs">Registros de jugadores</string>
+    <string name="copied">Copiado</string>
+
+    <!--Push notifications-->
+    <string name="push_notifications_channel_name">Notificaciones push</string>
+    <string name="push_notifications_channel_desc">Contiene información útil sobre noticias y actualizaciones de aplicaciones</string>
+
+    <!--Lyrics-->
+    <string name="view_lyrics">Ver letras</string>
+    <string name="lyrics_not_tap_to_write">Texto no encontrado, haga clic aquí para escribirlo usted mismo</string>
 </resources>
