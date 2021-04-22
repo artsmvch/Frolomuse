@@ -35,7 +35,7 @@ class ExploreMediaBucketUseCase @AssistedInject constructor(
     }
 
     override fun getSortedCollection(sortOrder: String): Flowable<List<MediaFile>> {
-        return repository.getSortedAudioFiles(bucket, sortOrder)
+        return repository.getAudioFiles(bucket)
     }
 
     @AssistedInject.Factory

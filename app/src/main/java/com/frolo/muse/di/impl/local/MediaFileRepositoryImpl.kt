@@ -44,6 +44,10 @@ internal class MediaFileRepositoryImpl(
                 selectionArgs, validatedSortOrder, queryExecutor, CURSOR_MAPPER)
     }
 
+    override fun getAudioFiles(bucket: MediaBucket): Flowable<List<MediaFile>> {
+        return getSortedAudioFiles(bucket, SORT_BY_FILENAME)
+    }
+
     override fun blockingGetSortOrders(): List<SortOrder> {
         return collectSortOrders(
             createSortOrder(SORT_BY_FILENAME, R.string.sort_by_filename),

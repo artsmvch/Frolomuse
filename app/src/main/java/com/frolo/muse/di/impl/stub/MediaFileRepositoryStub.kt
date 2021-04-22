@@ -21,6 +21,10 @@ class MediaFileRepositoryStub : MediaFileRepository {
         return flowableError()
     }
 
+    override fun getAudioFiles(bucket: MediaBucket): Flowable<List<MediaFile>> {
+        return flowableError()
+    }
+
     override fun isShortcutSupported(item: MediaFile?): Single<Boolean> {
         return singleError()
     }

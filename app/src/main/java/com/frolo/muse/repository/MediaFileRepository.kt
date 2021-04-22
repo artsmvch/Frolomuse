@@ -8,4 +8,5 @@ import io.reactivex.Flowable
 interface MediaFileRepository: MediaRepository<MediaFile> {
     fun getAudioFiles(): Flowable<List<MediaFile>>
     fun getSortedAudioFiles(bucket: MediaBucket, sortOrder: String?): Flowable<List<MediaFile>>
+    fun getAudioFiles(bucket: MediaBucket): Flowable<List<MediaFile>>
 }
