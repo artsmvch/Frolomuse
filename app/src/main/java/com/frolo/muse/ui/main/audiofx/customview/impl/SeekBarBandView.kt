@@ -4,7 +4,6 @@ import android.animation.ValueAnimator
 import android.content.Context
 import android.content.res.ColorStateList
 import android.graphics.PorterDuff
-import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.View
@@ -205,17 +204,15 @@ class SeekBarBandView @JvmOverloads constructor(
     }
 
     private fun calculateYForProgress(progressPercentage: Float): Float {
-        val thumb: Drawable? = verticalSeekBar.thumb
-        val thumbSize = thumb?.intrinsicWidth ?: 0
-        val trackHeight: Int = ((verticalSeekBar.measuredWidth
+        //val thumb: Drawable? = verticalSeekBar.thumb
+        //val thumbSize = thumb?.intrinsicWidth ?: 0
+        val trackSize: Int = (verticalSeekBar.measuredWidth
                 - verticalSeekBar.paddingLeft
-                - verticalSeekBar.paddingRight
-                - thumbSize)
-                + 2 * verticalSeekBar.thumbOffset)
-        val progressedTrackHeight = (trackHeight * progressPercentage).toInt()
+                - verticalSeekBar.paddingRight)
+        val progressedTrackHeight = trackSize * progressPercentage
         return (verticalSeekBarWrapper.top
-                + verticalSeekBar.top + verticalSeekBar.paddingTop
-                + verticalSeekBar.thumbOffset * 2f + progressedTrackHeight)
+                + verticalSeekBar.left + verticalSeekBar.paddingLeft
+                + progressedTrackHeight)
     }
 
     override fun onDetachedFromWindow() {

@@ -8,12 +8,12 @@
     android:gravity="bottom">
 
     <include layout="@layout/include_preset_reverb_chooser"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <include layout="@layout/include_preset_chooser"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -22,12 +22,12 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="5"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="10dp"
         android:paddingTop="0dp"
-        android:paddingBottom="12dp"/>
+        android:paddingBottom="0dp"/>
 
     <include layout="@layout/include_seekbar_bass_boost"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="8dp"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"/>
 

@@ -305,8 +305,8 @@ abstract class BaseEqualizerView<V> @JvmOverloads constructor(
         // The centered horizontal line
         visualNeutralPaint.strokeWidth = gridLineThickness
         visualNeutralPaint.color = gridColor
-        canvas.drawLine(paddingLeft.toFloat(), neutralY - visualNeutralPaint.strokeWidth / 2,
-                measuredWidth - paddingRight.toFloat(), neutralY - visualNeutralPaint.strokeWidth / 2, visualNeutralPaint)
+        canvas.drawLine(paddingLeft.toFloat(), neutralY,
+                measuredWidth - paddingRight.toFloat(), neutralY, visualNeutralPaint)
     }
 
     /**
@@ -322,14 +322,16 @@ abstract class BaseEqualizerView<V> @JvmOverloads constructor(
 
         val firstBandView = container.getChildAt(0) as V
 
+        val topOffset = container.top + container.paddingTop
+
         // The y of the center
-        val neutralY = container.top + container.paddingTop + firstBandView.centerY
+        val neutralY = firstBandView.centerY
 
         // Visual paths
         for (visualPath in visualPaths) {
             visualPath.path.reset()
             visualPath.tmpCx1 = paddingLeft.toFloat()
-            visualPath.tmpCy1 = neutralY
+            visualPath.tmpCy1 = topOffset + neutralY
             visualPath.path.moveTo(visualPath.tmpCx1, visualPath.tmpCy1)
         }
         for (i in 0..bandViewCount) {
@@ -345,10 +347,10 @@ abstract class BaseEqualizerView<V> @JvmOverloads constructor(
                     val bandView = container.getChildAt(i) as V
                     val centerY = bandView.thumbCenterY
                     visualPath.tmpCx2 = bandView.left + bandView.thumbCenterX
-                    visualPath.tmpCy2 = bandView.top + centerY + (neutralY - centerY) * yCoefficient
+                    visualPath.tmpCy2 = topOffset + bandView.top + centerY + (neutralY - centerY) * yCoefficient
                 } else {
                     visualPath.tmpCx2 = measuredWidth - paddingRight.toFloat()
-                    visualPath.tmpCy2 = neutralY
+                    visualPath.tmpCy2 = topOffset + neutralY
                 }
                 val x1 = visualPath.tmpCx1 + (visualPath.tmpCx2 - visualPath.tmpCx1) / 2f
                 val y1 = visualPath.tmpCy1
@@ -363,8 +365,6 @@ abstract class BaseEqualizerView<V> @JvmOverloads constructor(
         for (visualPath in visualPaths) {
             visualPaint.color = visualPath.color
             visualPaint.strokeWidth = visualPath.strokeWidth
-            // This offset helps to draw the path centered at its Y coors according to the stroke width
-            visualPath.path.offset(0f, -visualPath.strokeWidth / 2f)
             canvas.drawPath(visualPath.path, visualPaint)
         }
     }
