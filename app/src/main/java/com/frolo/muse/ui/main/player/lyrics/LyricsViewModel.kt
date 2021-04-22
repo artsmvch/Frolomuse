@@ -60,19 +60,9 @@ class LyricsViewModel constructor(
     private val _lyricsSavedEvent = SingleLiveEvent<Unit>()
     val lyricsSavedEvent: LiveData<Unit> get() = _lyricsSavedEvent
 
-    private val _isEditable: MutableLiveData<Boolean> = MediatorLiveData<Boolean>().apply {
-        addSource(lyrics) {
-            value = true
-        }
-        addSource(isLoadingLyrics) { isLoading ->
-            value = if (isLoading) {
-                false
-            } else {
-                lyrics.value != null
-            }
-        }
+    val isEditable: LiveData<Boolean> = isLoadingLyrics.map(true) { isLoading ->
+        isLoading != true
     }
-    val isEditable: LiveData<Boolean> = _isEditable
 
     private fun fetchLyrics() {
         // First, trying to fetch lyrics from the local repo
