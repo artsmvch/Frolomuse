@@ -31,7 +31,7 @@ import java.util.Objects;
 /**
  * Implementation of {@link AudioFxApplicable} based on the AudioFx effects from the Android SDK.
  */
-public class AudioFx_Impl implements AudioFxApplicable {
+public class AudioFxImpl implements AudioFxApplicable {
 
     private static final String LOG_TAG = "AudioFx_Impl";
 
@@ -48,8 +48,8 @@ public class AudioFx_Impl implements AudioFxApplicable {
      */
     private static final boolean OPTIMIZE_AUDIO_SESSION_CHANGE = true;
 
-    public static AudioFx_Impl getInstance(Context context, String prefsName) {
-        return new AudioFx_Impl(context, prefsName);
+    public static AudioFxImpl getInstance(Context context, String prefsName) {
+        return new AudioFxImpl(context, prefsName);
     }
 
     private static short clamp(short minValue, short maxValue, short value) {
@@ -76,11 +76,11 @@ public class AudioFx_Impl implements AudioFxApplicable {
     private final boolean mHasVirtualizer;
     private final boolean mHasPresetReverb;
 
-    private final AudioFx_Persistence mPersistence;
+    private final AudioFxPersistence mPersistence;
 
-    private final AudioFx_ObserverRegistry mObserverRegistry;
+    private final AudioFxObserverRegistry mObserverRegistry;
 
-    AudioFx_Impl(Context context, String prefsName) {
+    AudioFxImpl(Context context, String prefsName) {
         mContext = context;
 
         // Checking what audio effects the device does have
@@ -112,9 +112,9 @@ public class AudioFx_Impl implements AudioFxApplicable {
         mHasVirtualizer = hasVirtualizer;
         mHasPresetReverb = hasPresetReverb;
 
-        mPersistence = AudioFx_Persistence.create(context, prefsName);
+        mPersistence = AudioFxPersistence.create(context, prefsName);
 
-        mObserverRegistry = AudioFx_ObserverRegistry.create(context, this);
+        mObserverRegistry = AudioFxObserverRegistry.create(context, this);
 
         if (DEBUG) {
             String msg = new StringBuilder("Initialized:\n")
@@ -325,9 +325,9 @@ public class AudioFx_Impl implements AudioFxApplicable {
     @Override
     public Preset getCurrentPreset() {
         final int eqUseFlag = mPersistence.getEqUseFlag();
-        if (eqUseFlag == AudioFx_Persistence.FLAG_EQ_USE_NATIVE_PRESET) {
+        if (eqUseFlag == AudioFxPersistence.FLAG_EQ_USE_NATIVE_PRESET) {
             return mPersistence.getLastNativePreset();
-        } else if (eqUseFlag == AudioFx_Persistence.FLAG_EQ_USE_CUSTOM_PRESET) {
+        } else if (eqUseFlag == AudioFxPersistence.FLAG_EQ_USE_CUSTOM_PRESET) {
             return mPersistence.getLastCustomPreset();
         } else {
             // no preset
@@ -340,7 +340,7 @@ public class AudioFx_Impl implements AudioFxApplicable {
         if (preset instanceof NativePreset) {
             int eqUseFlag = mPersistence.getEqUseFlag();
             NativePreset lastPreset = mPersistence.getLastNativePreset();
-            if (eqUseFlag == AudioFx_Persistence.FLAG_EQ_USE_NATIVE_PRESET
+            if (eqUseFlag == AudioFxPersistence.FLAG_EQ_USE_NATIVE_PRESET
                     && Objects.equals(preset, lastPreset)) {
                 // No changes
                 return;
@@ -363,14 +363,14 @@ public class AudioFx_Impl implements AudioFxApplicable {
                 report(t);
             }
 
-            mPersistence.saveEqUseFlag(AudioFx_Persistence.FLAG_EQ_USE_NATIVE_PRESET);
+            mPersistence.saveEqUseFlag(AudioFxPersistence.FLAG_EQ_USE_NATIVE_PRESET);
             mPersistence.saveLastNativePreset((NativePreset) preset);
             mObserverRegistry.dispatchPresetUsed(preset);
         } else if (preset instanceof CustomPreset) {
 
             int eqUseFlag = mPersistence.getEqUseFlag();
             CustomPreset lastPreset = mPersistence.getLastCustomPreset();
-            if (eqUseFlag == AudioFx_Persistence.FLAG_EQ_USE_CUSTOM_PRESET
+            if (eqUseFlag == AudioFxPersistence.FLAG_EQ_USE_CUSTOM_PRESET
                     && Objects.equals(preset, lastPreset)) {
                 // No changes
                 return;
@@ -394,7 +394,7 @@ public class AudioFx_Impl implements AudioFxApplicable {
                 report(t);
             }
 
-            mPersistence.saveEqUseFlag(AudioFx_Persistence.FLAG_EQ_USE_CUSTOM_PRESET);
+            mPersistence.saveEqUseFlag(AudioFxPersistence.FLAG_EQ_USE_CUSTOM_PRESET);
             mPersistence.saveLastCustomPreset((CustomPreset) preset);
             mObserverRegistry.dispatchPresetUsed(preset);
         } else {
@@ -404,7 +404,7 @@ public class AudioFx_Impl implements AudioFxApplicable {
 
     @Override
     public void unusePreset() {
-        mPersistence.saveEqUseFlag(AudioFx_Persistence.FLAG_EQ_USE_NO_PRESET);
+        mPersistence.saveEqUseFlag(AudioFxPersistence.FLAG_EQ_USE_NO_PRESET);
     }
 
     @Override
@@ -611,15 +611,15 @@ public class AudioFx_Impl implements AudioFxApplicable {
 
                 final int eqUseFlag = mPersistence.getEqUseFlag();
                 final boolean adjustBandLevels;
-                if (eqUseFlag == AudioFx_Persistence.FLAG_EQ_USE_NO_PRESET) {
+                if (eqUseFlag == AudioFxPersistence.FLAG_EQ_USE_NO_PRESET) {
                     adjustBandLevels = true;
-                } else if (eqUseFlag == AudioFx_Persistence.FLAG_EQ_USE_NATIVE_PRESET) {
+                } else if (eqUseFlag == AudioFxPersistence.FLAG_EQ_USE_NATIVE_PRESET) {
                     NativePreset preset = mPersistence.getLastNativePreset();
                     if (preset != null) {
                         newEqualizer.usePreset(preset.getIndex());
                     }
                     adjustBandLevels = preset == null;
-                } else if (eqUseFlag == AudioFx_Persistence.FLAG_EQ_USE_CUSTOM_PRESET) {
+                } else if (eqUseFlag == AudioFxPersistence.FLAG_EQ_USE_CUSTOM_PRESET) {
                     CustomPreset preset = mPersistence.getLastCustomPreset();
                     short[] bandLevels = preset != null ? preset.getLevels() : null;
                     if (bandLevels != null) {

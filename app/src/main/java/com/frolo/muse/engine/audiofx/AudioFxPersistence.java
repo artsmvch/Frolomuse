@@ -16,9 +16,9 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Helper class to persist the state of AudioFx.
  * The state is stored in a SharedPreferences whose name is specified by the client.
- * To create an instance, call {@link AudioFx_Persistence#create(Context, String)} method.
+ * To create an instance, call {@link AudioFxPersistence#create(Context, String)} method.
  */
-final class AudioFx_Persistence {
+final class AudioFxPersistence {
 
     private static final boolean DEBUG = BuildConfig.DEBUG;
 
@@ -26,8 +26,8 @@ final class AudioFx_Persistence {
     static final int FLAG_EQ_USE_NATIVE_PRESET = 1;
     static final int FLAG_EQ_USE_CUSTOM_PRESET = 2;
 
-    static AudioFx_Persistence create(@NonNull Context context, @NonNull String prefsName) {
-        return new AudioFx_Persistence(context, prefsName);
+    static AudioFxPersistence create(@NonNull Context context, @NonNull String prefsName) {
+        return new AudioFxPersistence(context, prefsName);
     }
 
     private static final String KEY_PREFIX = "audiofx.";
@@ -65,7 +65,7 @@ final class AudioFx_Persistence {
 
     private volatile Reverb mReverb = Reverb.NONE;
 
-    private AudioFx_Persistence(@NonNull Context context, @NonNull String prefsName) {
+    private AudioFxPersistence(@NonNull Context context, @NonNull String prefsName) {
         mContext = context;
         mPrefsName = prefsName;
         mPrefs = mContext.getSharedPreferences(mPrefsName, Context.MODE_PRIVATE);

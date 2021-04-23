@@ -20,10 +20,10 @@ import java.util.concurrent.CopyOnWriteArraySet;
  * The thread-safe registry for observers of type {@link AudioFxObserver}.
  * NOTE: All observer methods are called on the main thread.
  */
-final class AudioFx_ObserverRegistry {
+final class AudioFxObserverRegistry {
 
-    static AudioFx_ObserverRegistry create(@NonNull Context context, @NonNull AudioFx audioFx) {
-        return new AudioFx_ObserverRegistry(context, audioFx);
+    static AudioFxObserverRegistry create(@NonNull Context context, @NonNull AudioFx audioFx) {
+        return new AudioFxObserverRegistry(context, audioFx);
     }
 
     private class DispatcherHandler extends Handler {
@@ -111,7 +111,7 @@ final class AudioFx_ObserverRegistry {
 
     private final CopyOnWriteArraySet<AudioFxObserver> mObservers = new CopyOnWriteArraySet<>();
 
-    private AudioFx_ObserverRegistry(@NonNull Context context, @NonNull AudioFx audioFx) {
+    private AudioFxObserverRegistry(@NonNull Context context, @NonNull AudioFx audioFx) {
         mAudioFx = audioFx;
         mHandler = new DispatcherHandler(context.getMainLooper());
     }

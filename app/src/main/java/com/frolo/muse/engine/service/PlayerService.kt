@@ -14,7 +14,7 @@ import com.frolo.muse.Logger
 import com.frolo.muse.R
 import com.frolo.muse.common.*
 import com.frolo.muse.engine.*
-import com.frolo.muse.engine.audiofx.AudioFx_Impl
+import com.frolo.muse.engine.audiofx.AudioFxImpl
 import com.frolo.muse.engine.service.PlayerService.Companion.newIntent
 import com.frolo.muse.engine.service.PlayerService.PlayerBinder
 import com.frolo.muse.engine.service.observers.*
@@ -178,7 +178,7 @@ class PlayerService: RxService() {
 
         // Creating AudioFx
         val audioFxApplicable: AudioFxApplicable =
-                AudioFx_Impl.getInstance(this, Const.AUDIO_FX_PREFERENCES)
+                AudioFxImpl.getInstance(this, Const.AUDIO_FX_PREFERENCES)
 
         player = PlayerImpl.create(this, audioFxApplicable, playerJournal)
 
