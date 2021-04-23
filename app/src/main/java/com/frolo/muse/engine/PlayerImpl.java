@@ -148,34 +148,6 @@ public final class PlayerImpl implements Player {
         return what == MediaPlayer.MEDIA_ERROR_SERVER_DIED;
     }
 
-    /**
-     * Maps error codes of {@link MediaPlayer} to String.
-     * @param what error code
-     * @param extra error extra
-     * @return error message
-     */
-    @NotNull
-    private static String getEngineErrorMessage(int what, /* unused */ int extra) {
-        switch (what) {
-            case MediaPlayer.MEDIA_ERROR_IO:
-                return "IO";
-            case MediaPlayer.MEDIA_ERROR_MALFORMED:
-                return "MALFORMED";
-            case MediaPlayer.MEDIA_ERROR_NOT_VALID_FOR_PROGRESSIVE_PLAYBACK:
-                return "NOT_VALID_FOR_PROGRESSIVE_PLAYBACK";
-            case MediaPlayer.MEDIA_ERROR_SERVER_DIED:
-                return "SERVER_DIED";
-            case MediaPlayer.MEDIA_ERROR_TIMED_OUT:
-                return "TIMED_OUT";
-            case MediaPlayer.MEDIA_ERROR_UNKNOWN:
-                return "UNKNOWN";
-            case MediaPlayer.MEDIA_ERROR_UNSUPPORTED:
-                return "UNSUPPORTED";
-            default:
-                return "null";
-        }
-    }
-
     // Guard for mEngine
     private final Object mEngineLock = new Object();
 
@@ -459,7 +431,7 @@ public final class PlayerImpl implements Player {
                     }
 
                     // Always reporting errors to better understand what problems users do experience
-                    report(new PlayerException(getEngineErrorMessage(what, extra)));
+                    report(new PlayerException(MediaPlayerErrors.getErrorMessage(what, extra)));
 
                     // If it's a critical error, then the engine is not valid anymore.
                     // In this case, the current engine instance should be released and gc-ed.
