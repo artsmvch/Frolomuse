@@ -1102,6 +1102,18 @@ public final class PlayerImpl implements Player {
                     final MediaPlayer engine = mEngine;
                     if (engine == null) return;
 
+                    // Here, we check if the pause can be skipped.
+                    // This is to avoid unnecessary pauses,
+                    // because the media player engine may break
+                    // if it actually wasn't playing until now.
+                    boolean canSkipThePause = false;
+                    try {
+                        canSkipThePause = !mIsPlayingFlag && !engine.isPlaying();
+                    } catch (Throwable error) {
+                        mPlayerJournal.logError("Failed to check if the pause can be skipped", error);
+                    }
+                    if (canSkipThePause) return;
+
                     mIsPlayingFlag = false;
 
                     mPlayerJournal.logMessage("Pause");
