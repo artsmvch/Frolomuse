@@ -3,48 +3,57 @@ package com.frolo.muse.ui.main.player
 import android.annotation.SuppressLint
 import android.view.MotionEvent
 import android.view.View
-import java.util.*
+import androidx.annotation.UiThread
+import com.frolo.muse.rx.subscribeSafely
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import java.util.concurrent.TimeUnit
 
 
+@UiThread
 class PulseTouchDownListener constructor(
-    private val delay: Long,
+    private val initialDelay: Long,
     private val period: Long,
     private val onPulse: () -> Unit
 ): View.OnTouchListener {
 
-    // The current timer.
-    private var timer: Timer? = null
+    // The current timer disposable.
+    private var timerDisposable: Disposable? = null
 
     // Indicates whether the current timer has been pulsed at least once.
     // This flag is set to false when the timer is scheduled/cancelled.
     private var pulsed: Boolean = false
 
+    val isRunning: Boolean
+        get() {
+            val disposable: Disposable? = timerDisposable
+            return disposable != null && !disposable.isDisposed
+        }
+
     @SuppressLint("ClickableViewAccessibility")
-    override fun onTouch(v: View, event: MotionEvent): Boolean {
+    override fun onTouch(view: View, event: MotionEvent): Boolean {
         return when(event.action) {
             MotionEvent.ACTION_DOWN -> {
 
                 // Cancel the previous timer, if any
-                timer?.apply {
-                    cancel()
-                    purge()
-                }
+                timerDisposable?.dispose()
 
                 pulsed = false
-                timer = Timer("pulse_touch_down").also { timer ->
-                    timer.schedule(object : TimerTask() {
-                        override fun run() {
-                            v.post {
-                                if (v.isAttachedToWindow) {
-                                    pulsed = true
-                                    onPulse.invoke()
-                                } else {
-                                    cancel()
-                                }
-                            }
+
+                timerDisposable = Observable.interval(initialDelay, period, TimeUnit.MILLISECONDS)
+                    .timeInterval()
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnNext {
+                        if (view.isAttachedToWindow) {
+                            pulsed = true
+                            onPulse.invoke()
+                        } else {
+                            timerDisposable?.dispose()
+                            timerDisposable = null
                         }
-                    }, delay, period)
-                }
+                    }
+                    .subscribeSafely()
 
                 false
             }
@@ -53,17 +62,16 @@ class PulseTouchDownListener constructor(
                 // The result is the value of the 'pulsed' flag.
                 // If the timer has not been pulsed at all, then the result is false and the touch is handled by default.
                 // Otherwise, the result is true.
-                val result = pulsed
+                val result: Boolean = pulsed
 
-                timer?.apply {
-                    cancel()
-                    purge()
-                }
+                timerDisposable?.dispose()
+                timerDisposable = null
+
                 pulsed = false
 
                 if (result) {
                     // Clear the pressed state
-                    v.isPressed = false
+                    view.isPressed = false
                 }
 
                 result
@@ -74,6 +82,6 @@ class PulseTouchDownListener constructor(
     }
 }
 
-fun View.doOnPulseTouchDown(delay: Long = 500, period: Long = 750, action: () -> Unit) {
-    setOnTouchListener(PulseTouchDownListener(delay, period, action))
+fun View.doOnPulseTouchDown(initialDelay: Long = 500, period: Long = 750, action: () -> Unit) {
+    setOnTouchListener(PulseTouchDownListener(initialDelay, period, action))
 }
