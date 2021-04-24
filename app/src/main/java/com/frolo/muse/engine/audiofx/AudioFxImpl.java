@@ -20,6 +20,7 @@ import com.frolo.muse.model.preset.NativePreset;
 import com.frolo.muse.model.preset.Preset;
 import com.frolo.muse.model.reverb.Reverb;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -48,8 +49,17 @@ public class AudioFxImpl implements AudioFxApplicable {
      */
     private static final boolean OPTIMIZE_AUDIO_SESSION_CHANGE = true;
 
-    public static AudioFxImpl getInstance(Context context, String prefsName) {
-        return new AudioFxImpl(context, prefsName);
+    public interface ErrorHandler {
+        void onError(Throwable error);
+    }
+
+    public static AudioFxImpl getInstance(@NotNull Context context, @NotNull String prefsName) {
+        return getInstance(context, prefsName, null);
+    }
+
+    public static AudioFxImpl getInstance(
+            @NotNull Context context, @NotNull String prefsName, @Nullable ErrorHandler errorHandler) {
+        return new AudioFxImpl(context, prefsName, errorHandler);
     }
 
     private static short clamp(short minValue, short maxValue, short value) {
@@ -80,7 +90,9 @@ public class AudioFxImpl implements AudioFxApplicable {
 
     private final AudioFxObserverRegistry mObserverRegistry;
 
-    AudioFxImpl(Context context, String prefsName) {
+    private final ErrorHandler mErrorHandler;
+
+    AudioFxImpl(Context context, String prefsName, ErrorHandler errorHandler) {
         mContext = context;
 
         // Checking what audio effects the device does have
@@ -116,19 +128,25 @@ public class AudioFxImpl implements AudioFxApplicable {
 
         mObserverRegistry = AudioFxObserverRegistry.create(context, this);
 
+        mErrorHandler = errorHandler;
+
         if (DEBUG) {
             String msg = new StringBuilder("Initialized:\n")
-                    .append("hasEqualizer=").append(mHasEqualizer).append("\n")
-                    .append("hasBassBoost=").append(mHasBassBoost).append("\n")
-                    .append("hasVirtualizer=").append(mHasVirtualizer).append("\n")
-                    .append("hasPresetReverb=").append(mHasPresetReverb).append("\n")
-                    .toString();
+                .append("hasEqualizer=").append(mHasEqualizer).append("\n")
+                .append("hasBassBoost=").append(mHasBassBoost).append("\n")
+                .append("hasVirtualizer=").append(mHasVirtualizer).append("\n")
+                .append("hasPresetReverb=").append(mHasPresetReverb).append("\n")
+                .toString();
             Log.d(LOG_TAG, msg);
         }
     }
 
     private void report(Throwable t) {
-        if (DEBUG) Log.e(LOG_TAG, "A critical error occurred", t);
+        AudioFxException error = new AudioFxException(t);
+        if (DEBUG) Log.e(LOG_TAG, "A critical error occurred", error);
+        if (mErrorHandler != null) {
+            mErrorHandler.onError(error);
+        }
     }
 
     @Override

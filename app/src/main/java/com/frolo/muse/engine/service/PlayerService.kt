@@ -17,6 +17,7 @@ import com.frolo.muse.engine.*
 import com.frolo.muse.engine.audiofx.AudioFxImpl
 import com.frolo.muse.engine.service.PlayerService.Companion.newIntent
 import com.frolo.muse.engine.service.PlayerService.PlayerBinder
+import com.frolo.muse.engine.service.audiofx.DefaultAudioFxErrorHandler
 import com.frolo.muse.engine.service.observers.*
 import com.frolo.muse.headset.createHeadsetHandler
 import com.frolo.muse.interactor.media.DispatchSongPlayedUseCase
@@ -178,7 +179,7 @@ class PlayerService: RxService() {
 
         // Creating AudioFx
         val audioFxApplicable: AudioFxApplicable =
-                AudioFxImpl.getInstance(this, Const.AUDIO_FX_PREFERENCES)
+                AudioFxImpl.getInstance(this, Const.AUDIO_FX_PREFERENCES, DefaultAudioFxErrorHandler())
 
         player = PlayerImpl.create(this, audioFxApplicable, playerJournal)
 
