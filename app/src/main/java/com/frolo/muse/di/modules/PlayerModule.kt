@@ -34,6 +34,6 @@ class PlayerModule(
             return CompositePlayerJournal(journals)
         }
 
-        return StoredInMemoryPlayerJournal()
+        return PlayerJournal.EMPTY
     }
 }

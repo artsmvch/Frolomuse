@@ -4,11 +4,14 @@ import androidx.annotation.WorkerThread
 import com.frolo.muse.engine.PlayerJournal
 import io.reactivex.Flowable
 import io.reactivex.processors.BehaviorProcessor
+import java.util.*
+import java.util.concurrent.ConcurrentLinkedQueue
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
-import java.util.concurrent.LinkedBlockingQueue
 
 
+@Deprecated("Bad queue performance")
+// TODO: improve performance of the backing queue collection, it should be thread safe, fixed size and FIFO.
 class StoredInMemoryPlayerJournal(val size: Int = DEFAULT_SIZE) : PlayerJournal {
 
     private val logExecutor: Executor by lazy {
@@ -19,7 +22,9 @@ class StoredInMemoryPlayerJournal(val size: Int = DEFAULT_SIZE) : PlayerJournal 
         }
     }
 
-    private val logDataQueue = LinkedBlockingQueue<LogData>(size)
+    private val logDataLock = Any()
+
+    private val logDataQueue: Queue<LogData> = ConcurrentLinkedQueue<LogData>()
 
     private val logDataSnapshotProcessor = BehaviorProcessor.create<List<LogData>>()
 
@@ -27,8 +32,16 @@ class StoredInMemoryPlayerJournal(val size: Int = DEFAULT_SIZE) : PlayerJournal 
 
     @WorkerThread
     private fun appendLogData(data: LogData) {
-        logDataQueue.add(data)
-        logDataSnapshotProcessor.onNext(logDataQueue.toList())
+        synchronized(logDataLock) {
+            val currentSize = logDataQueue.size
+            // Check if the queue would overflow.
+            // If so, remove the last item.
+            if (currentSize > 0 && currentSize >= size) {
+                logDataQueue.poll()
+            }
+            logDataQueue.add(data)
+            logDataSnapshotProcessor.onNext(logDataQueue.toList())
+        }
     }
 
     override fun logMessage(message: String?) {
