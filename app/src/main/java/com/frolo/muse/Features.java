@@ -18,8 +18,15 @@ public final class Features {
         return Build.VERSION.SDK_INT <= Build.VERSION_CODES.P;
     }
 
+    /**
+     * Checks if the plain old file explorer feature is available.
+     * Starting with Android 11, the all file access is not permitted to apps by default.
+     * Thus, we can only use media file models provided by the MediaStore.
+     * On older versions on Android, everything works as before.
+     * @return true if the plain old file explorer feature is available.
+     */
     public static boolean isPlainOldFileExplorerFeatureAvailable() {
-        return Build.VERSION.SDK_INT <= Build.VERSION_CODES.P;
+        return Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q;
     }
 
     private Features() {
