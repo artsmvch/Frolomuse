@@ -21,7 +21,7 @@
             app:layout_constraintBottom_toTopOf="@id/layout_divider"
             android:id="@+id/imv_root"
             android:scaleType="centerCrop"
-            android:layout_marginStart="10dp"
+            android:layout_marginStart="6dp"
             app:layout_goneMarginTop="4dp"
             android:layout_marginBottom="4dp"
             android:layout_width="@dimen/list_item_img_art_size"
