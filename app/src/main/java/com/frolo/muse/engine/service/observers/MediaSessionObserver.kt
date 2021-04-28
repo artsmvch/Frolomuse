@@ -2,37 +2,133 @@ package com.frolo.muse.engine.service.observers
 
 import android.content.Context
 import android.support.v4.media.session.MediaSessionCompat
+import android.support.v4.media.session.PlaybackStateCompat
+import androidx.annotation.MainThread
 import com.frolo.muse.common.toSong
 import com.frolo.muse.engine.AudioSource
 import com.frolo.muse.engine.Player
 import com.frolo.muse.engine.SimplePlayerObserver
 import com.frolo.muse.engine.service.setMetadata
+import com.frolo.muse.model.media.Song
+import com.frolo.muse.rx.subscribeSafely
+import io.reactivex.Flowable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import java.util.concurrent.TimeUnit
 
 
-class MediaSessionObserver constructor(
+class MediaSessionObserver private constructor(
     private val context: Context,
     private val mediaSession: MediaSessionCompat
 ): SimplePlayerObserver() {
 
-    private var disposable: Disposable? = null
+    private var songDisposable: Disposable? = null
+
+    private var progressDisposable: Disposable? = null
+
+    /**
+     * Syncs the media session with the current playback state of [player].
+     * Call this at some point when registering this player observer in the player,
+     * so that the media session has a valid state at the very beginning
+     * before any observer callback gets called.
+     */
+    private fun syncPlaybackState(player: Player) {
+        setPlaybackState(
+            isPlaying = player.isPlaying(),
+            progress = player.getProgress().toLong(),
+            speed = player.getSpeed()
+        )
+    }
 
     override fun onAudioSourceChanged(player: Player, item: AudioSource?, positionInQueue: Int) {
-
-        disposable?.dispose()
-
-        val song = item?.toSong()
-
-        disposable = Arts.getPlaybackArt(context, song)
+        songDisposable?.dispose()
+        val song: Song? = item?.toSong()
+        songDisposable = Arts.getPlaybackArt(context, song)
             .doOnSubscribe { mediaSession.setMetadata(song , null) }
             .doOnSuccess { art -> mediaSession.setMetadata(song , art) }
             .ignoreElement()
-            .subscribe({ /* stub */}, { /* stub */ })
+            .subscribeSafely()
 
+        setUndefinedPlaybackState()
+    }
+
+    override fun onPrepared(player: Player, duration: Int, progress: Int) {
+        setPlaybackState(
+            isPlaying = false,
+            progress = progress.toLong(),
+            speed = player.getSpeed()
+        )
+    }
+
+    override fun onPlaybackStarted(player: Player) {
+        progressDisposable = Flowable.interval(0L, PROGRESS_UPDATER_INTERVAL_IN_MS, TimeUnit.MILLISECONDS)
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnNext {
+                setPlaybackState(
+                    isPlaying = true,
+                    progress = player.getProgress().toLong(),
+                    speed = player.getSpeed()
+                )
+            }
+            .subscribeSafely()
+    }
+
+    override fun onPlaybackPaused(player: Player) {
+        progressDisposable?.dispose()
+        setPlaybackState(
+            isPlaying = false,
+            progress = player.getProgress().toLong(),
+            speed = player.getSpeed()
+        )
+    }
+
+    override fun onSoughtTo(player: Player, position: Int) {
+        setPlaybackState(
+            isPlaying = player.isPlaying(),
+            progress = position.toLong(),
+            speed = player.getSpeed()
+        )
+    }
+
+    override fun onPlaybackSpeedChanged(player: Player, speed: Float) {
+        setPlaybackState(
+            isPlaying = player.isPlaying(),
+            progress = player.getProgress().toLong(),
+            speed = speed
+        )
+    }
+
+    @MainThread
+    private fun setUndefinedPlaybackState() {
+        val playbackState = PlaybackStateCompat.Builder()
+            .build()
+        mediaSession.setPlaybackState(playbackState)
+    }
+
+    @MainThread
+    private fun setPlaybackState(isPlaying: Boolean, progress: Long, speed: Float) {
+        val state = if (isPlaying) PlaybackStateCompat.STATE_PLAYING else PlaybackStateCompat.STATE_PAUSED
+        val playbackState = PlaybackStateCompat.Builder()
+            .setActions(PlaybackStateCompat.ACTION_SEEK_TO)
+            .setState(state, progress, speed)
+            .build()
+        mediaSession.setPlaybackState(playbackState)
     }
 
     override fun onShutdown(player: Player) {
-        disposable?.dispose()
+        songDisposable?.dispose()
+        progressDisposable?.dispose()
+    }
+
+    companion object {
+        private const val PROGRESS_UPDATER_INTERVAL_IN_MS = 1000L
+
+        fun attach(context: Context, mediaSession: MediaSessionCompat, player: Player): MediaSessionObserver {
+            return MediaSessionObserver(context, mediaSession).also { observer ->
+                player.registerObserver(observer)
+                observer.syncPlaybackState(player)
+            }
+        }
     }
 
 }

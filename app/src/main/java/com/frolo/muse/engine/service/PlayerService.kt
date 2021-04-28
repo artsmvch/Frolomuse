@@ -119,6 +119,10 @@ class PlayerService: RxService() {
         override fun onSkipToPrevious() {
             player.skipToPrevious()
         }
+
+        override fun onSeekTo(pos: Long) {
+            player.seekTo(pos.toInt())
+        }
     }
 
     //region Service binding
@@ -211,7 +215,7 @@ class PlayerService: RxService() {
                 postPlayerNotification(playerNtf, force)
             }
         )
-        player.registerObserver(MediaSessionObserver(this, mediaSession))
+        MediaSessionObserver.attach(this, mediaSession, player)
 
         Logger.d(TAG, "Service created")
     }
