@@ -1,6 +1,7 @@
 package com.frolo.muse.ui.base
 
 import android.app.Application
+import android.content.Context
 import androidx.arch.core.executor.ArchTaskExecutor
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -16,8 +17,8 @@ import io.reactivex.disposables.Disposable
 
 
 abstract class BaseAndroidViewModel constructor(
-        application: Application,
-        private val eventLogger: EventLogger
+    application: Application,
+    private val eventLogger: EventLogger
 ) : AndroidViewModel(application) {
 
     private val disposables = CompositeDisposable()
@@ -26,6 +27,8 @@ abstract class BaseAndroidViewModel constructor(
     val error: LiveData<Throwable> = _error
 
     protected val justApplication: Application get() = getApplication()
+
+    protected val justContext: Context get() = getApplication()
 
     private fun logError(err: Throwable) {
         eventLogger.log(err)

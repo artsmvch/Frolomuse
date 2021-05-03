@@ -7,7 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?colorSurface"
-        android:alpha="0.6"/>
+        android:alpha="0.8"/>
 
     <com.frolo.muse.views.progress.IBar
         android:id="@+id/pb_progress"

@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import com.frolo.muse.arch.EventLiveData
 import com.frolo.muse.arch.SingleLiveEvent
 import com.frolo.muse.arch.call
+import com.frolo.muse.billing.BillingManager
 import com.frolo.muse.engine.Player
 import com.frolo.muse.interactor.feature.FeaturesUseCase
 import com.frolo.muse.interactor.firebase.SyncFirebaseMessagingTokenUseCase
@@ -37,6 +38,7 @@ class MainViewModel @Inject constructor(
     private val navigateToMediaUseCase: NavigateToMediaUseCase,
     private val syncFirebaseMessagingTokenUseCase: SyncFirebaseMessagingTokenUseCase,
     private val featuresUseCase: FeaturesUseCase,
+    private val billingManager: BillingManager,
     private val schedulerProvider: SchedulerProvider,
     private val permissionChecker: PermissionChecker,
     private val eventLogger: EventLogger
@@ -116,6 +118,8 @@ class MainViewModel @Inject constructor(
         featuresUseCase.sync()
             .observeOn(schedulerProvider.main())
             .subscribeFor {  }
+        // Syncing billing state
+        billingManager.sync()
     }
 
     fun onStart() {

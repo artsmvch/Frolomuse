@@ -64,7 +64,7 @@ android {
     }
     buildTypes {
         debug {
-            applicationIdSuffix ".dbg"
+            //applicationIdSuffix ".dbg"
             debuggable true
             shrinkResources false
             minifyEnabled false
@@ -244,6 +244,10 @@ dependencies {
 
     // AdMob
     implementation 'com.google.android.gms:play-services-ads:19.5.0'
+
+    // Billing
+    def billing_version = "3.0.3"
+    implementation "com.android.billingclient:billing-ktx:$billing_version"
 
     // Jsoup (HTML parser)
     implementation 'org.jsoup:jsoup:1.13.1'

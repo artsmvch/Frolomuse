@@ -367,6 +367,22 @@
     <string name="view_lyrics">View lyrics</string>
     <string name="lyrics_not_tap_to_write">Text not found, click here to write it yourself</string>
 
+    <!--Premium-->
+    <string name="buy_premium">Buy premium</string>
+    <string name="buy_premium_desc">Remove ads and unlock premium features</string>
+    <string name="premium_dialog_title">Premium</string>
+    <string-array name="premium_benefits">
+        <item>Remove all ads</item>
+        <item>Unlock playback crossfade</item>
+        <item>Unlock playback speed and pitch</item>
+        <item>Unlock all themes</item>
+        <item>Full access to all new features in future updates</item>
+    </string-array>
+    <string name="premium_benefit_support_dev">Support developer</string>
+    <string name="one_time_purchase">One time purchase · buy and use forever</string>
+    <string name="buy_premium_for_s">Buy for %s</string>
+    <string name="buy">Buy</string>
+
     <!--Onboarding-->
     <string name="skip">Skip</string>
     <string name="done">Done</string>

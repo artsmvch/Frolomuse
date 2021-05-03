@@ -1,11 +1,13 @@
 package com.frolo.muse
 
 import android.app.Activity
+import android.content.Context
 import android.os.Build
 import android.os.StrictMode
 import android.os.strictmode.Violation
 import android.widget.Toast
 import androidx.multidex.MultiDexApplication
+import com.android.billingclient.api.BillingClient
 import com.frolo.muse.admob.AdMobs
 import com.frolo.muse.di.AppComponent
 import com.frolo.muse.di.DaggerAppComponent
@@ -99,6 +101,7 @@ class FrolomuseApp : MultiDexApplication() {
                 .detectLeakedRegistrationObjects()
                 .setClassInstanceLimit(PlayerImpl::class.java, 1)
                 .setClassInstanceLimit(AudioFxImpl::class.java, 1)
+                .setClassInstanceLimit(BillingClient::class.java, 1)
                 .penaltyLog()
                 .run {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
@@ -165,6 +168,16 @@ class FrolomuseApp : MultiDexApplication() {
 
     fun onFragmentNavigatorDestroyed() {
         navigatorWrapper.detachBase()
+    }
+
+    companion object {
+        fun from(context: Context): FrolomuseApp {
+            val applicationContent: Context = context.applicationContext
+            if (applicationContent !is FrolomuseApp) {
+                throw NullPointerException("Application context is not an instance of FrolomuseApp")
+            }
+            return applicationContent
+        }
     }
 
 }

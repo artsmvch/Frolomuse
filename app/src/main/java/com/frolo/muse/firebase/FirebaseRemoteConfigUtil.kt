@@ -12,6 +12,7 @@ object FirebaseRemoteConfigUtil {
     private const val STRICT_ACTIVATION = false
 
     const val LYRICS_VIEWER_ENABLED = "lyrics_viewer_enabled"
+    const val PURCHASE_FEATURE_ENABLED = "purchase_feature_enabled"
 
     private val executor = Executors.newFixedThreadPool(2)
 

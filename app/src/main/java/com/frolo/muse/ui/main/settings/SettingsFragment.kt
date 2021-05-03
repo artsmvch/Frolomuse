@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ViewModelProviders
 import androidx.preference.CheckBoxPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -16,6 +18,7 @@ import com.frolo.muse.FrolomuseApp
 import com.frolo.muse.BuildConfig
 import com.frolo.muse.Features
 import com.frolo.muse.R
+import com.frolo.muse.arch.observe
 import com.frolo.muse.logger.*
 import com.frolo.muse.mediascan.MediaScanService
 import com.frolo.muse.model.Theme
@@ -25,6 +28,7 @@ import com.frolo.muse.ui.ThemeHandler
 import com.frolo.muse.ui.base.NoClipping
 import com.frolo.muse.ui.goToStore
 import com.frolo.muse.ui.helpWithTranslations
+import com.frolo.muse.ui.main.settings.premium.BuyPremiumDialog
 import com.frolo.muse.ui.main.settings.journal.PlayerJournalDialog
 import com.frolo.muse.ui.main.settings.playback.PlaybackFadingDialog
 import com.frolo.muse.ui.main.settings.duration.MinAudioFileDurationDialog
@@ -38,6 +42,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 
 class SettingsFragment : PreferenceFragmentCompat(),
+        BuyPremiumDialog.OnBuyPremiumClickListener,
         SleepTimerDialog.OnTimeSelectedListener,
         NoClipping {
 
@@ -53,9 +58,24 @@ class SettingsFragment : PreferenceFragmentCompat(),
                 .provideEventLogger()
     }
 
+    private val buyPremiumPreference: Preference? get() = findPreference("buy_premium")
+
+    private val billingViewModel: BillingViewModel by lazy {
+        val appComponent = requireContext().let { context ->
+            FrolomuseApp.from(context).appComponent
+        }
+        val viewModelFactory = appComponent.provideVMFactory()
+        ViewModelProviders.of(this, viewModelFactory)[BillingViewModel::class.java]
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         decorate(listView)
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        observeBillingViewModel(viewLifecycleOwner)
     }
 
     private fun decorate(list: androidx.recyclerview.widget.RecyclerView) {
@@ -69,6 +89,15 @@ class SettingsFragment : PreferenceFragmentCompat(),
     }
 
     private fun setupPreferences() {
+
+        buyPremiumPreference?.apply {
+            // By default, it's invisible
+            isVisible = false
+            onPreferenceClickListener = Preference.OnPreferenceClickListener {
+                billingViewModel.onBuyPremiumPreferenceClicked()
+                true
+            }
+        }
 
         findPreference("playback_fading").apply {
             onPreferenceClickListener = Preference.OnPreferenceClickListener {
@@ -194,6 +223,25 @@ class SettingsFragment : PreferenceFragmentCompat(),
                 true
             }
         }
+    }
+
+    private fun observeBillingViewModel(owner: LifecycleOwner) = with(billingViewModel) {
+        isBuyPremiumOptionVisible.observe(owner) { visible ->
+            buyPremiumPreference?.isVisible = visible == true
+        }
+
+        showPremiumBenefitsEvent.observe(owner) {
+            showPremiumBenefitsDialog()
+        }
+    }
+
+    override fun onBuyPremiumClick() {
+        billingViewModel.onBuyPremiumClicked()
+    }
+
+    private fun showPremiumBenefitsDialog() {
+        val dialog = BuyPremiumDialog.newInstance()
+        dialog.show(childFragmentManager, TAG_BUY_PREMIUM)
     }
 
     private fun showPlaybackFadingDialog() {
@@ -400,6 +448,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
     companion object {
         private const val RC_SCAN_MEDIA = 1573
 
+        private const val TAG_BUY_PREMIUM = "buy_premium"
         private const val TAG_LIBRARY_SECTION_CHOOSER = "library_section_chooser"
         private const val TAG_THEME_CHOOSER = "theme_chooser"
         private const val TAG_LICENCES = "licences"

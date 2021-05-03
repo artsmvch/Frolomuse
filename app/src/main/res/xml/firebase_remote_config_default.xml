@@ -12,4 +12,8 @@
         <key>lyrics_viewer_enabled</key>
         <value>true</value>
     </entry>
+    <entry>
+        <key>purchase_feature_enabled</key>
+        <value>false</value>
+    </entry>
 </defaultsMap>

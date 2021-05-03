@@ -1,6 +1,7 @@
 package com.frolo.muse.logger
 
 import androidx.annotation.StringDef
+import com.frolo.muse.billing.ProductId
 import com.frolo.muse.model.Theme
 import com.frolo.muse.model.media.Media
 import com.frolo.muse.model.media.Song
@@ -288,6 +289,31 @@ fun EventLogger.logLyricsSaved(edited: Boolean) {
 
 fun EventLogger.logPlayerOptionsMenuShown() {
     log("player_options_menu_shown")
+}
+
+//endregion
+
+
+//region Purchases
+
+@Suppress("FunctionName")
+private fun Params(productId: ProductId): Map<String, String> {
+    return mapOf(
+        "sku" to productId.sku,
+        "type" to productId.type
+    )
+}
+
+fun EventLogger.logClickedOnProduct(productId: ProductId) {
+    log("clicked_on_product", Params(productId))
+}
+
+fun EventLogger.logLaunchedBillingFlow(productId: ProductId) {
+    log("launched_billing_flow", Params(productId))
+}
+
+fun EventLogger.logPurchasedProduct(productId: ProductId) {
+    log("purchased_product", Params(productId))
 }
 
 //endregion

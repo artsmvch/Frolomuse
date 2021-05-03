@@ -21,10 +21,12 @@ import com.frolo.muse.ui.main.library.songs.SongListViewModel
 import com.frolo.muse.ui.main.player.PlayerViewModel
 import com.frolo.muse.ui.main.player.current.CurrSongQueueViewModel
 import com.frolo.muse.ui.main.player.mini.MiniPlayerViewModel
+import com.frolo.muse.ui.main.settings.BillingViewModel
 import com.frolo.muse.ui.main.settings.playback.PlaybackFadingViewModel
 import com.frolo.muse.ui.main.settings.duration.MinAudioFileDurationViewModel
 import com.frolo.muse.ui.main.settings.hidden.HiddenFilesViewModel
 import com.frolo.muse.ui.main.settings.journal.PlayerJournalViewModel
+import com.frolo.muse.ui.main.settings.premium.BuyPremiumViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -145,6 +147,16 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(CurrSongQueueViewModel::class)
     abstract fun bindCurrSongQueueViewModel(viewModel: CurrSongQueueViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(BillingViewModel::class)
+    abstract fun bindBillingViewModel(viewModel: BillingViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(BuyPremiumViewModel::class)
+    abstract fun bindBuyPremiumViewModel(viewModel: BuyPremiumViewModel): ViewModel
 
     @Binds
     @IntoMap

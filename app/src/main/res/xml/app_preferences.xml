@@ -7,6 +7,11 @@
         android:title="@string/app_prefs">
 
         <Preference
+            android:key="buy_premium"
+            android:title="@string/buy_premium"
+            android:summary="@string/buy_premium_desc"/>
+
+        <Preference
             android:icon="@drawable/ic_fading"
             android:key="playback_fading"
             android:title="@string/playback_fading"
