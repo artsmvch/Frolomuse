@@ -24,13 +24,13 @@ fun buildMediaMetadata(song: Song?, art: Bitmap?): MediaMetadata {
             putLong(MediaMetadata.METADATA_KEY_TRACK_NUMBER, song.trackNumber.toLong())
             // We set the art only if the song is not null
             putBitmap(MediaMetadata.METADATA_KEY_ALBUM_ART, art)
+            putLong(MediaMetadata.METADATA_KEY_DURATION, song.duration.toLong())
         }
+    } else {
+        // Do NOT put the actual duration value in the metadata,
+        // so that the seek bar is invisible.
+        builder.putLong(MediaMetadata.METADATA_KEY_DURATION, -1L)
     }
-
-    // [!] Never put the actual duration value in the metadata,
-    // because this causes a progress bar to appear in the notification.
-    // The following line hides the progress bar in media-styled notifications.
-    builder.putLong(MediaMetadata.METADATA_KEY_DURATION, -1L)
 
     return builder.build()
 }

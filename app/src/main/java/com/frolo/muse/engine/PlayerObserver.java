@@ -88,6 +88,20 @@ public interface PlayerObserver {
     void onABChanged(@NotNull Player player, boolean aPointed, boolean bPointed);
 
     /**
+     * Called when the playback speed gets changed for the given <code>player</code>.
+     * @param player for which the playback speed is changed
+     * @param speed the new speed
+     */
+    void onPlaybackSpeedChanged(@NotNull Player player, float speed);
+
+    /**
+     * Called when the playback pitch gets changed for the given <code>player</code>.
+     * @param player for which the playback pitch is changed
+     * @param pitch the new pitch
+     */
+    void onPlaybackPitchChanged(@NotNull Player player, float pitch);
+
+    /**
      * Called when an internal error has occurred in the given <code>player</code>.
      * This is not a terminate state, it is only a notification that something went wrong.
      * @param player with an internal error

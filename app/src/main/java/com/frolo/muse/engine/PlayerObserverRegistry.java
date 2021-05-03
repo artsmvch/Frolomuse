@@ -44,7 +44,9 @@ final class PlayerObserverRegistry {
         static final int MSG_REPEAT_MODE_CHANGED = 8;
         static final int MSG_SHUTDOWN = 9;
         static final int MSG_AB_CHANGED = 10;
-        static final int MSG_INTERNAL_ERROR_OCCURRED = 11;
+        static final int MSG_SPEED_CHANGED = 11;
+        static final int MSG_PITCH_CHANGED = 12;
+        static final int MSG_INTERNAL_ERROR_OCCURRED = 13;
 
         DispatcherHandler(Looper looper) {
             super(looper);
@@ -140,6 +142,22 @@ final class PlayerObserverRegistry {
                     final boolean bPointed = msg.arg2 == 0;
                     for (PlayerObserver observer : mObservers) {
                         observer.onABChanged(getPlayer(), aPointed, bPointed);
+                    }
+                    break;
+                }
+
+                case MSG_SPEED_CHANGED: {
+                    final float speed = (Float) msg.obj;
+                    for (PlayerObserver observer : mObservers) {
+                        observer.onPlaybackSpeedChanged(getPlayer(), speed);
+                    }
+                    break;
+                }
+
+                case MSG_PITCH_CHANGED: {
+                    final float pitch = (Float) msg.obj;
+                    for (PlayerObserver observer : mObservers) {
+                        observer.onPlaybackPitchChanged(getPlayer(), pitch);
                     }
                     break;
                 }
@@ -304,6 +322,22 @@ final class PlayerObserverRegistry {
 
         final Message message =
                 mHandler.obtainMessage(DispatcherHandler.MSG_AB_CHANGED, aPointed ? 0 : 1, bPointed ? 0 : 1);
+        dispatch(message);
+    }
+
+    synchronized void dispatchSpeedChanged(float speed) {
+        mHandler.removeMessages(DispatcherHandler.MSG_SPEED_CHANGED);
+
+        final Message message =
+                mHandler.obtainMessage(DispatcherHandler.MSG_SPEED_CHANGED, Float.valueOf(speed));
+        dispatch(message);
+    }
+
+    synchronized void dispatchPitchChanged(float pitch) {
+        mHandler.removeMessages(DispatcherHandler.MSG_PITCH_CHANGED);
+
+        final Message message =
+                mHandler.obtainMessage(DispatcherHandler.MSG_PITCH_CHANGED, Float.valueOf(pitch));
         dispatch(message);
     }
 

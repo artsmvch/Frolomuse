@@ -238,6 +238,10 @@ public final class PlayerImpl implements Player {
     private volatile PlaybackFadingStrategy mPlaybackFadingStrategy;
     private volatile Timer mPlaybackFadingTimer;
 
+    // Playback Params
+    private volatile float mPlaybackSpeed = SPEED_NORMAL;
+    private volatile float mPlaybackPitch = PITCH_NORMAL;
+
     private PlayerImpl(@NotNull Context context, @NotNull AudioFxApplicable audioFx, @Nullable PlayerJournal journal) {
         mContext = context;
         mAudioFx = audioFx;
@@ -473,7 +477,21 @@ public final class PlayerImpl implements Player {
                             try {
                                 newEngine.reset();
                                 newEngine.setDataSource(currentItem.getSource());
+
+                                try {
+                                    // Setting playback params. Must be done before engine preparation,
+                                    // so that the engine does not start playing automatically.
+                                    PlaybackParams playbackParams = newEngine.getPlaybackParams();
+                                    playbackParams.setSpeed(mPlaybackSpeed);
+                                    playbackParams.setPitch(mPlaybackPitch);
+                                    newEngine.setPlaybackParams(playbackParams);
+                                } catch (IllegalStateException error) {
+                                    report(error);
+                                    mPlayerJournal.logMessage("Failed to set playback params for the new engine");
+                                }
+
                                 newEngine.prepare();
+
                                 mIsPreparedFlag = true;
                                 mAudioFx.apply(newEngine);
                                 mObserverRegistry.dispatchPrepared(newEngine.getDuration(), 0);
@@ -646,6 +664,19 @@ public final class PlayerImpl implements Player {
                             mPlayerJournal.logMessage("Set data source from path: " + path);
                             engine.setDataSource(path);
                         }
+
+                        try {
+                            // Setting playback params. Must be done before engine preparation,
+                            // so that the engine does not start playing automatically.
+                            PlaybackParams playbackParams = engine.getPlaybackParams();
+                            playbackParams.setSpeed(mPlaybackSpeed);
+                            playbackParams.setPitch(mPlaybackPitch);
+                            engine.setPlaybackParams(playbackParams);
+                        } catch (IllegalStateException error) {
+                            report(error);
+                            mPlayerJournal.logError("Failed to set playback params for the current engine", error);
+                        }
+
                         engine.prepare();
 
                         mIsPreparedFlag = true;
@@ -1650,31 +1681,15 @@ public final class PlayerImpl implements Player {
     @Override
     public float getSpeed() {
         if (isShutdown()) return SPEED_NORMAL;
-
-        synchronized (mEngineLock) {
-
-            if (!mIsPreparedFlag) return SPEED_NORMAL;
-
-            final MediaPlayer engine = mEngine;
-            // If the engine is null, then the speed is considered normal
-            if (engine == null) return SPEED_NORMAL;
-
-            mPlayerJournal.logMessage("Get speed");
-
-            try {
-                final PlaybackParams params = engine.getPlaybackParams();
-                return params != null ? params.getSpeed() : SPEED_NORMAL;
-            } catch (Throwable error) {
-                report(error);
-                mPlayerJournal.logError("Failed to get speed", error);
-                return SPEED_NORMAL;
-            }
-        }
+        return mPlaybackSpeed;
     }
 
     @Override
     public void setSpeed(float speed) {
         if (isShutdown()) return;
+
+        // Validating the speed
+        speed = MathUtil.clamp(SPEED_RANGE, speed);
 
         synchronized (mEngineLock) {
 
@@ -1686,9 +1701,21 @@ public final class PlayerImpl implements Player {
             mPlayerJournal.logMessage("Set speed: " + speed);
 
             try {
+                boolean wasPlaying = mIsPreparedFlag && engine.isPlaying();
                 final PlaybackParams params = engine.getPlaybackParams();
-                params.setSpeed(MathUtil.clamp(SPEED_RANGE, speed));
+                params.setSpeed(speed);
                 engine.setPlaybackParams(params);
+                if (!wasPlaying) {
+                    boolean isActuallyPlaying = engine.isPlaying();
+                    // As per docs, setting playback params with a non-zero speed
+                    // causes MediaPlayer to start playing. This is not what we want,
+                    // so we call the 'pause' method here.
+                    if (isActuallyPlaying) {
+                        engine.pause();
+                    }
+                }
+                mPlaybackSpeed = speed;
+                mObserverRegistry.dispatchSpeedChanged(speed);
             } catch (Throwable error) {
                 report(error);
                 mPlayerJournal.logError("Failed to set speed", error);
@@ -1699,31 +1726,15 @@ public final class PlayerImpl implements Player {
     @Override
     public float getPitch() {
         if (isShutdown()) return PITCH_NORMAL;
-
-        synchronized (mEngineLock) {
-
-            if (!mIsPreparedFlag) return PITCH_NORMAL;
-
-            final MediaPlayer engine = mEngine;
-            // If the engine is null, then the pitch is considered normal
-            if (engine == null) return PITCH_NORMAL;
-
-            mPlayerJournal.logMessage("Get pitch");
-
-            try {
-                final PlaybackParams params = engine.getPlaybackParams();
-                return params != null ? params.getPitch() : PITCH_NORMAL;
-            } catch (Throwable error) {
-                report(error);
-                mPlayerJournal.logError("Failed to get pitch", error);
-                return PITCH_NORMAL;
-            }
-        }
+        return mPlaybackPitch;
     }
 
     @Override
     public void setPitch(float pitch) {
         if (isShutdown()) return;
+
+        // Validating the pitch
+        pitch = MathUtil.clamp(PITCH_RANGE, pitch);
 
         synchronized (mEngineLock) {
 
@@ -1736,8 +1747,10 @@ public final class PlayerImpl implements Player {
 
             try {
                 final PlaybackParams params = engine.getPlaybackParams();
-                params.setPitch(MathUtil.clamp(PITCH_RANGE, pitch));
+                params.setPitch(pitch);
                 engine.setPlaybackParams(params);
+                mPlaybackPitch = pitch;
+                mObserverRegistry.dispatchPitchChanged(pitch);
             } catch (Throwable error) {
                 report(error);
                 mPlayerJournal.logError("Failed to set pitch", error);

@@ -55,6 +55,14 @@ public abstract class SimplePlayerObserver implements PlayerObserver {
     }
 
     @Override
+    public void onPlaybackSpeedChanged(@NotNull Player player, float speed) {
+    }
+
+    @Override
+    public void onPlaybackPitchChanged(@NotNull Player player, float pitch) {
+    }
+
+    @Override
     public void onInternalErrorOccurred(@NotNull Player player, @NotNull Throwable error) {
     }
 

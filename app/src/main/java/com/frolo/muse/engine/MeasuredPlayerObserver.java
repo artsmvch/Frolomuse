@@ -22,7 +22,7 @@ final class MeasuredPlayerObserver implements PlayerObserver {
 
     private static final String LOG_TAG = "MeasuredPlayerObserver";
 
-    private static final long UNACCEPTABLE_TIME = 50L;
+    private static final long UNACCEPTABLE_TIME = 100L;
     private static final long CRITICAL_TIME = 10L;
 
     @NotNull
@@ -161,6 +161,20 @@ final class MeasuredPlayerObserver implements PlayerObserver {
     public void onABChanged(@NotNull Player player, boolean aPointed, boolean bPointed) {
         final Measurement m = start("onABChanged");
         mDelegate.onABChanged(player, aPointed, bPointed);
+        end(m);
+    }
+
+    @Override
+    public void onPlaybackSpeedChanged(@NotNull Player player, float speed) {
+        final Measurement m = start("onPlaybackSpeedChanged");
+        mDelegate.onPlaybackSpeedChanged(player, speed);
+        end(m);
+    }
+
+    @Override
+    public void onPlaybackPitchChanged(@NotNull Player player, float pitch) {
+        final Measurement m = start("onPlaybackPitchChanged");
+        mDelegate.onPlaybackPitchChanged(player, pitch);
         end(m);
     }
 
