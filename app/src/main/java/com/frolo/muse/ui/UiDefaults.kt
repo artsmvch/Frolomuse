@@ -2,7 +2,13 @@
 
 package com.frolo.muse.ui
 
+import android.content.Context
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.LayerDrawable
+import android.view.Gravity
 import android.view.animation.*
+import androidx.appcompat.content.res.AppCompatResources
+import com.frolo.muse.R
 
 
 private const val LAYOUT_ANIMATION_DURATION_MEDIUM = 220L
@@ -28,4 +34,12 @@ fun ShotLayoutAnimationController(): LayoutAnimationController {
         order = LayoutAnimationController.ORDER_NORMAL
         delay = 0.2f
     }
+}
+
+fun ProBadgedDrawable(context: Context, drawable: Drawable): Drawable {
+    val badgeDrawable = AppCompatResources.getDrawable(context, R.drawable.ic_pro_badge_16)
+    val layers = arrayOf(drawable, badgeDrawable)
+    val layerDrawable = LayerDrawable(layers)
+    layerDrawable.setLayerGravity(1, Gravity.TOP or Gravity.END)
+    return layerDrawable
 }

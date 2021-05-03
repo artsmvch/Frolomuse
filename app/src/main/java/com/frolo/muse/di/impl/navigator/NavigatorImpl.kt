@@ -1,7 +1,10 @@
 package com.frolo.muse.di.impl.navigator
 
+import com.frolo.muse.FrolomuseApp
+import com.frolo.muse.billing.ProductId
 import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.model.media.*
+import com.frolo.muse.rx.subscribeSafely
 import com.frolo.muse.ui.*
 import com.frolo.muse.ui.main.MainActivity
 import com.frolo.muse.ui.main.audiofx.params.PlaybackParamsDialog
@@ -147,6 +150,14 @@ class NavigatorImpl(private val root: MainActivity) : Navigator {
     }
 
     override fun openSettings() {
+    }
+
+    override fun launchBillingFlow(productId: ProductId) {
+        FrolomuseApp.from(root)
+            .appComponent
+            .provideBillingManager()
+            .launchBillingFlow(productId)
+            .subscribeSafely()
     }
 
     override fun goBack() {

@@ -1,5 +1,6 @@
 package com.frolo.muse.navigator
 
+import com.frolo.muse.billing.ProductId
 import com.frolo.muse.model.media.*
 import java.io.File
 
@@ -122,6 +123,10 @@ class NavigatorWrapper : Navigator {
 
     override fun openSettings() {
         delegate?.openSettings()
+    }
+
+    override fun launchBillingFlow(productId: ProductId) {
+        delegate?.launchBillingFlow(productId)
     }
 
     override fun goBack() {

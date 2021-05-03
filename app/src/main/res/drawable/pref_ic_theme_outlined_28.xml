@@ -2,12 +2,14 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:viewportWidth="511"
     android:viewportHeight="511"
-    android:width="@dimen/preference_icon_size"
-    android:height="@dimen/preference_icon_size">
+    android:width="28dp"
+    android:height="28dp">
 
     <group
         android:pivotX="255.5"
-        android:pivotY="255.5">
+        android:pivotY="255.5"
+        android:scaleX="0.68"
+        android:scaleY="0.68">
 
         <path
             android:fillColor="?iconImageTint"

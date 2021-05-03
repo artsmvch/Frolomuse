@@ -3,6 +3,8 @@ package com.frolo.muse.ui.main.audiofx
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.frolo.muse.arch.*
+import com.frolo.muse.billing.BillingManager
+import com.frolo.muse.billing.ProductId
 import com.frolo.muse.engine.*
 import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.logger.EventLogger
@@ -15,6 +17,7 @@ import com.frolo.muse.model.preset.VoidPreset
 import com.frolo.muse.model.reverb.Reverb
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.repository.PresetRepository
+import com.frolo.muse.repository.RemoteConfigRepository
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.base.BaseViewModel
 import io.reactivex.processors.PublishProcessor
@@ -22,18 +25,49 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 
-// TODO: check on which schedulers are all rx sources subscribed in here
 class AudioFxViewModel @Inject constructor(
     private val player: Player,
     private val audioFx: AudioFx,
     private val schedulerProvider: SchedulerProvider,
-    private val repository: PresetRepository,
+    private val presetRepository: PresetRepository,
+    private val remoteConfigRepository: RemoteConfigRepository,
     private val preferences: Preferences,
     private val navigator: Navigator,
+    private val billingManager: BillingManager,
     private val eventLogger: EventLogger
 ): BaseViewModel(eventLogger) {
 
-    private val voidPreset = repository.voidPreset.blockingGet()
+    val isPurchaseFeatureEnabled: LiveData<Boolean> by lazy {
+        MutableLiveData<Boolean>().apply {
+            remoteConfigRepository.isPurchaseFeatureEnabled()
+                .observeOn(schedulerProvider.main())
+                .subscribeFor { isPurchased ->
+                    value = isPurchased
+                }
+        }
+    }
+
+    val isPremiumPurchased: LiveData<Boolean> by lazy {
+        MutableLiveData<Boolean>().apply {
+            billingManager.isProductPurchased(productId = ProductId.PREMIUM, forceCheckFromApi = true)
+                .observeOn(schedulerProvider.main())
+                .subscribeFor { isPurchased ->
+                    value = isPurchased
+                }
+        }
+    }
+
+    val isPlaybackParamsProBadged: LiveData<Boolean> =
+        combine(isPurchaseFeatureEnabled, isPremiumPurchased) { isPurchaseFeatureEnabled, isPremiumPurchased ->
+            isPurchaseFeatureEnabled == true && isPremiumPurchased != true
+        }
+
+    val isPlaybackParamsFeatureAvailable: LiveData<Boolean?> =
+        combine(isPurchaseFeatureEnabled, isPremiumPurchased) { isPurchaseFeatureEnabled, isPremiumPurchased ->
+            (isPurchaseFeatureEnabled == null || !isPurchaseFeatureEnabled) || (isPremiumPurchased == null || isPremiumPurchased)
+        }
+
+    private val voidPreset = presetRepository.voidPreset.blockingGet()
 
     private val bassBoostPublisher: PublishProcessor<Short> by lazy {
         PublishProcessor.create<Short>().also { publisher ->
@@ -183,7 +217,7 @@ class AudioFxViewModel @Inject constructor(
     }
 
     private fun loadPresets() {
-        repository.presets
+        presetRepository.presets
             .subscribeOn(schedulerProvider.worker())
             .observeOn(schedulerProvider.computation())
             .map { customPresets ->
@@ -233,7 +267,7 @@ class AudioFxViewModel @Inject constructor(
     }
 
     fun onDeletePresetClicked(preset: CustomPreset) {
-        repository.delete(preset)
+        presetRepository.delete(preset)
             .subscribeOn(schedulerProvider.worker())
             .observeOn(schedulerProvider.main())
             .doOnComplete { eventLogger.logCustomPresetDeleted() }
@@ -267,7 +301,14 @@ class AudioFxViewModel @Inject constructor(
     }
 
     fun onPlaybackParamsOptionSelected() {
-        navigator.openPlaybackParams()
+        val canOpenPlaybackParams = isPlaybackParamsFeatureAvailable.value.let { available ->
+            available == null || available
+        }
+        if (canOpenPlaybackParams) {
+            navigator.openPlaybackParams()
+        } else {
+            navigator.launchBillingFlow(ProductId.PREMIUM)
+        }
     }
 
     fun onSavePresetButtonClicked(currentBandLevels: ShortArray) {

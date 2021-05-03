@@ -24,10 +24,7 @@ class BenefitAdapter(private val benefits: List<Benefit>) : RecyclerView.Adapter
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
         fun bind(benefit: Benefit) = with(itemView) {
-            when (benefit.icon) {
-                Benefit.Icon.CHECK -> imv_benefit_icon.setImageResource(R.drawable.ic_premium_check)
-                Benefit.Icon.LOVE -> imv_benefit_icon.setImageResource(R.drawable.ic_filled_heart)
-            }
+            imv_benefit_icon.setImageResource(benefit.iconId)
             tv_benefit_text.text = benefit.text
         }
 

@@ -1,5 +1,6 @@
 package com.frolo.muse.navigator
 
+import com.frolo.muse.billing.ProductId
 import com.frolo.muse.model.media.*
 import java.io.File
 
@@ -58,6 +59,8 @@ interface Navigator {
     fun savePreset(bandLevels: ShortArray)
 
     fun openSettings()
+
+    fun launchBillingFlow(productId: ProductId)
 
     fun goBack()
 }

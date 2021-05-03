@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProviders
@@ -19,15 +20,14 @@ import com.frolo.muse.BuildConfig
 import com.frolo.muse.Features
 import com.frolo.muse.R
 import com.frolo.muse.arch.observe
+import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.logger.*
 import com.frolo.muse.mediascan.MediaScanService
 import com.frolo.muse.model.Theme
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.sleeptimer.PlayerSleepTimer
-import com.frolo.muse.ui.ThemeHandler
+import com.frolo.muse.ui.*
 import com.frolo.muse.ui.base.NoClipping
-import com.frolo.muse.ui.goToStore
-import com.frolo.muse.ui.helpWithTranslations
 import com.frolo.muse.ui.main.settings.premium.BuyPremiumDialog
 import com.frolo.muse.ui.main.settings.journal.PlayerJournalDialog
 import com.frolo.muse.ui.main.settings.playback.PlaybackFadingDialog
@@ -37,7 +37,6 @@ import com.frolo.muse.ui.main.settings.info.AppInfoDialog
 import com.frolo.muse.ui.main.settings.library.LibrarySectionsDialog
 import com.frolo.muse.ui.main.settings.libs.LicensesDialog
 import com.frolo.muse.ui.main.settings.sleeptimer.SleepTimerDialog
-import com.frolo.muse.ui.shareApp
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 
@@ -59,6 +58,8 @@ class SettingsFragment : PreferenceFragmentCompat(),
     }
 
     private val buyPremiumPreference: Preference? get() = findPreference("buy_premium")
+
+    private val playbackFadingPreference: Preference? get() = findPreference("playback_fading")
 
     private val billingViewModel: BillingViewModel by lazy {
         val appComponent = requireContext().let { context ->
@@ -99,7 +100,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
             }
         }
 
-        findPreference("playback_fading").apply {
+        playbackFadingPreference?.apply {
             onPreferenceClickListener = Preference.OnPreferenceClickListener {
                 showPlaybackFadingDialog()
                 true
@@ -230,6 +231,13 @@ class SettingsFragment : PreferenceFragmentCompat(),
             buyPremiumPreference?.isVisible = visible == true
         }
 
+        isPlaybackFadingProBadged.observeNonNull(owner) { isBadged ->
+            val context = requireContext()
+            playbackFadingPreference?.icon = AppCompatResources.getDrawable(context, R.drawable.pref_ic_fading_outline_28)?.let { drawable ->
+                if (isBadged) ProBadgedDrawable(context, drawable) else drawable
+            }
+        }
+
         showPremiumBenefitsEvent.observe(owner) {
             showPremiumBenefitsDialog()
         }
@@ -351,7 +359,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
 
         val currentTheme: Theme? = preferences.theme
 
-        val icon = ContextCompat.getDrawable(activity, R.drawable.ic_theme)
+        val icon = ContextCompat.getDrawable(activity, R.drawable.pref_ic_theme_outlined_28)
 
         // The order is really important
         val themeNames = arrayOf(

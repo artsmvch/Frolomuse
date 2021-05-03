@@ -1,5 +1,6 @@
 package com.frolo.muse.di
 
+import com.frolo.muse.billing.BillingManager
 import com.frolo.muse.di.modules.*
 import com.frolo.muse.engine.PlayerJournal
 import com.frolo.muse.engine.service.PlayerService
@@ -97,4 +98,7 @@ interface AppComponent {
 
     // ViewModel factory creators
     fun providePosterVMFactoryCreator(): PosterVMFactory.Creator
+
+    // Billing
+    fun provideBillingManager(): BillingManager
 }

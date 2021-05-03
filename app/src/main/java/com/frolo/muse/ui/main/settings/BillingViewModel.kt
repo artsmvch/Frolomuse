@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.frolo.muse.FrolomuseApp
 import com.frolo.muse.arch.SingleLiveEvent
 import com.frolo.muse.arch.call
+import com.frolo.muse.arch.combine
 import com.frolo.muse.arch.combineMultiple
 import com.frolo.muse.billing.*
 import com.frolo.muse.interactor.feature.FeaturesUseCase
@@ -48,6 +49,11 @@ class BillingViewModel @Inject constructor(
             val isFeatureEnabled = booleans[0] ?: false
             val isPurchased = booleans[1]
             isFeatureEnabled && (isPurchased != null && !isPurchased)
+        }
+
+    val isPlaybackFadingProBadged: LiveData<Boolean> =
+        combine(isPurchaseFeatureEnabled, isPremiumPurchased) { isPurchaseFeatureEnabled, isPremiumPurchased ->
+            isPurchaseFeatureEnabled == true && isPremiumPurchased != true
         }
 
     private val _showPremiumBenefitsEvent = SingleLiveEvent<Unit>()

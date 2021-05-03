@@ -5,7 +5,6 @@
         android:id="@+id/action_playback_params"
         android:title="@string/playback_params"
         android:icon="@drawable/ic_speedometer"
-        app:iconTint="?colorOnPrimary"
         app:showAsAction="ifRoom"/>
 
     <item

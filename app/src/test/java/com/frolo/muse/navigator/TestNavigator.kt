@@ -1,5 +1,6 @@
 package com.frolo.muse.navigator
 
+import com.frolo.muse.billing.ProductId
 import com.frolo.muse.model.media.*
 import java.io.File
 
@@ -32,5 +33,6 @@ class TestNavigator : Navigator {
     override fun openPlaybackParams() = Unit
     override fun savePreset(bandLevels: ShortArray) = Unit
     override fun openSettings() = Unit
+    override fun launchBillingFlow(productId: ProductId) = Unit
     override fun goBack() = Unit
 }
