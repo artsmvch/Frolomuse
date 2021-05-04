@@ -6,6 +6,7 @@ import android.os.Bundle
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.logAppLaunched
 import com.frolo.muse.repository.Preferences
+import java.util.concurrent.atomic.AtomicReference
 
 
 class FrolomuseActivityWatcher(
@@ -15,8 +16,14 @@ class FrolomuseActivityWatcher(
 
     private var activityResumeCount: Int = 0
 
-    var foregroundActivity: Activity? = null
-        private set
+    private val foregroundActivityRef = AtomicReference<Activity>(null)
+
+    /**
+     * Returns activity that is currently in the foreground. If the app is not in the foreground,
+     * then null is returned.
+     * NOTE: this getter is thread-safe.
+     */
+    val foregroundActivity: Activity? get() = foregroundActivityRef.get()
 
     override fun onActivityCreated(activity: Activity, bundle: Bundle?) {
         Logger.d(LOG_TAG, "On activity created: $activity")
@@ -33,14 +40,12 @@ class FrolomuseActivityWatcher(
             noteAppLaunch()
         }
         activityResumeCount++
-        foregroundActivity = activity
+        foregroundActivityRef.set(activity)
     }
 
     override fun onActivityPaused(activity: Activity) {
         Logger.d(LOG_TAG, "On activity paused: $activity")
-        if (foregroundActivity === activity) {
-            foregroundActivity = null
-        }
+        foregroundActivityRef.compareAndSet(activity, null)
     }
 
     override fun onActivityStopped(activity: Activity) {
