@@ -269,6 +269,7 @@
     <string name="playback_params">Playback Params</string>
     <string name="speed">Speed</string>
     <string name="pitch">Pitch</string>
+    <string name="reset_playback_params_when_switching_song">Reset settings when switching songs</string>
     <string name="normalize">Normalize</string>
 
     <!--media file editor-->

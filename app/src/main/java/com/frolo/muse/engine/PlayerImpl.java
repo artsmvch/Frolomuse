@@ -36,7 +36,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * Events are dispatched on the main thread using {@link PlayerObserverRegistry}.
  * The implementation uses {@link MediaPlayer} as the engine and uses {@link AudioFxApplicable} as the AudioFx.
  */
-public final class PlayerImpl implements Player {
+public final class PlayerImpl implements Player, AdvancedPlaybackParams {
 
     private static final boolean DEBUG = BuildConfig.DEBUG;
 
@@ -239,7 +239,9 @@ public final class PlayerImpl implements Player {
     private volatile Timer mPlaybackFadingTimer;
 
     // Playback Params
+    private volatile boolean mIsPlaybackSpeedPersisted = false;
     private volatile float mPlaybackSpeed = SPEED_NORMAL;
+    private volatile boolean mIsPlaybackPitchPersisted = false;
     private volatile float mPlaybackPitch = PITCH_NORMAL;
 
     private PlayerImpl(@NotNull Context context, @NotNull AudioFxApplicable audioFx, @Nullable PlayerJournal journal) {
@@ -613,6 +615,15 @@ public final class PlayerImpl implements Player {
 
                 // The current audio source is changed => gotta reset A-B
                 mABEngine.reset();
+
+                // Reset the speed if it should not be persisted
+                if (!mIsPlaybackSpeedPersisted) {
+                    mPlaybackSpeed = SPEED_NORMAL;
+                }
+                // Reset the pitch if it should not be persisted
+                if (!mIsPlaybackPitchPersisted) {
+                    mPlaybackPitch = PITCH_NORMAL;
+                }
 
                 mObserverRegistry.dispatchAudioSourceChanged(item, mCurrentPositionInQueue);
 
@@ -1679,6 +1690,16 @@ public final class PlayerImpl implements Player {
     }
 
     @Override
+    public boolean isSpeedPersisted() {
+        return mIsPlaybackSpeedPersisted;
+    }
+
+    @Override
+    public void setSpeedPersisted(boolean isPersisted) {
+        mIsPlaybackSpeedPersisted = isPersisted;
+    }
+
+    @Override
     public float getSpeed() {
         if (isShutdown()) return SPEED_NORMAL;
         return mPlaybackSpeed;
@@ -1721,6 +1742,16 @@ public final class PlayerImpl implements Player {
                 mPlayerJournal.logError("Failed to set speed", error);
             }
         }
+    }
+
+    @Override
+    public boolean isPitchPersisted() {
+        return mIsPlaybackPitchPersisted;
+    }
+
+    @Override
+    public void setPitchPersisted(boolean isPersisted) {
+        mIsPlaybackPitchPersisted = isPersisted;
     }
 
     @Override

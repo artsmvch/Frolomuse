@@ -5,7 +5,9 @@ import android.os.Build
 import android.os.Bundle
 import android.view.ViewGroup
 import android.view.Window
+import android.widget.CompoundButton
 import androidx.annotation.RequiresApi
+import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import com.frolo.muse.R
 import com.frolo.muse.arch.observeNonNull
@@ -18,6 +20,10 @@ import kotlinx.android.synthetic.main.dialog_playback_params.*
 class PlaybackParamsDialog : BaseDialogFragment() {
 
     private val viewModel: PlaybackParamsViewModel by viewModel()
+
+    private val doNotPersistCheckedChangeListener = CompoundButton.OnCheckedChangeListener { _, isChecked ->
+        viewModel.onDoNotPersistPlaybackParamsToggled(isChecked)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +61,8 @@ class PlaybackParamsDialog : BaseDialogFragment() {
             }
         }
 
+        chb_do_not_persist.setOnCheckedChangeListener(doNotPersistCheckedChangeListener)
+
         btn_cancel.setOnClickListener {
             dismiss()
         }
@@ -67,6 +75,20 @@ class PlaybackParamsDialog : BaseDialogFragment() {
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
         error.observeNonNull(owner) { err ->
             postError(err)
+        }
+
+        isPersistenceAvailable.observeNonNull(owner) { isAvailable ->
+            dialog?.apply {
+                chb_do_not_persist.isVisible = isAvailable
+            }
+        }
+
+        doNotPersistPlaybackParams.observeNonNull(owner) { doNotPersist ->
+            dialog?.apply {
+                chb_do_not_persist.setOnCheckedChangeListener(null)
+                chb_do_not_persist.isChecked = doNotPersist
+                chb_do_not_persist.setOnCheckedChangeListener(doNotPersistCheckedChangeListener)
+            }
         }
 
         speed.observeNonNull(owner) { speed ->

@@ -19,6 +19,8 @@ class PlayerWrapper : Player {
     private val delegateRef = AtomicReference<Player>()
     private val delegate: Player? get() = delegateRef.get()
 
+    val wrapped: Player? get() = delegate
+
     fun attachBase(player: Player) {
         delegateRef.set(player)
     }

@@ -4,7 +4,11 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.frolo.muse.arch.liveDataOf
+import com.frolo.muse.arch.map
+import com.frolo.muse.engine.AdvancedPlaybackParams
 import com.frolo.muse.engine.Player
+import com.frolo.muse.engine.PlayerWrapper
 import com.frolo.muse.engine.SimplePlayerObserver
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.rx.SchedulerProvider
@@ -17,16 +21,33 @@ import javax.inject.Inject
 
 @RequiresApi(Build.VERSION_CODES.M)
 class PlaybackParamsViewModel @Inject constructor(
-        private val player: Player,
-        private val schedulerProvider: SchedulerProvider,
-        private val eventLogger: EventLogger
+    private val player: Player,
+    private val schedulerProvider: SchedulerProvider,
+    private val eventLogger: EventLogger
 ): BaseViewModel(eventLogger) {
 
+    private val advancedPlaybackParams: AdvancedPlaybackParams? = lookupAdvancedPlaybackParams(player)
+
+    val isPersistenceAvailable: LiveData<Boolean> = liveDataOf(advancedPlaybackParams != null)
+
+    private val _isPersisted = MutableLiveData<Boolean>().apply {
+        value = if (advancedPlaybackParams != null) {
+            // We count it persisted only if both speed and pitch are persisted
+            advancedPlaybackParams.isSpeedPersisted()
+                    && advancedPlaybackParams.isPitchPersisted()
+        } else {
+            false
+        }
+    }
+    val doNotPersistPlaybackParams: LiveData<Boolean> = _isPersisted.map(true) { isPersisted ->
+        isPersisted != true
+    }
+
     private val _speed: MutableLiveData<Float> = MutableLiveData()
-    val speed: LiveData<Float> = _speed
+    val speed: LiveData<Float> get() = _speed
 
     private val _pitch: MutableLiveData<Float> = MutableLiveData()
-    val pitch: LiveData<Float> = _pitch
+    val pitch: LiveData<Float> get() = _pitch
 
     private val speedPublisher: PublishProcessor<Float> by lazy {
         PublishProcessor.create<Float>().also { publisher ->
@@ -65,6 +86,15 @@ class PlaybackParamsViewModel @Inject constructor(
         _pitch.value = player.getPitch()
     }
 
+    fun onDoNotPersistPlaybackParamsToggled(isChecked: Boolean) {
+        val isPersisted: Boolean = !isChecked
+        _isPersisted.value = isPersisted
+        advancedPlaybackParams?.apply {
+            setSpeedPersisted(isPersisted)
+            setPitchPersisted(isPersisted)
+        }
+    }
+
     fun onSeekSpeed(speed: Float) {
         speedPublisher.onNext(speed)
     }
@@ -88,6 +118,21 @@ class PlaybackParamsViewModel @Inject constructor(
     override fun onCleared() {
         super.onCleared()
         player.unregisterObserver(playerObserver)
+    }
+
+    companion object {
+
+        private fun lookupAdvancedPlaybackParams(player: Player): AdvancedPlaybackParams? {
+            var wrappedPlayer: Player? = player
+            do {
+                if (wrappedPlayer is AdvancedPlaybackParams) {
+                    return wrappedPlayer
+                }
+                wrappedPlayer = (wrappedPlayer as? PlayerWrapper)?.wrapped
+            } while (wrappedPlayer != null)
+            return null
+        }
+
     }
 
 }
