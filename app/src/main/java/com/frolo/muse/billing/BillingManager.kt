@@ -94,7 +94,10 @@ class BillingManager(private val frolomuseApp: FrolomuseApp) {
 
         prepareBillingClient()
 
-        return preparedBillingClientProcessor.firstOrError().map { it.value }
+        return preparedBillingClientProcessor
+            .filter { it.isPresent }
+            .firstOrError()
+            .map { it.value }
     }
 
     /**

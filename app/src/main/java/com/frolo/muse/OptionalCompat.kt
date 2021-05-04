@@ -2,6 +2,8 @@ package com.frolo.muse
 
 
 data class OptionalCompat<T>(val value: T?) {
+
+    val isPresent: Boolean get() = value != null
     
     inline fun unwrap(action: (T) -> Unit) {
         value?.also(action)
