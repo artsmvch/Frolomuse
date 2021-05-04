@@ -66,8 +66,10 @@ class BillingManager(private val frolomuseApp: FrolomuseApp) {
             return
         }
 
+        Logger.d(LOG_TAG, "Starting billing client connection")
         client.startConnection(object : BillingClientStateListener {
             override fun onBillingSetupFinished(result: BillingResult) {
+                Logger.d(LOG_TAG, "Billing setup finished: result=$result")
                 if (result.responseCode == BillingClient.BillingResponseCode.OK) {
                     preparedBillingClientProcessor.onNext(OptionalCompat.of(client))
                 } else {
@@ -77,6 +79,7 @@ class BillingManager(private val frolomuseApp: FrolomuseApp) {
             }
 
             override fun onBillingServiceDisconnected() {
+                Logger.d(LOG_TAG, "Billing service disconnected")
                 preparedBillingClientProcessor.onNext(OptionalCompat.empty())
                 isPreparingBillingClient.set(false)
             }
@@ -175,13 +178,15 @@ class BillingManager(private val frolomuseApp: FrolomuseApp) {
         return localPurchaseDetails.observeOn(mainThreadScheduler).switchMapSingle { optionalDetailsJson ->
 
             if (optionalDetailsJson.isPresent && (checkedFromApiRef.get() || !forceCheckFromApi)) {
+                val json = optionalDetailsJson.get()
                 try {
-                    val details = PurchaseDetails.deserializeFromJson(optionalDetailsJson.get())
+                    val details = PurchaseDetails.deserializeFromJson(json)
                     val isPurchased = (details.state == Purchase.PurchaseState.PURCHASED)
-                    Logger.d(LOG_TAG, "The local purchase state of ${productId.sku} is present: ${details.state}")
+                    Logger.d(LOG_TAG, "The local purchase details of ${productId.sku} is present: $details")
                     // The local state is present and we're not forced to check it from the API
                     return@switchMapSingle Single.just(isPurchased)
-                } catch (ignored: Throwable) {
+                } catch (err: Throwable) {
+                    Logger.e(LOG_TAG, "Failed to deserialize purchase details: json=$json", err)
                 }
             }
 
