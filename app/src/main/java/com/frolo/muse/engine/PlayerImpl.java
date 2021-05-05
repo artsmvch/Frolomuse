@@ -666,14 +666,20 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
 
                     try {
                         engine.reset();
-                        if (item instanceof MediaStoreRow) {
-                            Uri uri = ((MediaStoreRow) item).getUri();
-                            mPlayerJournal.logMessage("Set data source from uri: " + uri.toString());
-                            engine.setDataSource(mContext, uri);
-                        } else {
-                            String path = item.getSource();
-                            mPlayerJournal.logMessage("Set data source from path: " + path);
-                            engine.setDataSource(path);
+                        try {
+                            // First, try to set the data source by the filepath
+                            String filepath = item.getSource();
+                            mPlayerJournal.logMessage("Set data source from path: " + filepath);
+                            engine.setDataSource(filepath);
+                        } catch (Throwable error) {
+                            // If failed, try to set the data source by the uri
+                            if (item instanceof MediaStoreRow) {
+                                Uri uri = ((MediaStoreRow) item).getUri();
+                                mPlayerJournal.logMessage("Set data source from uri: " + uri.toString());
+                                engine.setDataSource(mContext, uri);
+                            } else {
+                                throw error;
+                            }
                         }
 
                         try {
