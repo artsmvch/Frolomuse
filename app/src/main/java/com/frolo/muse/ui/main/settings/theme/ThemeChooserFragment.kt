@@ -30,6 +30,8 @@ class ThemeChooserFragment : BaseFragment(), NoClipping, ThemePageFragment.Theme
         }
     }
 
+    private var pendingRestoredPosition: Int? = null
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -43,6 +45,7 @@ class ThemeChooserFragment : BaseFragment(), NoClipping, ThemePageFragment.Theme
             ThemePageCarouselHelper.setup(this)
             adapter = ThemePageAdapter(this@ThemeChooserFragment)
             registerOnPageChangeCallback(themePageCallback)
+            requestTransform()
         }
     }
 
@@ -54,8 +57,7 @@ class ThemeChooserFragment : BaseFragment(), NoClipping, ThemePageFragment.Theme
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
         if (savedInstanceState != null && savedInstanceState.containsKey(STATE_PAGE_INDEX)) {
-            val pageIndex = savedInstanceState.getInt(STATE_PAGE_INDEX, 0)
-            //vp_themes.setCurrentItem(pageIndex, false)
+            pendingRestoredPosition = savedInstanceState.getInt(STATE_PAGE_INDEX, 0)
         }
     }
 
@@ -89,6 +91,10 @@ class ThemeChooserFragment : BaseFragment(), NoClipping, ThemePageFragment.Theme
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
         themeItems.observe(owner) { items ->
             (vp_themes.adapter as? ThemePageAdapter)?.pages = items.orEmpty()
+            pendingRestoredPosition?.also { targetPosition ->
+                pendingRestoredPosition = null
+                vp_themes.setCurrentItem(targetPosition, false)
+            }
         }
 
         applyThemeEvent.observeNonNull(owner) { theme ->

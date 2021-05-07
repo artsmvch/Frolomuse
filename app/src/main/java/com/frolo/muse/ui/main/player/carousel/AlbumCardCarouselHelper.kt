@@ -2,9 +2,9 @@ package com.frolo.muse.ui.main.player.carousel
 
 import android.view.View
 import android.view.ViewTreeObserver
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.frolo.muse.dp2px
+import com.frolo.muse.views.viewpager.setOverScrollModeCompat
 import kotlinx.android.synthetic.main.include_square_album_art.view.*
 import kotlin.math.abs
 import kotlin.math.min
@@ -67,9 +67,8 @@ class AlbumCardCarouselHelper private constructor(
             with(target) {
                 clipToPadding = false
                 clipChildren = false
-                overScrollMode = androidx.viewpager2.widget.ViewPager2.OVER_SCROLL_NEVER
                 offscreenPageLimit = 1
-                (getChildAt(0) as? RecyclerView)?.overScrollMode = RecyclerView.OVER_SCROLL_NEVER
+                setOverScrollModeCompat(ViewPager2.OVER_SCROLL_NEVER)
             }
 
             val layoutListener = AlbumCardCarouselHelper(target)

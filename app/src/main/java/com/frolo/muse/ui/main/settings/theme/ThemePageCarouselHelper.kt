@@ -3,11 +3,11 @@ package com.frolo.muse.ui.main.settings.theme
 import android.view.View
 import android.view.ViewTreeObserver
 import androidx.core.view.updatePadding
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import com.frolo.muse.android.activityManager
+import com.frolo.muse.views.viewpager.setOverScrollModeCompat
 import kotlin.math.abs
 import kotlin.math.min
 
@@ -59,9 +59,8 @@ class ThemePageCarouselHelper private constructor(
             with(target) {
                 clipToPadding = false
                 clipChildren = false
-                overScrollMode = ViewPager2.OVER_SCROLL_NEVER
                 offscreenPageLimit = maxOffscreenPageLimit
-                (getChildAt(0) as? RecyclerView)?.overScrollMode = RecyclerView.OVER_SCROLL_NEVER
+                setOverScrollModeCompat(ViewPager2.OVER_SCROLL_NEVER)
             }
 
             val layoutListener = ThemePageCarouselHelper(target)
