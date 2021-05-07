@@ -21,6 +21,7 @@ import com.frolo.muse.ui.main.library.playlists.playlist.PlaylistFragment
 import com.frolo.muse.ui.main.library.playlists.playlist.addsong.AddSongToPlaylistDialog
 import com.frolo.muse.ui.main.player.lyrics.LyricsDialogFragment
 import com.frolo.muse.ui.main.player.poster.PosterDialog
+import com.frolo.muse.ui.main.settings.theme.ThemeChooserFragment
 import java.io.File
 
 
@@ -150,6 +151,11 @@ class NavigatorImpl(private val root: MainActivity) : Navigator {
     }
 
     override fun openSettings() {
+    }
+
+    override fun openThemeChooser() {
+        val fragment = ThemeChooserFragment.newInstance()
+        root.pushFragment(fragment)
     }
 
     override fun launchBillingFlow(productId: ProductId) {

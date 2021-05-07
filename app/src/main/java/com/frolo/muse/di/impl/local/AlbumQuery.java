@@ -15,8 +15,10 @@ import java.util.List;
 
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
+import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 
 final class AlbumQuery {
@@ -160,6 +162,39 @@ final class AlbumQuery {
                 itemId,
                 BUILDER
         );
+    }
+
+    /*package*/ static Flowable<Album> querySingleForPreview(ContentResolver resolver) {
+        return queryAll(resolver).observeOn(Schedulers.computation()).map(new Function<List<Album>, Album>() {
+            @Override
+            public Album apply(@NonNull List<Album> albums) throws Exception {
+                int minNumOfSongs = 5;
+                int maxNumOfSongs = 10;
+                Album candidate = null;
+                int index = 0;
+                do {
+                    Album album = albums.get(index);
+                    if (candidate != null) {
+                        int currNumOfSongs = candidate.getNumberOfSongs();
+                        int nextNumOfSongs = album.getNumberOfSongs();
+                        if (currNumOfSongs < minNumOfSongs && nextNumOfSongs >= minNumOfSongs) {
+                            candidate = album;
+                        } else if (currNumOfSongs > maxNumOfSongs
+                                && nextNumOfSongs >= minNumOfSongs && nextNumOfSongs <= maxNumOfSongs) {
+                            candidate = album;
+                        }
+                    } else {
+                        candidate = album;
+                    }
+                    int numberOfSongs = candidate.getNumberOfSongs();
+                    if (numberOfSongs >= minNumOfSongs && numberOfSongs <= maxNumOfSongs) {
+                        // We found it! The perfect album for the preview
+                        return candidate;
+                    }
+                } while (index < albums.size());
+                return candidate;
+            }
+        });
     }
 
     /*package*/ static Flowable<List<Album>> queryForArtist(

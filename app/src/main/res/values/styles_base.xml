@@ -262,4 +262,12 @@
     <style name="Base.AppTheme.ShapeAppearance.AlbumArt" parent="ShapeAppearance.MaterialComponents.MediumComponent">
         <item name="cornerSize">16dp</item>
     </style>
+
+    <style name="Base.AppTheme.ShapeableImageView.ThemeArt" parent="">
+        <item name="shapeAppearance">@style/Base.AppTheme.ShapeAppearance.ThemeArt</item>
+    </style>
+
+    <style name="Base.AppTheme.ShapeAppearance.ThemeArt" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+        <item name="cornerSize">8dp</item>
+    </style>
 </resources>

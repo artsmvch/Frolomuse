@@ -1,12 +1,15 @@
 package com.frolo.muse.android
 
+import android.app.ActivityManager
 import android.app.NotificationManager
 import android.content.ClipboardManager
 import android.content.Context
+import android.hardware.display.DisplayManager
 import android.os.Build
 import android.view.Display
 import android.view.WindowManager
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.hardware.display.DisplayManagerCompat
 
 
 val Context.windowManager: WindowManager?
@@ -36,4 +39,19 @@ val Context.displayCompat: Display?
         } else {
             windowManager?.defaultDisplay
         }
+    }
+
+val Context.displayManager: DisplayManager?
+    get() {
+        return getSystemService(Context.DISPLAY_SERVICE) as? DisplayManager
+    }
+
+val Context.displayManagerCompat: DisplayManagerCompat?
+    get() {
+        return DisplayManagerCompat.getInstance(this)
+    }
+
+val Context.activityManager: ActivityManager?
+    get() {
+        return getSystemService(Context.ACTIVITY_SERVICE) as? ActivityManager
     }

@@ -45,7 +45,7 @@ abstract public class PlayerHostActivity
         super.onCreate(savedInstanceState);
 
         mHandler = new Handler(getMainLooper());
-        mHandler.post(mCheckPlayerHolderTask);
+        checkPlayerHolder();
     }
 
     @Override

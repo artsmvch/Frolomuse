@@ -192,6 +192,10 @@
     <string name="licenses">Licenses</string>
 
     <string name="choose_theme">Choose Theme</string>
+    <string name="page_s_of_s">%d of %d</string>
+    <string name="apply_theme">Apply Theme</string>
+    <string name="applied">Applied</string>
+    <string name="fancy_theme">Fancy theme</string>
     <string name="light_blue_theme">Light blue theme</string>
     <string name="light_pink_theme">Light pink theme</string>
     <string name="dark_blue_theme">Dark blue theme</string>

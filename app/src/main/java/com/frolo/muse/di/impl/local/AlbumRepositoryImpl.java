@@ -56,6 +56,11 @@ public class AlbumRepositoryImpl extends BaseMediaRepository<Album> implements A
     }
 
     @Override
+    public Flowable<Album> getItemForPreview() {
+        return AlbumQuery.querySingleForPreview(getContext().getContentResolver());
+    }
+
+    @Override
     public Flowable<List<Album>> getFilteredItems(final String filter) {
         return AlbumQuery.queryAllFiltered(getContext().getContentResolver(), filter);
     }

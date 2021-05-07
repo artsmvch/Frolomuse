@@ -7,7 +7,6 @@ import java.util.List;
 
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
-import io.reactivex.Single;
 
 public interface AlbumRepository extends MediaRepository<Album> {
 
@@ -19,6 +18,12 @@ public interface AlbumRepository extends MediaRepository<Album> {
      * @return albums
      */
     Flowable<List<Album>> getAllItems(String sortOrder, int minSongDuration);
+
+    /**
+     * Returns an item for preview (for example, theme preview).
+     * @return item for preview
+     */
+    Flowable<Album> getItemForPreview();
 
     /**
      * Retrieves albums for the given artist

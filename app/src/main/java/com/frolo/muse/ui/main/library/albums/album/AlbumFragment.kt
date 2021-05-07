@@ -32,7 +32,7 @@ import kotlin.math.abs
 import kotlin.math.pow
 
 
-class AlbumFragment: AbsSongCollectionFragment<Song>(), NoClipping {
+open class AlbumFragment: AbsSongCollectionFragment<Song>(), NoClipping {
 
     private val onOffsetChangedListener: AppBarLayout.OnOffsetChangedListener =
         AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
@@ -194,7 +194,8 @@ class AlbumFragment: AbsSongCollectionFragment<Song>(), NoClipping {
 
     companion object {
 
-        private const val ARG_ALBUM = "album"
+        // Required argument
+        const val ARG_ALBUM = "album"
 
         // Factory
         fun newInstance(album: Album) = AlbumFragment()

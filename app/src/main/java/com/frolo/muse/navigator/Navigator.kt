@@ -60,6 +60,8 @@ interface Navigator {
 
     fun openSettings()
 
+    fun openThemeChooser()
+
     fun launchBillingFlow(productId: ProductId)
 
     fun goBack()

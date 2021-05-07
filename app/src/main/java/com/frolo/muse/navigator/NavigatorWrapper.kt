@@ -125,6 +125,10 @@ class NavigatorWrapper : Navigator {
         delegate?.openSettings()
     }
 
+    override fun openThemeChooser() {
+        delegate?.openThemeChooser()
+    }
+
     override fun launchBillingFlow(productId: ProductId) {
         delegate?.launchBillingFlow(productId)
     }

@@ -129,7 +129,7 @@ class MainActivity : PlayerHostActivity(),
     private var notHandledIntent: Intent? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(null)
+        super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
 
@@ -150,7 +150,7 @@ class MainActivity : PlayerHostActivity(),
 
         observeScanStatus()
 
-        maybeInitializeFragments(player, lastSavedInstanceState)
+        maybeInitializeFragments(player, savedInstanceState)
 
         // TODO: need to postpone the handling of the intent cause fragments may not be initialized
         handleIntent(intent)

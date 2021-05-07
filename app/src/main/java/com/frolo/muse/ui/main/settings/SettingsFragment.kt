@@ -24,6 +24,7 @@ import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.logger.*
 import com.frolo.muse.mediascan.MediaScanService
 import com.frolo.muse.model.Theme
+import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.sleeptimer.PlayerSleepTimer
 import com.frolo.muse.ui.*
@@ -46,15 +47,21 @@ class SettingsFragment : PreferenceFragmentCompat(),
         NoClipping {
 
     private val preferences: Preferences by lazy {
-        (requireContext().applicationContext as FrolomuseApp)
-                .appComponent
-                .providePreferences()
+        FrolomuseApp.from(requireContext())
+            .appComponent
+            .providePreferences()
+    }
+
+    private val navigator: Navigator by lazy {
+        FrolomuseApp.from(requireContext())
+            .appComponent
+            .provideNavigator()
     }
 
     private val eventLogger: EventLogger by lazy {
-        (requireContext().applicationContext as FrolomuseApp)
-                .appComponent
-                .provideEventLogger()
+        FrolomuseApp.from(requireContext())
+            .appComponent
+            .provideEventLogger()
     }
 
     private val buyPremiumPreference: Preference? get() = findPreference("buy_premium")
@@ -355,62 +362,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
     }
 
     private fun showThemeChooser() {
-        val activity = activity ?: return
-
-        val currentTheme: Theme? = preferences.theme
-
-        val icon = ContextCompat.getDrawable(activity, R.drawable.pref_ic_theme_outlined_28)
-
-        // The order is really important
-        val themeNames = arrayOf(
-            getString(R.string.light_blue_theme),
-            getString(R.string.light_pink_theme),
-            getString(R.string.dark_blue_theme),
-            getString(R.string.dark_especial_theme),
-            getString(R.string.dark_purple_theme),
-            getString(R.string.dark_orange_theme),
-            getString(R.string.dark_green_theme)
-        )
-
-        val currentThemeIndex = when(currentTheme) {
-            Theme.LIGHT_BLUE -> 0
-            Theme.LIGHT_PINK -> 1
-            Theme.DARK_BLUE -> 2
-            Theme.DARK_BLUE_ESPECIAL -> 3
-            Theme.DARK_PURPLE -> 4
-            Theme.DARK_ORANGE -> 5
-            Theme.DARK_GREEN -> 6
-            else -> -1
-        }
-
-        MaterialAlertDialogBuilder(activity)
-            .setTitle(getString(R.string.choose_theme))
-            .setIcon(icon)
-            .setSingleChoiceItems(themeNames, currentThemeIndex) { dialog, which ->
-                dialog.dismiss()
-
-                val selectedTheme: Theme? = when (which) {
-                    0 -> Theme.LIGHT_BLUE
-                    1 -> Theme.LIGHT_PINK
-                    2 -> Theme.DARK_BLUE
-                    3 -> Theme.DARK_BLUE_ESPECIAL
-                    4 -> Theme.DARK_PURPLE
-                    5 -> Theme.DARK_ORANGE
-                    6 -> Theme.DARK_GREEN
-                    else -> null // That's an error
-                }
-
-                if (selectedTheme != null && selectedTheme != currentTheme) {
-                    preferences.saveTheme(selectedTheme)
-                    eventLogger.logThemeChanged(selectedTheme)
-                    if (activity is ThemeHandler) {
-                        activity.handleThemeChange()
-                    } else {
-                        activity.recreate()
-                    }
-                }
-            }
-            .show()
+        navigator.openThemeChooser()
     }
 
     private fun showMinAudioFileDurationDialog() {
