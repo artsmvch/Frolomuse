@@ -60,7 +60,11 @@ interface Navigator {
 
     fun openSettings()
 
+    fun openPlaybackFadingParams()
+
     fun openThemeChooser()
+
+    fun offerToBuyPremium()
 
     fun launchBillingFlow(productId: ProductId)
 

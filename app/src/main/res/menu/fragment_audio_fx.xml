@@ -4,7 +4,7 @@
     <item
         android:id="@+id/action_playback_params"
         android:title="@string/playback_params"
-        android:icon="@drawable/ic_speedometer"
+        android:icon="@drawable/ic_playback_params"
         app:showAsAction="ifRoom"/>
 
     <item

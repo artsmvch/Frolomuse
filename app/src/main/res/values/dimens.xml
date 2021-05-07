@@ -27,7 +27,7 @@
 
     <!-- Default screen margins, per the Android Design guidelines. -->
 
-    <dimen name="toolbar_item_icon_size">18sp</dimen>
+    <dimen name="toolbar_item_icon_size">24dp</dimen>
     
     <dimen name="album_art_rounded_corner_radius">12dp</dimen>
 

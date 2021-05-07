@@ -20,6 +20,7 @@ import com.frolo.muse.R
 import com.frolo.muse.StyleUtil
 import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
+import com.frolo.muse.dp2px
 import com.frolo.muse.glide.GlideOptions.bitmapTransform
 import com.frolo.muse.model.preset.Preset
 import com.frolo.muse.model.reverb.Reverb
@@ -182,9 +183,9 @@ class AudioFxFragment: BaseFragment(), NoClipping {
         isPlaybackParamsProBadged.observeNonNull(owner) { isBadged ->
             tb_actions.menu.findItem(R.id.action_playback_params)?.also { menuItem ->
                 val context = requireContext()
-                val icon = AppCompatResources.getDrawable(context, R.drawable.ic_speedometer)
+                val icon = AppCompatResources.getDrawable(context, R.drawable.ic_playback_params)
                 if (isBadged && icon != null) {
-                    menuItem.icon = ProBadgedDrawable(context, icon)
+                    menuItem.icon = ProBadgedDrawable(context, icon, rightMargin = 6f.dp2px(context).toInt())
                 } else {
                     menuItem.icon = icon
                 }

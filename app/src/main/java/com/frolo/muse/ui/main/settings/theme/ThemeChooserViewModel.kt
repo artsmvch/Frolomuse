@@ -11,6 +11,7 @@ import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.logThemeChanged
 import com.frolo.muse.model.Theme
 import com.frolo.muse.model.media.Album
+import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.repository.AlbumRepository
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.rx.SchedulerProvider
@@ -24,6 +25,7 @@ class ThemeChooserViewModel @Inject constructor(
     private val albumRepository: AlbumRepository,
     private val preferences: Preferences,
     private val billingManager: BillingManager,
+    private val navigator: Navigator,
     private val schedulerProvider: SchedulerProvider,
     private val eventLogger: EventLogger
 ): BaseViewModel(eventLogger) {
@@ -124,9 +126,7 @@ class ThemeChooserViewModel @Inject constructor(
             return
         }
 
-        billingManager.launchBillingFlow(ProductId.PREMIUM)
-            .observeOn(schedulerProvider.main())
-            .subscribeFor {  }
+        navigator.offerToBuyPremium()
     }
 
     fun onApplyThemeClick(page: ThemePage) {
@@ -138,9 +138,7 @@ class ThemeChooserViewModel @Inject constructor(
 
         // Check if the user must be premium to apply this theme
         if (page.hasProBadge) {
-            billingManager.launchBillingFlow(ProductId.PREMIUM)
-                .observeOn(schedulerProvider.main())
-                .subscribeFor {  }
+            navigator.offerToBuyPremium()
             return
         }
 

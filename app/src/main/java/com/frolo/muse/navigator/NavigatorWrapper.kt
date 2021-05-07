@@ -125,8 +125,16 @@ class NavigatorWrapper : Navigator {
         delegate?.openSettings()
     }
 
+    override fun openPlaybackFadingParams() {
+        delegate?.openPlaybackFadingParams()
+    }
+
     override fun openThemeChooser() {
         delegate?.openThemeChooser()
+    }
+
+    override fun offerToBuyPremium() {
+        delegate?.offerToBuyPremium()
     }
 
     override fun launchBillingFlow(productId: ProductId) {

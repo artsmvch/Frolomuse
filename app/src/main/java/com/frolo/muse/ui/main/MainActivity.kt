@@ -40,6 +40,7 @@ import com.frolo.muse.ui.main.library.LibraryFragment
 import com.frolo.muse.ui.main.library.search.SearchFragment
 import com.frolo.muse.ui.main.player.mini.MiniPlayerFragment
 import com.frolo.muse.ui.main.settings.AppBarSettingsFragment
+import com.frolo.muse.ui.main.settings.premium.BuyPremiumDialog
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.shape.CornerFamily
@@ -58,7 +59,8 @@ import kotlin.math.pow
 class MainActivity : PlayerHostActivity(),
         FragmentNavigator,
         PlayerSheetCallback,
-        ThemeHandler {
+        ThemeHandler,
+        BuyPremiumDialog.OnBuyPremiumClickListener {
 
     // Reference to the presentation layer
     private val viewModel: MainViewModel by lazy {
@@ -710,6 +712,10 @@ class MainActivity : PlayerHostActivity(),
             intent = notHandledIntent
         }
         recreate()
+    }
+
+    override fun onBuyPremiumClick() {
+        viewModel.onBuyPremiumClick()
     }
 
     companion object {

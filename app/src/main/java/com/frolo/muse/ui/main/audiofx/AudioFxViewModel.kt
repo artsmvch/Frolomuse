@@ -2,6 +2,7 @@ package com.frolo.muse.ui.main.audiofx
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import com.frolo.muse.arch.*
 import com.frolo.muse.billing.BillingManager
 import com.frolo.muse.billing.ProductId
@@ -17,7 +18,6 @@ import com.frolo.muse.model.preset.VoidPreset
 import com.frolo.muse.model.reverb.Reverb
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.repository.PresetRepository
-import com.frolo.muse.repository.RemoteConfigRepository
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.base.BaseViewModel
 import io.reactivex.processors.PublishProcessor
@@ -30,24 +30,13 @@ class AudioFxViewModel @Inject constructor(
     private val audioFx: AudioFx,
     private val schedulerProvider: SchedulerProvider,
     private val presetRepository: PresetRepository,
-    private val remoteConfigRepository: RemoteConfigRepository,
     private val preferences: Preferences,
     private val navigator: Navigator,
     private val billingManager: BillingManager,
     private val eventLogger: EventLogger
 ): BaseViewModel(eventLogger) {
 
-    val isPurchaseFeatureEnabled: LiveData<Boolean> by lazy {
-        MutableLiveData<Boolean>().apply {
-            remoteConfigRepository.isPurchaseFeatureEnabled()
-                .observeOn(schedulerProvider.main())
-                .subscribeFor { isPurchased ->
-                    value = isPurchased
-                }
-        }
-    }
-
-    val isPremiumPurchased: LiveData<Boolean> by lazy {
+    private val isPremiumPurchased: LiveData<Boolean> by lazy {
         MutableLiveData<Boolean>().apply {
             billingManager.isProductPurchased(productId = ProductId.PREMIUM, forceCheckFromApi = true)
                 .observeOn(schedulerProvider.main())
@@ -58,13 +47,8 @@ class AudioFxViewModel @Inject constructor(
     }
 
     val isPlaybackParamsProBadged: LiveData<Boolean> =
-        combine(isPurchaseFeatureEnabled, isPremiumPurchased) { isPurchaseFeatureEnabled, isPremiumPurchased ->
-            isPurchaseFeatureEnabled == true && isPremiumPurchased != true
-        }
-
-    val isPlaybackParamsFeatureAvailable: LiveData<Boolean?> =
-        combine(isPurchaseFeatureEnabled, isPremiumPurchased) { isPurchaseFeatureEnabled, isPremiumPurchased ->
-            (isPurchaseFeatureEnabled == null || !isPurchaseFeatureEnabled) || (isPremiumPurchased == null || isPremiumPurchased)
+        Transformations.map(isPremiumPurchased) { isPremiumPurchased ->
+            isPremiumPurchased?.let { bool -> !bool }
         }
 
     private val voidPreset = presetRepository.voidPreset.blockingGet()
@@ -301,13 +285,11 @@ class AudioFxViewModel @Inject constructor(
     }
 
     fun onPlaybackParamsOptionSelected() {
-        val canOpenPlaybackParams = isPlaybackParamsFeatureAvailable.value.let { available ->
-            available == null || available
-        }
-        if (canOpenPlaybackParams) {
+        val isPremiumPurchased = isPremiumPurchased.value ?: true
+        if (isPremiumPurchased) {
             navigator.openPlaybackParams()
         } else {
-            navigator.launchBillingFlow(ProductId.PREMIUM)
+            navigator.offerToBuyPremium()
         }
     }
 

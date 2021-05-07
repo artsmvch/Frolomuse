@@ -23,7 +23,6 @@ import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.logger.*
 import com.frolo.muse.mediascan.MediaScanService
-import com.frolo.muse.model.Theme
 import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.sleeptimer.PlayerSleepTimer
@@ -31,7 +30,6 @@ import com.frolo.muse.ui.*
 import com.frolo.muse.ui.base.NoClipping
 import com.frolo.muse.ui.main.settings.premium.BuyPremiumDialog
 import com.frolo.muse.ui.main.settings.journal.PlayerJournalDialog
-import com.frolo.muse.ui.main.settings.playback.PlaybackFadingDialog
 import com.frolo.muse.ui.main.settings.duration.MinAudioFileDurationDialog
 import com.frolo.muse.ui.main.settings.hidden.HiddenFilesDialog
 import com.frolo.muse.ui.main.settings.info.AppInfoDialog
@@ -109,7 +107,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
 
         playbackFadingPreference?.apply {
             onPreferenceClickListener = Preference.OnPreferenceClickListener {
-                showPlaybackFadingDialog()
+                billingViewModel.onPlaybackFadingClick()
                 true
             }
         }
@@ -257,11 +255,6 @@ class SettingsFragment : PreferenceFragmentCompat(),
     private fun showPremiumBenefitsDialog() {
         val dialog = BuyPremiumDialog.newInstance()
         dialog.show(childFragmentManager, TAG_BUY_PREMIUM)
-    }
-
-    private fun showPlaybackFadingDialog() {
-        val dialog = PlaybackFadingDialog.newInstance()
-        dialog.show(childFragmentManager, TAG_PLAYBACK_FADING)
     }
 
     override fun onTimeSelected(hours: Int, minutes: Int, seconds: Int) {
