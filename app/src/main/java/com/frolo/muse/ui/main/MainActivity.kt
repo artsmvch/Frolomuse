@@ -216,11 +216,6 @@ class MainActivity : PlayerHostActivity(),
         )
     }
 
-    override fun onRestart() {
-        super.onRestart()
-        maybeInitializeFragments(player, lastSavedInstanceState)
-    }
-
     override fun onStart() {
         super.onStart()
 
@@ -229,6 +224,10 @@ class MainActivity : PlayerHostActivity(),
         }
 
         viewModel.onStart()
+
+        // The best place to re-try initializing fragments, because after calling
+        // super.onStart(), the state of the fragment manager is not saved.
+        maybeInitializeFragments(player, lastSavedInstanceState)
     }
 
     override fun onResume() {
