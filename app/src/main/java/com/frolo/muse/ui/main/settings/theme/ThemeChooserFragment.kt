@@ -30,7 +30,7 @@ class ThemeChooserFragment : BaseFragment(), NoClipping, ThemePageFragment.Theme
         }
     }
 
-    private var pendingRestoredPosition: Int? = null
+    private var lastKnownPagerPosition: Int? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -57,8 +57,16 @@ class ThemeChooserFragment : BaseFragment(), NoClipping, ThemePageFragment.Theme
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
         if (savedInstanceState != null && savedInstanceState.containsKey(STATE_PAGE_INDEX)) {
-            pendingRestoredPosition = savedInstanceState.getInt(STATE_PAGE_INDEX, 0)
+            lastKnownPagerPosition = savedInstanceState.getInt(STATE_PAGE_INDEX, 0)
         }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        // Here, we also have to remember the last known position,
+        // cause the user can only switch between the navigation tabs,
+        // in which case onSaveInstanceState will not be called.
+        lastKnownPagerPosition = vp_themes.currentItem
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -91,8 +99,9 @@ class ThemeChooserFragment : BaseFragment(), NoClipping, ThemePageFragment.Theme
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
         themeItems.observe(owner) { items ->
             (vp_themes.adapter as? ThemePageAdapter)?.pages = items.orEmpty()
-            pendingRestoredPosition?.also { targetPosition ->
-                pendingRestoredPosition = null
+            // Restore the position if needed
+            lastKnownPagerPosition?.also { targetPosition ->
+                lastKnownPagerPosition = null
                 vp_themes.setCurrentItem(targetPosition, false)
             }
         }
