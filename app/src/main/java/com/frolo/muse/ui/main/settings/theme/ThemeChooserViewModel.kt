@@ -8,6 +8,8 @@ import com.frolo.muse.billing.ProductId
 import com.frolo.muse.common.albumId
 import com.frolo.muse.engine.Player
 import com.frolo.muse.logger.EventLogger
+import com.frolo.muse.logger.ProductOfferUiElementSource
+import com.frolo.muse.logger.logProductOffered
 import com.frolo.muse.logger.logThemeChanged
 import com.frolo.muse.model.Theme
 import com.frolo.muse.model.media.Album
@@ -126,6 +128,7 @@ class ThemeChooserViewModel @Inject constructor(
             return
         }
 
+        eventLogger.logProductOffered(ProductId.PREMIUM, ProductOfferUiElementSource.THEME_PREVIEW_BADGE)
         navigator.offerToBuyPremium()
     }
 
@@ -138,6 +141,7 @@ class ThemeChooserViewModel @Inject constructor(
 
         // Check if the user must be premium to apply this theme
         if (page.hasProBadge) {
+            eventLogger.logProductOffered(ProductId.PREMIUM, ProductOfferUiElementSource.THEME_PREVIEW_APPLY)
             navigator.offerToBuyPremium()
             return
         }

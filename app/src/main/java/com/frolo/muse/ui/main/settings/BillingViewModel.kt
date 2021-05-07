@@ -8,8 +8,9 @@ import com.frolo.muse.billing.*
 import com.frolo.muse.engine.PlaybackFadingStrategy
 import com.frolo.muse.engine.Player
 import com.frolo.muse.logger.EventLogger
-import com.frolo.muse.logger.logClickedOnProduct
+import com.frolo.muse.logger.ProductOfferUiElementSource
 import com.frolo.muse.logger.logLaunchedBillingFlow
+import com.frolo.muse.logger.logProductOffered
 import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.rx.SchedulerProvider
@@ -67,7 +68,7 @@ class BillingViewModel @Inject constructor(
     val showPremiumBenefitsEvent: LiveData<Unit> get() = _showPremiumBenefitsEvent
 
     fun onBuyPremiumPreferenceClicked() {
-        eventLogger.logClickedOnProduct(ProductId.PREMIUM)
+        eventLogger.logProductOffered(ProductId.PREMIUM, ProductOfferUiElementSource.SETTINGS)
         _showPremiumBenefitsEvent.call()
     }
 
@@ -89,6 +90,7 @@ class BillingViewModel @Inject constructor(
         if (userHasUsedIt || isPremiumPurchased) {
             navigator.openPlaybackFadingParams()
         } else {
+            eventLogger.logProductOffered(ProductId.PREMIUM, ProductOfferUiElementSource.PLAYBACK_FADING)
             navigator.offerToBuyPremium()
         }
     }

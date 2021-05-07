@@ -52,7 +52,13 @@ class BuyPremiumDialog : BaseDialogFragment() {
         }
 
         btn_buy_premium.setOnClickListener {
-            listener?.onBuyPremiumClick()
+            val listener = this@BuyPremiumDialog.listener
+            if (listener != null) {
+                listener.onBuyPremiumClick()
+            } else {
+                // Let the view model handle it, since the listener is null
+                viewModel.onBuyClicked()
+            }
             dismiss()
         }
     }

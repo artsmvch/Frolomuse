@@ -7,6 +7,7 @@ import com.frolo.muse.billing.BillingManager
 import com.frolo.muse.billing.ProductDetails
 import com.frolo.muse.billing.ProductId
 import com.frolo.muse.logger.EventLogger
+import com.frolo.muse.logger.logLaunchedBillingFlow
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.base.BaseViewModel
 import javax.inject.Inject
@@ -37,5 +38,13 @@ class BuyPremiumViewModel @Inject constructor(
         combine(isLoading, productDetails) { isLoading, productDetails ->
             isLoading != true && productDetails != null
         }
+
+    fun onBuyClicked() {
+        val productId = ProductId.PREMIUM
+        eventLogger.logLaunchedBillingFlow(productId)
+        billingManager.launchBillingFlow(productId)
+            .observeOn(schedulerProvider.main())
+            .subscribeFor {  }
+    }
 
 }

@@ -9,7 +9,9 @@ import com.frolo.muse.billing.ProductId
 import com.frolo.muse.engine.*
 import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.logger.EventLogger
+import com.frolo.muse.logger.ProductOfferUiElementSource
 import com.frolo.muse.logger.logCustomPresetDeleted
+import com.frolo.muse.logger.logProductOffered
 import com.frolo.muse.model.ShortRange
 import com.frolo.muse.model.VisualizerRendererType
 import com.frolo.muse.model.preset.CustomPreset
@@ -289,6 +291,7 @@ class AudioFxViewModel @Inject constructor(
         if (isPremiumPurchased) {
             navigator.openPlaybackParams()
         } else {
+            eventLogger.logProductOffered(ProductId.PREMIUM, ProductOfferUiElementSource.PLAYBACK_PARAMS)
             navigator.offerToBuyPremium()
         }
     }

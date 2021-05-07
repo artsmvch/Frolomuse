@@ -305,8 +305,17 @@ private fun Params(productId: ProductId): Map<String, String> {
     )
 }
 
-fun EventLogger.logClickedOnProduct(productId: ProductId) {
-    log("clicked_on_product", Params(productId))
+enum class ProductOfferUiElementSource(val sourceName: String) {
+    SETTINGS("settings"),
+    PLAYBACK_FADING("playback_fading"),
+    PLAYBACK_PARAMS("playback_params"),
+    THEME_PREVIEW_BADGE("theme_preview_badge"),
+    THEME_PREVIEW_APPLY("theme_preview_apply")
+}
+
+fun EventLogger.logProductOffered(productId: ProductId, uiElementSource: ProductOfferUiElementSource) {
+    val params = Params(productId) + mapOf("ui_element_source" to uiElementSource.sourceName)
+    log("product_offered", params)
 }
 
 fun EventLogger.logLaunchedBillingFlow(productId: ProductId) {
