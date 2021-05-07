@@ -120,5 +120,10 @@
             android:key="player_journal"
             android:title="@string/player_journal"
             android:summary="@string/player_journal_desc"/>
+
+        <Preference
+            android:key="refund_premium_purchase"
+            android:title="Refund premium purchase"
+            android:summary="Refund premium purchase. DO NOT USE IN PRODUCTION"/>
     </androidx.preference.PreferenceCategory>
 </androidx.preference.PreferenceScreen>

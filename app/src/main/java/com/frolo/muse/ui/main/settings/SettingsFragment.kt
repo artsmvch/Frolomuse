@@ -229,9 +229,20 @@ class SettingsFragment : PreferenceFragmentCompat(),
                 true
             }
         }
+
+        findPreference("refund_premium_purchase").apply {
+            setOnPreferenceClickListener {
+                billingViewModel.onRefundPremiumPurchaseClicked()
+                true
+            }
+        }
     }
 
     private fun observeBillingViewModel(owner: LifecycleOwner) = with(billingViewModel) {
+        error.observeNonNull(owner) { err ->
+            Toast.makeText(requireContext(), err.message.orEmpty(), Toast.LENGTH_SHORT).show()
+        }
+
         isBuyPremiumOptionVisible.observe(owner) { visible ->
             buyPremiumPreference?.isVisible = visible == true
         }
@@ -245,6 +256,10 @@ class SettingsFragment : PreferenceFragmentCompat(),
 
         showPremiumBenefitsEvent.observe(owner) {
             showPremiumBenefitsDialog()
+        }
+
+        notifyPremiumPurchaseRefundedEvent.observe(owner) {
+            Toast.makeText(requireContext(), "Refunded", Toast.LENGTH_SHORT).show()
         }
     }
 

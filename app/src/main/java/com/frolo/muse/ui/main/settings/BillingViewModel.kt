@@ -2,6 +2,7 @@ package com.frolo.muse.ui.main.settings
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.frolo.muse.BuildConfig
 import com.frolo.muse.FrolomuseApp
 import com.frolo.muse.arch.*
 import com.frolo.muse.billing.*
@@ -67,6 +68,9 @@ class BillingViewModel @Inject constructor(
     private val _showPremiumBenefitsEvent = SingleLiveEvent<Unit>()
     val showPremiumBenefitsEvent: LiveData<Unit> get() = _showPremiumBenefitsEvent
 
+    private val _notifyPremiumPurchaseRefundedEvent = SingleLiveEvent<Unit>()
+    val notifyPremiumPurchaseRefundedEvent: LiveData<Unit> get() = _notifyPremiumPurchaseRefundedEvent
+
     fun onBuyPremiumPreferenceClicked() {
         eventLogger.logProductOffered(ProductId.PREMIUM, ProductOfferUiElementSource.SETTINGS)
         _showPremiumBenefitsEvent.call()
@@ -93,6 +97,21 @@ class BillingViewModel @Inject constructor(
             eventLogger.logProductOffered(ProductId.PREMIUM, ProductOfferUiElementSource.PLAYBACK_FADING)
             navigator.offerToBuyPremium()
         }
+    }
+
+    /**
+     * [!] For debugging only.
+     */
+    fun onRefundPremiumPurchaseClicked() {
+        if (!BuildConfig.DEBUG) {
+            val msg = "How the hell did the 'Refund premium purchase' option end up in Production"
+            throw IllegalStateException(msg)
+        }
+        billingManager.refundPurchase(ProductId.PREMIUM)
+            .observeOn(schedulerProvider.main())
+            .subscribeFor {
+                _notifyPremiumPurchaseRefundedEvent.call()
+            }
     }
 
 }

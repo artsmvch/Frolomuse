@@ -226,6 +226,42 @@ class BillingManager(private val frolomuseApp: FrolomuseApp) {
         }
     }
 
+    fun refundPurchase(productId: ProductId): Completable {
+        return requirePreparedClient().observeOn(mainThreadScheduler).flatMapCompletable { billingClient ->
+            billingClient.queryPurchasesSingle(productId.type)
+                .observeOn(computationScheduler)
+                .map { purchasesResult ->
+                    if (purchasesResult.responseCode == BillingClient.BillingResponseCode.OK) {
+                        val purchase = purchasesResult.purchasesList?.find { it.sku == productId.sku }
+                        OptionalCompat.of(purchase)
+                    } else {
+                        val msg = "Failed to query purchases: responseCode=${purchasesResult.responseCode}"
+                        throw IllegalStateException(msg)
+                    }
+                }
+                .observeOn(mainThreadScheduler)
+                .flatMapCompletable purchasesResult@ { optionalPurchase ->
+                    val purchase = optionalPurchase.value
+                        // If the purchase is null, then we consider it refunded
+                        ?: return@purchasesResult Completable.complete()
+
+                    Completable.create { emitter ->
+                        val consumeParams = ConsumeParams.newBuilder()
+                            .setPurchaseToken(purchase.purchaseToken)
+                            .build()
+                        val listener = ConsumeResponseListener { result, _ ->
+                            if (result.responseCode == BillingClient.BillingResponseCode.OK) {
+                                emitter.onComplete()
+                            } else {
+                                emitter.onError(BillingClientException(result))
+                            }
+                        }
+                        billingClient.consumeAsync(consumeParams, listener)
+                    }
+                }
+        }
+    }
+
     companion object {
 
         private val DEBUG = BuildConfig.DEBUG
