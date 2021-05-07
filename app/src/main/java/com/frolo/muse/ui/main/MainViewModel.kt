@@ -226,7 +226,9 @@ class MainViewModel @Inject constructor(
     }
 
     fun onBuyPremiumClick() {
-        billingManager.launchBillingFlow(ProductId.PREMIUM)
+        val productId = ProductId.PREMIUM
+        eventLogger.logLaunchedBillingFlow(productId)
+        billingManager.launchBillingFlow(productId)
             .observeOn(schedulerProvider.main())
             .subscribeFor {  }
     }
