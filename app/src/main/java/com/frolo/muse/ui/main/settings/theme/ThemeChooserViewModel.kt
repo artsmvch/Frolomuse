@@ -19,7 +19,9 @@ import com.frolo.muse.repository.Preferences
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.rx.flowable.doOnFirst
 import com.frolo.muse.ui.base.BaseViewModel
+import io.reactivex.Flowable
 import io.reactivex.Single
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 
@@ -74,10 +76,18 @@ class ThemeChooserViewModel @Inject constructor(
         getAlbumForPreview()
             .observeOn(schedulerProvider.main())
             .flatMapPublisher { album ->
-                billingManager.isProductPurchased(
-                    productId = ProductId.PREMIUM,
-                    forceCheckFromApi = true
-                ).observeOn(schedulerProvider.main()).map { isPremiumPurchased ->
+
+                // Check if the user has purchased the premium product.
+                // The timeout for this check is 5 seconds, otherwise
+                // we consider it not purchased.
+                // In case of an error, we also consider it not purchased.
+                val isPurchasedSource = billingManager.isProductPurchased(productId = ProductId.PREMIUM, forceCheckFromApi = true)
+                    .timeout(5, TimeUnit.SECONDS, Flowable.just(false))
+                    .observeOn(schedulerProvider.main())
+                    .doOnError { err -> logError(err) }
+                    .onErrorReturnItem(false)
+
+                isPurchasedSource.observeOn(schedulerProvider.main()).map { isPremiumPurchased ->
                     val currentTheme = preferences.theme
 
                     val premiumThemePages = premiumThemes.map { theme ->
@@ -113,6 +123,8 @@ class ThemeChooserViewModel @Inject constructor(
      * Returns the best album model for the preview.
      */
     private fun getAlbumForPreview(): Single<Album> {
+        // Fake album model
+        val fakeAlbum = Album(0, "", "", 0)
         val currAudioSource = player.getCurrent()
         val source = if (currAudioSource != null) {
             albumRepository.getItem(currAudioSource.albumId)
@@ -121,11 +133,10 @@ class ThemeChooserViewModel @Inject constructor(
         }
         return source
             .firstOrError()
-            .onErrorReturn {
-                // Fake album model
-                Album(0, "", "", 0)
-            }
             .subscribeOn(schedulerProvider.worker())
+            // 2 seconds should be enough to load an album for preview
+            .timeout(2, TimeUnit.SECONDS, Single.just(fakeAlbum))
+            .onErrorReturn { fakeAlbum }
     }
 
     fun onProBadgeClick(page: ThemePage) {

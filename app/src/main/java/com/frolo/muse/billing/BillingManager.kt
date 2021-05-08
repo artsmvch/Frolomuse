@@ -16,7 +16,7 @@ import io.reactivex.Scheduler
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.processors.BehaviorProcessor
+import io.reactivex.processors.PublishProcessor
 import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.atomic.AtomicBoolean
 
@@ -48,7 +48,7 @@ class BillingManager(private val frolomuseApp: FrolomuseApp) {
     private val disposables = CompositeDisposable()
 
     private val isPreparingBillingClient = AtomicBoolean(false)
-    private val preparedBillingClientProcessor = BehaviorProcessor.create<OptionalCompat<BillingClient>>()
+    private val preparedBillingClientProcessor = PublishProcessor.create<Result<BillingClient>>()
 
     init {
         if (DEBUG) {
@@ -71,16 +71,18 @@ class BillingManager(private val frolomuseApp: FrolomuseApp) {
             override fun onBillingSetupFinished(result: BillingResult) {
                 Logger.d(LOG_TAG, "Billing setup finished: result=$result")
                 if (result.responseCode == BillingClient.BillingResponseCode.OK) {
-                    preparedBillingClientProcessor.onNext(OptionalCompat.of(client))
+                    preparedBillingClientProcessor.onNext(Result.success(client))
                 } else {
-                    preparedBillingClientProcessor.onNext(OptionalCompat.empty())
+                    val err = BillingClientException(result)
+                    preparedBillingClientProcessor.onNext(Result.failure(err))
                 }
                 isPreparingBillingClient.set(false)
             }
 
             override fun onBillingServiceDisconnected() {
                 Logger.d(LOG_TAG, "Billing service disconnected")
-                preparedBillingClientProcessor.onNext(OptionalCompat.empty())
+                val err = NullPointerException("Billing service disconnected")
+                preparedBillingClientProcessor.onNext(Result.failure(err))
                 isPreparingBillingClient.set(false)
             }
         })
@@ -95,9 +97,8 @@ class BillingManager(private val frolomuseApp: FrolomuseApp) {
         prepareBillingClient()
 
         return preparedBillingClientProcessor
-            .filter { it.isPresent }
             .firstOrError()
-            .map { it.value }
+            .map { result -> result.getOrThrow() }
     }
 
     /**
