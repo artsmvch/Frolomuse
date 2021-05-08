@@ -579,6 +579,15 @@ class MainActivity : PlayerHostActivity(),
     private fun showRateDialog() {
         rateDialog?.dismiss()
 
+        // First, check if there is an already shown dialog
+        fragNavController?.doIfStateNotSaved {
+            val currDialog = this.currentDialogFrag
+            if (currDialog != null && currDialog.isShowing) {
+                // It's better not to show the Rate dialog over the existing dialog
+                return
+            }
+        }
+
         val dialog = RateDialog(this) { dialog, what ->
             dialog.dismiss()
             when (what) {
