@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions
+import com.bumptech.glide.request.RequestOptions
 import com.frolo.muse.R
 import com.frolo.muse.StyleUtil
 import com.frolo.muse.arch.observe
@@ -174,10 +175,16 @@ open class AlbumFragment: AbsSongCollectionFragment<Song>(), NoClipping {
     }
 
     private fun loadAlbumArt(albumId: Long) {
+        val requestOptions = RequestOptions()
+        // Use theme of the host context for placeholder and error drawables
+        context?.theme?.let { safeTheme ->
+            requestOptions.theme(safeTheme)
+        }
         Glide.with(this@AlbumFragment)
             .makeRequestAsBitmap(albumId)
             .placeholder(R.drawable.ic_album_200dp)
             .error(R.drawable.ic_album_200dp)
+            .apply(requestOptions)
             .transition(BitmapTransitionOptions.withCrossFade())
             .into(imv_album_art)
     }

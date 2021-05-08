@@ -57,6 +57,10 @@ class ThemePreviewFragment : AlbumFragment() {
         return ContextThemeWrapper(newContext, themeResId)
     }
 
+    override fun getContext(): Context? {
+        return super.getContext()?.let(::createPreviewContext)
+    }
+
     override fun onGetLayoutInflater(savedInstanceState: Bundle?): LayoutInflater {
         return super.onGetLayoutInflater(savedInstanceState).run {
             cloneInContext(createPreviewContext(context))
