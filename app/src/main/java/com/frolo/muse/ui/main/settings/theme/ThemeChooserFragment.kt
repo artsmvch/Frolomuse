@@ -71,7 +71,10 @@ class ThemeChooserFragment : BaseFragment(), NoClipping, ThemePageFragment.Theme
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putInt(STATE_PAGE_INDEX, vp_themes.currentItem)
+        // The view may be null at this step
+        vp_themes?.also { safeViewPager ->
+            outState.putInt(STATE_PAGE_INDEX, safeViewPager.currentItem)
+        }
     }
 
     override fun onDestroyView() {
