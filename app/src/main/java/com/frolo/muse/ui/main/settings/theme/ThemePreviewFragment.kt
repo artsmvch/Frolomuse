@@ -37,6 +37,8 @@ class ThemePreviewFragment : AlbumFragment() {
                 .get(AlbumViewModel::class.java)
     }
 
+    private val superContext: Context? get() = super.getContext()
+
     /**
      * Creates context for the theme preview fragment. It has special theme and density dpi.
      */
@@ -58,12 +60,12 @@ class ThemePreviewFragment : AlbumFragment() {
     }
 
     override fun getContext(): Context? {
-        return super.getContext()?.let(::createPreviewContext)
+        return superContext?.let(::createPreviewContext)
     }
 
     override fun onGetLayoutInflater(savedInstanceState: Bundle?): LayoutInflater {
         return super.onGetLayoutInflater(savedInstanceState).run {
-            cloneInContext(createPreviewContext(context))
+            cloneInContext(createPreviewContext(superContext ?: context))
         }
     }
 
