@@ -144,8 +144,8 @@ class ThemeChooserViewModel @Inject constructor(
         }
         return source
             .subscribeOn(schedulerProvider.worker())
-            // 2 seconds should be enough to load an album for preview
-            .timeout(2, TimeUnit.SECONDS, Flowable.just(fakeAlbum))
+            // 4 seconds should be enough to load an album for preview
+            .timeout(4, TimeUnit.SECONDS, Flowable.just(fakeAlbum))
             .onErrorReturn { fakeAlbum }
     }
 
