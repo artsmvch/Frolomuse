@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
+import com.frolo.muse.BuildConfig
 import com.frolo.muse.R
 import com.frolo.muse.model.ThemeUtils
 import com.frolo.muse.rx.disposeOnStopOf
@@ -16,6 +17,7 @@ import com.frolo.muse.ui.base.castHost
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_theme_page.*
+import java.lang.IllegalStateException
 import java.util.concurrent.TimeUnit
 import kotlin.math.exp
 import kotlin.math.sin
@@ -43,6 +45,11 @@ class ThemePageFragment : BaseFragment() {
             childFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, previewFragment)
                 .commit()
+        } else {
+            // This is an invalid state
+            if (BuildConfig.DEBUG) {
+                throw IllegalStateException("Could not find theme res ID: $themePage")
+            }
         }
 
         imv_preview_pro_badge.isVisible = themePage.hasProBadge

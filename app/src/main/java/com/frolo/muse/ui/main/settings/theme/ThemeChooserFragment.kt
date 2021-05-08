@@ -65,7 +65,7 @@ class ThemeChooserFragment : BaseFragment(), NoClipping, ThemePageFragment.Theme
         super.onStop()
         // Here, we also have to remember the last known position,
         // cause the user can only switch between the navigation tabs,
-        // in which case onSaveInstanceState will not be called.
+        // in which case onSaveInstanceState may not be called.
         lastKnownPagerPosition = vp_themes.currentItem
     }
 
@@ -97,6 +97,16 @@ class ThemeChooserFragment : BaseFragment(), NoClipping, ThemePageFragment.Theme
     }
 
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
+        isLoading.observe(owner) { isLoading ->
+            if (isLoading == true) {
+                group_pager.visibility = View.INVISIBLE
+                progress_bar.visibility = View.VISIBLE
+            } else {
+                group_pager.visibility = View.VISIBLE
+                progress_bar.visibility = View.GONE
+            }
+        }
+
         themeItems.observe(owner) { items ->
             (vp_themes.adapter as? ThemePageAdapter)?.pages = items.orEmpty()
             // Restore the position if needed

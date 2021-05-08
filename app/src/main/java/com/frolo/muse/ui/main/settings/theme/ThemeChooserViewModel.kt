@@ -17,6 +17,7 @@ import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.repository.AlbumRepository
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.rx.SchedulerProvider
+import com.frolo.muse.rx.flowable.doOnFirst
 import com.frolo.muse.ui.base.BaseViewModel
 import io.reactivex.Single
 import javax.inject.Inject
@@ -37,6 +38,9 @@ class ThemeChooserViewModel @Inject constructor(
             value = preferences.theme
         }
     }
+
+    private val _isLoading = MutableLiveData<Boolean>(false)
+    val isLoading: LiveData<Boolean> get() = _isLoading
 
     private val _themeItems by lazy {
         MutableLiveData<List<ThemePage>>().apply {
@@ -98,6 +102,8 @@ class ThemeChooserViewModel @Inject constructor(
                 }
             }
             .observeOn(schedulerProvider.main())
+            .doOnSubscribe { _isLoading.value = true }
+            .doOnFirst { _isLoading.value = false }
             .subscribeFor("load_themes") { themeItems ->
                 onResult.invoke(themeItems)
             }
