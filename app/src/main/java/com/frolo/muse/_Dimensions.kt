@@ -1,44 +1,25 @@
 package com.frolo.muse
 
 import android.content.Context
-import android.content.res.Resources
-import android.util.DisplayMetrics
-import android.util.TypedValue
-import android.view.WindowManager
 
 
+@Deprecated("Use Screen.dpFloat", ReplaceWith("Screen.dpFloat(context, this)"))
 fun Float.dp2px(context: Context): Float {
-    val metrics = context.resources.displayMetrics
-    return this * (metrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
+    return Screen.dpFloat(context, this)
 }
 
-fun Float.px2dp(context: Context): Float {
-    val metrics = context.resources.displayMetrics
-    return this / (metrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
-}
-
+@Deprecated("Use Screen.dpFloat", ReplaceWith("Screen.dpFloat(this)"))
 fun Float.dp2px(): Float {
-    val metrics = Resources.getSystem().displayMetrics
-    return this * (metrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
+    return Screen.dpFloat(this)
 }
 
-fun Float.px2dp(): Float {
-    val metrics = Resources.getSystem().displayMetrics
-    return this / (metrics.densityDpi.toFloat() / DisplayMetrics.DENSITY_DEFAULT)
+@Deprecated("Use Screen.spFloat", ReplaceWith("Screen.spFloat(context, this)"))
+fun Float.sp2px(context: Context): Float {
+    return Screen.spFloat(context, this)
 }
 
-fun Float.sp2px(context: Context? = null): Float {
-    val metrics: DisplayMetrics =
-            if (context != null) context.resources.displayMetrics
-            else Resources.getSystem().displayMetrics
-    return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, this, metrics)
-}
-
+@Deprecated("Use Screen.getScreenWidth", ReplaceWith("Screen.getScreenWidth(this)"))
 val Context.screenWidth: Int
     get() {
-        val displayMetrics = DisplayMetrics()
-        val windowManager = getSystemService(Context.WINDOW_SERVICE) as? WindowManager
-                ?: throw NullPointerException("Context is missing WindowManager")
-        windowManager.defaultDisplay.getMetrics(displayMetrics)
-        return displayMetrics.widthPixels
+        return Screen.getScreenWidth(this)
     }
