@@ -191,6 +191,7 @@ final class AlbumQuery {
                         // We found it! The perfect album for the preview
                         return candidate;
                     }
+                    index++;
                 } while (index < albums.size());
                 return candidate;
             }

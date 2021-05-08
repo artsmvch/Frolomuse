@@ -20,7 +20,7 @@ import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.rx.flowable.doOnFirst
 import com.frolo.muse.ui.base.BaseViewModel
 import io.reactivex.Flowable
-import io.reactivex.Single
+import io.reactivex.functions.BiFunction
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -73,45 +73,54 @@ class ThemeChooserViewModel @Inject constructor(
             Theme.DARK_FANCY
         )
 
-        getAlbumForPreview()
+        val source1 = getAlbumForPreview()
+        val source2 = isPremiumPurchased()
+        val combiner = BiFunction<Album, Boolean, Pair<Album, Boolean>> { album, isPremiumPurchased ->
+            album to isPremiumPurchased
+        }
+
+        Flowable.combineLatest(source1, source2, combiner)
             .observeOn(schedulerProvider.main())
-            .flatMapPublisher { album ->
+            .map { pair ->
+                val album = pair.first
+                val isPremiumPurchased = pair.second
+                val currentTheme = preferences.theme
 
-                // Check if the user has purchased the premium product.
-                // The timeout for this check is 5 seconds, otherwise
-                // we consider it not purchased.
-                // In case of an error, we also consider it not purchased.
-                val isPurchasedSource = billingManager.isProductPurchased(productId = ProductId.PREMIUM, forceCheckFromApi = true)
-                    .timeout(5, TimeUnit.SECONDS, Flowable.just(false))
-                    .observeOn(schedulerProvider.main())
-                    .doOnError { err -> logError(err) }
-                    .onErrorReturnItem(false)
+                val premiumThemePages = premiumThemes.map { theme ->
+                    ThemePage(
+                        theme = theme,
+                        isApplied = currentTheme == theme,
+                        hasProBadge = !isPremiumPurchased,
+                        album = album
+                    )
+                }
 
-                isPurchasedSource.observeOn(schedulerProvider.main()).map { isPremiumPurchased ->
-                    val currentTheme = preferences.theme
+                val defaultThemePages = defaultThemes.map { theme ->
+                    ThemePage(
+                        theme = theme,
+                        isApplied = currentTheme == theme,
+                        hasProBadge = false,
+                        album = album
+                    )
+                }
 
-                    val premiumThemePages = premiumThemes.map { theme ->
-                        ThemePage(
-                            theme = theme,
-                            isApplied = currentTheme == theme,
-                            hasProBadge = !isPremiumPurchased,
-                            album = album
-                        )
+                premiumThemePages + defaultThemePages
+            }
+            .map { themePages ->
+                // Special sorting order for theme previews
+                themePages.sortedBy { page ->
+                    when (page.theme) {
+                        Theme.LIGHT_BLUE -> 0
+                        Theme.DARK_BLUE -> 100
+                        Theme.DARK_FANCY -> 200
+                        Theme.LIGHT_PINK -> 300
+                        Theme.DARK_BLUE_ESPECIAL -> 400
+                        Theme.DARK_PURPLE -> 500
+                        Theme.DARK_ORANGE -> 600
+                        Theme.DARK_GREEN -> 700
                     }
-
-                    val defaultThemePages = defaultThemes.map { theme ->
-                        ThemePage(
-                            theme = theme,
-                            isApplied = currentTheme == theme,
-                            hasProBadge = false,
-                            album = album
-                        )
-                    }
-
-                    premiumThemePages + defaultThemePages
                 }
             }
-            .observeOn(schedulerProvider.main())
             .doOnSubscribe { _isLoading.value = true }
             .doOnFirst { _isLoading.value = false }
             .subscribeFor("load_themes") { themeItems ->
@@ -122,21 +131,37 @@ class ThemeChooserViewModel @Inject constructor(
     /**
      * Returns the best album model for the preview.
      */
-    private fun getAlbumForPreview(): Single<Album> {
+    private fun getAlbumForPreview(): Flowable<Album> {
         // Fake album model
         val fakeAlbum = Album(0, "", "", 0)
         val currAudioSource = player.getCurrent()
+        // If there is an audio source being played by the player,
+        // then we retrieve the album for this media item.
         val source = if (currAudioSource != null) {
             albumRepository.getItem(currAudioSource.albumId)
         } else {
             albumRepository.itemForPreview
         }
         return source
-            .firstOrError()
             .subscribeOn(schedulerProvider.worker())
             // 2 seconds should be enough to load an album for preview
-            .timeout(2, TimeUnit.SECONDS, Single.just(fakeAlbum))
+            .timeout(2, TimeUnit.SECONDS, Flowable.just(fakeAlbum))
             .onErrorReturn { fakeAlbum }
+    }
+
+    /**
+     * Returns true if the user is premium.
+     */
+    private fun isPremiumPurchased(): Flowable<Boolean> {
+        // Check if the user has purchased the premium product.
+        // The timeout for this check is 5 seconds, otherwise
+        // we consider it not purchased.
+        // In case of an error, we also consider it not purchased.
+        return billingManager.isProductPurchased(productId = ProductId.PREMIUM, forceCheckFromApi = true)
+            .timeout(5, TimeUnit.SECONDS, Flowable.just(false))
+            .observeOn(schedulerProvider.main())
+            .doOnError { err -> logError(err) }
+            .onErrorReturnItem(false)
     }
 
     fun onProBadgeClick(page: ThemePage) {
