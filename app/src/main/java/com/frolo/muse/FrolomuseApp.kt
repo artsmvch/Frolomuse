@@ -121,9 +121,10 @@ class FrolomuseApp : MultiDexApplication() {
 
     private fun showViolation(violation: Violation?) {
         if (BuildConfig.DEBUG) {
-            foregroundActivity?.also { context ->
-                Toast.makeText(context, violation?.toString().orEmpty(), Toast.LENGTH_LONG).show()
-            }
+            // TODO: find a better way to report violation
+//            foregroundActivity?.also { context ->
+//                Toast.makeText(context, violation?.toString().orEmpty(), Toast.LENGTH_LONG).show()
+//            }
         }
     }
 
