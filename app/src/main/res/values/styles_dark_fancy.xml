@@ -129,6 +129,10 @@
         <item name="bubbleColor">@color/app_dark_fancy_fast_scroller</item>
     </style>
 
+    <style name="Base.AppTheme.EqualizerView.Dark.Fancy" parent="Base.AppTheme.EqualizerView.Dark">
+        <item name="gridColor">#9A656565</item>
+    </style>
+
     <style name="Base.AppTheme.Dark.Fancy" parent="Base.AppTheme.Dark">
         <item name="colorPrimary">@color/app_dark_fancy_primary</item>
         <item name="colorPrimaryDark">@color/app_dark_fancy_primary_dark</item>
@@ -173,6 +177,7 @@
         <item name="iBarStyle">@style/Base.AppTheme.Dark.IBar</item>
         <item name="miniVisualizerStyle">@style/AppTheme.MiniVisualizer.Dark.Fancy</item>
         <item name="fastScrollerStyle">@style/AppTheme.FastScroller.Dark.Fancy</item>
+        <item name="equalizerViewStyle">@style/Base.AppTheme.EqualizerView.Dark.Fancy</item>
     </style>
 
 </resources>

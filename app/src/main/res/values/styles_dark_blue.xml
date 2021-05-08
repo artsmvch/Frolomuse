@@ -129,6 +129,10 @@
         <item name="bubbleColor">@color/app_dark_blue_fast_scroller</item>
     </style>
 
+    <style name="Base.AppTheme.EqualizerView.Dark.Blue.Especial" parent="Base.AppTheme.EqualizerView.Dark">
+        <item name="gridColor">#9A656565</item>
+    </style>
+
     <style name="Base.AppTheme.Dark.Blue" parent="Base.AppTheme.Dark">
         <item name="colorPrimary">@color/app_dark_blue_primary</item>
         <item name="colorPrimaryDark">@color/app_dark_blue_primary_dark</item>
@@ -178,6 +182,7 @@
     <!--Especial dark blue theme. Almost the same as dark blue theme except the window background-->
     <style name="Base.AppTheme.Dark.Blue.Especial" parent="Base.AppTheme.Dark.Blue">
         <item name="android:windowBackground">@drawable/png_universe</item>
+        <item name="equalizerViewStyle">@style/Base.AppTheme.EqualizerView.Dark.Blue.Especial</item>
     </style>
 
 </resources>
