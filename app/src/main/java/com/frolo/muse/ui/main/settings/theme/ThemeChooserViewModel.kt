@@ -18,6 +18,7 @@ import com.frolo.muse.repository.AlbumRepository
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.rx.flowable.doOnFirst
+import com.frolo.muse.rx.flowable.timeoutForFirstElement
 import com.frolo.muse.ui.base.BaseViewModel
 import io.reactivex.Flowable
 import io.reactivex.functions.BiFunction
@@ -133,7 +134,7 @@ class ThemeChooserViewModel @Inject constructor(
      */
     private fun getAlbumForPreview(): Flowable<Album> {
         // Fake album model
-        val fakeAlbum = Album(0, "", "", 0)
+        val fakeAlbum = Album(0, "Test album", "Test artist", 0)
         val currAudioSource = player.getCurrent()
         // If there is an audio source being played by the player,
         // then we retrieve the album for this media item.
@@ -144,8 +145,8 @@ class ThemeChooserViewModel @Inject constructor(
         }
         return source
             .subscribeOn(schedulerProvider.worker())
-            // 4 seconds should be enough to load an album for preview
-            .timeout(4, TimeUnit.SECONDS, Flowable.just(fakeAlbum))
+            // 4 seconds should be enough to load an album for preview.
+            .timeoutForFirstElement(4L, TimeUnit.SECONDS)
             .onErrorReturn { fakeAlbum }
     }
 

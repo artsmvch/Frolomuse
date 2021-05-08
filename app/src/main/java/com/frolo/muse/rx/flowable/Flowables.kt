@@ -5,6 +5,7 @@ import io.reactivex.Scheduler
 import io.reactivex.functions.BiConsumer
 import io.reactivex.functions.BiFunction
 import io.reactivex.functions.Consumer
+import io.reactivex.functions.Function
 import io.reactivex.plugins.RxJavaPlugins
 import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
@@ -57,4 +58,11 @@ fun <T> Flowable<T>.doOnFirst(consumer: (T) -> Unit): Flowable<T> {
  */
 fun <T> Flowable<T>.withDefaultItemDelayed(item: T, delay: Long, unit: TimeUnit, scheduler: Scheduler = Schedulers.computation()): Flowable<T> {
     return RxJavaPlugins.onAssembly(FlowableWithDefaultItemDelayed(this, item, delay, unit, scheduler))
+}
+
+/**
+ * Sets a timeout for the first element only.
+ */
+fun <T> Flowable<T>.timeoutForFirstElement(timeout: Long, timeUnit: TimeUnit): Flowable<T> {
+    return timeout(Flowable.timer(timeout, timeUnit), Function { _: T -> Flowable.never<Unit>() })
 }
