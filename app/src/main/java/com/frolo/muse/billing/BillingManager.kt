@@ -227,7 +227,7 @@ class BillingManager(private val frolomuseApp: FrolomuseApp) {
         }
     }
 
-    fun refundPurchase(productId: ProductId): Completable {
+    fun consumeProduct(productId: ProductId): Completable {
         return requirePreparedClient().observeOn(mainThreadScheduler).flatMapCompletable { billingClient ->
             billingClient.queryPurchasesSingle(productId.type)
                 .observeOn(computationScheduler)

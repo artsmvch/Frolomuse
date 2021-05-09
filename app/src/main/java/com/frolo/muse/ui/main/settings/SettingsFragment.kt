@@ -230,9 +230,9 @@ class SettingsFragment : PreferenceFragmentCompat(),
             }
         }
 
-        findPreference("refund_premium_purchase").apply {
+        findPreference("consume_premium_product").apply {
             setOnPreferenceClickListener {
-                billingViewModel.onRefundPremiumPurchaseClicked()
+                billingViewModel.onConsumePremiumProductClicked()
                 true
             }
         }
@@ -258,8 +258,8 @@ class SettingsFragment : PreferenceFragmentCompat(),
             showPremiumBenefitsDialog()
         }
 
-        notifyPremiumPurchaseRefundedEvent.observe(owner) {
-            Toast.makeText(requireContext(), "Refunded", Toast.LENGTH_SHORT).show()
+        notifyPremiumProductConsumedEvent.observe(owner) {
+            Toast.makeText(requireContext(), "Consumed", Toast.LENGTH_SHORT).show()
         }
     }
 

@@ -68,8 +68,8 @@ class BillingViewModel @Inject constructor(
     private val _showPremiumBenefitsEvent = SingleLiveEvent<Unit>()
     val showPremiumBenefitsEvent: LiveData<Unit> get() = _showPremiumBenefitsEvent
 
-    private val _notifyPremiumPurchaseRefundedEvent = SingleLiveEvent<Unit>()
-    val notifyPremiumPurchaseRefundedEvent: LiveData<Unit> get() = _notifyPremiumPurchaseRefundedEvent
+    private val _notifyPremiumProductConsumedEvent = SingleLiveEvent<Unit>()
+    val notifyPremiumProductConsumedEvent: LiveData<Unit> get() = _notifyPremiumProductConsumedEvent
 
     fun onBuyPremiumPreferenceClicked() {
         eventLogger.logProductOffered(ProductId.PREMIUM, ProductOfferUiElementSource.SETTINGS)
@@ -102,15 +102,15 @@ class BillingViewModel @Inject constructor(
     /**
      * [!] For debugging only.
      */
-    fun onRefundPremiumPurchaseClicked() {
+    fun onConsumePremiumProductClicked() {
         if (!BuildConfig.DEBUG) {
-            val msg = "How the hell did the 'Refund premium purchase' option end up in Production"
+            val msg = "How the hell did the 'Consume premium product' option end up in Production"
             throw IllegalStateException(msg)
         }
-        billingManager.refundPurchase(ProductId.PREMIUM)
+        billingManager.consumeProduct(ProductId.PREMIUM)
             .observeOn(schedulerProvider.main())
             .subscribeFor {
-                _notifyPremiumPurchaseRefundedEvent.call()
+                _notifyPremiumProductConsumedEvent.call()
             }
     }
 
