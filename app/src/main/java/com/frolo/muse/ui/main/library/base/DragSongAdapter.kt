@@ -136,7 +136,7 @@ class DragSongAdapter constructor(
                 }
                 setImageResource(R.drawable.ic_drag_burger)
                 imageTintList =
-                    ColorStateList.valueOf(StyleUtil.readColorAttrValue(context, R.attr.iconImageTint))
+                    ColorStateList.valueOf(StyleUtil.resolveColor(context, R.attr.iconImageTint))
             }
         }
 

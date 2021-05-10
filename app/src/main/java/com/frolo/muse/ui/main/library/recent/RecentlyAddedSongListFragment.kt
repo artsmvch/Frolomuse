@@ -46,7 +46,7 @@ class RecentlyAddedSongListFragment: SimpleMediaCollectionFragment<Song>() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.fragment_recently_added, menu)
         context?.also { safeContext ->
-            menu.setIconTint(StyleUtil.readColorAttrValue(safeContext, R.attr.iconImageTint))
+            menu.setIconTint(StyleUtil.resolveColor(safeContext, R.attr.iconImageTint))
         }
     }
 

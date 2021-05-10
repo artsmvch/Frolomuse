@@ -17,20 +17,25 @@ import androidx.appcompat.content.res.AppCompatResources;
  * Helper class for convenient reading of theme attributes.
  */
 public final class StyleUtil {
-    private StyleUtil() {
+
+    private static void failedToResolveAttribute(@AttrRes int attrId) {
+        //throw new IllegalArgumentException("Failed to resolve attribute: " + attrId);
     }
 
     @ColorInt
-    public static int readColorAttrValue(@NonNull Context context, @AttrRes int attrId) {
+    public static int resolveColor(@NonNull Context context, @AttrRes int attrId) {
         final TypedValue typedValue = new TypedValue();
-        context.getTheme().resolveAttribute(attrId, typedValue, true);
+        if (!context.getTheme().resolveAttribute(attrId, typedValue, true)) {
+            failedToResolveAttribute(attrId);
+        }
         return typedValue.data;
     }
 
     @Nullable
-    public static ColorStateList readColorStateListAttrValue(@NonNull Context context, @AttrRes int attrId) {
+    public static ColorStateList resolveColorStateList(@NonNull Context context, @AttrRes int attrId) {
         final TypedValue typedValue = new TypedValue();
         if (!context.getTheme().resolveAttribute(attrId, typedValue, false)) {
+            failedToResolveAttribute(attrId);
             // Failed to resolve the attribute, returning null
             return null;
         }
@@ -43,29 +48,40 @@ public final class StyleUtil {
     }
 
     @StyleRes
-    public static int readStyleAttrValue(@NonNull Context context, @AttrRes int attrId) {
+    public static int resolveStyleRes(@NonNull Context context, @AttrRes int attrId) {
         final TypedValue typedValue = new TypedValue();
-        context.getTheme().resolveAttribute(attrId, typedValue, true);
+        if (!context.getTheme().resolveAttribute(attrId, typedValue, true)) {
+            failedToResolveAttribute(attrId);
+        }
         return typedValue.resourceId;
     }
 
-    public static float readDimenAttrValue(@NonNull Context context, @AttrRes int attrId) {
+    public static float resolveDimen(@NonNull Context context, @AttrRes int attrId) {
         final TypedValue typedValue = new TypedValue();
-        context.getTheme().resolveAttribute(attrId, typedValue, true);
+        if (!context.getTheme().resolveAttribute(attrId, typedValue, true)) {
+            failedToResolveAttribute(attrId);
+        }
         return typedValue.getDimension(context.getResources().getDisplayMetrics());
     }
 
     @Nullable
-    public static Drawable readDrawableAttrValue(@NonNull Context context, @AttrRes int attrId) {
+    public static Drawable resolveDrawable(@NonNull Context context, @AttrRes int attrId) {
         final TypedValue typedValue = new TypedValue();
-        context.getTheme().resolveAttribute(attrId, typedValue, true);
+        if (!context.getTheme().resolveAttribute(attrId, typedValue, true)) {
+            failedToResolveAttribute(attrId);
+        }
         return AppCompatResources.getDrawable(context, typedValue.resourceId);
     }
 
-    public static boolean readBooleanAttrValue(@NonNull Context context, @AttrRes int attrId) {
+    public static boolean resolveBool(@NonNull Context context, @AttrRes int attrId) {
         final TypedValue typedValue = new TypedValue();
-        context.getTheme().resolveAttribute(attrId, typedValue, true);
+        if (!context.getTheme().resolveAttribute(attrId, typedValue, true)) {
+            failedToResolveAttribute(attrId);
+        }
         return typedValue.data != 0;
+    }
+
+    private StyleUtil() {
     }
 
 }

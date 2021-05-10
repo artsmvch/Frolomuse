@@ -96,7 +96,7 @@ class AppRecyclerView @JvmOverloads constructor(
 
         private fun fastScrollerContext(context: Context): Context {
             val fastScrollerThemeId =
-                    StyleUtil.readStyleAttrValue(context, com.frolo.muse.R.attr.fastScrollerStyle)
+                    StyleUtil.resolveStyleRes(context, com.frolo.muse.R.attr.fastScrollerStyle)
             return if (fastScrollerThemeId != 0) ContextThemeWrapper(context, fastScrollerThemeId)
             else ContextThemeWrapper(context, R.style.Base_AppTheme_FastScroller)
         }

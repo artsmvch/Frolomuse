@@ -33,8 +33,8 @@ class CheckableImageView @JvmOverloads constructor(
             } else 0
             arr.recycle()
 
-            @ColorInt val colorSecondary = StyleUtil.readColorAttrValue(context, R.attr.colorSecondary)
-            @ColorInt val colorOnSecondary = StyleUtil.readColorAttrValue(context, R.attr.colorOnSecondary)
+            @ColorInt val colorSecondary = StyleUtil.resolveColor(context, R.attr.colorSecondary)
+            @ColorInt val colorOnSecondary = StyleUtil.resolveColor(context, R.attr.colorOnSecondary)
             if (value == 0) {
                 CheckMarkDrawable(colorSecondary, colorOnSecondary)
             } else {

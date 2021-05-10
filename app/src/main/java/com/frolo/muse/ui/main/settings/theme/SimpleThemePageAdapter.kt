@@ -58,10 +58,10 @@ class SimpleThemePageAdapter(
 
         fun bind(page: ThemePage) {
             val themedContext = ThemeUtils.createThemedContext(itemView.context, page.theme)
-            val windowBackground = StyleUtil.readDrawableAttrValue(themedContext, android.R.attr.windowBackground)
-            val primaryColor = StyleUtil.readColorAttrValue(themedContext, R.attr.colorPrimary)
-            val secondaryColor = StyleUtil.readColorAttrValue(themedContext, R.attr.colorSecondary)
-            val textColor = StyleUtil.readColorStateListAttrValue(themedContext, android.R.attr.textColorPrimary)
+            val windowBackground = StyleUtil.resolveDrawable(themedContext, android.R.attr.windowBackground)
+            val primaryColor = StyleUtil.resolveColor(themedContext, R.attr.colorPrimary)
+            val secondaryColor = StyleUtil.resolveColor(themedContext, R.attr.colorSecondary)
+            val textColor = StyleUtil.resolveColorStateList(themedContext, android.R.attr.textColorPrimary)
             val themeName = ThemeUtils.getNameResourceId(page.theme)?.let { themedContext.getString(it) } ?: ""
             val isCurrentThemeDark = currentTheme.isDark
             with(itemView) {

@@ -98,7 +98,7 @@ class ArtistFragment: BaseFragment() {
         transaction.commit()
 
         view_backdrop.background = MaterialShapeDrawable().apply {
-            fillColor = ColorStateList.valueOf(StyleUtil.readColorAttrValue(view.context, R.attr.colorPrimary))
+            fillColor = ColorStateList.valueOf(StyleUtil.resolveColor(view.context, R.attr.colorPrimary))
             shapeAppearanceModel = ShapeAppearanceModel.builder()
                 .setBottomRightCorner(CornerFamily.ROUNDED, backdropCornerRadius)
                 .build()

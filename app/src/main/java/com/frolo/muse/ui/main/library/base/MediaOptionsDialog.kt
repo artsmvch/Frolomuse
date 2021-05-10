@@ -30,7 +30,7 @@ class MediaOptionsDialog<E: Media> constructor(
         VIEW_GENRE, SET_AS_DEFAULT, HIDE, SCAN_FILES, CREATE_SHORTCUT
     }
 
-    private val iconTint = StyleUtil.readColorAttrValue(context, R.attr.iconImageTint)
+    private val iconTint = StyleUtil.resolveColor(context, R.attr.iconImageTint)
     private val drawableHeart: Drawable
     private val drawableFilledHeart: Drawable
 

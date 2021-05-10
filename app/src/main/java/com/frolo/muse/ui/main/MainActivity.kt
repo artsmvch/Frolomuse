@@ -95,28 +95,28 @@ class MainActivity : PlayerHostActivity(),
 
     @get:ColorInt
     private val colorPrimary: Int by lazy {
-        StyleUtil.readColorAttrValue(this, R.attr.colorPrimary)
+        StyleUtil.resolveColor(this, R.attr.colorPrimary)
     }
 
     @get:ColorInt
     private val colorPrimaryDark: Int by lazy {
-        StyleUtil.readColorAttrValue(this, R.attr.colorPrimaryDark)
+        StyleUtil.resolveColor(this, R.attr.colorPrimaryDark)
     }
 
     @get:ColorInt
     private val colorPrimarySurface: Int by lazy {
-        StyleUtil.readColorAttrValue(this, R.attr.colorPrimarySurface)
+        StyleUtil.resolveColor(this, R.attr.colorPrimarySurface)
     }
 
     @get:ColorInt
     private val colorSurface: Int by lazy {
-        StyleUtil.readColorAttrValue(this, R.attr.colorSurface)
+        StyleUtil.resolveColor(this, R.attr.colorSurface)
     }
 
     @get:ColorInt
     private val actionModeBackgroundColor: Int by lazy {
         // TODO: we need to be careful with this because the actual value of this attribute may be a drawable
-        StyleUtil.readColorAttrValue(this, R.attr.actionModeBackground)
+        StyleUtil.resolveColor(this, R.attr.actionModeBackground)
     }
 
     private val fragmentLifecycleCallbacks: FragmentManager.FragmentLifecycleCallbacks =

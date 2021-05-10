@@ -111,7 +111,7 @@ open class AlbumFragment: AbsSongCollectionFragment<Song>(), NoClipping {
         app_bar_layout.addOnOffsetChangedListener(onOffsetChangedListener)
 
         view_backdrop.background = MaterialShapeDrawable().apply {
-            fillColor = ColorStateList.valueOf(StyleUtil.readColorAttrValue(view.context, R.attr.colorPrimary))
+            fillColor = ColorStateList.valueOf(StyleUtil.resolveColor(view.context, R.attr.colorPrimary))
             shapeAppearanceModel = ShapeAppearanceModel.builder()
                 .setBottomRightCorner(CornerFamily.ROUNDED, backdropCornerRadius)
                 .build()

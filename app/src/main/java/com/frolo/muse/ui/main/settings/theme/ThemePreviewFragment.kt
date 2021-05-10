@@ -71,7 +71,7 @@ class ThemePreviewFragment : AlbumFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        view.background = StyleUtil.readDrawableAttrValue(view.context, android.R.attr.windowBackground)
+        view.background = StyleUtil.resolveDrawable(view.context, android.R.attr.windowBackground)
     }
 
     override fun removeClipping(left: Int, top: Int, right: Int, bottom: Int) {

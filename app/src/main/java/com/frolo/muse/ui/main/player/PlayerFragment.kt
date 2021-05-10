@@ -113,12 +113,12 @@ class PlayerFragment: BaseFragment() {
 
     @get:ColorInt
     private val colorModeOff: Int by lazy {
-        StyleUtil.readColorAttrValue(requireContext(), R.attr.iconImageTint)
+        StyleUtil.resolveColor(requireContext(), R.attr.iconImageTint)
     }
 
     @get:ColorInt
     private val colorModeOn: Int by lazy {
-        StyleUtil.readColorAttrValue(requireContext(), R.attr.colorAccent)
+        StyleUtil.resolveColor(requireContext(), R.attr.colorAccent)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -61,7 +61,7 @@ class MiniPlayerFragment : BaseFragment() {
         }
 
         pb_progress.apply {
-            val colorOnPrimarySurface = StyleUtil.readColorAttrValue(context, R.attr.colorOnPrimarySurface)
+            val colorOnPrimarySurface = StyleUtil.resolveColor(context, R.attr.colorOnPrimarySurface)
             backgroundProgressBarColor = ColorUtils.setAlphaComponent(colorOnPrimarySurface, (0.2f * 255).toInt())
             progressBarColor = colorOnPrimarySurface
         }

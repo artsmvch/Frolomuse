@@ -95,7 +95,7 @@ class MediaAdapter constructor(
 
         @ColorInt
         private val primarySurfaceColor: Int =
-                StyleUtil.readColorAttrValue(itemView.context, R.attr.colorPrimarySurface)
+                StyleUtil.resolveColor(itemView.context, R.attr.colorPrimarySurface)
 
         @ColorInt
         private val highlightColor: Int =

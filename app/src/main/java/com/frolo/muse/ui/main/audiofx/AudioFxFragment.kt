@@ -265,10 +265,10 @@ class AudioFxFragment: BaseFragment(), NoClipping {
                 layout_audio_fx_content.doOnLayout { view ->
 
                     val backgroundColor: Int =
-                            StyleUtil.readColorAttrValue(view.context, R.attr.colorSurface)
+                            StyleUtil.resolveColor(view.context, R.attr.colorSurface)
 
                     val windowBackground: Drawable? =
-                            StyleUtil.readDrawableAttrValue(view.context, android.R.attr.windowBackground)
+                            StyleUtil.resolveDrawable(view.context, android.R.attr.windowBackground)
 
                     // Calculating optimal size for the snapshot
                     // so it will be loaded faster and will consume not that much memory

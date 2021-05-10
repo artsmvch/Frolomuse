@@ -64,7 +64,7 @@ class PlayerSheetFragment : BaseFragment(),
 
         view.doOnLayout {
             behavior.peekHeight =
-                StyleUtil.readDimenAttrValue(view.context, R.attr.actionBarSize).toInt()
+                StyleUtil.resolveDimen(view.context, R.attr.actionBarSize).toInt()
         }
 
         bottom_sheet_current_song_queue.touchCallback =
