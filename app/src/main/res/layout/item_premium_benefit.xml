@@ -11,15 +11,19 @@
     <ImageView
         android:id="@+id/imv_benefit_icon"
         android:layout_width="16dp"
-        android:layout_height="16dp"/>
+        android:layout_height="16dp"
+        android:layout_marginStart="16dp"/>
 
     <TextView
         android:id="@+id/tv_benefit_text"
         android:layout_width="0dp"
         android:layout_weight="1"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:minHeight="48dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:minHeight="40dp"
         android:gravity="start|center_vertical"
         android:textAppearance="?textAppearanceListItem"
         tools:text="Benefit" />
