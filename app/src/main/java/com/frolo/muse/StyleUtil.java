@@ -1,6 +1,7 @@
 package com.frolo.muse;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.util.TypedValue;
 
@@ -9,7 +10,7 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
-import androidx.core.content.ContextCompat;
+import androidx.appcompat.content.res.AppCompatResources;
 
 
 /**
@@ -24,6 +25,21 @@ public final class StyleUtil {
         final TypedValue typedValue = new TypedValue();
         context.getTheme().resolveAttribute(attrId, typedValue, true);
         return typedValue.data;
+    }
+
+    @Nullable
+    public static ColorStateList readColorStateListAttrValue(@NonNull Context context, @AttrRes int attrId) {
+        final TypedValue typedValue = new TypedValue();
+        if (!context.getTheme().resolveAttribute(attrId, typedValue, false)) {
+            // Failed to resolve the attribute, returning null
+            return null;
+        }
+        if (typedValue.type >= TypedValue.TYPE_FIRST_COLOR_INT &&
+                typedValue.type <= TypedValue.TYPE_LAST_COLOR_INT) {
+            return ColorStateList.valueOf(typedValue.data);
+        } else {
+            return AppCompatResources.getColorStateList(context, typedValue.data);
+        }
     }
 
     @StyleRes
@@ -43,7 +59,7 @@ public final class StyleUtil {
     public static Drawable readDrawableAttrValue(@NonNull Context context, @AttrRes int attrId) {
         final TypedValue typedValue = new TypedValue();
         context.getTheme().resolveAttribute(attrId, typedValue, true);
-        return ContextCompat.getDrawable(context, typedValue.resourceId);
+        return AppCompatResources.getDrawable(context, typedValue.resourceId);
     }
 
     public static boolean readBooleanAttrValue(@NonNull Context context, @AttrRes int attrId) {

@@ -1,6 +1,7 @@
 package com.frolo.muse;
 
 import android.content.Context;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
@@ -62,6 +63,10 @@ public final class Screen {
         }
         windowManager.getDefaultDisplay().getMetrics(metrics);
         return metrics.widthPixels;
+    }
+
+    public static boolean isLandscape(@NonNull Context context) {
+        return context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
     }
 
     private Screen() {

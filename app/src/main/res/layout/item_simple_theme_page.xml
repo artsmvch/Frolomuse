@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="8dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="2dp"
+        app:cardMaxElevation="4dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:minHeight="96dp">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/imv_primary_color"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintWidth_percent="0.8"
+                android:id="@+id/imv_window_background"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:scaleType="centerCrop"
+                tools:src="@color/md_red_500"/>
+
+            <com.google.android.material.imageview.ShapeableImageView
+                app:layout_constraintStart_toEndOf="@id/imv_window_background"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintWidth_percent="0.2"
+                android:id="@+id/imv_primary_color"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                tools:src="@color/md_blue_700"/>
+
+            <TextView
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/fab_button"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintWidth_default="wrap"
+                android:id="@+id/tv_theme_name"
+                android:layout_width="0dp"
+                android:layout_margin="8dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:maxLines="4"
+                android:ellipsize="end"
+                android:textSize="15sp"
+                android:textAppearance="?textAppearanceListItem"
+                tools:text="The greatest theme"/>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                app:layout_constraintStart_toStartOf="@id/imv_primary_color"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/imv_primary_color"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:id="@+id/fab_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:fabSize="mini"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/imv_preview_pro_badge"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_gravity="end|top"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="4dp"
+        app:srcCompat="@drawable/ic_pro_badge_36"
+        android:visibility="gone"
+        android:elevation="10dp"
+        tools:visibility="visible"/>
+</FrameLayout>

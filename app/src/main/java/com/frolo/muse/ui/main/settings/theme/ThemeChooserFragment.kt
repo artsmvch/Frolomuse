@@ -6,13 +6,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import androidx.lifecycle.LifecycleOwner
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.viewpager2.widget.ViewPager2
+import com.bumptech.glide.Glide
 import com.frolo.muse.R
+import com.frolo.muse.Screen
 import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.model.Theme
+import com.frolo.muse.repository.Preferences
 import com.frolo.muse.ui.ThemeHandler
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.base.NoClipping
@@ -20,7 +25,9 @@ import com.frolo.muse.ui.base.setupNavigation
 import kotlinx.android.synthetic.main.fragment_theme_chooser.*
 
 
-class ThemeChooserFragment : BaseFragment(), NoClipping, ThemePageFragment.ThemePageCallback {
+class ThemeChooserFragment : BaseFragment(), NoClipping, ThemePageCallback {
+
+    private val preferences: Preferences by prefs()
 
     private val viewModel: ThemeChooserViewModel by viewModel()
 
@@ -42,11 +49,28 @@ class ThemeChooserFragment : BaseFragment(), NoClipping, ThemePageFragment.Theme
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupNavigation(tb_actions)
 
-        vp_themes.apply {
-            ThemePageCarouselHelper.setup(this)
-            adapter = ThemePageAdapter(this@ThemeChooserFragment)
-            registerOnPageChangeCallback(themePageCallback)
-            requestTransform()
+        val isLandscape = Screen.isLandscape(view.context)
+
+        if (isLandscape) {
+            rv_themes.layoutManager = GridLayoutManager(
+                    view.context, 1, GridLayoutManager.HORIZONTAL, false)
+            rv_themes.adapter = SimpleThemePageAdapter(
+                currentTheme = preferences.theme,
+                requestManager = Glide.with(this),
+                callback = this
+            )
+            rv_themes.overScrollMode = View.OVER_SCROLL_NEVER
+            rv_themes.isVisible = true
+            group_pager.isVisible = false
+        } else {
+            vp_themes.apply {
+                ThemePageCarouselHelper.setup(this)
+                adapter = ThemePageAdapter(this@ThemeChooserFragment)
+                registerOnPageChangeCallback(themePageCallback)
+                requestTransform()
+            }
+            rv_themes.isVisible = false
+            group_pager.isVisible = true
         }
     }
 
@@ -106,21 +130,35 @@ class ThemeChooserFragment : BaseFragment(), NoClipping, ThemePageFragment.Theme
         }
 
         isLoading.observe(owner) { isLoading ->
+            val isLandscape = Screen.isLandscape(requireContext())
             if (isLoading == true) {
-                group_pager.visibility = View.INVISIBLE
+                if (isLandscape) {
+                    rv_themes.visibility = View.INVISIBLE
+                } else {
+                    group_pager.visibility = View.INVISIBLE
+                }
                 progress_bar.visibility = View.VISIBLE
             } else {
-                group_pager.visibility = View.VISIBLE
+                if (isLandscape) {
+                    rv_themes.visibility = View.VISIBLE
+                } else {
+                    group_pager.visibility = View.VISIBLE
+                }
                 progress_bar.visibility = View.GONE
             }
         }
 
         themeItems.observe(owner) { items ->
-            (vp_themes.adapter as? ThemePageAdapter)?.pages = items.orEmpty()
-            // Restore the position if needed
-            lastKnownPagerPosition?.also { targetPosition ->
-                lastKnownPagerPosition = null
-                vp_themes.setCurrentItem(targetPosition, false)
+            val isLandscape = Screen.isLandscape(requireContext())
+            if (isLandscape) {
+                (rv_themes.adapter as? SimpleThemePageAdapter)?.pages = items.orEmpty()
+            } else {
+                (vp_themes.adapter as? ThemePageAdapter)?.pages = items.orEmpty()
+                // Restore the position if needed
+                lastKnownPagerPosition?.also { targetPosition ->
+                    lastKnownPagerPosition = null
+                    vp_themes.setCurrentItem(targetPosition, false)
+                }
             }
         }
 

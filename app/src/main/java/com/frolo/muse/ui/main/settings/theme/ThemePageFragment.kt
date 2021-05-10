@@ -126,11 +126,6 @@ class ThemePageFragment : BaseFragment() {
             .start()
     }
 
-    interface ThemePageCallback {
-        fun onProBadgeClick(page: ThemePage)
-        fun onApplyThemeClick(page: ThemePage)
-    }
-
     companion object {
         private const val ARG_THEME_PAGE = "theme_page"
 
