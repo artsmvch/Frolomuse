@@ -65,15 +65,12 @@ class BillingViewModel @Inject constructor(
                 isPremiumPurchased == false && hasNonEmptyParams != true
             }
 
-    private val _showPremiumBenefitsEvent = SingleLiveEvent<Unit>()
-    val showPremiumBenefitsEvent: LiveData<Unit> get() = _showPremiumBenefitsEvent
-
     private val _notifyPremiumProductConsumedEvent = SingleLiveEvent<Unit>()
     val notifyPremiumProductConsumedEvent: LiveData<Unit> get() = _notifyPremiumProductConsumedEvent
 
     fun onBuyPremiumPreferenceClicked() {
         eventLogger.logProductOffered(ProductId.PREMIUM, ProductOfferUiElementSource.SETTINGS)
-        _showPremiumBenefitsEvent.call()
+        navigator.offerToBuyPremium()
     }
 
     fun onBuyPremiumClicked() {

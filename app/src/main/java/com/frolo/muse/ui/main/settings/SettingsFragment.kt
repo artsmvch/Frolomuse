@@ -254,10 +254,6 @@ class SettingsFragment : PreferenceFragmentCompat(),
             }
         }
 
-        showPremiumBenefitsEvent.observe(owner) {
-            showPremiumBenefitsDialog()
-        }
-
         notifyPremiumProductConsumedEvent.observe(owner) {
             Toast.makeText(requireContext(), "Consumed", Toast.LENGTH_SHORT).show()
         }
@@ -265,11 +261,6 @@ class SettingsFragment : PreferenceFragmentCompat(),
 
     override fun onBuyPremiumClick() {
         billingViewModel.onBuyPremiumClicked()
-    }
-
-    private fun showPremiumBenefitsDialog() {
-        val dialog = BuyPremiumDialog.newInstance()
-        dialog.show(childFragmentManager, TAG_BUY_PREMIUM)
     }
 
     override fun onTimeSelected(hours: Int, minutes: Int, seconds: Int) {

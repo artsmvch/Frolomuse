@@ -360,7 +360,6 @@ class MainActivity : PlayerHostActivity(),
     override fun pushFragment(newFragment: Fragment) {
         fragNavController?.doIfStateNotSaved {
             pushFragment(newFragment)
-            // TODO: do we really need to collapse it?
             collapseSlidingPlayer()
         }
     }
@@ -646,6 +645,9 @@ class MainActivity : PlayerHostActivity(),
     }
 
     fun expandSlidingPlayer() {
+        fragNavController?.doIfStateNotSaved {
+            clearDialogFragment()
+        }
         BottomSheetBehavior.from(sliding_player_layout).state = BottomSheetBehavior.STATE_EXPANDED
     }
 
