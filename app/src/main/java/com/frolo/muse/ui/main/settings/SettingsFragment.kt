@@ -249,7 +249,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
 
         isPlaybackFadingProBadged.observeNonNull(owner) { isBadged ->
             val context = requireContext()
-            playbackFadingPreference?.icon = AppCompatResources.getDrawable(context, R.drawable.pref_ic_fading_outline_28)?.let { drawable ->
+            playbackFadingPreference?.icon = AppCompatResources.getDrawable(context, R.drawable.pref_ic_fading_outline_24)?.let { drawable ->
                 if (isBadged) ProBadgedDrawable(context, drawable) else drawable
             }
         }

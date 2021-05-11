@@ -12,65 +12,65 @@
             android:summary="@string/buy_premium_desc"/>
 
         <Preference
-            android:icon="@drawable/pref_ic_fading_outline_28"
+            android:icon="@drawable/pref_ic_fading_outline_24"
             android:key="playback_fading"
             android:title="@string/playback_fading"
             android:summary="@string/playback_fading_desc"/>
 
         <CheckBoxPreference
-            android:icon="@drawable/pref_ic_headphones_pause_outlined_28"
+            android:icon="@drawable/pref_ic_headphones_pause_outlined_24"
             android:key="pause_playback"
             android:title="@string/pause_playback"
             android:summary="@string/pause_when_headphones_are_disconnected"
             android:defaultValue="false"/>
 
         <CheckBoxPreference
-            android:icon="@drawable/pref_ic_headphones_play_outlined_28"
+            android:icon="@drawable/pref_ic_headphones_play_outlined_24"
             android:key="resume_playback"
             android:title="@string/resume_playback"
             android:summary="@string/resume_when_headphones_are_connected"
             android:defaultValue="false"/>
 
         <Preference
-            android:icon="@drawable/pref_ic_media_library_outlined_28"
+            android:icon="@drawable/pref_ic_media_library_outlined_24"
             android:key="library_sections"
             android:title="@string/library_sections"
             android:summary="@string/library_sections_desc"/>
 
         <CheckBoxPreference
-            android:icon="@drawable/pref_ic_album_grid_outlined_28"
+            android:icon="@drawable/pref_ic_album_grid_outlined_24"
             android:key="album_grid"
             android:title="@string/album_grid"
             android:summary="@string/show_album_grid"
             android:defaultValue="false"/>
 
         <Preference
-            android:icon="@drawable/pref_ic_theme_outlined_28"
+            android:icon="@drawable/pref_ic_theme_outlined_24"
             android:key="theme"
             android:title="@string/app_theme"
             android:summary="@string/choose_theme"
             android:defaultValue="false"/>
 
         <Preference
-            android:icon="@drawable/pref_ic_timer_outlined_28"
+            android:icon="@drawable/pref_ic_sleep_timer_outlined_24"
             android:key="sleep_timer"
             android:title="@string/sleep_timer"
             android:summary="@string/sleep_time_description"/>
 
         <Preference
-            android:icon="@drawable/pref_ic_hidden_files_outlined_28"
+            android:icon="@drawable/pref_ic_hidden_files_outlined_24"
             android:key="hidden_files"
             android:title="@string/hidden_files"
             android:summary="@string/hidden_files_desc"/>
 
         <Preference
-            android:icon="@drawable/pref_ic_exclude_short_songs_outlined_28"
+            android:icon="@drawable/pref_ic_exclude_short_songs_outlined_24"
             android:key="exclude_short_songs"
             android:title="@string/exclude_short_songs"
             android:summary="@string/exclude_short_songs_desc"/>
 
         <Preference
-            android:icon="@drawable/pref_ic_scan_file_outlined_28"
+            android:icon="@drawable/pref_ic_scan_file_outlined_24"
             android:key="rescan_media_library"
             android:title="@string/rescan_media_library"
             android:summary="@string/rescan_media_library_desc"/>
@@ -80,32 +80,31 @@
         android:title="@string/about">
 
         <Preference
-            android:icon="@drawable/pref_ic_copyright_outlined_28"
+            android:icon="@drawable/pref_ic_copyright_outlined_24"
             android:key="licenses"
             android:title="@string/licenses"
             android:summary="@string/third_part_libs"
             android:defaultValue="false"/>
 
         <Preference
-            android:icon="@drawable/pref_ic_rate_outlined_28"
+            android:icon="@drawable/pref_ic_rate_outlined_24"
             android:key="rate_this_app"
             android:title="@string/rate_this_app"
             android:summary="@string/rate_this_app_if_you_want"/>
 
         <Preference
-            android:icon="@drawable/pref_ic_share_app_outlined_28"
+            android:icon="@drawable/pref_ic_share_app_outlined_24"
             android:key="share_this_app"
             android:title="@string/share_this_app"
             android:summary="@string/share_this_app_if_you_want"/>
 
         <Preference
-            android:icon="@drawable/pref_ic_translations_outlined_28"
             android:key="help_with_translations"
             android:title="@string/help_with_translations"
             android:summary="@string/help_with_translations_desc"/>
 
         <Preference
-            android:icon="@drawable/pref_ic_info_outlined_28"
+            android:icon="@drawable/pref_ic_info_outlined_24"
             android:key="version"
             android:title="@string/version"
             android:defaultValue="false"/>
@@ -116,7 +115,6 @@
         android:title="Debug">
 
         <Preference
-            android:icon="@drawable/pref_ic_journal_outlined_28"
             android:key="player_journal"
             android:title="@string/player_journal"
             android:summary="@string/player_journal_desc"/>
