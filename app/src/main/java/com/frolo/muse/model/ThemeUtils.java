@@ -25,7 +25,7 @@ public final class ThemeUtils {
             case DARK_PURPLE:           return R.style.Base_AppTheme_Dark_Purple;
             case DARK_ORANGE:           return R.style.Base_AppTheme_Dark_Yellow;
             case DARK_GREEN:            return R.style.Base_AppTheme_Dark_Green;
-            case DARK_FANCY:            return R.style.Base_AppTheme_Dark_Fancy;
+            case DARK_RED:              return R.style.Base_AppTheme_Dark_Red;
             default:                    return null;
         }
     }
@@ -41,7 +41,7 @@ public final class ThemeUtils {
             case DARK_PURPLE:           return R.string.dark_purple_theme;
             case DARK_ORANGE:           return R.string.dark_orange_theme;
             case DARK_GREEN:            return R.string.dark_green_theme;
-            case DARK_FANCY:            return R.string.fancy_theme;
+            case DARK_RED:              return R.string.dark_red_theme;
             default:                    return null;
         }
     }

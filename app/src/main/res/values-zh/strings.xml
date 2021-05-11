@@ -183,7 +183,7 @@
     <string name="version">應用版本</string>
     <string name="licenses">許可證</string>
 
-    <string name="choose_theme">選擇主題</string>
+    <string name="app_theme_desc">選擇主題</string>
     <string name="light_blue_theme">淺藍色主題</string>
     <string name="light_pink_theme">淺粉紅色主題</string>
     <string name="dark_blue_theme">深藍色主題</string>

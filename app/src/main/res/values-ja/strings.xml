@@ -183,7 +183,7 @@
     <string name="version">アプリケーションのバージョン</string>
     <string name="licenses">ライセンス</string>
 
-    <string name="choose_theme">テーマを選択</string>
+    <string name="app_theme_desc">テーマを選択</string>
     <string name="light_blue_theme">水色のテーマ</string>
     <string name="light_pink_theme">淡いピンクのテーマ</string>
     <string name="dark_blue_theme">ダークブルーのテーマ</string>

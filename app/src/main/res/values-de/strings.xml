@@ -189,7 +189,11 @@
     <string name="version">Anwendungsversion</string>
     <string name="licenses">Lizenzen</string>
 
-    <string name="choose_theme">Thema wählen</string>
+    <string name="app_theme_desc">Wählen Sie ein Thema für die App aus und wenden Sie es an</string>
+    <string name="page_s_of_s">%d von %d</string>
+    <string name="apply_theme">Thema anwenden</string>
+    <string name="applied">Angewandt</string>
+    <string name="dark_red_theme">Dunkelrotes Thema</string>
     <string name="light_blue_theme">Hellblaues Thema</string>
     <string name="light_pink_theme">Hellrosa Thema</string>
     <string name="dark_blue_theme">Dunkelblaues Thema</string>
@@ -243,6 +247,7 @@
     <string name="such_name_already_exists">Ein solcher Name existiert bereits</string>
 
     <!--AudioFx-->
+    <string name="audio_fx_switch_tooltip">Aktivieren Sie diese Option, um Audioeffekte zu aktivieren</string>
     <string name="no_audio_effects_available">Keine Audioeffekte</string>
     <string name="no_audio_effects_available_desc">
         Wir konnten keinen Audioeffekt finden. Bitte aktivieren Sie den vom Android-Betriebssystem bereitgestellten Standard-Equalizer
@@ -266,6 +271,7 @@
     <string name="playback_params">Wiedergabe-Parameter</string>
     <string name="speed">Geschwindigkeit</string>
     <string name="pitch">Tonhöhe</string>
+    <string name="reset_playback_params_when_switching_song">Beim Umschalten zwischen den Songs auf die normalen Einstellungen zurücksetzen</string>
     <string name="normalize">Normalisieren</string>
 
     <!--media file editor-->
@@ -363,4 +369,20 @@
     <!--Lyrics-->
     <string name="view_lyrics">Texte anzeigen</string>
     <string name="lyrics_not_tap_to_write">Text nicht gefunden, klicken Sie hier, um ihn selbst zu schreiben</string>
+
+    <!--Premium-->
+    <string name="buy_premium">Premium kaufen</string>
+    <string name="buy_premium_desc">Werbung entfernen und Premium-Funktionen freischalten</string>
+    <string name="premium_dialog_title">Premium</string>
+    <string-array name="premium_benefits">
+        <item>Alle Werbung entfernen</item>
+        <item>Die Überblendung der Wiedergabe entsperren</item>
+        <item>Wiedergabegeschwindigkeit und Tonhöhe entsperren</item>
+        <item>Alle Themen entsperren</item>
+        <item>Vollzugriff auf alle neuen Funktionen in zukünftigen Updates</item>
+    </string-array>
+    <string name="premium_benefit_support_dev">Entwickler unterstützen</string>
+    <string name="one_time_purchase">Einmaliger Kauf · Kaufen und für immer nutzen</string>
+    <string name="buy_premium_for_s">Kaufen für %s</string>
+    <string name="buy">Kaufen</string>
 </resources>

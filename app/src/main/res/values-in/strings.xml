@@ -183,7 +183,7 @@
     <string name="version">Versi aplikasi</string>
     <string name="licenses">Lisensi</string>
 
-    <string name="choose_theme">Pilih Tema</string>
+    <string name="app_theme_desc">Pilih Tema</string>
     <string name="light_blue_theme">Tema biru muda</string>
     <string name="light_pink_theme">Tema merah muda terang</string>
     <string name="dark_blue_theme">Tema biru gelap</string>

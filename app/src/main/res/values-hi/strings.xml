@@ -189,7 +189,7 @@
     <string name="version">एप्लिकेशन वर्जन</string>
     <string name="licenses">लाइसेंस</string>
 
-    <string name="choose_theme">थीम चुनें</string>
+    <string name="app_theme_desc">थीम चुनें</string>
     <string name="light_blue_theme">हल्का नीला विषय</string>
     <string name="light_pink_theme">हल्का गुलाबी विषय</string>
     <string name="dark_blue_theme">डार्क ब्लू थीम</string>

@@ -189,7 +189,7 @@
     <string name="version">Versão do aplicativo</string>
     <string name="licenses">Licenças</string>
 
-    <string name="choose_theme">Escolha o tema</string>
+    <string name="app_theme_desc">Escolha o tema</string>
     <string name="light_blue_theme">Tema azul claro</string>
     <string name="light_pink_theme">Tema rosa claro</string>
     <string name="dark_blue_theme">Tema azul escuro</string>

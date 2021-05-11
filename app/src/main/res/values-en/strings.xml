@@ -189,7 +189,11 @@
     <string name="version">Application version</string>
     <string name="licenses">Licenses</string>
 
-    <string name="choose_theme">Choose Theme</string>
+    <string name="app_theme_desc">Select and apply a theme for the app</string>
+    <string name="page_s_of_s">%d of %d</string>
+    <string name="apply_theme">Apply Theme</string>
+    <string name="applied">Applied</string>
+    <string name="dark_red_theme">Dark red theme</string>
     <string name="light_blue_theme">Light blue theme</string>
     <string name="light_pink_theme">Light pink theme</string>
     <string name="dark_blue_theme">Dark blue theme</string>
@@ -243,6 +247,7 @@
     <string name="such_name_already_exists">Such name already exists</string>
 
     <!--AudioFx-->
+    <string name="audio_fx_switch_tooltip">Toggle to enable audio effects</string>
     <string name="no_audio_effects_available">No audio effects</string>
     <string name="no_audio_effects_available_desc">
         We could not find any audio effect available. Please enable the default equalizer provided by Android OS
@@ -266,6 +271,7 @@
     <string name="playback_params">Playback Params</string>
     <string name="speed">Speed</string>
     <string name="pitch">Pitch</string>
+    <string name="reset_playback_params_when_switching_song">Reset settings when switching songs</string>
     <string name="normalize">Normalize</string>
 
     <!--media file editor-->
@@ -363,4 +369,20 @@
     <!--Lyrics-->
     <string name="view_lyrics">View lyrics</string>
     <string name="lyrics_not_tap_to_write">Text not found, click here to write it yourself</string>
+
+    <!--Premium-->
+    <string name="buy_premium">Buy premium</string>
+    <string name="buy_premium_desc">Remove ads and unlock premium features</string>
+    <string name="premium_dialog_title">Premium</string>
+    <string-array name="premium_benefits">
+        <item>Remove all ads</item>
+        <item>Unlock playback crossfade</item>
+        <item>Unlock playback speed and pitch</item>
+        <item>Unlock all themes</item>
+        <item>Full access to all new features in future updates</item>
+    </string-array>
+    <string name="premium_benefit_support_dev">Support developer</string>
+    <string name="one_time_purchase">One time purchase · buy and use forever</string>
+    <string name="buy_premium_for_s">Buy for %s</string>
+    <string name="buy">Buy</string>
 </resources>

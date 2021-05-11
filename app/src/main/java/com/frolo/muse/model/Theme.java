@@ -13,7 +13,7 @@ public enum Theme {
     DARK_ORANGE(25, true),
     DARK_GREEN(26, true),
     LIGHT_PINK(27, false),
-    DARK_FANCY(28, true)
+    DARK_RED(28, true)
     ;
 
     public static Theme findById(int id) {

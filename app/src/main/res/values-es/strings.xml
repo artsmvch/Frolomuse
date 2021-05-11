@@ -189,7 +189,11 @@
     <string name="version">Versión de la aplicación</string>
     <string name="licenses">Licencias</string>
 
-    <string name="choose_theme">Escoge un tema</string>
+    <string name="app_theme_desc">Seleccionar y aplicar un tema para la aplicación</string>
+    <string name="page_s_of_s">%d de %d</string>
+    <string name="apply_theme">Aplicar tema</string>
+    <string name="applied">Aplicado</string>
+    <string name="dark_red_theme">Tema rojo oscuro</string>
     <string name="light_blue_theme">Tema azul claro</string>
     <string name="light_pink_theme">Tema rosa claro</string>
     <string name="dark_blue_theme">Tema azul oscuro</string>
@@ -243,6 +247,7 @@
     <string name="such_name_already_exists">Tal nombre ya existe</string>
 
     <!--AudioFx-->
+    <string name="audio_fx_switch_tooltip">Alternar para habilitar efectos de audio</string>
     <string name="no_audio_effects_available">Sin efectos de audio</string>
     <string name="no_audio_effects_available_desc">
         No pudimos encontrar ningún efecto de audio disponible. Habilite el ecualizador predeterminado proporcionado por el sistema operativo Android
@@ -266,6 +271,7 @@
     <string name="playback_params">Parámetros de reproducción</string>
     <string name="speed">Velocidad</string>
     <string name="pitch">Tono</string>
+    <string name="reset_playback_params_when_switching_song">Restablecer la configuración al cambiar de canción</string>
     <string name="normalize">Normalizar</string>
 
     <!--media file editor-->
@@ -363,4 +369,20 @@
     <!--Lyrics-->
     <string name="view_lyrics">Ver letras</string>
     <string name="lyrics_not_tap_to_write">Texto no encontrado, haga clic aquí para escribirlo usted mismo</string>
+
+    <!--Premium-->
+    <string name="buy_premium">Comprar premium</string>
+    <string name="buy_premium_desc">Eliminar anuncios y desbloquear funciones premium</string>
+    <string name="premium_dialog_title">Premium</string>
+    <string-array name="premium_benefits">
+        <item>Quita todos los anuncios</item>
+        <item>Desbloquea reproducción de fundido cruzado</item>
+        <item>Desbloquea la velocidad y el tono de reproducción</item>
+        <item>Desbloquea todos los temas</item>
+        <item>Acceso completo a todas las funciones nuevas en futuras actualizaciones</item>
+    </string-array>
+    <string name="premium_benefit_support_dev">Apoya al desarrollador</string>
+    <string name="one_time_purchase">Compra única · compra y usa para siempre</string>
+    <string name="buy_premium_for_s">Comprar por %s</string>
+    <string name="buy">Comprar</string>
 </resources>

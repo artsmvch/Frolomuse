@@ -71,7 +71,7 @@ class ThemeChooserViewModel @Inject constructor(
         )
 
         val premiumThemes = listOf(
-            Theme.DARK_FANCY
+            Theme.DARK_RED
         )
 
         val source1 = getAlbumForPreview()
@@ -113,7 +113,7 @@ class ThemeChooserViewModel @Inject constructor(
                     when (page.theme) {
                         Theme.LIGHT_BLUE -> 0
                         Theme.DARK_BLUE -> 100
-                        Theme.DARK_FANCY -> 200
+                        Theme.DARK_RED -> 200
                         Theme.LIGHT_PINK -> 300
                         Theme.DARK_BLUE_ESPECIAL -> 400
                         Theme.DARK_PURPLE -> 500
@@ -158,6 +158,7 @@ class ThemeChooserViewModel @Inject constructor(
         // The timeout for this check is 5 seconds, otherwise
         // we consider it not purchased.
         // In case of an error, we also consider it not purchased.
+        // TODO: timeout not working
         return billingManager.isProductPurchased(productId = ProductId.PREMIUM, forceCheckFromApi = true)
             .timeout(5, TimeUnit.SECONDS, Flowable.just(false))
             .observeOn(schedulerProvider.main())

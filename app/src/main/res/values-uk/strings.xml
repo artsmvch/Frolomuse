@@ -195,7 +195,7 @@
     <string name="version">Версія програми</string>
     <string name="licenses">Ліцензії</string>
 
-    <string name="choose_theme">Виберіть Тема</string>
+    <string name="app_theme_desc">Виберіть Тема</string>
     <string name="light_blue_theme">Світло-блакитна тема</string>
     <string name="light_pink_theme">Світло-рожева тема</string>
     <string name="dark_blue_theme">Темно-синя тема</string>

@@ -19,7 +19,7 @@ fun EventLogger.logAppLaunched(launchCount: Int) {
 
 fun EventLogger.logThemeChanged(theme: Theme?) {
     val paramValue = when (theme) {
-        Theme.DARK_FANCY ->         "dark_fancy"
+        Theme.DARK_RED ->           "dark_red"
         Theme.DARK_BLUE ->          "dark_blue"
         Theme.DARK_BLUE_ESPECIAL -> "dark_blue_especial"
         Theme.DARK_PURPLE ->        "dark_purple"

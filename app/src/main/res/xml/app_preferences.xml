@@ -49,7 +49,7 @@
             android:icon="@drawable/pref_ic_theme_outlined_24"
             android:key="theme"
             android:title="@string/app_theme"
-            android:summary="@string/choose_theme"
+            android:summary="@string/app_theme_desc"
             android:defaultValue="false"/>
 
         <Preference
