@@ -15,12 +15,9 @@ import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.frolo.muse.Logger
-import com.frolo.muse.R
-import com.frolo.muse.StyleUtil
+import com.frolo.muse.*
 import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
-import com.frolo.muse.dp2px
 import com.frolo.muse.glide.GlideOptions.bitmapTransform
 import com.frolo.muse.model.preset.Preset
 import com.frolo.muse.model.reverb.Reverb
@@ -34,6 +31,7 @@ import com.frolo.muse.ui.main.audiofx.preset.PresetSavedEvent
 import com.frolo.muse.views.observeSelection
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import it.sephiroth.android.library.tooltip.Tooltip
 import jp.wasabeef.glide.transformations.BlurTransformation
 import kotlinx.android.synthetic.main.fragment_audio_fx.*
 import kotlinx.android.synthetic.main.include_audio_fx_content.*
@@ -61,6 +59,8 @@ class AudioFxFragment: BaseFragment(), NoClipping {
     private lateinit var presetSaveEvent: PresetSavedEvent
 
     private var blurredSnapshotDisposable: Disposable? = null
+
+    private var switchTooltip: Tooltip.TooltipView? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -141,7 +141,14 @@ class AudioFxFragment: BaseFragment(), NoClipping {
     }
 
     override fun onDestroyView() {
+        // Clear snapshot disposable
         blurredSnapshotDisposable?.dispose()
+        blurredSnapshotDisposable = null
+
+        // Clear tooltip
+        switchTooltip?.remove()
+        switchTooltip = null
+
         super.onDestroyView()
     }
 
@@ -175,9 +182,63 @@ class AudioFxFragment: BaseFragment(), NoClipping {
         }
     }
 
+    private fun scheduleSwitchTooltip() {
+        val switch: View = tb_actions.menu
+            .findItem(R.id.action_switch_audio_fx)
+            ?.actionView ?: return
+
+        switch.doOnLayout {
+            // Check if fragment's view is created
+            view ?: return@doOnLayout
+            showSwitchTooltip(it)
+        }
+    }
+
+    private fun showSwitchTooltip(switchView: View) {
+        view ?: return
+
+        if (switchTooltip != null && switchTooltip?.isShown == true) {
+            // Is showing already
+            return
+        }
+
+        val callback = object : Tooltip.Callback {
+            override fun onTooltipClose(p0: Tooltip.TooltipView?, p1: Boolean, p2: Boolean) = Unit
+            override fun onTooltipFailed(p0: Tooltip.TooltipView?) = Unit
+            override fun onTooltipShown(p0: Tooltip.TooltipView?) = Unit
+            override fun onTooltipHidden(p0: Tooltip.TooltipView?) {
+                this@AudioFxFragment.switchTooltip == null
+            }
+        }
+
+        val builder = Tooltip.Builder()
+            .maxWidth((Screen.getScreenWidth(switchView.context) * 0.8f).toInt())
+            .anchor(switchView, Tooltip.Gravity.BOTTOM)
+            .withArrow(true)
+            .closePolicy(Tooltip.ClosePolicy.TOUCH_ANYWHERE_CONSUME, 0)
+            .showDelay(300L)
+            .fadeDuration(100L)
+            .floatingAnimation(Tooltip.AnimationBuilder.DEFAULT)
+            .text(getString(R.string.audio_fx_switch_tooltip))
+            .fitToScreen(true)
+            .withCallback(callback)
+            .build()
+
+        val tooltipView = Tooltip.make(switchView.context, builder)
+
+        tooltipView.show()
+
+        this.switchTooltip?.hide()
+        this.switchTooltip = tooltipView
+    }
+
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
         error.observeNonNull(owner) { err ->
             toastError(err)
+        }
+
+        showTooltipEvent.observe(owner) {
+            scheduleSwitchTooltip()
         }
 
         isPlaybackParamsProBadged.observeNonNull(owner) { isBadged ->

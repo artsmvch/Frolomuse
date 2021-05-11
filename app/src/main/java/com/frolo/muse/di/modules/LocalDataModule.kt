@@ -197,4 +197,10 @@ class LocalDataModule {
     fun provideSoundResolver(): SoundResolver {
         return BASSSoundResolverImpl(BuildConfig.SOUND_FRAME_GAIN_COUNT)
     }
+
+    @Singleton
+    @Provides
+    fun provideTooltipManager(context: Context): TooltipManager {
+        return TooltipManagerImpl(context)
+    }
 }

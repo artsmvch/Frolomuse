@@ -250,6 +250,7 @@
     <string name="such_name_already_exists">Such name already exists</string>
 
     <!--AudioFx-->
+    <string name="audio_fx_switch_tooltip">Toggle to enable audio effects</string>
     <string name="no_audio_effects_available">No audio effects</string>
     <string name="no_audio_effects_available_desc">
         We could not find any audio effect available. Please enable the default equalizer provided by Android OS

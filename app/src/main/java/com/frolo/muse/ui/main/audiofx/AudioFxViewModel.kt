@@ -13,6 +13,7 @@ import com.frolo.muse.logger.ProductOfferUiElementSource
 import com.frolo.muse.logger.logCustomPresetDeleted
 import com.frolo.muse.logger.logProductOffered
 import com.frolo.muse.model.ShortRange
+import com.frolo.muse.model.TooltipId
 import com.frolo.muse.model.VisualizerRendererType
 import com.frolo.muse.model.preset.CustomPreset
 import com.frolo.muse.model.preset.Preset
@@ -20,6 +21,7 @@ import com.frolo.muse.model.preset.VoidPreset
 import com.frolo.muse.model.reverb.Reverb
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.repository.PresetRepository
+import com.frolo.muse.repository.TooltipManager
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.base.BaseViewModel
 import io.reactivex.processors.PublishProcessor
@@ -35,6 +37,7 @@ class AudioFxViewModel @Inject constructor(
     private val preferences: Preferences,
     private val navigator: Navigator,
     private val billingManager: BillingManager,
+    private val tooltipManager: TooltipManager,
     private val eventLogger: EventLogger
 ): BaseViewModel(eventLogger) {
 
@@ -193,6 +196,22 @@ class AudioFxViewModel @Inject constructor(
     private val _selectVisualizerRendererTypeEvent = SingleLiveEvent<VisualizerRendererType>()
     val selectVisualizerRendererTypeEvent: LiveData<VisualizerRendererType>
         get() = _selectVisualizerRendererTypeEvent
+
+    private val _showTooltipEvent by lazy {
+        EventLiveData<Unit>().apply {
+            // We only need to show the switch tooltip if the audio fx is not enabled
+            if (!audioFx.isEnabled) {
+                tooltipManager.processTooltip(TooltipId.AUDIO_FX_SWITCH)
+                    .observeOn(schedulerProvider.main())
+                    .subscribeFor("process_audio_fx_switch_tooltip") { canShow ->
+                        if (canShow && !audioFx.isEnabled) {
+                            this.call()
+                        }
+                    }
+            }
+        }
+    }
+    val showTooltipEvent: LiveData<Unit> get() = _showTooltipEvent
 
     //endregion
 
