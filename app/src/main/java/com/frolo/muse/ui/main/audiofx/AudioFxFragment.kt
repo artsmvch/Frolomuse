@@ -1,6 +1,7 @@
 package com.frolo.muse.ui.main.audiofx
 
 import android.content.Context
+import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
@@ -215,13 +216,14 @@ class AudioFxFragment: BaseFragment(), NoClipping {
             .maxWidth((Screen.getScreenWidth(switchView.context) * 0.8f).toInt())
             .anchor(switchView, Tooltip.Gravity.BOTTOM)
             .withArrow(true)
-            .closePolicy(Tooltip.ClosePolicy.TOUCH_ANYWHERE_CONSUME, 0)
+            .closePolicy(Tooltip.ClosePolicy.TOUCH_ANYWHERE_NO_CONSUME, 0)
             .showDelay(300L)
             .fadeDuration(100L)
             .floatingAnimation(Tooltip.AnimationBuilder.DEFAULT)
             .text(getString(R.string.audio_fx_switch_tooltip))
             .fitToScreen(true)
             .withCallback(callback)
+            .typeface(Typeface.DEFAULT)
             .build()
 
         val tooltipView = Tooltip.make(switchView.context, builder)

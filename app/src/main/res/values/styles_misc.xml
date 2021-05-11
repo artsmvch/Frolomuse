@@ -61,4 +61,15 @@
         <item name="android:lineSpacingExtra">0sp</item>
         <item name="android:textSize">12.5sp</item>
     </style>
+
+    <!--Tooltips-->
+    <style name="Tooltip.Default" parent="ToolTipLayoutDefaultStyle">
+        <item name="ttlm_backgroundColor">?colorSecondary</item>
+        <item name="ttlm_cornerRadius">8dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.Tooltip</item>
+    </style>
+
+    <style name="TextAppearance.Tooltip" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:textColor">?colorOnSecondary</item>
+    </style>
 </resources>

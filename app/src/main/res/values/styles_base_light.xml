@@ -27,6 +27,7 @@
         <item name="sliderStyle">@style/Base.AppTheme.Slider.Light</item>
         <item name="cardViewStyle">@style/Base.AppTheme.CardView</item>
         <item name="materialCardViewStyle">@style/Base.AppTheme.CardView</item>
+        <item name="ttlm_defaultStyle">@style/Tooltip.Default</item>
 
         <item name="actionBarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
         <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
