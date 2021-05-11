@@ -7,6 +7,7 @@
         android:title="@string/app_prefs">
 
         <Preference
+            android:icon="@drawable/pref_ic_premium_outlined_24"
             android:key="buy_premium"
             android:title="@string/buy_premium"
             android:summary="@string/buy_premium_desc"/>
