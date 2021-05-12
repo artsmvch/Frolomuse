@@ -1,8 +1,10 @@
 package com.frolo.muse.ui.main.library.search.adapter
 
+import android.graphics.Typeface
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.ColorInt
@@ -10,12 +12,9 @@ import androidx.core.graphics.ColorUtils
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
-import com.frolo.muse.R
-import com.frolo.muse.StyleUtil
+import com.frolo.muse.*
 import com.frolo.muse.model.media.*
 import com.frolo.muse.ui.main.library.base.BaseAdapter
-import com.frolo.muse.dp2px
-import com.frolo.muse.inflateChild
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter
 import kotlinx.android.synthetic.main.item_header.view.*
 import kotlin.properties.Delegates
@@ -93,37 +92,37 @@ class MediaAdapter constructor(
 
     abstract class MediaViewHolder(itemView: View): BaseViewHolder(itemView) {
 
-        @ColorInt
-        private val primarySurfaceColor: Int =
-                StyleUtil.resolveColor(itemView.context, R.attr.colorPrimarySurface)
-
-        @ColorInt
-        private val highlightColor: Int =
-                ColorUtils.setAlphaComponent(primarySurfaceColor, (0.85f * 255).toInt())
-
-        private val highlightSpan = ForegroundColorSpan(highlightColor)
+        @get:ColorInt
+        private val highlightColor: Int by lazy {
+            val textColor = StyleUtil.resolveColor(itemView.context, android.R.attr.textColorPrimary)
+            val accentColor = StyleUtil.resolveColor(itemView.context, R.attr.colorAccent)
+            ColorUtils.compositeColors(accentColor, textColor)
+        }
 
         init {
             itemView.apply {
                 layoutParams = layoutParams.also { params ->
                     if (params is ViewGroup.MarginLayoutParams) {
-                        val margin = 2f.dp2px(context).toInt()
+                        val margin = Screen.dp(context, 2f)
                         params.leftMargin = margin
                         params.topMargin = margin
-                        params.marginEnd = margin
+                        params.rightMargin = margin
                         params.bottomMargin = margin
                     }
                 }
             }
         }
 
-        fun String.highlight(query: String): CharSequence {
-            val i = indexOf(string = query, ignoreCase = true)
-            return if (i >= 0) {
-                val ss = SpannableString(this)
-                ss.setSpan(highlightSpan, i, i + query.length, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
-                return ss
-            } else this
+        fun highlight(text: String, part: String): CharSequence {
+            val index = text.indexOf(string = part, ignoreCase = true)
+            return if (index >= 0) {
+                val spannableString = SpannableString(text)
+                spannableString.setSpan(ForegroundColorSpan(highlightColor),
+                        index, index + part.length, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+                spannableString.setSpan(StyleSpan(Typeface.BOLD),
+                        index, index + part.length, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+                return spannableString
+            } else text
         }
     }
 

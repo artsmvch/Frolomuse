@@ -20,7 +20,7 @@ class PlaylistViewHolder(itemView: View): MediaAdapter.MediaViewHolder(itemView)
         with(itemView) {
             val res = resources
 
-            tv_playlist_name.text = item.getNameString(res).highlight(query)
+            tv_playlist_name.text = highlight(text = item.getNameString(resources), part = query)
             tv_playlist_date_modified.text = item.getDateAddedString(res)
 
             imv_check.setChecked(selected, selectionChanged)

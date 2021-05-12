@@ -29,7 +29,7 @@ class SongViewHolder(itemView: View): MediaAdapter.MediaViewHolder(itemView) {
 
         with(itemView) {
             val res = resources
-            tv_song_name.text = item.getNameString(res).highlight(query)
+            tv_song_name.text = highlight(text = item.getNameString(resources), part = query)
             tv_artist_name.text = item.getAlbumString(res)
             tv_duration.text = item.getDurationString()
 

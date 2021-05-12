@@ -21,7 +21,7 @@ class ArtistViewHolder(itemView: View): MediaAdapter.MediaViewHolder(itemView) {
         with(itemView) {
             val res = resources
 
-            tv_artist_name.text = item.getNameString(res).highlight(query)
+            tv_artist_name.text = highlight(text = item.getNameString(resources), part = query)
             tv_number_of_albums.text = item.getNumberOfAlbumsString(res)
             tv_number_of_tracks.text = item.getNumberOfTracksString(res)
 

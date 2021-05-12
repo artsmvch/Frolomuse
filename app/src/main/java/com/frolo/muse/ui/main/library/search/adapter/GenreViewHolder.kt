@@ -17,8 +17,7 @@ class GenreViewHolder(itemView: View): MediaAdapter.MediaViewHolder(itemView) {
             query: String) {
 
         with(itemView) {
-            val res = resources
-            tv_genre_name.text = item.getNameString(res).highlight(query)
+            tv_genre_name.text = highlight(text = item.getNameString(resources), part = query)
 
             imv_check.setChecked(selected, selectionChanged)
 

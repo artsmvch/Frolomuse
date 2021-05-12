@@ -29,7 +29,7 @@ class AlbumViewHolder(itemView: View): MediaAdapter.MediaViewHolder(itemView) {
                 .error(R.drawable.ic_framed_album)
                 .into(imv_album_art)
 
-            tv_album_name.text = item.getNameString(resources).highlight(query)
+            tv_album_name.text = highlight(text = item.getNameString(resources), part = query)
             tv_artist_name.text = item.getArtistString(resources)
             tv_number_of_tracks.text = item.getNumberOfTracksString(resources)
 
