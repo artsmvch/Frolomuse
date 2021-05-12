@@ -7,6 +7,7 @@ import com.frolo.muse.billing.BillingManager
 import com.frolo.muse.billing.ProductDetails
 import com.frolo.muse.billing.ProductId
 import com.frolo.muse.logger.EventLogger
+import com.frolo.muse.logger.logFailedToGetProductDetails
 import com.frolo.muse.logger.logLaunchedBillingFlow
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.base.BaseViewModel
@@ -28,6 +29,7 @@ class BuyPremiumViewModel @Inject constructor(
                 .observeOn(schedulerProvider.main())
                 .doOnSubscribe { _isLoading.value = true }
                 .doFinally { _isLoading.value = false }
+                .doOnError { eventLogger.logFailedToGetProductDetails(ProductId.PREMIUM) }
                 .subscribeFor { productDetails ->
                     value = productDetails
                 }

@@ -318,6 +318,11 @@ fun EventLogger.logProductOffered(productId: ProductId, uiElementSource: Product
     log("product_offered", params)
 }
 
+fun EventLogger.logFailedToGetProductDetails(productId: ProductId) {
+    val params = Params(productId)
+    log("failed_to_get_product_details", params)
+}
+
 fun EventLogger.logLaunchedBillingFlow(productId: ProductId) {
     log("launched_billing_flow", Params(productId))
 }
