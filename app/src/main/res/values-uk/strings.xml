@@ -195,7 +195,11 @@
     <string name="version">Версія програми</string>
     <string name="licenses">Ліцензії</string>
 
-    <string name="app_theme_desc">Виберіть Тема</string>
+    <string name="app_theme_desc">Вибрати і застосувати тему для додатка</string>
+    <string name="page_s_of_s">%d з %d</string>
+    <string name="apply_theme">Застосувати тему</string>
+    <string name="applied">Застосована</string>
+    <string name="dark_red_theme">Темно-червона тема</string>
     <string name="light_blue_theme">Світло-блакитна тема</string>
     <string name="light_pink_theme">Світло-рожева тема</string>
     <string name="dark_blue_theme">Темно-синя тема</string>
@@ -249,6 +253,7 @@
     <string name="such_name_already_exists">Така назва вже існує</string>
 
     <!--AudioFx-->
+    <string name="audio_fx_switch_tooltip">Увімкніть, щоб активувати звукові ефекти</string>
     <string name="no_audio_effects_available">Звукові ефекти не знайдені</string>
     <string name="no_audio_effects_available_desc">
         Ми не змогли знайти жодного доступного звукового ефекту. Увімкніть еквалайзер за замовчуванням, який надає ОС Android
@@ -272,6 +277,7 @@
     <string name="playback_params">Параметри відтворення</string>
     <string name="speed">Швидкість</string>
     <string name="pitch">Крок</string>
+    <string name="reset_playback_params_when_switching_song">Скидати налаштування під час перемикання пісень</string>
     <string name="normalize">Нормалізувати</string>
 
     <!--media file editor-->
@@ -369,4 +375,20 @@
     <!--Lyrics-->
     <string name="view_lyrics">Переглянути тексти пісень</string>
     <string name="lyrics_not_tap_to_write">Тексту не знайдено, натисніть тут, щоб написати його самостійно</string>
+
+    <!--Premium-->
+    <string name="buy_premium">Купити преміум</string>
+    <string name="buy_premium_desc">Видалити рекламу і розблокувати преміум-функції</string>
+    <string name="premium_dialog_title">Преміум</string>
+    <string-array name="premium_benefits">
+        <item>Видалити всю рекламу</item>
+        <item>Розблокувати загасання відтворення</item>
+        <item>Розблокувати швидкість і тон відтворення</item>
+        <item>Розблокувати всі теми</item>
+        <item>Повний доступ до всіх нових функцій у майбутніх оновленнях</item>
+    </string-array>
+    <string name="premium_benefit_support_dev">Підтримати розробника</string>
+    <string name="one_time_purchase">Одноразова покупка · купити і використовувати назавжди</string>
+    <string name="buy_premium_for_s">Купити за %s</string>
+    <string name="buy">Купити</string>
 </resources>
