@@ -188,7 +188,11 @@
     <string name="version">Uygulama sürümü</string>
     <string name="licenses">Lisanslar</string>
 
-    <string name="app_theme_desc">Temayı Seç</string>
+    <string name="app_theme_desc">Uygulama için bir tema seçin ve uygulayın</string>
+    <string name="page_s_of_s">%d / %d</string>
+    <string name="apply_theme">Temayı Uygula</string>
+    <string name="applied">Uygulamalı</string>
+    <string name="dark_red_theme">Koyu kırmızı tema</string>
     <string name="light_blue_theme">Açık mavi tema</string>
     <string name="light_pink_theme">Açık pembe tema</string>
     <string name="dark_blue_theme">Koyu mavi tema</string>
@@ -242,6 +246,7 @@
     <string name="such_name_already_exists">Böyle bir isim zaten var</string>
 
     <!--AudioFx-->
+    <string name="audio_fx_switch_tooltip">Ses efektlerini etkinleştirmek için geçiş yapın</string>
     <string name="no_audio_effects_available">Ses efekti yok</string>
     <string name="no_audio_effects_available_desc">
         Kullanılabilir herhangi bir ses efekti bulamadık. Lütfen Android işletim sistemi tarafından sağlanan varsayılan ekolayzırı etkinleştirin
@@ -265,6 +270,7 @@
     <string name="playback_params">Oynatma Paramları</string>
     <string name="speed">Hız</string>
     <string name="pitch">Ton</string>
+    <string name="reset_playback_params_when_switching_song">Şarkı değiştirirken ayarları sıfırla</string>
     <string name="normalize">Normalleştirmek</string>
 
     <!--media file editor-->
@@ -362,4 +368,20 @@
     <!--Lyrics-->
     <string name="view_lyrics">Şarkı sözlerini görüntüle</string>
     <string name="lyrics_not_tap_to_write">Metin bulunamadı, kendiniz yazmak için burayı tıklayın</string>
+
+    <!--Premium-->
+    <string name="buy_premium">Premium satın al</string>
+    <string name="buy_premium_desc">Reklamları kaldırın ve premium özelliklerin engelini kaldırın</string>
+    <string name="premium_dialog_title">Premium</string>
+    <string-array name="premium_benefits">
+        <item>Tüm reklamları kaldırma</item>
+        <item>Oynatmanın solmasının kilidini açın</item>
+        <item>Oynatma hızının ve tonunun kilidini açın</item>
+        <item>Tüm temaların kilidini açın</item>
+        <item>Gelecekteki güncellemelerde tüm yeni özelliklere tam erişim</item>
+    </string-array>
+    <string name="premium_benefit_support_dev">Geliştiriciyi destekleyin</string>
+    <string name="one_time_purchase">Tek seferlik satın alma · sonsuza kadar satın alın ve kullanın</string>
+    <string name="buy_premium_for_s">%s için satın al</string>
+    <string name="buy">Satın Al</string>
 </resources>

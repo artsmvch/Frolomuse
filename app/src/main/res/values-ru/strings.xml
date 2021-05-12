@@ -394,7 +394,7 @@
         <item>Полный доступ ко всем новым функциям в будущих обновлениях</item>
     </string-array>
     <string name="premium_benefit_support_dev">Поддержать разработчика</string>
-    <string name="one_time_purchase">Одноразовая покупка · купите и используйте навсегда</string>
+    <string name="one_time_purchase">Одноразовая покупка · купить и использовать навсегда</string>
     <string name="buy_premium_for_s">Купить за %s</string>
     <string name="buy">Купить</string>
 </resources>
