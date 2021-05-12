@@ -113,12 +113,12 @@ class ThemeChooserViewModel @Inject constructor(
                     when (page.theme) {
                         Theme.LIGHT_BLUE -> 0
                         Theme.DARK_BLUE -> 100
-                        Theme.DARK_RED -> 200
-                        Theme.LIGHT_PINK -> 300
-                        Theme.DARK_BLUE_ESPECIAL -> 400
-                        Theme.DARK_PURPLE -> 500
-                        Theme.DARK_ORANGE -> 600
-                        Theme.DARK_GREEN -> 700
+                        Theme.LIGHT_PINK -> 200
+                        Theme.DARK_PURPLE -> 300
+                        Theme.DARK_ORANGE -> 400
+                        Theme.DARK_GREEN -> 500
+                        Theme.DARK_BLUE_ESPECIAL -> 600
+                        Theme.DARK_RED -> 700
                     }
                 }
             }
