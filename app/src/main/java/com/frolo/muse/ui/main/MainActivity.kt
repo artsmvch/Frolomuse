@@ -432,7 +432,7 @@ class MainActivity : PlayerHostActivity(),
                 .build()
 
             rootFragmentListener = object : FragNavController.RootFragmentListener {
-                override val numberOfRootFragments = 5
+                override val numberOfRootFragments = 4
 
                 override fun getRootFragment(index: Int): Fragment {
                     when (index) {
