@@ -3,6 +3,7 @@ package com.frolo.muse.ui.main.settings.premium
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
+import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.LifecycleOwner
@@ -40,7 +41,10 @@ class BuyPremiumDialog : BaseDialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return super.onCreateDialog(savedInstanceState).apply {
             setContentView(R.layout.dialog_buy_premium)
-            setupDialogSizeByDefault(this)
+
+            val width = resources.displayMetrics.widthPixels
+            setupDialogSize(this, (width * 11) / 12, ViewGroup.LayoutParams.WRAP_CONTENT)
+
             loadUi(this)
         }
     }
