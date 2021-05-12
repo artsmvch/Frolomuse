@@ -158,9 +158,8 @@ class ThemeChooserViewModel @Inject constructor(
         // The timeout for this check is 5 seconds, otherwise
         // we consider it not purchased.
         // In case of an error, we also consider it not purchased.
-        // TODO: timeout not working
         return billingManager.isProductPurchased(productId = ProductId.PREMIUM, forceCheckFromApi = true)
-            .timeout(5, TimeUnit.SECONDS, Flowable.just(false))
+            .timeoutForFirstElement(5, TimeUnit.SECONDS)
             .observeOn(schedulerProvider.main())
             .doOnError { err -> logError(err) }
             .onErrorReturnItem(false)

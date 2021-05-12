@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.UiThread
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import com.frolo.muse.BuildConfig
@@ -29,11 +30,25 @@ class ThemePageFragment : BaseFragment() {
 
     private val preferences by prefs()
 
-    private val themePage: ThemePage by lazy {
+    /**
+     * The initial theme page argument, which is set by the [androidx.fragment.app.Fragment.setArguments] method.
+     * Cannot be null.
+     */
+    private val initialArgument: ThemePage by lazy {
         requireArguments().getParcelable<ThemePage>(ARG_THEME_PAGE) as ThemePage
     }
 
+    /**
+     * The overridden theme page argument, which is set by the [updateArgument] method. Nullable.
+     */
+    private var overriddenArgument: ThemePage? = null
+
     private val callback: ThemePageCallback? get() = castHost()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        overriddenArgument = savedInstanceState?.getParcelable(STATE_OVERRIDDEN_THEME_PAGE) as? ThemePage
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,6 +57,7 @@ class ThemePageFragment : BaseFragment() {
     ): View? = inflater.inflate(R.layout.fragment_theme_page, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val themePage = getThemePage()
         val context = view.context
         val themeResId = ThemeUtils.getStyleResourceId(themePage.theme)
         if (themeResId != null) {
@@ -74,15 +90,41 @@ class ThemePageFragment : BaseFragment() {
             fragment_container_card.maxCardElevation = Screen.dpFloat(2f)
         }
 
-        imv_preview_pro_badge.isVisible = themePage.hasProBadge
         imv_preview_pro_badge.setOnClickListener {
-            callback?.onProBadgeClick(themePage)
+            callback?.onProBadgeClick(getThemePage())
         }
 
         btn_apply_theme.setOnClickListener {
-            callback?.onApplyThemeClick(themePage)
+            callback?.onApplyThemeClick(getThemePage())
         }
-        if (themePage.isApplied) {
+
+        setupButtons(themePage)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        scheduleProBadgeAnimation()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        overriddenArgument?.also { themePage ->
+            outState.putParcelable(STATE_OVERRIDDEN_THEME_PAGE, themePage)
+        }
+    }
+
+    /**
+     * The current theme page argument. Returns the overridden argument, if any, or the initial one.
+     */
+    @UiThread
+    private fun getThemePage(): ThemePage {
+        return overriddenArgument ?: initialArgument
+    }
+
+    private fun setupButtons(page: ThemePage) {
+        imv_preview_pro_badge.isVisible = page.hasProBadge
+
+        if (page.isApplied) {
             btn_apply_theme.setText(R.string.applied)
             btn_apply_theme.isEnabled = false
         } else {
@@ -91,9 +133,11 @@ class ThemePageFragment : BaseFragment() {
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        scheduleProBadgeAnimation()
+    @UiThread
+    fun updateArgument(themePage: ThemePage) {
+        overriddenArgument = themePage
+        view ?: return
+        setupButtons(themePage)
     }
 
     private fun scheduleProBadgeAnimation() {
@@ -128,6 +172,7 @@ class ThemePageFragment : BaseFragment() {
 
     companion object {
         private const val ARG_THEME_PAGE = "theme_page"
+        private const val STATE_OVERRIDDEN_THEME_PAGE = "overridden_theme_page"
 
         fun newInstance(page: ThemePage): ThemePageFragment {
             return ThemePageFragment().apply {

@@ -13,7 +13,7 @@ class ThemePageItemDiffCallback(
     override fun getNewListSize(): Int = newList?.size ?: 0
 
     override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-        return oldList!![oldItemPosition].theme == newList!![newItemPosition].theme
+        return oldList!![oldItemPosition].uniqueId == newList!![newItemPosition].uniqueId
     }
 
     override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {

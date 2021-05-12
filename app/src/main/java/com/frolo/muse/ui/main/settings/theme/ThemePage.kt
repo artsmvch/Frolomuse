@@ -18,6 +18,8 @@ data class ThemePage(
     val album: Album
 ): Parcelable {
 
+    val uniqueId: Long get() = theme.id.toLong()
+
     constructor(parcel: Parcel) : this(
         theme = Theme.valueOf(parcel.readString()!!),
         isApplied = parcel.readByte() != 0.toByte(),
