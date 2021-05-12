@@ -182,7 +182,11 @@
     <string name="version">응용 프로그램 버전</string>
     <string name="licenses">라이센스</string>
 
-    <string name="app_theme_desc">테마를 선택하십시오</string>
+    <string name="app_theme_desc">앱 테마 선택 및 적용</string>
+    <string name="page_s_of_s">%d / %d</string>
+    <string name="apply_theme">테마 적용</string>
+    <string name="applied">적용된</string>
+    <string name="dark_red_theme">진한 빨간색 테마</string>
     <string name="light_blue_theme">밝은 파란색 테마</string>
     <string name="light_pink_theme">라이트 핑크 테마</string>
     <string name="dark_blue_theme">진한 파란색 테마</string>
@@ -237,6 +241,7 @@
     <string name="such_name_already_exists">그런 이름은 이미 존재합니다</string>
 
     <!--AudioFx-->
+    <string name="audio_fx_switch_tooltip">오디오 효과를 사용하려면 전환</string>
     <string name="no_audio_effects_available">오디오 효과 없음</string>
     <string name="no_audio_effects_available_desc">
         사용 가능한 오디오 효과를 찾을 수 없습니다. Android 운영 체제에서 제공하는 기본 이퀄라이저를 활성화하십시오
@@ -260,6 +265,7 @@
     <string name="playback_params">재생 매개 변수</string>
     <string name="speed">속도</string>
     <string name="pitch">피치</string>
+    <string name="reset_playback_params_when_switching_song">노래 전환시 설정 재설정</string>
     <string name="normalize">정규화</string>
 
     <!--media file editor-->
@@ -357,4 +363,20 @@
     <!--Lyrics-->
     <string name="view_lyrics">가사보기</string>
     <string name="lyrics_not_tap_to_write">텍스트를 찾을 수 없습니다. 직접 작성하려면 여기를 클릭하세요</string>
+
+    <!--Premium-->
+    <string name="buy_premium">프리미엄 구매</string>
+    <string name="buy_premium_desc">광고 제거 및 프리미엄 기능 잠금 해제</string>
+    <string name="premium_dialog_title">프리미엄</string>
+    <string-array name="premium_benefits">
+        <item>모든 광고 제거</item>
+        <item>재생 페이딩 잠금 해제</item>
+        <item>재생 속도 및 피치 잠금 해제</item>
+        <item>모든 테마 잠금 해제</item>
+        <item>향후 업데이트의 모든 새로운 기능에 대한 전체 액세스</item>
+    </string-array>
+    <string name="premium_benefit_support_dev">개발자 지원</string>
+    <string name="one_time_purchase">일회성 구매 · 구매 및 영원히 사용</string>
+    <string name="buy_premium_for_s">%s 에 구매</string>
+    <string name="buy">구입</string>
 </resources>

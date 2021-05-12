@@ -376,7 +376,7 @@
     <string name="premium_dialog_title">Premium</string>
     <string-array name="premium_benefits">
         <item>Remove all ads</item>
-        <item>Unlock playback crossfade</item>
+        <item>Unlock playback fading</item>
         <item>Unlock playback speed and pitch</item>
         <item>Unlock all themes</item>
         <item>Full access to all new features in future updates</item>
