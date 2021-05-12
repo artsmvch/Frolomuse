@@ -189,7 +189,11 @@
     <string name="version">एप्लिकेशन वर्जन</string>
     <string name="licenses">लाइसेंस</string>
 
-    <string name="app_theme_desc">थीम चुनें</string>
+    <string name="app_theme_desc">एप्लिकेशन के लिए एक विषय चुनें और लागू करें</string>
+    <string name="page_s_of_s">%d का %d</string>
+    <string name="apply_theme">विषय लागू करें</string>
+    <string name="applied">लागू</string>
+    <string name="dark_red_theme">गहरा लाल रंग का विषय</string>
     <string name="light_blue_theme">हल्का नीला विषय</string>
     <string name="light_pink_theme">हल्का गुलाबी विषय</string>
     <string name="dark_blue_theme">डार्क ब्लू थीम</string>
@@ -242,6 +246,7 @@
     <string name="such_name_already_exists">ऐसा नाम पहले से मौजूद है</string>
 
     <!--AudioFx-->
+    <string name="audio_fx_switch_tooltip">ऑडियो प्रभाव सक्षम करने के लिए टॉगल करें</string>
     <string name="no_audio_effects_available">कोई ऑडियो प्रभाव नहीं</string>
     <string name="no_audio_effects_available_desc">
         हमें कोई ऑडियो प्रभाव उपलब्ध नहीं मिला। कृपया Android ऑपरेटिंग सिस्टम द्वारा प्रदान किए गए डिफ़ॉल्ट तुल्यकारक को सक्षम करें
@@ -265,6 +270,7 @@
     <string name="playback_params">प्लेबैक पैराम्स</string>
     <string name="speed">गति</string>
     <string name="pitch">पिच</string>
+    <string name="reset_playback_params_when_switching_song">गाने स्विच करते समय सेटिंग्स रीसेट करें</string>
     <string name="normalize">सामान्य</string>
 
     <!--media file editor-->
@@ -362,4 +368,20 @@
     <!--Lyrics-->
     <string name="view_lyrics">देखें गाने के बोल</string>
     <string name="lyrics_not_tap_to_write">पाठ नहीं मिला, इसे स्वयं लिखने के लिए यहां क्लिक करें</string>
+
+    <!--Premium-->
+    <string name="buy_premium">प्रीमियम खरीदें</string>
+    <string name="buy_premium_desc">विज्ञापन हटाएँ और प्रीमियम सुविधाओं को अनलॉक करें</string>
+    <string name="premium_dialog_title">प्रीमियम</string>
+    <string-array name="premium_benefits">
+        <item>सभी विज्ञापन हटाए</item>
+        <item>प्लेबैक फीका अनलॉक</item>
+        <item>प्लेबैक की गति और पिच को अनलॉक करें</item>
+        <item>सभी ऐप थीम अनलॉक करें</item>
+        <item>भविष्य के अपडेट में सभी नई सुविधाओं तक पूर्ण पहुंच</item>
+    </string-array>
+    <string name="premium_benefit_support_dev">डेवलपर का समर्थन करें</string>
+    <string name="one_time_purchase">एक बार खरीद · खरीद और हमेशा के लिए उपयोग करें</string>
+    <string name="buy_premium_for_s">%s के लिए खरीदें</string>
+    <string name="buy">खरीदें</string>
 </resources>
