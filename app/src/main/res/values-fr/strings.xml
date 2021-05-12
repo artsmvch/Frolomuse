@@ -189,7 +189,11 @@
     <string name="version">Version de l\'application</string>
     <string name="licenses">Licences</string>
 
-    <string name="app_theme_desc">Choisir un thème</string>
+    <string name="app_theme_desc">Sélectionner et appliquer un thème pour l\'application</string>
+    <string name="page_s_of_s">%d de %d</string>
+    <string name="apply_theme">Appliquer le thème</string>
+    <string name="applied">Appliqué</string>
+    <string name="dark_red_theme">Thème rouge foncé</string>
     <string name="light_blue_theme">Thème bleu clair</string>
     <string name="light_pink_theme">Thème rose clair</string>
     <string name="dark_blue_theme">Thème bleu foncé</string>
@@ -243,6 +247,7 @@
     <string name="such_name_already_exists">Ce nom existe déjà</string>
 
     <!--AudioFx-->
+    <string name="audio_fx_switch_tooltip">Basculer pour activer les effets audio</string>
     <string name="no_audio_effects_available">Aucun effet audio</string>
     <string name="no_audio_effects_available_desc">
         Nous n\'avons trouvé aucun effet audio disponible. Veuillez activer l\'égaliseur par défaut fourni par Android OS
@@ -266,6 +271,7 @@
     <string name="playback_params">Paramètres de lecture</string>
     <string name="speed">Vitesse</string>
     <string name="pitch">Ton</string>
+    <string name="reset_playback_params_when_switching_song">Réinitialiser les paramètres lors du changement de chanson</string>
     <string name="normalize">Normaliser</string>
 
     <!--media file editor-->
@@ -363,4 +369,20 @@
     <!--Lyrics-->
     <string name="view_lyrics">Voir les paroles</string>
     <string name="lyrics_not_tap_to_write">Texte non trouvé, cliquez ici pour l\'écrire vous-même</string>
+
+    <!--Premium-->
+    <string name="buy_premium">Acheter premium</string>
+    <string name="buy_premium_desc">Supprimer les publicités et débloquer les fonctionnalités premium</string>
+    <string name="premium_dialog_title">Prime</string>
+    <string-array name="premium_benefits">
+        <item>Supprimer toutes les annonces</item>
+        <item>Déverrouiller le fondu enchaîné de lecture</item>
+        <item>Déverrouiller la vitesse et la hauteur de lecture</item>
+        <item>Déverrouiller tous les thèmes</item>
+        <item>Accès complet à toutes les nouvelles fonctionnalités des futures mises à jour</item>
+    </string-array>
+    <string name="premium_benefit_support_dev">Soutenir le développeur</string>
+    <string name="one_time_purchase">Achat unique · acheter et utiliser pour toujours</string>
+    <string name="buy_premium_for_s">Acheter pour %s</string>
+    <string name="buy">Acheter</string>
 </resources>
