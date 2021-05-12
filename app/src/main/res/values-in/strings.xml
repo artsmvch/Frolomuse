@@ -370,7 +370,7 @@
     <string name="premium_dialog_title">Premium</string>
     <string-array name="premium_benefits">
         <item>Hapus semua iklan</item>
-        <item>Buka kunci playback crossfade</item>
+        <item>Buka kunci playback fade</item>
         <item>Buka kunci kecepatan dan nada pemutaran</item>
         <item>Buka kunci semua tema</item>
         <item>Akses penuh ke semua fitur baru di pembaruan mendatang</item>

@@ -376,7 +376,7 @@
     <string name="premium_dialog_title">Premium</string>
     <string-array name="premium_benefits">
         <item>Quita todos los anuncios</item>
-        <item>Desbloquea reproducción de fundido cruzado</item>
+        <item>Desbloquea el desvanecimiento de la reproducción</item>
         <item>Desbloquea la velocidad y el tono de reproducción</item>
         <item>Desbloquea todos los temas</item>
         <item>Acceso completo a todas las funciones nuevas en futuras actualizaciones</item>

@@ -369,7 +369,7 @@
     <string name="premium_dialog_title">プレミアム</string>
     <string-array name="premium_benefits">
         <item>すべての広告を削除する</item>
-        <item>再生クロスフェードのロックを解除する</item>
+        <item>再生フェードのロックを解除する</item>
         <item>再生速度とピッチのロックを解除する</item>
         <item>すべてのテーマのロックを解除します</item>
         <item>今後のアップデートでのすべての新機能へのフルアクセス</item>
