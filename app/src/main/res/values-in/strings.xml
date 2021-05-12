@@ -183,7 +183,11 @@
     <string name="version">Versi aplikasi</string>
     <string name="licenses">Lisensi</string>
 
-    <string name="app_theme_desc">Pilih Tema</string>
+    <string name="app_theme_desc">Pilih dan terapkan tema untuk aplikasi tersebut</string>
+    <string name="page_s_of_s">%d dari %d</string>
+    <string name="apply_theme">Terapkan Tema</string>
+    <string name="applied">Terapan</string>
+    <string name="dark_red_theme">Tema merah gelap</string>
     <string name="light_blue_theme">Tema biru muda</string>
     <string name="light_pink_theme">Tema merah muda terang</string>
     <string name="dark_blue_theme">Tema biru gelap</string>
@@ -237,6 +241,7 @@
     <string name="such_name_already_exists">Nama seperti itu sudah ada</string>
 
     <!--AudioFx-->
+    <string name="audio_fx_switch_tooltip">Alihkan untuk mengaktifkan efek audio</string>
     <string name="no_audio_effects_available">Tidak ada efek audio</string>
     <string name="no_audio_effects_available_desc">
         Kami tidak dapat menemukan efek audio yang tersedia. Harap aktifkan equalizer default yang disediakan oleh OS Android
@@ -260,6 +265,7 @@
     <string name="playback_params">Pemutaran params</string>
     <string name="speed">Kecepatan</string>
     <string name="pitch">Nada</string>
+    <string name="reset_playback_params_when_switching_song">Setel ulang pengaturan saat berpindah lagu</string>
     <string name="normalize">Normalisasi</string>
 
     <!--media file editor-->
@@ -357,4 +363,20 @@
     <!--Lyrics-->
     <string name="view_lyrics">Lihat lirik</string>
     <string name="lyrics_not_tap_to_write">Teks tidak ditemukan, klik di sini untuk menulisnya sendiri</string>
+
+    <!--Premium-->
+    <string name="buy_premium">Beli premium</string>
+    <string name="buy_premium_desc">Hapus iklan dan buka fitur premium</string>
+    <string name="premium_dialog_title">Premium</string>
+    <string-array name="premium_benefits">
+        <item>Hapus semua iklan</item>
+        <item>Buka kunci playback crossfade</item>
+        <item>Buka kunci kecepatan dan nada pemutaran</item>
+        <item>Buka kunci semua tema</item>
+        <item>Akses penuh ke semua fitur baru di pembaruan mendatang</item>
+    </string-array>
+    <string name="premium_benefit_support_dev">Dukung pengembang</string>
+    <string name="one_time_purchase">Pembelian satu kali · beli dan gunakan selamanya</string>
+    <string name="buy_premium_for_s">Beli seharga %s</string>
+    <string name="buy">Beli</string>
 </resources>
