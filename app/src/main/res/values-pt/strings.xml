@@ -189,7 +189,11 @@
     <string name="version">Versão do aplicativo</string>
     <string name="licenses">Licenças</string>
 
-    <string name="app_theme_desc">Escolha o tema</string>
+    <string name="app_theme_desc">Selecionar e aplicar um tema para o aplicativo</string>
+    <string name="page_s_of_s">%d de %d</string>
+    <string name="apply_theme">Aplicar tema</string>
+    <string name="applied">Aplicado</string>
+    <string name="dark_red_theme">Tema vermelho escuro</string>
     <string name="light_blue_theme">Tema azul claro</string>
     <string name="light_pink_theme">Tema rosa claro</string>
     <string name="dark_blue_theme">Tema azul escuro</string>
@@ -243,6 +247,7 @@
     <string name="such_name_already_exists">Tal nome já existe</string>
 
     <!--AudioFx-->
+    <string name="audio_fx_switch_tooltip">Alterne para ativar os efeitos de áudio</string>
     <string name="no_audio_effects_available">Sem efeitos de áudio</string>
     <string name="no_audio_effects_available_desc">
         Não encontramos nenhum efeito de áudio disponível. Habilite o equalizador padrão fornecido pelo sistema operacional Android
@@ -266,6 +271,7 @@
     <string name="playback_params">Params de reprodução</string>
     <string name="speed">Rapidez</string>
     <string name="pitch">Tom</string>
+    <string name="reset_playback_params_when_switching_song">Redefinir as configurações ao trocar de música</string>
     <string name="normalize">Normalizar</string>
 
     <!--media file editor-->
@@ -363,4 +369,20 @@
     <!--Lyrics-->
     <string name="view_lyrics">Ver letras</string>
     <string name="lyrics_not_tap_to_write">Texto não encontrado, clique aqui para escrevê-lo você mesmo</string>
+
+    <!--Premium-->
+    <string name="buy_premium">Comprar premium</string>
+    <string name="buy_premium_desc">Remover anúncios e desbloquear recursos premium</string>
+    <string name="premium_dialog_title">Premium</string>
+    <string-array name="premium_benefits">
+        <item>Remover todos os anúncios</item>
+        <item>Desbloquear o esmaecimento da reprodução</item>
+        <item>Desbloquear velocidade de reprodução e tom</item>
+        <item>Desbloquear todos os temas</item>
+        <item>Acesso total a todos os novos recursos em atualizações futuras</item>
+    </string-array>
+    <string name="premium_benefit_support_dev">Apoie o desenvolvedor</string>
+    <string name="one_time_purchase">Compra única · compre e use para sempre</string>
+    <string name="buy_premium_for_s">Comprar por %s</string>
+    <string name="buy">Comprar</string>
 </resources>
