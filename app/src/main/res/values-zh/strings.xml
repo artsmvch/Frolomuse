@@ -183,7 +183,11 @@
     <string name="version">應用版本</string>
     <string name="licenses">許可證</string>
 
-    <string name="app_theme_desc">選擇主題</string>
+    <string name="app_theme_desc">選擇並應用主題</string>
+    <string name="page_s_of_s">%d 之 %d</string>
+    <string name="apply_theme">套用主題</string>
+    <string name="applied">已應用</string>
+    <string name="dark_red_theme">暗紅色主題</string>
     <string name="light_blue_theme">淺藍色主題</string>
     <string name="light_pink_theme">淺粉紅色主題</string>
     <string name="dark_blue_theme">深藍色主題</string>
@@ -236,6 +240,7 @@
     <string name="such_name_already_exists">這樣的名字已經存在</string>
 
     <!--AudioFx-->
+    <string name="audio_fx_switch_tooltip">切換以啟用音頻效果</string>
     <string name="no_audio_effects_available">沒有音效</string>
     <string name="no_audio_effects_available_desc">
         我們找不到任何可用的音頻效果。 請啟用Android操作系統提供的默認均衡器
@@ -259,6 +264,7 @@
     <string name="playback_params">播放參數</string>
     <string name="speed">速度</string>
     <string name="pitch">瀝青</string>
+    <string name="reset_playback_params_when_switching_song">切換歌曲時重置設置</string>
     <string name="normalize">規範化</string>
 
     <!--media file editor-->
@@ -357,4 +363,19 @@
     <string name="view_lyrics">查看歌詞</string>
     <string name="lyrics_not_tap_to_write">找不到文字，請點擊此處自行撰寫</string>
 
+    <!--Premium-->
+    <string name="buy_premium">購買溢價</string>
+    <string name="buy_premium_desc">刪除廣告並解鎖高級功能</string>
+    <string name="premium_dialog_title">高級功能</string>
+    <string-array name="premium_benefits">
+        <item>刪除所有廣告</item>
+        <item>解鎖播放褪色</item>
+        <item>解鎖播放速度和音高</item>
+        <item>解鎖所有主題</item>
+        <item>在將來的更新中完全訪問所有新功能</item>
+    </string-array>
+    <string name="premium_benefit_support_dev">支持開發商</string>
+    <string name="one_time_purchase">一次性購買·永久使用</string>
+    <string name="buy_premium_for_s">買 %s</string>
+    <string name="buy">買</string>
 </resources>
