@@ -59,21 +59,6 @@ class ThemeChooserViewModel @Inject constructor(
 
     private fun loadThemes(onResult: (List<ThemePage>) -> Unit) {
 
-        // Themes that are available by default
-        val defaultThemes = listOf(
-            Theme.LIGHT_BLUE,
-            Theme.LIGHT_PINK,
-            Theme.DARK_BLUE,
-            Theme.DARK_BLUE_ESPECIAL,
-            Theme.DARK_PURPLE,
-            Theme.DARK_GREEN,
-            Theme.DARK_ORANGE
-        )
-
-        val premiumThemes = listOf(
-            Theme.DARK_RED
-        )
-
         val source1 = getAlbumForPreview()
         val source2 = isPremiumPurchased()
         val combiner = BiFunction<Album, Boolean, Pair<Album, Boolean>> { album, isPremiumPurchased ->
@@ -87,25 +72,15 @@ class ThemeChooserViewModel @Inject constructor(
                 val isPremiumPurchased = pair.second
                 val currentTheme = preferences.theme
 
-                val premiumThemePages = premiumThemes.map { theme ->
+                Theme.values().map { theme ->
+                    val hasProBadge: Boolean = isPremiumTheme(theme) && !isPremiumPurchased
                     ThemePage(
                         theme = theme,
                         isApplied = currentTheme == theme,
-                        hasProBadge = !isPremiumPurchased,
+                        hasProBadge = hasProBadge,
                         album = album
                     )
                 }
-
-                val defaultThemePages = defaultThemes.map { theme ->
-                    ThemePage(
-                        theme = theme,
-                        isApplied = currentTheme == theme,
-                        hasProBadge = false,
-                        album = album
-                    )
-                }
-
-                premiumThemePages + defaultThemePages
             }
             .map { themePages ->
                 // Special sorting order for theme previews
@@ -127,6 +102,16 @@ class ThemeChooserViewModel @Inject constructor(
             .subscribeFor("load_themes") { themeItems ->
                 onResult.invoke(themeItems)
             }
+    }
+
+    /**
+     * Returns true if [theme] is available for premium users only.
+     */
+    private fun isPremiumTheme(theme: Theme): Boolean {
+        return when (theme) {
+            Theme.DARK_RED -> true
+            else -> false
+        }
     }
 
     /**
