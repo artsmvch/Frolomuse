@@ -21,9 +21,9 @@ class SimpleThemePageAdapter(
     private val currentTheme: Theme,
     private val requestManager: RequestManager,
     private val callback: ThemePageCallback
-) : RecyclerView.Adapter<SimpleThemePageAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<SimpleThemePageAdapter.ViewHolder>(), AbsThemePageAdapter {
 
-    var pages: List<ThemePage> by Delegates.observable(emptyList()) { _, oldList, newList ->
+    override var pages: List<ThemePage> by Delegates.observable(emptyList()) { _, oldList, newList ->
         val diffCallback = ThemePageItemDiffCallback(oldList, newList)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
         diffResult.dispatchUpdatesTo(this)

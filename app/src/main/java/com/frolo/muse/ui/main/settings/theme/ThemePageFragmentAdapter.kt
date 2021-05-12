@@ -7,9 +7,9 @@ import androidx.viewpager2.adapter.FragmentViewHolder
 import kotlin.properties.Delegates
 
 
-class ThemePageAdapter(private val fragment: Fragment) : FragmentStateAdapter(fragment) {
+class ThemePageFragmentAdapter(private val fragment: Fragment) : FragmentStateAdapter(fragment), AbsThemePageAdapter {
 
-    var pages: List<ThemePage> by Delegates.observable(emptyList()) { _, oldList, newList ->
+    override var pages: List<ThemePage> by Delegates.observable(emptyList()) { _, oldList, newList ->
         val diffCallback = ThemePageItemDiffCallback(oldList, newList)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
         diffResult.dispatchUpdatesTo(this)
