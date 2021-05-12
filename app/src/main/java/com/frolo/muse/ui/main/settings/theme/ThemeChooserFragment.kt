@@ -23,6 +23,7 @@ import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.base.NoClipping
 import com.frolo.muse.ui.base.setupNavigation
 import kotlinx.android.synthetic.main.fragment_theme_chooser.*
+import kotlinx.android.synthetic.main.include_theme_pager.*
 import kotlinx.android.synthetic.main.include_theme_pager.view.*
 
 
@@ -38,7 +39,7 @@ class ThemeChooserFragment : BaseFragment(), NoClipping, ThemePageCallback {
         override fun onPageSelected(position: Int) {
             val pageCount: Int = absThemePageAdapter?.pageCount ?: 0
             val text: String = getString(R.string.page_s_of_s, (position + 1), pageCount)
-            include_theme_pager?.tv_theme_page?.text = text
+            view?.tv_theme_page?.text = text
         }
     }
 
@@ -51,7 +52,7 @@ class ThemeChooserFragment : BaseFragment(), NoClipping, ThemePageCallback {
     private val themeViewPager: ViewPager2?
         get() {
             view ?: return null
-            return include_theme_pager?.vp_themes as? ViewPager2
+            return view?.vp_themes as? ViewPager2
         }
 
     /**
@@ -61,7 +62,7 @@ class ThemeChooserFragment : BaseFragment(), NoClipping, ThemePageCallback {
     private val themeRecyclerView: RecyclerView?
         get() {
             view ?: return null
-            return include_theme_pager as? RecyclerView
+            return view?.rv_themes as? RecyclerView
         }
 
     override fun onCreateView(
@@ -153,10 +154,12 @@ class ThemeChooserFragment : BaseFragment(), NoClipping, ThemePageCallback {
 
         isLoading.observe(owner) { isLoading ->
             if (isLoading == true) {
-                include_theme_pager.visibility = View.INVISIBLE
+                group_theme_pager?.visibility = View.INVISIBLE
+                rv_themes?.visibility = View.INVISIBLE
                 progress_bar.visibility = View.VISIBLE
             } else {
-                include_theme_pager.visibility = View.VISIBLE
+                group_theme_pager?.visibility = View.VISIBLE
+                rv_themes?.visibility = View.VISIBLE
                 progress_bar.visibility = View.GONE
             }
         }

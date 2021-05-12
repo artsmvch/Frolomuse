@@ -43,17 +43,24 @@ class SimpleThemePageAdapter(
 
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         init {
-            itemView.setOnClickListener {
+            val onApplyThemeClickListener = View.OnClickListener {
                 pages.getOrNull(bindingAdapterPosition)?.also { page ->
                     callback.onApplyThemeClick(page)
                 }
             }
+            itemView.setOnClickListener(onApplyThemeClickListener)
+            itemView.fab_button.setOnClickListener(onApplyThemeClickListener)
             itemView.imv_preview_pro_badge.setOnClickListener {
                 pages.getOrNull(bindingAdapterPosition)?.also { page ->
                     callback.onProBadgeClick(page)
                 }
             }
-            itemView.fab_button.isEnabled = false
+        }
+
+        private fun dispatchApplyThemeClick() {
+            pages.getOrNull(bindingAdapterPosition)?.also { page ->
+                callback.onApplyThemeClick(page)
+            }
         }
 
         fun bind(page: ThemePage) {
