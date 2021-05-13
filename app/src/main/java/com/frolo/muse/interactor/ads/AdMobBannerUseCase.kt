@@ -10,17 +10,15 @@ import com.frolo.muse.android.firstPackageInstallTime
 import com.frolo.muse.billing.BillingManager
 import com.frolo.muse.billing.ProductId
 import com.frolo.muse.repository.Preferences
-import com.frolo.muse.repository.RemoteConfigRepository
 import com.frolo.muse.rx.SchedulerProvider
 import io.reactivex.Flowable
-import io.reactivex.functions.Function3
+import io.reactivex.functions.BiFunction
 import javax.inject.Inject
 
 
 class AdMobBannerUseCase @Inject constructor(
     private val context: Context,
     private val billingManager: BillingManager,
-    private val remoteConfigRepository: RemoteConfigRepository,
     private val preferences: Preferences,
     private val schedulerProvider: SchedulerProvider
 ) {
@@ -52,22 +50,14 @@ class AdMobBannerUseCase @Inject constructor(
                 .toFlowable()
         }
 
-        val isPurchaseFeatureEnabledSource: Flowable<Boolean> =
-                remoteConfigRepository.isPurchaseFeatureEnabled().toFlowable()
-
         val isPremiumPurchasedSource: Flowable<Boolean> =
                 billingManager.isProductPurchased(productId = ProductId.PREMIUM, forceCheckFromApi = true)
 
-        val sourceCombiner = Function3<BannerState, Boolean, Boolean, BannerState> { state, isPurchaseFeatureEnabled, isPremiumPurchased ->
+        val sourceCombiner = BiFunction<BannerState, Boolean, BannerState> { state, isPremiumPurchased ->
             when {
                 isPremiumPurchased -> {
                     // The user has purchased the premium, so he is completely free from advertising
                     state.copy(canBeShown = false)
-                }
-                isPurchaseFeatureEnabled -> {
-                    // The purchase feature is enabled, but the user has not purchased the premium yet.
-                    // We need to show the banner so that he wants to make the premium purchase.
-                    state.copy(canBeShown = true)
                 }
                 else -> {
                     // It goes as it is.
@@ -76,7 +66,7 @@ class AdMobBannerUseCase @Inject constructor(
             }
         }
 
-        return Flowable.combineLatest(remoteConfigsSource, isPurchaseFeatureEnabledSource, isPremiumPurchasedSource, sourceCombiner)
+        return Flowable.combineLatest(remoteConfigsSource, isPremiumPurchasedSource, sourceCombiner)
                 .observeOn(schedulerProvider.main())
     }
 
