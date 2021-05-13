@@ -201,10 +201,11 @@ class AudioFxViewModel @Inject constructor(
         EventLiveData<Unit>().apply {
             // We only need to show the switch tooltip if the audio fx is not enabled
             if (!audioFx.isEnabled) {
-                tooltipManager.processTooltip(TooltipId.AUDIO_FX_SWITCH)
+                tooltipManager.canShowTooltip(TooltipId.AUDIO_FX_SWITCH)
                     .observeOn(schedulerProvider.main())
-                    .subscribeFor("process_audio_fx_switch_tooltip") { canShow ->
-                        if (canShow && !audioFx.isEnabled) {
+                    .subscribeFor("can_show_audio_fx_switch_tooltip") { canShow ->
+                        val state: ScreenState? = screenState.value
+                        if (canShow && !audioFx.isEnabled && state == ScreenState.NORMAL) {
                             this.call()
                         }
                     }
@@ -260,6 +261,12 @@ class AudioFxViewModel @Inject constructor(
         _selectedReverb.value = audioFx.currentReverb
 
         loadPresets()
+    }
+
+    fun onSwitchTooltipShown() {
+        tooltipManager.markTooltipShown(TooltipId.AUDIO_FX_SWITCH)
+            .observeOn(schedulerProvider.main())
+            .subscribeFor {  }
     }
 
     fun onStopped() {

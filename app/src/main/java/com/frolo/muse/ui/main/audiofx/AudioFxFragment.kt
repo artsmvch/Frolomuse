@@ -205,8 +205,13 @@ class AudioFxFragment: BaseFragment(), NoClipping {
 
         val callback = object : Tooltip.Callback {
             override fun onTooltipClose(p0: Tooltip.TooltipView?, p1: Boolean, p2: Boolean) = Unit
+
             override fun onTooltipFailed(p0: Tooltip.TooltipView?) = Unit
-            override fun onTooltipShown(p0: Tooltip.TooltipView?) = Unit
+
+            override fun onTooltipShown(p0: Tooltip.TooltipView?) {
+                viewModel.onSwitchTooltipShown()
+            }
+
             override fun onTooltipHidden(p0: Tooltip.TooltipView?) {
                 this@AudioFxFragment.switchTooltip == null
             }
