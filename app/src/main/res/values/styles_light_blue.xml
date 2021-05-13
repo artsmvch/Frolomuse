@@ -19,6 +19,8 @@
     <color name="app_blue_surface">@color/abs_white</color>
     <color name="app_blue_on_surface">#515151</color>
 
+    <color name="app_blue_premium_product_accent">#5FA9CC</color>
+
     <style name="AppTheme.Light.Blue" parent="Base.AppTheme.Light">
         <item name="actionModeBackground">@color/app_blue_action_mode</item>
 
@@ -45,6 +47,8 @@
         <item name="bottomNavigationStyle">@style/Base.AppTheme.BottomNavigation.Light.Blue</item>
         <item name="textInputStyle">@style/AppTheme.TextInputLayout.Light.Blue</item>
         <item name="seekBarStyle">@style/AppTheme.SeekBar.Light.Blue</item>
+
+        <item name="colorPremiumProductAccent">@color/app_blue_premium_product_accent</item>
     </style>
 
     <style name="Base.AppTheme.BottomNavigation.Light.Blue" parent="Base.AppTheme.BottomNavigationView">
@@ -69,6 +73,8 @@
 
         <item name="textInputStyle">@style/AppTheme.TextInputLayout.Light.Blue</item>
         <item name="seekBarStyle">@style/AppTheme.SeekBar.Light.Blue</item>
+
+        <item name="colorPremiumProductAccent">@color/app_blue_premium_product_accent</item>
     </style>
 
     <style name="AppTheme.AlertDialog.Light.Blue" parent="Base.AppTheme.AlertDialog">

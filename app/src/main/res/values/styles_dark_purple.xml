@@ -19,6 +19,7 @@
     <color name="app_dark_purple_fast_scroller">#5B3992</color>
 
     <color name="app_dark_purple_divider_tint">#3A344C</color>
+    <color name="app_dark_purple_premium_product_accent">@color/app_dark_purple_accent</color>
 
     <style name="AppTheme.Dialog.Dark.Purple" parent="Base.AppTheme.Dark.Dialog">
         <item name="colorPrimary">@color/app_dark_purple_primary</item>
@@ -42,6 +43,8 @@
         <item name="android:textColorPrimary">@color/md_white_1000</item>
         <item name="android:textColorSecondary">@color/md_grey_300</item>
         <item name="android:textColorHint">@color/md_grey_300</item>
+
+        <item name="colorPremiumProductAccent">@color/app_dark_purple_premium_product_accent</item>
     </style>
 
     <style name="AppTheme.AlertDialog.Dark.Purple" parent="Base.AppTheme.AlertDialog">
@@ -170,6 +173,7 @@
         <!--Custom attrs-->
         <item name="iconImageTint">#EAEAEA</item>
         <item name="dividerTint">@color/app_dark_purple_divider_tint</item>
+        <item name="colorPremiumProductAccent">@color/app_dark_purple_premium_product_accent</item>
         <item name="iBarStyle">@style/Base.AppTheme.Dark.IBar</item>
         <item name="miniVisualizerStyle">@style/AppTheme.MiniVisualizer.Dark.Purple</item>
         <item name="fastScrollerStyle">@style/AppTheme.FastScroller.Dark.Purple</item>

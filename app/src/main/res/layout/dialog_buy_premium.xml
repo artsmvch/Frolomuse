@@ -7,6 +7,19 @@
     android:layout_height="wrap_content"
     android:id="@+id/layout_root">
 
+    <androidx.appcompat.widget.AppCompatImageView
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/imv_background"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="centerCrop"
+        android:alpha="1"
+        app:tint="?attr/colorPremiumProductAccent"
+        app:srcCompat="@drawable/png_premium_background"/>
+
     <LinearLayout
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -26,8 +39,10 @@
             android:text="@string/premium_dialog_title"/>
 
         <include layout="@layout/include_divider"
+            android:id="@+id/view_top_divider"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/vertical_divider_height"/>
+            android:layout_height="@dimen/vertical_divider_height"
+            android:visibility="gone"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list_benefits"
@@ -42,8 +57,10 @@
             tools:itemCount="5"/>
 
         <include layout="@layout/include_divider"
+            android:id="@+id/view_top_divider"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/vertical_divider_height"/>
+            android:layout_height="@dimen/vertical_divider_height"
+            android:visibility="gone"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -71,6 +88,7 @@
             android:paddingBottom="8dp"
             app:cornerRadius="16dp"
             android:textSize="13.5sp"
+            app:backgroundTint="?attr/colorPremiumProductAccent"
             style="@style/Widget.MaterialComponents.Button"/>
     </LinearLayout>
 

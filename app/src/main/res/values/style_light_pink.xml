@@ -18,6 +18,8 @@
 
     <color name="app_pink_waveform_progress">#A34874</color>
 
+    <color name="app_pink_premium_product_accent">#E13D7E</color>
+
     <style name="AppTheme.Light.Pink" parent="Base.AppTheme.Light">
         <item name="actionModeBackground">@color/app_pink_action_mode</item>
 
@@ -46,6 +48,8 @@
         <item name="seekBarStyle">@style/AppTheme.SeekBar.Light.Pink</item>
 
         <item name="waveformSeekBarStyle">@style/AppTheme.WaveformSeekBar.Light.Pink</item>
+
+        <item name="colorPremiumProductAccent">@color/app_pink_premium_product_accent</item>
     </style>
 
     <style name="Base.AppTheme.BottomNavigation.Light.Pink" parent="Base.AppTheme.BottomNavigationView">
@@ -70,6 +74,8 @@
 
         <item name="textInputStyle">@style/AppTheme.TextInputLayout.Light.Pink</item>
         <item name="seekBarStyle">@style/AppTheme.SeekBar.Light.Pink</item>
+
+        <item name="colorPremiumProductAccent">@color/app_pink_premium_product_accent</item>
     </style>
 
     <style name="AppTheme.AlertDialog.Light.Pink" parent="Base.AppTheme.AlertDialog">

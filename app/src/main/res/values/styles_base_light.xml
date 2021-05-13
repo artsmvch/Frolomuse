@@ -53,6 +53,7 @@
         <item name="iconImageTint">#ABABAB</item>
         <item name="placeholderImageTint">#C3C3C3</item>
         <item name="dividerTint">#E3E3E3</item>
+        <item name="colorPremiumProductAccent">?colorAccent</item>
     </style>
 
     <style name="Base.AppTheme.Dialog.Light" parent="Theme.MaterialComponents.Light.Dialog">
@@ -74,6 +75,8 @@
         <item name="android:textColorPrimary">@color/text_primary_dark</item>
         <item name="android:textColorSecondary">@color/text_secondary_dark</item>
         <item name="android:textColorHint">@color/md_grey_400</item>
+
+        <item name="colorPremiumProductAccent">?colorAccent</item>
     </style>
 
     <style name="Base.AppTheme.Light.Toolbar" parent="Base.AppTheme.Toolbar">

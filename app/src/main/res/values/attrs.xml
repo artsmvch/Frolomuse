@@ -7,6 +7,8 @@
     <attr name="placeholderImageTint" format="color"/>
     <!--Tint for dividers (list item dividers etc.)-->
     <attr name="dividerTint" format="color"/>
+    <!--Tint for app in-app premium products-->
+    <attr name="colorPremiumProductAccent" format="color"/>
 
     <declare-styleable name="ControllerView">
         <attr name="label" format="string"/>

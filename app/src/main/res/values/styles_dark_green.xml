@@ -15,6 +15,8 @@
     <color name="app_dark_green_accent">@color/app_dark_green_secondary</color>
     <color name="app_dark_green_surface">#2B2E2D</color>
 
+    <color name="app_dark_green_premium_product_accent">@color/app_dark_green_accent</color>
+
     <style name="AppTheme.Dialog.Dark.Green" parent="Base.AppTheme.Dark.Dialog">
         <item name="colorPrimary">@color/app_dark_green_accent</item>
         <item name="colorPrimaryDark">@color/app_dark_green_primary_dark</item>
@@ -36,6 +38,8 @@
         <item name="android:textColorPrimary">@color/md_white_1000</item>
         <item name="android:textColorSecondary">@color/md_grey_300</item>
         <item name="android:textColorHint">@color/md_grey_300</item>
+
+        <item name="colorPremiumProductAccent">@color/app_dark_green_premium_product_accent</item>
     </style>
 
     <style name="AppTheme.AlertDialog.Dark.Green" parent="Base.AppTheme.AlertDialog">
@@ -137,6 +141,7 @@
         <!--Custom attrs-->
         <item name="iconImageTint">#EAEAEA</item>
         <item name="dividerTint">#464A48</item>
+        <item name="colorPremiumProductAccent">@color/app_dark_green_premium_product_accent</item>
         <item name="iBarStyle">@style/Base.AppTheme.Dark.IBar</item>
         <item name="miniVisualizerStyle">@style/AppTheme.MiniVisualizer.Dark.Green</item>
     </style>

@@ -44,6 +44,7 @@
         <item name="iconImageTint">#FFFFFF</item>
         <item name="placeholderImageTint">#FFFFFF</item>
         <item name="dividerTint">#ABABAB</item>
+        <item name="colorPremiumProductAccent">?colorAccent</item>
         <item name="iBarStyle">@style/Base.AppTheme.Dark.IBar</item>
         <item name="fastScrollerStyle">@style/Base.AppTheme.FastScroller</item>
     </style>
@@ -61,6 +62,8 @@
         <item name="searchViewStyle">@style/Base.AppTheme.SearchView</item>
         <item name="autoCompleteTextViewStyle">@style/Base.AppTheme.AutoCompleteTextView</item>
         <item name="sliderStyle">@style/Base.AppTheme.Slider.Dark</item>
+
+        <item name="colorPremiumProductAccent">?colorAccent</item>
     </style>
 
     <style name="Base.AppTheme.Dark.IBar" parent="android:style/Widget">
