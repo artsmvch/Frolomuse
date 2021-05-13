@@ -165,7 +165,7 @@ class PlayerService: RxService() {
         super.onCreate()
         (application as FrolomuseApp).appComponent.inject(this)
 
-        mediaSession = MediaSessionCompat(applicationContext, packageName).apply {
+        mediaSession = MediaSessionCompat(applicationContext, "PlayerService").apply {
             setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS)
             isActive = true
             setCallback(mediaSessionCallback)
