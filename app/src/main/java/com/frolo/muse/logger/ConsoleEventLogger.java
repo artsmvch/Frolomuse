@@ -7,7 +7,7 @@ import androidx.annotation.Nullable;
 import java.util.Map;
 
 
-class AndroidEventLogger implements EventLogger {
+final class ConsoleEventLogger implements EventLogger {
 
     private String buildTag() {
         return "FrolomuseEvent";

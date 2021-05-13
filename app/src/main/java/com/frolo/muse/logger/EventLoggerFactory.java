@@ -6,8 +6,8 @@ import java.util.Arrays;
 
 
 // Factories
-public final class EventLoggers {
-    private EventLoggers() { }
+public final class EventLoggerFactory {
+    private EventLoggerFactory() { }
 
     public static EventLogger createFlurry(Context context) {
         return new FlurryEventLogger(context);
@@ -21,8 +21,8 @@ public final class EventLoggers {
         return new MuteEventLogger();
     }
 
-    public static EventLogger createDroid() {
-        return new AndroidEventLogger();
+    public static EventLogger createConsole() {
+        return new ConsoleEventLogger();
     }
 
     public static EventLogger compose(EventLogger... loggers) {
