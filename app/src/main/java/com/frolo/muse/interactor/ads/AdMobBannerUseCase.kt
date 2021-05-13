@@ -23,6 +23,11 @@ class AdMobBannerUseCase @Inject constructor(
     private val schedulerProvider: SchedulerProvider
 ) {
 
+    // The default library banner id, hardcoded in the app code.
+    private fun getDefaultLibraryBannerId(): String {
+        return context.getString(R.string.ad_mob_library_unit_id)
+    }
+
     fun getLibraryBannerState(): Flowable<BannerState> {
         val remoteConfigsSource: Flowable<BannerState>
         if (DEBUG) {
@@ -40,7 +45,7 @@ class AdMobBannerUseCase @Inject constructor(
                     val bannerId = if (!config.libraryBannerId.isNullOrBlank()) {
                         config.libraryBannerId
                     } else {
-                        context.getString(R.string.ad_mob_library_unit_id)
+                        getDefaultLibraryBannerId()
                     }
                     BannerState(
                         canBeShown = canBeShown(config),
