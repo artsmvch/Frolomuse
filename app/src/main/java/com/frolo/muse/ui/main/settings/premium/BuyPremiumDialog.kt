@@ -15,6 +15,7 @@ import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.ui.base.BaseDialogFragment
 import com.frolo.muse.ui.base.castHost
+import com.frolo.muse.views.RecyclerViewDividers
 import kotlinx.android.synthetic.main.dialog_buy_premium.*
 
 
@@ -65,6 +66,12 @@ class BuyPremiumDialog : BaseDialogFragment() {
             }
             dismiss()
         }
+
+        RecyclerViewDividers.attach(
+            listView = list_benefits,
+            topDivider = view_top_divider,
+            bottomDivider = view_bottom_divider
+        )
     }
 
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
