@@ -1,5 +1,3 @@
-@file:Suppress("FunctionName")
-
 package com.frolo.muse.billing
 
 import android.content.Context
@@ -12,15 +10,6 @@ import io.reactivex.disposables.Disposables
 import io.reactivex.schedulers.Schedulers
 import java.lang.UnsupportedOperationException
 
-
-class BillingClientException: RuntimeException {
-    constructor(cause: Throwable?): super(cause)
-    constructor(message: String?): super(message)
-}
-
-fun BillingClientException(result: BillingResult): BillingClientException {
-    return BillingClientException(result.debugMessage)
-}
 
 private fun getMainThreadScheduler(): Scheduler {
     return AndroidSchedulers.mainThread()
