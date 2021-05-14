@@ -128,9 +128,10 @@ class PlayerViewModel @Inject constructor(
             val source: String? = song?.source
 
             if (source == null) liveDataOf<Sound>(null)
-            else MutableLiveData<Sound>(null).apply {
+            else MutableLiveData<Sound>().apply {
                 resolveSoundUseCase.resolve(source)
                     .observeOn(schedulerProvider.main())
+                    .doOnError { value = null }
                     .subscribeFor(key = "resolve_sound") { sound ->
                         value = sound
                     }

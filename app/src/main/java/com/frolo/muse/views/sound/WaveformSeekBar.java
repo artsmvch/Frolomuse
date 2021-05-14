@@ -1,6 +1,5 @@
 package com.frolo.muse.views.sound;
 
-import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -13,11 +12,11 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewParent;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Interpolator;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.Nullable;
-import androidx.interpolator.view.animation.FastOutLinearInInterpolator;
 
 import com.frolo.muse.BuildConfig;
 import com.frolo.muse.R;
@@ -52,6 +51,30 @@ public class WaveformSeekBar extends View {
         return percent;
     }
 
+    /**
+     * Calculates the intermediate waveform between <code>start</code> and <code>end</code> waveforms.
+     * <code>factor</code> defines the position between the start and end waves. Normally, the factor
+     * should be from 0 to 1. If the factor is 0, then the resulting waveform is equal to the start one.
+     * If the factor is 1, then the resulting waveform is equal to the end one.
+     * @param start the start waveform
+     * @param end the end waveform
+     * @param factor factor
+     * @return intermediate waveform
+     */
+    private static Waveform calculateIntermediateWaveform(Waveform start, Waveform end, float factor) {
+        int waveCount = end.getWaveCount();
+        if (waveCount != start.getWaveCount()) {
+            return end;
+        }
+        float normalizer = ((float) end.getMaxWave()) / start.getMaxWave();
+        int[] waves = new int[waveCount];
+        for (int i = 0; i < waveCount; i++) {
+            float normalizedStartWave = start.getWaveAt(i) * normalizer;
+            waves[i] = (int) (normalizedStartWave + (end.getWaveAt(i) - normalizedStartWave) * factor);
+        }
+        return new WaveformImpl(waves);
+    }
+
     //Styling
     @ColorInt
     private int mWaveBackgroundColor;
@@ -67,15 +90,15 @@ public class WaveformSeekBar extends View {
     private final Paint mWaveProgressPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
     //Animation
-    private Animator mWaveAnim = null;
+    private ValueAnimator mWaveAnim = null;
     private final long mWaveAnimDur;
-    private final Interpolator mWaveAnimInterpolator = new FastOutLinearInInterpolator();
-    private float mWaveHeightFactor = 1f;
+    private final Interpolator mWaveAnimInterpolator = new AccelerateDecelerateInterpolator();
+    private float mWaveAnimFactor = 1f;
     private final ValueAnimator.AnimatorUpdateListener mWaveAnimUpdateListener =
             new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
-                    mWaveHeightFactor = (float) animation.getAnimatedValue();
+                    mWaveAnimFactor = (float) animation.getAnimatedValue();
                     invalidate();
                 }
             };
@@ -87,6 +110,7 @@ public class WaveformSeekBar extends View {
     private Waveform mWaveform;
     private float mProgressPercentPosition = 0.0f;
     private float mProgressPosition = -1; // position of the progress in percentage
+    private Waveform mPrevWaveform;
 
     //Listener
     private OnSeekBarChangeListener mListener;
@@ -180,6 +204,24 @@ public class WaveformSeekBar extends View {
      * @param animate if waveform appearance needs to be animated
      */
     public void setWaveform(@Nullable Waveform waveform, boolean animate) {
+
+        Waveform currWaveform = mWaveform;
+        if (currWaveform != null) {
+            Waveform prevWaveform = mPrevWaveform;
+            // First, checking if there is running waveform animation.
+            if (prevWaveform != null
+                    && prevWaveform.getWaveCount() == currWaveform.getWaveCount()
+                    && mWaveAnim != null && mWaveAnim.isRunning()) {
+                // Creating an intermediate waveform according to the current animation factor.
+                float factor = (float) mWaveAnim.getAnimatedValue();
+                mPrevWaveform = calculateIntermediateWaveform(prevWaveform, currWaveform, factor);
+            } else {
+                mPrevWaveform = currWaveform;
+            }
+        } else {
+            mPrevWaveform = null;
+        }
+
         this.mWaveform = waveform;
 
         if (mWaveAnim != null) {
@@ -321,7 +363,7 @@ public class WaveformSeekBar extends View {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        mWaveHeightFactor = 1f;
+        mWaveAnimFactor = 1f;
     }
 
     @Override
@@ -411,12 +453,24 @@ public class WaveformSeekBar extends View {
         final int contentHeight = getMeasuredHeight() - getPaddingTop() - getPaddingBottom();
         final int leftPadding = getPaddingLeft();
         final float waveCenterY = getPaddingTop() + (float) contentHeight / 2;
-        final float maxWaveHeight = contentHeight * mWaveHeightFactor;
         final float waveHalfOfWidth = mWaveWidth / 2;
 
         for (int i = 0; i < waveform.getWaveCount(); i++) {
-            int wave = waveform.getWaveAt(i);
-            float waveHeight = maxWaveHeight * ((float) wave / maxWave);
+            final float waveHeight;
+            if (mPrevWaveform != null && mWaveAnimFactor < 1f) {
+                int prevWave = mPrevWaveform.getWaveAt(i);
+                int prevMaxWave = mPrevWaveform.getMaxWave();
+                float prevWaveHeight = contentHeight * ((float) prevWave / prevMaxWave);
+
+                int targetWave = waveform.getWaveAt(i);
+                int targetMaxWave = waveform.getMaxWave();
+                float targetWaveHeight = contentHeight * ((float) targetWave / targetMaxWave);
+
+                waveHeight = prevWaveHeight + (targetWaveHeight - prevWaveHeight) * mWaveAnimFactor;
+            } else {
+                int targetWave = waveform.getWaveAt(i);
+                waveHeight = contentHeight * ((float) targetWave / maxWave) * mWaveAnimFactor;
+            }
             float waveHalfOfHeight = waveHeight / 2;
             float waveCenterX = i * (mWaveWidth + mWaveGap) + mWaveGap + waveHalfOfWidth + leftPadding;
 
