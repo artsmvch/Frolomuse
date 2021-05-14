@@ -64,7 +64,7 @@ android {
     }
     buildTypes {
         debug {
-            //applicationIdSuffix ".dbg"
+            applicationIdSuffix ".dbg"
             debuggable true
             shrinkResources false
             minifyEnabled false
