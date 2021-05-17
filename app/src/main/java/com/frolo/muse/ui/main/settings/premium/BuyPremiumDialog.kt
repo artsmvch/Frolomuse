@@ -10,6 +10,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.Fade
 import androidx.transition.TransitionManager
+import com.frolo.muse.BuildConfig
 import com.frolo.muse.R
 import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
@@ -70,6 +71,10 @@ class BuyPremiumDialog : BaseDialogFragment() {
     }
 
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
+        error.observeNonNull(owner) { err ->
+            if (BuildConfig.DEBUG) postError(err)
+        }
+
         closeEvent.observe(owner) {
             dismiss()
         }
