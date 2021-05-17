@@ -5,7 +5,6 @@ import com.frolo.muse.arch.EventLiveData
 import com.frolo.muse.arch.SingleLiveEvent
 import com.frolo.muse.arch.call
 import com.frolo.muse.billing.BillingManager
-import com.frolo.muse.billing.ProductId
 import com.frolo.muse.engine.Player
 import com.frolo.muse.interactor.feature.FeaturesUseCase
 import com.frolo.muse.interactor.firebase.SyncFirebaseMessagingTokenUseCase
@@ -223,14 +222,6 @@ class MainViewModel @Inject constructor(
     fun onOpenAudioSourceIntent(source: String) {
         _pendingAudioSourceIntent = source
         tryHandlePendingAudioSourceIntentIfNeeded()
-    }
-
-    fun onBuyPremiumClick() {
-        val productId = ProductId.PREMIUM
-        eventLogger.logLaunchedBillingFlow(productId)
-        billingManager.launchBillingFlow(productId)
-            .observeOn(schedulerProvider.main())
-            .subscribeFor {  }
     }
 
     override fun onCleared() {

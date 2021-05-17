@@ -2,6 +2,8 @@ package com.frolo.muse.logger
 
 import androidx.annotation.StringDef
 import com.frolo.muse.billing.ProductId
+import com.frolo.muse.billing.TrialStatus
+import com.frolo.muse.billing.TrialStatus.*
 import com.frolo.muse.model.Theme
 import com.frolo.muse.model.media.Media
 import com.frolo.muse.model.media.Song
@@ -305,6 +307,18 @@ private fun Params(productId: ProductId): Map<String, String> {
     )
 }
 
+@Suppress("FunctionName")
+private fun Params(trialStatus: TrialStatus?): Map<String, String> {
+    val trialStatusName = when (trialStatus) {
+        NotAvailable -> "not_available"
+        is Available -> "available"
+        Activated -> "activated"
+        Expired -> "expired"
+        null -> "null"
+    }
+    return mapOf("trial_status" to trialStatusName)
+}
+
 enum class ProductOfferUiElementSource(val sourceName: String) {
     SETTINGS("settings"),
     PLAYBACK_FADING("playback_fading"),
@@ -325,6 +339,10 @@ fun EventLogger.logFailedToGetProductDetails(productId: ProductId) {
 
 fun EventLogger.logLaunchedBillingFlow(productId: ProductId) {
     log("launched_billing_flow", Params(productId))
+}
+
+fun EventLogger.logPremiumTrialActivated() {
+    log("premium_trial_activated")
 }
 
 fun EventLogger.logPurchasedProduct(productId: ProductId) {

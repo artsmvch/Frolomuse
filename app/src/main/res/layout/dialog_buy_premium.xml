@@ -63,6 +63,7 @@
             android:visibility="gone"/>
 
         <TextView
+            android:id="@+id/tv_premium_caption"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -71,10 +72,10 @@
             android:layout_gravity="center_horizontal"
             android:textAppearance="?textAppearanceCaption"
             android:gravity="center"
-            android:text="@string/one_time_purchase"/>
+            tools:text="@string/one_time_purchase"/>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_buy_premium"
+            android:id="@+id/btn_premium_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
@@ -89,7 +90,8 @@
             app:cornerRadius="16dp"
             android:textSize="13.5sp"
             app:backgroundTint="?attr/colorPremiumProductAccent"
-            style="@style/Widget.MaterialComponents.Button"/>
+            style="@style/Widget.MaterialComponents.Button"
+            tools:text="@string/buy"/>
     </LinearLayout>
 
     <include layout="@layout/include_progress_overlay"

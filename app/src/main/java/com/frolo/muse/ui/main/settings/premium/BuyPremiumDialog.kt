@@ -13,10 +13,12 @@ import androidx.transition.TransitionManager
 import com.frolo.muse.R
 import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
+import com.frolo.muse.billing.TrialStatus
 import com.frolo.muse.ui.base.BaseDialogFragment
 import com.frolo.muse.ui.base.castHost
 import com.frolo.muse.views.RecyclerViewDividers
 import kotlinx.android.synthetic.main.dialog_buy_premium.*
+import java.util.concurrent.TimeUnit
 
 
 class BuyPremiumDialog : BaseDialogFragment() {
@@ -56,15 +58,8 @@ class BuyPremiumDialog : BaseDialogFragment() {
             adapter = BenefitAdapter(getBenefits())
         }
 
-        btn_buy_premium.setOnClickListener {
-            val listener = this@BuyPremiumDialog.listener
-            if (listener != null) {
-                listener.onBuyPremiumClick()
-            } else {
-                // Let the view model handle it, since the listener is null
-                viewModel.onBuyClicked()
-            }
-            dismiss()
+        btn_premium_button.setOnClickListener {
+            viewModel.onButtonClicked()
         }
 
         RecyclerViewDividers.attach(
@@ -75,6 +70,10 @@ class BuyPremiumDialog : BaseDialogFragment() {
     }
 
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
+        closeEvent.observe(owner) {
+            dismiss()
+        }
+
         isLoading.observeNonNull(owner) { isLoading ->
             dialog?.apply {
                 val transition = Fade().apply {
@@ -85,24 +84,49 @@ class BuyPremiumDialog : BaseDialogFragment() {
             }
         }
 
-        productDetails.observe(owner) { productDetails ->
+        premiumStatus.observe(owner) { premiumStatus ->
             dialog?.apply {
-                if (productDetails != null) {
-                    val priceText = productDetails.price
-                    btn_buy_premium.text = getString(R.string.buy_premium_for_s, priceText)
-                } else {
-                    btn_buy_premium.text = getString(R.string.buy)
+                val productDetails = premiumStatus?.productDetails
+                val trialStatus = premiumStatus?.trialStatus
+                val activatePremium = premiumStatus?.activatePremium ?: false
+                when {
+                    activatePremium -> {
+                        val trialDurationMillis = (trialStatus as? TrialStatus.Available)?.durationMillis
+                        if (trialDurationMillis != null) {
+                            val days: Int = TimeUnit.MILLISECONDS
+                                .toDays(trialDurationMillis)
+                                .coerceAtLeast(1)
+                                .toInt()
+                            val text = getString(R.string.premium_trial_desc_s, days)
+                            tv_premium_caption.text = text
+                        } else {
+                            tv_premium_caption.text = null
+                        }
+                        tv_premium_caption.isVisible = true
+                        btn_premium_button.setText(R.string.activate_premium_trial)
+                    }
+
+                    productDetails != null -> {
+                        tv_premium_caption.setText(R.string.one_time_purchase)
+                        btn_premium_button.text = getString(R.string.buy_premium_for_s, productDetails.price)
+                    }
+
+                    else -> {
+                        tv_premium_caption.setText(R.string.one_time_purchase)
+                        btn_premium_button.setText(R.string.buy)
+                    }
                 }
             }
         }
 
-        isBuyButtonEnabled.observeNonNull(owner) { isEnabled ->
+        isButtonEnabled.observeNonNull(owner) { isEnabled ->
             dialog?.apply {
-                btn_buy_premium.isEnabled = isEnabled
+                btn_premium_button.isEnabled = isEnabled
             }
         }
     }
 
+    @Deprecated("Will not be called")
     interface OnBuyPremiumClickListener {
         fun onBuyPremiumClick()
     }

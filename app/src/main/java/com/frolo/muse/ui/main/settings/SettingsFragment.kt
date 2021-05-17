@@ -28,7 +28,6 @@ import com.frolo.muse.repository.Preferences
 import com.frolo.muse.sleeptimer.PlayerSleepTimer
 import com.frolo.muse.ui.*
 import com.frolo.muse.ui.base.NoClipping
-import com.frolo.muse.ui.main.settings.premium.BuyPremiumDialog
 import com.frolo.muse.ui.main.settings.journal.PlayerJournalDialog
 import com.frolo.muse.ui.main.settings.duration.MinAudioFileDurationDialog
 import com.frolo.muse.ui.main.settings.hidden.HiddenFilesDialog
@@ -40,7 +39,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 
 class SettingsFragment : PreferenceFragmentCompat(),
-        BuyPremiumDialog.OnBuyPremiumClickListener,
         SleepTimerDialog.OnTimeSelectedListener,
         NoClipping {
 
@@ -66,12 +64,12 @@ class SettingsFragment : PreferenceFragmentCompat(),
 
     private val playbackFadingPreference: Preference? get() = findPreference("playback_fading")
 
-    private val billingViewModel: BillingViewModel by lazy {
+    private val settingsViewModel: SettingsViewModel by lazy {
         val appComponent = requireContext().let { context ->
             FrolomuseApp.from(context).appComponent
         }
         val viewModelFactory = appComponent.provideVMFactory()
-        ViewModelProviders.of(this, viewModelFactory)[BillingViewModel::class.java]
+        ViewModelProviders.of(this, viewModelFactory)[SettingsViewModel::class.java]
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -100,14 +98,14 @@ class SettingsFragment : PreferenceFragmentCompat(),
             // By default, it's invisible
             isVisible = false
             onPreferenceClickListener = Preference.OnPreferenceClickListener {
-                billingViewModel.onBuyPremiumPreferenceClicked()
+                settingsViewModel.onBuyPremiumPreferenceClicked()
                 true
             }
         }
 
         playbackFadingPreference?.apply {
             onPreferenceClickListener = Preference.OnPreferenceClickListener {
-                billingViewModel.onPlaybackFadingClick()
+                settingsViewModel.onPlaybackFadingClick()
                 true
             }
         }
@@ -232,13 +230,20 @@ class SettingsFragment : PreferenceFragmentCompat(),
 
         findPreference("consume_premium_product").apply {
             setOnPreferenceClickListener {
-                billingViewModel.onConsumePremiumProductClicked()
+                settingsViewModel.onConsumePremiumProductClicked()
+                true
+            }
+        }
+
+        findPreference("reset_premium_trial").apply {
+            setOnPreferenceClickListener {
+                settingsViewModel.onResetPremiumTrialClicked()
                 true
             }
         }
     }
 
-    private fun observeBillingViewModel(owner: LifecycleOwner) = with(billingViewModel) {
+    private fun observeBillingViewModel(owner: LifecycleOwner) = with(settingsViewModel) {
         error.observeNonNull(owner) { err ->
             Toast.makeText(requireContext(), err.message.orEmpty(), Toast.LENGTH_SHORT).show()
         }
@@ -257,10 +262,10 @@ class SettingsFragment : PreferenceFragmentCompat(),
         notifyPremiumProductConsumedEvent.observe(owner) {
             Toast.makeText(requireContext(), "Consumed", Toast.LENGTH_SHORT).show()
         }
-    }
 
-    override fun onBuyPremiumClick() {
-        billingViewModel.onBuyPremiumClicked()
+        notifyPremiumTrialResetEvent.observe(owner) {
+            Toast.makeText(requireContext(), "Reset", Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onTimeSelected(hours: Int, minutes: Int, seconds: Int) {

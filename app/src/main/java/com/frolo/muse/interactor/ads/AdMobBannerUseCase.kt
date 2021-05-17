@@ -9,10 +9,11 @@ import com.frolo.muse.admob.BannerState
 import com.frolo.muse.android.firstPackageInstallTime
 import com.frolo.muse.billing.BillingManager
 import com.frolo.muse.billing.ProductId
+import com.frolo.muse.billing.TrialStatus
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.rx.SchedulerProvider
 import io.reactivex.Flowable
-import io.reactivex.functions.BiFunction
+import io.reactivex.functions.Function3
 import javax.inject.Inject
 
 
@@ -58,10 +59,14 @@ class AdMobBannerUseCase @Inject constructor(
         val isPremiumPurchasedSource: Flowable<Boolean> =
                 billingManager.isProductPurchased(productId = ProductId.PREMIUM, forceCheckFromApi = true)
 
-        val sourceCombiner = BiFunction<BannerState, Boolean, BannerState> { state, isPremiumPurchased ->
+        val isTrialActivatedSource: Flowable<Boolean> =
+                billingManager.getTrialStatus().map { status -> status == TrialStatus.Activated }
+
+        val sourceCombiner = Function3<BannerState, Boolean, Boolean, BannerState> { state, isPremiumPurchased, isTrialActivated ->
             when {
-                isPremiumPurchased -> {
-                    // The user has purchased the premium, so he is completely free from advertising
+                isPremiumPurchased || isTrialActivated -> {
+                    // The user has purchased the premium or the premium trial is activated,
+                    // so he is completely free from advertising.
                     state.copy(canBeShown = false)
                 }
                 else -> {
@@ -71,7 +76,7 @@ class AdMobBannerUseCase @Inject constructor(
             }
         }
 
-        return Flowable.combineLatest(remoteConfigsSource, isPremiumPurchasedSource, sourceCombiner)
+        return Flowable.combineLatest(remoteConfigsSource, isPremiumPurchasedSource, isTrialActivatedSource, sourceCombiner)
                 .observeOn(schedulerProvider.main())
     }
 

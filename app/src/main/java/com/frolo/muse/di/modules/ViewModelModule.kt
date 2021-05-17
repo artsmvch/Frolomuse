@@ -21,7 +21,7 @@ import com.frolo.muse.ui.main.library.songs.SongListViewModel
 import com.frolo.muse.ui.main.player.PlayerViewModel
 import com.frolo.muse.ui.main.player.current.CurrSongQueueViewModel
 import com.frolo.muse.ui.main.player.mini.MiniPlayerViewModel
-import com.frolo.muse.ui.main.settings.BillingViewModel
+import com.frolo.muse.ui.main.settings.SettingsViewModel
 import com.frolo.muse.ui.main.settings.playback.PlaybackFadingViewModel
 import com.frolo.muse.ui.main.settings.duration.MinAudioFileDurationViewModel
 import com.frolo.muse.ui.main.settings.hidden.HiddenFilesViewModel
@@ -151,8 +151,8 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(BillingViewModel::class)
-    abstract fun bindBillingViewModel(viewModel: BillingViewModel): ViewModel
+    @ViewModelKey(SettingsViewModel::class)
+    abstract fun bindBillingViewModel(viewModel: SettingsViewModel): ViewModel
 
     @Binds
     @IntoMap

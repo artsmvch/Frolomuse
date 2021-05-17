@@ -5,13 +5,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.frolo.muse.arch.*
 import com.frolo.muse.billing.BillingManager
-import com.frolo.muse.billing.ProductId
 import com.frolo.muse.engine.*
 import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.ProductOfferUiElementSource
 import com.frolo.muse.logger.logCustomPresetDeleted
-import com.frolo.muse.logger.logProductOffered
 import com.frolo.muse.model.ShortRange
 import com.frolo.muse.model.TooltipId
 import com.frolo.muse.model.VisualizerRendererType
@@ -23,7 +21,7 @@ import com.frolo.muse.repository.Preferences
 import com.frolo.muse.repository.PresetRepository
 import com.frolo.muse.repository.TooltipManager
 import com.frolo.muse.rx.SchedulerProvider
-import com.frolo.muse.ui.base.BaseViewModel
+import com.frolo.muse.ui.base.BillingViewModel
 import io.reactivex.processors.PublishProcessor
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -39,22 +37,10 @@ class AudioFxViewModel @Inject constructor(
     private val billingManager: BillingManager,
     private val tooltipManager: TooltipManager,
     private val eventLogger: EventLogger
-): BaseViewModel(eventLogger) {
-
-    private val isPremiumPurchased: LiveData<Boolean> by lazy {
-        MutableLiveData<Boolean>().apply {
-            billingManager.isProductPurchased(productId = ProductId.PREMIUM, forceCheckFromApi = true)
-                .observeOn(schedulerProvider.main())
-                .subscribeFor { isPurchased ->
-                    value = isPurchased
-                }
-        }
-    }
+): BillingViewModel(schedulerProvider, navigator, billingManager, eventLogger) {
 
     val isPlaybackParamsProBadged: LiveData<Boolean> =
-        Transformations.map(isPremiumPurchased) { isPremiumPurchased ->
-            isPremiumPurchased?.let { bool -> !bool }
-        }
+        Transformations.map(isPremiumFeatureAvailable) { bool -> bool?.not() }
 
     private val voidPreset = presetRepository.voidPreset.blockingGet()
 
@@ -313,12 +299,8 @@ class AudioFxViewModel @Inject constructor(
     }
 
     fun onPlaybackParamsOptionSelected() {
-        val isPremiumPurchased = isPremiumPurchased.value ?: true
-        if (isPremiumPurchased) {
+        if (tryUsePremiumFeature(ProductOfferUiElementSource.PLAYBACK_PARAMS)) {
             navigator.openPlaybackParams()
-        } else {
-            eventLogger.logProductOffered(ProductId.PREMIUM, ProductOfferUiElementSource.PLAYBACK_PARAMS)
-            navigator.offerToBuyPremium()
         }
     }
 

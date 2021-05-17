@@ -3,11 +3,13 @@ package com.frolo.muse.billing
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.annotation.UiThread
+import androidx.core.content.edit
 import com.android.billingclient.api.*
 import com.frolo.muse.BuildConfig
 import com.frolo.muse.FrolomuseApp
 import com.frolo.muse.Logger
 import com.frolo.muse.OptionalCompat
+import com.frolo.muse.firebase.FirebaseRemoteConfigUtil
 import com.frolo.muse.rx.subscribeSafely
 import com.frolo.rxpreference.RxPreference
 import io.reactivex.Completable
@@ -18,6 +20,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.processors.PublishProcessor
 import io.reactivex.schedulers.Schedulers
+import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
 
 
@@ -26,8 +29,18 @@ class BillingManager(private val frolomuseApp: FrolomuseApp) {
 
     private val context: Context get() = frolomuseApp
 
-    private val preferences: SharedPreferences by lazy {
-        context.getSharedPreferences(PREFS_STORAGE_NAME, Context.MODE_PRIVATE)
+    /**
+     * SharedPreferences for storing purchase details.
+     */
+    private val purchasesPreferences: SharedPreferences by lazy {
+        context.getSharedPreferences(PURCHASES_PREFS_STORAGE_NAME, Context.MODE_PRIVATE)
+    }
+
+    /**
+     * SharedPreferences for storing trial information.
+     */
+    private val trialPreferences: SharedPreferences by lazy {
+        context.getSharedPreferences(TRIAL_PREFS_STORAGE_NAME, Context.MODE_PRIVATE)
     }
 
     private val client: BillingClient by lazy {
@@ -49,12 +62,6 @@ class BillingManager(private val frolomuseApp: FrolomuseApp) {
 
     private val isPreparingBillingClient = AtomicBoolean(false)
     private val preparedBillingClientProcessor = PublishProcessor.create<Result<BillingClient>>()
-
-    init {
-        if (DEBUG) {
-            Logger.d(LOG_TAG, "Storage: ${preferences.all}")
-        }
-    }
 
     /**
      * Prepares the billing client: start the connection to make the client ready.
@@ -106,7 +113,7 @@ class BillingManager(private val frolomuseApp: FrolomuseApp) {
      */
     private fun handlePurchases(purchases: List<Purchase>) {
         // Store the state of each purchase
-        val editor = preferences.edit()
+        val editor: SharedPreferences.Editor = purchasesPreferences.edit()
         editor.clear()
         purchases.forEach { purchase ->
             val key = getPurchaseDetailsKey(purchase.sku)
@@ -149,10 +156,98 @@ class BillingManager(private val frolomuseApp: FrolomuseApp) {
     }
 
     fun sync() {
+
+        if (DEBUG) {
+            Logger.d(LOG_TAG, "PurchasesPreferences: ${purchasesPreferences.all}")
+            Logger.d(LOG_TAG, "TrialPreferences: ${trialPreferences.all}")
+        }
+
         if (!client.isReady) {
             prepareBillingClient()
         }
+
+        // The trial period is considered valid if it is >= 0L
+        val isTrialDurationValid: Boolean = try {
+            trialPreferences.getLong(KEY_TRIAL_DURATION_MILLIS, -1L) >= 0L
+        } catch (ignored: Throwable) {
+            false
+        }
+        if (!isTrialDurationValid) {
+            FirebaseRemoteConfigUtil.getActivatedConfig()
+                .map { config ->
+                    // Should throw an exception if the value is empty or invalid
+                    config.getValue(REMOTE_KEY_TRIAL_DURATION_MILLIS).asString().toLong()
+                }
+                .doOnSuccess { duration ->
+                    trialPreferences.edit { putLong(KEY_TRIAL_DURATION_MILLIS, duration) }
+                }
+                .doOnError { err ->
+                    Logger.e(LOG_TAG, "Failed to sync Trial duration millis", err)
+                }
+                .subscribeSafely()
+        }
     }
+
+    //region Trial
+    fun getTrialStatus(): Flowable<TrialStatus> {
+        return RxPreference.ofLong(trialPreferences, KEY_TRIAL_ACTIVATION_TIME_MILLIS)
+            .get()
+            .map { activationTimeOptional ->
+
+                val trialDurationMillis: Long = if (DEBUG) {
+                    // For debugging, trial duration is only 5 minutes
+                    DEBUG_TRIAL_DURATION_MILLIS
+                } else {
+                    trialPreferences.getLong(KEY_TRIAL_DURATION_MILLIS, DEFAULT_TRIAL_DURATION_MILLIS)
+                }
+
+                when {
+                    trialDurationMillis <= 0 -> {
+                        // The duration is invalid or equal to 0 => no trial available.
+                        TrialStatus.NotAvailable
+                    }
+                    activationTimeOptional.isPresent -> {
+                        // There is an activation time present, we need to check if it has expired
+                        val currentTimeMillis: Long = getCurrentTimeMillis()
+                        val activationTimeMillis: Long = activationTimeOptional.get()
+                        val expirationTimeMillis: Long = activationTimeMillis + trialDurationMillis
+                        if (currentTimeMillis < expirationTimeMillis) TrialStatus.Activated else TrialStatus.Expired
+                    }
+                    else -> {
+                        // There is no activation time in the preferences.
+                        // We consider the trial available (not yet activated).
+                        TrialStatus.Available(trialDurationMillis)
+                    }
+                }
+            }
+            .observeOn(mainThreadScheduler)
+    }
+
+    fun activateTrialVersion(): Completable {
+        val source = Completable.fromAction {
+            if (trialPreferences.contains(KEY_TRIAL_ACTIVATION_TIME_MILLIS)) {
+                throw IllegalStateException("The trial is already activated")
+            }
+            val currentTimeMillis: Long = getCurrentTimeMillis()
+            trialPreferences.edit { putLong(KEY_TRIAL_ACTIVATION_TIME_MILLIS, currentTimeMillis) }
+        }
+
+        return source.subscribeOn(queryScheduler).observeOn(mainThreadScheduler)
+    }
+
+    /**
+     * Resets trial activation. NOTE: should be used only for testing.
+     */
+    fun resetTrial(): Completable {
+        val source = Completable.fromAction {
+            trialPreferences.edit {
+                remove(KEY_TRIAL_ACTIVATION_TIME_MILLIS)
+            }
+        }
+
+        return source.subscribeOn(queryScheduler).observeOn(mainThreadScheduler)
+    }
+    //endregion
 
     fun getProductDetails(productId: ProductId): Single<ProductDetails> {
         return requirePreparedClient().flatMap { billingClient ->
@@ -177,7 +272,7 @@ class BillingManager(private val frolomuseApp: FrolomuseApp) {
 
     fun isProductPurchased(productId: ProductId, forceCheckFromApi: Boolean = true): Flowable<Boolean> {
         val key = getPurchaseDetailsKey(productId.sku)
-        val localPurchaseDetails = RxPreference.ofString(preferences, key).get()
+        val localPurchaseDetails = RxPreference.ofString(purchasesPreferences, key).get()
         val checkedFromApiRef = AtomicBoolean(false)
         return localPurchaseDetails.observeOn(mainThreadScheduler).switchMapSingle { optionalDetailsJson ->
 
@@ -220,9 +315,14 @@ class BillingManager(private val frolomuseApp: FrolomuseApp) {
                 val params = BillingFlowParams.newBuilder()
                     .setSkuDetails(skuDetails)
                     .build()
-                val activity = frolomuseApp.foregroundActivity
-                        ?: throw NullPointerException("Could not find foreground activity")
-                Single.fromCallable { billingClient.launchBillingFlow(activity, params) }
+
+                val source: Single<BillingResult> = Single.fromCallable {
+                    val activity = frolomuseApp.foregroundActivity
+                            ?: throw NullPointerException("Could not find foreground activity")
+                    billingClient.launchBillingFlow(activity, params)
+                }
+
+                source.subscribeOn(mainThreadScheduler)
             }
         }
     }
@@ -269,12 +369,23 @@ class BillingManager(private val frolomuseApp: FrolomuseApp) {
 
         private const val LOG_TAG = "BillingManager"
 
-        private const val PREFS_STORAGE_NAME = "com.frolo.muse.billing.BillingStorage"
+        private const val PURCHASES_PREFS_STORAGE_NAME = "com.frolo.muse.billing.Purchases"
+        private const val TRIAL_PREFS_STORAGE_NAME = "com.frolo.muse.billing.Trial"
 
+        private const val REMOTE_KEY_TRIAL_DURATION_MILLIS = "trial_duration_millis"
+        private const val KEY_TRIAL_DURATION_MILLIS = "trial_duration_millis"
+        private const val KEY_TRIAL_ACTIVATION_TIME_MILLIS = "trial_activation_time_millis"
         private const val KEY_PURCHASE_DETAILS = "purchase_details"
+
+        private val DEFAULT_TRIAL_DURATION_MILLIS = TimeUnit.DAYS.toMillis(3)
+        private val DEBUG_TRIAL_DURATION_MILLIS = TimeUnit.MINUTES.toMillis(5)
 
         private fun getPurchaseDetailsKey(sku: String): String {
             return KEY_PURCHASE_DETAILS + "_" + sku
+        }
+
+        private fun getCurrentTimeMillis(): Long {
+            return System.currentTimeMillis()
         }
     }
 }
