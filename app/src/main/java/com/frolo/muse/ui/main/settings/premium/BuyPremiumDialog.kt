@@ -70,6 +70,20 @@ class BuyPremiumDialog : BaseDialogFragment() {
         )
     }
 
+    private fun animateTrialActivation(dialog: Dialog) = with(dialog) {
+        fl_trial_activation_container.setOnTouchListener { _, _ -> true }
+        fl_trial_activation_container.isVisible = true
+        fl_trial_activation_container.alpha = 0f
+        fl_trial_activation_container.animate()
+            .alpha(1f)
+            .setDuration(200L)
+            .start()
+
+        cv_trial_activation.setChecked(checked = true, animate = true)
+
+        dismissDelayed(1000L)
+    }
+
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
         error.observeNonNull(owner) { err ->
             if (BuildConfig.DEBUG) postError(err)
@@ -77,6 +91,10 @@ class BuyPremiumDialog : BaseDialogFragment() {
 
         closeEvent.observe(owner) {
             dismiss()
+        }
+
+        showTrialActivationAndCloseEvent.observe(owner) {
+            dialog?.apply { animateTrialActivation(this) } ?: dismiss()
         }
 
         isLoading.observeNonNull(owner) { isLoading ->

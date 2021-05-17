@@ -287,6 +287,11 @@ class CheckView @JvmOverloads constructor(
     }
 
     private fun resolveStateImmediately() {
+        if (checkAnimator?.isRunning == true || circleAnimator?.isRunning == true) {
+            // Do NOT touch this if any of the animators is running
+            return
+        }
+
         if (checked) {
             setCheckPathPercentage(1f)
             setCirclePathPercentage(1f)
@@ -306,6 +311,11 @@ class CheckView @JvmOverloads constructor(
     }
 
     private fun setCheckPathPercentage(@FloatRange(from = 0.0, to = 1.0) percent: Float) {
+        if (percent == 0f) {
+            pathCheck.reset()
+            return
+        }
+
         setCheckPathFull()
         val totalLength = minorContourLength + majorContourLength
         val pivotPercent = minorContourLength / totalLength
@@ -355,6 +365,11 @@ class CheckView @JvmOverloads constructor(
     }
 
     private fun setCirclePathPercentage(@FloatRange(from = 0.0, to = 1.0) percent: Float) {
+        if (percent == 0f) {
+            pathCircle.reset()
+            return
+        }
+
         pathCircle.apply {
             reset()
             moveTo(circleStart.x, circleStart.y)

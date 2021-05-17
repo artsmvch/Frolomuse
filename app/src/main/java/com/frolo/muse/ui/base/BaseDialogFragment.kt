@@ -4,10 +4,12 @@ import android.Manifest
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
+import android.os.Handler
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatDialogFragment
+import androidx.core.os.postDelayed
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
 import com.frolo.muse.FrolomuseApp
@@ -173,5 +175,17 @@ abstract class BaseDialogFragment : AppCompatDialogFragment() {
             if (msg.isNullOrBlank()) getString(R.string.sorry_exception) else msg
         }
         errorToast = Toast.makeText(context, msg, Toast.LENGTH_LONG).apply { show() }
+    }
+
+    protected fun dismissDelayed(delayMillis: Long) {
+        val context: Context? = context
+        if (context != null) {
+            Handler(context.mainLooper).postDelayed(delayMillis) {
+                dismissAllowingStateLoss()
+            }
+        } else {
+            // The fragment is not attached to a context, dismiss it right now
+            dismissAllowingStateLoss()
+        }
     }
 }

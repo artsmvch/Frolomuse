@@ -103,4 +103,37 @@
         android:visibility="invisible"
         android:layout_width="0dp"
         android:layout_height="0dp" />
+
+    <LinearLayout
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/fl_trial_activation_container"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:padding="24dp"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:background="?colorSurface"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <com.frolo.muse.views.checkable.CheckView
+            android:id="@+id/cv_trial_activation"
+            android:layout_width="108dp"
+            android:layout_height="108dp"
+            app:strokeColor="?colorPremiumProductAccent"
+            app:strokeWidth="6dp"
+            app:circleColor="@color/transparent"/>
+
+        <TextView
+            android:id="@+id/tv_trial_activation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:textAppearance="?textAppearanceHeadline5"
+            android:textColor="?colorPremiumProductAccent"
+            android:text="@string/premium_trial_activated"/>
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

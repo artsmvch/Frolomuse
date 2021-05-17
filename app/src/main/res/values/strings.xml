@@ -391,6 +391,7 @@
     <string name="premium_trial">Trial</string>
     <string name="premium_trial_desc_s">Activate trial for %d day and try premium features</string>
     <string name="activate_premium_trial">Activate trial</string>
+    <string name="premium_trial_activated">Premium trial activated</string>
 
     <!--Onboarding-->
     <string name="skip">Skip</string>

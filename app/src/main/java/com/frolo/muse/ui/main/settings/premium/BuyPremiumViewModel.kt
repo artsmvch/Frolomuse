@@ -27,6 +27,9 @@ class BuyPremiumViewModel @Inject constructor(
     private val _closeEvent = EventLiveData<Unit>()
     val closeEvent: LiveData<Unit> get() = _closeEvent
 
+    private val _showTrialActivationAndCloseEvent = EventLiveData<Unit>()
+    val showTrialActivationAndCloseEvent: LiveData<Unit> get() = _showTrialActivationAndCloseEvent
+
     private val _isLoading = MutableLiveData<Boolean>(false)
     val isLoading: LiveData<Boolean> get() = _isLoading
 
@@ -71,7 +74,7 @@ class BuyPremiumViewModel @Inject constructor(
             eventLogger.logPremiumTrialActivated()
             billingManager.activateTrialVersion()
                 .observeOn(schedulerProvider.main())
-                .subscribeFor { _closeEvent.call() }
+                .subscribeFor { _showTrialActivationAndCloseEvent.call() }
         } else {
             val productId = ProductId.PREMIUM
             eventLogger.logLaunchedBillingFlow(productId)
