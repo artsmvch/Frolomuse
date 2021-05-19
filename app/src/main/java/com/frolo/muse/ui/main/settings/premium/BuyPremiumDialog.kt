@@ -71,6 +71,7 @@ class BuyPremiumDialog : BaseDialogFragment() {
     }
 
     private fun animateTrialActivation(dialog: Dialog) = with(dialog) {
+        ll_content_container.isVisible = false
         fl_trial_activation_container.setOnTouchListener { _, _ -> true }
         fl_trial_activation_container.isVisible = true
         fl_trial_activation_container.alpha = 0f
@@ -80,6 +81,9 @@ class BuyPremiumDialog : BaseDialogFragment() {
             .start()
 
         cv_trial_activation.setChecked(checked = true, animate = true)
+
+        // Special exit animation for activated premium trial
+        window?.setWindowAnimations(R.style.Base_AppTheme_WindowAnimation_Dialog_ActivatedPremiumTrial)
 
         dismissDelayed(1000L)
     }
