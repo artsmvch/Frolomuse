@@ -375,7 +375,7 @@
     <string name="premium_dialog_title">प्रीमियम</string>
     <string-array name="premium_benefits">
         <item>सभी विज्ञापन हटाए</item>
-        <item>प्लेबैक फीका अनलॉक</item>
+<!--        <item>प्लेबैक फीका अनलॉक</item>-->
         <item>प्लेबैक की गति और पिच को अनलॉक करें</item>
         <item>सभी ऐप थीम अनलॉक करें</item>
         <item>भविष्य के अपडेट में सभी नई सुविधाओं तक पूर्ण पहुंच</item>

@@ -252,13 +252,6 @@ class SettingsFragment : PreferenceFragmentCompat(),
             buyPremiumPreference?.isVisible = visible == true
         }
 
-        isPlaybackFadingProBadged.observeNonNull(owner) { isBadged ->
-            val context = requireContext()
-            playbackFadingPreference?.icon = AppCompatResources.getDrawable(context, R.drawable.pref_ic_fading_outlined_24)?.let { drawable ->
-                if (isBadged) ProBadgedDrawable(context, drawable) else drawable
-            }
-        }
-
         notifyPremiumProductConsumedEvent.observe(owner) {
             Toast.makeText(requireContext(), "Consumed", Toast.LENGTH_SHORT).show()
         }

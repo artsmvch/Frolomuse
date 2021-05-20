@@ -376,7 +376,7 @@
     <string name="premium_dialog_title">Prime</string>
     <string-array name="premium_benefits">
         <item>Supprimer toutes les annonces</item>
-        <item>Déverrouiller le fondu de lecture</item>
+<!--        <item>Déverrouiller le fondu de lecture</item>-->
         <item>Déverrouiller la vitesse et la hauteur de lecture</item>
         <item>Déverrouiller tous les thèmes</item>
         <item>Accès complet à toutes les nouvelles fonctionnalités des futures mises à jour</item>

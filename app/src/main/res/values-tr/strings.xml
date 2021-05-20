@@ -375,7 +375,7 @@
     <string name="premium_dialog_title">Premium</string>
     <string-array name="premium_benefits">
         <item>Tüm reklamları kaldırma</item>
-        <item>Oynatmanın solmasının kilidini açın</item>
+<!--        <item>Oynatmanın solmasının kilidini açın</item>-->
         <item>Oynatma hızının ve tonunun kilidini açın</item>
         <item>Tüm temaların kilidini açın</item>
         <item>Gelecekteki güncellemelerde tüm yeni özelliklere tam erişim</item>

@@ -369,7 +369,7 @@
     <string name="premium_dialog_title">高級功能</string>
     <string-array name="premium_benefits">
         <item>刪除所有廣告</item>
-        <item>解鎖播放褪色</item>
+<!--        <item>解鎖播放褪色</item>-->
         <item>解鎖播放速度和音高</item>
         <item>解鎖所有主題</item>
         <item>在將來的更新中完全訪問所有新功能</item>

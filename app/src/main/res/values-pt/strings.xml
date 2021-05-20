@@ -376,7 +376,7 @@
     <string name="premium_dialog_title">Premium</string>
     <string-array name="premium_benefits">
         <item>Remover todos os anúncios</item>
-        <item>Desbloquear o esmaecimento da reprodução</item>
+<!--        <item>Desbloquear o esmaecimento da reprodução</item>-->
         <item>Desbloquear velocidade de reprodução e tom</item>
         <item>Desbloquear todos os temas</item>
         <item>Acesso total a todos os novos recursos em atualizações futuras</item>

@@ -376,7 +376,7 @@
     <string name="premium_dialog_title">Premium</string>
     <string-array name="premium_benefits">
         <item>Alle Werbung entfernen</item>
-        <item>Das Fading der Wiedergabe entsperren</item>
+<!--        <item>Das Fading der Wiedergabe entsperren</item>-->
         <item>Wiedergabegeschwindigkeit und Tonhöhe entsperren</item>
         <item>Alle Themen entsperren</item>
         <item>Vollzugriff auf alle neuen Funktionen in zukünftigen Updates</item>

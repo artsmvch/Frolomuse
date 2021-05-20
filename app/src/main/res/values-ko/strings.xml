@@ -370,7 +370,7 @@
     <string name="premium_dialog_title">프리미엄</string>
     <string-array name="premium_benefits">
         <item>모든 광고 제거</item>
-        <item>재생 페이딩 잠금 해제</item>
+<!--        <item>재생 페이딩 잠금 해제</item>-->
         <item>재생 속도 및 피치 잠금 해제</item>
         <item>모든 테마 잠금 해제</item>
         <item>향후 업데이트의 모든 새로운 기능에 대한 전체 액세스</item>
