@@ -30,6 +30,7 @@ import com.frolo.muse.ui.main.library.playlists.playlist.PlaylistVMFactory
 import com.frolo.muse.ui.main.library.playlists.playlist.addsong.AddSongToPlaylistVMFactory
 import com.frolo.muse.ui.main.player.lyrics.LyricsVMFactory
 import com.frolo.muse.ui.main.player.poster.PosterVMFactory
+import com.frolo.muse.ui.main.settings.premium.BuyPremiumVMFactory
 import dagger.Component
 import javax.inject.Singleton
 
@@ -85,6 +86,7 @@ interface AppComponent {
     fun inject(vmf: LyricsVMFactory)
     fun inject(vmf: CreatePlaylistVMFactory)
     fun inject(vmf: AudioBucketVMFactory)
+    fun inject(vmf: BuyPremiumVMFactory)
 
     // UseCase factories
     fun provideGetAlbumSongsUseCaseFactory(): GetAlbumSongsUseCase.Factory

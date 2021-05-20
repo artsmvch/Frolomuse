@@ -26,7 +26,6 @@ import com.frolo.muse.ui.main.settings.playback.PlaybackFadingViewModel
 import com.frolo.muse.ui.main.settings.duration.MinAudioFileDurationViewModel
 import com.frolo.muse.ui.main.settings.hidden.HiddenFilesViewModel
 import com.frolo.muse.ui.main.settings.journal.PlayerJournalViewModel
-import com.frolo.muse.ui.main.settings.premium.BuyPremiumViewModel
 import com.frolo.muse.ui.main.settings.theme.ThemeChooserViewModel
 import dagger.Binds
 import dagger.Module
@@ -153,11 +152,6 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(SettingsViewModel::class)
     abstract fun bindBillingViewModel(viewModel: SettingsViewModel): ViewModel
-
-    @Binds
-    @IntoMap
-    @ViewModelKey(BuyPremiumViewModel::class)
-    abstract fun bindBuyPremiumViewModel(viewModel: BuyPremiumViewModel): ViewModel
 
     @Binds
     @IntoMap

@@ -15,13 +15,13 @@ import com.frolo.muse.logger.logLaunchedBillingFlow
 import com.frolo.muse.logger.logPremiumTrialActivated
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.base.BaseViewModel
-import javax.inject.Inject
 
 
-class BuyPremiumViewModel @Inject constructor(
+class BuyPremiumViewModel constructor(
     private val billingManager: BillingManager,
     private val schedulerProvider: SchedulerProvider,
-    private val eventLogger: EventLogger
+    private val eventLogger: EventLogger,
+    private val allowTrialActivation: Boolean
 ): BaseViewModel(eventLogger) {
 
     private val _closeEvent = EventLiveData<Unit>()
@@ -58,7 +58,7 @@ class BuyPremiumViewModel @Inject constructor(
 
     val premiumStatus: LiveData<PremiumStatus> by lazy {
         combine(productDetails, trialStatus) { productDetails, trialStatus ->
-            PremiumStatus(productDetails, trialStatus)
+            PremiumStatus(productDetails, trialStatus, allowTrialActivation)
         }
     }
 
@@ -86,10 +86,18 @@ class BuyPremiumViewModel @Inject constructor(
 
     data class PremiumStatus(
         val productDetails: ProductDetails?,
-        val trialStatus: TrialStatus?
+        val trialStatus: TrialStatus?,
+        val allowTrialActivation: Boolean
     ) {
-        val activatePremium: Boolean
-            get() = trialStatus is TrialStatus.Available
+
+        /**
+         * If true, then the user will be prompted to activate the premium trial version first.
+         * Otherwise, he can only buy premium.
+         */
+        val activateTrial: Boolean get() {
+            return allowTrialActivation && trialStatus is TrialStatus.Available
+        }
+
     }
 
 }

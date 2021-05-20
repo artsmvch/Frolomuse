@@ -157,7 +157,7 @@ class ThemeChooserViewModel @Inject constructor(
         }
 
         eventLogger.logProductOffered(ProductId.PREMIUM, ProductOfferUiElementSource.THEME_PREVIEW_BADGE)
-        navigator.offerToBuyPremium()
+        navigator.offerToBuyPremium(allowTrialActivation = false)
     }
 
     fun onApplyThemeClick(page: ThemePage) {
@@ -170,7 +170,7 @@ class ThemeChooserViewModel @Inject constructor(
         // Check if the user must be premium to apply this theme
         if (page.hasProBadge) {
             eventLogger.logProductOffered(ProductId.PREMIUM, ProductOfferUiElementSource.THEME_PREVIEW_APPLY)
-            navigator.offerToBuyPremium()
+            navigator.offerToBuyPremium(allowTrialActivation = false)
             return
         }
 

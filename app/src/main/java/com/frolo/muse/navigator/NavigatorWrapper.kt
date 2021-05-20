@@ -133,8 +133,8 @@ class NavigatorWrapper : Navigator {
         delegate?.openThemeChooser()
     }
 
-    override fun offerToBuyPremium() {
-        delegate?.offerToBuyPremium()
+    override fun offerToBuyPremium(allowTrialActivation: Boolean) {
+        delegate?.offerToBuyPremium(allowTrialActivation)
     }
 
     override fun launchBillingFlow(productId: ProductId) {

@@ -165,8 +165,8 @@ class NavigatorImpl(private val root: MainActivity) : Navigator {
         root.pushFragment(fragment)
     }
 
-    override fun offerToBuyPremium() {
-        val dialog = BuyPremiumDialog.newInstance()
+    override fun offerToBuyPremium(allowTrialActivation: Boolean) {
+        val dialog = BuyPremiumDialog.newInstance(allowTrialActivation)
         root.pushDialog(dialog)
     }
 

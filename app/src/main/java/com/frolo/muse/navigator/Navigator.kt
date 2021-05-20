@@ -64,7 +64,7 @@ interface Navigator {
 
     fun openThemeChooser()
 
-    fun offerToBuyPremium()
+    fun offerToBuyPremium(allowTrialActivation: Boolean)
 
     fun launchBillingFlow(productId: ProductId)
 

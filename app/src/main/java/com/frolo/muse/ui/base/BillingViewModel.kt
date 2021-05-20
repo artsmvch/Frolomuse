@@ -60,7 +60,7 @@ abstract class BillingViewModel constructor(
             true
         } else {
             eventLogger.logProductOffered(ProductId.PREMIUM, uiElementSource)
-            navigator.offerToBuyPremium()
+            navigator.offerToBuyPremium(allowTrialActivation = true)
             false
         }
     }

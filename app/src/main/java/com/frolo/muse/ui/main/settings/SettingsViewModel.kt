@@ -35,7 +35,7 @@ class SettingsViewModel @Inject constructor(
 
     fun onBuyPremiumPreferenceClicked() {
         eventLogger.logProductOffered(ProductId.PREMIUM, ProductOfferUiElementSource.SETTINGS)
-        navigator.offerToBuyPremium()
+        navigator.offerToBuyPremium(allowTrialActivation = true)
     }
 
     fun onPlaybackFadingClick() {

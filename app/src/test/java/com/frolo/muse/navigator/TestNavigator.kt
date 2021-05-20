@@ -35,7 +35,7 @@ class TestNavigator : Navigator {
     override fun openSettings() = Unit
     override fun openPlaybackFadingParams() = Unit
     override fun openThemeChooser() = Unit
-    override fun offerToBuyPremium() = Unit
+    override fun offerToBuyPremium(allowTrialActivation: Boolean) = Unit
     override fun launchBillingFlow(productId: ProductId) = Unit
     override fun goBack() = Unit
 }

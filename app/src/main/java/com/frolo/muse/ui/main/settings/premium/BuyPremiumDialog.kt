@@ -4,9 +4,11 @@ import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.Fade
 import androidx.transition.TransitionManager
@@ -24,7 +26,13 @@ import java.util.concurrent.TimeUnit
 
 class BuyPremiumDialog : BaseDialogFragment() {
 
-    private val viewModel: BuyPremiumViewModel by viewModel()
+    private val viewModel: BuyPremiumViewModel by lazy {
+        val args = requireArguments()
+        val allowTrialActivation = args.getBoolean(ARG_ALLOW_TRIAL_ACTIVATION, true)
+        val appComponent = requireFrolomuseApp().appComponent
+        val vmFactory = BuyPremiumVMFactory(appComponent, allowTrialActivation)
+        ViewModelProviders.of(this, vmFactory)[BuyPremiumViewModel::class.java]
+    }
 
     private val listener: OnBuyPremiumClickListener? get() = castHost()
 
@@ -115,9 +123,9 @@ class BuyPremiumDialog : BaseDialogFragment() {
             dialog?.apply {
                 val productDetails = premiumStatus?.productDetails
                 val trialStatus = premiumStatus?.trialStatus
-                val activatePremium = premiumStatus?.activatePremium ?: false
+                val activateTrial = premiumStatus?.activateTrial ?: false
                 when {
-                    activatePremium -> {
+                    activateTrial -> {
                         val trialDurationMillis = (trialStatus as? TrialStatus.Available)?.durationMillis
                         if (trialDurationMillis != null) {
                             val days: Int = TimeUnit.MILLISECONDS
@@ -126,10 +134,11 @@ class BuyPremiumDialog : BaseDialogFragment() {
                                 .toInt()
                             val text = getString(R.string.premium_trial_desc_s, days)
                             tv_premium_caption.text = text
+                            tv_premium_caption.isVisible = true
                         } else {
                             tv_premium_caption.text = null
+                            tv_premium_caption.isVisible = false
                         }
-                        tv_premium_caption.isVisible = true
                         btn_premium_button.setText(R.string.activate_premium_trial)
                     }
 
@@ -160,7 +169,13 @@ class BuyPremiumDialog : BaseDialogFragment() {
 
     companion object {
 
-        fun newInstance(): DialogFragment = BuyPremiumDialog()
+        private const val ARG_ALLOW_TRIAL_ACTIVATION = "allow_trial_activation"
+
+        fun newInstance(allowTrialActivation: Boolean): DialogFragment {
+            return BuyPremiumDialog().apply {
+                arguments = bundleOf(ARG_ALLOW_TRIAL_ACTIVATION to allowTrialActivation)
+            }
+        }
     }
 
 }
