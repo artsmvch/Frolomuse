@@ -9,10 +9,7 @@ import com.frolo.muse.billing.BillingManager
 import com.frolo.muse.billing.ProductDetails
 import com.frolo.muse.billing.ProductId
 import com.frolo.muse.billing.TrialStatus
-import com.frolo.muse.logger.EventLogger
-import com.frolo.muse.logger.logFailedToGetProductDetails
-import com.frolo.muse.logger.logLaunchedBillingFlow
-import com.frolo.muse.logger.logPremiumTrialActivated
+import com.frolo.muse.logger.*
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.base.BaseViewModel
 
@@ -70,10 +67,11 @@ class BuyPremiumViewModel constructor(
 
     fun onButtonClicked() {
         val premiumStatus: PremiumStatus = premiumStatus.value ?: return
-        if (premiumStatus.activatePremium) {
-            eventLogger.logPremiumTrialActivated()
+        if (premiumStatus.activateTrial) {
             billingManager.activateTrialVersion()
                 .observeOn(schedulerProvider.main())
+                .doOnComplete { eventLogger.logPremiumTrialActivated() }
+                .doOnError { eventLogger.logFailedToActivatePremiumTrial() }
                 .subscribeFor { _showTrialActivationAndCloseEvent.call() }
         } else {
             val productId = ProductId.PREMIUM

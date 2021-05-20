@@ -345,6 +345,10 @@ fun EventLogger.logPremiumTrialActivated() {
     log("premium_trial_activated")
 }
 
+fun EventLogger.logFailedToActivatePremiumTrial() {
+    log("failed_to_activate_premium_trial")
+}
+
 fun EventLogger.logPurchasedProduct(productId: ProductId) {
     log("purchased_product", Params(productId))
 }
