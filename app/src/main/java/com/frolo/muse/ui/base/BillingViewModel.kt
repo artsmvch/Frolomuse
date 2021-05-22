@@ -46,7 +46,7 @@ abstract class BillingViewModel constructor(
 
     protected val isPremiumFeatureAvailable: LiveData<Boolean> =
         combine(isPremiumPurchased, premiumTrialStatus) { isPremiumPurchased, trialStatus ->
-            isPremiumPurchased == true || trialStatus is TrialStatus.Activated || isPremiumPurchased == null
+            isPremiumPurchased == true || trialStatus is TrialStatus.Activated
         }
 
     /**
