@@ -473,7 +473,7 @@ class PlayerFragment: BaseFragment() {
                 waveform_seek_bar.setWaveform(waveform, true)
             } else {
                 val waveform = StaticWaveform(BuildConfig.SOUND_FRAME_GAIN_COUNT, 1, 10)
-                waveform_seek_bar.setWaveform(waveform, false)
+                waveform_seek_bar.setWaveform(waveform, true)
             }
         }
 
