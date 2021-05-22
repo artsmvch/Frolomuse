@@ -12,7 +12,7 @@ import androidx.lifecycle.LifecycleOwner
 import com.frolo.muse.R
 import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.ui.base.BaseDialogFragment
-import com.frolo.muse.views.observeProgress
+import com.frolo.muse.views.doOnProgressChanged
 import kotlinx.android.synthetic.main.dialog_playback_params.*
 
 
@@ -46,7 +46,7 @@ class PlaybackParamsDialog : BaseDialogFragment() {
         sb_speed.apply {
             // speed range 0..2, controller range 0...200
             max = 200
-            observeProgress { progress ->
+            doOnProgressChanged { _, progress, _ ->
                 val value = progress.toFloat() / 100
                 viewModel.onSeekSpeed(value)
             }
@@ -55,7 +55,7 @@ class PlaybackParamsDialog : BaseDialogFragment() {
         sb_pitch.apply {
             // pitch range 0..2, controller range 0..200
             max = 200
-            observeProgress { progress ->
+            doOnProgressChanged { _, progress, _ ->
                 val value = progress.toFloat() / 100
                 viewModel.onSeekPitch(value)
             }

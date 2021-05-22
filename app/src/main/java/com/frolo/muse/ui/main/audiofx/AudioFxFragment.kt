@@ -29,7 +29,7 @@ import com.frolo.muse.ui.base.NoClipping
 import com.frolo.muse.ui.main.audiofx.adapter.PresetAdapter
 import com.frolo.muse.ui.main.audiofx.adapter.ReverbAdapter
 import com.frolo.muse.ui.main.audiofx.preset.PresetSavedEvent
-import com.frolo.muse.views.observeSelection
+import com.frolo.muse.views.doOnItemSelected
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import it.sephiroth.android.library.tooltip.Tooltip
@@ -159,7 +159,7 @@ class AudioFxFragment: BaseFragment(), NoClipping {
     }
 
     private fun initPresetChooser() {
-        sp_presets.observeSelection { adapterView, position ->
+        sp_presets.doOnItemSelected { adapterView, _, position, _ ->
             val adapter = adapterView.adapter as? PresetAdapter
             if (adapter != null) {
                 val item = adapter.getItem(position)
@@ -174,7 +174,7 @@ class AudioFxFragment: BaseFragment(), NoClipping {
     }
 
     private fun initPresetReverbChooser() {
-        sp_reverbs.observeSelection { adapterView, position ->
+        sp_reverbs.doOnItemSelected { adapterView, _, position, _ ->
             val adapter = adapterView.adapter as? ReverbAdapter
             if (adapter != null) {
                 val item = adapter.getItem(position)
