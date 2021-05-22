@@ -375,7 +375,7 @@
         <item>모든 테마 잠금 해제</item>
         <item>향후 업데이트의 모든 새로운 기능에 대한 전체 액세스</item>
     </string-array>
-    <string name="premium_benefit_support_dev">개발자 지원</string>
+    <string name="premium_benefit_support_dev">이 프로젝트의 개발 지원</string>
     <string name="one_time_purchase">일회성 구매 · 구매 및 영원히 사용</string>
     <string name="buy_premium_for_s">%s 에 구매</string>
     <string name="buy">구입</string>

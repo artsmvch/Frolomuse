@@ -380,7 +380,7 @@
         <item>सभी ऐप थीम अनलॉक करें</item>
         <item>भविष्य के अपडेट में सभी नई सुविधाओं तक पूर्ण पहुंच</item>
     </string-array>
-    <string name="premium_benefit_support_dev">डेवलपर का समर्थन करें</string>
+    <string name="premium_benefit_support_dev">इस परियोजना के विकास का समर्थन करें</string>
     <string name="one_time_purchase">एक बार खरीद · खरीद और हमेशा के लिए उपयोग करें</string>
     <string name="buy_premium_for_s">%s के लिए खरीदें</string>
     <string name="buy">खरीदें</string>

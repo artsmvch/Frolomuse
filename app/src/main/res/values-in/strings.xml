@@ -375,7 +375,7 @@
         <item>Buka kunci semua tema</item>
         <item>Akses penuh ke semua fitur baru di pembaruan mendatang</item>
     </string-array>
-    <string name="premium_benefit_support_dev">Dukung pengembang</string>
+    <string name="premium_benefit_support_dev">Dukung pengembangan proyek ini</string>
     <string name="one_time_purchase">Pembelian satu kali · beli dan gunakan selamanya</string>
     <string name="buy_premium_for_s">Beli seharga %s</string>
     <string name="buy">Beli</string>

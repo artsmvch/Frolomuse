@@ -380,7 +380,7 @@
         <item>Tüm temaların kilidini açın</item>
         <item>Gelecekteki güncellemelerde tüm yeni özelliklere tam erişim</item>
     </string-array>
-    <string name="premium_benefit_support_dev">Geliştiriciyi destekleyin</string>
+    <string name="premium_benefit_support_dev">Bu projenin gelişimini destekleyin</string>
     <string name="one_time_purchase">Tek seferlik satın alma · sonsuza kadar satın alın ve kullanın</string>
     <string name="buy_premium_for_s">%s için satın al</string>
     <string name="buy">Satın Al</string>

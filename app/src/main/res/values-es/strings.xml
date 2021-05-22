@@ -381,7 +381,7 @@
         <item>Desbloquea todos los temas</item>
         <item>Acceso completo a todas las funciones nuevas en futuras actualizaciones</item>
     </string-array>
-    <string name="premium_benefit_support_dev">Apoya al desarrollador</string>
+    <string name="premium_benefit_support_dev">Apoya el desarrollo de este proyecto</string>
     <string name="one_time_purchase">Compra única · compra y usa para siempre</string>
     <string name="buy_premium_for_s">Comprar por %s</string>
     <string name="buy">Comprar</string>

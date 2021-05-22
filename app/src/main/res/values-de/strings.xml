@@ -381,7 +381,7 @@
         <item>Alle Themen entsperren</item>
         <item>Vollzugriff auf alle neuen Funktionen in zukünftigen Updates</item>
     </string-array>
-    <string name="premium_benefit_support_dev">Entwickler unterstützen</string>
+    <string name="premium_benefit_support_dev">Die Entwicklung dieses Projekts unterstützen</string>
     <string name="one_time_purchase">Einmaliger Kauf · Kaufen und für immer nutzen</string>
     <string name="buy_premium_for_s">Kaufen für %s</string>
     <string name="buy">Kaufen</string>

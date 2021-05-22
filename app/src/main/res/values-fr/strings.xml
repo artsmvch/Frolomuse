@@ -381,7 +381,7 @@
         <item>Déverrouiller tous les thèmes</item>
         <item>Accès complet à toutes les nouvelles fonctionnalités des futures mises à jour</item>
     </string-array>
-    <string name="premium_benefit_support_dev">Soutenir le développeur</string>
+    <string name="premium_benefit_support_dev">Soutenir le développement de ce projet</string>
     <string name="one_time_purchase">Achat unique · acheter et utiliser pour toujours</string>
     <string name="buy_premium_for_s">Acheter pour %s</string>
     <string name="buy">Acheter</string>

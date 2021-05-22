@@ -387,7 +387,7 @@
         <item>Розблокувати всі теми</item>
         <item>Повний доступ до всіх нових функцій у майбутніх оновленнях</item>
     </string-array>
-    <string name="premium_benefit_support_dev">Підтримати розробника</string>
+    <string name="premium_benefit_support_dev">Підтримати розвиток цього проекту</string>
     <string name="one_time_purchase">Одноразова покупка · купити і використовувати назавжди</string>
     <string name="buy_premium_for_s">Купити за %s</string>
     <string name="buy">Купити</string>

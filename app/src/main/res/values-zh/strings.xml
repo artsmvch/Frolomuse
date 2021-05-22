@@ -374,7 +374,7 @@
         <item>解鎖所有主題</item>
         <item>在將來的更新中完全訪問所有新功能</item>
     </string-array>
-    <string name="premium_benefit_support_dev">支持開發商</string>
+    <string name="premium_benefit_support_dev">支持該項目的發展</string>
     <string name="one_time_purchase">一次性購買·永久使用</string>
     <string name="buy_premium_for_s">買 %s</string>
     <string name="buy">買</string>
