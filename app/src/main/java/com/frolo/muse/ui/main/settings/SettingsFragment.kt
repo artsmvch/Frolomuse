@@ -405,7 +405,8 @@ class SettingsFragment : PreferenceFragmentCompat(),
         }
         MaterialAlertDialogBuilder(safeContext)
             .setTitle("Choose language")
-            .setSingleChoiceItems(languages.toTypedArray(), checkedLangIndex) { _, index ->
+            .setSingleChoiceItems(languages.toTypedArray(), checkedLangIndex) { dialog, index ->
+                dialog?.dismiss()
                 if (index > 0) {
                     val selectedLang: String = languages[index]
                     preferences.language = selectedLang
