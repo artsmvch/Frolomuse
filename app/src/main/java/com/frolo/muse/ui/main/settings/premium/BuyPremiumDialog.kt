@@ -132,8 +132,9 @@ class BuyPremiumDialog : BaseDialogFragment() {
                                 .toDays(trialDurationMillis)
                                 .coerceAtLeast(1)
                                 .toInt()
-                            val text = getString(R.string.premium_trial_desc_s, days)
-                            tv_premium_caption.text = text
+                            val durationText = this.context.resources.getQuantityString(R.plurals.days, days, days)
+                            val captionText = getString(R.string.premium_trial_desc_s, durationText)
+                            tv_premium_caption.text = captionText
                             tv_premium_caption.isVisible = true
                         } else {
                             tv_premium_caption.text = null

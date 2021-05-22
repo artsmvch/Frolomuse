@@ -378,4 +378,10 @@
     <string name="one_time_purchase">一次性購買·永久使用</string>
     <string name="buy_premium_for_s">買 %s</string>
     <string name="buy">買</string>
+    <string name="premium_trial_desc_s">激活試用版（%s）並嘗試使用高級功能</string>
+    <plurals name="days">
+        <item quantity="other">%d 天</item>
+    </plurals>
+    <string name="activate_premium_trial">激活試用版</string>
+    <string name="premium_trial_activated">高級試用版已激活</string>
 </resources>

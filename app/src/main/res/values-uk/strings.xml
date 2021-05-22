@@ -391,4 +391,13 @@
     <string name="one_time_purchase">Одноразова покупка · купити і використовувати назавжди</string>
     <string name="buy_premium_for_s">Купити за %s</string>
     <string name="buy">Купити</string>
+    <string name="premium_trial_desc_s">Активуйте пробну версію (%s) і спробуйте преміум-функції</string>
+    <plurals name="days">
+        <item quantity="one">%d день</item>
+        <item quantity="few">%d дні</item>
+        <item quantity="many">%d днів</item>
+        <item quantity="other">%d днів</item>
+    </plurals>
+    <string name="activate_premium_trial">Активувати</string>
+    <string name="premium_trial_activated">Пробну версію активовано</string>
 </resources>

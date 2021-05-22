@@ -379,4 +379,10 @@
     <string name="one_time_purchase">일회성 구매 · 구매 및 영원히 사용</string>
     <string name="buy_premium_for_s">%s 에 구매</string>
     <string name="buy">구입</string>
+    <string name="premium_trial_desc_s">평가판을 활성화하고 (%s) 프리미엄 기능을 사용해보십시오</string>
+    <plurals name="days">
+        <item quantity="other">%d 일</item>
+    </plurals>
+    <string name="activate_premium_trial">프리미엄 평가판 활성화</string>
+    <string name="premium_trial_activated">프리미엄 평가판이 활성화되었습니다</string>
 </resources>

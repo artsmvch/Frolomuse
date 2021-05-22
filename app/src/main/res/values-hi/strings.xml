@@ -384,4 +384,11 @@
     <string name="one_time_purchase">एक बार खरीद · खरीद और हमेशा के लिए उपयोग करें</string>
     <string name="buy_premium_for_s">%s के लिए खरीदें</string>
     <string name="buy">खरीदें</string>
+    <string name="premium_trial_desc_s">परीक्षण संस्करण (%s) सक्रिय करें और प्रीमियम सुविधाओं का प्रयास करें</string>
+    <plurals name="days">
+        <item quantity="one">%d दिन</item>
+        <item quantity="other">%d दिन</item>
+    </plurals>
+    <string name="activate_premium_trial">परीक्षण संस्करण सक्रिय करें</string>
+    <string name="premium_trial_activated">प्रीमियम परीक्षण सक्रिय</string>
 </resources>

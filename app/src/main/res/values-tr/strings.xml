@@ -384,4 +384,11 @@
     <string name="one_time_purchase">Tek seferlik satın alma · sonsuza kadar satın alın ve kullanın</string>
     <string name="buy_premium_for_s">%s için satın al</string>
     <string name="buy">Satın Al</string>
+    <string name="premium_trial_desc_s">Deneme sürümünü etkinleştirin (%s) ve premium özellikleri deneyin</string>
+    <plurals name="days">
+        <item quantity="one">%d gün</item>
+        <item quantity="other">%d gün</item>
+    </plurals>
+    <string name="activate_premium_trial">Deneme sürümünü etkinleştirin</string>
+    <string name="premium_trial_activated">Premium deneme etkinleştirildi</string>
 </resources>

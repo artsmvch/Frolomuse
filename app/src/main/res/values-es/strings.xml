@@ -385,4 +385,11 @@
     <string name="one_time_purchase">Compra única · compra y usa para siempre</string>
     <string name="buy_premium_for_s">Comprar por %s</string>
     <string name="buy">Comprar</string>
+    <string name="premium_trial_desc_s">Active la versión de prueba (%s) y pruebe las funciones premium</string>
+    <plurals name="days">
+        <item quantity="one">%d día</item>
+        <item quantity="other">%d días</item>
+    </plurals>
+    <string name="activate_premium_trial">Activar versión de prueba</string>
+    <string name="premium_trial_activated">Prueba premium activada</string>
 </resources>
