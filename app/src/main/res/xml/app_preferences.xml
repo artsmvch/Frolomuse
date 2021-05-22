@@ -121,6 +121,11 @@
             android:summary="@string/player_journal_desc"/>
 
         <Preference
+            android:key="set_language"
+            android:title="Set language"
+            android:summary="Set language for the application"/>
+
+        <Preference
             android:key="consume_premium_product"
             android:title="Consume premium product"
             android:summary="Consume premium product. DO NOT USE IN PRODUCTION"/>

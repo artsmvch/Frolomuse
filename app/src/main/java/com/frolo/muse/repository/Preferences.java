@@ -9,6 +9,8 @@ import com.frolo.muse.model.VisualizerRendererType;
 import com.frolo.muse.model.playback.PlaybackFadingParams;
 import com.frolo.muse.model.media.Media;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.io.PrintWriter;
 import java.util.List;
 
@@ -28,6 +30,10 @@ public interface Preferences {
 
     @Player.ShuffleMode int loadShuffleMode();
     void saveShuffleMode(@Player.ShuffleMode int mode);
+
+    @Nullable
+    String getLanguage();
+    void setLanguage(@Nullable String lang);
 
     void saveTheme(Theme theme);
     Theme getTheme();

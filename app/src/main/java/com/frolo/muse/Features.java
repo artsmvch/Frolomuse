@@ -29,6 +29,14 @@ public final class Features {
         return Build.VERSION.SDK_INT <= Build.VERSION_CODES.Q;
     }
 
+    /**
+     * This feature is currently only available for debug builds.
+     * @return true if the language chooser feature is available.
+     */
+    public static boolean isLanguageChooserFeatureAvailable() {
+        return BuildConfig.DEBUG;
+    }
+
     private Features() {
     }
 }

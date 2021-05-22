@@ -60,6 +60,7 @@ public class PreferencesImpl implements Preferences {
     private static final String KEY_RESUME_ON_PLUGGED_IN = "resume_on_plugged_in";
 
     private static final String KEY_ALBUM_GRID_ENABLED = "album_big_item_displaying";
+    private static final String KEY_LANGUAGE = "app_language_key";
     private static final String KEY_THEME = "app_theme";
 
     private static final String KEY_VISUALIZER_RENDERER_TYPE = "visualizer_renderer_type";
@@ -170,6 +171,26 @@ public class PreferencesImpl implements Preferences {
 
     public void saveShuffleMode(@Player.ShuffleMode int mode) {
         preferences.edit().putInt(KEY_PLAYBACK_SHUFFLE_MODE, mode).apply();
+    }
+
+    @Nullable
+    @Override
+    public String getLanguage() {
+        try {
+            return preferences.getString(KEY_LANGUAGE, null);
+        } catch (Throwable err) {
+            if (DEBUG) throw err;
+            return null;
+        }
+    }
+
+    @Override
+    public void setLanguage(@Nullable String lang) {
+        try {
+            preferences.edit().putString(KEY_LANGUAGE, lang).apply();
+        } catch (Throwable err) {
+            if (DEBUG) throw err;
+        }
     }
 
     public void saveTheme(Theme theme) {

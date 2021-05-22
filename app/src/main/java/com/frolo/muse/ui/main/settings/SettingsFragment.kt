@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProviders
@@ -228,6 +227,13 @@ class SettingsFragment : PreferenceFragmentCompat(),
             }
         }
 
+        findPreference("set_language").apply {
+            setOnPreferenceClickListener {
+                showLanguageChooser()
+                true
+            }
+        }
+
         findPreference("consume_premium_product").apply {
             setOnPreferenceClickListener {
                 settingsViewModel.onConsumePremiumProductClicked()
@@ -385,6 +391,30 @@ class SettingsFragment : PreferenceFragmentCompat(),
     private fun showPlayerJournal() {
         val dialog = PlayerJournalDialog.newInstance()
         dialog.show(childFragmentManager, TAG_PLAYER_JOURNAL)
+    }
+
+    private fun showLanguageChooser() {
+        val safeContext = this.context ?: return
+        val languages: List<String> = listOf("Defined by system settings",
+                "en", "de", "es", "fr", "hi", "ja", "ko", "pt", "ru", "tr", "uk", "zh")
+        val currSavedLang: String? = preferences.language
+        val checkedLangIndex: Int = if (currSavedLang.isNullOrBlank()) {
+            0
+        } else {
+            languages.indexOf(currSavedLang)
+        }
+        MaterialAlertDialogBuilder(safeContext)
+            .setTitle("Choose language")
+            .setSingleChoiceItems(languages.toTypedArray(), checkedLangIndex) { _, index ->
+                if (index > 0) {
+                    val selectedLang: String = languages[index]
+                    preferences.language = selectedLang
+                } else {
+                    preferences.language = null
+                }
+                activity?.recreate()
+            }
+            .show()
     }
 
     override fun removeClipping(left: Int, top: Int, right: Int, bottom: Int) {

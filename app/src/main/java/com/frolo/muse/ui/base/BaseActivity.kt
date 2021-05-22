@@ -1,11 +1,10 @@
 package com.frolo.muse.ui.base
 
+import android.content.Context
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.frolo.muse.BuildConfig
-import com.frolo.muse.FrolomuseApp
-import com.frolo.muse.R
+import com.frolo.muse.*
 import com.frolo.muse.model.ThemeUtils
 import com.frolo.muse.repository.Preferences
 import javax.inject.Inject
@@ -18,6 +17,20 @@ abstract class BaseActivity: AppCompatActivity() {
     private var errorToast: Toast? = null
 
     fun requireFrolomuseApp() = application as FrolomuseApp
+
+    override fun attachBaseContext(newBase: Context?) {
+        if (Features.isLanguageChooserFeatureAvailable() && newBase != null) {
+            FrolomuseApp.from(newBase).appComponent.inject(this)
+            val lang: String? = preferences.language
+            if (!lang.isNullOrBlank()) {
+                val newLocalizedBase = LocaleHelper.applyLanguage(newBase, lang)
+                super.attachBaseContext(newLocalizedBase)
+                return
+            }
+        }
+
+        super.attachBaseContext(newBase)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         requireFrolomuseApp().appComponent.inject(this)
