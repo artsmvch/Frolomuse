@@ -17,7 +17,7 @@ fun EditText.getNonNullText(): String {
     return text?.toString() ?: ""
 }
 
-fun ControllerView.observeProgress(observer: (progress: Int) -> Unit) {
+fun SeekBar.observeProgress(observer: (progress: Int) -> Unit) {
     setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
         override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
             observer(progress)

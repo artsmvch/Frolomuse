@@ -43,18 +43,18 @@ class PlaybackParamsDialog : BaseDialogFragment() {
     }
 
     private fun loadUI(dialog: Dialog) = with(dialog) {
-        cv_speed.apply {
+        sb_speed.apply {
             // speed range 0..2, controller range 0...200
-            setMax(200)
+            max = 200
             observeProgress { progress ->
                 val value = progress.toFloat() / 100
                 viewModel.onSeekSpeed(value)
             }
         }
 
-        cv_pitch.apply {
+        sb_pitch.apply {
             // pitch range 0..2, controller range 0..200
-            setMax(200)
+            max = 200
             observeProgress { progress ->
                 val value = progress.toFloat() / 100
                 viewModel.onSeekPitch(value)
@@ -93,13 +93,13 @@ class PlaybackParamsDialog : BaseDialogFragment() {
 
         speed.observeNonNull(owner) { speed ->
             dialog?.apply {
-                cv_speed.progress = (speed * 100).toInt()
+                sb_speed.progress = (speed * 100).toInt()
             }
         }
 
         pitch.observeNonNull(owner) { pitch ->
             dialog?.apply {
-                cv_pitch.progress = (pitch * 100).toInt()
+                sb_pitch.progress = (pitch * 100).toInt()
             }
         }
     }

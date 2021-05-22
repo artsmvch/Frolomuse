@@ -35,35 +35,77 @@
         android:gravity="center"
         android:textAppearance="?textAppearanceHeadline5"/>
 
-    <com.frolo.muse.views.ControllerView
+    <androidx.appcompat.widget.AppCompatTextView
         app:layout_constraintStart_toStartOf="@id/content_start_guideline"
+        app:layout_constraintTop_toTopOf="@id/sb_speed"
+        app:layout_constraintBottom_toBottomOf="@id/sb_speed"
+        app:layout_constraintWidth_default="wrap"
+        app:layout_constraintWidth_max="68dp"
+        android:id="@+id/tv_speed_label"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:maxLines="2"
+        android:gravity="start|center_vertical"
+        android:ellipsize="end"
+        android:textAppearance="?textAppearanceCaption"
+        android:textSize="11dp"
+        android:text="@string/speed"
+        tools:ignore="SpUsage" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        app:layout_constraintStart_toStartOf="@id/content_start_guideline"
+        app:layout_constraintTop_toTopOf="@id/sb_pitch"
+        app:layout_constraintBottom_toBottomOf="@id/sb_pitch"
+        app:layout_constraintWidth_default="wrap"
+        app:layout_constraintWidth_max="68dp"
+        android:id="@+id/tv_pitch_label"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:maxLines="2"
+        android:gravity="start|center_vertical"
+        android:ellipsize="end"
+        android:textAppearance="?textAppearanceCaption"
+        android:textSize="11dp"
+        android:text="@string/pitch"
+        tools:ignore="SpUsage" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/labels_end_barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="end"
+        app:constraint_referenced_ids="tv_speed_label,tv_pitch_label"/>
+
+    <androidx.appcompat.widget.AppCompatSeekBar
+        app:layout_constraintStart_toEndOf="@id/labels_end_barrier"
         app:layout_constraintTop_toBottomOf="@id/tv_title"
         app:layout_constraintEnd_toEndOf="@id/content_end_guideline"
-        android:layout_marginTop="24dp"
-        android:id="@+id/cv_speed"
-        app:label="@string/speed"
+        app:layout_constraintHeight_min="40dp"
+        android:id="@+id/sb_speed"
         android:layout_width="0dp"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"/>
 
-    <com.frolo.muse.views.ControllerView
-        app:layout_constraintStart_toStartOf="@id/content_start_guideline"
-        app:layout_constraintTop_toBottomOf="@id/cv_speed"
+    <androidx.appcompat.widget.AppCompatSeekBar
+        app:layout_constraintStart_toEndOf="@id/labels_end_barrier"
+        app:layout_constraintTop_toBottomOf="@id/sb_speed"
         app:layout_constraintEnd_toEndOf="@id/content_end_guideline"
-        android:layout_marginTop="16dp"
-        android:id="@+id/cv_pitch"
-        app:label="@string/pitch"
+        app:layout_constraintHeight_min="40dp"
+        android:id="@+id/sb_pitch"
         android:layout_width="0dp"
+        android:layout_marginTop="8dp"
         android:layout_height="wrap_content" />
 
     <com.google.android.material.checkbox.MaterialCheckBox
         app:layout_constraintStart_toStartOf="@id/content_start_guideline"
-        app:layout_constraintTop_toBottomOf="@id/cv_pitch"
+        app:layout_constraintTop_toBottomOf="@id/sb_pitch"
         app:layout_constraintEnd_toEndOf="@id/content_end_guideline"
         app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintWidth_default="wrap"
         android:id="@+id/chb_do_not_persist"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:text="@string/reset_playback_params_when_switching_song"/>
 
     <com.google.android.flexbox.FlexboxLayout
