@@ -80,17 +80,17 @@
         app:layout_constraintStart_toEndOf="@id/labels_end_barrier"
         app:layout_constraintTop_toBottomOf="@id/tv_title"
         app:layout_constraintEnd_toEndOf="@id/content_end_guideline"
-        app:layout_constraintHeight_min="40dp"
+        app:layout_constraintHeight_min="32dp"
         android:id="@+id/sb_speed"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"/>
+        android:layout_marginTop="32dp"/>
 
     <androidx.appcompat.widget.AppCompatSeekBar
         app:layout_constraintStart_toEndOf="@id/labels_end_barrier"
         app:layout_constraintTop_toBottomOf="@id/sb_speed"
         app:layout_constraintEnd_toEndOf="@id/content_end_guideline"
-        app:layout_constraintHeight_min="40dp"
+        app:layout_constraintHeight_min="32dp"
         android:id="@+id/sb_pitch"
         android:layout_width="0dp"
         android:layout_marginTop="8dp"
