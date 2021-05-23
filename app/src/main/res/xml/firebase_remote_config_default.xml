@@ -16,4 +16,8 @@
         <key>purchase_feature_enabled</key>
         <value>false</value>
     </entry>
+    <entry>
+        <key>trial_duration_millis</key>
+        <value>259200000</value>
+    </entry>
 </defaultsMap>
