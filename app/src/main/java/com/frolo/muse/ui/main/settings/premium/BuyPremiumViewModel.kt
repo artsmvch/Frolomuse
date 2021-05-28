@@ -74,6 +74,7 @@ class BuyPremiumViewModel constructor(
                 .doOnError { eventLogger.logFailedToActivatePremiumTrial() }
                 .subscribeFor { _showTrialActivationAndCloseEvent.call() }
         } else {
+            // TODO: Launch and log only when we have product details
             val productId = ProductId.PREMIUM
             eventLogger.logLaunchedBillingFlow(productId)
             billingManager.launchBillingFlow(productId)
