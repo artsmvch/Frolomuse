@@ -1,4 +1,4 @@
-package com.frolo.muse
+package java.com.frolo.muse
 
 import com.frolo.muse.engine.AudioSource
 import com.frolo.muse.model.media.Song

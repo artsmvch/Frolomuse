@@ -81,19 +81,33 @@ public class SongRepositoryImpl extends BaseMediaRepository<Song> implements Son
     }
 
     @Override
-    public Completable addToPlaylist(long playlistId, Song item) {
-        return PlaylistHelper.addSongToPlaylist(
-                getContext().getContentResolver(),
-                playlistId,
-                item.getId());
+    public Completable addToPlaylist(Playlist playlist, Song item) {
+        if (playlist.isFromSharedStorage()) {
+            // Legacy
+            return PlaylistHelper.addSongToPlaylist(
+                    getContext().getContentResolver(),
+                    playlist.getId(),
+                    item.getId());
+        } else {
+            // New playlist storage
+            return PlaylistDatabaseManager.get(getContext())
+                    .addPlaylistMembers(playlist.getId(), Collections.singleton(item));
+        }
     }
 
     @Override
-    public Completable addToPlaylist(long playlistId, Collection<Song> items) {
-        return PlaylistHelper.addItemsToPlaylist(
-                getContext().getContentResolver(),
-                playlistId,
-                items);
+    public Completable addToPlaylist(Playlist playlist, Collection<Song> items) {
+        if (playlist.isFromSharedStorage()) {
+            // Legacy
+            return PlaylistHelper.addItemsToPlaylist(
+                    getContext().getContentResolver(),
+                    playlist.getId(),
+                    items);
+        } else {
+            // New playlist storage
+            return PlaylistDatabaseManager.get(getContext())
+                    .addPlaylistMembers(playlist.getId(), items);
+        }
     }
 
     @Override
@@ -155,7 +169,13 @@ public class SongRepositoryImpl extends BaseMediaRepository<Song> implements Son
 
     @Override
     public Flowable<List<Song>> getSongsFromPlaylist(final Playlist playlist, String sortOrder) {
-        return SongQuery.queryForPlaylist(getContext().getContentResolver(), playlist, sortOrder);
+        if (playlist.isFromSharedStorage()) {
+            // Legacy
+            return SongQuery.queryForPlaylist(getContext().getContentResolver(), playlist, sortOrder);
+        } else {
+            // New playlist storage
+            return PlaylistDatabaseManager.get(getContext()).queryPlaylistMembers(playlist.getId(), sortOrder);
+        }
     }
 
     @Override

@@ -21,6 +21,8 @@ final class PlaylistQuery {
 
     private static final Uri URI = MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI;
 
+    private static final boolean IS_FROM_SHARED_STORAGE = true;
+
     private static final String[] PROJECTION = {
         MediaStore.Audio.Playlists._ID,
         MediaStore.Audio.Playlists.DATA,
@@ -51,6 +53,7 @@ final class PlaylistQuery {
                 public Playlist build(Cursor cursor, String[] projection) {
                     return new Playlist(
                         cursor.getLong(cursor.getColumnIndex(PROJECTION[0])),
+                        IS_FROM_SHARED_STORAGE,
                         cursor.getString(cursor.getColumnIndex(PROJECTION[1])),
                         cursor.getString(cursor.getColumnIndex(PROJECTION[2])),
                         cursor.getLong(cursor.getColumnIndex(PROJECTION[3])),
@@ -281,11 +284,11 @@ final class PlaylistQuery {
                 int updatedCount = resolver.update(URI,
                         values, MediaStore.Audio.Playlists._ID + " = " + item.getId(), null);
                 if (updatedCount == 0) {
-                    throw new Exception("Failed to updated item: " + item);
+                    throw new Exception("Failed to update item: " + item);
                 }
 
                 long now = System.currentTimeMillis() / 1000;
-                return new Playlist(item.getId(), newName, item.getSource(), item.getDateAdded(), now);
+                return new Playlist(item.getId(), IS_FROM_SHARED_STORAGE, newName, item.getSource(), item.getDateAdded(), now);
             }
         });
     }

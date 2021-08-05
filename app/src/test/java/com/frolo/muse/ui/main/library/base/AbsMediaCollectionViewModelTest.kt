@@ -12,7 +12,6 @@ import com.frolo.muse.model.menu.ContextualMenu
 import com.frolo.muse.navigator.TestNavigator
 import com.frolo.muse.permission.PermissionChecker
 import com.nhaarman.mockitokotlin2.doReturn
-import com.nhaarman.mockitokotlin2.doThrow
 import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.Flowable
@@ -25,6 +24,7 @@ import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
+import java.com.frolo.muse.mockMediaList
 
 
 @RunWith(JUnit4::class)

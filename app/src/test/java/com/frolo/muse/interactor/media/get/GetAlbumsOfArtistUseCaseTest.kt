@@ -2,8 +2,8 @@ package com.frolo.muse.interactor.media.get
 
 import com.frolo.muse.TestSchedulerProvider
 import com.frolo.muse.TestSortOrder
-import com.frolo.muse.mockKT
-import com.frolo.muse.mockList
+import java.com.frolo.muse.mockKT
+import java.com.frolo.muse.mockList
 import com.frolo.muse.model.media.Album
 import com.frolo.muse.model.media.Artist
 import com.frolo.muse.model.media.Media

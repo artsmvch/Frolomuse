@@ -2,6 +2,7 @@ package com.frolo.muse.ui.main.library.playlists
 
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import com.frolo.muse.R
 import com.frolo.muse.inflateChild
@@ -37,6 +38,7 @@ class PlaylistAdapter : BaseAdapter<Playlist, PlaylistAdapter.PlaylistViewHolder
         with(holder.itemView as MediaConstraintLayout) {
             tv_playlist_name.text = item.getNameString(resources)
             tv_playlist_date_modified.text = item.getDateAddedString(resources)
+            tv_playlist_type.isVisible = item.isFromSharedStorage
 
             imv_check.setChecked(selected, selectionChanged)
             
@@ -52,7 +54,7 @@ class PlaylistAdapter : BaseAdapter<Playlist, PlaylistAdapter.PlaylistViewHolder
 
     object PlaylistItemCallback: DiffUtil.ItemCallback<Playlist>() {
         override fun areItemsTheSame(oldItem: Playlist, newItem: Playlist): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.isFromSharedStorage == newItem.isFromSharedStorage && oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(oldItem: Playlist, newItem: Playlist): Boolean {

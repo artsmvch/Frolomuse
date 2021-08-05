@@ -7,7 +7,7 @@ import android.database.Cursor;
 import android.net.Uri;
 
 import com.frolo.muse.R;
-import com.frolo.muse.db.AppMediaStore;
+import com.frolo.muse.content.AppMediaStore;
 import com.frolo.muse.model.preset.CustomPreset;
 import com.frolo.muse.model.preset.VoidPreset;
 import com.frolo.muse.repository.PresetRepository;

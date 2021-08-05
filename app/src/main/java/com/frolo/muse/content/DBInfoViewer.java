@@ -1,4 +1,4 @@
-package com.frolo.muse.db;
+package com.frolo.muse.content;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;

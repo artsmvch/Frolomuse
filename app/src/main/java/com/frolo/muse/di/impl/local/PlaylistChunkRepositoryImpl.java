@@ -9,6 +9,7 @@ import com.frolo.muse.model.sort.SortOrder;
 import com.frolo.muse.repository.PlaylistChunkRepository;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.Completable;
@@ -53,34 +54,58 @@ public class PlaylistChunkRepositoryImpl extends SongRepositoryImpl implements P
 
     @Override
     public Completable addToPlaylist(Playlist playlist, Collection<Song> items) {
-        return PlaylistHelper.addItemsToPlaylist(
-                getContext().getContentResolver(),
-                playlist.getId(),
-                items);
+        if (playlist.isFromSharedStorage()) {
+            // Legacy
+            return PlaylistHelper.addItemsToPlaylist(getContext().getContentResolver(), playlist.getId(), items);
+        } else {
+            // New playlist storage
+            return PlaylistDatabaseManager.get(getContext()).addPlaylistMembers(playlist.getId(), items);
+        }
     }
 
     @Override
     public Completable removeFromPlaylist(Playlist playlist, Song item) {
-        return PlaylistHelper.removeFromPlaylist(
-                getContext().getContentResolver(),
-                playlist.getId(),
-                item);
+        if (playlist.isFromSharedStorage()) {
+            // Legacy
+            return PlaylistHelper.removeFromPlaylist(
+                    getContext().getContentResolver(),
+                    playlist.getId(),
+                    item);
+        } else {
+            // New playlist storage
+            return PlaylistDatabaseManager.get(getContext())
+                    .removePlaylistMembers(playlist.getId(), Collections.singleton(item));
+        }
     }
 
     @Override
     public Completable removeFromPlaylist(Playlist playlist, Collection<Song> items) {
-        return PlaylistHelper.removeFromPlaylist(
-                getContext().getContentResolver(),
-                playlist.getId(),
-                items);
+        if (playlist.isFromSharedStorage()) {
+            // Legacy
+            return PlaylistHelper.removeFromPlaylist(
+                    getContext().getContentResolver(),
+                    playlist.getId(),
+                    items);
+        } else {
+            // New playlist storage
+            return PlaylistDatabaseManager.get(getContext())
+                    .removePlaylistMembers(playlist.getId(), items);
+        }
     }
 
     @Override
     public Completable moveItemInPlaylist(Playlist playlist, int fromPos, int toPos) {
-        return PlaylistHelper.moveItemInPlaylist(
-                getContext().getContentResolver(),
-                playlist.getId(),
-                fromPos,
-                toPos);
+        if (playlist.isFromSharedStorage()) {
+            // Legacy
+            return PlaylistHelper.moveItemInPlaylist(getContext().getContentResolver(), playlist.getId(), fromPos, toPos);
+        } else {
+            return Completable.error(new UnsupportedOperationException(
+                    "Use moveItemInPlaylist(MoveOp) method for playlists from application storage"));
+        }
+    }
+
+    @Override
+    public Completable moveItemInPlaylist(MoveOp op) {
+        return PlaylistDatabaseManager.get(getContext()).movePlaylistMember(op.target, op.previous, op.next);
     }
 }

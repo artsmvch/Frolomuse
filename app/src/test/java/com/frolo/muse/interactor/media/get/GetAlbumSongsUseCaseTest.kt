@@ -22,6 +22,8 @@ import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
+import java.com.frolo.muse.mockKT
+import java.com.frolo.muse.mockSong
 
 
 @RunWith(JUnit4::class)
@@ -41,14 +43,14 @@ class GetAlbumSongsUseCaseTest {
     private val sortOrder1 = TestSortOrder("Sort Order 1","sort_order_1")
     private val result1: List<Song> = List(size = 5) { index ->
         mockSong(
-            duration = (5 + 10 * index) * 1_000
+                duration = (5 + 10 * index) * 1_000
         )
     }
 
     private val sortOrder2 = TestSortOrder("Sort Order 2","sort_order_2")
     private val result2: List<Song> = List(size = 10) { index ->
         mockSong(
-            duration = (5 + 10 * index) * 1_000
+                duration = (5 + 10 * index) * 1_000
         )
     }
 

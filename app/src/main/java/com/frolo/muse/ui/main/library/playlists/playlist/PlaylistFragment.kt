@@ -71,9 +71,7 @@ class PlaylistFragment: AbsSongCollectionFragment<Song>(), NoClipping {
     private var onDragEndedCallback: Runnable? = null
 
     override val adapter: SongAdapter<Song> by lazy {
-        DragSongAdapter(Glide.with(this), onDragListener).apply {
-            setHasStableIds(true)
-        }
+        DragSongAdapter(Glide.with(this), onDragListener)
     }
 
     private val onOffsetChangedListener: AppBarLayout.OnOffsetChangedListener =

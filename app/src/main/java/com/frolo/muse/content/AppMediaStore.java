@@ -1,4 +1,4 @@
-package com.frolo.muse.db;
+package com.frolo.muse.content;
 
 import android.net.Uri;
 import android.provider.BaseColumns;

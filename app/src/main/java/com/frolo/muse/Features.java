@@ -37,6 +37,17 @@ public final class Features {
         return BuildConfig.DEBUG;
     }
 
+    /**
+     * New playlist storage based on a local database owned and managed by the application.
+     * We faced a lot of problems with the playlist storage managed by {@link android.provider.MediaStore}
+     * on Android 10 and above, so it was decided to create our own database.
+     * The new database is managed by {@link com.frolo.muse.di.impl.local.PlaylistDatabaseManager}.
+     * @return true if the new playlist storage feature is available.
+     */
+    public static boolean isAppPlaylistStorageFeatureAvailable() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q;
+    }
+
     private Features() {
     }
 }

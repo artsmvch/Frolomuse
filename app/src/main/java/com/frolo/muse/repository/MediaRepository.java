@@ -1,6 +1,7 @@
 package com.frolo.muse.repository;
 
 import com.frolo.muse.model.media.Media;
+import com.frolo.muse.model.media.Playlist;
 import com.frolo.muse.model.media.Song;
 import com.frolo.muse.model.sort.SortOrder;
 
@@ -92,8 +93,8 @@ public interface MediaRepository<E extends Media> {
      * ********************************************
      * ***************************************** */
 
-    Completable addToPlaylist(long playlistId, E item);
-    Completable addToPlaylist(long playlistId, Collection<E> items);
+    Completable addToPlaylist(Playlist playlist, E item);
+    Completable addToPlaylist(Playlist playlist, Collection<E> items);
 
 
     /* ********************************************
@@ -105,7 +106,10 @@ public interface MediaRepository<E extends Media> {
      * ********************************************
      * ********************************************
      * ***************************************** */
+
+    // NOTE: Be careful if you want to change it to observable/flowable.
     Single<List<Song>> collectSongs(E item);
+    // NOTE: Be careful if you want to change it to observable/flowable.
     Single<List<Song>> collectSongs(Collection<E> items);
 
     /* ********************************************

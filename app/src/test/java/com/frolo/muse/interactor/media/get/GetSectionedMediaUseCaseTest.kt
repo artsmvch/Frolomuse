@@ -2,7 +2,7 @@ package com.frolo.muse.interactor.media.get
 
 import com.frolo.muse.TestSchedulerProvider
 import com.frolo.muse.TestSortOrder
-import com.frolo.muse.mockMediaList
+import java.com.frolo.muse.mockMediaList
 import com.frolo.muse.model.Library
 import com.frolo.muse.model.media.Media
 import com.frolo.muse.model.menu.SortOrderMenu

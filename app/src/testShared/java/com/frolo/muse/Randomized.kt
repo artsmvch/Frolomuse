@@ -1,4 +1,4 @@
-package com.frolo.muse
+package java.com.frolo.muse
 
 import kotlin.random.Random
 

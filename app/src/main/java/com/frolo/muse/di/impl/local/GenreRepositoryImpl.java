@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.frolo.muse.R;
 import com.frolo.muse.model.media.Genre;
+import com.frolo.muse.model.media.Playlist;
 import com.frolo.muse.model.media.Song;
 import com.frolo.muse.model.sort.SortOrder;
 import com.frolo.muse.repository.GenreRepository;
@@ -81,13 +82,27 @@ public class GenreRepositoryImpl extends BaseMediaRepository<Genre> implements G
     }
 
     @Override
-    public Completable addToPlaylist(long playlistId, Genre item) {
-        return PlaylistHelper.addGenreToPlaylist(getContext().getContentResolver(), playlistId, item.getId());
+    public Completable addToPlaylist(Playlist playlist, Genre item) {
+        if (playlist.isFromSharedStorage()) {
+            // Legacy
+            return PlaylistHelper.addGenreToPlaylist(getContext().getContentResolver(), playlist.getId(), item.getId());
+        } else {
+            // New playlist storage
+            return collectSongs(item).flatMapCompletable(songs -> PlaylistDatabaseManager.get(getContext())
+                    .addPlaylistMembers(playlist.getId(), songs));
+        }
     }
 
     @Override
-    public Completable addToPlaylist(long playlistId, Collection<Genre> items) {
-        return PlaylistHelper.addItemsToPlaylist(getContext().getContentResolver(), playlistId, items);
+    public Completable addToPlaylist(Playlist playlist, Collection<Genre> items) {
+        if (playlist.isFromSharedStorage()) {
+            // Legacy
+            return PlaylistHelper.addItemsToPlaylist(getContext().getContentResolver(), playlist.getId(), items);
+        } else {
+            // New playlist storage
+            return collectSongs(items).flatMapCompletable(songs -> PlaylistDatabaseManager.get(getContext())
+                    .addPlaylistMembers(playlist.getId(), songs));
+        }
     }
 
     @Override

@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.frolo.muse.R;
 import com.frolo.muse.model.media.Artist;
+import com.frolo.muse.model.media.Playlist;
 import com.frolo.muse.model.media.Song;
 import com.frolo.muse.model.sort.SortOrder;
 import com.frolo.muse.repository.ArtistRepository;
@@ -84,19 +85,33 @@ public class ArtistRepositoryImpl extends BaseMediaRepository<Artist> implements
     }
 
     @Override
-    public Completable addToPlaylist(long playlistId, Artist item) {
-        return PlaylistHelper.addArtistToPlaylist(
-                getContext().getContentResolver(),
-                playlistId,
-                item.getId());
+    public Completable addToPlaylist(Playlist playlist, Artist item) {
+        if (playlist.isFromSharedStorage()) {
+            // Legacy
+            return PlaylistHelper.addArtistToPlaylist(
+                    getContext().getContentResolver(),
+                    playlist.getId(),
+                    item.getId());
+        } else {
+            // New playlist storage
+            return collectSongs(item).flatMapCompletable(songs -> PlaylistDatabaseManager.get(getContext())
+                    .addPlaylistMembers(playlist.getId(), songs));
+        }
     }
 
     @Override
-    public Completable addToPlaylist(long playlistId, Collection<Artist> items) {
-        return PlaylistHelper.addItemsToPlaylist(
-                getContext().getContentResolver(),
-                playlistId,
-                items);
+    public Completable addToPlaylist(Playlist playlist, Collection<Artist> items) {
+        if (playlist.isFromSharedStorage()) {
+            // Legacy
+            return PlaylistHelper.addItemsToPlaylist(
+                    getContext().getContentResolver(),
+                    playlist.getId(),
+                    items);
+        } else {
+            // New playlist storage
+            return collectSongs(items).flatMapCompletable(songs -> PlaylistDatabaseManager.get(getContext())
+                    .addPlaylistMembers(playlist.getId(), songs));
+        }
     }
 
     @Override

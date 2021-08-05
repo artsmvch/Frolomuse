@@ -3,8 +3,8 @@ package com.frolo.muse.common
 import com.frolo.muse.engine.AudioMetadata
 import com.frolo.muse.engine.AudioSource
 import com.frolo.muse.engine.AudioSources
-import com.frolo.muse.mockAudioSource
-import com.frolo.muse.mockSong
+import java.com.frolo.muse.mockAudioSource
+import java.com.frolo.muse.mockSong
 import com.frolo.muse.model.media.Song
 import junit.framework.TestCase.assertEquals
 import org.junit.Test

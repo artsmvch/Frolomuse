@@ -13,7 +13,7 @@ import android.provider.MediaStore;
 import androidx.annotation.NonNull;
 
 import com.frolo.muse.BuildConfig;
-import com.frolo.muse.db.AppMediaStore;
+import com.frolo.muse.content.AppMediaStore;
 import com.frolo.muse.model.media.MyFile;
 
 import java.io.File;

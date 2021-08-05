@@ -64,7 +64,7 @@
         </provider>
 
         <provider
-            android:name=".db.AppContentProvider"
+            android:name=".content.AppContentProvider"
             android:authorities="${applicationId}.MediaStore"
             android:exported="false" />
 

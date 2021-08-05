@@ -1,4 +1,4 @@
-package com.frolo.muse.db;
+package com.frolo.muse.content;
 
 // Versions and information about changes in each version
 final class Versions {

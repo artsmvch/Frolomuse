@@ -2,8 +2,8 @@ package com.frolo.muse.engine
 
 import androidx.test.runner.AndroidJUnit4
 import com.frolo.muse.common.prepareByTarget
-import com.frolo.muse.randomLong
-import com.frolo.muse.randomString
+import java.com.frolo.muse.randomLong
+import java.com.frolo.muse.randomString
 import com.nhaarman.mockitokotlin2.*
 import org.junit.Test
 import org.junit.runner.RunWith

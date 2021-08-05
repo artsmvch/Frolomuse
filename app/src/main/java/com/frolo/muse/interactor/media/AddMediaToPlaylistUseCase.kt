@@ -29,7 +29,7 @@ class AddMediaToPlaylistUseCase @AssistedInject constructor(
      * Returns the count of added media items.
      */
     fun addMediaToPlaylist(playlist: Playlist): Single<Int> {
-        return genericMediaRepository.addToPlaylist(playlist.id, items)
+        return genericMediaRepository.addToPlaylist(playlist, items)
                 .subscribeOn(schedulerProvider.worker())
                 .andThen(Single.just(items.count()))
     }

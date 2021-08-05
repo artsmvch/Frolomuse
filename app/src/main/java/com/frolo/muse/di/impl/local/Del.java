@@ -202,12 +202,20 @@ final class Del {
 
     @RequiresApi(api = Build.VERSION_CODES.R)
     private static void deleteSongs_API30(Context context, Collection<? extends Song> songs) throws Exception {
+        if (songs.isEmpty()) {
+            return;
+        }
+
         List<Uri> uris = new ArrayList<>(songs.size());
         for (Song song : songs) uris.add(ContentUris.withAppendedId(URI_SONG, song.getId()));
         deleteUris_API30(context, uris);
     }
 
     private static void deleteSongs_Internal(Context context, Collection<Song> songs) throws Exception {
+        if (songs.isEmpty()) {
+            return;
+        }
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             deleteSongs_API30(context, songs);
         } else {
@@ -219,6 +227,10 @@ final class Del {
     }
 
     private static void deleteGenres_Internal(Context context, Collection<Genre> genres) throws Exception {
+        if (genres.isEmpty()) {
+            return;
+        }
+
         ContentResolver resolver = context.getContentResolver();
 
         Collection<Song> songs = SongQuery.queryForGenres(resolver, genres)
@@ -234,6 +246,10 @@ final class Del {
     }
 
     private static void deleteArtists_Internal(Context context, Collection<Artist> artists) throws Exception {
+        if (artists.isEmpty()) {
+            return;
+        }
+
         ContentResolver resolver = context.getContentResolver();
 
         Collection<Song> songs = SongQuery.queryForArtists(resolver, artists)
@@ -249,6 +265,10 @@ final class Del {
     }
 
     private static void deleteAlbums_Internal(Context context, Collection<Album> albums) throws Exception {
+        if (albums.isEmpty()) {
+            return;
+        }
+
         ContentResolver resolver = context.getContentResolver();
 
         Collection<Song> songs = SongQuery.queryForAlbums(resolver, albums)
@@ -264,6 +284,10 @@ final class Del {
     }
 
     private static void deletePlaylists_Internal(Context context, Collection<Playlist> playlists) throws Exception {
+        if (playlists.isEmpty()) {
+            return;
+        }
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             Uri playlistsUri = MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI;
             List<Uri> uris = new ArrayList<>(playlists.size());
@@ -279,6 +303,10 @@ final class Del {
     }
 
     private static void deleteMyFiles_Internal(Context context, Collection<MyFile> myFiles) throws Exception {
+        if (myFiles.isEmpty()) {
+            return;
+        }
+
         ContentResolver resolver = context.getContentResolver();
 
         Collection<Song> songs = SongQuery.queryForMyFiles(resolver, myFiles)
@@ -293,6 +321,10 @@ final class Del {
     }
 
     private static void deleteMediaFiles_Internal(Context context, Collection<MediaFile> mediaFiles) throws Exception {
+        if (mediaFiles.isEmpty()) {
+            return;
+        }
+
         ContentResolver resolver = context.getContentResolver();
 
         Collection<Song> songs = SongQuery.queryForMediaFiles(resolver, mediaFiles)

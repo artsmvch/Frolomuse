@@ -18,6 +18,8 @@ import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
+import java.com.frolo.muse.mockKT
+import java.com.frolo.muse.mockList
 
 
 @RunWith(JUnit4::class)

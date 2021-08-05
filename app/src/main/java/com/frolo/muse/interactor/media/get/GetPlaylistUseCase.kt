@@ -30,7 +30,7 @@ class GetPlaylistUseCase @AssistedInject constructor(
 
     fun getPlaylist(): Flowable<Playlist> {
         return Flowable.just(playlist)
-            .concatWith(playlistRepository.getItem(playlist.id))
+            .concatWith(playlistRepository.getItem(playlist))
             .subscribeOn(schedulerProvider.worker())
     }
 
@@ -54,12 +54,29 @@ class GetPlaylistUseCase @AssistedInject constructor(
         return playlistChunkRepository.getSongsFromPlaylist(playlist, sortOrder)
     }
 
+    override fun removeDuplicatesIfNecessary(list: List<Song>): List<Song> {
+        return if (playlist.isFromSharedStorage) {
+            list.distinctBy { item -> item.id }
+        } else {
+            // No need to remove duplicates for playlists from the application storage
+            list
+        }
+    }
+
     fun removeItem(song: Song): Completable {
         return playlistChunkRepository.removeFromPlaylist(playlist, song)
             .subscribeOn(schedulerProvider.worker())
     }
 
-    fun moveItem(listSize: Int, fromPosition: Int, toPosition: Int): Completable {
+    fun moveItem(fromPosition: Int, toPosition: Int, snapshot: List<Song>): Completable {
+        return if (playlist.isFromSharedStorage) {
+            moveItemLegacyImpl(fromPosition, toPosition, snapshot.size)
+        } else {
+            moveItemImpl(fromPosition, toPosition, snapshot)
+        }
+    }
+
+    private fun moveItemLegacyImpl(fromPosition: Int, toPosition: Int, listSize: Int): Completable {
         return preferences.getSortOrderForSection(Library.PLAYLIST)
             .firstOrError()
             .flatMap { sortOrder ->
@@ -88,6 +105,30 @@ class GetPlaylistUseCase @AssistedInject constructor(
                 } else Completable.complete()
             }
             .subscribeOn(schedulerProvider.worker())
+    }
+
+    private fun moveItemImpl(fromPosition: Int, toPosition: Int, snapshot: List<Song>): Completable {
+        val previous: Song?
+        val next: Song?
+        when {
+            fromPosition < toPosition -> {
+                previous = snapshot.getOrNull(toPosition)
+                next = snapshot.getOrNull(toPosition + 1)
+            }
+            fromPosition > toPosition -> {
+                previous = snapshot.getOrNull(toPosition - 1)
+                next = snapshot.getOrNull(toPosition)
+            }
+            else -> {
+                // Should not happen
+                val error = IllegalArgumentException("Position 'from' " +
+                        "is equal to position 'to': $fromPosition")
+                return Completable.error(error)
+            }
+        }
+        val target: Song = snapshot[fromPosition]
+        val moveOp = PlaylistChunkRepository.MoveOp(target, previous, next);
+        return playlistChunkRepository.moveItemInPlaylist(moveOp)
     }
 
     @AssistedInject.Factory

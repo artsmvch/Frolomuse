@@ -8,6 +8,7 @@ import androidx.annotation.RequiresApi
 import com.frolo.muse.R
 import com.frolo.muse.model.media.MediaBucket
 import com.frolo.muse.model.media.MediaFile
+import com.frolo.muse.model.media.Playlist
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.model.sort.SortOrder
 import com.frolo.muse.repository.MediaFileRepository
@@ -88,15 +89,15 @@ internal class MediaFileRepositoryImpl(
         return Del.deleteMediaFiles(context, items)
     }
 
-    override fun addToPlaylist(playlistId: Long, item: MediaFile): Completable {
+    override fun addToPlaylist(playlist: Playlist, item: MediaFile): Completable {
         return collectSongs(item).flatMapCompletable { songs ->
-            songRepository.addToPlaylist(playlistId, songs)
+            songRepository.addToPlaylist(playlist, songs)
         }
     }
 
-    override fun addToPlaylist(playlistId: Long, items: MutableCollection<MediaFile>): Completable {
+    override fun addToPlaylist(playlist: Playlist, items: MutableCollection<MediaFile>): Completable {
         return collectSongs(items).flatMapCompletable { songs ->
-            songRepository.addToPlaylist(playlistId, songs)
+            songRepository.addToPlaylist(playlist, songs)
         }
     }
 

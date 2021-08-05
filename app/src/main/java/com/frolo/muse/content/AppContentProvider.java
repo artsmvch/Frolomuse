@@ -1,4 +1,4 @@
-package com.frolo.muse.db;
+package com.frolo.muse.content;
 
 import android.content.ContentProvider;
 import android.content.ContentUris;

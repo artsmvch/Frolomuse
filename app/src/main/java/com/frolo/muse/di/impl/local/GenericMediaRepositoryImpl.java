@@ -172,19 +172,33 @@ public class GenericMediaRepositoryImpl implements GenericMediaRepository {
     }
 
     @Override
-    public Completable addToPlaylist(long playlistId, Media item) {
-        return PlaylistHelper.addItemToPlaylist(
-                mContext.getContentResolver(),
-                playlistId,
-                item);
+    public Completable addToPlaylist(Playlist playlist, Media item) {
+        if (playlist.isFromSharedStorage()) {
+            // Legacy
+            return PlaylistHelper.addItemToPlaylist(
+                    mContext.getContentResolver(),
+                    playlist.getId(),
+                    item);
+        } else {
+            // New playlist storage
+            return collectSongs(item).flatMapCompletable(songs -> PlaylistDatabaseManager.get(mContext)
+                    .addPlaylistMembers(playlist.getId(), songs));
+        }
     }
 
     @Override
-    public Completable addToPlaylist(long playlistId, Collection<Media> items) {
-        return PlaylistHelper.addItemsToPlaylist(
-                mContext.getContentResolver(),
-                playlistId,
-                items);
+    public Completable addToPlaylist(Playlist playlist, Collection<Media> items) {
+        if (playlist.isFromSharedStorage()) {
+            // Legacy
+            return PlaylistHelper.addItemsToPlaylist(
+                    mContext.getContentResolver(),
+                    playlist.getId(),
+                    items);
+        } else {
+            // New playlist storage
+            return collectSongs(items).flatMapCompletable(songs -> PlaylistDatabaseManager.get(mContext)
+                    .addPlaylistMembers(playlist.getId(), songs));
+        }
     }
 
     @SuppressLint("SwitchIntDef")

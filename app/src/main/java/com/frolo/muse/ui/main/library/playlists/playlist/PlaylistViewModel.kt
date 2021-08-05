@@ -115,10 +115,8 @@ class PlaylistViewModel constructor(
 
     // TODO: passing a list snapshot looks a little dirty
     fun onItemMoved(fromPosition: Int, toPosition: Int, listSnapshot: List<Song>) {
-        val listSize = listSnapshot.size
-
         // TODO: NOTE we need to submit the updated list (with updated item positions) because getPlaylistUseCase.moveItem does not trigger the update sometimes
-        getPlaylistUseCase.moveItem(listSize, fromPosition, toPosition)
+        getPlaylistUseCase.moveItem(fromPosition, toPosition, mediaList.value.orEmpty())
                 .observeOn(schedulerProvider.main())
                 .doOnComplete { submitMediaList(listSnapshot) }
                 .subscribeFor {

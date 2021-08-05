@@ -3,6 +3,7 @@ package com.frolo.muse.di.impl.stub
 import com.frolo.muse.ThrowableUtils
 import com.frolo.muse.model.media.MediaBucket
 import com.frolo.muse.model.media.MediaFile
+import com.frolo.muse.model.media.Playlist
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.model.sort.SortOrder
 import com.frolo.muse.repository.MediaFileRepository
@@ -29,11 +30,11 @@ class MediaFileRepositoryStub : MediaFileRepository {
         return singleError()
     }
 
-    override fun addToPlaylist(playlistId: Long, item: MediaFile?): Completable {
+    override fun addToPlaylist(playlist: Playlist, item: MediaFile?): Completable {
         return completableError()
     }
 
-    override fun addToPlaylist(playlistId: Long, items: MutableCollection<MediaFile>?): Completable {
+    override fun addToPlaylist(playlist: Playlist, items: MutableCollection<MediaFile>?): Completable {
         return completableError()
     }
 

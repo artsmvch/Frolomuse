@@ -2,6 +2,7 @@ package com.frolo.muse.di.impl.local;
 
 import android.content.Context;
 
+import com.frolo.muse.model.media.Playlist;
 import com.frolo.muse.model.media.Song;
 import com.frolo.muse.model.media.SongWithPlayCount;
 import com.frolo.muse.model.sort.SortOrder;
@@ -118,16 +119,16 @@ public class SongWithPlayCountRepositoryImpl extends BaseMediaRepository<SongWit
     }
 
     @Override
-    public Completable addToPlaylist(long playlistId, SongWithPlayCount item) {
-        return mDelegate.addToPlaylist(playlistId, item);
+    public Completable addToPlaylist(Playlist playlist, SongWithPlayCount item) {
+        return mDelegate.addToPlaylist(playlist, item);
     }
 
     @Override
-    public Completable addToPlaylist(final long playlistId, Collection<SongWithPlayCount> items) {
+    public Completable addToPlaylist(final Playlist playlist, Collection<SongWithPlayCount> items) {
         return map(items).flatMapCompletable(new Function<Collection<Song>, CompletableSource>() {
             @Override
             public CompletableSource apply(Collection<Song> songs) {
-                return mDelegate.addToPlaylist(playlistId, songs);
+                return mDelegate.addToPlaylist(playlist, songs);
             }
         });
     }

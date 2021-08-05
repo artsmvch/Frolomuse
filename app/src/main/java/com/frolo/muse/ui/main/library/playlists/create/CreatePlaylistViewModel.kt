@@ -15,11 +15,11 @@ import io.reactivex.Single
 
 
 class CreatePlaylistViewModel constructor(
-        private val schedulerProvider: SchedulerProvider,
-        private val playlistRepository: PlaylistRepository,
-        private val songRepository: SongRepository,
-        private val eventLogger: EventLogger,
-        private val songsToAdd: List<Song>
+    private val schedulerProvider: SchedulerProvider,
+    private val playlistRepository: PlaylistRepository,
+    private val songRepository: SongRepository,
+    private val eventLogger: EventLogger,
+    private val songsToAdd: List<Song>
 ): BaseViewModel(eventLogger) {
 
     private val _creationError: MutableLiveData<Throwable> = MutableLiveData()
@@ -33,24 +33,24 @@ class CreatePlaylistViewModel constructor(
 
     fun onSaveButtonClicked(typedName: String) {
         playlistRepository.create(typedName)
-                .flatMap { playlist ->
-                    songRepository
-                            .addToPlaylist(playlist.id, songsToAdd)
-                            .andThen(Single.just(playlist))
-                }
-                .subscribeOn(schedulerProvider.worker())
-                .observeOn(schedulerProvider.main())
-                .doOnSubscribe { _isLoading.value = true }
-                .doFinally { _isLoading.value = false }
-                .doOnSuccess { eventLogger.logPlaylistCreated(initialSongCount = songsToAdd.count()) }
-                .subscribe(
-                        { playlist ->
-                            _playlistCreatedEvent.value = playlist
-                        },
-                        { err ->
-                            _creationError.value = err
-                        })
-                .save()
+            .flatMap { playlist ->
+                songRepository
+                    .addToPlaylist(playlist, songsToAdd)
+                    .andThen(Single.just(playlist))
+            }
+            .subscribeOn(schedulerProvider.worker())
+            .observeOn(schedulerProvider.main())
+            .doOnSubscribe { _isLoading.value = true }
+            .doFinally { _isLoading.value = false }
+            .doOnSuccess { eventLogger.logPlaylistCreated(initialSongCount = songsToAdd.count()) }
+            .subscribe(
+                { playlist ->
+                    _playlistCreatedEvent.value = playlist
+                },
+                { err ->
+                    _creationError.value = err
+                })
+            .save()
     }
 
 }

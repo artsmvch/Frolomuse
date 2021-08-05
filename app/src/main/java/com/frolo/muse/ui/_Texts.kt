@@ -102,11 +102,11 @@ fun Playlist.getNameString(res: Resources): String {
 }
 
 fun Playlist.getDateAddedString(res: Resources): String {
-    return DATE_FORMAT.format(Date(dateAdded * 1000))
+    return DATE_FORMAT.format(Date(dateAddedMillis))
 }
 
 fun Playlist.getDateModifiedString(res: Resources): String {
-    return DATE_FORMAT.format(Date(dateModified * 1000))
+    return DATE_FORMAT.format(Date(dateModifiedMillis))
 }
 
 fun MyFile.getNameString(): String {

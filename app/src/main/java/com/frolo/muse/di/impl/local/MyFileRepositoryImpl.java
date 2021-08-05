@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import com.frolo.muse.BuildConfig;
 import com.frolo.muse.R;
 import com.frolo.muse.model.media.MyFile;
+import com.frolo.muse.model.media.Playlist;
 import com.frolo.muse.model.media.Song;
 import com.frolo.muse.model.sort.SortOrder;
 import com.frolo.muse.repository.MyFileRepository;
@@ -85,19 +86,33 @@ public class MyFileRepositoryImpl extends BaseMediaRepository<MyFile> implements
     }
 
     @Override
-    public Completable addToPlaylist(long playlistId, MyFile item) {
-        return PlaylistHelper.addMyFileToPlaylist(
-                getContext().getContentResolver(),
-                playlistId,
-                item);
+    public Completable addToPlaylist(Playlist playlist, MyFile item) {
+        if (playlist.isFromSharedStorage()) {
+            // Legacy
+            return PlaylistHelper.addMyFileToPlaylist(
+                    getContext().getContentResolver(),
+                    playlist.getId(),
+                    item);
+        } else {
+            // New playlist storage
+            return collectSongs(item).flatMapCompletable(songs -> PlaylistDatabaseManager.get(getContext())
+                    .addPlaylistMembers(playlist.getId(), songs));
+        }
     }
 
     @Override
-    public Completable addToPlaylist(long playlistId, Collection<MyFile> items) {
-        return PlaylistHelper.addItemsToPlaylist(
-                getContext().getContentResolver(),
-                playlistId,
-                items);
+    public Completable addToPlaylist(Playlist playlist, Collection<MyFile> items) {
+        if (playlist.isFromSharedStorage()) {
+            // Legacy
+            return PlaylistHelper.addItemsToPlaylist(
+                    getContext().getContentResolver(),
+                    playlist.getId(),
+                    items);
+        } else {
+            // New playlist storage
+            return collectSongs(items).flatMapCompletable(songs -> PlaylistDatabaseManager.get(getContext())
+                    .addPlaylistMembers(playlist.getId(), songs));
+        }
     }
 
     @Override

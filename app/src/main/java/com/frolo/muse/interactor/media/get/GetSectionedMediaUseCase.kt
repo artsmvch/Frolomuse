@@ -23,6 +23,22 @@ abstract class GetSectionedMediaUseCase <E: Media> constructor(
 
     abstract fun getSortedCollection(sortOrder: String): Flowable<List<E>>
 
+    /**
+     * Remove duplicates from [list] if necessary. The default implementation uses [Media.getId] to distinct items,
+     * but not for sections such as [Library.FOLDERS] and [Library.MIXED].
+     * If you don't need to remove duplicates, just return the given list.
+     */
+    open fun removeDuplicatesIfNecessary(list: List<E>): List<E> {
+        return when (section) {
+            // MyFiles do not have unique ID so we cannot distinct them
+            Library.FOLDERS -> list
+            // Mixed media list may contain media items with different type but same ID
+            // so we cannot distinct them
+            Library.MIXED -> list
+            else -> list.distinctBy { item -> item.id }
+        }
+    }
+
     override fun getSortOrderMenu(): Single<SortOrderMenu> {
         return repository.sortOrders
             .observeOn(schedulerProvider.worker())
@@ -66,22 +82,14 @@ abstract class GetSectionedMediaUseCase <E: Media> constructor(
                 val sortOrder = pair.first
                 val isReversed = pair.second
                 getSortedCollection(sortOrder)
-                    .map { list ->
-                        when (section) {
-                            // MyFiles do not have unique ID so we cannot distinct them
-                            Library.FOLDERS -> list
-                            // Mixed media list may contain media items with different type but same ID
-                            // so we cannot distinct them
-                            Library.MIXED -> list
-                            else -> list.distinctBy { item -> item.id }
-                        }
-                    }
+                    .subscribeOn(schedulerProvider.worker())
+                    .observeOn(schedulerProvider.computation())
+                    .map { list -> removeDuplicatesIfNecessary(list) }
                     .map { list ->
                         if (isReversed) {
                             list.reversed()
                         } else list
                     }
-                    .subscribeOn(schedulerProvider.worker())
         }
     }
 
