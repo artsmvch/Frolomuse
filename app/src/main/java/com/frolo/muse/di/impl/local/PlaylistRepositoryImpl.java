@@ -16,11 +16,13 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.functions.BiFunction;
+import io.reactivex.functions.Function;
 
 
 public class PlaylistRepositoryImpl extends BaseMediaRepository<Playlist> implements PlaylistRepository {
@@ -145,19 +147,42 @@ public class PlaylistRepositoryImpl extends BaseMediaRepository<Playlist> implem
 
     @Override
     public Single<List<Song>> collectSongs(Playlist item) {
-        return SongQuery.queryForPlaylist(
-                getContext().getContentResolver(),
-                item,
-                SongQuery.Sort.BY_PLAY_ORDER)
-                .firstOrError();
+        if (item.isFromSharedStorage()) {
+            // Legacy
+            return SongQuery.queryForPlaylist(
+                    getContext().getContentResolver(),
+                    item,
+                    SongQuery.Sort.BY_PLAY_ORDER)
+                    .firstOrError();
+        } else {
+            // New playlist storage
+            return PlaylistDatabaseManager.get(getContext())
+                    .queryPlaylistMembers(item.getId())
+                    .firstOrError();
+        }
     }
 
     @Override
-    public Single<List<Song>> collectSongs(Collection<Playlist> items) {
-        return SongQuery.queryForPlaylists(
-                getContext().getContentResolver(),
-                items)
-                .firstOrError();
+    public Single<List<Song>> collectSongs(final Collection<Playlist> items) {
+        return Single.defer((Callable<Single<List<Song>>>) () -> {
+            // Collecting single sources
+            List<Single<List<Song>>> sources = new ArrayList<>();
+            for (Playlist playlist : items) {
+                Single<List<Song>> source = collectSongs(playlist);
+                sources.add(source);
+            }
+
+            Function<Object[], List<Song>> zipper = objects -> {
+                List<Song> resultList = new ArrayList<>();
+                for (Object obj : objects) {
+                    //noinspection unchecked
+                    resultList.addAll((List<Song>) obj);
+                }
+                return resultList;
+            };
+            // Zipping single sources
+            return Single.zip(sources, zipper);
+        });
     }
 
     @Override
