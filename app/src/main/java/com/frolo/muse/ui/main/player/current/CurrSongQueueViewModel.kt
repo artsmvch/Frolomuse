@@ -147,7 +147,8 @@ class CurrSongQueueViewModel @Inject constructor(
             .subscribeFor { list -> submitMediaList(list) }
     }
 
-    fun onStart() {
+    override fun onStart() {
+        super.onStart()
         scrollToPositionPromptShown = false
         handleQueue(player.getCurrentQueue())
     }
@@ -197,9 +198,6 @@ class CurrSongQueueViewModel @Inject constructor(
 
         val targetPosition = playingPosition.value ?: return
         _scrollToPositionEvent.value = targetPosition
-    }
-
-    fun onStop() {
     }
 
     fun onItemPositionClicked(item: Song, position: Int) {

@@ -1,5 +1,6 @@
 package com.frolo.muse.ui.main.library.base
 
+import androidx.annotation.CallSuper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -292,11 +293,16 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
      ******* LIFECYCLE EVENTS *******
      *******************************/
 
-    internal fun onActive() {
+    @CallSuper
+    internal open fun onStart() {
         if (_activated.not() || _mediaListFetched.not()) {
             _activated = true
             doFetch()
         }
+    }
+
+    @CallSuper
+    internal open fun onStop() {
     }
 
     fun onContextualMenuDestroyed() {

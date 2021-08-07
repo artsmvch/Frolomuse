@@ -75,12 +75,16 @@ class SearchViewModel @Inject constructor(
         publisher.onNext(query)
     }
 
-    fun onStart() {
+    override fun onStart() {
+        super.onStart()
+
         // Every time the view model starts, [queryCount] is reset to 0.
         queryCount = 0
     }
 
-    fun onStop() {
+    override fun onStop() {
+        super.onStop()
+
         queryCount.also { count ->
             if (count > 0) eventLogger.logMediaSearchUsed(queryCount = count)
         }

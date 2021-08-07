@@ -156,12 +156,10 @@ class CurrSongQueueFragment: AbsMediaCollectionFragment<Song>() {
     override fun onStart() {
         super.onStart()
         adapter.listener = adapterListener
-        viewModel.onStart()
     }
 
     override fun onStop() {
         adapter.listener = null
-        viewModel.onStop()
         super.onStop()
     }
 

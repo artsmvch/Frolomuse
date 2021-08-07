@@ -82,7 +82,6 @@ class SearchFragment: AbsMediaCollectionFragment<Media>(), NoClipping {
     override fun onStart() {
         super.onStart()
         adapter.listener = adapterListener
-        viewModel.onStart()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -93,7 +92,6 @@ class SearchFragment: AbsMediaCollectionFragment<Media>(), NoClipping {
     override fun onStop() {
         super.onStop()
         adapter.listener = null
-        viewModel.onStop()
     }
 
     override fun onDestroyView() {

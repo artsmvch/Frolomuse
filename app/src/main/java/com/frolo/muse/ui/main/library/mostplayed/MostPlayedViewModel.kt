@@ -68,7 +68,9 @@ class MostPlayedViewModel @Inject constructor(
     private var subscriptionTimeoutDisposable: Disposable? = null
     private var subscriptionWasCancelled: Boolean = false
 
-    fun onStart() {
+    override fun onStart() {
+        super.onStart()
+
         subscriptionTimeoutDisposable?.dispose()
 
         if (subscriptionWasCancelled) {
@@ -77,7 +79,9 @@ class MostPlayedViewModel @Inject constructor(
         }
     }
 
-    fun onStop() {
+    override fun onStop() {
+        super.onStop()
+
         Completable.timer(INACTIVITY_TIMEOUT, TimeUnit.MILLISECONDS)
             .subscribeOn(schedulerProvider.computation())
             .observeOn(schedulerProvider.main())

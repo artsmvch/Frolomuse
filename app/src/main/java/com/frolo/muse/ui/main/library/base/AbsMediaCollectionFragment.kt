@@ -44,8 +44,12 @@ abstract class AbsMediaCollectionFragment <E: Media>: BaseFragment(),
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel.onActive()
         observerViewModel(viewLifecycleOwner)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        viewModel.onStart()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -57,6 +61,7 @@ abstract class AbsMediaCollectionFragment <E: Media>: BaseFragment(),
     }
 
     override fun onStop() {
+        viewModel.onStop()
         // Not sure if we should finish it here,
         // But we need finish the action mode, if the fragment is not visible.
         actionMode?.finish()
