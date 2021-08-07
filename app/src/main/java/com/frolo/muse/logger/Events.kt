@@ -141,6 +141,16 @@ fun EventLogger.logMediaAddedToPlaylist(mediaCount: Int) {
     log("media_added_to_playlist", params)
 }
 
+fun EventLogger.logPlaylistsTransferred(timeMillis: Long) {
+    val params = mapOf("time_millis" to timeMillis.toString())
+    log("playlists_transferred", params)
+}
+
+fun EventLogger.logFailedToTransferPlaylists(err: Throwable) {
+    val params = mapOf("error" to err.toString())
+    log("failed_to_transfer_playlists", params)
+}
+
 //endregion
 
 //region Custom Preset

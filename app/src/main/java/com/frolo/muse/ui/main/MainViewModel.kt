@@ -8,6 +8,7 @@ import com.frolo.muse.billing.BillingManager
 import com.frolo.muse.engine.Player
 import com.frolo.muse.interactor.feature.FeaturesUseCase
 import com.frolo.muse.interactor.firebase.SyncFirebaseMessagingTokenUseCase
+import com.frolo.muse.interactor.media.TransferPlaylistsUseCase
 import com.frolo.muse.interactor.media.shortcut.NavigateToMediaUseCase
 import com.frolo.muse.interactor.player.OpenAudioSourceUseCase
 import com.frolo.muse.interactor.player.RestorePlayerStateUseCase
@@ -37,6 +38,7 @@ class MainViewModel @Inject constructor(
     private val openAudioSourceUseCase: OpenAudioSourceUseCase,
     private val navigateToMediaUseCase: NavigateToMediaUseCase,
     private val syncFirebaseMessagingTokenUseCase: SyncFirebaseMessagingTokenUseCase,
+    private val transferPlaylistsUseCase: TransferPlaylistsUseCase,
     private val featuresUseCase: FeaturesUseCase,
     private val billingManager: BillingManager,
     private val schedulerProvider: SchedulerProvider,
@@ -75,13 +77,13 @@ class MainViewModel @Inject constructor(
                     { /* stub */ },
                     { err ->
                         if (err is SecurityException) {
-                            tryAksRESPermission()
+                            tryAskRESPermission()
                         }
                     }
                 )
                 .save()
         } else {
-            tryAksRESPermission()
+            tryAskRESPermission()
         }
     }
 
@@ -94,15 +96,21 @@ class MainViewModel @Inject constructor(
                 .observeOn(schedulerProvider.main())
                 .subscribeFor { _pendingAudioSourceIntent = null }
         } else {
-            tryAksRESPermission()
+            tryAskRESPermission()
         }
+    }
+
+    private fun tryTransferPlaylistsIfNecessary() {
+        transferPlaylistsUseCase.transferPlaylistsIfNecessary()
+            .observeOn(schedulerProvider.main())
+            .subscribeFor {  }
     }
 
     /**
      * The view model must call this method to ask the RES permission.
      * It also checks if it's still pending for the result of RES permission asked earlier.
      */
-    private fun tryAksRESPermission() {
+    private fun tryAskRESPermission() {
         if (!_pendingReadStoragePermissionResult) {
             _askRESPermissionsEvent.call()
             _pendingReadStoragePermissionResult = true
@@ -120,11 +128,15 @@ class MainViewModel @Inject constructor(
             .subscribeFor {  }
         // Syncing billing state
         billingManager.sync()
+        // Transfer playlists if necessary
+        if (permissionChecker.isQueryMediaContentPermissionGranted) {
+            tryTransferPlaylistsIfNecessary()
+        }
     }
 
     fun onStart() {
         if (!permissionChecker.isQueryMediaContentPermissionGranted) {
-            tryAksRESPermission()
+            tryAskRESPermission()
         }
     }
 
@@ -196,6 +208,7 @@ class MainViewModel @Inject constructor(
         _pendingReadStoragePermissionResult = false
         tryRestorePlayerStateIfNeeded()
         tryHandlePendingAudioSourceIntentIfNeeded()
+        tryTransferPlaylistsIfNecessary()
     }
 
     fun onRESPermissionDenied() {
@@ -204,7 +217,7 @@ class MainViewModel @Inject constructor(
     }
 
     fun onAgreedWithRESPermissionExplanation() {
-        tryAksRESPermission()
+        tryAskRESPermission()
     }
 
     fun onDeniedRESPermissionExplanation() {

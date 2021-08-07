@@ -9,20 +9,21 @@ import com.frolo.muse.model.media.Song;
 import com.frolo.muse.model.sort.SortOrder;
 import com.frolo.muse.repository.PlaylistRepository;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
+import io.reactivex.Scheduler;
 import io.reactivex.Single;
-import io.reactivex.functions.BiFunction;
+import io.reactivex.SingleSource;
 import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 
 public class PlaylistRepositoryImpl extends BaseMediaRepository<Playlist> implements PlaylistRepository {
@@ -51,35 +52,70 @@ public class PlaylistRepositoryImpl extends BaseMediaRepository<Playlist> implem
     }
 
     @Override
+    public Completable transferFromSharedStorage() {
+        if (!Features.isAppPlaylistStorageFeatureAvailable()) {
+            // Transfer is not allowed if the App-Playlist-Storage feature is not available
+            return Completable.complete();
+        }
+
+        final Scheduler workerScheduler = Schedulers.io();
+        return PlaylistQuery.queryAll(getContext().getContentResolver(), null)
+            .subscribeOn(workerScheduler)
+            .first(Collections.emptyList())
+            .flatMap((Function<List<Playlist>, SingleSource<List<PlaylistCreationOp>>>) playlists -> {
+                if (playlists.isEmpty()) {
+                    // No playlists to transfer
+                    return Single.just(Collections.emptyList());
+                }
+
+                List<Single<PlaylistCreationOp>> sources = new ArrayList<>(playlists.size());
+                for (Playlist playlist : playlists) {
+                    Single<PlaylistCreationOp> source = collectSongs(playlist)
+                        .subscribeOn(workerScheduler)
+                        .map(songs -> new PlaylistCreationOp(playlist.getName(), songs));
+                    sources.add(source);
+                }
+                Function<Object[], List<PlaylistCreationOp>> zipper = objects -> {
+                    List<PlaylistCreationOp> resultList = new ArrayList<>(objects.length);
+                    for (Object obj : objects) {
+                        resultList.add((PlaylistCreationOp) obj);
+                    }
+                    return resultList;
+                };
+                return Single.zip(sources, zipper);
+            })
+            .flatMapCompletable(playlistCreationOps ->
+                PlaylistDatabaseManager
+                    .get(getContext())
+                    .createPlaylists(playlistCreationOps)
+            );
+    }
+
+    @Override
     public Flowable<List<Playlist>> getAllItems() {
         return getAllItems(PlaylistQuery.Sort.BY_NAME);
     }
 
     @Override
     public Flowable<List<Playlist>> getAllItems(final String sortOrder) {
-        // Legacy
-        Flowable<List<Playlist>> source1 =
-                PlaylistQuery.queryAll(getContext().getContentResolver(), sortOrder);
-        // New playlist storage
-        Flowable<List<Playlist>> source2 =
-                PlaylistDatabaseManager.get(getContext()).queryAllPlaylists(sortOrder);
-        BiFunction<List<Playlist>, List<Playlist>, List<Playlist>> combiner =
-                new BiFunction<List<Playlist>, List<Playlist>, List<Playlist>>() {
-                    @NotNull
-                    @Override
-                    public List<Playlist> apply(@NotNull List<Playlist> playlists1, @NotNull List<Playlist> playlists2) {
-                        List<Playlist> resultList = new ArrayList<>(playlists1.size() + playlists2.size());
-                        resultList.addAll(playlists1);
-                        resultList.addAll(playlists2);
-                        return resultList;
-                    }
-                };
-        return Flowable.combineLatest(source1, source2, combiner);
+        if (Features.isAppPlaylistStorageFeatureAvailable()) {
+            // New playlist storage
+            return PlaylistDatabaseManager.get(getContext()).queryAllPlaylists(sortOrder);
+        } else {
+            // Legacy
+            return PlaylistQuery.queryAll(getContext().getContentResolver(), sortOrder);
+        }
     }
 
     @Override
     public Flowable<List<Playlist>> getFilteredItems(final String filter) {
-        return PlaylistQuery.queryAllFiltered(getContext().getContentResolver(), filter);
+        if (Features.isAppPlaylistStorageFeatureAvailable()) {
+            // New playlist storage
+            return PlaylistDatabaseManager.get(getContext()).queryAllPlaylistsFiltered(filter);
+        } else {
+            // Legacy
+            return PlaylistQuery.queryAllFiltered(getContext().getContentResolver(), filter);
+        }
     }
 
     @Override
@@ -93,6 +129,7 @@ public class PlaylistRepositoryImpl extends BaseMediaRepository<Playlist> implem
         }
     }
 
+    @Deprecated
     @Override
     public Flowable<Playlist> getItem(final long id) {
         return PlaylistQuery.querySingle(getContext().getContentResolver(), id);

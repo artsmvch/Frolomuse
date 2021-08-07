@@ -1,5 +1,6 @@
 package com.frolo.muse.database
 
+import androidx.annotation.WorkerThread
 import androidx.room.*
 import com.frolo.muse.database.entity.PlaylistEntity
 import io.reactivex.Completable
@@ -17,11 +18,21 @@ abstract class PlaylistEntityDao {
     @Query("SELECT * FROM playlists")
     abstract fun getAllPlaylistEntities(): Flowable<List<PlaylistEntity>>
 
+    @Query("SELECT * FROM playlists WHERE name LIKE '%' || :filter || '%'")
+    abstract fun getAllPlaylistEntitiesFiltered(filter: String): Flowable<List<PlaylistEntity>>
+
     @Query("SELECT * FROM playlists WHERE name = :name")
     abstract fun findPlaylistEntitiesByName(name: String): Single<List<PlaylistEntity>>
 
+    @Query("SELECT * FROM playlists WHERE name = :name")
+    abstract fun blockingFindPlaylistEntitiesByName(name: String): List<PlaylistEntity>
+
     @Insert
     abstract fun createPlaylistEntity(entity: PlaylistEntity): Single<Long>
+
+    @WorkerThread
+    @Insert
+    abstract fun blockingCreatePlaylistEntity(entity: PlaylistEntity): Long
 
     @Update
     abstract fun updatePlaylistEntity(entity: PlaylistEntity): Completable

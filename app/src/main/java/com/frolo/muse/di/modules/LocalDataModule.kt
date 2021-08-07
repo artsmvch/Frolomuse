@@ -203,4 +203,10 @@ class LocalDataModule {
     fun provideTooltipManager(context: Context): TooltipManager {
         return TooltipManagerImpl(context)
     }
+
+    @Singleton
+    @Provides
+    fun providePlaylistTransferPreferences(context: Context): PlaylistTransferPreferences {
+        return PlaylistTransferPreferencesImpl(context)
+    }
 }

@@ -31,7 +31,7 @@ import java.util.concurrent.Executors
  * Playlist database wrapper that manages local storage for playlists.
  * The queried playlist models from this manager have [Playlist.isFromSharedStorage] set to true.
  */
-class PlaylistDatabaseManager private constructor(private val context: Context) {
+internal class PlaylistDatabaseManager private constructor(private val context: Context) {
 
     // Executors and schedulers
     private val workerScheduler: Scheduler by lazy { Schedulers.io() }
@@ -84,6 +84,15 @@ class PlaylistDatabaseManager private constructor(private val context: Context) 
     }
 
     /**
+     * Queries playlists stored in the local database. [filter] is used to filter playlists by [Playlist.getName].
+     */
+    fun queryAllPlaylistsFiltered(filter: String): Flowable<List<Playlist>> {
+        return playlistEntityDao.getAllPlaylistEntitiesFiltered(filter)
+            .observeOn(computationScheduler)
+            .map { entities -> entities.map(entityToPlaylistMapper) }
+    }
+
+    /**
      * Creates a new playlist with [name]. The playlist info will be stored in a local database.
      */
     fun createPlaylist(name: String): Single<Playlist> {
@@ -111,6 +120,54 @@ class PlaylistDatabaseManager private constructor(private val context: Context) 
                         .map(entityToPlaylistMapper)
                 }
             }
+    }
+
+    fun createPlaylists(opList: List<PlaylistCreationOp>): Completable {
+        return Completable.fromAction {
+            opList.forEach { op ->
+                try {
+                    // Atomicity is important
+                    database.runInTransaction {
+                        val name: String = op.name
+                        val songs: List<Song> = op.songs
+
+                        // Checking if the name is correct
+                        if (name.isBlank()) return@runInTransaction
+
+                        // Checking for existing playlists with the same name
+                        val existingPlaylists = playlistEntityDao.blockingFindPlaylistEntitiesByName(name)
+                        if (existingPlaylists.isNotEmpty()) return@runInTransaction
+
+                        // Creating playlist entity
+                        val timeMillis = System.currentTimeMillis()
+                        val timeSeconds = timeMillis / 1000
+                        val playlistEntity = PlaylistEntity(
+                            name = name,
+                            source = null,
+                            dateCreated = timeSeconds,
+                            dateModified = timeSeconds
+                        )
+                        val playlistId: Long = playlistEntityDao.blockingCreatePlaylistEntity(playlistEntity)
+
+                        // Adding playlist members
+                        val memberEntities: List<PlaylistMemberEntity> = songs.map { song ->
+                            PlaylistMemberEntity(
+                                audioId = song.id,
+                                source = song.source,
+                                playlistId = playlistId
+                            )
+                        }
+                        playlistMemberEntityDao.blockingAddPlaylistMemberEntities(
+                            entities = memberEntities,
+                            allowDuplicateAudio = false
+                        )
+                    }
+                } catch (err: Throwable) {
+                    // So strict for debug
+                    if (DEBUG) throw err
+                }
+            }
+        }.subscribeOn(workerScheduler)
     }
 
     /**
