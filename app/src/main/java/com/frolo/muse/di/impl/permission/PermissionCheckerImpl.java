@@ -3,6 +3,7 @@ package com.frolo.muse.di.impl.permission;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.os.Build;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -32,4 +33,8 @@ public final class PermissionCheckerImpl implements PermissionChecker {
         }
     }
 
+    @Override
+    public boolean shouldRequestMediaPermissionInSettings() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.R;
+    }
 }

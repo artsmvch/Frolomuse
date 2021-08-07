@@ -25,6 +25,8 @@ import androidx.lifecycle.ViewModelProviders
 import com.frolo.muse.Logger
 import com.frolo.muse.R
 import com.frolo.muse.StyleUtil
+import com.frolo.muse.android.ViewAppSettingsIntent
+import com.frolo.muse.android.startActivitySafely
 import com.frolo.muse.arch.observe
 import com.frolo.muse.dp2px
 import com.frolo.muse.engine.Player
@@ -144,7 +146,7 @@ class MainActivity : PlayerHostActivity(),
 
         requireFrolomuseApp().onFragmentNavigatorCreated(this)
 
-        observerViewModel(this)
+        observeViewModel(this)
 
         supportFragmentManager.registerFragmentLifecycleCallbacks(fragmentLifecycleCallbacks, true)
 
@@ -628,7 +630,7 @@ class MainActivity : PlayerHostActivity(),
             .show()
     }
 
-    private fun observerViewModel(owner: LifecycleOwner) = with(viewModel) {
+    private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
         askToRateEvent.observe(owner) {
             showRateDialog()
         }
@@ -639,6 +641,13 @@ class MainActivity : PlayerHostActivity(),
 
         explainNeedForRESPermissionEvent.observe(owner) {
             explainNeedForRESPermission()
+        }
+
+        openPermissionSettingsEvent.observe(owner) {
+            val intent: Intent = ViewAppSettingsIntent(this@MainActivity)
+            if (!startActivitySafely(intent)) {
+                requestRESPermission()
+            }
         }
     }
 

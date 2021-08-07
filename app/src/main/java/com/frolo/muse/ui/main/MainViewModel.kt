@@ -63,6 +63,9 @@ class MainViewModel @Inject constructor(
     private val _explainNeedForRESPermissionEvent = EventLiveData<Unit>()
     val explainNeedForRESPermissionEvent: LiveData<Unit> get() = _explainNeedForRESPermissionEvent
 
+    private val _openPermissionSettingsEvent = EventLiveData<Unit>()
+    val openPermissionSettingsEvent: LiveData<Unit> get() = _openPermissionSettingsEvent
+
     private val _askToRateEvent = SingleLiveEvent<Unit>()
     val askToRateEvent: LiveData<Unit> get() = _askToRateEvent
 
@@ -217,7 +220,11 @@ class MainViewModel @Inject constructor(
     }
 
     fun onAgreedWithRESPermissionExplanation() {
-        tryAskRESPermission()
+        if (permissionChecker.shouldRequestMediaPermissionInSettings()) {
+            _openPermissionSettingsEvent.call()
+        } else {
+            tryAskRESPermission()
+        }
     }
 
     fun onDeniedRESPermissionExplanation() {

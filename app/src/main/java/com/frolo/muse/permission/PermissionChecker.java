@@ -20,4 +20,9 @@ public interface PermissionChecker {
      */
     void requireQueryMediaContentPermission() throws SecurityException;
 
+    /**
+     * @return true if the media permission should be requested in the settings.
+     */
+    boolean shouldRequestMediaPermissionInSettings();
+
 }

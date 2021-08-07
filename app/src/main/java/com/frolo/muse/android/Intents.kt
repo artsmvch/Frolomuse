@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.media.audiofx.AudioEffect
 import android.net.Uri
+import android.provider.Settings
 import com.frolo.muse.OS
 import java.io.File
 
@@ -61,4 +62,11 @@ fun ViewAppInStoreIntent(context: Context): Intent {
         // then we search for default app market.
         ViewAppInDefaultStore(context)
     }
+}
+
+fun ViewAppSettingsIntent(context: Context): Intent {
+    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+    intent.data = Uri.fromParts("package", context.packageName, null)
+    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    return intent
 }
