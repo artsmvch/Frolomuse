@@ -132,7 +132,17 @@ public class PlaylistRepositoryImpl extends BaseMediaRepository<Playlist> implem
     @Deprecated
     @Override
     public Flowable<Playlist> getItem(final long id) {
-        return PlaylistQuery.querySingle(getContext().getContentResolver(), id);
+        Flowable<Playlist> fallback =
+                PlaylistQuery.querySingle(getContext().getContentResolver(), id);
+        if (Features.isAppPlaylistStorageFeatureAvailable()) {
+            // New playlist storage
+            return PlaylistDatabaseManager.get(getContext())
+                .queryPlaylist(id)
+                .onErrorResumeNext(fallback);
+        } else {
+            // Legacy
+            return fallback;
+        }
     }
 
     @Override
