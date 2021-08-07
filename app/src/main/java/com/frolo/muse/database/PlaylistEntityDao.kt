@@ -13,7 +13,7 @@ import org.jetbrains.annotations.TestOnly
 abstract class PlaylistEntityDao {
 
     @Query("SELECT * FROM playlists WHERE id = :playlistId")
-    abstract fun getPlaylistEntity(playlistId: Long): Flowable<PlaylistEntity>
+    abstract fun getPlaylistEntities(playlistId: Long): Flowable<List<PlaylistEntity>>
 
     @Query("SELECT * FROM playlists")
     abstract fun getAllPlaylistEntities(): Flowable<List<PlaylistEntity>>

@@ -85,7 +85,14 @@ final class Shortcuts {
                 prefix = "mediafile_";
                 break;
             case Media.PLAYLIST:
-                prefix = "playlist_";
+                Playlist playlist = (Playlist) media;
+                if (playlist.isFromSharedStorage()) {
+                    // Legacy
+                    prefix = "playlist_";
+                } else {
+                    // New playlist storage
+                    prefix = "app_playlist_";
+                }
                 break;
             case Media.SONG:
                 prefix = "song_";

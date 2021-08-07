@@ -60,8 +60,8 @@ internal class PlaylistDatabaseManager private constructor(private val context: 
      */
     fun queryPlaylist(id: Long): Flowable<Playlist> {
         return playlistEntityDao
-            .getPlaylistEntity(id)
-            .observeOn(computationScheduler)
+            .getPlaylistEntities(id)
+            .map { list -> list.first() }
             .map(entityToPlaylistMapper)
     }
 
