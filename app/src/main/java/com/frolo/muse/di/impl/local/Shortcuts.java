@@ -81,6 +81,9 @@ final class Shortcuts {
             case Media.MY_FILE:
                 prefix = "myfile_";
                 break;
+            case Media.MEDIA_FILE:
+                prefix = "mediafile_";
+                break;
             case Media.PLAYLIST:
                 prefix = "playlist_";
                 break;
@@ -237,8 +240,9 @@ final class Shortcuts {
         return Single.fromCallable(new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
-                if (media.getKind() == Media.MY_FILE) {
-                    // We do not support shortcuts for MyFile media models at all
+                @Media.Kind int kindOfMedia = media.getKind();
+                if (kindOfMedia == Media.MY_FILE || kindOfMedia == Media.MEDIA_FILE) {
+                    // We do not support shortcuts for models with type of MY_FILE and MEDIA_FILE
                     return false;
                 }
 
