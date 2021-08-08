@@ -107,8 +107,7 @@ internal class PlaylistDatabaseManager private constructor(private val context: 
                     val exception = LocalizedMessageException(context, R.string.such_name_already_exists)
                     Single.error(exception)
                 } else {
-                    val timeMillis = System.currentTimeMillis()
-                    val timeSeconds = timeMillis / 1000
+                    val timeSeconds: Long = currentTimeSeconds()
                     val entity = PlaylistEntity(
                         name = name,
                         source = null,
@@ -141,8 +140,7 @@ internal class PlaylistDatabaseManager private constructor(private val context: 
                         if (existingPlaylists.isNotEmpty()) return@runInTransaction
 
                         // Creating playlist entity
-                        val timeMillis = System.currentTimeMillis()
-                        val timeSeconds = timeMillis / 1000
+                        val timeSeconds: Long = currentTimeSeconds()
                         val playlistEntity = PlaylistEntity(
                             name = name,
                             source = null,
@@ -199,14 +197,11 @@ internal class PlaylistDatabaseManager private constructor(private val context: 
             name = newName,
             source = playlist.source,
             dateCreated = playlist.dateAdded,
-            dateModified = playlist.dateModified
+            dateModified = currentTimeSeconds()
         )
         return playlistEntityDao.updatePlaylistEntity(entity)
             // Return the updated playlist model after successful update in DAO
-            .andThen(Single.just(
-                Playlist(playlist.id, playlist.isFromSharedStorage, playlist.source,
-                 playlist.name, playlist.dateAdded, playlist.dateModified)
-            ))
+            .andThen(Single.just(entityToPlaylistMapper.invoke(entity)))
     }
 
     private fun getSharedStorageErrorLabel(operation: String, playlist: Playlist): String {
@@ -492,6 +487,8 @@ internal class PlaylistDatabaseManager private constructor(private val context: 
         @SuppressLint("StaticFieldLeak")
         @Volatile
         private var instance: PlaylistDatabaseManager? = null
+
+        private fun currentTimeSeconds(): Long = System.currentTimeMillis() / 1000L
 
         @AnyThread
         @JvmStatic

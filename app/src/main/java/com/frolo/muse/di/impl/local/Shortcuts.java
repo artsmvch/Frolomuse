@@ -11,6 +11,7 @@ import android.os.Build;
 import android.provider.MediaStore;
 import android.util.TypedValue;
 
+import androidx.annotation.AnyThread;
 import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,6 +27,7 @@ import com.frolo.muse.model.media.Album;
 import com.frolo.muse.model.media.Artist;
 import com.frolo.muse.model.media.Genre;
 import com.frolo.muse.model.media.Media;
+import com.frolo.muse.model.media.MediaFile;
 import com.frolo.muse.model.media.MyFile;
 import com.frolo.muse.model.media.Playlist;
 import com.frolo.muse.model.media.Song;
@@ -36,19 +38,21 @@ import com.frolo.muse.util.BitmapUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import io.reactivex.Completable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 
 final class Shortcuts {
     private Shortcuts() {
     }
+
+    private static final String SHARED_PLAYLIST_PREFIX = "playlist_";
+    private static final String APP_PLAYLIST_PREFIX = "app_playlist_";
 
     private static class ShortcutParams {
         @NonNull
@@ -94,10 +98,10 @@ final class Shortcuts {
                 Playlist playlist = (Playlist) media;
                 if (playlist.isFromSharedStorage()) {
                     // Legacy
-                    prefix = "playlist_";
+                    prefix = SHARED_PLAYLIST_PREFIX;
                 } else {
                     // New playlist storage
-                    prefix = "app_playlist_";
+                    prefix = APP_PLAYLIST_PREFIX;
                 }
                 break;
             case Media.SONG:
@@ -114,26 +118,40 @@ final class Shortcuts {
     @NonNull
     private static String getShortcutLabel(@NonNull Media media) {
         switch (media.getKind()) {
+            case Media.SONG:        return ((Song) media).getTitle();
             case Media.ALBUM:       return ((Album) media).getName();
             case Media.ARTIST:      return ((Artist) media).getName();
             case Media.GENRE:       return ((Genre) media).getName();
-            case Media.MY_FILE:     return ((MyFile) media).getJavaFile().getAbsolutePath();
             case Media.PLAYLIST:    return ((Playlist) media).getName();
-            case Media.SONG:        return ((Song) media).getTitle();
+            case Media.MY_FILE:     return ((MyFile) media).getJavaFile().getAbsolutePath();
+            case Media.MEDIA_FILE: {
+                MediaFile mediaFile = (MediaFile) media;
+                String name = mediaFile.getName();
+                return name != null ? name : "";
+            }
             default:                throw new UnknownMediaException(media);
         }
     }
 
-    @MainThread
-    private static void installShortcut_Internal(
-        @NonNull Context context,
-        @NonNull ShortcutParams params
-    ) throws Exception {
-        ThreadStrictMode.assertMain();
+    @WorkerThread
+    @NonNull
+    private static ShortcutParams createShortcutParams(
+            @NonNull Context context, @NonNull Media media) {
 
-        if (!ShortcutManagerCompat.isRequestPinShortcutSupported(context)) {
-            throw new IllegalStateException("Pin shortcuts are not supported");
-        }
+        ThreadStrictMode.assertBackground();
+
+        String shortcutId = getShortcutId(media);
+        String shortcutLabel = getShortcutLabel(media);
+        Intent shortcutIntent = getShortcutIntent(context, media);
+        Bitmap icon = tryGetShortcutIcon(context, media);
+
+        return new ShortcutParams(shortcutId, shortcutLabel, shortcutIntent, icon);
+    }
+
+    @AnyThread
+    @NonNull
+    private static ShortcutInfoCompat toShortcutInfoCompat(
+            @NonNull Context context, @NonNull ShortcutParams params) {
 
         final ShortcutInfoCompat.Builder shortcutInfoBuilder =
                 new ShortcutInfoCompat.Builder(context, params.shortcutId);
@@ -148,7 +166,19 @@ final class Shortcuts {
 
         shortcutInfoBuilder.setIntent(params.intent);
 
-        final ShortcutInfoCompat shortcutInfo = shortcutInfoBuilder.build();
+        return shortcutInfoBuilder.build();
+    }
+
+    @MainThread
+    private static void requestPinShortcut(
+            @NonNull Context context, @NonNull ShortcutParams params) {
+        ThreadStrictMode.assertMain();
+
+        if (!ShortcutManagerCompat.isRequestPinShortcutSupported(context)) {
+            throw new IllegalStateException("Pin shortcuts are not supported");
+        }
+
+        final ShortcutInfoCompat shortcutInfo = toShortcutInfoCompat(context, params);
 
         ShortcutManagerCompat.requestPinShortcut(context, shortcutInfo, null);
     }
@@ -218,9 +248,7 @@ final class Shortcuts {
      */
     @NonNull
     private static Intent getShortcutIntent(
-        @NonNull final Context context,
-        @NonNull final Media media
-    ) throws UnknownMediaException {
+            @NonNull final Context context, @NonNull final Media media) throws UnknownMediaException {
 
         if (media.getKind() == Media.SONG) {
             return MainActivity.newSongIntent(context, (Song) media);
@@ -250,38 +278,22 @@ final class Shortcuts {
     }
 
     static Single<Boolean> isShortcutSupported(@NonNull Context context, @NonNull Media media) {
-        return Single.fromCallable(new Callable<Boolean>() {
-            @Override
-            public Boolean call() throws Exception {
-                @Media.Kind int kindOfMedia = media.getKind();
-                if (kindOfMedia == Media.MY_FILE || kindOfMedia == Media.MEDIA_FILE) {
-                    // We do not support shortcuts for models with type of MY_FILE and MEDIA_FILE
-                    return false;
-                }
-
-                return ShortcutManagerCompat.isRequestPinShortcutSupported(context);
+        return Single.fromCallable(() -> {
+            @Media.Kind int kindOfMedia = media.getKind();
+            if (kindOfMedia == Media.MY_FILE || kindOfMedia == Media.MEDIA_FILE) {
+                // We do not support shortcuts for models with type of MY_FILE and MEDIA_FILE
+                return false;
             }
+
+            return ShortcutManagerCompat.isRequestPinShortcutSupported(context);
         });
     }
 
     static Completable createMediaShortcut(@NonNull final Context context, @NonNull final Media media) {
-        return Single.fromCallable(new Callable<ShortcutParams>() {
-            @Override
-            public ShortcutParams call() throws Exception {
-                final String shortcutId = getShortcutId(media);
-                final String shortcutLabel = getShortcutLabel(media);
-                final Intent shortcutIntent = getShortcutIntent(context, media);
-                final Bitmap icon = tryGetShortcutIcon(context, media);
-                return new ShortcutParams(shortcutId, shortcutLabel, shortcutIntent, icon);
-            }
-        }).subscribeOn(Schedulers.io())
+        return Single.fromCallable(() -> createShortcutParams(context, media))
+                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSuccess(new Consumer<ShortcutParams>() {
-                    @Override
-                    public void accept(ShortcutParams shortcutParams) throws Exception {
-                        installShortcut_Internal(context, shortcutParams);
-                    }
-                })
+                .doOnSuccess(shortcutParams -> requestPinShortcut(context, shortcutParams))
                 .ignoreElement();
     }
 
@@ -307,6 +319,39 @@ final class Shortcuts {
 
     static Completable createMyFileShortcut(@NonNull Context context, @NonNull MyFile myFile) {
         return createMediaShortcut(context, myFile);
+    }
+
+    static Completable updateMediaShortcut(@NonNull Context context, @NonNull Media media) {
+        return Completable.fromAction(() -> {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N_MR1) {
+                return;
+            }
+
+            ShortcutManager manager = (ShortcutManager) context.getSystemService(Context.SHORTCUT_SERVICE);
+            if (manager == null) {
+                return;
+            }
+
+            String shortcutId = getShortcutId(media);
+            List<ShortcutInfo> pinnedShortcuts = manager.getPinnedShortcuts();
+            ShortcutInfo targetShortcut = null;
+            for (ShortcutInfo info : pinnedShortcuts) {
+                if (info.getId().equals(shortcutId)) {
+                    targetShortcut = info;
+                    break;
+                }
+            }
+
+            if (targetShortcut != null) {
+                ShortcutParams params = createShortcutParams(context, media);
+                ShortcutInfoCompat infoCompat = toShortcutInfoCompat(context, params);
+                List<ShortcutInfo> toUpdate = Collections.singletonList(infoCompat.toShortcutInfo());
+                boolean wasUpdated = manager.updateShortcuts(toUpdate);
+                if (!wasUpdated) {
+                    // It's sad
+                }
+            }
+        });
     }
 
     // Playlist transfer
@@ -335,7 +380,7 @@ final class Shortcuts {
         for (ShortcutInfo info : pinnedShortcuts) {
             String shortcutId = info.getId();
             // Special prefix (see getShortcutId method)
-            String idPrefix = "playlist_";
+            String idPrefix = SHARED_PLAYLIST_PREFIX;
             if (shortcutId.startsWith(idPrefix)) {
                 // It's a legacy playlist shortcut
                 String mediaIdString = shortcutId.replaceAll(idPrefix, "");

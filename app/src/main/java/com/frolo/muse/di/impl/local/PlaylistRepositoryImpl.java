@@ -256,17 +256,22 @@ public class PlaylistRepositoryImpl extends BaseMediaRepository<Playlist> implem
 
     @Override
     public Single<Playlist> update(final Playlist playlist, final String newName) {
+        final Single<Playlist> updateSource;
         if (playlist.isFromSharedStorage()) {
             // Legacy
-            return PlaylistQuery.update(
-                    getContext(),
-                    getContext().getContentResolver(),
-                    playlist,
-                    newName);
+            updateSource = PlaylistQuery.update(
+                    getContext(), getContext().getContentResolver(), playlist, newName);
         } else {
             // New playlist storage
-            return PlaylistDatabaseManager.get(getContext()).updatePlaylist(playlist, newName);
+            updateSource = PlaylistDatabaseManager.get(getContext()).updatePlaylist(playlist, newName);
         }
+
+        return updateSource
+            .flatMap(updated ->
+                Shortcuts.updateMediaShortcut(getContext(), updated)
+                    .onErrorComplete()
+                    .andThen(Single.just(updated))
+            );
     }
 
     @Override
