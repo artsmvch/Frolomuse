@@ -3,14 +3,18 @@ package com.frolo.muse.di.impl.local;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ShortcutInfo;
+import android.content.pm.ShortcutManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.MediaStore;
 import android.util.TypedValue;
 
 import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.annotation.WorkerThread;
 import androidx.core.content.pm.ShortcutInfoCompat;
 import androidx.core.content.pm.ShortcutManagerCompat;
@@ -31,6 +35,8 @@ import com.frolo.muse.util.BitmapUtil;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.Callable;
 
 import io.reactivex.Completable;
@@ -301,6 +307,63 @@ final class Shortcuts {
 
     static Completable createMyFileShortcut(@NonNull Context context, @NonNull MyFile myFile) {
         return createMediaShortcut(context, myFile);
+    }
+
+    // Playlist transfer
+    static Completable transferPlaylistShortcuts(
+            @NonNull final Context context, @NonNull final List<PlaylistTransfer.Result> transfers) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1) {
+            return Completable.fromAction(() -> transferPlaylistShortcuts_API25(context, transfers))
+                    .subscribeOn(AndroidSchedulers.mainThread());
+        }
+
+        return Completable.complete();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N_MR1)
+    private static void transferPlaylistShortcuts_API25(
+            @NonNull Context context, @NonNull List<PlaylistTransfer.Result> transfers) {
+        ShortcutManager manager = (ShortcutManager) context.getSystemService(Context.SHORTCUT_SERVICE);
+        if (manager == null) {
+            return;
+        }
+
+        List<ShortcutInfo> pinnedShortcuts = manager.getPinnedShortcuts();
+
+        List<String> legacyPlaylistShortcutIds = new ArrayList<>();
+        //List<Playlist> playlistShortcutIntents = new ArrayList<>();
+        for (ShortcutInfo info : pinnedShortcuts) {
+            String shortcutId = info.getId();
+            // Special prefix (see getShortcutId method)
+            String idPrefix = "playlist_";
+            if (shortcutId.startsWith(idPrefix)) {
+                // It's a legacy playlist shortcut
+                String mediaIdString = shortcutId.replaceAll(idPrefix, "");
+                try {
+                    // If parsed well...
+                    long mediaId = Long.parseLong(mediaIdString);
+                    legacyPlaylistShortcutIds.add(shortcutId);
+
+                    // Let's find the corresponding target playlist
+                    Playlist targetPlaylist = null;
+                    for (PlaylistTransfer.Result transfer : transfers) {
+                        if (transfer.original.getId() == mediaId) {
+                            targetPlaylist = transfer.outcome;
+                            break;
+                        }
+                    }
+                    if (targetPlaylist != null && !targetPlaylist.isFromSharedStorage()) {
+                        //playlistShortcutIntents.add(targetPlaylist);
+                    }
+                } catch (Throwable ignored) {
+                }
+            }
+        }
+
+        // NOTE: we should only disable the old shortcuts and not pin new ones,
+        // because pinning requires user interaction, which can be confusing for the user,
+        // and we just want to transfer playlists unnoticed.
+        manager.disableShortcuts(legacyPlaylistShortcutIds);
     }
 
 }

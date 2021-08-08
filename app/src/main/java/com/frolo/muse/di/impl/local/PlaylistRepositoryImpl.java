@@ -62,32 +62,40 @@ public class PlaylistRepositoryImpl extends BaseMediaRepository<Playlist> implem
         return PlaylistQuery.queryAll(getContext().getContentResolver(), null)
             .subscribeOn(workerScheduler)
             .first(Collections.emptyList())
-            .flatMap((Function<List<Playlist>, SingleSource<List<PlaylistCreationOp>>>) playlists -> {
+            .flatMap((Function<List<Playlist>, SingleSource<List<PlaylistTransfer.Op>>>) playlists -> {
                 if (playlists.isEmpty()) {
                     // No playlists to transfer
                     return Single.just(Collections.emptyList());
                 }
 
-                List<Single<PlaylistCreationOp>> sources = new ArrayList<>(playlists.size());
+                // Collecting all op sources and zipping them
+                List<Single<PlaylistTransfer.Op>> sources = new ArrayList<>(playlists.size());
                 for (Playlist playlist : playlists) {
-                    Single<PlaylistCreationOp> source = collectSongs(playlist)
+                    Single<PlaylistTransfer.Op> source = collectSongs(playlist)
                         .subscribeOn(workerScheduler)
-                        .map(songs -> new PlaylistCreationOp(playlist.getName(), songs));
+                        .map(songs -> new PlaylistTransfer.Op(playlist, songs));
                     sources.add(source);
                 }
-                Function<Object[], List<PlaylistCreationOp>> zipper = objects -> {
-                    List<PlaylistCreationOp> resultList = new ArrayList<>(objects.length);
+                Function<Object[], List<PlaylistTransfer.Op>> zipper = objects -> {
+                    List<PlaylistTransfer.Op> resultList = new ArrayList<>(objects.length);
                     for (Object obj : objects) {
-                        resultList.add((PlaylistCreationOp) obj);
+                        resultList.add((PlaylistTransfer.Op) obj);
                     }
                     return resultList;
                 };
                 return Single.zip(sources, zipper);
             })
-            .flatMapCompletable(playlistCreationOps ->
+            .flatMap(playlistCreationOps ->
+                // Transferring playlists in the app database
                 PlaylistDatabaseManager
                     .get(getContext())
-                    .createPlaylists(playlistCreationOps)
+                    .transferPlaylists(playlistCreationOps)
+            )
+            .flatMapCompletable(results ->
+                // Transferring shortcuts
+                Shortcuts.transferPlaylistShortcuts(getContext(), results)
+                    // Ignoring any error, cause it is not that important
+                    .onErrorComplete()
             );
     }
 

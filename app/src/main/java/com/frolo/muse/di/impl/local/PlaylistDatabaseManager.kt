@@ -122,17 +122,19 @@ internal class PlaylistDatabaseManager private constructor(private val context: 
             }
     }
 
-    fun createPlaylists(opList: List<PlaylistCreationOp>): Completable {
-        return Completable.fromAction {
+    fun transferPlaylists(opList: List<PlaylistTransfer.Op>): Single<List<PlaylistTransfer.Result>> {
+        return Single.fromCallable {
+            val results = ArrayList<PlaylistTransfer.Result>(opList.size)
             opList.forEach { op ->
+                val original: Playlist = op.original
                 try {
                     // Atomicity is important
                     database.runInTransaction {
-                        val name: String = op.name
+                        val name: String? = original.name
                         val songs: List<Song> = op.songs
 
                         // Checking if the name is correct
-                        if (name.isBlank()) return@runInTransaction
+                        if (name.isNullOrBlank()) return@runInTransaction
 
                         // Checking for existing playlists with the same name
                         val existingPlaylists = playlistEntityDao.blockingFindPlaylistEntitiesByName(name)
@@ -161,12 +163,24 @@ internal class PlaylistDatabaseManager private constructor(private val context: 
                             entities = memberEntities,
                             allowDuplicateAudio = false
                         )
+
+                        playlistEntity.copy(id = playlistId)
+                            .let(entityToPlaylistMapper)
+                            .let { createdPlaylist ->
+                                val result = PlaylistTransfer.Result(original, createdPlaylist)
+                                results.add(result)
+                            }
                     }
                 } catch (err: Throwable) {
                     // So strict for debug
                     if (DEBUG) throw err
+                    val result = PlaylistTransfer.Result(original, null)
+                    results.add(result)
                 }
             }
+
+            // Result
+            results.toList()
         }.subscribeOn(workerScheduler)
     }
 
