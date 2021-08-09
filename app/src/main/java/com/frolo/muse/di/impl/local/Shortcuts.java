@@ -1,5 +1,6 @@
 package com.frolo.muse.di.impl.local;
 
+import android.app.PendingIntent;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
@@ -23,6 +24,7 @@ import androidx.core.graphics.drawable.IconCompat;
 
 import com.frolo.muse.R;
 import com.frolo.muse.ThreadStrictMode;
+import com.frolo.muse.broadcast.Broadcasts;
 import com.frolo.muse.model.media.Album;
 import com.frolo.muse.model.media.Artist;
 import com.frolo.muse.model.media.Genre;
@@ -180,7 +182,13 @@ final class Shortcuts {
 
         final ShortcutInfoCompat shortcutInfo = toShortcutInfoCompat(context, params);
 
-        ShortcutManagerCompat.requestPinShortcut(context, shortcutInfo, null);
+        // Preparing callback
+        Intent callbackIntent = new Intent(Broadcasts.ACTION_SHORTCUT_PINNED);
+        callbackIntent.setPackage(context.getPackageName());
+        PendingIntent callback = PendingIntent.getBroadcast(
+                context, 0, callbackIntent, 0);
+
+        ShortcutManagerCompat.requestPinShortcut(context, shortcutInfo, callback.getIntentSender());
     }
 
     @WorkerThread

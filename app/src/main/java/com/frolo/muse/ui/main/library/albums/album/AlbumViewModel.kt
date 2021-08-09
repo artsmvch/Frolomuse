@@ -108,7 +108,7 @@ class AlbumViewModel constructor(
         createAlbumShortcutUseCase.createShortcut(albumArg)
             .observeOn(schedulerProvider.main())
             .doOnComplete { eventLogger.logShortcutCreated(Media.ALBUM) }
-            .subscribeFor { dispatchShortcutCreated() }
+            .subscribeFor { }
     }
 
 }

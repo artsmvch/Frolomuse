@@ -141,7 +141,7 @@ class PlaylistViewModel constructor(
         createPlaylistShortcutUseCase.createShortcut(targetPlaylist)
                 .observeOn(schedulerProvider.main())
                 .doOnComplete { eventLogger.logShortcutCreated(Media.PLAYLIST) }
-                .subscribeFor { dispatchShortcutCreated() }
+                .subscribeFor { }
     }
 
 }

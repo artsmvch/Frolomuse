@@ -78,7 +78,7 @@ class GenreViewModel constructor(
         createGenreShortcutUseCase.createShortcut(genreArg)
                 .observeOn(schedulerProvider.main())
                 .doOnComplete { eventLogger.logShortcutCreated(Media.GENRE) }
-                .subscribeFor { dispatchShortcutCreated() }
+                .subscribeFor { }
     }
 
 }

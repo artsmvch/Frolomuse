@@ -207,10 +207,6 @@ abstract class AbsMediaCollectionFragment <E: Media>: BaseFragment(),
                 viewModel.onCreateShortcutOptionConfirmed(item)
             }
         }
-
-        shortcutCreatedEvent.observeNonNull(owner) {
-            toastShortMessage(R.string.shortcut_created)
-        }
     }
 
     private fun onShowOptionsMenuDialog(optionsMenu: OptionsMenu<E>): MediaOptionsDialog<E> {

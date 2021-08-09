@@ -1,14 +1,18 @@
 package com.frolo.muse
 
 import android.app.Activity
+import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Build
+import android.os.Handler
 import android.os.StrictMode
 import android.os.strictmode.Violation
-import android.widget.Toast
 import androidx.multidex.MultiDexApplication
 import com.android.billingclient.api.BillingClient
 import com.frolo.muse.admob.AdMobs
+import com.frolo.muse.broadcast.Broadcasts
 import com.frolo.muse.di.AppComponent
 import com.frolo.muse.di.DaggerAppComponent
 import com.frolo.muse.di.impl.navigator.NavigatorImpl
@@ -32,6 +36,8 @@ class FrolomuseApp : MultiDexApplication() {
     lateinit var appComponent: AppComponent
         private set
 
+    private lateinit var uiHandler: Handler
+
     private val preferences by lazy { appComponent.providePreferences() }
     private val eventLogger by lazy { appComponent.provideEventLogger() }
 
@@ -49,6 +55,8 @@ class FrolomuseApp : MultiDexApplication() {
 
         appComponent = buildAppComponent()
 
+        uiHandler = Handler(mainLooper)
+
         registerActivityLifecycleCallbacks(activityWatcher)
 
         setupStrictMode()
@@ -58,6 +66,8 @@ class FrolomuseApp : MultiDexApplication() {
         setupFirebaseRemoteConfigs()
 
         initAdMob()
+
+        setupShortcutsListener()
     }
 
     private fun buildAppComponent(): AppComponent =
@@ -132,11 +142,7 @@ class FrolomuseApp : MultiDexApplication() {
         RxJavaPlugins.setErrorHandler { err ->
             // Default error consumer
             eventLogger.log(err)
-            (activityWatcher.foregroundActivity as? BaseActivity)?.let { activity ->
-                activity.runOnUiThread {
-                    activity.postError(err)
-                }
-            }
+            runOnForegroundActivity { postError(err) }
         }
     }
 
@@ -152,6 +158,29 @@ class FrolomuseApp : MultiDexApplication() {
     private fun initAdMob() {
         if (AdMobs.shouldInitializeOnColdStart()) {
             MobileAds.initialize(this)
+        }
+    }
+
+    private fun setupShortcutsListener() {
+        val targetAction: String = Broadcasts.ACTION_SHORTCUT_PINNED
+        // This callback will fire every time the user pinned an app shortcut
+        val receiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                if (intent == null || intent.action != targetAction) {
+                    return
+                }
+
+                runOnForegroundActivity { postMessage(getString(R.string.shortcut_created)) }
+            }
+        }
+        val intentFilter = IntentFilter(targetAction)
+        registerReceiver(receiver, intentFilter)
+    }
+
+    private fun runOnForegroundActivity(action: BaseActivity.() -> Unit) {
+        uiHandler.post {
+            ThreadStrictMode.assertMain()
+            (activityWatcher.foregroundActivity as? BaseActivity)?.action()
         }
     }
 

@@ -116,9 +116,6 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
     private val _confirmShortcutCreationEvent = SingleLiveEvent<E>()
     val confirmShortcutCreationEvent: LiveData<E> get() = _confirmShortcutCreationEvent
 
-    private val _shortcutCreatedEvent = SingleLiveEvent<Unit>()
-    val shortcutCreatedEvent: LiveData<Unit> get() = _shortcutCreatedEvent
-
     // Contextual
     private val _openContextualMenuEvent: MutableLiveData<ContextualMenu<E>> = SingleLiveEvent()
     val openContextualMenuEvent: LiveData<ContextualMenu<E>> = _openContextualMenuEvent
@@ -173,10 +170,6 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
 
     protected fun askReadPermission() {
         _askReadPermissionEvent.call()
-    }
-
-    protected fun dispatchShortcutCreated() {
-        _shortcutCreatedEvent.call()
     }
 
     /********************************
@@ -687,7 +680,7 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
         createShortcutUseCase.createShortcut(item)
                 .observeOn(schedulerProvider.main())
                 .doOnComplete { eventLogger.logShortcutCreated(item.kind) }
-                .subscribeFor { _shortcutCreatedEvent.call() }
+                .subscribeFor { }
     }
 
     fun onConfirmedDeletion(item: E, type: DeletionType) {
