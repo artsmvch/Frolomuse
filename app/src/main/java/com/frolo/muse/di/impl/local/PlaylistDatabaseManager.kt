@@ -247,7 +247,6 @@ internal class PlaylistDatabaseManager private constructor(private val context: 
     fun queryPlaylistMembers(playlistId: Long, sortOrder: String?): Flowable<List<Song>> {
         return playlistMemberEntityDao.getAllPlaylistMemberEntities(playlistId)
             .observeOn(computationScheduler)
-            .doOnNext { entities -> if (DEBUG) detectPlaylistAnomalies(entities) }
             .switchMap { entities ->
                 querySongs(entities)
                     .observeOn(workerScheduler)
@@ -346,6 +345,9 @@ internal class PlaylistDatabaseManager private constructor(private val context: 
     private fun transformAndCleanUp(entities: List<PlaylistMemberEntity>, songs: Collection<Song>): List<Song> {
         if (entities.isEmpty()) return emptyList()
 
+        // Detect anomalies
+        if (DEBUG) detectPlaylistAnomalies(entities)
+
         // Step 1: arrange entities in natural order
         val firstItem = entities.find { entity -> entity.prevId == null }
                 ?: throw IllegalStateException("Could not find the first item in play order")
@@ -396,6 +398,9 @@ internal class PlaylistDatabaseManager private constructor(private val context: 
                 finalOrderedEntities.removeAt(index)
             }
         }
+
+        // Detect anomalies again
+        if (DEBUG) detectPlaylistAnomalies(finalOrderedEntities)
 
         // Step 4: transform entities to songs
         val orderedSongs = ArrayList<Song>(orderedEntities.size)
