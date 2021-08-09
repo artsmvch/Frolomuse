@@ -6,7 +6,7 @@ import com.frolo.muse.common.toSong
 import com.frolo.muse.engine.AudioSource
 import com.frolo.muse.engine.Player
 import com.frolo.muse.engine.SimplePlayerObserver
-import com.frolo.muse.engine.service.PlayerNtf
+import com.frolo.muse.engine.service.PlayerNotificationParams
 import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.rx.flowable.doOnNextIndexed
@@ -27,16 +27,16 @@ import java.util.concurrent.atomic.AtomicReference
 class PlayerNotifier constructor(
     private val context: Context,
     private val getIsFavouriteUseCase: GetIsFavouriteUseCase<Song>,
-    private val onNotify: (player: PlayerNtf, force: Boolean) -> Unit
+    private val onNotify: (player: PlayerNotificationParams, force: Boolean) -> Unit
 ): SimplePlayerObserver() {
 
     private var notificationDisposable: Disposable? = null
 
-    private val lastPlayerNtfRef = AtomicReference<PlayerNtf>(null)
+    private val lastPlayerNtfRef = AtomicReference<PlayerNotificationParams>(null)
 
-    private fun notify(playerNtf: PlayerNtf, force: Boolean) {
-        lastPlayerNtfRef.set(playerNtf)
-        onNotify.invoke(playerNtf, force)
+    private fun notify(params: PlayerNotificationParams, force: Boolean) {
+        lastPlayerNtfRef.set(params)
+        onNotify.invoke(params, force)
     }
 
     private fun notify(item: AudioSource?, isPlaying: Boolean, force: Boolean) {
@@ -62,7 +62,7 @@ class PlayerNotifier constructor(
 
         // The default notification that is posted first,
         // because the album art has not been loaded yet.
-        val defaultPlayerNtf = PlayerNtf(
+        val defaultParams = PlayerNotificationParams(
             item = item,
             art = art,
             isPlaying = isPlaying,
@@ -70,8 +70,8 @@ class PlayerNotifier constructor(
         )
 
         notificationDisposable = Arts.getPlaybackArt(context, song)
-            .map { resultArt -> defaultPlayerNtf.copy(art = resultArt) }
-            .onErrorReturnItem(defaultPlayerNtf)
+            .map { resultArt -> defaultParams.copy(art = resultArt) }
+            .onErrorReturnItem(defaultParams)
             .flatMapPublisher { playerNtf ->
                 if (song != null) {
                     getIsFavouriteUseCase.isFavourite(song)
@@ -82,8 +82,8 @@ class PlayerNotifier constructor(
                 }
             }
             // Give 100 ms to load the album art and the fav status.
-            // If the delay timed out, then emit the default item.
-            .withDefaultItemDelayed(defaultPlayerNtf, 100, TimeUnit.MILLISECONDS)
+            // If the delay timed out, then emit the default params.
+            .withDefaultItemDelayed(defaultParams, 100, TimeUnit.MILLISECONDS)
             .distinctUntilChanged()
             .observeOn(AndroidSchedulers.mainThread())
             .onBackpressureLatest()

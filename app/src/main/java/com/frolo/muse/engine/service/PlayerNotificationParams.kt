@@ -9,7 +9,7 @@ import com.frolo.muse.engine.AudioSource
  * and the [isPlaying] flag, which determines whether the player is currently playing.
  * If [item] is null, it means that there is no playing song in the player.
  */
-data class PlayerNtf(
+data class PlayerNotificationParams(
     val item: AudioSource?,
     val art: Bitmap?,
     val isPlaying: Boolean,
@@ -18,7 +18,12 @@ data class PlayerNtf(
 
     companion object {
 
-        val NONE = PlayerNtf(item = null, art = null, isPlaying = false, isFavourite = false)
+        val NONE = PlayerNotificationParams(
+            item = null,
+            art = null,
+            isPlaying = false,
+            isFavourite = false
+        )
 
     }
 

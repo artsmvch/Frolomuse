@@ -211,8 +211,8 @@ class PlayerService: RxService() {
         player.registerObserver(SongPlayCounter(schedulerProvider, dispatchSongPlayedUseCase))
         player.registerObserver(WidgetUpdater(this))
         player.registerObserver(
-            PlayerNotifier(this, getIsFavouriteUseCase) { playerNtf, force ->
-                postPlayerNotification(playerNtf, force)
+            PlayerNotifier(this, getIsFavouriteUseCase) { params, force ->
+                postPlayerNotification(params, force)
             }
         )
         MediaSessionObserver.attach(this, mediaSession, player)
@@ -345,15 +345,15 @@ class PlayerService: RxService() {
     }
 
     private fun buildPromiseNotification(): Notification {
-        return buildPlayerNotification(PlayerNtf.NONE)
+        return buildPlayerNotification(PlayerNotificationParams.NONE)
     }
 
-    private fun buildPlayerNotification(playerNtf: PlayerNtf): Notification {
+    private fun buildPlayerNotification(params: PlayerNotificationParams): Notification {
 
-        val item = playerNtf.item
-        val art = playerNtf.art
-        val isPlaying = playerNtf.isPlaying
-        val isFav = playerNtf.isFavourite
+        val item = params.item
+        val art = params.art
+        val isPlaying = params.isPlaying
+        val isFav = params.isFavourite
 
         val context = this@PlayerService
 
@@ -447,13 +447,13 @@ class PlayerService: RxService() {
         return notificationBuilder.build()
     }
 
-    private fun postPlayerNotification(playerNtf: PlayerNtf, force: Boolean) {
+    private fun postPlayerNotification(params: PlayerNotificationParams, force: Boolean) {
 
         if (notificationCancelled && !force) {
             return
         }
 
-        startForeground(NOTIFICATION_ID_PLAYBACK, buildPlayerNotification(playerNtf))
+        startForeground(NOTIFICATION_ID_PLAYBACK, buildPlayerNotification(params))
 
         // We're about to post the notification. It's not cancelled now
         notificationCancelled = false
