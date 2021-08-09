@@ -11,7 +11,6 @@ import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.rx.flowable.doOnNextIndexed
 import com.frolo.muse.rx.flowable.withDefaultItemDelayed
-import com.frolo.muse.rx.subscribeSafely
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -94,7 +93,7 @@ class PlayerNotifier constructor(
                 notify(playerNtf, force && isFirstItem)
             }
             .ignoreElements()
-            .subscribeSafely()
+            .subscribe()
     }
 
     override fun onPlaybackStarted(player: Player) {

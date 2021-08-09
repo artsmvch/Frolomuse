@@ -24,6 +24,7 @@ import io.reactivex.Scheduler
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import org.jetbrains.annotations.TestOnly
+import java.io.Serializable
 import java.util.concurrent.Executors
 
 
@@ -434,7 +435,7 @@ internal class PlaylistDatabaseManager private constructor(private val context: 
         val song: Song,
         val playlistId: Long,
         val entity: PlaylistMemberEntity
-    ) : Song {
+    ) : Song, Serializable {
         override fun getId(): Long = song.id
         override fun getSource(): String? = song.source
         override fun getTitle(): String? = song.title

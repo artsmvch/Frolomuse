@@ -1,6 +1,7 @@
 package com.frolo.muse.database.entity
 
 import androidx.room.*
+import java.io.Serializable
 
 
 /**
@@ -47,7 +48,7 @@ data class PlaylistMemberEntity(
     val dateAdded: Long? = null,
     @ColumnInfo(name = "date_modified")
     val dateModified: Long? = null
-) {
+): Serializable {
     companion object {
         const val NO_ID = 0L
     }
