@@ -8,7 +8,7 @@ import com.frolo.muse.di.impl.local.PlaylistDatabaseManager
 import com.frolo.muse.model.media.Song
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.com.frolo.muse.mockList
+import java.com.frolo.muse.mockSongList
 
 
 @RunWith(AndroidJUnit4::class)
@@ -32,7 +32,7 @@ class PlaylistDatabaseManager_Performance_Test {
 
     private fun test_Performance_addPlaylistMembers(count: Int, criticalTime: Long) {
         val manager = obtainClearedPlaylistDatabaseManager()
-        val songs: List<Song> = mockList(size = count)
+        val songs: List<Song> = mockSongList(size = count, allowIdCollisions = false)
         val playlist = manager.createPlaylist("TestPlaylist").blockingGet()
         val completable = manager.addPlaylistMembers(playlist.id, songs)
         val startTime = currentTimestamp()
@@ -44,17 +44,26 @@ class PlaylistDatabaseManager_Performance_Test {
 
     @Test
     fun test_Performance_addPlaylistMembers_SmallCount() {
-        test_Performance_addPlaylistMembers(10, 10L)
+        // 100 ms for 10 new members
+        test_Performance_addPlaylistMembers(10, 100L)
     }
 
     @Test
     fun test_Performance_addPlaylistMembers_MediumCount() {
-        test_Performance_addPlaylistMembers(1000, 1000L)
+        // 5000 ms for 1_000 new members
+        test_Performance_addPlaylistMembers(1_000, 5_000L)
     }
 
     @Test
     fun test_Performance_addPlaylistMembers_HugeCount() {
-        test_Performance_addPlaylistMembers(10000, 10000L)
+        // 150_000 ms for 3_0000 new members
+        test_Performance_addPlaylistMembers(3_0000, 150_000L)
     }
+
+//    @Test
+//    fun test_Performance_addPlaylistMembers_InsaneCount() {
+//        // 5_000_000 ms for 10_0000 new members
+//        test_Performance_addPlaylistMembers(10_0000, 5_000_000L)
+//    }
 
 }
