@@ -1,4 +1,4 @@
-package java.com.frolo.muse
+package com.frolo.muse
 
 import kotlin.random.Random
 
@@ -30,6 +30,8 @@ fun randomDouble(until: Double? = null): Double =
 fun randomFloat(): Float = sharedRandom.nextFloat()
 
 fun randomChar(): Char = chars[sharedRandom.nextInt(chars.size)]
+
+fun randomBoolean(): Boolean = sharedRandom.nextBoolean()
 
 fun randomString(length: Int = sharedRandom.nextInt(10)): String {
     return (1..length).map { randomChar() }.joinToString(separator = "") { "$it" }

@@ -28,6 +28,7 @@ import com.frolo.muse.ui.base.BaseViewModel
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.disposables.Disposable
+import org.jetbrains.annotations.TestOnly
 import org.reactivestreams.Subscription
 
 
@@ -292,6 +293,11 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
             _activated = true
             doFetch()
         }
+    }
+
+    @TestOnly
+    internal fun onActive() {
+        onStart()
     }
 
     @CallSuper

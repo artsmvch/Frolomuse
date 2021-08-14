@@ -18,9 +18,9 @@ import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
-import java.com.frolo.muse.mockList
-import java.com.frolo.muse.mockMedia
-import java.com.frolo.muse.mockMediaList
+import com.frolo.muse.mockList
+import com.frolo.muse.mockMedia
+import com.frolo.muse.mockMediaList
 
 
 @RunWith(JUnit4::class)

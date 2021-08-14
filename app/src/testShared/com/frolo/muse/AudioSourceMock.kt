@@ -1,4 +1,4 @@
-package java.com.frolo.muse
+package com.frolo.muse
 
 import com.frolo.muse.engine.AudioMetadata
 import com.frolo.muse.engine.AudioSource

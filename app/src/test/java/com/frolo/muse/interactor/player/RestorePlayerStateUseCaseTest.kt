@@ -6,9 +6,9 @@ import com.frolo.muse.engine.AudioSourceQueue
 import com.frolo.muse.common.AudioSourceQueueFactory
 import com.frolo.muse.common.toAudioSource
 import com.frolo.muse.common.toAudioSources
-import java.com.frolo.muse.mockKT
-import java.com.frolo.muse.mockList
-import java.com.frolo.muse.mockSongList
+import com.frolo.muse.mockKT
+import com.frolo.muse.mockList
+import com.frolo.muse.mockSongList
 import com.frolo.muse.model.media.Album
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.repository.*

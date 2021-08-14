@@ -8,7 +8,7 @@ import com.frolo.muse.di.impl.local.PlaylistDatabaseManager
 import com.frolo.muse.model.media.Song
 import org.junit.Test
 import org.junit.runner.RunWith
-import java.com.frolo.muse.mockSongList
+import com.frolo.muse.mockSongList
 
 
 @RunWith(AndroidJUnit4::class)

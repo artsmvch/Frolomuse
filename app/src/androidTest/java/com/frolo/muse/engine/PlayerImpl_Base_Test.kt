@@ -4,8 +4,8 @@ import androidx.test.InstrumentationRegistry
 import com.frolo.muse.common.toAudioSource
 import com.frolo.muse.di.impl.local.SongRepositoryImpl
 import com.frolo.muse.engine.stub.AudioFxStub
-import java.com.frolo.muse.randomLong
-import java.com.frolo.muse.randomString
+import com.frolo.muse.randomLong
+import com.frolo.muse.randomString
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.same
 import com.nhaarman.mockitokotlin2.times
