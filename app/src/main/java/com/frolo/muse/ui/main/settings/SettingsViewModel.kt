@@ -25,7 +25,7 @@ class SettingsViewModel @Inject constructor(
 ): BillingViewModel(schedulerProvider, navigator, billingManager, eventLogger) {
 
     val isBuyPremiumOptionVisible: LiveData<Boolean> by lazy {
-        isPremiumPurchased.map(false) { isPremiumPurchased -> isPremiumPurchased == false }
+        liveDataOf(false)
     }
 
     private val _notifyPremiumProductConsumedEvent = SingleLiveEvent<Unit>()

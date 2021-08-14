@@ -108,10 +108,8 @@ class ThemeChooserViewModel @Inject constructor(
      * Returns true if [theme] is available for premium users only.
      */
     private fun isPremiumTheme(theme: Theme): Boolean {
-        return when (theme) {
-            Theme.DARK_RED -> true
-            else -> false
-        }
+        // All themes are free
+        return false
     }
 
     /**

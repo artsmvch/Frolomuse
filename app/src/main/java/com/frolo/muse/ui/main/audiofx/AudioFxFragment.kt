@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.util.Size
 import android.view.*
 import android.widget.CompoundButton
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.view.doOnLayout
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
@@ -22,7 +21,6 @@ import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.glide.GlideOptions.bitmapTransform
 import com.frolo.muse.model.preset.Preset
 import com.frolo.muse.model.reverb.Reverb
-import com.frolo.muse.ui.ProBadgedDrawable
 import com.frolo.muse.ui.Snapshots
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.base.NoClipping
@@ -246,18 +244,6 @@ class AudioFxFragment: BaseFragment(), NoClipping {
 
         showTooltipEvent.observe(owner) {
             scheduleSwitchTooltip()
-        }
-
-        isPlaybackParamsProBadged.observeNonNull(owner) { isBadged ->
-            tb_actions.menu.findItem(R.id.action_playback_params)?.also { menuItem ->
-                val context = requireContext()
-                val icon = AppCompatResources.getDrawable(context, R.drawable.ic_playback_params)
-                if (isBadged && icon != null) {
-                    menuItem.icon = ProBadgedDrawable(context, icon, rightMargin = 6f.dp2px(context).toInt())
-                } else {
-                    menuItem.icon = icon
-                }
-            }
         }
 
         screenState.observe(owner) { state ->

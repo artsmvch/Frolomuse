@@ -2,13 +2,11 @@ package com.frolo.muse.ui.main.audiofx
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import com.frolo.muse.arch.*
 import com.frolo.muse.billing.BillingManager
 import com.frolo.muse.engine.*
 import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.logger.EventLogger
-import com.frolo.muse.logger.ProductOfferUiElementSource
 import com.frolo.muse.logger.logCustomPresetDeleted
 import com.frolo.muse.model.ShortRange
 import com.frolo.muse.model.TooltipId
@@ -38,9 +36,6 @@ class AudioFxViewModel @Inject constructor(
     private val tooltipManager: TooltipManager,
     private val eventLogger: EventLogger
 ): BillingViewModel(schedulerProvider, navigator, billingManager, eventLogger) {
-
-    val isPlaybackParamsProBadged: LiveData<Boolean> =
-        Transformations.map(isPremiumFeatureAvailable) { bool -> bool?.not() }
 
     private val voidPreset = presetRepository.voidPreset.blockingGet()
 
@@ -299,9 +294,7 @@ class AudioFxViewModel @Inject constructor(
     }
 
     fun onPlaybackParamsOptionSelected() {
-        if (tryUsePremiumFeature(ProductOfferUiElementSource.PLAYBACK_PARAMS)) {
-            navigator.openPlaybackParams()
-        }
+        navigator.openPlaybackParams()
     }
 
     fun onSavePresetButtonClicked(currentBandLevels: ShortArray) {
