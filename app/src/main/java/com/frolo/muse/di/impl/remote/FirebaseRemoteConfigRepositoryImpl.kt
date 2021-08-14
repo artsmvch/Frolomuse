@@ -6,6 +6,7 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigValue
 import com.google.firebase.remoteconfig.ktx.get
 import io.reactivex.Single
+import io.reactivex.schedulers.Schedulers
 
 
 class FirebaseRemoteConfigRepositoryImpl : RemoteConfigRepository {
@@ -40,9 +41,11 @@ class FirebaseRemoteConfigRepositoryImpl : RemoteConfigRepository {
     }
 
     override fun isPlayerWakeLockEnabled(): Single<Boolean> {
-        return Single.fromCallable { FirebaseRemoteConfig.getInstance() }.map { config ->
-            config[FirebaseRemoteConfigUtil.PLAYER_WAKE_LOCK_FEATURE_ENABLED].asString() == "true"
-        }
+        return Single.fromCallable { FirebaseRemoteConfig.getInstance() }
+            .map { config ->
+                config[FirebaseRemoteConfigUtil.PLAYER_WAKE_LOCK_FEATURE_ENABLED].asString() == "true"
+            }
+            .subscribeOn(Schedulers.computation())
     }
 
 }
