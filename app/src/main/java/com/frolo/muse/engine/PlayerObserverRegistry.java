@@ -8,6 +8,7 @@ import android.os.Message;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 
@@ -196,6 +197,18 @@ final class PlayerObserverRegistry {
         }
 
         mObservers.add(MeasuredPlayerObserver.wrap(observer));
+    }
+
+    void registerAll(Collection<PlayerObserver> observers) {
+        if (observers == null) {
+            return;
+        }
+
+        for (PlayerObserver observer : observers) {
+            if (observer != null) {
+                mObservers.add(MeasuredPlayerObserver.wrap(observer));
+            }
+        }
     }
 
     void unregister(PlayerObserver observer) {

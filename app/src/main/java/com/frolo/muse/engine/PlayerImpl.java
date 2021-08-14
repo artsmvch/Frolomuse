@@ -9,15 +9,18 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
+import android.os.PowerManager;
 import android.os.SystemClock;
 
 import androidx.annotation.GuardedBy;
 
 import com.frolo.muse.BuildConfig;
+import com.frolo.muse.engine.stub.AudioFxStub;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -69,6 +72,79 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
     }
 
     /**
+     * Builder for creating PlayerImpl instances.
+     */
+    public static final class Builder {
+        private final Context mContext;
+        @NotNull
+        private AudioFxApplicable mAudioFx;
+        private PlayerJournal mJournal;
+        private boolean mUseWakeLocks;
+        @RepeatMode
+        private int mRepeatMode;
+        @ShuffleMode
+        private int mShuffleMode;
+        private PlaybackFadingStrategy mPlaybackFadingStrategy;
+        private final List<PlayerObserver> mObservers = new ArrayList<>();
+
+        private Builder(@NotNull Context context, @NotNull AudioFxApplicable audioFx) {
+            mContext = context;
+            mAudioFx = audioFx;
+        }
+
+        private Builder self() {
+            return this;
+        }
+
+        public Builder setPlayerJournal(@Nullable PlayerJournal journal) {
+            mJournal = journal;
+            return self();
+        }
+
+        public Builder setUseWakeLocks(boolean useWakeLocks) {
+            mUseWakeLocks = useWakeLocks;
+            return self();
+        }
+
+        public Builder setRepeatMode(@RepeatMode int mode) {
+            mRepeatMode = mode;
+            return self();
+        }
+
+        public Builder setShuffleMode(@ShuffleMode int mode) {
+            mShuffleMode = mode;
+            return self();
+        }
+
+        public Builder setPlaybackFadingStrategy(@Nullable PlaybackFadingStrategy strategy) {
+            mPlaybackFadingStrategy = strategy;
+            return self();
+        }
+
+        public Builder addObserver(@NotNull PlayerObserver observer) {
+            mObservers.add(observer);
+            return self();
+        }
+
+        @NotNull
+        public PlayerImpl build() {
+            if (mAudioFx == null) {
+                if (DEBUG) {
+                    throw new IllegalArgumentException("AudioFx is not set in the builder");
+                }
+                // Fallback
+                mAudioFx = AudioFxStub.INSTANCE;
+            }
+            return new PlayerImpl(this);
+        }
+    }
+
+    @NotNull
+    public static Builder newBuilder(@NotNull Context context, @NotNull AudioFxApplicable audioFx) {
+        return new Builder(context, audioFx);
+    }
+
+    /**
      * Wrapper for engine tasks. This does additional work,
      * including checking the execution thread and the shutdown status of the player.
      */
@@ -89,16 +165,6 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
             // Finally, executing the task
             mTask.run();
         }
-    }
-
-    /**
-     * Factory method that creates a new implementation of {@link Player}.
-     * @param context context
-     * @param audioFx audioFx
-     * @return a new implementation
-     */
-    public static Player create(@NotNull Context context, @NotNull AudioFxApplicable audioFx, @Nullable PlayerJournal journal) {
-        return new PlayerImpl(context, audioFx, journal);
     }
 
     /**
@@ -160,6 +226,9 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
     // Handlers
     private final Handler mEngineHandler;
     private final Object mEngineTasksLock = new Object();
+
+    // Wake locks
+    private final boolean mUseWakeLocks;
 
     // Player journal
     @NotNull
@@ -244,13 +313,26 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
     private volatile boolean mIsPlaybackPitchPersisted = false;
     private volatile float mPlaybackPitch = PITCH_NORMAL;
 
-    private PlayerImpl(@NotNull Context context, @NotNull AudioFxApplicable audioFx, @Nullable PlayerJournal journal) {
-        mContext = context;
-        mAudioFx = audioFx;
+    private PlayerImpl(@NotNull Builder builder) {
+        mContext = builder.mContext;
+
         mEngineHandler = createEngineHandler();
-        mObserverRegistry = PlayerObserverRegistry.create(context, this);
-        mAudioFocusRequester = AudioFocusRequesterImpl.create(context, this);
-        mPlayerJournal = journal != null ? journal : PlayerJournal.EMPTY;
+
+        mUseWakeLocks = builder.mUseWakeLocks;
+
+        mPlayerJournal = builder.mJournal != null ? builder.mJournal : PlayerJournal.EMPTY;
+
+        mAudioFocusRequester = AudioFocusRequesterImpl.create(builder.mContext, this);
+
+        mAudioFx = builder.mAudioFx;
+
+        mObserverRegistry = PlayerObserverRegistry.create(builder.mContext, this);
+        mObserverRegistry.registerAll(builder.mObservers);
+
+        mRepeatMode = builder.mRepeatMode;
+        mShuffleMode = builder.mShuffleMode;
+
+        mPlaybackFadingStrategy = builder.mPlaybackFadingStrategy;
         startPlaybackFadingTimer();
     }
 
@@ -403,6 +485,12 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
     @NotNull
     private MediaPlayer createEngine() {
         final MediaPlayer engine = new MediaPlayer();
+
+        if (mUseWakeLocks) {
+            // WakeLock will help us prevent playback interruptions.
+            // See https://stackoverflow.com/a/53093684/9437681
+            engine.setWakeMode(mContext, PowerManager.PARTIAL_WAKE_LOCK);
+        }
 
         engine.setAuxEffectSendLevel(1.0f);
         engine.setAudioStreamType(AudioManager.STREAM_MUSIC);

@@ -22,7 +22,9 @@ abstract class PlayerImpl_Base_Test {
      */
     protected fun createPlayerImpl(): PlayerImpl {
         val context = InstrumentationRegistry.getTargetContext()
-        return PlayerImpl.create(context, AudioFxStub, null) as PlayerImpl
+        return PlayerImpl.newBuilder(context, AudioFxStub)
+            .setUseWakeLocks(false)
+            .build()
     }
 
     /**

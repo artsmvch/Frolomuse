@@ -6,6 +6,7 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.hardware.display.DisplayManager
 import android.os.Build
+import android.os.PowerManager
 import android.view.Display
 import android.view.WindowManager
 import androidx.core.app.NotificationManagerCompat
@@ -54,4 +55,9 @@ val Context.displayManagerCompat: DisplayManagerCompat?
 val Context.activityManager: ActivityManager?
     get() {
         return getSystemService(Context.ACTIVITY_SERVICE) as? ActivityManager
+    }
+
+val Context.powerManager: PowerManager?
+    get() {
+        return getSystemService(Context.POWER_SERVICE) as? PowerManager
     }
