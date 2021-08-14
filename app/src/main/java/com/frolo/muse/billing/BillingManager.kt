@@ -173,7 +173,7 @@ class BillingManager(private val frolomuseApp: FrolomuseApp) {
             false
         }
         if (!isTrialDurationValid) {
-            FirebaseRemoteConfigUtil.getActivatedConfig()
+            FirebaseRemoteConfigUtil.fetchAndActivate()
                 .map { config ->
                     // Should throw an exception if the value is empty or invalid
                     config.getValue(REMOTE_KEY_TRIAL_DURATION_MILLIS).asString().toLong()

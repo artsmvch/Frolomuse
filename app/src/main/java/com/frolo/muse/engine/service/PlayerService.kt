@@ -29,6 +29,7 @@ import com.frolo.muse.model.media.Song
 import com.frolo.muse.model.playback.PlaybackFadingParams
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.repository.PresetRepository
+import com.frolo.muse.repository.RemoteConfigRepository
 import com.frolo.muse.rx.RxService
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.sleeptimer.PlayerSleepTimer
@@ -73,6 +74,8 @@ class PlayerService: RxService() {
     lateinit var preferences: Preferences
     @Inject
     lateinit var presetRepository: PresetRepository
+    @Inject
+    lateinit var remoteConfigRepository: RemoteConfigRepository
     @Inject
     lateinit var schedulerProvider: SchedulerProvider
     @Inject
@@ -193,7 +196,7 @@ class PlayerService: RxService() {
         // Building player instance
         player = PlayerImpl.newBuilder(this, audioFx)
             .setPlayerJournal(playerJournal)
-            .setUseWakeLocks(false)
+            .setUseWakeLocks(quicklyGetIsPlayerWakeLockEnabled())
             // Setting up repeat and shuffle modes
             .setRepeatMode(preferences.loadRepeatMode())
             .setShuffleMode(preferences.loadShuffleMode())
@@ -221,6 +224,17 @@ class PlayerService: RxService() {
         registerReceiver(sleepTimerHandler, PlayerSleepTimer.createIntentFilter())
 
         Logger.d(TAG, "Service created")
+    }
+
+    private fun quicklyGetIsPlayerWakeLockEnabled(): Boolean {
+        return try {
+            remoteConfigRepository.isPlayerWakeLockEnabled()
+                .timeout(1, TimeUnit.SECONDS)
+                .blockingGet()
+        } catch (err: Throwable) {
+            Logger.e(err)
+            false
+        }
     }
 
     private fun quicklyRestorePlaybackFadingStrategy(): PlaybackFadingStrategy {
