@@ -1,6 +1,5 @@
-package com.frolo.muse.admob
+package com.frolo.ads
 
-import com.frolo.muse.Logger
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.LoadAdError
 
@@ -16,16 +15,8 @@ class LoggingAdListener constructor(
         log.invoke("Ad closed")
     }
 
-    override fun onAdFailedToLoad(i: Int) {
-        log.invoke("Ad failed to load")
-    }
-
     override fun onAdFailedToLoad(err: LoadAdError?) {
         log.invoke("Ad failed to load: $err")
-    }
-
-    override fun onAdLeftApplication() {
-        log.invoke("Ad left application")
     }
 
     override fun onAdOpened() {
@@ -42,11 +33,5 @@ class LoggingAdListener constructor(
 
     override fun onAdImpression() {
         log.invoke("Ad impression")
-    }
-
-    companion object {
-        fun createDefault(tag: String): LoggingAdListener {
-            return LoggingAdListener { Logger.d(tag, it.orEmpty()) }
-        }
     }
 }

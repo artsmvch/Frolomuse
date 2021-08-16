@@ -1,4 +1,4 @@
-package com.frolo.muse.admob
+package com.frolo.ads
 
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.LoadAdError
@@ -9,11 +9,7 @@ class CompositeAdListener(private val listeners: List<AdListener>) : AdListener(
         listeners.forEach { it.onAdLoaded() }
     }
 
-    override fun onAdFailedToLoad(err: LoadAdError?) {
-        listeners.forEach { it.onAdFailedToLoad(err) }
-    }
-
-    override fun onAdFailedToLoad(err: Int) {
+    override fun onAdFailedToLoad(err: LoadAdError) {
         listeners.forEach { it.onAdFailedToLoad(err) }
     }
 
@@ -31,9 +27,5 @@ class CompositeAdListener(private val listeners: List<AdListener>) : AdListener(
 
     override fun onAdClosed() {
         listeners.forEach { it.onAdClosed() }
-    }
-
-    override fun onAdLeftApplication() {
-        listeners.forEach { it.onAdLeftApplication() }
     }
 }

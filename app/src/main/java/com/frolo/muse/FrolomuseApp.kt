@@ -11,7 +11,6 @@ import android.os.StrictMode
 import android.os.strictmode.Violation
 import androidx.multidex.MultiDexApplication
 import com.android.billingclient.api.BillingClient
-import com.frolo.muse.admob.AdMobs
 import com.frolo.muse.broadcast.Broadcasts
 import com.frolo.muse.di.AppComponent
 import com.frolo.muse.di.DaggerAppComponent
@@ -25,7 +24,6 @@ import com.frolo.muse.navigator.NavigatorWrapper
 import com.frolo.muse.ui.base.BaseActivity
 import com.frolo.muse.ui.base.FragmentNavigator
 import com.frolo.muse.ui.main.MainActivity
-import com.google.android.gms.ads.MobileAds
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import io.reactivex.plugins.RxJavaPlugins
@@ -64,8 +62,6 @@ class FrolomuseApp : MultiDexApplication() {
         setupRxPlugins()
 
         setupFirebaseRemoteConfigs()
-
-        initAdMob()
 
         setupShortcutsListener()
     }
@@ -153,12 +149,6 @@ class FrolomuseApp : MultiDexApplication() {
             .build()
         instance.setConfigSettingsAsync(configSettings)
         instance.setDefaultsAsync(R.xml.firebase_remote_config_default)
-    }
-
-    private fun initAdMob() {
-        if (AdMobs.shouldInitializeOnColdStart()) {
-            MobileAds.initialize(this)
-        }
     }
 
     private fun setupShortcutsListener() {

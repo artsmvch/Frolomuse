@@ -1,4 +1,4 @@
-package com.frolo.muse.admob
+package com.frolo.ads
 
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdView
@@ -24,12 +24,6 @@ class AdListenerBuilder {
 
     fun doLogging(log: (msg: String?) -> Unit): AdListenerBuilder {
         val l = LoggingAdListener(log)
-        listeners.add(l)
-        return this
-    }
-
-    fun doDefaultLogging(tag: String): AdListenerBuilder {
-        val l = LoggingAdListener.createDefault(tag)
         listeners.add(l)
         return this
     }

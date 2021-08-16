@@ -248,9 +248,6 @@ dependencies {
     // ViewPager2 indicator
     implementation 'com.github.zhpanvip:viewpagerindicator:1.0.7'
 
-    // AdMob
-    implementation 'com.google.android.gms:play-services-ads:19.5.0'
-
     // Billing
     def billing_version = "3.0.3"
     implementation "com.android.billingclient:billing-ktx:$billing_version"
