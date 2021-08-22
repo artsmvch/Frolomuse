@@ -38,8 +38,8 @@ public class PreferencesImpl implements Preferences {
 
     private static final String STORAGE_NAME = "mp_shared_preferences";
 
-    // how many times the app is opened
-    private static final String KEY_TOTAL_OPEN_COUNT = "open_count";
+    // how many times the app was launched
+    private static final String KEY_TOTAL_LAUNCH_COUNT = "open_count";
     // how many times should the app be opened to ask the user to rate it;
     // this value should be increased each time the button 'ask later' pressed
     private static final String KEY_OPEN_COUNT_TO_RATE = "open count to rate";
@@ -265,19 +265,19 @@ public class PreferencesImpl implements Preferences {
         preferences.edit().putBoolean(KEY_PAUSE_ON_UNPLUGGED, shouldPause).apply();
     }
 
-    public int getOpenCount() {
-        return preferences.getInt(KEY_TOTAL_OPEN_COUNT, 0);
+    public int getLaunchCount() {
+        return preferences.getInt(KEY_TOTAL_LAUNCH_COUNT, 0);
     }
 
-    public void setOpenCount(int count) {
-        preferences.edit().putInt(KEY_TOTAL_OPEN_COUNT, count).apply();
+    public void setLaunchCount(int count) {
+        preferences.edit().putInt(KEY_TOTAL_LAUNCH_COUNT, count).apply();
     }
 
-    public int getOpenCountToRate() {
+    public int getMinLaunchCountForRatingRequest() {
         return preferences.getInt(KEY_OPEN_COUNT_TO_RATE, 5);
     }
 
-    public void setOpenCountToRate(int count) {
+    public void setMinLaunchCountForRatingRequest(int count) {
         preferences.edit().putInt(KEY_OPEN_COUNT_TO_RATE, count).apply();
     }
 
@@ -631,7 +631,7 @@ public class PreferencesImpl implements Preferences {
 
     @Override
     public Flowable<Boolean> shouldShowGreetings() {
-        if (getOpenCount() > 0) {
+        if (getLaunchCount() > 0) {
             // the app was opened before
             return Flowable.just(false);
         }

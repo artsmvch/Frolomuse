@@ -7,6 +7,7 @@ import com.frolo.muse.logger.logPlaylistsTransferred
 import com.frolo.muse.permission.PermissionChecker
 import com.frolo.muse.repository.PlaylistRepository
 import com.frolo.muse.repository.PlaylistTransferPreferences
+import com.frolo.muse.repository.Preferences
 import com.frolo.muse.rx.SchedulerProvider
 import io.reactivex.Completable
 import java.util.concurrent.atomic.AtomicLong
@@ -20,6 +21,7 @@ import javax.inject.Inject
  */
 class TransferPlaylistsUseCase @Inject constructor(
     private val permissionChecker: PermissionChecker,
+    private val appPreferences: Preferences,
     private val playlistTransferPreferences: PlaylistTransferPreferences,
     private val playlistRepository: PlaylistRepository,
     private val schedulerProvider: SchedulerProvider,
@@ -31,6 +33,11 @@ class TransferPlaylistsUseCase @Inject constructor(
     fun transferPlaylistsIfNecessary(): Completable {
         if (!Features.isAppPlaylistStorageFeatureAvailable()) {
             return Completable.complete()
+        }
+
+        if (appPreferences.launchCount <= 1) {
+            // This is the first launch of the app. We don't want to transfer shared playlists.
+            return playlistTransferPreferences.completeTransfer()
         }
 
         return playlistTransferPreferences.requestTransfer()

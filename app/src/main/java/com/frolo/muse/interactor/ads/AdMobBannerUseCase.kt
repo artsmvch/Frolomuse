@@ -88,8 +88,8 @@ class AdMobBannerUseCase @Inject constructor(
             return false
         }
 
-        val openCount = preferences.openCount
-        if (config.thresholdOpenCount != null && openCount < config.thresholdOpenCount) {
+        val launchCount = preferences.launchCount
+        if (config.thresholdOpenCount != null && launchCount < config.thresholdOpenCount) {
             return false
         }
 

@@ -54,11 +54,11 @@ public interface Preferences {
     boolean shouldPauseOnUnplugged();
     void setPauseOnUnplugged(boolean shouldPause);
 
-    int getOpenCount();
-    void setOpenCount(int count);
+    int getLaunchCount();
+    void setLaunchCount(int count);
 
-    int getOpenCountToRate();
-    void setOpenCountToRate(int count);
+    int getMinLaunchCountForRatingRequest();
+    void setMinLaunchCountForRatingRequest(int count);
 
     boolean getRated();
     void setRated(boolean rated);

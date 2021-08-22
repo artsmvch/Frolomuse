@@ -14,7 +14,7 @@ interface PlaylistTransferPreferences {
 
     /**
      * Marks transfer of playlists from the shared storage as complete.
-     * NOTE: Must be paired with a call of [requestTransfer] method.
+     * Can be called even if there was no transfer and it is not needed.
      */
     fun completeTransfer(): Completable
 }

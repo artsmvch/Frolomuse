@@ -24,7 +24,7 @@ class RateUseCase @Inject constructor(
             false
         } else {
             // not reached specified count to show the rate dialog yet
-            preferences.openCount >= preferences.openCountToRate
+            preferences.launchCount >= preferences.minLaunchCountForRatingRequest
         }
     }
 
@@ -44,18 +44,18 @@ class RateUseCase @Inject constructor(
 
     fun dismissRate() {
         // it must be a fucking PIG if he(she) doesn't want to rate my App but still using it
-        val countToRate = preferences.openCount * 3 // ask again after 3x additional launches
-        preferences.openCountToRate = countToRate
+        val minCountForRatingRequest = preferences.launchCount * 3 // ask again after 3x additional launches
+        preferences.minLaunchCountForRatingRequest = minCountForRatingRequest
     }
 
     fun askLater() {
-        val nextCount = preferences.openCount + 5 // ask again after 5 additional launches
-        preferences.openCountToRate = nextCount
+        val minCountForRatingRequest = preferences.launchCount + 5 // ask again after 5 additional launches
+        preferences.minLaunchCountForRatingRequest = minCountForRatingRequest
     }
 
     fun cancelRate() {
-        val countBeforeRating = preferences.openCount + 3 // ask again after 3 additional launches
-        preferences.openCountToRate = countBeforeRating
+        val minCountForRatingRequest = preferences.launchCount + 3 // ask again after 3 additional launches
+        preferences.minLaunchCountForRatingRequest = minCountForRatingRequest
     }
 
 }

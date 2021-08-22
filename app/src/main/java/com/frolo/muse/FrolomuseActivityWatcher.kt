@@ -74,8 +74,8 @@ class FrolomuseActivityWatcher(
     }
 
     private fun noteAppLaunch() {
-        val totalLaunchCount = preferences.openCount + 1 // +1 for the current launch
-        preferences.openCount = totalLaunchCount
+        val totalLaunchCount = preferences.launchCount + 1 // +1 for the current launch
+        preferences.launchCount = totalLaunchCount
         eventLogger.logAppLaunched(totalLaunchCount)
         Logger.d(LOG_TAG, "Noted app launch: $totalLaunchCount")
     }
