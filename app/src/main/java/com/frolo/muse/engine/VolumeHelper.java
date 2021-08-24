@@ -12,7 +12,7 @@ final class VolumeHelper {
      */
     public static float computeVolume(float level) {
         final float volume = doMagicTransformation(level);
-        return MathUtil.clamp(sVolumeRange, volume);
+        return MathUtil.clamp(volume, sVolumeRange);
     }
 
     private static float doCubicTransformation(float level) {

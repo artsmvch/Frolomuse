@@ -82,7 +82,7 @@ public abstract class PlaybackFadingStrategy {
                 value = NORMAL_LEVEL;
             }
 
-            return MathUtil.clamp(MIN_LEVEL, MAX_LEVEL, value);
+            return MathUtil.clamp(value, MIN_LEVEL, MAX_LEVEL);
         }
     }
 

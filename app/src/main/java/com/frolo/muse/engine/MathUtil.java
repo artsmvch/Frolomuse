@@ -5,14 +5,14 @@ import org.jetbrains.annotations.NotNull;
 
 final class MathUtil {
 
-    static float clamp(float min, float max, float value) {
+    static float clamp(float value, float min, float max) {
         if (value < min) return min;
         if (value > max) return max;
         return value;
     }
 
-    static float clamp(@NotNull Range range, float value) {
-        return clamp(range.min, range.max, value);
+    static float clamp(float value, @NotNull Range range) {
+        return clamp(value, range.min, range.max);
     }
 
     /**

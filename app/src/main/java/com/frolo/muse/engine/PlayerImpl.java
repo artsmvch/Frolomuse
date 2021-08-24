@@ -1804,7 +1804,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
         if (isShutdown()) return;
 
         // Validating the speed
-        speed = MathUtil.clamp(SPEED_RANGE, speed);
+        speed = MathUtil.clamp(speed, SPEED_RANGE);
 
         synchronized (mEngineLock) {
 
@@ -1859,7 +1859,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
         if (isShutdown()) return;
 
         // Validating the pitch
-        pitch = MathUtil.clamp(PITCH_RANGE, pitch);
+        pitch = MathUtil.clamp(pitch, PITCH_RANGE);
 
         synchronized (mEngineLock) {
 
