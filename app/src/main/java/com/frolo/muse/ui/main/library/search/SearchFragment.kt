@@ -15,6 +15,7 @@ import com.frolo.muse.ui.base.NoClipping
 import com.frolo.muse.ui.main.library.base.AbsMediaCollectionFragment
 import com.frolo.muse.ui.main.library.base.BaseAdapter
 import com.frolo.muse.ui.main.library.search.adapter.MediaAdapter
+import com.frolo.muse.views.hideKeyboardOnScroll
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration
 import kotlinx.android.synthetic.main.fragment_base_list.*
 import kotlinx.android.synthetic.main.fragment_search.*
@@ -51,6 +52,7 @@ class SearchFragment: AbsMediaCollectionFragment<Media>(), NoClipping {
         rv_list.apply {
             adapter = this@SearchFragment.adapter
             layoutManager = androidx.recyclerview.widget.LinearLayoutManager(rv_list.context)
+            hideKeyboardOnScroll()
             addItemDecoration(StickyRecyclerHeadersDecoration(this@SearchFragment.adapter))
             // Do not apply margin decoration as it breaks header decoration
         }
@@ -95,7 +97,7 @@ class SearchFragment: AbsMediaCollectionFragment<Media>(), NoClipping {
     }
 
     override fun onDestroyView() {
-        Keyboards.closeFrom(this)
+        Keyboards.hideFrom(this)
         super.onDestroyView()
     }
 
