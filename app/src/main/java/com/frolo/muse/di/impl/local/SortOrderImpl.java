@@ -6,6 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
+import com.frolo.muse.Features;
+import com.frolo.muse.LocaleHelper;
 import com.frolo.muse.model.sort.SortOrder;
 
 
@@ -22,9 +24,18 @@ final class SortOrderImpl extends SortOrder {
         mNameStringId = nameStringId;
     }
 
+    @NonNull
+    private Context getLocalizedContext() {
+        if (Features.isLanguageChooserFeatureAvailable()) {
+            return LocaleHelper.applyDefaultLanguage(mContext);
+        } else {
+            return mContext;
+        }
+    }
+
     @Override
     public String getLocalizedName() {
-        return mContext.getString(mNameStringId);
+        return getLocalizedContext().getString(mNameStringId);
     }
 
     @Override

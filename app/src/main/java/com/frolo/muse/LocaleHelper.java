@@ -6,12 +6,40 @@ import android.content.res.Resources;
 import android.os.Build;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import java.util.Locale;
 
 
 public final class LocaleHelper {
+
+    @Nullable
+    public static Locale getSystemLocale() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            return Resources.getSystem().getConfiguration().getLocales().get(0);
+        } else {
+            //noinspection deprecation
+            return Resources.getSystem().getConfiguration().locale;
+        }
+    }
+
+    @Nullable
+    public static String getSystemLang() {
+        Locale systemLocale = getSystemLocale();
+        return systemLocale != null ? systemLocale.getLanguage() : null;
+    }
+
+    @NonNull
+    public static Context applyDefaultLanguage(@NonNull Context context) {
+        Locale locale = Locale.getDefault();
+        String lang = locale != null ? locale.getLanguage() : null;
+        if (lang != null && !lang.isEmpty()) {
+            return LocaleHelper.applyLanguage(context, lang);
+        } else {
+            return context;
+        }
+    }
 
     @NonNull
     public static Context applyLanguage(@NonNull Context context, @NonNull String lang) {

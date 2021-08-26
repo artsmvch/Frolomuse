@@ -21,9 +21,16 @@ abstract class BaseActivity: AppCompatActivity() {
     override fun attachBaseContext(newBase: Context?) {
         if (Features.isLanguageChooserFeatureAvailable() && newBase != null) {
             FrolomuseApp.from(newBase).appComponent.inject(this)
-            val lang: String? = preferences.language
-            if (!lang.isNullOrBlank()) {
-                val newLocalizedBase = LocaleHelper.applyLanguage(newBase, lang)
+
+            // First, get the language from the preferences
+            var targetLang: String? = preferences.language
+            if (targetLang.isNullOrEmpty()) {
+                // Use the system language as a fallback
+                targetLang = LocaleHelper.getSystemLang()
+            }
+
+            if (!targetLang.isNullOrBlank()) {
+                val newLocalizedBase = LocaleHelper.applyLanguage(newBase, targetLang)
                 super.attachBaseContext(newLocalizedBase)
                 return
             }
