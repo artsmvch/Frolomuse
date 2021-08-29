@@ -13,24 +13,31 @@ import java.util.*
 class FrolomuseActivityWatcher(
     private val preferences: Preferences,
     private val eventLogger: EventLogger
-): Application.ActivityLifecycleCallbacks {
+): Application.ActivityLifecycleCallbacks, ActivityWatcher {
 
     private val _createdActivities = Collections.synchronizedList(ArrayList<Activity>())
-    @get:AnyThread
-    val createdActivities: List<Activity> get() = _createdActivities
-
     private val _startedActivities = Collections.synchronizedList(ArrayList<Activity>())
-    @get:AnyThread
-    val startedActivities: List<Activity> get() = _startedActivities
-
     private val _resumedActivities = Collections.synchronizedList(ArrayList<Activity>())
-    @get:AnyThread
-    val resumedActivities: List<Activity> get() = _resumedActivities
 
     private var activityResumeCount: Int = 0
 
-    @get:AnyThread
-    val foregroundActivity: Activity? get() {
+    @AnyThread
+    override fun getCreatedActivities(): List<Activity> {
+        return _createdActivities
+    }
+
+    @AnyThread
+    override fun getStartedActivities(): List<Activity> {
+        return _startedActivities
+    }
+
+    @AnyThread
+    override fun getResumedActivities(): List<Activity> {
+        return _resumedActivities
+    }
+
+    @AnyThread
+    override fun getForegroundActivity(): Activity? {
         return resumedActivities.lastOrNull() ?: startedActivities.lastOrNull()
     }
 

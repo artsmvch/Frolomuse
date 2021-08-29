@@ -21,6 +21,7 @@ public interface PermissionChecker {
     void requireQueryMediaContentPermission() throws SecurityException;
 
     /**
+     * This method should only be called after a media permission request has been processed.
      * @return true if the media permission should be requested in the settings.
      */
     boolean shouldRequestMediaPermissionInSettings();

@@ -1,6 +1,7 @@
 package com.frolo.muse.di.modules
 
 import android.content.Context
+import com.frolo.muse.ActivityWatcher
 import com.frolo.muse.FrolomuseApp
 import com.frolo.muse.billing.BillingManager
 import com.frolo.muse.di.Exec
@@ -31,10 +32,15 @@ class MiscModule {
         return Executors.newCachedThreadPool()
     }
 
+    @Provides
+    fun provideActivityWatcher(app: FrolomuseApp): ActivityWatcher {
+        return app
+    }
+
     @Singleton
     @Provides
-    fun providePermissionChecker(context: Context): PermissionChecker {
-        return PermissionCheckerImpl(context)
+    fun providePermissionChecker(context: Context, activityWatcher: ActivityWatcher): PermissionChecker {
+        return PermissionCheckerImpl(context, activityWatcher)
     }
 
     @Singleton

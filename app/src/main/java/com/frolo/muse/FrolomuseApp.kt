@@ -29,7 +29,7 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import io.reactivex.plugins.RxJavaPlugins
 
 
-class FrolomuseApp : MultiDexApplication() {
+class FrolomuseApp : MultiDexApplication(), ActivityWatcher {
 
     lateinit var appComponent: AppComponent
         private set
@@ -45,8 +45,6 @@ class FrolomuseApp : MultiDexApplication() {
 
     private val playerWrapper = PlayerWrapper()
     private val navigatorWrapper = NavigatorWrapper()
-
-    val foregroundActivity: Activity? get() = activityWatcher.foregroundActivity
 
     override fun onCreate() {
         super.onCreate()
@@ -189,6 +187,26 @@ class FrolomuseApp : MultiDexApplication() {
     fun onFragmentNavigatorDestroyed() {
         navigatorWrapper.detachBase()
     }
+
+    //region Activity watcher
+
+    override fun getCreatedActivities(): List<Activity> {
+        return activityWatcher.createdActivities
+    }
+
+    override fun getStartedActivities(): List<Activity> {
+        return activityWatcher.startedActivities
+    }
+
+    override fun getResumedActivities(): List<Activity> {
+        return activityWatcher.resumedActivities
+    }
+
+    override fun getForegroundActivity(): Activity? {
+        return activityWatcher.foregroundActivity
+    }
+
+    //endregion
 
     companion object {
         fun from(context: Context): FrolomuseApp {
