@@ -192,6 +192,9 @@ class MainActivity : PlayerHostActivity(),
                 .setTopRightCorner(CornerFamily.ROUNDED, bottomNavCornerRadius)
                 .build()
         }
+        with(BottomSheetBehavior.from(sliding_player_layout)) {
+            addBottomSheetCallback(bottomSheetCallback)
+        }
 
         mini_player_container.setOnClickListener {
             expandSlidingPlayer()
@@ -219,10 +222,6 @@ class MainActivity : PlayerHostActivity(),
     override fun onStart() {
         super.onStart()
 
-        with(BottomSheetBehavior.from(sliding_player_layout)) {
-            addBottomSheetCallback(bottomSheetCallback)
-        }
-
         viewModel.onStart()
 
         // The best place to re-try initializing fragments, because after calling
@@ -241,10 +240,6 @@ class MainActivity : PlayerHostActivity(),
     }
 
     override fun onStop() {
-        with(BottomSheetBehavior.from(sliding_player_layout)) {
-            removeBottomSheetCallback(bottomSheetCallback)
-        }
-
         viewModel.onStop()
 
         if (isFinishing) {
@@ -256,6 +251,9 @@ class MainActivity : PlayerHostActivity(),
 
     override fun onDestroy() {
         super.onDestroy()
+        with(BottomSheetBehavior.from(sliding_player_layout)) {
+            removeBottomSheetCallback(bottomSheetCallback)
+        }
         supportFragmentManager.unregisterFragmentLifecycleCallbacks(fragmentLifecycleCallbacks)
         requireFrolomuseApp().onFragmentNavigatorDestroyed()
     }
