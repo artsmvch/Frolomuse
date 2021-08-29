@@ -163,7 +163,16 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
             // Then, we need to check if the player is shutdown
             if (isShutdown()) return;
             // Finally, executing the task
-            mTask.run();
+            try {
+                mTask.run();
+            } catch (Throwable error) {
+                mObserverRegistry.dispatchInternalErrorOccurred(error);
+                // Oops, need to do a hard reset
+                if (DEBUG) {
+                    failOnEventThread(error);
+                }
+                performHardReset(error);
+            }
         }
     }
 
@@ -275,9 +284,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
             processEngineTask(_skipToNext(false));
 
             // Notifying all threads that the playback is complete
-            synchronized (mOnCompletionWaiter) {
-                mOnCompletionWaiter.notifyAll();
-            }
+            notifyPlaybackCompleted();
         }
     };
 
@@ -440,6 +447,12 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
         }
     }
 
+    private void notifyPlaybackCompleted() {
+        synchronized (mOnCompletionWaiter) {
+            mOnCompletionWaiter.notifyAll();
+        }
+    }
+
     /**
      * Tries to request audio focus.
      * Returns true if the focus is granted and the player can start playing, false - otherwise.
@@ -474,6 +487,59 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
     @NotNull
     protected final Context getContext() {
         return mContext;
+    }
+
+    /**
+     * Throws the given <code>error</code> on the event thread. Typically, the event thread
+     * is the main thread of the application. This method can be used for debugging, for example
+     * to signal an exception that cannot be handled properly, thus it would better to crash the app.
+     * @param error to throw on the event thread.
+     */
+    private void failOnEventThread(Throwable error) {
+        final Runnable action = new Runnable() {
+            @Override
+            public void run() {
+                if (error instanceof RuntimeException) {
+                    throw (RuntimeException) error;
+                } else {
+                    throw new RuntimeException(error);
+                }
+            }
+        };
+        mObserverRegistry.post(action);
+    }
+
+    /**
+     * Performs a hard reset on this instance. Be careful, this should only be done in an emergency.
+     * NOTE: At the moment, this method does not notify observers about the reset.
+     */
+    final void performHardReset(Throwable cause) {
+        synchronized (mEngineLock) {
+
+            mPlayerJournal.logError("Perform hard reset", cause);
+
+            //throw new UnsupportedOperationException("Not implemented yet!");
+
+            try {
+                MediaPlayer engine = mEngine;
+                if (engine != null) {
+                    engine.release();
+                }
+            } catch (Throwable ignored) {
+            } finally {
+                mEngine = null;
+            }
+
+            mOriginQueue = AudioSourceQueue.empty();
+            mCurrentQueue = AudioSourceQueue.empty();
+
+            mABEngine.reset();
+
+            mIsPlayingFlag = false;
+            mIsPreparedFlag = false;
+
+            notifyPlaybackCompleted();
+        }
     }
 
     /**
