@@ -10,18 +10,19 @@ import com.frolo.muse.rx.SchedulerProvider
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
+import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
 
 
 class RestorePlayerStateUseCase @Inject constructor(
-        private val schedulerProvider: SchedulerProvider,
-        private val songRepository: SongRepository,
-        private val albumRepository: AlbumRepository,
-        private val artistRepository: ArtistRepository,
-        private val genreRepository: GenreRepository,
-        private val playlistRepository: PlaylistRepository,
-        private val preferences: Preferences,
-        private val audioSourceQueueFactory: AudioSourceQueueFactory
+    private val schedulerProvider: SchedulerProvider,
+    private val songRepository: SongRepository,
+    private val albumRepository: AlbumRepository,
+    private val artistRepository: ArtistRepository,
+    private val genreRepository: GenreRepository,
+    private val playlistRepository: PlaylistRepository,
+    private val preferences: Preferences,
+    private val audioSourceQueueFactory: AudioSourceQueueFactory
 ) {
 
     private data class PlayerState constructor(
@@ -30,6 +31,8 @@ class RestorePlayerStateUseCase @Inject constructor(
         val startPlaying: Boolean,
         val playbackPosition: Int
     )
+
+    private val isOrWillBeRestored = AtomicBoolean(false)
 
     private fun getDefaultPlayerState(): Single<PlayerState> {
         return songRepository.allItems
@@ -95,44 +98,50 @@ class RestorePlayerStateUseCase @Inject constructor(
 
         // check for result. if the returned queue is empty then fetch default one
         return songQueueSource
-                .firstOrError()
-                .flatMap { queue ->
-                    preferences.minAudioFileDuration
-                        .first(0)
-                        .map { queue.excludeShortAudioSources(it) }
-                }
-                .map { queue ->
+            .firstOrError()
+            .flatMap { queue ->
+                preferences.minAudioFileDuration
+                    .first(0)
+                    .map { queue.excludeShortAudioSources(it) }
+            }
+            .map { queue ->
 
-                    val targetItem = queue.findFirstOrNull { item ->
-                        item.id == preferences.lastSongId
-                    } ?: queue.getItemAt(0)
+                val targetItem = queue.findFirstOrNull { item ->
+                    item.id == preferences.lastSongId
+                } ?: queue.getItemAt(0)
 
-                    PlayerState(
-                        queue = queue,
-                        targetItem = targetItem,
-                        startPlaying = false,
-                        playbackPosition = preferences.lastPlaybackPosition
-                    )
+                PlayerState(
+                    queue = queue,
+                    targetItem = targetItem,
+                    startPlaying = false,
+                    playbackPosition = preferences.lastPlaybackPosition
+                )
+            }
+            .onErrorResumeNext(getDefaultPlayerState())
+            .doOnSuccess { playerState ->
+                val queue = player.getCurrentQueue()
+                if (queue != null && !queue.isEmpty) {
+                    // no need to set the new queue, the player already has a non-empty one
+                    return@doOnSuccess
                 }
-                .onErrorResumeNext(getDefaultPlayerState())
-                .doOnSuccess { playerState ->
-                    val queue = player.getCurrentQueue()
-                    if (queue != null && !queue.isEmpty) {
-                        // no need to set the new queue, the player already has a non-empty one
-                        return@doOnSuccess
-                    }
-                    player.prepareByTarget(
-                        playerState.queue,
-                        playerState.targetItem,
-                        playerState.startPlaying,
-                        playerState.playbackPosition
-                    )
-                }
-                .ignoreElement()
-                .subscribeOn(schedulerProvider.worker())
+                player.prepareByTarget(
+                    playerState.queue,
+                    playerState.targetItem,
+                    playerState.startPlaying,
+                    playerState.playbackPosition
+                )
+            }
+            .ignoreElement()
+            .subscribeOn(schedulerProvider.worker())
+            .doOnSubscribe { isOrWillBeRestored.set(true) }
+            .doOnError { isOrWillBeRestored.set(false) }
     }
 
     fun restorePlayerStateIfNeeded(player: Player): Completable {
+        if (isOrWillBeRestored.get()) {
+            return Completable.complete()
+        }
+
         val currentQueue = player.getCurrentQueue()
         return if (currentQueue == null || currentQueue.isEmpty) {
             // Restore the state ONLY if the player has no attached queue
