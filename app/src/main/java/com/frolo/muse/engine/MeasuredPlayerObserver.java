@@ -1,5 +1,6 @@
 package com.frolo.muse.engine;
 
+import android.os.Debug;
 import android.os.SystemClock;
 import android.util.Log;
 
@@ -72,7 +73,16 @@ final class MeasuredPlayerObserver implements PlayerObserver {
         handle(m.mAction, endTime - m.mStartTime);
     }
 
+    private boolean isDebuggerConnected() {
+        return Debug.isDebuggerConnected();
+    }
+
     private void handle(String eventName, long time) {
+        if (isDebuggerConnected()) {
+            // There is no point in checking this when debugging
+            return;
+        }
+
         if (time >= UNACCEPTABLE_TIME) {
             if (DEBUG) {
                 String msg = mDelegateName + " took " + time + " ms to execute " + eventName + ". It's unacceptable";
