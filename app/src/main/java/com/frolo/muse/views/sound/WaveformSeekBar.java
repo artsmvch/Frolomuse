@@ -51,6 +51,10 @@ public class WaveformSeekBar extends View {
         return percent;
     }
 
+    private static int calculateDiscretePosition(int count, float percent) {
+        return Math.round(count * percent) - 1;
+    }
+
     /**
      * Calculates the intermediate waveform between <code>start</code> and <code>end</code> waveforms.
      * <code>factor</code> defines the position between the start and end waves. Normally, the factor
@@ -163,7 +167,7 @@ public class WaveformSeekBar extends View {
 
     private void setProgressInPercentageInternal(float percent, boolean fromUser) {
         mProgressPercentPosition = percent;
-        int position = Math.round(getWaveCount() * percent) - 1;
+        int position = calculateDiscretePosition(getWaveCount(), percent);
         if (mProgressPosition != position) {
             mProgressPosition = position;
             invalidate();
@@ -231,9 +235,19 @@ public class WaveformSeekBar extends View {
 
         calculateWaveDimensions(getWaveCount());
 
-        if (!animate) {
+        // Need to re-calculate the progress position
+        boolean shouldInvalidate = false;
+        int progressPosition = calculateDiscretePosition(getWaveCount(), mProgressPercentPosition);
+        if (mProgressPosition != progressPosition) {
+            mProgressPosition = progressPosition;
+            shouldInvalidate = true;
+        }
+
+        if (shouldInvalidate || !animate) {
             invalidate();
-        } else {
+        }
+
+        if (animate) {
             // Animating increasing of waves from 0 to 1
             ValueAnimator newWaveAnim = ValueAnimator.ofFloat(0.0f, 1.0f);
             newWaveAnim.setDuration(mWaveAnimDur);
