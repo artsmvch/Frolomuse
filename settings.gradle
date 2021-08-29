@@ -1,1 +1,1 @@
-include ':app', ':MyID3_for_Android', ':ringdroid', ':mediabutton', 'ads'
+include ':app', ':MyID3_for_Android', ':ringdroid', ':mediabutton', 'ads', ':material-support'

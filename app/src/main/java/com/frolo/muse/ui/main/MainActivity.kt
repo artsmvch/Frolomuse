@@ -43,6 +43,7 @@ import com.frolo.muse.ui.main.library.search.SearchFragment
 import com.frolo.muse.ui.main.player.mini.MiniPlayerFragment
 import com.frolo.muse.ui.main.settings.AppBarSettingsFragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetBehaviorSupport
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.shape.CornerFamily
 import com.google.android.material.shape.MaterialShapeDrawable
@@ -195,12 +196,11 @@ class MainActivity : PlayerHostActivity(),
         with(BottomSheetBehavior.from(sliding_player_layout)) {
             addBottomSheetCallback(bottomSheetCallback)
         }
+        BottomSheetBehaviorSupport.dispatchOnSlide(sliding_player_layout)
 
         mini_player_container.setOnClickListener {
             expandSlidingPlayer()
         }
-
-        handleSlide(0.0f)
     }
 
     private fun observeScanStatus() {
