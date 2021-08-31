@@ -10,7 +10,6 @@ import com.frolo.muse.rx.SchedulerProvider
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
-import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
 
 
@@ -31,8 +30,6 @@ class RestorePlayerStateUseCase @Inject constructor(
         val startPlaying: Boolean,
         val playbackPosition: Int
     )
-
-    private val isOrWillBeRestored = AtomicBoolean(false)
 
     private fun getDefaultPlayerState(): Single<PlayerState> {
         return songRepository.allItems
@@ -133,15 +130,9 @@ class RestorePlayerStateUseCase @Inject constructor(
             }
             .ignoreElement()
             .subscribeOn(schedulerProvider.worker())
-            .doOnSubscribe { isOrWillBeRestored.set(true) }
-            .doOnError { isOrWillBeRestored.set(false) }
     }
 
     fun restorePlayerStateIfNeeded(player: Player): Completable {
-        if (isOrWillBeRestored.get()) {
-            return Completable.complete()
-        }
-
         val currentQueue = player.getCurrentQueue()
         return if (currentQueue == null || currentQueue.isEmpty) {
             // Restore the state ONLY if the player has no attached queue

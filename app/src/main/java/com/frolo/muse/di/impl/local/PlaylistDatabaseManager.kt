@@ -1,6 +1,7 @@
 package com.frolo.muse.di.impl.local
 
 import android.annotation.SuppressLint
+import android.content.ContentUris
 import android.content.Context
 import android.net.Uri
 import android.provider.MediaStore
@@ -10,6 +11,7 @@ import androidx.room.Room
 import com.frolo.muse.BuildConfig
 import com.frolo.muse.LocalizedMessageException
 import com.frolo.muse.R
+import com.frolo.muse.ThreadStrictMode
 import com.frolo.muse.database.FrolomuseDatabase
 import com.frolo.muse.database.entity.*
 import com.frolo.muse.kotlin.contains
@@ -22,6 +24,7 @@ import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Scheduler
 import io.reactivex.Single
+import io.reactivex.functions.Function
 import io.reactivex.schedulers.Schedulers
 import org.jetbrains.annotations.TestOnly
 import java.io.Serializable
@@ -30,7 +33,7 @@ import java.util.concurrent.Executors
 
 /**
  * Playlist database wrapper that manages local storage for playlists.
- * The queried playlist models from this manager have [Playlist.isFromSharedStorage] set to true.
+ * The queried playlist models from this manager have [Playlist.isFromSharedStorage] set to false.
  */
 internal class PlaylistDatabaseManager private constructor(private val context: Context) {
 
@@ -312,37 +315,83 @@ internal class PlaylistDatabaseManager private constructor(private val context: 
      * Queries songs for [entities]. It is possible that for some entities songs are not found.
      * This is probably because they were deleted from the device.
      */
+    @WorkerThread
     private fun querySongs(entities: List<PlaylistMemberEntity>): Flowable<List<Song>> {
+        ThreadStrictMode.assertBackground()
+
         val filteredEntities = entities.filter { entity ->
             !entity.source.isNullOrBlank()
         }
-        val uri: Uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
-        val selectionBuilder = StringBuilder(MediaStore.Audio.Media.DATA + " IN (")
-        val selectionArgsBuilder = ArrayList<String>(filteredEntities.size)
-        var firstItemsLooped = false
-        for (entity in filteredEntities) {
-            val path = requireNotNull(entity.source)
-            if (firstItemsLooped) {
-                selectionBuilder.append(',')
+
+        if (filteredEntities.size <= IN_OP_LIMIT) {
+            // For count <= IN_OP_LIMIT, we can make one request to the content provider and use IN function in the where clause
+            val uri: Uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
+            val selectionBuilder = StringBuilder(MediaStore.Audio.Media.DATA + " IN (")
+            val selectionArgsBuilder = ArrayList<String>(filteredEntities.size)
+            var firstItemsLooped = false
+            for (entity in filteredEntities) {
+                val path = requireNotNull(entity.source)
+                if (firstItemsLooped) {
+                    selectionBuilder.append(',')
+                }
+                selectionBuilder.append('?')
+                selectionArgsBuilder.add(path)
+                firstItemsLooped = true
             }
-            selectionBuilder.append('?')
-            selectionArgsBuilder.add(path)
-            firstItemsLooped = true
+            if (!firstItemsLooped) {
+                // No params
+                return Flowable.just(emptyList())
+            }
+            selectionBuilder.append(')')
+            val selection: String = selectionBuilder.toString()
+            val selectionArgs: Array<String>? = selectionArgsBuilder.toTypedArray()
+            val sortOrder: String? = null
+            return RxContent.query(context.contentResolver, uri, SONG_PROJECTION, selection,
+                    selectionArgs, sortOrder, queryExecutor, SONG_CURSOR_MAPPER)
+        } else {
+            // For count > IN_OP_LIMIT, we query each song separately and then combine them
+            val uri: Uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
+            val selection: String = MediaStore.Audio.Media.DATA + " = ?"
+            val sources = filteredEntities.mapNotNull { entity ->
+                val source = entity.source
+                if (source.isNullOrEmpty()) return@mapNotNull null
+                val selectionArgs = arrayOf<String>(source)
+                RxContent.query(context.contentResolver, uri, SONG_PROJECTION, selection,
+                        selectionArgs, null, queryExecutor, SONG_CURSOR_MAPPER)
+            }
+
+            return if (sources.isNotEmpty()) {
+                val combiner = Function<Array<Any?>, List<Song>> { array ->
+                    array.mapNotNull { any ->
+                        (any as? List<*>)?.firstOrNull() as? Song
+                    }
+                }
+                Flowable.combineLatestDelayError(sources, combiner)
+            } else {
+                Flowable.just(emptyList())
+            }
+
+//            val sources = filteredEntities.mapNotNull { entity ->
+//                val safeAudioId = entity.audioId ?: return@mapNotNull null
+//                RxContent.queryItem(context.contentResolver, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+//                        SONG_PROJECTION, safeAudioId, queryExecutor, SONG_CURSOR_MAPPER)
+//            }
+//
+//            return if (sources.isNotEmpty()) {
+//                val combiner = Function<Array<Any?>, List<Song>> { array ->
+//                    array.mapNotNull { any -> any as? Song }
+//                }
+//                Flowable.combineLatestDelayError(sources, combiner)
+//            } else {
+//                Flowable.just(emptyList())
+//            }
         }
-        if (!firstItemsLooped) {
-            // No params
-            return Flowable.just(emptyList())
-        }
-        selectionBuilder.append(')')
-        val selection: String = selectionBuilder.toString()
-        val selectionArgs: Array<String>? = selectionArgsBuilder.toTypedArray()
-        val sortOrder: String? = null
-        return RxContent.query(context.contentResolver, uri, SONG_PROJECTION, selection,
-                selectionArgs, sortOrder, queryExecutor, SONG_CURSOR_MAPPER)
     }
 
     @WorkerThread
     private fun transformAndCleanUp(entities: List<PlaylistMemberEntity>, songs: Collection<Song>): List<Song> {
+        ThreadStrictMode.assertBackground()
+
         if (entities.isEmpty()) return emptyList()
 
         // Detect anomalies
@@ -460,6 +509,11 @@ internal class PlaylistDatabaseManager private constructor(private val context: 
         private val DEBUG = BuildConfig.DEBUG
 
         const val DATABASE_NAME = "com.frolo.muse.MediaDatabase.sql"
+
+        /**
+         * Max number of elements that we can use in an 'IN' operation in a 'WHERE' clause.
+         */
+        private const val IN_OP_LIMIT = 100
 
         private val SONG_PROJECTION = arrayOf(
             MediaStore.Audio.Media._ID,
