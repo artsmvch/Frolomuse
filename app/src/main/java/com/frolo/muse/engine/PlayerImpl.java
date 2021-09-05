@@ -340,7 +340,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
 
         mAudioFx = builder.mAudioFx;
 
-        mObserverRegistry = PlayerObserverRegistry.create(builder.mContext, this);
+        mObserverRegistry = PlayerObserverRegistry.create(builder.mContext, this, builder.mDebug);
         mObserverRegistry.registerAll(builder.mObservers);
 
         mRepeatMode = builder.mRepeatMode;

@@ -24,10 +24,11 @@ final class PlayerObserverRegistry {
      * Factory method that creates a new instance of {@link PlayerObserverRegistry}.
      * @param context to create a handler for events
      * @param player the observed player
+     * @param debug debug mode
      * @return a new instance of {@link PlayerObserverRegistry}
      */
-    static PlayerObserverRegistry create(@NotNull Context context, @NotNull Player player) {
-        return new PlayerObserverRegistry(context, player);
+    static PlayerObserverRegistry create(@NotNull Context context, @NotNull Player player, boolean debug) {
+        return new PlayerObserverRegistry(context, player, debug);
     }
 
     private static final int ARG_NOTHING = 0;
@@ -181,8 +182,11 @@ final class PlayerObserverRegistry {
     @NotNull
     private final Player mPlayer;
 
-    private PlayerObserverRegistry(@NotNull Context context, @NotNull Player player) {
+    private final boolean mDebug;
+
+    private PlayerObserverRegistry(@NotNull Context context, @NotNull Player player, boolean debug) {
         mPlayer = player;
+        mDebug = debug;
         mHandler = new DispatcherHandler(context.getMainLooper());
     }
 
@@ -191,12 +195,20 @@ final class PlayerObserverRegistry {
         return mPlayer;
     }
 
+    private PlayerObserver wrapIfNeeded(PlayerObserver observer) {
+        if (mDebug) {
+            return MeasuredPlayerObserver.wrap(observer);
+        } else {
+            return observer;
+        }
+    }
+
     void register(PlayerObserver observer) {
         if (observer == null) {
             return;
         }
 
-        mObservers.add(MeasuredPlayerObserver.wrap(observer));
+        mObservers.add(wrapIfNeeded(observer));
     }
 
     void registerAll(Collection<PlayerObserver> observers) {
@@ -206,7 +218,7 @@ final class PlayerObserverRegistry {
 
         for (PlayerObserver observer : observers) {
             if (observer != null) {
-                mObservers.add(MeasuredPlayerObserver.wrap(observer));
+                mObservers.add(wrapIfNeeded(observer));
             }
         }
     }
@@ -216,7 +228,7 @@ final class PlayerObserverRegistry {
             return;
         }
 
-        mObservers.remove(MeasuredPlayerObserver.wrap(observer));
+        mObservers.remove(wrapIfNeeded(observer));
     }
 
     void clear() {
