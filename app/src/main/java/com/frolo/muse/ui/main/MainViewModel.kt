@@ -139,7 +139,7 @@ class MainViewModel @Inject constructor(
 
     fun onStart() {
         if (permissionChecker.isQueryMediaContentPermissionGranted) {
-            tryRestorePlayerStateIfNeeded()
+            // TODO: restore the player state, if needed
         } else {
             tryAskRESPermission()
         }
