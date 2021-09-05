@@ -23,8 +23,8 @@ final class MeasuredPlayerObserver implements PlayerObserver {
 
     private static final String LOG_TAG = "MeasuredPlayerObserver";
 
-    private static final long UNACCEPTABLE_TIME = 100L;
-    private static final long CRITICAL_TIME = 10L;
+    private static final long UNACCEPTABLE_TIME = 400L;
+    private static final long CRITICAL_TIME = 50L;
 
     @NotNull
     static PlayerObserver wrap(@NotNull PlayerObserver delegate) {
