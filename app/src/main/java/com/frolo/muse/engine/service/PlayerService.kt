@@ -195,6 +195,7 @@ class PlayerService: RxService() {
 
         // Building player instance
         player = PlayerImpl.newBuilder(this, audioFx)
+            .setDebug(BuildConfig.DEBUG)
             .setPlayerJournal(playerJournal)
             .setUseWakeLocks(quicklyGetIsPlayerWakeLockEnabled())
             // Setting up repeat and shuffle modes
