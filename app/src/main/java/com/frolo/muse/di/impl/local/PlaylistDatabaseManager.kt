@@ -513,7 +513,7 @@ internal class PlaylistDatabaseManager private constructor(private val context: 
         /**
          * Max number of elements that we can use in an 'IN' operation in a 'WHERE' clause.
          */
-        private const val IN_OP_LIMIT = 100
+        private const val IN_OP_LIMIT = 1000
 
         private val SONG_PROJECTION = arrayOf(
             MediaStore.Audio.Media._ID,
