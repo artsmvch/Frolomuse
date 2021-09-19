@@ -211,7 +211,7 @@ class AudioFxFragment: BaseFragment(), NoClipping {
             }
 
             override fun onTooltipHidden(p0: Tooltip.TooltipView?) {
-                this@AudioFxFragment.switchTooltip == null
+                this@AudioFxFragment.switchTooltip = null
             }
         }
 
