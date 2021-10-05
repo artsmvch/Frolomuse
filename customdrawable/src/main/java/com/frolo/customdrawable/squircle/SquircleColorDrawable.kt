@@ -1,24 +1,17 @@
-package com.frolo.muse.drawable
+package com.frolo.customdrawable.squircle
 
 import android.graphics.*
-
 import android.graphics.drawable.Drawable
 
-import androidx.annotation.ColorInt
-import com.frolo.muse.math.buildFullSquirclePath
-import com.frolo.muse.math.validateSquircleCurvature
-import kotlin.math.min
 
 /**
  * Color filled squircle drawable. It is like [android.graphics.drawable.ColorDrawable] but it is squircle.
  * [curvature] defines the curvature of the squircle shape.
  */
 class SquircleColorDrawable constructor(
-    private val curvature: Double,
-    @ColorInt color: Int = Color.TRANSPARENT
+    private val curvature: Double = DEFAULT_SQUIRCLE_CURVATURE,
+    color: Int = Color.TRANSPARENT
 ): Drawable() {
-
-    private val matrix = Matrix()
 
     private val squirclePath = Path().apply {
         fillType = Path.FillType.EVEN_ODD
@@ -29,7 +22,6 @@ class SquircleColorDrawable constructor(
         this.color = color
     }
 
-    @ColorInt
     var color: Int = color
         set(value) {
             if (field != value) {
@@ -41,28 +33,12 @@ class SquircleColorDrawable constructor(
 
     init {
         validateSquircleCurvature(curvature)
-        buildPathCentered(bounds)
-    }
-
-    private fun buildPathCentered(bounds: Rect?) {
-        if (bounds == null || bounds.isEmpty) {
-            squirclePath.reset()
-            return
-        }
-
-        val width = bounds.width()
-        val height = bounds.height()
-
-        val radius = min(width, height) / 2
-        buildFullSquirclePath(squirclePath, radius, curvature)
-
-        matrix.setTranslate(width / 2f - radius, height / 2f - radius)
-        squirclePath.transform(matrix)
+        buildPathCentered(squirclePath, curvature, bounds)
     }
 
     override fun onBoundsChange(bounds: Rect) {
         super.onBoundsChange(bounds)
-        buildPathCentered(bounds)
+        buildPathCentered(squirclePath, curvature, bounds)
     }
 
     override fun draw(canvas: Canvas) {

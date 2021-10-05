@@ -14,7 +14,6 @@ import android.os.SystemClock;
 
 import androidx.annotation.GuardedBy;
 
-import com.frolo.muse.BuildConfig;
 import com.frolo.muse.engine.stub.AudioFxStub;
 
 import org.jetbrains.annotations.NotNull;
@@ -40,8 +39,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * The implementation uses {@link MediaPlayer} as the engine and uses {@link AudioFxApplicable} as the AudioFx.
  */
 public final class PlayerImpl implements Player, AdvancedPlaybackParams {
-
-    private static final boolean DEBUG = BuildConfig.DEBUG;
 
     private static final int NO_AUDIO_SESSION = 0;
 
@@ -78,6 +75,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
         private final Context mContext;
         @NotNull
         private AudioFxApplicable mAudioFx;
+        private boolean mDebug = false;
         private PlayerJournal mJournal;
         private boolean mUseWakeLocks;
         @RepeatMode
@@ -94,6 +92,11 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
 
         private Builder self() {
             return this;
+        }
+
+        public Builder setDebug(boolean debug) {
+            mDebug = debug;
+            return self();
         }
 
         public Builder setPlayerJournal(@Nullable PlayerJournal journal) {
@@ -129,7 +132,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
         @NotNull
         public PlayerImpl build() {
             if (mAudioFx == null) {
-                if (DEBUG) {
+                if (mDebug) {
                     throw new IllegalArgumentException("AudioFx is not set in the builder");
                 }
                 // Fallback
@@ -168,7 +171,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
             } catch (Throwable error) {
                 mObserverRegistry.dispatchInternalErrorOccurred(error);
                 // Oops, need to do a hard reset
-                if (DEBUG) {
+                if (mDebug) {
                     failOnEventThread(error);
                 }
                 performHardReset(error);
@@ -222,6 +225,8 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
     private static boolean isCriticalEngineError(int what, /* unused */ int extra) {
         return what == MediaPlayer.MEDIA_ERROR_SERVER_DIED;
     }
+
+    private final boolean mDebug;
 
     // Guard for mEngine
     private final Object mEngineLock = new Object();
@@ -323,6 +328,8 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
     private PlayerImpl(@NotNull Builder builder) {
         mContext = builder.mContext;
 
+        mDebug = builder.mDebug;
+
         mEngineHandler = createEngineHandler();
 
         mUseWakeLocks = builder.mUseWakeLocks;
@@ -333,7 +340,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
 
         mAudioFx = builder.mAudioFx;
 
-        mObserverRegistry = PlayerObserverRegistry.create(builder.mContext, this);
+        mObserverRegistry = PlayerObserverRegistry.create(builder.mContext, this, builder.mDebug);
         mObserverRegistry.registerAll(builder.mObservers);
 
         mRepeatMode = builder.mRepeatMode;
@@ -349,7 +356,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
      * NOTE: this only works for debug builds.
      */
     private void assertEngineThread() {
-        if (DEBUG) {
+        if (mDebug) {
             final boolean isOnEngineThread = mEngineHandler.getLooper().isCurrentThread();
             if (!isOnEngineThread) {
                 throw new IllegalStateException("Called not on engine thread");

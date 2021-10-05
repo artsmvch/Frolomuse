@@ -1,22 +1,21 @@
 package com.frolo.muse.glide
 
 import android.graphics.*
-import com.bumptech.glide.load.Key
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation
-import com.frolo.muse.math.DEFAULT_SQUIRCLE_CURVATURE
-import com.frolo.muse.math.createFullSquirclePath
+import com.frolo.customdrawable.squircle.createFullSquirclePath
+import java.nio.ByteBuffer
 import java.security.MessageDigest
 import java.util.*
 import kotlin.math.min
 
 
 class SquircleTransformation(
-    private val curvature: Double = DEFAULT_CURVATURE
+    private val curvature: Double
 ) : BitmapTransformation() {
 
     override fun hashCode(): Int {
-        return Objects.hashCode(curvature)
+        return Objects.hash(ID, curvature)
     }
 
     override fun equals(other: Any?): Boolean {
@@ -24,7 +23,10 @@ class SquircleTransformation(
     }
 
     override fun updateDiskCacheKey(messageDigest: MessageDigest) {
-        messageDigest.update(ID.toByteArray(Key.CHARSET))
+        messageDigest.update(ID_BYTES)
+
+        val curvatureData = ByteBuffer.allocate(8).putDouble(curvature).array()
+        messageDigest.update(curvatureData)
     }
 
     override fun transform(pool: BitmapPool, toTransform: Bitmap, outWidth: Int, outHeight: Int): Bitmap {
@@ -54,10 +56,8 @@ class SquircleTransformation(
     }
 
     companion object {
-        private const val VERSION = 1
-        private const val ID = "com.frolo.muse.glide.SquircleTransformation:$VERSION"
-
-        const val DEFAULT_CURVATURE = DEFAULT_SQUIRCLE_CURVATURE
+        private const val ID = "com.frolo.muse.glide.SquircleTransformation"
+        private val ID_BYTES = ID.toByteArray(CHARSET)
     }
 
 }

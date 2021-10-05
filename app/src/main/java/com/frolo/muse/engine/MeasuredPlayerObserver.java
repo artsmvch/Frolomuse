@@ -4,8 +4,6 @@ import android.os.Debug;
 import android.os.SystemClock;
 import android.util.Log;
 
-import com.frolo.muse.BuildConfig;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -19,20 +17,14 @@ import java.util.Objects;
  */
 final class MeasuredPlayerObserver implements PlayerObserver {
 
-    private static final boolean DEBUG = BuildConfig.DEBUG;
-
     private static final String LOG_TAG = "MeasuredPlayerObserver";
 
-    private static final long UNACCEPTABLE_TIME = 100L;
-    private static final long CRITICAL_TIME = 10L;
+    private static final long UNACCEPTABLE_TIME = 400L;
+    private static final long CRITICAL_TIME = 50L;
 
     @NotNull
     static PlayerObserver wrap(@NotNull PlayerObserver delegate) {
-        if (DEBUG) {
-            return new MeasuredPlayerObserver(delegate);
-        } else {
-            return delegate;
-        }
+        return new MeasuredPlayerObserver(delegate);
     }
 
     private static String getName(@NotNull PlayerObserver delegate) {
@@ -84,10 +76,8 @@ final class MeasuredPlayerObserver implements PlayerObserver {
         }
 
         if (time >= UNACCEPTABLE_TIME) {
-            if (DEBUG) {
-                String msg = mDelegateName + " took " + time + " ms to execute " + eventName + ". It's unacceptable";
-                throw new IllegalStateException(msg);
-            }
+            String msg = mDelegateName + " took " + time + " ms to execute " + eventName + ". It's unacceptable";
+            throw new IllegalStateException(msg);
         }
 
         if (time >= CRITICAL_TIME) {

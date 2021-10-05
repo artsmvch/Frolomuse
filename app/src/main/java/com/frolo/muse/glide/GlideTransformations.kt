@@ -4,8 +4,8 @@ import android.graphics.drawable.Drawable
 import com.bumptech.glide.RequestBuilder
 
 
-fun RequestBuilder<Drawable>.squircleCrop(
-    curvature: Double = SquircleTransformation.DEFAULT_CURVATURE
-): RequestBuilder<Drawable> {
+private const val DEFAULT_SQUIRCLE_CURVATURE = 3.2
+
+fun RequestBuilder<Drawable>.squircleCrop(curvature: Double = DEFAULT_SQUIRCLE_CURVATURE): RequestBuilder<Drawable> {
     return transform(SquircleTransformation(curvature))
 }
