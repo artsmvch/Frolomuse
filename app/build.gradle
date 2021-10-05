@@ -106,8 +106,6 @@ android {
 
     sourceSets {
         main {
-            jni.srcDirs = ['src/main/jniLibs']
-            jniLibs.srcDir 'src/main/jniLibs'
         }
 
         test {
@@ -140,6 +138,9 @@ dependencies {
 
     // Custom drawables
     implementation project(path: ':customdrawable')
+
+    // Sound wave forms
+    implementation project(path: ':soundwaveform')
 
     // Instrumentation tests
     androidTestImplementation "com.android.support.test:runner:1.0.2"

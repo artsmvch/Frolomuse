@@ -1,0 +1,30 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 30
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+    }
+
+    sourceSets {
+        main {
+            jni.srcDirs = ['src/main/jniLibs']
+            jniLibs.srcDir 'src/main/jniLibs'
+        }
+    }
+
+    buildTypes {
+        debug {
+        }
+        release {
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+}
