@@ -94,7 +94,18 @@ android {
             }
         }
     }
+
+    flavorDimensions "default"
     productFlavors {
+        // Version for Play Store
+        playStore {
+
+        }
+
+        // Version for App Gallery
+        appGallery {
+
+        }
     }
 
     lintOptions {
@@ -135,7 +146,8 @@ dependencies {
 
     // Billing
     implementation project(path: ':billings:billing-api')
-    implementation project(path: ':billings:play-store-billing-impl')
+    playStoreImplementation project(path: ':billings:play-store-billing-impl')
+    appGalleryImplementation project(path: ':billings:app-gallery-billing-impl')
 
     // Material design support
     implementation project(path: ':material-support')

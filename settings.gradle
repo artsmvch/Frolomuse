@@ -4,6 +4,7 @@ include ':app'
 // Billing
 include ':billings:billing-api'
 include ':billings:play-store-billing-impl'
+include ':billings:app-gallery-billing-impl'
 
 // Util stuff
 include ':MyID3_for_Android'

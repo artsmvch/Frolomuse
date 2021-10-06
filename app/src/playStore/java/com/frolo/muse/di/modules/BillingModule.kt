@@ -7,7 +7,6 @@ import com.frolo.billing.playstore.BillingManagerImpl
 import com.frolo.billing.playstore.ForegroundActivityWatcher
 import com.frolo.muse.FrolomuseApp
 import com.frolo.muse.billing.TrialManager
-import com.frolo.muse.billing.TrialManagerImpl
 import com.frolo.muse.interactor.billing.PremiumManager
 import dagger.Module
 import dagger.Provides
@@ -17,12 +16,6 @@ import javax.inject.Singleton
 class BillingModule constructor(
     private val isDebug: Boolean
 ) {
-
-    @Provides
-    @Singleton
-    fun provideTrialManager(context: Context): TrialManager {
-        return TrialManagerImpl(context)
-    }
 
     @Provides
     @Singleton
