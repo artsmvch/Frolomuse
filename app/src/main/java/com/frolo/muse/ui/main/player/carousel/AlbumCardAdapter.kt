@@ -17,6 +17,7 @@ import com.frolo.muse.*
 import com.frolo.muse.common.albumId
 import com.frolo.muse.engine.AudioSource
 import com.frolo.muse.glide.makeRequest
+import com.google.android.material.card.CardViewSupport
 import kotlinx.android.synthetic.main.include_square_album_art.view.*
 import kotlin.math.max
 
@@ -34,11 +35,11 @@ class AlbumCardAdapter constructor(
         val maxCardElevation = 16f.dp2px(parent.context)
         val cornerRadius = 6f.dp2px(parent.context)
 
-        val horizontalPadding =
-                calculateCardHorizontalShadowPadding(maxCardElevation, cornerRadius)
+        val horizontalPadding: Float =
+                CardViewSupport.calculateCardHorizontalShadowPadding(maxCardElevation, cornerRadius)
 
-        val verticalPadding =
-                calculateCardVerticalShadowPadding(maxCardElevation, cornerRadius)
+        val verticalPadding: Float =
+                CardViewSupport.calculateCardVerticalShadowPadding(maxCardElevation, cornerRadius)
 
         val padding = max(horizontalPadding, verticalPadding).toInt()
 
