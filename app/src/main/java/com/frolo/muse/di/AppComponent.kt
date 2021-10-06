@@ -1,6 +1,6 @@
 package com.frolo.muse.di
 
-import com.frolo.muse.billing.BillingManager
+import com.frolo.billing.BillingManager
 import com.frolo.muse.di.modules.*
 import com.frolo.muse.engine.PlayerJournal
 import com.frolo.muse.engine.service.PlayerService
@@ -49,7 +49,8 @@ import javax.inject.Singleton
         MiscModule::class,
         UseCaseModule::class,
         SongQueueFactoryModule::class,
-        UseCaseModule::class
+        UseCaseModule::class,
+        BillingModule::class
     ]
 )
 interface AppComponent {

@@ -2,8 +2,8 @@ package com.frolo.muse.ui.main.settings.premium
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.frolo.muse.billing.BillingManager
 import com.frolo.muse.di.AppComponent
+import com.frolo.muse.interactor.billing.PremiumManager
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.rx.SchedulerProvider
 import javax.inject.Inject
@@ -14,7 +14,7 @@ class BuyPremiumVMFactory constructor(
     private val allowTrialActivation: Boolean
 ) : ViewModelProvider.Factory {
 
-    @Inject lateinit var billingManager: BillingManager
+    @Inject lateinit var premiumManager: PremiumManager
     @Inject lateinit var schedulerProvider: SchedulerProvider
     @Inject lateinit var eventLogger: EventLogger
 
@@ -25,7 +25,7 @@ class BuyPremiumVMFactory constructor(
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return BuyPremiumViewModel(
-            billingManager = billingManager,
+            premiumManager = premiumManager,
             schedulerProvider = schedulerProvider,
             eventLogger = eventLogger,
             allowTrialActivation = allowTrialActivation

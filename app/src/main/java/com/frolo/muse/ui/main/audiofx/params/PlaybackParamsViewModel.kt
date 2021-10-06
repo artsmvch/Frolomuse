@@ -6,12 +6,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.frolo.muse.arch.liveDataOf
 import com.frolo.muse.arch.map
-import com.frolo.muse.billing.BillingManager
 import com.frolo.muse.billing.TrialStatus
 import com.frolo.muse.engine.AdvancedPlaybackParams
 import com.frolo.muse.engine.Player
 import com.frolo.muse.engine.PlayerWrapper
 import com.frolo.muse.engine.SimplePlayerObserver
+import com.frolo.muse.interactor.billing.PremiumManager
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.base.BaseViewModel
@@ -24,7 +24,7 @@ import javax.inject.Inject
 @RequiresApi(Build.VERSION_CODES.M)
 class PlaybackParamsViewModel @Inject constructor(
     private val player: Player,
-    private val billingManager: BillingManager,
+    private val premiumManager: PremiumManager,
     private val schedulerProvider: SchedulerProvider,
     private val eventLogger: EventLogger
 ): BaseViewModel(eventLogger) {
@@ -33,7 +33,7 @@ class PlaybackParamsViewModel @Inject constructor(
 
     val isTrialVersion: LiveData<Boolean> by lazy {
         MutableLiveData<Boolean>().apply {
-            billingManager.getTrialStatus()
+            premiumManager.getTrialStatus()
                 .observeOn(schedulerProvider.main())
                 .subscribeFor { trialStatus ->
                     value = trialStatus == TrialStatus.Activated

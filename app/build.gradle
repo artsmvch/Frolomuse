@@ -133,6 +133,10 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.31"
     implementation "org.jetbrains.kotlin:kotlin-reflect:1.4.31"
 
+    // Billing
+    implementation project(path: ':billings:billing-api')
+    implementation project(path: ':billings:play-store-billing-impl')
+
     // Material design support
     implementation project(path: ':material-support')
 
@@ -254,10 +258,6 @@ dependencies {
 
     // ViewPager2 indicator
     implementation 'com.github.zhpanvip:viewpagerindicator:1.0.7'
-
-    // Billing
-    def billing_version = "3.0.3"
-    implementation "com.android.billingclient:billing-ktx:$billing_version"
 
     // Jsoup (HTML parser)
     implementation 'org.jsoup:jsoup:1.13.1'

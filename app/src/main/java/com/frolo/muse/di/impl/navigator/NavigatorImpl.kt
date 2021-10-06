@@ -1,7 +1,7 @@
 package com.frolo.muse.di.impl.navigator
 
 import com.frolo.muse.FrolomuseApp
-import com.frolo.muse.billing.ProductId
+import com.frolo.billing.ProductId
 import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.model.media.*
 import com.frolo.muse.rx.subscribeSafely

@@ -1,10 +1,10 @@
-package com.frolo.muse.billing
+package com.frolo.billing.playstore
 
 import com.android.billingclient.api.Purchase
 import org.json.JSONObject
 
 
-data class PurchaseDetails(
+internal data class PurchaseDetails(
     val sku: String,
     @Purchase.PurchaseState val state: Int,
     val isAcknowledged: Boolean

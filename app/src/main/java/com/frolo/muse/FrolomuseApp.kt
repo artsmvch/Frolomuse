@@ -10,7 +10,6 @@ import android.os.Handler
 import android.os.StrictMode
 import android.os.strictmode.Violation
 import androidx.multidex.MultiDexApplication
-import com.android.billingclient.api.BillingClient
 import com.frolo.muse.broadcast.Broadcasts
 import com.frolo.muse.di.AppComponent
 import com.frolo.muse.di.DaggerAppComponent
@@ -64,17 +63,20 @@ class FrolomuseApp : MultiDexApplication(), ActivityWatcher {
         setupShortcutsListener()
     }
 
-    private fun buildAppComponent(): AppComponent =
-        DaggerAppComponent.builder()
+    private fun buildAppComponent(): AppComponent {
+        val isDebug = BuildConfig.DEBUG
+        return DaggerAppComponent.builder()
             .appModule(AppModule(this))
-            .playerModule(PlayerModule(playerWrapper, BuildConfig.DEBUG))
+            .playerModule(PlayerModule(playerWrapper, isDebug))
             .localDataModule(LocalDataModule())
             .remoteDataModule(RemoteDataModule())
             .navigationModule(NavigationModule(navigatorWrapper))
-            .eventLoggerModule(EventLoggerModule(BuildConfig.DEBUG))
+            .eventLoggerModule(EventLoggerModule(isDebug))
             .networkModule(NetworkModule())
             .miscModule(MiscModule())
+            .billingModule(BillingModule(isDebug))
             .build()
+    }
 
     private fun setupStrictMode() {
         if (BuildConfig.DEBUG) {
@@ -105,7 +107,6 @@ class FrolomuseApp : MultiDexApplication(), ActivityWatcher {
                 .detectLeakedRegistrationObjects()
                 .setClassInstanceLimit(PlayerImpl::class.java, 1)
                 .setClassInstanceLimit(AudioFxImpl::class.java, 1)
-                .setClassInstanceLimit(BillingClient::class.java, 1)
                 .penaltyLog()
                 .run {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {

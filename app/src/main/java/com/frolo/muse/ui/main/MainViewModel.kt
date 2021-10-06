@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import com.frolo.muse.arch.EventLiveData
 import com.frolo.muse.arch.SingleLiveEvent
 import com.frolo.muse.arch.call
-import com.frolo.muse.billing.BillingManager
 import com.frolo.muse.engine.Player
+import com.frolo.muse.interactor.billing.PremiumManager
 import com.frolo.muse.interactor.feature.FeaturesUseCase
 import com.frolo.muse.interactor.firebase.SyncFirebaseMessagingTokenUseCase
 import com.frolo.muse.interactor.media.TransferPlaylistsUseCase
@@ -40,7 +40,7 @@ class MainViewModel @Inject constructor(
     private val syncFirebaseMessagingTokenUseCase: SyncFirebaseMessagingTokenUseCase,
     private val transferPlaylistsUseCase: TransferPlaylistsUseCase,
     private val featuresUseCase: FeaturesUseCase,
-    private val billingManager: BillingManager,
+    private val premiumManager: PremiumManager,
     private val schedulerProvider: SchedulerProvider,
     private val permissionChecker: PermissionChecker,
     private val eventLogger: EventLogger
@@ -129,8 +129,10 @@ class MainViewModel @Inject constructor(
         featuresUseCase.sync()
             .observeOn(schedulerProvider.main())
             .subscribeFor {  }
-        // Syncing billing state
-        billingManager.sync()
+        // Syncing premium state
+        premiumManager.sync()
+            .observeOn(schedulerProvider.main())
+            .subscribeFor {  }
         // Transfer playlists if necessary
         if (permissionChecker.isQueryMediaContentPermissionGranted) {
             tryTransferPlaylistsIfNecessary()

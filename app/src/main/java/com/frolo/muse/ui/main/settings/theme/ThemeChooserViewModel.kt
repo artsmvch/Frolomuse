@@ -3,10 +3,10 @@ package com.frolo.muse.ui.main.settings.theme
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.frolo.muse.arch.SingleLiveEvent
-import com.frolo.muse.billing.BillingManager
-import com.frolo.muse.billing.ProductId
+import com.frolo.muse.billing.Products
 import com.frolo.muse.common.albumId
 import com.frolo.muse.engine.Player
+import com.frolo.muse.interactor.billing.PremiumManager
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.ProductOfferUiElementSource
 import com.frolo.muse.logger.logProductOffered
@@ -30,7 +30,7 @@ class ThemeChooserViewModel @Inject constructor(
     private val player: Player,
     private val albumRepository: AlbumRepository,
     private val preferences: Preferences,
-    private val billingManager: BillingManager,
+    private val premiumManager: PremiumManager,
     private val navigator: Navigator,
     private val schedulerProvider: SchedulerProvider,
     private val eventLogger: EventLogger
@@ -141,7 +141,7 @@ class ThemeChooserViewModel @Inject constructor(
         // The timeout for this check is 5 seconds, otherwise
         // we consider it not purchased.
         // In case of an error, we also consider it not purchased.
-        return billingManager.isProductPurchased(productId = ProductId.PREMIUM, forceCheckFromApi = true)
+        return premiumManager.isProductPurchased(productId = Products.PREMIUM, forceCheckFromApi = true)
             .timeoutForFirstElement(5, TimeUnit.SECONDS)
             .observeOn(schedulerProvider.main())
             .doOnError { err -> logError(err) }
@@ -154,7 +154,7 @@ class ThemeChooserViewModel @Inject constructor(
             return
         }
 
-        eventLogger.logProductOffered(ProductId.PREMIUM, ProductOfferUiElementSource.THEME_PREVIEW_BADGE)
+        eventLogger.logProductOffered(Products.PREMIUM, ProductOfferUiElementSource.THEME_PREVIEW_BADGE)
         navigator.offerToBuyPremium(allowTrialActivation = false)
     }
 
@@ -167,7 +167,7 @@ class ThemeChooserViewModel @Inject constructor(
 
         // Check if the user must be premium to apply this theme
         if (page.hasProBadge) {
-            eventLogger.logProductOffered(ProductId.PREMIUM, ProductOfferUiElementSource.THEME_PREVIEW_APPLY)
+            eventLogger.logProductOffered(Products.PREMIUM, ProductOfferUiElementSource.THEME_PREVIEW_APPLY)
             navigator.offerToBuyPremium(allowTrialActivation = false)
             return
         }

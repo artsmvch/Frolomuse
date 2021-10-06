@@ -1,4 +1,4 @@
-package com.frolo.muse.billing
+package com.frolo.billing
 
 
 data class ProductDetails(

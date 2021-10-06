@@ -3,8 +3,8 @@ package com.frolo.muse.ui.main.audiofx
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.frolo.muse.arch.*
-import com.frolo.muse.billing.BillingManager
 import com.frolo.muse.engine.*
+import com.frolo.muse.interactor.billing.PremiumManager
 import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.logCustomPresetDeleted
@@ -19,7 +19,7 @@ import com.frolo.muse.repository.Preferences
 import com.frolo.muse.repository.PresetRepository
 import com.frolo.muse.repository.TooltipManager
 import com.frolo.muse.rx.SchedulerProvider
-import com.frolo.muse.ui.base.BillingViewModel
+import com.frolo.muse.ui.base.PremiumViewModel
 import io.reactivex.processors.PublishProcessor
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
@@ -32,10 +32,10 @@ class AudioFxViewModel @Inject constructor(
     private val presetRepository: PresetRepository,
     private val preferences: Preferences,
     private val navigator: Navigator,
-    private val billingManager: BillingManager,
+    private val premiumManager: PremiumManager,
     private val tooltipManager: TooltipManager,
     private val eventLogger: EventLogger
-): BillingViewModel(schedulerProvider, navigator, billingManager, eventLogger) {
+): PremiumViewModel(schedulerProvider, navigator, premiumManager, eventLogger) {
 
     private val voidPreset = presetRepository.voidPreset.blockingGet()
 

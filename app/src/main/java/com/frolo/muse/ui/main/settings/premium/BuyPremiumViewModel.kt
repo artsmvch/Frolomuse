@@ -5,17 +5,17 @@ import androidx.lifecycle.MutableLiveData
 import com.frolo.muse.arch.EventLiveData
 import com.frolo.muse.arch.call
 import com.frolo.muse.arch.combine
-import com.frolo.muse.billing.BillingManager
-import com.frolo.muse.billing.ProductDetails
-import com.frolo.muse.billing.ProductId
+import com.frolo.billing.ProductDetails
+import com.frolo.muse.billing.Products
 import com.frolo.muse.billing.TrialStatus
+import com.frolo.muse.interactor.billing.PremiumManager
 import com.frolo.muse.logger.*
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.base.BaseViewModel
 
 
 class BuyPremiumViewModel constructor(
-    private val billingManager: BillingManager,
+    private val premiumManager: PremiumManager,
     private val schedulerProvider: SchedulerProvider,
     private val eventLogger: EventLogger,
     private val allowTrialActivation: Boolean
@@ -32,11 +32,11 @@ class BuyPremiumViewModel constructor(
 
     private val productDetails: LiveData<ProductDetails> by lazy {
         MutableLiveData<ProductDetails>().apply {
-            billingManager.getProductDetails(ProductId.PREMIUM)
+            premiumManager.getProductDetails(Products.PREMIUM)
                 .observeOn(schedulerProvider.main())
                 .doOnSubscribe { _isLoading.value = true }
                 .doFinally { _isLoading.value = false }
-                .doOnError { eventLogger.logFailedToGetProductDetails(ProductId.PREMIUM) }
+                .doOnError { eventLogger.logFailedToGetProductDetails(Products.PREMIUM) }
                 .subscribeFor { productDetails ->
                     value = productDetails
                 }
@@ -45,7 +45,7 @@ class BuyPremiumViewModel constructor(
 
     private val trialStatus: LiveData<TrialStatus> by lazy {
         MutableLiveData<TrialStatus>().apply {
-            billingManager.getTrialStatus()
+            premiumManager.getTrialStatus()
                 .observeOn(schedulerProvider.main())
                 .subscribeFor { trialStatus ->
                     value = trialStatus
@@ -68,16 +68,16 @@ class BuyPremiumViewModel constructor(
     fun onButtonClicked() {
         val premiumStatus: PremiumStatus = premiumStatus.value ?: return
         if (premiumStatus.activateTrial) {
-            billingManager.activateTrialVersion()
+            premiumManager.activateTrialVersion()
                 .observeOn(schedulerProvider.main())
                 .doOnComplete { eventLogger.logPremiumTrialActivated() }
                 .doOnError { eventLogger.logFailedToActivatePremiumTrial() }
                 .subscribeFor { _showTrialActivationAndCloseEvent.call() }
         } else {
             // TODO: Launch and log only when we have product details
-            val productId = ProductId.PREMIUM
+            val productId = Products.PREMIUM
             eventLogger.logLaunchedBillingFlow(productId)
-            billingManager.launchBillingFlow(productId)
+            premiumManager.launchBillingFlow(productId)
                 .observeOn(schedulerProvider.main())
                 .subscribeFor { _closeEvent.call() }
         }

@@ -1,6 +1,6 @@
 package com.frolo.muse.navigator
 
-import com.frolo.muse.billing.ProductId
+import com.frolo.billing.ProductId
 import com.frolo.muse.model.media.*
 import java.io.File
 

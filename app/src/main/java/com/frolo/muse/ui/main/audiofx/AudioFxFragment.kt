@@ -114,13 +114,13 @@ class AudioFxFragment: BaseFragment(), NoClipping {
 
         slider_bass_boost.addOnChangeListener { _, value, fromUser ->
             if (fromUser) {
-                viewModel.onBassStrengthChanged(value.toShort())
+                viewModel.onBassStrengthChanged(value.toInt().toShort())
             }
         }
 
         slider_virtualizer.addOnChangeListener { _, value, fromUser ->
             if (fromUser) {
-                viewModel.onVirtStrengthChanged(value.toShort())
+                viewModel.onVirtStrengthChanged(value.toInt().toShort())
             }
         }
 

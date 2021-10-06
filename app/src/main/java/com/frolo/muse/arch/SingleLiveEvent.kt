@@ -24,7 +24,8 @@ class SingleLiveEvent<T> : MutableLiveData<T>() {
     }
 
     override fun removeObserver(observer: Observer<in T>) {
-        observers.remove(observer)
+        val wrapper = ObserverWrapper(observer)
+        observers.remove(wrapper)
         super.removeObserver(observer)
     }
 
@@ -45,6 +46,17 @@ class SingleLiveEvent<T> : MutableLiveData<T>() {
 
         fun newValue() {
             pending.set(true)
+        }
+
+        override fun hashCode(): Int {
+            return observer.hashCode()
+        }
+
+        override fun equals(other: Any?): Boolean {
+            if (other is ObserverWrapper<*>) {
+                return observer == other.observer
+            }
+            return false
         }
     }
 }

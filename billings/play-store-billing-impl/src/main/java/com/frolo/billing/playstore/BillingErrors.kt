@@ -1,8 +1,7 @@
 @file:Suppress("FunctionName")
 
-package com.frolo.muse.billing
+package com.frolo.billing.playstore
 
-import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingResult
 
 

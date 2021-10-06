@@ -1,16 +1,10 @@
-package com.frolo.muse.billing
+package com.frolo.billing.playstore
 
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.annotation.UiThread
-import androidx.core.content.edit
 import com.android.billingclient.api.*
-import com.frolo.muse.BuildConfig
-import com.frolo.muse.FrolomuseApp
-import com.frolo.muse.Logger
-import com.frolo.muse.OptionalCompat
-import com.frolo.muse.firebase.FirebaseRemoteConfigUtil
-import com.frolo.muse.rx.subscribeSafely
+import com.frolo.billing.*
 import com.frolo.rxpreference.RxPreference
 import io.reactivex.Completable
 import io.reactivex.Flowable
@@ -20,14 +14,18 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.processors.PublishProcessor
 import io.reactivex.schedulers.Schedulers
-import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
 
 
 @UiThread
-class BillingManager(private val frolomuseApp: FrolomuseApp) {
+class BillingManagerImpl(
+    private val foregroundActivityWatcher: ForegroundActivityWatcher,
+    private val isDebug: Boolean
+): BillingManager {
 
-    private val context: Context get() = frolomuseApp
+    private val context: Context get() = foregroundActivityWatcher.context
+
+    private val logger: Logger by lazy { Logger.create(LOG_TAG, isDebug) }
 
     /**
      * SharedPreferences for storing purchase details.
@@ -36,16 +34,9 @@ class BillingManager(private val frolomuseApp: FrolomuseApp) {
         context.getSharedPreferences(PURCHASES_PREFS_STORAGE_NAME, Context.MODE_PRIVATE)
     }
 
-    /**
-     * SharedPreferences for storing trial information.
-     */
-    private val trialPreferences: SharedPreferences by lazy {
-        context.getSharedPreferences(TRIAL_PREFS_STORAGE_NAME, Context.MODE_PRIVATE)
-    }
-
     private val client: BillingClient by lazy {
         val purchasesUpdatedListener = PurchasesUpdatedListener { _, purchases ->
-            Logger.d(LOG_TAG, "Purchases updated: $purchases")
+            logger.d("Purchases updated: $purchases")
             purchases?.also(::handlePurchases)
         }
         BillingClient.newBuilder(context)
@@ -54,11 +45,13 @@ class BillingManager(private val frolomuseApp: FrolomuseApp) {
             .build()
     }
 
+    // Disposables
+    private val internalDisposables = CompositeDisposable()
+
+    // Schedulers
     private val mainThreadScheduler: Scheduler by lazy { AndroidSchedulers.mainThread() }
     private val queryScheduler: Scheduler by lazy { Schedulers.io() }
     private val computationScheduler: Scheduler by lazy { Schedulers.computation() }
-
-    private val disposables = CompositeDisposable()
 
     private val isPreparingBillingClient = AtomicBoolean(false)
     private val preparedBillingClientProcessor = PublishProcessor.create<Result<BillingClient>>()
@@ -73,10 +66,10 @@ class BillingManager(private val frolomuseApp: FrolomuseApp) {
             return
         }
 
-        Logger.d(LOG_TAG, "Starting billing client connection")
+        logger.d("Starting billing client connection")
         client.startConnection(object : BillingClientStateListener {
             override fun onBillingSetupFinished(result: BillingResult) {
-                Logger.d(LOG_TAG, "Billing setup finished: result=$result")
+                logger.d("Billing setup finished: result=$result")
                 if (result.responseCode == BillingClient.BillingResponseCode.OK) {
                     preparedBillingClientProcessor.onNext(Result.success(client))
                 } else {
@@ -87,7 +80,7 @@ class BillingManager(private val frolomuseApp: FrolomuseApp) {
             }
 
             override fun onBillingServiceDisconnected() {
-                Logger.d(LOG_TAG, "Billing service disconnected")
+                logger.d("Billing service disconnected")
                 val err = NullPointerException("Billing service disconnected")
                 preparedBillingClientProcessor.onNext(Result.failure(err))
                 isPreparingBillingClient.set(false)
@@ -126,7 +119,7 @@ class BillingManager(private val frolomuseApp: FrolomuseApp) {
         // Acknowledge each purchase, if needed
         val ackSources = purchases.mapNotNull { purchase ->
             if (purchase.isAcknowledged) {
-                Logger.d(LOG_TAG, "Purchase is already acknowledged: sku=${purchase.sku}")
+                logger.d("Purchase is already acknowledged: sku=${purchase.sku}")
                 return@mapNotNull null
             }
 
@@ -136,10 +129,10 @@ class BillingManager(private val frolomuseApp: FrolomuseApp) {
                     .build()
                 val listener = AcknowledgePurchaseResponseListener { result ->
                     if (result.responseCode == BillingClient.BillingResponseCode.OK) {
-                        Logger.d(LOG_TAG, "Purchase has been acknowledged: sku=${purchase.sku}")
+                        logger.d("Purchase has been acknowledged: sku=${purchase.sku}")
                         emitter.onComplete()
                     } else {
-                        Logger.d(LOG_TAG, "Failed to acknowledge purchase: sku=${purchase.sku}")
+                        logger.d("Failed to acknowledge purchase: sku=${purchase.sku}")
                         emitter.onError(BillingClientException(result))
                     }
                 }
@@ -151,110 +144,28 @@ class BillingManager(private val frolomuseApp: FrolomuseApp) {
 
         Completable.mergeDelayError(ackSources)
             .observeOn(mainThreadScheduler)
-            .subscribeSafely()
-            .let(disposables::add)
+            .subscribe({ /* no-op */ }, { err -> logger.e(err) })
+            .let(internalDisposables::add)
     }
 
-    fun sync() {
-
-        if (DEBUG) {
-            Logger.d(LOG_TAG, "PurchasesPreferences: ${purchasesPreferences.all}")
-            Logger.d(LOG_TAG, "TrialPreferences: ${trialPreferences.all}")
-        }
-
-        if (!client.isReady) {
-            prepareBillingClient()
-        }
-
-        // The trial period is considered valid if it is >= 0L
-        val isTrialDurationValid: Boolean = try {
-            trialPreferences.getLong(KEY_TRIAL_DURATION_MILLIS, -1L) >= 0L
-        } catch (ignored: Throwable) {
-            false
-        }
-        if (!isTrialDurationValid) {
-            FirebaseRemoteConfigUtil.fetchAndActivate()
-                .map { config ->
-                    // Should throw an exception if the value is empty or invalid
-                    config.getValue(REMOTE_KEY_TRIAL_DURATION_MILLIS).asString().toLong()
-                }
-                .doOnSuccess { duration ->
-                    trialPreferences.edit { putLong(KEY_TRIAL_DURATION_MILLIS, duration) }
-                }
-                .doOnError { err ->
-                    Logger.e(LOG_TAG, "Failed to sync Trial duration millis", err)
-                }
-                .subscribeSafely()
-        }
-    }
-
-    //region Trial
-    fun getTrialStatus(): Flowable<TrialStatus> {
-        return RxPreference.ofLong(trialPreferences, KEY_TRIAL_ACTIVATION_TIME_MILLIS)
-            .get()
-            .map { activationTimeOptional ->
-
-                val trialDurationMillis: Long = if (DEBUG) {
-                    // For debugging, trial duration is only 5 minutes
-                    DEBUG_TRIAL_DURATION_MILLIS
-                } else {
-                    trialPreferences.getLong(KEY_TRIAL_DURATION_MILLIS, DEFAULT_TRIAL_DURATION_MILLIS)
-                }
-
-                when {
-                    trialDurationMillis <= 0 -> {
-                        // The duration is invalid or equal to 0 => no trial available.
-                        TrialStatus.NotAvailable
-                    }
-                    activationTimeOptional.isPresent -> {
-                        // There is an activation time present, we need to check if it has expired
-                        val currentTimeMillis: Long = getCurrentTimeMillis()
-                        val activationTimeMillis: Long = activationTimeOptional.get()
-                        val expirationTimeMillis: Long = activationTimeMillis + trialDurationMillis
-                        if (currentTimeMillis < expirationTimeMillis) TrialStatus.Activated else TrialStatus.Expired
-                    }
-                    else -> {
-                        // There is no activation time in the preferences.
-                        // We consider the trial available (not yet activated).
-                        TrialStatus.Available(trialDurationMillis)
-                    }
-                }
+    override fun sync(): Completable {
+        val source = Completable.fromAction {
+            if (!client.isReady) {
+                prepareBillingClient()
             }
+        }
+
+        return source
+            .subscribeOn(mainThreadScheduler)
             .observeOn(mainThreadScheduler)
     }
 
-    fun activateTrialVersion(): Completable {
-        val source = Completable.fromAction {
-            if (trialPreferences.contains(KEY_TRIAL_ACTIVATION_TIME_MILLIS)) {
-                throw IllegalStateException("The trial is already activated")
-            }
-            val currentTimeMillis: Long = getCurrentTimeMillis()
-            trialPreferences.edit { putLong(KEY_TRIAL_ACTIVATION_TIME_MILLIS, currentTimeMillis) }
-        }
-
-        return source.subscribeOn(queryScheduler).observeOn(mainThreadScheduler)
-    }
-
-    /**
-     * Resets trial activation. NOTE: should be used only for testing.
-     */
-    fun resetTrial(): Completable {
-        val source = Completable.fromAction {
-            trialPreferences.edit {
-                remove(KEY_TRIAL_ACTIVATION_TIME_MILLIS)
-            }
-        }
-
-        return source.subscribeOn(queryScheduler).observeOn(mainThreadScheduler)
-    }
-    //endregion
-
-    fun getProductDetails(productId: ProductId): Single<ProductDetails> {
+    override fun getProductDetails(productId: ProductId): Single<ProductDetails> {
         return requirePreparedClient().flatMap { billingClient ->
-            billingClient.querySkuDetailsSingle(listOf(productId.sku), productId.type)
+            billingClient.querySkuDetailsSingle(listOf(productId.sku), productId.billingSkyType)
                 .observeOn(computationScheduler)
                 .map { skuDetailsList ->
-                    skuDetailsList.find { it.sku == productId.sku && it.type == productId.type }
+                    skuDetailsList.find { it.sku == productId.sku && it.type == productId.billingSkyType }
                 }
                 .map { skuDetails ->
                     ProductDetails(
@@ -270,7 +181,7 @@ class BillingManager(private val frolomuseApp: FrolomuseApp) {
         }
     }
 
-    fun isProductPurchased(productId: ProductId, forceCheckFromApi: Boolean = true): Flowable<Boolean> {
+    override fun isProductPurchased(productId: ProductId, forceCheckFromApi: Boolean): Flowable<Boolean> {
         val key = getPurchaseDetailsKey(productId.sku)
         val localPurchaseDetails = RxPreference.ofString(purchasesPreferences, key).get()
         val checkedFromApiRef = AtomicBoolean(false)
@@ -281,17 +192,17 @@ class BillingManager(private val frolomuseApp: FrolomuseApp) {
                 try {
                     val details = PurchaseDetails.deserializeFromJson(json)
                     val isPurchased = (details.state == Purchase.PurchaseState.PURCHASED)
-                    Logger.d(LOG_TAG, "The local purchase details of ${productId.sku} is present: $details")
+                    logger.d("The local purchase details of ${productId.sku} is present: $details")
                     // The local state is present and we're not forced to check it from the API
                     return@switchMapSingle Single.just(isPurchased)
                 } catch (err: Throwable) {
-                    Logger.e(LOG_TAG, "Failed to deserialize purchase details: json=$json", err)
+                    logger.e("Failed to deserialize purchase details: json=$json", err)
                 }
             }
 
-            Logger.d(LOG_TAG, "Checking purchase state of ${productId.sku} from API")
+            logger.d("Checking purchase state of ${productId.sku} from API")
             requirePreparedClient().flatMap { billingClient ->
-                billingClient.queryPurchasesSingle(productId.type)
+                billingClient.queryPurchasesSingle(productId.billingSkyType)
                     .doOnSuccess { result ->
                         checkedFromApiRef.set(true)
                         result.purchasesList?.also(::handlePurchases)
@@ -301,15 +212,15 @@ class BillingManager(private val frolomuseApp: FrolomuseApp) {
                         desiredPurchase != null && (desiredPurchase.purchaseState == Purchase.PurchaseState.PURCHASED)
                     }
                     .doOnSuccess { isPurchased ->
-                        Logger.d(LOG_TAG, "Checked purchase state of ${productId.sku}: purchased=$isPurchased")
+                        logger.d("Checked purchase state of ${productId.sku}: purchased=$isPurchased")
                     }
             }
         }
     }
 
-    fun launchBillingFlow(productId: ProductId): Single<BillingResult> {
+    private fun launchBillingFlowImpl(productId: ProductId): Single<BillingResult> {
         return requirePreparedClient().observeOn(mainThreadScheduler).flatMap { billingClient ->
-            billingClient.querySkuDetailsSingle(listOf(productId.sku), productId.type).flatMap { skuDetailsList ->
+            billingClient.querySkuDetailsSingle(listOf(productId.sku), productId.billingSkyType).flatMap { skuDetailsList ->
                 val skuDetails = skuDetailsList.find { skuDetails -> skuDetails.sku == productId.sku }
                         ?: throw NullPointerException("Could not find SKU details for sku=${productId.sku}")
                 val params = BillingFlowParams.newBuilder()
@@ -317,7 +228,7 @@ class BillingManager(private val frolomuseApp: FrolomuseApp) {
                     .build()
 
                 val source: Single<BillingResult> = Single.fromCallable {
-                    val activity = frolomuseApp.foregroundActivity
+                    val activity = foregroundActivityWatcher.foregroundActivity
                             ?: throw NullPointerException("Could not find foreground activity")
                     billingClient.launchBillingFlow(activity, params)
                 }
@@ -327,14 +238,18 @@ class BillingManager(private val frolomuseApp: FrolomuseApp) {
         }
     }
 
-    fun consumeProduct(productId: ProductId): Completable {
+    override fun launchBillingFlow(productId: ProductId): Completable {
+        return launchBillingFlowImpl(productId).ignoreElement()
+    }
+
+    override fun consumeProduct(productId: ProductId): Completable {
         return requirePreparedClient().observeOn(mainThreadScheduler).flatMapCompletable { billingClient ->
-            billingClient.queryPurchasesSingle(productId.type)
+            billingClient.queryPurchasesSingle(productId.billingSkyType)
                 .observeOn(computationScheduler)
                 .map { purchasesResult ->
                     if (purchasesResult.responseCode == BillingClient.BillingResponseCode.OK) {
                         val purchase = purchasesResult.purchasesList?.find { it.sku == productId.sku }
-                        OptionalCompat.of(purchase)
+                        Optional.of(purchase)
                     } else {
                         val msg = "Failed to query purchases: responseCode=${purchasesResult.responseCode}"
                         throw IllegalStateException(msg)
@@ -364,28 +279,14 @@ class BillingManager(private val frolomuseApp: FrolomuseApp) {
     }
 
     companion object {
-
-        private val DEBUG = BuildConfig.DEBUG
-
         private const val LOG_TAG = "BillingManager"
 
-        private const val PURCHASES_PREFS_STORAGE_NAME = "com.frolo.muse.billing.Purchases"
-        private const val TRIAL_PREFS_STORAGE_NAME = "com.frolo.muse.billing.Trial"
+        private const val PURCHASES_PREFS_STORAGE_NAME = "com.frolo.billing.playstore.Purchases"
 
-        private const val REMOTE_KEY_TRIAL_DURATION_MILLIS = "trial_duration_millis"
-        private const val KEY_TRIAL_DURATION_MILLIS = "trial_duration_millis"
-        private const val KEY_TRIAL_ACTIVATION_TIME_MILLIS = "trial_activation_time_millis"
         private const val KEY_PURCHASE_DETAILS = "purchase_details"
-
-        private val DEFAULT_TRIAL_DURATION_MILLIS = TimeUnit.DAYS.toMillis(3)
-        private val DEBUG_TRIAL_DURATION_MILLIS = TimeUnit.MINUTES.toMillis(5)
 
         private fun getPurchaseDetailsKey(sku: String): String {
             return KEY_PURCHASE_DETAILS + "_" + sku
-        }
-
-        private fun getCurrentTimeMillis(): Long {
-            return System.currentTimeMillis()
         }
     }
 }

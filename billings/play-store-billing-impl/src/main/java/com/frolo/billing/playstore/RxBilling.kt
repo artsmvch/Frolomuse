@@ -1,4 +1,4 @@
-package com.frolo.muse.billing
+package com.frolo.billing.playstore
 
 import android.content.Context
 import com.android.billingclient.api.*
@@ -8,7 +8,6 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposables
 import io.reactivex.schedulers.Schedulers
-import java.lang.UnsupportedOperationException
 
 
 private fun getMainThreadScheduler(): Scheduler {

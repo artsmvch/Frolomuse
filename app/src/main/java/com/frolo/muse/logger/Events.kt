@@ -1,7 +1,7 @@
 package com.frolo.muse.logger
 
 import androidx.annotation.StringDef
-import com.frolo.muse.billing.ProductId
+import com.frolo.billing.ProductId
 import com.frolo.muse.billing.TrialStatus
 import com.frolo.muse.billing.TrialStatus.*
 import com.frolo.muse.model.Theme
@@ -313,7 +313,7 @@ fun EventLogger.logPlayerOptionsMenuShown() {
 private fun Params(productId: ProductId): Map<String, String> {
     return mapOf(
         "sku" to productId.sku,
-        "type" to productId.type
+        "type" to productId.type.name
     )
 }
 

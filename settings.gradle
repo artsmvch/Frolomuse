@@ -1,4 +1,11 @@
+// Main app
 include ':app'
+
+// Billing
+include ':billings:billing-api'
+include ':billings:play-store-billing-impl'
+
+// Util stuff
 include ':MyID3_for_Android'
 include ':ringdroid'
 include ':mediabutton'
