@@ -59,7 +59,7 @@ import javax.inject.Inject
  * So to be working as long as needed, the service must be at least foreground or bound.
  * See https://stackoverflow.com/a/17883828/9437681
  */
-class PlayerService: RxService() {
+class PlayerService: RxService(), PlayerNotificationSender {
 
     class PlayerBinder constructor(val service: Player): Binder()
 
@@ -208,11 +208,7 @@ class PlayerService: RxService() {
             .addObserver(PlayerStateSaver(preferences))
             .addObserver(SongPlayCounter(schedulerProvider, dispatchSongPlayedUseCase))
             .addObserver(WidgetUpdater(this))
-            .addObserver(
-                PlayerNotifier(this, getIsFavouriteUseCase) { params, force ->
-                    postPlayerNotification(params, force)
-                }
-            )
+            .addObserver(PlayerNotifier(this, getIsFavouriteUseCase, this))
             .build()
 
         // Attaching media session observer
@@ -480,9 +476,8 @@ class PlayerService: RxService() {
         return notificationBuilder.build()
     }
 
-    private fun postPlayerNotification(params: PlayerNotificationParams, force: Boolean) {
-
-        if (notificationCancelled && !force) {
+    override fun sendPlayerNotification(params: PlayerNotificationParams, forced: Boolean) {
+        if (notificationCancelled && !forced) {
             return
         }
 

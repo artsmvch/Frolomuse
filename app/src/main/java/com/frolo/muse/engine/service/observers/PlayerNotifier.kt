@@ -7,6 +7,7 @@ import com.frolo.muse.engine.AudioSource
 import com.frolo.muse.engine.Player
 import com.frolo.muse.engine.SimplePlayerObserver
 import com.frolo.muse.engine.service.PlayerNotificationParams
+import com.frolo.muse.engine.service.PlayerNotificationSender
 import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.rx.flowable.doOnNextIndexed
@@ -19,15 +20,15 @@ import java.util.concurrent.atomic.AtomicReference
 
 
 /**
- * Invokes [onNotify] when the user should be notified about the playback and other player-related stuff.
- * The [onNotify] lambda takes two params: a player notification model and a 'force' flag
+ * Calls [sender] when the user should be notified about the playback and other player-related stuff.
+ * The [sender] takes two params: a player notification model and a 'force' flag
  * that indicates whether the user should be forced to receive notification.
  * The client can do anything in the lambda, like show a notification in UI.
  */
 class PlayerNotifier constructor(
     private val context: Context,
     private val getIsFavouriteUseCase: GetIsFavouriteUseCase<Song>,
-    private val onNotify: (player: PlayerNotificationParams, force: Boolean) -> Unit
+    private val sender: PlayerNotificationSender
 ): SimplePlayerObserver() {
 
     private var notificationDisposable: Disposable? = null
@@ -36,7 +37,7 @@ class PlayerNotifier constructor(
 
     private fun notify(params: PlayerNotificationParams, force: Boolean) {
         lastPlayerNtfRef.set(params)
-        onNotify.invoke(params, force)
+        sender.sendPlayerNotification(params, force)
     }
 
     private fun notify(item: AudioSource?, isPlaying: Boolean, force: Boolean) {
@@ -56,7 +57,7 @@ class PlayerNotifier constructor(
             isFav = lastPlayerNtf.isFavourite
         } else {
             // Otherwise, then the art is the default one and the favourite flag is false.
-            art = Arts.getDefaultArt()
+            art = Arts.getDefault()
             isFav = false
         }
 

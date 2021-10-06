@@ -36,16 +36,13 @@ final class Arts {
     }
 
     @Nullable
-    public static Bitmap getDefaultArt() {
+    static Bitmap getDefault() {
         return sDefaultArt;
-    }
-
-    private Arts() {
     }
 
     @MainThread
     @NonNull
-    public static Single<Bitmap> getPlaybackArt(@NonNull Context context, @Nullable final Song song) {
+    static Single<Bitmap> getPlaybackArt(@NonNull Context context, @Nullable final Song song) {
         ThreadStrictMode.assertMain();
 
         final int targetArtWidth = (int) dp2px(context, 200f);
@@ -75,6 +72,9 @@ final class Arts {
                 .onErrorReturnItem(EMPTY_BITMAP)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    private Arts() {
     }
 
 }
