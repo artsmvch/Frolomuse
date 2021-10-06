@@ -18,7 +18,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 
 @UiThread
-class BillingManagerImpl(
+class PlayStoreBillingManagerImpl(
     private val foregroundActivityWatcher: ForegroundActivityWatcher,
     private val isDebug: Boolean
 ): BillingManager {

@@ -3,7 +3,7 @@ package com.frolo.muse.di.modules
 import android.app.Activity
 import android.content.Context
 import com.frolo.billing.BillingManager
-import com.frolo.billing.playstore.BillingManagerImpl
+import com.frolo.billing.playstore.PlayStoreBillingManagerImpl
 import com.frolo.billing.playstore.ForegroundActivityWatcher
 import com.frolo.muse.FrolomuseApp
 import com.frolo.muse.billing.TrialManager
@@ -24,7 +24,7 @@ class BillingModule constructor(
             override val context: Context get() = app
             override val foregroundActivity: Activity? get() = app.foregroundActivity
         }
-        return BillingManagerImpl(foregroundActivityWatcher, isDebug)
+        return PlayStoreBillingManagerImpl(foregroundActivityWatcher, isDebug)
     }
 
     @Provides
