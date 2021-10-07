@@ -30,6 +30,8 @@ import io.reactivex.plugins.RxJavaPlugins
 
 class FrolomuseApp : MultiDexApplication(), ActivityWatcher {
 
+    private val isDebug: Boolean get() = BuildConfig.DEBUG
+
     lateinit var appComponent: AppComponent
         private set
 
@@ -42,7 +44,7 @@ class FrolomuseApp : MultiDexApplication(), ActivityWatcher {
         FrolomuseActivityWatcher(preferences, eventLogger)
     }
 
-    private val playerWrapper = PlayerWrapper()
+    private val playerWrapper = PlayerWrapper(enableStrictMode = isDebug)
     private val navigatorWrapper = NavigatorWrapper()
 
     override fun onCreate() {
@@ -64,7 +66,6 @@ class FrolomuseApp : MultiDexApplication(), ActivityWatcher {
     }
 
     private fun buildAppComponent(): AppComponent {
-        val isDebug = BuildConfig.DEBUG
         return DaggerAppComponent.builder()
             .appModule(AppModule(this))
             .playerModule(PlayerModule(playerWrapper, isDebug))
@@ -79,8 +80,7 @@ class FrolomuseApp : MultiDexApplication(), ActivityWatcher {
     }
 
     private fun setupStrictMode() {
-        if (BuildConfig.DEBUG) {
-
+        if (isDebug) {
             StrictMode.ThreadPolicy.Builder()
                 .detectDiskReads()
                 .detectDiskWrites()
@@ -125,7 +125,7 @@ class FrolomuseApp : MultiDexApplication(), ActivityWatcher {
     }
 
     private fun showViolation(violation: Violation?) {
-        if (BuildConfig.DEBUG) {
+        if (isDebug) {
             // TODO: find a better way to report violation
 //            foregroundActivity?.also { context ->
 //                Toast.makeText(context, violation?.toString().orEmpty(), Toast.LENGTH_LONG).show()
@@ -211,11 +211,11 @@ class FrolomuseApp : MultiDexApplication(), ActivityWatcher {
 
     companion object {
         fun from(context: Context): FrolomuseApp {
-            val applicationContent: Context = context.applicationContext
-            if (applicationContent !is FrolomuseApp) {
-                throw NullPointerException("Application context is not an instance of FrolomuseApp")
+            val applicationContext: Context = context.applicationContext
+            if (applicationContext !is FrolomuseApp) {
+                throw NullPointerException("Application context is not an instance of ${FrolomuseApp::class.java.simpleName}")
             }
-            return applicationContent
+            return applicationContext
         }
     }
 

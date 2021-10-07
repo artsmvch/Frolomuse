@@ -14,10 +14,18 @@ import java.util.concurrent.atomic.AtomicReference
  * Thread-safe wrapper for [Player] that delegates all method calls to [delegate].
  * The delegate can be attached using [attachBase] method and detached using [detachBase] method.
  */
-class PlayerWrapper : Player {
+class PlayerWrapper constructor(
+    private val enableStrictMode: Boolean
+) : Player {
 
     private val delegateRef = AtomicReference<Player>()
-    private val delegate: Player? get() = delegateRef.get()
+    private val delegate: Player? get() {
+        val instance = delegateRef.get()
+        if (instance == null && enableStrictMode) {
+            throw NullPointerException("Delegate not attached")
+        }
+        return instance
+    }
 
     val wrapped: Player? get() = delegate
 
