@@ -49,6 +49,7 @@ final class PlayerObserverRegistry {
         static final int MSG_SPEED_CHANGED = 11;
         static final int MSG_PITCH_CHANGED = 12;
         static final int MSG_INTERNAL_ERROR_OCCURRED = 13;
+        static final int MSG_CURRENT_ITEM_UPDATED = 14;
 
         DispatcherHandler(Looper looper) {
             super(looper);
@@ -168,6 +169,14 @@ final class PlayerObserverRegistry {
                     final Throwable error = (Throwable) msg.obj;
                     for (PlayerObserver observer : mObservers) {
                         observer.onInternalErrorOccurred(getPlayer(), error);
+                    }
+                    break;
+                }
+
+                case MSG_CURRENT_ITEM_UPDATED: {
+                    final AudioSource item = (AudioSource) msg.obj;
+                    for (PlayerObserver observer : mObservers) {
+                        observer.onAudioSourceUpdated(getPlayer(), item);
                     }
                     break;
                 }
@@ -295,9 +304,18 @@ final class PlayerObserverRegistry {
 
     synchronized void dispatchAudioSourceChanged(@Nullable AudioSource item, int positionInQueue) {
         mHandler.removeMessages(DispatcherHandler.MSG_CURRENT_ITEM_CHANGED);
+        mHandler.removeMessages(DispatcherHandler.MSG_CURRENT_ITEM_UPDATED);
 
         final Message message =
                 mHandler.obtainMessage(DispatcherHandler.MSG_CURRENT_ITEM_CHANGED, positionInQueue, ARG_NOTHING, item);
+        dispatch(message);
+    }
+
+    synchronized void dispatchAudioSourceUpdated(@NotNull AudioSource item) {
+        mHandler.removeMessages(DispatcherHandler.MSG_CURRENT_ITEM_UPDATED);
+
+        final Message message =
+                mHandler.obtainMessage(DispatcherHandler.MSG_CURRENT_ITEM_UPDATED, item);
         dispatch(message);
     }
 

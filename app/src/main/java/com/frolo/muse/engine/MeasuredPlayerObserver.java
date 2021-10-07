@@ -130,6 +130,13 @@ final class MeasuredPlayerObserver implements PlayerObserver {
     }
 
     @Override
+    public void onAudioSourceUpdated(@NotNull Player player, @NotNull AudioSource item) {
+        final Measurement m = start("onAudioSourceUpdated");
+        mDelegate.onAudioSourceUpdated(player, item);
+        end(m);
+    }
+
+    @Override
     public void onPositionInQueueChanged(@NotNull Player player, int positionInQueue) {
         final Measurement m = start("onPositionInQueueChanged");
         mDelegate.onPositionInQueueChanged(player, positionInQueue);

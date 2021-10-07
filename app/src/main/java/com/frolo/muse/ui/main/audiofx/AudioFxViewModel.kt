@@ -71,6 +71,10 @@ class AudioFxViewModel @Inject constructor(
         override fun onAudioSourceChanged(player: Player, item: AudioSource?, positionInQueue: Int) {
             _currentAudioSource.value = item
         }
+
+        override fun onAudioSourceUpdated(player: Player, item: AudioSource) {
+            _currentAudioSource.value = item
+        }
     }
 
     private val audioFxObserver = object : AudioFxObserver {

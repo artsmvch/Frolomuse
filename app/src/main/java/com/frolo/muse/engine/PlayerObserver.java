@@ -51,6 +51,14 @@ public interface PlayerObserver {
     void onAudioSourceChanged(@NotNull Player player, @Nullable AudioSource item, int positionInQueue);
 
     /**
+     * Called when the current audio source item has been updated for the given <code>player</code>.
+     * This is mainly due to calls to the {@link Player#update(AudioSource)} method.
+     * @param player for which the current audio source has been updated
+     * @param item updated audio source value
+     */
+    void onAudioSourceUpdated(@NotNull Player player, @NotNull AudioSource item);
+
+    /**
      * Called when the position of the current audio source in queue gets changed for the given <code>player</code>.
      * @param player for which the current audio source is changed
      * @param positionInQueue new position of the current audio source in the queue

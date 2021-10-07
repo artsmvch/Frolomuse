@@ -42,6 +42,10 @@ class MiniPlayerViewModel @Inject constructor(
             _currentSong.value = item?.toSong()
         }
 
+        override fun onAudioSourceUpdated(player: Player, item: AudioSource) {
+            _currentSong.value = item.toSong()
+        }
+
         override fun onPrepared(player: Player, duration: Int, progress: Int) {
             _maxProgress.value = duration
         }

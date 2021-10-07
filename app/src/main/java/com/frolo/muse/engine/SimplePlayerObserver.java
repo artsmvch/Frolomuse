@@ -35,6 +35,10 @@ public abstract class SimplePlayerObserver implements PlayerObserver {
     }
 
     @Override
+    public void onAudioSourceUpdated(@NotNull Player player, @NotNull AudioSource item) {
+    }
+
+    @Override
     public void onPositionInQueueChanged(@NotNull Player player, int positionInQueue) {
     }
 

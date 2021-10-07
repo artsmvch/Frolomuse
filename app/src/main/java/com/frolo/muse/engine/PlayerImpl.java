@@ -1413,7 +1413,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
 
                 if (currentItem != null && AudioSources.areSourcesTheSame(currentItem, item)) {
                     mCurrentItem = item;
-                    mObserverRegistry.dispatchAudioSourceChanged(item, mCurrentPositionInQueue);
+                    mObserverRegistry.dispatchAudioSourceUpdated(item);
                 }
 
             }

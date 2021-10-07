@@ -21,7 +21,7 @@ import java.util.concurrent.atomic.AtomicReference
 
 /**
  * Calls [sender] when the user should be notified about the playback and other player-related stuff.
- * The [sender] takes two params: a player notification model and a 'force' flag
+ * The [sender] takes two params: a player notification model and a 'forced' flag
  * that indicates whether the user should be forced to receive notification.
  * The client can do anything in the lambda, like show a notification in UI.
  */
@@ -35,12 +35,12 @@ class PlayerNotifier constructor(
 
     private val lastPlayerNtfRef = AtomicReference<PlayerNotificationParams>(null)
 
-    private fun notify(params: PlayerNotificationParams, force: Boolean) {
+    private fun notify(params: PlayerNotificationParams, forced: Boolean) {
         lastPlayerNtfRef.set(params)
-        sender.sendPlayerNotification(params, force)
+        sender.sendPlayerNotification(params, forced)
     }
 
-    private fun notify(item: AudioSource?, isPlaying: Boolean, force: Boolean) {
+    private fun notify(item: AudioSource?, isPlaying: Boolean, forced: Boolean) {
         notificationDisposable?.dispose()
 
         val song: Song? = item?.toSong()
@@ -91,22 +91,26 @@ class PlayerNotifier constructor(
             .doOnNextIndexed { index, playerNtf ->
                 val isFirstItem = index == 0
                 // we can only force notify about the first item
-                notify(playerNtf, force && isFirstItem)
+                notify(playerNtf, forced && isFirstItem)
             }
             .ignoreElements()
             .subscribe()
     }
 
     override fun onPlaybackStarted(player: Player) {
-        notify(item = player.getCurrent(), isPlaying = true, force = true)
+        notify(item = player.getCurrent(), isPlaying = true, forced = true)
     }
 
     override fun onPlaybackPaused(player: Player) {
-        notify(item = player.getCurrent(), isPlaying = false, force = false)
+        notify(item = player.getCurrent(), isPlaying = false, forced = false)
     }
 
     override fun onAudioSourceChanged(player: Player, item: AudioSource?, positionInQueue: Int) {
-        notify(item = item, isPlaying = player.isPlaying(), force = false)
+        notify(item = item, isPlaying = player.isPlaying(), forced = false)
+    }
+
+    override fun onAudioSourceUpdated(player: Player, item: AudioSource) {
+        notify(item = item, isPlaying = player.isPlaying(), forced = false)
     }
 
     override fun onShutdown(player: Player) {

@@ -21,17 +21,7 @@ class SongPlayCounter constructor(
     private val dispatchSongPlayedUseCase: DispatchSongPlayedUseCase
 ): SimplePlayerObserver() {
 
-    private companion object {
-        const val NEGLIGIBLE_DURATION = 0.01f
-
-        const val MIN_VALUABLE_DURATION = 5_000 // 5 seconds
-
-        const val MIN_VALUABLE_PERCENT_OF_DURATION = 0.3f // 30% of duration
-
-        const val PLAYBACK_NOT_STARTED_YET = -1L
-    }
-
-    private val disposables = CompositeDisposable()
+    private val internalDisposables = CompositeDisposable()
 
     private var currentItem: AudioSource? = null
     private var currentItemDuration: Int = 0
@@ -41,17 +31,15 @@ class SongPlayCounter constructor(
     private var lastTimePlaybackStarted: Long = PLAYBACK_NOT_STARTED_YET
     // Total duration of playback performance
     private var performanceDuration: Int = 0
+    private var wasCurrentItemChecked = false
 
-    private fun now(): Long = System.currentTimeMillis()
-
-    override fun onAudioSourceChanged(player: Player, item: AudioSource?, positionInQueue: Int) {
+    private fun checkIfPlayed() {
         if (isPlaying) {
-            // it was playing
-            val performed = now() - lastTimePlaybackStarted
+            val performed = currentTimeMillis() - lastTimePlaybackStarted
             performanceDuration += performed.toInt()
         }
 
-        val isPerformed = when {
+        val isPlayed = when {
             // If it wasn't even prepared then do not consider it as played
             !isPrepared -> false
 
@@ -68,23 +56,27 @@ class SongPlayCounter constructor(
             }
         }
 
-        if (isPerformed) {
+        if (isPlayed && !wasCurrentItemChecked) {
+            wasCurrentItemChecked = true
             currentItem?.also { safeItem ->
                 dispatchSongPlayedUseCase.dispatchSongPlayed(safeItem.toSong())
-                        .observeOn(schedulerProvider.main())
-                        .subscribe({ }, { })
-                        .also { d -> disposables.add(d) }
+                    .observeOn(schedulerProvider.main())
+                    .doOnSubscribe { internalDisposables.add(it) }
+                    .subscribe()
             }
         }
+    }
+
+    override fun onAudioSourceChanged(player: Player, item: AudioSource?, positionInQueue: Int) {
+        checkIfPlayed()
 
         currentItem = item
         currentItemDuration = 0
-        // TODO: currently isPrepared() can return true, if the current song was only updated (not changed), but this behavior can be changed in the future
         isPrepared = player.isPrepared()
         isPlaying = player.isPlaying()
-
-        lastTimePlaybackStarted = if (!isPlaying) PLAYBACK_NOT_STARTED_YET else now()
+        lastTimePlaybackStarted = if (!isPlaying) PLAYBACK_NOT_STARTED_YET else currentTimeMillis()
         performanceDuration = 0
+        wasCurrentItemChecked = false
     }
 
     override fun onPrepared(player: Player, duration: Int, progress: Int) {
@@ -94,7 +86,7 @@ class SongPlayCounter constructor(
 
     override fun onPlaybackPaused(player: Player) {
         if (isPlaying) {
-            val performed = now() - lastTimePlaybackStarted
+            val performed = currentTimeMillis() - lastTimePlaybackStarted
             performanceDuration += performed.toInt()
         }
         isPlaying = false
@@ -102,11 +94,35 @@ class SongPlayCounter constructor(
 
     override fun onPlaybackStarted(player: Player) {
         isPlaying = true
-        lastTimePlaybackStarted = now()
+        lastTimePlaybackStarted = currentTimeMillis()
     }
 
     override fun onShutdown(player: Player) {
-        disposables.clear()
+        checkIfPlayed()
+
+        // Clearing states
+        currentItem = null
+        currentItemDuration = 0
+        isPrepared = false
+        isPlaying = false
+        lastTimePlaybackStarted = PLAYBACK_NOT_STARTED_YET
+        performanceDuration = 0
+        wasCurrentItemChecked = false
+
+        // Disposing the other stuff
+        internalDisposables.clear()
+    }
+
+    companion object {
+        private const val NEGLIGIBLE_DURATION = 0.01f
+
+        private const val MIN_VALUABLE_DURATION = 5_000 // 5 seconds
+
+        private const val MIN_VALUABLE_PERCENT_OF_DURATION = 0.3f // 30% of duration
+
+        private const val PLAYBACK_NOT_STARTED_YET = -1L
+
+        private fun currentTimeMillis(): Long = System.currentTimeMillis()
     }
 
 }

@@ -41,15 +41,22 @@ class MediaSessionObserver private constructor(
     }
 
     override fun onAudioSourceChanged(player: Player, item: AudioSource?, positionInQueue: Int) {
-        songDisposable?.dispose()
+        updateMetadataAsync(item)
+        setUndefinedPlaybackState()
+    }
+
+    override fun onAudioSourceUpdated(player: Player, item: AudioSource) {
+        updateMetadataAsync(item)
+    }
+
+    private fun updateMetadataAsync(item: AudioSource?) {
         val song: Song? = item?.toSong()
+        songDisposable?.dispose()
         songDisposable = Arts.getPlaybackArt(context, song)
             .doOnSubscribe { mediaSession.setMetadata(song , null) }
             .doOnSuccess { art -> mediaSession.setMetadata(song , art) }
             .ignoreElement()
             .subscribeSafely()
-
-        setUndefinedPlaybackState()
     }
 
     override fun onPrepared(player: Player, duration: Int, progress: Int) {

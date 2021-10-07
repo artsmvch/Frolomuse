@@ -32,6 +32,10 @@ class WidgetUpdater constructor(
         updateWidgets(player)
     }
 
+    override fun onAudioSourceUpdated(player: Player, item: AudioSource) {
+        updateWidgets(player)
+    }
+
     override fun onShuffleModeChanged(player: Player, mode: Int) {
         updateWidgets(player)
     }
