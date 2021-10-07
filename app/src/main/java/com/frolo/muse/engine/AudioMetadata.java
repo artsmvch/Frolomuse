@@ -1,11 +1,13 @@
 package com.frolo.muse.engine;
 
 
+import java.io.Serializable;
+
 /**
  * Represents metadata of an {@link AudioSource}.
  * This contains methods for getting information such as title, artist, album, etc.
  */
-public interface AudioMetadata {
+public interface AudioMetadata extends Serializable {
 
     String getTitle();
 

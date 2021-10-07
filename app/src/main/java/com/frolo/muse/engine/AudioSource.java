@@ -2,13 +2,15 @@ package com.frolo.muse.engine;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.io.Serializable;
+
 
 /**
  * AudioSource represents audio that can be played by {@link Player}.
  * Audio sources are distinguished by {@link AudioSource#getId()}.
  * {@link AudioSource#getMetadata()}} returns metadata that contains information about the AudioSource.
  */
-public interface AudioSource {
+public interface AudioSource extends Serializable {
 
     /**
      * Returns unique identifier of the AudioSource.
