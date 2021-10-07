@@ -6,6 +6,8 @@ import com.frolo.muse.engine.Player
 import com.frolo.muse.engine.SimplePlayerObserver
 import com.frolo.muse.interactor.media.DispatchSongPlayedUseCase
 import com.frolo.muse.rx.SchedulerProvider
+import com.frolo.muse.stopwatch.Stopwatch
+import com.frolo.muse.stopwatch.Stopwatches
 import io.reactivex.disposables.CompositeDisposable
 
 
@@ -25,34 +27,24 @@ class SongPlayCounter constructor(
 
     private var currentItem: AudioSource? = null
     private var currentItemDuration: Int = 0
-    private var isPrepared: Boolean = false
-    private var isPlaying: Boolean = false
-    // Remembers the last timestamp when the playback started
-    private var lastTimePlaybackStarted: Long = PLAYBACK_NOT_STARTED_YET
-    // Total duration of playback performance
-    private var performanceDuration: Int = 0
-    private var wasCurrentItemChecked = false
+
+    private val stopwatch: Stopwatch = Stopwatches.createSimple()
+    private var wasCurrentItemChecked: Boolean = false
 
     private fun checkIfPlayed() {
-        if (isPlaying) {
-            val performed = currentTimeMillis() - lastTimePlaybackStarted
-            performanceDuration += performed.toInt()
-        }
+        val playedTime = stopwatch.elapsedTime
 
         val isPlayed = when {
-            // If it wasn't even prepared then do not consider it as played
-            !isPrepared -> false
-
             // If audio's duration is so negligible then ignore it
             currentItemDuration < NEGLIGIBLE_DURATION -> false
 
             currentItemDuration < MIN_VALUABLE_DURATION -> {
-                performanceDuration >= currentItemDuration * 0.9 // 90% of audio's duration
+                playedTime >= currentItemDuration * 0.9 // 90% of audio's duration
             }
 
             else -> {
-                val percent = performanceDuration.toFloat() / currentItemDuration
-                percent >= MIN_VALUABLE_PERCENT_OF_DURATION && performanceDuration >= MIN_VALUABLE_DURATION * 0.9
+                val percent = playedTime.toFloat() / currentItemDuration
+                percent >= MIN_VALUABLE_PERCENT_OF_DURATION && playedTime >= MIN_VALUABLE_DURATION * 0.9
             }
         }
 
@@ -72,29 +64,20 @@ class SongPlayCounter constructor(
 
         currentItem = item
         currentItemDuration = 0
-        isPrepared = player.isPrepared()
-        isPlaying = player.isPlaying()
-        lastTimePlaybackStarted = if (!isPlaying) PLAYBACK_NOT_STARTED_YET else currentTimeMillis()
-        performanceDuration = 0
+        stopwatch.stop()
         wasCurrentItemChecked = false
     }
 
     override fun onPrepared(player: Player, duration: Int, progress: Int) {
-        isPrepared = true
         currentItemDuration = duration
     }
 
-    override fun onPlaybackPaused(player: Player) {
-        if (isPlaying) {
-            val performed = currentTimeMillis() - lastTimePlaybackStarted
-            performanceDuration += performed.toInt()
-        }
-        isPlaying = false
+    override fun onPlaybackStarted(player: Player) {
+        stopwatch.start()
     }
 
-    override fun onPlaybackStarted(player: Player) {
-        isPlaying = true
-        lastTimePlaybackStarted = currentTimeMillis()
+    override fun onPlaybackPaused(player: Player) {
+        stopwatch.pause()
     }
 
     override fun onShutdown(player: Player) {
@@ -103,10 +86,7 @@ class SongPlayCounter constructor(
         // Clearing states
         currentItem = null
         currentItemDuration = 0
-        isPrepared = false
-        isPlaying = false
-        lastTimePlaybackStarted = PLAYBACK_NOT_STARTED_YET
-        performanceDuration = 0
+        stopwatch.stop()
         wasCurrentItemChecked = false
 
         // Disposing the other stuff
@@ -119,10 +99,6 @@ class SongPlayCounter constructor(
         private const val MIN_VALUABLE_DURATION = 5_000 // 5 seconds
 
         private const val MIN_VALUABLE_PERCENT_OF_DURATION = 0.3f // 30% of duration
-
-        private const val PLAYBACK_NOT_STARTED_YET = -1L
-
-        private fun currentTimeMillis(): Long = System.currentTimeMillis()
     }
 
 }
