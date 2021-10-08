@@ -89,8 +89,8 @@ class SongPlayCounter constructor(
         stopwatch.stop()
         wasCurrentItemChecked = false
 
-        // Disposing the other stuff
-        internalDisposables.clear()
+        // No need to dispose the stuff if we want all pending dispatches to be processed
+        // internalDisposables.dispose()
     }
 
     companion object {
