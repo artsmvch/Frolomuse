@@ -407,6 +407,15 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
     }
 
     /**
+     * Cancels all pending engine tasks.
+     */
+    private void cancelAllEngineTasks() {
+        synchronized (mEngineTasksLock) {
+            mEngineHandler.removeCallbacksAndMessages(null);
+        }
+    }
+
+    /**
      * Executes <code>action</code> on the engine thread.
      * Posting is async in the sense that if the call occurs on the engine thread,
      * the execution will not be performed immediately, but in the near future.
@@ -2018,6 +2027,9 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
         if (mShutdown.getAndSet(true)) return;
 
         mPlayerJournal.logMessage("Shutdown");
+
+        // Cancelling pending engine tasks
+        cancelAllEngineTasks();
 
         // Resetting the A-B engine
         mABEngine.reset();
