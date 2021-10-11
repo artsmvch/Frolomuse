@@ -47,9 +47,9 @@ class PlaylistListFragment: SimpleMediaCollectionFragment<Playlist>(),
         } else super.onOptionsItemSelected(item)
     }
 
-    override fun onDecorateList(list: RecyclerView) {
-        super.onDecorateList(list)
-        list.apply {
+    override fun onDecorateListView(listView: RecyclerView) {
+        super.onDecorateListView(listView)
+        listView.apply {
             clipToPadding = false
             //updatePadding(bottom = additionalBottomPadding)
         }
@@ -72,7 +72,7 @@ class PlaylistListFragment: SimpleMediaCollectionFragment<Playlist>(),
             }
         }
 
-        requireList().apply {
+        requireListView().apply {
             clipToPadding = false
             updatePadding(bottom = bottom + additionalBottomPadding)
         }

@@ -56,7 +56,7 @@ class AlbumListFragment: SimpleMediaCollectionFragment<Album>() {
         } else super.onOptionsItemSelected(item)
     }
 
-    override fun onDecorateList(list: RecyclerView) {
+    override fun onDecorateListView(listView: RecyclerView) {
         val gridEnabled = preferences.isAlbumGridEnabled
 
         adapter.itemViewType = if (gridEnabled) {
@@ -65,16 +65,16 @@ class AlbumListFragment: SimpleMediaCollectionFragment<Album>() {
             AlbumAdapter.VIEW_TYPE_BIG_ITEM
         }
 
-        list.adapter = adapter
+        listView.adapter = adapter
 
         if (gridEnabled) {
-            list.layoutManager = GridLayoutManager(context, 3)
-            list.addGridItemMargins()
+            listView.layoutManager = GridLayoutManager(context, 3)
+            listView.addGridItemMargins()
         } else {
-            list.layoutManager = LinearLayoutManager(context)
-            list.addLinearItemMargins()
+            listView.layoutManager = LinearLayoutManager(context)
+            listView.addLinearItemMargins()
         }
-        list.layoutAnimation = ShotLayoutAnimationController()
+        listView.layoutAnimation = ShotLayoutAnimationController()
     }
 
     private fun observeViewModel(owner: LifecycleOwner) {

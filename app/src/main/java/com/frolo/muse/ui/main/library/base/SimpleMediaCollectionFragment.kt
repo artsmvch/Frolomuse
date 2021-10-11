@@ -43,24 +43,24 @@ abstract class SimpleMediaCollectionFragment <E: Media>:
 
     final override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // Setting up the list
-        onDecorateList(rv_list)
-        // Setting up the placeholder
-        onDecoratePlaceholder(layout_list_placeholder)
+        // Setting up the list view
+        onDecorateListView(rv_list)
+        // Setting up the placeholder view
+        onDecoratePlaceholderView(layout_list_placeholder)
     }
 
-    protected fun requireList(): RecyclerView {
+    protected fun requireListView(): RecyclerView {
         return requireNotNull(rv_list)
     }
 
-    protected open fun onDecorateList(list: RecyclerView) {
-        list.adapter = adapter
-        list.layoutManager = LinearLayoutManager(context)
-        list.addLinearItemMargins()
-        list.layoutAnimation = ShotLayoutAnimationController()
+    protected open fun onDecorateListView(listView: RecyclerView) {
+        listView.adapter = adapter
+        listView.layoutManager = LinearLayoutManager(context)
+        listView.addLinearItemMargins()
+        listView.layoutAnimation = ShotLayoutAnimationController()
     }
 
-    protected open fun onDecoratePlaceholder(list: View) {
+    protected open fun onDecoratePlaceholderView(view: View) {
     }
 
     override fun onStart() {
