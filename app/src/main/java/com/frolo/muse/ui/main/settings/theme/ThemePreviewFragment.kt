@@ -74,7 +74,7 @@ class ThemePreviewFragment : AlbumFragment() {
         view.background = StyleUtil.resolveDrawable(view.context, android.R.attr.windowBackground)
     }
 
-    override fun removeClipping(left: Int, top: Int, right: Int, bottom: Int) {
+    override fun applyContentInsets(left: Int, top: Int, right: Int, bottom: Int) {
         // Do not clip
     }
 

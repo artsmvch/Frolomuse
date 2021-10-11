@@ -7,12 +7,15 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
+import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.DecelerateInterpolator
 import androidx.annotation.ColorInt
+import androidx.annotation.Dimension
+import androidx.annotation.Px
 import androidx.appcompat.view.ActionMode
 import androidx.core.app.ActivityCompat
 import androidx.core.graphics.ColorUtils
@@ -28,7 +31,6 @@ import com.frolo.muse.StyleUtil
 import com.frolo.muse.android.ViewAppSettingsIntent
 import com.frolo.muse.android.startActivitySafely
 import com.frolo.muse.arch.observe
-import com.frolo.muse.dp2px
 import com.frolo.muse.engine.Player
 import com.frolo.muse.model.media.*
 import com.frolo.muse.rx.disposeOnDestroyOf
@@ -120,11 +122,35 @@ class MainActivity : PlayerHostActivity(),
         StyleUtil.resolveColor(this, R.attr.actionModeBackground)
     }
 
+    @get:Px
+    private val playerSheetPeekHeight: Int by lazy {
+        resources.getDimension(R.dimen.player_sheet_peek_height).toInt()
+    }
+
+    @get:Px
+    private val playerSheetCornerRadius: Int by lazy {
+        resources.getDimension(R.dimen.player_sheet_corner_radius).toInt()
+    }
+
+    @get:Dimension
+    private val bottomNavigationCornerRadius: Float by lazy {
+        resources.getDimension(R.dimen.bottom_navigation_bar_corner_radius)
+    }
+
+    private val fragmentContentInsets: Rect by lazy {
+        val left = resources.getDimension(R.dimen.fragment_content_left_inset).toInt()
+        val top = resources.getDimension(R.dimen.fragment_content_top_inset).toInt()
+        val right = resources.getDimension(R.dimen.fragment_content_right_inset).toInt()
+        val bottom = resources.getDimension(R.dimen.fragment_content_bottom_inset).toInt()
+        Rect(left, top, right, bottom)
+    }
+
     private val fragmentLifecycleCallbacks: FragmentManager.FragmentLifecycleCallbacks =
         object : FragmentManager.FragmentLifecycleCallbacks() {
             override fun onFragmentViewCreated(fm: FragmentManager, f: Fragment, v: View, savedInstanceState: Bundle?) {
-                if (f is NoClipping) {
-                    f.removeClipping(0, 0, 0, 56f.dp2px(v.context).toInt())
+                if (f is FragmentContentInsetsListener) {
+                    f.applyContentInsets(fragmentContentInsets.left, fragmentContentInsets.top,
+                        fragmentContentInsets.right, fragmentContentInsets.bottom)
                 }
             }
         }
@@ -176,21 +202,19 @@ class MainActivity : PlayerHostActivity(),
     }
 
     private fun loadUI() {
-        val bottomNavCornerRadius = 48f.dp2px(this)
-
         bottom_navigation_view.background = MaterialShapeDrawable().apply {
             fillColor = ColorStateList.valueOf(colorSurface)
             shapeAppearanceModel = ShapeAppearanceModel.builder()
-                .setTopLeftCorner(CornerFamily.ROUNDED, bottomNavCornerRadius)
-                .setTopRightCorner(CornerFamily.ROUNDED, bottomNavCornerRadius)
+                .setTopLeftCorner(CornerFamily.ROUNDED, bottomNavigationCornerRadius)
+                .setTopRightCorner(CornerFamily.ROUNDED, bottomNavigationCornerRadius)
                 .build()
         }
 
         sliding_player_layout.background = MaterialShapeDrawable().apply {
             fillColor = ColorStateList.valueOf(colorPrimarySurface)
             shapeAppearanceModel = ShapeAppearanceModel.builder()
-                .setTopLeftCorner(CornerFamily.ROUNDED, bottomNavCornerRadius)
-                .setTopRightCorner(CornerFamily.ROUNDED, bottomNavCornerRadius)
+                .setTopLeftCorner(CornerFamily.ROUNDED, bottomNavigationCornerRadius)
+                .setTopRightCorner(CornerFamily.ROUNDED, bottomNavigationCornerRadius)
                 .build()
         }
         with(BottomSheetBehavior.from(sliding_player_layout)) {
@@ -505,7 +529,7 @@ class MainActivity : PlayerHostActivity(),
 
         sliding_player_layout.doOnLayout { v ->
             with(BottomSheetBehavior.from(v)) {
-                peekHeight = 96f.dp2px(this@MainActivity).toInt()
+                peekHeight = playerSheetPeekHeight
             }
         }
 
@@ -681,11 +705,11 @@ class MainActivity : PlayerHostActivity(),
             val blendedColor = ColorUtils.blendARGB(colorSurface, colorPrimarySurface, blendRatio)
             fillColor = ColorStateList.valueOf(blendedColor)
 
-            val cornerRadius = 48f.dp2px(this@MainActivity) * (1 - slideOffset)
-            Logger.d("MainActivitySlide", "cornerRadius=$cornerRadius")
+            val factoredCornerRadius = playerSheetCornerRadius * (1 - slideOffset)
+            Logger.d("MainActivitySlide", "cornerRadius=$factoredCornerRadius")
             this.shapeAppearanceModel = ShapeAppearanceModel.builder()
-                .setTopLeftCorner(CornerFamily.ROUNDED, cornerRadius)
-                .setTopRightCorner(CornerFamily.ROUNDED, cornerRadius)
+                .setTopLeftCorner(CornerFamily.ROUNDED, factoredCornerRadius)
+                .setTopRightCorner(CornerFamily.ROUNDED, factoredCornerRadius)
                 .build()
         }
 

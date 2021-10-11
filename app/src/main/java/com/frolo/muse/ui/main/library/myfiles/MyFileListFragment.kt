@@ -11,7 +11,7 @@ import com.frolo.muse.mediascan.MediaScanService
 import com.frolo.muse.model.media.MyFile
 import com.frolo.muse.ui.ShotLayoutAnimationController
 import com.frolo.muse.ui.base.BackPressHandler
-import com.frolo.muse.ui.base.NoClipping
+import com.frolo.muse.ui.base.FragmentContentInsetsListener
 import com.frolo.muse.ui.getNameAsRootString
 import com.frolo.muse.ui.main.addLinearItemMargins
 import com.frolo.muse.ui.main.library.base.AbsMediaCollectionFragment
@@ -27,7 +27,7 @@ import kotlinx.android.synthetic.main.fragment_my_file_list.*
 )
 class MyFileListFragment: AbsMediaCollectionFragment<MyFile>(),
         BackPressHandler,
-        NoClipping {
+        FragmentContentInsetsListener {
 
     override val viewModel: MyFileListViewModel by viewModel()
 
@@ -162,7 +162,7 @@ class MyFileListFragment: AbsMediaCollectionFragment<MyFile>(),
         tv_parent_file_name.text = root.getNameAsRootString()
     }
 
-    override fun removeClipping(left: Int, top: Int, right: Int, bottom: Int) {
+    override fun applyContentInsets(left: Int, top: Int, right: Int, bottom: Int) {
         view?.also { safeView ->
             if (safeView is ViewGroup) {
                 rv_list.setPadding(left, top, right, bottom)

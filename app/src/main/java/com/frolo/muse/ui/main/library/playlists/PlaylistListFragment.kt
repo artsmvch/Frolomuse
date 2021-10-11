@@ -65,7 +65,7 @@ class PlaylistListFragment: SimpleMediaCollectionFragment<Playlist>(),
         viewModel.onCreatePlaylistButtonClicked()
     }
 
-    override fun removeClipping(left: Int, top: Int, right: Int, bottom: Int) {
+    override fun applyContentInsets(left: Int, top: Int, right: Int, bottom: Int) {
         view?.also { safeView ->
             if (safeView is ViewGroup) {
                 safeView.clipToPadding = false

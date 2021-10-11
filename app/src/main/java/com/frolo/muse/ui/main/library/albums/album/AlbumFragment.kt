@@ -17,7 +17,7 @@ import com.frolo.muse.glide.*
 import com.frolo.muse.model.media.Album
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.dp2px
-import com.frolo.muse.ui.base.NoClipping
+import com.frolo.muse.ui.base.FragmentContentInsetsListener
 import com.frolo.muse.ui.base.setupNavigation
 import com.frolo.muse.ui.base.withArg
 import com.frolo.muse.ui.main.confirmShortcutCreation
@@ -33,7 +33,7 @@ import kotlin.math.abs
 import kotlin.math.pow
 
 
-open class AlbumFragment: AbsSongCollectionFragment<Song>(), NoClipping {
+open class AlbumFragment: AbsSongCollectionFragment<Song>(), FragmentContentInsetsListener {
 
     private val onOffsetChangedListener: AppBarLayout.OnOffsetChangedListener =
         AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
@@ -189,7 +189,7 @@ open class AlbumFragment: AbsSongCollectionFragment<Song>(), NoClipping {
             .into(imv_album_art)
     }
 
-    override fun removeClipping(left: Int, top: Int, right: Int, bottom: Int) {
+    override fun applyContentInsets(left: Int, top: Int, right: Int, bottom: Int) {
         view?.also { safeView ->
             if (safeView is ViewGroup) {
                 rv_list.setPadding(left, top, right, bottom)

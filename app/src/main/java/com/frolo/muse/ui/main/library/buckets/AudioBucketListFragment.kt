@@ -14,7 +14,7 @@ import com.frolo.muse.model.media.MediaBucket
 import com.frolo.muse.ui.ShotLayoutAnimationController
 import com.frolo.muse.ui.base.BackPressHandler
 import com.frolo.muse.ui.base.BaseFragment
-import com.frolo.muse.ui.base.NoClipping
+import com.frolo.muse.ui.base.FragmentContentInsetsListener
 import com.frolo.muse.ui.base.RESPermissionObserver
 import com.frolo.muse.ui.main.addLinearItemMargins
 import com.frolo.muse.ui.main.library.base.BaseAdapter
@@ -26,7 +26,7 @@ import kotlinx.android.synthetic.main.fragment_base_list.*
 class AudioBucketListFragment : BaseFragment(),
         BucketCallback,
         BackPressHandler,
-        NoClipping {
+        FragmentContentInsetsListener {
 
     private val viewModel: AudioBucketListViewModel by viewModel()
 
@@ -151,7 +151,7 @@ class AudioBucketListFragment : BaseFragment(),
 //        }
     }
 
-    override fun removeClipping(left: Int, top: Int, right: Int, bottom: Int) {
+    override fun applyContentInsets(left: Int, top: Int, right: Int, bottom: Int) {
         view?.also { safeView ->
             if (safeView is ViewGroup) {
                 rv_list.setPadding(left, top, right, bottom)

@@ -26,7 +26,7 @@ import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.sleeptimer.PlayerSleepTimer
 import com.frolo.muse.ui.*
-import com.frolo.muse.ui.base.NoClipping
+import com.frolo.muse.ui.base.FragmentContentInsetsListener
 import com.frolo.muse.ui.main.settings.journal.PlayerJournalDialog
 import com.frolo.muse.ui.main.settings.duration.MinAudioFileDurationDialog
 import com.frolo.muse.ui.main.settings.hidden.HiddenFilesDialog
@@ -39,7 +39,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class SettingsFragment : PreferenceFragmentCompat(),
         SleepTimerDialog.OnTimeSelectedListener,
-        NoClipping {
+        FragmentContentInsetsListener {
 
     private val preferences: Preferences by lazy {
         FrolomuseApp.from(requireContext())
@@ -418,7 +418,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
             .show()
     }
 
-    override fun removeClipping(left: Int, top: Int, right: Int, bottom: Int) {
+    override fun applyContentInsets(left: Int, top: Int, right: Int, bottom: Int) {
         view?.also { safeView ->
             val recyclerView = listView
 

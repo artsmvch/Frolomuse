@@ -9,7 +9,7 @@ import com.bumptech.glide.Glide
 import com.frolo.muse.R
 import com.frolo.muse.model.media.Artist
 import com.frolo.muse.model.media.Song
-import com.frolo.muse.ui.base.NoClipping
+import com.frolo.muse.ui.base.FragmentContentInsetsListener
 import com.frolo.muse.ui.base.withArg
 import com.frolo.muse.ui.main.addLinearItemMargins
 import com.frolo.muse.ui.main.library.base.AbsSongCollectionFragment
@@ -17,7 +17,7 @@ import com.frolo.muse.ui.main.library.base.SongAdapter
 import kotlinx.android.synthetic.main.fragment_base_list.*
 
 
-class SongsOfArtistFragment: AbsSongCollectionFragment<Song>(), NoClipping {
+class SongsOfArtistFragment: AbsSongCollectionFragment<Song>(), FragmentContentInsetsListener {
 
     override val viewModel: SongsOfArtistViewModel by lazy {
         val artist = requireArguments().getSerializable(ARG_ARTIST) as Artist
@@ -66,7 +66,7 @@ class SongsOfArtistFragment: AbsSongCollectionFragment<Song>(), NoClipping {
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
     }
 
-    override fun removeClipping(left: Int, top: Int, right: Int, bottom: Int) {
+    override fun applyContentInsets(left: Int, top: Int, right: Int, bottom: Int) {
         view?.also { safeView ->
             if (safeView is ViewGroup) {
                 rv_list.setPadding(left, top, right, bottom)

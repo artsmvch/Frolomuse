@@ -11,7 +11,7 @@ import com.frolo.muse.Keyboards
 import com.frolo.muse.R
 import com.frolo.muse.arch.observe
 import com.frolo.muse.model.media.Media
-import com.frolo.muse.ui.base.NoClipping
+import com.frolo.muse.ui.base.FragmentContentInsetsListener
 import com.frolo.muse.ui.main.library.base.AbsMediaCollectionFragment
 import com.frolo.muse.ui.main.library.base.BaseAdapter
 import com.frolo.muse.ui.main.library.search.adapter.MediaAdapter
@@ -21,7 +21,7 @@ import kotlinx.android.synthetic.main.fragment_base_list.*
 import kotlinx.android.synthetic.main.fragment_search.*
 
 
-class SearchFragment: AbsMediaCollectionFragment<Media>(), NoClipping {
+class SearchFragment: AbsMediaCollectionFragment<Media>(), FragmentContentInsetsListener {
 
     override val viewModel: SearchViewModel by viewModel()
 
@@ -127,7 +127,7 @@ class SearchFragment: AbsMediaCollectionFragment<Media>(), NoClipping {
         }
     }
 
-    override fun removeClipping(left: Int, top: Int, right: Int, bottom: Int) {
+    override fun applyContentInsets(left: Int, top: Int, right: Int, bottom: Int) {
         view?.also { safeView ->
             if (safeView is ViewGroup) {
                 rv_list.setPadding(left, top, right, bottom)

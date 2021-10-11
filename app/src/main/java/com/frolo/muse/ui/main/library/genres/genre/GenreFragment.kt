@@ -14,7 +14,7 @@ import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.dp2px
 import com.frolo.muse.model.media.Genre
 import com.frolo.muse.model.media.Song
-import com.frolo.muse.ui.base.NoClipping
+import com.frolo.muse.ui.base.FragmentContentInsetsListener
 import com.frolo.muse.ui.base.setupNavigation
 import com.frolo.muse.ui.base.withArg
 import com.frolo.muse.ui.main.confirmShortcutCreation
@@ -32,7 +32,7 @@ import kotlin.math.abs
 import kotlin.math.pow
 
 
-class GenreFragment: AbsSongCollectionFragment<Song>(), NoClipping {
+class GenreFragment: AbsSongCollectionFragment<Song>(), FragmentContentInsetsListener {
 
     override val viewModel: GenreViewModel by lazy {
         val genre = requireArguments().getSerializable(ARG_GENRE) as Genre
@@ -144,7 +144,7 @@ class GenreFragment: AbsSongCollectionFragment<Song>(), NoClipping {
         }
     }
 
-    override fun removeClipping(left: Int, top: Int, right: Int, bottom: Int) {
+    override fun applyContentInsets(left: Int, top: Int, right: Int, bottom: Int) {
         view?.also { safeView ->
             if (safeView is ViewGroup) {
                 rv_list.setPadding(left, top, right, bottom)

@@ -9,14 +9,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.frolo.muse.R
 import com.frolo.muse.model.media.Media
 import com.frolo.muse.ui.ShotLayoutAnimationController
-import com.frolo.muse.ui.base.NoClipping
+import com.frolo.muse.ui.base.FragmentContentInsetsListener
 import com.frolo.muse.ui.main.addLinearItemMargins
 import kotlinx.android.synthetic.main.fragment_base_list.*
 
 
 abstract class SimpleMediaCollectionFragment <E: Media>:
         AbsMediaCollectionFragment<E>(),
-        NoClipping {
+        FragmentContentInsetsListener {
 
     abstract val adapter: BaseAdapter<E, *>
 
@@ -93,7 +93,7 @@ abstract class SimpleMediaCollectionFragment <E: Media>:
         toastError(err)
     }
 
-    override fun removeClipping(left: Int, top: Int, right: Int, bottom: Int) {
+    override fun applyContentInsets(left: Int, top: Int, right: Int, bottom: Int) {
         view?.also { safeView ->
             if (safeView is ViewGroup) {
                 rv_list.setPadding(left, top, right, bottom)

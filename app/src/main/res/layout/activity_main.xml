@@ -42,7 +42,7 @@
             android:layout_height="match_parent"
             android:background="@null"
             app:behavior_hideable="false"
-            app:behavior_peekHeight="96dp"
+            app:behavior_peekHeight="@dimen/player_sheet_peek_height"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
             <FrameLayout

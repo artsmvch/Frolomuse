@@ -20,14 +20,14 @@ import com.frolo.muse.model.Theme
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.ui.ThemeHandler
 import com.frolo.muse.ui.base.BaseFragment
-import com.frolo.muse.ui.base.NoClipping
+import com.frolo.muse.ui.base.FragmentContentInsetsListener
 import com.frolo.muse.ui.base.setupNavigation
 import kotlinx.android.synthetic.main.fragment_theme_chooser.*
 import kotlinx.android.synthetic.main.include_theme_pager.*
 import kotlinx.android.synthetic.main.include_theme_pager.view.*
 
 
-class ThemeChooserFragment : BaseFragment(), NoClipping, ThemePageCallback {
+class ThemeChooserFragment : BaseFragment(), FragmentContentInsetsListener, ThemePageCallback {
 
     private val preferences: Preferences by prefs()
 
@@ -130,7 +130,7 @@ class ThemeChooserFragment : BaseFragment(), NoClipping, ThemePageCallback {
         super.onDestroyView()
     }
 
-    override fun removeClipping(left: Int, top: Int, right: Int, bottom: Int) {
+    override fun applyContentInsets(left: Int, top: Int, right: Int, bottom: Int) {
         view?.also { safeView ->
             if (safeView is ViewGroup) {
                 safeView.updatePadding(bottom = bottom)

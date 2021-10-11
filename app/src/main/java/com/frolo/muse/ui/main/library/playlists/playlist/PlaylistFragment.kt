@@ -23,7 +23,7 @@ import com.frolo.muse.ui.main.addLinearItemMargins
 import com.frolo.muse.ui.main.library.base.AbsSongCollectionFragment
 import com.frolo.muse.ui.main.library.base.SongAdapter
 import com.frolo.muse.dp2px
-import com.frolo.muse.ui.base.NoClipping
+import com.frolo.muse.ui.base.FragmentContentInsetsListener
 import com.frolo.muse.ui.base.setupNavigation
 import com.frolo.muse.ui.main.confirmShortcutCreation
 import com.frolo.muse.ui.toString
@@ -37,7 +37,7 @@ import kotlin.math.abs
 import kotlin.math.pow
 
 
-class PlaylistFragment: AbsSongCollectionFragment<Song>(), NoClipping {
+class PlaylistFragment: AbsSongCollectionFragment<Song>(), FragmentContentInsetsListener {
 
     override val viewModel: PlaylistViewModel by lazy {
         val playlist = requireArguments().getSerializable(ARG_PLAYLIST) as Playlist
@@ -211,7 +211,7 @@ class PlaylistFragment: AbsSongCollectionFragment<Song>(), NoClipping {
         }
     }
 
-    override fun removeClipping(left: Int, top: Int, right: Int, bottom: Int) {
+    override fun applyContentInsets(left: Int, top: Int, right: Int, bottom: Int) {
         view?.also { safeView ->
             if (safeView is ViewGroup) {
                 rv_list.setPadding(left, top, right, bottom)

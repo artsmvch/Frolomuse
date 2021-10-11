@@ -15,7 +15,7 @@ import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.model.media.MediaBucket
 import com.frolo.muse.model.media.MediaFile
 import com.frolo.muse.ui.ShotLayoutAnimationController
-import com.frolo.muse.ui.base.NoClipping
+import com.frolo.muse.ui.base.FragmentContentInsetsListener
 import com.frolo.muse.ui.base.castHost
 import com.frolo.muse.ui.base.serializableArg
 import com.frolo.muse.ui.base.withArg
@@ -27,7 +27,7 @@ import kotlinx.android.synthetic.main.fragment_base_list.*
 import kotlinx.android.synthetic.main.fragment_media_file_list.*
 
 
-class AudioBucketFragment : AbsMediaCollectionFragment<MediaFile>(), NoClipping {
+class AudioBucketFragment : AbsMediaCollectionFragment<MediaFile>(), FragmentContentInsetsListener {
 
     private val bucketArg by serializableArg<MediaBucket>(ARG_BUCKET)
 
@@ -109,7 +109,7 @@ class AudioBucketFragment : AbsMediaCollectionFragment<MediaFile>(), NoClipping 
         toastError(err)
     }
 
-    override fun removeClipping(left: Int, top: Int, right: Int, bottom: Int) {
+    override fun applyContentInsets(left: Int, top: Int, right: Int, bottom: Int) {
         view?.also { safeView ->
             if (safeView is ViewGroup) {
                 rv_list.setPadding(left, top, right, bottom)

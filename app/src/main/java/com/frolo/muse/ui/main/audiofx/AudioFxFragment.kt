@@ -23,7 +23,7 @@ import com.frolo.muse.model.preset.Preset
 import com.frolo.muse.model.reverb.Reverb
 import com.frolo.muse.ui.Snapshots
 import com.frolo.muse.ui.base.BaseFragment
-import com.frolo.muse.ui.base.NoClipping
+import com.frolo.muse.ui.base.FragmentContentInsetsListener
 import com.frolo.muse.ui.main.audiofx.adapter.PresetAdapter
 import com.frolo.muse.ui.main.audiofx.adapter.ReverbAdapter
 import com.frolo.muse.ui.main.audiofx.preset.PresetSavedEvent
@@ -41,7 +41,7 @@ import kotlinx.android.synthetic.main.include_seekbar_bass_boost.*
 import kotlinx.android.synthetic.main.include_seekbar_visualizer.*
 
 
-class AudioFxFragment: BaseFragment(), NoClipping {
+class AudioFxFragment: BaseFragment(), FragmentContentInsetsListener {
 
     private val viewModel: AudioFxViewModel by viewModel()
 
@@ -435,7 +435,7 @@ class AudioFxFragment: BaseFragment(), NoClipping {
         }
     }
 
-    override fun removeClipping(left: Int, top: Int, right: Int, bottom: Int) {
+    override fun applyContentInsets(left: Int, top: Int, right: Int, bottom: Int) {
         view?.also {
             layout_audio_fx_content?.also { safeContentLayout ->
                 safeContentLayout.setPadding(left, top, right, bottom)
