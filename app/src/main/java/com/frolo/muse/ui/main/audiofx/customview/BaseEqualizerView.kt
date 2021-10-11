@@ -5,9 +5,6 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
-import android.os.Handler
-import android.os.Looper
-import android.os.Message
 import android.util.AttributeSet
 import android.util.DisplayMetrics
 import android.view.View
@@ -33,24 +30,6 @@ abstract class BaseEqualizerView<V> @JvmOverloads constructor(
     defStyleRes: Int = DEFAULT_STYLE_RES_ID
 ): FrameLayout(context, attrs, defStyleAttr) where V: View, V: BaseEqualizerView.BandView {
 
-    /**
-     * Special handler for setting the band level with some delay.
-     * [Message.what] is the band index.
-     * [Message.arg1] is the level value.
-     */
-    private inner class BandLevelHandler(looper: Looper): Handler(looper) {
-        override fun handleMessage(msg: Message) {
-            val bandIndex = msg.what.toShort()
-            val bandLevel = msg.arg1.toShort()
-            audioFx?.also { safeAudioFx ->
-                val numberOfBands = safeAudioFx.numberOfBands.toInt()
-                if (bandIndex in 0 until numberOfBands) {
-                    safeAudioFx.setBandLevel(bandIndex, bandLevel)
-                }
-            }
-        }
-    }
-
     private val audioFxObserver: AudioFxObserver = object : SimpleAudioFxObserver() {
         override fun onBandLevelChanged(audioFx: AudioFx, band: Short, level: Short) {
             val container = getBandViewContainer()
@@ -61,7 +40,8 @@ abstract class BaseEqualizerView<V> @JvmOverloads constructor(
         }
     }
 
-    private var audioFx: AudioFx? = null
+    protected var audioFx: AudioFx? = null
+        private set
 
     private val childContext: Context
     private val bandsContainer: LinearLayout by lazy {
@@ -70,8 +50,6 @@ abstract class BaseEqualizerView<V> @JvmOverloads constructor(
             addView(layout, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
         }
     }
-
-    private val bandLevelHandler: BandLevelHandler
 
     private val drawVisuals: Boolean
 
@@ -144,8 +122,6 @@ abstract class BaseEqualizerView<V> @JvmOverloads constructor(
             a.recycle()
         }
 
-        bandLevelHandler = BandLevelHandler(context.mainLooper)
-
         visualPaint.style = Paint.Style.STROKE
         visualPaint.strokeWidth = dpToPx(context, 2f)
         visualNeutralPaint.strokeWidth = dpToPx(context, 1.6f)
@@ -214,7 +190,7 @@ abstract class BaseEqualizerView<V> @JvmOverloads constructor(
             val listener = object : BandListener {
                 override fun onLevelChanged(bandView: BandView, level: Int) {
                     invalidate()
-                    setBandLevelInternal(bandIndex, level)
+                    onDispatchLevelChange(bandIndex, level)
                 }
 
                 override fun onAnimatedLevelChanged(bandView: BandView, animatedLevel: Int) {
@@ -243,13 +219,14 @@ abstract class BaseEqualizerView<V> @JvmOverloads constructor(
     /**
      * Creates a new band view.
      */
-    abstract fun onCreateBandView(): V
+    protected abstract fun onCreateBandView(): V
 
-    private fun setBandLevelInternal(bandIndex: Int, level: Int) {
-        bandLevelHandler.removeMessages(bandIndex)
-        val message = bandLevelHandler.obtainMessage(bandIndex, level, 0)
-        bandLevelHandler.sendMessageDelayed(message, DEBOUNCE_SET_BAND_LEVEL)
-    }
+    /**
+     * Dispatches the level change of the band at [bandIndex].
+     * Inheritors must set the new [level] value for the current audio fx.
+     * Additional throttling can be applied for this action.
+     */
+    protected abstract fun onDispatchLevelChange(bandIndex: Int, level: Int)
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
@@ -271,7 +248,6 @@ abstract class BaseEqualizerView<V> @JvmOverloads constructor(
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         audioFx?.unregisterObserver(audioFxObserver)
-        bandLevelHandler.removeCallbacksAndMessages(null)
     }
 
     override fun dispatchDraw(canvas: Canvas) {
@@ -423,8 +399,6 @@ abstract class BaseEqualizerView<V> @JvmOverloads constructor(
         private const val DEFAULT_STYLE_RES_ID = R.style.EqualizerView_Default
         private const val DEFAULT_GRID_COLOR = Color.TRANSPARENT
         private const val DEFAULT_LEVEL_COLOR = Color.LTGRAY
-
-        private const val DEBOUNCE_SET_BAND_LEVEL = 300L
 
         private fun getBandLabel(bandIndex: Int, frequencyRange: IntArray): String {
             val freq: Int = frequencyRange.getOrNull(0) ?: 0

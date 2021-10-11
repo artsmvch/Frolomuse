@@ -46,6 +46,7 @@ class SeekBarBandView @JvmOverloads constructor(
     private var minLevel = 0
     private var maxLevel = 1
     private var currentLevel = 0
+    private var isTrackingLevel = false
 
     // Internal views
     private val labelTextView: TextView
@@ -60,8 +61,14 @@ class SeekBarBandView @JvmOverloads constructor(
                 dispatchValueChangedByUser(newValue)
             }
         }
-        override fun onStartTrackingTouch(seekBar: SeekBar) = Unit
-        override fun onStopTrackingTouch(seekBar: SeekBar) = Unit
+
+        override fun onStartTrackingTouch(seekBar: SeekBar) {
+            isTrackingLevel = true
+        }
+
+        override fun onStopTrackingTouch(seekBar: SeekBar) {
+            isTrackingLevel = false
+        }
     }
 
     override val actualLevel: Int get() = currentLevel
@@ -116,6 +123,11 @@ class SeekBarBandView @JvmOverloads constructor(
     }
 
     override fun setLevel(level: Int, animate: Boolean) {
+        if (isTrackingLevel) {
+            // it's being tracked
+            return
+        }
+
         if (currentLevel == level) {
             // no changes
             return
