@@ -282,6 +282,9 @@ dependencies {
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-rxjava2:2.3.0"
+
+    // Waveform Seek Bar
+    implementation 'com.github.alexei-frolo:WaveformSeekBar:1.1'
 }
 
 apply plugin: 'com.google.gms.google-services'

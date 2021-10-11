@@ -1,7 +1,6 @@
 package com.frolo.muse.ui.main.player.waveform;
 
-import com.frolo.muse.views.sound.WaveformSeekBar;
-
+import com.frolo.waveformseekbar.WaveformSeekBar;
 
 /**
  * A Waveform implementation based on a static wave value;

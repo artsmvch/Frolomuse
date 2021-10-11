@@ -3,8 +3,7 @@ package com.frolo.muse.ui.main.player.waveform;
 import androidx.annotation.NonNull;
 
 import com.frolo.muse.model.sound.Sound;
-import com.frolo.muse.views.sound.WaveformSeekBar;
-
+import com.frolo.waveformseekbar.WaveformSeekBar;
 
 /**
  * A Waveform implementation based on {@link Sound}.
@@ -12,7 +11,7 @@ import com.frolo.muse.views.sound.WaveformSeekBar;
  */
 public class SoundWaveform implements WaveformSeekBar.Waveform {
 
-    private Sound sound;
+    private final Sound sound;
 
     public SoundWaveform(@NonNull Sound sound) {
         this.sound = sound;

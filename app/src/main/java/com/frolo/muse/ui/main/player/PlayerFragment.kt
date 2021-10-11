@@ -43,7 +43,7 @@ import com.frolo.muse.ui.main.player.waveform.SoundWaveform
 import com.frolo.muse.ui.main.player.waveform.StaticWaveform
 import com.frolo.muse.ui.main.showVolumeControl
 import com.frolo.muse.views.Anim
-import com.frolo.muse.views.sound.WaveformSeekBar
+import com.frolo.waveformseekbar.WaveformSeekBar
 import kotlinx.android.synthetic.main.include_playback_progress.*
 import kotlinx.android.synthetic.main.fragment_player.*
 import kotlinx.android.synthetic.main.include_player_album_art_carousel.*
@@ -91,8 +91,8 @@ class PlayerFragment: BaseFragment() {
 
     // This flag indicates whether the user is currently tracking the progress bar
     private var isTrackingProgress = false
-    private val seekBarListener = object : WaveformSeekBar.OnSeekBarChangeListener {
-        override fun onProgressInPercentageChanged(seekBar: WaveformSeekBar, percent: Float, fromUser: Boolean) {
+    private val waveformCallback = object : WaveformSeekBar.Callback {
+        override fun onProgressChanged(seekBar: WaveformSeekBar, percent: Float, fromUser: Boolean) {
             if (fromUser) {
                 viewModel.onSeekProgressToPercent(percent)
             }
@@ -208,13 +208,13 @@ class PlayerFragment: BaseFragment() {
     override fun onStart() {
         super.onStart()
         vp_album_art.registerOnPageChangeCallback(onPageChangeCallback)
-        waveform_seek_bar.setOnSeekBarChangeListener(seekBarListener)
+        waveform_seek_bar.setCallback(waveformCallback)
     }
 
     override fun onStop() {
         super.onStop()
         vp_album_art.unregisterOnPageChangeCallback(onPageChangeCallback)
-        waveform_seek_bar.setOnSeekBarChangeListener(null)
+        waveform_seek_bar.setCallback(null)
     }
 
     /********************************

@@ -16,7 +16,7 @@
         android:textSize="12sp"
         tools:text="@string/placeholder_zero_duration"/>
 
-    <com.frolo.muse.views.sound.WaveformSeekBar
+    <com.frolo.waveformseekbar.WaveformSeekBar
         android:id="@+id/waveform_seek_bar"
         android:layout_weight="1"
         android:layout_width="0dp"
