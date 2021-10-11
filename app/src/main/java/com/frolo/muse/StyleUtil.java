@@ -2,7 +2,6 @@ package com.frolo.muse;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.util.TypedValue;
 
@@ -19,8 +18,23 @@ import androidx.appcompat.content.res.AppCompatResources;
  */
 public final class StyleUtil {
 
+    private static final boolean DEBUG = BuildConfig.DEBUG;
+
     private static void failedToResolveAttribute(@AttrRes int attrId) {
-        //throw new IllegalArgumentException("Failed to resolve attribute: " + attrId);
+        if (DEBUG) {
+            throw new IllegalArgumentException("Failed to resolve attribute: " + attrId);
+        }
+    }
+
+    private static void assertColorInt(@NonNull TypedValue value) {
+        boolean isColorInt = value.type >= TypedValue.TYPE_FIRST_COLOR_INT
+                && value.type <= TypedValue.TYPE_LAST_COLOR_INT;
+        if (!isColorInt) {
+            if (DEBUG) {
+                throw new IllegalArgumentException("Resolved attribute value is not a color. " +
+                        "Actual type: " + value.type);
+            }
+        }
     }
 
     @ColorInt
@@ -29,6 +43,7 @@ public final class StyleUtil {
         if (!context.getTheme().resolveAttribute(attrId, typedValue, true)) {
             failedToResolveAttribute(attrId);
         }
+        assertColorInt(typedValue);
         return typedValue.data;
     }
 

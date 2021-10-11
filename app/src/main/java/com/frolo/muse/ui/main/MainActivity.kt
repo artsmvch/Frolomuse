@@ -25,9 +25,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProviders
-import com.frolo.muse.Logger
-import com.frolo.muse.R
-import com.frolo.muse.StyleUtil
+import com.frolo.muse.*
 import com.frolo.muse.android.ViewAppSettingsIntent
 import com.frolo.muse.android.startActivitySafely
 import com.frolo.muse.arch.observe
@@ -118,8 +116,13 @@ class MainActivity : PlayerHostActivity(),
 
     @get:ColorInt
     private val actionModeBackgroundColor: Int by lazy {
-        // TODO: we need to be careful with this because the actual value of this attribute may be a drawable
-        StyleUtil.resolveColor(this, R.attr.actionModeBackground)
+        try {
+            StyleUtil.resolveColor(this, R.attr.actionModeBackground)
+        } catch (error: Throwable) {
+            // This is probably a drawable
+            DebugUtils.dumpOnMainThread(error)
+            StyleUtil.resolveColor(this, android.R.attr.navigationBarColor)
+        }
     }
 
     @get:Px
