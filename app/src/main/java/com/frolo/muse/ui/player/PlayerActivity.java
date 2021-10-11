@@ -14,6 +14,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.ParcelFileDescriptor;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -47,6 +49,7 @@ import io.reactivex.schedulers.Schedulers;
 import io.reactivex.schedulers.Timed;
 
 
+@Deprecated
 public class PlayerActivity extends AppCompatActivity {
     private static final String TAG = PlayerActivity.class.getSimpleName();
 
@@ -54,6 +57,13 @@ public class PlayerActivity extends AppCompatActivity {
 
     private static final String ARG_POSITION = "position";
     private static final String ARG_IS_PLAYING = "is_playing";
+
+    private static final int FULLSCREEN_SYSTEM_UI_FLAGS = View.SYSTEM_UI_FLAG_LOW_PROFILE
+            | View.SYSTEM_UI_FLAG_FULLSCREEN
+            | View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
 
     // UI views
     private ImageView imageAlbumArt;
@@ -94,6 +104,8 @@ public class PlayerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 
+        makeFullscreen();
+
         setContentView(R.layout.activity_player);
 
         imageAlbumArt = findViewById(R.id.imv_album_art);
@@ -106,6 +118,15 @@ public class PlayerActivity extends AppCompatActivity {
         handleIntent(getIntent(), savedInstanceState);
         initUI();
         updateUI();
+    }
+
+    private void makeFullscreen() {
+        Window window = getWindow();
+        if (window == null) {
+            return;
+        }
+        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        window.getDecorView().setSystemUiVisibility(FULLSCREEN_SYSTEM_UI_FLAGS);
     }
 
     @Override

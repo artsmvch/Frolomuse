@@ -103,7 +103,8 @@
 
         <activity
             android:name=".ui.player.PlayerActivity"
-            android:theme="@style/Base.AppTheme.Player.Transparent">
+            android:theme="@style/AppTheme.Player.Deprecated.Activity"
+            android:configChanges="orientation|screenSize">
             <intent-filter>
                 <category android:name="android.intent.category.DEFAULT" />
                 <action android:name="android.intent.action.VIEW" />

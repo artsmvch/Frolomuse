@@ -1,9 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="Base.AppTheme.SeekBar.Player" parent="AppTheme.SeekBar.Light.Blue">
+    <style name="AppTheme.Player.Deprecated.SeekBar" parent="AppTheme.SeekBar.Light.Blue">
     </style>
 
-    <style name="Base.AppTheme.Player.Transparent" parent="Base.AppTheme.Light">
+    <style name="AppTheme.Player.Deprecated.Activity.Animation" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:activityOpenExitAnimation">@android:anim/fade_out</item>
+        <item name="android:activityCloseEnterAnimation">@android:anim/fade_out</item>
+        <item name="android:activityCloseExitAnimation">@android:anim/fade_in</item>
+    </style>
+
+    <style name="AppTheme.Player.Deprecated.Activity" parent="Base.AppTheme.Light">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowIsTranslucent">true</item>
@@ -11,10 +18,12 @@
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowActivityTransitions">true</item>
+        <item name="android:windowAnimationStyle">@style/AppTheme.Player.Deprecated.Activity.Animation</item>
 
         <item name="colorPrimaryDark">#202020</item>
         <item name="colorAccent">#DC4D69</item>
 
-        <item name="seekBarStyle">@style/Base.AppTheme.SeekBar.Player</item>
+        <item name="seekBarStyle">@style/AppTheme.Player.Deprecated.SeekBar</item>
     </style>
 </resources>

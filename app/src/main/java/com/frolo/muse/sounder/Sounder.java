@@ -22,6 +22,7 @@ import java.io.FileDescriptor;
  *
  * The Sounder is backed with {@link MediaPlayer} engine.
  */
+@Deprecated
 public final class Sounder {
     private final MediaPlayer mEngine;
     private final Callback mCallback;
