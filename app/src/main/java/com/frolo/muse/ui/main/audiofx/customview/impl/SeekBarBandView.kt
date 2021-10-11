@@ -199,9 +199,9 @@ class SeekBarBandView @JvmOverloads constructor(
     }
 
     private fun calculateThumbCenterX(): Float {
-        val width: Int = verticalSeekBarWrapper.measuredWidth
-                - verticalSeekBarWrapper.paddingLeft
-                - verticalSeekBarWrapper.paddingRight
+        val width: Int = verticalSeekBarWrapper.measuredWidth -
+                verticalSeekBarWrapper.paddingLeft -
+                verticalSeekBarWrapper.paddingRight
         return verticalSeekBarWrapper.left + verticalSeekBarWrapper.paddingLeft + width / 2f
     }
 
