@@ -1058,11 +1058,11 @@ final class SongQuery {
                 filteredSources.add(filteredSource);
             }
             Function<Object[], List<T>> zipper = objects -> {
-                List<T> chunk = new ArrayList<>();
+                List<T> heap = new ArrayList<>();
                 for (Object object : objects) {
-                    chunk.addAll((List<T>) object);
+                    heap.addAll((List<T>) object);
                 }
-                return chunk;
+                return heap;
             };
             Single<List<T>> resultSingle = Single.zip(filteredSources, zipper);
             return resultSingle.toFlowable().onBackpressureLatest();
