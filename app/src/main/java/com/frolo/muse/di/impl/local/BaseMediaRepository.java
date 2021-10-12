@@ -1,5 +1,6 @@
 package com.frolo.muse.di.impl.local;
 
+import android.content.ContentResolver;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
@@ -42,7 +43,12 @@ abstract class BaseMediaRepository<E extends Media> implements MediaRepository<E
     }
 
     @NonNull
-    protected Flowable<SongFilter> getSongFilter() {
+    protected final ContentResolver getContentResolver() {
+        return mConfiguration.getContext().getContentResolver();
+    }
+
+    @NonNull
+    protected final Flowable<SongFilter> getSongFilter() {
         return mConfiguration.getSongFilterProvider().getSongFilter();
     }
 

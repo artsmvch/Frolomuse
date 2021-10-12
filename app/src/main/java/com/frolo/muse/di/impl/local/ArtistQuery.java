@@ -1,42 +1,21 @@
 package com.frolo.muse.di.impl.local;
 
 import android.content.ContentResolver;
-import android.content.ContentUris;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 
 import com.frolo.muse.model.media.Artist;
+import com.frolo.muse.model.media.SongFilter;
+import com.frolo.rxcontent.CursorMapper;
+import com.frolo.rxcontent.RxContent;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Flowable;
-import io.reactivex.functions.Function;
 
 
-final class ArtistQuery {
-    private static final Uri URI = MediaStore.Audio.Artists.EXTERNAL_CONTENT_URI;
-
-    private static final String[] PROJECTION = {
-            MediaStore.Audio.Artists._ID,
-            MediaStore.Audio.Artists.ARTIST,
-            MediaStore.Audio.Artists.NUMBER_OF_TRACKS,
-            MediaStore.Audio.Artists.NUMBER_OF_ALBUMS
-    };
-
-    private static final Query.Builder<Artist> BUILDER =
-            new Query.Builder<Artist>() {
-        @Override
-        public Artist build(Cursor cursor, String[] projection) {
-            return new Artist(
-                    cursor.getLong(cursor.getColumnIndex(PROJECTION[0])),
-                    cursor.getString(cursor.getColumnIndex(PROJECTION[1])),
-                    cursor.getInt(cursor.getColumnIndex(PROJECTION[2])),
-                    cursor.getInt(cursor.getColumnIndex(PROJECTION[3]))
-            );
-        }
-    };
+/* package-private */ final class ArtistQuery {
 
     static final class Sort {
 
@@ -49,87 +28,50 @@ final class ArtistQuery {
         }
     }
 
-    /*package*/ static Flowable<List<Artist>> queryAll(
-            final ContentResolver resolver,
-            final String sortOrder) {
+    private static final Uri URI = MediaStore.Audio.Artists.EXTERNAL_CONTENT_URI;
+
+    private static final String[] PROJECTION = {
+        MediaStore.Audio.Artists._ID,
+        MediaStore.Audio.Artists.ARTIST,
+        MediaStore.Audio.Artists.NUMBER_OF_TRACKS,
+        MediaStore.Audio.Artists.NUMBER_OF_ALBUMS
+    };
+
+    private static final CursorMapper<Artist> CURSOR_MAPPER = new CursorMapper<Artist>() {
+        @Override
+        public Artist map(Cursor cursor) {
+            return new Artist(
+                cursor.getLong(cursor.getColumnIndex(PROJECTION[0])),
+                cursor.getString(cursor.getColumnIndex(PROJECTION[1])),
+                cursor.getInt(cursor.getColumnIndex(PROJECTION[2])),
+                cursor.getInt(cursor.getColumnIndex(PROJECTION[3]))
+            );
+        }
+    };
+
+    static Flowable<List<Artist>> queryAll(ContentResolver resolver, SongFilter songFilter, String sortOrder) {
         final String selection = null;
         final String[] selectionArgs = null;
-        return Query.query(
-                resolver,
-                URI,
-                PROJECTION,
-                selection,
-                selectionArgs,
-                sortOrder,
-                BUILDER);
+        Flowable<List<Artist>> source = RxContent.query(resolver, URI, PROJECTION,
+                selection, selectionArgs, sortOrder, ExecutorHolder.workerExecutor(), CURSOR_MAPPER);
+        return SongQuery.filterArtists(resolver, source, songFilter);
     }
 
-    /*package*/ static Flowable<List<Artist>> queryAll(
-            final ContentResolver resolver,
-            final String sortOrder,
-            final int minSongDuration) {
-        final String selection = null;
-        final String[] selectionArgs = null;
-        return Query.query(
-                resolver,
-                URI,
-                PROJECTION,
-                selection,
-                selectionArgs,
-                sortOrder,
-                BUILDER
-        ).map(new Function<List<Artist>, List<Artist>>() {
-            @Override
-            public List<Artist> apply(List<Artist> artists) {
-                if (minSongDuration <= 0)
-                    return artists;
-
-                try {
-                    final List<Artist> filtered = new ArrayList<>(artists.size());
-                    for (Artist artist : artists) {
-                        int maxSongDuration = SongQuery.getMaxSongDurationInArtist(resolver, artist);
-                        if (maxSongDuration / 1000 >= minSongDuration) {
-                            filtered.add(artist);
-                        }
-                    }
-                    return filtered;
-                } catch (Throwable ignored) {
-                    return artists;
-                }
-            }
-        });
+    static Flowable<List<Artist>> queryAll(ContentResolver resolver, SongFilter songFilter) {
+        return queryAll(resolver, songFilter, Sort.BY_ARTIST);
     }
 
-    /*package*/ static Flowable<List<Artist>> queryAll(ContentResolver resolver) {
-        return queryAll(resolver, Sort.BY_ARTIST);
-    }
-
-    /*package*/ static Flowable<List<Artist>> queryAllFiltered(
-            ContentResolver resolver,
-            String filter) {
+    static Flowable<List<Artist>> queryAllFiltered(ContentResolver resolver, SongFilter songFilter, String namePiece) {
         final String selection = MediaStore.Audio.Artists.ARTIST + " LIKE ?";
-        final String[] selectionArgs = new String[]{ "%" + filter + "%" };
+        final String[] selectionArgs = new String[] { "%" + namePiece + "%" };
         final String sortOrder = Sort.BY_ARTIST;
-        return Query.query(
-                resolver,
-                URI,
-                PROJECTION,
-                selection,
-                selectionArgs,
-                sortOrder,
-                BUILDER);
+        Flowable<List<Artist>> source = RxContent.query(resolver, URI, PROJECTION,
+                selection, selectionArgs, sortOrder, ExecutorHolder.workerExecutor(), CURSOR_MAPPER);
+        return SongQuery.filterArtists(resolver, source, songFilter);
     }
 
-    /*package*/ static Flowable<Artist> querySingle(
-            final ContentResolver resolver,
-            final long itemId) {
-        return Query.querySingle(
-                resolver,
-                URI,
-                PROJECTION,
-                itemId,
-                BUILDER
-        );
+    static Flowable<Artist> queryItem(ContentResolver resolver, long itemId) {
+        return RxContent.queryItem(resolver, URI, PROJECTION, itemId, ExecutorHolder.workerExecutor(), CURSOR_MAPPER);
     }
 
     private ArtistQuery() {

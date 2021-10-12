@@ -64,7 +64,7 @@ public final class AlbumRepositoryImpl extends BaseMediaRepository<Album> implem
 
     @Override
     public Flowable<Album> getItem(final long id) {
-        return AlbumQuery.querySingle(getContext().getContentResolver(), id);
+        return AlbumQuery.queryItem(getContext().getContentResolver(), id);
     }
 
     @Override
@@ -109,7 +109,9 @@ public final class AlbumRepositoryImpl extends BaseMediaRepository<Album> implem
 
     @Override
     public Single<List<Song>> collectSongs(Album item) {
-        return SongQuery.queryForAlbum(getContext().getContentResolver(), item, SongQuery.Sort.BY_TITLE).firstOrError();
+        return getSongFilter().switchMap(songFilter ->
+                SongQuery.query(getContentResolver(), songFilter, AlbumQuery.Sort.BY_ALBUM, item))
+                .firstOrError();
     }
 
     @Override

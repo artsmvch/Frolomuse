@@ -15,7 +15,7 @@ import io.reactivex.Flowable;
 import io.reactivex.Single;
 
 
-public class ArtistRepositoryImpl extends BaseMediaRepository<Artist> implements ArtistRepository {
+public final class ArtistRepositoryImpl extends BaseMediaRepository<Artist> implements ArtistRepository {
 
     private final static String[] SORT_ORDER_KEYS = {
         ArtistQuery.Sort.BY_ARTIST,
@@ -42,26 +42,22 @@ public class ArtistRepositoryImpl extends BaseMediaRepository<Artist> implements
 
     @Override
     public Flowable<List<Artist>> getAllItems() {
-        return ArtistQuery.queryAll(getContext().getContentResolver());
+        return getSongFilter().switchMap(songFilter -> ArtistQuery.queryAll(getContentResolver(), songFilter));
     }
 
     @Override
     public Flowable<List<Artist>> getAllItems(final String sortOrder) {
-        return ArtistQuery.queryAll(
-                getContext().getContentResolver(),
-                sortOrder);
+        return getSongFilter().switchMap(songFilter -> ArtistQuery.queryAll(getContentResolver(), songFilter, sortOrder));
     }
 
     @Override
     public Flowable<List<Artist>> getFilteredItems(final String namePiece) {
-        return ArtistQuery.queryAllFiltered(
-                getContext().getContentResolver(),
-                namePiece);
+        return getSongFilter().switchMap(songFilter -> ArtistQuery.queryAllFiltered(getContentResolver(), songFilter, namePiece));
     }
 
     @Override
     public Flowable<Artist> getItem(final long id) {
-        return ArtistQuery.querySingle(getContext().getContentResolver(), id);
+        return ArtistQuery.queryItem(getContext().getContentResolver(), id);
     }
 
     @Override
@@ -78,10 +74,7 @@ public class ArtistRepositoryImpl extends BaseMediaRepository<Artist> implements
     public Completable addToPlaylist(Playlist playlist, Artist item) {
         if (playlist.isFromSharedStorage()) {
             // Legacy
-            return PlaylistHelper.addArtistToPlaylist(
-                    getContext().getContentResolver(),
-                    playlist.getId(),
-                    item.getId());
+            return PlaylistHelper.addArtistToPlaylist(getContentResolver(), playlist.getId(), item.getId());
         } else {
             // New playlist storage
             return collectSongs(item).flatMapCompletable(songs -> PlaylistDatabaseManager.get(getContext())
@@ -93,10 +86,7 @@ public class ArtistRepositoryImpl extends BaseMediaRepository<Artist> implements
     public Completable addToPlaylist(Playlist playlist, Collection<Artist> items) {
         if (playlist.isFromSharedStorage()) {
             // Legacy
-            return PlaylistHelper.addItemsToPlaylist(
-                    getContext().getContentResolver(),
-                    playlist.getId(),
-                    items);
+            return PlaylistHelper.addItemsToPlaylist(getContentResolver(), playlist.getId(), items);
         } else {
             // New playlist storage
             return collectSongs(items).flatMapCompletable(songs -> PlaylistDatabaseManager.get(getContext())
@@ -106,10 +96,8 @@ public class ArtistRepositoryImpl extends BaseMediaRepository<Artist> implements
 
     @Override
     public Single<List<Song>> collectSongs(Artist item) {
-        return SongQuery.queryForArtist(
-                getContext().getContentResolver(),
-                item,
-                SongQuery.Sort.BY_TITLE)
+        return getSongFilter().switchMap(songFilter ->
+                SongQuery.query(getContentResolver(), songFilter, ArtistQuery.Sort.BY_ARTIST, item))
                 .firstOrError();
     }
 

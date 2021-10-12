@@ -89,6 +89,8 @@ final class SongQuery {
         }
     }
 
+    private static final String[] EMPTY_PROJECTION = new String[0];
+
     private static final String[] PROJECTION_SONG = new String[] {
             MediaStore.Audio.Media._ID,
             MediaStore.Audio.Media.DATA,
@@ -1021,9 +1023,8 @@ final class SongQuery {
         return query(resolver, filter, sortOrder);
     }
 
-    private static boolean blockingHasEntries(
-            ContentResolver resolver, Uri uri, String selection, String[] selectionArgs) {
-        Cursor cursor = resolver.query(uri, new String[0], selection, selectionArgs, null);
+    private static boolean blockingHasEntries(ContentResolver resolver, Uri uri, String selection, String[] selectionArgs) {
+        Cursor cursor = resolver.query(uri, EMPTY_PROJECTION, selection, selectionArgs, null);
         if (cursor == null) {
             return true;
         }
@@ -1102,9 +1103,14 @@ final class SongQuery {
 //        });
 //    }
 
-    static Flowable<List<Album>> filter(
+    static Flowable<List<Album>> filterAlbums(
             ContentResolver resolver, Flowable<List<Album>> source, final SongFilter filter) {
         return filterImpl(resolver, source, album -> filter.newBuilder().setAlbumId(album.getId()).build());
+    }
+
+    static Flowable<List<Artist>> filterArtists(
+            ContentResolver resolver, Flowable<List<Artist>> source, final SongFilter filter) {
+        return filterImpl(resolver, source, artist -> filter.newBuilder().setArtistId(artist.getId()).build());
     }
 
     private SongQuery() {

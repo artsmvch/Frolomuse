@@ -1,6 +1,5 @@
 package com.frolo.muse.di.impl.local
 
-import android.content.ContentResolver
 import android.os.Build
 import android.provider.MediaStore
 import androidx.annotation.RequiresApi
@@ -26,7 +25,6 @@ internal class MediaFileRepositoryImpl(
     private val songRepository: SongRepository
 ) : BaseMediaRepository<MediaFile>(configuration), MediaFileRepository {
 
-    private val contentResolver: ContentResolver get() = configuration.context.contentResolver
     private val queryExecutor: Executor get() = configuration.queryExecutor
 
     override fun getAudioFiles(): Flowable<List<MediaFile>> {
