@@ -11,15 +11,6 @@ import io.reactivex.Flowable;
 public interface AlbumRepository extends MediaRepository<Album> {
 
     /**
-     * Retrieves all albums that have at least one song with a duration not shorter than <code>minSongDuration</code>.
-     * The items are sorted by <code>sortOrder</code>
-     * @param sortOrder to sort the items
-     * @param minSongDuration min acceptable duration for songs in the albums
-     * @return albums
-     */
-    Flowable<List<Album>> getAllItems(String sortOrder, int minSongDuration);
-
-    /**
      * Returns an item for preview (for example, theme preview).
      * @return item for preview
      */

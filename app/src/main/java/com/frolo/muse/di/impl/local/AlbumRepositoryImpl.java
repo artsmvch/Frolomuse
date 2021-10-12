@@ -1,7 +1,5 @@
 package com.frolo.muse.di.impl.local;
 
-import android.content.Context;
-
 import com.frolo.muse.R;
 import com.frolo.muse.model.media.Album;
 import com.frolo.muse.model.media.Artist;
@@ -18,7 +16,7 @@ import io.reactivex.Flowable;
 import io.reactivex.Single;
 
 
-public class AlbumRepositoryImpl extends BaseMediaRepository<Album> implements AlbumRepository {
+public final class AlbumRepositoryImpl extends BaseMediaRepository<Album> implements AlbumRepository {
 
     private final static String[] SORT_ORDER_KEYS = {
         AlbumQuery.Sort.BY_ALBUM,
@@ -29,8 +27,8 @@ public class AlbumRepositoryImpl extends BaseMediaRepository<Album> implements A
         return Preconditions.takeIfNotNullAndListedOrDefault(candidate, SORT_ORDER_KEYS, AlbumQuery.Sort.BY_ALBUM);
     }
 
-    public AlbumRepositoryImpl(Context context) {
-        super(context);
+    public AlbumRepositoryImpl(LibraryConfiguration configuration) {
+        super(configuration);
     }
 
     @Override
@@ -43,27 +41,25 @@ public class AlbumRepositoryImpl extends BaseMediaRepository<Album> implements A
 
     @Override
     public Flowable<List<Album>> getAllItems() {
-        return AlbumQuery.queryAll(getContext().getContentResolver());
+        return getSongFilter().switchMap(filter ->
+                AlbumQuery.queryAll(getContext().getContentResolver(), filter, AlbumQuery.Sort.BY_ALBUM));
     }
 
     @Override
     public Flowable<List<Album>> getAllItems(final String sortOrder) {
-        return AlbumQuery.queryAll(getContext().getContentResolver(), sortOrder);
-    }
-
-    @Override
-    public Flowable<List<Album>> getAllItems(String sortOrder, int minSongDuration) {
-        return AlbumQuery.queryAll(getContext().getContentResolver(), sortOrder, minSongDuration);
+        return getSongFilter().switchMap(filter ->
+                AlbumQuery.queryAll(getContext().getContentResolver(), filter, sortOrder));
     }
 
     @Override
     public Flowable<Album> getItemForPreview() {
-        return AlbumQuery.querySingleForPreview(getContext().getContentResolver());
+        return AlbumQuery.queryForPreview(getContext().getContentResolver());
     }
 
     @Override
-    public Flowable<List<Album>> getFilteredItems(final String filter) {
-        return AlbumQuery.queryAllFiltered(getContext().getContentResolver(), filter);
+    public Flowable<List<Album>> getFilteredItems(final String namePiece) {
+        return getSongFilter().switchMap(filter ->
+                AlbumQuery.queryAllFiltered(getContext().getContentResolver(), filter, namePiece));
     }
 
     @Override
@@ -113,19 +109,7 @@ public class AlbumRepositoryImpl extends BaseMediaRepository<Album> implements A
 
     @Override
     public Single<List<Song>> collectSongs(Album item) {
-        return SongQuery.queryForAlbum(
-                getContext().getContentResolver(),
-                item,
-                SongQuery.Sort.BY_TITLE)
-                .firstOrError();
-    }
-
-    @Override
-    public Single<List<Song>> collectSongs(Collection<Album> items) {
-        return SongQuery.queryForAlbums(
-                getContext().getContentResolver(),
-                items)
-                .firstOrError();
+        return SongQuery.queryForAlbum(getContext().getContentResolver(), item, SongQuery.Sort.BY_TITLE).firstOrError();
     }
 
     @Override
@@ -145,17 +129,13 @@ public class AlbumRepositoryImpl extends BaseMediaRepository<Album> implements A
 
     @Override
     public Flowable<List<Album>> getAlbumsOfArtist(final Artist artist) {
-        return AlbumQuery.queryForArtist(
-                getContext().getContentResolver(),
-                artist.getId());
+        return getSongFilter().switchMap(filter ->
+                AlbumQuery.queryForArtist(getContext().getContentResolver(), filter, artist.getId()));
     }
 
     @Override
     public Completable updateArt(final long albumId, final String filepath) {
-        return AlbumQuery.updateAlbumArtPath(
-                getContext().getContentResolver(),
-                albumId,
-                filepath);
+        return AlbumQuery.updateAlbumArtPath(getContext().getContentResolver(), albumId, filepath);
     }
 
     @Override

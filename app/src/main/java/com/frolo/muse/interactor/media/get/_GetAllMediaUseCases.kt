@@ -31,7 +31,6 @@ fun GetAllSongsUseCase(
 
     override fun getSortedCollection(sortOrder: String): Flowable<List<Song>> =
         repository.getAllItems(sortOrder)
-            .excludeShortSongs(preferences)
 
 }
 
@@ -47,9 +46,7 @@ fun GetAllArtistsUseCase(
 ) {
 
     override fun getSortedCollection(sortOrder: String): Flowable<List<Artist>> {
-        return preferences.minAudioFileDuration.flatMap { minSongDuration ->
-            repository.getAllItems(sortOrder, minSongDuration)
-        }
+        return repository.getAllItems(sortOrder)
     }
 
 }
@@ -66,9 +63,7 @@ fun GetAllAlbumsUseCase(
 ) {
 
     override fun getSortedCollection(sortOrder: String): Flowable<List<Album>> {
-        return preferences.minAudioFileDuration.flatMap { minSongDuration ->
-            repository.getAllItems(sortOrder, minSongDuration)
-        }
+        return repository.getAllItems(sortOrder)
     }
 
 }
@@ -85,9 +80,7 @@ fun GetAllGenresUseCase(
 ) {
 
     override fun getSortedCollection(sortOrder: String): Flowable<List<Genre>> {
-        return preferences.minAudioFileDuration.flatMap { minSongDuration ->
-            repository.getAllItems(sortOrder, minSongDuration)
-        }
+        return repository.getAllItems(sortOrder)
     }
 
 }

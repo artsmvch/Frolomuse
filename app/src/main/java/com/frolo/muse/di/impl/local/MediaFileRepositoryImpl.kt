@@ -1,7 +1,6 @@
 package com.frolo.muse.di.impl.local
 
 import android.content.ContentResolver
-import android.content.Context
 import android.os.Build
 import android.provider.MediaStore
 import androidx.annotation.RequiresApi
@@ -23,12 +22,12 @@ import java.util.concurrent.Executor
 
 @RequiresApi(Build.VERSION_CODES.Q)
 internal class MediaFileRepositoryImpl(
-    context: Context,
-    private val queryExecutor: Executor,
+    private val configuration: LibraryConfiguration,
     private val songRepository: SongRepository
-) : BaseMediaRepository<MediaFile>(context), MediaFileRepository {
+) : BaseMediaRepository<MediaFile>(configuration), MediaFileRepository {
 
-    private val contentResolver: ContentResolver get() = context.contentResolver
+    private val contentResolver: ContentResolver get() = configuration.context.contentResolver
+    private val queryExecutor: Executor get() = configuration.queryExecutor
 
     override fun getAudioFiles(): Flowable<List<MediaFile>> {
         val selection = MediaStore.Files.FileColumns.MEDIA_TYPE + " = ?"
@@ -70,9 +69,9 @@ internal class MediaFileRepositoryImpl(
                 selectionArgs, validatedSortOrder, queryExecutor, CURSOR_MAPPER)
     }
 
-    override fun getFilteredItems(filter: String?): Flowable<List<MediaFile>> {
+    override fun getFilteredItems(namePiece: String?): Flowable<List<MediaFile>> {
         val selection = MediaStore.Files.FileColumns.DISPLAY_NAME + " = ?"
-        val selectionArgs = arrayOf(filter.orEmpty())
+        val selectionArgs = arrayOf(namePiece.orEmpty())
         return RxContent.query(contentResolver, URI, PROJECTION, selection,
                 selectionArgs, null, queryExecutor, CURSOR_MAPPER)
     }

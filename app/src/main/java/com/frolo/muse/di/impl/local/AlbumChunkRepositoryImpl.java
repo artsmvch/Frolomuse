@@ -1,7 +1,5 @@
 package com.frolo.muse.di.impl.local;
 
-import android.content.Context;
-
 import com.frolo.muse.R;
 import com.frolo.muse.model.sort.SortOrder;
 import com.frolo.muse.repository.AlbumChunkRepository;
@@ -23,8 +21,8 @@ public class AlbumChunkRepositoryImpl extends SongRepositoryImpl implements Albu
         return Preconditions.takeIfNotNullAndListedOrDefault(candidate, SORT_ORDER_KEYS, SongQuery.Sort.BY_DEFAULT);
     }
 
-    public AlbumChunkRepositoryImpl(Context context) {
-        super(context);
+    public AlbumChunkRepositoryImpl(LibraryConfiguration configuration) {
+        super(configuration);
     }
 
     @Override

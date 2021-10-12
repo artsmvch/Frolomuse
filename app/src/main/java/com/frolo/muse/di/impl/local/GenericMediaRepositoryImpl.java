@@ -120,13 +120,13 @@ public class GenericMediaRepositoryImpl implements GenericMediaRepository {
     }
 
     @Override
-    public Flowable<List<Media>> getFilteredItems(String filter) {
+    public Flowable<List<Media>> getFilteredItems(String namePiece) {
         return Flowable.combineLatest(
-                mSongRepo.getFilteredItems(filter),
-                mAlbumRepo.getFilteredItems(filter),
-                mArtistRepo.getFilteredItems(filter),
-                mGenreRepo.getFilteredItems(filter),
-                mPlaylistRepo.getFilteredItems(filter),
+                mSongRepo.getFilteredItems(namePiece),
+                mAlbumRepo.getFilteredItems(namePiece),
+                mArtistRepo.getFilteredItems(namePiece),
+                mGenreRepo.getFilteredItems(namePiece),
+                mPlaylistRepo.getFilteredItems(namePiece),
                 createCombiner());
     }
 

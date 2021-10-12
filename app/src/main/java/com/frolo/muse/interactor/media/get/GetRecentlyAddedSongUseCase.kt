@@ -38,7 +38,6 @@ class GetRecentlyAddedSongUseCase @Inject constructor(
         return Single.fromCallable { calculatePeriodLastTimestamp(period) }
                 .flatMapPublisher { timestamp -> repository.getRecentlyAddedSongs(timestamp) }
                 .subscribeOn(schedulerProvider.worker())
-                .excludeShortSongs(preferences)
     }
 
     fun getRecentPeriodMenu(): Single<RecentPeriodMenu> {

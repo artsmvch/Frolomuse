@@ -1,7 +1,6 @@
 package com.frolo.muse.di.impl.local
 
 import android.annotation.SuppressLint
-import android.content.ContentUris
 import android.content.Context
 import android.net.Uri
 import android.provider.MediaStore
@@ -15,9 +14,7 @@ import com.frolo.muse.ThreadStrictMode
 import com.frolo.muse.database.FrolomuseDatabase
 import com.frolo.muse.database.entity.*
 import com.frolo.muse.kotlin.contains
-import com.frolo.muse.model.media.Playlist
-import com.frolo.muse.model.media.Song
-import com.frolo.muse.model.media.Songs
+import com.frolo.muse.model.media.*
 import com.frolo.rxcontent.CursorMapper
 import com.frolo.rxcontent.RxContent
 import io.reactivex.Completable
@@ -491,6 +488,7 @@ internal class PlaylistDatabaseManager private constructor(private val context: 
         val entity: PlaylistMemberEntity
     ) : Song, Serializable {
         override fun getId(): Long = song.id
+        override fun getSongType(): SongType = song.songType
         override fun getSource(): String? = song.source
         override fun getTitle(): String? = song.title
         override fun getAlbumId(): Long = song.albumId
@@ -525,12 +523,19 @@ internal class PlaylistDatabaseManager private constructor(private val context: 
             MediaStore.Audio.Media.ARTIST,
             MediaStore.Audio.Media.DURATION,
             MediaStore.Audio.Media.YEAR,
-            MediaStore.Audio.Media.TRACK
+            MediaStore.Audio.Media.TRACK,
+            MediaStore.Audio.Media.IS_MUSIC,
+            MediaStore.Audio.Media.IS_PODCAST,
+            MediaStore.Audio.Media.IS_RINGTONE,
+            MediaStore.Audio.Media.IS_ALARM,
+            MediaStore.Audio.Media.IS_NOTIFICATION,
+            MediaStore.Audio.Media.IS_AUDIOBOOK
         )
 
         private val SONG_CURSOR_MAPPER = CursorMapper<Song> { cursor ->
             Songs.create(
                 cursor.getLong(cursor.getColumnIndex(SONG_PROJECTION[0])),
+                SongQueryHelper.getSongType(cursor),
                 cursor.getString(cursor.getColumnIndex(SONG_PROJECTION[1])),
                 cursor.getString(cursor.getColumnIndex(SONG_PROJECTION[2])),
                 cursor.getLong(cursor.getColumnIndex(SONG_PROJECTION[3])),

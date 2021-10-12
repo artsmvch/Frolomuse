@@ -1,7 +1,5 @@
 package com.frolo.muse.di.impl.local;
 
-import android.content.Context;
-
 import com.frolo.muse.Features;
 import com.frolo.muse.R;
 import com.frolo.muse.model.media.Playlist;
@@ -38,8 +36,8 @@ public class PlaylistRepositoryImpl extends BaseMediaRepository<Playlist> implem
         return Preconditions.takeIfNotNullAndListedOrDefault(candidate, SORT_ORDER_KEYS, PlaylistQuery.Sort.BY_NAME);
     }
 
-    public PlaylistRepositoryImpl(final Context context) {
-        super(context);
+    public PlaylistRepositoryImpl(LibraryConfiguration configuration) {
+        super(configuration);
     }
 
     @Override
@@ -116,13 +114,13 @@ public class PlaylistRepositoryImpl extends BaseMediaRepository<Playlist> implem
     }
 
     @Override
-    public Flowable<List<Playlist>> getFilteredItems(final String filter) {
+    public Flowable<List<Playlist>> getFilteredItems(final String namePiece) {
         if (Features.isAppPlaylistStorageFeatureAvailable()) {
             // New playlist storage
-            return PlaylistDatabaseManager.get(getContext()).queryAllPlaylistsFiltered(filter);
+            return PlaylistDatabaseManager.get(getContext()).queryAllPlaylistsFiltered(namePiece);
         } else {
             // Legacy
-            return PlaylistQuery.queryAllFiltered(getContext().getContentResolver(), filter);
+            return PlaylistQuery.queryAllFiltered(getContext().getContentResolver(), namePiece);
         }
     }
 

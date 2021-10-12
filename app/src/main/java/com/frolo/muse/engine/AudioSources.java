@@ -15,6 +15,7 @@ public final class AudioSources {
 
     private static final class SimpleAudioMetadata implements AudioMetadata {
 
+        final AudioType audioType;
         final String title;
         final long albumId;
         final String album;
@@ -26,6 +27,7 @@ public final class AudioSources {
         final int trackNumber;
 
         SimpleAudioMetadata(
+            AudioType audioType,
             String title,
             long albumId,
             String album,
@@ -36,6 +38,7 @@ public final class AudioSources {
             int year,
             int trackNumber
         ) {
+            this.audioType = audioType;
             this.title = title != null ? title : "";
             this.albumId = albumId;
             this.album = album != null ? album : "";
@@ -53,7 +56,8 @@ public final class AudioSources {
             if (obj == this) return true;
             if (obj != null && obj instanceof SimpleAudioMetadata) {
                 SimpleAudioMetadata another = (SimpleAudioMetadata) obj;
-                return Objects.equals(title, another.title)
+                return audioType == another.audioType
+                        && Objects.equals(title, another.title)
                         && albumId == another.albumId
                         && Objects.equals(album, another.album)
                         && artistId == another.artistId
@@ -63,6 +67,11 @@ public final class AudioSources {
                         && year == another.year
                         && trackNumber == another.trackNumber;
             } else return false;
+        }
+
+        @Override
+        public AudioType getAudioType() {
+            return audioType;
         }
 
         public String getTitle() {
@@ -162,6 +171,7 @@ public final class AudioSources {
 
     @NotNull
     public static AudioMetadata createMetadata(
+        AudioType audioType,
         String title,
         long albumId,
         String album,
@@ -172,12 +182,14 @@ public final class AudioSources {
         int year,
         int trackNumber
     ) {
-        return new SimpleAudioMetadata(title, albumId, album, artistId, artist, genre, duration, year, trackNumber);
+        return new SimpleAudioMetadata(audioType, title, albumId, album,
+                artistId, artist, genre, duration, year, trackNumber);
     }
 
     @NotNull
     public static AudioMetadata copyMetadata(@NotNull AudioMetadata metadata) {
         return createMetadata(
+            metadata.getAudioType(),
             metadata.getTitle(),
             metadata.getAlbumId(),
             metadata.getAlbum(),

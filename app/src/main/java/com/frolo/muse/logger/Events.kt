@@ -364,3 +364,16 @@ fun EventLogger.logPurchasedProduct(productId: ProductId) {
 }
 
 //endregion
+
+
+//region Library song filter
+
+fun EventLogger.logLibrarySongFilterViewed() {
+    log("library_song_filter_viewed")
+}
+
+fun EventLogger.logLibrarySongFilterSaved() {
+    log("library_song_filter_saved")
+}
+
+//endregion

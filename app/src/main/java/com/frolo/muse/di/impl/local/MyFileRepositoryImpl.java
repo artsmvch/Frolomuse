@@ -42,9 +42,9 @@ public class MyFileRepositoryImpl extends BaseMediaRepository<MyFile> implements
 
     private final SharedPreferences mPrefs;
 
-    public MyFileRepositoryImpl(Context context) {
-        super(context);
-        mPrefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+    public MyFileRepositoryImpl(LibraryConfiguration configuration) {
+        super(configuration);
+        mPrefs = configuration.getContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
     }
 
     @Override
@@ -66,7 +66,7 @@ public class MyFileRepositoryImpl extends BaseMediaRepository<MyFile> implements
     }
 
     @Override
-    public Flowable<List<MyFile>> getFilteredItems(String filter) {
+    public Flowable<List<MyFile>> getFilteredItems(String namePiece) {
         return Flowable.error(new UnsupportedOperationException());
     }
 
@@ -121,14 +121,6 @@ public class MyFileRepositoryImpl extends BaseMediaRepository<MyFile> implements
                 getContext().getContentResolver(),
                 item,
                 SongQuery.Sort.BY_TITLE)
-                .firstOrError();
-    }
-
-    @Override
-    public Single<List<Song>> collectSongs(Collection<MyFile> items) {
-        return SongQuery.queryForMyFiles(
-                getContext().getContentResolver(),
-                items)
                 .firstOrError();
     }
 

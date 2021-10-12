@@ -19,6 +19,7 @@ public final class Songs {
     private static class SimpleSong implements Song, Serializable, MediaStoreRow {
 
         final long id;
+        final SongType songType;
         final String source;
         final String title;
         final long albumId;
@@ -32,6 +33,7 @@ public final class Songs {
 
         SimpleSong(
             long id,
+            SongType songType,
             String source,
             String title,
             long albumId,
@@ -44,6 +46,7 @@ public final class Songs {
             int trackNumber
         ) {
             this.id = id;
+            this.songType = songType;
             this.source = source;
             this.title = title != null ? title : "";
             this.albumId = albumId;
@@ -54,6 +57,11 @@ public final class Songs {
             this.duration = duration;
             this.year = year;
             this.trackNumber = trackNumber;
+        }
+
+        @Override
+        public SongType getSongType() {
+            return songType;
         }
 
         public String getSource() {
@@ -68,6 +76,7 @@ public final class Songs {
                 SimpleSong another = (SimpleSong) obj;
                 return id == another.id
                         && Objects.equals(source, another.source)
+                        && songType == another.songType
                         && Objects.equals(title, another.title)
                         && albumId == another.albumId
                         && Objects.equals(album, another.album)
@@ -147,6 +156,7 @@ public final class Songs {
     /**
      * Creates an instance of type Song.
      * @param id song ID
+     * @param songType song type
      * @param source source
      * @param title title
      * @param albumId album ID
@@ -161,6 +171,7 @@ public final class Songs {
      */
     public static Song create(
         long id,
+        SongType songType,
         String source,
         String title,
         long albumId,
@@ -172,7 +183,8 @@ public final class Songs {
         int year,
         int trackNumber
     ) {
-        return new SimpleSong(id, source, title, albumId, album, artistId, artist, genre, duration, year, trackNumber);
+        return new SimpleSong(id, songType, source, title, albumId, album,
+                artistId, artist, genre, duration, year, trackNumber);
     }
 
     /**
@@ -186,6 +198,7 @@ public final class Songs {
 
         return create(
             src.getId(),
+            src.getSongType(),
             src.getSource(),
             src.getTitle(),
             src.getAlbumId(),

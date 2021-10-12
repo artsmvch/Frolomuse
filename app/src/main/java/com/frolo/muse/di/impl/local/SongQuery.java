@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 
+import com.frolo.muse.DebugUtils;
 import com.frolo.muse.content.AppMediaStore;
 import com.frolo.muse.model.media.Album;
 import com.frolo.muse.model.media.Artist;
@@ -15,6 +16,7 @@ import com.frolo.muse.model.media.MediaFile;
 import com.frolo.muse.model.media.MyFile;
 import com.frolo.muse.model.media.Playlist;
 import com.frolo.muse.model.media.Song;
+import com.frolo.muse.model.media.SongFilter;
 import com.frolo.muse.model.media.SongWithPlayCount;
 import com.frolo.muse.model.media.Songs;
 
@@ -33,6 +35,7 @@ import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.FlowableEmitter;
 import io.reactivex.FlowableOnSubscribe;
+import io.reactivex.Single;
 import io.reactivex.disposables.Disposables;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Function;
@@ -96,7 +99,13 @@ final class SongQuery {
             MediaStore.Audio.Media.ARTIST,
             MediaStore.Audio.Media.DURATION,
             MediaStore.Audio.Media.YEAR,
-            MediaStore.Audio.Media.TRACK
+            MediaStore.Audio.Media.TRACK,
+            MediaStore.Audio.Media.IS_MUSIC,
+            MediaStore.Audio.Media.IS_PODCAST,
+            MediaStore.Audio.Media.IS_RINGTONE,
+            MediaStore.Audio.Media.IS_ALARM,
+            MediaStore.Audio.Media.IS_NOTIFICATION,
+            MediaStore.Audio.Media.IS_AUDIOBOOK
     };
 
     private static final String[] PROJECTION_PLAYLIST_MEMBER = new String[] {
@@ -109,7 +118,13 @@ final class SongQuery {
             MediaStore.Audio.Playlists.Members.ARTIST,
             MediaStore.Audio.Playlists.Members.DURATION,
             MediaStore.Audio.Playlists.Members.YEAR,
-            MediaStore.Audio.Playlists.Members.TRACK
+            MediaStore.Audio.Playlists.Members.TRACK,
+            MediaStore.Audio.Playlists.Members.IS_MUSIC,
+            MediaStore.Audio.Playlists.Members.IS_PODCAST,
+            MediaStore.Audio.Playlists.Members.IS_RINGTONE,
+            MediaStore.Audio.Playlists.Members.IS_ALARM,
+            MediaStore.Audio.Playlists.Members.IS_NOTIFICATION,
+            MediaStore.Audio.Playlists.Members.IS_AUDIOBOOK
     };
 
     private static final String[] PROJECTION_SONG_PLAY_COUNT = new String[] {
@@ -124,6 +139,7 @@ final class SongQuery {
         public Song build(Cursor cursor, String[] projection) {
             return Songs.create(
                     cursor.getLong(cursor.getColumnIndex(PROJECTION_SONG[0])),
+                    SongQueryHelper.getSongType(cursor),
                     cursor.getString(cursor.getColumnIndex(PROJECTION_SONG[1])),
                     cursor.getString(cursor.getColumnIndex(PROJECTION_SONG[2])),
                     cursor.getLong(cursor.getColumnIndex(PROJECTION_SONG[3])),
@@ -144,6 +160,7 @@ final class SongQuery {
         public Song build(Cursor cursor, String[] projection) {
             return Songs.create(
                     cursor.getLong(cursor.getColumnIndex(PROJECTION_PLAYLIST_MEMBER[0])),
+                    SongQueryHelper.getSongType(cursor),
                     cursor.getString(cursor.getColumnIndex(PROJECTION_PLAYLIST_MEMBER[1])),
                     cursor.getString(cursor.getColumnIndex(PROJECTION_PLAYLIST_MEMBER[2])),
                     cursor.getLong(cursor.getColumnIndex(PROJECTION_PLAYLIST_MEMBER[3])),
@@ -315,6 +332,7 @@ final class SongQuery {
                 });
     }
 
+    @Deprecated
     /*package*/ static Flowable<List<Song>> queryForAlbum(
             final ContentResolver resolver,
             final Album album,
@@ -337,6 +355,7 @@ final class SongQuery {
                 BUILDER_SONG);
     }
 
+    @Deprecated
     /*package*/ static Flowable<List<Song>> queryForAlbums(
             final ContentResolver resolver,
             final Collection<Album> albums) {
@@ -347,6 +366,7 @@ final class SongQuery {
         return Flowable.combineLatest(sources, COMBINER);
     }
 
+    @Deprecated
     /*package*/ static Flowable<List<Song>> queryForArtist(
             final ContentResolver resolver,
             final Artist artist,
@@ -363,6 +383,7 @@ final class SongQuery {
                 BUILDER_SONG);
     }
 
+    @Deprecated
     /*package*/ static Flowable<List<Song>> queryForArtists(
             final ContentResolver resolver,
             final Collection<Artist> artists) {
@@ -373,6 +394,7 @@ final class SongQuery {
         return Flowable.combineLatest(sources, COMBINER);
     }
 
+    @Deprecated
     /*package*/ static Flowable<List<Song>> queryForGenre(
             final ContentResolver resolver,
             final Genre genre,
@@ -391,6 +413,7 @@ final class SongQuery {
                 BUILDER_SONG);
     }
 
+    @Deprecated
     /*package*/ static Flowable<List<Song>> queryForGenres(
             final ContentResolver resolver,
             final Collection<Genre> genres) {
@@ -419,6 +442,7 @@ final class SongQuery {
                 BUILDER_PLAYLIST_MEMBER);
     }
 
+    @Deprecated
     /*package*/ static Flowable<List<Song>> queryForPlaylists(
             final ContentResolver resolver,
             final Collection<Playlist> playlists) {
@@ -429,6 +453,7 @@ final class SongQuery {
         return Flowable.combineLatest(sources, COMBINER);
     }
 
+    @Deprecated
     /*package*/ static Flowable<List<Song>> queryForMyFile(
             final ContentResolver resolver,
             final MyFile myFile,
@@ -457,6 +482,7 @@ final class SongQuery {
         );
     }
 
+    @Deprecated
     /*package*/ static Flowable<List<Song>> queryForMyFiles(
             final ContentResolver resolver,
             final Collection<MyFile> myFiles) {
@@ -467,6 +493,7 @@ final class SongQuery {
         return Flowable.combineLatest(sources, COMBINER);
     }
 
+    @Deprecated
     /*package*/ static Flowable<List<Song>> queryForMediaFiles(
             final ContentResolver resolver,
             final Collection<MediaFile> mediaFiles) {
@@ -484,10 +511,7 @@ final class SongQuery {
         return Flowable.combineLatest(sources, COMBINER);
     }
 
-    /*package*/ static Flowable<List<Song>> queryRecentlyAdded(
-            final ContentResolver resolver,
-            final long dateAdded
-    ) {
+    /*package*/ static Flowable<List<Song>> queryRecentlyAdded(final ContentResolver resolver, final long dateAdded) {
         String selection = MediaStore.Audio.Media.IS_MUSIC + "!= 0" + " AND "
                 + MediaStore.Audio.Media.DATE_ADDED + ">" + dateAdded;
         String[] selectionArgs = null;
@@ -931,6 +955,156 @@ final class SongQuery {
         String selection = null;
         String[] selectionArgs = null;
         return getMaxSongDuration(resolver, uri, selection, selectionArgs);
+    }
+
+    static Flowable<List<Song>> query(final ContentResolver resolver, final Uri uri,
+                                      final SongFilter filter, final String sortOrder) {
+        if (filter.getTypes().isEmpty()) {
+            // No song types defined => early return
+            return Flowable.just(Collections.emptyList());
+        }
+
+        SongQueryHelper.SelectionWithArgs selectionWithArgs = SongQueryHelper.getSelectionWithArgs(filter);
+
+        return Query.query(resolver, uri, PROJECTION_SONG, selectionWithArgs.selection,
+                selectionWithArgs.args, sortOrder, BUILDER_SONG);
+    }
+
+    static Flowable<List<Song>> query(final ContentResolver resolver, final SongFilter filter, final String sortOrder) {
+        return query(resolver, URI, filter, sortOrder);
+    }
+
+    static Flowable<List<Song>> query(final ContentResolver resolver, SongFilter filter,
+                                      final String sortOrder, final Album album) {
+        filter = filter.newBuilder()
+            .setAlbumId(album.getId())
+            .build();
+        return query(resolver, filter, sortOrder);
+    }
+
+    static Flowable<List<Song>> query(final ContentResolver resolver, SongFilter filter,
+                                      final String sortOrder, final Artist artist) {
+        filter = filter.newBuilder()
+            .setArtistId(artist.getId())
+            .build();
+        return query(resolver, filter, sortOrder);
+    }
+
+    static Flowable<List<Song>> query(final ContentResolver resolver, SongFilter filter,
+                                      final String sortOrder, final Genre genre) {
+        Uri uri = MediaStore.Audio.Genres.Members.getContentUri("external", genre.getId());
+//        filter = filter.newBuilder()
+//            .setGenreId(genre.getId())
+//            .build();
+        return query(resolver, uri, filter, sortOrder);
+    }
+
+    static Flowable<List<Song>> query(final ContentResolver resolver, SongFilter filter,
+                                      final String sortOrder, final Playlist playlist) {
+        Uri uri = MediaStore.Audio.Playlists.Members.getContentUri("external", playlist.getId());
+        return query(resolver, uri, filter, sortOrder);
+    }
+
+    static Flowable<List<Song>> query(final ContentResolver resolver, SongFilter filter,
+                                      final String sortOrder, final MyFile myFile) {
+        File javaFile = myFile.getJavaFile();
+        String absolutePath = javaFile.getAbsolutePath();
+        if (javaFile.isFile()) {
+            filter = filter.newBuilder()
+                .setFilepath(absolutePath)
+                .build();
+        } else {
+            filter = filter.newBuilder()
+                .setFolderPath(absolutePath)
+                .build();
+        }
+        return query(resolver, filter, sortOrder);
+    }
+
+    private static boolean blockingHasEntries(
+            ContentResolver resolver, Uri uri, String selection, String[] selectionArgs) {
+        Cursor cursor = resolver.query(uri, new String[0], selection, selectionArgs, null);
+        if (cursor == null) {
+            return true;
+        }
+        try {
+            return cursor.getCount() > 0;
+        } finally {
+            cursor.close();
+        }
+    }
+
+    private static <T> Flowable<List<T>> filterImpl(
+            ContentResolver resolver, Flowable<List<T>> source, Function<T, SongFilter> filterFunc) {
+        return source.switchMap(items -> {
+            List<Single<List<T>>> filteredSources = new ArrayList<>(items.size());
+            for (final T item : items) {
+                Single<List<T>> filteredSource = Single.fromCallable(() -> {
+                    try {
+                        SongFilter resultFilter = filterFunc.apply(item);
+                        SongQueryHelper.SelectionWithArgs selectionWithArgs =
+                                SongQueryHelper.getSelectionWithArgs(resultFilter);
+                        if (blockingHasEntries(resolver, URI, selectionWithArgs.selection, selectionWithArgs.args)) {
+                            return Collections.singletonList(item);
+                        }
+                        return Collections.emptyList();
+                    } catch (Throwable error) {
+                        DebugUtils.dumpOnMainThread(error);
+                        return Collections.singletonList(item);
+                    }
+                });
+                filteredSource = filteredSource.subscribeOn(ExecutorHolder.workerScheduler());
+                filteredSources.add(filteredSource);
+            }
+            Function<Object[], List<T>> zipper = objects -> {
+                List<T> chunk = new ArrayList<>();
+                for (Object object : objects) {
+                    chunk.addAll((List<T>) object);
+                }
+                return chunk;
+            };
+            Single<List<T>> resultSingle = Single.zip(filteredSources, zipper);
+            return resultSingle.toFlowable().onBackpressureLatest();
+        });
+    }
+
+//    static Flowable<List<Album>> filter(
+//            ContentResolver resolver, Flowable<List<Album>> source, final SongFilter filter) {
+//        return source.switchMap(albums -> {
+//            List<Single<List<Album>>> filteredSources = new ArrayList<>(albums.size());
+//            for (final Album album : albums) {
+//                Single<List<Album>> filteredSource = Single.fromCallable(() -> {
+//                    try {
+//                        SongFilter albumFilter = filter.newBuilder().setAlbumId(album.getId()).build();
+//                        SongQueryHelper.SelectionWithArgs selectionWithArgs =
+//                                SongQueryHelper.getSelectionWithArgs(albumFilter);
+//                        if (blockingHasEntries(resolver, URI, selectionWithArgs.selection, selectionWithArgs.args)) {
+//                            return Collections.singletonList(album);
+//                        }
+//                        return Collections.emptyList();
+//                    } catch (Throwable error) {
+//                        DebugUtils.dumpOnMainThread(error);
+//                        return Collections.singletonList(album);
+//                    }
+//                });
+//                filteredSource = filteredSource.subscribeOn(ExecutorHolder.workerScheduler());
+//                filteredSources.add(filteredSource);
+//            }
+//            Function<Object[], List<Album>> zipper = objects -> {
+//                List<Album> chunk = new ArrayList<>();
+//                for (Object object : objects) {
+//                    chunk.addAll((List<Album>) object);
+//                }
+//                return chunk;
+//            };
+//            Single<List<Album>> resultSingle = Single.zip(filteredSources, zipper);
+//            return resultSingle.toFlowable().onBackpressureLatest();
+//        });
+//    }
+
+    static Flowable<List<Album>> filter(
+            ContentResolver resolver, Flowable<List<Album>> source, final SongFilter filter) {
+        return filterImpl(resolver, source, album -> filter.newBuilder().setAlbumId(album.getId()).build());
     }
 
     private SongQuery() {

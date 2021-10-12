@@ -3,11 +3,13 @@ package com.frolo.muse
 import com.frolo.muse.engine.AudioMetadata
 import com.frolo.muse.engine.AudioSource
 import com.frolo.muse.engine.AudioSources
+import com.frolo.muse.engine.AudioType
 
 
 fun mockAudioSource(
     id: Long = randomLong(),
     source: String = randomString(),
+    audioType: AudioType = randomEnumValue<AudioType>()!!,
     title: String = randomString(),
     albumId: Long = randomLong(),
     album: String = randomString(),
@@ -19,11 +21,12 @@ fun mockAudioSource(
     trackNumber: Int = randomInt()
 ): AudioSource {
     val metadata = AudioSources.createMetadata(
-            title, albumId, album, artistId, artist, genre, duration, year, trackNumber)
+        audioType, title, albumId, album, artistId, artist, genre, duration, year, trackNumber)
     return AudioSources.createAudioSource(id, source, metadata)
 }
 
 fun mockAudioMetadata(
+    audioType: AudioType = randomEnumValue<AudioType>()!!,
     title: String = randomString(),
     albumId: Long = randomLong(),
     album: String = randomString(),
@@ -33,4 +36,4 @@ fun mockAudioMetadata(
     duration: Int = randomInt(),
     year: Int = randomInt(),
     trackNumber: Int = randomInt()
-): AudioMetadata = AudioSources.createMetadata(title, albumId, album, artistId, artist, genre, duration, year, trackNumber)
+): AudioMetadata = AudioSources.createMetadata(audioType, title, albumId, album, artistId, artist, genre, duration, year, trackNumber)

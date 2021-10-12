@@ -10,6 +10,7 @@ import com.frolo.muse.interactor.media.AddSongToPlaylistUseCase
 import com.frolo.muse.interactor.media.get.*
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.navigator.Navigator
+import com.frolo.muse.repository.LibraryPreferences
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.repository.SongRepository
 import com.frolo.muse.ui.base.BaseActivity
@@ -57,6 +58,7 @@ interface AppComponent {
 
     fun provideNavigator(): Navigator
     fun providePreferences(): Preferences
+    fun provideLibraryPreferences(): LibraryPreferences
     fun provideVMFactory(): ViewModelModule.ViewModelFactory
     fun provideEventLogger(): EventLogger
     fun providePlayerJournal(): PlayerJournal

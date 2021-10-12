@@ -37,3 +37,14 @@ fun randomString(length: Int = sharedRandom.nextInt(10)): String {
     return (1..length).map { randomChar() }.joinToString(separator = "") { "$it" }
 }
 
+fun <E : Enum<*>> randomEnumValue(clazz: Class<E>): E? {
+    val constants = clazz.enumConstants
+            ?: throw AssertionError("$clazz must represent an enum type")
+    val randomIndex = randomInt(constants.size)
+    return constants.getOrNull(randomIndex)
+}
+
+inline fun <reified E : Enum<E>> randomEnumValue(): E? {
+    return randomEnumValue(E::class.java)
+}
+

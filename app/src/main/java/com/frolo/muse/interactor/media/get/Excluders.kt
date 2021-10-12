@@ -15,11 +15,13 @@ fun <A: AudioSource> List<A>.excludeShortAudioSources(minDurationInSeconds: Int)
     return filter { it.durationInSeconds >= minDurationInSeconds }
 }
 
+@Deprecated("Filter should work at the repository level")
 fun <S: Song> List<S>.excludeShortSongs(minDurationInSeconds: Int): List<S> {
     if (minDurationInSeconds <= 0) return this
     return filter { it.durationInSeconds >= minDurationInSeconds }
 }
 
+@Deprecated("Filter should work at the repository level")
 fun <M: Media> List<M>.excludeShortAudioFiles(minDurationInSeconds: Int): List<M> {
     if (minDurationInSeconds <= 0) return this
     return filter { it !is Song || it.durationInSeconds >= minDurationInSeconds }
@@ -40,6 +42,7 @@ fun Player.removeShortAudioSources(minDurationInSeconds: Int) {
  * Excludes short songs from lists emitted by [this] Flowable source.
  * The min duration is defined by [Preferences.getMinAudioFileDuration].
  */
+@Deprecated("Filter should work at the repository level")
 fun <T: Song> Flowable<List<T>>.excludeShortSongs(preferences: Preferences): Flowable<List<T>> {
     val sources = listOf(this, preferences.minAudioFileDuration)
     return Flowable.combineLatest(sources) { arr ->
@@ -53,6 +56,7 @@ fun <T: Song> Flowable<List<T>>.excludeShortSongs(preferences: Preferences): Flo
  * Excludes short songs from lists emitted by [this] Flowable source.
  * The min duration is defined by [Preferences.getMinAudioFileDuration].
  */
+@Deprecated("Filter should work at the repository level")
 fun <T: Media> Flowable<List<T>>.excludeShortAudioFiles(preferences: Preferences): Flowable<List<T>> {
     val sources = listOf(this, preferences.minAudioFileDuration)
     return Flowable.combineLatest(sources) { arr ->

@@ -1,7 +1,9 @@
 package com.frolo.muse.common
 
 import com.frolo.muse.engine.AudioSource
+import com.frolo.muse.engine.AudioType
 import com.frolo.muse.model.media.Song
+import com.frolo.muse.model.media.SongType
 
 
 val AudioSource.title: String? get() = metadata.title
@@ -23,6 +25,8 @@ val AudioSource.year: Int get() = metadata.year
 val AudioSource.trackNumber: Int get() = metadata.trackNumber
 
 val AudioSource.durationInSeconds: Int get() = duration / 1000
+
+fun AudioType.toSongType(): SongType = Util.toSongType(this)
 
 fun AudioSource.toSong(): Song {
     return if (this is Song) this

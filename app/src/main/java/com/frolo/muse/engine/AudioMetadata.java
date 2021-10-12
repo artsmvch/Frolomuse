@@ -9,6 +9,8 @@ import java.io.Serializable;
  */
 public interface AudioMetadata extends Serializable {
 
+    AudioType getAudioType();
+
     String getTitle();
 
     long getArtistId();

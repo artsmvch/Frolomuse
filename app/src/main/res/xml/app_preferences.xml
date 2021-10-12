@@ -38,6 +38,11 @@
             android:title="@string/library_sections"
             android:summary="@string/library_sections_desc"/>
 
+        <Preference
+            android:key="library_song_filter"
+            android:title="@string/library_song_filter_pref_title"
+            android:summary="@string/library_song_filter_pref_description"/>
+
         <CheckBoxPreference
             android:icon="@drawable/pref_ic_album_grid_outlined_24"
             android:key="album_grid"

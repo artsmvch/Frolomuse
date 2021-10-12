@@ -6,9 +6,11 @@ import android.provider.MediaStore;
 
 import com.frolo.muse.engine.AudioMetadata;
 import com.frolo.muse.engine.AudioSource;
+import com.frolo.muse.engine.AudioType;
 import com.frolo.muse.engine.MediaStoreRow;
 import com.frolo.muse.model.media.Media;
 import com.frolo.muse.model.media.Song;
+import com.frolo.muse.model.media.SongType;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -21,6 +23,32 @@ import java.util.Objects;
 public final class Util {
 
     private static final Uri CONTENT_URI = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+
+    @NotNull
+    static SongType toSongType(@NotNull AudioType type) {
+        switch (type) {
+            case MUSIC:         return SongType.MUSIC;
+            case PODCAST:       return SongType.PODCAST;
+            case RINGTONE:      return SongType.RINGTONE;
+            case ALARM:         return SongType.ALARM;
+            case NOTIFICATION:  return SongType.NOTIFICATION;
+            case AUDIOBOOK:     return SongType.AUDIOBOOK;
+            default:            return SongType.MUSIC;
+        }
+    }
+
+    @NotNull
+    static AudioType toAudioType(@NotNull SongType type) {
+        switch (type) {
+            case MUSIC:         return AudioType.MUSIC;
+            case PODCAST:       return AudioType.PODCAST;
+            case RINGTONE:      return AudioType.RINGTONE;
+            case ALARM:         return AudioType.ALARM;
+            case NOTIFICATION:  return AudioType.NOTIFICATION;
+            case AUDIOBOOK:     return AudioType.AUDIOBOOK;
+            default:            return AudioType.MUSIC;
+        }
+    }
 
     private static final class AudioSourceFromSongDelegate
             implements Song, Media, AudioSource, AudioMetadata, MediaStoreRow {
@@ -35,6 +63,16 @@ public final class Util {
         @Override
         public AudioMetadata getMetadata() {
             return this;
+        }
+
+        @Override
+        public AudioType getAudioType() {
+            return toAudioType(mDelegate.getSongType());
+        }
+
+        @Override
+        public SongType getSongType() {
+            return mDelegate.getSongType();
         }
 
         @Override
@@ -121,6 +159,16 @@ public final class Util {
 
         SongFromAudioSourceDelegate(AudioSource delegate) {
             mDelegate = delegate;
+        }
+
+        @Override
+        public AudioType getAudioType() {
+            return mDelegate.getMetadata().getAudioType();
+        }
+
+        @Override
+        public SongType getSongType() {
+            return toSongType(mDelegate.getMetadata().getAudioType());
         }
 
         @NotNull

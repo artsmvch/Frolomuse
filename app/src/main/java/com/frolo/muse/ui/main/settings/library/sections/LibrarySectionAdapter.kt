@@ -1,4 +1,4 @@
-package com.frolo.muse.ui.main.settings.library
+package com.frolo.muse.ui.main.settings.library.sections
 
 import android.view.LayoutInflater
 import android.view.MotionEvent

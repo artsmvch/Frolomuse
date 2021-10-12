@@ -3,6 +3,7 @@ package com.frolo.muse.common
 import com.frolo.muse.engine.AudioMetadata
 import com.frolo.muse.engine.AudioSource
 import com.frolo.muse.engine.AudioSources
+import com.frolo.muse.engine.AudioType
 import com.frolo.muse.mockAudioSource
 import com.frolo.muse.mockSong
 import com.frolo.muse.model.media.Song
@@ -54,6 +55,7 @@ class AudioSourcesTest {
         val id = 371L
         val source = "Source"
 
+        val audioType = AudioType.MUSIC
         val title = "Title"
         val artistId = 137L
         val artist = "Artist"
@@ -65,7 +67,7 @@ class AudioSourcesTest {
         val trackNumber = 1
 
         val metadata: AudioMetadata = AudioSources.createMetadata(
-                title, albumId, album, artistId, artist, genre, duration, year, trackNumber)
+            audioType, title, albumId, album, artistId, artist, genre, duration, year, trackNumber)
 
         val test: (AudioSource) -> Unit = { audioSource ->
             assertEquals(id, audioSource.id)

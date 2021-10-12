@@ -53,6 +53,11 @@ public final class SongWithPlayCount implements Song, Serializable {
     }
 
     @Override
+    public SongType getSongType() {
+        return song.getSongType();
+    }
+
+    @Override
     public String getSource() {
         return song.getSource();
     }

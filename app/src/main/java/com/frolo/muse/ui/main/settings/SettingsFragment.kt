@@ -31,7 +31,8 @@ import com.frolo.muse.ui.main.settings.journal.PlayerJournalDialog
 import com.frolo.muse.ui.main.settings.duration.MinAudioFileDurationDialog
 import com.frolo.muse.ui.main.settings.hidden.HiddenFilesDialog
 import com.frolo.muse.ui.main.settings.info.AppInfoDialog
-import com.frolo.muse.ui.main.settings.library.LibrarySectionsDialog
+import com.frolo.muse.ui.main.settings.library.sections.LibrarySectionsDialog
+import com.frolo.muse.ui.main.settings.library.filter.LibrarySongFilterDialog
 import com.frolo.muse.ui.main.settings.libs.LicensesDialog
 import com.frolo.muse.ui.main.settings.sleeptimer.SleepTimerDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -128,6 +129,13 @@ class SettingsFragment : PreferenceFragmentCompat(),
         findPreference("library_sections").apply {
             onPreferenceClickListener = Preference.OnPreferenceClickListener {
                 showLibrarySectionChooser()
+                true
+            }
+        }
+
+        findPreference("library_song_filter").apply {
+            onPreferenceClickListener = Preference.OnPreferenceClickListener {
+                showLibrarySongFilter()
                 true
             }
         }
@@ -378,6 +386,11 @@ class SettingsFragment : PreferenceFragmentCompat(),
         dialog.show(childFragmentManager, TAG_LIBRARY_SECTION_CHOOSER)
     }
 
+    private fun showLibrarySongFilter() {
+        val dialog = LibrarySongFilterDialog.newInstance()
+        dialog.show(childFragmentManager, TAG_LIBRARY_SONG_FILTER)
+    }
+
     private fun showThirdPartyLibs() {
         val dialog = LicensesDialog.newInstance()
         dialog.show(childFragmentManager, TAG_LICENCES)
@@ -438,6 +451,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
 
         private const val TAG_BUY_PREMIUM = "buy_premium"
         private const val TAG_LIBRARY_SECTION_CHOOSER = "library_section_chooser"
+        private const val TAG_LIBRARY_SONG_FILTER = "library_song_filter"
         private const val TAG_THEME_CHOOSER = "theme_chooser"
         private const val TAG_LICENCES = "licences"
         private const val TAG_SLEEP_TIMER = "sleep_timer"

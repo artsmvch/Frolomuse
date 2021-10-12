@@ -1,7 +1,5 @@
 package com.frolo.muse.di.impl.local;
 
-import android.content.Context;
-
 import com.frolo.muse.R;
 import com.frolo.muse.model.media.Playlist;
 import com.frolo.muse.model.media.Song;
@@ -31,8 +29,8 @@ public class PlaylistChunkRepositoryImpl extends SongRepositoryImpl implements P
         return Preconditions.takeIfNotNullAndListedOrDefault(candidate, SORT_ORDER_KEYS, SongQuery.Sort.BY_PLAY_ORDER);
     }
 
-    public PlaylistChunkRepositoryImpl(Context context) {
-        super(context);
+    public PlaylistChunkRepositoryImpl(LibraryConfiguration configuration) {
+        super(configuration);
     }
 
     @Override
@@ -50,17 +48,6 @@ public class PlaylistChunkRepositoryImpl extends SongRepositoryImpl implements P
     @Override
     public Single<Boolean> isMovingAllowedForSortOrder(String sortOrder) {
         return Single.just(sortOrder.equals(SongQuery.Sort.BY_PLAY_ORDER));
-    }
-
-    @Override
-    public Completable addToPlaylist(Playlist playlist, Collection<Song> items) {
-        if (playlist.isFromSharedStorage()) {
-            // Legacy
-            return PlaylistHelper.addItemsToPlaylist(getContext().getContentResolver(), playlist.getId(), items);
-        } else {
-            // New playlist storage
-            return PlaylistDatabaseManager.get(getContext()).addPlaylistMembers(playlist.getId(), items);
-        }
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.frolo.muse.ui.main.settings.library
+package com.frolo.muse.ui.main.settings.library.sections
 
 import android.app.Dialog
 import android.os.Bundle
@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.dialog_library_sections.*
 
 
 class LibrarySectionsDialog : BaseDialogFragment(),
-        LibrarySectionAdapter.OnDragListener {
+    LibrarySectionAdapter.OnDragListener {
 
     private val preferences: Preferences by prefs()
 

@@ -1,7 +1,5 @@
 package com.frolo.muse.di.impl.local;
 
-import android.content.Context;
-
 import com.frolo.muse.R;
 import com.frolo.muse.model.sort.SortOrder;
 import com.frolo.muse.repository.GenreChunkRepository;
@@ -24,8 +22,8 @@ public class GenreChunkRepositoryImpl extends SongRepositoryImpl implements Genr
         return Preconditions.takeIfNotNullAndListedOrDefault(candidate, SORT_ORDER_KEYS, SongQuery.Sort.BY_DEFAULT);
     }
 
-    public GenreChunkRepositoryImpl(Context context) {
-        super(context);
+    public GenreChunkRepositoryImpl(LibraryConfiguration configuration) {
+        super(configuration);
     }
 
     @Override

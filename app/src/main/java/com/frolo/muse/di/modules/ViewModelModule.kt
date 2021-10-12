@@ -26,6 +26,7 @@ import com.frolo.muse.ui.main.settings.playback.PlaybackFadingViewModel
 import com.frolo.muse.ui.main.settings.duration.MinAudioFileDurationViewModel
 import com.frolo.muse.ui.main.settings.hidden.HiddenFilesViewModel
 import com.frolo.muse.ui.main.settings.journal.PlayerJournalViewModel
+import com.frolo.muse.ui.main.settings.library.filter.LibrarySongFilterViewModel
 import com.frolo.muse.ui.main.settings.theme.ThemeChooserViewModel
 import dagger.Binds
 import dagger.Module
@@ -182,5 +183,10 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(ThemeChooserViewModel::class)
     abstract fun bindThemeChooserViewModel(viewModel: ThemeChooserViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(LibrarySongFilterViewModel::class)
+    abstract fun bindLibrarySongFilterViewModel(viewModel: LibrarySongFilterViewModel): ViewModel
 
 }

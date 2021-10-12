@@ -97,7 +97,9 @@ public interface Preferences {
      * All audio files with duration less than this value are excluded from the library search.
      * NOTE: the duration is considered in seconds.
      */
+    @Deprecated
     Flowable<Integer> getMinAudioFileDuration();
+    @Deprecated
     Completable setMinAudioFileDuration(int minDuration);
 
     Flowable<PlaybackFadingParams> getPlaybackFadingParams();

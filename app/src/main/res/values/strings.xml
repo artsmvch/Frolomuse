@@ -241,6 +241,16 @@
         Here you control how the playback should fade in and out. You can set a suitable duration using the slider below. Duration "0" means that there will be no fading.
     </string>
     <string name="playback_fading_duration">Duration</string>
+    <!--Library song filter-->
+    <string name="library_song_filter_pref_title">Song filter</string>
+    <string name="library_song_filter_pref_description">Song filter</string>
+    <string name="library_song_filter_title">Song filter</string>
+    <string name="library_song_filter_type_music">Music</string>
+    <string name="library_song_filter_type_podcast">Podcast</string>
+    <string name="library_song_filter_type_ringtone">Ringtone</string>
+    <string name="library_song_filter_type_alarm">Alarm</string>
+    <string name="library_song_filter_type_notification">Notification</string>
+    <string name="library_song_filter_type_audiobook">Audiobook</string>
 
     <!--create and edit playlist-->
     <string name="save_playlist">Save playlist</string>

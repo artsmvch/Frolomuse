@@ -2,6 +2,7 @@ package com.frolo.muse.engine
 
 import androidx.test.runner.AndroidJUnit4
 import com.frolo.muse.common.prepareByTarget
+import com.frolo.muse.randomEnumValue
 import com.frolo.muse.randomInt
 import com.frolo.muse.randomLong
 import com.frolo.muse.randomString
@@ -37,6 +38,7 @@ class PlayerImpl_Update_Test : PlayerImpl_Base_Test() {
 
         val secondItem = queue.getItemAt(1)
         val newSecondItemMetadata = AudioSources.createMetadata(
+            randomEnumValue(),
             randomString(),
             randomLong(),
             randomString(),
@@ -83,6 +85,7 @@ class PlayerImpl_Update_Test : PlayerImpl_Base_Test() {
         player.waitUntilAllEventsAreOver()
 
         val newItemMetadata = AudioSources.createMetadata(
+            randomEnumValue(),
             randomString(),
             randomLong(),
             randomString(),

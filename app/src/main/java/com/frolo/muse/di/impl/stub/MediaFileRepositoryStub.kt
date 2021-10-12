@@ -46,7 +46,7 @@ class MediaFileRepositoryStub : MediaFileRepository {
         return flowableError()
     }
 
-    override fun getFilteredItems(filter: String?): Flowable<MutableList<MediaFile>> {
+    override fun getFilteredItems(namePiece: String?): Flowable<MutableList<MediaFile>> {
         return flowableError()
     }
 

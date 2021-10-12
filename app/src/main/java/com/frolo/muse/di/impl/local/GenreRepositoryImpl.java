@@ -1,7 +1,5 @@
 package com.frolo.muse.di.impl.local;
 
-import android.content.Context;
-
 import com.frolo.muse.R;
 import com.frolo.muse.model.media.Genre;
 import com.frolo.muse.model.media.Playlist;
@@ -27,8 +25,8 @@ public class GenreRepositoryImpl extends BaseMediaRepository<Genre> implements G
         return Preconditions.takeIfNotNullAndListedOrDefault(candidate, SORT_ORDER_KEYS, GenreQuery.Sort.BY_NAME);
     }
 
-    public GenreRepositoryImpl(Context context) {
-        super(context);
+    public GenreRepositoryImpl(LibraryConfiguration configuration) {
+        super(configuration);
     }
 
     @Override
@@ -49,13 +47,8 @@ public class GenreRepositoryImpl extends BaseMediaRepository<Genre> implements G
     }
 
     @Override
-    public Flowable<List<Genre>> getAllItems(String sortOrder, int minSongDuration) {
-        return GenreQuery.queryAll(getContext().getContentResolver(), sortOrder, minSongDuration);
-    }
-
-    @Override
-    public Flowable<List<Genre>> getFilteredItems(final String filter) {
-        return GenreQuery.queryAllFiltered(getContext().getContentResolver(), filter);
+    public Flowable<List<Genre>> getFilteredItems(final String namePiece) {
+        return GenreQuery.queryAllFiltered(getContext().getContentResolver(), namePiece);
     }
 
     @Override
@@ -111,14 +104,6 @@ public class GenreRepositoryImpl extends BaseMediaRepository<Genre> implements G
                 getContext().getContentResolver(),
                 item,
                 SongQuery.Sort.BY_TITLE)
-                .firstOrError();
-    }
-
-    @Override
-    public Single<List<Song>> collectSongs(Collection<Genre> items) {
-        return SongQuery.queryForGenres(
-                getContext().getContentResolver(),
-                items)
                 .firstOrError();
     }
 

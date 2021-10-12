@@ -2,6 +2,7 @@ package com.frolo.muse;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.util.TypedValue;
 
@@ -19,6 +20,8 @@ import androidx.appcompat.content.res.AppCompatResources;
 public final class StyleUtil {
 
     private static final boolean DEBUG = BuildConfig.DEBUG;
+
+    private static final int FALLBACK_COLOR = Color.TRANSPARENT;
 
     private static void failedToResolveAttribute(@AttrRes int attrId) {
         if (DEBUG) {
@@ -39,12 +42,12 @@ public final class StyleUtil {
 
     @ColorInt
     public static int resolveColor(@NonNull Context context, @AttrRes int attrId) {
-        final TypedValue typedValue = new TypedValue();
-        if (!context.getTheme().resolveAttribute(attrId, typedValue, true)) {
+        ColorStateList list = resolveColorStateList(context, attrId);
+        if (list == null) {
             failedToResolveAttribute(attrId);
+            return FALLBACK_COLOR;
         }
-        assertColorInt(typedValue);
-        return typedValue.data;
+        return list.getDefaultColor();
     }
 
     @Nullable

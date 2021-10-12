@@ -6,6 +6,8 @@ import java.io.Serializable;
 
 public interface Song extends Media, Serializable {
 
+    SongType getSongType();
+
     String getSource();
 
     String getTitle();
@@ -35,5 +37,4 @@ public interface Song extends Media, Serializable {
      * @return the track number of this on the album
      */
     int getTrackNumber();
-
 }

@@ -20,7 +20,6 @@ class GetAlbumSongsUseCase @AssistedInject constructor(
 
     override fun getSortedCollection(sortOrder: String): Flowable<List<Song>> {
         return repository.getSongsFromAlbum(album, sortOrder)
-                .excludeShortSongs(preferences)
     }
 
     @AssistedInject.Factory

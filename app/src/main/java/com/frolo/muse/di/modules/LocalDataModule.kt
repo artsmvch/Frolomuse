@@ -80,77 +80,100 @@ class LocalDataModule {
 
     @Singleton
     @Provides
-    fun provideSongRepository(context: Context): SongRepository {
-        return SongRepositoryImpl(context)
+    fun provideLibraryPreferences(context: Context): LibraryPreferences {
+        return LibraryPreferenceImpl(context)
+    }
+
+    @Provides
+    fun provideSongFilterProvider(preferences: LibraryPreferences): SongFilterProvider {
+        return preferences
+    }
+
+    @Provides
+    fun provideLibraryConfiguration(
+        context: Context,
+        songFilterProvider: SongFilterProvider,
+        @Exec(Exec.Type.QUERY) executor: Executor,
+    ): LibraryConfiguration {
+        return LibraryConfiguration(context, songFilterProvider, executor)
+    }
+
+    @Singleton
+    @Provides
+    fun provideSongRepository(configuration: LibraryConfiguration): SongRepository {
+        return SongRepositoryImpl(configuration)
     }
 
     @Provides
     fun provideSongWithPlayCountRepository(
-            context: Context,
-            repository: SongRepository
+        configuration: LibraryConfiguration,
+        repository: SongRepository
     ): SongWithPlayCountRepository {
-        return SongWithPlayCountRepositoryImpl(context, repository)
+        return SongWithPlayCountRepositoryImpl(configuration, repository)
     }
 
     @Singleton
     @Provides
-    fun provideAlbumRepository(context: Context): AlbumRepository {
-        return AlbumRepositoryImpl(context)
+    fun provideAlbumRepository(configuration: LibraryConfiguration): AlbumRepository {
+        return AlbumRepositoryImpl(configuration)
     }
 
     @Singleton
     @Provides
-    fun provideArtistRepository(context: Context): ArtistRepository {
-        return ArtistRepositoryImpl(context)
+    fun provideArtistRepository(configuration: LibraryConfiguration): ArtistRepository {
+        return ArtistRepositoryImpl(configuration)
     }
 
     @Singleton
     @Provides
-    fun provideGenreRepository(context: Context): GenreRepository {
-        return GenreRepositoryImpl(context)
+    fun provideGenreRepository(configuration: LibraryConfiguration): GenreRepository {
+        return GenreRepositoryImpl(configuration)
     }
 
     @Singleton
     @Provides
-    fun provideAlbumChunkRepository(context: Context): AlbumChunkRepository {
-        return AlbumChunkRepositoryImpl(context)
+    fun provideAlbumChunkRepository(configuration: LibraryConfiguration): AlbumChunkRepository {
+        return AlbumChunkRepositoryImpl(configuration)
     }
 
     @Singleton
     @Provides
-    fun provideArtistChunkRepository(context: Context): ArtistChunkRepository {
-        return ArtistChunkRepositoryImpl(context)
+    fun provideArtistChunkRepository(configuration: LibraryConfiguration): ArtistChunkRepository {
+        return ArtistChunkRepositoryImpl(configuration)
     }
 
     @Singleton
     @Provides
-    fun provideGenreChunkRepository(context: Context): GenreChunkRepository {
-        return GenreChunkRepositoryImpl(context)
+    fun provideGenreChunkRepository(configuration: LibraryConfiguration): GenreChunkRepository {
+        return GenreChunkRepositoryImpl(configuration)
     }
 
     @Singleton
     @Provides
-    fun providePlaylistChunkRepository(context: Context): PlaylistChunkRepository {
-        return PlaylistChunkRepositoryImpl(context)
+    fun providePlaylistChunkRepository(configuration: LibraryConfiguration): PlaylistChunkRepository {
+        return PlaylistChunkRepositoryImpl(configuration)
     }
 
     @Singleton
     @Provides
-    fun providePlaylistRepository(context: Context): PlaylistRepository {
-        return PlaylistRepositoryImpl(context)
+    fun providePlaylistRepository(configuration: LibraryConfiguration): PlaylistRepository {
+        return PlaylistRepositoryImpl(configuration)
     }
 
     @Singleton
     @Provides
-    fun provideMyFileRepository(context: Context): MyFileRepository {
-        return MyFileRepositoryImpl(context)
+    fun provideMyFileRepository(configuration: LibraryConfiguration): MyFileRepository {
+        return MyFileRepositoryImpl(configuration)
     }
 
     @Singleton
     @Provides
-    fun provideMediaFileRepository(context: Context, @Exec(Exec.Type.QUERY) executor: Executor, songRepository: SongRepository): MediaFileRepository {
+    fun provideMediaFileRepository(
+        configuration: LibraryConfiguration,
+        songRepository: SongRepository
+    ): MediaFileRepository {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            MediaFileRepositoryImpl(context, executor, songRepository)
+            MediaFileRepositoryImpl(configuration, songRepository)
         } else {
             MediaFileRepositoryStub()
         }

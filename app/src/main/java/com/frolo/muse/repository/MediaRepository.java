@@ -47,10 +47,10 @@ public interface MediaRepository<E extends Media> {
 
     /**
      * Queries all songs filtering them with the given filter
-     * @param filter to filter songs
+     * @param namePiece to filter songs
      * @return songs with names containing filter
      */
-    Flowable<List<E>> getFilteredItems(String filter);
+    Flowable<List<E>> getFilteredItems(String namePiece);
 
     /**
      * Querying {@link E} that has the given id.

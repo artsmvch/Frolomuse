@@ -1,7 +1,5 @@
 package com.frolo.muse.di.impl.local;
 
-import android.content.Context;
-
 import com.frolo.muse.model.media.Playlist;
 import com.frolo.muse.model.media.Song;
 import com.frolo.muse.model.media.SongWithPlayCount;
@@ -56,8 +54,8 @@ public class SongWithPlayCountRepositoryImpl extends BaseMediaRepository<SongWit
             }
         };
 
-    public SongWithPlayCountRepositoryImpl(Context context, SongRepository delegate) {
-        super(context);
+    public SongWithPlayCountRepositoryImpl(LibraryConfiguration configuration, SongRepository delegate) {
+        super(configuration);
         mDelegate = delegate;
     }
 
@@ -88,8 +86,8 @@ public class SongWithPlayCountRepositoryImpl extends BaseMediaRepository<SongWit
     }
 
     @Override
-    public Flowable<List<SongWithPlayCount>> getFilteredItems(String filter) {
-        return mDelegate.getFilteredItems(filter).switchMap(MAPPER);
+    public Flowable<List<SongWithPlayCount>> getFilteredItems(String namePiece) {
+        return mDelegate.getFilteredItems(namePiece).switchMap(MAPPER);
     }
 
     @Override

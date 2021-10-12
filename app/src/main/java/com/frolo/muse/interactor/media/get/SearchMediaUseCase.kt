@@ -4,7 +4,6 @@ import com.frolo.muse.model.media.Media
 import com.frolo.muse.model.menu.SortOrderMenu
 import com.frolo.muse.model.sort.SortOrder
 import com.frolo.muse.repository.GenericMediaRepository
-import com.frolo.muse.repository.Preferences
 import com.frolo.muse.rx.SchedulerProvider
 import io.reactivex.Completable
 import io.reactivex.Flowable
@@ -14,8 +13,7 @@ import javax.inject.Inject
 
 class SearchMediaUseCase @Inject constructor(
     private val schedulerProvider: SchedulerProvider,
-    private val repository: GenericMediaRepository,
-    private val preferences: Preferences
+    private val repository: GenericMediaRepository
 ): GetMediaUseCase<Media> {
 
     override fun getSortOrderMenu(): Single<SortOrderMenu> {
@@ -35,9 +33,7 @@ class SearchMediaUseCase @Inject constructor(
     }
 
     fun search(query: String): Flowable<List<Media>> {
-        return repository.getFilteredItems(query)
-                .subscribeOn(schedulerProvider.worker())
-                .excludeShortAudioFiles(preferences)
+        return repository.getFilteredItems(query).subscribeOn(schedulerProvider.worker())
     }
 
 }

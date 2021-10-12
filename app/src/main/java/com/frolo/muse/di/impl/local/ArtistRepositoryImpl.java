@@ -1,7 +1,5 @@
 package com.frolo.muse.di.impl.local;
 
-import android.content.Context;
-
 import com.frolo.muse.R;
 import com.frolo.muse.model.media.Artist;
 import com.frolo.muse.model.media.Playlist;
@@ -29,8 +27,8 @@ public class ArtistRepositoryImpl extends BaseMediaRepository<Artist> implements
         return Preconditions.takeIfNotNullAndListedOrDefault(candidate, SORT_ORDER_KEYS, ArtistQuery.Sort.BY_ARTIST);
     }
 
-    public ArtistRepositoryImpl(Context context) {
-        super(context);
+    public ArtistRepositoryImpl(LibraryConfiguration configuration) {
+        super(configuration);
     }
 
     @Override
@@ -55,18 +53,10 @@ public class ArtistRepositoryImpl extends BaseMediaRepository<Artist> implements
     }
 
     @Override
-    public Flowable<List<Artist>> getAllItems(String sortOrder, int minSongDuration) {
-        return ArtistQuery.queryAll(
-                getContext().getContentResolver(),
-                sortOrder,
-                minSongDuration);
-    }
-
-    @Override
-    public Flowable<List<Artist>> getFilteredItems(final String filter) {
+    public Flowable<List<Artist>> getFilteredItems(final String namePiece) {
         return ArtistQuery.queryAllFiltered(
                 getContext().getContentResolver(),
-                filter);
+                namePiece);
     }
 
     @Override
@@ -120,14 +110,6 @@ public class ArtistRepositoryImpl extends BaseMediaRepository<Artist> implements
                 getContext().getContentResolver(),
                 item,
                 SongQuery.Sort.BY_TITLE)
-                .firstOrError();
-    }
-
-    @Override
-    public Single<List<Song>> collectSongs(Collection<Artist> items) {
-        return SongQuery.queryForArtists(
-                getContext().getContentResolver(),
-                items)
                 .firstOrError();
     }
 

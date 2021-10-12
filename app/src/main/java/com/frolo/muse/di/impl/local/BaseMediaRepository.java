@@ -7,15 +7,20 @@ import androidx.annotation.StringRes;
 
 import com.frolo.muse.BuildConfig;
 import com.frolo.muse.model.media.Media;
+import com.frolo.muse.model.media.Song;
+import com.frolo.muse.model.media.SongFilter;
 import com.frolo.muse.model.sort.SortOrder;
 import com.frolo.muse.repository.MediaRepository;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Callable;
 
+import io.reactivex.Flowable;
 import io.reactivex.Single;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 
@@ -25,20 +30,25 @@ import io.reactivex.schedulers.Schedulers;
  */
 abstract class BaseMediaRepository<E extends Media> implements MediaRepository<E> {
 
-    private final Context mContext;
+    private final LibraryConfiguration mConfiguration;
 
-    BaseMediaRepository(@NonNull Context context) {
-        mContext = context;
+    BaseMediaRepository(@NonNull LibraryConfiguration configuration) {
+        mConfiguration = configuration;
     }
 
     @NonNull
     protected final Context getContext() {
-        return mContext;
+        return mConfiguration.getContext();
+    }
+
+    @NonNull
+    protected Flowable<SongFilter> getSongFilter() {
+        return mConfiguration.getSongFilterProvider().getSongFilter();
     }
 
     @NonNull
     protected final SortOrder createSortOrder(String key, @StringRes int nameStringId) {
-        return new SortOrderImpl(mContext, key, nameStringId);
+        return new SortOrderImpl(getContext(), key, nameStringId);
     }
 
     @NonNull
@@ -94,4 +104,22 @@ abstract class BaseMediaRepository<E extends Media> implements MediaRepository<E
         }).subscribeOn(Schedulers.computation());
     }
 
+    @Override
+    public Single<List<Song>> collectSongs(Collection<E> items) {
+        List<Single<List<Song>>> sources = new ArrayList<>(items.size());
+        for (E item : items) {
+            Single<List<Song>> source = collectSongs(item);
+            sources.add(source);
+        }
+        Function<Object[], List<Song>> zipper = objects -> {
+            List<Song> result = new ArrayList<>();
+            for (Object obj : objects) {
+                @SuppressWarnings("unchecked")
+                List<Song> chunk = (List<Song>) obj;
+                result.addAll(chunk);
+            }
+            return result;
+        };
+        return Single.zip(sources, zipper);
+    }
 }
