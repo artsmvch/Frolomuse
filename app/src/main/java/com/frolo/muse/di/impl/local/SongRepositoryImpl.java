@@ -51,14 +51,14 @@ public class SongRepositoryImpl extends BaseMediaRepository<Song> implements Son
 
     @Override
     public final Flowable<List<Song>> getAllItems() {
-        return SongQuery.queryAll(getContext().getContentResolver());
+        return getSongFilter().switchMap(filter ->
+                SongQuery.query(getContext().getContentResolver(), filter, SongQuery.Sort.BY_TITLE));
     }
 
     @Override
     public final Flowable<List<Song>> getAllItems(final String sortOrder) {
-        return getSongFilter().switchMap(filter -> {
-            return SongQuery.query(getContext().getContentResolver(), filter, sortOrder);
-        });
+        return getSongFilter().switchMap(filter ->
+                SongQuery.query(getContext().getContentResolver(), filter, sortOrder));
     }
 
     @Override
@@ -71,7 +71,7 @@ public class SongRepositoryImpl extends BaseMediaRepository<Song> implements Son
 
     @Override
     public final Flowable<Song> getItem(final long id) {
-        return SongQuery.querySingle(getContext().getContentResolver(), id);
+        return SongQuery.queryItem(getContext().getContentResolver(), id);
     }
 
     @Override
@@ -88,10 +88,7 @@ public class SongRepositoryImpl extends BaseMediaRepository<Song> implements Son
     public final Completable addToPlaylist(Playlist playlist, Song item) {
         if (playlist.isFromSharedStorage()) {
             // Legacy
-            return PlaylistHelper.addSongToPlaylist(
-                    getContext().getContentResolver(),
-                    playlist.getId(),
-                    item.getId());
+            return PlaylistHelper.addSongToPlaylist(getContentResolver(), playlist.getId(), item.getId());
         } else {
             // New playlist storage
             return PlaylistDatabaseManager.get(getContext())
@@ -127,26 +124,14 @@ public class SongRepositoryImpl extends BaseMediaRepository<Song> implements Son
 
     @Override
     public final Single<Song> getSong(final String path) {
-        return SongQuery.querySingleByPath(getContext().getContentResolver(), path).firstOrError();
+        return SongQuery.queryItemByPath(getContext().getContentResolver(), path).firstOrError();
     }
 
     @Override
-    public final Single<Song> update(
-            final Song song,
-            final String newTitle,
-            final String newAlbum,
-            final String newArtist,
-            final String newGenre) {
-
-        return SongQuery.update(
-                getContext().getContentResolver(),
-                song,
-                newTitle,
-                newAlbum,
-                newArtist,
-                newGenre)
-                .andThen(getItem(song.getId()))
-                .firstOrError();
+    public final Single<Song> update(Song song, String newTitle, String newAlbum, String newArtist, String newGenre) {
+        return SongQuery.update(getContentResolver(), song, newTitle, newAlbum, newArtist, newGenre)
+            .andThen(getItem(song.getId()))
+            .firstOrError();
     }
 
     @Override

@@ -13,46 +13,38 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import io.reactivex.Completable;
-import io.reactivex.CompletableSource;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.functions.Function;
 
 
-public class SongWithPlayCountRepositoryImpl extends BaseMediaRepository<SongWithPlayCount> implements SongWithPlayCountRepository {
+public final class SongWithPlayCountRepositoryImpl
+        extends BaseMediaRepository<SongWithPlayCount>
+        implements SongWithPlayCountRepository {
 
     private final SongRepository mDelegate;
 
-    private final Function<List<Song>, Publisher<List<SongWithPlayCount>>> MAPPER =
-        new Function<List<Song>, Publisher<List<SongWithPlayCount>>>() {
-            @Override
-            public Publisher<List<SongWithPlayCount>> apply(List<Song> songs) {
-                final List<Flowable<SongWithPlayCount>> sources = new ArrayList<>(songs.size());
-                for (final Song song : songs) {
-                    Flowable<SongWithPlayCount> source =
-                            SongQuery.getSongWithPlayCount(getContext().getContentResolver(), song);
+    private final Function<List<Song>, Publisher<List<SongWithPlayCount>>> MAPPER = songs -> {
+        final List<Flowable<SongWithPlayCount>> sources = new ArrayList<>(songs.size());
+        for (final Song song : songs) {
+            Flowable<SongWithPlayCount> source =
+                    SongQuery.getSongWithPlayCount(getContext().getContentResolver(), song);
 
-                    sources.add(source);
-                }
+            sources.add(source);
+        }
 
-                Function<Object[], List<SongWithPlayCount>> combiner =
-                    new Function<Object[], List<SongWithPlayCount>>() {
-                        @Override
-                        public List<SongWithPlayCount> apply(Object[] objects) {
-                            List<SongWithPlayCount> items = new ArrayList<>(objects.length);
-                            for (Object obj : objects) {
-                                items.add((SongWithPlayCount) obj);
-                            }
-                            return items;
-                        }
-                    };
-
-                return Flowable.combineLatest(sources, combiner);
+        Function<Object[], List<SongWithPlayCount>> combiner = objects -> {
+            List<SongWithPlayCount> items = new ArrayList<>(objects.length);
+            for (Object obj : objects) {
+                items.add((SongWithPlayCount) obj);
             }
+            return items;
         };
+
+        return Flowable.combineLatest(sources, combiner);
+    };
 
     public SongWithPlayCountRepositoryImpl(LibraryConfiguration configuration, SongRepository delegate) {
         super(configuration);
@@ -60,13 +52,10 @@ public class SongWithPlayCountRepositoryImpl extends BaseMediaRepository<SongWit
     }
 
     private Single<List<Song>> map(final Collection<SongWithPlayCount> items) {
-        return Single.fromCallable(new Callable<List<Song>>() {
-            @Override
-            public List<Song> call() {
-                ArrayList<Song> songs = new ArrayList<>(items.size());
-                songs.addAll(items);
-                return songs;
-            }
+        return Single.fromCallable(() -> {
+            ArrayList<Song> songs = new ArrayList<>(items.size());
+            songs.addAll(items);
+            return songs;
         });
     }
 
@@ -77,7 +66,8 @@ public class SongWithPlayCountRepositoryImpl extends BaseMediaRepository<SongWit
 
     @Override
     public Flowable<List<SongWithPlayCount>> getAllItems() {
-        return SongQuery.querySongsWithPlayCount(getContext().getContentResolver(), 0);
+        return getSongFilter().switchMap(songFilter ->
+                SongQuery.querySongsWithPlayCount(getContentResolver(), songFilter, 0));
     }
 
     @Override
@@ -92,13 +82,8 @@ public class SongWithPlayCountRepositoryImpl extends BaseMediaRepository<SongWit
 
     @Override
     public Flowable<SongWithPlayCount> getItem(long id) {
-        return mDelegate.getItem(id)
-            .switchMap(new Function<Song, Publisher<SongWithPlayCount>>() {
-                @Override
-                public Publisher<SongWithPlayCount> apply(final Song song) {
-                    return SongQuery.getSongWithPlayCount(getContext().getContentResolver(), song);
-                }
-            });
+        return mDelegate.getItem(id).switchMap(song ->
+                SongQuery.getSongWithPlayCount(getContext().getContentResolver(), song));
     }
 
     @Override
@@ -108,12 +93,7 @@ public class SongWithPlayCountRepositoryImpl extends BaseMediaRepository<SongWit
 
     @Override
     public Completable delete(Collection<SongWithPlayCount> items) {
-        return map(items).flatMapCompletable(new Function<Collection<Song>, CompletableSource>() {
-            @Override
-            public CompletableSource apply(Collection<Song> songs) {
-                return mDelegate.delete(songs);
-            }
-        });
+        return map(items).flatMapCompletable(songs -> mDelegate.delete(songs));
     }
 
     @Override
@@ -123,12 +103,7 @@ public class SongWithPlayCountRepositoryImpl extends BaseMediaRepository<SongWit
 
     @Override
     public Completable addToPlaylist(final Playlist playlist, Collection<SongWithPlayCount> items) {
-        return map(items).flatMapCompletable(new Function<Collection<Song>, CompletableSource>() {
-            @Override
-            public CompletableSource apply(Collection<Song> songs) {
-                return mDelegate.addToPlaylist(playlist, songs);
-            }
-        });
+        return map(items).flatMapCompletable(songs -> mDelegate.addToPlaylist(playlist, songs));
     }
 
     @Override
