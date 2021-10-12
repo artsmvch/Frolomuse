@@ -24,7 +24,7 @@ import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 
-public class PlaylistRepositoryImpl extends BaseMediaRepository<Playlist> implements PlaylistRepository {
+public final class PlaylistRepositoryImpl extends BaseMediaRepository<Playlist> implements PlaylistRepository {
 
     private final static String[] SORT_ORDER_KEYS = {
         PlaylistQuery.Sort.BY_NAME,
@@ -128,7 +128,7 @@ public class PlaylistRepositoryImpl extends BaseMediaRepository<Playlist> implem
     public Flowable<Playlist> getItem(Playlist item) {
         if (item.isFromSharedStorage()) {
             // Legacy
-            return PlaylistQuery.querySingle(getContext().getContentResolver(), item.getId());
+            return PlaylistQuery.queryItem(getContext().getContentResolver(), item.getId());
         } else {
             // New playlist storage
             return PlaylistDatabaseManager.get(getContext()).queryPlaylist(item.getId());
@@ -139,7 +139,7 @@ public class PlaylistRepositoryImpl extends BaseMediaRepository<Playlist> implem
     @Override
     public Flowable<Playlist> getItem(final long id) {
         Flowable<Playlist> fallback =
-                PlaylistQuery.querySingle(getContext().getContentResolver(), id);
+                PlaylistQuery.queryItem(getContext().getContentResolver(), id);
         if (Features.isAppPlaylistStorageFeatureAvailable()) {
             // New playlist storage
             return PlaylistDatabaseManager.get(getContext())
@@ -202,10 +202,7 @@ public class PlaylistRepositoryImpl extends BaseMediaRepository<Playlist> implem
     public Single<List<Song>> collectSongs(Playlist item) {
         if (item.isFromSharedStorage()) {
             // Legacy
-            return SongQuery.queryForPlaylist(
-                    getContext().getContentResolver(),
-                    item,
-                    SongQuery.Sort.BY_PLAY_ORDER)
+            return SongQuery.queryForPlaylist(getContentResolver(), item, SongQuery.Sort.BY_PLAY_ORDER)
                     .firstOrError();
         } else {
             // New playlist storage
@@ -245,10 +242,7 @@ public class PlaylistRepositoryImpl extends BaseMediaRepository<Playlist> implem
             return PlaylistDatabaseManager.get(getContext()).createPlaylist(name);
         } else {
             // Legacy
-            return PlaylistQuery.create(
-                    getContext(),
-                    getContext().getContentResolver(),
-                    name);
+            return PlaylistQuery.create(getContext(), getContentResolver(), name);
         }
     }
 

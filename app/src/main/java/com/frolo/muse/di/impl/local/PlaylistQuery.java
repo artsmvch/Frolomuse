@@ -9,27 +9,16 @@ import android.provider.MediaStore;
 
 import com.frolo.muse.R;
 import com.frolo.muse.model.media.Playlist;
+import com.frolo.rxcontent.CursorMapper;
+import com.frolo.rxcontent.RxContent;
 
 import java.util.List;
-import java.util.concurrent.Callable;
 
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 
 
-final class PlaylistQuery {
-
-    private static final Uri URI = MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI;
-
-    private static final boolean IS_FROM_SHARED_STORAGE = true;
-
-    private static final String[] PROJECTION = {
-        MediaStore.Audio.Playlists._ID,
-        MediaStore.Audio.Playlists.DATA,
-        MediaStore.Audio.Playlists.NAME,
-        MediaStore.Audio.Playlists.DATE_ADDED,
-        MediaStore.Audio.Playlists.DATE_MODIFIED
-    };
+/* package-private */ final class PlaylistQuery {
 
     static final class Sort {
         // Sort orders are case-insensitive
@@ -47,34 +36,40 @@ final class PlaylistQuery {
         }
     }
 
-    private static final Query.Builder<Playlist> BUILDER =
-            new Query.Builder<Playlist>() {
-                @Override
-                public Playlist build(Cursor cursor, String[] projection) {
-                    return new Playlist(
-                        cursor.getLong(cursor.getColumnIndex(PROJECTION[0])),
-                        IS_FROM_SHARED_STORAGE,
-                        cursor.getString(cursor.getColumnIndex(PROJECTION[1])),
-                        cursor.getString(cursor.getColumnIndex(PROJECTION[2])),
-                        cursor.getLong(cursor.getColumnIndex(PROJECTION[3])),
-                        cursor.getLong(cursor.getColumnIndex(PROJECTION[4]))
-                    );
-                }
-            };
+    private static final Uri URI = MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI;
 
-    private static boolean checkPlaylistNameExists_Internal(ContentResolver resolver, String name) {
+    private static final boolean IS_FROM_SHARED_STORAGE = true;
+
+    private static final String[] PROJECTION = {
+        MediaStore.Audio.Playlists._ID,
+        MediaStore.Audio.Playlists.DATA,
+        MediaStore.Audio.Playlists.NAME,
+        MediaStore.Audio.Playlists.DATE_ADDED,
+        MediaStore.Audio.Playlists.DATE_MODIFIED
+    };
+
+    private static final CursorMapper<Playlist> CURSOR_MAPPER = new CursorMapper<Playlist>() {
+        @Override
+        public Playlist map(Cursor cursor) {
+            return new Playlist(
+                cursor.getLong(cursor.getColumnIndex(PROJECTION[0])),
+                IS_FROM_SHARED_STORAGE,
+                cursor.getString(cursor.getColumnIndex(PROJECTION[1])),
+                cursor.getString(cursor.getColumnIndex(PROJECTION[2])),
+                cursor.getLong(cursor.getColumnIndex(PROJECTION[3])),
+                cursor.getLong(cursor.getColumnIndex(PROJECTION[4]))
+            );
+        }
+    };
+
+    private static boolean checkPlaylistNameExistsInternal(ContentResolver resolver, String name) {
         boolean exists = false;
 
         String[] projection = new String[] { MediaStore.Audio.Playlists.NAME };
         String selection = MediaStore.Audio.Playlists.NAME + "=?";
         String[] selectionArgs = new String[] { name };
         String sortOrder = null;
-        Cursor cursor = resolver.query(
-                URI,
-                projection,
-                selection,
-                selectionArgs,
-                sortOrder);
+        Cursor cursor = resolver.query(URI, projection, selection, selectionArgs, sortOrder);
 
         if (cursor != null) {
             try {
@@ -89,19 +84,14 @@ final class PlaylistQuery {
         return exists;
     }
 
-    private static long getPlaylistIdByName_Internal(ContentResolver resolver, String playlistName) {
+    private static long getPlaylistIdByNameInternal(ContentResolver resolver, String playlistName) {
         long id = -1;
 
         String[] projection = new String[] { MediaStore.Audio.Playlists._ID };
         String selection = MediaStore.Audio.Playlists.NAME + "=?";
         String[] selectionArgs = new String[] { playlistName };
         String sortOrder = null;
-        Cursor cursor = resolver.query(
-                URI,
-                projection,
-                selection,
-                selectionArgs,
-                sortOrder);
+        Cursor cursor = resolver.query(URI, projection, selection, selectionArgs, sortOrder);
 
         if (cursor != null) {
             try {
@@ -115,181 +105,128 @@ final class PlaylistQuery {
         return id;
     }
 
-    /*package*/ static Flowable<List<Playlist>> queryAll(
-            final ContentResolver resolver,
-            final String sortOrder) {
-        final String selection = null;
-        final String[] selectionArgs = null;
-        return Query.query(
-                resolver,
-                URI,
-                PROJECTION,
-                selection,
-                selectionArgs,
-                sortOrder,
-                BUILDER);
+    static Flowable<List<Playlist>> queryAll(ContentResolver resolver, String sortOrder) {
+        String selection = null;
+        String[] selectionArgs = null;
+        return RxContent.query(resolver, URI, PROJECTION, selection, selectionArgs,
+                sortOrder, ExecutorHolder.workerExecutor(), CURSOR_MAPPER);
     }
 
-    /*package*/ static Flowable<List<Playlist>> queryAll(
-            final ContentResolver resolver) {
-        final String selection = null;
-        final String[] selectionArgs = null;
-        return Query.query(
-                resolver,
-                URI,
-                PROJECTION,
-                selection,
-                selectionArgs,
-                Sort.BY_NAME,
-                BUILDER);
+    static Flowable<List<Playlist>> queryAllFiltered(ContentResolver resolver, String filter) {
+        String selection = MediaStore.Audio.Playlists.NAME + " LIKE ?";
+        String[] selectionArgs = new String[] { "%" + filter + "%" };
+        return RxContent.query(resolver, URI, PROJECTION, selection, selectionArgs,
+                Sort.BY_NAME, ExecutorHolder.workerExecutor(), CURSOR_MAPPER);
     }
 
-    /*package*/ static Flowable<List<Playlist>> queryAllFiltered(
-            final ContentResolver resolver,
-            final String filter) {
-        final String selection = MediaStore.Audio.Playlists.NAME + " LIKE ?";
-        final String[] selectionArgs = new String[]{ "%" + filter + "%" };
-        return Query.query(
-                resolver,
-                URI,
-                PROJECTION,
-                selection,
-                selectionArgs,
-                Sort.BY_NAME,
-                BUILDER);
+    static Flowable<Playlist> queryItem(ContentResolver resolver, long itemId) {
+        return RxContent.queryItem(resolver, URI, PROJECTION, itemId,
+                ExecutorHolder.workerExecutor(), CURSOR_MAPPER);
     }
 
-    /*package*/ static Flowable<Playlist> querySingle(
-            final ContentResolver resolver,
-            final long itemId) {
-        return Query.querySingle(
-                resolver,
-                URI,
-                PROJECTION,
-                itemId,
-                BUILDER);
-    }
-
-    /*package*/ static Single<Playlist> create(
-            final Context context,
-            final ContentResolver resolver,
-            final String name) {
-        return Single.fromCallable(new Callable<Playlist>() {
-            @Override
-            public Playlist call() throws Exception {
-                if (name.trim().isEmpty()) {
-                    String msg = context.getString(
-                            R.string.name_is_empty);
-                    throw new IllegalArgumentException(msg);
-                }
-
-                String[] emptyProjection = new String[0];
-                String selection = MediaStore.Audio.Playlists.NAME + " = ?";
-                String[] selectionArgs = new String[] { name };
-                String sortOrder = null;
-                Cursor cursor = resolver.
-                        query(URI, emptyProjection, selection, selectionArgs, sortOrder);
-
-                boolean exists = false;
-
-                if (cursor != null) {
-                    try {
-                        exists = cursor.getCount() != 0;
-                    } finally {
-                        cursor.close();
-                    }
-                }
-
-
-                if (exists) {
-                    String msg = context.getString(
-                            R.string.such_name_already_exists);
-                    throw new IllegalArgumentException(msg);
-                }
-
-                long id = getPlaylistIdByName_Internal(resolver, name);
-
-                if (id == -1) {
-                    ContentValues values = new ContentValues(1);
-                    values.put(MediaStore.Audio.Playlists.NAME, name);
-
-                    Uri uri = resolver.insert(URI, values);
-
-                    // Need to notify the content resolver about the insertion,
-                    // because it does not automatically receive notifications in some Android APIs (i.e. 30)
-                    resolver.notifyChange(uri != null ? uri : URI, null);
-
-                    if (uri == null) {
-                        // The docs say it may be null
-                        throw new Exception(
-                                "Failed to insert item: " + values);
-                    }
-
-                    String idString = uri.getLastPathSegment();
-                    if (idString == null) {
-                        throw new Exception(
-                                "Failed to parse uri last segment: " + uri);
-                    }
-
-                    id = Long.parseLong(idString);
-                }
-
-                //long now = System.currentTimeMillis() / 1000;
-
-                // Simply querying the newly created playlist by its ID
-                return querySingle(resolver, id).blockingFirst();
+    static Single<Playlist> create(Context context, ContentResolver resolver, String name) {
+        return Single.fromCallable(() -> {
+            if (name.trim().isEmpty()) {
+                String msg = context.getString(R.string.name_is_empty);
+                throw new IllegalArgumentException(msg);
             }
+
+            String[] emptyProjection = new String[0];
+            String selection = MediaStore.Audio.Playlists.NAME + " = ?";
+            String[] selectionArgs = new String[] { name };
+            String sortOrder = null;
+            Cursor cursor = resolver.query(URI, emptyProjection, selection, selectionArgs, sortOrder);
+
+            boolean exists = false;
+
+            if (cursor != null) {
+                try {
+                    exists = cursor.getCount() != 0;
+                } finally {
+                    cursor.close();
+                }
+            }
+
+
+            if (exists) {
+                String msg = context.getString(
+                        R.string.such_name_already_exists);
+                throw new IllegalArgumentException(msg);
+            }
+
+            long id = getPlaylistIdByNameInternal(resolver, name);
+
+            if (id == -1) {
+                ContentValues values = new ContentValues(1);
+                values.put(MediaStore.Audio.Playlists.NAME, name);
+
+                Uri uri = resolver.insert(URI, values);
+
+                // Need to notify the content resolver about the insertion,
+                // because it does not automatically receive notifications in some Android APIs (i.e. 30)
+                resolver.notifyChange(uri != null ? uri : URI, null);
+
+                if (uri == null) {
+                    // The docs say it may be null
+                    throw new Exception("Failed to insert item: " + values);
+                }
+
+                String idString = uri.getLastPathSegment();
+                if (idString == null) {
+                    throw new Exception("Failed to parse uri last segment: " + uri);
+                }
+
+                id = Long.parseLong(idString);
+            }
+
+            //long now = System.currentTimeMillis() / 1000;
+
+            // Simply querying the newly created playlist by its ID
+            return queryItem(resolver, id).blockingFirst();
         });
     }
 
-    /*package*/ static Single<Playlist> update(
-            final Context context,
-            final ContentResolver resolver,
-            final Playlist item,
-            final String newName) {
-        return Single.fromCallable(new Callable<Playlist>() {
-            @Override
-            public Playlist call() throws Exception {
-                if (item.getName().equals(newName)) {
-                    // just return same item
-                    return new Playlist(item);
-                }
-
-                if (newName.trim().isEmpty()) {
-                    String msg = context.getString(
-                            R.string.name_is_empty);
-                    throw new IllegalArgumentException(msg);
-                }
-
-                if (checkPlaylistNameExists_Internal(resolver, newName)) {
-                    String msg = context.getString(
-                            R.string.such_name_already_exists);
-                    throw new IllegalArgumentException(msg);
-                }
-
-                long existingId = getPlaylistIdByName_Internal(resolver, newName);
-
-                if (existingId == item.getId())
-                    // we're trying to change the name of the same item so return it
-                    return item;
-                if (existingId != -1) {
-                    String msg = context.getString(
-                            R.string.such_name_already_exists);
-                    throw new IllegalArgumentException(msg);
-                }
-
-                ContentValues values = new ContentValues(1);
-                values.put(MediaStore.Audio.Playlists.NAME, newName);
-
-                int updatedCount = resolver.update(URI,
-                        values, MediaStore.Audio.Playlists._ID + " = " + item.getId(), null);
-                if (updatedCount == 0) {
-                    throw new Exception("Failed to update item: " + item);
-                }
-
-                long now = System.currentTimeMillis() / 1000;
-                return new Playlist(item.getId(), IS_FROM_SHARED_STORAGE, newName, item.getSource(), item.getDateAdded(), now);
+    static Single<Playlist> update(Context context, ContentResolver resolver, Playlist item, String newName) {
+        return Single.fromCallable(() -> {
+            if (item.getName().equals(newName)) {
+                // just return same item
+                return new Playlist(item);
             }
+
+            if (newName.trim().isEmpty()) {
+                String msg = context.getString(
+                        R.string.name_is_empty);
+                throw new IllegalArgumentException(msg);
+            }
+
+            if (checkPlaylistNameExistsInternal(resolver, newName)) {
+                String msg = context.getString(
+                        R.string.such_name_already_exists);
+                throw new IllegalArgumentException(msg);
+            }
+
+            long existingId = getPlaylistIdByNameInternal(resolver, newName);
+
+            if (existingId == item.getId())
+                // we're trying to change the name of the same item so return it
+                return item;
+            if (existingId != -1) {
+                String msg = context.getString(
+                        R.string.such_name_already_exists);
+                throw new IllegalArgumentException(msg);
+            }
+
+            ContentValues values = new ContentValues(1);
+            values.put(MediaStore.Audio.Playlists.NAME, newName);
+
+            int updatedCount = resolver.update(URI,
+                    values, MediaStore.Audio.Playlists._ID + " = " + item.getId(), null);
+            if (updatedCount == 0) {
+                throw new Exception("Failed to update item: " + item);
+            }
+
+            long now = System.currentTimeMillis() / 1000;
+            return new Playlist(item.getId(), IS_FROM_SHARED_STORAGE, newName, item.getSource(), item.getDateAdded(), now);
         });
     }
 
