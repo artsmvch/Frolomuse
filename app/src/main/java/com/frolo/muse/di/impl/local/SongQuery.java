@@ -1038,6 +1038,10 @@ final class SongQuery {
     private static <T> Flowable<List<T>> filterImpl(
             ContentResolver resolver, Flowable<List<T>> source, Function<T, SongFilter> filterFunc) {
         return source.switchMap(items -> {
+            if (items.isEmpty()) {
+                return Flowable.just(items);
+            }
+
             List<Single<List<T>>> filteredSources = new ArrayList<>(items.size());
             for (final T item : items) {
                 Single<List<T>> filteredSource = Single.fromCallable(() -> {
