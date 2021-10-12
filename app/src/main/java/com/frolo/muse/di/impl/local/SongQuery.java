@@ -7,7 +7,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 
-import com.frolo.muse.DebugUtils;
 import com.frolo.muse.content.AppMediaStore;
 import com.frolo.muse.model.media.Album;
 import com.frolo.muse.model.media.Artist;
@@ -35,7 +34,6 @@ import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.FlowableEmitter;
 import io.reactivex.FlowableOnSubscribe;
-import io.reactivex.Single;
 import io.reactivex.disposables.Disposables;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Function;
@@ -88,8 +86,6 @@ final class SongQuery {
             this.lastPlayTime = lastPlayTime;
         }
     }
-
-    private static final String[] EMPTY_PROJECTION = new String[0];
 
     private static final String[] PROJECTION_SONG = new String[] {
             MediaStore.Audio.Media._ID,
@@ -1021,100 +1017,6 @@ final class SongQuery {
                 .build();
         }
         return query(resolver, filter, sortOrder);
-    }
-
-    private static boolean blockingHasEntries(ContentResolver resolver, Uri uri, String selection, String[] selectionArgs) {
-        Cursor cursor = resolver.query(uri, EMPTY_PROJECTION, selection, selectionArgs, null);
-        if (cursor == null) {
-            return true;
-        }
-        try {
-            return cursor.getCount() > 0;
-        } finally {
-            cursor.close();
-        }
-    }
-
-    private static <T> Flowable<List<T>> filterImpl(
-            ContentResolver resolver, Flowable<List<T>> source, Function<T, SongFilter> filterFunc) {
-        return source.switchMap(items -> {
-            if (items.isEmpty()) {
-                return Flowable.just(items);
-            }
-
-            List<Single<List<T>>> filteredSources = new ArrayList<>(items.size());
-            for (final T item : items) {
-                Single<List<T>> filteredSource = Single.fromCallable(() -> {
-                    try {
-                        SongFilter resultFilter = filterFunc.apply(item);
-                        SongQueryHelper.SelectionWithArgs selectionWithArgs =
-                                SongQueryHelper.getSelectionWithArgs(resultFilter);
-                        if (blockingHasEntries(resolver, URI, selectionWithArgs.selection, selectionWithArgs.args)) {
-                            return Collections.singletonList(item);
-                        }
-                        return Collections.emptyList();
-                    } catch (Throwable error) {
-                        DebugUtils.dumpOnMainThread(error);
-                        return Collections.singletonList(item);
-                    }
-                });
-                filteredSource = filteredSource.subscribeOn(ExecutorHolder.workerScheduler());
-                filteredSources.add(filteredSource);
-            }
-            Function<Object[], List<T>> zipper = objects -> {
-                List<T> heap = new ArrayList<>();
-                for (Object object : objects) {
-                    heap.addAll((List<T>) object);
-                }
-                return heap;
-            };
-            Single<List<T>> resultSingle = Single.zip(filteredSources, zipper);
-            return resultSingle.toFlowable().onBackpressureLatest();
-        });
-    }
-
-//    static Flowable<List<Album>> filter(
-//            ContentResolver resolver, Flowable<List<Album>> source, final SongFilter filter) {
-//        return source.switchMap(albums -> {
-//            List<Single<List<Album>>> filteredSources = new ArrayList<>(albums.size());
-//            for (final Album album : albums) {
-//                Single<List<Album>> filteredSource = Single.fromCallable(() -> {
-//                    try {
-//                        SongFilter albumFilter = filter.newBuilder().setAlbumId(album.getId()).build();
-//                        SongQueryHelper.SelectionWithArgs selectionWithArgs =
-//                                SongQueryHelper.getSelectionWithArgs(albumFilter);
-//                        if (blockingHasEntries(resolver, URI, selectionWithArgs.selection, selectionWithArgs.args)) {
-//                            return Collections.singletonList(album);
-//                        }
-//                        return Collections.emptyList();
-//                    } catch (Throwable error) {
-//                        DebugUtils.dumpOnMainThread(error);
-//                        return Collections.singletonList(album);
-//                    }
-//                });
-//                filteredSource = filteredSource.subscribeOn(ExecutorHolder.workerScheduler());
-//                filteredSources.add(filteredSource);
-//            }
-//            Function<Object[], List<Album>> zipper = objects -> {
-//                List<Album> chunk = new ArrayList<>();
-//                for (Object object : objects) {
-//                    chunk.addAll((List<Album>) object);
-//                }
-//                return chunk;
-//            };
-//            Single<List<Album>> resultSingle = Single.zip(filteredSources, zipper);
-//            return resultSingle.toFlowable().onBackpressureLatest();
-//        });
-//    }
-
-    static Flowable<List<Album>> filterAlbums(
-            ContentResolver resolver, Flowable<List<Album>> source, final SongFilter filter) {
-        return filterImpl(resolver, source, album -> filter.newBuilder().setAlbumId(album.getId()).build());
-    }
-
-    static Flowable<List<Artist>> filterArtists(
-            ContentResolver resolver, Flowable<List<Artist>> source, final SongFilter filter) {
-        return filterImpl(resolver, source, artist -> filter.newBuilder().setArtistId(artist.getId()).build());
     }
 
     private SongQuery() {

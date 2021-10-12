@@ -1,15 +1,26 @@
 package com.frolo.muse.di.impl.local;
 
+import android.content.ContentResolver;
 import android.database.Cursor;
+import android.net.Uri;
 import android.provider.MediaStore;
 
 import androidx.annotation.NonNull;
 
+import com.frolo.muse.DebugUtils;
+import com.frolo.muse.model.media.Album;
+import com.frolo.muse.model.media.Artist;
+import com.frolo.muse.model.media.Genre;
 import com.frolo.muse.model.media.SongFilter;
 import com.frolo.muse.model.media.SongType;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+
+import io.reactivex.Flowable;
+import io.reactivex.Single;
+import io.reactivex.functions.Function;
 
 
 final class SongQueryHelper {
@@ -23,6 +34,8 @@ final class SongQueryHelper {
             this.args = args;
         }
     }
+
+    private static final String[] EMPTY_PROJECTION = new String[0];
 
     static boolean getBool(@NonNull Cursor cursor, @NonNull String columnName) {
         return getBool(cursor, cursor.getColumnIndex(columnName));
@@ -213,6 +226,79 @@ final class SongQueryHelper {
         }
 
         return new SelectionWithArgs(selection, selectionArgs);
+    }
+
+    private static boolean blockingHasEntries(ContentResolver resolver, Uri uri, String selection, String[] selectionArgs) {
+        Cursor cursor = resolver.query(uri, EMPTY_PROJECTION, selection, selectionArgs, null);
+        if (cursor == null) {
+            return true;
+        }
+        try {
+            return cursor.getCount() > 0;
+        } finally {
+            cursor.close();
+        }
+    }
+
+    private static <T> Flowable<List<T>> filterImpl(
+            ContentResolver resolver, Flowable<List<T>> source,
+            Function<T, Uri> uriFunc, Function<T, SongFilter> filterFunc) {
+        return source.switchMap(items -> {
+            if (items.isEmpty()) {
+                return Flowable.just(items);
+            }
+
+            List<Single<List<T>>> filteredSources = new ArrayList<>(items.size());
+            for (final T item : items) {
+                Single<List<T>> filteredSource = Single.fromCallable(() -> {
+                    try {
+                        SongFilter resultFilter = filterFunc.apply(item);
+                        SongQueryHelper.SelectionWithArgs selectionWithArgs =
+                                SongQueryHelper.getSelectionWithArgs(resultFilter);
+                        Uri uri = uriFunc.apply(item);
+                        if (blockingHasEntries(resolver, uri, selectionWithArgs.selection, selectionWithArgs.args)) {
+                            return Collections.singletonList(item);
+                        }
+                        return Collections.emptyList();
+                    } catch (Throwable error) {
+                        DebugUtils.dumpOnMainThread(error);
+                        return Collections.singletonList(item);
+                    }
+                });
+                filteredSource = filteredSource.subscribeOn(ExecutorHolder.workerScheduler());
+                filteredSources.add(filteredSource);
+            }
+            Function<Object[], List<T>> zipper = objects -> {
+                List<T> heap = new ArrayList<>();
+                for (Object object : objects) {
+                    heap.addAll((List<T>) object);
+                }
+                return heap;
+            };
+            Single<List<T>> resultSingle = Single.zip(filteredSources, zipper);
+            return resultSingle.toFlowable().onBackpressureLatest();
+        });
+    }
+
+    static Flowable<List<Album>> filterAlbums(
+            ContentResolver resolver, Flowable<List<Album>> source, final SongFilter filter) {
+        return filterImpl(resolver, source,
+                album -> MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+                album -> filter.newBuilder().setAlbumId(album.getId()).build());
+    }
+
+    static Flowable<List<Artist>> filterArtists(
+            ContentResolver resolver, Flowable<List<Artist>> source, final SongFilter filter) {
+        return filterImpl(resolver, source,
+                artist -> MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+                artist -> filter.newBuilder().setArtistId(artist.getId()).build());
+    }
+
+    static Flowable<List<Genre>> filterGenres(
+            ContentResolver resolver, Flowable<List<Genre>> source, final SongFilter filter) {
+        return filterImpl(resolver, source,
+                genre -> MediaStore.Audio.Genres.Members.getContentUri("external", genre.getId()),
+                genre -> filter);
     }
 
     private SongQueryHelper() {

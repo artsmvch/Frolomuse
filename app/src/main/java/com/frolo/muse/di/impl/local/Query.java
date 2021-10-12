@@ -34,6 +34,7 @@ import io.reactivex.functions.Action;
 import io.reactivex.functions.Function;
 
 
+@Deprecated
 final class Query {
 
     private final static Object NOTHING = new Object();

@@ -15,7 +15,7 @@ import io.reactivex.Flowable;
 import io.reactivex.Single;
 
 
-public class GenreRepositoryImpl extends BaseMediaRepository<Genre> implements GenreRepository {
+public final class GenreRepositoryImpl extends BaseMediaRepository<Genre> implements GenreRepository {
 
     private final static String[] SORT_ORDER_KEYS = {
         GenreQuery.Sort.BY_NAME
@@ -38,30 +38,27 @@ public class GenreRepositoryImpl extends BaseMediaRepository<Genre> implements G
 
     @Override
     public Flowable<List<Genre>> getAllItems() {
-        return GenreQuery.queryAll(getContext().getContentResolver());
+        return getSongFilter().switchMap(songFilter -> GenreQuery.queryAll(getContentResolver(), songFilter));
     }
 
     @Override
     public Flowable<List<Genre>> getAllItems(final String sortOrder) {
-        return GenreQuery.queryAll(getContext().getContentResolver(), sortOrder);
+        return getSongFilter().switchMap(songFilter -> GenreQuery.queryAll(getContentResolver(), songFilter, sortOrder));
     }
 
     @Override
     public Flowable<List<Genre>> getFilteredItems(final String namePiece) {
-        return GenreQuery.queryAllFiltered(getContext().getContentResolver(), namePiece);
+        return getSongFilter().switchMap(songFilter -> GenreQuery.queryAllFiltered(getContentResolver(), songFilter, namePiece));
     }
 
     @Override
     public Flowable<Genre> getItem(final long id) {
-        return GenreQuery.querySingle(getContext().getContentResolver(), id);
+        return GenreQuery.queryItem(getContentResolver(), id);
     }
 
     @Override
     public Single<Genre> findItemByName(final String name) {
-        return GenreQuery.querySingleByName(
-                getContext().getContentResolver(),
-                name)
-                .firstOrError();
+        return GenreQuery.queryItemByName(getContentResolver(), name).firstOrError();
     }
 
     @Override
@@ -100,10 +97,8 @@ public class GenreRepositoryImpl extends BaseMediaRepository<Genre> implements G
 
     @Override
     public Single<List<Song>> collectSongs(Genre item) {
-        return SongQuery.queryForGenre(
-                getContext().getContentResolver(),
-                item,
-                SongQuery.Sort.BY_TITLE)
+        return getSongFilter().switchMap(songFilter ->
+                SongQuery.query(getContentResolver(), songFilter, GenreQuery.Sort.BY_NAME, item))
                 .firstOrError();
     }
 

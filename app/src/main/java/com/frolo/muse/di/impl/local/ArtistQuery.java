@@ -54,7 +54,7 @@ import io.reactivex.Flowable;
         final String[] selectionArgs = null;
         Flowable<List<Artist>> source = RxContent.query(resolver, URI, PROJECTION,
                 selection, selectionArgs, sortOrder, ExecutorHolder.workerExecutor(), CURSOR_MAPPER);
-        return SongQuery.filterArtists(resolver, source, songFilter);
+        return SongQueryHelper.filterArtists(resolver, source, songFilter);
     }
 
     static Flowable<List<Artist>> queryAll(ContentResolver resolver, SongFilter songFilter) {
@@ -67,7 +67,7 @@ import io.reactivex.Flowable;
         final String sortOrder = Sort.BY_ARTIST;
         Flowable<List<Artist>> source = RxContent.query(resolver, URI, PROJECTION,
                 selection, selectionArgs, sortOrder, ExecutorHolder.workerExecutor(), CURSOR_MAPPER);
-        return SongQuery.filterArtists(resolver, source, songFilter);
+        return SongQueryHelper.filterArtists(resolver, source, songFilter);
     }
 
     static Flowable<Artist> queryItem(ContentResolver resolver, long itemId) {

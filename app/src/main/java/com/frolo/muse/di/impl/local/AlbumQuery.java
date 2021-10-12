@@ -80,7 +80,7 @@ import io.reactivex.schedulers.Schedulers;
         String[] selectionArgs = null;
         Flowable<List<Album>> source = RxContent.query(resolver, URI, PROJECTION, selection, selectionArgs,
                 sortOrder, ExecutorHolder.workerExecutor(), CURSOR_MAPPER);
-        return SongQuery.filterAlbums(resolver, source, filter);
+        return SongQueryHelper.filterAlbums(resolver, source, filter);
     }
 
     static Flowable<List<Album>> queryAllFiltered(
@@ -89,7 +89,7 @@ import io.reactivex.schedulers.Schedulers;
         final String[] selectionArgs = new String[]{ "%" + namePiece + "%" };
         Flowable<List<Album>> source =  RxContent.query(resolver, URI, PROJECTION, selection, selectionArgs,
                 Sort.BY_ALBUM, ExecutorHolder.workerExecutor(), CURSOR_MAPPER);
-        return SongQuery.filterAlbums(resolver, source, songFilter);
+        return SongQueryHelper.filterAlbums(resolver, source, songFilter);
     }
 
     static Flowable<Album> queryItem(ContentResolver resolver, long itemId) {
@@ -144,7 +144,7 @@ import io.reactivex.schedulers.Schedulers;
             source = RxContent.query(resolver, uri, PROJECTION, selection, selectionArgs,
                     sortOrder, ExecutorHolder.workerExecutor(), CURSOR_MAPPER);
         }
-        return SongQuery.filterAlbums(resolver, source, songFilter);
+        return SongQueryHelper.filterAlbums(resolver, source, songFilter);
     }
 
     @Deprecated
