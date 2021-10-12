@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
-import java.util.concurrent.Callable;
 
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
@@ -373,54 +372,49 @@ public class PreferencesImpl implements Preferences {
     @Override
     public Flowable<String> getSortOrderForSection(final @Library.Section int section) {
         final String key = getKeySortOrderForSection(section);
-        return Query.createFlowable(
-                preferences,
-                key,
-                new Callable<String>() {
-                    @Override
-                    public String call() {
-                        String order = preferences.getString(key, null);
-                        switch (section) {
-                            case Library.ALBUMS:
-                                return AlbumRepositoryImpl.getSortOrderOrDefault(order);
+        return RxPreference.ofString(preferences, key).get().map(optional -> {
+            final String order = optional.orElse(null);
+            switch (section) {
+                case Library.ALBUMS:
+                    return AlbumRepositoryImpl.getSortOrderOrDefault(order);
 
-                            case Library.ARTISTS:
-                                return ArtistRepositoryImpl.getSortOrderOrDefault(order);
+                case Library.ARTISTS:
+                    return ArtistRepositoryImpl.getSortOrderOrDefault(order);
 
-                            case Library.GENRES:
-                                return GenreRepositoryImpl.getSortOrderOrDefault(order);
+                case Library.GENRES:
+                    return GenreRepositoryImpl.getSortOrderOrDefault(order);
 
-                            case Library.PLAYLISTS:
-                                return PlaylistRepositoryImpl.getSortOrderOrDefault(order);
+                case Library.PLAYLISTS:
+                    return PlaylistRepositoryImpl.getSortOrderOrDefault(order);
 
-                            case Library.FAVOURITES:
-                            case Library.RECENTLY_ADDED:
-                            case Library.ALL_SONGS:
-                                return SongRepositoryImpl.getSortOrderOrDefault(order);
+                case Library.FAVOURITES:
+                case Library.RECENTLY_ADDED:
+                case Library.ALL_SONGS:
+                    return SongRepositoryImpl.getSortOrderOrDefault(order);
 
-                            case Library.ALBUM:
-                                return AlbumChunkRepositoryImpl.getSortOrderOrDefault(order);
+                case Library.ALBUM:
+                    return AlbumChunkRepositoryImpl.getSortOrderOrDefault(order);
 
-                            case Library.ARTIST:
-                                return ArtistChunkRepositoryImpl.getSortOrderOrDefault(order);
+                case Library.ARTIST:
+                    return ArtistChunkRepositoryImpl.getSortOrderOrDefault(order);
 
-                            case Library.GENRE:
-                                return GenreChunkRepositoryImpl.getSortOrderOrDefault(order);
+                case Library.GENRE:
+                    return GenreChunkRepositoryImpl.getSortOrderOrDefault(order);
 
-                            case Library.PLAYLIST:
-                                return PlaylistChunkRepositoryImpl.getSortOrderOrDefault(order);
+                case Library.PLAYLIST:
+                    return PlaylistChunkRepositoryImpl.getSortOrderOrDefault(order);
 
-                            case Library.FOLDERS: {
-                                return MyFileRepositoryImpl.getSortOrderOrDefault(order);
-                            }
-
-                            case Library.MIXED:
-                            default:
-                                throw new IllegalArgumentException("Unsupported library section: " + section);
-                        }
-                    }
+                case Library.FOLDERS: {
+                    return MyFileRepositoryImpl.getSortOrderOrDefault(order);
                 }
-        );
+
+                case Library.MIXED:
+                case Library.MOST_PLAYED:
+                default: {
+                    throw new IllegalArgumentException("Unsupported library section: " + section);
+                }
+            }
+        });
     }
 
     @Override
@@ -444,16 +438,7 @@ public class PreferencesImpl implements Preferences {
     @Override
     public Flowable<Boolean> isSortOrderReversedForSection(@Library.Section int section) {
         final String key = getKeySortReversedOrderForSection(section);
-        return Query.createFlowable(
-                preferences,
-                key,
-                new Callable<Boolean>() {
-                    @Override
-                    public Boolean call() {
-                        return preferences.getBoolean(key, false);
-                    }
-                }
-        );
+        return RxPreference.ofBoolean(preferences, key).get(false);
     }
 
     @Override
