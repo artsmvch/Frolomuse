@@ -1,6 +1,7 @@
 package com.frolo.muse.engine
 
 import androidx.test.InstrumentationRegistry
+import com.frolo.muse.TestLibraryConfiguration
 import com.frolo.muse.common.toAudioSource
 import com.frolo.muse.di.impl.local.SongRepositoryImpl
 import com.frolo.muse.engine.stub.AudioFxStub
@@ -35,7 +36,8 @@ abstract class PlayerImpl_Base_Test {
             throw IllegalArgumentException("Invalid size = $size")
         }
         val context = InstrumentationRegistry.getTargetContext()
-        val repository = SongRepositoryImpl(context)
+        val configuration = TestLibraryConfiguration(context)
+        val repository = SongRepositoryImpl(configuration)
         val songs = repository.allItems.blockingFirst()
         val audioSources = songs.map { it.toAudioSource() }
         if (size != null) {

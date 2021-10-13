@@ -98,7 +98,7 @@ import io.reactivex.schedulers.Schedulers;
     }
 
     static Flowable<Album> queryForPreview(ContentResolver resolver) {
-        return queryAll(resolver, SongFilter.none(), Sort.BY_ALBUM).observeOn(Schedulers.computation()).map(albums -> {
+        return queryAll(resolver, SongFilter.empty(), Sort.BY_ALBUM).observeOn(Schedulers.computation()).map(albums -> {
             int minNumOfSongs = 5;
             int maxNumOfSongs = 10;
             Album candidate = null;

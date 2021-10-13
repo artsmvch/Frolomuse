@@ -4,6 +4,7 @@ package com.frolo.muse.database
 
 import androidx.test.InstrumentationRegistry
 import androidx.test.runner.AndroidJUnit4
+import com.frolo.muse.TestLibraryConfiguration
 import com.frolo.muse.di.impl.local.PlaylistDatabaseManager
 import com.frolo.muse.di.impl.local.SongRepositoryImpl
 import com.frolo.muse.kotlin.moveItem
@@ -26,7 +27,8 @@ class PlaylistDatabaseManager_Test {
      */
     private fun getSongList(count: Int): List<Song> {
         val context = InstrumentationRegistry.getTargetContext()
-        val repository = SongRepositoryImpl(context)
+        val configuration = TestLibraryConfiguration(context)
+        val repository = SongRepositoryImpl(configuration)
         val songs = repository.allItems.blockingFirst()
         if (songs.size < count) {
             throw IllegalStateException("Could not find enough songs: " +

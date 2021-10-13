@@ -310,24 +310,19 @@ final class SongQueryHelper {
         }
 
         {
-            // Folder path
+            // Folder path / file path
             final String folderPath = filter.getFolderPath();
-            if (folderPath != null && !folderPath.isEmpty()) {
-                if (selectionBuilder.length() > 0) selectionBuilder.append(" AND ");
-
-                selectionBuilder.append(MediaStore.Audio.Media.DATA).append(" LIKE ?");
-                selectionArgsList.add("%" + folderPath + "/%");
-            }
-        }
-
-        {
-            // Filepath
             final String filepath = filter.getFilepath();
             if (filepath != null && !filepath.isEmpty()) {
                 if (selectionBuilder.length() > 0) selectionBuilder.append(" AND ");
 
                 selectionBuilder.append(MediaStore.Audio.Media.DATA).append(" LIKE ?");
                 selectionArgsList.add(filepath);
+            } else if ((folderPath != null && !folderPath.isEmpty())) {
+                if (selectionBuilder.length() > 0) selectionBuilder.append(" AND ");
+
+                selectionBuilder.append(MediaStore.Audio.Media.DATA).append(" LIKE ?");
+                selectionArgsList.add("%" + folderPath + "/%");
             }
         }
 

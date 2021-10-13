@@ -27,13 +27,13 @@ public final class SongFilter {
         ALL_SONG_TYPES.addAll(Arrays.asList(songTypesValues));
     }
 
-    private static final SongFilter NONE = new SongFilter(ALL_SONG_TYPES,
+    private static final SongFilter EMPTY = new SongFilter(ALL_SONG_TYPES,
             NAME_PIECE_NOT_SET, FOLDER_PATH_NOT_SET, FILEPATH_NOT_SET,
             ID_NOT_SET, ID_NOT_SET, ID_NOT_SET, DURATION_NOT_SET, DURATION_NOT_SET, TIME_NOT_SET);
 
     @NotNull
-    public static SongFilter none() {
-        return NONE;
+    public static SongFilter empty() {
+        return EMPTY;
     }
 
     @NotNull
@@ -150,9 +150,7 @@ public final class SongFilter {
     @NotNull
     public Builder newBuilder() {
         Builder builder = new Builder();
-        for (SongType type : types) {
-            builder.addType(type);
-        }
+        builder.setOnlyTypes(types);
         builder.setNamePiece(namePiece);
         builder.setFolderPath(folderPath);
         builder.setFilepath(filepath);
@@ -166,7 +164,7 @@ public final class SongFilter {
     }
 
     public static final class Builder {
-        private final Set<SongType> types = new HashSet<>(6);
+        private final Set<SongType> types;
         private String namePiece = NAME_PIECE_NOT_SET;
         private String folderPath = FOLDER_PATH_NOT_SET;
         private String filepath = FILEPATH_NOT_SET;
@@ -177,14 +175,36 @@ public final class SongFilter {
         private long maxDuration = DURATION_NOT_SET;
         private long timeAdded = TIME_NOT_SET;
 
-        public Builder addType(@NotNull SongType type) {
-            types.add(type);
+        public Builder() {
+            // All types are enabled by default
+            types = new HashSet<>(ALL_SONG_TYPES);
+        }
+
+        public Builder setOnlyType(@NotNull SongType type) {
+            this.types.clear();
+            this.types.add(type);
             return this;
         }
 
-        public Builder setTypes(@NotNull Collection<SongType> types) {
+        public Builder setOnlyTypes(@NotNull Collection<SongType> types) {
             this.types.clear();
             this.types.addAll(types);
+            return this;
+        }
+
+        public Builder setOnlyTypes(@NotNull SongType... types) {
+            this.types.clear();
+            this.types.addAll(Arrays.asList(types));
+            return this;
+        }
+
+        public Builder noTypes() {
+            this.types.clear();
+            return this;
+        }
+
+        public Builder addType(@NotNull SongType type) {
+            types.add(type);
             return this;
         }
 
