@@ -44,6 +44,8 @@
         <item name="android:textColorSecondary">@color/text_secondary_dark</item>
         <item name="android:textColorHint">#ADADAD</item>
 
+        <item name="errorTextColor">@color/error</item>
+
         <!--Text appearances-->
         <item name="textAppearanceListItem">@style/Base.AppTheme.TextAppearance.ListItem</item>
         <item name="textAppearanceListItemSmall">@style/Base.AppTheme.TextAppearance.ListItemSmall</item>
@@ -75,6 +77,8 @@
         <item name="android:textColorPrimary">@color/text_primary_dark</item>
         <item name="android:textColorSecondary">@color/text_secondary_dark</item>
         <item name="android:textColorHint">@color/md_grey_400</item>
+
+        <item name="errorTextColor">@color/error</item>
 
         <item name="colorPremiumProductAccent">?colorAccent</item>
     </style>

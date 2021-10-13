@@ -21,6 +21,7 @@ class RestorePlayerStateUseCase @Inject constructor(
     private val genreRepository: GenreRepository,
     private val playlistRepository: PlaylistRepository,
     private val preferences: Preferences,
+    private val libraryPreferences: LibraryPreferences,
     private val audioSourceQueueFactory: AudioSourceQueueFactory
 ) {
 
@@ -97,7 +98,7 @@ class RestorePlayerStateUseCase @Inject constructor(
         return songQueueSource
             .firstOrError()
             .flatMap { queue ->
-                preferences.minAudioFileDuration
+                libraryPreferences.getMinAudioDuration()
                     .first(0)
                     .map { queue.excludeShortAudioSources(it) }
             }

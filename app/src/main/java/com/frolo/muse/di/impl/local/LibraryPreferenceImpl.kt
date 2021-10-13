@@ -8,8 +8,8 @@ import com.frolo.muse.repository.LibraryPreferences
 import com.frolo.rxpreference.RxPreference
 import io.reactivex.Completable
 import io.reactivex.Flowable
-import io.reactivex.Single
-import io.reactivex.schedulers.Schedulers
+import org.json.JSONArray
+import org.json.JSONObject
 
 
 internal class LibraryPreferenceImpl(
@@ -20,17 +20,50 @@ internal class LibraryPreferenceImpl(
         context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
     }
 
-    private val songTypeMapping = mapOf(
-        SongType.MUSIC to "music",
-        SongType.PODCAST to "podcast",
-        SongType.RINGTONE to "ringtone",
-        SongType.ALARM to "alarm",
-        SongType.NOTIFICATION to "notification",
-        SongType.AUDIOBOOK to "audiobook"
-    )
-
     private val defaultSongFilter: SongFilter by lazy {
         SongFilter.Builder().addType(SongType.MUSIC).build()
+    }
+
+    private fun toJSON(filter: SongFilter): String {
+        val json = JSONObject()
+
+        // Types
+        val typesArray = JSONArray()
+        for (type in filter.types) {
+            typesArray.put(SONG_TYPE_MAPPING[type])
+        }
+        json.put(JSON_KEY_SONG_TYPES, typesArray)
+
+        // Min duration
+        if (filter.minDuration != SongFilter.DURATION_NOT_SET) {
+            json.put(JSON_KEY_MIN_DURATION, filter.minDuration)
+        }
+
+        return json.toString()
+    }
+
+    private fun toSongFilter(jsonString: String): SongFilter {
+        val builder = SongFilter.Builder()
+        val json = JSONObject(jsonString)
+
+        // Types
+        json.optJSONArray(JSON_KEY_SONG_TYPES)?.also { typesArray ->
+            for (i in 0 until typesArray.length()) {
+                val value = typesArray.get(i)
+                val entry = SONG_TYPE_MAPPING.entries.firstOrNull { it.value == value }
+                if (entry != null) {
+                    builder.addType(entry.key)
+                }
+            }
+        }
+
+        // Min duration
+        if (json.has(JSON_KEY_MIN_DURATION)) {
+            val minDuration = json.getLong(JSON_KEY_MIN_DURATION)
+            builder.setMinDuration(minDuration)
+        }
+
+        return builder.build()
     }
 
     override fun getSongFilter(): Flowable<SongFilter> {
@@ -38,15 +71,7 @@ internal class LibraryPreferenceImpl(
             .get()
             .map { optional ->
                 if (optional.isPresent) {
-                    val builder = SongFilter.Builder()
-                    val tokens = optional.get().split(SONG_TYPE_DELIMITER)
-                    tokens.forEach { token ->
-                        val entry = songTypeMapping.entries.firstOrNull { it.value == token }
-                        if (entry != null) {
-                            builder.addType(entry.key)
-                        }
-                    }
-                    builder.build()
+                    toSongFilter(optional.get())
                 } else {
                     defaultSongFilter
                 }
@@ -54,15 +79,37 @@ internal class LibraryPreferenceImpl(
             .onErrorReturnItem(defaultSongFilter)
     }
 
-    override fun setSongFilter(filter: SongFilter): Completable {
-        return Single.fromCallable {
-            val tokens = filter.types.mapNotNull { songTypeMapping.get(it) }
-            tokens.joinToString(SONG_TYPE_DELIMITER)
-        }
-            .subscribeOn(Schedulers.computation())
-            .flatMapCompletable { value ->
-                RxPreference.ofString(prefs, KEY_SONG_FILTER).set(value)
+    private fun updateSongFilter(updater: (SongFilter) -> SongFilter): Completable {
+        return songFilter.first(defaultSongFilter)
+            .flatMapCompletable { filter ->
+                val newFilter = updater.invoke(filter)
+                val newJson = toJSON(newFilter)
+                RxPreference.ofString(prefs, KEY_SONG_FILTER).set(newJson)
             }
+    }
+
+    override fun getSongTypes(): Flowable<List<SongType>> {
+        return songFilter.map { filter -> filter.types.toList() }
+    }
+
+    override fun setSongTypes(types: List<SongType>): Completable {
+        return updateSongFilter { filter ->
+            filter.newBuilder()
+                .setTypes(types)
+                .build()
+        }
+    }
+
+    override fun getMinAudioDuration(): Flowable<Long> {
+        return songFilter.map { filter -> filter.minDuration }
+    }
+
+    override fun setMinAudioDuration(duration: Long): Completable {
+        return updateSongFilter { filter ->
+            filter.newBuilder()
+                .setMinDuration(duration)
+                .build()
+        }
     }
 
     companion object {
@@ -70,8 +117,18 @@ internal class LibraryPreferenceImpl(
 
         private const val KEY_SONG_FILTER = "song_filter"
 
-        // Must not be changed!!!
-        private const val SONG_TYPE_DELIMITER = ","
+        // JSON keys (Must not be changed!!!)
+        private const val JSON_KEY_SONG_TYPES = "song_types"
+        private const val JSON_KEY_MIN_DURATION = "min_duration"
+
+        private val SONG_TYPE_MAPPING = mapOf(
+            SongType.MUSIC          to "music",
+            SongType.PODCAST        to "podcast",
+            SongType.RINGTONE       to "ringtone",
+            SongType.ALARM          to "alarm",
+            SongType.NOTIFICATION   to "notification",
+            SongType.AUDIOBOOK      to "audiobook"
+        )
     }
 
 }

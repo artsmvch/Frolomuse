@@ -42,16 +42,12 @@ class GetAlbumSongsUseCaseTest {
 
     private val sortOrder1 = TestSortOrder("Sort Order 1","sort_order_1")
     private val result1: List<Song> = List(size = 5) { index ->
-        mockSong(
-                duration = (5 + 10 * index) * 1_000
-        )
+        mockSong(duration = (5 + 10 * index) * 1_000)
     }
 
     private val sortOrder2 = TestSortOrder("Sort Order 2","sort_order_2")
     private val result2: List<Song> = List(size = 10) { index ->
-        mockSong(
-                duration = (5 + 10 * index) * 1_000
-        )
+        mockSong(duration = (5 + 10 * index) * 1_000)
     }
 
     private val sortOrders: MutableList<SortOrder> = arrayListOf(sortOrder1, sortOrder2)
@@ -88,9 +84,6 @@ class GetAlbumSongsUseCaseTest {
             whenever(preferences.isSortOrderReversedForSection(eq(Library.ALBUM)))
                     .doReturn(Flowable.just(false))
 
-            whenever(preferences.minAudioFileDuration)
-                    .doReturn(Flowable.just(0))
-
             getAlbumSongsUseCase.getMediaList()
                     .subscribe(subscriber)
 
@@ -107,9 +100,6 @@ class GetAlbumSongsUseCaseTest {
 
             whenever(preferences.isSortOrderReversedForSection(eq(Library.ALBUM)))
                     .doReturn(Flowable.just(false))
-
-            whenever(preferences.minAudioFileDuration)
-                    .doReturn(Flowable.just(10))
 
             getAlbumSongsUseCase.getMediaList()
                     .subscribe(subscriber)
@@ -128,9 +118,6 @@ class GetAlbumSongsUseCaseTest {
             whenever(preferences.isSortOrderReversedForSection(eq(Library.ALBUM)))
                     .doReturn(Flowable.just(true))
 
-            whenever(preferences.minAudioFileDuration)
-                    .doReturn(Flowable.just(0))
-
             getAlbumSongsUseCase.getMediaList()
                     .subscribe(subscriber)
 
@@ -147,9 +134,6 @@ class GetAlbumSongsUseCaseTest {
 
             whenever(preferences.isSortOrderReversedForSection(eq(Library.ALBUM)))
                     .doReturn(Flowable.just(true))
-
-            whenever(preferences.minAudioFileDuration)
-                    .doReturn(Flowable.just(20))
 
             getAlbumSongsUseCase.getMediaList()
                     .subscribe(subscriber)
@@ -171,9 +155,6 @@ class GetAlbumSongsUseCaseTest {
 
         whenever(repository.getSongsFromAlbum(eq(album), eq(sortOrder1.key)))
                 .doReturn(Flowable.error(UnsupportedOperationException()))
-
-        whenever(preferences.minAudioFileDuration)
-                .doReturn(Flowable.just(0))
 
         getAlbumSongsUseCase.getMediaList()
                 .subscribe(subscriber)

@@ -940,6 +940,7 @@ abstract class UseCaseModule {
                 genreRepository: GenreRepository,
                 playlistRepository: PlaylistRepository,
                 preferences: Preferences,
+                libraryPreferences: LibraryPreferences,
                 audioSourceQueueFactory: AudioSourceQueueFactory
         ): RestorePlayerStateUseCase {
             return RestorePlayerStateUseCase(
@@ -950,6 +951,7 @@ abstract class UseCaseModule {
                     genreRepository,
                     playlistRepository,
                     preferences,
+                    libraryPreferences,
                     audioSourceQueueFactory)
         }
 

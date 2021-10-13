@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -178,6 +179,12 @@ public final class SongFilter {
 
         public Builder addType(@NotNull SongType type) {
             types.add(type);
+            return this;
+        }
+
+        public Builder setTypes(@NotNull Collection<SongType> types) {
+            this.types.clear();
+            this.types.addAll(types);
             return this;
         }
 

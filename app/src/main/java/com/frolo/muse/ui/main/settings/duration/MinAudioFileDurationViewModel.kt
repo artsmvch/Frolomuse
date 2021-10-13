@@ -9,7 +9,7 @@ import com.frolo.muse.engine.Player
 import com.frolo.muse.interactor.media.get.removeShortAudioSources
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.logMinAudioFileDurationSet
-import com.frolo.muse.repository.Preferences
+import com.frolo.muse.repository.LibraryPreferences
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.base.BaseViewModel
 import javax.inject.Inject
@@ -17,14 +17,14 @@ import javax.inject.Inject
 
 class MinAudioFileDurationViewModel @Inject constructor(
     private val player: Player,
-    private val preferences: Preferences,
+    private val libraryPreferences: LibraryPreferences,
     private val schedulerProvider: SchedulerProvider,
     private val eventLogger: EventLogger
 ): BaseViewModel(eventLogger) {
 
-    private val currMinAudioDuration: LiveData<Int> by lazy {
-        MutableLiveData<Int>().apply {
-            preferences.minAudioFileDuration
+    private val currMinAudioDuration: LiveData<Long> by lazy {
+        MutableLiveData<Long>().apply {
+            libraryPreferences.getMinAudioDuration()
                 .firstOrError()
                 .observeOn(schedulerProvider.main())
                 .subscribeFor { value = it }
@@ -32,7 +32,7 @@ class MinAudioFileDurationViewModel @Inject constructor(
     }
 
     private val _minutes by lazy {
-        MediatorLiveData<Int>().apply {
+        MediatorLiveData<Long>().apply {
             addSource(currMinAudioDuration) { durationInSeconds ->
                 if (durationInSeconds > 0) {
                     value = durationInSeconds / 60
@@ -40,10 +40,10 @@ class MinAudioFileDurationViewModel @Inject constructor(
             }
         }
     }
-    val minutes: LiveData<Int> get() = _minutes
+    val minutes: LiveData<Long> get() = _minutes
 
     private val _seconds by lazy {
-        MediatorLiveData<Int>().apply {
+        MediatorLiveData<Long>().apply {
             addSource(currMinAudioDuration) { durationInSeconds ->
                 if (durationInSeconds > 0) {
                     value = durationInSeconds % 60
@@ -51,7 +51,7 @@ class MinAudioFileDurationViewModel @Inject constructor(
             }
         }
     }
-    val seconds: LiveData<Int> get() = _seconds
+    val seconds: LiveData<Long> get() = _seconds
 
     private val _goBackEvent = SingleLiveEvent<Unit>()
     val goBackEvent: LiveData<Unit> get() = _goBackEvent
@@ -61,12 +61,13 @@ class MinAudioFileDurationViewModel @Inject constructor(
     }
 
     fun onSaveClicked(typedMinutes: Int, typedSeconds: Int) {
-        val newDuration = typedMinutes * 60 + typedSeconds
-        preferences.setMinAudioFileDuration(newDuration)
-            .doOnComplete { player.removeShortAudioSources(newDuration) }
+        val newDurationInSeconds = typedMinutes * 60L + typedSeconds
+        val newDurationInMilliseconds = newDurationInSeconds * 1000L
+        libraryPreferences.setMinAudioDuration(newDurationInMilliseconds)
+            .doOnComplete { player.removeShortAudioSources(newDurationInSeconds) }
             .subscribeOn(schedulerProvider.worker())
             .observeOn(schedulerProvider.main())
-            .doOnComplete { eventLogger.logMinAudioFileDurationSet(newDuration) }
+            .doOnComplete { eventLogger.logMinAudioFileDurationSet(newDurationInSeconds) }
             .subscribeFor {
                 _goBackEvent.call()
             }

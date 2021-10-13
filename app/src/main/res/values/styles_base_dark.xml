@@ -35,6 +35,8 @@
         <item name="android:textColorSecondary">@color/md_white_1000</item>
         <item name="android:textColorHint">@color/md_white_1000</item>
 
+        <item name="errorTextColor">@color/error</item>
+
         <!--Text appearances-->
         <item name="textAppearanceListItem">@style/Base.AppTheme.TextAppearance.ListItem</item>
         <item name="textAppearanceListItemSmall">@style/Base.AppTheme.TextAppearance.ListItem</item>
@@ -62,6 +64,8 @@
         <item name="searchViewStyle">@style/Base.AppTheme.SearchView</item>
         <item name="autoCompleteTextViewStyle">@style/Base.AppTheme.AutoCompleteTextView</item>
         <item name="sliderStyle">@style/Base.AppTheme.Slider.Dark</item>
+
+        <item name="errorTextColor">@color/error</item>
 
         <item name="colorPremiumProductAccent">?colorAccent</item>
     </style>

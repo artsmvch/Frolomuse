@@ -37,7 +37,7 @@ fun EventLogger.logThemeChanged(theme: Theme?) {
     log("theme_changed", params)
 }
 
-fun EventLogger.logMinAudioFileDurationSet(durationInSeconds: Int) {
+fun EventLogger.logMinAudioFileDurationSet(durationInSeconds: Long) {
     val params = mapOf("duration_in_seconds" to durationInSeconds.toString())
     log("min_audio_file_duration_set", params)
 }

@@ -98,10 +98,12 @@ class LibrarySongFilterViewModel @Inject constructor(
     private fun blockingSaveFilter() {
         val currentItems = songFilterItems.value ?: return
         val oldFilter = _songFilter.value ?: return
-        val newFilter = createSongFilter(currentItems)
-        if (newFilter != oldFilter) {
+        val enabledTypes = currentItems.mapNotNull { item ->
+            if (item.isChecked) item.type else null
+        }
+        if (enabledTypes != oldFilter.types) {
             try {
-                preferences.setSongFilter(newFilter)
+                preferences.setSongTypes(enabledTypes)
                     .observeOn(schedulerProvider.worker())
                     .blockingAwait()
             } catch (error: Throwable) {
