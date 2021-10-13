@@ -17,7 +17,6 @@ import com.frolo.muse.model.media.Playlist;
 import com.frolo.muse.model.media.Song;
 import com.frolo.muse.model.media.SongFilter;
 import com.frolo.muse.model.media.SongWithPlayCount;
-import com.frolo.muse.model.media.Songs;
 import com.frolo.rxcontent.CursorMapper;
 import com.frolo.rxcontent.RxContent;
 
@@ -87,88 +86,10 @@ import io.reactivex.functions.Function;
         }
     }
 
-    private static final String[] PROJECTION_SONG = new String[] {
-        MediaStore.Audio.Media._ID,
-        MediaStore.Audio.Media.DATA,
-        MediaStore.Audio.Media.TITLE,
-        MediaStore.Audio.Media.ALBUM_ID,
-        MediaStore.Audio.Media.ALBUM,
-        MediaStore.Audio.Media.ARTIST_ID,
-        MediaStore.Audio.Media.ARTIST,
-        MediaStore.Audio.Media.DURATION,
-        MediaStore.Audio.Media.YEAR,
-        MediaStore.Audio.Media.TRACK,
-        MediaStore.Audio.Media.IS_MUSIC,
-        MediaStore.Audio.Media.IS_PODCAST,
-        MediaStore.Audio.Media.IS_RINGTONE,
-        MediaStore.Audio.Media.IS_ALARM,
-        MediaStore.Audio.Media.IS_NOTIFICATION,
-        MediaStore.Audio.Media.IS_AUDIOBOOK
-    };
-
-    private static final String[] PROJECTION_PLAYLIST_MEMBER = new String[] {
-        MediaStore.Audio.Playlists.Members.AUDIO_ID,
-        MediaStore.Audio.Playlists.Members.DATA,
-        MediaStore.Audio.Playlists.Members.TITLE,
-        MediaStore.Audio.Playlists.Members.ALBUM_ID,
-        MediaStore.Audio.Playlists.Members.ALBUM,
-        MediaStore.Audio.Playlists.Members.ARTIST_ID,
-        MediaStore.Audio.Playlists.Members.ARTIST,
-        MediaStore.Audio.Playlists.Members.DURATION,
-        MediaStore.Audio.Playlists.Members.YEAR,
-        MediaStore.Audio.Playlists.Members.TRACK,
-        MediaStore.Audio.Playlists.Members.IS_MUSIC,
-        MediaStore.Audio.Playlists.Members.IS_PODCAST,
-        MediaStore.Audio.Playlists.Members.IS_RINGTONE,
-        MediaStore.Audio.Playlists.Members.IS_ALARM,
-        MediaStore.Audio.Playlists.Members.IS_NOTIFICATION,
-        MediaStore.Audio.Playlists.Members.IS_AUDIOBOOK
-    };
-
     private static final String[] PROJECTION_SONG_PLAY_COUNT = new String[] {
         AppMediaStore.SongPlayCount.ABSOLUTE_PATH,
         AppMediaStore.SongPlayCount.PLAY_COUNT,
         AppMediaStore.SongPlayCount.LAST_PLAY_TIME
-    };
-
-    private static final CursorMapper<Song> CURSOR_MAPPER_SONG = new CursorMapper<Song>() {
-        @Override
-        public Song map(Cursor cursor) {
-            return Songs.create(
-                cursor.getLong(cursor.getColumnIndex(PROJECTION_SONG[0])),
-                SongQueryHelper.getSongType(cursor),
-                cursor.getString(cursor.getColumnIndex(PROJECTION_SONG[1])),
-                cursor.getString(cursor.getColumnIndex(PROJECTION_SONG[2])),
-                cursor.getLong(cursor.getColumnIndex(PROJECTION_SONG[3])),
-                cursor.getString(cursor.getColumnIndex(PROJECTION_SONG[4])),
-                cursor.getLong(cursor.getColumnIndex(PROJECTION_SONG[5])),
-                cursor.getString(cursor.getColumnIndex(PROJECTION_SONG[6])),
-                "",
-                cursor.getInt(cursor.getColumnIndex(PROJECTION_SONG[7])),
-                cursor.getInt(cursor.getColumnIndex(PROJECTION_SONG[8])),
-                cursor.getInt(cursor.getColumnIndex(PROJECTION_SONG[9]))
-            );
-        }
-    };
-
-    private static final CursorMapper<Song> CURSOR_MAPPER_PLAYLIST_MEMBER = new CursorMapper<Song>() {
-        @Override
-        public Song map(Cursor cursor) {
-            return Songs.create(
-                cursor.getLong(cursor.getColumnIndex(PROJECTION_PLAYLIST_MEMBER[0])),
-                SongQueryHelper.getSongType(cursor),
-                cursor.getString(cursor.getColumnIndex(PROJECTION_PLAYLIST_MEMBER[1])),
-                cursor.getString(cursor.getColumnIndex(PROJECTION_PLAYLIST_MEMBER[2])),
-                cursor.getLong(cursor.getColumnIndex(PROJECTION_PLAYLIST_MEMBER[3])),
-                cursor.getString(cursor.getColumnIndex(PROJECTION_PLAYLIST_MEMBER[4])),
-                cursor.getLong(cursor.getColumnIndex(PROJECTION_PLAYLIST_MEMBER[5])),
-                cursor.getString(cursor.getColumnIndex(PROJECTION_PLAYLIST_MEMBER[6])),
-                "",
-                cursor.getInt(cursor.getColumnIndex(PROJECTION_PLAYLIST_MEMBER[7])),
-                cursor.getInt(cursor.getColumnIndex(PROJECTION_PLAYLIST_MEMBER[8])),
-                cursor.getInt(cursor.getColumnIndex(PROJECTION_SONG[9]))
-            );
-        }
     };
 
     private static final CursorMapper<SongPlayCount> CURSOR_MAPPER_SONG_PLAY_COUNT = new CursorMapper<SongPlayCount>() {
@@ -195,8 +116,8 @@ import io.reactivex.functions.Function;
     };
 
     static Flowable<Song> queryItem(ContentResolver resolver, long itemId) {
-        return RxContent.queryItem(resolver, URI, PROJECTION_SONG, itemId,
-                ContentExecutors.workerExecutor(), CURSOR_MAPPER_SONG);
+        return RxContent.queryItem(resolver, URI, SongQueryHelper.getSongProjection(), itemId,
+                ContentExecutors.workerExecutor(), SongQueryHelper.getSongCursorMapper());
     }
 
     static Flowable<Song> queryItemByPath(ContentResolver resolver, String path) {
@@ -204,8 +125,8 @@ import io.reactivex.functions.Function;
         String[] selectionArgs = new String[] { path };
         String sortOrder = null;
 
-        return RxContent.query(resolver, URI, PROJECTION_SONG, selection, selectionArgs, sortOrder,
-                ContentExecutors.workerExecutor(), CURSOR_MAPPER_SONG)
+        return RxContent.query(resolver, URI, SongQueryHelper.getSongProjection(), selection, selectionArgs,
+                sortOrder, ContentExecutors.workerExecutor(), SongQueryHelper.getSongCursorMapper())
                 .map(songs -> songs.get(0));
     }
 
@@ -280,8 +201,8 @@ import io.reactivex.functions.Function;
         Uri uri = MediaStore.Audio.Playlists.Members.getContentUri("external", playlist.getId());
         String selection = null;
         String[] selectionArgs = null;
-        return RxContent.query(resolver, uri, PROJECTION_PLAYLIST_MEMBER, selection, selectionArgs,
-                sortOrder, ContentExecutors.workerExecutor(), CURSOR_MAPPER_PLAYLIST_MEMBER);
+        return RxContent.query(resolver, uri, SongQueryHelper.getPlaylistMemberProjection(), selection, selectionArgs,
+                sortOrder, ContentExecutors.workerExecutor(), SongQueryHelper.getPlaylistMemberCursorMapper());
     }
 
     @Deprecated
@@ -308,8 +229,8 @@ import io.reactivex.functions.Function;
             selection = MediaStore.Audio.Media.DATA + " like ?";
             selectionArgs = new String[] {"%" + path + "/%"};
         }
-        return RxContent.query(resolver, URI, PROJECTION_SONG, selection, selectionArgs,
-                sortOrder, ContentExecutors.workerExecutor(), CURSOR_MAPPER_SONG);
+        return RxContent.query(resolver, URI, SongQueryHelper.getSongProjection(), selection, selectionArgs,
+                sortOrder, ContentExecutors.workerExecutor(), SongQueryHelper.getSongCursorMapper());
     }
 
     @Deprecated
@@ -603,8 +524,8 @@ import io.reactivex.functions.Function;
 
         SongQueryHelper.SelectionWithArgs selectionWithArgs = SongQueryHelper.getSelectionWithArgs(filter);
 
-        return RxContent.query(resolver, uri, PROJECTION_SONG, selectionWithArgs.selection, selectionWithArgs.args,
-                sortOrder, ContentExecutors.workerExecutor(), CURSOR_MAPPER_SONG);
+        return RxContent.query(resolver, uri, SongQueryHelper.getSongProjection(), selectionWithArgs.selection, selectionWithArgs.args,
+                sortOrder, ContentExecutors.workerExecutor(), SongQueryHelper.getSongCursorMapper());
     }
 
     static Flowable<List<Song>> query(final ContentResolver resolver, final SongFilter filter, final String sortOrder) {
@@ -633,12 +554,6 @@ import io.reactivex.functions.Function;
 //        filter = filter.newBuilder()
 //            .setGenreId(genre.getId())
 //            .build();
-        return query(resolver, uri, filter, sortOrder);
-    }
-
-    static Flowable<List<Song>> query(final ContentResolver resolver, SongFilter filter,
-                                      final String sortOrder, final Playlist playlist) {
-        Uri uri = MediaStore.Audio.Playlists.Members.getContentUri("external", playlist.getId());
         return query(resolver, uri, filter, sortOrder);
     }
 

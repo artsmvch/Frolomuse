@@ -10,6 +10,7 @@ import com.frolo.muse.interactor.media.get.retainItemsWithSongTypes
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.logLibrarySongFilterSaved
 import com.frolo.muse.logger.logLibrarySongFilterViewed
+import com.frolo.muse.model.media.SongFeatures
 import com.frolo.muse.model.media.SongFilter
 import com.frolo.muse.model.media.SongType
 import com.frolo.muse.repository.LibraryPreferences
@@ -53,7 +54,9 @@ class LibrarySongFilterViewModel @Inject constructor(
             createSongFilterItem(filter, SongType.ALARM),
             createSongFilterItem(filter, SongType.NOTIFICATION),
             createSongFilterItem(filter, SongType.AUDIOBOOK)
-        )
+        ).filter { item ->
+            SongFeatures.isSongTypeSupported(item.type)
+        }
     }
 
     private fun createSongFilterItem(filter: SongFilter, targetType: SongType): SongFilterItem {

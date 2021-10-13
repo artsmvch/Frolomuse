@@ -3,16 +3,22 @@ package com.frolo.muse.di.impl.local;
 import android.content.ContentResolver;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
+import android.provider.BaseColumns;
 import android.provider.MediaStore;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 
 import com.frolo.muse.DebugUtils;
 import com.frolo.muse.model.media.Album;
 import com.frolo.muse.model.media.Artist;
 import com.frolo.muse.model.media.Genre;
+import com.frolo.muse.model.media.Song;
 import com.frolo.muse.model.media.SongFilter;
 import com.frolo.muse.model.media.SongType;
+import com.frolo.muse.model.media.Songs;
+import com.frolo.rxcontent.CursorMapper;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -36,10 +42,160 @@ final class SongQueryHelper {
         }
     }
 
-    private static final String[] EMPTY_PROJECTION = new String[0];
+    private static final String DEFAULT_GENRE_VALUE = "";
+
+    private static final String[] OPT_EMPTY_PROJECTION = { BaseColumns._ID };
+
+    private static final String[] PROJECTION_SONG = new String[] {
+        MediaStore.Audio.Media._ID,
+        MediaStore.Audio.Media.DATA,
+        MediaStore.Audio.Media.TITLE,
+        MediaStore.Audio.Media.ALBUM_ID,
+        MediaStore.Audio.Media.ALBUM,
+        MediaStore.Audio.Media.ARTIST_ID,
+        MediaStore.Audio.Media.ARTIST,
+        MediaStore.Audio.Media.DURATION,
+        MediaStore.Audio.Media.YEAR,
+        MediaStore.Audio.Media.TRACK,
+        MediaStore.Audio.Media.IS_MUSIC,
+        MediaStore.Audio.Media.IS_PODCAST,
+        MediaStore.Audio.Media.IS_RINGTONE,
+        MediaStore.Audio.Media.IS_ALARM,
+        MediaStore.Audio.Media.IS_NOTIFICATION
+    };
+
+    @RequiresApi(api = Build.VERSION_CODES.Q)
+    private static final String[] PROJECTION_SONG_API_29 = new String[] {
+        MediaStore.Audio.Media._ID,
+        MediaStore.Audio.Media.DATA,
+        MediaStore.Audio.Media.TITLE,
+        MediaStore.Audio.Media.ALBUM_ID,
+        MediaStore.Audio.Media.ALBUM,
+        MediaStore.Audio.Media.ARTIST_ID,
+        MediaStore.Audio.Media.ARTIST,
+        MediaStore.Audio.Media.DURATION,
+        MediaStore.Audio.Media.YEAR,
+        MediaStore.Audio.Media.TRACK,
+        MediaStore.Audio.Media.IS_MUSIC,
+        MediaStore.Audio.Media.IS_PODCAST,
+        MediaStore.Audio.Media.IS_RINGTONE,
+        MediaStore.Audio.Media.IS_ALARM,
+        MediaStore.Audio.Media.IS_NOTIFICATION,
+        MediaStore.Audio.Media.IS_AUDIOBOOK
+    };
+
+    static String[] getSongProjection() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            return PROJECTION_SONG_API_29;
+        } else {
+            return PROJECTION_SONG;
+        }
+    }
+
+    private static final String[] PROJECTION_PLAYLIST_MEMBER = new String[] {
+        MediaStore.Audio.Playlists.Members.AUDIO_ID,
+        MediaStore.Audio.Playlists.Members.DATA,
+        MediaStore.Audio.Playlists.Members.TITLE,
+        MediaStore.Audio.Playlists.Members.ALBUM_ID,
+        MediaStore.Audio.Playlists.Members.ALBUM,
+        MediaStore.Audio.Playlists.Members.ARTIST_ID,
+        MediaStore.Audio.Playlists.Members.ARTIST,
+        MediaStore.Audio.Playlists.Members.DURATION,
+        MediaStore.Audio.Playlists.Members.YEAR,
+        MediaStore.Audio.Playlists.Members.TRACK,
+        MediaStore.Audio.Playlists.Members.IS_MUSIC,
+        MediaStore.Audio.Playlists.Members.IS_PODCAST,
+        MediaStore.Audio.Playlists.Members.IS_RINGTONE,
+        MediaStore.Audio.Playlists.Members.IS_ALARM,
+        MediaStore.Audio.Playlists.Members.IS_NOTIFICATION
+    };
+
+    @RequiresApi(api = Build.VERSION_CODES.Q)
+    private static final String[] PROJECTION_PLAYLIST_MEMBER_API_29 = new String[] {
+        MediaStore.Audio.Playlists.Members.AUDIO_ID,
+        MediaStore.Audio.Playlists.Members.DATA,
+        MediaStore.Audio.Playlists.Members.TITLE,
+        MediaStore.Audio.Playlists.Members.ALBUM_ID,
+        MediaStore.Audio.Playlists.Members.ALBUM,
+        MediaStore.Audio.Playlists.Members.ARTIST_ID,
+        MediaStore.Audio.Playlists.Members.ARTIST,
+        MediaStore.Audio.Playlists.Members.DURATION,
+        MediaStore.Audio.Playlists.Members.YEAR,
+        MediaStore.Audio.Playlists.Members.TRACK,
+        MediaStore.Audio.Playlists.Members.IS_MUSIC,
+        MediaStore.Audio.Playlists.Members.IS_PODCAST,
+        MediaStore.Audio.Playlists.Members.IS_RINGTONE,
+        MediaStore.Audio.Playlists.Members.IS_ALARM,
+        MediaStore.Audio.Playlists.Members.IS_NOTIFICATION,
+        MediaStore.Audio.Playlists.Members.IS_AUDIOBOOK
+    };
+
+    static String[] getPlaylistMemberProjection() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            return PROJECTION_PLAYLIST_MEMBER_API_29;
+        } else {
+            return PROJECTION_PLAYLIST_MEMBER;
+        }
+    }
+
+    private static final CursorMapper<Song> CURSOR_MAPPER_SONG = new CursorMapper<Song>() {
+        @Override
+        public Song map(Cursor cursor) {
+            String[] projection = getSongProjection();
+            return Songs.create(
+                cursor.getLong(cursor.getColumnIndex(projection[0])),
+                SongQueryHelper.getSongType(cursor),
+                cursor.getString(cursor.getColumnIndex(projection[1])),
+                cursor.getString(cursor.getColumnIndex(projection[2])),
+                cursor.getLong(cursor.getColumnIndex(projection[3])),
+                cursor.getString(cursor.getColumnIndex(projection[4])),
+                cursor.getLong(cursor.getColumnIndex(projection[5])),
+                cursor.getString(cursor.getColumnIndex(projection[6])),
+                DEFAULT_GENRE_VALUE,
+                cursor.getInt(cursor.getColumnIndex(projection[7])),
+                cursor.getInt(cursor.getColumnIndex(projection[8])),
+                cursor.getInt(cursor.getColumnIndex(projection[9]))
+            );
+        }
+    };
+
+    static CursorMapper<Song> getSongCursorMapper() {
+        return CURSOR_MAPPER_SONG;
+    }
+
+    private static final CursorMapper<Song> CURSOR_MAPPER_PLAYLIST_MEMBER = new CursorMapper<Song>() {
+        @Override
+        public Song map(Cursor cursor) {
+            String[] projection = getPlaylistMemberProjection();
+            return Songs.create(
+                cursor.getLong(cursor.getColumnIndex(projection[0])),
+                SongQueryHelper.getSongType(cursor),
+                cursor.getString(cursor.getColumnIndex(projection[1])),
+                cursor.getString(cursor.getColumnIndex(projection[2])),
+                cursor.getLong(cursor.getColumnIndex(projection[3])),
+                cursor.getString(cursor.getColumnIndex(projection[4])),
+                cursor.getLong(cursor.getColumnIndex(projection[5])),
+                cursor.getString(cursor.getColumnIndex(projection[6])),
+                DEFAULT_GENRE_VALUE,
+                cursor.getInt(cursor.getColumnIndex(projection[7])),
+                cursor.getInt(cursor.getColumnIndex(projection[8])),
+                cursor.getInt(cursor.getColumnIndex(projection[9]))
+            );
+        }
+    };
+
+    static CursorMapper<Song> getPlaylistMemberCursorMapper() {
+        return CURSOR_MAPPER_PLAYLIST_MEMBER;
+    }
 
     static boolean getBool(@NonNull Cursor cursor, @NonNull String columnName) {
-        return getBool(cursor, cursor.getColumnIndex(columnName));
+        int columnIndex = cursor.getColumnIndex(columnName);
+        if (columnIndex >= 0) {
+            return getBool(cursor, cursor.getColumnIndex(columnName));
+        } else {
+            // fallback
+            return false;
+        }
     }
 
     static boolean getBool(@NonNull Cursor cursor, int columnIndex) {
@@ -76,7 +232,7 @@ final class SongQueryHelper {
             Collection<SongType> includedTypes = filter.getTypes();
             boolean noTypesIncluded = includedTypes.isEmpty();
             boolean atLeastOneTypeDefined = false;
-            for (SongType type : SongType.values()) {
+            loop : for (SongType type : SongType.values()) {
                 boolean isTypeIncluded = includedTypes.contains(type);
                 // If no types included at all, then each type must be specified as '== 0' in the selection
                 if (isTypeIncluded || noTypesIncluded) {
@@ -95,8 +251,6 @@ final class SongQueryHelper {
                         selectionBuilder.append("(");
                     }
 
-                    atLeastOneTypeDefined = true;
-
                     switch (type) {
                         case MUSIC:
                             selectionBuilder.append(MediaStore.Audio.Media.IS_MUSIC);
@@ -113,9 +267,15 @@ final class SongQueryHelper {
                         case NOTIFICATION:
                             selectionBuilder.append(MediaStore.Audio.Media.IS_NOTIFICATION);
                             break;
-                        case AUDIOBOOK:
-                            selectionBuilder.append(MediaStore.Audio.Media.IS_AUDIOBOOK);
+                        case AUDIOBOOK: {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                                selectionBuilder.append(MediaStore.Audio.Media.IS_AUDIOBOOK);
+                            } else {
+                                // Not supported
+                                continue loop;
+                            }
                             break;
+                        }
                     }
 
                     if (noTypesIncluded) {
@@ -129,6 +289,8 @@ final class SongQueryHelper {
                         selectionBuilder.append(" != ?");
                         selectionArgsList.add("0");
                     }
+
+                    atLeastOneTypeDefined = true;
                 }
             }
             if (atLeastOneTypeDefined) {
@@ -248,7 +410,7 @@ final class SongQueryHelper {
     }
 
     private static boolean blockingHasEntries(ContentResolver resolver, Uri uri, String selection, String[] selectionArgs) {
-        Cursor cursor = resolver.query(uri, EMPTY_PROJECTION, selection, selectionArgs, null);
+        Cursor cursor = resolver.query(uri, OPT_EMPTY_PROJECTION, selection, selectionArgs, null);
         if (cursor == null) {
             throw new NullPointerException("Query to " + uri + " returned null cursor");
         }

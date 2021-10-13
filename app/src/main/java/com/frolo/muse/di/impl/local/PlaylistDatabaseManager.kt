@@ -15,7 +15,6 @@ import com.frolo.muse.database.FrolomuseDatabase
 import com.frolo.muse.database.entity.*
 import com.frolo.muse.kotlin.contains
 import com.frolo.muse.model.media.*
-import com.frolo.rxcontent.CursorMapper
 import com.frolo.rxcontent.RxContent
 import io.reactivex.Completable
 import io.reactivex.Flowable
@@ -35,7 +34,7 @@ import java.util.concurrent.Executors
 internal class PlaylistDatabaseManager private constructor(private val context: Context) {
 
     // Executors and schedulers
-    private val workerScheduler: Scheduler by lazy { Schedulers.io() }
+    private val workerScheduler: Scheduler get() = ContentExecutors.workerScheduler()
     private val computationScheduler: Scheduler by lazy { Schedulers.computation() }
     private val queryExecutor by lazy { Executors.newCachedThreadPool() }
 
@@ -343,8 +342,8 @@ internal class PlaylistDatabaseManager private constructor(private val context: 
             val selection: String = selectionBuilder.toString()
             val selectionArgs: Array<String>? = selectionArgsBuilder.toTypedArray()
             val sortOrder: String? = null
-            return RxContent.query(context.contentResolver, uri, SONG_PROJECTION, selection,
-                    selectionArgs, sortOrder, queryExecutor, SONG_CURSOR_MAPPER)
+            return RxContent.query(context.contentResolver, uri, SongQueryHelper.getSongProjection(), selection,
+                    selectionArgs, sortOrder, queryExecutor, SongQueryHelper.getSongCursorMapper())
         } else {
             // For count > IN_OP_LIMIT, we query each song separately and then combine them
             val uri: Uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
@@ -353,8 +352,8 @@ internal class PlaylistDatabaseManager private constructor(private val context: 
                 val source = entity.source
                 if (source.isNullOrEmpty()) return@mapNotNull null
                 val selectionArgs = arrayOf<String>(source)
-                RxContent.query(context.contentResolver, uri, SONG_PROJECTION, selection,
-                        selectionArgs, null, queryExecutor, SONG_CURSOR_MAPPER)
+                RxContent.query(context.contentResolver, uri, SongQueryHelper.getSongProjection(), selection,
+                        selectionArgs, null, queryExecutor, SongQueryHelper.getSongCursorMapper())
             }
 
             return if (sources.isNotEmpty()) {
@@ -512,42 +511,6 @@ internal class PlaylistDatabaseManager private constructor(private val context: 
          * Max number of elements that we can use in an 'IN' operation in a 'WHERE' clause.
          */
         private const val IN_OP_LIMIT = 1000
-
-        private val SONG_PROJECTION = arrayOf(
-            MediaStore.Audio.Media._ID,
-            MediaStore.Audio.Media.DATA,
-            MediaStore.Audio.Media.TITLE,
-            MediaStore.Audio.Media.ALBUM_ID,
-            MediaStore.Audio.Media.ALBUM,
-            MediaStore.Audio.Media.ARTIST_ID,
-            MediaStore.Audio.Media.ARTIST,
-            MediaStore.Audio.Media.DURATION,
-            MediaStore.Audio.Media.YEAR,
-            MediaStore.Audio.Media.TRACK,
-            MediaStore.Audio.Media.IS_MUSIC,
-            MediaStore.Audio.Media.IS_PODCAST,
-            MediaStore.Audio.Media.IS_RINGTONE,
-            MediaStore.Audio.Media.IS_ALARM,
-            MediaStore.Audio.Media.IS_NOTIFICATION,
-            MediaStore.Audio.Media.IS_AUDIOBOOK
-        )
-
-        private val SONG_CURSOR_MAPPER = CursorMapper<Song> { cursor ->
-            Songs.create(
-                cursor.getLong(cursor.getColumnIndex(SONG_PROJECTION[0])),
-                SongQueryHelper.getSongType(cursor),
-                cursor.getString(cursor.getColumnIndex(SONG_PROJECTION[1])),
-                cursor.getString(cursor.getColumnIndex(SONG_PROJECTION[2])),
-                cursor.getLong(cursor.getColumnIndex(SONG_PROJECTION[3])),
-                cursor.getString(cursor.getColumnIndex(SONG_PROJECTION[4])),
-                cursor.getLong(cursor.getColumnIndex(SONG_PROJECTION[5])),
-                cursor.getString(cursor.getColumnIndex(SONG_PROJECTION[6])),
-                "",
-                cursor.getInt(cursor.getColumnIndex(SONG_PROJECTION[7])),
-                cursor.getInt(cursor.getColumnIndex(SONG_PROJECTION[8])),
-                cursor.getInt(cursor.getColumnIndex(SONG_PROJECTION[9]))
-            )
-        }
 
         @SuppressLint("StaticFieldLeak")
         @Volatile

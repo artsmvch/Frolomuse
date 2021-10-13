@@ -9,6 +9,10 @@ public final class OS {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.N;
     }
 
+    public static boolean isAtLeastQ() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q;
+    }
+
     private OS() {
     }
 }
