@@ -301,6 +301,9 @@ final class SongQueryHelper {
 
     static Flowable<List<Album>> filterAlbums(
             ContentResolver resolver, Flowable<List<Album>> source, final SongFilter filter) {
+        if (filter.getTypes().isEmpty()) {
+            return Flowable.just(Collections.emptyList());
+        }
         return filterImpl(resolver, source,
                 album -> MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                 album -> filter.newBuilder().setAlbumId(album.getId()).build());
@@ -308,6 +311,9 @@ final class SongQueryHelper {
 
     static Flowable<List<Artist>> filterArtists(
             ContentResolver resolver, Flowable<List<Artist>> source, final SongFilter filter) {
+        if (filter.getTypes().isEmpty()) {
+            return Flowable.just(Collections.emptyList());
+        }
         return filterImpl(resolver, source,
                 artist -> MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                 artist -> filter.newBuilder().setArtistId(artist.getId()).build());
@@ -315,6 +321,9 @@ final class SongQueryHelper {
 
     static Flowable<List<Genre>> filterGenres(
             ContentResolver resolver, Flowable<List<Genre>> source, final SongFilter filter) {
+        if (filter.getTypes().isEmpty()) {
+            return Flowable.just(Collections.emptyList());
+        }
         return filterImpl(resolver, source,
                 genre -> MediaStore.Audio.Genres.Members.getContentUri("external", genre.getId()),
                 genre -> filter);
