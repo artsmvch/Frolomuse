@@ -3,7 +3,7 @@ package com.frolo.muse.di.impl.local;
 import androidx.annotation.NonNull;
 
 import java.util.concurrent.Executor;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -36,7 +36,7 @@ import io.reactivex.schedulers.Schedulers;
             };
             sInstance = new ThreadPoolExecutor(CORE_THREAD_NUMBER, MAX_THREAD_NUMBER,
                     KEEP_ALIVE_TIME_IN_SECONDS, TimeUnit.SECONDS,
-                    new LinkedBlockingQueue<Runnable>(),
+                    new SynchronousQueue<Runnable>(),
                     threadFactory);
         }
     }
