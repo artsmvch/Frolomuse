@@ -22,7 +22,7 @@ public final class SongFilter {
     private static final Set<SongType> ALL_SONG_TYPES;
 
     static {
-        SongType[] songTypesValues= SongType.values();
+        SongType[] songTypesValues = SongType.values();
         ALL_SONG_TYPES = new HashSet<>(songTypesValues.length);
         ALL_SONG_TYPES.addAll(Arrays.asList(songTypesValues));
     }
