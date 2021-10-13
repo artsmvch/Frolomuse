@@ -28,7 +28,7 @@ import com.frolo.muse.sleeptimer.PlayerSleepTimer
 import com.frolo.muse.ui.*
 import com.frolo.muse.ui.base.FragmentContentInsetsListener
 import com.frolo.muse.ui.main.settings.journal.PlayerJournalDialog
-import com.frolo.muse.ui.main.settings.duration.MinAudioFileDurationDialog
+import com.frolo.muse.ui.main.settings.library.duration.MinAudioFileDurationDialog
 import com.frolo.muse.ui.main.settings.hidden.HiddenFilesDialog
 import com.frolo.muse.ui.main.settings.info.AppInfoDialog
 import com.frolo.muse.ui.main.settings.library.sections.LibrarySectionsDialog

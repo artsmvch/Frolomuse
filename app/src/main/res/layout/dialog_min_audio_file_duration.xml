@@ -48,18 +48,18 @@
                 android:layout_width="80dp"
                 android:layout_height="wrap_content" />
 
-            <ImageView
+            <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="8dp"
                 android:layout_height="8dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/ic_dot_divider"
-                android:tint="?iconImageTint" />
+                app:tint="?iconImageTint" />
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:gravity="center"
                 android:inputType="number"
                 android:textIsSelectable="false"
-                android:imeOptions="actionNext"
+                android:imeOptions="actionDone"
                 android:id="@+id/edt_seconds"
                 android:layout_margin="4dp"
                 android:padding="12dp"

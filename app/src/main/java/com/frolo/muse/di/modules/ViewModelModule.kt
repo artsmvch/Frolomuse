@@ -23,7 +23,7 @@ import com.frolo.muse.ui.main.player.current.CurrSongQueueViewModel
 import com.frolo.muse.ui.main.player.mini.MiniPlayerViewModel
 import com.frolo.muse.ui.main.settings.SettingsViewModel
 import com.frolo.muse.ui.main.settings.playback.PlaybackFadingViewModel
-import com.frolo.muse.ui.main.settings.duration.MinAudioFileDurationViewModel
+import com.frolo.muse.ui.main.settings.library.duration.MinAudioFileDurationViewModel
 import com.frolo.muse.ui.main.settings.hidden.HiddenFilesViewModel
 import com.frolo.muse.ui.main.settings.journal.PlayerJournalViewModel
 import com.frolo.muse.ui.main.settings.library.filter.LibrarySongFilterViewModel

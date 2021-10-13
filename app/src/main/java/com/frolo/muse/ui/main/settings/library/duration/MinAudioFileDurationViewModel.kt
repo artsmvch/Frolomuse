@@ -1,4 +1,4 @@
-package com.frolo.muse.ui.main.settings.duration
+package com.frolo.muse.ui.main.settings.library.duration
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
@@ -22,7 +22,7 @@ class MinAudioFileDurationViewModel @Inject constructor(
     private val eventLogger: EventLogger
 ): BaseViewModel(eventLogger) {
 
-    private val currMinAudioDuration: LiveData<Long> by lazy {
+    private val currMinAudioDurationInMillis: LiveData<Long> by lazy {
         MutableLiveData<Long>().apply {
             libraryPreferences.getMinAudioDuration()
                 .firstOrError()
@@ -33,9 +33,9 @@ class MinAudioFileDurationViewModel @Inject constructor(
 
     private val _minutes by lazy {
         MediatorLiveData<Long>().apply {
-            addSource(currMinAudioDuration) { durationInSeconds ->
-                if (durationInSeconds > 0) {
-                    value = durationInSeconds / 60
+            addSource(currMinAudioDurationInMillis) { durationInMillis ->
+                if (durationInMillis > 0) {
+                    value = (durationInMillis / 1000) / 60
                 }
             }
         }
@@ -44,9 +44,9 @@ class MinAudioFileDurationViewModel @Inject constructor(
 
     private val _seconds by lazy {
         MediatorLiveData<Long>().apply {
-            addSource(currMinAudioDuration) { durationInSeconds ->
-                if (durationInSeconds > 0) {
-                    value = durationInSeconds % 60
+            addSource(currMinAudioDurationInMillis) { durationInMillis ->
+                if (durationInMillis > 0) {
+                    value = (durationInMillis / 1000) % 60
                 }
             }
         }

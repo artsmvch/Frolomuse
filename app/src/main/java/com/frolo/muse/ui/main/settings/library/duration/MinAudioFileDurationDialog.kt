@@ -1,4 +1,4 @@
-package com.frolo.muse.ui.main.settings.duration
+package com.frolo.muse.ui.main.settings.library.duration
 
 import android.app.Dialog
 import android.os.Bundle
