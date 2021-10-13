@@ -3,9 +3,10 @@ package com.frolo.muse.ui.main.settings.library.filter
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import com.frolo.muse.DebugUtils
 import com.frolo.muse.arch.SingleLiveEvent
 import com.frolo.muse.arch.call
+import com.frolo.muse.engine.Player
+import com.frolo.muse.interactor.media.get.retainItemsWithSongTypes
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.logLibrarySongFilterSaved
 import com.frolo.muse.logger.logLibrarySongFilterViewed
@@ -20,6 +21,7 @@ import javax.inject.Inject
 class LibrarySongFilterViewModel @Inject constructor(
     private val preferences: LibraryPreferences,
     private val schedulerProvider: SchedulerProvider,
+    private val player: Player,
     private val eventLogger: EventLogger
 ): BaseViewModel(eventLogger) {
 
@@ -58,16 +60,6 @@ class LibrarySongFilterViewModel @Inject constructor(
         return SongFilterItem(targetType, filter.types.contains(targetType))
     }
 
-    private fun createSongFilter(items: List<SongFilterItem>): SongFilter {
-        var builder = SongFilter.Builder()
-        items.forEach { item ->
-            if (item.isChecked) {
-                builder = builder.addType(item.type)
-            }
-        }
-        return builder.build()
-    }
-
     fun onFirstCreate() {
         eventLogger.logLibrarySongFilterViewed()
     }
@@ -91,25 +83,23 @@ class LibrarySongFilterViewModel @Inject constructor(
     }
 
     fun onSaveClicked() {
-        blockingSaveFilter()
-        _closeEvent.call()
-    }
+        val currentItems = songFilterItems.value ?: kotlin.run {
+            _closeEvent.call()
+            return
+        }
 
-    private fun blockingSaveFilter() {
-        val currentItems = songFilterItems.value ?: return
-        val oldFilter = _songFilter.value ?: return
+        val oldFilter = _songFilter.value
         val enabledTypes = currentItems.mapNotNull { item ->
             if (item.isChecked) item.type else null
         }
-        if (enabledTypes != oldFilter.types) {
-            try {
-                preferences.setSongTypes(enabledTypes)
-                    .observeOn(schedulerProvider.worker())
-                    .blockingAwait()
-            } catch (error: Throwable) {
-                DebugUtils.dump(error)
-            }
-            eventLogger.logLibrarySongFilterSaved()
+        if (oldFilter == null || enabledTypes != oldFilter.types) {
+            preferences.setSongTypes(enabledTypes)
+                .doOnComplete { player.retainItemsWithSongTypes(enabledTypes) }
+                .observeOn(schedulerProvider.main())
+                .doOnComplete { eventLogger.logLibrarySongFilterSaved() }
+                .subscribeFor { _closeEvent.call() }
+        } else {
+            _closeEvent.call()
         }
     }
 

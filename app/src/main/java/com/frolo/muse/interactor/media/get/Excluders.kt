@@ -1,23 +1,40 @@
 package com.frolo.muse.interactor.media.get
 
+import androidx.annotation.WorkerThread
+import com.frolo.muse.common.audioType
 import com.frolo.muse.common.durationInSeconds
+import com.frolo.muse.common.toSongType
 import com.frolo.muse.engine.AudioSource
 import com.frolo.muse.engine.AudioSourceQueue
 import com.frolo.muse.engine.Player
+import com.frolo.muse.model.media.SongType
 
 
+@WorkerThread
 fun <A: AudioSource> List<A>.excludeShortAudioSources(minDurationInSeconds: Long): List<A> {
     if (minDurationInSeconds <= 0) return this
     return filter { it.durationInSeconds >= minDurationInSeconds }
 }
 
+@WorkerThread
 fun AudioSourceQueue.excludeShortAudioSources(minDurationInSeconds: Long): AudioSourceQueue {
     val filteredItems = snapshot.excludeShortAudioSources(minDurationInSeconds)
     return AudioSourceQueue.create(type, id, name, filteredItems)
 }
 
+@WorkerThread
 fun Player.removeShortAudioSources(minDurationInSeconds: Long) {
     val currentAudioSources = getCurrentQueue()?.snapshot ?: return
     val itemsToRemove = currentAudioSources.filter { it.durationInSeconds < minDurationInSeconds }
+    removeAll(itemsToRemove)
+}
+
+@WorkerThread
+fun Player.retainItemsWithSongTypes(types: Collection<SongType>) {
+    val queue = getCurrentQueue() ?: return
+    val itemsToRemove = queue.snapshot.orEmpty().filter { item ->
+        val songType = item.audioType.toSongType()
+        songType !in types
+    }
     removeAll(itemsToRemove)
 }

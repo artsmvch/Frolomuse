@@ -6,6 +6,8 @@ import com.frolo.muse.model.media.Song
 import com.frolo.muse.model.media.SongType
 
 
+val AudioSource.audioType: AudioType get() = metadata.audioType
+
 val AudioSource.title: String? get() = metadata.title
 
 val AudioSource.artistId: Long get() = metadata.artistId
