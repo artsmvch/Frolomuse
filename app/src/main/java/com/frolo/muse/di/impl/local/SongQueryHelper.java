@@ -15,6 +15,7 @@ import com.frolo.muse.model.media.SongFilter;
 import com.frolo.muse.model.media.SongType;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -72,13 +73,21 @@ final class SongQueryHelper {
 
         {
             // Song type
+            Collection<SongType> includedTypes = filter.getTypes();
+            boolean noTypesIncluded = includedTypes.isEmpty();
             boolean atLeastOneTypeDefined = false;
             for (SongType type : SongType.values()) {
-                if (filter.getTypes().contains(type)) {
+                boolean isTypeIncluded = includedTypes.contains(type);
+                // If no types included at all, then each type must be specified as '== 0' in the selection
+                if (isTypeIncluded || noTypesIncluded) {
 
                     if (selectionBuilder.length() > 0) {
                         if (atLeastOneTypeDefined) {
-                            selectionBuilder.append(" OR ");
+                            if (noTypesIncluded) {
+                                selectionBuilder.append(" AND ");
+                            } else {
+                                selectionBuilder.append(" OR ");
+                            }
                         } else {
                             selectionBuilder.append(" AND (");
                         }
@@ -108,8 +117,18 @@ final class SongQueryHelper {
                             selectionBuilder.append(MediaStore.Audio.Media.IS_AUDIOBOOK);
                             break;
                     }
-                    selectionBuilder.append(" != ?");
-                    selectionArgsList.add("0");
+
+                    if (noTypesIncluded) {
+                        selectionBuilder.append(" = ?");
+                        selectionArgsList.add("0");
+                    } else if (isTypeIncluded) {
+                        selectionBuilder.append(" != ?");
+                        selectionArgsList.add("0");
+                    } else {
+                        DebugUtils.dumpOnMainThread(new IllegalStateException("Should not get here"));
+                        selectionBuilder.append(" != ?");
+                        selectionArgsList.add("0");
+                    }
                 }
             }
             if (atLeastOneTypeDefined) {
@@ -231,7 +250,7 @@ final class SongQueryHelper {
     private static boolean blockingHasEntries(ContentResolver resolver, Uri uri, String selection, String[] selectionArgs) {
         Cursor cursor = resolver.query(uri, EMPTY_PROJECTION, selection, selectionArgs, null);
         if (cursor == null) {
-            return true;
+            throw new NullPointerException("Query to " + uri + " returned null cursor");
         }
         try {
             return cursor.getCount() > 0;
