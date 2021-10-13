@@ -79,7 +79,7 @@ import io.reactivex.schedulers.Schedulers;
         String selection = null;
         String[] selectionArgs = null;
         Flowable<List<Album>> source = RxContent.query(resolver, URI, PROJECTION, selection, selectionArgs,
-                sortOrder, ExecutorHolder.workerExecutor(), CURSOR_MAPPER);
+                sortOrder, ContentExecutors.workerExecutor(), CURSOR_MAPPER);
         return SongQueryHelper.filterAlbums(resolver, source, filter);
     }
 
@@ -88,13 +88,13 @@ import io.reactivex.schedulers.Schedulers;
         final String selection = MediaStore.Audio.Albums.ALBUM + " LIKE ?";
         final String[] selectionArgs = new String[]{ "%" + namePiece + "%" };
         Flowable<List<Album>> source =  RxContent.query(resolver, URI, PROJECTION, selection, selectionArgs,
-                Sort.BY_ALBUM, ExecutorHolder.workerExecutor(), CURSOR_MAPPER);
+                Sort.BY_ALBUM, ContentExecutors.workerExecutor(), CURSOR_MAPPER);
         return SongQueryHelper.filterAlbums(resolver, source, songFilter);
     }
 
     static Flowable<Album> queryItem(ContentResolver resolver, long itemId) {
         return RxContent.queryItem(resolver, URI, PROJECTION, itemId,
-                ExecutorHolder.workerExecutor(), CURSOR_MAPPER);
+                ContentExecutors.workerExecutor(), CURSOR_MAPPER);
     }
 
     static Flowable<Album> queryForPreview(ContentResolver resolver) {
@@ -138,11 +138,11 @@ import io.reactivex.schedulers.Schedulers;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             final String sortOrder = MediaStore.Audio.Artists.Albums.ALBUM + " COLLATE NOCASE ASC";
             source = RxContent.query(resolver, uri, PROJECTION_ARTIST_MEMBER, selection, selectionArgs,
-                    sortOrder, ExecutorHolder.workerExecutor(), CURSOR_MAPPER_ARTIST_MEMBER);
+                    sortOrder, ContentExecutors.workerExecutor(), CURSOR_MAPPER_ARTIST_MEMBER);
         } else {
             final String sortOrder = MediaStore.Audio.Albums.ALBUM + " COLLATE NOCASE ASC";
             source = RxContent.query(resolver, uri, PROJECTION, selection, selectionArgs,
-                    sortOrder, ExecutorHolder.workerExecutor(), CURSOR_MAPPER);
+                    sortOrder, ContentExecutors.workerExecutor(), CURSOR_MAPPER);
         }
         return SongQueryHelper.filterAlbums(resolver, source, songFilter);
     }

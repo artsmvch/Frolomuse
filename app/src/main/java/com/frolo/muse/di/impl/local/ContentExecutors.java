@@ -1,5 +1,7 @@
 package com.frolo.muse.di.impl.local;
 
+import androidx.annotation.NonNull;
+
 import java.util.concurrent.Executor;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadFactory;
@@ -11,9 +13,9 @@ import io.reactivex.Scheduler;
 import io.reactivex.schedulers.Schedulers;
 
 
-/* package-private */ final class ExecutorHolder {
+/* package-private */ final class ContentExecutors {
 
-    private static class WorkerExecutor {
+    private static class WorkerExecutorHolder {
 
         // Configuration
         static final int CORE_THREAD_NUMBER = 8;
@@ -39,14 +41,20 @@ import io.reactivex.schedulers.Schedulers;
         }
     }
 
+    private static class WorkerSchedulerHolder {
+        static final Scheduler sInstance = Schedulers.from(WorkerExecutorHolder.sInstance);
+    }
+
+    @NonNull
     static Executor workerExecutor() {
-        return WorkerExecutor.sInstance;
+        return WorkerExecutorHolder.sInstance;
     }
 
+    @NonNull
     static Scheduler workerScheduler() {
-        return Schedulers.from(workerExecutor());
+        return WorkerSchedulerHolder.sInstance;
     }
 
-    private ExecutorHolder() {
+    private ContentExecutors() {
     }
 }

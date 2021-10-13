@@ -109,19 +109,19 @@ import io.reactivex.Single;
         String selection = null;
         String[] selectionArgs = null;
         return RxContent.query(resolver, URI, PROJECTION, selection, selectionArgs,
-                sortOrder, ExecutorHolder.workerExecutor(), CURSOR_MAPPER);
+                sortOrder, ContentExecutors.workerExecutor(), CURSOR_MAPPER);
     }
 
     static Flowable<List<Playlist>> queryAllFiltered(ContentResolver resolver, String filter) {
         String selection = MediaStore.Audio.Playlists.NAME + " LIKE ?";
         String[] selectionArgs = new String[] { "%" + filter + "%" };
         return RxContent.query(resolver, URI, PROJECTION, selection, selectionArgs,
-                Sort.BY_NAME, ExecutorHolder.workerExecutor(), CURSOR_MAPPER);
+                Sort.BY_NAME, ContentExecutors.workerExecutor(), CURSOR_MAPPER);
     }
 
     static Flowable<Playlist> queryItem(ContentResolver resolver, long itemId) {
         return RxContent.queryItem(resolver, URI, PROJECTION, itemId,
-                ExecutorHolder.workerExecutor(), CURSOR_MAPPER);
+                ContentExecutors.workerExecutor(), CURSOR_MAPPER);
     }
 
     static Single<Playlist> create(Context context, ContentResolver resolver, String name) {

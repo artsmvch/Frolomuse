@@ -196,7 +196,7 @@ import io.reactivex.functions.Function;
 
     static Flowable<Song> queryItem(ContentResolver resolver, long itemId) {
         return RxContent.queryItem(resolver, URI, PROJECTION_SONG, itemId,
-                ExecutorHolder.workerExecutor(), CURSOR_MAPPER_SONG);
+                ContentExecutors.workerExecutor(), CURSOR_MAPPER_SONG);
     }
 
     static Flowable<Song> queryItemByPath(ContentResolver resolver, String path) {
@@ -205,7 +205,7 @@ import io.reactivex.functions.Function;
         String sortOrder = null;
 
         return RxContent.query(resolver, URI, PROJECTION_SONG, selection, selectionArgs, sortOrder,
-                ExecutorHolder.workerExecutor(), CURSOR_MAPPER_SONG)
+                ContentExecutors.workerExecutor(), CURSOR_MAPPER_SONG)
                 .map(songs -> songs.get(0));
     }
 
@@ -213,7 +213,7 @@ import io.reactivex.functions.Function;
         final Uri favUri = AppMediaStore.Favourites.getContentUri();
         final Uri songsUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
         final List<Uri> uris = Arrays.asList(favUri, songsUri);
-        return RxContent.createFlowable(resolver, uris, ExecutorHolder.workerExecutor(),
+        return RxContent.createFlowable(resolver, uris, ContentExecutors.workerExecutor(),
             () -> {
                 String[] projection = { AppMediaStore.Favourites.PATH };
                 String selectionNull = null;
@@ -281,7 +281,7 @@ import io.reactivex.functions.Function;
         String selection = null;
         String[] selectionArgs = null;
         return RxContent.query(resolver, uri, PROJECTION_PLAYLIST_MEMBER, selection, selectionArgs,
-                sortOrder, ExecutorHolder.workerExecutor(), CURSOR_MAPPER_PLAYLIST_MEMBER);
+                sortOrder, ContentExecutors.workerExecutor(), CURSOR_MAPPER_PLAYLIST_MEMBER);
     }
 
     @Deprecated
@@ -309,7 +309,7 @@ import io.reactivex.functions.Function;
             selectionArgs = new String[] {"%" + path + "/%"};
         }
         return RxContent.query(resolver, URI, PROJECTION_SONG, selection, selectionArgs,
-                sortOrder, ExecutorHolder.workerExecutor(), CURSOR_MAPPER_SONG);
+                sortOrder, ContentExecutors.workerExecutor(), CURSOR_MAPPER_SONG);
     }
 
     @Deprecated
@@ -334,7 +334,7 @@ import io.reactivex.functions.Function;
 
     static Flowable<Boolean> isFavourite(ContentResolver resolver, Song item) {
         final String[] emptyProjection = new String[0];
-        return RxContent.createFlowable(resolver, AppMediaStore.Favourites.getContentUri(), ExecutorHolder.workerExecutor(),
+        return RxContent.createFlowable(resolver, AppMediaStore.Favourites.getContentUri(), ContentExecutors.workerExecutor(),
             () -> {
                 Uri uri = ContentUris.withAppendedId(
                         AppMediaStore.Favourites.getContentUri(), item.getId());
@@ -491,7 +491,7 @@ import io.reactivex.functions.Function;
             final String selection = AppMediaStore.SongPlayCount.PLAY_COUNT + ">= ?";
             final String[] selectionArgs = new String[] { String.valueOf(minPlayCount) };
             return RxContent.query(resolver, songPlayCountUri, PROJECTION_SONG_PLAY_COUNT,
-                selection, selectionArgs, null, ExecutorHolder.workerExecutor(), CURSOR_MAPPER_SONG_PLAY_COUNT)
+                selection, selectionArgs, null, ContentExecutors.workerExecutor(), CURSOR_MAPPER_SONG_PLAY_COUNT)
                 .switchMap((Function<List<SongPlayCount>, Publisher<List<SongWithPlayCount>>>) counts -> {
                     if (counts.isEmpty()) {
                         // Returning this flowable because Flowable.combineLatest for empty collection will not work for us
@@ -604,7 +604,7 @@ import io.reactivex.functions.Function;
         SongQueryHelper.SelectionWithArgs selectionWithArgs = SongQueryHelper.getSelectionWithArgs(filter);
 
         return RxContent.query(resolver, uri, PROJECTION_SONG, selectionWithArgs.selection, selectionWithArgs.args,
-                sortOrder, ExecutorHolder.workerExecutor(), CURSOR_MAPPER_SONG);
+                sortOrder, ContentExecutors.workerExecutor(), CURSOR_MAPPER_SONG);
     }
 
     static Flowable<List<Song>> query(final ContentResolver resolver, final SongFilter filter, final String sortOrder) {

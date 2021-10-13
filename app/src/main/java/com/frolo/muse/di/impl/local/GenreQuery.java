@@ -47,7 +47,7 @@ import io.reactivex.Flowable;
         final String selection = null;
         final String[] selectionArgs = null;
         Flowable<List<Genre>> source = RxContent.query(resolver, URI, PROJECTION,
-                selection, selectionArgs, sortOrder, ExecutorHolder.workerExecutor(), CURSOR_MAPPER);
+                selection, selectionArgs, sortOrder, ContentExecutors.workerExecutor(), CURSOR_MAPPER);
         return SongQueryHelper.filterGenres(resolver, source, songFilter);
     }
 
@@ -60,12 +60,12 @@ import io.reactivex.Flowable;
         final String[] selectionArgs = new String[] { "%" + namePiece + "%" };
         final String sortOrder = Sort.BY_NAME;
         Flowable<List<Genre>> source = RxContent.query(resolver, URI, PROJECTION,
-                selection, selectionArgs, sortOrder, ExecutorHolder.workerExecutor(), CURSOR_MAPPER);
+                selection, selectionArgs, sortOrder, ContentExecutors.workerExecutor(), CURSOR_MAPPER);
         return SongQueryHelper.filterGenres(resolver, source, songFilter);
     }
 
     static Flowable<Genre> queryItem(ContentResolver resolver, long itemId) {
-        return RxContent.queryItem(resolver, URI, PROJECTION, itemId, ExecutorHolder.workerExecutor(), CURSOR_MAPPER);
+        return RxContent.queryItem(resolver, URI, PROJECTION, itemId, ContentExecutors.workerExecutor(), CURSOR_MAPPER);
     }
 
     static Flowable<Genre> queryItemByName(ContentResolver resolver, String name) {
@@ -73,7 +73,7 @@ import io.reactivex.Flowable;
         String[] selectionArgs = new String[] { name };
         final String sortOrder = Sort.BY_NAME;
         return RxContent.query(resolver, URI, PROJECTION,
-                selection, selectionArgs, sortOrder, ExecutorHolder.workerExecutor(), CURSOR_MAPPER)
+                selection, selectionArgs, sortOrder, ContentExecutors.workerExecutor(), CURSOR_MAPPER)
                 .map(genres -> genres.get(0));
     }
 

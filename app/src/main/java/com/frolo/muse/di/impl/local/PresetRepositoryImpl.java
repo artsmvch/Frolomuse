@@ -77,7 +77,7 @@ public final class PresetRepositoryImpl implements PresetRepository {
         String[] selectionArgs = null;
         String sortOrder = null;
         return RxContent.query(mContext.getContentResolver(), URI, PROJECTION,
-                selection, selectionArgs, sortOrder, ExecutorHolder.workerExecutor(), CURSOR_MAPPER);
+                selection, selectionArgs, sortOrder, ContentExecutors.workerExecutor(), CURSOR_MAPPER);
     }
 
     @Override
@@ -88,7 +88,7 @@ public final class PresetRepositoryImpl implements PresetRepository {
     @Override
     public Flowable<CustomPreset> getPresetById(final long id) {
         return RxContent.queryItem(mContext.getContentResolver(), URI, PROJECTION,
-                id, ExecutorHolder.workerExecutor(), CURSOR_MAPPER);
+                id, ContentExecutors.workerExecutor(), CURSOR_MAPPER);
     }
 
     @Override

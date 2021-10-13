@@ -384,7 +384,7 @@ import io.reactivex.disposables.Disposables;
     static Flowable<List<MyFile>> getHiddenFiles(ContentResolver resolver) {
         return RxContent.query(resolver, URI_HIDDEN_FILES,
                 PROJECTION_HIDDEN_FILES, null, null, null,
-                ExecutorHolder.workerExecutor(), CURSOR_MAPPER_HIDDEN_FILES);
+                ContentExecutors.workerExecutor(), CURSOR_MAPPER_HIDDEN_FILES);
     }
 
     static Completable setFileHidden(final ContentResolver resolver, final MyFile item, final boolean hidden) {
