@@ -186,7 +186,7 @@ final class SongQueryHelper {
         {
             // Min duration
             final long minDuration = filter.getMinDuration();
-            if (minDuration != SongFilter.DURATION_NOT_SET) {
+            if (minDuration != SongFilter.DURATION_NOT_SET && minDuration > 0) {
                 if (selectionBuilder.length() > 0) selectionBuilder.append(" AND ");
 
                 selectionBuilder.append(MediaStore.Audio.Media.DURATION).append(" >= ?");
