@@ -42,6 +42,8 @@ class RestorePlayerStateUseCaseTest {
     @Mock
     private lateinit var preferences: Preferences
     @Mock
+    private lateinit var libraryPreferences: LibraryPreferences
+    @Mock
     private lateinit var audioSourceQueueFactory: AudioSourceQueueFactory
 
     private lateinit var restorePlayerStateUseCase: RestorePlayerStateUseCase
@@ -60,6 +62,7 @@ class RestorePlayerStateUseCaseTest {
                 genreRepository,
                 playlistRepository,
                 preferences,
+                libraryPreferences,
                 audioSourceQueueFactory
         )
     }
@@ -99,7 +102,7 @@ class RestorePlayerStateUseCaseTest {
         whenever(preferences.lastPlaybackPosition)
                 .thenReturn(playbackPosition)
 
-        whenever(preferences.minAudioFileDuration)
+        whenever(libraryPreferences.getMinAudioDuration())
                 .thenReturn(Flowable.just(0))
 
         whenever(songRepository.allItems)
