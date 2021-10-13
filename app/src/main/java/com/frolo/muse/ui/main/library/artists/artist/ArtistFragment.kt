@@ -9,7 +9,6 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProviders
 import com.frolo.muse.R
 import com.frolo.muse.StyleUtil
-import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.dp2px
 import com.frolo.muse.model.media.Artist
@@ -124,10 +123,6 @@ class ArtistFragment: BaseFragment() {
             context?.confirmShortcutCreation(artist) {
                 viewModel.onCreateArtistShortcutActionConfirmed()
             }
-        }
-
-        shortcutCreatedEvent.observe(owner) {
-            toastShortMessage(R.string.shortcut_created)
         }
     }
 
