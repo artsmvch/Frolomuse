@@ -173,7 +173,7 @@ dependencies {
     testImplementation "androidx.arch.core:core-testing:2.1.0"
 
     // Flurry analytics
-    implementation('com.flurry.android:ads:8.1.0') {
+    implementation('com.flurry.android:analytics:13.0.1') {
         transitive = true
     }
 
