@@ -180,6 +180,12 @@
     <string name="nav_favourite">喜愛</string>
 
     <!--app preferences-->
+    <string name="playback_settings">音樂的播放</string>
+    <string name="library_settings">圖書館</string>
+    <string name="appearance_settings">外貌</string>
+    <string name="about_app_settings">關於</string>
+
+    <!--app preferences-->
     <string name="version">應用版本</string>
     <string name="licenses">許可證</string>
 

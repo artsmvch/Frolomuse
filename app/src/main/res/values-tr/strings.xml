@@ -185,6 +185,12 @@
     <string name="nav_favourite">Favori</string>
 
     <!--app preferences-->
+    <string name="playback_settings">Geri çalma</string>
+    <string name="library_settings">Kütüphane</string>
+    <string name="appearance_settings">Dış görünüş</string>
+    <string name="about_app_settings">Hakkında</string>
+
+    <!--app preferences-->
     <string name="version">Uygulama sürümü</string>
     <string name="licenses">Lisanslar</string>
 

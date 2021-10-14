@@ -198,6 +198,12 @@
     <string name="nav_favourite">Любимые</string>
 
     <!--app preferences-->
+    <string name="playback_settings">Воспроизведение</string>
+    <string name="library_settings">Библиотека</string>
+    <string name="appearance_settings">Внешний вид</string>
+    <string name="about_app_settings">Об этом приложении</string>
+
+    <!--app preferences-->
     <string name="version">Версия приложения</string>
     <string name="licenses">Лицензии</string>
 

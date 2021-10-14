@@ -179,6 +179,12 @@
     <string name="nav_favourite">좋아하는 노래</string>
 
     <!--app preferences-->
+    <string name="playback_settings">오디오 재생</string>
+    <string name="library_settings">음악 라이브러리</string>
+    <string name="appearance_settings">모습</string>
+    <string name="about_app_settings">앱 정보</string>
+
+    <!--app preferences-->
     <string name="version">응용 프로그램 버전</string>
     <string name="licenses">라이센스</string>
 

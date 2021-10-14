@@ -180,6 +180,12 @@
     <string name="nav_favourite">お気に入り</string>
 
     <!--app preferences-->
+    <string name="playback_settings">オーディオ再生</string>
+    <string name="library_settings">ライブラリ</string>
+    <string name="appearance_settings">外観</string>
+    <string name="about_app_settings">アプリについて</string>
+
+    <!--app preferences-->
     <string name="version">アプリケーションのバージョン</string>
     <string name="licenses">ライセンス</string>
 

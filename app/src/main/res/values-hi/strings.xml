@@ -186,6 +186,12 @@
     <string name="nav_favourite">पसंदीदा</string>
 
     <!--app preferences-->
+    <string name="playback_settings">प्लेबैक</string>
+    <string name="library_settings">पुस्तकालय</string>
+    <string name="appearance_settings">दिखावट</string>
+    <string name="about_app_settings">के बारे में</string>
+
+    <!--app preferences-->
     <string name="version">एप्लिकेशन वर्जन</string>
     <string name="licenses">लाइसेंस</string>
 

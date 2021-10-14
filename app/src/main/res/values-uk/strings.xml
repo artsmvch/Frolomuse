@@ -192,6 +192,12 @@
     <string name="nav_favourite">Улюблений</string>
 
     <!--app preferences-->
+    <string name="playback_settings">Відтворення</string>
+    <string name="library_settings">Бібліотека</string>
+    <string name="appearance_settings">Зовнішній вигляд</string>
+    <string name="about_app_settings">Про додаток</string>
+
+    <!--app preferences-->
     <string name="version">Версія програми</string>
     <string name="licenses">Ліцензії</string>
 

@@ -186,6 +186,12 @@
     <string name="nav_favourite">Favorito</string>
 
     <!--app preferences-->
+    <string name="playback_settings">Reprodução de áudio</string>
+    <string name="library_settings">Biblioteca</string>
+    <string name="appearance_settings">Aparência</string>
+    <string name="about_app_settings">Sobre</string>
+
+    <!--app preferences-->
     <string name="version">Versão do aplicativo</string>
     <string name="licenses">Licenças</string>
 

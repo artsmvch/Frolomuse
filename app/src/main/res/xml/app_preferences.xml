@@ -4,13 +4,7 @@
     android:key="@string/preference_screen">
 
     <androidx.preference.PreferenceCategory
-        android:title="@string/app_prefs">
-
-        <Preference
-            android:icon="@drawable/pref_ic_premium_outlined_24"
-            android:key="buy_premium"
-            android:title="@string/buy_premium"
-            android:summary="@string/buy_premium_desc"/>
+        android:title="@string/playback_settings">
 
         <Preference
             android:icon="@drawable/pref_ic_fading_outlined_24"
@@ -33,6 +27,16 @@
             android:defaultValue="false"/>
 
         <Preference
+            android:icon="@drawable/pref_ic_sleep_timer_outlined_24"
+            android:key="sleep_timer"
+            android:title="@string/sleep_timer"
+            android:summary="@string/sleep_time_description"/>
+    </androidx.preference.PreferenceCategory>
+
+    <androidx.preference.PreferenceCategory
+        android:title="@string/library_settings">
+
+        <Preference
             android:icon="@drawable/pref_ic_media_library_outlined_24"
             android:key="library_sections"
             android:title="@string/library_sections"
@@ -44,37 +48,17 @@
             android:title="@string/library_song_filter_pref_title"
             android:summary="@string/library_song_filter_pref_description"/>
 
-        <CheckBoxPreference
-            android:icon="@drawable/pref_ic_album_grid_outlined_24"
-            android:key="album_grid"
-            android:title="@string/album_grid"
-            android:summary="@string/show_album_grid"
-            android:defaultValue="false"/>
-
         <Preference
-            android:icon="@drawable/pref_ic_theme_outlined_24"
-            android:key="theme"
-            android:title="@string/app_theme"
-            android:summary="@string/app_theme_desc"
-            android:defaultValue="false"/>
-
-        <Preference
-            android:icon="@drawable/pref_ic_sleep_timer_outlined_24"
-            android:key="sleep_timer"
-            android:title="@string/sleep_timer"
-            android:summary="@string/sleep_time_description"/>
+            android:icon="@drawable/pref_ic_exclude_short_songs_outlined_24"
+            android:key="exclude_short_songs"
+            android:title="@string/exclude_short_songs"
+            android:summary="@string/exclude_short_songs_desc"/>
 
         <Preference
             android:icon="@drawable/pref_ic_hidden_files_outlined_24"
             android:key="hidden_files"
             android:title="@string/hidden_files"
             android:summary="@string/hidden_files_desc"/>
-
-        <Preference
-            android:icon="@drawable/pref_ic_exclude_short_songs_outlined_24"
-            android:key="exclude_short_songs"
-            android:title="@string/exclude_short_songs"
-            android:summary="@string/exclude_short_songs_desc"/>
 
         <Preference
             android:icon="@drawable/pref_ic_scan_file_outlined_24"
@@ -84,14 +68,31 @@
     </androidx.preference.PreferenceCategory>
 
     <androidx.preference.PreferenceCategory
-        android:title="@string/about">
+        android:title="@string/appearance_settings">
 
         <Preference
-            android:icon="@drawable/pref_ic_copyright_outlined_24"
-            android:key="licenses"
-            android:title="@string/licenses"
-            android:summary="@string/third_part_libs"
+            android:icon="@drawable/pref_ic_theme_outlined_24"
+            android:key="theme"
+            android:title="@string/app_theme"
+            android:summary="@string/app_theme_desc"
             android:defaultValue="false"/>
+
+        <CheckBoxPreference
+            android:icon="@drawable/pref_ic_album_grid_outlined_24"
+            android:key="album_grid"
+            android:title="@string/album_grid"
+            android:summary="@string/show_album_grid"
+            android:defaultValue="false"/>
+    </androidx.preference.PreferenceCategory>
+
+    <androidx.preference.PreferenceCategory
+        android:title="@string/about_app_settings">
+
+        <Preference
+            android:icon="@drawable/pref_ic_premium_outlined_24"
+            android:key="buy_premium"
+            android:title="@string/buy_premium"
+            android:summary="@string/buy_premium_desc"/>
 
         <Preference
             android:icon="@drawable/pref_ic_rate_outlined_24"
@@ -109,6 +110,13 @@
             android:key="help_with_translations"
             android:title="@string/help_with_translations"
             android:summary="@string/help_with_translations_desc"/>
+
+        <Preference
+            android:icon="@drawable/pref_ic_copyright_outlined_24"
+            android:key="licenses"
+            android:title="@string/licenses"
+            android:summary="@string/third_part_libs"
+            android:defaultValue="false"/>
 
         <Preference
             android:icon="@drawable/pref_ic_info_outlined_24"

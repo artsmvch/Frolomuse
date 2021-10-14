@@ -180,6 +180,12 @@
     <string name="nav_favourite">Favorit</string>
 
     <!--app preferences-->
+    <string name="playback_settings">Pemutaran</string>
+    <string name="library_settings">Perpustakaan</string>
+    <string name="appearance_settings">Penampilan</string>
+    <string name="about_app_settings">Tentang</string>
+
+    <!--app preferences-->
     <string name="version">Versi aplikasi</string>
     <string name="licenses">Lisensi</string>
 
