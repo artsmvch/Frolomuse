@@ -479,6 +479,16 @@ final class SongQueryHelper {
                 album -> filter.newBuilder().setAlbumId(album.getId()).build());
     }
 
+    static Flowable<List<Album>> filterAlbumsOfArtist(
+            ContentResolver resolver, Flowable<List<Album>> source, final SongFilter filter, long artistId) {
+        if (filter.getTypes().isEmpty()) {
+            return Flowable.just(Collections.emptyList());
+        }
+        return filterImpl(resolver, source,
+                album -> MediaStore.Audio.Artists.Albums.getContentUri("external", artistId),
+                album -> filter.newBuilder().setAlbumId(album.getId()).build());
+    }
+
     static Flowable<List<Artist>> filterArtists(
             ContentResolver resolver, Flowable<List<Artist>> source, final SongFilter filter) {
         if (filter.getTypes().isEmpty()) {

@@ -144,7 +144,7 @@ import io.reactivex.schedulers.Schedulers;
             source = RxContent.query(resolver, uri, PROJECTION, selection, selectionArgs,
                     sortOrder, ContentExecutors.workerExecutor(), CURSOR_MAPPER);
         }
-        return SongQueryHelper.filterAlbums(resolver, source, songFilter);
+        return SongQueryHelper.filterAlbumsOfArtist(resolver, source, songFilter, artistId);
     }
 
     @Deprecated
