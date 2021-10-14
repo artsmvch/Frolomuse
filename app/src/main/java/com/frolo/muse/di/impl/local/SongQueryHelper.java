@@ -232,10 +232,48 @@ final class SongQueryHelper {
             Collection<SongType> includedTypes = filter.getTypes();
             boolean noTypesIncluded = includedTypes.isEmpty();
             boolean atLeastOneTypeDefined = false;
-            loop : for (SongType type : SongType.values()) {
+            for (SongType type : SongType.values()) {
                 boolean isTypeIncluded = includedTypes.contains(type);
                 // If no types included at all, then each type must be specified as '== 0' in the selection
                 if (isTypeIncluded || noTypesIncluded) {
+
+                    final String token;
+                    switch (type) {
+                        case MUSIC:
+                            token = MediaStore.Audio.Media.IS_MUSIC;
+                            break;
+                        case PODCAST:
+                            token = MediaStore.Audio.Media.IS_PODCAST;
+                            break;
+                        case RINGTONE:
+                            token = MediaStore.Audio.Media.IS_RINGTONE;
+                            break;
+                        case ALARM:
+                            token = MediaStore.Audio.Media.IS_ALARM;
+                            break;
+                        case NOTIFICATION:
+                            token = MediaStore.Audio.Media.IS_NOTIFICATION;
+                            break;
+                        case AUDIOBOOK: {
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                                token = MediaStore.Audio.Media.IS_AUDIOBOOK;
+                            } else {
+                                // Not supported
+                                token = null;
+                            }
+                            break;
+                        }
+                        default: {
+                            // Should not get here
+                            DebugUtils.dumpOnMainThread(new IllegalArgumentException(String.valueOf(type)));
+                            token = null;
+                        }
+                    }
+
+                    if (token == null || token.isEmpty()) {
+                        // Token is null or empty => go to the next type
+                        continue;
+                    }
 
                     if (selectionBuilder.length() > 0) {
                         if (atLeastOneTypeDefined) {
@@ -251,32 +289,7 @@ final class SongQueryHelper {
                         selectionBuilder.append("(");
                     }
 
-                    switch (type) {
-                        case MUSIC:
-                            selectionBuilder.append(MediaStore.Audio.Media.IS_MUSIC);
-                            break;
-                        case PODCAST:
-                            selectionBuilder.append(MediaStore.Audio.Media.IS_PODCAST);
-                            break;
-                        case RINGTONE:
-                            selectionBuilder.append(MediaStore.Audio.Media.IS_RINGTONE);
-                            break;
-                        case ALARM:
-                            selectionBuilder.append(MediaStore.Audio.Media.IS_ALARM);
-                            break;
-                        case NOTIFICATION:
-                            selectionBuilder.append(MediaStore.Audio.Media.IS_NOTIFICATION);
-                            break;
-                        case AUDIOBOOK: {
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                                selectionBuilder.append(MediaStore.Audio.Media.IS_AUDIOBOOK);
-                            } else {
-                                // Not supported
-                                continue loop;
-                            }
-                            break;
-                        }
-                    }
+                    selectionBuilder.append(token);
 
                     if (noTypesIncluded) {
                         selectionBuilder.append(" = ?");
