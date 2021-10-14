@@ -59,6 +59,7 @@ class PlayerImpl_Update_Test : PlayerImpl_Base_Test() {
 
         player.doAfterAllEvents {
             verify(testObserver, times(1)).onAudioSourceChanged(same(player), eq(item), eq(position))
+            verify(testObserver, never()).onAudioSourceUpdated(same(player), any())
             verify(testObserver, never()).onPositionInQueueChanged(same(player), any())
             assertTrue(player.getCurrentQueue()!!.length == originalSize)
         }
@@ -106,7 +107,7 @@ class PlayerImpl_Update_Test : PlayerImpl_Base_Test() {
 
         player.doAfterAllEvents {
             verify(testObserver, times(1)).onAudioSourceChanged(same(player), eq(item), eq(position))
-            verify(testObserver, times(1)).onAudioSourceChanged(same(player), eq(updatedItem), eq(position))
+            verify(testObserver, times(1)).onAudioSourceUpdated(same(player), eq(updatedItem))
             verify(testObserver, never()).onPositionInQueueChanged(same(player), any())
             assertTrue(player.getCurrentQueue()!!.length == originalSize)
         }
