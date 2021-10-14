@@ -10,10 +10,13 @@ import java.util.Map;
 class FlurryEventLogger implements EventLogger {
 
     FlurryEventLogger(Context context) {
-        // initializing Flurry
+        initFlurry(context);
+    }
+
+    private void initFlurry(Context context) {
         new FlurryAgent.Builder()
-                .withLogEnabled(true)
-                .build(context, BuildConfig.FLURRY_KEY);
+            .withLogEnabled(BuildConfig.DEBUG)
+            .build(context, BuildConfig.FLURRY_KEY);
     }
 
     @Override
