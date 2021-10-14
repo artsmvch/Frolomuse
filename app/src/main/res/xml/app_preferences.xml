@@ -39,6 +39,7 @@
             android:summary="@string/library_sections_desc"/>
 
         <Preference
+            android:icon="@drawable/pref_ic_song_filter_outlined_24"
             android:key="library_song_filter"
             android:title="@string/library_song_filter_pref_title"
             android:summary="@string/library_song_filter_pref_description"/>

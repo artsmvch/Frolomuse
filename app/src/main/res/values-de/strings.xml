@@ -238,6 +238,16 @@
         Hier steuern Sie, wie die Wiedergabe ein- und ausgeblendet werden soll. Sie können eine geeignete Dauer mit dem Schieberegler unten einstellen. Dauer "0" bedeutet, dass es kein Ausbleichen gibt.
     </string>
     <string name="playback_fading_duration">Dauer</string>
+    <!--Library song filter-->
+    <string name="library_song_filter_pref_title">Songtyp-Filter</string>
+    <string name="library_song_filter_pref_description">Geben Sie an, welche Arten von Songs in der Bibliothek angezeigt werden sollen</string>
+    <string name="library_song_filter_title">Songtyp-Filter</string>
+    <string name="library_song_filter_type_music">Musik</string>
+    <string name="library_song_filter_type_podcast">Podcast</string>
+    <string name="library_song_filter_type_ringtone">Klingelton</string>
+    <string name="library_song_filter_type_alarm">Wecker</string>
+    <string name="library_song_filter_type_notification">Benachrichtigung</string>
+    <string name="library_song_filter_type_audiobook">Hörbuch</string>
 
     <!--create playlist-->
     <string name="save_playlist">Wiedergabeliste speichern</string>

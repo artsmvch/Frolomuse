@@ -244,6 +244,16 @@
         Тут ви керуєте тим, як відтворення має затухати і з\'являтися. Ви можете встановити відповідну тривалість за допомогою повзунка нижче. Тривалість "0" означає, що не буде завмирання.
     </string>
     <string name="playback_fading_duration">Тривалість</string>
+    <!--Library song filter-->
+    <string name="library_song_filter_pref_title">Фільтр типу пісні</string>
+    <string name="library_song_filter_pref_description">Вкажіть, які типи пісень мають відображатися в бібліотеці</string>
+    <string name="library_song_filter_title">Фільтр типу пісні</string>
+    <string name="library_song_filter_type_music">Музика</string>
+    <string name="library_song_filter_type_podcast">Подкаст</string>
+    <string name="library_song_filter_type_ringtone">Рінгтон</string>
+    <string name="library_song_filter_type_alarm">Будильник</string>
+    <string name="library_song_filter_type_notification">Повідомлення</string>
+    <string name="library_song_filter_type_audiobook">Аудіокнига</string>
 
     <!--create and edit playlist-->
     <string name="save_playlist">Зберегти список відтворення</string>

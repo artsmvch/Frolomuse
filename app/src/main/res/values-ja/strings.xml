@@ -231,6 +231,16 @@
         ここでは、再生をフェードインおよびフェードアウトする方法を制御します。下のスライダーを使用して適切な期間を設定できます。継続時間「0」は、フェードがないことを意味します。
     </string>
     <string name="playback_fading_duration">期間</string>
+    <!--Library song filter-->
+    <string name="library_song_filter_pref_title">ソングタイプフィルター</string>
+    <string name="library_song_filter_pref_description">ライブラリに表示する曲の種類を指定します</string>
+    <string name="library_song_filter_title">ソングタイプフィルター</string>
+    <string name="library_song_filter_type_music">音楽</string>
+    <string name="library_song_filter_type_podcast">ポッドキャスト</string>
+    <string name="library_song_filter_type_ringtone">着メロ</string>
+    <string name="library_song_filter_type_alarm">目覚まし時計</string>
+    <string name="library_song_filter_type_notification">通知</string>
+    <string name="library_song_filter_type_audiobook">オーディオブック</string>
 
     <!--create playlist-->
     <string name="save_playlist">プレイリストを保存</string>

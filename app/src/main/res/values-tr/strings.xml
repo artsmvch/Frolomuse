@@ -237,6 +237,16 @@
         Burada oynatmanın nasıl açılıp kapanacağını kontrol edersiniz. Aşağıdaki kaydırıcıyı kullanarak uygun bir süre ayarlayabilirsiniz. Süre "0", solma olmayacağı anlamına gelir.
     </string>
     <string name="playback_fading_duration">Süre</string>
+    <!--Library song filter-->
+    <string name="library_song_filter_pref_title">Şarkı türü filtresi</string>
+    <string name="library_song_filter_pref_description">Kitaplıkta ne tür şarkıların görüntüleneceğini belirtin</string>
+    <string name="library_song_filter_title">Şarkı türü filtresi</string>
+    <string name="library_song_filter_type_music">Müzik</string>
+    <string name="library_song_filter_type_podcast">Podcast</string>
+    <string name="library_song_filter_type_ringtone">Zil sesi</string>
+    <string name="library_song_filter_type_alarm">Alarm saati</string>
+    <string name="library_song_filter_type_notification">Bildirim</string>
+    <string name="library_song_filter_type_audiobook">Sesli kitap</string>
 
     <!--create and edit playlist-->
     <string name="save_playlist">Oynatma listesini kaydet</string>

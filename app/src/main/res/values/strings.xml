@@ -242,9 +242,9 @@
     </string>
     <string name="playback_fading_duration">Duration</string>
     <!--Library song filter-->
-    <string name="library_song_filter_pref_title">Song filter</string>
-    <string name="library_song_filter_pref_description">Song filter</string>
-    <string name="library_song_filter_title">Song filter</string>
+    <string name="library_song_filter_pref_title">Song type filter</string>
+    <string name="library_song_filter_pref_description">Specify what types of songs should be displayed in the library</string>
+    <string name="library_song_filter_title">Song type filter</string>
     <string name="library_song_filter_type_music">Music</string>
     <string name="library_song_filter_type_podcast">Podcast</string>
     <string name="library_song_filter_type_ringtone">Ringtone</string>

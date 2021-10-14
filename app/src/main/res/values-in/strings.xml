@@ -232,6 +232,16 @@
         Di sini Anda mengontrol bagaimana pemutaran harus masuk dan keluar. Anda dapat mengatur durasi yang sesuai menggunakan penggeser di bawah ini. Durasi "0" berarti tidak akan ada pemudaran.
     </string>
     <string name="playback_fading_duration">Durasi</string>
+    <!--Library song filter-->
+    <string name="library_song_filter_pref_title">Filter jenis lagu</string>
+    <string name="library_song_filter_pref_description">Tentukan jenis lagu apa yang harus ditampilkan di perpustakaan</string>
+    <string name="library_song_filter_title">Filter jenis lagu</string>
+    <string name="library_song_filter_type_music">Musik</string>
+    <string name="library_song_filter_type_podcast">Siniar</string>
+    <string name="library_song_filter_type_ringtone">Nada dering</string>
+    <string name="library_song_filter_type_alarm">Jam alarm</string>
+    <string name="library_song_filter_type_notification">Pemberitahuan</string>
+    <string name="library_song_filter_type_audiobook">Buku audio</string>
 
     <!--create and edit playlist-->
     <string name="save_playlist">Simpan daftar putar</string>

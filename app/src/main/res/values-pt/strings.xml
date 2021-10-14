@@ -238,6 +238,16 @@
         Aqui você controla como a reprodução deve aparecer e desaparecer gradualmente. Você pode definir uma duração adequada usando o controle deslizante abaixo. Duração "0" significa que não haverá desvanecimento.
     </string>
     <string name="playback_fading_duration">Duração</string>
+    <!--Library song filter-->
+    <string name="library_song_filter_pref_title">Filtro de tipo de música</string>
+    <string name="library_song_filter_pref_description">Especifique quais tipos de músicas devem ser exibidos na biblioteca</string>
+    <string name="library_song_filter_title">Filtro de tipo de música</string>
+    <string name="library_song_filter_type_music">Música</string>
+    <string name="library_song_filter_type_podcast">Podcast</string>
+    <string name="library_song_filter_type_ringtone">Toque</string>
+    <string name="library_song_filter_type_alarm">Despertador</string>
+    <string name="library_song_filter_type_notification">Notificação</string>
+    <string name="library_song_filter_type_audiobook">Áudio-livro</string>
 
     <!--create playlist-->
     <string name="save_playlist">Salvar lista de reprodução</string>

@@ -250,6 +250,16 @@
         Здесь вы управляете тем, как воспроизведение должно появляться и исчезать. Вы можете установить подходящую продолжительность с помощью ползунка ниже. Длительность «0» означает, что затухания не будет.
     </string>
     <string name="playback_fading_duration">Продолжительность</string>
+    <!--Library song filter-->
+    <string name="library_song_filter_pref_title">Фильтр по типу песни</string>
+    <string name="library_song_filter_pref_description">Укажите, какие типы песен должны отображаться в библиотеке</string>
+    <string name="library_song_filter_title">Фильтр по типу песни</string>
+    <string name="library_song_filter_type_music">Музыка</string>
+    <string name="library_song_filter_type_podcast">Подкаст</string>
+    <string name="library_song_filter_type_ringtone">Рингтон</string>
+    <string name="library_song_filter_type_alarm">Будильник</string>
+    <string name="library_song_filter_type_notification">Уведомление</string>
+    <string name="library_song_filter_type_audiobook">Аудиокнига</string>
 
     <!-- create playlist-->
     <string name="save_playlist">Сохранить плейлист</string>

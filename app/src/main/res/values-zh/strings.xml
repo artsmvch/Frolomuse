@@ -231,6 +231,16 @@
         在這裡，您可以控製播放的淡入和淡出方式。您可以使用下面的滑塊設置合適的持續時間。持續時間“ 0”表示不會衰減。
     </string>
     <string name="playback_fading_duration">持續時間</string>
+    <!--Library song filter-->
+    <string name="library_song_filter_pref_title">歌曲類型過濾器</string>
+    <string name="library_song_filter_pref_description">指定應在庫中顯示哪些類型的歌曲</string>
+    <string name="library_song_filter_title">歌曲類型過濾器</string>
+    <string name="library_song_filter_type_music">音樂</string>
+    <string name="library_song_filter_type_podcast">播客</string>
+    <string name="library_song_filter_type_ringtone">鈴聲</string>
+    <string name="library_song_filter_type_alarm">鬧鐘</string>
+    <string name="library_song_filter_type_notification">通知</string>
+    <string name="library_song_filter_type_audiobook">有声读物</string>
 
     <!--create playlist-->
     <string name="save_playlist">保存播放列表</string>

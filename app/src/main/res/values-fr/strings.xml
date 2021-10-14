@@ -238,6 +238,16 @@
         Ici, vous contrôlez la façon dont la lecture de la musique doit s\'effacer. Vous pouvez définir une durée appropriée à l\'aide du curseur ci-dessous. La durée "0" signifie qu\'il n\'y aura pas de fondu.
     </string>
     <string name="playback_fading_duration">Durée</string>
+    <!--Library song filter-->
+    <string name="library_song_filter_pref_title">Filtre de type de morceau</string>
+    <string name="library_song_filter_pref_description">Spécifiez quels types de chansons doivent être affichés dans la bibliothèque</string>
+    <string name="library_song_filter_title">Filtre de type de morceau</string>
+    <string name="library_song_filter_type_music">Musique</string>
+    <string name="library_song_filter_type_podcast">Podcast</string>
+    <string name="library_song_filter_type_ringtone">Sonnerie</string>
+    <string name="library_song_filter_type_alarm">Alarme</string>
+    <string name="library_song_filter_type_notification">Notification</string>
+    <string name="library_song_filter_type_audiobook">Livre audio</string>
 
     <!--create playlist-->
     <string name="save_playlist">Enregistrer la playlist</string>

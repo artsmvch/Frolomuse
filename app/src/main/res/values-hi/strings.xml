@@ -237,6 +237,16 @@
         यहां आप यह नियंत्रित करते हैं कि प्लेबैक कैसे अंदर और बाहर फीका होना चाहिए। आप नीचे स्लाइडर का उपयोग करके एक उपयुक्त अवधि निर्धारित कर सकते हैं। अवधि "0" का मतलब है कि कोई लुप्त होती नहीं होगी।
     </string>
     <string name="playback_fading_duration">समयांतराल</string>
+    <!--Library song filter-->
+    <string name="library_song_filter_pref_title">गीत प्रकार फ़िल्टर</string>
+    <string name="library_song_filter_pref_description">निर्दिष्ट करें कि पुस्तकालय में किस प्रकार के गीतों को प्रदर्शित किया जाना चाहिए</string>
+    <string name="library_song_filter_title">गीत प्रकार फ़िल्टर</string>
+    <string name="library_song_filter_type_music">संगीत</string>
+    <string name="library_song_filter_type_podcast">पॉडकास्ट</string>
+    <string name="library_song_filter_type_ringtone">रिंगटोन</string>
+    <string name="library_song_filter_type_alarm">अलार्म घड़ी</string>
+    <string name="library_song_filter_type_notification">अधिसूचना</string>
+    <string name="library_song_filter_type_audiobook">ऑडियोबुक</string>
 
     <!--create playlist-->
     <string name="save_playlist">प्लेलिस्ट सहेजें</string>

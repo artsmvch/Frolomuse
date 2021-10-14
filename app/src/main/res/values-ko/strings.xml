@@ -232,6 +232,16 @@
         여기에서 재생 페이드 인 및 페이드 아웃 방법을 제어합니다. 아래 슬라이더를 사용하여 적절한 기간을 설정할 수 있습니다. 기간 "0"은 페이딩이 없음을 의미합니다.
     </string>
     <string name="playback_fading_duration">지속</string>
+    <!--Library song filter-->
+    <string name="library_song_filter_pref_title">노래 유형 필터</string>
+    <string name="library_song_filter_pref_description">라이브러리에 표시할 노래 유형 지정</string>
+    <string name="library_song_filter_title">노래 유형 필터</string>
+    <string name="library_song_filter_type_music">음악</string>
+    <string name="library_song_filter_type_podcast">팟캐스트</string>
+    <string name="library_song_filter_type_ringtone">벨소리</string>
+    <string name="library_song_filter_type_alarm">알람 시계</string>
+    <string name="library_song_filter_type_notification">공고</string>
+    <string name="library_song_filter_type_audiobook">오디오 북</string>
 
     <!--create and edit playlist-->
     <string name="save_playlist">재생 목록 저장</string>
