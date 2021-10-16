@@ -27,13 +27,13 @@ public final class SongFilter {
         ALL_SONG_TYPES.addAll(Arrays.asList(songTypesValues));
     }
 
-    private static final SongFilter EMPTY = new SongFilter(ALL_SONG_TYPES,
+    private static final SongFilter ALL_ENABLED = new SongFilter(ALL_SONG_TYPES,
             NAME_PIECE_NOT_SET, FOLDER_PATH_NOT_SET, FILEPATH_NOT_SET,
             ID_NOT_SET, ID_NOT_SET, ID_NOT_SET, DURATION_NOT_SET, DURATION_NOT_SET, TIME_NOT_SET);
 
     @NotNull
-    public static SongFilter empty() {
-        return EMPTY;
+    public static SongFilter allEnabled() {
+        return ALL_ENABLED;
     }
 
     @NotNull
@@ -78,6 +78,23 @@ public final class SongFilter {
         this.minDuration = minDuration;
         this.maxDuration = maxDuration;
         this.timeAdded = timeAdded;
+    }
+
+    public boolean isAllDisabled() {
+        return types.isEmpty();
+    }
+
+    public boolean isAllEnabled() {
+        return types.containsAll(ALL_SONG_TYPES)
+            && (namePiece == null || namePiece.isEmpty())
+            && (folderPath == null || folderPath.isEmpty())
+            && (filepath == null || filepath.isEmpty())
+            && albumId == ID_NOT_SET
+            && artistId == ID_NOT_SET
+            && genreId == ID_NOT_SET
+            && minDuration == DURATION_NOT_SET
+            && maxDuration == DURATION_NOT_SET
+            && timeAdded == TIME_NOT_SET;
     }
 
     @NotNull
@@ -195,6 +212,12 @@ public final class SongFilter {
         public Builder setOnlyTypes(@NotNull SongType... types) {
             this.types.clear();
             this.types.addAll(Arrays.asList(types));
+            return this;
+        }
+
+        public Builder allTypes() {
+            this.types.clear();
+            this.types.addAll(ALL_SONG_TYPES);
             return this;
         }
 

@@ -11,7 +11,7 @@ import java.util.concurrent.Executor
 
 
 internal fun TestLibraryConfiguration(context: Context): LibraryConfiguration {
-    val songFilterProvider = SongFilterProvider { Flowable.just(SongFilter.empty()) }
+    val songFilterProvider = SongFilterProvider { Flowable.just(SongFilter.allEnabled()) }
     val queryExecutor = Executor { it.run() }
     return LibraryConfiguration(context, songFilterProvider, queryExecutor)
 }

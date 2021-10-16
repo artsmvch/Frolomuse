@@ -17,7 +17,7 @@ class SongQueryHelperTest {
     // Empty
     @Test
     fun test_GetSelectionWithArgs1() {
-        val filter = SongFilter.empty()
+        val filter = SongFilter.allEnabled()
         val selectionWithArgs = SongQueryHelper.getSelectionWithArgs(filter)
         val expectedSelection: String
         val expectedArgs: Array<String>
