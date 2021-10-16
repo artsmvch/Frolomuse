@@ -110,7 +110,7 @@ public final class AlbumRepositoryImpl extends BaseMediaRepository<Album> implem
     @Override
     public Single<List<Song>> collectSongs(Album item) {
         return getSongFilter().switchMap(songFilter ->
-                SongQuery.query(getContentResolver(), songFilter, AlbumQuery.Sort.BY_ALBUM, item))
+                SongQuery.query(getContentResolver(), songFilter, SongQuery.Sort.BY_ALBUM, item))
                 .firstOrError();
     }
 

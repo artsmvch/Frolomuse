@@ -109,7 +109,7 @@ public final class MyFileRepositoryImpl extends BaseMediaRepository<MyFile> impl
     @Override
     public Single<List<Song>> collectSongs(MyFile item) {
         return getSongFilter().switchMap(songFilter ->
-                SongQuery.query(getContentResolver(), songFilter, MyFileQuery.Sort.BY_FILENAME, item))
+                SongQuery.query(getContentResolver(), songFilter, SongQuery.Sort.BY_TITLE, item))
                 .firstOrError();
     }
 

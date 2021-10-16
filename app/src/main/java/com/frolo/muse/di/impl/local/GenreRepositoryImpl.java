@@ -98,7 +98,7 @@ public final class GenreRepositoryImpl extends BaseMediaRepository<Genre> implem
     @Override
     public Single<List<Song>> collectSongs(Genre item) {
         return getSongFilter().switchMap(songFilter ->
-                SongQuery.query(getContentResolver(), songFilter, GenreQuery.Sort.BY_NAME, item))
+                SongQuery.query(getContentResolver(), songFilter, SongQuery.Sort.BY_TITLE, item))
                 .firstOrError();
     }
 

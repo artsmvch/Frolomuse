@@ -97,7 +97,7 @@ public final class ArtistRepositoryImpl extends BaseMediaRepository<Artist> impl
     @Override
     public Single<List<Song>> collectSongs(Artist item) {
         return getSongFilter().switchMap(songFilter ->
-                SongQuery.query(getContentResolver(), songFilter, ArtistQuery.Sort.BY_ARTIST, item))
+                SongQuery.query(getContentResolver(), songFilter, SongQuery.Sort.BY_ARTIST, item))
                 .firstOrError();
     }
 
