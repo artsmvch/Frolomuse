@@ -21,7 +21,7 @@ internal class LibraryPreferenceImpl(
     }
 
     private val defaultSongFilter: SongFilter by lazy {
-        SongFilter.Builder().setOnlyType(SongType.MUSIC).build()
+        SongFilter.allEnabled()
     }
 
     private fun toJSON(filter: SongFilter): String {

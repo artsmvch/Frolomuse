@@ -189,22 +189,25 @@ final class SongQueryHelper {
     }
 
     static boolean getBool(@NonNull Cursor cursor, @NonNull String columnName) {
+        return getBool(cursor, columnName, false);
+    }
+
+    static boolean getBool(@NonNull Cursor cursor, @NonNull String columnName, boolean fallback) {
         int columnIndex = cursor.getColumnIndex(columnName);
         if (columnIndex >= 0) {
             return getBool(cursor, cursor.getColumnIndex(columnName));
         } else {
-            // fallback
-            return false;
+            return fallback;
         }
     }
 
-    static boolean getBool(@NonNull Cursor cursor, int columnIndex) {
+    private static boolean getBool(@NonNull Cursor cursor, int columnIndex) {
         return cursor.getInt(columnIndex) != 0;
     }
 
     @NonNull
     static SongType getSongType(@NonNull Cursor cursor) {
-        if (getBool(cursor, MediaStore.Audio.Media.IS_MUSIC)) {
+        if (getBool(cursor, MediaStore.Audio.Media.IS_MUSIC, true)) {
             return SongType.MUSIC;
         } else if (getBool(cursor, MediaStore.Audio.Media.IS_PODCAST)) {
             return SongType.PODCAST;
@@ -471,8 +474,11 @@ final class SongQueryHelper {
 
     static Flowable<List<Album>> filterAlbums(
             ContentResolver resolver, Flowable<List<Album>> source, final SongFilter filter) {
-        if (filter.getTypes().isEmpty()) {
+        if (filter.isAllDisabled()) {
             return Flowable.just(Collections.emptyList());
+        }
+        if (filter.isAllEnabled()) {
+            return source;
         }
         return filterImpl(resolver, source,
                 album -> MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
@@ -487,8 +493,11 @@ final class SongQueryHelper {
 
     static Flowable<List<Artist>> filterArtists(
             ContentResolver resolver, Flowable<List<Artist>> source, final SongFilter filter) {
-        if (filter.getTypes().isEmpty()) {
+        if (filter.isAllDisabled()) {
             return Flowable.just(Collections.emptyList());
+        }
+        if (filter.isAllEnabled()) {
+            return source;
         }
         return filterImpl(resolver, source,
                 artist -> MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
@@ -497,8 +506,11 @@ final class SongQueryHelper {
 
     static Flowable<List<Genre>> filterGenres(
             ContentResolver resolver, Flowable<List<Genre>> source, final SongFilter filter) {
-        if (filter.getTypes().isEmpty()) {
+        if (filter.isAllDisabled()) {
             return Flowable.just(Collections.emptyList());
+        }
+        if (filter.isAllEnabled()) {
+            return source;
         }
         return filterImpl(resolver, source,
                 genre -> MediaStore.Audio.Genres.Members.getContentUri("external", genre.getId()),

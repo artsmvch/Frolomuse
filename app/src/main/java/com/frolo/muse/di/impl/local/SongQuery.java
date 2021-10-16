@@ -174,7 +174,7 @@ import io.reactivex.functions.Function;
     static Flowable<List<Song>> queryForAlbums(ContentResolver resolver, Collection<Album> albums) {
         List<Flowable<List<Song>>> sources = new ArrayList<>(albums.size());
         for (Album album : albums) {
-            sources.add(query(resolver, SongFilter.empty(), Sort.BY_TITLE, album));
+            sources.add(query(resolver, SongFilter.allEnabled(), Sort.BY_TITLE, album));
         }
         return Flowable.combineLatest(sources, COMBINER);
     }
@@ -183,7 +183,7 @@ import io.reactivex.functions.Function;
     static Flowable<List<Song>> queryForArtists(ContentResolver resolver, Collection<Artist> artists) {
         List<Flowable<List<Song>>> sources = new ArrayList<>(artists.size());
         for (Artist artist : artists) {
-            sources.add(query(resolver, SongFilter.empty(), Sort.BY_TITLE, artist));
+            sources.add(query(resolver, SongFilter.allEnabled(), Sort.BY_TITLE, artist));
         }
         return Flowable.combineLatest(sources, COMBINER);
     }
@@ -192,7 +192,7 @@ import io.reactivex.functions.Function;
     static Flowable<List<Song>> queryForGenres(ContentResolver resolver, Collection<Genre> genres) {
         List<Flowable<List<Song>>> sources = new ArrayList<>(genres.size());
         for (Genre genre : genres) {
-            sources.add(query(resolver, SongFilter.empty(), Sort.BY_TITLE, genre));
+            sources.add(query(resolver, SongFilter.allEnabled(), Sort.BY_TITLE, genre));
         }
         return Flowable.combineLatest(sources, COMBINER);
     }
@@ -517,9 +517,15 @@ import io.reactivex.functions.Function;
 
     static Flowable<List<Song>> query(final ContentResolver resolver, final Uri uri,
                                       final SongFilter filter, final String sortOrder) {
-        if (filter.getTypes().isEmpty()) {
-            // No song types defined => early return
+        if (filter.isAllDisabled()) {
+            // Everything is disabled => return empty list
             return Flowable.just(Collections.emptyList());
+        }
+
+        if (filter.isAllEnabled()) {
+            // Everything is enabled => return as is
+            return RxContent.query(resolver, uri, SongQueryHelper.getSongProjection(), null, null,
+                    sortOrder, ContentExecutors.workerExecutor(), SongQueryHelper.getSongCursorMapper());
         }
 
         SongQueryHelper.SelectionWithArgs selectionWithArgs = SongQueryHelper.getSelectionWithArgs(filter);
@@ -563,10 +569,12 @@ import io.reactivex.functions.Function;
         String absolutePath = javaFile.getAbsolutePath();
         if (javaFile.isFile()) {
             filter = filter.newBuilder()
+                .allTypes()
                 .setFilepath(absolutePath)
                 .build();
         } else {
             filter = filter.newBuilder()
+                .allTypes()
                 .setFolderPath(absolutePath)
                 .build();
         }
