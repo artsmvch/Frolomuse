@@ -486,7 +486,7 @@ final class SongQueryHelper {
                         return Collections.singletonList(item);
                     }
                 });
-                filteredSource = filteredSource.subscribeOn(ContentExecutors.workerScheduler());
+                filteredSource = filteredSource.subscribeOn(ContentExecutors.fastParallelScheduler());
                 filteredSources.add(filteredSource);
             }
             Function<Object[], List<T>> zipper = objects -> {

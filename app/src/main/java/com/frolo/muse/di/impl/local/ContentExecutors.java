@@ -75,14 +75,32 @@ import io.reactivex.schedulers.Schedulers;
         static final Scheduler sInstance = Schedulers.from(WorkerExecutorHolder.sInstance);
     }
 
+    /**
+     * Worker executor for content queries. It doesn't matter if the operations are heavy or light,
+     * they should be used for IO tasks. The executor is based on a thread pool and is lazy initialized.
+     * @return worker executor
+     */
     @NonNull
     static Executor workerExecutor() {
         return WorkerExecutorHolder.sInstance;
     }
 
+    /**
+     * Default worker scheduler based on the worker executor and used for query operations.
+     * @return worker scheduler
+     */
     @NonNull
     static Scheduler workerScheduler() {
         return WorkerSchedulerHolder.sInstance;
+    }
+
+    /**
+     * Used for several small tasks executed in parallel. The default work scheduler is currently returned.
+     * @return fast parallel scheduler
+     */
+    @NonNull
+    static Scheduler fastParallelScheduler() {
+        return workerScheduler();
     }
 
     private ContentExecutors() {
