@@ -8,6 +8,7 @@ import android.provider.BaseColumns;
 import android.provider.MediaStore;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import com.frolo.muse.DebugUtils;
@@ -15,6 +16,7 @@ import com.frolo.muse.model.media.Album;
 import com.frolo.muse.model.media.Artist;
 import com.frolo.muse.model.media.Genre;
 import com.frolo.muse.model.media.Song;
+import com.frolo.muse.model.media.SongFeatures;
 import com.frolo.muse.model.media.SongFilter;
 import com.frolo.muse.model.media.SongType;
 import com.frolo.muse.model.media.Songs;
@@ -33,12 +35,28 @@ import io.reactivex.functions.Function;
 final class SongQueryHelper {
 
     static final class SelectionWithArgs {
+        @Nullable
         final String selection;
+        @Nullable
         final String[] args;
 
-        SelectionWithArgs(String selection, String[] args) {
+        SelectionWithArgs(@Nullable String selection, @Nullable String[] args) {
             this.selection = selection;
             this.args = args;
+        }
+    }
+
+    private static final List<SongType> SUPPORTED_SONG_TYPES;
+    private static final List<SongType> UNSUPPORTED_SONG_TYPES;
+    static {
+        SUPPORTED_SONG_TYPES = new ArrayList<>();
+        UNSUPPORTED_SONG_TYPES = new ArrayList<>();
+        for (SongType type : SongType.values()) {
+            if (SongFeatures.isSongTypeSupported(type)) {
+                SUPPORTED_SONG_TYPES.add(type);
+            } else {
+                UNSUPPORTED_SONG_TYPES.add(type);
+            }
         }
     }
 
@@ -230,12 +248,17 @@ final class SongQueryHelper {
         StringBuilder selectionBuilder = new StringBuilder();
         List<String> selectionArgsList = new ArrayList<>();
 
-        {
+        song_type_block : {
             // Song type
             Collection<SongType> includedTypes = filter.getTypes();
-            boolean noTypesIncluded = includedTypes.isEmpty();
+            if (includedTypes.containsAll(SUPPORTED_SONG_TYPES)) {
+                // All inclusive => no song type selection required
+                break song_type_block;
+            }
+
+            boolean noTypesIncluded = includedTypes.isEmpty() || UNSUPPORTED_SONG_TYPES.containsAll(includedTypes);
             boolean atLeastOneTypeDefined = false;
-            for (SongType type : SongType.values()) {
+            for (SongType type : SUPPORTED_SONG_TYPES) {
                 boolean isTypeIncluded = includedTypes.contains(type);
                 // If no types included at all, then each type must be specified as '== 0' in the selection
                 if (isTypeIncluded || noTypesIncluded) {
@@ -408,7 +431,13 @@ final class SongQueryHelper {
             }
         }
 
-        final String selection = selectionBuilder.toString();
+        final String selection;
+        if (selectionBuilder.length() > 0) {
+            selection = selectionBuilder.toString();
+        } else {
+            selection = null;
+        }
+
         final String[] selectionArgs;
         if (!selectionArgsList.isEmpty()) {
             selectionArgs = new String[selectionArgsList.size()];

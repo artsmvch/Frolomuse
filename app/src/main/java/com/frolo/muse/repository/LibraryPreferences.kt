@@ -10,7 +10,7 @@ interface LibraryPreferences : SongFilterProvider {
     override fun getSongFilter(): Flowable<SongFilter>
 
     fun getSongTypes(): Flowable<List<SongType>>
-    fun setSongTypes(types: List<SongType>): Completable
+    fun setSongTypes(types: Collection<SongType>): Completable
 
     fun getMinAudioDuration(): Flowable<Long>
     fun setMinAudioDuration(duration: Long): Completable

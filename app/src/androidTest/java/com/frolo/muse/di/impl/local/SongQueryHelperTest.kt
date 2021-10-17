@@ -2,6 +2,7 @@ package com.frolo.muse.di.impl.local
 
 import android.provider.MediaStore.Audio.Media.*
 import com.frolo.muse.OS
+import com.frolo.muse.model.media.SongFeatures
 import com.frolo.muse.model.media.SongFilter
 import com.frolo.muse.model.media.SongType
 import org.junit.Assert.assertArrayEquals
@@ -14,22 +15,13 @@ import org.junit.runners.JUnit4
 @RunWith(JUnit4::class)
 class SongQueryHelperTest {
 
-    // Empty
+    // All enabled
     @Test
     fun test_GetSelectionWithArgs1() {
         val filter = SongFilter.allEnabled()
         val selectionWithArgs = SongQueryHelper.getSelectionWithArgs(filter)
-        val expectedSelection: String
-        val expectedArgs: Array<String>
-        if (OS.isAtLeastQ()) {
-            expectedSelection = "($IS_MUSIC != ? OR $IS_PODCAST != ? OR $IS_RINGTONE != ? " +
-                    "OR $IS_ALARM != ? OR $IS_NOTIFICATION != ? OR $IS_AUDIOBOOK != ?)"
-            expectedArgs = arrayOf<String>("0", "0", "0", "0", "0", "0")
-        } else {
-            expectedSelection = "($IS_MUSIC != ? OR $IS_PODCAST != ? OR $IS_RINGTONE != ? " +
-                    "OR $IS_ALARM != ? OR $IS_NOTIFICATION != ?)"
-            expectedArgs = arrayOf<String>("0", "0", "0", "0", "0")
-        }
+        val expectedSelection: String? = null
+        val expectedArgs: Array<String>? = null
         assertEquals(selectionWithArgs.selection, expectedSelection)
         assertArrayEquals(selectionWithArgs.args, expectedArgs)
     }
@@ -161,20 +153,84 @@ class SongQueryHelperTest {
         assertArrayEquals(selectionWithArgs.args, expectedArgs)
     }
 
-    // Empty (but in another way)
+    // All enabled (but in another way)
     @Test
     fun test_GetSelectionWithArgs11() {
         val filter = SongFilter.Builder().build()
         val selectionWithArgs = SongQueryHelper.getSelectionWithArgs(filter)
-        val expectedSelection: String
-        val expectedArgs: Array<String>
+        val expectedSelection: String? = null
+        val expectedArgs: Array<String>? = null
+        assertEquals(selectionWithArgs.selection, expectedSelection)
+        assertArrayEquals(selectionWithArgs.args, expectedArgs)
+    }
+
+    // All song types enabled, but name piece
+    @Test
+    fun test_GetSelectionWithArgs12() {
+        val filter = SongFilter.Builder()
+            .allTypes()
+            .setNamePiece("piece_of_@")
+            .build()
+        val selectionWithArgs = SongQueryHelper.getSelectionWithArgs(filter)
+        val expectedSelection: String = "$TITLE LIKE ?"
+        val expectedArgs: Array<String> = arrayOf("%piece_of_@%")
+        assertEquals(selectionWithArgs.selection, expectedSelection)
+        assertArrayEquals(selectionWithArgs.args, expectedArgs)
+    }
+
+    // Supported song types
+    @Test
+    fun test_GetSelectionWithArgs13() {
+        val supportedSongTypes = SongType.values().filter { SongFeatures.isSongTypeSupported(it) }
+        val filter = SongFilter.Builder()
+            .setOnlyTypes(supportedSongTypes)
+            .build()
+        val selectionWithArgs = SongQueryHelper.getSelectionWithArgs(filter)
+        val expectedSelection: String? = null
+        val expectedArgs: Array<String>? = null
+        assertEquals(selectionWithArgs.selection, expectedSelection)
+        assertArrayEquals(selectionWithArgs.args, expectedArgs)
+    }
+
+    // Unsupported song types
+    @Test
+    fun test_GetSelectionWithArgs14() {
+        val unsupportedSongTypes = SongType.values().filterNot { SongFeatures.isSongTypeSupported(it) }
+        val filter = SongFilter.Builder()
+            .setOnlyTypes(unsupportedSongTypes)
+            .build()
+        val selectionWithArgs = SongQueryHelper.getSelectionWithArgs(filter)
+        val expectedSelection: String?
+        val expectedArgs: Array<String>?
         if (OS.isAtLeastQ()) {
-            expectedSelection = "($IS_MUSIC != ? OR $IS_PODCAST != ? OR $IS_RINGTONE != ? " +
-                    "OR $IS_ALARM != ? OR $IS_NOTIFICATION != ? OR $IS_AUDIOBOOK != ?)"
+            expectedSelection = "($IS_MUSIC = ? AND $IS_PODCAST = ? AND $IS_RINGTONE = ? " +
+                    "AND $IS_ALARM = ? AND $IS_NOTIFICATION = ? AND $IS_AUDIOBOOK = ?)"
             expectedArgs = arrayOf<String>("0", "0", "0", "0", "0", "0")
         } else {
-            expectedSelection = "($IS_MUSIC != ? OR $IS_PODCAST != ? OR $IS_RINGTONE != ? " +
-                    "OR $IS_ALARM != ? OR $IS_NOTIFICATION != ?)"
+            expectedSelection = "($IS_MUSIC = ? AND $IS_PODCAST = ? AND $IS_RINGTONE = ? " +
+                    "AND $IS_ALARM = ? AND $IS_NOTIFICATION = ?)"
+            expectedArgs = arrayOf<String>("0", "0", "0", "0", "0")
+        }
+        assertEquals(selectionWithArgs.selection, expectedSelection)
+        assertArrayEquals(selectionWithArgs.args, expectedArgs)
+    }
+
+    // No types enabled
+    @Test
+    fun test_GetSelectionWithArgs15() {
+        val filter = SongFilter.Builder()
+            .noTypes()
+            .build()
+        val selectionWithArgs = SongQueryHelper.getSelectionWithArgs(filter)
+        val expectedSelection: String?
+        val expectedArgs: Array<String>?
+        if (OS.isAtLeastQ()) {
+            expectedSelection = "($IS_MUSIC = ? AND $IS_PODCAST = ? AND $IS_RINGTONE = ? " +
+                    "AND $IS_ALARM = ? AND $IS_NOTIFICATION = ? AND $IS_AUDIOBOOK = ?)"
+            expectedArgs = arrayOf<String>("0", "0", "0", "0", "0", "0")
+        } else {
+            expectedSelection = "($IS_MUSIC = ? AND $IS_PODCAST = ? AND $IS_RINGTONE = ? " +
+                    "AND $IS_ALARM = ? AND $IS_NOTIFICATION = ?)"
             expectedArgs = arrayOf<String>("0", "0", "0", "0", "0")
         }
         assertEquals(selectionWithArgs.selection, expectedSelection)

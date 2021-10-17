@@ -92,9 +92,18 @@ class LibrarySongFilterViewModel @Inject constructor(
         }
 
         val oldFilter = _songFilter.value
-        val enabledTypes = currentItems.mapNotNull { item ->
+
+        val typesEnabledByUser = currentItems.mapNotNull { item ->
             if (item.isChecked) item.type else null
         }
+        // If the song type is not supported, then it is enabled by default,
+        // because, you know, the user cannot see it in the UI.
+        // So we don't want him to lose any unavailable type.
+        val typesEnabledByDefault = SongType.values().filterNot { type ->
+            SongFeatures.isSongTypeSupported(type)
+        }
+        val enabledTypes = (typesEnabledByUser + typesEnabledByDefault).toSet()
+
         if (oldFilter == null || enabledTypes != oldFilter.types) {
             preferences.setSongTypes(enabledTypes)
                 .doOnComplete { player.retainItemsWithSongTypes(enabledTypes) }

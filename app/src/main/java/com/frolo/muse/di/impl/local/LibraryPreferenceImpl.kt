@@ -92,7 +92,7 @@ internal class LibraryPreferenceImpl(
         return songFilter.map { filter -> filter.types.toList() }
     }
 
-    override fun setSongTypes(types: List<SongType>): Completable {
+    override fun setSongTypes(types: Collection<SongType>): Completable {
         return updateSongFilter { filter ->
             filter.newBuilder()
                 .setOnlyTypes(types)
