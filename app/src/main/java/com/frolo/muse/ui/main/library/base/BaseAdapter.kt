@@ -9,14 +9,10 @@ import kotlin.collections.ArrayList
 
 
 abstract class BaseAdapter<E, VH> constructor(
-        private val itemCallback: DiffUtil.ItemCallback<E>? = null
+    private val itemCallback: DiffUtil.ItemCallback<E>? = null
 ): RecyclerView.Adapter<VH>() where VH: BaseAdapter.BaseViewHolder {
 
-    companion object {
-        private const val PAYLOAD_SECTION_CHANGED = true
-    }
-
-    private class Node<E>(var item: E, var selected: Boolean = false)
+    private data class Node<E>(val item: E, val selected: Boolean = false)
 
     interface Listener<E> {
         fun onItemClick(item: E, position: Int)
@@ -25,7 +21,7 @@ abstract class BaseAdapter<E, VH> constructor(
     }
 
     var listener: Listener<E>? = null
-    private var nodes: MutableList<Node<E>> = mutableListOf()
+    private var nodes = ArrayList<Node<E>>()
 
     fun getSnapshot(): List<E> = nodes.map { node -> node.item }
 
@@ -39,7 +35,7 @@ abstract class BaseAdapter<E, VH> constructor(
     }
 
     fun submit(list: List<E>) {
-        val newNodes = ArrayList<Node<E>>(nodes.size).also { newNodeList ->
+        val newNodes = ArrayList<Node<E>>(list.size).also { newNodeList ->
             list.mapTo(newNodeList) { item -> Node(item, false) }
         }
 
@@ -75,11 +71,14 @@ abstract class BaseAdapter<E, VH> constructor(
     }
 
     fun submitSelection(selectedItems: Collection<E>) {
-        nodes.forEachIndexed { index, node ->
+        // TODO: optimization required
+        for (index in nodes.indices) {
+            val node = nodes[index]
             val selected = selectedItems.contains(node.item)
             if (node.selected != selected) {
-                node.selected = selected
-                notifyItemChanged(index, PAYLOAD_SECTION_CHANGED)
+                val newNode = node.copy(selected = selected)
+                nodes[index] = newNode
+                notifyItemChanged(index, EMPTY_PAYLOAD)
             }
         }
     }
@@ -107,8 +106,8 @@ abstract class BaseAdapter<E, VH> constructor(
     }
 
     operator fun set(position: Int, item: E) {
-        nodes[position].item = item
-        notifyItemChanged(position, PAYLOAD_SECTION_CHANGED)
+        nodes[position] = nodes[position].copy(item = item)
+        notifyItemChanged(position, EMPTY_PAYLOAD)
     }
 
     protected open fun onPreRemove(position: Int) {
@@ -177,9 +176,9 @@ abstract class BaseAdapter<E, VH> constructor(
     }
 
     private class NodeCallback<E> constructor(
-            private val oldNodes: List<Node<E>>,
-            private val newNodes: List<Node<E>>,
-            private val itemCallback: DiffUtil.ItemCallback<E>
+        private val oldNodes: List<Node<E>>,
+        private val newNodes: List<Node<E>>,
+        private val itemCallback: DiffUtil.ItemCallback<E>
     ): DiffUtil.Callback() {
 
         override fun getOldListSize() = oldNodes.size
@@ -199,6 +198,10 @@ abstract class BaseAdapter<E, VH> constructor(
                     && itemCallback.areContentsTheSame(oldNode.item, newNode.item)
         }
 
+    }
+
+    companion object {
+        private val EMPTY_PAYLOAD = Any()
     }
 
 }
