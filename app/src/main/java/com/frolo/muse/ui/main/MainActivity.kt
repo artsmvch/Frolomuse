@@ -392,11 +392,14 @@ class MainActivity : PlayerHostActivity(),
     override fun pop() {
         fragNavController?.doIfStateNotSaved {
             val currDialogFrag = currentDialogFrag
-            if (currDialogFrag != null
-                    && currDialogFrag.isAdded) {
+            if (currDialogFrag != null && currDialogFrag.isAdded) {
                 // There's a dialog fragment opened.
                 // Clear it first.
-                clearDialogFragment()
+                try {
+                    clearDialogFragment()
+                } catch (error: Throwable) {
+                    Logger.e(error)
+                }
             } else {
                 val stack = currentStack
                 if (stack != null && stack.size > 1) {
