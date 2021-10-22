@@ -19,11 +19,7 @@ class GenreListFragment: SimpleMediaCollectionFragment<Genre>() {
 
     override val viewModel: GenreListViewModel by viewModel()
 
-    override val adapter: BaseAdapter<Genre, *> by lazy {
-        GenreAdapter().apply {
-            setHasStableIds(true)
-        }
-    }
+    override val adapter: BaseAdapter<Genre, *> by lazy { GenreAdapter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

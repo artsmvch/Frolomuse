@@ -169,11 +169,7 @@ class CurrSongQueueFragment: AbsMediaCollectionFragment<Song>() {
     }
 
     override fun onSubmitList(list: List<Song>) {
-        // a little dirty bullshit.
-        // we don't want to retrieve values from the view model ourselves.
-        val playingPosition = viewModel.playingPosition.value ?: -1
-        val isPlaying = viewModel.isPlaying.value ?: false
-        adapter.submit(list, playingPosition, isPlaying)
+        adapter.submit(list)
     }
 
     override fun onSubmitSelectedItems(selectedItems: Set<Song>) {

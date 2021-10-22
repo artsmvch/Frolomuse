@@ -57,11 +57,7 @@ open class AlbumFragment: AbsSongCollectionFragment<Song>(), FragmentContentInse
                 .get(AlbumViewModel::class.java)
     }
 
-    override val adapter by lazy {
-        SongOfAlbumAdapter().apply {
-            setHasStableIds(true)
-        }
-    }
+    override val adapter by lazy { SongOfAlbumAdapter() }
 
     private val backdropCornerRadius: Float by lazy { 72f.dp2px(requireContext()) }
 

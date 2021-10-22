@@ -2,6 +2,7 @@ package com.frolo.muse.ui.main.library.base
 
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
 import com.frolo.muse.R
@@ -19,9 +20,10 @@ import kotlinx.android.synthetic.main.include_song_art_container.view.*
 import kotlinx.android.synthetic.main.item_song.view.*
 
 
-open class SongAdapter<T: Song> constructor(
-    private val requestManager: RequestManager? = null
-): BaseAdapter<T, SongAdapter.SongViewHolder>(), FastScroller.SectionIndexer {
+open class SongAdapter<S: Song> constructor(
+    private val requestManager: RequestManager? = null,
+    private val itemCallback: DiffUtil.ItemCallback<S>? = SongItemCallback<S>()
+): BaseAdapter<S, SongAdapter.SongViewHolder>(), FastScroller.SectionIndexer {
 
     var playingPosition = -1
         private set
@@ -30,15 +32,8 @@ open class SongAdapter<T: Song> constructor(
 
     override fun getItemId(position: Int) = getItemAt(position).id
 
-    fun submit(list: List<T>, position: Int, isPlaying: Boolean) {
-        this.playingPosition = position
-        this.isPlaying = isPlaying
-        submit(list)
-    }
-
     fun setPlayingPositionAndState(position: Int, isPlaying: Boolean) {
-        if (this.playingPosition == position
-                && this.isPlaying == isPlaying) {
+        if (this.playingPosition == position && this.isPlaying == isPlaying) {
             return
         }
 
@@ -57,8 +52,9 @@ open class SongAdapter<T: Song> constructor(
         }
 
         this.isPlaying = isPlaying
-        if (playingPosition >= 0)
+        if (playingPosition >= 0) {
             notifyItemChanged(playingPosition)
+        }
     }
 
     override fun onPreRemove(position: Int) {
@@ -85,7 +81,7 @@ open class SongAdapter<T: Song> constructor(
     override fun onBindViewHolder(
         holder: SongViewHolder,
         position: Int,
-        item: T,
+        item: S,
         selected: Boolean,
         selectionChanged: Boolean
     ) {
@@ -140,6 +136,16 @@ open class SongAdapter<T: Song> constructor(
                 miniVisualizer?.visibility = View.INVISIBLE
                 miniVisualizer?.setAnimate(false)
             }
+        }
+    }
+
+    class SongItemCallback<S: Song> : DiffUtil.ItemCallback<S>() {
+        override fun areItemsTheSame(oldItem: S, newItem: S): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: S, newItem: S): Boolean {
+            return oldItem == newItem
         }
     }
 

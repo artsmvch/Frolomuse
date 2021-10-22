@@ -26,11 +26,7 @@ class AlbumListFragment: SimpleMediaCollectionFragment<Album>() {
 
     override val viewModel: AlbumListViewModel by viewModel()
 
-    override val adapter by lazy {
-        AlbumAdapter(Glide.with(this)).apply {
-            setHasStableIds(true)
-        }
-    }
+    override val adapter by lazy { AlbumAdapter(Glide.with(this)) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -21,11 +21,7 @@ class PlaylistListFragment: SimpleMediaCollectionFragment<Playlist>(),
 
     override val viewModel: PlaylistListViewModel by viewModel()
 
-    override val adapter: BaseAdapter<Playlist, *> by lazy {
-        PlaylistAdapter().apply {
-            setHasStableIds(true)
-        }
-    }
+    override val adapter: BaseAdapter<Playlist, *> by lazy { PlaylistAdapter()}
 
     private val additionalBottomPadding: Int by lazy {
         72f.dp2px(requireContext()).toInt()

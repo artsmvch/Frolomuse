@@ -78,7 +78,7 @@ abstract class BaseAdapter<E, VH> constructor(
             if (node.selected != selected) {
                 val newNode = node.copy(selected = selected)
                 nodes[index] = newNode
-                notifyItemChanged(index, EMPTY_PAYLOAD)
+                notifyItemChanged(index, SELECTION_CHANGED_PAYLOAD)
             }
         }
     }
@@ -107,7 +107,7 @@ abstract class BaseAdapter<E, VH> constructor(
 
     operator fun set(position: Int, item: E) {
         nodes[position] = nodes[position].copy(item = item)
-        notifyItemChanged(position, EMPTY_PAYLOAD)
+        notifyItemChanged(position, SELECTION_CHANGED_PAYLOAD)
     }
 
     protected open fun onPreRemove(position: Int) {
@@ -165,7 +165,7 @@ abstract class BaseAdapter<E, VH> constructor(
 
     final override fun onBindViewHolder(holder: VH, position: Int, payloads: List<Any>) {
         val node = nodes[position]
-        val selectionChanged = payloads.isNotEmpty() && payloads[0] as Boolean
+        val selectionChanged = payloads.contains(SELECTION_CHANGED_PAYLOAD)
         onBindViewHolder(holder, position, node.item, node.selected, selectionChanged)
     }
 
@@ -201,7 +201,7 @@ abstract class BaseAdapter<E, VH> constructor(
     }
 
     companion object {
-        private val EMPTY_PAYLOAD = Any()
+        private val SELECTION_CHANGED_PAYLOAD = Any()
     }
 
 }

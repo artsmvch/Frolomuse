@@ -26,11 +26,7 @@ class SongsOfArtistFragment: AbsSongCollectionFragment<Song>(), FragmentContentI
                 .get(SongsOfArtistViewModel::class.java)
     }
 
-    override val adapter: SongAdapter<Song> by lazy {
-        SongOfArtistAdapter(Glide.with(this)).apply {
-            setHasStableIds(true)
-        }
-    }
+    override val adapter: SongAdapter<Song> by lazy { SongOfArtistAdapter(Glide.with(this))}
 
     override fun onCreateView(
         inflater: LayoutInflater,

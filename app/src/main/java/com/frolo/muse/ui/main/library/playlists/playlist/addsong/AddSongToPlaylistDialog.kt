@@ -31,7 +31,6 @@ class AddSongToPlaylistDialog: BaseDialogFragment() {
 
     private val adapter by lazy {
         SongSelectorAdapter(Glide.with(this)).apply {
-            setHasStableIds(true)
             listener = object : BaseAdapter.Listener<Song> {
                 override fun onItemClick(item: Song, position: Int) {
                     viewModel.onItemClicked(item)

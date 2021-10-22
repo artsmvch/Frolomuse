@@ -14,11 +14,7 @@ class ArtistListFragment: SimpleMediaCollectionFragment<Artist>() {
 
     override val viewModel: ArtistListViewModel by viewModel()
 
-    override val adapter by lazy {
-        ArtistAdapter().apply {
-            setHasStableIds(true)
-        }
-    }
+    override val adapter by lazy { ArtistAdapter() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -41,11 +41,7 @@ class GenreFragment: AbsSongCollectionFragment<Song>(), FragmentContentInsetsLis
                 .get(GenreViewModel::class.java)
     }
 
-    override val adapter by lazy {
-        SongAdapter<Song>(Glide.with(this)).apply {
-            setHasStableIds(true)
-        }
-    }
+    override val adapter by lazy { SongAdapter<Song>(Glide.with(this)) }
 
     private val backdropCornerRadius: Float by lazy { 72f.dp2px(requireContext()) }
 

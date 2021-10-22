@@ -29,11 +29,7 @@ class AlbumsOfArtistFragment : AbsMediaCollectionFragment<Album>() {
                 .get(AlbumsOfArtistViewModel::class.java)
     }
 
-    private val adapter: BaseAdapter<Album, *> by lazy {
-        AlbumOfArtistAdapter(Glide.with(this)).apply {
-            setHasStableIds(true)
-        }
-    }
+    private val adapter: BaseAdapter<Album, *> by lazy { AlbumOfArtistAdapter(Glide.with(this)) }
 
     private val adapterListener = object : BaseAdapter.Listener<Album> {
         override fun onItemClick(item: Album, position: Int) {
