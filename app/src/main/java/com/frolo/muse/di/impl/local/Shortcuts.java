@@ -1,5 +1,6 @@
 package com.frolo.muse.di.impl.local;
 
+import android.app.ActivityManager;
 import android.app.PendingIntent;
 import android.content.ContentUris;
 import android.content.Context;
@@ -23,6 +24,7 @@ import androidx.core.content.pm.ShortcutManagerCompat;
 import androidx.core.graphics.drawable.IconCompat;
 
 import com.frolo.muse.R;
+import com.frolo.muse.Screen;
 import com.frolo.muse.ThreadStrictMode;
 import com.frolo.muse.broadcast.Broadcasts;
 import com.frolo.muse.model.media.Album;
@@ -207,6 +209,14 @@ final class Shortcuts {
         return null;
     }
 
+    private static int getShortcutIconSize(@NonNull final Context context) {
+        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        if (activityManager == null) {
+            return Screen.dp(context, 72);
+        }
+        return activityManager.getLauncherLargeIconSize();
+    }
+
     @WorkerThread
     @Nullable
     private static Bitmap tryGetAlbumIcon(@NonNull final Context context, long albumId) {
@@ -220,9 +230,8 @@ final class Shortcuts {
                 return null;
             }
 
-            // TODO: is 200x200 a good size for it?
-            final Bitmap scaled =
-                    Bitmap.createScaledBitmap(original, 200, 200, true);
+            int iconSize = getShortcutIconSize(context);
+            final Bitmap scaled = Bitmap.createScaledBitmap(original, iconSize, iconSize, true);
 
             if (original != scaled) {
                 original.recycle();
