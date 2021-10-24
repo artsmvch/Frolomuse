@@ -39,17 +39,7 @@ abstract class BaseAdapter<E, VH> constructor(
             list.mapTo(newNodeList) { item -> Node(item, false) }
         }
 
-        if (itemCallback != null) {
-            val callback = NodeCallback(nodes, newNodes, itemCallback)
-            val diffResult = DiffUtil.calculateDiff(callback)
-
-            nodes = newNodes
-
-            diffResult.dispatchUpdatesTo(this)
-        } else {
-            nodes = newNodes
-            notifyDataSetChanged()
-        }
+        submitImpl(newNodes)
     }
 
     fun submit(list: List<E>, selectedItem: Collection<E>) {
@@ -57,12 +47,14 @@ abstract class BaseAdapter<E, VH> constructor(
             list.mapTo(newNodeList) { item -> Node(item, selectedItem.contains(item)) }
         }
 
+        submitImpl(newNodes)
+    }
+
+    private fun submitImpl(newNodes: ArrayList<Node<E>>) {
         if (itemCallback != null) {
             val callback = NodeCallback(nodes, newNodes, itemCallback)
             val diffResult = DiffUtil.calculateDiff(callback)
-
             nodes = newNodes
-
             diffResult.dispatchUpdatesTo(this)
         } else {
             nodes = newNodes
