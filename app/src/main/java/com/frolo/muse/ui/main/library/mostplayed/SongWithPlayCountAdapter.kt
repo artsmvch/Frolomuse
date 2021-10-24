@@ -2,11 +2,10 @@ package com.frolo.muse.ui.main.library.mostplayed
 
 import android.view.View
 import android.view.ViewGroup
-import com.bumptech.glide.RequestManager
 import com.frolo.muse.R
-import com.frolo.muse.glide.makeRequest
 import com.frolo.muse.inflateChild
 import com.frolo.muse.model.media.SongWithPlayCount
+import com.frolo.muse.thumbnails.ThumbnailLoader
 import com.frolo.muse.ui.getArtistString
 import com.frolo.muse.ui.getDurationString
 import com.frolo.muse.ui.getLastTimePlayedString
@@ -19,8 +18,8 @@ import kotlinx.android.synthetic.main.item_song_with_play_count.view.*
 
 
 class SongWithPlayCountAdapter constructor(
-    private val requestManager: RequestManager
-): SongAdapter<SongWithPlayCount>(requestManager) {
+        private val thumbnailLoader: ThumbnailLoader,
+): SongAdapter<SongWithPlayCount>(thumbnailLoader) {
 
     private companion object {
         const val VIEW_TYPE_DEFAULT = 0
@@ -63,11 +62,7 @@ class SongWithPlayCountAdapter constructor(
                 tv_last_time_played.text = null
             }
 
-            requestManager.makeRequest(item.albumId)
-                .placeholder(R.drawable.ic_framed_music_note)
-                .error(R.drawable.ic_framed_music_note)
-                .circleCrop()
-                .into(imv_album_art)
+            thumbnailLoader.loadSongThumbnail(item, imv_song_thumbnail)
 
             imv_check.setChecked(selected, selectionChanged)
 

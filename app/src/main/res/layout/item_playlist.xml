@@ -16,8 +16,7 @@
         android:layout_width="@dimen/list_item_img_art_size"
         android:layout_height="@dimen/list_item_img_art_size"
         android:layout_margin="@dimen/list_item_img_art_padding"
-        android:scaleType="centerInside"
-        android:src="@drawable/ic_framed_playlist"/>
+        android:scaleType="centerInside"/>
 
     <include
         app:layout_constraintTop_toTopOf="parent"

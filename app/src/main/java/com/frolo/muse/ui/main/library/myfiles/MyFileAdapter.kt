@@ -3,9 +3,11 @@ package com.frolo.muse.ui.main.library.myfiles
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.DiffUtil
 import com.frolo.muse.R
 import com.frolo.muse.inflateChild
 import com.frolo.muse.model.media.MyFile
+import com.frolo.muse.thumbnails.ThumbnailLoader
 import com.frolo.muse.ui.getNameString
 import com.frolo.muse.ui.main.library.base.BaseAdapter
 import com.frolo.muse.ui.main.library.base.sectionIndexAt
@@ -16,24 +18,17 @@ import kotlinx.android.synthetic.main.include_song_art_container.view.*
 import kotlinx.android.synthetic.main.item_file.view.*
 
 
-class MyFileAdapter: BaseAdapter<MyFile,
-        BaseAdapter.BaseViewHolder>(),
-        FastScroller.SectionIndexer {
+class MyFileAdapter constructor(
+    private val thumbnailLoader: ThumbnailLoader
+): BaseAdapter<MyFile, BaseAdapter.BaseViewHolder>(ItemDiffCallback()), FastScroller.SectionIndexer {
 
     var playingPosition = -1
         private set
     var isPlaying = false
         private set
 
-    fun submit(list: List<MyFile>, position: Int, isPlaying: Boolean) {
-        this.playingPosition = position
-        this.isPlaying = isPlaying
-        submit(list)
-    }
-
     fun setPlayingPositionAndState(position: Int, isPlaying: Boolean) {
-        if (this.playingPosition == position
-                && this.isPlaying == isPlaying) {
+        if (this.playingPosition == position && this.isPlaying == isPlaying) {
             return
         }
 
@@ -52,8 +47,9 @@ class MyFileAdapter: BaseAdapter<MyFile,
         }
 
         this.isPlaying = isPlaying
-        if (playingPosition >= 0)
+        if (playingPosition >= 0) {
             notifyItemChanged(playingPosition)
+        }
     }
 
     override fun onPreRemove(position: Int) {
@@ -89,20 +85,17 @@ class MyFileAdapter: BaseAdapter<MyFile,
 
         with(holder.itemView as MediaConstraintLayout) {
             tv_filename.text = item.getNameString()
-            when {
-                item.isDirectory -> imv_album_art.setImageResource(R.drawable.ic_framed_folder)
-                item.isSongFile -> imv_album_art.setImageResource(R.drawable.ic_framed_music_note)
-                else -> imv_album_art.setImageDrawable(null)
-            }
+
+            thumbnailLoader.loadMyFileThumbnail(item, imv_song_thumbnail)
 
             val isPlayPosition = position == playingPosition
 
             if (isPlayPosition) {
-                view_song_art_overlay.isVisible = true
+                imv_song_thumbnail.isDimmed = true
                 mini_visualizer.isVisible = true
                 mini_visualizer.setAnimate(isPlaying)
             } else {
-                view_song_art_overlay.isVisible = false
+                imv_song_thumbnail.isDimmed = false
                 mini_visualizer.isVisible = false
                 mini_visualizer.setAnimate(false)
             }
@@ -117,6 +110,17 @@ class MyFileAdapter: BaseAdapter<MyFile,
     class MyFileViewHolder(itemView: View): BaseViewHolder(itemView) {
         override val viewOptionsMenu: View?
             get() = itemView.view_options_menu
+    }
+
+    class ItemDiffCallback : DiffUtil.ItemCallback<MyFile>() {
+        override fun areItemsTheSame(oldItem: MyFile, newItem: MyFile): Boolean {
+            return oldItem.javaFile?.absolutePath == newItem.javaFile?.absolutePath
+        }
+
+        override fun areContentsTheSame(oldItem: MyFile, newItem: MyFile): Boolean {
+            return oldItem.javaFile.name == newItem.javaFile.name
+        }
+
     }
 
 }

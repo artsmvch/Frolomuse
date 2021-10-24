@@ -7,6 +7,7 @@ import android.view.MenuItem
 import androidx.lifecycle.LifecycleOwner
 import com.frolo.muse.R
 import com.frolo.muse.model.media.Artist
+import com.frolo.muse.thumbnails.provideThumbnailLoader
 import com.frolo.muse.ui.main.library.base.SimpleMediaCollectionFragment
 
 
@@ -14,7 +15,7 @@ class ArtistListFragment: SimpleMediaCollectionFragment<Artist>() {
 
     override val viewModel: ArtistListViewModel by viewModel()
 
-    override val adapter by lazy { ArtistAdapter() }
+    override val adapter by lazy { ArtistAdapter(provideThumbnailLoader()) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

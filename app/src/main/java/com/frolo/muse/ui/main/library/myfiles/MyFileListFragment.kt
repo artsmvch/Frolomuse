@@ -9,6 +9,7 @@ import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.mediascan.MediaScanService
 import com.frolo.muse.model.media.MyFile
+import com.frolo.muse.thumbnails.provideThumbnailLoader
 import com.frolo.muse.ui.ShotLayoutAnimationController
 import com.frolo.muse.ui.base.BackPressHandler
 import com.frolo.muse.ui.base.FragmentContentInsetsListener
@@ -32,7 +33,7 @@ class MyFileListFragment: AbsMediaCollectionFragment<MyFile>(),
     override val viewModel: MyFileListViewModel by viewModel()
 
     private val adapter: MyFileAdapter by lazy {
-        MyFileAdapter().apply {
+        MyFileAdapter(provideThumbnailLoader()).apply {
             listener = object : BaseAdapter.Listener<MyFile> {
                 override fun onItemClick(item: MyFile, position: Int) {
                     viewModel.onItemClicked(item)
@@ -98,9 +99,7 @@ class MyFileListFragment: AbsMediaCollectionFragment<MyFile>(),
     }
 
     override fun onSubmitList(list: List<MyFile>) {
-        val playingPosition = viewModel.playingPosition.value ?: -1
-        val isPlaying = viewModel.isPlaying.value ?: false
-        adapter.submit(list, playingPosition, isPlaying)
+        adapter.submit(list)
     }
 
     override fun onSubmitSelectedItems(selectedItems: Set<MyFile>) {

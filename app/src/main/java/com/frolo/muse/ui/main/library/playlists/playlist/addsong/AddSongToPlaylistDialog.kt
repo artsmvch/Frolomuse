@@ -6,12 +6,12 @@ import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProviders
-import com.bumptech.glide.Glide
 import com.frolo.muse.R
 import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.model.media.Playlist
 import com.frolo.muse.model.media.Song
+import com.frolo.muse.thumbnails.provideThumbnailLoader
 import com.frolo.muse.ui.base.BaseDialogFragment
 import com.frolo.muse.ui.base.withArg
 import com.frolo.muse.ui.main.addLinearItemMargins
@@ -30,7 +30,7 @@ class AddSongToPlaylistDialog: BaseDialogFragment() {
     }
 
     private val adapter by lazy {
-        SongSelectorAdapter(Glide.with(this)).apply {
+        SongSelectorAdapter(provideThumbnailLoader()).apply {
             listener = object : BaseAdapter.Listener<Song> {
                 override fun onItemClick(item: Song, position: Int) {
                     viewModel.onItemClicked(item)

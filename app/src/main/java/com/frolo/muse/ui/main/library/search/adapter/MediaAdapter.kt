@@ -11,9 +11,9 @@ import androidx.annotation.ColorInt
 import androidx.core.graphics.ColorUtils
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.RequestManager
 import com.frolo.muse.*
 import com.frolo.muse.model.media.*
+import com.frolo.muse.thumbnails.ThumbnailLoader
 import com.frolo.muse.ui.main.library.base.BaseAdapter
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter
 import kotlinx.android.synthetic.main.item_header.view.*
@@ -21,7 +21,7 @@ import kotlin.properties.Delegates
 
 
 class MediaAdapter constructor(
-    private val requestManager: RequestManager
+    private val thumbnailLoader: ThumbnailLoader
 ): BaseAdapter<Media, MediaAdapter.MediaViewHolder>(MediaItemCallback),
         StickyRecyclerHeadersAdapter<MediaAdapter.HeaderViewHolder> {
 
@@ -33,15 +33,15 @@ class MediaAdapter constructor(
         parent: ViewGroup,
         viewType: Int
     ): MediaViewHolder = when(viewType) {
-        Media.SONG -> SongViewHolder(parent.inflateChild(R.layout.item_song))
+        Media.SONG -> SongViewHolder(parent.inflateChild(R.layout.item_song), thumbnailLoader)
 
-        Media.ALBUM -> AlbumViewHolder(parent.inflateChild(R.layout.item_album))
+        Media.ALBUM -> AlbumViewHolder(parent.inflateChild(R.layout.item_album), thumbnailLoader)
 
-        Media.ARTIST -> ArtistViewHolder(parent.inflateChild(R.layout.item_artist))
+        Media.ARTIST -> ArtistViewHolder(parent.inflateChild(R.layout.item_artist), thumbnailLoader)
 
-        Media.GENRE -> GenreViewHolder(parent.inflateChild(R.layout.item_genre))
+        Media.GENRE -> GenreViewHolder(parent.inflateChild(R.layout.item_genre), thumbnailLoader)
 
-        Media.PLAYLIST -> PlaylistViewHolder(parent.inflateChild(R.layout.item_playlist))
+        Media.PLAYLIST -> PlaylistViewHolder(parent.inflateChild(R.layout.item_playlist), thumbnailLoader)
 
         else -> throw IllegalArgumentException("Unexpected view type: $viewType")
     }
@@ -54,10 +54,10 @@ class MediaAdapter constructor(
         selectionChanged: Boolean
     ) = when(holder.itemViewType) {
         Media.SONG ->
-            (holder as SongViewHolder).bind(item as Song, selected, selectionChanged, requestManager, query)
+            (holder as SongViewHolder).bind(item as Song, selected, selectionChanged, query)
 
         Media.ALBUM ->
-            (holder as AlbumViewHolder).bind(item as Album, selected, selectionChanged, requestManager, query)
+            (holder as AlbumViewHolder).bind(item as Album, selected, selectionChanged, query)
 
         Media.ARTIST ->
             (holder as ArtistViewHolder).bind(item as Artist, selected, selectionChanged, query)

@@ -6,7 +6,6 @@ import android.view.*
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
 import com.frolo.muse.R
 import com.frolo.muse.StyleUtil
 import com.frolo.muse.arch.observe
@@ -14,6 +13,7 @@ import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.dp2px
 import com.frolo.muse.model.media.Genre
 import com.frolo.muse.model.media.Song
+import com.frolo.muse.thumbnails.provideThumbnailLoader
 import com.frolo.muse.ui.base.FragmentContentInsetsListener
 import com.frolo.muse.ui.base.setupNavigation
 import com.frolo.muse.ui.base.withArg
@@ -41,7 +41,7 @@ class GenreFragment: AbsSongCollectionFragment<Song>(), FragmentContentInsetsLis
                 .get(GenreViewModel::class.java)
     }
 
-    override val adapter by lazy { SongAdapter<Song>(Glide.with(this)) }
+    override val adapter by lazy { SongAdapter<Song>(provideThumbnailLoader()) }
 
     private val backdropCornerRadius: Float by lazy { 72f.dp2px(requireContext()) }
 

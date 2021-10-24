@@ -56,6 +56,7 @@
         <item name="placeholderImageTint">#C3C3C3</item>
         <item name="dividerTint">#E3E3E3</item>
         <item name="colorPremiumProductAccent">?colorAccent</item>
+        <item name="thumbnailBackgroundTint">@color/thumbnail_background_tint</item>
     </style>
 
     <style name="Base.AppTheme.Dialog.Light" parent="Theme.MaterialComponents.Light.Dialog">

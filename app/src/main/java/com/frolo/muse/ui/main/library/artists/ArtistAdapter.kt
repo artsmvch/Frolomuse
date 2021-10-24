@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import com.frolo.muse.R
 import com.frolo.muse.inflateChild
 import com.frolo.muse.model.media.Artist
+import com.frolo.muse.thumbnails.ThumbnailLoader
 import com.frolo.muse.ui.getNameString
 import com.frolo.muse.ui.getNumberOfAlbumsString
 import com.frolo.muse.ui.getNumberOfTracksString
@@ -17,7 +18,9 @@ import kotlinx.android.synthetic.main.include_check.view.*
 import kotlinx.android.synthetic.main.item_artist.view.*
 
 
-class ArtistAdapter: BaseAdapter<Artist, ArtistAdapter.ArtistViewHolder>(ArtistItemCallback),
+class ArtistAdapter(
+    private val thumbnailLoader: ThumbnailLoader
+): BaseAdapter<Artist, ArtistAdapter.ArtistViewHolder>(ArtistItemCallback),
         FastScroller.SectionIndexer {
 
     override fun getSectionText(position: Int) = sectionIndexAt(position) { name }
@@ -43,6 +46,8 @@ class ArtistAdapter: BaseAdapter<Artist, ArtistAdapter.ArtistViewHolder>(ArtistI
             tv_artist_name.text = item.getNameString(res)
             tv_number_of_albums.text = item.getNumberOfAlbumsString(res)
             tv_number_of_tracks.text = item.getNumberOfTracksString(res)
+
+            thumbnailLoader.loadArtistThumbnail(item, imv_artist_art)
 
             imv_check.setChecked(selected, selectionChanged)
 

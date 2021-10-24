@@ -6,6 +6,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import com.frolo.muse.R
 import com.frolo.muse.model.media.Genre
+import com.frolo.muse.thumbnails.provideThumbnailLoader
 import com.frolo.muse.ui.main.library.base.BaseAdapter
 import com.frolo.muse.ui.main.library.base.SimpleMediaCollectionFragment
 
@@ -19,7 +20,7 @@ class GenreListFragment: SimpleMediaCollectionFragment<Genre>() {
 
     override val viewModel: GenreListViewModel by viewModel()
 
-    override val adapter: BaseAdapter<Genre, *> by lazy { GenreAdapter() }
+    override val adapter by lazy { GenreAdapter(provideThumbnailLoader()) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

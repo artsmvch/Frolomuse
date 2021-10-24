@@ -8,10 +8,10 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.frolo.muse.R
 import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.model.media.Song
+import com.frolo.muse.thumbnails.provideThumbnailLoader
 import com.frolo.muse.ui.base.adapter.SimpleItemTouchHelperCallback
 import com.frolo.muse.ui.main.addLinearItemMargins
 import com.frolo.muse.ui.main.library.base.AbsMediaCollectionFragment
@@ -70,7 +70,7 @@ class CurrSongQueueFragment: AbsMediaCollectionFragment<Song>() {
     }
 
     private val adapter: SongAdapter<Song> by lazy {
-        DragSongAdapter(Glide.with(this), onDragListener)
+        DragSongAdapter(provideThumbnailLoader(), onDragListener)
     }
 
     private val adapterListener = object : BaseAdapter.Listener<Song> {

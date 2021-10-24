@@ -5,10 +5,10 @@ import android.view.*
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
 import com.frolo.muse.R
 import com.frolo.muse.model.media.Artist
 import com.frolo.muse.model.media.Song
+import com.frolo.muse.thumbnails.provideThumbnailLoader
 import com.frolo.muse.ui.base.FragmentContentInsetsListener
 import com.frolo.muse.ui.base.withArg
 import com.frolo.muse.ui.main.addLinearItemMargins
@@ -26,7 +26,7 @@ class SongsOfArtistFragment: AbsSongCollectionFragment<Song>(), FragmentContentI
                 .get(SongsOfArtistViewModel::class.java)
     }
 
-    override val adapter: SongAdapter<Song> by lazy { SongOfArtistAdapter(Glide.with(this))}
+    override val adapter: SongAdapter<Song> by lazy { SongOfArtistAdapter(provideThumbnailLoader()) }
 
     override fun onCreateView(
         inflater: LayoutInflater,

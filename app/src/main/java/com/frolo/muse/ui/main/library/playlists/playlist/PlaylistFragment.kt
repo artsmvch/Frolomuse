@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.frolo.muse.R
 import com.frolo.muse.StyleUtil
 import com.frolo.muse.arch.observe
@@ -23,6 +22,7 @@ import com.frolo.muse.ui.main.addLinearItemMargins
 import com.frolo.muse.ui.main.library.base.AbsSongCollectionFragment
 import com.frolo.muse.ui.main.library.base.SongAdapter
 import com.frolo.muse.dp2px
+import com.frolo.muse.thumbnails.provideThumbnailLoader
 import com.frolo.muse.ui.base.FragmentContentInsetsListener
 import com.frolo.muse.ui.base.setupNavigation
 import com.frolo.muse.ui.main.confirmShortcutCreation
@@ -71,7 +71,7 @@ class PlaylistFragment: AbsSongCollectionFragment<Song>(), FragmentContentInsets
     private var onDragEndedCallback: Runnable? = null
 
     override val adapter: SongAdapter<Song> by lazy {
-        DragSongAdapter(Glide.with(this), onDragListener)
+        DragSongAdapter(provideThumbnailLoader(), onDragListener)
     }
 
     private val onOffsetChangedListener: AppBarLayout.OnOffsetChangedListener =

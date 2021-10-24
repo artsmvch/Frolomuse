@@ -5,12 +5,12 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.lifecycle.LifecycleOwner
-import com.bumptech.glide.Glide
 import com.frolo.muse.R
 import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.glide.GlideAlbumArtHelper
 import com.frolo.muse.glide.observe
 import com.frolo.muse.model.media.Song
+import com.frolo.muse.thumbnails.provideThumbnailLoader
 import com.frolo.muse.ui.main.library.base.SimpleMediaCollectionFragment
 import com.frolo.muse.ui.main.library.base.SongAdapter
 
@@ -19,7 +19,7 @@ class SongListFragment: SimpleMediaCollectionFragment<Song>() {
 
     override val viewModel: SongListViewModel by viewModel()
 
-    override val adapter: SongAdapter<Song> by lazy { SongAdapter<Song>(Glide.with(this)) }
+    override val adapter: SongAdapter<Song> by lazy { SongAdapter<Song>(provideThumbnailLoader()) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

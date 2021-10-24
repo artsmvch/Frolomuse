@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import com.frolo.muse.R
 import com.frolo.muse.inflateChild
 import com.frolo.muse.model.media.Genre
+import com.frolo.muse.thumbnails.ThumbnailLoader
 import com.frolo.muse.ui.getNameString
 import com.frolo.muse.ui.main.library.base.BaseAdapter
 import com.frolo.muse.ui.main.library.base.sectionIndexAt
@@ -15,7 +16,9 @@ import kotlinx.android.synthetic.main.include_check.view.*
 import kotlinx.android.synthetic.main.item_genre.view.*
 
 
-class GenreAdapter: BaseAdapter<Genre, GenreAdapter.GenreViewHolder>(GenreItemCallback),
+class GenreAdapter(
+    private val thumbnailLoader: ThumbnailLoader
+): BaseAdapter<Genre, GenreAdapter.GenreViewHolder>(GenreItemCallback),
         FastScroller.SectionIndexer {
 
     override fun getItemId(position: Int) = getItemAt(position).id
@@ -38,6 +41,8 @@ class GenreAdapter: BaseAdapter<Genre, GenreAdapter.GenreViewHolder>(GenreItemCa
         with(holder.itemView as MediaConstraintLayout) {
             val res = holder.itemView.resources
             tv_genre_name.text = item.getNameString(res)
+
+            thumbnailLoader.loadGenreThumbnail(item, imv_genre_art)
 
             imv_check.setChecked(selected, selectionChanged)
 

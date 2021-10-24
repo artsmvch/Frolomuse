@@ -5,21 +5,14 @@
     android:layout_width="@dimen/media_item_art_size"
     android:layout_height="@dimen/media_item_art_size">
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/imv_album_art"
+    <com.frolo.muse.views.SongThumbnailView
+        android:id="@+id/imv_song_thumbnail"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:layout_margin="1px"
         android:scaleType="centerCrop"
         tools:src="@drawable/ic_framed_music_note"/>
-
-    <View
-        android:id="@+id/view_song_art_overlay"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/bg_song_art_overlay"
-        android:visibility="invisible"/>
 
     <com.frolo.muse.views.MiniVisualizer
         android:id="@+id/mini_visualizer"

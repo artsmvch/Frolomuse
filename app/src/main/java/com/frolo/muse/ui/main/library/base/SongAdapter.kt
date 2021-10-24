@@ -3,16 +3,15 @@ package com.frolo.muse.ui.main.library.base
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
-import com.bumptech.glide.Glide
-import com.bumptech.glide.RequestManager
 import com.frolo.muse.R
-import com.frolo.muse.glide.makeRequest
 import com.frolo.muse.inflateChild
 import com.frolo.muse.model.media.Song
+import com.frolo.muse.thumbnails.ThumbnailLoader
 import com.frolo.muse.ui.getArtistString
 import com.frolo.muse.ui.getDurationString
 import com.frolo.muse.ui.getNameString
 import com.frolo.muse.views.MiniVisualizer
+import com.frolo.muse.views.SongThumbnailView
 import com.frolo.muse.views.media.MediaConstraintLayout
 import com.l4digital.fastscroll.FastScroller
 import kotlinx.android.synthetic.main.include_check.view.*
@@ -21,7 +20,7 @@ import kotlinx.android.synthetic.main.item_song.view.*
 
 
 open class SongAdapter<S: Song> constructor(
-    private val requestManager: RequestManager? = null,
+    private val thumbnailLoader: ThumbnailLoader,
     private val itemCallback: DiffUtil.ItemCallback<S>? = SongItemCallback<S>()
 ): BaseAdapter<S, SongAdapter.SongViewHolder>(), FastScroller.SectionIndexer {
 
@@ -94,12 +93,7 @@ open class SongAdapter<S: Song> constructor(
             tv_artist_name.text = item.getArtistString(res)
             tv_duration.text = item.getDurationString()
 
-            val safeRequestManager = requestManager ?: Glide.with(this)
-            safeRequestManager.makeRequest(item.albumId)
-                .placeholder(R.drawable.ic_framed_music_note)
-                .error(R.drawable.ic_framed_music_note)
-                .circleCrop()
-                .into(imv_album_art)
+            thumbnailLoader.loadSongThumbnail(item, imv_song_thumbnail)
 
             imv_check.setChecked(selected, selectionChanged)
 
@@ -118,8 +112,8 @@ open class SongAdapter<S: Song> constructor(
     open class SongViewHolder(itemView: View): BaseViewHolder(itemView) {
         override val viewOptionsMenu: View? = itemView.view_options_menu
 
-        private val songArtOverlay: View? =
-                itemView.findViewById(R.id.view_song_art_overlay)
+        private val songThumbnailView: SongThumbnailView? =
+                itemView.findViewById(R.id.imv_song_thumbnail)
         private val miniVisualizer: MiniVisualizer? =
                 itemView.findViewById(R.id.mini_visualizer)
 
@@ -128,11 +122,11 @@ open class SongAdapter<S: Song> constructor(
             isPlaying: Boolean
         ) {
             if (isPlayPosition) {
-                songArtOverlay?.visibility = View.VISIBLE
+                songThumbnailView?.isDimmed = true
                 miniVisualizer?.visibility = View.VISIBLE
                 miniVisualizer?.setAnimate(isPlaying)
             } else {
-                songArtOverlay?.visibility = View.INVISIBLE
+                songThumbnailView?.isDimmed = false
                 miniVisualizer?.visibility = View.INVISIBLE
                 miniVisualizer?.setAnimate(false)
             }

@@ -14,6 +14,7 @@ import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.model.media.MediaBucket
 import com.frolo.muse.model.media.MediaFile
+import com.frolo.muse.thumbnails.provideThumbnailLoader
 import com.frolo.muse.ui.ShotLayoutAnimationController
 import com.frolo.muse.ui.base.FragmentContentInsetsListener
 import com.frolo.muse.ui.base.castHost
@@ -38,7 +39,7 @@ class AudioBucketFragment : AbsMediaCollectionFragment<MediaFile>(), FragmentCon
     }
 
     private val adapter: AudioFileAdapter by lazy {
-        AudioFileAdapter().apply {
+        AudioFileAdapter(provideThumbnailLoader()).apply {
             listener = object : BaseAdapter.Listener<MediaFile> {
                 override fun onItemClick(item: MediaFile, position: Int) {
                     viewModel.onItemClicked(item)
@@ -91,9 +92,6 @@ class AudioBucketFragment : AbsMediaCollectionFragment<MediaFile>(), FragmentCon
     }
 
     override fun onSubmitList(list: List<MediaFile>) {
-        val playingPosition = viewModel.playingPosition.value ?: -1
-        val isPlaying = viewModel.isPlaying.value ?: false
-        adapter.submit(list, playingPosition, isPlaying)
         adapter.submit(list)
     }
 

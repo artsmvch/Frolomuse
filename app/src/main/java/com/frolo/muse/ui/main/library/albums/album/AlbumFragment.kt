@@ -17,6 +17,7 @@ import com.frolo.muse.glide.*
 import com.frolo.muse.model.media.Album
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.dp2px
+import com.frolo.muse.thumbnails.provideThumbnailLoader
 import com.frolo.muse.ui.base.FragmentContentInsetsListener
 import com.frolo.muse.ui.base.setupNavigation
 import com.frolo.muse.ui.base.withArg
@@ -57,7 +58,7 @@ open class AlbumFragment: AbsSongCollectionFragment<Song>(), FragmentContentInse
                 .get(AlbumViewModel::class.java)
     }
 
-    override val adapter by lazy { SongOfAlbumAdapter() }
+    override val adapter by lazy { SongOfAlbumAdapter(provideThumbnailLoader()) }
 
     private val backdropCornerRadius: Float by lazy { 72f.dp2px(requireContext()) }
 

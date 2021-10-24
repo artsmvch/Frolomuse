@@ -4,6 +4,7 @@ import android.view.ViewGroup
 import com.frolo.muse.R
 import com.frolo.muse.inflateChild
 import com.frolo.muse.model.media.Song
+import com.frolo.muse.thumbnails.ThumbnailLoader
 import com.frolo.muse.ui.getArtistString
 import com.frolo.muse.ui.getDurationString
 import com.frolo.muse.ui.getNameString
@@ -14,7 +15,7 @@ import kotlinx.android.synthetic.main.include_check.view.*
 import kotlinx.android.synthetic.main.item_song_of_album.view.*
 
 
-class SongOfAlbumAdapter : SongAdapter<Song>() {
+class SongOfAlbumAdapter(thumbnailLoader: ThumbnailLoader) : SongAdapter<Song>(thumbnailLoader) {
 
     override fun onCreateBaseViewHolder(
         parent: ViewGroup,

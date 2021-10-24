@@ -10,9 +10,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.frolo.muse.R
 import com.frolo.muse.model.media.Playlist
 import com.frolo.muse.ui.main.library.FabCallback
-import com.frolo.muse.ui.main.library.base.BaseAdapter
 import com.frolo.muse.ui.main.library.base.SimpleMediaCollectionFragment
 import com.frolo.muse.dp2px
+import com.frolo.muse.thumbnails.provideThumbnailLoader
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
@@ -21,7 +21,7 @@ class PlaylistListFragment: SimpleMediaCollectionFragment<Playlist>(),
 
     override val viewModel: PlaylistListViewModel by viewModel()
 
-    override val adapter: BaseAdapter<Playlist, *> by lazy { PlaylistAdapter()}
+    override val adapter by lazy { PlaylistAdapter(provideThumbnailLoader())}
 
     private val additionalBottomPadding: Int by lazy {
         72f.dp2px(requireContext()).toInt()

@@ -232,4 +232,10 @@ class LocalDataModule {
     fun providePlaylistTransferPreferences(context: Context): PlaylistTransferPreferences {
         return PlaylistTransferPreferencesImpl(context)
     }
+
+    @Singleton
+    @Provides
+    fun provideAppearancePreferences(context: Context): AppearancePreferences {
+        return AppearancePreferencesImpl(context)
+    }
 }

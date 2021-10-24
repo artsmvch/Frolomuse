@@ -6,12 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.RequestManager
 import com.frolo.muse.R
 import com.frolo.muse.StyleUtil
 import com.frolo.muse.dp2px
 import com.frolo.muse.inflateChild
 import com.frolo.muse.model.media.Song
+import com.frolo.muse.thumbnails.ThumbnailLoader
 import com.frolo.muse.ui.base.adapter.ItemTouchHelperAdapter
 import com.frolo.muse.ui.getArtistString
 import com.frolo.muse.ui.getDurationString
@@ -23,9 +23,9 @@ import kotlinx.android.synthetic.main.item_drag_song.view.*
 
 
 class DragSongAdapter constructor(
-    requestManager: RequestManager,
-    private val onDragListener: OnDragListener? = null
-): SongAdapter<Song>(requestManager), ItemTouchHelperAdapter {
+        private val thumbnailLoader: ThumbnailLoader,
+        private val onDragListener: OnDragListener? = null
+): SongAdapter<Song>(thumbnailLoader), ItemTouchHelperAdapter {
 
     companion object {
         const val VIEW_TYPE_NORMAL = 0
@@ -129,7 +129,7 @@ class DragSongAdapter constructor(
         private val dragIconSize: Int = 16f.dp2px(itemView.context).toInt()
 
         init {
-            itemView.imv_album_art.apply {
+            itemView.imv_song_thumbnail.apply {
                 updateLayoutParams {
                     width = dragIconSize
                     height = dragIconSize
