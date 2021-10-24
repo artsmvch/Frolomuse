@@ -18,7 +18,7 @@ import kotlinx.android.synthetic.main.item_song_with_play_count.view.*
 
 
 class SongWithPlayCountAdapter constructor(
-        private val thumbnailLoader: ThumbnailLoader,
+    private val thumbnailLoader: ThumbnailLoader,
 ): SongAdapter<SongWithPlayCount>(thumbnailLoader) {
 
     private companion object {

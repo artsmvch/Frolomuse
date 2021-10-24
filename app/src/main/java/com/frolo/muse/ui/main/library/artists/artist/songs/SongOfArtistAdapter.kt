@@ -16,7 +16,7 @@ import kotlinx.android.synthetic.main.item_song_of_artist.view.*
 
 
 class SongOfArtistAdapter constructor(
-        private val thumbnailLoader: ThumbnailLoader,
+    private val thumbnailLoader: ThumbnailLoader,
 ): SongAdapter<Song>(thumbnailLoader) {
 
     override fun onCreateBaseViewHolder(

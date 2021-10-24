@@ -23,8 +23,8 @@ import kotlinx.android.synthetic.main.item_drag_song.view.*
 
 
 class DragSongAdapter constructor(
-        private val thumbnailLoader: ThumbnailLoader,
-        private val onDragListener: OnDragListener? = null
+    private val thumbnailLoader: ThumbnailLoader,
+    private val onDragListener: OnDragListener? = null
 ): SongAdapter<Song>(thumbnailLoader), ItemTouchHelperAdapter {
 
     companion object {
