@@ -190,6 +190,16 @@ abstract class BaseAdapter<E, VH> constructor(
                     && itemCallback.areContentsTheSame(oldNode.item, newNode.item)
         }
 
+        override fun getChangePayload(oldItemPosition: Int, newItemPosition: Int): Any? {
+            val oldNode = oldNodes[oldItemPosition]
+            val newNode = newNodes[newItemPosition]
+            return if (oldNode.selected != newNode.selected) {
+                SELECTION_CHANGED_PAYLOAD
+            } else {
+                itemCallback.getChangePayload(oldNode.item, newNode.item)
+            }
+        }
+
     }
 
     companion object {

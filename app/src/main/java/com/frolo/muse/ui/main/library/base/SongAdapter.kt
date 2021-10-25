@@ -139,7 +139,14 @@ open class SongAdapter<S: Song> constructor(
         }
 
         override fun areContentsTheSame(oldItem: S, newItem: S): Boolean {
-            return oldItem == newItem
+            return oldItem.artistId == newItem.artistId &&
+                oldItem.albumId == newItem.albumId &&
+                oldItem.duration == newItem.duration &&
+                oldItem.trackNumber == newItem.trackNumber &&
+                oldItem.title == newItem.title &&
+                oldItem.album == newItem.album &&
+                oldItem.artist == newItem.artist &&
+                oldItem.genre == newItem.genre
         }
     }
 
