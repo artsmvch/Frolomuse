@@ -234,8 +234,8 @@ class SongEditorViewModel constructor(
         // Need to catch any InterruptedException
         // because the thread can be interrupted when the view model is cleared.
         try {
-            // 10 seconds is maximum waiting time for the user
-            countDownLatch.await(10, TimeUnit.SECONDS)
+            // 30 seconds is maximum waiting time for the user
+            countDownLatch.await(30, TimeUnit.SECONDS)
         } catch (ignored: InterruptedException) {
         }
     }
