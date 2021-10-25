@@ -56,6 +56,7 @@
         <item name="placeholderImageTint">#C3C3C3</item>
         <item name="dividerTint">#E3E3E3</item>
         <item name="colorPremiumProductAccent">?colorAccent</item>
+        <item name="thumbnailForegroundTint">@color/thumbnail_foreground_tint</item>
         <item name="thumbnailBackgroundTint">@color/thumbnail_background_tint</item>
     </style>
 

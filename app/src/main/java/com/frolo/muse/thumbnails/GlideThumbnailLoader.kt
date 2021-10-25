@@ -7,7 +7,6 @@ import android.widget.ImageView
 import androidx.annotation.DrawableRes
 import androidx.annotation.UiThread
 import androidx.core.content.ContextCompat
-import androidx.core.graphics.ColorUtils
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
@@ -57,12 +56,12 @@ class GlideThumbnailLoader constructor(
         val backgroundColor = StyleUtil.resolveColor(context, R.attr.thumbnailBackgroundTint)
         val background = SquircleColorDrawable(SQUIRCLE_CURVATURE, backgroundColor)
 
-        val thumbnailTint = StyleUtil.resolveColor(context, R.attr.colorOnSecondary)
-        val finalThumbnail = thumbnail.mutate().apply {
-            setTint(thumbnailTint)
+        val foregroundColor = StyleUtil.resolveColor(context, R.attr.thumbnailForegroundTint)
+        val coloredThumbnail = thumbnail.mutate().apply {
+            setTint(foregroundColor)
         }
 
-        val layerDrawable = LayerDrawable(arrayOf(background, finalThumbnail))
+        val layerDrawable = LayerDrawable(arrayOf(background, coloredThumbnail))
         val thumbnailInset = Screen.dp(context, 12)
         layerDrawable.setLayerInset(1, thumbnailInset, thumbnailInset, thumbnailInset, thumbnailInset)
 

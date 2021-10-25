@@ -47,6 +47,7 @@
         <item name="placeholderImageTint">#FFFFFF</item>
         <item name="dividerTint">#ABABAB</item>
         <item name="colorPremiumProductAccent">?colorAccent</item>
+        <item name="thumbnailForegroundTint">@color/thumbnail_foreground_tint</item>
         <item name="thumbnailBackgroundTint">@color/thumbnail_background_tint</item>
         <item name="iBarStyle">@style/Base.AppTheme.Dark.IBar</item>
         <item name="fastScrollerStyle">@style/Base.AppTheme.FastScroller</item>

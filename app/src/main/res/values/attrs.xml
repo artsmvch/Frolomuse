@@ -9,7 +9,8 @@
     <attr name="dividerTint" format="color"/>
     <!--Tint for app in-app premium products-->
     <attr name="colorPremiumProductAccent" format="color"/>
-    <!--Tint for thumbnail backgrounds-->
+    <!--Tint for thumbnail foreground and background tints-->
+    <attr name="thumbnailForegroundTint" format="color"/>
     <attr name="thumbnailBackgroundTint" format="color"/>
 
     <declare-styleable name="ControllerView">
