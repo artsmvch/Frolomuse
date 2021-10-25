@@ -2,7 +2,6 @@ package com.frolo.muse.ui.main.player.current
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
 import com.frolo.muse.arch.SingleLiveEvent
 import com.frolo.muse.arch.map
 import com.frolo.muse.common.toSongs
@@ -32,35 +31,35 @@ import kotlin.math.max
 
 
 class CurrSongQueueViewModel @Inject constructor(
-        @Exec(Exec.Type.MAIN) private val mainThreadExecutor: Executor,
-        private val player: Player,
-        permissionChecker: PermissionChecker,
-        getCurrentSongQueueUseCase: GetCurrentSongQueueUseCase,
-        getMediaMenuUseCase: GetMediaMenuUseCase<Song>,
-        clickMediaUseCase: ClickMediaUseCase<Song>,
-        playMediaUseCase: PlayMediaUseCase<Song>,
-        shareMediaUseCase: ShareMediaUseCase<Song>,
-        deleteMediaUseCase: DeleteMediaUseCase<Song>,
-        getIsFavouriteUseCase: GetIsFavouriteUseCase<Song>,
-        changeFavouriteUseCase: ChangeFavouriteUseCase<Song>,
-        createShortcutUseCase: CreateShortcutUseCase<Song>,
-        private val schedulerProvider: SchedulerProvider,
-        private val navigator: Navigator,
-        eventLogger: EventLogger
+    @Exec(Exec.Type.MAIN) private val mainThreadExecutor: Executor,
+    private val player: Player,
+    permissionChecker: PermissionChecker,
+    getCurrentSongQueueUseCase: GetCurrentSongQueueUseCase,
+    getMediaMenuUseCase: GetMediaMenuUseCase<Song>,
+    clickMediaUseCase: ClickMediaUseCase<Song>,
+    playMediaUseCase: PlayMediaUseCase<Song>,
+    shareMediaUseCase: ShareMediaUseCase<Song>,
+    deleteMediaUseCase: DeleteMediaUseCase<Song>,
+    getIsFavouriteUseCase: GetIsFavouriteUseCase<Song>,
+    changeFavouriteUseCase: ChangeFavouriteUseCase<Song>,
+    createShortcutUseCase: CreateShortcutUseCase<Song>,
+    private val schedulerProvider: SchedulerProvider,
+    private val navigator: Navigator,
+    eventLogger: EventLogger
 ): AbsMediaCollectionViewModel<Song>(
-        permissionChecker,
-        getCurrentSongQueueUseCase,
-        getMediaMenuUseCase,
-        clickMediaUseCase,
-        playMediaUseCase,
-        shareMediaUseCase,
-        deleteMediaUseCase,
-        getIsFavouriteUseCase,
-        changeFavouriteUseCase,
-        createShortcutUseCase,
-        schedulerProvider,
-        navigator,
-        eventLogger
+    permissionChecker,
+    getCurrentSongQueueUseCase,
+    getMediaMenuUseCase,
+    clickMediaUseCase,
+    playMediaUseCase,
+    shareMediaUseCase,
+    deleteMediaUseCase,
+    getIsFavouriteUseCase,
+    changeFavouriteUseCase,
+    createShortcutUseCase,
+    schedulerProvider,
+    navigator,
+    eventLogger
 ) {
 
     private var currQueue: AudioSourceQueue? = null
@@ -100,7 +99,7 @@ class CurrSongQueueViewModel @Inject constructor(
     val isPlaying: LiveData<Boolean> get() = _isPlaying
 
     private val _playingPosition = MutableLiveData<Int>(player.getCurrentPositionInQueue())
-    val playingPosition: LiveData<Int> = Transformations.distinctUntilChanged(_playingPosition)
+    val playingPosition: LiveData<Int> get() = _playingPosition
 
     val saveAsPlaylistOptionEnabled: LiveData<Boolean> =
         mediaList.map(false) { list: List<*>? -> !list.isNullOrEmpty() }
