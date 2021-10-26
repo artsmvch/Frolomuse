@@ -5,6 +5,7 @@ import com.frolo.muse.model.lyrics.Lyrics
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.repository.LyricsRemoteRepository
 import io.reactivex.Single
+import io.reactivex.schedulers.Schedulers
 import kotlin.math.min
 
 
@@ -13,9 +14,21 @@ class LyricsRemoteRepositoryImpl private constructor(
     private val maxCacheSize: Int
 ): LyricsRemoteRepository {
 
-    private val api: LyricsApi by lazy { MetroLyricsApi() }
+    private val api: LyricsApi by lazy { createLyricsApi() }
     private val cache: LruCache<CacheParams, Lyrics>? by lazy {
-        if (enableCache) LyricsLruCache(calculateCacheMaxSize(maxCacheSize)) else null
+        if (enableCache) createLyricsCache(api) else null
+    }
+
+    private fun createLyricsCache(api: LyricsApi): LruCache<CacheParams, Lyrics> {
+        return LyricsLruCache(calculateCacheMaxSize(maxCacheSize))
+    }
+
+    private fun createLyricsApi(): LyricsApi {
+        val apiList = arrayListOf<LyricsApi>(
+            SongLyricsApi(),
+            MetroLyricsApi()
+        )
+        return LyricsApiChain(apiList)
     }
 
     override fun test(): Single<Boolean> {
@@ -31,7 +44,7 @@ class LyricsRemoteRepositoryImpl private constructor(
     }
 
     override fun getLyrics(song: Song): Single<Lyrics> {
-        return Single.fromCallable {
+        val source = Single.fromCallable {
             val cacheParams = CacheParams(song.artist, song.title)
             val cachedLyrics = cache?.get(cacheParams)
             if (cachedLyrics == null) {
@@ -42,6 +55,8 @@ class LyricsRemoteRepositoryImpl private constructor(
                 return@fromCallable cachedLyrics
             }
         }
+
+        return source.subscribeOn(Schedulers.io())
     }
 
     private data class CacheParams(val songName: String, val artistName: String)
