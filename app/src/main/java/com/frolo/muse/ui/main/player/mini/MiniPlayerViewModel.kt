@@ -50,6 +50,10 @@ class MiniPlayerViewModel @Inject constructor(
             _maxProgress.value = duration
         }
 
+        override fun onSoughtTo(player: Player, position: Int) {
+            _progress.value = position
+        }
+
         override fun onPlaybackPaused(player: Player) {
             _isPlaying.value = false
         }
