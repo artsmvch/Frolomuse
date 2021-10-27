@@ -62,6 +62,12 @@ open class AlbumFragment: AbsSongCollectionFragment<Song>(), FragmentContentInse
 
     private val backdropCornerRadius: Float by lazy { 72f.dp2px(requireContext()) }
 
+    private var isPlayButtonAlwaysVisible: Boolean = false
+
+    protected fun setPlayButtonAlwaysVisible() {
+        isPlayButtonAlwaysVisible = true
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -145,7 +151,7 @@ open class AlbumFragment: AbsSongCollectionFragment<Song>(), FragmentContentInse
         }
 
         playButtonVisible.observeNonNull(owner) { isVisible ->
-            if (isVisible) {
+            if (isPlayButtonAlwaysVisible || isVisible) {
                 if (!fab_play.isOrWillBeShown) fab_play.show()
             } else {
                 if (!fab_play.isOrWillBeHidden) fab_play.hide()

@@ -63,6 +63,11 @@ class ThemePreviewFragment : AlbumFragment() {
         return superContext?.let(::createPreviewContext)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setPlayButtonAlwaysVisible()
+    }
+
     override fun onGetLayoutInflater(savedInstanceState: Bundle?): LayoutInflater {
         return super.onGetLayoutInflater(savedInstanceState).run {
             cloneInContext(createPreviewContext(superContext ?: context))
