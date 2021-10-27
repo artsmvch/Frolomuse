@@ -182,6 +182,9 @@
         <item name="miniVisualizerStyle">@style/AppTheme.MiniVisualizer.Dark.Red</item>
         <item name="fastScrollerStyle">@style/AppTheme.FastScroller.Dark.Red</item>
         <item name="equalizerViewStyle">@style/Base.AppTheme.EqualizerView.Dark.Red</item>
+
+        <item name="thumbnailForegroundTint">#F05E5E</item>
+        <item name="thumbnailBackgroundTint">#33F05E5E</item>
     </style>
 
 </resources>

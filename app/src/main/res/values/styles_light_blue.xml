@@ -49,8 +49,8 @@
         <item name="seekBarStyle">@style/AppTheme.SeekBar.Light.Blue</item>
 
         <item name="colorPremiumProductAccent">@color/app_blue_premium_product_accent</item>
-        <item name="thumbnailForegroundTint">@color/thumbnail_foreground_tint_light_blue</item>
-        <item name="thumbnailBackgroundTint">@color/thumbnail_background_tint_light_blue</item>
+        <item name="thumbnailForegroundTint">#6DA3BC</item>
+        <item name="thumbnailBackgroundTint">#296DA3BC</item>
     </style>
 
     <style name="Base.AppTheme.BottomNavigation.Light.Blue" parent="Base.AppTheme.BottomNavigationView">

@@ -50,6 +50,8 @@
         <item name="waveformSeekBarStyle">@style/AppTheme.WaveformSeekBar.Light.Pink</item>
 
         <item name="colorPremiumProductAccent">@color/app_pink_premium_product_accent</item>
+        <item name="thumbnailForegroundTint">#9F597A</item>
+        <item name="thumbnailBackgroundTint">#1F9F597A</item>
     </style>
 
     <style name="Base.AppTheme.BottomNavigation.Light.Pink" parent="Base.AppTheme.BottomNavigationView">
