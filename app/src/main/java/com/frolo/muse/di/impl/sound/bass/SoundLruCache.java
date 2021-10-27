@@ -9,10 +9,11 @@ import com.frolo.muse.model.sound.Sound;
 final class SoundLruCache extends LruCache<String, Sound> {
 
     /**
-     * This is how many bytes one integer takes.
-     * @return how many bytes one integer takes
+     * This is how many bytes one level takes. Since a level is
+     * represented by an integer, and in JVM, it is 4 bytes.
+     * @return how many bytes one level takes
      */
-    static int getIntSize() {
+    static int getLevelSize() {
         return 4;
     }
 
@@ -22,7 +23,7 @@ final class SoundLruCache extends LruCache<String, Sound> {
 
     @Override
     protected int sizeOf(@NonNull String key, @NonNull Sound value) {
-        return value.getFrameCount() * getIntSize();
+        return value.getFrameCount() * getLevelSize();
     }
 
 }

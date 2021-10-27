@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.concurrent.Callable;
 
 import io.reactivex.Flowable;
+import io.reactivex.schedulers.Schedulers;
 
 
 public class BASSSoundResolverImpl implements SoundResolver {
@@ -18,13 +19,23 @@ public class BASSSoundResolverImpl implements SoundResolver {
     private static final boolean DEBUG = BuildConfig.DEBUG;
     private static final String LOG_TAG = "BASSSoundResolverImpl";
 
+    private static void initNativeLibrary() {
+        String errorLabel = "Failed to init BASS";
+        try {
+            boolean initialized = BASS.BASS_Init(0, 44100, BASS.BASS_DEVICE_LATENCY);
+            if (!initialized) {
+                Log.e(LOG_TAG, errorLabel);
+            }
+        } catch (Throwable error) {
+            Log.e(LOG_TAG, errorLabel, error);
+        }
+    }
+
     private static int calcSoundCacheSize(int levelCount) {
-        // The maximum allowed capacity is 1 megabyte
-        final int maxAllowedSize = 1 * 1024 * 1024;
-
+        // The maximum allowed capacity is 64 kilobytes
+        final int maxAllowedSize = 64 * 1024;
         // We want the cache to be able to store at least 100 items
-        final int preferredCacheSize = 100 * levelCount + SoundLruCache.getIntSize();
-
+        final int preferredCacheSize = 100 * levelCount * SoundLruCache.getLevelSize();
         return Math.min(maxAllowedSize, preferredCacheSize);
     }
 
@@ -80,25 +91,22 @@ public class BASSSoundResolverImpl implements SoundResolver {
     public BASSSoundResolverImpl(int levelCount) {
         this.levelCount = levelCount;
         this.cache = new SoundLruCache(calcSoundCacheSize(levelCount));
-
-        boolean initialized = BASS.BASS_Init(0, 44100, BASS.BASS_DEVICE_LATENCY);
-        if (!initialized) {
-            Log.e(LOG_TAG, "Failed to init BASS");
-        }
+        initNativeLibrary();
     }
 
     @Override
     public Flowable<Sound> resolve(final String filepath) {
-        return Flowable.fromCallable(new Callable<Sound>() {
+        Flowable<Sound> source = Flowable.fromCallable(new Callable<Sound>() {
             @Override
             public Sound call() throws Exception {
                 // Checking the cache first
-                final Sound cached = cache.get(filepath);
-                if (cached != null)
-                    return cached;
+                final Sound cachedValue = cache.get(filepath);
+                if (cachedValue != null) {
+                    return cachedValue;
+                }
 
                 // No cached value, creating a new one
-                final Sound sound = resolve_Internal(filepath, levelCount);
+                final Sound sound = blockingResolveImpl(filepath, levelCount);
 
                 // Putting it in the cache for further optimization
                 cache.put(filepath, sound);
@@ -106,9 +114,11 @@ public class BASSSoundResolverImpl implements SoundResolver {
                 return sound;
             }
         });
+
+        return source.subscribeOn(Schedulers.io());
     }
 
-    private Sound resolve_Internal(String filename, int levelCount) throws Exception {
+    private Sound blockingResolveImpl(String filename, int levelCount) throws Exception {
         if (levelCount < 0) {
             throw new IllegalArgumentException("Invalid level count: " + levelCount);
         }
