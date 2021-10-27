@@ -123,6 +123,7 @@ class ThemeChooserViewModel @Inject constructor(
         // then we retrieve the album for this media item.
         val source = if (currAudioSource != null) {
             albumRepository.getItem(currAudioSource.albumId)
+                .onErrorResumeNext(albumRepository.itemForPreview) // fallback
         } else {
             albumRepository.itemForPreview
         }
