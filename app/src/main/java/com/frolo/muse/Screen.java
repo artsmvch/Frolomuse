@@ -41,17 +41,27 @@ public final class Screen {
         return (float) (dp * scale);
     }
 
-    public static float spFloat(@NonNull Context context, float dp) {
-        return spFloat(context.getResources().getDisplayMetrics(), dp);
+    @Px
+    public static int sp(@NonNull Context context, int sp) {
+        return (int) spFloat(context, sp);
+    }
+
+    @Px
+    public static int sp(@NonNull Context context, float sp) {
+        return (int) spFloat(context, sp);
+    }
+
+    public static float spFloat(@NonNull Context context, float sp) {
+        return spFloat(context.getResources().getDisplayMetrics(), sp);
     }
 
     // NOTE: not recommended for use.
-    public static float spFloat(float dp) {
-        return spFloat(getDefaultDisplayMetrics(), dp);
+    public static float spFloat(float sp) {
+        return spFloat(getDefaultDisplayMetrics(), sp);
     }
 
-    private static float spFloat(@NonNull DisplayMetrics metrics, float dp) {
-        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, dp, metrics);
+    private static float spFloat(@NonNull DisplayMetrics metrics, float sp) {
+        return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, sp, metrics);
     }
 
     @Px

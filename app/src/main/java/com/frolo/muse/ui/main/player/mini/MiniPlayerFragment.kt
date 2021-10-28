@@ -10,11 +10,11 @@ import androidx.core.graphics.ColorUtils
 import androidx.lifecycle.LifecycleOwner
 import com.frolo.mediabutton.PlayButton
 import com.frolo.muse.R
+import com.frolo.muse.Screen
 import com.frolo.muse.StyleUtil
 import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.model.media.Song
-import com.frolo.muse.sp2px
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.getNameString
 import com.frolo.muse.views.text.FitSingleLineTextView
@@ -35,7 +35,7 @@ class MiniPlayerFragment : BaseFragment() {
 
         with(tsw_song_name) {
 
-            val maxTextSizeInPx = 15f.sp2px(context).toInt()
+            val maxTextSizeInPx = Screen.sp(context, 15f)
 
             setFactory {
                 FitSingleLineTextView(context).apply {
