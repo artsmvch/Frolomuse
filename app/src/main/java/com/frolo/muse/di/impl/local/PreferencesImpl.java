@@ -88,6 +88,8 @@ public class PreferencesImpl implements Preferences {
         sDefaultLibrarySections = sections;
     }
 
+    private static final Theme DEFAULT_THEME = Theme.DARK_ORANGE;
+
     // Sort orders
     @Deprecated
     private static final String KEY_SORT_ORDER = "sort_order";
@@ -205,11 +207,11 @@ public class PreferencesImpl implements Preferences {
 
     public Theme getTheme() {
         try {
-            final int id = preferences.getInt(KEY_THEME, Theme.DARK_ORANGE.getId());
-            return Theme.findByIdOrDefault(id, Theme.DARK_ORANGE);
+            final int id = preferences.getInt(KEY_THEME, DEFAULT_THEME.getId());
+            return Theme.findByIdOrDefault(id, DEFAULT_THEME);
         } catch (Throwable err) {
             if (DEBUG) throw err;
-            return Theme.DARK_ORANGE;
+            return DEFAULT_THEME;
         }
     }
 
