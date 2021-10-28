@@ -22,7 +22,7 @@
         <include layout="@layout/include_check"
             app:layout_constraintEnd_toEndOf="@id/imv_album_art"
             app:layout_constraintTop_toTopOf="@id/imv_album_art"
-            android:layout_margin="8dp"
+            android:layout_margin="4dp"
             android:layout_width="@dimen/list_item_check_size"
             android:layout_height="@dimen/list_item_check_size" />
 
