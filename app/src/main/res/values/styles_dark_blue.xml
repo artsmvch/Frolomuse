@@ -181,12 +181,17 @@
         <item name="iBarStyle">@style/Base.AppTheme.Dark.IBar</item>
         <item name="miniVisualizerStyle">@style/AppTheme.MiniVisualizer.Dark.Blue</item>
         <item name="fastScrollerStyle">@style/AppTheme.FastScroller.Dark.Blue</item>
+        <item name="thumbnailForegroundTint">#64C0E5</item>
+        <item name="thumbnailBackgroundTint">#1F64C0E5</item>
     </style>
 
     <!--Especial dark blue theme. Almost the same as dark blue theme except the window background-->
     <style name="Base.AppTheme.Dark.Blue.Especial" parent="Base.AppTheme.Dark.Blue">
         <item name="android:windowBackground">@drawable/png_universe</item>
         <item name="equalizerViewStyle">@style/Base.AppTheme.EqualizerView.Dark.Blue.Especial</item>
+
+        <item name="thumbnailForegroundTint">#64C0E5</item>
+        <item name="thumbnailBackgroundTint">#3364C0E5</item>
     </style>
 
 </resources>
