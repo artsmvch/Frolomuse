@@ -3,7 +3,7 @@ package com.frolo.muse.ui.main.player.carousel
 import android.view.View
 import android.view.ViewTreeObserver
 import androidx.viewpager2.widget.ViewPager2
-import com.frolo.muse.dp2px
+import com.frolo.muse.Screen
 import com.frolo.muse.views.viewpager.setOverScrollModeCompat
 import kotlinx.android.synthetic.main.include_square_album_art.view.*
 import kotlin.math.abs
@@ -21,17 +21,19 @@ class AlbumCardCarouselHelper private constructor(
     /**
      * Minimal card elevation that all items must have on their album cards.
      */
-    private val baseCardElevation: Float = 4f.dp2px(viewPager.context)
+    private val baseCardElevation: Float =
+            Screen.dpFloat(viewPager.context, AlbumCardProperties.BASE_CARD_ELEVATION_IN_DP)
     /**
      * Additional card elevation for the currently selected item.
      */
-    private val raisingCardElevation: Float = 12f.dp2px(viewPager.context)
+    private val raisingCardElevation: Float =
+            Screen.dpFloat(viewPager.context, AlbumCardProperties.RAISING_CARD_ELEVATION_IN_DP)
 
     /**
      * The maximum percent of the page width relatively to the pager width.
      * This value must be such that the previews of the left and right pages are visible enough.
      */
-    private val maxPageWidthPercent: Float = 0.7f
+    private val maxPageWidthPercent: Float = 0.83f
 
     override fun onGlobalLayout() {
         // remove itself from listener as the viewpager laid out
