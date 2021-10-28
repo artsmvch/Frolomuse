@@ -28,8 +28,12 @@ class PlayerSheetFragment : BaseFragment(),
     private val bottomSheetCallback =
         object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                layout_hook.alpha = 1 - slideOffset
-                layout_hook.isClickable = slideOffset < 0.4
+                // For Goodness sake make sure the view is created
+                view ?: return
+
+                layout_hook.alpha = (1 - slideOffset * 2).coerceIn(0f, 1f)
+                layout_hook.isClickable = slideOffset < 0.3
+
                 container_current_song_queue.alpha = slideOffset
                 view_dim_overlay.alpha = 1 - (1 - slideOffset).pow(2)
             }
@@ -126,7 +130,7 @@ class PlayerSheetFragment : BaseFragment(),
     fun onSlideOffset(offset: Float) {
         currSheetSlideOffset = offset
         view?.also {
-            imv_close?.alpha = offset * 4 - 3
+            imv_close?.alpha = (offset * 4 - 3).coerceIn(0f, 1f)
         }
     }
 
