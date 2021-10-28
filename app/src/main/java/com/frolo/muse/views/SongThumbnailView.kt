@@ -23,7 +23,7 @@ class SongThumbnailView @JvmOverloads constructor(
         set(value) {
             if (field != value) {
                 field = value
-                alpha = if (value) 0.2f else 1f
+                alpha = if (value) 0.32f else 1f
                 invalidate()
             }
         }
