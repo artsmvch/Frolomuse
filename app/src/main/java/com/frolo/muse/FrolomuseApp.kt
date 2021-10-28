@@ -214,6 +214,11 @@ class FrolomuseApp : MultiDexApplication(), ActivityWatcher {
         super.onLowMemory()
         eventLogger.logLowMemory()
         Logger.w(LOG_TAG, "Low memory!")
+        if (isDebug) {
+            runOnForegroundActivity {
+                postMessage("Low memory!")
+            }
+        }
     }
 
     companion object {
