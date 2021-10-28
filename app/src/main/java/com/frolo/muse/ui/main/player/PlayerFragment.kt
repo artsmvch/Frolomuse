@@ -146,7 +146,7 @@ class PlayerFragment: BaseFragment() {
         // Intercepting all touches to prevent their processing in the lower view layers
         view.setOnTouchListener { _, _ -> true }
 
-        btn_options_menu.setOnClickListener { v ->
+        btn_options_menu.setOnClickListener {
             viewModel.onOptionsMenuClicked()
         }
 
@@ -155,8 +155,8 @@ class PlayerFragment: BaseFragment() {
             adapter = AlbumCardAdapter(requestManager = Glide.with(this@PlayerFragment))
         }
 
-        initTextSwitcher(tsw_song_name, 18f, Typeface.BOLD)
-        initTextSwitcher(tsw_artist_name, 12f)
+        initTextSwitcher(tsw_song_name, 20f, Typeface.BOLD)
+        initTextSwitcher(tsw_artist_name, 13f)
 
         btn_play.setOnClickListener {
             viewModel.onPlayButtonClicked()
