@@ -2,6 +2,7 @@ package com.frolo.muse.ui.main.player.mini
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.frolo.muse.arch.distinctUntilChanged
 import com.frolo.muse.arch.map
 import com.frolo.muse.common.toSong
 import com.frolo.muse.engine.AudioSource
@@ -35,7 +36,7 @@ class MiniPlayerViewModel @Inject constructor(
     val maxProgress: LiveData<Int> get() = _maxProgress
 
     private val _progress = MutableLiveData<Int>(player.getProgress())
-    val progress: LiveData<Int> get() = _progress
+    val progress: LiveData<Int> get() = _progress.distinctUntilChanged()
 
     private val playerObserver = object : SimplePlayerObserver() {
         override fun onAudioSourceChanged(player: Player, item: AudioSource?, positionInQueue: Int) {
