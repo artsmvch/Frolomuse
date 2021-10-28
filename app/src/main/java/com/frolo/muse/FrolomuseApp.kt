@@ -19,6 +19,7 @@ import com.frolo.muse.engine.Player
 import com.frolo.muse.engine.PlayerImpl
 import com.frolo.muse.engine.PlayerWrapper
 import com.frolo.muse.engine.audiofx.AudioFxImpl
+import com.frolo.muse.logger.logLowMemory
 import com.frolo.muse.navigator.NavigatorWrapper
 import com.frolo.muse.ui.base.BaseActivity
 import com.frolo.muse.ui.base.FragmentNavigator
@@ -209,7 +210,16 @@ class FrolomuseApp : MultiDexApplication(), ActivityWatcher {
 
     //endregion
 
+    override fun onLowMemory() {
+        super.onLowMemory()
+        eventLogger.logLowMemory()
+        Logger.w(LOG_TAG, "Low memory!")
+    }
+
     companion object {
+
+        private const val LOG_TAG = "FrolomuseApp"
+
         fun from(context: Context): FrolomuseApp {
             val applicationContext: Context = context.applicationContext
             if (applicationContext !is FrolomuseApp) {

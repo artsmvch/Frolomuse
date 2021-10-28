@@ -377,3 +377,12 @@ fun EventLogger.logLibrarySongFilterSaved() {
 }
 
 //endregion
+
+
+//region Application memory state
+
+fun EventLogger.logLowMemory() {
+    log("low_memory")
+}
+
+//endregion
