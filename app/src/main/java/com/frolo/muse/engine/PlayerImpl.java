@@ -1233,6 +1233,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
 
                     try {
                         engine.seekTo(position);
+                        maybeAdjustVolume();
                         mObserverRegistry.dispatchSoughtTo(position);
                     } catch (Throwable error) {
                         report(error);
