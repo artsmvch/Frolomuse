@@ -257,7 +257,7 @@ public class MediaScanService extends Service {
                     } else {
                         files = new ArrayList<>(0);
                     }
-                } catch (SecurityException e) {
+                } catch (Exception e) {
                     if (DEBUG) Log.e(LOG_TAG, "", e);
                     files = new ArrayList<>(0);
                 }
