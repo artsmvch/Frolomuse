@@ -34,6 +34,7 @@ import com.frolo.muse.model.media.*
 import com.frolo.muse.rx.disposeOnDestroyOf
 import com.frolo.muse.rx.subscribeSafely
 import com.frolo.muse.ui.PlayerHostActivity
+import com.frolo.muse.ui.ScrolledToTop
 import com.frolo.muse.ui.ThemeHandler
 import com.frolo.muse.ui.base.*
 import com.frolo.muse.ui.main.audiofx.AudioFxFragment
@@ -509,7 +510,19 @@ class MainActivity : PlayerHostActivity(),
         }
 
         bottom_navigation_view.setOnNavigationItemReselectedListener {
-            fragNavController?.doIfStateNotSaved { clearStack() }
+            fragNavController?.doIfStateNotSaved {
+                if (isRootFragment) {
+                    // If we are at the root fragment, we can try to scroll
+                    // to the top of the content of the root fragment
+                    currentStack?.also { safeStack ->
+                        val root = if (safeStack.size == 1) safeStack.peek() else null
+                        if (root != null && root is ScrolledToTop) {
+                            root.scrollToTop()
+                        }
+                    }
+                }
+                clearStack()
+            }
         }
 
         bottom_navigation_view.selectedItemId = when(currTabIndex) {

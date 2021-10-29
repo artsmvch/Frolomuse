@@ -15,6 +15,7 @@ import com.frolo.muse.ui.base.FragmentContentInsetsListener
 import com.frolo.muse.ui.main.library.base.AbsMediaCollectionFragment
 import com.frolo.muse.ui.main.library.base.BaseAdapter
 import com.frolo.muse.ui.main.library.search.adapter.MediaAdapter
+import com.frolo.muse.ui.smoothScrollToTop
 import com.frolo.muse.views.hideKeyboardOnScroll
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration
 import kotlinx.android.synthetic.main.fragment_base_list.*
@@ -135,6 +136,10 @@ class SearchFragment: AbsMediaCollectionFragment<Media>(), FragmentContentInsets
                 safeView.clipToPadding = false
             }
         }
+    }
+
+    override fun scrollToTop() {
+        rv_list?.smoothScrollToTop()
     }
 
     companion object {

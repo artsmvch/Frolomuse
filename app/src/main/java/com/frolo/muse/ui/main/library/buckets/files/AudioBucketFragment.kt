@@ -24,6 +24,7 @@ import com.frolo.muse.ui.main.addLinearItemMargins
 import com.frolo.muse.ui.main.library.base.AbsMediaCollectionFragment
 import com.frolo.muse.ui.main.library.base.BaseAdapter
 import com.frolo.muse.ui.main.library.buckets.BucketCallback
+import com.frolo.muse.ui.smoothScrollToTop
 import kotlinx.android.synthetic.main.fragment_base_list.*
 import kotlinx.android.synthetic.main.fragment_media_file_list.*
 
@@ -115,6 +116,10 @@ class AudioBucketFragment : AbsMediaCollectionFragment<MediaFile>(), FragmentCon
                 safeView.clipToPadding = false
             }
         }
+    }
+
+    override fun scrollToTop() {
+        rv_list?.smoothScrollToTop()
     }
 
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {

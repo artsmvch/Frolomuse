@@ -9,6 +9,7 @@ import android.view.Gravity
 import android.view.animation.*
 import androidx.annotation.Px
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.recyclerview.widget.RecyclerView
 import com.frolo.muse.R
 import com.frolo.muse.dp2px
 
@@ -51,4 +52,8 @@ fun ProBadgedDrawable(
     layerDrawable.setLayerInsetTop(0, topMargin)
     layerDrawable.setLayerInsetRight(0, rightMargin)
     return layerDrawable
+}
+
+fun RecyclerView.smoothScrollToTop() {
+    smoothScrollToPosition(0)
 }

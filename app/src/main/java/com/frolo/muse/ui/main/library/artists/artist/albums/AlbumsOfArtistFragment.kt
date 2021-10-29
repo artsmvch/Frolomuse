@@ -17,6 +17,7 @@ import com.frolo.muse.ui.main.library.base.BaseAdapter
 import com.frolo.muse.dp2px
 import com.frolo.muse.glide.GlideAlbumArtHelper
 import com.frolo.muse.glide.observe
+import com.frolo.muse.ui.smoothScrollToTop
 import kotlinx.android.synthetic.main.fragment_albums_of_artist.*
 
 
@@ -98,6 +99,10 @@ class AlbumsOfArtistFragment : AbsMediaCollectionFragment<Album>() {
 
     override fun onDisplayError(err: Throwable) {
         toastError(err)
+    }
+
+    override fun scrollToTop() {
+        rv_list?.smoothScrollToTop()
     }
 
     companion object {

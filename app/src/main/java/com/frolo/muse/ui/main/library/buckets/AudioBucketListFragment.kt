@@ -11,6 +11,7 @@ import com.frolo.muse.R
 import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.model.media.MediaBucket
+import com.frolo.muse.ui.ScrolledToTop
 import com.frolo.muse.ui.ShotLayoutAnimationController
 import com.frolo.muse.ui.base.BackPressHandler
 import com.frolo.muse.ui.base.BaseFragment
@@ -19,6 +20,7 @@ import com.frolo.muse.ui.base.RESPermissionObserver
 import com.frolo.muse.ui.main.addLinearItemMargins
 import com.frolo.muse.ui.main.library.base.BaseAdapter
 import com.frolo.muse.ui.main.library.buckets.files.AudioBucketFragment
+import com.frolo.muse.ui.smoothScrollToTop
 import kotlinx.android.synthetic.main.fragment_audio_bucket_list.*
 import kotlinx.android.synthetic.main.fragment_base_list.*
 
@@ -26,7 +28,8 @@ import kotlinx.android.synthetic.main.fragment_base_list.*
 class AudioBucketListFragment : BaseFragment(),
         BucketCallback,
         BackPressHandler,
-        FragmentContentInsetsListener {
+        FragmentContentInsetsListener,
+        ScrolledToTop {
 
     private val viewModel: AudioBucketListViewModel by viewModel()
 
@@ -159,6 +162,10 @@ class AudioBucketListFragment : BaseFragment(),
                 safeView.clipToPadding = false
             }
         }
+    }
+
+    override fun scrollToTop() {
+        rv_list?.smoothScrollToTop()
     }
 
     companion object {

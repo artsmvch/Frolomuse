@@ -17,6 +17,7 @@ import com.frolo.muse.ui.getNameAsRootString
 import com.frolo.muse.ui.main.addLinearItemMargins
 import com.frolo.muse.ui.main.library.base.AbsMediaCollectionFragment
 import com.frolo.muse.ui.main.library.base.BaseAdapter
+import com.frolo.muse.ui.smoothScrollToTop
 import com.frolo.muse.views.Anim
 import kotlinx.android.synthetic.main.fragment_base_list.*
 import kotlinx.android.synthetic.main.fragment_my_file_list.*
@@ -169,6 +170,10 @@ class MyFileListFragment: AbsMediaCollectionFragment<MyFile>(),
                 safeView.clipToPadding = false
             }
         }
+    }
+
+    override fun scrollToTop() {
+        rv_list?.smoothScrollToTop()
     }
 
     companion object {

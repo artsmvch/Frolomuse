@@ -14,6 +14,7 @@ import com.frolo.muse.model.media.*
 import com.frolo.muse.model.menu.ContextualMenu
 import com.frolo.muse.model.menu.OptionsMenu
 import com.frolo.muse.model.menu.SortOrderMenu
+import com.frolo.muse.ui.ScrolledToTop
 import com.frolo.muse.ui.base.BackPressHandler
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.base.RESPermissionObserver
@@ -22,7 +23,8 @@ import com.frolo.muse.ui.main.confirmShortcutCreation
 
 
 abstract class AbsMediaCollectionFragment <E: Media>: BaseFragment(),
-        BackPressHandler {
+        BackPressHandler,
+        ScrolledToTop {
 
     // Options menu
     private var mediaOptionsDialog: MediaOptionsDialog<E>? = null

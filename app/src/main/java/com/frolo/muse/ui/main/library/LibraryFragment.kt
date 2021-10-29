@@ -6,11 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.updateLayoutParams
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.viewpager.widget.ViewPager
 import com.frolo.muse.R
 import com.frolo.muse.model.Library
 import com.frolo.muse.repository.Preferences
+import com.frolo.muse.ui.ScrolledToTop
 import com.frolo.muse.ui.base.BackPressHandler
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.base.FragmentContentInsetsListener
@@ -20,7 +22,8 @@ import kotlinx.android.synthetic.main.fragment_library.*
 
 class LibraryFragment: BaseFragment(),
         BackPressHandler,
-        FragmentContentInsetsListener {
+        FragmentContentInsetsListener,
+        ScrolledToTop {
 
     private val preferences: Preferences by prefs()
 
@@ -109,9 +112,14 @@ class LibraryFragment: BaseFragment(),
         return fragment.onBackPress()
     }
 
-    private fun invalidateFab() {
+    private fun peekCurrentPage(): Fragment? {
+        view ?: return null
         val adapter = vp_sections.adapter as? LibraryPageAdapter
-        val currFragment = adapter?.getPageAt(vp_sections.currentItem)
+        return adapter?.getPageAt(vp_sections.currentItem)
+    }
+
+    private fun invalidateFab() {
+        val currFragment = peekCurrentPage()
         if (currFragment is FabCallback && currFragment.isUsingFab()) {
             currFragment.decorateFab(fab_action)
             fab_action.show()
@@ -130,6 +138,15 @@ class LibraryFragment: BaseFragment(),
     }
 
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
+    }
+
+    override fun scrollToTop() {
+        app_bar_layout?.setExpanded(true, true)
+        peekCurrentPage()?.also { page ->
+            if (page is ScrolledToTop) {
+                page.scrollToTop()
+            }
+        }
     }
 
     companion object {

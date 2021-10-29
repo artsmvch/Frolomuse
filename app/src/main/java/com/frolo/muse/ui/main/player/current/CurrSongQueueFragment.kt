@@ -19,6 +19,7 @@ import com.frolo.muse.ui.main.library.base.BaseAdapter
 import com.frolo.muse.ui.main.library.base.DragSongAdapter
 import com.frolo.muse.ui.main.library.base.SongAdapter
 import com.frolo.muse.ui.main.library.playlists.create.PlaylistCreateEvent
+import com.frolo.muse.ui.smoothScrollToTop
 import com.frolo.muse.views.Views
 import kotlinx.android.synthetic.main.fragment_base_list.*
 import kotlinx.android.synthetic.main.fragment_curr_song_queue.*
@@ -212,6 +213,10 @@ class CurrSongQueueFragment: AbsMediaCollectionFragment<Song>() {
         scrollToPositionIfNotVisibleToUserEvent.observeNonNull(owner) { position ->
             postScrollToPositionIfNotVisibleToUser(position)
         }
+    }
+
+    override fun scrollToTop() {
+        rv_list?.smoothScrollToTop()
     }
 
     /**

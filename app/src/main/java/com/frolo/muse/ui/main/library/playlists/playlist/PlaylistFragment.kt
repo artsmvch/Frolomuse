@@ -26,6 +26,7 @@ import com.frolo.muse.thumbnails.provideThumbnailLoader
 import com.frolo.muse.ui.base.FragmentContentInsetsListener
 import com.frolo.muse.ui.base.setupNavigation
 import com.frolo.muse.ui.main.confirmShortcutCreation
+import com.frolo.muse.ui.smoothScrollToTop
 import com.frolo.muse.ui.toString
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.shape.CornerFamily
@@ -219,6 +220,10 @@ class PlaylistFragment: AbsSongCollectionFragment<Song>(), FragmentContentInsets
                 safeView.clipToPadding = false
             }
         }
+    }
+
+    override fun scrollToTop() {
+        rv_list?.smoothScrollToTop()
     }
 
     companion object {

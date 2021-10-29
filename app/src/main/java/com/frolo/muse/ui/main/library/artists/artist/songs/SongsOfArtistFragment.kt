@@ -14,6 +14,7 @@ import com.frolo.muse.ui.base.withArg
 import com.frolo.muse.ui.main.addLinearItemMargins
 import com.frolo.muse.ui.main.library.base.AbsSongCollectionFragment
 import com.frolo.muse.ui.main.library.base.SongAdapter
+import com.frolo.muse.ui.smoothScrollToTop
 import kotlinx.android.synthetic.main.fragment_base_list.*
 
 
@@ -70,6 +71,10 @@ class SongsOfArtistFragment: AbsSongCollectionFragment<Song>(), FragmentContentI
                 safeView.clipToPadding = false
             }
         }
+    }
+
+    override fun scrollToTop() {
+        rv_list?.smoothScrollToTop()
     }
 
     fun onSortOrderActionSelected() {

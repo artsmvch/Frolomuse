@@ -11,6 +11,7 @@ import com.frolo.muse.model.media.Media
 import com.frolo.muse.ui.ShotLayoutAnimationController
 import com.frolo.muse.ui.base.FragmentContentInsetsListener
 import com.frolo.muse.ui.main.addLinearItemMargins
+import com.frolo.muse.ui.smoothScrollToTop
 import kotlinx.android.synthetic.main.fragment_base_list.*
 
 
@@ -101,5 +102,9 @@ abstract class SimpleMediaCollectionFragment <E: Media>:
                 safeView.clipToPadding = false
             }
         }
+    }
+
+    override fun scrollToTop() {
+        rv_list?.smoothScrollToTop()
     }
 }
