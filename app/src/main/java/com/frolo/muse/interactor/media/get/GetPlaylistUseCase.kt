@@ -83,26 +83,29 @@ class GetPlaylistUseCase @AssistedInject constructor(
                 playlistChunkRepository.isMovingAllowedForSortOrder(sortOrder)
             }
             .flatMapCompletable { isMovingAllowed ->
-                if (isMovingAllowed) {
-                    val isReversed = preferences
-                        .isSortOrderReversedForSection(Library.PLAYLIST)
-                        .blockingFirst()
+                if (!isMovingAllowed) {
+                    // The move op is not allowed => just complete
+                    return@flatMapCompletable Completable.complete()
+                }
 
-                    val actualFromPosition = if (isReversed) {
-                        (listSize - 1) - fromPosition
-                    } else fromPosition
+                preferences
+                    .isSortOrderReversedForSection(Library.PLAYLIST)
+                    .firstOrError()
+                    .flatMapCompletable { isReversed ->
+                        val actualFromPosition = if (isReversed) {
+                            (listSize - 1) - fromPosition
+                        } else fromPosition
 
-                    val actualToPosition = if (isReversed) {
-                        (listSize - 1) - toPosition
-                    } else toPosition
+                        val actualToPosition = if (isReversed) {
+                            (listSize - 1) - toPosition
+                        } else toPosition
 
-                    playlistChunkRepository.moveItemInPlaylist(
-                        playlist,
-                        actualFromPosition,
-                        actualToPosition
-                    )
-
-                } else Completable.complete()
+                        playlistChunkRepository.moveItemInPlaylist(
+                            playlist,
+                            actualFromPosition,
+                            actualToPosition
+                        )
+                    }
             }
             .subscribeOn(schedulerProvider.worker())
     }
