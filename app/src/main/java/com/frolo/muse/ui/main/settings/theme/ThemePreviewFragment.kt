@@ -10,6 +10,7 @@ import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProviders
 import com.frolo.muse.StyleUtil
+import com.frolo.muse.di.appComponent
 import com.frolo.muse.model.media.Album
 import com.frolo.muse.ui.main.library.albums.album.AlbumFragment
 import com.frolo.muse.ui.main.library.albums.album.AlbumVMFactory
@@ -28,9 +29,12 @@ class ThemePreviewFragment : AlbumFragment() {
         requireArguments().getFloat(ARG_DENSITY_DPI_FACTOR, 1f)
     }
 
+    private val album: Album by lazy {
+        requireArguments().getSerializable(ARG_ALBUM) as Album
+    }
+
     override val viewModel: AlbumViewModel by lazy {
-        val album = requireArguments().getSerializable(ARG_ALBUM) as Album
-        val vmFactory = AlbumVMFactory(requireFrolomuseApp().appComponent, album)
+        val vmFactory = AlbumVMFactory(appComponent, album)
         // Try using the parent fragment (if any) as the scope for the view model,
         // so that the album and songs are shared and loaded only once.
         ViewModelProviders.of(parentFragment ?: this, vmFactory)

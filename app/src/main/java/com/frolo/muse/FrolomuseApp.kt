@@ -14,6 +14,7 @@ import com.frolo.muse.broadcast.Broadcasts
 import com.frolo.muse.di.AppComponent
 import com.frolo.muse.di.DaggerAppComponent
 import com.frolo.muse.di.impl.navigator.NavigatorImpl
+import com.frolo.muse.di.initAppComponent
 import com.frolo.muse.di.modules.*
 import com.frolo.muse.engine.Player
 import com.frolo.muse.engine.PlayerImpl
@@ -33,6 +34,7 @@ class FrolomuseApp : MultiDexApplication(), ActivityWatcher {
 
     private val isDebug: Boolean get() = BuildConfig.DEBUG
 
+    @Deprecated("Use AppComponentBridge")
     lateinit var appComponent: AppComponent
         private set
 
@@ -51,7 +53,7 @@ class FrolomuseApp : MultiDexApplication(), ActivityWatcher {
     override fun onCreate() {
         super.onCreate()
 
-        appComponent = buildAppComponent()
+        initAppComponent()
 
         uiHandler = Handler(mainLooper)
 
@@ -64,6 +66,12 @@ class FrolomuseApp : MultiDexApplication(), ActivityWatcher {
         setupFirebaseRemoteConfigs()
 
         setupShortcutsListener()
+    }
+
+    private fun initAppComponent() {
+        val instance = buildAppComponent()
+        initAppComponent(instance)
+        appComponent = instance
     }
 
     private fun buildAppComponent(): AppComponent {
