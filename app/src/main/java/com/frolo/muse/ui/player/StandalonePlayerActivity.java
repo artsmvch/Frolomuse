@@ -50,8 +50,8 @@ import io.reactivex.schedulers.Timed;
 
 
 @Deprecated
-public class PlayerActivity extends AppCompatActivity {
-    private static final String TAG = PlayerActivity.class.getSimpleName();
+public class StandalonePlayerActivity extends AppCompatActivity {
+    private static final String TAG = StandalonePlayerActivity.class.getSimpleName();
 
     private static final int READ_INTENT_URI = 31115;
 
@@ -208,7 +208,7 @@ public class PlayerActivity extends AppCompatActivity {
                         @Override public void onError(Sounder sounder, Throwable error) {
                             Logger.e(error);
                             if (BuildConfig.DEBUG) {
-                                Context context = PlayerActivity.this;
+                                Context context = StandalonePlayerActivity.this;
                                 Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT)
                                         .show();
                             }
@@ -300,7 +300,7 @@ public class PlayerActivity extends AppCompatActivity {
                 trackingBar = true;
             }
             @Override public void onStopTrackingTouch(SeekBar seekBar) {
-                Sounder sounder = PlayerActivity.this.sounder;
+                Sounder sounder = StandalonePlayerActivity.this.sounder;
                 if (sounder != null) {
                     int position = seekBar.getProgress();
                     sounder.seekTo(position);
@@ -310,7 +310,7 @@ public class PlayerActivity extends AppCompatActivity {
         });
         buttonPlay.setOnClickListener(new View.OnClickListener() {
             @Override public void onClick(View v) {
-                Sounder sounder = PlayerActivity.this.sounder;
+                Sounder sounder = StandalonePlayerActivity.this.sounder;
                 if (sounder != null) {
                     if (!sounder.isPlaying()) {
                         if (requestAudioFocus())
@@ -384,11 +384,11 @@ public class PlayerActivity extends AppCompatActivity {
 
                         @Override
                         public void onSuccess(Bitmap bitmap) {
-                            Glide.with(PlayerActivity.this)
+                            Glide.with(StandalonePlayerActivity.this)
                                     .load(bitmap)
                                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                                     .skipMemoryCache(true)
-                                    .error(Glide.with(PlayerActivity.this).load(R.drawable.ic_album_grey_72dp))
+                                    .error(Glide.with(StandalonePlayerActivity.this).load(R.drawable.ic_album_grey_72dp))
                                     .circleCrop()
                                     .into(imageAlbumArt);
                         }
