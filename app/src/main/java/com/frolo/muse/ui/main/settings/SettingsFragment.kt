@@ -40,7 +40,8 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class SettingsFragment : PreferenceFragmentCompat(),
         SleepTimerDialog.OnTimeSelectedListener,
-        FragmentContentInsetsListener {
+        FragmentContentInsetsListener,
+        ScrolledToTop {
 
     private val preferences: Preferences by lazy {
         FrolomuseApp.from(requireContext())
@@ -444,6 +445,11 @@ class SettingsFragment : PreferenceFragmentCompat(),
                 safeView.clipToPadding = false
             }
         }
+    }
+
+    override fun scrollToTop() {
+        view ?: return
+        listView?.smoothScrollToTop()
     }
 
     companion object {
