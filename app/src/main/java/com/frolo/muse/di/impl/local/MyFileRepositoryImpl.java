@@ -8,6 +8,7 @@ import com.frolo.muse.R;
 import com.frolo.muse.model.media.MyFile;
 import com.frolo.muse.model.media.Playlist;
 import com.frolo.muse.model.media.Song;
+import com.frolo.muse.model.media.SongFilter;
 import com.frolo.muse.model.sort.SortOrder;
 import com.frolo.muse.repository.MyFileRepository;
 
@@ -108,8 +109,8 @@ public final class MyFileRepositoryImpl extends BaseMediaRepository<MyFile> impl
 
     @Override
     public Single<List<Song>> collectSongs(MyFile item) {
-        return getSongFilter().switchMap(songFilter ->
-                SongQuery.query(getContentResolver(), songFilter, SongQuery.Sort.BY_TITLE, item))
+        // TODO: apply the actual song filter
+        return SongQuery.query(getContentResolver(), SongFilter.allEnabled(), SongQuery.Sort.BY_TITLE, item)
                 .firstOrError();
     }
 
