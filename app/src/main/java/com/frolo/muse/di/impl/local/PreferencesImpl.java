@@ -196,6 +196,7 @@ public class PreferencesImpl implements Preferences {
         }
     }
 
+    @Override
     public void saveTheme(Theme theme) {
         try {
             if (theme != null) {
@@ -206,10 +207,15 @@ public class PreferencesImpl implements Preferences {
         }
     }
 
+    @Override
     public Theme getTheme() {
         try {
-            final int id = preferences.getInt(KEY_THEME, DEFAULT_THEME.getId());
-            return Theme.findByIdOrDefault(id, DEFAULT_THEME);
+            final int themeId = preferences.getInt(KEY_THEME, DEFAULT_THEME.getId());
+            if (!preferences.contains(KEY_THEME)) {
+                // Save the first value to be the default
+                preferences.edit().putInt(KEY_THEME, themeId).apply();
+            }
+            return Theme.findByIdOrDefault(themeId, DEFAULT_THEME);
         } catch (Throwable err) {
             if (DEBUG) throw err;
             return DEFAULT_THEME;
