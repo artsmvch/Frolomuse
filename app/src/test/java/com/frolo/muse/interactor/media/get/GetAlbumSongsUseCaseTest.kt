@@ -74,7 +74,7 @@ class GetAlbumSongsUseCaseTest {
 
     @Test
     fun test_getMediaList_Success() {
-        // Test with sort order 1, no audio duration limit
+        // Test with sort order 1
         run {
             val subscriber = TestSubscriber.create<List<Song>>()
 
@@ -87,11 +87,10 @@ class GetAlbumSongsUseCaseTest {
             getAlbumSongsUseCase.getMediaList()
                     .subscribe(subscriber)
 
-            val expectedOutput = result1.toList()
-            subscriber.assertResult(expectedOutput)
+            subscriber.assertResult(result1)
         }
 
-        // Test with sort order 1, limited audio duration
+        // Test with sort order 1, reversed
         run {
             val subscriber = TestSubscriber.create<List<Song>>()
 
@@ -99,16 +98,31 @@ class GetAlbumSongsUseCaseTest {
                     .doReturn(Flowable.just(sortOrder1.key))
 
             whenever(preferences.isSortOrderReversedForSection(eq(Library.ALBUM)))
+                    .doReturn(Flowable.just(true))
+
+            getAlbumSongsUseCase.getMediaList()
+                    .subscribe(subscriber)
+
+            subscriber.assertResult(result1.reversed())
+        }
+
+        // Test with sort order 2
+        run {
+            val subscriber = TestSubscriber.create<List<Song>>()
+
+            whenever(preferences.getSortOrderForSection(eq(Library.ALBUM)))
+                    .doReturn(Flowable.just(sortOrder2.key))
+
+            whenever(preferences.isSortOrderReversedForSection(eq(Library.ALBUM)))
                     .doReturn(Flowable.just(false))
 
             getAlbumSongsUseCase.getMediaList()
                     .subscribe(subscriber)
 
-            val expectedOutput2 = result1.filter { it.duration >= 10_000 }
-            subscriber.assertResult(expectedOutput2)
+            subscriber.assertResult(result2)
         }
 
-        // Test with sort order 2, no audio duration limit
+        // Test with sort order 2, reversed
         run {
             val subscriber = TestSubscriber.create<List<Song>>()
 
@@ -121,25 +135,7 @@ class GetAlbumSongsUseCaseTest {
             getAlbumSongsUseCase.getMediaList()
                     .subscribe(subscriber)
 
-            val expectedOutput = result2.reversed()
-            subscriber.assertResult(expectedOutput)
-        }
-
-        // Test with sort order 2, limited audio duration
-        run {
-            val subscriber = TestSubscriber.create<List<Song>>()
-
-            whenever(preferences.getSortOrderForSection(eq(Library.ALBUM)))
-                    .doReturn(Flowable.just(sortOrder2.key))
-
-            whenever(preferences.isSortOrderReversedForSection(eq(Library.ALBUM)))
-                    .doReturn(Flowable.just(true))
-
-            getAlbumSongsUseCase.getMediaList()
-                    .subscribe(subscriber)
-
-            val expectedOutput = result2.reversed().filter { it.duration >= 20_000 }
-            subscriber.assertResult(expectedOutput)
+            subscriber.assertResult(result2.reversed())
         }
     }
 
