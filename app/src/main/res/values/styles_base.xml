@@ -185,6 +185,11 @@
         <item name="android:layout_height">?attr/actionBarSize</item>
     </style>
 
+    <style name="Base.AppTheme.ActionButton.Overflow" parent="RtlUnderlay.Widget.AppCompat.ActionButton.Overflow">
+        <item name="srcCompat">@drawable/ic_menu_overflow</item>
+        <item name="android:tint">?iconImageTint</item>
+    </style>
+
     <style name="Base.AppTheme.TextAppearance.Toolbar.Title" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:textSize">20sp</item>
     </style>
