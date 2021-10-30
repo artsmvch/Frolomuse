@@ -107,14 +107,15 @@ class GlideThumbnailLoader constructor(
     override fun loadMyFileThumbnail(file: MyFile, target: ImageView) {
         when {
             file.isDirectory -> {
-                requestManager.load(R.drawable.ic_framed_folder).into(target)
+                requestManager.clear(target)
+                target.setImageResource(R.drawable.ic_framed_folder)
             }
             file.isSongFile -> {
                 loadThumbnailFromResource(target, R.drawable.ic_framed_music_note)
             }
             else -> {
-                val nullSource: String? = null
-                requestManager.load(nullSource).into(target)
+                requestManager.clear(target)
+                target.setImageDrawable(null)
             }
         }
     }
