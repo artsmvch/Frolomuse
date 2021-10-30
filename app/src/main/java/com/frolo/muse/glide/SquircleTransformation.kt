@@ -33,7 +33,16 @@ class SquircleTransformation(
         val outBitmap = pool.get(outWidth, outHeight, toTransform.config ?: Bitmap.Config.ARGB_8888)
 
         val canvas = Canvas(outBitmap)
-        val src = Rect(0, 0, toTransform.width, toTransform.width)
+
+        val srcWidth = toTransform.width
+        val srcHeight = toTransform.height
+        val src: Rect = if (srcWidth > srcHeight) {
+            val offset = (srcWidth - srcHeight) / 2
+            Rect(offset, 0, srcWidth - offset, srcHeight)
+        } else {
+            val offset = (srcHeight - srcWidth) / 2
+            Rect(0, offset, srcWidth, srcHeight - offset)
+        }
         val dst = Rect(0, 0, outWidth, outHeight)
         canvas.drawBitmap(toTransform, src, dst, null)
 
