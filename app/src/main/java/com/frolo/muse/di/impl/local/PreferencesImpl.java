@@ -88,7 +88,8 @@ public class PreferencesImpl implements Preferences {
         sDefaultLibrarySections = sections;
     }
 
-    private static final Theme DEFAULT_THEME = Theme.DARK_ORANGE;
+    // This is very important. Must be determined by A / B testing.
+    private static final Theme DEFAULT_THEME = Theme.DARK_PURPLE;
 
     // Sort orders
     @Deprecated
