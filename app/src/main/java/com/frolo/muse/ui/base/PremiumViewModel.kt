@@ -44,10 +44,11 @@ abstract class PremiumViewModel constructor(
         }
     }
 
-    protected val isPremiumFeatureAvailable: LiveData<Boolean> =
+    protected val isPremiumFeatureAvailable: LiveData<Boolean> by lazy {
         combine(isPremiumPurchased, premiumTrialStatus) { isPremiumPurchased, trialStatus ->
             isPremiumPurchased == true || trialStatus is TrialStatus.Activated
         }
+    }
 
     /**
      * Checks if the user has access to premium features. If not, it offers the user to buy premium.

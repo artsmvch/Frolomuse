@@ -21,7 +21,6 @@ import com.frolo.muse.rx.flowable.doOnFirst
 import com.frolo.muse.rx.flowable.timeoutForFirstElement
 import com.frolo.muse.ui.base.BaseViewModel
 import io.reactivex.Flowable
-import io.reactivex.functions.BiFunction
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -58,26 +57,15 @@ class ThemeChooserViewModel @Inject constructor(
     val applyThemeEvent: LiveData<Theme> get() = _applyThemeEvent
 
     private fun loadThemes(onResult: (List<ThemePage>) -> Unit) {
-
-        val source1 = getAlbumForPreview()
-        val source2 = isPremiumPurchased()
-        val combiner = BiFunction<Album, Boolean, Pair<Album, Boolean>> { album, isPremiumPurchased ->
-            album to isPremiumPurchased
-        }
-
-        Flowable.combineLatest(source1, source2, combiner)
+        getAlbumForPreview()
             .observeOn(schedulerProvider.main())
-            .map { pair ->
-                val album = pair.first
-                val isPremiumPurchased = pair.second
+            .map { album ->
                 val currentTheme = preferences.theme
-
                 Theme.values().map { theme ->
-                    val hasProBadge: Boolean = isPremiumTheme(theme) && !isPremiumPurchased
                     ThemePage(
                         theme = theme,
                         isApplied = currentTheme == theme,
-                        hasProBadge = hasProBadge,
+                        hasProBadge = false,
                         album = album
                     )
                 }
