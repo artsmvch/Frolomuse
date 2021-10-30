@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!--Base light theme-->
     <style name="Base.AppTheme.Light" parent="Theme.MaterialComponents.Light">
@@ -10,7 +10,8 @@
         <item name="android:actionBarSize">@dimen/default_bar_size</item>
         <item name="actionModeCloseDrawable">@drawable/ic_action_close</item>
         <item name="android:windowBackground">@color/white</item>
-        <item name="android:navigationBarColor">@color/white</item>
+        <item name="android:navigationBarColor" tools:targetApi="o_mr1">@color/white</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
         <item name="actionOverflowButtonStyle">@style/Base.AppTheme.ActionButton.Overflow</item>
 
         <item name="dialogTheme">@style/Base.AppTheme.Dialog.Light</item>
