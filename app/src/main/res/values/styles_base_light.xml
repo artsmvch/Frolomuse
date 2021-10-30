@@ -11,6 +11,7 @@
         <item name="actionModeCloseDrawable">@drawable/ic_action_close</item>
         <item name="android:windowBackground">@color/white</item>
         <item name="android:navigationBarColor">@color/white</item>
+        <item name="actionOverflowButtonStyle">@style/Base.AppTheme.ActionButton.Overflow</item>
 
         <item name="dialogTheme">@style/Base.AppTheme.Dialog.Light</item>
         <item name="android:dialogTheme">@style/Base.AppTheme.Dialog.Light</item>
