@@ -35,13 +35,25 @@ class AlbumCardCarouselHelper private constructor(
      */
     private val maxPageWidthPercent: Float = 0.83f
 
-    override fun onGlobalLayout() {
-        // remove itself from listener as the viewpager laid out
-        viewPager.viewTreeObserver.removeOnGlobalLayoutListener(this)
+    // Internal state
+    private var lastPagerWidth: Int = -1
+    private var lastPagerHeight: Int = -1
 
+    override fun onGlobalLayout() {
         val pagerWidth = viewPager.measuredWidth
         val pagerHeight = viewPager.measuredHeight
 
+        // Check if the size has changed
+        if (lastPagerWidth == pagerWidth && lastPagerHeight == pagerHeight) {
+            return
+        }
+        lastPagerWidth = pagerWidth
+        lastPagerHeight = pagerHeight
+
+        updateTransformer(pagerWidth, pagerHeight)
+    }
+
+    private fun updateTransformer(pagerWidth: Int, pagerHeight: Int) {
         val initialPageWidth = (pagerWidth * maxPageWidthPercent).toInt()
         val initialPageHeight = initialPageWidth
 
@@ -53,14 +65,13 @@ class AlbumCardCarouselHelper private constructor(
 
         viewPager.setPadding(hp, vp, hp, vp)
 
-        AlbumCardTransformer(
+        val transformer = AlbumCardTransformer(
             minScale = minPageScale,
             maxScale = maxPageScale,
             baseCardElevation = baseCardElevation,
             raisingCardElevation = raisingCardElevation
-        ).also { transformer ->
-            viewPager.setPageTransformer(transformer)
-        }
+        )
+        viewPager.setPageTransformer(transformer)
     }
 
     companion object {
