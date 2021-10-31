@@ -9,7 +9,7 @@
         <item name="actionBarSize">@dimen/default_bar_size</item>
         <item name="android:actionBarSize">@dimen/default_bar_size</item>
         <item name="actionModeCloseDrawable">@drawable/ic_action_close</item>
-        <item name="actionOverflowButtonStyle">@style/Base.AppTheme.ActionButton.Overflow</item>
+        <item name="actionOverflowButtonStyle">@style/Base.AppTheme.ActionButton.Overflow.Dark</item>
 
         <!--Material colors-->
         <item name="dialogCornerRadius">@dimen/dialog_corner_radius</item>
@@ -23,7 +23,7 @@
         <item name="materialCardViewStyle">@style/Base.AppTheme.CardView</item>
         <item name="ttlm_defaultStyle">@style/Tooltip.Default</item>
 
-        <item name="actionBarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="actionBarTheme">@style/Base.AppTheme.ThemeOverlay.Dark.ActionBar</item>
         <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.Tinted</item>
         <item name="actionOverflowMenuStyle">@style/Base.AppTheme.PopupMenu.Overflow</item>
@@ -71,6 +71,15 @@
         <item name="errorTextColor">@color/error</item>
 
         <item name="colorPremiumProductAccent">?colorAccent</item>
+    </style>
+
+    <style name="Base.AppTheme.ActionButton.Overflow.Dark" parent="RtlUnderlay.Widget.AppCompat.ActionButton.Overflow">
+        <item name="srcCompat">@drawable/ic_menu_overflow</item>
+        <item name="android:tint">@color/white</item>
+    </style>
+
+    <style name="Base.AppTheme.ThemeOverlay.Dark.ActionBar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="actionOverflowButtonStyle">@style/Base.AppTheme.ActionButton.Overflow.Dark</item>
     </style>
 
     <style name="Base.AppTheme.Dark.IBar" parent="android:style/Widget">

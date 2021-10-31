@@ -11,7 +11,7 @@
         <item name="actionModeCloseDrawable">@drawable/ic_action_close</item>
         <item name="android:windowBackground">@color/white</item>
         <item name="android:navigationBarColor">@color/white</item>
-        <item name="actionOverflowButtonStyle">@style/Base.AppTheme.ActionButton.Overflow</item>
+        <item name="actionOverflowButtonStyle">@style/Base.AppTheme.ActionButton.Overflow.Light</item>
 
         <item name="dialogTheme">@style/Base.AppTheme.Dialog.Light</item>
         <item name="android:dialogTheme">@style/Base.AppTheme.Dialog.Light</item>
@@ -30,7 +30,7 @@
         <item name="materialCardViewStyle">@style/Base.AppTheme.CardView</item>
         <item name="ttlm_defaultStyle">@style/Tooltip.Default</item>
 
-        <item name="actionBarTheme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
+        <item name="actionBarTheme">@style/Base.AppTheme.ThemeOverlay.Light.ActionBar</item>
         <item name="actionBarPopupTheme">@style/ThemeOverlay.AppCompat.Light</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.Tinted</item>
         <item name="actionOverflowMenuStyle">@style/Base.AppTheme.PopupMenu.Overflow</item>
@@ -84,6 +84,15 @@
         <item name="errorTextColor">@color/error</item>
 
         <item name="colorPremiumProductAccent">?colorAccent</item>
+    </style>
+
+    <style name="Base.AppTheme.ActionButton.Overflow.Light" parent="RtlUnderlay.Widget.AppCompat.ActionButton.Overflow">
+        <item name="srcCompat">@drawable/ic_menu_overflow</item>
+        <item name="android:tint">@color/white</item>
+    </style>
+
+    <style name="Base.AppTheme.ThemeOverlay.Light.ActionBar" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="actionOverflowButtonStyle">@style/Base.AppTheme.ActionButton.Overflow.Light</item>
     </style>
 
     <style name="Base.AppTheme.Light.Toolbar" parent="Base.AppTheme.Toolbar">
