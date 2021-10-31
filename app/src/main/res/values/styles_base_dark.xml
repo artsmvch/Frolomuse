@@ -10,7 +10,6 @@
         <item name="android:actionBarSize">@dimen/default_bar_size</item>
         <item name="actionModeCloseDrawable">@drawable/ic_action_close</item>
         <item name="actionOverflowButtonStyle">@style/Base.AppTheme.ActionButton.Overflow</item>
-        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>
 
         <!--Material colors-->
         <item name="dialogCornerRadius">@dimen/dialog_corner_radius</item>

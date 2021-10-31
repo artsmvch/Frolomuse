@@ -2,6 +2,7 @@ package com.frolo.muse.ui.base
 
 import android.content.Context
 import android.os.Bundle
+import android.view.Window
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.frolo.muse.*
@@ -58,6 +59,25 @@ abstract class BaseActivity: AppCompatActivity() {
             // Anyway we have to set up the theme
             setTheme(R.style.Base_AppTheme_Dark_Yellow)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        syncNavigationBarAppearance()
+    }
+
+    /**
+     * Synchronizes the appearance of the navigation bar with its color. That is, if the color of the navigation bar
+     * is light, then the appearance will be light, if the color is dark, then the appearance will be dark.
+     * Calling this method is required for older versions of the API that do not support
+     * the appearance attribute of the navigation bar in xml styles.
+     * The best place to call this method is in the onResume callback,
+     * since the window is already created at this point and the activity is in the foreground.
+     */
+    private fun syncNavigationBarAppearance() {
+        val safeWindow: Window = this.window ?: return
+        val isLight = SystemBarUtils.isLight(safeWindow.navigationBarColor)
+        SystemBarUtils.setNavigationBarAppearanceLight(safeWindow, isLight)
     }
 
     fun postMessage(message: String) {
