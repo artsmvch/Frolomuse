@@ -1,4 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--Album card carousel-->
+    <dimen name="album_carousel_base_card_elevation">4dp</dimen>
+    <dimen name="album_carousel_max_card_elevation">12dp</dimen>
+    <dimen name="album_carousel_card_corner_radius">16dp</dimen>
+
+    <!--Player screen-->
+    <dimen name="player_element_vertical_gap">16dp</dimen>
+    <dimen name="player_element_vertical_small_gap">8dp</dimen>
 
     <!--Default dimension for bar widgets such as Toolbar, BottomNavigationView, TabLayout etc.-->
     <dimen name="default_bar_size">52dp</dimen>
@@ -37,8 +46,6 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
 
     <dimen name="toolbar_item_icon_size">24dp</dimen>
-    
-    <dimen name="album_art_rounded_corner_radius">12dp</dimen>
 
     <dimen name="vertical_divider_height">1dp</dimen>
     <dimen name="horizontal_divider_height">1dp</dimen>

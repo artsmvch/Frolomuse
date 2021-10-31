@@ -32,13 +32,13 @@
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/player_element_vertical_gap"
         android:layout_marginEnd="16dp"
         android:layout_gravity="center_horizontal"/>
 
     <include layout="@layout/include_player_controller_full"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="@dimen/player_element_vertical_gap"
         android:layout_marginBottom="8dp"/>
 </LinearLayout>

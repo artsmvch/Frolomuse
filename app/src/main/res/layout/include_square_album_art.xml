@@ -7,9 +7,9 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cv_album_art"
-        app:cardElevation="4dp"
-        app:cardMaxElevation="12dp"
-        app:cardCornerRadius="16dp"
+        app:cardElevation="@dimen/album_carousel_base_card_elevation"
+        app:cardMaxElevation="@dimen/album_carousel_max_card_elevation"
+        app:cardCornerRadius="@dimen/album_carousel_card_corner_radius"
         app:cardPreventCornerOverlap="true"
         app:cardUseCompatPadding="false"
         app:cardBackgroundColor="?colorSurface"

@@ -32,8 +32,8 @@ class AlbumCardAdapter constructor(
     ): AlbumArtViewHolder {
         val itemView = parent.inflateChild(R.layout.include_square_album_art)
 
-        val maxCardElevation = Screen.dpFloat(parent.context, AlbumCardProperties.MAX_CARD_ELEVATION_IN_DP)
-        val cornerRadius = Screen.dpFloat(parent.context, AlbumCardProperties.CARD_CORNER_RADIUS_IN_DP)
+        val maxCardElevation = AlbumCardProperties.getMaxCardElevation(itemView.context)
+        val cornerRadius = AlbumCardProperties.getCardCornerRadius(itemView.context)
 
         val horizontalPadding: Float =
                 CardViewSupport.calculateCardHorizontalShadowPadding(maxCardElevation, cornerRadius)

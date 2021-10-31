@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Album card carousel-->
+    <dimen name="album_carousel_base_card_elevation">8dp</dimen>
+    <dimen name="album_carousel_max_card_elevation">16dp</dimen>
+    <dimen name="album_carousel_card_corner_radius">24dp</dimen>
+
+    <!--Player screen-->
+    <dimen name="player_element_vertical_gap">32dp</dimen>
+    <dimen name="player_element_vertical_small_gap">16dp</dimen>
+</resources>

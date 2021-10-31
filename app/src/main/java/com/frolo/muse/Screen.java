@@ -79,6 +79,26 @@ public final class Screen {
         return context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE;
     }
 
+    public static int getLayoutSize(@NonNull Context context) {
+        return context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
+    }
+
+    public static boolean isSmall(@NonNull Context context) {
+        return getLayoutSize(context) == Configuration.SCREENLAYOUT_SIZE_SMALL;
+    }
+
+    public static boolean isNormal(@NonNull Context context) {
+        return getLayoutSize(context) == Configuration.SCREENLAYOUT_SIZE_NORMAL;
+    }
+
+    public static boolean isLarge(@NonNull Context context) {
+        return getLayoutSize(context) == Configuration.SCREENLAYOUT_SIZE_LARGE;
+    }
+
+    public static boolean isXLarge(@NonNull Context context) {
+        return getLayoutSize(context) == Configuration.SCREENLAYOUT_SIZE_XLARGE;
+    }
+
     private Screen() {
     }
 }
