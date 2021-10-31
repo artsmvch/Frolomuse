@@ -75,9 +75,13 @@ abstract class BaseActivity: AppCompatActivity() {
      * since the window is already created at this point and the activity is in the foreground.
      */
     private fun syncNavigationBarAppearance() {
-        val safeWindow: Window = this.window ?: return
-        val isLight = SystemBarUtils.isLight(safeWindow.navigationBarColor)
-        SystemBarUtils.setNavigationBarAppearanceLight(safeWindow, isLight)
+        try {
+            val safeWindow: Window = this.window ?: return
+            val isLight = SystemBarUtils.isLight(safeWindow.navigationBarColor)
+            SystemBarUtils.setNavigationBarAppearanceLight(safeWindow, isLight)
+        } catch (e: Throwable) {
+            Logger.e(e)
+        }
     }
 
     fun postMessage(message: String) {
