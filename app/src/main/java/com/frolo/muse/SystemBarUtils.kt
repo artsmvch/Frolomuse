@@ -51,7 +51,7 @@ object SystemBarUtils {
         window.navigationBarColor = color
     }
 
-    @RequiresApi(Build.VERSION_CODES.M)
+    @RequiresApi(Build.VERSION_CODES.O)
     fun setNavigationBarAppearanceLight(window: Window, isLight: Boolean)  {
         if (isLight) {
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION)

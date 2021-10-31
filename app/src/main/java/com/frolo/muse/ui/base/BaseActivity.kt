@@ -1,9 +1,11 @@
 package com.frolo.muse.ui.base
 
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.view.Window
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.frolo.muse.*
 import com.frolo.muse.model.ThemeUtils
@@ -75,6 +77,13 @@ abstract class BaseActivity: AppCompatActivity() {
      * since the window is already created at this point and the activity is in the foreground.
      */
     private fun syncNavigationBarAppearance() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            syncNavigationBarAppearanceImpl27()
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun syncNavigationBarAppearanceImpl27() {
         try {
             val safeWindow: Window = this.window ?: return
             val isLight = SystemBarUtils.isLight(safeWindow.navigationBarColor)
