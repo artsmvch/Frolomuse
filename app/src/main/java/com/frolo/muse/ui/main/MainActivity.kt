@@ -464,14 +464,18 @@ class MainActivity : PlayerHostActivity(),
                 override val numberOfRootFragments = 4
 
                 override fun getRootFragment(index: Int): Fragment {
-                    when (index) {
-                        INDEX_LIBRARY -> return LibraryFragment.newInstance()
-                        //INDEX_PLAYER -> return PlayerFragment.newInstance()
-                        INDEX_EQUALIZER-> return AudioFxFragment.newInstance()
-                        INDEX_SEARCH -> return SearchFragment.newInstance()
-                        INDEX_SETTINGS-> return AppBarSettingsFragment.newInstance()
+                    return when (index) {
+                        INDEX_LIBRARY ->    LibraryFragment.newInstance()
+                        INDEX_EQUALIZER ->  AudioFxFragment.newInstance()
+                        INDEX_SEARCH ->     SearchFragment.newInstance()
+                        INDEX_SETTINGS ->   AppBarSettingsFragment.newInstance()
+                        else -> {
+                            if (isDebug) {
+                                throw IllegalStateException("Unexpected root index: $index")
+                            }
+                            Fragment()
+                        }
                     }
-                    throw IllegalStateException("Unknown index: $index")
                 }
 
             }
@@ -526,11 +530,16 @@ class MainActivity : PlayerHostActivity(),
         }
 
         bottom_navigation_view.selectedItemId = when(currTabIndex) {
-            INDEX_LIBRARY -> R.id.nav_library
-            INDEX_EQUALIZER -> R.id.nav_equalizer
-            INDEX_SEARCH -> R.id.nav_search
-            INDEX_SETTINGS -> R.id.nav_settings
-            else -> R.id.nav_library
+            INDEX_LIBRARY ->    R.id.nav_library
+            INDEX_EQUALIZER ->  R.id.nav_equalizer
+            INDEX_SEARCH ->     R.id.nav_search
+            INDEX_SETTINGS ->   R.id.nav_settings
+            else -> {
+                if (isDebug) {
+                    throw IllegalStateException("Unexpected tab index: $currTabIndex")
+                }
+                R.id.nav_library
+            }
         }
 
         // Initializing PlayerSheet and MiniPlayer
@@ -773,6 +782,9 @@ class MainActivity : PlayerHostActivity(),
     }
 
     companion object {
+
+        private val isDebug: Boolean = BuildConfig.DEBUG
+
         private const val RC_READ_STORAGE = 1043
 
         // Fragment tags
