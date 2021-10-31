@@ -3,6 +3,7 @@ package com.frolo.muse.ui.main.player.carousel
 import android.view.View
 import android.view.ViewTreeObserver
 import androidx.viewpager2.widget.ViewPager2
+import com.frolo.muse.Screen
 import com.frolo.muse.views.viewpager.setOverScrollModeCompat
 import kotlinx.android.synthetic.main.include_square_album_art.view.*
 import kotlin.math.abs
@@ -16,6 +17,11 @@ class AlbumCardCarouselHelper private constructor(
 
     private val minPageScale: Float = 0.75f
     private val maxPageScale: Float = 1f
+
+    // For debugging
+    private val screenLayoutSizeName: String by lazy {
+        Screen.getLayoutSizeName(viewPager.context)
+    }
 
     /**
      * Minimal card elevation that all items must have on their album cards.

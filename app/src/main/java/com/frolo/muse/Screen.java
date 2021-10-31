@@ -83,6 +83,24 @@ public final class Screen {
         return context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK;
     }
 
+    public static String getLayoutSizeName(@NonNull Context context) {
+        int layoutSize = getLayoutSize(context);
+        switch (layoutSize) {
+            case Configuration.SCREENLAYOUT_SIZE_SMALL:
+                return "small";
+            case Configuration.SCREENLAYOUT_SIZE_NORMAL:
+                return "normal";
+            case Configuration.SCREENLAYOUT_SIZE_LARGE:
+                return "large";
+            case Configuration.SCREENLAYOUT_SIZE_XLARGE:
+                return "xlarge";
+            case Configuration.SCREENLAYOUT_SIZE_UNDEFINED:
+                return "undefined";
+            default:
+                return "unknown";
+        }
+    }
+
     public static boolean isSmall(@NonNull Context context) {
         return getLayoutSize(context) == Configuration.SCREENLAYOUT_SIZE_SMALL;
     }
