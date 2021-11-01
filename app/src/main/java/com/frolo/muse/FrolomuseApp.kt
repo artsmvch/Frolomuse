@@ -23,7 +23,6 @@ import com.frolo.muse.engine.audiofx.AudioFxImpl
 import com.frolo.muse.logger.logLowMemory
 import com.frolo.muse.navigator.NavigatorWrapper
 import com.frolo.muse.ui.base.BaseActivity
-import com.frolo.muse.ui.base.FragmentNavigator
 import com.frolo.muse.ui.main.MainActivity
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
@@ -190,8 +189,8 @@ class FrolomuseApp : MultiDexApplication(), ActivityWatcher {
         playerWrapper.detachBase()
     }
 
-    fun onFragmentNavigatorCreated(fragmentNavigator: FragmentNavigator) {
-        navigatorWrapper.attachBase(NavigatorImpl(fragmentNavigator as MainActivity))
+    fun onFragmentNavigatorCreated(activity: MainActivity) {
+        navigatorWrapper.attachBase(NavigatorImpl(activity))
     }
 
     fun onFragmentNavigatorDestroyed() {

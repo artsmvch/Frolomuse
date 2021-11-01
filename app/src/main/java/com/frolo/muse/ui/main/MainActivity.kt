@@ -60,7 +60,7 @@ import kotlin.math.pow
 
 // TODO: show some splash until the player is connected and the fragment are loaded
 class MainActivity : PlayerHostActivity(),
-        FragmentNavigator,
+        SimpleFragmentNavigator,
         PlayerSheetCallback,
         ThemeHandler {
 

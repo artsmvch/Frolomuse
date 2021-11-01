@@ -75,7 +75,7 @@ class LibraryFragment: BaseFragment(),
         }
 
         vp_sections.apply {
-            adapter = LibraryPageAdapter(childFragmentManager, context).apply {
+            adapter = LibraryPageAdapter(context, childFragmentManager).apply {
                 sections = actualSections
             }
 
