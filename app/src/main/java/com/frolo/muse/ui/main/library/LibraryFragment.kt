@@ -9,6 +9,7 @@ import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.viewpager.widget.ViewPager
+import com.frolo.muse.FragmentUtils
 import com.frolo.muse.R
 import com.frolo.muse.model.Library
 import com.frolo.muse.repository.Preferences
@@ -143,7 +144,7 @@ class LibraryFragment: BaseFragment(),
     override fun scrollToTop() {
         app_bar_layout?.setExpanded(true, true)
         peekCurrentPage()?.also { page ->
-            if (page is ScrolledToTop) {
+            if (page is ScrolledToTop && FragmentUtils.isInForeground(page)) {
                 page.scrollToTop()
             }
         }

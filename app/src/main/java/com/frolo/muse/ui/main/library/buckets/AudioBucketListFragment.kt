@@ -5,8 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.frolo.muse.FragmentUtils
 import com.frolo.muse.R
 import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
@@ -91,25 +93,28 @@ class AudioBucketListFragment : BaseFragment(),
     }
 
     override fun onLeaveBucket() {
-        val transaction = childFragmentManager.beginTransaction()
-        childFragmentManager.fragments?.forEach { childFragment ->
-            transaction.remove(childFragment)
-        }
-        transaction.commitNow()
-        layout_list.isVisible = true
+        leaveBucketImpl()
     }
 
     override fun onBackPress(): Boolean {
-        val childFragment = childFragmentManager.findFragmentByTag(FRAGMENT_TAG_BUCKET)
-        return if (childFragment != null) {
+        return leaveBucketImpl()
+    }
+
+    private fun leaveBucketImpl(): Boolean {
+        val bucketFragment = peekBucketFragment()
+        return if (bucketFragment != null) {
             childFragmentManager.beginTransaction()
-                .remove(childFragment)
+                .remove(bucketFragment)
                 .commitNow()
             layout_list.isVisible = true
             true
         } else {
             false
         }
+    }
+
+    private fun peekBucketFragment(): Fragment? {
+        return childFragmentManager.findFragmentByTag(FRAGMENT_TAG_BUCKET)
     }
 
     private fun openBucket(bucket: MediaBucket) {
@@ -165,7 +170,14 @@ class AudioBucketListFragment : BaseFragment(),
     }
 
     override fun scrollToTop() {
-        rv_list?.smoothScrollToTop()
+        val bucketFragment = peekBucketFragment()
+        if (bucketFragment != null) {
+            if (bucketFragment is ScrolledToTop && FragmentUtils.isInForeground(bucketFragment)) {
+                bucketFragment.scrollToTop()
+            }
+        } else {
+            rv_list.smoothScrollToTop()
+        }
     }
 
     companion object {

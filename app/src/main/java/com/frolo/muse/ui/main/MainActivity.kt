@@ -520,7 +520,10 @@ class MainActivity : PlayerHostActivity(),
                     // to the top of the content of the root fragment
                     currentStack?.also { safeStack ->
                         val root = if (safeStack.size == 1) safeStack.peek() else null
-                        if (root != null && root is ScrolledToTop) {
+                        if (root != null
+                                && root is ScrolledToTop
+                                && FragmentUtils.isInForeground(root)) {
+                            // The fragment has to be in the foreground
                             root.scrollToTop()
                         }
                     }

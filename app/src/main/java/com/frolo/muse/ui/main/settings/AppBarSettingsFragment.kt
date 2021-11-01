@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
+import com.frolo.muse.FragmentUtils
 import com.frolo.muse.R
 import com.frolo.muse.ui.ScrolledToTop
 import com.frolo.muse.ui.base.BaseFragment
@@ -36,7 +37,7 @@ class AppBarSettingsFragment : BaseFragment(), ScrolledToTop {
     override fun scrollToTop() {
         app_bar_layout?.setExpanded(true, true)
         val innerFragment = peekInnerFragment()
-        if (innerFragment != null && innerFragment is ScrolledToTop) {
+        if (innerFragment is ScrolledToTop && FragmentUtils.isInForeground(innerFragment)) {
             innerFragment.scrollToTop()
         }
     }
