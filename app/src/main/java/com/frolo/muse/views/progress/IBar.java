@@ -88,6 +88,9 @@ public class IBar extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         //Trace.d(TAG, "drawing");
+        if (colors == null) {
+            return;
+        }
 
         int cx = getWidth() / 2;
         int cy = getHeight() / 2;
