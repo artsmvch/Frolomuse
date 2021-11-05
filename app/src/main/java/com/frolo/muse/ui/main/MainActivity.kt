@@ -706,7 +706,12 @@ class MainActivity : PlayerHostActivity(),
 
     fun expandSlidingPlayer() {
         fragNavController?.doIfStateNotSaved {
-            clearDialogFragment()
+            // Wrapping in a try-catch, because sometimes it crashes
+            try {
+                clearDialogFragment()
+            } catch (error: Throwable) {
+                Logger.e(error)
+            }
         }
         BottomSheetBehavior.from(sliding_player_layout).state = BottomSheetBehavior.STATE_EXPANDED
     }
