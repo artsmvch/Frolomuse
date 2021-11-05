@@ -56,17 +56,15 @@ class PlayerStateSaver constructor(
     }
 
     private fun saveQueueAsync(queue: AudioSourceQueue) {
-        val saveTypeAndIdTask = Completable.fromAction {
-            preferences.apply {
-                saveLastMediaCollectionType(queue.type)
-                saveLastMediaCollectionId(queue.id)
-            } }.subscribeOn(workerScheduler)
-
-        val saveItemIdsTask = Single.fromCallable { queue.map { source -> source.id } }
+        Single.fromCallable { queue.map { source -> source.id } }
             .subscribeOn(computationScheduler)
             .flatMapCompletable { preferences.saveLastMediaCollectionItemIds(it) }
-
-        Completable.merge(listOf(saveTypeAndIdTask, saveItemIdsTask))
+            .doOnComplete {
+                preferences.apply {
+                    saveLastMediaCollectionType(-1)
+                    saveLastMediaCollectionId(-1)
+                }
+            }
             .subscribe()
             .also { newDisposable ->
                 internalDisposables.add(newDisposable)

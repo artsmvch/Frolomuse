@@ -19,7 +19,7 @@ fun <A: AudioSource> List<A>.excludeShortAudioSources(minDurationInSeconds: Long
 @WorkerThread
 fun AudioSourceQueue.excludeShortAudioSources(minDurationInSeconds: Long): AudioSourceQueue {
     val filteredItems = snapshot.excludeShortAudioSources(minDurationInSeconds)
-    return AudioSourceQueue.create(type, id, name, filteredItems)
+    return AudioSourceQueue.create(filteredItems)
 }
 
 @WorkerThread

@@ -1,7 +1,6 @@
 package com.frolo.muse.di.modules
 
 import com.frolo.muse.engine.Player
-import com.frolo.muse.common.AudioSourceQueueFactory
 import com.frolo.muse.interactor.feature.FeaturesUseCase
 import com.frolo.muse.navigator.Navigator
 import com.frolo.muse.interactor.media.*
@@ -246,163 +245,100 @@ abstract class UseCaseModule {
         @Provides
         @JvmStatic
         fun provideClickMediaUseCase(
-                schedulerProvider: SchedulerProvider,
-                player: Player,
-                repository: GenericMediaRepository,
-                navigator: Navigator,
-                audioSourceQueueFactory: AudioSourceQueueFactory
+            schedulerProvider: SchedulerProvider,
+            player: Player,
+            repository: GenericMediaRepository,
+            navigator: Navigator
         ): ClickMediaUseCase<Media> {
-            return ClickMediaUseCase<Media>(
-                    schedulerProvider,
-                    player,
-                    repository,
-                    navigator,
-                    audioSourceQueueFactory
-            )
+            return ClickMediaUseCase<Media>(schedulerProvider, player, repository, navigator)
         }
 
         @Provides
         @JvmStatic
         fun provideClickArtistUseCase(
-                schedulerProvider: SchedulerProvider,
-                player: Player,
-                repository: GenericMediaRepository,
-                navigator: Navigator,
-                audioSourceQueueFactory: AudioSourceQueueFactory
+            schedulerProvider: SchedulerProvider,
+            player: Player,
+            repository: GenericMediaRepository,
+            navigator: Navigator
         ): ClickMediaUseCase<Artist> {
-            return ClickMediaUseCase<Artist>(
-                    schedulerProvider,
-                    player,
-                    repository,
-                    navigator,
-                    audioSourceQueueFactory
-            )
+            return ClickMediaUseCase<Artist>(schedulerProvider, player, repository, navigator)
         }
 
         @Provides
         @JvmStatic
         fun provideClickAlbumUseCase(
-                schedulerProvider: SchedulerProvider,
-                player: Player,
-                repository: GenericMediaRepository,
-                navigator: Navigator,
-                audioSourceQueueFactory: AudioSourceQueueFactory
+            schedulerProvider: SchedulerProvider,
+            player: Player,
+            repository: GenericMediaRepository,
+            navigator: Navigator
         ): ClickMediaUseCase<Album> {
-            return ClickMediaUseCase<Album>(
-                    schedulerProvider,
-                    player,
-                    repository,
-                    navigator,
-                    audioSourceQueueFactory
-            )
+            return ClickMediaUseCase<Album>(schedulerProvider, player, repository, navigator)
         }
 
         @Provides
         @JvmStatic
         fun provideClickGenreUseCase(
-                schedulerProvider: SchedulerProvider,
-                player: Player,
-                repository: GenericMediaRepository,
-                navigator: Navigator,
-                audioSourceQueueFactory: AudioSourceQueueFactory
+            schedulerProvider: SchedulerProvider,
+            player: Player,
+            repository: GenericMediaRepository,
+            navigator: Navigator
         ): ClickMediaUseCase<Genre> {
-            return ClickMediaUseCase<Genre>(
-                    schedulerProvider,
-                    player,
-                    repository,
-                    navigator,
-                    audioSourceQueueFactory
-            )
+            return ClickMediaUseCase<Genre>(schedulerProvider, player, repository, navigator)
         }
 
         @Provides
         @JvmStatic
         fun provideClickPlaylistUseCase(
-                schedulerProvider: SchedulerProvider,
-                player: Player,
-                repository: GenericMediaRepository,
-                navigator: Navigator,
-                audioSourceQueueFactory: AudioSourceQueueFactory
+            schedulerProvider: SchedulerProvider,
+            player: Player,
+            repository: GenericMediaRepository,
+            navigator: Navigator
         ): ClickMediaUseCase<Playlist> {
-            return ClickMediaUseCase<Playlist>(
-                    schedulerProvider,
-                    player,
-                    repository,
-                    navigator,
-                    audioSourceQueueFactory
-            )
+            return ClickMediaUseCase<Playlist>(schedulerProvider, player, repository, navigator)
         }
 
         @Provides
         @JvmStatic
         fun provideClickSongUseCase(
-                schedulerProvider: SchedulerProvider,
-                player: Player,
-                repository: GenericMediaRepository,
-                navigator: Navigator,
-                audioSourceQueueFactory: AudioSourceQueueFactory
+            schedulerProvider: SchedulerProvider,
+            player: Player,
+            repository: GenericMediaRepository,
+            navigator: Navigator
         ): ClickMediaUseCase<Song> {
-            return ClickMediaUseCase<Song>(
-                    schedulerProvider,
-                    player,
-                    repository,
-                    navigator,
-                    audioSourceQueueFactory
-            )
+            return ClickMediaUseCase<Song>(schedulerProvider, player, repository, navigator)
         }
 
         @Provides
         @JvmStatic
         fun provideClickSongWithPlayCountUseCase(
-                schedulerProvider: SchedulerProvider,
-                player: Player,
-                repository: GenericMediaRepository,
-                navigator: Navigator,
-                audioSourceQueueFactory: AudioSourceQueueFactory
+            schedulerProvider: SchedulerProvider,
+            player: Player,
+            repository: GenericMediaRepository,
+            navigator: Navigator
         ): ClickMediaUseCase<SongWithPlayCount> {
-            return ClickMediaUseCase<SongWithPlayCount>(
-                    schedulerProvider,
-                    player,
-                    repository,
-                    navigator,
-                    audioSourceQueueFactory
-            )
+            return ClickMediaUseCase<SongWithPlayCount>(schedulerProvider, player, repository, navigator)
         }
 
         @Provides
         @JvmStatic
         fun provideClickMyFileUseCase(
-                schedulerProvider: SchedulerProvider,
-                player: Player,
-                repository: GenericMediaRepository,
-                navigator: Navigator,
-                audioSourceQueueFactory: AudioSourceQueueFactory
+            schedulerProvider: SchedulerProvider,
+            player: Player,
+            repository: GenericMediaRepository,
+            navigator: Navigator
         ): ClickMediaUseCase<MyFile> {
-            return ClickMediaUseCase<MyFile>(
-                    schedulerProvider,
-                    player,
-                    repository,
-                    navigator,
-                    audioSourceQueueFactory
-            )
+            return ClickMediaUseCase<MyFile>(schedulerProvider, player, repository, navigator)
         }
 
         @Provides
         @JvmStatic
         fun provideClickMediaFileUseCase(
-                schedulerProvider: SchedulerProvider,
-                player: Player,
-                repository: GenericMediaRepository,
-                navigator: Navigator,
-                audioSourceQueueFactory: AudioSourceQueueFactory
+            schedulerProvider: SchedulerProvider,
+            player: Player,
+            repository: GenericMediaRepository,
+            navigator: Navigator,
         ): ClickMediaUseCase<MediaFile> {
-            return ClickMediaUseCase<MediaFile>(
-                    schedulerProvider,
-                    player,
-                    repository,
-                    navigator,
-                    audioSourceQueueFactory
-            )
+            return ClickMediaUseCase<MediaFile>(schedulerProvider, player, repository, navigator)
         }
 
         /*PlayMediaUseCase*/
@@ -939,8 +875,7 @@ abstract class UseCaseModule {
             artistRepository: ArtistRepository,
             genreRepository: GenreRepository,
             playlistRepository: PlaylistRepository,
-            preferences: Preferences,
-            libraryPreferences: LibraryPreferences
+            preferences: Preferences
         ): RestorePlayerStateUseCase {
             return RestorePlayerStateUseCase(
                 schedulerProvider,
@@ -949,8 +884,7 @@ abstract class UseCaseModule {
                 artistRepository,
                 genreRepository,
                 playlistRepository,
-                preferences,
-                libraryPreferences
+                preferences
             )
         }
 

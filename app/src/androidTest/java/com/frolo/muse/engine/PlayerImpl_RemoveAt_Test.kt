@@ -23,7 +23,7 @@ class PlayerImpl_RemoveAt_Test : PlayerImpl_Base_Test() {
         player.registerObserver(testObserver)
 
         val originalQueue = createNonEmptyAudioSourceQueue(size = 2)
-        val queue = originalQueue.clone()
+        val queue = originalQueue.createCopy()
         val originalSize = queue.length
 
         val position = 0
@@ -49,7 +49,7 @@ class PlayerImpl_RemoveAt_Test : PlayerImpl_Base_Test() {
         player.registerObserver(testObserver)
 
         val originalQueue = createNonEmptyAudioSourceQueue(size = 2)
-        val queue = originalQueue.clone()
+        val queue = originalQueue.createCopy()
         val originalSize = queue.length
 
         val position = 1
@@ -75,7 +75,7 @@ class PlayerImpl_RemoveAt_Test : PlayerImpl_Base_Test() {
         player.registerObserver(testObserver)
 
         val originalQueue = createNonEmptyAudioSourceQueue(size = 2)
-        val queue = originalQueue.clone()
+        val queue = originalQueue.createCopy()
         val originalSize = queue.length
 
         val position = 0

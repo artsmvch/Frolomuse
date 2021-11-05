@@ -202,7 +202,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
             return "Queue[null]";
         }
 
-        return "Queue[name=" + queue.getName() + ", length=" + queue.getLength() + "]";
+        return "Queue[name=" + queue + ", length=" + queue.getLength() + "]";
     }
 
     @NotNull
@@ -935,7 +935,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
                 }
 
                 // The current queue will be cloned from the original
-                final AudioSourceQueue currentQueue = queue.clone();
+                final AudioSourceQueue currentQueue = queue.createCopy();
 
                 // Then, we need to configure the new queue according to the current shuffle mode
                 // and define the position of the target item in the result queue

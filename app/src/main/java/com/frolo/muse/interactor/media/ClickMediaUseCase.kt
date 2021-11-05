@@ -2,7 +2,6 @@ package com.frolo.muse.interactor.media
 
 import com.frolo.muse.common.AudioSourceQueue
 import com.frolo.muse.engine.Player
-import com.frolo.muse.common.AudioSourceQueueFactory
 import com.frolo.muse.common.prepareByTarget
 import com.frolo.muse.common.toAudioSource
 import com.frolo.muse.navigator.Navigator
@@ -19,8 +18,7 @@ class ClickMediaUseCase <E: Media> constructor(
     private val schedulerProvider: SchedulerProvider,
     private val player: Player,
     private val genericMediaRepository: GenericMediaRepository,
-    private val navigator: Navigator,
-    private val audioSourceQueueFactory: AudioSourceQueueFactory
+    private val navigator: Navigator
 ) {
 
     private fun processPlay(target: Song, songs: List<Song>, toggleIfSameSong: Boolean, associatedMediaItem: Media?) {

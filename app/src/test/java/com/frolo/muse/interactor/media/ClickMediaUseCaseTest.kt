@@ -3,7 +3,6 @@ package com.frolo.muse.interactor.media
 import com.frolo.muse.*
 import com.frolo.muse.engine.Player
 import com.frolo.muse.engine.AudioSourceQueue
-import com.frolo.muse.common.AudioSourceQueueFactory
 import com.frolo.muse.common.toAudioSource
 import com.frolo.muse.common.toAudioSources
 import com.frolo.muse.model.media.*
@@ -32,8 +31,6 @@ class ClickMediaUseCaseTest {
     @Mock
     private lateinit var repository: GenericMediaRepository
     @Mock
-    private lateinit var audioSourceQueueFactory: AudioSourceQueueFactory
-    @Mock
     private lateinit var navigator: Navigator
 
     @Before
@@ -44,8 +41,7 @@ class ClickMediaUseCaseTest {
                 TestSchedulerProvider.SHARED,
                 player,
                 repository,
-                navigator,
-                audioSourceQueueFactory
+                navigator
         )
     }
 
@@ -54,15 +50,12 @@ class ClickMediaUseCaseTest {
         val songs = mockList<Song>(size = 10)
         val song = mockKT<Song>()
 
-        val songQueue = AudioSourceQueue.create(AudioSourceQueue.CHUNK, AudioSourceQueue.NO_ID, "", songs.toAudioSources())
+        val songQueue = AudioSourceQueue.create(songs.toAudioSources())
 
         val testObserver = TestObserver.create<Unit>()
 
         whenever(player.getCurrent())
                 .thenReturn(null)
-
-        whenever(audioSourceQueueFactory.create(eq(listOf(song)), eq(songs)))
-                .thenReturn(songQueue)
 
         whenever(player.prepareByTarget(eq(songQueue), eq(song.toAudioSource()), eq(true), eq(0)))
                 .thenDoNothing()
@@ -241,7 +234,7 @@ class ClickMediaUseCaseTest {
         val song = mockKT<Song>()
         val songsFromMyFile = listOf(song)
         val allSongs = songsFromMyFile + songsFromMyFile
-        val songQueue = AudioSourceQueue.create(AudioSourceQueue.CHUNK, AudioSourceQueue.NO_ID, "", allSongs.toAudioSources())
+        val songQueue = AudioSourceQueue.create(allSongs.toAudioSources())
 
         whenever(myFile.kind).thenReturn(Media.MY_FILE)
 
@@ -254,8 +247,6 @@ class ClickMediaUseCaseTest {
         whenever(repository.collectSongs(any<MyFile>())).thenReturn(Single.just(songsFromMyFile))
 
         whenever(player.getCurrent()).thenReturn(null)
-
-        whenever(audioSourceQueueFactory.create(eq(listOf(song)), eq(allSongs))).thenReturn(songQueue)
 
         whenever(player.prepareByTarget(eq(songQueue), eq(song.toAudioSource()), eq(true), eq(0))).thenDoNothing()
 

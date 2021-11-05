@@ -3,7 +3,6 @@ package com.frolo.muse.interactor.media
 import com.frolo.muse.*
 import com.frolo.muse.engine.Player
 import com.frolo.muse.engine.AudioSourceQueue
-import com.frolo.muse.common.AudioSourceQueueFactory
 import com.frolo.muse.common.toAudioSource
 import com.frolo.muse.common.toAudioSources
 import com.frolo.muse.model.media.Media
@@ -34,8 +33,6 @@ class PlayMediaUseCaseTest {
     private lateinit var preferences: Preferences
     @Mock
     private lateinit var player: Player
-    @Mock
-    private lateinit var audioSourceQueueFactory: AudioSourceQueueFactory
 
     private lateinit var playMediaUseCase: PlayMediaUseCase<Media>
 
@@ -58,11 +55,7 @@ class PlayMediaUseCaseTest {
 
         val targetSong = songs.first()
 
-        val songQueue = AudioSourceQueue.create(
-                AudioSourceQueue.CHUNK,
-                AudioSourceQueue.NO_ID,
-                "",
-                songs.toAudioSources())
+        val songQueue = AudioSourceQueue.create(songs.toAudioSources())
 
         whenever(repository.collectSongs(eq(items)))
                 .thenReturn(Single.just(songs))
@@ -75,9 +68,6 @@ class PlayMediaUseCaseTest {
 
         whenever(preferences.saveLastSongId(any()))
                 .thenDoNothing()
-
-        whenever(audioSourceQueueFactory.create(eq(items), eq(songs)))
-                .thenReturn(songQueue)
 
         whenever(player.prepareByTarget(any(), any(), any(), any()))
                 .thenDoNothing()
@@ -97,11 +87,7 @@ class PlayMediaUseCaseTest {
 
         val targetSong = songs.first()
 
-        val songQueue = AudioSourceQueue.create(
-                AudioSourceQueue.CHUNK,
-                AudioSourceQueue.NO_ID,
-                "",
-                songs.toAudioSources())
+        val songQueue = AudioSourceQueue.create(songs.toAudioSources())
 
         whenever(repository.collectSongs(eq(item)))
                 .thenReturn(Single.just(songs))
@@ -117,9 +103,6 @@ class PlayMediaUseCaseTest {
 
         whenever(preferences.saveLastSongId(any()))
                 .thenDoNothing()
-
-        whenever(audioSourceQueueFactory.create(eq(listOf(item)), eq(songs)))
-                .thenReturn(songQueue)
 
         whenever(player.prepareByTarget(any(), any(), any(), any()))
                 .thenDoNothing()

@@ -50,7 +50,6 @@ import javax.inject.Singleton
         NetworkModule::class,
         MiscModule::class,
         UseCaseModule::class,
-        SongQueueFactoryModule::class,
         UseCaseModule::class,
         BillingModule::class
     ]

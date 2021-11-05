@@ -1,63 +1,44 @@
 package com.frolo.muse.engine;
 
-import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 
 import com.frolo.muse.util.CollectionUtil;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.WeakHashMap;
 import java.util.concurrent.Executor;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 
 // Thread-safe
-public final class AudioSourceQueue implements Cloneable {
+public final class AudioSourceQueue implements Tagged<Object, Object>, Cloneable {
 
     // By default
     public static final boolean UNIQUE = false;
-
-    // Types
-    public static final int NONE = -1;
-    public static final int SINGLE = 0;
-    public static final int ALBUM = 1;
-    public static final int ARTIST = 2;
-    public static final int GENRE = 3;
-    public static final int PLAYLIST = 4;
-    public static final int FOLDER = 5;
-    public static final int CHUNK = 6;
-    public static final int FAVOURITES = 7;
-
-    // No id
-    public static final long NO_ID = -1;
-
-    @IntDef({NONE, SINGLE, ALBUM, ARTIST, GENRE, PLAYLIST, FOLDER, CHUNK, FAVOURITES})
-    @Retention(RetentionPolicy.SOURCE)
-    @Target({ElementType.LOCAL_VARIABLE, ElementType.FIELD, ElementType.PARAMETER, ElementType.METHOD})
-    public @interface QueueType { }
 
     public interface Callback {
         void invalidate(AudioSourceQueue queue);
     }
 
-    @QueueType
-    private final int mType;
-    private final long mId;
-    private final String mName;
     private final List<AudioSource> mItems;
     // If this flag is true then the queue has no item collision (i.e. represents a set of audio sources)
     private final boolean mUnique;
     // Each callback has its own executor on which the invalidation is performed
     private final Map<Callback, Executor> mCallbacks = new WeakHashMap<>();
+
+    private final ReadWriteLock mTagsLock = new ReentrantReadWriteLock();
+    private final Map<Object, Object> mTags = new HashMap<>();
 
     private class Invalidator implements Runnable {
         final Callback mCallback;
@@ -74,28 +55,67 @@ public final class AudioSourceQueue implements Cloneable {
 
     // Factory
     public static AudioSourceQueue empty() {
-        return new AudioSourceQueue(NONE, NO_ID, "", new ArrayList<AudioSource>(), UNIQUE);
+        return new AudioSourceQueue(new ArrayList<AudioSource>(), UNIQUE);
     }
 
     // Factory
-    public static AudioSourceQueue create(
-            @QueueType int type, long id, String name, List<AudioSource> items, boolean unique) {
-        return new AudioSourceQueue(type, id, name, items, unique);
+    public static AudioSourceQueue create(List<AudioSource> items, boolean unique) {
+        return new AudioSourceQueue(items, unique);
     }
 
-    public static AudioSourceQueue create(
-            @QueueType int type, long id, String name,List<AudioSource> items) {
-        return create(type, id, name, items, UNIQUE);
+    public static AudioSourceQueue create(List<AudioSource> items) {
+        return create(items, UNIQUE);
     }
 
-    private AudioSourceQueue(int type, long id, String name, List<AudioSource> items, boolean unique) {
-        this.mType = type;
-        this.mId = id;
-        this.mName = name;
+    private AudioSourceQueue(List<AudioSource> items, boolean unique) {
         this.mItems = unique
                 ? new ArrayList<>(new LinkedHashSet<>(items))
                 : new ArrayList<>(items);
         this.mUnique = unique;
+    }
+
+    /* package */ Map<Object, Object> getTagsSnapshot() {
+        final Lock lock = mTagsLock.readLock();
+        try {
+            lock.lock();
+            return new HashMap<>(mTags);
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    @Override
+    @Nullable
+    public Object getTag(Object key) {
+        final Lock lock = mTagsLock.readLock();
+        try {
+            lock.lock();
+            return mTags.get(key);
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    @Override
+    public void putTag(Object key, Object value) {
+        final Lock lock = mTagsLock.writeLock();
+        try {
+            lock.lock();
+            mTags.put(key, value);
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    @Override
+    public void removeTag(Object key) {
+        final Lock lock = mTagsLock.writeLock();
+        try {
+            lock.lock();
+            mTags.remove(key);
+        } finally {
+            lock.unlock();
+        }
     }
 
     /**
@@ -120,19 +140,6 @@ public final class AudioSourceQueue implements Cloneable {
         }
     }
 
-    @QueueType
-    public int getType() {
-        return mType;
-    }
-
-    public long getId() {
-        return mId;
-    }
-
-    public String getName() {
-        return mName;
-    }
-
     public boolean isUnique() {
         return mUnique;
     }
@@ -153,31 +160,31 @@ public final class AudioSourceQueue implements Cloneable {
         return mItems.get(position);
     }
 
-    public synchronized void setItemAt(int position, AudioSource item) {
-        mItems.set(position, item);
-    }
-
     public synchronized boolean contains(AudioSource item) {
         return mItems.contains(item);
     }
 
-    /*package*/ synchronized void copyItemsFrom(AudioSourceQueue src) {
+    /* package */ synchronized void setItemAt(int position, AudioSource item) {
+        mItems.set(position, item);
+    }
+
+    /* package */ synchronized void copyItemsFrom(AudioSourceQueue src) {
         mItems.clear();
         mItems.addAll(src.mItems);
         invalidateSelf();
     }
 
-    /*package*/ synchronized void addAll(Collection<?extends AudioSource> items) {
+    /* package */ synchronized void addAll(Collection<?extends AudioSource> items) {
         if (mUnique) {
             mItems.removeAll(items);
-            mItems.addAll(items);
+            mItems.addAll(new LinkedHashSet<>(items));
         } else {
             mItems.addAll(items);
         }
         invalidateSelf();
     }
 
-    /*package*/ synchronized void addAll(int position, Collection<?extends AudioSource> items) {
+    /* package */ synchronized void addAll(int position, Collection<?extends AudioSource> items) {
         if (mUnique) {
             mItems.removeAll(items);
 
@@ -200,7 +207,7 @@ public final class AudioSourceQueue implements Cloneable {
      * Replaces all audio sources with the same ID as the given <code>audioSource</code> with this <code>audioSource</code>.
      * @param audioSource to replace with
      */
-    /*package*/ synchronized void replaceAllWithSameId(AudioSource audioSource) {
+    /* package */ synchronized void replaceAllWithSameId(AudioSource audioSource) {
         if (audioSource == null) return;
 
         boolean atLeastOneReplaced = false;
@@ -217,27 +224,27 @@ public final class AudioSourceQueue implements Cloneable {
         }
     }
 
-    /*package*/ synchronized void remove(AudioSource item) {
+    /* package */ synchronized void remove(AudioSource item) {
         mItems.remove(item);
         invalidateSelf();
     }
 
-    /*package*/ synchronized void removeAt(int position) {
+    /* package */ synchronized void removeAt(int position) {
         mItems.remove(position);
         invalidateSelf();
     }
 
-    /*package*/ synchronized void removeAll(Collection<?extends AudioSource> items) {
+    /* package */ synchronized void removeAll(Collection<?extends AudioSource> items) {
         mItems.removeAll(items);
         invalidateSelf();
     }
 
-    /*package*/ synchronized void clear() {
+    /* package */ synchronized void clear() {
         mItems.clear();
         invalidateSelf();
     }
 
-    /*package*/ synchronized void moveItem(int fromPosition, int toPosition) {
+    /* package */ synchronized void moveItem(int fromPosition, int toPosition) {
         if (fromPosition < toPosition) {
             for (int i = fromPosition; i < toPosition; i++) {
                 Collections.swap(mItems, i, i + 1);
@@ -253,7 +260,7 @@ public final class AudioSourceQueue implements Cloneable {
     /**
      * Shuffles the queue.
      */
-    /*package*/ synchronized void shuffle() {
+    /* package */ synchronized void shuffle() {
         Collections.shuffle(mItems);
         invalidateSelf();
     }
@@ -262,7 +269,7 @@ public final class AudioSourceQueue implements Cloneable {
      * Shuffles the queue and puts the given <code>putInFront</code> audio source in the front of the queue.
      * This puts the given audio source in the front only if the queue contains it.
      */
-    /*package*/ synchronized void shuffleWithItemInFront(AudioSource putInFront) {
+    /* package */ synchronized void shuffleWithItemInFront(AudioSource putInFront) {
         Collections.shuffle(mItems);
         if (mItems.remove(putInFront)) {
             mItems.add(0, putInFront);
@@ -283,8 +290,18 @@ public final class AudioSourceQueue implements Cloneable {
     @NonNull
     @Override
     protected synchronized AudioSourceQueue clone() {
+        return createCopy();
+    }
+
+    @NonNull
+    public synchronized AudioSourceQueue createCopy() {
         List<AudioSource> clonedItems = new ArrayList<>(mItems);
-        return new AudioSourceQueue(mType, mId, mName, clonedItems, mUnique);
+        Map<Object, Object> tagsSnapshot = getTagsSnapshot();
+        AudioSourceQueue clonedQueue = new AudioSourceQueue(clonedItems, mUnique);
+        for (Map.Entry<Object, Object> tagEntry : tagsSnapshot.entrySet()) {
+            clonedQueue.putTag(tagEntry.getKey(), tagEntry.getValue());
+        }
+        return clonedQueue;
     }
 
     public synchronized List<AudioSource> getSnapshot() {
@@ -296,18 +313,25 @@ public final class AudioSourceQueue implements Cloneable {
         if (other == null) {
             return false;
         }
-        synchronized (other) {
-            if (mType != other.mType) {
-                return false;
-            }
-            if (mId != other.mId) {
-                return false;
-            }
-            if (!Objects.equals(mName, other.mName)) {
-                return false;
-            }
-            return CollectionUtil.areListContentsEqual(this.mItems, other.mItems);
+
+        final boolean areTagsEqual;
+        final Lock tagsLock = mTagsLock.readLock();
+        try {
+            tagsLock.lock();
+            areTagsEqual = Objects.equals(mTags, other.getTagsSnapshot());
+        } finally {
+            tagsLock.unlock();
         }
+
+        final boolean areItemsEqual;
+        // Double synchronized block? You wanna trap in a lock?
+        synchronized (this) {
+            synchronized (other) {
+                areItemsEqual = CollectionUtil.areListContentsEqual(this.mItems, other.mItems);
+            }
+        }
+
+        return areTagsEqual && areItemsEqual;
     }
 
 }

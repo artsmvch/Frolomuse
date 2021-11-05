@@ -4,6 +4,13 @@ import com.frolo.muse.engine.AudioSource
 import com.frolo.muse.engine.AudioSourceQueue
 import com.frolo.muse.model.media.*
 
+
+val TAG_ASSOCIATED_MEDIA = Any()
+@Deprecated("Use TAG_ASSOCIATED_MEDIA")
+val TAG_QUEUE_NAME = Any()
+@Deprecated("Use TAG_ASSOCIATED_MEDIA")
+val TAG_QUEUE_ID = Any()
+
 fun AudioSourceQueue?.isNullOrEmpty(): Boolean {
     return this == null || isEmpty
 }
@@ -43,11 +50,19 @@ inline fun <T> AudioSourceQueue.map(transform: (AudioSource) -> T): List<T> {
 @Suppress("FunctionName")
 fun AudioSourceQueue(songs: List<Song>, associatedMediaItem: Media?): AudioSourceQueue {
     val audioSources = songs.toAudioSources()
-    return when(associatedMediaItem) {
-        is Album -> AudioSourceQueue.create(AudioSourceQueue.ALBUM, associatedMediaItem.id, associatedMediaItem.name, audioSources)
-        is Artist -> AudioSourceQueue.create(AudioSourceQueue.ARTIST, associatedMediaItem.id, associatedMediaItem.name, audioSources)
-        is Genre -> AudioSourceQueue.create(AudioSourceQueue.GENRE, associatedMediaItem.id, associatedMediaItem.name, audioSources)
-        is Playlist -> AudioSourceQueue.create(AudioSourceQueue.PLAYLIST, associatedMediaItem.id, associatedMediaItem.name, audioSources)
-        else -> AudioSourceQueue.create(AudioSourceQueue.CHUNK, AudioSourceQueue.NO_ID, "", audioSources)
+    val queue = AudioSourceQueue.create(audioSources)
+    if (associatedMediaItem != null) {
+        queue.putTag(TAG_ASSOCIATED_MEDIA, associatedMediaItem)
     }
+    return queue
 }
+
+@Suppress("FunctionName")
+fun AudioSourceQueue(song: Song): AudioSourceQueue {
+    return AudioSourceQueue(listOf(song), song)
+}
+
+val AudioSourceQueue.associatedMedia: Media?
+    get() {
+        return this.getTag(TAG_ASSOCIATED_MEDIA) as? Media
+    }

@@ -1,9 +1,9 @@
 package com.frolo.muse.interactor.player
 
 import com.frolo.muse.TestSchedulerProvider
+import com.frolo.muse.common.AudioSourceQueue
 import com.frolo.muse.engine.Player
 import com.frolo.muse.engine.AudioSourceQueue
-import com.frolo.muse.common.AudioSourceQueueFactory
 import com.frolo.muse.common.toAudioSource
 import com.frolo.muse.common.toAudioSources
 import com.frolo.muse.mockKT
@@ -41,10 +41,6 @@ class RestorePlayerStateUseCaseTest {
     private lateinit var playlistRepository: PlaylistRepository
     @Mock
     private lateinit var preferences: Preferences
-    @Mock
-    private lateinit var libraryPreferences: LibraryPreferences
-    @Mock
-    private lateinit var audioSourceQueueFactory: AudioSourceQueueFactory
 
     private lateinit var restorePlayerStateUseCase: RestorePlayerStateUseCase
 
@@ -61,27 +57,27 @@ class RestorePlayerStateUseCaseTest {
                 artistRepository,
                 genreRepository,
                 playlistRepository,
-                preferences,
-                libraryPreferences,
-                audioSourceQueueFactory
+                preferences
         )
     }
 
     @Test
     fun test_restoreState_Success() {
-        val type = AudioSourceQueue.ALBUM
         val id = 1L
         val album = Album(id, "album", "artist", 10)
         val songs = mockSongList(size = 10, allowIdCollisions = false)
         val targetSong = songs.first()
-        val songQueue = AudioSourceQueue.create(type, album.id, album.name, songs.toAudioSources())
+        val songQueue = AudioSourceQueue(songs, null)
         val playbackPosition = 1337
 
         whenever(preferences.lastMediaCollectionType)
-                .thenReturn(type)
+                .thenReturn(-1)
 
         whenever(preferences.lastMediaCollectionId)
                 .thenReturn(id)
+
+        whenever(preferences.lastMediaCollectionItemIds)
+                .thenReturn(Flowable.just(songs.map { song -> song.id }))
 
         whenever(albumRepository.getItem(eq(id)))
                 .thenReturn(Flowable.just(album))
@@ -89,24 +85,17 @@ class RestorePlayerStateUseCaseTest {
         whenever(albumRepository.collectSongs(eq(album)))
                 .thenReturn(Single.just(songs))
 
-        whenever(audioSourceQueueFactory.create(
-                eq(type),
-                eq(id),
-                eq(album.name),
-                eq(songs)
-        )).thenReturn(songQueue)
-
         whenever(preferences.lastSongId)
                 .thenReturn(targetSong.id)
 
         whenever(preferences.lastPlaybackPosition)
                 .thenReturn(playbackPosition)
 
-        whenever(libraryPreferences.getMinAudioDuration())
-                .thenReturn(Flowable.just(0))
-
         whenever(songRepository.allItems)
                 .thenReturn(Flowable.just(mockList(size = 100)))
+
+        whenever(songRepository.getSongsOptionally(eq(songs.map { song -> song.id })))
+                .thenReturn(Flowable.just(songs))
 
         whenever(songRepository.getItem(eq(targetSong.id)))
                 .thenReturn(Flowable.just(targetSong))
@@ -128,7 +117,6 @@ class RestorePlayerStateUseCaseTest {
 
     @Test
     fun test_restoreState_SuccessDefault() {
-        val type = AudioSourceQueue.ALBUM
         val id = 1L
         val album = Album(id, "album", "artist", 10)
         val songs = mockSongList(size = 0, allowIdCollisions = false)
@@ -136,36 +124,22 @@ class RestorePlayerStateUseCaseTest {
         val playbackPosition = 1337
         val allSongs = mockSongList(size = 100, allowIdCollisions = false)
         val defaultTargetSong = allSongs.first()
-        val songQueue = AudioSourceQueue.create(
-                type, album.id, album.name, songs.toAudioSources())
-        val defaultSongQueue = AudioSourceQueue.create(
-                AudioSourceQueue.CHUNK, AudioSourceQueue.NO_ID, "", allSongs.toAudioSources())
+        val defaultSongQueue = AudioSourceQueue.create(allSongs.toAudioSources())
 
         whenever(preferences.lastMediaCollectionType)
-                .thenReturn(type)
+                .thenReturn(-1)
 
         whenever(preferences.lastMediaCollectionId)
                 .thenReturn(id)
+
+        whenever(preferences.lastMediaCollectionItemIds)
+                .thenReturn(Flowable.just(songs.map { song -> song.id }))
 
         whenever(albumRepository.getItem(eq(id)))
                 .thenReturn(Flowable.just(album))
 
         whenever(albumRepository.collectSongs(eq(album)))
                 .thenReturn(Single.just(songs))
-
-        whenever(audioSourceQueueFactory.create(
-                eq(type),
-                eq(id),
-                eq(album.name),
-                eq(songs)
-        )).thenReturn(songQueue)
-
-        whenever(audioSourceQueueFactory.create(
-                eq(AudioSourceQueue.CHUNK),
-                eq(AudioSourceQueue.NO_ID),
-                eq(""),
-                eq(allSongs)
-        )).thenReturn(defaultSongQueue)
 
         whenever(preferences.lastSongId)
                 .thenReturn(targetSong.id)
@@ -187,45 +161,32 @@ class RestorePlayerStateUseCaseTest {
         observer.assertComplete()
 
         verify(player, times(1))
-                .prepareByTarget(defaultSongQueue, defaultTargetSong.toAudioSource(), false, 0)
+                .prepareByTarget(argThat { deepEquals(defaultSongQueue) }, eq(defaultTargetSong.toAudioSource()), eq(false), eq(playbackPosition))
     }
 
     @Test
     fun test_restoreState_Failure() {
-        val type = AudioSourceQueue.ALBUM
         val id = 1L
         val album = Album(id, "album", "artist", 10)
         val songs = mockSongList(size = 0, allowIdCollisions = false)
         val targetSong = mockKT<Song>()
         val playbackPosition = 1337
         val allSongs = mockSongList(size = 0, allowIdCollisions = false)
-        val songQueue = AudioSourceQueue.create(type, album.id, album.name, allSongs.toAudioSources())
 
         whenever(preferences.lastMediaCollectionType)
-                .thenReturn(type)
+                .thenReturn(-1)
 
         whenever(preferences.lastMediaCollectionId)
                 .thenReturn(id)
+
+        whenever(preferences.lastMediaCollectionItemIds)
+                .thenReturn(Flowable.just(songs.map { song -> song.id }))
 
         whenever(albumRepository.getItem(eq(id)))
                 .thenReturn(Flowable.just(album))
 
         whenever(albumRepository.collectSongs(eq(album)))
                 .thenReturn(Single.just(songs))
-
-        whenever(audioSourceQueueFactory.create(
-                eq(type),
-                eq(id),
-                eq(album.name),
-                eq(allSongs)
-        )).thenReturn(songQueue)
-
-        whenever(audioSourceQueueFactory.create(
-                eq(AudioSourceQueue.CHUNK),
-                eq(AudioSourceQueue.NO_ID),
-                eq(""),
-                eq(songs)
-        )).thenReturn(songQueue)
 
         whenever(preferences.lastSongId)
                 .thenReturn(targetSong.id)

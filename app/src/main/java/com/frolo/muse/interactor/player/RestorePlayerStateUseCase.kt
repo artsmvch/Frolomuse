@@ -4,7 +4,6 @@ import com.frolo.muse.common.*
 import com.frolo.muse.engine.Player
 import com.frolo.muse.engine.AudioSourceQueue
 import com.frolo.muse.engine.AudioSource
-import com.frolo.muse.interactor.media.get.excludeShortAudioSources
 import com.frolo.muse.repository.*
 import com.frolo.muse.rx.SchedulerProvider
 import io.reactivex.Completable
@@ -20,8 +19,7 @@ class RestorePlayerStateUseCase @Inject constructor(
     private val artistRepository: ArtistRepository,
     private val genreRepository: GenreRepository,
     private val playlistRepository: PlaylistRepository,
-    private val preferences: Preferences,
-    private val libraryPreferences: LibraryPreferences
+    private val preferences: Preferences
 ) {
 
     private data class PlayerState constructor(
@@ -55,28 +53,28 @@ class RestorePlayerStateUseCase @Inject constructor(
                 }
             }
 
-        val queueFallbackSource: Flowable<AudioSourceQueue> = when (val type = preferences.lastMediaCollectionType) {
-            AudioSourceQueue.ALBUM -> albumRepository.getItem(preferences.lastMediaCollectionId)
+        val queueFallbackSource: Flowable<AudioSourceQueue> = when (preferences.lastMediaCollectionType) {
+            /* deprecated */ 1 -> albumRepository.getItem(preferences.lastMediaCollectionId)
                 .flatMapSingle { album ->
                     albumRepository.collectSongs(album).map { songs -> AudioSourceQueue(songs, album) }
                 }
 
-            AudioSourceQueue.ARTIST -> artistRepository.getItem(preferences.lastMediaCollectionId)
+            /* deprecated */ 2 -> artistRepository.getItem(preferences.lastMediaCollectionId)
                 .flatMapSingle { artist ->
                     artistRepository.collectSongs(artist).map { songs -> AudioSourceQueue(songs, artist) }
                 }
 
-            AudioSourceQueue.GENRE -> genreRepository.getItem(preferences.lastMediaCollectionId)
+            /* deprecated */ 3 -> genreRepository.getItem(preferences.lastMediaCollectionId)
                 .flatMapSingle { genre ->
                     genreRepository.collectSongs(genre).map { songs -> AudioSourceQueue(songs, genre) }
                 }
 
-            AudioSourceQueue.PLAYLIST -> playlistRepository.getItem(preferences.lastMediaCollectionId)
+            /* deprecated */ 4 -> playlistRepository.getItem(preferences.lastMediaCollectionId)
                 .flatMapSingle { playlist ->
                     playlistRepository.collectSongs(playlist).map { songs -> AudioSourceQueue(songs, playlist) }
                 }
 
-            AudioSourceQueue.FAVOURITES -> songRepository.allFavouriteItems.map { songs ->
+            /* deprecated */ 7 -> songRepository.allFavouriteItems.map { songs ->
                 AudioSourceQueue(songs, null)
             }
 
@@ -87,11 +85,6 @@ class RestorePlayerStateUseCase @Inject constructor(
 
         return queueSource.firstOrError()
             .onErrorResumeNext(queueFallbackSource.firstOrError())
-            .flatMap { queue ->
-                libraryPreferences.getMinAudioDuration()
-                    .first(0)
-                    .map { queue.excludeShortAudioSources(it) }
-            }
             .map { queue ->
 
                 val targetItem = queue.findFirstOrNull { item -> item.id == preferences.lastSongId }

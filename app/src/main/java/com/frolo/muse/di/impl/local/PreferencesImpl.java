@@ -230,10 +230,14 @@ public class PreferencesImpl implements Preferences {
         }
     }
 
-    public void saveLastMediaCollectionType(@AudioSourceQueue.QueueType int type) {
+    @Deprecated
+    @Override
+    public void saveLastMediaCollectionType(int type) {
         preferences.edit().putInt(KEY_LAST_MEDIA_COLLECTION_TYPE, type).apply();
     }
 
+    @Deprecated
+    @Override
     public void saveLastMediaCollectionId(long id) {
         preferences.edit().putLong(KEY_LAST_MEDIA_COLLECTION_ID, id).apply();
     }
@@ -256,15 +260,19 @@ public class PreferencesImpl implements Preferences {
                 .flatMapCompletable(value -> RxPreference.ofString(preferences, KEY_LAST_MEDIA_COLLECTION_ITEM_IDS).set(value));
     }
 
-    public @AudioSourceQueue.QueueType
-    int getLastMediaCollectionType() {
-        return preferences.getInt(KEY_LAST_MEDIA_COLLECTION_TYPE, AudioSourceQueue.CHUNK);
+    @Deprecated
+    @Override
+    public int getLastMediaCollectionType() {
+        return preferences.getInt(KEY_LAST_MEDIA_COLLECTION_TYPE, /* deprecated */ 6);
     }
 
+    @Deprecated
+    @Override
     public long getLastMediaCollectionId() {
         return preferences.getLong(KEY_LAST_MEDIA_COLLECTION_ID, /* no id */ - 1);
     }
 
+    @Override
     public long getLastSongId() {
         return preferences.getLong(KEY_LAST_SONG_ID, -1);
     }

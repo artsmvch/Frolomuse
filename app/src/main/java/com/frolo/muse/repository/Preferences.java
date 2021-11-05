@@ -38,13 +38,17 @@ public interface Preferences {
     void saveTheme(Theme theme);
     Theme getTheme();
 
-    void saveLastMediaCollectionType(@AudioSourceQueue.QueueType int type);
+    @Deprecated
+    void saveLastMediaCollectionType(int type);
+    @Deprecated
     void saveLastMediaCollectionId(long id);
     void saveLastSongId(long id);
     void saveLastPlaybackPosition(int position);
     Completable saveLastMediaCollectionItemIds(List<Long> ids);
 
-    @AudioSourceQueue.QueueType int getLastMediaCollectionType();
+    @Deprecated
+    int getLastMediaCollectionType();
+    @Deprecated
     long getLastMediaCollectionId();
     long getLastSongId();
     int getLastPlaybackPosition();
