@@ -17,6 +17,10 @@ fun AudioSourceQueue.indexOf(predicate: (item: AudioSource) -> Boolean): Int {
     return -1
 }
 
+fun AudioSourceQueue.first(): AudioSource {
+    return getItemAt(0)
+}
+
 fun AudioSourceQueue.findFirstOrNull(predicate: (item: AudioSource) -> Boolean): AudioSource? {
     for (i in 0 until length) {
         val item = getItemAt(i)
@@ -30,6 +34,10 @@ fun AudioSourceQueue.findFirstOrNull(predicate: (item: AudioSource) -> Boolean):
 @Throws(NoSuchElementException::class)
 fun AudioSourceQueue.find(predicate: (item: AudioSource) -> Boolean): AudioSource {
     return findFirstOrNull(predicate) ?: throw NoSuchElementException()
+}
+
+inline fun <T> AudioSourceQueue.map(transform: (AudioSource) -> T): List<T> {
+    return snapshot.map(transform)
 }
 
 @Suppress("FunctionName")

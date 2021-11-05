@@ -42,11 +42,13 @@ public interface Preferences {
     void saveLastMediaCollectionId(long id);
     void saveLastSongId(long id);
     void saveLastPlaybackPosition(int position);
+    Completable saveLastMediaCollectionItemIds(List<Long> ids);
 
     @AudioSourceQueue.QueueType int getLastMediaCollectionType();
     long getLastMediaCollectionId();
     long getLastSongId();
     int getLastPlaybackPosition();
+    Flowable<List<Long>> getLastMediaCollectionItemIds();
 
     boolean shouldResumeOnPluggedIn();
     void setResumeOnPluggedIn(boolean shouldResume);

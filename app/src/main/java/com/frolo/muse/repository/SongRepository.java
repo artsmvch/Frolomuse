@@ -21,6 +21,8 @@ public interface SongRepository extends MediaRepository<Song> {
      */
     Single<Song> getSong(String path);
 
+    Flowable<List<Song>> getSongsOptionally(List<Long> ids);
+
     Single<Song> update(Song song, String newTitle, String newAlbum, String newArtist, String newGenre);
 
     Flowable<List<Song>> getSongsFromAlbum(Album album, String sortOrder);

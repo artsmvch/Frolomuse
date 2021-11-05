@@ -18,17 +18,24 @@ import com.frolo.muse.repository.Preferences;
 import com.frolo.rxpreference.RxOptional;
 import com.frolo.rxpreference.RxPreference;
 
+import org.reactivestreams.Publisher;
+
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
+import java.util.concurrent.Callable;
 
 import io.reactivex.Completable;
+import io.reactivex.CompletableSource;
 import io.reactivex.Flowable;
+import io.reactivex.Single;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 
 public class PreferencesImpl implements Preferences {
@@ -49,6 +56,7 @@ public class PreferencesImpl implements Preferences {
     private static final String KEY_LAST_MEDIA_COLLECTION_ID = "last_media_collection_id";
     private static final String KEY_LAST_SONG_ID = "last_song_id";
     private static final String KEY_LAST_PLAYBACK_POSITION = "last_playback_position";
+    private static final String KEY_LAST_MEDIA_COLLECTION_ITEM_IDS = "last_media_collection_item_ids";
 
     // player and playback
     private static final String KEY_PLAYBACK_REPEAT_MODE = "playback_repeat_mode";
@@ -240,6 +248,14 @@ public class PreferencesImpl implements Preferences {
         preferences.edit().putInt(KEY_LAST_PLAYBACK_POSITION, position).apply();
     }
 
+    @Override
+    public Completable saveLastMediaCollectionItemIds(final List<Long> ids) {
+        Single<String> serializationSource =
+                Single.fromCallable(() -> PreferencesSerialization.trySerializeItemIds(ids));
+        return serializationSource.subscribeOn(Schedulers.computation())
+                .flatMapCompletable(value -> RxPreference.ofString(preferences, KEY_LAST_MEDIA_COLLECTION_ITEM_IDS).set(value));
+    }
+
     public @AudioSourceQueue.QueueType
     int getLastMediaCollectionType() {
         return preferences.getInt(KEY_LAST_MEDIA_COLLECTION_TYPE, AudioSourceQueue.CHUNK);
@@ -256,6 +272,20 @@ public class PreferencesImpl implements Preferences {
     @Override
     public int getLastPlaybackPosition() {
         return preferences.getInt(KEY_LAST_PLAYBACK_POSITION, 0);
+    }
+
+    @Override
+    public Flowable<List<Long>> getLastMediaCollectionItemIds() {
+        return RxPreference.ofString(preferences, KEY_LAST_MEDIA_COLLECTION_ITEM_IDS)
+            .get()
+            .observeOn(Schedulers.computation())
+            .map(optional -> {
+                if (optional.isPresent()) {
+                    return PreferencesSerialization.tryDeserializeItemIds(optional.get());
+                } else {
+                    return Collections.emptyList();
+                }
+            });
     }
 
     public boolean shouldResumeOnPluggedIn() {

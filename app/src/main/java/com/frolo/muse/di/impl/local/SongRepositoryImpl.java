@@ -128,6 +128,11 @@ public class SongRepositoryImpl extends BaseMediaRepository<Song> implements Son
     }
 
     @Override
+    public final Flowable<List<Song>> getSongsOptionally(List<Long> ids) {
+        return SongQuery.queryOptionallyByIds(getContentResolver(), ids);
+    }
+
+    @Override
     public final Single<Song> update(Song song, String newTitle, String newAlbum, String newArtist, String newGenre) {
         return SongQuery.update(getContentResolver(), song, newTitle, newAlbum, newArtist, newGenre)
             .andThen(getItem(song.getId()))

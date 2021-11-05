@@ -103,6 +103,11 @@ import io.reactivex.schedulers.Schedulers;
         return workerScheduler();
     }
 
+    @NonNull
+    static Scheduler computationScheduler() {
+        return Schedulers.computation();
+    }
+
     private ContentExecutors() {
     }
 }

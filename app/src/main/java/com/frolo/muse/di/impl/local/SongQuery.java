@@ -130,6 +130,64 @@ import io.reactivex.functions.Function;
                 .map(songs -> songs.get(0));
     }
 
+    static Flowable<List<Song>> queryOptionallyByIds(ContentResolver resolver, final List<Long> ids) {
+        // Null
+        if (ids == null) {
+            return Flowable.error(new NullPointerException());
+        }
+        // Empty
+        if (ids.isEmpty()) {
+            return Flowable.just(Collections.emptyList());
+        }
+        // One item
+        if (ids.size() == 1) {
+            return Flowable.defer(() -> queryItem(resolver, ids.get(0))
+                    .map(song -> Collections.singletonList(song))
+                    .onErrorReturnItem(Collections.emptyList()));
+        }
+        if (ids.size() < 10) {
+            // Item count < 10
+            Flowable<List<Song>> resultSource = Flowable.defer((Callable<Publisher<List<Song>>>) () -> {
+                List<Flowable<List<Song>>> sources = new ArrayList<>(ids.size());
+                for (Long id : ids) {
+                    Flowable<List<Song>> itemSource = queryItem(resolver, id)
+                            .map(song -> Collections.singletonList(song))
+                            .onErrorReturnItem(Collections.emptyList());
+                    sources.add(itemSource);
+                }
+                Function<Object[], List<Song>> combiner = objects -> {
+                    List<Song> result = new ArrayList<>(objects.length);
+                    for (Object obj : objects) {
+                        result.addAll((List<Song>) obj);
+                    }
+                    return result;
+                };
+                return Flowable.combineLatest(sources, combiner);
+            });
+            return resultSource.subscribeOn(ContentExecutors.computationScheduler());
+        } else {
+            // Default impl
+            return query(resolver, SongFilter.allEnabled(), null)
+                    .observeOn(ContentExecutors.computationScheduler())
+                    .map(songs -> {
+                        List<Song> result = new ArrayList<>(ids.size());
+                        for (Long desiredId : ids) {
+                            Song desiredSong = null;
+                            for (Song song : songs) {
+                                if (song.getId() == desiredId) {
+                                    desiredSong = song;
+                                    break;
+                                }
+                            }
+                            if (desiredSong != null) {
+                                result.add(desiredSong);
+                            }
+                        }
+                        return result;
+                    });
+        }
+    }
+
     static Flowable<List<Song>> queryAllFavourites(ContentResolver resolver) {
         final Uri favUri = AppMediaStore.Favourites.getContentUri();
         final Uri songsUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;

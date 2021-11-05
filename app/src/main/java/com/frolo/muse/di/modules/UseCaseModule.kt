@@ -933,26 +933,25 @@ abstract class UseCaseModule {
         @Provides
         @JvmStatic
         fun provideRestorePlayerStateUseCase(
-                schedulerProvider: SchedulerProvider,
-                songRepository: SongRepository,
-                albumRepository: AlbumRepository,
-                artistRepository: ArtistRepository,
-                genreRepository: GenreRepository,
-                playlistRepository: PlaylistRepository,
-                preferences: Preferences,
-                libraryPreferences: LibraryPreferences,
-                audioSourceQueueFactory: AudioSourceQueueFactory
+            schedulerProvider: SchedulerProvider,
+            songRepository: SongRepository,
+            albumRepository: AlbumRepository,
+            artistRepository: ArtistRepository,
+            genreRepository: GenreRepository,
+            playlistRepository: PlaylistRepository,
+            preferences: Preferences,
+            libraryPreferences: LibraryPreferences
         ): RestorePlayerStateUseCase {
             return RestorePlayerStateUseCase(
-                    schedulerProvider,
-                    songRepository,
-                    albumRepository,
-                    artistRepository,
-                    genreRepository,
-                    playlistRepository,
-                    preferences,
-                    libraryPreferences,
-                    audioSourceQueueFactory)
+                schedulerProvider,
+                songRepository,
+                albumRepository,
+                artistRepository,
+                genreRepository,
+                playlistRepository,
+                preferences,
+                libraryPreferences
+            )
         }
 
         /*control player*/

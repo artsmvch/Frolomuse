@@ -21,8 +21,7 @@ class RestorePlayerStateUseCase @Inject constructor(
     private val genreRepository: GenreRepository,
     private val playlistRepository: PlaylistRepository,
     private val preferences: Preferences,
-    private val libraryPreferences: LibraryPreferences,
-    private val audioSourceQueueFactory: AudioSourceQueueFactory
+    private val libraryPreferences: LibraryPreferences
 ) {
 
     private data class PlayerState constructor(
@@ -34,69 +33,60 @@ class RestorePlayerStateUseCase @Inject constructor(
 
     private fun getDefaultPlayerState(): Single<PlayerState> {
         return songRepository.allItems
-                .firstOrError()
-                .map { songs ->
-                    audioSourceQueueFactory.create(AudioSourceQueue.CHUNK, AudioSourceQueue.NO_ID, "", songs)
-                }
-                .map { queue ->
-                    val first = queue.getItemAt(0)
-                    PlayerState(
-                        queue = queue,
-                        targetItem = first,
-                        startPlaying = false,
-                        playbackPosition = 0
-                    )
-                }
+            .firstOrError()
+            .map { songs -> AudioSourceQueue(songs, null) }
+            .map { queue ->
+                PlayerState(
+                    queue = queue,
+                    targetItem = queue.first(),
+                    startPlaying = false,
+                    playbackPosition = 0
+                )
+            }
     }
 
     private fun forceRestorePlayerState(player: Player): Completable {
-        @AudioSourceQueue.QueueType val type = preferences.lastMediaCollectionType
+        val queueSource: Flowable<AudioSourceQueue> = preferences.lastMediaCollectionItemIds
+            .switchMap { ids -> songRepository.getSongsOptionally(ids) }
+            .map { songs -> AudioSourceQueue(songs, null) }
+            .doOnNext { queue ->
+                if (queue.isEmpty) {
+                    throw NullPointerException("Queue is empty")
+                }
+            }
 
-        val songQueueSource: Flowable<AudioSourceQueue> = when (type) {
+        val queueFallbackSource: Flowable<AudioSourceQueue> = when (val type = preferences.lastMediaCollectionType) {
             AudioSourceQueue.ALBUM -> albumRepository.getItem(preferences.lastMediaCollectionId)
                 .flatMapSingle { album ->
-                    albumRepository.collectSongs(album)
-                        .map { songs ->
-                            audioSourceQueueFactory.create(type, album.id, album.name, songs)
-                        }
+                    albumRepository.collectSongs(album).map { songs -> AudioSourceQueue(songs, album) }
                 }
 
             AudioSourceQueue.ARTIST -> artistRepository.getItem(preferences.lastMediaCollectionId)
                 .flatMapSingle { artist ->
-                    artistRepository.collectSongs(artist)
-                        .map { songs ->
-                            audioSourceQueueFactory.create(type, artist.id, artist.name, songs)
-                        }
+                    artistRepository.collectSongs(artist).map { songs -> AudioSourceQueue(songs, artist) }
                 }
 
             AudioSourceQueue.GENRE -> genreRepository.getItem(preferences.lastMediaCollectionId)
                 .flatMapSingle { genre ->
-                    genreRepository.collectSongs(genre)
-                        .map { songs ->
-                            audioSourceQueueFactory.create(type, genre.id, genre.name, songs)
-                        }
+                    genreRepository.collectSongs(genre).map { songs -> AudioSourceQueue(songs, genre) }
                 }
 
             AudioSourceQueue.PLAYLIST -> playlistRepository.getItem(preferences.lastMediaCollectionId)
                 .flatMapSingle { playlist ->
-                    playlistRepository.collectSongs(playlist)
-                        .map { songs ->
-                            audioSourceQueueFactory.create(type, playlist.id, playlist.name, songs)
-                        }
+                    playlistRepository.collectSongs(playlist).map { songs -> AudioSourceQueue(songs, playlist) }
                 }
 
             AudioSourceQueue.FAVOURITES -> songRepository.allFavouriteItems.map { songs ->
-                audioSourceQueueFactory.create(type, AudioSourceQueue.NO_ID, "", songs)
+                AudioSourceQueue(songs, null)
             }
 
             else -> songRepository.allItems.map { songs ->
-                audioSourceQueueFactory.create(type, AudioSourceQueue.NO_ID, "", songs)
+                AudioSourceQueue(songs, null)
             }
         }
 
-        // check for result. if the returned queue is empty then fetch default one
-        return songQueueSource
-            .firstOrError()
+        return queueSource.firstOrError()
+            .onErrorResumeNext(queueFallbackSource.firstOrError())
             .flatMap { queue ->
                 libraryPreferences.getMinAudioDuration()
                     .first(0)
@@ -104,9 +94,8 @@ class RestorePlayerStateUseCase @Inject constructor(
             }
             .map { queue ->
 
-                val targetItem = queue.findFirstOrNull { item ->
-                    item.id == preferences.lastSongId
-                } ?: queue.getItemAt(0)
+                val targetItem = queue.findFirstOrNull { item -> item.id == preferences.lastSongId }
+                        ?: queue.first()
 
                 PlayerState(
                     queue = queue,
