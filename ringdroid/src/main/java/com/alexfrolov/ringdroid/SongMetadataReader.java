@@ -134,7 +134,29 @@ public class SongMetadataReader {
     }
 
     private String getBasename(String filename) {
-        return filename.substring(filename.lastIndexOf('/') + 1,
-                                  filename.lastIndexOf('.'));
+        try {
+            return filename.substring(filename.lastIndexOf('/') + 1,
+                    filename.lastIndexOf('.'));
+        } catch (Throwable ignored) {
+
+            // Start index
+            int startIndex = filename.lastIndexOf('/');
+            if (startIndex >= 0) {
+                startIndex += 1;
+            } else {
+                startIndex = 0;
+            }
+
+            // End index
+            int endIndex = filename.lastIndexOf('.');
+            if (endIndex >= startIndex) {
+                // OK
+            } else {
+                endIndex = filename.length() - 1;
+            }
+
+            // Substring
+            return filename.substring(startIndex, endIndex);
+        }
     }
 }
