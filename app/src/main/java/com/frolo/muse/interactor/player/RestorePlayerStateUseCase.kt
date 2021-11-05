@@ -87,14 +87,15 @@ class RestorePlayerStateUseCase @Inject constructor(
             .onErrorResumeNext(queueFallbackSource.firstOrError())
             .map { queue ->
 
-                val targetItem = queue.findFirstOrNull { item -> item.id == preferences.lastSongId }
-                        ?: queue.first()
+                val targetItemId = preferences.lastSongId
+                val targetItem = queue.findFirstOrNull { item -> item.id == targetItemId }
+                val playbackProgress = if (targetItem != null) preferences.lastPlaybackPosition else 0
 
                 PlayerState(
                     queue = queue,
-                    targetItem = targetItem,
+                    targetItem = targetItem ?: queue.first(),
                     startPlaying = false,
-                    playbackPosition = preferences.lastPlaybackPosition
+                    playbackPosition = playbackProgress
                 )
             }
             .onErrorResumeNext(getDefaultPlayerState())
