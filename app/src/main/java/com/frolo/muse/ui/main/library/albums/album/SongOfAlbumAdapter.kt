@@ -30,7 +30,7 @@ class SongOfAlbumAdapter(thumbnailLoader: ThumbnailLoader) : SongAdapter<Song>(t
         selectionChanged: Boolean
     ) {
 
-        val isPlayPosition = position == playingPosition
+        val isPlayPosition = position == playPosition
 
         with((holder.itemView as MediaConstraintLayout)) {
             val res = resources

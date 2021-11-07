@@ -93,7 +93,7 @@ class AudioBucketFragment : AbsMediaCollectionFragment<MediaFile>(), FragmentCon
     }
 
     override fun onSubmitList(list: List<MediaFile>) {
-        adapter.submit(list)
+        adapter.submitAndRetainPlayState(list)
     }
 
     override fun onSubmitSelectedItems(selectedItems: Set<MediaFile>) {
@@ -124,12 +124,12 @@ class AudioBucketFragment : AbsMediaCollectionFragment<MediaFile>(), FragmentCon
 
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
         isPlaying.observeNonNull(owner) { isPlaying ->
-            adapter.setPlayingState(isPlaying)
+            adapter.setPlaying(isPlaying)
         }
 
         playingPosition.observeNonNull(owner) { playingPosition ->
             val isPlaying = isPlaying.value ?: false
-            adapter.setPlayingPositionAndState(playingPosition, isPlaying)
+            adapter.setPlayState(playingPosition, isPlaying)
         }
 
         bucket.observe(owner) { currentBucket ->

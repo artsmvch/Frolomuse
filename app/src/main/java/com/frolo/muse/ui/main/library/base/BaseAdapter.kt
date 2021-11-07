@@ -79,12 +79,7 @@ abstract class BaseAdapter<E, VH> constructor(
 
     fun indexOf(item: E) = nodes.indexOfFirst { node -> node.item == item }
 
-    protected open fun onPreMove(fromPosition: Int, toPosition: Int) {
-        // to override
-    }
-
     fun moveItem(fromPosition: Int, toPosition: Int) {
-        onPreMove(fromPosition, toPosition)
         if (fromPosition < toPosition) {
             for (i in fromPosition until toPosition) {
                 Collections.swap(nodes, i, i + 1)
@@ -102,12 +97,7 @@ abstract class BaseAdapter<E, VH> constructor(
         notifyItemChanged(position, SELECTION_CHANGED_PAYLOAD)
     }
 
-    protected open fun onPreRemove(position: Int) {
-        // to override
-    }
-
     fun remove(position: Int) {
-        onPreRemove(position)
         nodes.removeAt(position)
         notifyItemRemoved(position)
     }

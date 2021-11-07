@@ -33,12 +33,12 @@ class MostPlayedFragment : SimpleMediaCollectionFragment<SongWithPlayCount>() {
 
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
         isPlaying.observeNonNull(owner) { isPlaying ->
-            adapter.setPlayingState(isPlaying)
+            adapter.setPlaying(isPlaying)
         }
 
         playingPosition.observeNonNull(owner) { playingPosition ->
             val isPlaying = isPlaying.value ?: false
-            adapter.setPlayingPositionAndState(playingPosition, isPlaying)
+            adapter.setPlayState(playingPosition, isPlaying)
         }
 
     }

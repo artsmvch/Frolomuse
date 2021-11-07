@@ -101,7 +101,7 @@ class DragSongAdapter constructor(
     ) {
 
         if (holder is DragSongViewHolder) {
-            val isPlayPosition = position == playingPosition
+            val isPlayPosition = position == playPosition
 
             with(holder.itemView as MediaConstraintLayout) {
                 val res = resources

@@ -51,7 +51,7 @@ abstract class AbsSongCollectionFragment<T: Song> : AbsMediaCollectionFragment<T
     }
 
     override fun onSubmitList(list: List<T>) {
-        adapter.submit(list)
+        adapter.submitAndRetainPlayState(list)
     }
 
     override fun onSubmitSelectedItems(selectedItems: Set<T>) {
@@ -60,12 +60,12 @@ abstract class AbsSongCollectionFragment<T: Song> : AbsMediaCollectionFragment<T
 
     private fun observerViewModel(owner: LifecycleOwner) = with(viewModel) {
         isPlaying.observeNonNull(owner) { isPlaying ->
-            adapter.setPlayingState(isPlaying)
+            adapter.setPlaying(isPlaying)
         }
 
         playingPosition.observeNonNull(owner) { playingPosition ->
             val isPlaying = isPlaying.value ?: false
-            adapter.setPlayingPositionAndState(playingPosition, isPlaying)
+            adapter.setPlayState(playingPosition, isPlaying)
         }
     }
 

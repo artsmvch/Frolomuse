@@ -8,6 +8,7 @@ import com.frolo.muse.R
 import com.frolo.muse.inflateChild
 import com.frolo.muse.model.media.MyFile
 import com.frolo.muse.thumbnails.ThumbnailLoader
+import com.frolo.muse.ui.base.PlayStateAwareAdapter
 import com.frolo.muse.ui.getNameString
 import com.frolo.muse.ui.main.library.base.BaseAdapter
 import com.frolo.muse.ui.main.library.base.sectionIndexAt
@@ -20,53 +21,7 @@ import kotlinx.android.synthetic.main.item_file.view.*
 
 class MyFileAdapter constructor(
     private val thumbnailLoader: ThumbnailLoader
-): BaseAdapter<MyFile, BaseAdapter.BaseViewHolder>(ItemDiffCallback()), FastScroller.SectionIndexer {
-
-    var playingPosition = -1
-        private set
-    var isPlaying = false
-        private set
-
-    fun setPlayingPositionAndState(position: Int, isPlaying: Boolean) {
-        if (this.playingPosition == position && this.isPlaying == isPlaying) {
-            return
-        }
-
-        if (playingPosition >= 0) {
-            this.isPlaying = false
-            notifyItemChanged(playingPosition)
-        }
-        this.playingPosition = position
-        this.isPlaying = isPlaying
-        notifyItemChanged(position)
-    }
-
-    fun setPlayingState(isPlaying: Boolean) {
-        if (this.isPlaying == isPlaying) {
-            return
-        }
-
-        this.isPlaying = isPlaying
-        if (playingPosition >= 0) {
-            notifyItemChanged(playingPosition)
-        }
-    }
-
-    override fun onPreRemove(position: Int) {
-        if (playingPosition == position) {
-            playingPosition = -1
-        } else if (playingPosition > position) {
-            playingPosition--
-        }
-    }
-
-    override fun onPreMove(fromPosition: Int, toPosition: Int) {
-        when (playingPosition) {
-            fromPosition -> playingPosition = toPosition
-            in (fromPosition + 1)..toPosition -> playingPosition--
-            in toPosition until fromPosition -> playingPosition++
-        }
-    }
+): PlayStateAwareAdapter<MyFile, BaseAdapter.BaseViewHolder>(ItemDiffCallback()), FastScroller.SectionIndexer {
 
     override fun getSectionText(position: Int) = sectionIndexAt(position) { getNameString() }
 
@@ -88,7 +43,7 @@ class MyFileAdapter constructor(
 
             thumbnailLoader.loadMyFileThumbnail(item, imv_song_thumbnail)
 
-            val isPlayPosition = position == playingPosition
+            val isPlayPosition = position == playPosition
 
             if (isPlayPosition) {
                 imv_song_thumbnail.isDimmed = true

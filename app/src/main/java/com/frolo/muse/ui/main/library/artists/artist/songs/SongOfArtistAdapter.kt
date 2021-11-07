@@ -31,7 +31,7 @@ class SongOfArtistAdapter constructor(
         selected: Boolean, selectionChanged: Boolean
     ) {
 
-        val isPlayPosition = position == playingPosition
+        val isPlayPosition = position == playPosition
 
         with(holder.itemView as MediaConstraintLayout) {
             val res = resources

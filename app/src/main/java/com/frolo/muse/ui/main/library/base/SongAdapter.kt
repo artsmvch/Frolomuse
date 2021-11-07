@@ -7,6 +7,7 @@ import com.frolo.muse.R
 import com.frolo.muse.inflateChild
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.thumbnails.ThumbnailLoader
+import com.frolo.muse.ui.base.PlayStateAwareAdapter
 import com.frolo.muse.ui.getArtistString
 import com.frolo.muse.ui.getDurationString
 import com.frolo.muse.ui.getNameString
@@ -22,55 +23,9 @@ import kotlinx.android.synthetic.main.item_song.view.*
 open class SongAdapter<S: Song> constructor(
     private val thumbnailLoader: ThumbnailLoader,
     private val itemCallback: DiffUtil.ItemCallback<S>? = SongItemCallback<S>()
-): BaseAdapter<S, SongAdapter.SongViewHolder>(itemCallback), FastScroller.SectionIndexer {
-
-    var playingPosition = -1
-        private set
-    var isPlaying = false
-        private set
+): PlayStateAwareAdapter<S, SongAdapter.SongViewHolder>(itemCallback), FastScroller.SectionIndexer {
 
     override fun getItemId(position: Int) = getItemAt(position).id
-
-    fun setPlayingPositionAndState(position: Int, isPlaying: Boolean) {
-        if (this.playingPosition == position && this.isPlaying == isPlaying) {
-            return
-        }
-
-        if (playingPosition >= 0) {
-            this.isPlaying = false
-            notifyItemChanged(playingPosition)
-        }
-        this.playingPosition = position
-        this.isPlaying = isPlaying
-        notifyItemChanged(position)
-    }
-
-    fun setPlayingState(isPlaying: Boolean) {
-        if (this.isPlaying == isPlaying) {
-            return
-        }
-
-        this.isPlaying = isPlaying
-        if (playingPosition >= 0) {
-            notifyItemChanged(playingPosition)
-        }
-    }
-
-    override fun onPreRemove(position: Int) {
-        if (playingPosition == position) {
-            playingPosition = -1
-        } else if (playingPosition > position) {
-            playingPosition--
-        }
-    }
-
-    override fun onPreMove(fromPosition: Int, toPosition: Int) {
-        when (playingPosition) {
-            fromPosition -> playingPosition = toPosition
-            in (fromPosition + 1)..toPosition -> playingPosition--
-            in toPosition until fromPosition -> playingPosition++
-        }
-    }
 
     override fun onCreateBaseViewHolder(
         parent: ViewGroup,
@@ -85,7 +40,7 @@ open class SongAdapter<S: Song> constructor(
         selectionChanged: Boolean
     ) {
 
-        val isPlayPosition = position == playingPosition
+        val isPlayPosition = position == playPosition
 
         with((holder.itemView as MediaConstraintLayout)) {
             val res = resources

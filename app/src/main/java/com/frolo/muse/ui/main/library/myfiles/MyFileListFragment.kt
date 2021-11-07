@@ -100,7 +100,7 @@ class MyFileListFragment: AbsMediaCollectionFragment<MyFile>(),
     }
 
     override fun onSubmitList(list: List<MyFile>) {
-        adapter.submit(list)
+        adapter.submitAndRetainPlayState(list)
     }
 
     override fun onSubmitSelectedItems(selectedItems: Set<MyFile>) {
@@ -117,12 +117,12 @@ class MyFileListFragment: AbsMediaCollectionFragment<MyFile>(),
 
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
         isPlaying.observeNonNull(owner) { isPlaying ->
-            adapter.setPlayingState(isPlaying)
+            adapter.setPlaying(isPlaying)
         }
 
         playingPosition.observeNonNull(owner) { playingPosition ->
             val isPlaying = isPlaying.value ?: false
-            adapter.setPlayingPositionAndState(playingPosition, isPlaying)
+            adapter.setPlayState(playingPosition, isPlaying)
         }
 
         root.observeNonNull(owner) { root ->
