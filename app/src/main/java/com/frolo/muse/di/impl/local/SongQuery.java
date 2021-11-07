@@ -188,6 +188,14 @@ import io.reactivex.functions.Function;
         }
     }
 
+    static Flowable<List<Song>> queryRecentlyAdded(ContentResolver resolver, SongFilter filter, long dateAdded) {
+        filter = filter.newBuilder()
+            .setTimeAdded(dateAdded)
+            .build();
+        String sortOrder = MediaStore.Audio.Media.DATE_ADDED + " DESC";
+        return query(resolver, filter, sortOrder);
+    }
+
     static Flowable<List<Song>> queryAllFavourites(ContentResolver resolver) {
         final Uri favUri = AppMediaStore.Favourites.getContentUri();
         final Uri songsUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;

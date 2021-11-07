@@ -170,11 +170,8 @@ public class SongRepositoryImpl extends BaseMediaRepository<Song> implements Son
 
     @Override
     public final Flowable<List<Song>> getRecentlyAddedSongs(final long dateAdded) {
-        return getSongFilter().switchMap(filter -> {
-            SongFilter recentlyAddedFilter = filter.newBuilder().setTimeAdded(dateAdded).build();
-            return SongQuery.query(getContext().getContentResolver(),
-                    recentlyAddedFilter, SongQuery.Sort.BY_DATE_ADDED);
-        });
+        return getSongFilter().switchMap(filter ->
+                SongQuery.queryRecentlyAdded(getContext().getContentResolver(), filter, dateAdded));
     }
 
     @Override
