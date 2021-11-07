@@ -8,20 +8,17 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.frolo.muse.R
-import com.frolo.muse.StyleUtil
+import com.frolo.muse.*
 import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.model.media.Playlist
 import com.frolo.muse.model.media.Song
-import com.frolo.muse.removeCallbacksSafely
 import com.frolo.muse.ui.base.adapter.SimpleItemTouchHelperCallback
 import com.frolo.muse.ui.base.withArg
 import com.frolo.muse.ui.main.library.base.DragSongAdapter
 import com.frolo.muse.ui.main.addLinearItemMargins
 import com.frolo.muse.ui.main.library.base.AbsSongCollectionFragment
 import com.frolo.muse.ui.main.library.base.SongAdapter
-import com.frolo.muse.dp2px
 import com.frolo.muse.thumbnails.provideThumbnailLoader
 import com.frolo.muse.ui.base.FragmentContentInsetsListener
 import com.frolo.muse.ui.base.setupNavigation
@@ -162,15 +159,31 @@ class PlaylistFragment: AbsSongCollectionFragment<Song>(), FragmentContentInsets
     }
 
     private fun dispatchItemRemoved(item: Song) {
-        checkWritePermissionFor {
+        maybeCheckWritePermissionFor {
             viewModel.onItemRemoved(item)
         }
     }
 
     private fun dispatchItemMoved(fromPosition: Int, toPosition: Int) {
-        checkWritePermissionFor {
+        maybeCheckWritePermissionFor {
             val listSnapshot = adapter.getSnapshot()
             viewModel.onItemMoved(fromPosition, toPosition, listSnapshot)
+        }
+    }
+
+    /**
+     * Optionally checks the write permission for [action] on the playlist. If the playlist is not
+     * from the shared storage, then the write permission is not required (since the playlist is stored
+     * and managed by the application).
+     * Otherwise, the permission will be checked and / or requested (if necessary).
+     * But it will be only requested, if the state of the fragment is not saved.
+     */
+    private inline fun maybeCheckWritePermissionFor(crossinline action: () -> Unit) {
+        val currentPlaylist = viewModel.playlist.value
+        if (currentPlaylist != null && !currentPlaylist.isFromSharedStorage) {
+            action.invoke()
+        } else if (!isStateSaved) {
+            checkWritePermissionFor(action)
         }
     }
 
