@@ -202,7 +202,7 @@ class PlayerFragment: BaseFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         observeViewModel(viewLifecycleOwner)
-        viewModel.onOpened()
+        viewModel.onUiCreated()
     }
 
     override fun onStart() {

@@ -7,10 +7,7 @@ import com.frolo.muse.arch.SingleLiveEvent
 import com.frolo.muse.arch.combine
 import com.frolo.muse.arch.liveDataOf
 import com.frolo.muse.arch.map
-import com.frolo.muse.common.pointNextABPoint
-import com.frolo.muse.common.switchToNextRepeatMode
-import com.frolo.muse.common.switchToNextShuffleMode
-import com.frolo.muse.common.toSong
+import com.frolo.muse.common.*
 import com.frolo.muse.di.Exec
 import com.frolo.muse.engine.*
 import com.frolo.muse.interactor.feature.FeaturesUseCase
@@ -32,9 +29,7 @@ import com.frolo.muse.model.sound.Sound
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.rx.flowable.doOnNextIndexed
 import com.frolo.muse.ui.base.BaseViewModel
-import io.reactivex.Observable
 import java.util.concurrent.Executor
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 
@@ -70,6 +65,7 @@ class PlayerViewModel @Inject constructor(
             _song.value = item?.toSong()
             _currPosition.value = positionInQueue
             _playbackProgress.value = 0
+            startObservingPlaybackProgress(item)
         }
 
         override fun onAudioSourceUpdated(player: Player, item: AudioSource) {
@@ -209,7 +205,6 @@ class PlayerViewModel @Inject constructor(
 
     init {
         player.registerObserver(playerObserver)
-        onOpened()
     }
 
     private fun handleQueue(queue: AudioSourceQueue?) {
@@ -222,28 +217,29 @@ class PlayerViewModel @Inject constructor(
         }
     }
 
-    private fun startObservingPlaybackProgress() {
-        Observable.interval(1, TimeUnit.SECONDS)
-            .timeInterval()
-            .observeOn(schedulerProvider.worker())
-            .map { player.getProgress() }
-            //.takeWhile { player.isPlaying() }
+    private fun startObservingPlaybackProgress(audioSource: AudioSource?) {
+        PlayerProgressObserver.spawn(player, audioSource)
             .observeOn(schedulerProvider.main())
             .subscribeFor(key = "observing_playback_progress") { progress ->
                 _playbackProgress.value = progress
             }
     }
 
-    fun onOpened() {
+    /**
+     * Should be called when the user interface has been created and the view model has been observed.
+     * From this point, the state of the view model is synced with the state of the player and its queue.
+     */
+    fun onUiCreated() {
         handleQueue(player.getCurrentQueue())
-        _song.value = player.getCurrent()?.toSong()
+        val currentAudioSource: AudioSource? = player.getCurrent()
+        _song.value = currentAudioSource?.toSong()
         _playbackDuration.value = player.getDuration()
         _playbackProgress.value = player.getProgress()
         _isPlaying.value = player.isPlaying()
         _abState.value = ABState(player.isAPointed(), player.isBPointed())
         _shuffleMode.value = player.getShuffleMode()
         _repeatMode.value = player.getRepeatMode()
-        startObservingPlaybackProgress()
+        startObservingPlaybackProgress(currentAudioSource)
     }
 
     fun onLikeClicked() {
