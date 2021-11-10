@@ -15,6 +15,7 @@ import com.frolo.muse.model.media.MediaFile;
 import com.frolo.muse.model.media.MyFile;
 import com.frolo.muse.model.media.Playlist;
 import com.frolo.muse.model.media.Song;
+import com.frolo.muse.model.media.SongComparators;
 import com.frolo.muse.model.media.SongFilter;
 import com.frolo.muse.model.media.SongWithPlayCount;
 import com.frolo.rxcontent.CursorMapper;
@@ -609,7 +610,17 @@ import io.reactivex.functions.Function;
         filter = filter.newBuilder()
             .setAlbumId(album.getId())
             .build();
-        return query(resolver, filter, sortOrder);
+        Flowable<List<Song>> source = query(resolver, filter, sortOrder);
+        if (sortOrder == null || sortOrder.isEmpty()) {
+            // If the sort order is null or empty, we sort the songs by track number.
+            return source.observeOn(ContentExecutors.computationScheduler()).map(songs -> {
+                List<Song> output = new ArrayList<>(songs);
+                Collections.sort(output, SongComparators.BY_TRACK_NUMBER);
+                return output;
+            });
+        } else {
+            return source;
+        }
     }
 
     static Flowable<List<Song>> query(final ContentResolver resolver, SongFilter filter,
