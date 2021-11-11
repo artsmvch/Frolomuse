@@ -5,15 +5,15 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.lifecycle.LifecycleOwner
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.frolo.muse.R
+import com.frolo.muse.Screen
 import com.frolo.muse.glide.GlideAlbumArtHelper
 import com.frolo.muse.glide.observe
 import com.frolo.muse.model.media.Album
 import com.frolo.muse.repository.Preferences
+import com.frolo.muse.thumbnails.provideThumbnailLoader
 import com.frolo.muse.ui.ShotLayoutAnimationController
 import com.frolo.muse.ui.main.addGridItemMargins
 import com.frolo.muse.ui.main.addLinearItemMargins
@@ -26,7 +26,7 @@ class AlbumListFragment: SimpleMediaCollectionFragment<Album>() {
 
     override val viewModel: AlbumListViewModel by viewModel()
 
-    override val adapter by lazy { AlbumAdapter(Glide.with(this)) }
+    override val adapter by lazy { AlbumAdapter(provideThumbnailLoader()) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,9 +53,9 @@ class AlbumListFragment: SimpleMediaCollectionFragment<Album>() {
     }
 
     override fun onDecorateListView(listView: RecyclerView) {
-        val gridEnabled = preferences.isAlbumGridEnabled
+        val isGridEnabled = preferences.isAlbumGridEnabled
 
-        adapter.itemViewType = if (gridEnabled) {
+        adapter.itemViewType = if (isGridEnabled) {
             AlbumAdapter.VIEW_TYPE_SMALL_ITEM
         } else {
             AlbumAdapter.VIEW_TYPE_BIG_ITEM
@@ -63,8 +63,15 @@ class AlbumListFragment: SimpleMediaCollectionFragment<Album>() {
 
         listView.adapter = adapter
 
-        if (gridEnabled) {
-            listView.layoutManager = GridLayoutManager(context, 3)
+        val context = listView.context
+        if (isGridEnabled) {
+            val minSpanCount = 2
+            val minItemWidth = Screen.dp(context, 120)
+            listView.layoutManager = AlbumGridLayoutManager(
+                context = context,
+                minSpanCount = minSpanCount,
+                preferredItemWidth = minItemWidth
+            )
             listView.addGridItemMargins()
         } else {
             listView.layoutManager = LinearLayoutManager(context)

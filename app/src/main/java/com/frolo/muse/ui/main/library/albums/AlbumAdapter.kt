@@ -5,12 +5,11 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
-import com.bumptech.glide.RequestManager
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.frolo.muse.DebugUtils
 import com.frolo.muse.R
-import com.frolo.muse.glide.makeRequest
 import com.frolo.muse.inflateChild
 import com.frolo.muse.model.media.Album
+import com.frolo.muse.thumbnails.ThumbnailLoader
 import com.frolo.muse.ui.getNumberOfTracksString
 import com.frolo.muse.ui.main.library.base.BaseAdapter
 import com.frolo.muse.ui.main.library.base.sectionIndexAt
@@ -22,7 +21,7 @@ import com.l4digital.fastscroll.FastScroller
 
 
 class AlbumAdapter constructor(
-    private val requestManager: RequestManager
+    private val thumbnailLoader: ThumbnailLoader
 ): BaseAdapter<Album, BaseAdapter.BaseViewHolder>(AlbumItemCallback), FastScroller.SectionIndexer {
 
     companion object {
@@ -45,13 +44,16 @@ class AlbumAdapter constructor(
     override fun onCreateBaseViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ) = when (viewType) {
+    ): BaseViewHolder = when (viewType) {
 
         VIEW_TYPE_SMALL_ITEM -> SmallItemViewHolder(parent.inflateChild(R.layout.item_album_card))
 
         VIEW_TYPE_BIG_ITEM -> BigItemViewHolder(parent.inflateChild(R.layout.item_album))
 
-        else -> throw IllegalArgumentException("Unexpected item view type: $itemViewType")
+        else -> {
+            DebugUtils.dumpOnMainThread(IllegalArgumentException("Unexpected item view type: $viewType"))
+            EmptyItemViewHolder(View(parent.context))
+        }
     }
 
     override fun onBindViewHolder(
@@ -65,12 +67,7 @@ class AlbumAdapter constructor(
         when (holder) {
             is SmallItemViewHolder -> {
                 with(holder) {
-                    requestManager.makeRequest(item.id)
-                        .placeholder(R.drawable.ic_framed_album)
-                        .error(R.drawable.ic_framed_album)
-                        .transition(DrawableTransitionOptions.withCrossFade(200))
-                        .centerCrop()
-                        .into(imageAlbumArt)
+                    thumbnailLoader.loadRawAlbumThumbnail(item, imageAlbumArt)
 
                     textAlbumName.text = item.name
                     textArtistName.text = item.artist
@@ -81,12 +78,7 @@ class AlbumAdapter constructor(
 
             is BigItemViewHolder -> {
                 with(holder) {
-                    requestManager.makeRequest(item.id)
-                        .placeholder(R.drawable.ic_framed_album)
-                        .error(R.drawable.ic_framed_album)
-                        .transition(DrawableTransitionOptions.withCrossFade(200))
-                        .centerCrop()
-                        .into(imageAlbumArt)
+                    thumbnailLoader.loadRawAlbumThumbnail(item, imageAlbumArt)
 
                     textAlbumName.text = item.name
                     textArtistName.text = item.artist
@@ -98,11 +90,13 @@ class AlbumAdapter constructor(
                 }
             }
 
-            else -> throw IllegalArgumentException("Unknown holder: $holder")
+            else -> {
+                DebugUtils.dumpOnMainThread(IllegalArgumentException("Unexpected holder: $holder"))
+            }
         }
     }
 
-    class SmallItemViewHolder(itemView: View): BaseAdapter.BaseViewHolder(itemView) {
+    private class SmallItemViewHolder(itemView: View): BaseAdapter.BaseViewHolder(itemView) {
         val cardView: MaterialCardView = itemView as MaterialCardView
         val textAlbumName: TextView = itemView.findViewById(R.id.tv_album_name)
         val textArtistName: TextView = itemView.findViewById(R.id.tv_artist_name)
@@ -111,13 +105,17 @@ class AlbumAdapter constructor(
         override val viewOptionsMenu: View = itemView.findViewById(R.id.view_options_menu)
     }
 
-    class BigItemViewHolder(itemView: View): BaseAdapter.BaseViewHolder(itemView) {
+    private class BigItemViewHolder(itemView: View): BaseAdapter.BaseViewHolder(itemView) {
         val textAlbumName: TextView = itemView.findViewById(R.id.tv_album_name)
         val textArtistName: TextView = itemView.findViewById(R.id.tv_artist_name)
         val textNumberOfTracks: TextView = itemView.findViewById(R.id.tv_number_of_tracks)
         val imageAlbumArt: ShapeableImageView = itemView.findViewById(R.id.imv_album_art)
         val imageCheck: CheckView = itemView.findViewById(R.id.imv_check)
         override val viewOptionsMenu: View = itemView.findViewById(R.id.view_options_menu)
+    }
+
+    private class EmptyItemViewHolder(itemView: View): BaseAdapter.BaseViewHolder(itemView) {
+        override val viewOptionsMenu: View? = null
     }
 
     object AlbumItemCallback: DiffUtil.ItemCallback<Album>() {
