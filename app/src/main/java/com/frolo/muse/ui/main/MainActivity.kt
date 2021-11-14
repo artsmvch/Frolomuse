@@ -15,6 +15,7 @@ import android.view.View
 import android.view.animation.DecelerateInterpolator
 import androidx.annotation.ColorInt
 import androidx.annotation.Dimension
+import androidx.annotation.IdRes
 import androidx.annotation.Px
 import androidx.appcompat.view.ActionMode
 import androidx.core.app.ActivityCompat
@@ -532,17 +533,9 @@ class MainActivity : PlayerHostActivity(),
             }
         }
 
-        bottom_navigation_view.selectedItemId = when(currTabIndex) {
-            INDEX_LIBRARY ->    R.id.nav_library
-            INDEX_EQUALIZER ->  R.id.nav_equalizer
-            INDEX_SEARCH ->     R.id.nav_search
-            INDEX_SETTINGS ->   R.id.nav_settings
-            else -> {
-                if (isDebug) {
-                    throw IllegalStateException("Unexpected tab index: $currTabIndex")
-                }
-                R.id.nav_library
-            }
+        val targetMenuId = getBottomMenuItemId(currTabIndex)
+        if (bottom_navigation_view.selectedItemId != targetMenuId) {
+            bottom_navigation_view.selectedItemId = targetMenuId
         }
 
         // Initializing PlayerSheet and MiniPlayer
@@ -571,6 +564,20 @@ class MainActivity : PlayerHostActivity(),
         }
 
         return true
+    }
+
+    @IdRes
+    private fun getBottomMenuItemId(tabIndex: Int): Int {
+        return when(tabIndex) {
+            INDEX_LIBRARY ->    R.id.nav_library
+            INDEX_EQUALIZER ->  R.id.nav_equalizer
+            INDEX_SEARCH ->     R.id.nav_search
+            INDEX_SETTINGS ->   R.id.nav_settings
+            else -> {
+                DebugUtils.dumpOnMainThread(IllegalStateException("Unexpected tab index: $currTabIndex"))
+                R.id.nav_library
+            }
+        }
     }
 
     /**

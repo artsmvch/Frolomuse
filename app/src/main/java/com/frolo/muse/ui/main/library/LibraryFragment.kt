@@ -18,6 +18,7 @@ import com.frolo.muse.ui.base.BackPressHandler
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.base.FragmentContentInsetsListener
 import com.frolo.muse.ui.removeAllFragmentsNow
+import com.frolo.muse.util.CollectionUtil
 import kotlinx.android.synthetic.main.fragment_library.*
 
 
@@ -28,9 +29,15 @@ class LibraryFragment: BaseFragment(),
 
     private val preferences: Preferences by prefs()
 
-    private var sections: List<@Library.Section Int>? = null
-
     private val viewModel by viewModel<LibraryViewModel>()
+
+    /**
+     * The sections that are currently being displayed. Used for comparison with the sections
+     * stored in the preferences. These sections need to be kept in the memory
+     * and not just rely on the saved instance state, because the fragment view can be created
+     * on the same fragment instance without providing the saved state.
+     */
+    private var currentSections: List<@Library.Section Int>? = null
 
     private val onPageChangeCallback = object : ViewPager.OnPageChangeListener {
         override fun onPageScrollStateChanged(state: Int) = Unit
@@ -63,22 +70,25 @@ class LibraryFragment: BaseFragment(),
             title = getString(R.string.nav_library)
         }
 
-        // Retrieving library sections from the preferences should be a synchronous operation
-        val actualSections = preferences.librarySections
-                .filter { section -> preferences.isLibrarySectionEnabled(section) }
+        if (savedInstanceState != null && savedInstanceState.containsKey(STATE_KEY_SECTIONS)) {
+            // Restoring the sections
+            currentSections = savedInstanceState.getIntegerArrayList(STATE_KEY_SECTIONS)
+        }
 
-        if (actualSections != sections) {
+        // Retrieving library sections from the preferences should be a synchronous operation
+        val actualSections = preferences.librarySections.filter { section ->
+            preferences.isLibrarySectionEnabled(section)
+        }
+
+        if (!areSectionListsEqual(currentSections, actualSections)) {
+            currentSections = actualSections
             // It's a compelled workaround to prevent the action bar from adding menus
-            // of previous fragments that are not at the current position
+            // of the previous fragments that are not at the current position
             childFragmentManager.removeAllFragmentsNow()
-            sections = actualSections
         }
 
         vp_sections.apply {
-            adapter = LibraryPageAdapter(context, childFragmentManager).apply {
-                sections = actualSections
-            }
-
+            adapter = LibraryPageAdapter(context, childFragmentManager, actualSections)
             // Registering OnPageChangeListener should go after the adapter is set up
             addOnPageChangeListener(onPageChangeCallback)
         }
@@ -96,9 +106,26 @@ class LibraryFragment: BaseFragment(),
         invalidateFab()
     }
 
+    private fun areSectionListsEqual(
+        sections1: List<@Library.Section Int>?,
+        sections2: List<@Library.Section Int>?
+    ): Boolean {
+        if (sections1 == null || sections2 == null) {
+            return false
+        }
+        return CollectionUtil.areListContentsEqual(sections1, sections2)
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         observeViewModel(viewLifecycleOwner)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        currentSections?.also { safeSections ->
+            outState.putIntegerArrayList(STATE_KEY_SECTIONS, ArrayList<Int>(safeSections))
+        }
     }
 
     override fun onDestroyView() {
@@ -109,8 +136,11 @@ class LibraryFragment: BaseFragment(),
     override fun onBackPress(): Boolean {
         val position = vp_sections.currentItem
         val adapter = vp_sections.adapter as? LibraryPageAdapter ?: return false
-        val fragment: BackPressHandler = adapter.getPageAt(position) as? BackPressHandler ?: return false
-        return fragment.onBackPress()
+        val page = adapter.getPageAt(position)
+        if (page is BackPressHandler && FragmentUtils.isInForeground(page)) {
+            return page.onBackPress()
+        }
+        return false
     }
 
     private fun peekCurrentPage(): Fragment? {
@@ -153,6 +183,8 @@ class LibraryFragment: BaseFragment(),
     companion object {
 
         private const val LOG_TAG = "LibraryFragment"
+
+        private const val STATE_KEY_SECTIONS = "library_sections"
 
         // Factory
         fun newInstance() = LibraryFragment()
