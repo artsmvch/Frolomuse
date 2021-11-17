@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestManager
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.frolo.customdrawable.squircle.SquircleColorDrawable
 import com.frolo.muse.FrolomuseApp
 import com.frolo.muse.R
@@ -90,6 +91,12 @@ class GlideThumbnailLoader constructor(
     }
 
     override fun loadRawAlbumThumbnail(album: Album, target: ImageView) {
+        requestManager.makeRequest(album.id)
+            .placeholder(R.drawable.ic_framed_album)
+            .error(R.drawable.ic_framed_album)
+            .transition(DrawableTransitionOptions.withCrossFade(200))
+            .centerCrop()
+            .into(target)
     }
 
     override fun loadArtistThumbnail(artist: Artist, target: ImageView) {

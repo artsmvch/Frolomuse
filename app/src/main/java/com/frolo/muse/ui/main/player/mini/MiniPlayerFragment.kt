@@ -70,6 +70,7 @@ class MiniPlayerFragment : BaseFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         observeViewModel(viewLifecycleOwner)
+        viewModel.onUiCreated()
     }
 
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {

@@ -3,7 +3,6 @@ package com.frolo.muse.ui
 import android.content.ContentUris
 import android.content.Context
 import android.content.Intent
-import android.content.res.Configuration
 import android.net.Uri
 import android.provider.MediaStore
 import com.frolo.muse.BuildConfig
@@ -22,11 +21,6 @@ private fun Context.safelyStartActivity(intent: Intent) {
     if (intent.resolveActivity(packageManager) != null) {
         startActivity(intent)
     }
-}
-
-fun Context.isInLandscapeMode(): Boolean {
-    val orientation = resources.configuration.orientation
-    return orientation == Configuration.ORIENTATION_LANDSCAPE
 }
 
 fun Context.share(uri: Uri, title: String) {

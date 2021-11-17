@@ -12,8 +12,7 @@ import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.base.BaseViewModel
-import io.reactivex.Observable
-import java.util.concurrent.TimeUnit
+import com.frolo.muse.ui.main.player.PlayerProgressObserver
 import javax.inject.Inject
 
 
@@ -23,24 +22,25 @@ class MiniPlayerViewModel @Inject constructor(
     private val eventLogger: EventLogger
 ): BaseViewModel(eventLogger) {
 
-    private val _currentSong = MutableLiveData<Song>(player.getCurrent()?.toSong())
+    private val _currentSong = MutableLiveData<Song>()
     val currentSong: LiveData<Song> get() = _currentSong
 
     val playerControllersEnabled: LiveData<Boolean> =
         currentSong.map(false) { song: Song? -> song != null }
 
-    private val _isPlaying = MutableLiveData<Boolean>(player.isPlaying())
+    private val _isPlaying = MutableLiveData<Boolean>()
     val isPlaying: LiveData<Boolean> get() = _isPlaying
 
-    private val _maxProgress = MutableLiveData<Int>(player.getDuration())
+    private val _maxProgress = MutableLiveData<Int>()
     val maxProgress: LiveData<Int> get() = _maxProgress
 
-    private val _progress = MutableLiveData<Int>(player.getProgress())
+    private val _progress = MutableLiveData<Int>()
     val progress: LiveData<Int> get() = _progress.distinctUntilChanged()
 
     private val playerObserver = object : SimplePlayerObserver() {
         override fun onAudioSourceChanged(player: Player, item: AudioSource?, positionInQueue: Int) {
             _currentSong.value = item?.toSong()
+            startObservingPlaybackProgress(item)
         }
 
         override fun onAudioSourceUpdated(player: Player, item: AudioSource) {
@@ -66,11 +66,18 @@ class MiniPlayerViewModel @Inject constructor(
 
     init {
         player.registerObserver(playerObserver)
+    }
 
-        // For observing player's progress
-        Observable.interval(1, TimeUnit.SECONDS)
-            .observeOn(schedulerProvider.worker())
-            .map { player.getProgress() }
+    fun onUiCreated() {
+        _currentSong.value = player.getCurrent()?.toSong()
+        _isPlaying.value = player.isPlaying()
+        _maxProgress.value = player.getDuration()
+        _progress.value = player.getProgress()
+        startObservingPlaybackProgress(player.getCurrent())
+    }
+
+    private fun startObservingPlaybackProgress(audioSource: AudioSource?) {
+        PlayerProgressObserver.spawn(player, audioSource)
             .observeOn(schedulerProvider.main())
             .subscribeFor(key = "observing_playback_progress") { progress ->
                 _progress.value = progress

@@ -24,17 +24,14 @@ import com.frolo.muse.ui.main.library.songs.SongListFragment
 import java.lang.ref.WeakReference
 
 
-class LibraryPageAdapter(context: Context, fragmentManager: FragmentManager):
-        FragmentPagerAdapter(fragmentManager, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+class LibraryPageAdapter constructor(
+    context: Context,
+    fragmentManager: FragmentManager,
+    val sections: List<@Library.Section Int>
+): FragmentPagerAdapter(fragmentManager, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     private val context = WeakReference(context)
     private val instantiatedFragments = SparseArray<WeakReference<Fragment>>()
-
-    var sections: List<@Library.Section Int> = emptyList()
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
 
     override fun getItem(position: Int): Fragment {
         return when(val section = sections[position]) {

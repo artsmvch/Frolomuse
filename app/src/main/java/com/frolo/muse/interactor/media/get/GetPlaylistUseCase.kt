@@ -69,14 +69,6 @@ class GetPlaylistUseCase @AssistedInject constructor(
     }
 
     fun moveItem(fromPosition: Int, toPosition: Int, snapshot: List<Song>): Completable {
-        return if (playlist.isFromSharedStorage) {
-            moveItemLegacyImpl(fromPosition, toPosition, snapshot.size)
-        } else {
-            moveItemImpl(fromPosition, toPosition, snapshot)
-        }
-    }
-
-    private fun moveItemLegacyImpl(fromPosition: Int, toPosition: Int, listSize: Int): Completable {
         return preferences.getSortOrderForSection(Library.PLAYLIST)
             .firstOrError()
             .flatMap { sortOrder ->
@@ -92,36 +84,94 @@ class GetPlaylistUseCase @AssistedInject constructor(
                     .isSortOrderReversedForSection(Library.PLAYLIST)
                     .firstOrError()
                     .flatMapCompletable { isReversed ->
-                        val actualFromPosition = if (isReversed) {
-                            (listSize - 1) - fromPosition
-                        } else fromPosition
-
-                        val actualToPosition = if (isReversed) {
-                            (listSize - 1) - toPosition
-                        } else toPosition
-
-                        playlistChunkRepository.moveItemInPlaylist(
-                            playlist,
-                            actualFromPosition,
-                            actualToPosition
-                        )
+                        if (playlist.isFromSharedStorage) {
+                            moveItemLegacyImpl(fromPosition, toPosition, snapshot, isReversed)
+                        } else {
+                            moveItemImpl(fromPosition, toPosition, snapshot, isReversed)
+                        }
                     }
             }
-            .subscribeOn(schedulerProvider.worker())
     }
 
-    private fun moveItemImpl(fromPosition: Int, toPosition: Int, snapshot: List<Song>): Completable {
+    private fun moveItemLegacyImpl(
+        fromPosition: Int,
+        toPosition: Int,
+        snapshot: List<Song>,
+        isReversed: Boolean
+    ): Completable {
+        val listSize = snapshot.size
+        val actualFromPosition: Int
+        val actualToPosition: Int
+        if (isReversed) {
+            actualFromPosition = (listSize - 1) - fromPosition
+            actualToPosition = (listSize - 1) - toPosition
+        } else {
+            actualFromPosition = fromPosition
+            actualToPosition = toPosition
+        }
+        val source = playlistChunkRepository.moveItemInPlaylist(playlist, actualFromPosition, actualToPosition)
+        return source.subscribeOn(schedulerProvider.worker())
+    }
+
+    private fun moveItemImpl(fromPosition: Int, toPosition: Int, snapshot: List<Song>, isReversed: Boolean): Completable {
         val previous: Song?
         val next: Song?
         when {
             fromPosition < toPosition -> {
-                previous = snapshot.getOrNull(toPosition)
-                next = snapshot.getOrNull(toPosition + 1)
+                // The fromPosition goes before the toPosition
+                if (isReversed) {
+                    /**
+                     (5) -----pos------
+                     (4) -fromPosition-
+                     (3) -----pos------
+                     (2) -----pos------
+                     (1) --toPosition--
+                     (0) -----pos------
+                     */
+                    previous = snapshot.getOrNull(toPosition + 1)
+                    next = snapshot.getOrNull(toPosition)
+                } else {
+                    /**
+                     (1) -----pos------
+                     (2) -fromPosition-
+                     (3) -----pos------
+                     (4) -----pos------
+                     (5) --toPosition--
+                     (6) -----pos------
+                     */
+                    previous = snapshot.getOrNull(toPosition)
+                    next = snapshot.getOrNull(toPosition + 1)
+                }
             }
+
+            // The fromPosition goes after the toPosition
             fromPosition > toPosition -> {
-                previous = snapshot.getOrNull(toPosition - 1)
-                next = snapshot.getOrNull(toPosition)
+                if (isReversed) {
+                    /**
+                    (5) -----pos------
+                    (4) --toPosition--
+                    (3) -----pos------
+                    (2) -----pos------
+                    (1) -fromPosition-
+                    (0) -----pos------
+                     */
+                    previous = snapshot.getOrNull(toPosition)
+                    next = snapshot.getOrNull(toPosition - 1)
+                } else {
+                    /**
+                    (0) -----pos------
+                    (1) --toPosition--
+                    (2) -----pos------
+                    (3) -----pos------
+                    (4) -fromPosition-
+                    (5) -----pos------
+                     */
+                    previous = snapshot.getOrNull(toPosition - 1)
+                    next = snapshot.getOrNull(toPosition)
+                }
             }
+
+            // The fromPosition is the toPosition, which is an error
             else -> {
                 // Should not happen
                 val error = IllegalArgumentException("Position 'from' " +
