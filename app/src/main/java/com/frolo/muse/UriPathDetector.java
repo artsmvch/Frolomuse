@@ -10,8 +10,8 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 
 
-public class UriPathDetector {
-    private UriPathDetector() { }
+@Deprecated
+public final class UriPathDetector {
 
     public static /*nullable*/ String detect(Context context, /*non-null*/ Uri uri) {
         try {
@@ -114,5 +114,8 @@ public class UriPathDetector {
     private static boolean isMediaDocument(Uri uri) {
         return "com.android.providers.media.documents".equals(uri
                 .getAuthority());
+    }
+
+    private UriPathDetector() {
     }
 }
