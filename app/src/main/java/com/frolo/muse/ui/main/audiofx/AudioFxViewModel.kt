@@ -204,7 +204,6 @@ class AudioFxViewModel @Inject constructor(
     init {
         player.registerObserver(playerObserver)
         audioFx.registerObserver(audioFxObserver)
-        onOpened()
     }
 
     private fun loadPresets() {
@@ -219,7 +218,11 @@ class AudioFxViewModel @Inject constructor(
             .subscribeFor { presets -> _presets.value = presets }
     }
 
-    fun onOpened() {
+    /**
+     * Should be called when the user interface has been created and the view model has been observed.
+     * From this point, the state of the view model is synced with the state of the audio fx.
+     */
+    fun onUiCreated() {
         // audio session
         _audioSessionId.value = player.getAudiSessionId()
         // available status

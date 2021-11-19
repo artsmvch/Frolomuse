@@ -131,7 +131,7 @@ class AudioFxFragment: BaseFragment(), FragmentContentInsetsListener {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         observeViewModel(viewLifecycleOwner)
-        viewModel.onOpened()
+        viewModel.onUiCreated()
     }
 
     override fun onStop() {
@@ -317,6 +317,11 @@ class AudioFxFragment: BaseFragment(), FragmentContentInsetsListener {
                 imv_blurred_snapshot.setImageDrawable(null)
 
                 layout_audio_fx_content.doOnLayout { view ->
+
+                    if (getView() == null) {
+                        // The fragment view has been destroyed or has not yet been created
+                        return@doOnLayout
+                    }
 
                     val backgroundColor: Int =
                             StyleUtil.resolveColor(view.context, R.attr.colorSurface)
