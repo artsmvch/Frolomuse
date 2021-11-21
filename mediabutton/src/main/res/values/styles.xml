@@ -8,4 +8,12 @@
         <item name="morphDuration">150</item>
     </style>
 
+    <style name="PlayButton.Standalone" parent="">
+        <item name="android:padding">0dp</item>
+        <item name="pauseBackground">#00FFFFFF</item>
+        <item name="resumeBackground">#00FFFFFF</item>
+        <item name="iconTint">#717171</item>
+        <item name="morphDuration">120</item>
+    </style>
+
 </resources>

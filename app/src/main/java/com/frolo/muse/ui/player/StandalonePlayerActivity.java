@@ -32,6 +32,7 @@ import com.frolo.mediabutton.PlayButton;
 import com.frolo.muse.BuildConfig;
 import com.frolo.muse.R;
 import com.frolo.muse.Logger;
+import com.frolo.muse.glide.SquircleTransformation;
 import com.frolo.muse.sounder.Sounder;
 
 import org.jetbrains.annotations.NotNull;
@@ -66,12 +67,14 @@ public class StandalonePlayerActivity extends AppCompatActivity {
             | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
 
     // UI views
+    private View touchOutsideView;
+    private View closeButton;
     private ImageView imageAlbumArt;
-    private TextView textPosition;
-    private TextView textDuration;
+    private TextView textProgress;
     private PlayButton buttonPlay;
     private SeekBar seekBarProgress;
     private TextView textTitle;
+    private TextView textArtist;
 
     private Disposable timerDisposable;
     private Disposable picDataDisposable;
@@ -108,12 +111,14 @@ public class StandalonePlayerActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_player);
 
+        touchOutsideView = findViewById(R.id.touch_outside);
+        closeButton = findViewById(R.id.imv_close);
         imageAlbumArt = findViewById(R.id.imv_album_art);
-        textPosition = findViewById(R.id.tv_position);
-        textDuration = findViewById(R.id.tv_duration);
+        textProgress = findViewById(R.id.tv_progress);
         buttonPlay = findViewById(R.id.btn_play);
         seekBarProgress = findViewById(R.id.seek_bar_progress);
-        textTitle = findViewById(R.id.tv_title);
+        textTitle = findViewById(R.id.tv_song_title);
+        textArtist = findViewById(R.id.tv_song_artist);
 
         handleIntent(getIntent(), savedInstanceState);
         initUI();
@@ -153,6 +158,10 @@ public class StandalonePlayerActivity extends AppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        destroyResources();
+    }
+
+    private void destroyResources() {
         if (sounder != null) {
             sounder.release();
             sounder = null;
@@ -266,32 +275,46 @@ public class StandalonePlayerActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        if (timerDisposable != null)
+        if (timerDisposable != null) {
             timerDisposable.dispose();
+        }
         updatePlayButtonState();
         updateProgress();
         timerDisposable = Observable.interval(1000L, TimeUnit.MILLISECONDS)
-                .timeInterval()
-                .observeOn(AndroidSchedulers.mainThread(), false, 100)
-                .subscribe(new Consumer<Timed<Long>>() {
-                    @Override public void accept(Timed<Long> longTimed) throws Exception {
-                        updateProgress();
-                    }
-                });
+            .timeInterval()
+            .observeOn(AndroidSchedulers.mainThread(), false, 100)
+            .subscribe(new Consumer<Timed<Long>>() {
+                @Override public void accept(Timed<Long> longTimed) throws Exception {
+                    updateProgress();
+                }
+            });
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if (timerDisposable != null)
+        if (timerDisposable != null) {
             timerDisposable.dispose();
+            timerDisposable = null;
+        }
+
+        if (isFinishing()) {
+            destroyResources();
+        }
     }
 
     private void initUI() {
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
         seekBarProgress.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
-                    textPosition.setText(convertDurationToString(progress));
+                    textProgress.setText(getProgressText(progress, sounder.getDuration()));
                 }
             }
             @Override public void onStartTrackingTouch(SeekBar seekBar) {
@@ -311,9 +334,12 @@ public class StandalonePlayerActivity extends AppCompatActivity {
                 Sounder sounder = StandalonePlayerActivity.this.sounder;
                 if (sounder != null) {
                     if (!sounder.isPlaying()) {
-                        if (requestAudioFocus())
+                        if (requestAudioFocus()) {
                             sounder.toggle();
-                    } else sounder.toggle();
+                        }
+                    } else {
+                        sounder.toggle();
+                    }
                 }
             }
         });
@@ -326,21 +352,30 @@ public class StandalonePlayerActivity extends AppCompatActivity {
                 MediaMetadataRetriever mmr = new MediaMetadataRetriever();
                 mmr.setDataSource(this, arg);
                 String songTitle = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
+                String artistTitle = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST);
                 byte[] picData = mmr.getEmbeddedPicture();
                 loadAlbumArt(picData);
                 mmr.release();
-                if (songTitle != null && !songTitle.isEmpty())
+                if (songTitle != null && !songTitle.isEmpty()) {
                     textTitle.setText(songTitle);
-                else textTitle.setText(R.string.placeholder_unknown);
+                } else {
+                    textTitle.setText(R.string.placeholder_unknown);
+                }
+                if (artistTitle != null && !artistTitle.isEmpty()) {
+                    textArtist.setText(artistTitle);
+                } else {
+                    textArtist.setText(R.string.placeholder_unknown);
+                }
             }
         } catch (Exception e) {
             Logger.e(e);
             textTitle.setText(R.string.placeholder_unknown);
+            textArtist.setText(R.string.placeholder_unknown);
         }
 
         if (sounder != null) {
             seekBarProgress.setMax(sounder.getDuration());
-            textDuration.setText(convertDurationToString(sounder.getDuration()));
+            textProgress.setText(getProgressText(sounder.getPos(), sounder.getDuration()));
         }
     }
 
@@ -358,7 +393,7 @@ public class StandalonePlayerActivity extends AppCompatActivity {
         if (sounder != null) {
             if (!trackingBar) {
                 seekBarProgress.setProgress(sounder.getPos());
-                textPosition.setText(convertDurationToString(sounder.getPos()));
+                textProgress.setText(getProgressText(sounder.getPos(), sounder.getDuration()));
             }
         }
     }
@@ -370,33 +405,32 @@ public class StandalonePlayerActivity extends AppCompatActivity {
                     return BitmapFactory.decodeByteArray(picData, 0, picData.length);
                 }
             }).subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new SingleObserver<Bitmap>() {
-                        @Override
-                        public void onSubscribe(Disposable d) {
-                            if (picDataDisposable != null) {
-                                picDataDisposable.dispose();
-                            }
-                            picDataDisposable = d;
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new SingleObserver<Bitmap>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        if (picDataDisposable != null) {
+                            picDataDisposable.dispose();
                         }
+                        picDataDisposable = d;
+                    }
 
-                        @Override
-                        public void onSuccess(Bitmap bitmap) {
-                            Glide.with(StandalonePlayerActivity.this)
-                                    .load(bitmap)
-                                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                                    .skipMemoryCache(true)
-                                    .error(Glide.with(StandalonePlayerActivity.this).load(R.drawable.ic_album_grey_72dp))
-                                    .circleCrop()
-                                    .into(imageAlbumArt);
-                        }
+                    @Override
+                    public void onSuccess(Bitmap bitmap) {
+                        Glide.with(StandalonePlayerActivity.this)
+                            .load(bitmap)
+                            .transform(new SquircleTransformation(2.9))
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                            .skipMemoryCache(true)
+                            .error(Glide.with(StandalonePlayerActivity.this).load(R.drawable.ic_album_grey_72dp))
+                            .into(imageAlbumArt);
+                    }
 
-                        @Override
-                        public void onError(Throwable e) {
-                            loadDefaultAlbumArt();
-                        }
-                    });
-
+                    @Override
+                    public void onError(Throwable e) {
+                        loadDefaultAlbumArt();
+                    }
+                });
         } else {
             loadDefaultAlbumArt();
         }
@@ -404,10 +438,10 @@ public class StandalonePlayerActivity extends AppCompatActivity {
 
     private void loadDefaultAlbumArt() {
         Glide.with(this)
-                .load(R.drawable.ic_album_grey_72dp)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true)
-                .into(imageAlbumArt);
+            .load(R.drawable.ic_album_grey_72dp)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .skipMemoryCache(true)
+            .into(imageAlbumArt);
     }
 
     private void showErrorToast(Throwable error) {
@@ -425,5 +459,9 @@ public class StandalonePlayerActivity extends AppCompatActivity {
         //int totalHours = totalMinutes / 60;
         String format = (seconds < 10) ? "%d:0%d" : "%d:%d";
         return String.format(format, totalMinutes, seconds);
+    }
+
+    private String getProgressText(int position, int duration) {
+        return convertDurationToString(position) + " / " + convertDurationToString(duration);
     }
 }

@@ -8,6 +8,11 @@
     android:fitsSystemWindows="true"
     android:background="@color/transparent_black">
 
+    <View
+        android:id="@+id/touch_outside"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
     <com.google.android.material.circularreveal.cardview.CircularRevealCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,90 +24,121 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
-            android:paddingTop="16dp"
-            android:paddingBottom="24dp">
+            android:layout_height="wrap_content">
+
+            <View
+                app:layout_constraintStart_toEndOf="@id/content_frame"
+                app:layout_constraintBottom_toTopOf="@id/content_frame"
+                android:id="@+id/content_frame_top_right_corner_margins"
+                android:layout_width="6dp"
+                android:layout_height="6dp"/>
+
+            <View
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:id="@+id/content_frame"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="18dp"/>
 
             <ImageView
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/content_frame_top_right_corner_margins"
+                app:layout_constraintEnd_toEndOf="@id/content_frame_top_right_corner_margins"
+                android:id="@+id/imv_close"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:padding="6dp"
+                android:src="@drawable/ic_action_close"
+                app:tint="@color/md_grey_500"/>
+
+            <ImageView
+                app:layout_constraintTop_toTopOf="@id/content_frame"
+                app:layout_constraintStart_toStartOf="@id/content_frame"
                 android:src="@drawable/ic_framed_music_note"
                 android:id="@+id/imv_album_art"
-                android:layout_width="50dp"
-                android:layout_height="50dp" />
-
-            <com.frolo.mediabutton.PlayButton
-                app:layout_constraintTop_toTopOf="@id/imv_album_art"
-                app:layout_constraintBottom_toBottomOf="@id/imv_album_art"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:id="@+id/btn_play"
-                android:padding="6dp"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:theme="@style/PlayButton.Default"/>
+                android:layout_width="52dp"
+                android:layout_height="52dp" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toEndOf="@id/imv_album_art"
-                app:layout_constraintEnd_toStartOf="@id/btn_play"
-                app:layout_constraintBottom_toTopOf="@id/barrier1"
-                android:id="@+id/tv_title"
+                app:layout_constraintTop_toTopOf="@id/content_frame"
+                app:layout_constraintEnd_toStartOf="@id/imv_close"
+                app:layout_constraintBottom_toTopOf="@id/tv_song_artist"
+                app:layout_constraintVertical_chainStyle="packed"
+                android:id="@+id/tv_song_title"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="12dp"
                 android:textAppearance="?textAppearanceBody1"
+                android:textSize="17sp"
+                android:textColor="@color/md_grey_900"
                 android:gravity="start|center_vertical"
-                android:maxLines="5"
+                android:maxLines="3"
                 android:ellipsize="end"
                 tools:text="Song title"/>
 
-            <androidx.constraintlayout.widget.Barrier
-                app:constraint_referenced_ids="imv_album_art,tv_title,btn_play"
-                app:barrierDirection="bottom"
-                android:id="@+id/barrier1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+            <androidx.appcompat.widget.AppCompatTextView
+                app:layout_constraintStart_toEndOf="@id/imv_album_art"
+                app:layout_constraintTop_toBottomOf="@id/tv_song_title"
+                app:layout_constraintEnd_toStartOf="@id/imv_close"
+                app:layout_constraintBottom_toTopOf="@id/tv_progress"
+                android:id="@+id/tv_song_artist"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
+                android:textAppearance="?textAppearanceBody2"
+                android:textSize="13sp"
+                android:textColor="@color/md_grey_600"
+                android:gravity="start|center_vertical"
+                android:maxLines="1"
+                android:ellipsize="end"
+                tools:text="Song artist"/>
 
             <androidx.appcompat.widget.AppCompatTextView
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/seek_bar_progress"
-                app:layout_constraintEnd_toStartOf="@id/seek_bar_progress"
-                app:layout_constraintBottom_toBottomOf="@id/seek_bar_progress"
-                android:id="@+id/tv_position"
-                android:layout_width="52dp"
+                app:layout_constraintStart_toEndOf="@id/imv_album_art"
+                app:layout_constraintTop_toBottomOf="@id/tv_song_artist"
+                app:layout_constraintEnd_toStartOf="@id/imv_close"
+                app:layout_constraintWidth_default="wrap"
+                app:layout_constraintHorizontal_bias="0.0"
+                android:id="@+id/tv_progress"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="16dp"
                 android:gravity="center"
                 android:textAppearance="?textAppearanceBody2"
+                android:textColor="@color/md_grey_600"
                 android:textSize="12sp"
-                tools:text="1:45"/>
+                tools:text="1:05 / 5:17"/>
+
+            <com.frolo.mediabutton.PlayButton
+                app:layout_constraintStart_toStartOf="@id/content_frame"
+                app:layout_constraintTop_toBottomOf="@id/tv_progress"
+                app:layout_constraintEnd_toStartOf="@id/seek_bar_progress"
+                app:layout_constraintBottom_toBottomOf="@id/content_frame"
+                android:id="@+id/btn_play"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:theme="@style/PlayButton.Standalone"/>
 
             <androidx.appcompat.widget.AppCompatSeekBar
-                app:layout_constraintStart_toEndOf="@id/tv_position"
-                app:layout_constraintTop_toBottomOf="@id/barrier1"
-                app:layout_constraintEnd_toStartOf="@id/tv_duration"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/btn_play"
+                app:layout_constraintTop_toBottomOf="@id/tv_progress"
+                app:layout_constraintEnd_toEndOf="@id/content_frame"
+                app:layout_constraintBottom_toBottomOf="@id/content_frame"
                 android:id="@+id/seek_bar_progress"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
                 android:paddingStart="16dp"
                 android:paddingEnd="16dp"/>
-
-            <androidx.appcompat.widget.AppCompatTextView
-                app:layout_constraintStart_toEndOf="@id/seek_bar_progress"
-                app:layout_constraintTop_toTopOf="@id/seek_bar_progress"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="@id/seek_bar_progress"
-                android:id="@+id/tv_duration"
-                android:layout_width="52dp"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textAppearance="?textAppearanceBody2"
-                android:textSize="12sp"
-                tools:text="5:17"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
