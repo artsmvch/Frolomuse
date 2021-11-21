@@ -208,9 +208,7 @@ public class StandalonePlayerActivity extends AppCompatActivity {
                         @Override public void onError(Sounder sounder, Throwable error) {
                             Logger.e(error);
                             if (BuildConfig.DEBUG) {
-                                Context context = StandalonePlayerActivity.this;
-                                Toast.makeText(context, error.getMessage(), Toast.LENGTH_SHORT)
-                                        .show();
+                                showErrorToast(error);
                             }
                         }
                     });
@@ -233,7 +231,7 @@ public class StandalonePlayerActivity extends AppCompatActivity {
                     updateUI();
                     updatePlayButtonState();
                 } catch (Exception e) {
-                    Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    showErrorToast(e);
                     Logger.e(TAG, e);
                     finish();
                 }
@@ -410,6 +408,14 @@ public class StandalonePlayerActivity extends AppCompatActivity {
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .skipMemoryCache(true)
                 .into(imageAlbumArt);
+    }
+
+    private void showErrorToast(Throwable error) {
+        String text = error.getMessage();
+        if (text == null || text.isEmpty()) {
+            text = "Error";
+        }
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show();
     }
 
     private String convertDurationToString(int position) {
