@@ -4,6 +4,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.frolo.muse.DebugUtils
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -80,6 +81,14 @@ abstract class BaseAdapter<E, VH> constructor(
     fun indexOf(item: E) = nodes.indexOfFirst { node -> node.item == item }
 
     fun moveItem(fromPosition: Int, toPosition: Int) {
+        if (fromPosition < 0 || fromPosition >= nodes.size
+                || toPosition < 0 || toPosition >= nodes.size) {
+            // Positions are out of bounds
+            val error = IllegalArgumentException("Failed to move item from position $fromPosition " +
+                    "to position $toPosition; list size is ${nodes.size}")
+            DebugUtils.dumpOnMainThread(error)
+            return
+        }
         if (fromPosition < toPosition) {
             for (i in fromPosition until toPosition) {
                 Collections.swap(nodes, i, i + 1)
