@@ -69,6 +69,7 @@ class MediaSessionObserver private constructor(
 
     override fun onPlaybackStarted(player: Player) {
         progressDisposable = Flowable.interval(0L, PROGRESS_UPDATER_INTERVAL_IN_MS, TimeUnit.MILLISECONDS)
+            .onBackpressureLatest()
             .observeOn(AndroidSchedulers.mainThread())
             .doOnNext {
                 setPlaybackState(

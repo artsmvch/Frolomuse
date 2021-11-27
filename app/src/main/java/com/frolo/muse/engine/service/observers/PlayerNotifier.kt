@@ -86,8 +86,8 @@ class PlayerNotifier constructor(
             // If the delay timed out, then emit the default params.
             .withDefaultItemDelayed(defaultParams, 100, TimeUnit.MILLISECONDS)
             .distinctUntilChanged()
-            .observeOn(AndroidSchedulers.mainThread())
             .onBackpressureLatest()
+            .observeOn(AndroidSchedulers.mainThread())
             .doOnNextIndexed { index, playerNtf ->
                 val isFirstItem = index == 0
                 // we can only force notify about the first item

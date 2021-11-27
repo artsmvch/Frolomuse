@@ -42,8 +42,8 @@ class AudioFxViewModel @Inject constructor(
     private val bassBoostPublisher: PublishProcessor<Short> by lazy {
         PublishProcessor.create<Short>().also { publisher ->
             publisher
-                .debounce(200, TimeUnit.MILLISECONDS)
                 .onBackpressureLatest()
+                .debounce(200, TimeUnit.MILLISECONDS)
                 .subscribeOn(schedulerProvider.worker())
                 .observeOn(schedulerProvider.main())
                 .subscribeFor { value ->
@@ -56,8 +56,8 @@ class AudioFxViewModel @Inject constructor(
     private val virtualizerPublisher: PublishProcessor<Short> by lazy {
         PublishProcessor.create<Short>().also { publisher ->
             publisher
-                .debounce(200, TimeUnit.MILLISECONDS)
                 .onBackpressureLatest()
+                .debounce(200, TimeUnit.MILLISECONDS)
                 .subscribeOn(schedulerProvider.worker())
                 .observeOn(schedulerProvider.main())
                 .subscribeFor { value ->

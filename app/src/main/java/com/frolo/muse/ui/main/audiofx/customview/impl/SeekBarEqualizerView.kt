@@ -29,9 +29,10 @@ class SeekBarEqualizerView @JvmOverloads constructor(
     private fun getBandLevelProcessor(bandIndex: Int): FlowableProcessor<Int> {
         return bandLevelProcessors.getOrPut(bandIndex) {
             PublishProcessor.create<Int>().also { processor ->
-                processor.throttleLast(SET_BAND_LEVEL_THROTTLING_IN_MS, TimeUnit.MILLISECONDS)
-                    .observeOn(levelDispatcherScheduler)
+                processor
                     .onBackpressureLatest()
+                    .throttleLast(SET_BAND_LEVEL_THROTTLING_IN_MS, TimeUnit.MILLISECONDS)
+                    .observeOn(levelDispatcherScheduler)
                     .subscribe { bandLevel ->
                         safelySetBandLevel(bandIndex, bandLevel)
                     }

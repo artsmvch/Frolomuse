@@ -65,24 +65,24 @@ class PlaybackParamsViewModel @Inject constructor(
     private val speedPublisher: PublishProcessor<Float> by lazy {
         PublishProcessor.create<Float>().also { publisher ->
             publisher
-                    .onBackpressureLatest()
-                    .debounce(200, TimeUnit.MILLISECONDS)
-                    .onErrorReturnItem(Player.SPEED_NORMAL)
-                    .subscribeOn(schedulerProvider.worker())
-                    .observeOn(schedulerProvider.main())
-                    .subscribeFor { value -> player.setSpeed(value) }
+                .onBackpressureLatest()
+                .debounce(200, TimeUnit.MILLISECONDS)
+                .onErrorReturnItem(Player.SPEED_NORMAL)
+                .subscribeOn(schedulerProvider.worker())
+                .observeOn(schedulerProvider.main())
+                .subscribeFor { value -> player.setSpeed(value) }
         }
     }
 
     private val pitchPublisher: PublishProcessor<Float> by lazy {
         PublishProcessor.create<Float>().also { publisher ->
             publisher
-                    .onBackpressureLatest()
-                    .debounce(200, TimeUnit.MILLISECONDS)
-                    .onErrorReturnItem(Player.PITCH_NORMAL)
-                    .subscribeOn(schedulerProvider.worker())
-                    .observeOn(schedulerProvider.main())
-                    .subscribeFor { value -> player.setPitch(value) }
+                .onBackpressureLatest()
+                .debounce(200, TimeUnit.MILLISECONDS)
+                .onErrorReturnItem(Player.PITCH_NORMAL)
+                .subscribeOn(schedulerProvider.worker())
+                .observeOn(schedulerProvider.main())
+                .subscribeFor { value -> player.setPitch(value) }
         }
     }
 

@@ -19,9 +19,9 @@ internal object PlayerProgressObserver {
         }
         return Flowable.interval(0L, periodInMs, TimeUnit.MILLISECONDS)
             .timeInterval()
+            .onBackpressureLatest()
             .observeOn(Schedulers.computation())
             .map { player.getProgress() }
-            .onBackpressureLatest()
     }
 
 }
