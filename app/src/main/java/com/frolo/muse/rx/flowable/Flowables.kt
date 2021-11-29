@@ -3,7 +3,6 @@ package com.frolo.muse.rx.flowable
 import io.reactivex.Flowable
 import io.reactivex.Scheduler
 import io.reactivex.functions.BiConsumer
-import io.reactivex.functions.BiFunction
 import io.reactivex.functions.Consumer
 import io.reactivex.functions.Function
 import io.reactivex.plugins.RxJavaPlugins
@@ -14,9 +13,8 @@ import java.util.concurrent.TimeUnit
 /**
  * Transforms [this] source so that it emits items with their emission index.
  */
-fun <T> Flowable<T>.indexed(): Flowable<Pair<Int, T>> {
-    val zipper = BiFunction<Int, T, Pair<Int, T>> { index, item -> index to item }
-    return Flowable.range(0, Integer.MAX_VALUE).zipWith(this, zipper)
+fun <T> Flowable<T>.indexed(): Flowable<IndexedValue<T>> {
+    return RxJavaPlugins.onAssembly(FlowableIndexedValue(this))
 }
 
 /**
@@ -24,10 +22,10 @@ fun <T> Flowable<T>.indexed(): Flowable<Pair<Int, T>> {
  */
 fun <T> Flowable<T>.doOnNextIndexed(consumer: BiConsumer<Int, T>): Flowable<T> {
     return indexed()
-        .doOnNext { pair ->
-            consumer.accept(pair.first, pair.second)
+        .doOnNext { indexedValue ->
+            consumer.accept(indexedValue.index, indexedValue.value)
         }
-        .map { pair -> pair.second }
+        .map { indexedValue -> indexedValue.value }
 }
 
 /**
