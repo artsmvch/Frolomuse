@@ -416,4 +416,8 @@
     </plurals>
     <string name="activate_premium_trial">Активувати</string>
     <string name="premium_trial_activated">Пробну версію активовано</string>
+
+    <!--Snowfall-->
+    <string name="snowfall">Снігопад</string>
+    <string name="snowfall_desc">Увімкніть химерний снігопад для зимового настрою</string>
 </resources>

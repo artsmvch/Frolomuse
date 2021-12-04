@@ -12,6 +12,8 @@
     <!--Tint for thumbnail foreground and background tints-->
     <attr name="thumbnailForegroundTint" format="color"/>
     <attr name="thumbnailBackgroundTint" format="color"/>
+    <!--Snowfall-->
+    <attr name="snowflakeTint" format="color"/>
 
     <declare-styleable name="ControllerView">
         <attr name="label" format="string"/>

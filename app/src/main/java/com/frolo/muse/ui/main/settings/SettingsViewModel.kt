@@ -1,6 +1,7 @@
 package com.frolo.muse.ui.main.settings
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.frolo.muse.BuildConfig
 import com.frolo.muse.arch.*
 import com.frolo.muse.billing.Products
@@ -10,9 +11,12 @@ import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.ProductOfferUiElementSource
 import com.frolo.muse.logger.logProductOffered
 import com.frolo.muse.navigator.Navigator
+import com.frolo.muse.repository.AppearancePreferences
 import com.frolo.muse.repository.Preferences
+import com.frolo.muse.repository.RemoteConfigRepository
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.base.PremiumViewModel
+import io.reactivex.Flowable
 import javax.inject.Inject
 
 
@@ -21,7 +25,9 @@ class SettingsViewModel @Inject constructor(
     private val schedulerProvider: SchedulerProvider,
     private val navigator: Navigator,
     private val premiumManager: PremiumManager,
+    private val remoteConfigRepository: RemoteConfigRepository,
     private val preferences: Preferences,
+    private val appearancePreferences: AppearancePreferences,
     private val eventLogger: EventLogger
 ): PremiumViewModel(schedulerProvider, navigator, premiumManager, eventLogger) {
 
@@ -34,6 +40,18 @@ class SettingsViewModel @Inject constructor(
 
     private val _notifyPremiumTrialResetEvent = SingleLiveEvent<Unit>()
     val notifyPremiumTrialResetEvent: LiveData<Unit> get() = _notifyPremiumTrialResetEvent
+
+    val snowfallOptionVisible: LiveData<Boolean> by lazy {
+        MutableLiveData<Boolean>(false).apply {
+            val source1 = remoteConfigRepository.isSnowfallFeatureEnabled().toFlowable()
+            val source2 = appearancePreferences.isSnowfallEnabled()
+            Flowable.combineLatest(source1, source2) { isFeatureEnabled, isLocallyEnabled ->
+                    isFeatureEnabled || isLocallyEnabled
+                }
+                .observeOn(schedulerProvider.main())
+                .subscribeFor { value = it }
+        }
+    }
 
     fun onBuyPremiumPreferenceClicked() {
         eventLogger.logProductOffered(Products.PREMIUM, ProductOfferUiElementSource.SETTINGS)

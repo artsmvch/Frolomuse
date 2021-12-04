@@ -71,4 +71,28 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         app:menu="@menu/activity_main"/>
+
+    <FrameLayout
+        android:id="@+id/fl_fancy_overlays"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="24dp">
+
+        <com.jetradarmobile.snowfall.SnowfallView
+            android:id="@+id/snowfall_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            app:snowflakesNum="30"
+            app:snowflakeAlphaMin="165"
+            app:snowflakeAlphaMax="255"
+            app:snowflakeAngleMax="15"
+            app:snowflakeSizeMin="8dp"
+            app:snowflakeSizeMax="20dp"
+            app:snowflakeSpeedMin="2"
+            app:snowflakeSpeedMax="6"
+            app:snowflakesFadingEnabled="true"
+            app:snowflakesAlreadyFalling="false"
+            app:snowflakeImage="@drawable/ic_snowflake"/>
+    </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

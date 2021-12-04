@@ -14,6 +14,7 @@ import com.frolo.muse.repository.AppearancePreferences
 import com.frolo.muse.repository.LibraryPreferences
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.repository.SongRepository
+import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.base.BaseActivity
 import com.frolo.muse.ui.main.audiofx.params.PlaybackParamsDialog
 import com.frolo.muse.ui.main.audiofx.preset.SavePresetVMFactory
@@ -56,6 +57,7 @@ import javax.inject.Singleton
 )
 interface AppComponent {
 
+    fun provideSchedulerProvider(): SchedulerProvider
     fun provideNavigator(): Navigator
     fun providePreferences(): Preferences
     fun provideLibraryPreferences(): LibraryPreferences

@@ -400,4 +400,8 @@
     </plurals>
     <string name="activate_premium_trial">激活試用版</string>
     <string name="premium_trial_activated">高級試用版已激活</string>
+
+    <!--Snowfall-->
+    <string name="snowfall">降雪</string>
+    <string name="snowfall_desc">打開異想天開的降雪以獲得寒冷的心情</string>
 </resources>

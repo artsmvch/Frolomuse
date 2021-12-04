@@ -401,4 +401,8 @@
     </plurals>
     <string name="activate_premium_trial">프리미엄 평가판 활성화</string>
     <string name="premium_trial_activated">프리미엄 평가판이 활성화되었습니다</string>
+
+    <!--Snowfall-->
+    <string name="snowfall">강설량</string>
+    <string name="snowfall_desc">겨울 분위기를 위해 아름다운 눈을 켜십시오</string>
 </resources>

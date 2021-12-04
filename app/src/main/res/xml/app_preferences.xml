@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.preference.PreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:key="@string/preference_screen">
 
     <androidx.preference.PreferenceCategory
@@ -69,6 +69,13 @@
 
     <androidx.preference.PreferenceCategory
         android:title="@string/appearance_settings">
+
+        <CheckBoxPreference
+            android:icon="@drawable/pref_ic_snowfall_outlined_24"
+            android:key="snowfall"
+            android:title="@string/snowfall"
+            android:summary="@string/snowfall_desc"
+            app:isPreferenceVisible="false"/>
 
         <Preference
             android:icon="@drawable/pref_ic_theme_outlined_24"

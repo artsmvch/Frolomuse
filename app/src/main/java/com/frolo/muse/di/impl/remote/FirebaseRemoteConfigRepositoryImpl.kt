@@ -48,4 +48,12 @@ class FirebaseRemoteConfigRepositoryImpl : RemoteConfigRepository {
             .subscribeOn(Schedulers.computation())
     }
 
+    override fun isSnowfallFeatureEnabled(): Single<Boolean> {
+        return Single.fromCallable { FirebaseRemoteConfig.getInstance() }
+            .map { config ->
+                config[FirebaseRemoteConfigUtil.SNOWFALL_FEATURE_ENABLED].asString() == "true"
+            }
+            .subscribeOn(Schedulers.computation())
+    }
+
 }

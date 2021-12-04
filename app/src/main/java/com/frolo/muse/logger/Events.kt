@@ -386,3 +386,16 @@ fun EventLogger.logLowMemory() {
 }
 
 //endregion
+
+
+//region Snowfall
+
+fun EventLogger.logSnowfallEnabled() {
+    log("snowfall_enabled")
+}
+
+fun EventLogger.logSnowfallDisabled() {
+    log("snowfall_disabled")
+}
+
+//endregion

@@ -285,6 +285,9 @@ dependencies {
 
     // Waveform Seek Bar
     implementation 'com.github.alexei-frolo:WaveformSeekBar:1.1'
+
+    // Falling snow view
+    implementation 'com.github.jetradarmobile:android-snowfall:1.2.1'
 }
 
 apply plugin: 'com.google.gms.google-services'

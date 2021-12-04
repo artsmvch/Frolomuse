@@ -1,6 +1,7 @@
 package com.frolo.muse.ui.main
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.frolo.muse.arch.EventLiveData
 import com.frolo.muse.arch.SingleLiveEvent
 import com.frolo.muse.arch.call
@@ -16,6 +17,7 @@ import com.frolo.muse.interactor.rate.RateUseCase
 import com.frolo.muse.logger.*
 import com.frolo.muse.model.media.Media
 import com.frolo.muse.permission.PermissionChecker
+import com.frolo.muse.repository.AppearancePreferences
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.base.BaseViewModel
 import io.reactivex.disposables.Disposable
@@ -43,6 +45,7 @@ class MainViewModel @Inject constructor(
     private val premiumManager: PremiumManager,
     private val schedulerProvider: SchedulerProvider,
     private val permissionChecker: PermissionChecker,
+    private val appearancePreferences: AppearancePreferences,
     private val eventLogger: EventLogger
 ): BaseViewModel(eventLogger) {
 
@@ -68,6 +71,17 @@ class MainViewModel @Inject constructor(
 
     private val _askToRateEvent = SingleLiveEvent<Unit>()
     val askToRateEvent: LiveData<Unit> get() = _askToRateEvent
+
+    val isSnowfallEnabled: LiveData<Boolean> by lazy {
+        MutableLiveData<Boolean>().apply {
+            appearancePreferences.isSnowfallEnabled()
+                .distinctUntilChanged()
+                .observeOn(schedulerProvider.main())
+                .subscribeFor { isEnabled ->
+                    value = isEnabled
+                }
+        }
+    }
 
     private fun tryRestorePlayerStateIfNeeded() {
         val player: Player = _player ?: return

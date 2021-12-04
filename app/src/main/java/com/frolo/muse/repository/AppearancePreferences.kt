@@ -8,4 +8,7 @@ import io.reactivex.Flowable
 interface AppearancePreferences {
     fun getThumbnailConfig(): Flowable<ThumbnailConfig>
     fun setThumbnailConfig(config: ThumbnailConfig): Completable
+
+    fun isSnowfallEnabled(): Flowable<Boolean>
+    fun setSnowfallEnabled(enabled: Boolean): Completable
 }

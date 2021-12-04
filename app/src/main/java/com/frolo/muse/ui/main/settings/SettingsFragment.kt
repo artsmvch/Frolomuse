@@ -20,10 +20,14 @@ import com.frolo.muse.Features
 import com.frolo.muse.R
 import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
+import com.frolo.muse.di.appComponent
 import com.frolo.muse.logger.*
 import com.frolo.muse.mediascan.MediaScanService
 import com.frolo.muse.navigator.Navigator
+import com.frolo.muse.repository.AppearancePreferences
 import com.frolo.muse.repository.Preferences
+import com.frolo.muse.rx.SchedulerProvider
+import com.frolo.muse.rx.disposeOnDestroyOf
 import com.frolo.muse.sleeptimer.PlayerSleepTimer
 import com.frolo.muse.ui.*
 import com.frolo.muse.ui.base.FragmentContentInsetsListener
@@ -36,6 +40,7 @@ import com.frolo.muse.ui.main.settings.library.filter.LibrarySongFilterDialog
 import com.frolo.muse.ui.main.settings.libs.LicensesDialog
 import com.frolo.muse.ui.main.settings.sleeptimer.SleepTimerDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import io.reactivex.Single
 
 
 class SettingsFragment : PreferenceFragmentCompat(),
@@ -43,27 +48,31 @@ class SettingsFragment : PreferenceFragmentCompat(),
         FragmentContentInsetsListener,
         ScrolledToTop {
 
+    private val schedulerProvider: SchedulerProvider by lazy {
+        appComponent.provideSchedulerProvider()
+    }
+
     private val preferences: Preferences by lazy {
-        FrolomuseApp.from(requireContext())
-            .appComponent
-            .providePreferences()
+        appComponent.providePreferences()
+    }
+
+    private val appearancePreferences: AppearancePreferences by lazy {
+        appComponent.provideAppearancePreferences()
     }
 
     private val navigator: Navigator by lazy {
-        FrolomuseApp.from(requireContext())
-            .appComponent
-            .provideNavigator()
+        appComponent.provideNavigator()
     }
 
     private val eventLogger: EventLogger by lazy {
-        FrolomuseApp.from(requireContext())
-            .appComponent
-            .provideEventLogger()
+        appComponent.provideEventLogger()
     }
 
     private val buyPremiumPreference: Preference? get() = findPreference("buy_premium")
 
     private val playbackFadingPreference: Preference? get() = findPreference("playback_fading")
+
+    private val snowfallPreference: CheckBoxPreference? get() = findPreference("snowfall") as? CheckBoxPreference
 
     private val settingsViewModel: SettingsViewModel by lazy {
         val appComponent = requireContext().let { context ->
@@ -139,6 +148,22 @@ class SettingsFragment : PreferenceFragmentCompat(),
                 showLibrarySongFilter()
                 true
             }
+        }
+
+        snowfallPreference?.apply {
+            appearancePreferences.isSnowfallEnabled()
+                .firstOrError()
+                .observeOn(schedulerProvider.main())
+                .subscribe { isEnabled ->
+                    this.isChecked = isEnabled
+                    this.onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, value ->
+                        if (value is Boolean) {
+                            setSnowfallEnabled(value)
+                        }
+                        true
+                    }
+                }
+                .disposeOnDestroyOf(this@SettingsFragment)
         }
 
         (findPreference("album_grid") as CheckBoxPreference).apply {
@@ -265,6 +290,10 @@ class SettingsFragment : PreferenceFragmentCompat(),
 
         isBuyPremiumOptionVisible.observe(owner) { visible ->
             buyPremiumPreference?.isVisible = visible == true
+        }
+
+        snowfallOptionVisible.observe(owner) { visible ->
+            snowfallPreference?.isVisible = visible == true
         }
 
         notifyPremiumProductConsumedEvent.observe(owner) {
@@ -430,6 +459,25 @@ class SettingsFragment : PreferenceFragmentCompat(),
                 activity?.recreate()
             }
             .show()
+    }
+
+    private fun setSnowfallEnabled(enabled: Boolean) {
+        // Saving to the prefs
+        appearancePreferences.setSnowfallEnabled(enabled)
+            .doOnComplete {
+                // Logging
+                if (enabled) {
+                    eventLogger.logSnowfallEnabled()
+                } else {
+                    eventLogger.logSnowfallDisabled()
+                }
+            }
+            .doOnError { error ->
+                eventLogger.log(error)
+            }
+            .observeOn(schedulerProvider.main())
+            .subscribe()
+            .disposeOnDestroyOf(this@SettingsFragment)
     }
 
     override fun applyContentInsets(left: Int, top: Int, right: Int, bottom: Int) {

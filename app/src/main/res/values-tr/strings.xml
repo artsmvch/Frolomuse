@@ -407,4 +407,8 @@
     </plurals>
     <string name="activate_premium_trial">Deneme sürümünü etkinleştirin</string>
     <string name="premium_trial_activated">Premium deneme etkinleştirildi</string>
+
+    <!--Snowfall-->
+    <string name="snowfall">Kar yağışı</string>
+    <string name="snowfall_desc">Bir kış havası için süslü kar yağışını açın</string>
 </resources>

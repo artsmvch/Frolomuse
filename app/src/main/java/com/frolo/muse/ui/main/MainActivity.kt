@@ -26,6 +26,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProviders
+import androidx.transition.Fade
+import androidx.transition.TransitionManager
 import com.frolo.muse.*
 import com.frolo.muse.android.ViewAppSettingsIntent
 import com.frolo.muse.android.startActivitySafely
@@ -691,6 +693,19 @@ class MainActivity : PlayerHostActivity(),
     }
 
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
+        isSnowfallEnabled.observe(owner) { isEnabled ->
+            val transition = Fade().apply {
+                duration = 150L
+                addTarget(snowfall_view)
+            }
+            TransitionManager.beginDelayedTransition(cl_root, transition)
+            if (isEnabled == true) {
+                snowfall_view.visibility = View.VISIBLE
+            } else {
+                snowfall_view.visibility = View.GONE
+            }
+        }
+
         askToRateEvent.observe(owner) {
             showRateDialog()
         }

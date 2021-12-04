@@ -407,4 +407,8 @@
     </plurals>
     <string name="activate_premium_trial">परीक्षण संस्करण सक्रिय करें</string>
     <string name="premium_trial_activated">प्रीमियम परीक्षण सक्रिय</string>
+
+    <!--Snowfall-->
+    <string name="snowfall">हिमपात</string>
+    <string name="snowfall_desc">सर्द मिजाज के लिए शानदार बर्फबारी चालू करें</string>
 </resources>

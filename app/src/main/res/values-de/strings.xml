@@ -408,4 +408,8 @@
     </plurals>
     <string name="activate_premium_trial">Testversion aktivieren</string>
     <string name="premium_trial_activated">Premium-Testversion aktiviert</string>
+
+    <!--Snowfall-->
+    <string name="snowfall">Schneefall</string>
+    <string name="snowfall_desc">Schalten Sie skurrilen Schneefall für eine winterliche Stimmung ein</string>
 </resources>

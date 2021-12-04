@@ -401,4 +401,8 @@
     </plurals>
     <string name="activate_premium_trial">Aktifkan versi trial</string>
     <string name="premium_trial_activated">Versi trial premium telah diaktifkan</string>
+
+    <!--Snowfall-->
+    <string name="snowfall">Salju yg turun</string>
+    <string name="snowfall_desc">Nyalakan hujan salju yang aneh untuk suasana musim dingin</string>
 </resources>

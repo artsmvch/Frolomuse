@@ -400,4 +400,8 @@
     </plurals>
     <string name="activate_premium_trial">試用版を有効にする</string>
     <string name="premium_trial_activated">プレミアムトライアルが有効になりました</string>
+
+    <!--Snowfall-->
+    <string name="snowfall">降雪</string>
+    <string name="snowfall_desc">冬の気分のために気まぐれな降雪をオンにします</string>
 </resources>

@@ -408,4 +408,8 @@
     </plurals>
     <string name="activate_premium_trial">Activate trial</string>
     <string name="premium_trial_activated">Premium trial activated</string>
+
+    <!--Snowfall-->
+    <string name="snowfall">Snowfall</string>
+    <string name="snowfall_desc">Turn on whimsical snowfall for a wintry mood</string>
 </resources>

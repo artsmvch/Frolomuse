@@ -408,4 +408,8 @@
     </plurals>
     <string name="activate_premium_trial">Ativar versão de teste</string>
     <string name="premium_trial_activated">A versão de teste foi ativada</string>
+
+    <!--Snowfall-->
+    <string name="snowfall">Queda de neve</string>
+    <string name="snowfall_desc">Ative a queda de neve extravagante para um clima de inverno</string>
 </resources>

@@ -422,4 +422,8 @@
     </plurals>
     <string name="activate_premium_trial">Активировать</string>
     <string name="premium_trial_activated">Премиум-пробная версия активирована</string>
+
+    <!--Snowfall-->
+    <string name="snowfall">Снегопад</string>
+    <string name="snowfall_desc">Включите причудливый снегопад для зимнего настроения</string>
 </resources>
