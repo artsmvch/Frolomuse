@@ -46,7 +46,8 @@ class SettingsViewModel @Inject constructor(
             val source1 = remoteConfigRepository.isSnowfallFeatureEnabled().toFlowable()
             val source2 = appearancePreferences.isSnowfallEnabled()
             Flowable.combineLatest(source1, source2) { isFeatureEnabled, isLocallyEnabled ->
-                    isFeatureEnabled || isLocallyEnabled
+                    // Only if the feature is enabled remotely
+                    isFeatureEnabled// || isLocallyEnabled
                 }
                 .observeOn(schedulerProvider.main())
                 .subscribeFor { value = it }

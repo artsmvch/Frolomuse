@@ -18,8 +18,10 @@ import com.frolo.muse.logger.*
 import com.frolo.muse.model.media.Media
 import com.frolo.muse.permission.PermissionChecker
 import com.frolo.muse.repository.AppearancePreferences
+import com.frolo.muse.repository.RemoteConfigRepository
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.base.BaseViewModel
+import io.reactivex.Flowable
 import io.reactivex.disposables.Disposable
 import javax.inject.Inject
 
@@ -46,6 +48,7 @@ class MainViewModel @Inject constructor(
     private val schedulerProvider: SchedulerProvider,
     private val permissionChecker: PermissionChecker,
     private val appearancePreferences: AppearancePreferences,
+    private val remoteConfigRepository: RemoteConfigRepository,
     private val eventLogger: EventLogger
 ): BaseViewModel(eventLogger) {
 
@@ -74,8 +77,12 @@ class MainViewModel @Inject constructor(
 
     val isSnowfallEnabled: LiveData<Boolean> by lazy {
         MutableLiveData<Boolean>().apply {
-            appearancePreferences.isSnowfallEnabled()
-                .distinctUntilChanged()
+            val source1 = remoteConfigRepository.isSnowfallFeatureEnabled().toFlowable()
+            val source2 = appearancePreferences.isSnowfallEnabled()
+            val combined = Flowable.combineLatest(source1, source2) { isFeatureEnabled, isLocallyEnabled ->
+                isFeatureEnabled && isLocallyEnabled
+            }
+            combined.distinctUntilChanged()
                 .observeOn(schedulerProvider.main())
                 .subscribeFor { isEnabled ->
                     value = isEnabled
