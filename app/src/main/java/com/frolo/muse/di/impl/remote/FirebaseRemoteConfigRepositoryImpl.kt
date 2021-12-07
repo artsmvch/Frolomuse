@@ -1,5 +1,6 @@
 package com.frolo.muse.di.impl.remote
 
+import com.frolo.muse.firebase.FirebaseRemoteConfigCache
 import com.frolo.muse.firebase.FirebaseRemoteConfigUtil
 import com.frolo.muse.repository.RemoteConfigRepository
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
@@ -49,11 +50,9 @@ class FirebaseRemoteConfigRepositoryImpl : RemoteConfigRepository {
     }
 
     override fun isSnowfallFeatureEnabled(): Single<Boolean> {
-        return Single.fromCallable { FirebaseRemoteConfig.getInstance() }
-            .map { config ->
-                config[FirebaseRemoteConfigUtil.SNOWFALL_FEATURE_ENABLED].asString() == "true"
-            }
-            .subscribeOn(Schedulers.computation())
+        return FirebaseRemoteConfigCache
+            .getBool(FirebaseRemoteConfigUtil.SNOWFALL_FEATURE_ENABLED)
+            .onErrorReturnItem(false)
     }
 
 }
