@@ -17,10 +17,10 @@ static def getDate() {
     return new Date().format('yyyyMMddHHmmss')
 }
 
-def version_code = 119
+def version_code = 120
 def version_major = 6
-def version_minor = 0
-def version_patch = 7
+def version_minor = 1
+def version_patch = 0
 
 android {
     signingConfigs {
