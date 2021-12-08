@@ -25,6 +25,7 @@ abstract class BaseViewModel constructor(
 
     // Common error stream
     private val _error = SingleLiveEvent<Throwable>()
+    @Deprecated("Create a separate error stream for your needs")
     val error: LiveData<Throwable> get() = _error
 
     protected fun logError(err: Throwable) {

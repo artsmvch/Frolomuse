@@ -19,7 +19,7 @@ object FirebaseRemoteConfigCache {
 
     private const val EMPTY_STRING_VALUE = ""
 
-    private val MIN_FETCH_INTERVAL_IN_SECONDS = TimeUnit.HOURS.toSeconds(3L)
+    private val MIN_FETCH_INTERVAL_IN_SECONDS = TimeUnit.HOURS.toSeconds(12L)
 
     private val internalDisposables = CompositeDisposable()
 
@@ -39,7 +39,10 @@ object FirebaseRemoteConfigCache {
                     .timeout(3L, TimeUnit.SECONDS)
                     .doOnSubscribe { disposable -> internalDisposables.add(disposable) }
                     .map { value -> value.asString() }
-                    .doOnError { error -> Logger.e(LOG_TAG, error) }
+                    .doOnError { error ->
+                        val wrappedError = FirebaseException(error)
+                        Logger.e(LOG_TAG, wrappedError)
+                    }
                     .onErrorReturnItem(EMPTY_STRING_VALUE)
                     .subscribe { value -> newProcessor.onNext(value) }
                 processor = newProcessor
