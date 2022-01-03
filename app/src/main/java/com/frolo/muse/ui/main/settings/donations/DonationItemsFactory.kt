@@ -68,7 +68,7 @@ internal object DonationItemsFactory {
                 DonationItem.Purchase(
                     nameResId = R.string.donate_gym,
                     iconResId = R.drawable.ic_donate_gym,
-                    iconSide = DonationItem.IconSide.BOTTOM_RIGHT,
+                    iconSide = DonationItem.IconSide.BOTTOM_LEFT,
                     tintResId = R.color.md_deep_purple_300,
                     productDetails = productDetails
                 )
