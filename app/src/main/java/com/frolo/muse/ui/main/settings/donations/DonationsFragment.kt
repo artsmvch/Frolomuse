@@ -4,6 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.view.doOnLayout
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import androidx.lifecycle.LifecycleOwner
@@ -18,6 +21,7 @@ import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.base.FragmentContentInsetsListener
 import com.frolo.muse.ui.base.setupNavigation
 import com.frolo.muse.util.SimpleLottieAnimationController
+import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.fragment_donations.*
 
 
@@ -32,6 +36,8 @@ class DonationsFragment : BaseFragment(), FragmentContentInsetsListener {
     }
 
     private val lottieAnimationController by lazy { SimpleLottieAnimationController(this) }
+
+    private var canDragAppBarLayout: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,6 +55,8 @@ class DonationsFragment : BaseFragment(), FragmentContentInsetsListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupNavigation(tb_actions)
 
+        setupDragCallback()
+
         val staggeredLayoutManager = StaggeredGridLayoutManager(getSpanCount(), RecyclerView.VERTICAL)
         rv_list.apply {
             layoutManager = staggeredLayoutManager
@@ -57,6 +65,21 @@ class DonationsFragment : BaseFragment(), FragmentContentInsetsListener {
                 left = Screen.dp(context, 12f),
                 right = Screen.dp(context, 12f)
             )
+        }
+    }
+
+    private fun setupDragCallback() {
+        app_bar_layout.doOnLayout {
+            val behavior = (app_bar_layout.layoutParams as CoordinatorLayout.LayoutParams).behavior
+            if (behavior is AppBarLayout.Behavior) {
+                behavior.setDragCallback(
+                    object : AppBarLayout.Behavior.DragCallback () {
+                        override fun canDrag(appBarLayout: AppBarLayout): Boolean {
+                            return canDragAppBarLayout
+                        }
+                    }
+                )
+            }
         }
     }
 
@@ -84,8 +107,14 @@ class DonationsFragment : BaseFragment(), FragmentContentInsetsListener {
                 TransitionManager.beginDelayedTransition(rootView, transition)
             }
             val safeIsLoading = isLoading == true
-            cl_content.isVisible = !safeIsLoading
+            tv_headline.isVisible = !safeIsLoading
+            tv_info_text.isVisible = !safeIsLoading
+            rv_list.isInvisible = safeIsLoading
             pb_loading.isVisible = safeIsLoading
+            canDragAppBarLayout = !safeIsLoading
+            if (safeIsLoading) {
+                app_bar_layout.setExpanded(true, false)
+            }
         }
 
         donationItems.observe(owner) { items ->

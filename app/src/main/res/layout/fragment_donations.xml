@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fl_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -30,6 +31,7 @@
                 app:navigationIcon="@drawable/ic_navigation_up"/>
 
             <TextView
+                android:id="@+id/tv_headline"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="?textAppearanceHeadline5"
@@ -40,6 +42,7 @@
                 android:text="@string/donations_headline" />
 
             <TextView
+                android:id="@+id/tv_info_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
