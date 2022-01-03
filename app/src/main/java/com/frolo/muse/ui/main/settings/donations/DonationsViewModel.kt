@@ -60,6 +60,7 @@ class DonationsViewModel @Inject constructor(
                     billingManager.consumeProduct(productId)
                         .doOnError { error ->
                             eventLogger.logFailedToConsumeDonation(productId, error)
+                            logError(error)
                         }
                         .onErrorComplete()
                         .andThen(Single.just(product))
@@ -96,6 +97,7 @@ class DonationsViewModel @Inject constructor(
                     billingManager.consumeProduct(result.productId)
                         .doOnError { error ->
                             eventLogger.logFailedToConsumeDonation(result.productId, error)
+                            logError(error)
                         }
                         .onErrorComplete()
                         .andThen(Single.just(result))

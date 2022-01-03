@@ -11,11 +11,13 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.transition.Fade
 import androidx.transition.TransitionManager
+import com.frolo.muse.BuildInfo
 import com.frolo.muse.R
 import com.frolo.muse.Screen
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.base.FragmentContentInsetsListener
 import com.frolo.muse.ui.base.setupNavigation
+import com.frolo.muse.util.SimpleLottieAnimationController
 import kotlinx.android.synthetic.main.fragment_donations.*
 
 
@@ -28,6 +30,8 @@ class DonationsFragment : BaseFragment(), FragmentContentInsetsListener {
             viewModel.onDonationItemClicked(donationItem)
         }
     }
+
+    private val lottieAnimationController by lazy { SimpleLottieAnimationController(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,9 +70,11 @@ class DonationsFragment : BaseFragment(), FragmentContentInsetsListener {
     }
 
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
-//        error.observe(owner) { error ->
-//            toastError(error)
-//        }
+        error.observe(owner) { error ->
+            if (BuildInfo.isDebug()) {
+                toastError(error)
+            }
+        }
 
         isLoading.observe(owner) { isLoading ->
             (view as? ViewGroup)?.also { rootView ->
@@ -87,7 +93,12 @@ class DonationsFragment : BaseFragment(), FragmentContentInsetsListener {
         }
 
         thanksForDonationEvent.observe(owner) {
+            playThanksForDonationAnimation()
         }
+    }
+
+    private fun playThanksForDonationAnimation() {
+        lottieAnimationController.playAnimation(CONFETTI_ANIM_ASSET_NAME)
     }
 
     override fun applyContentInsets(left: Int, top: Int, right: Int, bottom: Int) {
@@ -98,6 +109,8 @@ class DonationsFragment : BaseFragment(), FragmentContentInsetsListener {
     }
 
     companion object {
+        private const val CONFETTI_ANIM_ASSET_NAME = "lottie_animation/confetti.json"
+
         // Factory
         fun newInstance(): DonationsFragment = DonationsFragment()
     }

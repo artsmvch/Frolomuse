@@ -288,6 +288,9 @@ dependencies {
 
     // Falling snow view
     implementation 'com.github.jetradarmobile:android-snowfall:1.2.1'
+
+    // Lottie animation
+    implementation 'com.airbnb.android:lottie:4.2.2'
 }
 
 apply plugin: 'com.google.gms.google-services'
