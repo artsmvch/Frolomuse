@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
@@ -64,8 +66,12 @@ class LibraryFragment: BaseFragment(),
     ): View = inflater.inflate(R.layout.fragment_library, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        tb_actions.apply {
-            setTitle(R.string.nav_library)
+        val toolbar: Toolbar = this.tb_actions
+
+        toolbar.setTitle(R.string.nav_library)
+        (activity as? AppCompatActivity)?.apply {
+            // Required for options menu
+            setSupportActionBar(toolbar)
         }
 
         if (savedInstanceState != null && savedInstanceState.containsKey(STATE_KEY_SECTIONS)) {
