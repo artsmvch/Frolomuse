@@ -31,16 +31,6 @@ class FirebaseRemoteConfigRepositoryImpl : RemoteConfigRepository {
         }
     }
 
-    override fun isPurchaseFeatureEnabled(): Single<Boolean> {
-        return getActivatedConfigValue(FirebaseRemoteConfigUtil.PURCHASE_FEATURE_ENABLED) { value ->
-            try {
-                value.asString() == "true"
-            } catch (ignored: Throwable) {
-                false
-            }
-        }
-    }
-
     override fun isPlayerWakeLockEnabled(): Single<Boolean> {
         return Single.fromCallable { FirebaseRemoteConfig.getInstance() }
             .map { config ->

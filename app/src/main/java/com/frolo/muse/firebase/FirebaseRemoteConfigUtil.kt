@@ -12,6 +12,7 @@ object FirebaseRemoteConfigUtil {
     private const val STRICT_ACTIVATION = false
 
     const val LYRICS_VIEWER_ENABLED = "lyrics_viewer_enabled"
+    @Deprecated("Archived")
     const val PURCHASE_FEATURE_ENABLED = "purchase_feature_enabled"
     const val PLAYER_WAKE_LOCK_FEATURE_ENABLED = "player_wake_lock_feature_enabled"
     const val SNOWFALL_FEATURE_ENABLED = "snowfall_feature_enabled"

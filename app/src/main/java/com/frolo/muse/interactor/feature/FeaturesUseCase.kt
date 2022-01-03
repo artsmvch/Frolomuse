@@ -24,10 +24,6 @@ class FeaturesUseCase @Inject constructor(
             .ignoreElement()
     }
 
-    fun isPurchaseFeatureEnabled(): Single<Boolean> {
-        return remoteConfigRepository.isPurchaseFeatureEnabled()
-    }
-
     fun isLyricsViewerEnabled(): Single<Boolean> {
         return Single.fromCallable { lyricsViewerAvailableRef.get() }
     }
