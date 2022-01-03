@@ -6,7 +6,7 @@ import android.os.Looper
 
 internal object ThreadUtils {
 
-    private const val isDebug: Boolean = BuildConfig.DEBUG
+    private val isDebug: Boolean = BuildConfig.DEBUG
 
     private val mainHandler: Handler by lazy { Handler(Looper.getMainLooper()) }
 

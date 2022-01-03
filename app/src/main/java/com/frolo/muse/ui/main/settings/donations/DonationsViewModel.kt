@@ -67,7 +67,7 @@ class DonationsViewModel @Inject constructor(
                 }
                 .doOnError { err ->
                     eventLogger.logFailedToLoadDonation(productId, err)
-                    DebugUtils.dumpOnMainThread(err)
+                    logError(err)
                 }
                 .map { product -> listOf<ProductDetails>(product) }
                 .onErrorReturnItem(emptyList())
