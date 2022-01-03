@@ -183,6 +183,7 @@
         <item name="android:minHeight">?attr/actionBarSize</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">?attr/actionBarSize</item>
+        <item name="navigationIconTint">?colorOnPrimary</item>
     </style>
 
     <style name="Base.AppTheme.TextAppearance.Toolbar.Title" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Title">
