@@ -412,4 +412,17 @@
     <!--Snowfall-->
     <string name="snowfall">Nevada</string>
     <string name="snowfall_desc">Enciende la caprichosa nevada para crear una atmósfera invernal</string>
+
+    <!--Donations-->
+    <string name="donations_title">Donar</string>
+    <string name="donations_subtitle">Pequeña donación para el desarrollo del proyecto</string>
+    <string name="donations_headline">¡Gracias por elegirnos!</string>
+    <string name="donations_info_text">Hacemos todo lo posible por esta aplicación y queremos que no tenga anuncios. Si quieres ayudar a que este proyecto crezca, puedes hacer una pequeña donación.</string>
+    <string name="rate_on_play_store">Calificar en Play Store</string>
+    <string name="donate_thanks">Tu agradecimiento</string>
+    <string name="donate_coffee">Una taza de café</string>
+    <string name="donate_pizza">Una pizza</string>
+    <string name="donate_movie_ticket">Un boleto de cine</string>
+    <string name="donate_meal">Una comida</string>
+    <string name="donate_gym">Membresía de gimnasio</string>
 </resources>

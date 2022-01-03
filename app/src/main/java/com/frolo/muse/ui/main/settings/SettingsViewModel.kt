@@ -35,6 +35,14 @@ class SettingsViewModel @Inject constructor(
         liveDataOf(false)
     }
 
+    val isDonateOptionVisible: LiveData<Boolean> by lazy {
+        MutableLiveData<Boolean>().apply {
+            remoteConfigRepository.isDonationFeatureEnabled()
+                .observeOn(schedulerProvider.main())
+                .subscribeFor { isEnabled -> value = isEnabled }
+        }
+    }
+
     private val _notifyPremiumProductConsumedEvent = SingleLiveEvent<Unit>()
     val notifyPremiumProductConsumedEvent: LiveData<Unit> get() = _notifyPremiumProductConsumedEvent
 

@@ -23,6 +23,9 @@ abstract class BillingManagerWrapper(
     override fun launchBillingFlow(productId: ProductId): Completable =
         wrapped.launchBillingFlow(productId)
 
+    override fun launchBillingFlowForResult(productId: ProductId): Single<BillingFlowResult> =
+        wrapped.launchBillingFlowForResult(productId)
+
     override fun consumeProduct(productId: ProductId): Completable =
         wrapped.consumeProduct(productId)
 

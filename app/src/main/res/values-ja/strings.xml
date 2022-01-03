@@ -404,4 +404,17 @@
     <!--Snowfall-->
     <string name="snowfall">降雪</string>
     <string name="snowfall_desc">冬の気分のために気まぐれな降雪をオンにします</string>
+
+    <!--Donations-->
+    <string name="donations_title">寄付</string>
+    <string name="donations_subtitle">プロジェクトの開発のための少額の寄付</string>
+    <string name="donations_headline">私達を選んでいただきありがとうございます!</string>
+    <string name="donations_info_text">私たちはこのアプリのために最善を尽くしており、広告なしで維持したいと考えています。 このプロジェクトの成長を支援したい場合は、少額の寄付をすることができます。</string>
+    <string name="rate_on_play_store">PlayStoreでの評価</string>
+    <string name="donate_thanks">感謝</string>
+    <string name="donate_coffee">一杯のコーヒー</string>
+    <string name="donate_pizza">ピザ</string>
+    <string name="donate_movie_ticket">映画のチケット</string>
+    <string name="donate_meal">食事</string>
+    <string name="donate_gym">ジムメンバーシップ</string>
 </resources>

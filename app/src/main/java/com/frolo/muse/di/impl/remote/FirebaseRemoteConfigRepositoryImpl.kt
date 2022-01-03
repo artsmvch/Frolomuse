@@ -55,4 +55,10 @@ class FirebaseRemoteConfigRepositoryImpl : RemoteConfigRepository {
             .onErrorReturnItem(false)
     }
 
+    override fun isDonationFeatureEnabled(): Single<Boolean> {
+        return FirebaseRemoteConfigCache
+            .getBool(FirebaseRemoteConfigUtil.DONATION_FEATURE_ENABLED)
+            .onErrorReturnItem(false)
+    }
+
 }

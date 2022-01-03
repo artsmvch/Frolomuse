@@ -411,4 +411,17 @@
     <!--Snowfall-->
     <string name="snowfall">हिमपात</string>
     <string name="snowfall_desc">सर्द मिजाज के लिए शानदार बर्फबारी चालू करें</string>
+
+    <!--Donations-->
+    <string name="donations_title">दान करना</string>
+    <string name="donations_subtitle">परियोजना के विकास के लिए छोटा दान</string>
+    <string name="donations_headline">हमें चुनने के लिए धन्यवाद!</string>
+    <string name="donations_info_text">हम इस ऐप के लिए अपना सर्वश्रेष्ठ प्रयास करते हैं और हम चाहते हैं कि यह विज्ञापन-मुक्त रहे। यदि आप इस परियोजना को विकसित करने में मदद करना चाहते हैं, तो आप एक छोटा सा दान कर सकते हैं ।</string>
+    <string name="rate_on_play_store">Play Store पर रेट करें</string>
+    <string name="donate_thanks">कृतज्ञता</string>
+    <string name="donate_coffee">एक कप कॉफी</string>
+    <string name="donate_pizza">एक पिज्जा</string>
+    <string name="donate_movie_ticket">एक मूवी टिकट</string>
+    <string name="donate_meal">भोजन</string>
+    <string name="donate_gym">जिम सदस्यता</string>
 </resources>

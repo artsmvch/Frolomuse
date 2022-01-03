@@ -412,4 +412,17 @@
     <!--Snowfall-->
     <string name="snowfall">Schneefall</string>
     <string name="snowfall_desc">Schalten Sie skurrilen Schneefall für eine winterliche Stimmung ein</string>
+
+    <!--Donations-->
+    <string name="donations_title">Spenden</string>
+    <string name="donations_subtitle">Kleine Spende für die Entwicklung des Projekts</string>
+    <string name="donations_headline">Danke, daß Sie uns gewählt haben!</string>
+    <string name="donations_info_text">Wir geben unser Bestes für diese App und möchten, dass sie werbefrei bleibt. Wenn Sie dieses Projekt beim Wachsen unterstützen möchten, können Sie eine kleine Spende leisten.</string>
+    <string name="rate_on_play_store">Bewerten Sie im Play Store</string>
+    <string name="donate_thanks">Ihr Dank</string>
+    <string name="donate_coffee">Eine Tasse Kaffee</string>
+    <string name="donate_pizza">Eine Pizza</string>
+    <string name="donate_movie_ticket">Eine Kinokarte</string>
+    <string name="donate_meal">Eine Mahlzeit</string>
+    <string name="donate_gym">Fitnessstudio Mitgliedschaft</string>
 </resources>

@@ -15,6 +15,7 @@ object FirebaseRemoteConfigUtil {
     const val PURCHASE_FEATURE_ENABLED = "purchase_feature_enabled"
     const val PLAYER_WAKE_LOCK_FEATURE_ENABLED = "player_wake_lock_feature_enabled"
     const val SNOWFALL_FEATURE_ENABLED = "snowfall_feature_enabled"
+    const val DONATION_FEATURE_ENABLED = "donation_feature_enabled"
 
     private val executor = Executors.newFixedThreadPool(2)
 

@@ -426,4 +426,17 @@
     <!--Snowfall-->
     <string name="snowfall">Снегопад</string>
     <string name="snowfall_desc">Включите причудливый снегопад для зимнего настроения</string>
+
+    <!--Donations-->
+    <string name="donations_title">Пожертвовать</string>
+    <string name="donations_subtitle">Небольшое пожертвование на развитие проекта</string>
+    <string name="donations_headline">Спасибо, что выбрали нас!</string>
+    <string name="donations_info_text">Мы делаем все возможное для приложения и хотим, чтобы оно оставалось без рекламы. Если вы хотите помочь этому проекту в развитии, вы можете сделать небольшое пожертвование.</string>
+    <string name="rate_on_play_store">Оценить в Play Store</string>
+    <string name="donate_thanks">Ваша благодарность</string>
+    <string name="donate_coffee">Чашка кофе</string>
+    <string name="donate_pizza">Пицца</string>
+    <string name="donate_movie_ticket">Билет в кино</string>
+    <string name="donate_meal">Еда</string>
+    <string name="donate_gym">Абонемент в спортзал</string>
 </resources>

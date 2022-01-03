@@ -2,7 +2,6 @@ package com.frolo.billing.playstore
 
 import android.content.Context
 import com.android.billingclient.api.*
-import io.reactivex.Completable
 import io.reactivex.Scheduler
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -100,8 +99,4 @@ fun BillingClient.queryPurchasesSingle(@BillingClient.SkuType type: String): Sin
         .subscribeOn(getQueryScheduler())
         .unsubscribeOn(getMainThreadScheduler())
         .observeOn(getMainThreadScheduler())
-}
-
-fun BillingClient.launchBillingFlowCompletable(): Completable {
-    return Completable.error(UnsupportedOperationException())
 }

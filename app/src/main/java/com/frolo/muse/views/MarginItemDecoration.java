@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.jetbrains.annotations.NotNull;
 
+@Deprecated
 public class MarginItemDecoration extends RecyclerView.ItemDecoration  {
     final int v;
     final int h;

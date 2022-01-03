@@ -420,4 +420,17 @@
     <!--Snowfall-->
     <string name="snowfall">Снігопад</string>
     <string name="snowfall_desc">Увімкніть химерний снігопад для зимового настрою</string>
+
+    <!--Donations-->
+    <string name="donations_title">Пожертвувати</string>
+    <string name="donations_subtitle">Невелика пожертва на розвиток проекту</string>
+    <string name="donations_headline">Дякуємо, що обираєте нас!</string>
+    <string name="donations_info_text">Ми робимо все найкраще для цієї програми і хочемо, щоб вона залишалася без реклами. Якщо ви хочете допомогти цьому проекту у розвитку, ви можете зробити невелику пожертву.</string>
+    <string name="rate_on_play_store">Оцінити в Play Store</string>
+    <string name="donate_thanks">Ваша подяка</string>
+    <string name="donate_coffee">Філіжанка кави</string>
+    <string name="donate_pizza">Піца</string>
+    <string name="donate_movie_ticket">Квиток у кіно</string>
+    <string name="donate_meal">Їжа</string>
+    <string name="donate_gym">Абонемент у спортзал</string>
 </resources>

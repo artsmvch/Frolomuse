@@ -29,6 +29,10 @@ internal class BillingManagerStub : BillingManager {
         return Completable.error(notImplementedError())
     }
 
+    override fun launchBillingFlowForResult(productId: ProductId): Single<BillingFlowResult> {
+        return Single.error(notImplementedError())
+    }
+
     override fun consumeProduct(productId: ProductId): Completable {
         return Completable.error(notImplementedError())
     }

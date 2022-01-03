@@ -412,4 +412,17 @@
     <!--Snowfall-->
     <string name="snowfall">Snowfall</string>
     <string name="snowfall_desc">Turn on whimsical snowfall for a wintry mood</string>
+
+    <!--Donations-->
+    <string name="donations_title">Donate</string>
+    <string name="donations_subtitle">Small donation for the development of the project</string>
+    <string name="donations_headline">Thank you for choosing us!</string>
+    <string name="donations_info_text">We do our best for this app and we want it to stay ad-free. If you would like to help this project grow, you can make a small donation.</string>
+    <string name="rate_on_play_store">Rate on Play Store</string>
+    <string name="donate_thanks">Your Thanks</string>
+    <string name="donate_coffee">A cup of coffee</string>
+    <string name="donate_pizza">A pizza</string>
+    <string name="donate_movie_ticket">A movie ticket</string>
+    <string name="donate_meal">A meal</string>
+    <string name="donate_gym">Gym membership</string>
 </resources>

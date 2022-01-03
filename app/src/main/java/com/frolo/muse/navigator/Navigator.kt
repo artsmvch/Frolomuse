@@ -68,5 +68,7 @@ interface Navigator {
 
     fun launchBillingFlow(productId: ProductId)
 
+    fun openDonations()
+
     fun goBack()
 }

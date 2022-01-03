@@ -29,8 +29,18 @@ interface BillingManager {
 
     /**
      * Launches the purchase process for a product with [productId].
+     * NOTE: it fires the completion callback when the flow is launched,
+     * rather than completed / terminated.
      */
     fun launchBillingFlow(productId: ProductId): Completable
+
+    /**
+     * Launches the purchase process for a product with [productId] and waits for the result,
+     * that is, fires [BillingFlowSuccess] when the product is purchased,
+     * and fires [BillingFlowFailure] if the user cancels the flow,
+     * or the billing service is unavailable, or another kind of error occurs.
+     */
+    fun launchBillingFlowForResult(productId: ProductId): Single<BillingFlowResult>
 
     /**
      * Consumes all purchased products with the given [productId].

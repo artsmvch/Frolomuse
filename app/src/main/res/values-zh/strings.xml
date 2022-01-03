@@ -404,4 +404,17 @@
     <!--Snowfall-->
     <string name="snowfall">降雪</string>
     <string name="snowfall_desc">打開異想天開的降雪以獲得寒冷的心情</string>
+
+    <!--Donations-->
+    <string name="donations_title">捐</string>
+    <string name="donations_subtitle">小額捐款用於項目開發</string>
+    <string name="donations_headline">感謝您選擇我們！</string>
+    <string name="donations_info_text">我們為這個應用程序盡最大努力，我們希望它保持無廣告。 如果您想幫助這個項目發展，您可以進行小額捐贈。</string>
+    <string name="rate_on_play_store">在 PlayStore 上評分</string>
+    <string name="donate_thanks">你的感謝</string>
+    <string name="donate_coffee">一杯咖啡</string>
+    <string name="donate_pizza">一份披薩</string>
+    <string name="donate_movie_ticket">一張電影票</string>
+    <string name="donate_meal">一頓飯</string>
+    <string name="donate_gym">健身房會員</string>
 </resources>

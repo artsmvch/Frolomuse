@@ -412,4 +412,17 @@
     <!--Snowfall-->
     <string name="snowfall">Queda de neve</string>
     <string name="snowfall_desc">Ative a queda de neve extravagante para um clima de inverno</string>
+
+    <!--Donations-->
+    <string name="donations_title">Doar</string>
+    <string name="donations_subtitle">Pequena doação para o desenvolvimento do projeto</string>
+    <string name="donations_headline">Obrigado por nos escolher!</string>
+    <string name="donations_info_text">Fazemos o nosso melhor por este aplicativo e queremos que ele continue livre de anúncios. Se você gostaria de ajudar este projeto a crescer, você pode fazer uma pequena doação.</string>
+    <string name="rate_on_play_store">Avaliar na Play Store</string>
+    <string name="donate_thanks">Seu obrigado</string>
+    <string name="donate_coffee">Um copo de café</string>
+    <string name="donate_pizza">Uma pizza</string>
+    <string name="donate_movie_ticket">Um ingresso de cinéma</string>
+    <string name="donate_meal">Uma refeição</string>
+    <string name="donate_gym">Inscrição na academia</string>
 </resources>

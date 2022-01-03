@@ -40,7 +40,6 @@ import com.frolo.muse.ui.main.settings.library.filter.LibrarySongFilterDialog
 import com.frolo.muse.ui.main.settings.libs.LicensesDialog
 import com.frolo.muse.ui.main.settings.sleeptimer.SleepTimerDialog
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import io.reactivex.Single
 
 
 class SettingsFragment : PreferenceFragmentCompat(),
@@ -73,6 +72,8 @@ class SettingsFragment : PreferenceFragmentCompat(),
     private val playbackFadingPreference: Preference? get() = findPreference("playback_fading")
 
     private val snowfallPreference: CheckBoxPreference? get() = findPreference("snowfall") as? CheckBoxPreference
+
+    private val donatePreference: Preference? get() = findPreference("donate")
 
     private val settingsViewModel: SettingsViewModel by lazy {
         val appComponent = requireContext().let { context ->
@@ -210,6 +211,14 @@ class SettingsFragment : PreferenceFragmentCompat(),
             }
         }
 
+        // About
+        donatePreference?.apply {
+            onPreferenceClickListener = Preference.OnPreferenceClickListener {
+                showDonations()
+                true
+            }
+        }
+
         findPreference("rate_this_app").apply {
             onPreferenceClickListener = Preference.OnPreferenceClickListener {
                 eventLogger.logAppRatedFromSettings()
@@ -290,6 +299,10 @@ class SettingsFragment : PreferenceFragmentCompat(),
 
         isBuyPremiumOptionVisible.observe(owner) { visible ->
             buyPremiumPreference?.isVisible = visible == true
+        }
+
+        isDonateOptionVisible.observe(owner) { visible ->
+            donatePreference?.isVisible = visible == true
         }
 
         snowfallOptionVisible.observe(owner) { visible ->
@@ -424,6 +437,10 @@ class SettingsFragment : PreferenceFragmentCompat(),
     private fun showThirdPartyLibs() {
         val dialog = LicensesDialog.newInstance()
         dialog.show(childFragmentManager, TAG_LICENCES)
+    }
+
+    private fun showDonations() {
+        navigator.openDonations()
     }
 
     private fun showAppInfoDialog() {

@@ -141,6 +141,10 @@ class NavigatorWrapper : Navigator {
         delegate?.launchBillingFlow(productId)
     }
 
+    override fun openDonations() {
+        delegate?.openDonations()
+    }
+
     override fun goBack() {
         delegate?.goBack()
     }

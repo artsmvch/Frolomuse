@@ -411,4 +411,17 @@
     <!--Snowfall-->
     <string name="snowfall">Kar yağışı</string>
     <string name="snowfall_desc">Bir kış havası için süslü kar yağışını açın</string>
+
+    <!--Donations-->
+    <string name="donations_title">Bağış yapmak</string>
+    <string name="donations_subtitle">Projenin gelişimi için küçük bağış</string>
+    <string name="donations_headline">Bizi tercih ettiğiniz için teşekkürler!</string>
+    <string name="donations_info_text">Bu uygulama için elimizden gelenin en iyisini yapıyoruz ve reklamsız kalmasını istiyoruz. Bu projenin büyümesine yardımcı olmak isterseniz, küçük bir bağış yapabilirsiniz.</string>
+    <string name="rate_on_play_store">PlayStore\'da derecelendirmek için</string>
+    <string name="donate_thanks">Şükran</string>
+    <string name="donate_coffee">Bir fincan kahve</string>
+    <string name="donate_pizza">Bir pizza</string>
+    <string name="donate_movie_ticket">Bir sinema bileti</string>
+    <string name="donate_meal">Bir yemek</string>
+    <string name="donate_gym">Spor salonu üyeliği</string>
 </resources>

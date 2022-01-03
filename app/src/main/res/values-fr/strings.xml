@@ -412,4 +412,17 @@
     <!--Snowfall-->
     <string name="snowfall">Chute de neige</string>
     <string name="snowfall_desc">Allumer des chutes de neige fantaisistes pour une ambiance hivernale</string>
+
+    <!--Donations-->
+    <string name="donations_title">Faire un don</string>
+    <string name="donations_subtitle">Petit don pour le développement du projet</string>
+    <string name="donations_headline">Merci de nous avoir choisi!</string>
+    <string name="donations_info_text">Nous faisons de notre mieux pour cette application et nous voulons qu\'elle reste sans publicité. Si vous souhaitez faire grandir ce projet, vous pouvez faire un petit don.</string>
+    <string name="rate_on_play_store">Évaluer sur le Play Store</string>
+    <string name="donate_thanks">Vos remerciements</string>
+    <string name="donate_coffee">Une tasse de café</string>
+    <string name="donate_pizza">Une pizza</string>
+    <string name="donate_movie_ticket">Un billet de cinéma</string>
+    <string name="donate_meal">Un repas</string>
+    <string name="donate_gym">Abonnement au gymnase</string>
 </resources>

@@ -405,4 +405,17 @@
     <!--Snowfall-->
     <string name="snowfall">Salju yg turun</string>
     <string name="snowfall_desc">Nyalakan hujan salju yang aneh untuk suasana musim dingin</string>
+
+    <!--Donations-->
+    <string name="donations_title">Menyumbangkan</string>
+    <string name="donations_subtitle">Sumbangan kecil untuk pengembangan proyek</string>
+    <string name="donations_headline">Terima kasih telah memilih kami!</string>
+    <string name="donations_info_text">Kami melakukan yang terbaik untuk aplikasi ini dan kami ingin aplikasi ini tetap bebas iklan. Jika Anda ingin membantu proyek ini berkembang, Anda dapat memberikan sumbangan kecil.</string>
+    <string name="rate_on_play_store">Nilai di Play Store</string>
+    <string name="donate_thanks">Rasa syukur</string>
+    <string name="donate_coffee">Secangkir kopi</string>
+    <string name="donate_pizza">Pizza</string>
+    <string name="donate_movie_ticket">Tiket film</string>
+    <string name="donate_meal">Makanan</string>
+    <string name="donate_gym">Keanggotaan gym</string>
 </resources>

@@ -102,6 +102,12 @@
             android:summary="@string/buy_premium_desc"/>
 
         <Preference
+            android:key="donate"
+            android:title="@string/donations_title"
+            android:summary="@string/donations_subtitle"
+            app:isPreferenceVisible="false"/>
+
+        <Preference
             android:icon="@drawable/pref_ic_rate_outlined_24"
             android:key="rate_this_app"
             android:title="@string/rate_this_app"

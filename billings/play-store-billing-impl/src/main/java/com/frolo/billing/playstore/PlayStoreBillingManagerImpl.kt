@@ -2,6 +2,7 @@ package com.frolo.billing.playstore
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.annotation.GuardedBy
 import androidx.annotation.UiThread
 import com.android.billingclient.api.*
 import com.frolo.billing.*
@@ -12,6 +13,7 @@ import io.reactivex.Scheduler
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.processors.FlowableProcessor
 import io.reactivex.processors.PublishProcessor
 import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.atomic.AtomicBoolean
@@ -35,8 +37,9 @@ class PlayStoreBillingManagerImpl(
     }
 
     private val client: BillingClient by lazy {
-        val purchasesUpdatedListener = PurchasesUpdatedListener { _, purchases ->
-            logger.d("Purchases updated: $purchases")
+        val purchasesUpdatedListener = PurchasesUpdatedListener { billingResult, purchases ->
+            logger.d("Purchases updated: result=$billingResult, purchases=$purchases")
+            notifyPurchasesUpdated(billingResult, purchases)
             purchases?.also(::handlePurchases)
         }
         BillingClient.newBuilder(context)
@@ -44,6 +47,11 @@ class PlayStoreBillingManagerImpl(
             .setListener(purchasesUpdatedListener)
             .build()
     }
+
+    // Last billing flow state
+    private val billingFlowStateLock = Any()
+    @GuardedBy("billingFlowStateLock")
+    private var lastBillingFlowState: BillingFlowState? = null
 
     // Disposables
     private val internalDisposables = CompositeDisposable()
@@ -62,6 +70,8 @@ class PlayStoreBillingManagerImpl(
      */
     @UiThread
     private fun prepareBillingClient() {
+        ThreadUtils.assertMainThread()
+
         if (isPreparingBillingClient.getAndSet(true)) {
             return
         }
@@ -90,6 +100,8 @@ class PlayStoreBillingManagerImpl(
 
     @UiThread
     private fun requirePreparedClient(): Single<BillingClient> {
+        ThreadUtils.assertMainThread()
+
         if (client.isReady) {
             return Single.just(client)
         }
@@ -99,6 +111,37 @@ class PlayStoreBillingManagerImpl(
         return preparedBillingClientProcessor
             .firstOrError()
             .map { result -> result.getOrThrow() }
+    }
+
+    private fun notifyPurchasesUpdated(result: BillingResult, purchases: List<Purchase>?) {
+        synchronized(billingFlowStateLock) {
+            lastBillingFlowState?.also { state ->
+                val billingFlowResult = getBillingFlowResult(result, state.productId)
+                state.resultProcessor.onNext(billingFlowResult)
+                state.resultProcessor.onComplete()
+            }
+            lastBillingFlowState = null
+        }
+    }
+
+    private fun awaitBillingFlowResult(productId: ProductId): Single<BillingFlowResult> {
+        return synchronized(billingFlowStateLock) {
+            lastBillingFlowState?.also { state ->
+                val billingFlowResult = BillingFlowFailure(
+                    productId = productId,
+                    cause = BillingFlowFailure.Cause.UNKNOWN,
+                    exception = null
+                )
+                state.resultProcessor.onNext(billingFlowResult)
+                state.resultProcessor.onComplete()
+            }
+            val processor = PublishProcessor.create<BillingFlowResult>().toSerialized()
+            lastBillingFlowState = BillingFlowState(
+                productId = productId,
+                resultProcessor = processor
+            )
+            processor.firstOrError()
+        }
     }
 
     /**
@@ -242,6 +285,20 @@ class PlayStoreBillingManagerImpl(
         return launchBillingFlowImpl(productId).ignoreElement()
     }
 
+    override fun launchBillingFlowForResult(productId: ProductId): Single<BillingFlowResult> {
+        return launchBillingFlowImpl(productId)
+            .flatMap { billingResult ->
+                if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+                    // Launched OK, waiting for the result
+                    awaitBillingFlowResult(productId)
+                } else {
+                    // Launching failed
+                    val billingFlowResult = getBillingFlowResult(billingResult, productId)
+                    Single.just(billingFlowResult)
+                }
+            }
+    }
+
     override fun consumeProduct(productId: ProductId): Completable {
         return requirePreparedClient().observeOn(mainThreadScheduler).flatMapCompletable { billingClient ->
             billingClient.queryPurchasesSingle(productId.billingSkyType)
@@ -277,6 +334,11 @@ class PlayStoreBillingManagerImpl(
                 }
         }
     }
+
+    private data class BillingFlowState(
+        val productId: ProductId,
+        val resultProcessor: FlowableProcessor<BillingFlowResult>
+    )
 
     companion object {
         private const val LOG_TAG = "BillingManager"

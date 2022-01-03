@@ -22,6 +22,7 @@ import com.frolo.muse.ui.main.player.PlayerViewModel
 import com.frolo.muse.ui.main.player.current.CurrSongQueueViewModel
 import com.frolo.muse.ui.main.player.mini.MiniPlayerViewModel
 import com.frolo.muse.ui.main.settings.SettingsViewModel
+import com.frolo.muse.ui.main.settings.donations.DonationsViewModel
 import com.frolo.muse.ui.main.settings.playback.PlaybackFadingViewModel
 import com.frolo.muse.ui.main.settings.library.duration.MinAudioFileDurationViewModel
 import com.frolo.muse.ui.main.settings.hidden.HiddenFilesViewModel
@@ -188,5 +189,10 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(LibrarySongFilterViewModel::class)
     abstract fun bindLibrarySongFilterViewModel(viewModel: LibrarySongFilterViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(DonationsViewModel::class)
+    abstract fun bindDonationsViewModel(viewModel: DonationsViewModel): ViewModel
 
 }

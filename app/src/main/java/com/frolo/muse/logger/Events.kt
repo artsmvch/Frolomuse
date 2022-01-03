@@ -388,6 +388,45 @@ fun EventLogger.logLowMemory() {
 //endregion
 
 
+//region Donations
+
+fun EventLogger.logDonationsOpened() {
+    log("donations_opened")
+}
+
+fun EventLogger.logFailedToLoadDonation(productId: ProductId, err: Throwable) {
+    val params = mapOf(
+        "product" to productId.sku,
+        "error" to err.toString()
+    )
+    log("failed_to_load_donation", params)
+}
+
+fun EventLogger.logFailedToLoadDonations(err: Throwable) {
+    val params = mapOf("error" to err.toString())
+    log("failed_to_load_donations", params)
+}
+
+fun EventLogger.logDonationRatingClicked() {
+    log("donation_rating_clicked")
+}
+
+fun EventLogger.logDonationPurchaseClicked(productId: ProductId) {
+    val params = mapOf("product_id" to productId.sku)
+    log("donation_purchase_clicked", params)
+}
+
+fun EventLogger.logFailedToConsumeDonation(productId: ProductId, err: Throwable) {
+    val params = mapOf(
+        "product" to productId.sku,
+        "error" to err.toString()
+    )
+    log("failed_to_consume_donation", params)
+}
+
+//endregion
+
+
 //region Snowfall
 
 fun EventLogger.logSnowfallEnabled() {

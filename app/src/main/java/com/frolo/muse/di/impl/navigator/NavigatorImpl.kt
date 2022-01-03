@@ -21,6 +21,7 @@ import com.frolo.muse.ui.main.library.playlists.playlist.PlaylistFragment
 import com.frolo.muse.ui.main.library.playlists.playlist.addsong.AddSongToPlaylistDialog
 import com.frolo.muse.ui.main.player.lyrics.LyricsDialogFragment
 import com.frolo.muse.ui.main.player.poster.PosterDialog
+import com.frolo.muse.ui.main.settings.donations.DonationsFragment
 import com.frolo.muse.ui.main.settings.playback.PlaybackFadingDialog
 import com.frolo.muse.ui.main.settings.premium.BuyPremiumDialog
 import com.frolo.muse.ui.main.settings.theme.ThemeChooserFragment
@@ -176,6 +177,11 @@ class NavigatorImpl(private val root: MainActivity) : Navigator {
             .provideBillingManager()
             .launchBillingFlow(productId)
             .subscribeSafely()
+    }
+
+    override fun openDonations() {
+        val fragment = DonationsFragment.newInstance()
+        root.pushFragment(fragment)
     }
 
     override fun goBack() {

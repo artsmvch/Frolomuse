@@ -405,4 +405,17 @@
     <!--Snowfall-->
     <string name="snowfall">강설량</string>
     <string name="snowfall_desc">겨울 분위기를 위해 아름다운 눈을 켜십시오</string>
+
+    <!--Donations-->
+    <string name="donations_title">기부</string>
+    <string name="donations_subtitle">프로젝트 발전을 위한 소액 기부</string>
+    <string name="donations_headline">우리를 선택해 주셔서 감사합니다!</string>
+    <string name="donations_info_text">우리는 이 앱을 위해 최선을 다하고 있으며 광고 없이 유지되기를 바랍니다. 이 프로젝트의 성장을 돕고 싶다면 소액 기부를 할 수 있습니다.</string>
+    <string name="rate_on_play_store">PlayStore에서 평가</string>
+    <string name="donate_thanks">고마움</string>
+    <string name="donate_coffee">커피 한 잔</string>
+    <string name="donate_pizza">피자</string>
+    <string name="donate_movie_ticket">영화 티켓</string>
+    <string name="donate_meal">식사</string>
+    <string name="donate_gym">월간 헬스장 회원권</string>
 </resources>

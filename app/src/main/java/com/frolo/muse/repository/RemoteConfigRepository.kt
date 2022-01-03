@@ -8,4 +8,5 @@ interface RemoteConfigRepository {
     fun isPurchaseFeatureEnabled(): Single<Boolean>
     fun isPlayerWakeLockEnabled(): Single<Boolean>
     fun isSnowfallFeatureEnabled(): Single<Boolean>
+    fun isDonationFeatureEnabled(): Single<Boolean>
 }
