@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
@@ -65,9 +64,8 @@ class LibraryFragment: BaseFragment(),
     ): View = inflater.inflate(R.layout.fragment_library, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        (activity as? AppCompatActivity)?.apply {
-            setSupportActionBar(tb_actions)
-            title = getString(R.string.nav_library)
+        tb_actions.apply {
+            setTitle(R.string.nav_library)
         }
 
         if (savedInstanceState != null && savedInstanceState.containsKey(STATE_KEY_SECTIONS)) {

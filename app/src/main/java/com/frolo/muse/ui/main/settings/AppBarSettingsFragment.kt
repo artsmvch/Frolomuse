@@ -4,8 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.frolo.muse.FragmentUtils
 import com.frolo.muse.R
@@ -24,9 +22,8 @@ class AppBarSettingsFragment : BaseFragment(), ScrolledToTop {
     ): View = inflater.inflate(R.layout.fragment_appbar_settings, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        (activity as? AppCompatActivity)?.apply {
-            setSupportActionBar(tb_actions as Toolbar)
-            supportActionBar?.setTitle(R.string.nav_settings)
+        tb_actions.apply {
+            setTitle(R.string.nav_settings)
         }
     }
 
