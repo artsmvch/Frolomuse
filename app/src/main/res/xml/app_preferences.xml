@@ -102,6 +102,7 @@
             android:summary="@string/buy_premium_desc"/>
 
         <Preference
+            android:icon="@drawable/pref_ic_donate_outlined_24dp"
             android:key="donate"
             android:title="@string/donations_title"
             android:summary="@string/donations_subtitle"
