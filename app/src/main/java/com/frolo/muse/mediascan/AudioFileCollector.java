@@ -16,6 +16,7 @@ import com.frolo.muse.BuildConfig;
 import java.io.File;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -23,11 +24,20 @@ import java.util.List;
  * Helper class for collecting audio files that have not yet been scanned on the device.
  */
 final class AudioFileCollector {
-    private Context mContext;
+
+    private static boolean isEmpty(@Nullable String value) {
+        return value == null || value.isEmpty();
+    }
+
+    private static boolean isNotEmpty(@Nullable String value) {
+        return !isEmpty(value);
+    }
 
     static AudioFileCollector get(@NonNull Context context) {
         return new AudioFileCollector(context);
     }
+
+    private final Context mContext;
 
     private AudioFileCollector(Context context) {
         this.mContext = context;
@@ -45,6 +55,9 @@ final class AudioFileCollector {
     @WorkerThread
     List<String> collectAll() {
         final String absolutePath = Environment.getExternalStorageDirectory().getAbsolutePath();
+        if (isEmpty(absolutePath)) {
+            return Collections.emptyList();
+        }
 
         final List<String> list = new ArrayList<>();
 
@@ -80,17 +93,24 @@ final class AudioFileCollector {
      * @param parent from which the search starts
      */
     private void collectAudioFiles(String parent, List<String> dst) {
+        if (isEmpty(parent)) {
+            return;
+        }
         File file = new File(parent);
         if (!file.isHidden() && file.isDirectory() && !canSkipScanning(file)) {
             File[] listFiles = file.listFiles();
             if (listFiles != null && listFiles.length > 0) {
                 for (File childFile : listFiles) {
+                    String childPath = childFile.getAbsolutePath();
+                    if (isEmpty(childPath)) {
+                        continue;
+                    }
                     if (childFile.isDirectory()) {
                         // recursively searching for audio files in child file
-                        collectAudioFiles(childFile.getAbsolutePath(), dst);
-                    } else if (isAudioFile(childFile.getAbsolutePath())) {
+                        collectAudioFiles(childPath, dst);
+                    } else if (isAudioFile(childPath)) {
                         // it's an audio file, let's add it
-                        dst.add(childFile.getAbsolutePath());
+                        dst.add(childPath);
                     }
                 }
             }
@@ -135,7 +155,7 @@ final class AudioFileCollector {
                             if (audioFiles.contains(string)) {
                                 // this files is identified by MediaStore already, no need to scan it again. Remove it from the collection!
                                 audioFiles.remove(string);
-                            } else {
+                            } else if (!isNotEmpty(string)) {
                                 // this files is not in the collection, it may be deleted already, so need to scan it. Add it to the collection!
                                 audioFiles.add(string);
                             }

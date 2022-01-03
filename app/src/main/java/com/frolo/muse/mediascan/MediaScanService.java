@@ -268,15 +268,16 @@ public class MediaScanService extends Service {
                     return;
                 }
 
-                Handler h = mMainHandler;
-                if (h != null) {
-                    final List<String> paths = files;
-                    h.post(new Runnable() {
+                final Handler handler = mMainHandler;
+                if (handler != null) {
+                    final List<String> finalFiles = files;
+                    Runnable task = new Runnable() {
                         @Override
                         public void run() {
-                            scanAsync(startId, paths);
+                            scanAsync(startId, finalFiles);
                         }
-                    });
+                    };
+                    handler.post(task);
                 }
             }
         };
