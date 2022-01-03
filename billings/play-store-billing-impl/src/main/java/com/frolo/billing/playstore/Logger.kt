@@ -9,7 +9,7 @@ internal class Logger private constructor(
 ) {
 
     fun d(msg: String) {
-        if (isEnabled) Log.e(tag, msg)
+        if (isEnabled) Log.d(tag, msg)
     }
 
     fun e(msg: String) {
