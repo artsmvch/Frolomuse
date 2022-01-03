@@ -18,6 +18,7 @@ import com.frolo.muse.ui.ShotLayoutAnimationController
 import com.frolo.muse.ui.main.addGridItemMargins
 import com.frolo.muse.ui.main.addLinearItemMargins
 import com.frolo.muse.ui.main.library.base.SimpleMediaCollectionFragment
+import com.frolo.muse.views.recyclerview.FlexibleGridLayoutManager
 
 
 class AlbumListFragment: SimpleMediaCollectionFragment<Album>() {
@@ -67,10 +68,12 @@ class AlbumListFragment: SimpleMediaCollectionFragment<Album>() {
         if (isGridEnabled) {
             val minSpanCount = 2
             val minItemWidth = Screen.dp(context, 120)
-            listView.layoutManager = AlbumGridLayoutManager(
+            listView.layoutManager = FlexibleGridLayoutManager(
                 context = context,
+                orientation = RecyclerView.VERTICAL,
+                reverseLayout = false,
                 minSpanCount = minSpanCount,
-                preferredItemWidth = minItemWidth
+                preferredItemSize = minItemWidth
             )
             listView.addGridItemMargins()
         } else {

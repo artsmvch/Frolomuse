@@ -1,5 +1,6 @@
 package com.frolo.muse.ui.main.settings.donations
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +12,6 @@ import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import androidx.transition.Fade
 import androidx.transition.TransitionManager
 import com.frolo.muse.BuildInfo
@@ -21,6 +21,7 @@ import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.base.FragmentContentInsetsListener
 import com.frolo.muse.ui.base.setupNavigation
 import com.frolo.muse.util.SimpleLottieAnimationController
+import com.frolo.muse.views.recyclerview.FlexibleStaggeredLayoutManager
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.fragment_donations.*
 
@@ -57,9 +58,8 @@ class DonationsFragment : BaseFragment(), FragmentContentInsetsListener {
 
         setupDragCallback()
 
-        val staggeredLayoutManager = StaggeredGridLayoutManager(getSpanCount(), RecyclerView.VERTICAL)
         rv_list.apply {
-            layoutManager = staggeredLayoutManager
+            layoutManager = getLayoutManager(context)
             adapter = donationItemAdapter
             updatePadding(
                 left = Screen.dp(context, 12f),
@@ -83,8 +83,14 @@ class DonationsFragment : BaseFragment(), FragmentContentInsetsListener {
         }
     }
 
-    private fun getSpanCount(): Int {
-        return 2
+    private fun getLayoutManager(context: Context): RecyclerView.LayoutManager {
+        val minSpanCount = 2
+        val minItemWidth = Screen.dp(context, 160)
+        return FlexibleStaggeredLayoutManager(
+            orientation = RecyclerView.VERTICAL,
+            minSpanCount = minSpanCount,
+            preferredItemSize = minItemWidth
+        )
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
