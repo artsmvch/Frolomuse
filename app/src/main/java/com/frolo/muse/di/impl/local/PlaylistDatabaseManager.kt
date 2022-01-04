@@ -400,10 +400,21 @@ internal class PlaylistDatabaseManager private constructor(private val context: 
         var currItem: PlaylistMemberEntity? = firstItem
         while (currItem != null) {
             if (DEBUG) {
+                // This could be a cycled queue; too expensive operation to check it on a release version
                 if (orderedEntities.contains { it.id == currItem?.id }) {
                     throw PlaylistAnomaly("Found duplicates!!1")
                 }
             }
+
+            if (orderedEntities.size == entities.size) {
+                // This could be a cycled queue, gotta break here to avoid OOM
+                if (DEBUG) {
+                    throw PlaylistAnomaly("The length of the list of ordered entities is greater " +
+                            "than the length of the list of raw entities, but must be the same")
+                }
+                break
+            }
+
             orderedEntities.add(currItem)
 
             val nextItem = entities.find { entity -> entity.id == currItem!!.nextId }
