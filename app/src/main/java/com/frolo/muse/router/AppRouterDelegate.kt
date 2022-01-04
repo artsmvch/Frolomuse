@@ -5,148 +5,139 @@ import com.frolo.muse.model.media.*
 import java.io.File
 
 
-class AppRouterWrapper : AppRouter {
+abstract class AppRouterDelegate : AppRouter {
 
-    private var delegate: AppRouter? = null
-
-    fun attachBase(appRouter: AppRouter) {
-        this.delegate = appRouter
-    }
-
-    fun detachBase() {
-        this.delegate = null
-    }
+    protected abstract fun delegate(action: (AppRouter) -> Unit)
 
     override fun goToStore() {
-        delegate?.goToStore()
+        delegate { it.goToStore() }
     }
 
     override fun helpWithTranslations() {
-        delegate?.helpWithTranslations()
+        delegate { it.helpWithTranslations() }
     }
 
     override fun contactDeveloper() {
-        delegate?.contactDeveloper()
+        delegate { it.contactDeveloper() }
     }
 
     override fun shareSongs(songs: List<Song>) {
-        delegate?.shareSongs(songs)
+        delegate { it.shareSongs(songs) }
     }
 
     override fun openSong(song: Song) {
-        delegate?.openSong(song)
+        delegate { it.openSong(song) }
     }
 
     override fun openAlbum(album: Album) {
-        delegate?.openAlbum(album)
+        delegate { it.openAlbum(album) }
     }
 
     override fun openArtist(artist: Artist) {
-        delegate?.openArtist(artist)
+        delegate { it.openArtist(artist) }
     }
 
     override fun openGenre(genre: Genre) {
-        delegate?.openGenre(genre)
+        delegate { it.openGenre(genre) }
     }
 
     override fun openPlaylist(playlist: Playlist) {
-        delegate?.openPlaylist(playlist)
+        delegate { it.openPlaylist(playlist) }
     }
 
     override fun openMyFile(myFile: MyFile) {
-        delegate?.openMyFile(myFile)
+        delegate { it.openMyFile(myFile) }
     }
 
     override fun viewLyrics(song: Song) {
-        delegate?.viewLyrics(song)
+        delegate { it.viewLyrics(song) }
     }
 
     override fun viewPoster(song: Song) {
-        delegate?.viewPoster(song)
+        delegate { it.viewPoster(song) }
     }
 
     override fun sharePoster(song: Song, file: File) {
-        delegate?.sharePoster(song, file)
+        delegate { it.sharePoster(song, file) }
     }
 
     override fun openRingCutter(song: Song) {
-        delegate?.openRingCutter(song)
+        delegate { it.openRingCutter(song) }
     }
 
     override fun editSong(song: Song) {
-        delegate?.editSong(song)
+        delegate { it.editSong(song) }
     }
 
     override fun editAlbum(album: Album) {
-        delegate?.editAlbum(album)
+        delegate { it.editAlbum(album) }
     }
 
     override fun editPlaylist(playlist: Playlist) {
-        delegate?.editPlaylist(playlist)
+        delegate { it.editPlaylist(playlist) }
     }
 
     override fun addMediaItemsToPlaylist(items: ArrayList<out Media>) {
-        delegate?.addMediaItemsToPlaylist(items)
+        delegate { it.addMediaItemsToPlaylist(items) }
     }
 
     override fun addSongsToPlaylist(playlist: Playlist) {
-        delegate?.addSongsToPlaylist(playlist)
+        delegate { it.addSongsToPlaylist(playlist) }
     }
 
     override fun createPlaylist() {
-        delegate?.createPlaylist()
+        delegate { it.createPlaylist() }
     }
 
     override fun createPlaylist(songs: ArrayList<Song>) {
-        delegate?.createPlaylist(songs)
+        delegate { it.createPlaylist(songs) }
     }
 
     override fun openCurrentPlaying() {
-        delegate?.openCurrentPlaying()
+        delegate { it.openCurrentPlaying() }
     }
 
     override fun openPlayer() {
-        delegate?.openPlayer()
+        delegate { it.openPlayer() }
     }
 
     override fun openAudioFx() {
-        delegate?.openAudioFx()
+        delegate { it.openAudioFx() }
     }
 
     override fun openPlaybackParams() {
-        delegate?.openPlaybackParams()
+        delegate { it.openPlaybackParams() }
     }
 
     override fun savePreset(bandLevels: ShortArray) {
-        delegate?.savePreset(bandLevels)
+        delegate { it.savePreset(bandLevels) }
     }
 
     override fun openSettings() {
-        delegate?.openSettings()
+        delegate { it.openSettings() }
     }
 
     override fun openPlaybackFadingParams() {
-        delegate?.openPlaybackFadingParams()
+        delegate { it.openPlaybackFadingParams() }
     }
 
     override fun openThemeChooser() {
-        delegate?.openThemeChooser()
+        delegate { it.openThemeChooser() }
     }
 
     override fun offerToBuyPremium(allowTrialActivation: Boolean) {
-        delegate?.offerToBuyPremium(allowTrialActivation)
+        delegate { it.offerToBuyPremium(allowTrialActivation) }
     }
 
     override fun launchBillingFlow(productId: ProductId) {
-        delegate?.launchBillingFlow(productId)
+        delegate { it.launchBillingFlow(productId) }
     }
 
     override fun openDonations() {
-        delegate?.openDonations()
+        delegate { it.openDonations() }
     }
 
     override fun goBack() {
-        delegate?.goBack()
+        delegate { it.goBack() }
     }
-
 }
