@@ -3,7 +3,7 @@ package com.frolo.muse.ui.main.library.artists.artist.albums
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.frolo.muse.di.AppComponent
-import com.frolo.muse.navigator.Navigator
+import com.frolo.muse.router.AppRouter
 import com.frolo.muse.interactor.media.*
 import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
 import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
@@ -45,7 +45,7 @@ class AlbumsOfArtistVMFactory constructor(
     @Inject
     internal lateinit var schedulerProvider: SchedulerProvider
     @Inject
-    internal lateinit var navigator: Navigator
+    internal lateinit var appRouter: AppRouter
     @Inject
     internal lateinit var eventLogger: EventLogger
 
@@ -70,7 +70,7 @@ class AlbumsOfArtistVMFactory constructor(
                 changeFavouriteUseCase,
                 createShortcutUseCase,
                 schedulerProvider,
-                navigator,
+                appRouter,
                 eventLogger
         ) as T
     }

@@ -1,6 +1,6 @@
 package com.frolo.muse.ui.main.library.genres
 
-import com.frolo.muse.navigator.Navigator
+import com.frolo.muse.router.AppRouter
 import com.frolo.muse.interactor.media.*
 import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
 import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
@@ -26,7 +26,7 @@ class GenreListViewModel @Inject constructor(
         changeFavouriteUseCase: ChangeFavouriteUseCase<Genre>,
         createShortcutUseCase: CreateShortcutUseCase<Genre>,
         schedulerProvider: SchedulerProvider,
-        navigator: Navigator,
+        appRouter: AppRouter,
         eventLogger: EventLogger
 ): AbsMediaCollectionViewModel<Genre>(
         permissionChecker,
@@ -40,5 +40,5 @@ class GenreListViewModel @Inject constructor(
         changeFavouriteUseCase,
         createShortcutUseCase,
         schedulerProvider,
-        navigator,
+        appRouter,
         eventLogger)

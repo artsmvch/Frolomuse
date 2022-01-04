@@ -6,7 +6,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.frolo.muse.arch.*
-import com.frolo.muse.navigator.Navigator
+import com.frolo.muse.router.AppRouter
 import com.frolo.muse.interactor.media.*
 import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
 import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
@@ -33,19 +33,19 @@ import org.reactivestreams.Subscription
 
 
 abstract class AbsMediaCollectionViewModel<E: Media> constructor(
-        private val permissionChecker: PermissionChecker,
-        private val getMediaUseCase: GetMediaUseCase<E>,
-        private val getMediaMenuUseCase: GetMediaMenuUseCase<E>,
-        private val clickMediaUseCase: ClickMediaUseCase<E>,
-        private val playMediaUseCase: PlayMediaUseCase<E>,
-        private val shareMediaUseCase: ShareMediaUseCase<E>,
-        private val deleteMediaUseCase: DeleteMediaUseCase<E>,
-        private val getIsFavouriteUseCase: GetIsFavouriteUseCase<E>,
-        private val changeFavouriteUseCase: ChangeFavouriteUseCase<E>,
-        private val createShortcutUseCase: CreateShortcutUseCase<E>,
-        private val schedulerProvider: SchedulerProvider,
-        private val navigator: Navigator,
-        private val eventLogger: EventLogger
+    private val permissionChecker: PermissionChecker,
+    private val getMediaUseCase: GetMediaUseCase<E>,
+    private val getMediaMenuUseCase: GetMediaMenuUseCase<E>,
+    private val clickMediaUseCase: ClickMediaUseCase<E>,
+    private val playMediaUseCase: PlayMediaUseCase<E>,
+    private val shareMediaUseCase: ShareMediaUseCase<E>,
+    private val deleteMediaUseCase: DeleteMediaUseCase<E>,
+    private val getIsFavouriteUseCase: GetIsFavouriteUseCase<E>,
+    private val changeFavouriteUseCase: ChangeFavouriteUseCase<E>,
+    private val createShortcutUseCase: CreateShortcutUseCase<E>,
+    private val schedulerProvider: SchedulerProvider,
+    private val appRouter: AppRouter,
+    private val eventLogger: EventLogger
 ): BaseViewModel(eventLogger) {
 
     // Private flags
@@ -323,11 +323,11 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
     }
 
     protected open fun handleNavigateUp() {
-        navigator.goBack()
+        appRouter.goBack()
     }
 
     protected open fun handleBackPress() {
-        navigator.goBack()
+        appRouter.goBack()
     }
 
     /*******************************
@@ -491,7 +491,7 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
     fun onAddToPlaylistContextualOptionSelected() {
         val selectedItems = selectedItems.value ?: return
         _selectedItems.value = emptySet()
-        navigator.addMediaItemsToPlaylist(ArrayList(selectedItems))
+        appRouter.addMediaItemsToPlaylist(ArrayList(selectedItems))
     }
 
     fun onContextualMenuClosed() {
@@ -595,7 +595,7 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
         _closeOptionsMenuEvent.value = event
         val item = event.item
         if (item is Song) {
-            navigator.viewLyrics(item)
+            appRouter.viewLyrics(item)
         }
     }
 
@@ -605,7 +605,7 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
         val item = event.item
         if (item is Song) {
             val album = Album(item.albumId, item.album, item.artist, 1)
-            navigator.openAlbum(album)
+            appRouter.openAlbum(album)
         }
     }
 
@@ -615,7 +615,7 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
         val item = event.item
         if (item is Song) {
             val artist = Artist(item.artistId, item.artist, 1, 1)
-            navigator.openArtist(artist)
+            appRouter.openArtist(artist)
         }
     }
 
@@ -633,9 +633,9 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
         _closeOptionsMenuEvent.value = event
         val item = event.item
         when(item.kind) {
-            Media.SONG -> navigator.editSong(item as Song)
-            Media.ALBUM -> navigator.editAlbum(item as Album)
-            Media.PLAYLIST -> navigator.editPlaylist(item as Playlist)
+            Media.SONG -> appRouter.editSong(item as Song)
+            Media.ALBUM -> appRouter.editAlbum(item as Album)
+            Media.PLAYLIST -> appRouter.editPlaylist(item as Playlist)
             else -> { } // should not happen
         }
     }
@@ -671,7 +671,7 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
         Single.fromCallable { ArrayList(listOf(item)) }
                 .observeOn(schedulerProvider.main())
                 .subscribeFor { items ->
-                    navigator.addMediaItemsToPlaylist(items)
+                    appRouter.addMediaItemsToPlaylist(items)
                 }
     }
 

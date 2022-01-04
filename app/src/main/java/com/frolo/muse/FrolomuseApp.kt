@@ -13,7 +13,7 @@ import androidx.multidex.MultiDexApplication
 import com.frolo.muse.broadcast.Broadcasts
 import com.frolo.muse.di.AppComponent
 import com.frolo.muse.di.DaggerAppComponent
-import com.frolo.muse.di.impl.navigator.NavigatorImpl
+import com.frolo.muse.di.impl.navigator.AppRouterImpl
 import com.frolo.muse.di.initAppComponent
 import com.frolo.muse.di.modules.*
 import com.frolo.muse.engine.Player
@@ -21,7 +21,7 @@ import com.frolo.muse.engine.PlayerImpl
 import com.frolo.muse.engine.PlayerWrapper
 import com.frolo.muse.engine.audiofx.AudioFxImpl
 import com.frolo.muse.logger.logLowMemory
-import com.frolo.muse.navigator.NavigatorWrapper
+import com.frolo.muse.router.AppRouterWrapper
 import com.frolo.muse.ui.base.BaseActivity
 import com.frolo.muse.ui.main.MainActivity
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
@@ -47,7 +47,7 @@ class FrolomuseApp : MultiDexApplication(), ActivityWatcher {
     }
 
     private val playerWrapper = PlayerWrapper(enableStrictMode = isDebug)
-    private val navigatorWrapper = NavigatorWrapper()
+    private val navigatorWrapper = AppRouterWrapper()
 
     override fun onCreate() {
         super.onCreate()
@@ -190,7 +190,7 @@ class FrolomuseApp : MultiDexApplication(), ActivityWatcher {
     }
 
     fun onFragmentNavigatorCreated(activity: MainActivity) {
-        navigatorWrapper.attachBase(NavigatorImpl(activity))
+        navigatorWrapper.attachBase(AppRouterImpl(activity))
     }
 
     fun onFragmentNavigatorDestroyed() {

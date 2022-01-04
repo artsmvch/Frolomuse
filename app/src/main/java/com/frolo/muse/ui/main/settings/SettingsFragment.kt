@@ -23,7 +23,7 @@ import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.di.appComponent
 import com.frolo.muse.logger.*
 import com.frolo.muse.mediascan.MediaScanService
-import com.frolo.muse.navigator.Navigator
+import com.frolo.muse.router.AppRouter
 import com.frolo.muse.repository.AppearancePreferences
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.rx.SchedulerProvider
@@ -59,7 +59,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
         appComponent.provideAppearancePreferences()
     }
 
-    private val navigator: Navigator by lazy {
+    private val appRouter: AppRouter by lazy {
         appComponent.provideNavigator()
     }
 
@@ -416,7 +416,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
     }
 
     private fun showThemeChooser() {
-        navigator.openThemeChooser()
+        appRouter.openThemeChooser()
     }
 
     private fun showMinAudioFileDurationDialog() {
@@ -440,7 +440,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
     }
 
     private fun showDonations() {
-        navigator.openDonations()
+        appRouter.openDonations()
     }
 
     private fun showAppInfoDialog() {

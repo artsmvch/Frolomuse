@@ -3,7 +3,7 @@ package com.frolo.muse.ui.main.library.playlists.addmedia
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.frolo.muse.di.AppComponent
-import com.frolo.muse.navigator.Navigator
+import com.frolo.muse.router.AppRouter
 import com.frolo.muse.interactor.media.AddMediaToPlaylistUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.media.Media
@@ -21,7 +21,7 @@ class AddMediaToPlaylistVMFactory constructor(
     @Inject
     internal lateinit var schedulerProvider: SchedulerProvider
     @Inject
-    internal lateinit var navigator: Navigator
+    internal lateinit var appRouter: AppRouter
     @Inject
     internal lateinit var eventLogger: EventLogger
 
@@ -37,7 +37,7 @@ class AddMediaToPlaylistVMFactory constructor(
         return AddMediaToPlaylistViewModel(
                 addMediaToPlaylistUseCase,
                 schedulerProvider,
-                navigator,
+                appRouter,
                 eventLogger
         ) as T
     }

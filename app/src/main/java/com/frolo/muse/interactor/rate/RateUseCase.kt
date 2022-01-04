@@ -1,6 +1,6 @@
 package com.frolo.muse.interactor.rate
 
-import com.frolo.muse.navigator.Navigator
+import com.frolo.muse.router.AppRouter
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.rx.SchedulerProvider
 import io.reactivex.Completable
@@ -12,7 +12,7 @@ import javax.inject.Inject
 class RateUseCase @Inject constructor(
         private val schedulerProvider: SchedulerProvider,
         private val preferences: Preferences,
-        private val navigator: Navigator
+        private val appRouter: AppRouter
 ) {
 
     /**
@@ -39,7 +39,7 @@ class RateUseCase @Inject constructor(
     fun rate() {
         // Rated! Thanks
         preferences.rated = true
-        navigator.goToStore()
+        appRouter.goToStore()
     }
 
     fun dismissRate() {

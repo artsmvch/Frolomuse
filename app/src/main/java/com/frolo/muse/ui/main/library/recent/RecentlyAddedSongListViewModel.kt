@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.frolo.muse.arch.SingleLiveEvent
 import com.frolo.muse.engine.Player
-import com.frolo.muse.navigator.Navigator
+import com.frolo.muse.router.AppRouter
 import com.frolo.muse.interactor.media.*
 import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
 import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
@@ -21,20 +21,20 @@ import javax.inject.Inject
 
 
 class RecentlyAddedSongListViewModel @Inject constructor(
-        player: Player,
-        permissionChecker: PermissionChecker,
-        private val getRecentlyAddedSongUseCase: GetRecentlyAddedSongUseCase,
-        getMediaMenuUseCase: GetMediaMenuUseCase<Song>,
-        clickMediaUseCase: ClickMediaUseCase<Song>,
-        playMediaUseCase: PlayMediaUseCase<Song>,
-        shareMediaUseCase: ShareMediaUseCase<Song>,
-        deleteMediaUseCase: DeleteMediaUseCase<Song>,
-        getIsFavouriteUseCase: GetIsFavouriteUseCase<Song>,
-        changeFavouriteUseCase: ChangeFavouriteUseCase<Song>,
-        createShortcutUseCase: CreateShortcutUseCase<Song>,
-        private val schedulerProvider: SchedulerProvider,
-        navigator: Navigator,
-        eventLogger: EventLogger
+    player: Player,
+    permissionChecker: PermissionChecker,
+    private val getRecentlyAddedSongUseCase: GetRecentlyAddedSongUseCase,
+    getMediaMenuUseCase: GetMediaMenuUseCase<Song>,
+    clickMediaUseCase: ClickMediaUseCase<Song>,
+    playMediaUseCase: PlayMediaUseCase<Song>,
+    shareMediaUseCase: ShareMediaUseCase<Song>,
+    deleteMediaUseCase: DeleteMediaUseCase<Song>,
+    getIsFavouriteUseCase: GetIsFavouriteUseCase<Song>,
+    changeFavouriteUseCase: ChangeFavouriteUseCase<Song>,
+    createShortcutUseCase: CreateShortcutUseCase<Song>,
+    private val schedulerProvider: SchedulerProvider,
+    appRouter: AppRouter,
+    eventLogger: EventLogger
 ): AbsSongCollectionViewModel<Song>(
         player,
         permissionChecker,
@@ -48,7 +48,7 @@ class RecentlyAddedSongListViewModel @Inject constructor(
         changeFavouriteUseCase,
         createShortcutUseCase,
         schedulerProvider,
-        navigator,
+        appRouter,
         eventLogger
 ) {
 

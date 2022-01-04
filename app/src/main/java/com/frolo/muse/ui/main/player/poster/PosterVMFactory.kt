@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.frolo.muse.interactor.poster.CreatePosterUseCase
 import com.frolo.muse.interactor.poster.SavePosterUseCase
-import com.frolo.muse.navigator.Navigator
+import com.frolo.muse.router.AppRouter
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.rx.SchedulerProvider
@@ -16,7 +16,7 @@ class PosterVMFactory @AssistedInject constructor(
     private val createPosterUseCase: CreatePosterUseCase,
     private val savePosterUseCase: SavePosterUseCase,
     private val schedulerProvider: SchedulerProvider,
-    private val navigator: Navigator,
+    private val appRouter: AppRouter,
     private val eventLogger: EventLogger,
     @Assisted private val song: Song
 ): ViewModelProvider.Factory {
@@ -27,7 +27,7 @@ class PosterVMFactory @AssistedInject constructor(
             createPosterUseCase,
             savePosterUseCase,
             schedulerProvider,
-            navigator,
+            appRouter,
             eventLogger,
             song
         ) as T

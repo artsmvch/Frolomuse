@@ -1,11 +1,11 @@
-package com.frolo.muse.navigator
+package com.frolo.muse.router
 
 import com.frolo.billing.ProductId
 import com.frolo.muse.model.media.*
 import java.io.File
 
 
-interface Navigator {
+interface AppRouter {
     fun goToStore()
 
     fun helpWithTranslations()

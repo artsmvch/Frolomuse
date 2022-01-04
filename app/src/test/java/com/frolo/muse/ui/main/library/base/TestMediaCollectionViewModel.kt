@@ -1,6 +1,6 @@
 package com.frolo.muse.ui.main.library.base
 
-import com.frolo.muse.navigator.Navigator
+import com.frolo.muse.router.AppRouter
 import com.frolo.muse.interactor.media.*
 import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
 import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
@@ -24,7 +24,7 @@ class TestMediaCollectionViewModel<T> constructor(
         changeFavouriteUseCase: ChangeFavouriteUseCase<T>,
         createShortcutUseCase: CreateShortcutUseCase<T>,
         schedulerProvider: SchedulerProvider,
-        navigator: Navigator,
+        appRouter: AppRouter,
         eventLogger: EventLogger
 ): AbsMediaCollectionViewModel<T>(
         permissionChecker,
@@ -38,6 +38,6 @@ class TestMediaCollectionViewModel<T> constructor(
         changeFavouriteUseCase,
         createShortcutUseCase,
         schedulerProvider,
-        navigator,
+        appRouter,
         eventLogger
 ) where T: Media

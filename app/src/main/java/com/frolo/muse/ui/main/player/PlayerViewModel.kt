@@ -16,7 +16,7 @@ import com.frolo.muse.interactor.media.DeleteMediaUseCase
 import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
 import com.frolo.muse.interactor.player.ControlPlayerUseCase
 import com.frolo.muse.interactor.player.ResolveSoundUseCase
-import com.frolo.muse.navigator.Navigator
+import com.frolo.muse.router.AppRouter
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.logPlayerOptionsMenuShown
 import com.frolo.muse.model.ABState
@@ -43,7 +43,7 @@ class PlayerViewModel @Inject constructor(
     private val controlPlayerUseCase: ControlPlayerUseCase,
     private val resolveSoundUseCase: ResolveSoundUseCase,
     private val featuresUseCase: FeaturesUseCase,
-    private val navigator: Navigator,
+    private val appRouter: AppRouter,
     private val eventLogger: EventLogger
 ): BaseViewModel(eventLogger) {
 
@@ -309,14 +309,14 @@ class PlayerViewModel @Inject constructor(
 
     fun onEditSongOptionSelected() {
         val song = song.value ?: return
-        navigator.editSong(song)
+        appRouter.editSong(song)
     }
 
     fun onViewAlbumOptionSelected() {
         controlPlayerUseCase.getAlbum()
             .observeOn(schedulerProvider.main())
             .subscribeFor { album ->
-                navigator.openAlbum(album)
+                appRouter.openAlbum(album)
             }
     }
 
@@ -324,7 +324,7 @@ class PlayerViewModel @Inject constructor(
         controlPlayerUseCase.getArtist()
             .observeOn(schedulerProvider.main())
             .subscribeFor { artist ->
-                navigator.openArtist(artist)
+                appRouter.openArtist(artist)
             }
     }
 
@@ -332,46 +332,46 @@ class PlayerViewModel @Inject constructor(
         controlPlayerUseCase.getGenre()
             .observeOn(schedulerProvider.main())
             .subscribeFor { genre ->
-                navigator.openGenre(genre)
+                appRouter.openGenre(genre)
             }
     }
 
     fun onViewCurrentPlayingOptionSelected() {
-        navigator.openCurrentPlaying()
+        appRouter.openCurrentPlaying()
     }
 
     fun onEditAlbumOptionSelected() {
         val song = song.value ?: return
         // actually, the view model should not create the album object
         val album = Album(song.albumId, song.album, song.artist, 1)
-        navigator.editAlbum(album)
+        appRouter.editAlbum(album)
     }
 
     fun onShareOptionSelected() {
         val song = song.value ?: return
         val songs = listOf(song)
-        navigator.shareSongs(songs)
+        appRouter.shareSongs(songs)
     }
 
     fun onAddToPlaylistOptionSelected() {
         val song = song.value ?: return
         val items = arrayListOf<Media>(song)
-        navigator.addMediaItemsToPlaylist(items)
+        appRouter.addMediaItemsToPlaylist(items)
     }
 
     fun onViewLyricsOptionSelected() {
         val song = song.value ?: return
-        navigator.viewLyrics(song)
+        appRouter.viewLyrics(song)
     }
 
     fun onViewPosterOptionSelected() {
         val song = song.value ?: return
-        navigator.viewPoster(song)
+        appRouter.viewPoster(song)
     }
 
     fun onRingCutterOptionSelected() {
         val song = song.value ?: return
-        navigator.openRingCutter(song)
+        appRouter.openRingCutter(song)
     }
 
     fun onDeleteOptionSelected() {

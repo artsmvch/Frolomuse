@@ -3,7 +3,7 @@ package com.frolo.muse.ui.main.library.playlists.addmedia
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.frolo.muse.arch.combine
-import com.frolo.muse.navigator.Navigator
+import com.frolo.muse.router.AppRouter
 import com.frolo.muse.interactor.media.AddMediaToPlaylistUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.logMediaAddedToPlaylist
@@ -13,10 +13,10 @@ import com.frolo.muse.ui.base.BaseViewModel
 
 
 class AddMediaToPlaylistViewModel constructor(
-        private val addMediaToPlaylistUseCase: AddMediaToPlaylistUseCase,
-        private val schedulerProvider: SchedulerProvider,
-        private val navigator: Navigator,
-        private val eventLogger: EventLogger
+    private val addMediaToPlaylistUseCase: AddMediaToPlaylistUseCase,
+    private val schedulerProvider: SchedulerProvider,
+    private val appRouter: AppRouter,
+    private val eventLogger: EventLogger
 ) : BaseViewModel(eventLogger) {
 
     private val _isLoading: MutableLiveData<Boolean> = MutableLiveData()

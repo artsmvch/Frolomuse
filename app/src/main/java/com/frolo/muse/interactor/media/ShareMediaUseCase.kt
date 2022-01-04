@@ -1,6 +1,6 @@
 package com.frolo.muse.interactor.media
 
-import com.frolo.muse.navigator.Navigator
+import com.frolo.muse.router.AppRouter
 import com.frolo.muse.model.media.Media
 import com.frolo.muse.repository.MediaRepository
 import com.frolo.muse.rx.SchedulerProvider
@@ -10,7 +10,7 @@ import io.reactivex.Completable
 class ShareMediaUseCase <E: Media> constructor(
         private val schedulerProvider: SchedulerProvider,
         private val repository: MediaRepository<E>,
-        private val navigator: Navigator
+        private val appRouter: AppRouter
 ) {
 
     fun share(item: E): Completable {
@@ -22,7 +22,7 @@ class ShareMediaUseCase <E: Media> constructor(
                 .subscribeOn(schedulerProvider.worker())
                 .observeOn(schedulerProvider.main())
                 .doOnSuccess { songs ->
-                    navigator.shareSongs(songs)
+                    appRouter.shareSongs(songs)
                 }
                 .ignoreElement()
     }

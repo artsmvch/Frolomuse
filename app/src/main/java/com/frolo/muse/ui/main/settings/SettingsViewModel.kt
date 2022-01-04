@@ -10,7 +10,7 @@ import com.frolo.muse.interactor.billing.PremiumManager
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.ProductOfferUiElementSource
 import com.frolo.muse.logger.logProductOffered
-import com.frolo.muse.navigator.Navigator
+import com.frolo.muse.router.AppRouter
 import com.frolo.muse.repository.AppearancePreferences
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.repository.RemoteConfigRepository
@@ -23,13 +23,13 @@ import javax.inject.Inject
 class SettingsViewModel @Inject constructor(
     private val player: Player,
     private val schedulerProvider: SchedulerProvider,
-    private val navigator: Navigator,
+    private val appRouter: AppRouter,
     private val premiumManager: PremiumManager,
     private val remoteConfigRepository: RemoteConfigRepository,
     private val preferences: Preferences,
     private val appearancePreferences: AppearancePreferences,
     private val eventLogger: EventLogger
-): PremiumViewModel(schedulerProvider, navigator, premiumManager, eventLogger) {
+): PremiumViewModel(schedulerProvider, appRouter, premiumManager, eventLogger) {
 
     val isBuyPremiumOptionVisible: LiveData<Boolean> by lazy {
         liveDataOf(false)
@@ -64,11 +64,11 @@ class SettingsViewModel @Inject constructor(
 
     fun onBuyPremiumPreferenceClicked() {
         eventLogger.logProductOffered(Products.PREMIUM, ProductOfferUiElementSource.SETTINGS)
-        navigator.offerToBuyPremium(allowTrialActivation = true)
+        appRouter.offerToBuyPremium(allowTrialActivation = true)
     }
 
     fun onPlaybackFadingClick() {
-        navigator.openPlaybackFadingParams()
+        appRouter.openPlaybackFadingParams()
     }
 
     /**

@@ -1,7 +1,7 @@
 package com.frolo.muse.ui.main.library.artists.artist.songs
 
 import com.frolo.muse.engine.Player
-import com.frolo.muse.navigator.Navigator
+import com.frolo.muse.router.AppRouter
 import com.frolo.muse.interactor.media.*
 import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
 import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
@@ -29,7 +29,7 @@ class SongsOfArtistViewModel constructor(
         changeFavouriteUseCase: ChangeFavouriteUseCase<Song>,
         createShortcutUseCase: CreateShortcutUseCase<Song>,
         schedulerProvider: SchedulerProvider,
-        navigator: Navigator,
+        appRouter: AppRouter,
         eventLogger: EventLogger,
         private val artistArg: Artist
 ): AbsSongCollectionViewModel<Song>(
@@ -45,6 +45,6 @@ class SongsOfArtistViewModel constructor(
         changeFavouriteUseCase,
         createShortcutUseCase,
         schedulerProvider,
-        navigator,
+        appRouter,
         eventLogger
 ), AssociatedWithMediaItem by AssociatedWithMediaItem(artistArg)

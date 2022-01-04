@@ -1,6 +1,6 @@
 package com.frolo.muse.ui.main.library.artists
 
-import com.frolo.muse.navigator.Navigator
+import com.frolo.muse.router.AppRouter
 import com.frolo.muse.interactor.media.*
 import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
 import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
@@ -26,7 +26,7 @@ class ArtistListViewModel @Inject constructor(
         changeFavouriteUseCase: ChangeFavouriteUseCase<Artist>,
         createShortcutUseCase: CreateShortcutUseCase<Artist>,
         schedulerProvider: SchedulerProvider,
-        navigator: Navigator,
+        appRouter: AppRouter,
         eventLogger: EventLogger
 ): AbsMediaCollectionViewModel<Artist>(
         permissionChecker,
@@ -40,5 +40,5 @@ class ArtistListViewModel @Inject constructor(
         changeFavouriteUseCase,
         createShortcutUseCase,
         schedulerProvider,
-        navigator,
+        appRouter,
         eventLogger)

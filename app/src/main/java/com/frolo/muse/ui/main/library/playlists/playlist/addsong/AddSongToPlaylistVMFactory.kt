@@ -6,7 +6,7 @@ import com.frolo.muse.di.AppComponent
 import com.frolo.muse.interactor.media.AddSongToPlaylistUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.media.Playlist
-import com.frolo.muse.navigator.Navigator
+import com.frolo.muse.router.AppRouter
 import com.frolo.muse.rx.SchedulerProvider
 import javax.inject.Inject
 
@@ -21,7 +21,7 @@ class AddSongToPlaylistVMFactory constructor(
     @Inject
     internal lateinit var schedulerProvider: SchedulerProvider
     @Inject
-    internal lateinit var navigator: Navigator
+    internal lateinit var appRouter: AppRouter
     @Inject
     internal lateinit var eventLogger: EventLogger
 
@@ -37,7 +37,7 @@ class AddSongToPlaylistVMFactory constructor(
         return AddSongToPlaylistViewModel(
                 addSongToPlaylistUseCase,
                 schedulerProvider,
-                navigator,
+                appRouter,
                 eventLogger
         ) as T
     }

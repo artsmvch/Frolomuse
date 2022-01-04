@@ -5,7 +5,7 @@ import com.frolo.muse.engine.Player
 import com.frolo.muse.common.prepareByTarget
 import com.frolo.muse.common.toAudioSource
 import com.frolo.muse.model.media.Media
-import com.frolo.muse.navigator.Navigator
+import com.frolo.muse.router.AppRouter
 import com.frolo.muse.repository.*
 import com.frolo.muse.rx.SchedulerProvider
 import io.reactivex.Completable
@@ -20,7 +20,7 @@ class NavigateToMediaUseCase @Inject constructor(
     private val playlistRepository: PlaylistRepository,
     private val myFileRepository: MyFileRepository,
     private val schedulerProvider: SchedulerProvider,
-    private val navigator: Navigator,
+    private val appRouter: AppRouter,
     private val player: Player
 ) {
 
@@ -31,7 +31,7 @@ class NavigateToMediaUseCase @Inject constructor(
                 .subscribeOn(schedulerProvider.worker())
                 .observeOn(schedulerProvider.main())
                 .firstOrError()
-                .doOnSuccess { navigator.openAlbum(it) }
+                .doOnSuccess { appRouter.openAlbum(it) }
                 .ignoreElement()
 
         Media.ARTIST ->
@@ -39,7 +39,7 @@ class NavigateToMediaUseCase @Inject constructor(
                 .subscribeOn(schedulerProvider.worker())
                 .observeOn(schedulerProvider.main())
                 .firstOrError()
-                .doOnSuccess { navigator.openArtist(it) }
+                .doOnSuccess { appRouter.openArtist(it) }
                 .ignoreElement()
 
         Media.GENRE ->
@@ -47,7 +47,7 @@ class NavigateToMediaUseCase @Inject constructor(
                 .subscribeOn(schedulerProvider.worker())
                 .observeOn(schedulerProvider.main())
                 .firstOrError()
-                .doOnSuccess { navigator.openGenre(it) }
+                .doOnSuccess { appRouter.openGenre(it) }
                 .ignoreElement()
 
         Media.MY_FILE ->
@@ -55,7 +55,7 @@ class NavigateToMediaUseCase @Inject constructor(
                 .subscribeOn(schedulerProvider.worker())
                 .observeOn(schedulerProvider.main())
                 .firstOrError()
-                .doOnSuccess { navigator.openMyFile(it) }
+                .doOnSuccess { appRouter.openMyFile(it) }
                 .ignoreElement()
 
         Media.PLAYLIST ->
@@ -63,7 +63,7 @@ class NavigateToMediaUseCase @Inject constructor(
                 .subscribeOn(schedulerProvider.worker())
                 .observeOn(schedulerProvider.main())
                 .firstOrError()
-                .doOnSuccess { navigator.openPlaylist(it) }
+                .doOnSuccess { appRouter.openPlaylist(it) }
                 .ignoreElement()
 
         Media.SONG ->
@@ -74,7 +74,7 @@ class NavigateToMediaUseCase @Inject constructor(
                 .doOnSuccess { song ->
                     val queue = AudioSourceQueue(song)
                     player.prepareByTarget(queue, song.toAudioSource(), true)
-                    navigator.openPlayer()
+                    appRouter.openPlayer()
                 }
                 .ignoreElement()
 

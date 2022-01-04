@@ -9,7 +9,7 @@ import com.frolo.muse.interactor.media.get.GetMediaUseCase
 import com.frolo.muse.interactor.media.shortcut.CreateShortcutUseCase
 import com.frolo.muse.model.media.Media
 import com.frolo.muse.model.menu.ContextualMenu
-import com.frolo.muse.navigator.TestNavigator
+import com.frolo.muse.router.TestAppRouter
 import com.frolo.muse.permission.PermissionChecker
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.eq
@@ -57,7 +57,7 @@ class AbsMediaCollectionViewModelTest {
     @Mock
     private lateinit var createShortcutUseCase: CreateShortcutUseCase<Media>
     private val schedulerProvider = TestSchedulerProvider.SHARED
-    private val navigator = TestNavigator()
+    private val navigator = TestAppRouter()
     private val eventLogger = TestEventLogger()
 
     private lateinit var viewModel: AbsMediaCollectionViewModel<Media>
@@ -66,7 +66,7 @@ class AbsMediaCollectionViewModelTest {
     fun setup() {
         MockitoAnnotations.initMocks(this)
 
-        val navigator = TestNavigator()
+        val navigator = TestAppRouter()
         val eventLogger = TestEventLogger()
         viewModel = TestMediaCollectionViewModel(
                 permissionChecker,

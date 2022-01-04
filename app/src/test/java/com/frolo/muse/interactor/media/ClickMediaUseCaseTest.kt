@@ -6,7 +6,7 @@ import com.frolo.muse.engine.AudioSourceQueue
 import com.frolo.muse.common.toAudioSource
 import com.frolo.muse.common.toAudioSources
 import com.frolo.muse.model.media.*
-import com.frolo.muse.navigator.Navigator
+import com.frolo.muse.router.AppRouter
 import com.frolo.muse.repository.GenericMediaRepository
 import com.nhaarman.mockitokotlin2.*
 import io.reactivex.Single
@@ -31,7 +31,7 @@ class ClickMediaUseCaseTest {
     @Mock
     private lateinit var repository: GenericMediaRepository
     @Mock
-    private lateinit var navigator: Navigator
+    private lateinit var appRouter: AppRouter
 
     @Before
     fun setup() {
@@ -41,7 +41,7 @@ class ClickMediaUseCaseTest {
                 TestSchedulerProvider.SHARED,
                 player,
                 repository,
-                navigator
+                appRouter
         )
     }
 
@@ -98,7 +98,7 @@ class ClickMediaUseCaseTest {
 
         val testObserver = TestObserver.create<Unit>()
 
-        whenever(navigator.openAlbum(eq(album)))
+        whenever(appRouter.openAlbum(eq(album)))
                 .thenDoNothing()
 
         clickMediaUseCase.click(album, collection)
@@ -106,7 +106,7 @@ class ClickMediaUseCaseTest {
 
         testObserver.assertComplete()
 
-        verify(navigator, times(1))
+        verify(appRouter, times(1))
                 .openAlbum(album)
     }
 
@@ -117,7 +117,7 @@ class ClickMediaUseCaseTest {
 
         val testObserver = TestObserver.create<Unit>()
 
-        whenever(navigator.openArtist(eq(artist)))
+        whenever(appRouter.openArtist(eq(artist)))
                 .thenDoNothing()
 
         clickMediaUseCase.click(artist, collection)
@@ -125,7 +125,7 @@ class ClickMediaUseCaseTest {
 
         testObserver.assertComplete()
 
-        verify(navigator, times(1))
+        verify(appRouter, times(1))
                 .openArtist(artist)
     }
 
@@ -136,7 +136,7 @@ class ClickMediaUseCaseTest {
 
         val testObserver = TestObserver.create<Unit>()
 
-        whenever(navigator.openGenre(eq(genre)))
+        whenever(appRouter.openGenre(eq(genre)))
                 .thenDoNothing()
 
         clickMediaUseCase.click(genre, collection)
@@ -144,7 +144,7 @@ class ClickMediaUseCaseTest {
 
         testObserver.assertComplete()
 
-        verify(navigator, times(1))
+        verify(appRouter, times(1))
                 .openGenre(genre)
     }
 
@@ -155,7 +155,7 @@ class ClickMediaUseCaseTest {
 
         val testObserver = TestObserver.create<Unit>()
 
-        whenever(navigator.openPlaylist(eq(playlist)))
+        whenever(appRouter.openPlaylist(eq(playlist)))
                 .thenDoNothing()
 
         clickMediaUseCase.click(playlist, collection)
@@ -163,7 +163,7 @@ class ClickMediaUseCaseTest {
 
         testObserver.assertComplete()
 
-        verify(navigator, times(1))
+        verify(appRouter, times(1))
                 .openPlaylist(playlist)
     }
 
@@ -183,7 +183,7 @@ class ClickMediaUseCaseTest {
 
         val testObserver = TestObserver.create<Unit>()
 
-        whenever(navigator.openMyFile(myFile))
+        whenever(appRouter.openMyFile(myFile))
                 .thenDoNothing()
 
         clickMediaUseCase.click(myFile, collection)
@@ -191,7 +191,7 @@ class ClickMediaUseCaseTest {
 
         testObserver.assertComplete()
 
-        verify(navigator, times(1))
+        verify(appRouter, times(1))
                 .openMyFile(myFile)
     }
 
@@ -242,7 +242,7 @@ class ClickMediaUseCaseTest {
 
         whenever(myFile.isDirectory).thenReturn(false)
 
-        whenever(navigator.openMyFile(myFile)).thenDoNothing()
+        whenever(appRouter.openMyFile(myFile)).thenDoNothing()
 
         whenever(repository.collectSongs(any<MyFile>())).thenReturn(Single.just(songsFromMyFile))
 

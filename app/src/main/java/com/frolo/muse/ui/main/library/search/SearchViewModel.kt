@@ -2,7 +2,7 @@ package com.frolo.muse.ui.main.library.search
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.frolo.muse.navigator.Navigator
+import com.frolo.muse.router.AppRouter
 import com.frolo.muse.interactor.media.*
 import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
 import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
@@ -20,19 +20,19 @@ import javax.inject.Inject
 
 
 class SearchViewModel @Inject constructor(
-        permissionChecker: PermissionChecker,
-        searchMediaUseCase: SearchMediaUseCase,
-        getMediaMenuUseCase: GetMediaMenuUseCase<Media>,
-        clickMediaUseCase: ClickMediaUseCase<Media>,
-        playMediaUseCase: PlayMediaUseCase<Media>,
-        shareMediaUseCase: ShareMediaUseCase<Media>,
-        deleteMediaUseCase: DeleteMediaUseCase<Media>,
-        getIsFavouriteUseCase: GetIsFavouriteUseCase<Media>,
-        changeFavouriteUseCase: ChangeFavouriteUseCase<Media>,
-        createShortcutUseCase: CreateShortcutUseCase<Media>,
-        schedulerProvider: SchedulerProvider,
-        navigator: Navigator,
-        private val eventLogger: EventLogger
+    permissionChecker: PermissionChecker,
+    searchMediaUseCase: SearchMediaUseCase,
+    getMediaMenuUseCase: GetMediaMenuUseCase<Media>,
+    clickMediaUseCase: ClickMediaUseCase<Media>,
+    playMediaUseCase: PlayMediaUseCase<Media>,
+    shareMediaUseCase: ShareMediaUseCase<Media>,
+    deleteMediaUseCase: DeleteMediaUseCase<Media>,
+    getIsFavouriteUseCase: GetIsFavouriteUseCase<Media>,
+    changeFavouriteUseCase: ChangeFavouriteUseCase<Media>,
+    createShortcutUseCase: CreateShortcutUseCase<Media>,
+    schedulerProvider: SchedulerProvider,
+    appRouter: AppRouter,
+    private val eventLogger: EventLogger
 ): AbsMediaCollectionViewModel<Media>(
         permissionChecker,
         searchMediaUseCase,
@@ -45,7 +45,7 @@ class SearchViewModel @Inject constructor(
         changeFavouriteUseCase,
         createShortcutUseCase,
         schedulerProvider,
-        navigator,
+        appRouter,
         eventLogger) {
 
     private var queryCount: Int = 0

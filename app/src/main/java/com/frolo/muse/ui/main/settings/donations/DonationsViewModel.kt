@@ -6,12 +6,11 @@ import com.frolo.billing.BillingFlowSuccess
 import com.frolo.billing.BillingManager
 import com.frolo.billing.ProductDetails
 import com.frolo.muse.BuildInfo
-import com.frolo.muse.DebugUtils
 import com.frolo.muse.arch.EventLiveData
 import com.frolo.muse.arch.call
 import com.frolo.muse.billing.Products
 import com.frolo.muse.logger.*
-import com.frolo.muse.navigator.Navigator
+import com.frolo.muse.router.AppRouter
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.base.BaseViewModel
 import io.reactivex.Single
@@ -21,7 +20,7 @@ import javax.inject.Inject
 
 class DonationsViewModel @Inject constructor(
     private val billingManager: BillingManager,
-    private val navigator: Navigator,
+    private val appRouter: AppRouter,
     private val schedulerProvider: SchedulerProvider,
     private val eventLogger: EventLogger
 ) : BaseViewModel(eventLogger) {
@@ -111,7 +110,7 @@ class DonationsViewModel @Inject constructor(
                 }
         } else if (item is DonationItem.Rating) {
             eventLogger.logDonationRatingClicked()
-            navigator.goToStore()
+            appRouter.goToStore()
         } else {
             if (BuildInfo.isDebug()) {
                 throw IllegalArgumentException("Unexpected donation item: $item")

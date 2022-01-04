@@ -9,7 +9,7 @@ import com.frolo.muse.interactor.billing.PremiumManager
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.ProductOfferUiElementSource
 import com.frolo.muse.logger.logProductOffered
-import com.frolo.muse.navigator.Navigator
+import com.frolo.muse.router.AppRouter
 import com.frolo.muse.rx.SchedulerProvider
 
 
@@ -19,7 +19,7 @@ import com.frolo.muse.rx.SchedulerProvider
  */
 abstract class PremiumViewModel constructor(
     private val schedulerProvider: SchedulerProvider,
-    private val navigator: Navigator,
+    private val appRouter: AppRouter,
     private val premiumManager: PremiumManager,
     private val eventLogger: EventLogger
 ): BaseViewModel(eventLogger) {
@@ -61,7 +61,7 @@ abstract class PremiumViewModel constructor(
             true
         } else {
             eventLogger.logProductOffered(Products.PREMIUM, uiElementSource)
-            navigator.offerToBuyPremium(allowTrialActivation = true)
+            appRouter.offerToBuyPremium(allowTrialActivation = true)
             false
         }
     }

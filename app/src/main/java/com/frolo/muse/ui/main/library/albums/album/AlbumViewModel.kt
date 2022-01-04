@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.frolo.muse.arch.*
 import com.frolo.muse.engine.Player
-import com.frolo.muse.navigator.Navigator
+import com.frolo.muse.router.AppRouter
 import com.frolo.muse.interactor.media.*
 import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
 import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
@@ -22,22 +22,22 @@ import com.frolo.muse.ui.main.library.base.AssociatedWithMediaItem
 
 
 class AlbumViewModel constructor(
-        player: Player,
-        permissionChecker: PermissionChecker,
-        getAlbumSongsUseCase: GetAlbumSongsUseCase,
-        getMediaMenuUseCase: GetMediaMenuUseCase<Song>,
-        clickMediaUseCase: ClickMediaUseCase<Song>,
-        private val playMediaUseCase: PlayMediaUseCase<Song>,
-        shareMediaUseCase: ShareMediaUseCase<Song>,
-        deleteMediaUseCase: DeleteMediaUseCase<Song>,
-        getIsFavouriteUseCase: GetIsFavouriteUseCase<Song>,
-        changeFavouriteUseCase: ChangeFavouriteUseCase<Song>,
-        createSongShortcutUseCase: CreateShortcutUseCase<Song>,
-        private val createAlbumShortcutUseCase: CreateShortcutUseCase<Album>,
-        private val schedulerProvider: SchedulerProvider,
-        private val navigator: Navigator,
-        private val eventLogger: EventLogger,
-        private val albumArg: Album
+    player: Player,
+    permissionChecker: PermissionChecker,
+    getAlbumSongsUseCase: GetAlbumSongsUseCase,
+    getMediaMenuUseCase: GetMediaMenuUseCase<Song>,
+    clickMediaUseCase: ClickMediaUseCase<Song>,
+    private val playMediaUseCase: PlayMediaUseCase<Song>,
+    shareMediaUseCase: ShareMediaUseCase<Song>,
+    deleteMediaUseCase: DeleteMediaUseCase<Song>,
+    getIsFavouriteUseCase: GetIsFavouriteUseCase<Song>,
+    changeFavouriteUseCase: ChangeFavouriteUseCase<Song>,
+    createSongShortcutUseCase: CreateShortcutUseCase<Song>,
+    private val createAlbumShortcutUseCase: CreateShortcutUseCase<Album>,
+    private val schedulerProvider: SchedulerProvider,
+    private val appRouter: AppRouter,
+    private val eventLogger: EventLogger,
+    private val albumArg: Album
 ): AbsSongCollectionViewModel<Song>(
         player,
         permissionChecker,
@@ -51,7 +51,7 @@ class AlbumViewModel constructor(
         changeFavouriteUseCase,
         createSongShortcutUseCase,
         schedulerProvider,
-        navigator,
+        appRouter,
         eventLogger
 ), AssociatedWithMediaItem by AssociatedWithMediaItem(albumArg) {
 
@@ -79,7 +79,7 @@ class AlbumViewModel constructor(
         get() = _confirmAlbumShortcutCreationEvent
 
     fun onAlbumArtClicked() {
-        navigator.editAlbum(albumArg)
+        appRouter.editAlbum(albumArg)
     }
 
     fun onPlayButtonClicked() {

@@ -4,7 +4,7 @@ import com.frolo.muse.common.AudioSourceQueue
 import com.frolo.muse.engine.Player
 import com.frolo.muse.common.prepareByTarget
 import com.frolo.muse.common.toAudioSource
-import com.frolo.muse.navigator.Navigator
+import com.frolo.muse.router.AppRouter
 import com.frolo.muse.model.media.*
 import com.frolo.muse.repository.GenericMediaRepository
 import com.frolo.muse.rx.SchedulerProvider
@@ -18,7 +18,7 @@ class ClickMediaUseCase <E: Media> constructor(
     private val schedulerProvider: SchedulerProvider,
     private val player: Player,
     private val genericMediaRepository: GenericMediaRepository,
-    private val navigator: Navigator
+    private val appRouter: AppRouter
 ) {
 
     private fun processPlay(target: Song, songs: List<Song>, toggleIfSameSong: Boolean, associatedMediaItem: Media?) {
@@ -46,28 +46,28 @@ class ClickMediaUseCase <E: Media> constructor(
         Media.ALBUM -> {
             Single.fromCallable { item as Album }
                     .observeOn(schedulerProvider.main())
-                    .doOnSuccess { navigator.openAlbum(it) }
+                    .doOnSuccess { appRouter.openAlbum(it) }
                     .ignoreElement()
         }
 
         Media.ARTIST -> {
             Single.fromCallable { item as Artist }
                     .observeOn(schedulerProvider.main())
-                    .doOnSuccess { navigator.openArtist(it) }
+                    .doOnSuccess { appRouter.openArtist(it) }
                     .ignoreElement()
         }
 
         Media.GENRE -> {
             Single.fromCallable { item as Genre }
                     .observeOn(schedulerProvider.main())
-                    .doOnSuccess { navigator.openGenre(it) }
+                    .doOnSuccess { appRouter.openGenre(it) }
                     .ignoreElement()
         }
 
         Media.PLAYLIST -> {
             Single.fromCallable { item as Playlist }
                     .observeOn(schedulerProvider.main())
-                    .doOnSuccess { navigator.openPlaylist(it) }
+                    .doOnSuccess { appRouter.openPlaylist(it) }
                     .ignoreElement()
         }
 
@@ -76,7 +76,7 @@ class ClickMediaUseCase <E: Media> constructor(
                     .flatMapCompletable { myFile -> when {
                         myFile.isDirectory -> Completable.complete()
                                 .observeOn(schedulerProvider.main())
-                                .doOnComplete { navigator.openMyFile(myFile) }
+                                .doOnComplete { appRouter.openMyFile(myFile) }
 
                         myFile.isSongFile -> genericMediaRepository.collectSongs(myFile)
                             .subscribeOn(schedulerProvider.worker())

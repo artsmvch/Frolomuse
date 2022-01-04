@@ -13,7 +13,7 @@ import com.frolo.muse.logger.logProductOffered
 import com.frolo.muse.logger.logThemeChanged
 import com.frolo.muse.model.Theme
 import com.frolo.muse.model.media.Album
-import com.frolo.muse.navigator.Navigator
+import com.frolo.muse.router.AppRouter
 import com.frolo.muse.repository.AlbumRepository
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.rx.SchedulerProvider
@@ -30,7 +30,7 @@ class ThemeChooserViewModel @Inject constructor(
     private val albumRepository: AlbumRepository,
     private val preferences: Preferences,
     private val premiumManager: PremiumManager,
-    private val navigator: Navigator,
+    private val appRouter: AppRouter,
     private val schedulerProvider: SchedulerProvider,
     private val eventLogger: EventLogger
 ): BaseViewModel(eventLogger) {
@@ -144,7 +144,7 @@ class ThemeChooserViewModel @Inject constructor(
         }
 
         eventLogger.logProductOffered(Products.PREMIUM, ProductOfferUiElementSource.THEME_PREVIEW_BADGE)
-        navigator.offerToBuyPremium(allowTrialActivation = false)
+        appRouter.offerToBuyPremium(allowTrialActivation = false)
     }
 
     fun onApplyThemeClick(page: ThemePage) {
@@ -157,7 +157,7 @@ class ThemeChooserViewModel @Inject constructor(
         // Check if the user must be premium to apply this theme
         if (page.hasProBadge) {
             eventLogger.logProductOffered(Products.PREMIUM, ProductOfferUiElementSource.THEME_PREVIEW_APPLY)
-            navigator.offerToBuyPremium(allowTrialActivation = false)
+            appRouter.offerToBuyPremium(allowTrialActivation = false)
             return
         }
 

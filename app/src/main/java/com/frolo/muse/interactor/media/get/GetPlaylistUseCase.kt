@@ -1,6 +1,6 @@
 package com.frolo.muse.interactor.media.get
 
-import com.frolo.muse.navigator.Navigator
+import com.frolo.muse.router.AppRouter
 import com.frolo.muse.model.Library
 import com.frolo.muse.model.media.Playlist
 import com.frolo.muse.model.media.Song
@@ -19,7 +19,7 @@ class GetPlaylistUseCase @AssistedInject constructor(
     private val playlistRepository: PlaylistRepository,
     private val playlistChunkRepository: PlaylistChunkRepository,
     private val preferences: Preferences,
-    private val navigator: Navigator,
+    private val appRouter: AppRouter,
     @Assisted private val playlist: Playlist
 ): GetSectionedMediaUseCase<Song>(
     Library.PLAYLIST,
@@ -35,11 +35,11 @@ class GetPlaylistUseCase @AssistedInject constructor(
     }
 
     fun edit(freshVersion: Playlist? = null) {
-        navigator.editPlaylist(freshVersion ?: playlist)
+        appRouter.editPlaylist(freshVersion ?: playlist)
     }
 
     fun addSongs() {
-        navigator.addSongsToPlaylist(playlist)
+        appRouter.addSongsToPlaylist(playlist)
     }
 
     fun isCurrentSortOrderSwappable(): Flowable<Boolean> {

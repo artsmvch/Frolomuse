@@ -5,7 +5,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import com.frolo.muse.arch.SingleLiveEvent
 import com.frolo.muse.engine.Player
-import com.frolo.muse.navigator.Navigator
+import com.frolo.muse.router.AppRouter
 import com.frolo.muse.interactor.media.*
 import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
 import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
@@ -24,21 +24,21 @@ import io.reactivex.Single
 
 
 class PlaylistViewModel constructor(
-        player: Player,
-        permissionChecker: PermissionChecker,
-        private val getPlaylistUseCase: GetPlaylistUseCase,
-        getMediaMenuUseCase: GetMediaMenuUseCase<Song>,
-        clickMediaUseCase: ClickMediaUseCase<Song>,
-        private val playMediaUseCase: PlayMediaUseCase<Song>,
-        shareMediaUseCase: ShareMediaUseCase<Song>,
-        deleteMediaUseCase: DeleteMediaUseCase<Song>,
-        getIsFavouriteUseCase: GetIsFavouriteUseCase<Song>,
-        changeFavouriteUseCase: ChangeFavouriteUseCase<Song>,
-        createSongShortcutUseCase: CreateShortcutUseCase<Song>,
-        private val createPlaylistShortcutUseCase: CreateShortcutUseCase<Playlist>,
-        private val schedulerProvider: SchedulerProvider,
-        private val navigator: Navigator,
-        private val eventLogger: EventLogger
+    player: Player,
+    permissionChecker: PermissionChecker,
+    private val getPlaylistUseCase: GetPlaylistUseCase,
+    getMediaMenuUseCase: GetMediaMenuUseCase<Song>,
+    clickMediaUseCase: ClickMediaUseCase<Song>,
+    private val playMediaUseCase: PlayMediaUseCase<Song>,
+    shareMediaUseCase: ShareMediaUseCase<Song>,
+    deleteMediaUseCase: DeleteMediaUseCase<Song>,
+    getIsFavouriteUseCase: GetIsFavouriteUseCase<Song>,
+    changeFavouriteUseCase: ChangeFavouriteUseCase<Song>,
+    createSongShortcutUseCase: CreateShortcutUseCase<Song>,
+    private val createPlaylistShortcutUseCase: CreateShortcutUseCase<Playlist>,
+    private val schedulerProvider: SchedulerProvider,
+    private val appRouter: AppRouter,
+    private val eventLogger: EventLogger
 ): AbsSongCollectionViewModel<Song>(
         player,
         permissionChecker,
@@ -52,7 +52,7 @@ class PlaylistViewModel constructor(
         changeFavouriteUseCase,
         createSongShortcutUseCase,
         schedulerProvider,
-        navigator,
+        appRouter,
         eventLogger
 ), AssociatedWithMediaItem {
 

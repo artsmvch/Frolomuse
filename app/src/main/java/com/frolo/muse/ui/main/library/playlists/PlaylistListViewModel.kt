@@ -1,6 +1,6 @@
 package com.frolo.muse.ui.main.library.playlists
 
-import com.frolo.muse.navigator.Navigator
+import com.frolo.muse.router.AppRouter
 import com.frolo.muse.interactor.media.*
 import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
 import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
@@ -26,7 +26,7 @@ class PlaylistListViewModel @Inject constructor(
         changeFavouriteUseCase: ChangeFavouriteUseCase<Playlist>,
         createShortcutUseCase: CreateShortcutUseCase<Playlist>,
         schedulerProvider: SchedulerProvider,
-        private val navigator: Navigator,
+        private val appRouter: AppRouter,
         eventLogger: EventLogger
 ): AbsMediaCollectionViewModel<Playlist>(
         permissionChecker,
@@ -40,12 +40,12 @@ class PlaylistListViewModel @Inject constructor(
         changeFavouriteUseCase,
         createShortcutUseCase,
         schedulerProvider,
-        navigator,
+        appRouter,
         eventLogger
 ) {
 
     fun onCreatePlaylistButtonClicked() {
-        navigator.createPlaylist()
+        appRouter.createPlaylist()
     }
 
 }

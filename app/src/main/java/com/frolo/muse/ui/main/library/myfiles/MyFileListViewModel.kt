@@ -8,7 +8,7 @@ import com.frolo.muse.arch.call
 import com.frolo.muse.engine.AudioSource
 import com.frolo.muse.engine.Player
 import com.frolo.muse.engine.SimplePlayerObserver
-import com.frolo.muse.navigator.Navigator
+import com.frolo.muse.router.AppRouter
 import com.frolo.muse.interactor.media.*
 import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
 import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
@@ -32,22 +32,22 @@ import javax.inject.Inject
 
 
 class MyFileListViewModel @Inject constructor(
-        private val player: Player,
-        permissionChecker: PermissionChecker,
-        private val getAllMyFilesUseCase: GetAllMyFilesUseCase,
-        getMediaMenuUseCase: GetMediaMenuUseCase<MyFile>,
-        clickMediaUseCase: ClickMediaUseCase<MyFile>,
-        playMediaUseCase: PlayMediaUseCase<MyFile>,
-        shareMediaUseCase: ShareMediaUseCase<MyFile>,
-        deleteMediaUseCase: DeleteMediaUseCase<MyFile>,
-        getIsFavouriteUseCase: GetIsFavouriteUseCase<MyFile>,
-        changeFavouriteUseCase: ChangeFavouriteUseCase<MyFile>,
-        createShortcutUseCase: CreateShortcutUseCase<MyFile>,
-        private val setFolderAsDefaultUseCase: SetFolderAsDefaultUseCase,
-        private val hideFilesUseCase: HideFilesUseCase,
-        private val schedulerProvider: SchedulerProvider,
-        navigator: Navigator,
-        private val eventLogger: EventLogger
+    private val player: Player,
+    permissionChecker: PermissionChecker,
+    private val getAllMyFilesUseCase: GetAllMyFilesUseCase,
+    getMediaMenuUseCase: GetMediaMenuUseCase<MyFile>,
+    clickMediaUseCase: ClickMediaUseCase<MyFile>,
+    playMediaUseCase: PlayMediaUseCase<MyFile>,
+    shareMediaUseCase: ShareMediaUseCase<MyFile>,
+    deleteMediaUseCase: DeleteMediaUseCase<MyFile>,
+    getIsFavouriteUseCase: GetIsFavouriteUseCase<MyFile>,
+    changeFavouriteUseCase: ChangeFavouriteUseCase<MyFile>,
+    createShortcutUseCase: CreateShortcutUseCase<MyFile>,
+    private val setFolderAsDefaultUseCase: SetFolderAsDefaultUseCase,
+    private val hideFilesUseCase: HideFilesUseCase,
+    private val schedulerProvider: SchedulerProvider,
+    appRouter: AppRouter,
+    private val eventLogger: EventLogger
 ): AbsMediaCollectionViewModel<MyFile>(
         permissionChecker,
         getAllMyFilesUseCase,
@@ -60,7 +60,7 @@ class MyFileListViewModel @Inject constructor(
         changeFavouriteUseCase,
         createShortcutUseCase,
         schedulerProvider,
-        navigator,
+        appRouter,
         eventLogger
 ) {
 

@@ -10,7 +10,7 @@ import com.frolo.muse.engine.AudioSource
 import com.frolo.muse.engine.Player
 import com.frolo.muse.engine.AudioSourceQueue
 import com.frolo.muse.engine.SimplePlayerObserver
-import com.frolo.muse.navigator.Navigator
+import com.frolo.muse.router.AppRouter
 import com.frolo.muse.interactor.media.*
 import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
 import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
@@ -44,7 +44,7 @@ class CurrSongQueueViewModel @Inject constructor(
     changeFavouriteUseCase: ChangeFavouriteUseCase<Song>,
     createShortcutUseCase: CreateShortcutUseCase<Song>,
     private val schedulerProvider: SchedulerProvider,
-    private val navigator: Navigator,
+    private val appRouter: AppRouter,
     eventLogger: EventLogger
 ): AbsMediaCollectionViewModel<Song>(
     permissionChecker,
@@ -58,7 +58,7 @@ class CurrSongQueueViewModel @Inject constructor(
     changeFavouriteUseCase,
     createShortcutUseCase,
     schedulerProvider,
-    navigator,
+    appRouter,
     eventLogger
 ) {
 
@@ -220,7 +220,7 @@ class CurrSongQueueViewModel @Inject constructor(
 
     fun onSaveAsPlaylistOptionSelected() {
         val songs = ArrayList(mediaList.value ?: emptyList())
-        navigator.createPlaylist(songs)
+        appRouter.createPlaylist(songs)
     }
 
     override fun handleItemClick(item: Song) {

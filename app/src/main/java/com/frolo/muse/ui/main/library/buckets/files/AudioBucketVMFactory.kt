@@ -13,7 +13,7 @@ import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.media.MediaBucket
 import com.frolo.muse.model.media.MediaFile
 import com.frolo.muse.model.media.Playlist
-import com.frolo.muse.navigator.Navigator
+import com.frolo.muse.router.AppRouter
 import com.frolo.muse.permission.PermissionChecker
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.rx.SchedulerProvider
@@ -54,7 +54,7 @@ class AudioBucketVMFactory constructor(
     @Inject
     internal lateinit var preferences: Preferences
     @Inject
-    internal lateinit var navigator: Navigator
+    internal lateinit var appRouter: AppRouter
     @Inject
     internal lateinit var eventLogger: EventLogger
 
@@ -80,7 +80,7 @@ class AudioBucketVMFactory constructor(
             changeFavouriteUseCase,
             createSongShortcutUseCase,
             schedulerProvider,
-            navigator,
+            appRouter,
             eventLogger
         ) as T
     }

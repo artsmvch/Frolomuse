@@ -1,7 +1,7 @@
 package com.frolo.muse.ui.main.library.favourites
 
 import com.frolo.muse.engine.Player
-import com.frolo.muse.navigator.Navigator
+import com.frolo.muse.router.AppRouter
 import com.frolo.muse.interactor.media.*
 import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
 import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
@@ -28,7 +28,7 @@ class FavouriteSongListViewModel @Inject constructor(
         changeFavouriteUseCase: ChangeFavouriteUseCase<Song>,
         createShortcutUseCase: CreateShortcutUseCase<Song>,
         schedulerProvider: SchedulerProvider,
-        navigator: Navigator,
+        appRouter: AppRouter,
         eventLogger: EventLogger
 ): AbsSongCollectionViewModel<Song>(
         player,
@@ -43,5 +43,5 @@ class FavouriteSongListViewModel @Inject constructor(
         changeFavouriteUseCase,
         createShortcutUseCase,
         schedulerProvider,
-        navigator,
+        appRouter,
         eventLogger)

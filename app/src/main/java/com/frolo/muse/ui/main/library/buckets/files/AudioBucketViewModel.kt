@@ -14,7 +14,7 @@ import com.frolo.muse.interactor.media.shortcut.CreateShortcutUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.media.MediaBucket
 import com.frolo.muse.model.media.MediaFile
-import com.frolo.muse.navigator.Navigator
+import com.frolo.muse.router.AppRouter
 import com.frolo.muse.permission.PermissionChecker
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.main.library.base.AbsMediaCollectionViewModel
@@ -33,7 +33,7 @@ class AudioBucketViewModel constructor(
     changeFavouriteUseCase: ChangeFavouriteUseCase<MediaFile>,
     createShortcutUseCase: CreateShortcutUseCase<MediaFile>,
     private val schedulerProvider: SchedulerProvider,
-    navigator: Navigator,
+    appRouter: AppRouter,
     eventLogger: EventLogger
 ): AbsMediaCollectionViewModel<MediaFile>(
     permissionChecker,
@@ -47,7 +47,7 @@ class AudioBucketViewModel constructor(
     changeFavouriteUseCase,
     createShortcutUseCase,
     schedulerProvider,
-    navigator,
+    appRouter,
     eventLogger
 ) {
 

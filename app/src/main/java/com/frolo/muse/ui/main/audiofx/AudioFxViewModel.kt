@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.frolo.muse.arch.*
 import com.frolo.muse.engine.*
 import com.frolo.muse.interactor.billing.PremiumManager
-import com.frolo.muse.navigator.Navigator
+import com.frolo.muse.router.AppRouter
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.logCustomPresetDeleted
 import com.frolo.muse.model.ShortRange
@@ -31,11 +31,11 @@ class AudioFxViewModel @Inject constructor(
     private val schedulerProvider: SchedulerProvider,
     private val presetRepository: PresetRepository,
     private val preferences: Preferences,
-    private val navigator: Navigator,
+    private val appRouter: AppRouter,
     private val premiumManager: PremiumManager,
     private val tooltipManager: TooltipManager,
     private val eventLogger: EventLogger
-): PremiumViewModel(schedulerProvider, navigator, premiumManager, eventLogger) {
+): PremiumViewModel(schedulerProvider, appRouter, premiumManager, eventLogger) {
 
     private val voidPreset = presetRepository.voidPreset.blockingGet()
 
@@ -301,11 +301,11 @@ class AudioFxViewModel @Inject constructor(
     }
 
     fun onPlaybackParamsOptionSelected() {
-        navigator.openPlaybackParams()
+        appRouter.openPlaybackParams()
     }
 
     fun onSavePresetButtonClicked(currentBandLevels: ShortArray) {
-        navigator.savePreset(currentBandLevels)
+        appRouter.savePreset(currentBandLevels)
     }
 
     fun onVisualizerRendererTypeOptionClicked() {

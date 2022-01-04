@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.frolo.muse.interactor.poster.CreatePosterUseCase
 import com.frolo.muse.interactor.poster.SavePosterUseCase
-import com.frolo.muse.navigator.Navigator
+import com.frolo.muse.router.AppRouter
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.logPosterShared
 import com.frolo.muse.model.media.Song
@@ -18,7 +18,7 @@ class PosterViewModel constructor(
     private val createPosterUseCase: CreatePosterUseCase,
     private val savePosterUseCase: SavePosterUseCase,
     private val schedulerProvider: SchedulerProvider,
-    private val navigator: Navigator,
+    private val appRouter: AppRouter,
     private val eventLogger: EventLogger,
     private val songArg: Song
 ): BaseViewModel(eventLogger) {
@@ -43,7 +43,7 @@ class PosterViewModel constructor(
     }
 
     fun onCancelClicked() {
-        navigator.goBack()
+        appRouter.goBack()
     }
 
     fun onShareClicked() {
@@ -51,12 +51,12 @@ class PosterViewModel constructor(
         val file = _posterFile.value
         if (file != null) {
             // The file exists already no need to create it again
-            navigator.sharePoster(songArg, file)
+            appRouter.sharePoster(songArg, file)
         } else {
             savePosterUseCase.savePoster(bmp)
                 .observeOn(schedulerProvider.main())
                 .doOnSuccess { posterFile -> _posterFile.value = posterFile }
-                .subscribeFor { posterFile -> navigator.sharePoster(songArg, posterFile) }
+                .subscribeFor { posterFile -> appRouter.sharePoster(songArg, posterFile) }
         }
         eventLogger.logPosterShared()
     }

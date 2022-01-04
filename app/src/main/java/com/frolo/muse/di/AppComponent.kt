@@ -9,7 +9,7 @@ import com.frolo.muse.interactor.media.AddMediaToPlaylistUseCase
 import com.frolo.muse.interactor.media.AddSongToPlaylistUseCase
 import com.frolo.muse.interactor.media.get.*
 import com.frolo.muse.logger.EventLogger
-import com.frolo.muse.navigator.Navigator
+import com.frolo.muse.router.AppRouter
 import com.frolo.muse.repository.AppearancePreferences
 import com.frolo.muse.repository.LibraryPreferences
 import com.frolo.muse.repository.Preferences
@@ -58,7 +58,7 @@ import javax.inject.Singleton
 interface AppComponent {
 
     fun provideSchedulerProvider(): SchedulerProvider
-    fun provideNavigator(): Navigator
+    fun provideNavigator(): AppRouter
     fun providePreferences(): Preferences
     fun provideLibraryPreferences(): LibraryPreferences
     fun provideAppearancePreferences(): AppearancePreferences

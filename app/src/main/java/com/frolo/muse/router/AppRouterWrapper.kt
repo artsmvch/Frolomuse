@@ -1,16 +1,16 @@
-package com.frolo.muse.navigator
+package com.frolo.muse.router
 
 import com.frolo.billing.ProductId
 import com.frolo.muse.model.media.*
 import java.io.File
 
 
-class NavigatorWrapper : Navigator {
+class AppRouterWrapper : AppRouter {
 
-    private var delegate: Navigator? = null
+    private var delegate: AppRouter? = null
 
-    fun attachBase(navigator: Navigator) {
-        this.delegate = navigator
+    fun attachBase(appRouter: AppRouter) {
+        this.delegate = appRouter
     }
 
     fun detachBase() {

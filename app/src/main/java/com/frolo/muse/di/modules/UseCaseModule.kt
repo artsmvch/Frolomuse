@@ -2,7 +2,7 @@ package com.frolo.muse.di.modules
 
 import com.frolo.muse.engine.Player
 import com.frolo.muse.interactor.feature.FeaturesUseCase
-import com.frolo.muse.navigator.Navigator
+import com.frolo.muse.router.AppRouter
 import com.frolo.muse.interactor.media.*
 import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
 import com.frolo.muse.interactor.media.get.*
@@ -248,9 +248,9 @@ abstract class UseCaseModule {
             schedulerProvider: SchedulerProvider,
             player: Player,
             repository: GenericMediaRepository,
-            navigator: Navigator
+            appRouter: AppRouter
         ): ClickMediaUseCase<Media> {
-            return ClickMediaUseCase<Media>(schedulerProvider, player, repository, navigator)
+            return ClickMediaUseCase<Media>(schedulerProvider, player, repository, appRouter)
         }
 
         @Provides
@@ -259,9 +259,9 @@ abstract class UseCaseModule {
             schedulerProvider: SchedulerProvider,
             player: Player,
             repository: GenericMediaRepository,
-            navigator: Navigator
+            appRouter: AppRouter
         ): ClickMediaUseCase<Artist> {
-            return ClickMediaUseCase<Artist>(schedulerProvider, player, repository, navigator)
+            return ClickMediaUseCase<Artist>(schedulerProvider, player, repository, appRouter)
         }
 
         @Provides
@@ -270,9 +270,9 @@ abstract class UseCaseModule {
             schedulerProvider: SchedulerProvider,
             player: Player,
             repository: GenericMediaRepository,
-            navigator: Navigator
+            appRouter: AppRouter
         ): ClickMediaUseCase<Album> {
-            return ClickMediaUseCase<Album>(schedulerProvider, player, repository, navigator)
+            return ClickMediaUseCase<Album>(schedulerProvider, player, repository, appRouter)
         }
 
         @Provides
@@ -281,9 +281,9 @@ abstract class UseCaseModule {
             schedulerProvider: SchedulerProvider,
             player: Player,
             repository: GenericMediaRepository,
-            navigator: Navigator
+            appRouter: AppRouter
         ): ClickMediaUseCase<Genre> {
-            return ClickMediaUseCase<Genre>(schedulerProvider, player, repository, navigator)
+            return ClickMediaUseCase<Genre>(schedulerProvider, player, repository, appRouter)
         }
 
         @Provides
@@ -292,9 +292,9 @@ abstract class UseCaseModule {
             schedulerProvider: SchedulerProvider,
             player: Player,
             repository: GenericMediaRepository,
-            navigator: Navigator
+            appRouter: AppRouter
         ): ClickMediaUseCase<Playlist> {
-            return ClickMediaUseCase<Playlist>(schedulerProvider, player, repository, navigator)
+            return ClickMediaUseCase<Playlist>(schedulerProvider, player, repository, appRouter)
         }
 
         @Provides
@@ -303,9 +303,9 @@ abstract class UseCaseModule {
             schedulerProvider: SchedulerProvider,
             player: Player,
             repository: GenericMediaRepository,
-            navigator: Navigator
+            appRouter: AppRouter
         ): ClickMediaUseCase<Song> {
-            return ClickMediaUseCase<Song>(schedulerProvider, player, repository, navigator)
+            return ClickMediaUseCase<Song>(schedulerProvider, player, repository, appRouter)
         }
 
         @Provides
@@ -314,9 +314,9 @@ abstract class UseCaseModule {
             schedulerProvider: SchedulerProvider,
             player: Player,
             repository: GenericMediaRepository,
-            navigator: Navigator
+            appRouter: AppRouter
         ): ClickMediaUseCase<SongWithPlayCount> {
-            return ClickMediaUseCase<SongWithPlayCount>(schedulerProvider, player, repository, navigator)
+            return ClickMediaUseCase<SongWithPlayCount>(schedulerProvider, player, repository, appRouter)
         }
 
         @Provides
@@ -325,9 +325,9 @@ abstract class UseCaseModule {
             schedulerProvider: SchedulerProvider,
             player: Player,
             repository: GenericMediaRepository,
-            navigator: Navigator
+            appRouter: AppRouter
         ): ClickMediaUseCase<MyFile> {
-            return ClickMediaUseCase<MyFile>(schedulerProvider, player, repository, navigator)
+            return ClickMediaUseCase<MyFile>(schedulerProvider, player, repository, appRouter)
         }
 
         @Provides
@@ -336,9 +336,9 @@ abstract class UseCaseModule {
             schedulerProvider: SchedulerProvider,
             player: Player,
             repository: GenericMediaRepository,
-            navigator: Navigator,
+            appRouter: AppRouter,
         ): ClickMediaUseCase<MediaFile> {
-            return ClickMediaUseCase<MediaFile>(schedulerProvider, player, repository, navigator)
+            return ClickMediaUseCase<MediaFile>(schedulerProvider, player, repository, appRouter)
         }
 
         /*PlayMediaUseCase*/
@@ -472,126 +472,126 @@ abstract class UseCaseModule {
         @Provides
         @JvmStatic
         fun provideShareMediaUseCase(
-                schedulerProvider: SchedulerProvider,
-                repository: GenericMediaRepository,
-                navigator: Navigator
+            schedulerProvider: SchedulerProvider,
+            repository: GenericMediaRepository,
+            appRouter: AppRouter
         ): ShareMediaUseCase<Media> {
             return ShareMediaUseCase<Media>(
                     schedulerProvider,
                     repository,
-                    navigator
+                    appRouter
             )
         }
 
         @Provides
         @JvmStatic
         fun provideShareArtistUseCase(
-                schedulerProvider: SchedulerProvider,
-                repository: ArtistRepository,
-                navigator: Navigator
+            schedulerProvider: SchedulerProvider,
+            repository: ArtistRepository,
+            appRouter: AppRouter
         ): ShareMediaUseCase<Artist> {
             return ShareMediaUseCase<Artist>(
                     schedulerProvider,
                     repository,
-                    navigator
+                    appRouter
             )
         }
 
         @Provides
         @JvmStatic
         fun provideShareAlbumUseCase(
-                schedulerProvider: SchedulerProvider,
-                repository: AlbumRepository,
-                navigator: Navigator
+            schedulerProvider: SchedulerProvider,
+            repository: AlbumRepository,
+            appRouter: AppRouter
         ): ShareMediaUseCase<Album> {
             return ShareMediaUseCase<Album>(
                     schedulerProvider,
                     repository,
-                    navigator
+                    appRouter
             )
         }
 
         @Provides
         @JvmStatic
         fun provideShareGenreUseCase(
-                schedulerProvider: SchedulerProvider,
-                repository: GenreRepository,
-                navigator: Navigator
+            schedulerProvider: SchedulerProvider,
+            repository: GenreRepository,
+            appRouter: AppRouter
         ): ShareMediaUseCase<Genre> {
             return ShareMediaUseCase<Genre>(
                     schedulerProvider,
                     repository,
-                    navigator
+                    appRouter
             )
         }
 
         @Provides
         @JvmStatic
         fun provideSharePlaylistUseCase(
-                schedulerProvider: SchedulerProvider,
-                repository: PlaylistRepository,
-                navigator: Navigator
+            schedulerProvider: SchedulerProvider,
+            repository: PlaylistRepository,
+            appRouter: AppRouter
         ): ShareMediaUseCase<Playlist> {
             return ShareMediaUseCase<Playlist>(
                     schedulerProvider,
                     repository,
-                    navigator
+                    appRouter
             )
         }
 
         @Provides
         @JvmStatic
         fun provideShareSongUseCase(
-                schedulerProvider: SchedulerProvider,
-                repository: SongRepository,
-                navigator: Navigator
+            schedulerProvider: SchedulerProvider,
+            repository: SongRepository,
+            appRouter: AppRouter
         ): ShareMediaUseCase<Song> {
             return ShareMediaUseCase<Song>(
                     schedulerProvider,
                     repository,
-                    navigator
+                    appRouter
             )
         }
 
         @Provides
         @JvmStatic
         fun provideShareSongWithPlayCountUseCase(
-                schedulerProvider: SchedulerProvider,
-                repository: SongWithPlayCountRepository,
-                navigator: Navigator
+            schedulerProvider: SchedulerProvider,
+            repository: SongWithPlayCountRepository,
+            appRouter: AppRouter
         ): ShareMediaUseCase<SongWithPlayCount> {
             return ShareMediaUseCase<SongWithPlayCount>(
                     schedulerProvider,
                     repository,
-                    navigator
+                    appRouter
             )
         }
 
         @Provides
         @JvmStatic
         fun provideShareMyFileUseCase(
-                schedulerProvider: SchedulerProvider,
-                repository: MyFileRepository,
-                navigator: Navigator
+            schedulerProvider: SchedulerProvider,
+            repository: MyFileRepository,
+            appRouter: AppRouter
         ): ShareMediaUseCase<MyFile> {
             return ShareMediaUseCase<MyFile>(
                     schedulerProvider,
                     repository,
-                    navigator
+                    appRouter
             )
         }
 
         @Provides
         @JvmStatic
         fun provideShareMediaFileUseCase(
-                schedulerProvider: SchedulerProvider,
-                repository: MediaFileRepository,
-                navigator: Navigator
+            schedulerProvider: SchedulerProvider,
+            repository: MediaFileRepository,
+            appRouter: AppRouter
         ): ShareMediaUseCase<MediaFile> {
             return ShareMediaUseCase<MediaFile>(
                     schedulerProvider,
                     repository,
-                    navigator
+                    appRouter
             )
         }
 
@@ -854,14 +854,14 @@ abstract class UseCaseModule {
         @Provides
         @JvmStatic
         fun provideRateUseCase(
-                schedulerProvider: SchedulerProvider,
-                preferences: Preferences,
-                navigator: Navigator
+            schedulerProvider: SchedulerProvider,
+            preferences: Preferences,
+            appRouter: AppRouter
         ): RateUseCase {
             return RateUseCase(
                     schedulerProvider,
                     preferences,
-                    navigator)
+                    appRouter)
         }
 
         /*restore player state*/

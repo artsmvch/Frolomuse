@@ -1,11 +1,11 @@
-package com.frolo.muse.navigator
+package com.frolo.muse.router
 
 import com.frolo.billing.ProductId
 import com.frolo.muse.model.media.*
 import java.io.File
 
 
-class TestNavigator : Navigator {
+class TestAppRouter : AppRouter {
     override fun goToStore() = Unit
     override fun helpWithTranslations() = Unit
     override fun contactDeveloper() = Unit

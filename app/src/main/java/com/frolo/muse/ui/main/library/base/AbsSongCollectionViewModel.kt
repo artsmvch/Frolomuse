@@ -8,7 +8,7 @@ import com.frolo.muse.arch.liveDataOf
 import com.frolo.muse.engine.AudioSource
 import com.frolo.muse.engine.Player
 import com.frolo.muse.engine.SimplePlayerObserver
-import com.frolo.muse.navigator.Navigator
+import com.frolo.muse.router.AppRouter
 import com.frolo.muse.interactor.media.*
 import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
 import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
@@ -25,20 +25,20 @@ import io.reactivex.disposables.Disposable
 
 
 abstract class AbsSongCollectionViewModel<T: Song> constructor(
-        private val player: Player,
-        permissionChecker: PermissionChecker,
-        getMediaListUseCase: GetMediaUseCase<T>,
-        getMediaMenuUseCase: GetMediaMenuUseCase<T>,
-        clickMediaUseCase: ClickMediaUseCase<T>,
-        playMediaUseCase: PlayMediaUseCase<T>,
-        shareMediaUseCase: ShareMediaUseCase<T>,
-        deleteMediaUseCase: DeleteMediaUseCase<T>,
-        getIsFavouriteUseCase: GetIsFavouriteUseCase<T>,
-        changeFavouriteUseCase: ChangeFavouriteUseCase<T>,
-        createShortcutUseCase: CreateShortcutUseCase<T>,
-        private val schedulerProvider: SchedulerProvider,
-        navigator: Navigator,
-        eventLogger: EventLogger
+    private val player: Player,
+    permissionChecker: PermissionChecker,
+    getMediaListUseCase: GetMediaUseCase<T>,
+    getMediaMenuUseCase: GetMediaMenuUseCase<T>,
+    clickMediaUseCase: ClickMediaUseCase<T>,
+    playMediaUseCase: PlayMediaUseCase<T>,
+    shareMediaUseCase: ShareMediaUseCase<T>,
+    deleteMediaUseCase: DeleteMediaUseCase<T>,
+    getIsFavouriteUseCase: GetIsFavouriteUseCase<T>,
+    changeFavouriteUseCase: ChangeFavouriteUseCase<T>,
+    createShortcutUseCase: CreateShortcutUseCase<T>,
+    private val schedulerProvider: SchedulerProvider,
+    appRouter: AppRouter,
+    eventLogger: EventLogger
 ): AbsMediaCollectionViewModel<T>(
         permissionChecker,
         getMediaListUseCase,
@@ -51,7 +51,7 @@ abstract class AbsSongCollectionViewModel<T: Song> constructor(
         changeFavouriteUseCase,
         createShortcutUseCase,
         schedulerProvider,
-        navigator,
+        appRouter,
         eventLogger
 ) {
 

@@ -8,7 +8,7 @@ import com.frolo.muse.interactor.media.get.GetMostPlayedSongsUseCase
 import com.frolo.muse.interactor.media.shortcut.CreateShortcutUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.media.SongWithPlayCount
-import com.frolo.muse.navigator.Navigator
+import com.frolo.muse.router.AppRouter
 import com.frolo.muse.permission.PermissionChecker
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.main.library.base.AbsSongCollectionViewModel
@@ -30,20 +30,20 @@ import javax.inject.Inject
  * The time when the subscription should be disposed is controlled by [INACTIVITY_TIMEOUT].
  */
 class MostPlayedViewModel @Inject constructor(
-        player: Player,
-        permissionChecker: PermissionChecker,
-        getMostPlayedUseCase: GetMostPlayedSongsUseCase,
-        getMediaMenuUseCase: GetMediaMenuUseCase<SongWithPlayCount>,
-        clickMediaUseCase: ClickMediaUseCase<SongWithPlayCount>,
-        playMediaUseCase: PlayMediaUseCase<SongWithPlayCount>,
-        shareMediaUseCase: ShareMediaUseCase<SongWithPlayCount>,
-        deleteMediaUseCase: DeleteMediaUseCase<SongWithPlayCount>,
-        getIsFavouriteUseCase: GetIsFavouriteUseCase<SongWithPlayCount>,
-        changeFavouriteUseCase: ChangeFavouriteUseCase<SongWithPlayCount>,
-        createShortcutUseCase: CreateShortcutUseCase<SongWithPlayCount>,
-        private val schedulerProvider: SchedulerProvider,
-        navigator: Navigator,
-        eventLogger: EventLogger
+    player: Player,
+    permissionChecker: PermissionChecker,
+    getMostPlayedUseCase: GetMostPlayedSongsUseCase,
+    getMediaMenuUseCase: GetMediaMenuUseCase<SongWithPlayCount>,
+    clickMediaUseCase: ClickMediaUseCase<SongWithPlayCount>,
+    playMediaUseCase: PlayMediaUseCase<SongWithPlayCount>,
+    shareMediaUseCase: ShareMediaUseCase<SongWithPlayCount>,
+    deleteMediaUseCase: DeleteMediaUseCase<SongWithPlayCount>,
+    getIsFavouriteUseCase: GetIsFavouriteUseCase<SongWithPlayCount>,
+    changeFavouriteUseCase: ChangeFavouriteUseCase<SongWithPlayCount>,
+    createShortcutUseCase: CreateShortcutUseCase<SongWithPlayCount>,
+    private val schedulerProvider: SchedulerProvider,
+    appRouter: AppRouter,
+    eventLogger: EventLogger
 ): AbsSongCollectionViewModel<SongWithPlayCount>(
         player,
         permissionChecker,
@@ -57,7 +57,7 @@ class MostPlayedViewModel @Inject constructor(
         changeFavouriteUseCase,
         createShortcutUseCase,
         schedulerProvider,
-        navigator,
+        appRouter,
         eventLogger
 ) {
 
