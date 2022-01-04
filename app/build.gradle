@@ -87,12 +87,6 @@ android {
             versionNameSuffix "-R"
             signingConfig signingConfigs.release
         }
-
-        android.applicationVariants.all { variant ->
-            variant.outputs.all {
-                outputFileName = "Frolomuse-${variant.name}-${version_major}.${version_minor}.${version_patch}-${getDate()}.apk"
-            }
-        }
     }
 
     flavorDimensions "default"
@@ -105,6 +99,12 @@ android {
         // Version for App Gallery
         appGallery {
 
+        }
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "Frolomuse-${variant.name}-${version_major}.${version_minor}.${version_patch}-${getDate()}.apk"
         }
     }
 
