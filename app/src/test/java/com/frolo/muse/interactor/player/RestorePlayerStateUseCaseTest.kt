@@ -2,16 +2,18 @@ package com.frolo.muse.interactor.player
 
 import com.frolo.muse.TestSchedulerProvider
 import com.frolo.muse.common.AudioSourceQueue
-import com.frolo.muse.engine.Player
-import com.frolo.muse.engine.AudioSourceQueue
+import com.frolo.player.Player
+import com.frolo.player.AudioSourceQueue
 import com.frolo.muse.common.toAudioSource
 import com.frolo.muse.common.toAudioSources
-import com.frolo.muse.mockKT
-import com.frolo.muse.mockList
+import com.frolo.muse.mockSong
 import com.frolo.muse.mockSongList
 import com.frolo.muse.model.media.Album
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.repository.*
+import com.frolo.test.mockKT
+import com.frolo.test.mockList
+import com.frolo.test.randomLong
 import com.nhaarman.mockitokotlin2.*
 import io.reactivex.Flowable
 import io.reactivex.Single
@@ -117,32 +119,32 @@ class RestorePlayerStateUseCaseTest {
 
     @Test
     fun test_restoreState_SuccessDefault() {
-        val id = 1L
-        val album = Album(id, "album", "artist", 10)
-        val songs = mockSongList(size = 0, allowIdCollisions = false)
-        val targetSong = mockKT<Song>()
+        val albumId = randomLong()
+        val album = Album(albumId, "album", "artist", 0)
+        val albumSongs = mockSongList(size = 0, allowIdCollisions = false)
+        val lastPlayedSong = mockSong(albumId = albumId)
         val playbackPosition = 1337
         val allSongs = mockSongList(size = 100, allowIdCollisions = false)
-        val defaultTargetSong = allSongs.first()
-        val defaultSongQueue = AudioSourceQueue.create(allSongs.toAudioSources())
+        val expectedSong = allSongs.first()
+        val expectedQueue = AudioSourceQueue.create(allSongs.toAudioSources())
 
         whenever(preferences.lastMediaCollectionType)
                 .thenReturn(-1)
 
         whenever(preferences.lastMediaCollectionId)
-                .thenReturn(id)
+                .thenReturn(albumId)
 
         whenever(preferences.lastMediaCollectionItemIds)
-                .thenReturn(Flowable.just(songs.map { song -> song.id }))
+                .thenReturn(Flowable.just(albumSongs.map { song -> song.id }))
 
-        whenever(albumRepository.getItem(eq(id)))
+        whenever(albumRepository.getItem(eq(albumId)))
                 .thenReturn(Flowable.just(album))
 
         whenever(albumRepository.collectSongs(eq(album)))
-                .thenReturn(Single.just(songs))
+                .thenReturn(Single.just(albumSongs))
 
         whenever(preferences.lastSongId)
-                .thenReturn(targetSong.id)
+                .thenReturn(lastPlayedSong.id)
 
         whenever(preferences.lastPlaybackPosition)
                 .thenReturn(playbackPosition)
@@ -150,8 +152,8 @@ class RestorePlayerStateUseCaseTest {
         whenever(songRepository.allItems)
                 .thenReturn(Flowable.just(allSongs))
 
-        whenever(songRepository.getItem(eq(targetSong.id)))
-                .thenReturn(Flowable.just(targetSong))
+        whenever(songRepository.getItem(eq(lastPlayedSong.id)))
+                .thenReturn(Flowable.just(lastPlayedSong))
 
         val observer = TestObserver.create<Unit>()
 
@@ -160,8 +162,9 @@ class RestorePlayerStateUseCaseTest {
 
         observer.assertComplete()
 
-        verify(player, times(1))
-                .prepareByTarget(argThat { deepEquals(defaultSongQueue) }, eq(defaultTargetSong.toAudioSource()), eq(false), eq(playbackPosition))
+        verify(player, times(1)).prepareByTarget(
+            argThat { deepEquals(expectedQueue) }, eq(expectedSong.toAudioSource()),
+            eq(false), eq(0))
     }
 
     @Test

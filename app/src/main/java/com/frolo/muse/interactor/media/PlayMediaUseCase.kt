@@ -1,10 +1,10 @@
 package com.frolo.muse.interactor.media
 
 import com.frolo.muse.common.AudioSourceQueue
-import com.frolo.muse.engine.Player
-import com.frolo.muse.common.prepareByTarget
+import com.frolo.player.Player
+import com.frolo.player.prepareByTarget
 import com.frolo.muse.common.toAudioSources
-import com.frolo.muse.engine.AudioSource
+import com.frolo.player.AudioSource
 import com.frolo.muse.model.media.Media
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.repository.MediaRepository

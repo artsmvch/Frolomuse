@@ -16,9 +16,9 @@ import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.graphics.ColorUtils
 import androidx.core.view.forEach
 import com.frolo.muse.R
-import com.frolo.muse.engine.AudioFx
-import com.frolo.muse.engine.AudioFxObserver
-import com.frolo.muse.engine.SimpleAudioFxObserver
+import com.frolo.audiofx.AudioFx
+import com.frolo.audiofx.AudioFxObserver
+import com.frolo.audiofx.SimpleAudioFxObserver
 import java.util.*
 
 

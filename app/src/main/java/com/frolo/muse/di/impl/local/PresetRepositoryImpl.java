@@ -8,8 +8,8 @@ import android.net.Uri;
 
 import com.frolo.muse.R;
 import com.frolo.muse.content.AppMediaStore;
-import com.frolo.muse.model.preset.CustomPreset;
-import com.frolo.muse.model.preset.VoidPreset;
+import com.frolo.audiofx.CustomPreset;
+import com.frolo.audiofx.VoidPreset;
 import com.frolo.muse.repository.PresetRepository;
 import com.frolo.rxcontent.CursorMapper;
 import com.frolo.rxcontent.RxContent;

@@ -1,10 +1,10 @@
 package com.frolo.muse.engine.service.observers
 
 import com.frolo.muse.common.map
-import com.frolo.muse.engine.AudioSource
-import com.frolo.muse.engine.Player
-import com.frolo.muse.engine.SimplePlayerObserver
-import com.frolo.muse.engine.AudioSourceQueue
+import com.frolo.player.AudioSource
+import com.frolo.player.Player
+import com.frolo.player.SimplePlayerObserver
+import com.frolo.player.AudioSourceQueue
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.rx.newSingleThreadExecutor
 import io.reactivex.Completable

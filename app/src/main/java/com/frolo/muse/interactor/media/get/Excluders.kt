@@ -4,9 +4,9 @@ import androidx.annotation.WorkerThread
 import com.frolo.muse.common.audioType
 import com.frolo.muse.common.durationInSeconds
 import com.frolo.muse.common.toSongType
-import com.frolo.muse.engine.AudioSource
-import com.frolo.muse.engine.AudioSourceQueue
-import com.frolo.muse.engine.Player
+import com.frolo.player.AudioSource
+import com.frolo.player.AudioSourceQueue
+import com.frolo.player.Player
 import com.frolo.muse.model.media.SongType
 
 

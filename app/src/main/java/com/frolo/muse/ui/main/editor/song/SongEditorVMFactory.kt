@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.frolo.muse.FrolomuseApp
 import com.frolo.muse.di.AppComponent
-import com.frolo.muse.engine.Player
+import com.frolo.player.Player
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.repository.SongRepository

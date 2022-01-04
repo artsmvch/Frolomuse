@@ -3,7 +3,7 @@ package com.frolo.muse.ui.main.library.buckets.files
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.frolo.muse.di.AppComponent
-import com.frolo.muse.engine.Player
+import com.frolo.player.Player
 import com.frolo.muse.interactor.media.*
 import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
 import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase

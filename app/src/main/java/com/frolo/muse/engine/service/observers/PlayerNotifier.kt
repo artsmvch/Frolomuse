@@ -3,9 +3,9 @@ package com.frolo.muse.engine.service.observers
 import android.content.Context
 import android.graphics.Bitmap
 import com.frolo.muse.common.toSong
-import com.frolo.muse.engine.AudioSource
-import com.frolo.muse.engine.Player
-import com.frolo.muse.engine.SimplePlayerObserver
+import com.frolo.player.AudioSource
+import com.frolo.player.Player
+import com.frolo.player.SimplePlayerObserver
 import com.frolo.muse.engine.service.PlayerNotificationParams
 import com.frolo.muse.engine.service.PlayerNotificationSender
 import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase

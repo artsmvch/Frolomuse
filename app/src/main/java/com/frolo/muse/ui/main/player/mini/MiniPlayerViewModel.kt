@@ -5,9 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import com.frolo.muse.arch.distinctUntilChanged
 import com.frolo.muse.arch.map
 import com.frolo.muse.common.toSong
-import com.frolo.muse.engine.AudioSource
-import com.frolo.muse.engine.Player
-import com.frolo.muse.engine.SimplePlayerObserver
+import com.frolo.player.AudioSource
+import com.frolo.player.Player
+import com.frolo.player.SimplePlayerObserver
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.rx.SchedulerProvider

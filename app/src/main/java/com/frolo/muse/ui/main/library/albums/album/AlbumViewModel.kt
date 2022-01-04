@@ -3,7 +3,7 @@ package com.frolo.muse.ui.main.library.albums.album
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.frolo.muse.arch.*
-import com.frolo.muse.engine.Player
+import com.frolo.player.Player
 import com.frolo.muse.router.AppRouter
 import com.frolo.muse.interactor.media.*
 import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase

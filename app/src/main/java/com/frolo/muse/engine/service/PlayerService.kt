@@ -9,13 +9,14 @@ import android.widget.RemoteViews
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
+import com.frolo.audiofx.applicable.AudioFxApplicable
 import com.frolo.muse.BuildConfig
 import com.frolo.muse.FrolomuseApp
 import com.frolo.muse.Logger
 import com.frolo.muse.R
 import com.frolo.muse.common.*
 import com.frolo.muse.engine.*
-import com.frolo.muse.engine.audiofx.AudioFxImpl
+import com.frolo.audiofx.AudioFxImpl
 import com.frolo.muse.engine.service.PlayerService.Companion.newIntent
 import com.frolo.muse.engine.service.PlayerService.PlayerBinder
 import com.frolo.muse.engine.service.audiofx.DefaultAudioFxErrorHandler
@@ -34,6 +35,7 @@ import com.frolo.muse.rx.RxService
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.sleeptimer.PlayerSleepTimer
 import com.frolo.muse.ui.main.MainActivity
+import com.frolo.player.*
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 

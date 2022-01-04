@@ -1,6 +1,6 @@
 package com.frolo.muse.interactor.media.get
 
-import com.frolo.muse.engine.AudioSource
+import com.frolo.player.AudioSource
 import com.frolo.muse.model.Library
 import com.frolo.muse.model.media.MediaBucket
 import com.frolo.muse.model.media.MediaFile

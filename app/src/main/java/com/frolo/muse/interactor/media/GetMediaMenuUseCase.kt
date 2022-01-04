@@ -2,7 +2,7 @@ package com.frolo.muse.interactor.media
 
 import com.frolo.muse.Features
 import com.frolo.muse.common.toAudioSource
-import com.frolo.muse.engine.Player
+import com.frolo.player.Player
 import com.frolo.muse.model.media.*
 import com.frolo.muse.model.menu.ContextualMenu
 import com.frolo.muse.model.menu.OptionsMenu

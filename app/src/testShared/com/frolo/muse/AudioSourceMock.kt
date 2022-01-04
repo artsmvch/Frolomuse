@@ -1,9 +1,10 @@
 package com.frolo.muse
 
-import com.frolo.muse.engine.AudioMetadata
-import com.frolo.muse.engine.AudioSource
-import com.frolo.muse.engine.AudioSources
-import com.frolo.muse.engine.AudioType
+import com.frolo.player.AudioMetadata
+import com.frolo.player.AudioSource
+import com.frolo.player.data.AudioSources
+import com.frolo.player.AudioType
+import com.frolo.test.*
 
 
 fun mockAudioSource(

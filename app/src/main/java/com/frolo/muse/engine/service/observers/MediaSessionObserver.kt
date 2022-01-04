@@ -5,9 +5,9 @@ import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
 import androidx.annotation.MainThread
 import com.frolo.muse.common.toSong
-import com.frolo.muse.engine.AudioSource
-import com.frolo.muse.engine.Player
-import com.frolo.muse.engine.SimplePlayerObserver
+import com.frolo.player.AudioSource
+import com.frolo.player.Player
+import com.frolo.player.SimplePlayerObserver
 import com.frolo.muse.engine.service.setMetadata
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.rx.subscribeSafely

@@ -8,7 +8,7 @@ import android.widget.BaseAdapter
 import android.widget.TextView
 import androidx.annotation.StringRes
 import com.frolo.muse.R
-import com.frolo.muse.model.reverb.Reverb
+import com.frolo.audiofx.Reverb
 
 
 class ReverbAdapter constructor(

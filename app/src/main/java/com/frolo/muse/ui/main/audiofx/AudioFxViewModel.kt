@@ -2,6 +2,7 @@ package com.frolo.muse.ui.main.audiofx
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.frolo.audiofx.*
 import com.frolo.muse.arch.*
 import com.frolo.muse.engine.*
 import com.frolo.muse.interactor.billing.PremiumManager
@@ -11,15 +12,14 @@ import com.frolo.muse.logger.logCustomPresetDeleted
 import com.frolo.muse.model.ShortRange
 import com.frolo.muse.model.TooltipId
 import com.frolo.muse.model.VisualizerRendererType
-import com.frolo.muse.model.preset.CustomPreset
-import com.frolo.muse.model.preset.Preset
-import com.frolo.muse.model.preset.VoidPreset
-import com.frolo.muse.model.reverb.Reverb
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.repository.PresetRepository
 import com.frolo.muse.repository.TooltipManager
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.base.PremiumViewModel
+import com.frolo.player.AudioSource
+import com.frolo.player.Player
+import com.frolo.player.SimplePlayerObserver
 import io.reactivex.processors.PublishProcessor
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject

@@ -12,7 +12,7 @@ import com.frolo.muse.android.clipboardManager
 import com.frolo.muse.android.startActivitySafely
 import com.frolo.muse.arch.SingleLiveEvent
 import com.frolo.muse.arch.call
-import com.frolo.muse.engine.PlayerJournal
+import com.frolo.player.PlayerJournal
 import com.frolo.muse.engine.journals.CompositePlayerJournal
 import com.frolo.muse.engine.journals.StoredInMemoryPlayerJournal
 import com.frolo.muse.logger.EventLogger

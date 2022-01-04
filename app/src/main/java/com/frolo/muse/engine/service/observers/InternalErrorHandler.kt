@@ -3,8 +3,8 @@ package com.frolo.muse.engine.service.observers
 import android.content.Context
 import android.util.Log
 import com.frolo.muse.BuildConfig
-import com.frolo.muse.engine.Player
-import com.frolo.muse.engine.SimplePlayerObserver
+import com.frolo.player.Player
+import com.frolo.player.SimplePlayerObserver
 import com.frolo.muse.rx.newSingleThreadScheduler
 import com.frolo.muse.rx.subscribeSafely
 import com.google.firebase.crashlytics.FirebaseCrashlytics

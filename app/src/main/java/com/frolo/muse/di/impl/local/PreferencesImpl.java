@@ -6,8 +6,7 @@ import android.content.SharedPreferences;
 import androidx.annotation.Nullable;
 
 import com.frolo.muse.BuildConfig;
-import com.frolo.muse.engine.Player;
-import com.frolo.muse.engine.AudioSourceQueue;
+import com.frolo.player.Player;
 import com.frolo.muse.model.Library;
 import com.frolo.muse.model.Recently;
 import com.frolo.muse.model.Theme;
@@ -18,8 +17,6 @@ import com.frolo.muse.repository.Preferences;
 import com.frolo.rxpreference.RxOptional;
 import com.frolo.rxpreference.RxPreference;
 
-import org.reactivestreams.Publisher;
-
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,10 +24,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.StringTokenizer;
-import java.util.concurrent.Callable;
 
 import io.reactivex.Completable;
-import io.reactivex.CompletableSource;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.functions.Action;

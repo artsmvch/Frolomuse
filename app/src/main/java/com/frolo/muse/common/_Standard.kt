@@ -1,6 +1,6 @@
 package com.frolo.muse.common
 
-import com.frolo.muse.engine.Player
+import com.frolo.player.Player
 
 
 fun Player.switchToNextRepeatMode() {

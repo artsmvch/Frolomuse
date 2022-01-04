@@ -1,7 +1,7 @@
 package com.frolo.muse.engine.journals
 
 import android.util.Log
-import com.frolo.muse.engine.PlayerJournal
+import com.frolo.player.PlayerJournal
 
 
 class AndroidLogPlayerJournal(val tag: String): PlayerJournal {

@@ -1,6 +1,7 @@
 package com.frolo.muse
 
-import com.frolo.muse.engine.*
+import com.frolo.player.*
+import com.frolo.audiofx.AudioFx
 
 
 class TestPlayer: Player {

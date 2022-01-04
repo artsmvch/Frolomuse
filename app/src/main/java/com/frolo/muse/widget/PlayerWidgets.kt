@@ -18,8 +18,8 @@ import com.frolo.muse.R
 import com.frolo.muse.common.albumId
 import com.frolo.muse.common.title
 import com.frolo.muse.common.toAudioSource
-import com.frolo.muse.engine.AudioSource
-import com.frolo.muse.engine.Player
+import com.frolo.player.AudioSource
+import com.frolo.player.Player
 import com.frolo.muse.engine.service.PlayerService
 import com.frolo.muse.engine.service.PlayerService.Companion.newIntentFromWidget
 import com.frolo.muse.glide.GlideAlbumArtHelper

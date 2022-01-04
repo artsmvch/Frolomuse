@@ -1,12 +1,21 @@
 // Main app
 include ':app'
 
+// Player and AudioFx
+include ':player:api'
+include ':player:android-impl'
+include ':player:audiofx:api'
+include ':player:audiofx:android-impl'
+include ':player:audiofx-applicable'
+include ':player:data'
+
 // Billing
 include ':billings:billing-api'
 include ':billings:play-store-billing-impl'
 include ':billings:app-gallery-billing-impl'
 
 // Util stuff
+include ':vendor'
 include ':MyID3_for_Android'
 include ':ringdroid'
 include ':mediabutton'
@@ -14,3 +23,6 @@ include ':ads'
 include ':soundwaveform'
 include ':material-support'
 include ':customdrawable'
+
+// Test tools
+include ':test-tools'

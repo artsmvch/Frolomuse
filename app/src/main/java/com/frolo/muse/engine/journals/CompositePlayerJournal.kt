@@ -1,6 +1,6 @@
 package com.frolo.muse.engine.journals
 
-import com.frolo.muse.engine.PlayerJournal
+import com.frolo.player.PlayerJournal
 
 
 class CompositePlayerJournal(val journals: List<PlayerJournal>) : PlayerJournal {

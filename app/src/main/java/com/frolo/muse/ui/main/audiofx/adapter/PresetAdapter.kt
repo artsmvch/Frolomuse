@@ -10,9 +10,9 @@ import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import com.frolo.muse.R
 import com.frolo.muse.dp2px
-import com.frolo.muse.model.preset.CustomPreset
-import com.frolo.muse.model.preset.NativePreset
-import com.frolo.muse.model.preset.Preset
+import com.frolo.audiofx.CustomPreset
+import com.frolo.audiofx.NativePreset
+import com.frolo.audiofx.Preset
 import kotlinx.android.synthetic.main.item_preset_drop_down.view.*
 
 

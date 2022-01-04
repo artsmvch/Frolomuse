@@ -4,7 +4,7 @@ import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.MediaStore;
 
-import com.frolo.muse.engine.MediaStoreRow;
+import com.frolo.player.data.MediaStoreRow;
 
 import org.jetbrains.annotations.NotNull;
 

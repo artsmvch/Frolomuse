@@ -1,6 +1,6 @@
 package com.frolo.muse.di.modules
 
-import com.frolo.muse.engine.Player
+import com.frolo.player.Player
 import com.frolo.muse.interactor.feature.FeaturesUseCase
 import com.frolo.muse.router.AppRouter
 import com.frolo.muse.interactor.media.*
@@ -893,10 +893,10 @@ abstract class UseCaseModule {
         @Provides
         @JvmStatic
         fun provideControlPlayerUseCase(
-                player: Player,
-                schedulerProvider: SchedulerProvider,
-                albumRepository: AlbumRepository,
-                artistRepository: ArtistRepository
+            player: Player,
+            schedulerProvider: SchedulerProvider,
+            albumRepository: AlbumRepository,
+            artistRepository: ArtistRepository
         ): ControlPlayerUseCase {
             return ControlPlayerUseCase(
                     player,

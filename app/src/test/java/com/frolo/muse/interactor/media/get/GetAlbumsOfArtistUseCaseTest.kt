@@ -2,13 +2,13 @@ package com.frolo.muse.interactor.media.get
 
 import com.frolo.muse.TestSchedulerProvider
 import com.frolo.muse.TestSortOrder
-import com.frolo.muse.mockKT
-import com.frolo.muse.mockList
 import com.frolo.muse.model.media.Album
 import com.frolo.muse.model.media.Artist
 import com.frolo.muse.model.media.Media
 import com.frolo.muse.model.menu.SortOrderMenu
 import com.frolo.muse.repository.AlbumRepository
+import com.frolo.test.mockKT
+import com.frolo.test.mockList
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.Flowable

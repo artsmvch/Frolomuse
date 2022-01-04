@@ -9,7 +9,6 @@ import com.frolo.muse.arch.liveDataOf
 import com.frolo.muse.arch.map
 import com.frolo.muse.common.*
 import com.frolo.muse.di.Exec
-import com.frolo.muse.engine.*
 import com.frolo.muse.interactor.feature.FeaturesUseCase
 import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
 import com.frolo.muse.interactor.media.DeleteMediaUseCase
@@ -29,6 +28,10 @@ import com.frolo.muse.model.sound.Sound
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.rx.flowable.doOnNextIndexed
 import com.frolo.muse.ui.base.BaseViewModel
+import com.frolo.player.AudioSource
+import com.frolo.player.AudioSourceQueue
+import com.frolo.player.Player
+import com.frolo.player.SimplePlayerObserver
 import java.util.concurrent.Executor
 import javax.inject.Inject
 

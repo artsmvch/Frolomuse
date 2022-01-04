@@ -4,6 +4,7 @@ import com.frolo.muse.model.media.Media
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.model.media.SongType
 import com.frolo.muse.model.media.Songs
+import com.frolo.test.*
 import com.nhaarman.mockitokotlin2.mock
 
 

@@ -1,8 +1,8 @@
 package com.frolo.muse.interactor.media
 
 import com.frolo.muse.*
-import com.frolo.muse.engine.Player
-import com.frolo.muse.engine.AudioSourceQueue
+import com.frolo.player.Player
+import com.frolo.player.AudioSourceQueue
 import com.frolo.muse.common.toAudioSource
 import com.frolo.muse.common.toAudioSources
 import com.frolo.muse.model.media.Media
@@ -17,7 +17,7 @@ import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
-import com.frolo.muse.mockList
+import com.frolo.test.mockList
 import com.frolo.muse.mockMedia
 import com.frolo.muse.mockMediaList
 

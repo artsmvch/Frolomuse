@@ -19,8 +19,8 @@ import com.frolo.muse.*
 import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.glide.GlideOptions.bitmapTransform
-import com.frolo.muse.model.preset.Preset
-import com.frolo.muse.model.reverb.Reverb
+import com.frolo.audiofx.Preset
+import com.frolo.audiofx.Reverb
 import com.frolo.muse.ui.Snapshots
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.base.FragmentContentInsetsListener

@@ -1,9 +1,9 @@
 package com.frolo.muse.engine.service.observers
 
 import com.frolo.muse.common.toSong
-import com.frolo.muse.engine.AudioSource
-import com.frolo.muse.engine.Player
-import com.frolo.muse.engine.SimplePlayerObserver
+import com.frolo.player.AudioSource
+import com.frolo.player.Player
+import com.frolo.player.SimplePlayerObserver
 import com.frolo.muse.interactor.media.DispatchSongPlayedUseCase
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.stopwatch.Stopwatch

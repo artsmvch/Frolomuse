@@ -3,7 +3,7 @@ package com.frolo.muse.ui.main.library.playlists.playlist
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.frolo.muse.di.AppComponent
-import com.frolo.muse.engine.Player
+import com.frolo.player.Player
 import com.frolo.muse.router.AppRouter
 import com.frolo.muse.interactor.media.*
 import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase

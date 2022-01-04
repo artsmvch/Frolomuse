@@ -1,7 +1,7 @@
 package com.frolo.muse.repository;
 
-import com.frolo.muse.model.preset.CustomPreset;
-import com.frolo.muse.model.preset.VoidPreset;
+import com.frolo.audiofx.CustomPreset;
+import com.frolo.audiofx.VoidPreset;
 
 import java.util.List;
 

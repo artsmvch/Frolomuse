@@ -1,7 +1,7 @@
 package com.frolo.muse.engine.journals
 
 import androidx.annotation.WorkerThread
-import com.frolo.muse.engine.PlayerJournal
+import com.frolo.player.PlayerJournal
 import io.reactivex.Flowable
 import io.reactivex.processors.BehaviorProcessor
 import java.util.*

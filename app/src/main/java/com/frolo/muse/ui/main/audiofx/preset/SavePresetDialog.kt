@@ -5,7 +5,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProviders
 import com.frolo.muse.R
 import com.frolo.muse.arch.observeNonNull
-import com.frolo.muse.model.preset.CustomPreset
+import com.frolo.audiofx.CustomPreset
 import com.frolo.muse.ui.main.library.base.inputname.AbsInputNameDialog
 
 

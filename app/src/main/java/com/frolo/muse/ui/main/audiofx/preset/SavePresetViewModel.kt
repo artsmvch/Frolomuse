@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.frolo.muse.arch.SingleLiveEvent
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.logCustomPresetSaved
-import com.frolo.muse.model.preset.CustomPreset
+import com.frolo.audiofx.CustomPreset
 import com.frolo.muse.repository.PresetRepository
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.base.BaseViewModel

@@ -1,8 +1,8 @@
 package com.frolo.muse.ui.main.player
 
 import com.frolo.muse.common.duration
-import com.frolo.muse.engine.AudioSource
-import com.frolo.muse.engine.Player
+import com.frolo.player.AudioSource
+import com.frolo.player.Player
 import io.reactivex.Flowable
 import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit

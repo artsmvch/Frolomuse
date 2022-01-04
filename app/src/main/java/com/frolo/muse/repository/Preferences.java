@@ -1,7 +1,6 @@
 package com.frolo.muse.repository;
 
-import com.frolo.muse.engine.Player;
-import com.frolo.muse.engine.AudioSourceQueue;
+import com.frolo.player.Player;
 import com.frolo.muse.model.Library;
 import com.frolo.muse.model.Recently;
 import com.frolo.muse.model.Theme;

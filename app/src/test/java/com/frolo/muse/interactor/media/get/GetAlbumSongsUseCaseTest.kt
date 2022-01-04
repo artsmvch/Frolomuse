@@ -22,7 +22,7 @@ import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
-import com.frolo.muse.mockKT
+import com.frolo.test.mockKT
 import com.frolo.muse.mockSong
 
 

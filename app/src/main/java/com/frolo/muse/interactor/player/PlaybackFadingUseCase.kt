@@ -1,7 +1,7 @@
 package com.frolo.muse.interactor.player
 
-import com.frolo.muse.engine.PlaybackFadingStrategy
-import com.frolo.muse.engine.Player
+import com.frolo.player.PlaybackFadingStrategy
+import com.frolo.player.Player
 import com.frolo.muse.model.FloatRange
 import com.frolo.muse.model.playback.PlaybackFadingParams
 import com.frolo.muse.repository.Preferences

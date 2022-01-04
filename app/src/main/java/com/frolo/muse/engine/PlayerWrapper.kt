@@ -2,11 +2,13 @@ package com.frolo.muse.engine
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import com.frolo.muse.engine.Player.Companion.PITCH_NORMAL
-import com.frolo.muse.engine.Player.Companion.REPEAT_OFF
-import com.frolo.muse.engine.Player.Companion.SHUFFLE_OFF
-import com.frolo.muse.engine.Player.Companion.SPEED_NORMAL
-import com.frolo.muse.engine.stub.AudioFxStub
+import com.frolo.player.Player.Companion.PITCH_NORMAL
+import com.frolo.player.Player.Companion.REPEAT_OFF
+import com.frolo.player.Player.Companion.SHUFFLE_OFF
+import com.frolo.player.Player.Companion.SPEED_NORMAL
+import com.frolo.player.*
+import com.frolo.audiofx.AudioFx
+import com.frolo.audiofx.AudioFxStub
 import java.util.concurrent.atomic.AtomicReference
 
 

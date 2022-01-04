@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.frolo.muse.engine.Player;
+import com.frolo.player.Player;
 import com.frolo.muse.engine.service.PlayerService;
 
 

@@ -26,8 +26,8 @@ import com.frolo.muse.R
 import com.frolo.muse.StyleUtil
 import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
-import com.frolo.muse.engine.AudioSource
-import com.frolo.muse.engine.Player
+import com.frolo.player.AudioSource
+import com.frolo.player.Player
 import com.frolo.muse.glide.GlideAlbumArtHelper
 import com.frolo.muse.glide.observe
 import com.frolo.muse.model.media.Song

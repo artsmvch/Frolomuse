@@ -1,7 +1,7 @@
 package com.frolo.muse.common
 
-import com.frolo.muse.engine.AudioSource
-import com.frolo.muse.engine.AudioSourceQueue
+import com.frolo.player.AudioSource
+import com.frolo.player.AudioSourceQueue
 import com.frolo.muse.model.media.*
 
 

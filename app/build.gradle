@@ -136,6 +136,10 @@ android {
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
+
+    packagingOptions {
+        exclude 'META-INF/api_debug.kotlin_module'
+    }
 }
 
 dependencies {
@@ -143,6 +147,13 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.31"
     implementation "org.jetbrains.kotlin:kotlin-reflect:1.4.31"
+
+    // Player
+    implementation project(path: ':player:audiofx:api')
+    implementation project(path: ':player:audiofx:android-impl')
+    implementation project(path: ':player:api')
+    implementation project(path: ':player:android-impl')
+    implementation project(path: ':player:data')
 
     // Billing
     implementation project(path: ':billings:billing-api')
@@ -158,19 +169,21 @@ dependencies {
     // Sound wave forms
     implementation project(path: ':soundwaveform')
 
+    def mockito_version = "3.10.0" // 2.23.0
+    def mockito_kotlin_version = "2.1.0"
     // Instrumentation tests
     androidTestImplementation "com.android.support.test:runner:1.0.2"
-    androidTestImplementation 'org.mockito:mockito-core:2.23.0'
-    androidTestImplementation 'org.mockito:mockito-android:2.23.0'
-    androidTestImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0"
+    androidTestImplementation "org.mockito:mockito-core:$mockito_version"
+    androidTestImplementation "org.mockito:mockito-android:$mockito_version"
+    androidTestImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockito_kotlin_version"
+    androidTestImplementation project(path: ':test-tools')
 
     // Unit tests
     testImplementation 'junit:junit:4.12'
-
-    // Mockito
-    testImplementation 'org.mockito:mockito-core:2.23.0'
-    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0"
+    testImplementation "org.mockito:mockito-core:$mockito_version"
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockito_kotlin_version"
     testImplementation "androidx.arch.core:core-testing:2.1.0"
+    testImplementation project(path: ':test-tools')
 
     // Flurry analytics
     implementation('com.flurry.android:analytics:13.0.1') {

@@ -1,7 +1,7 @@
 package com.frolo.muse.engine.service
 
 import android.graphics.Bitmap
-import com.frolo.muse.engine.AudioSource
+import com.frolo.player.AudioSource
 
 
 /**

@@ -15,7 +15,7 @@ import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.Target
 import com.frolo.muse.*
 import com.frolo.muse.common.albumId
-import com.frolo.muse.engine.AudioSource
+import com.frolo.player.AudioSource
 import com.frolo.muse.glide.makeRequest
 import com.google.android.material.card.CardViewSupport
 import kotlinx.android.synthetic.main.include_square_album_art.view.*

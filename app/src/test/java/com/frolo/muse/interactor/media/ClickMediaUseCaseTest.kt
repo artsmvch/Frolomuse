@@ -1,13 +1,15 @@
 package com.frolo.muse.interactor.media
 
 import com.frolo.muse.*
-import com.frolo.muse.engine.Player
-import com.frolo.muse.engine.AudioSourceQueue
+import com.frolo.player.Player
+import com.frolo.player.AudioSourceQueue
 import com.frolo.muse.common.toAudioSource
 import com.frolo.muse.common.toAudioSources
 import com.frolo.muse.model.media.*
 import com.frolo.muse.router.AppRouter
 import com.frolo.muse.repository.GenericMediaRepository
+import com.frolo.test.mockKT
+import com.frolo.test.mockList
 import com.nhaarman.mockitokotlin2.*
 import io.reactivex.Single
 import io.reactivex.observers.TestObserver
@@ -17,8 +19,6 @@ import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
-import com.frolo.muse.mockKT
-import com.frolo.muse.mockList
 
 
 @RunWith(JUnit4::class)
@@ -47,8 +47,8 @@ class ClickMediaUseCaseTest {
 
     @Test
     fun test_clickOnSong_Play() {
-        val songs = mockList<Song>(size = 10)
-        val song = mockKT<Song>()
+        val songs = mockSongList(size = 10)
+        val song = mockSong()
 
         val songQueue = AudioSourceQueue.create(songs.toAudioSources())
 
@@ -71,8 +71,8 @@ class ClickMediaUseCaseTest {
 
     @Test
     fun test_clickOnSong_Toggle() {
-        val collection = mockList<Song>(size = 10)
-        val song = mockKT<Song>()
+        val collection = mockSongList(size = 10)
+        val song = mockSong()
 
         val testObserver = TestObserver.create<Unit>()
 

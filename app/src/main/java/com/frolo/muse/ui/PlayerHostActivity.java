@@ -11,7 +11,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.frolo.muse.BuildConfig;
-import com.frolo.muse.engine.Player;
+import com.frolo.player.Player;
 import com.frolo.muse.ui.base.BaseActivity;
 
 

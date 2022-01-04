@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.frolo.muse.BuildConfig
 import com.frolo.muse.arch.*
 import com.frolo.muse.billing.Products
-import com.frolo.muse.engine.Player
+import com.frolo.player.Player
 import com.frolo.muse.interactor.billing.PremiumManager
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.ProductOfferUiElementSource

@@ -4,10 +4,10 @@ import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.MediaStore;
 
-import com.frolo.muse.engine.AudioMetadata;
-import com.frolo.muse.engine.AudioSource;
-import com.frolo.muse.engine.AudioType;
-import com.frolo.muse.engine.MediaStoreRow;
+import com.frolo.player.AudioMetadata;
+import com.frolo.player.AudioSource;
+import com.frolo.player.AudioType;
+import com.frolo.player.data.MediaStoreRow;
 import com.frolo.muse.model.media.Media;
 import com.frolo.muse.model.media.Song;
 import com.frolo.muse.model.media.SongType;

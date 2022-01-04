@@ -13,7 +13,7 @@ import androidx.lifecycle.MutableLiveData
 import com.frolo.muse.FrolomuseApp
 import com.frolo.muse.arch.SingleLiveEvent
 import com.frolo.muse.common.toAudioSource
-import com.frolo.muse.engine.Player
+import com.frolo.player.Player
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.logSongUpdated
 import com.frolo.muse.model.media.Song

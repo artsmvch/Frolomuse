@@ -32,7 +32,7 @@ import com.frolo.muse.*
 import com.frolo.muse.android.ViewAppSettingsIntent
 import com.frolo.muse.android.startActivitySafely
 import com.frolo.muse.arch.observe
-import com.frolo.muse.engine.Player
+import com.frolo.player.Player
 import com.frolo.muse.model.media.*
 import com.frolo.muse.rx.disposeOnDestroyOf
 import com.frolo.muse.rx.subscribeSafely

@@ -1,11 +1,10 @@
 package com.frolo.muse
 
-import com.frolo.muse.engine.AudioFx
-import com.frolo.muse.engine.AudioFxObserver
-import com.frolo.muse.model.preset.CustomPreset
-import com.frolo.muse.model.preset.NativePreset
-import com.frolo.muse.model.preset.Preset
-import com.frolo.muse.model.reverb.Reverb
+import com.frolo.audiofx.AudioFx
+import com.frolo.audiofx.AudioFxObserver
+import com.frolo.audiofx.NativePreset
+import com.frolo.audiofx.Preset
+import com.frolo.audiofx.Reverb
 
 
 class TestAudioFx: AudioFx {

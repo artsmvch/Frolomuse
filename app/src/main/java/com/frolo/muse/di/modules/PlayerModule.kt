@@ -1,8 +1,8 @@
 package com.frolo.muse.di.modules
 
-import com.frolo.muse.engine.AudioFx
-import com.frolo.muse.engine.Player
-import com.frolo.muse.engine.PlayerJournal
+import com.frolo.audiofx.AudioFx
+import com.frolo.player.Player
+import com.frolo.player.PlayerJournal
 import com.frolo.muse.engine.journals.AndroidLogPlayerJournal
 import com.frolo.muse.engine.journals.CompositePlayerJournal
 import com.frolo.muse.engine.journals.StoredInMemoryPlayerJournal

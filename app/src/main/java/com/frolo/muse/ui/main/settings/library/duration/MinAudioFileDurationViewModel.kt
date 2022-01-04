@@ -5,7 +5,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import com.frolo.muse.arch.SingleLiveEvent
 import com.frolo.muse.arch.call
-import com.frolo.muse.engine.Player
+import com.frolo.player.Player
 import com.frolo.muse.interactor.media.get.removeShortAudioSources
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.logMinAudioFileDurationSet

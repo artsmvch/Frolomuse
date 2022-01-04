@@ -1,6 +1,6 @@
 package com.frolo.muse.engine.service.audiofx
 
-import com.frolo.muse.engine.audiofx.AudioFxImpl
+import com.frolo.audiofx.AudioFxImpl
 import com.frolo.muse.rx.newSingleThreadScheduler
 import com.frolo.muse.rx.subscribeSafely
 import com.google.firebase.crashlytics.FirebaseCrashlytics

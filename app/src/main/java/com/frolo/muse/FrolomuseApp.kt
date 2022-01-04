@@ -16,10 +16,10 @@ import com.frolo.muse.di.DaggerAppComponent
 import com.frolo.muse.di.impl.navigator.AppRouterImpl
 import com.frolo.muse.di.initAppComponent
 import com.frolo.muse.di.modules.*
-import com.frolo.muse.engine.Player
-import com.frolo.muse.engine.PlayerImpl
+import com.frolo.player.Player
+import com.frolo.player.PlayerImpl
+import com.frolo.audiofx.AudioFxImpl
 import com.frolo.muse.engine.PlayerWrapper
-import com.frolo.muse.engine.audiofx.AudioFxImpl
 import com.frolo.muse.logger.logLowMemory
 import com.frolo.muse.router.MutableAppRouterWrapper
 import com.frolo.muse.router.ThreadAppRouterWrapper

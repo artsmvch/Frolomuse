@@ -1,8 +1,8 @@
 package com.frolo.muse.interactor.media.shortcut
 
 import com.frolo.muse.common.AudioSourceQueue
-import com.frolo.muse.engine.Player
-import com.frolo.muse.common.prepareByTarget
+import com.frolo.player.Player
+import com.frolo.player.prepareByTarget
 import com.frolo.muse.common.toAudioSource
 import com.frolo.muse.model.media.Media
 import com.frolo.muse.router.AppRouter

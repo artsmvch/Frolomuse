@@ -1,7 +1,7 @@
 package com.frolo.muse.interactor.media
 
 import com.frolo.muse.common.toAudioSources
-import com.frolo.muse.engine.Player
+import com.frolo.player.Player
 import com.frolo.muse.kotlin.containsInstanceOf
 import com.frolo.muse.model.event.DeletionType
 import com.frolo.muse.model.media.Media
