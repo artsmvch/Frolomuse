@@ -314,7 +314,10 @@ public class StandalonePlayerActivity extends AppCompatActivity {
         seekBarProgress.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
-                    textProgress.setText(getProgressText(progress, sounder.getDuration()));
+                    Sounder sounder = StandalonePlayerActivity.this.sounder;
+                    if (sounder != null) {
+                        textProgress.setText(getProgressText(progress, sounder.getDuration()));
+                    }
                 }
             }
             @Override public void onStartTrackingTouch(SeekBar seekBar) {
