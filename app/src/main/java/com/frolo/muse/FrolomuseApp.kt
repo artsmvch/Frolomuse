@@ -26,6 +26,7 @@ import com.frolo.muse.router.MutableAppRouterWrapper
 import com.frolo.muse.router.ThreadAppRouterWrapper
 import com.frolo.muse.ui.base.BaseActivity
 import com.frolo.muse.ui.main.MainActivity
+import com.frolo.threads.HandlerExecutor
 import com.frolo.threads.ThreadStrictMode
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
