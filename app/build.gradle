@@ -166,15 +166,18 @@ dependencies {
     // Custom drawables
     implementation project(path: ':customdrawable')
 
-    // Sound wave forms
-    implementation project(path: ':soundwaveform')
-
     // Utils
     implementation project(path: ':utils:debug-common')
     implementation project(path: ':utils:threads-common')
     implementation project(path: ':utils:ui')
     implementation project(path: ':utils:stopwatch')
     implementation project(path: ':utils:headset')
+
+    // Audio libs
+    implementation project(path: ':audio-libs:my_id3')
+    //implementation group: 'org', name: 'jaudiotagger', version: '2.0.3' // https://mvnrepository.com/artifact/org/jaudiotagger
+    implementation project(path: ':audio-libs:soundwaveform')
+    implementation project(path: ':audio-libs:ringdroid')
 
     def mockito_version = "3.10.0" // 2.23.0
     def mockito_kotlin_version = "2.1.0"
@@ -248,9 +251,6 @@ dependencies {
     // alphabet index fast scroller
     implementation 'com.l4digital.fastscroll:fastscroll:2.0.1'
 
-    // Ringtone cutter
-    implementation project(':ringdroid')
-
     // For runtime permissions
     implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
 
@@ -271,10 +271,6 @@ dependencies {
     // Assisted injection
     compileOnly 'com.squareup.inject:assisted-inject-annotations-dagger2:0.5.2'
     kapt 'com.squareup.inject:assisted-inject-processor-dagger2:0.5.2'
-
-    // MP3 tags editor
-    implementation project(path: ':MyID3_for_Android')
-    //implementation group: 'org', name: 'jaudiotagger', version: '2.0.3' // https://mvnrepository.com/artifact/org/jaudiotagger
 
 //    def media2_version = "1.0.0"
 //    implementation "androidx.media2:media2-player:$media2_version"

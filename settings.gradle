@@ -21,13 +21,15 @@ include ':utils:ui'
 include ':utils:stopwatch'
 include ':utils:headset'
 
+// Audio libs
+include ':audio-libs:my_id3'
+include ':audio-libs:soundwaveform'
+include ':audio-libs:ringdroid'
+
 // Misc stuff
 include ':vendor'
-include ':MyID3_for_Android'
-include ':ringdroid'
 include ':mediabutton'
 include ':ads'
-include ':soundwaveform'
 include ':material-support'
 include ':customdrawable'
 
