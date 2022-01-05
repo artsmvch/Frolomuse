@@ -26,12 +26,16 @@ include ':audio-libs:my_id3'
 include ':audio-libs:soundwaveform'
 include ':audio-libs:ringdroid'
 
+// Custom views
+include ':custom-view:mediabutton'
+
+// Custom drawable
+include ':custom-drawable:squircle'
+
 // Misc stuff
 include ':vendor'
-include ':mediabutton'
 include ':ads'
 include ':material-support'
-include ':customdrawable'
 
 // Test tools
 include ':test-tools'

@@ -163,8 +163,11 @@ dependencies {
     // Material design support
     implementation project(path: ':material-support')
 
+    // Custom views
+    implementation project(path: ':custom-view::mediabutton')
+
     // Custom drawables
-    implementation project(path: ':customdrawable')
+    implementation project(path: ':custom-drawable:squircle')
 
     // Utils
     implementation project(path: ':utils:debug-common')
@@ -253,9 +256,6 @@ dependencies {
 
     // For runtime permissions
     implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
-
-    // music play button
-    implementation project(':mediabutton')
 
     // Firebase
     implementation platform('com.google.firebase:firebase-bom:26.8.0')
