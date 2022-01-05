@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.frolo.muse.FragmentUtils
+import com.frolo.ui.FragmentUtils
 import com.frolo.muse.R
 import com.frolo.muse.ui.ScrolledToTop
 import com.frolo.muse.ui.base.BaseFragment

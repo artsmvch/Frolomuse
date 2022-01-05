@@ -20,7 +20,7 @@ import com.frolo.muse.ui.main.library.base.DragSongAdapter
 import com.frolo.muse.ui.main.library.base.SongAdapter
 import com.frolo.muse.ui.main.library.playlists.create.PlaylistCreateEvent
 import com.frolo.muse.ui.smoothScrollToTop
-import com.frolo.muse.views.Views
+import com.frolo.ui.ViewUtils
 import kotlinx.android.synthetic.main.fragment_base_list.*
 import kotlinx.android.synthetic.main.fragment_curr_song_queue.*
 
@@ -243,7 +243,7 @@ class CurrSongQueueFragment: AbsMediaCollectionFragment<Song>() {
     }
 
     private fun postScrollToPositionIfNotVisibleToUser(position: Int) {
-        val percentOfAreaVisibleToUser = Views.getPercentOfAreaVisibleToUser(rv_list)
+        val percentOfAreaVisibleToUser = ViewUtils.getPercentOfAreaVisibleToUser(rv_list)
         if (percentOfAreaVisibleToUser < 0.05) { // the view must be visible to the user by a maximum of 5%
             val callback = Runnable {
                 scrollToPosition(position)

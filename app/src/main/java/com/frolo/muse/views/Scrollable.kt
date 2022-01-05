@@ -3,8 +3,8 @@ package com.frolo.muse.views
 import android.content.Context
 import androidx.annotation.Px
 import androidx.recyclerview.widget.RecyclerView
-import com.frolo.muse.Keyboards
-import com.frolo.muse.Screen
+import com.frolo.ui.KeyboardUtils
+import com.frolo.ui.Screen
 import kotlin.math.abs
 
 
@@ -36,7 +36,7 @@ fun RecyclerView.hideKeyboardOnScroll(@Px thresholdX: Int, @Px thresholdY: Int) 
             totalDx += dx
             totalDy += dy
             if (abs(totalDx) >= thresholdX || abs(totalDy) >= thresholdY) {
-                Keyboards.hideFrom(this@hideKeyboardOnScroll)
+                KeyboardUtils.hideFrom(this@hideKeyboardOnScroll)
             }
         }
 

@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.doOnLayout
 import com.frolo.muse.R
-import com.frolo.muse.StyleUtil
+import com.frolo.ui.StyleUtils
 import com.frolo.muse.ui.base.BackPressHandler
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.main.player.PlayerFragment
@@ -68,7 +68,7 @@ class PlayerSheetFragment : BaseFragment(),
 
         view.doOnLayout {
             behavior.peekHeight =
-                StyleUtil.resolveDimen(view.context, R.attr.actionBarSize).toInt()
+                StyleUtils.resolveDimen(view.context, R.attr.actionBarSize).toInt()
         }
 
         bottom_sheet_current_song_queue.touchCallback =

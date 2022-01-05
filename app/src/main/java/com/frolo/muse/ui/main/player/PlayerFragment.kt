@@ -23,7 +23,7 @@ import com.bumptech.glide.Glide
 import com.frolo.mediabutton.PlayButton
 import com.frolo.muse.BuildConfig
 import com.frolo.muse.R
-import com.frolo.muse.StyleUtil
+import com.frolo.ui.StyleUtils
 import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
 import com.frolo.player.AudioSource
@@ -113,12 +113,12 @@ class PlayerFragment: BaseFragment() {
 
     @get:ColorInt
     private val colorModeOff: Int by lazy {
-        StyleUtil.resolveColor(requireContext(), R.attr.iconImageTint)
+        StyleUtils.resolveColor(requireContext(), R.attr.iconImageTint)
     }
 
     @get:ColorInt
     private val colorModeOn: Int by lazy {
-        StyleUtil.resolveColor(requireContext(), R.attr.colorAccent)
+        StyleUtils.resolveColor(requireContext(), R.attr.colorAccent)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

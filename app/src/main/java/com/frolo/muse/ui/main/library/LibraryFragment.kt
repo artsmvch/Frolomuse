@@ -10,7 +10,7 @@ import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.viewpager.widget.ViewPager
-import com.frolo.muse.FragmentUtils
+import com.frolo.ui.FragmentUtils
 import com.frolo.muse.R
 import com.frolo.muse.model.Library
 import com.frolo.muse.repository.Preferences
@@ -18,7 +18,6 @@ import com.frolo.muse.ui.ScrolledToTop
 import com.frolo.muse.ui.base.BackPressHandler
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.base.FragmentContentInsetsListener
-import com.frolo.muse.ui.removeAllFragmentsNow
 import com.frolo.muse.util.CollectionUtil
 import kotlinx.android.synthetic.main.fragment_library.*
 
@@ -88,7 +87,7 @@ class LibraryFragment: BaseFragment(),
             currentSections = actualSections
             // It's a compelled workaround to prevent the action bar from adding menus
             // of the previous fragments that are not at the current position
-            childFragmentManager.removeAllFragmentsNow()
+            FragmentUtils.removeAllFragmentsNow(childFragmentManager)
         }
 
         vp_sections.apply {

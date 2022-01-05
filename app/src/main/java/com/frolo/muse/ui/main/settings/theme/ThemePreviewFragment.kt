@@ -9,7 +9,7 @@ import androidx.annotation.StyleRes
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProviders
-import com.frolo.muse.StyleUtil
+import com.frolo.ui.StyleUtils
 import com.frolo.muse.di.appComponent
 import com.frolo.muse.model.media.Album
 import com.frolo.muse.ui.main.library.albums.album.AlbumFragment
@@ -80,7 +80,7 @@ class ThemePreviewFragment : AlbumFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        view.background = StyleUtil.resolveDrawable(view.context, android.R.attr.windowBackground)
+        view.background = StyleUtils.resolveDrawable(view.context, android.R.attr.windowBackground)
     }
 
     override fun applyContentInsets(left: Int, top: Int, right: Int, bottom: Int) {

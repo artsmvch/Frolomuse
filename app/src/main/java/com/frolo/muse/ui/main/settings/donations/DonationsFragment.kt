@@ -16,7 +16,7 @@ import androidx.transition.Fade
 import androidx.transition.TransitionManager
 import com.frolo.muse.BuildInfo
 import com.frolo.muse.R
-import com.frolo.muse.Screen
+import com.frolo.ui.Screen
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.base.FragmentContentInsetsListener
 import com.frolo.muse.ui.base.setupNavigation

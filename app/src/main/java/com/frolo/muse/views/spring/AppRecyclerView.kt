@@ -8,7 +8,7 @@ import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.frolo.muse.R
-import com.frolo.muse.StyleUtil
+import com.frolo.ui.StyleUtils
 import com.l4digital.fastscroll.FastScroller
 
 
@@ -96,7 +96,7 @@ class AppRecyclerView @JvmOverloads constructor(
 
         private fun fastScrollerContext(context: Context): Context {
             val fastScrollerThemeId =
-                    StyleUtil.resolveStyleRes(context, com.frolo.muse.R.attr.fastScrollerStyle)
+                    StyleUtils.resolveStyleRes(context, com.frolo.muse.R.attr.fastScrollerStyle)
             return if (fastScrollerThemeId != 0) ContextThemeWrapper(context, fastScrollerThemeId)
             else ContextThemeWrapper(context, R.style.Base_AppTheme_FastScroller)
         }

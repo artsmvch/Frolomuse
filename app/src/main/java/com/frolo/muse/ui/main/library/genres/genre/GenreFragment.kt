@@ -7,7 +7,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.frolo.muse.R
-import com.frolo.muse.StyleUtil
+import com.frolo.ui.StyleUtils
 import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.dp2px
@@ -96,7 +96,7 @@ class GenreFragment: AbsSongCollectionFragment<Song>(), FragmentContentInsetsLis
         app_bar_layout.addOnOffsetChangedListener(onOffsetChangedListener)
 
         view_backdrop.background = MaterialShapeDrawable().apply {
-            fillColor = ColorStateList.valueOf(StyleUtil.resolveColor(view.context, R.attr.colorPrimary))
+            fillColor = ColorStateList.valueOf(StyleUtils.resolveColor(view.context, R.attr.colorPrimary))
             shapeAppearanceModel = ShapeAppearanceModel.builder()
                 .setBottomRightCorner(CornerFamily.ROUNDED, backdropCornerRadius)
                 .build()

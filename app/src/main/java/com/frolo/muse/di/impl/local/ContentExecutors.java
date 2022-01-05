@@ -2,7 +2,7 @@ package com.frolo.muse.di.impl.local;
 
 import androidx.annotation.NonNull;
 
-import com.frolo.muse.DebugUtils;
+import com.frolo.debug.DebugUtils;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.LinkedBlockingDeque;

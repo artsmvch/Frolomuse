@@ -15,6 +15,8 @@ import com.frolo.muse.*
 import com.frolo.muse.model.media.*
 import com.frolo.muse.thumbnails.ThumbnailLoader
 import com.frolo.muse.ui.main.library.base.BaseAdapter
+import com.frolo.ui.Screen
+import com.frolo.ui.StyleUtils
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter
 import kotlinx.android.synthetic.main.item_header.view.*
 import kotlin.properties.Delegates
@@ -94,8 +96,8 @@ class MediaAdapter constructor(
 
         @get:ColorInt
         private val highlightColor: Int by lazy {
-            val textColor = StyleUtil.resolveColor(itemView.context, android.R.attr.textColorPrimary)
-            val accentColor = StyleUtil.resolveColor(itemView.context, R.attr.colorAccent)
+            val textColor = StyleUtils.resolveColor(itemView.context, android.R.attr.textColorPrimary)
+            val accentColor = StyleUtils.resolveColor(itemView.context, R.attr.colorAccent)
             ColorUtils.compositeColors(accentColor, textColor)
         }
 

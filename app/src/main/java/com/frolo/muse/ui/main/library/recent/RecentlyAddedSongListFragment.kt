@@ -7,7 +7,7 @@ import android.view.MenuItem
 import android.view.View
 import androidx.lifecycle.LifecycleOwner
 import com.frolo.muse.R
-import com.frolo.muse.StyleUtil
+import com.frolo.ui.StyleUtils
 import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.glide.GlideAlbumArtHelper
 import com.frolo.muse.glide.observe
@@ -42,7 +42,7 @@ class RecentlyAddedSongListFragment: SimpleMediaCollectionFragment<Song>() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.fragment_recently_added, menu)
         context?.also { safeContext ->
-            menu.setIconTint(StyleUtil.resolveColor(safeContext, R.attr.iconImageTint))
+            menu.setIconTint(StyleUtils.resolveColor(safeContext, R.attr.iconImageTint))
         }
     }
 

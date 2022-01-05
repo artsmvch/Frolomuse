@@ -14,7 +14,14 @@ include ':billings:billing-api'
 include ':billings:play-store-billing-impl'
 include ':billings:app-gallery-billing-impl'
 
-// Util stuff
+// Utils
+include ':utils:debug-common'
+include ':utils:threads-common'
+include ':utils:ui'
+include ':utils:stopwatch'
+include ':utils:headset'
+
+// Misc stuff
 include ':vendor'
 include ':MyID3_for_Android'
 include ':ringdroid'

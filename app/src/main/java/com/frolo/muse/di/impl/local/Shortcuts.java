@@ -24,8 +24,8 @@ import androidx.core.content.pm.ShortcutManagerCompat;
 import androidx.core.graphics.drawable.IconCompat;
 
 import com.frolo.muse.R;
-import com.frolo.muse.Screen;
-import com.frolo.muse.ThreadStrictMode;
+import com.frolo.ui.Screen;
+import com.frolo.threads.ThreadStrictMode;
 import com.frolo.muse.broadcast.Broadcasts;
 import com.frolo.muse.model.media.Album;
 import com.frolo.muse.model.media.Artist;

@@ -10,7 +10,7 @@ import androidx.room.Room
 import com.frolo.muse.BuildConfig
 import com.frolo.muse.LocalizedMessageException
 import com.frolo.muse.R
-import com.frolo.muse.ThreadStrictMode
+import com.frolo.threads.ThreadStrictMode
 import com.frolo.muse.database.FrolomuseDatabase
 import com.frolo.muse.database.entity.*
 import com.frolo.muse.kotlin.contains

@@ -2,7 +2,7 @@ package com.frolo.muse.ui.main.settings.donations
 
 import androidx.annotation.AnyThread
 import com.frolo.billing.ProductDetails
-import com.frolo.muse.DebugUtils
+import com.frolo.debug.DebugUtils
 import com.frolo.muse.R
 import com.frolo.muse.billing.Products
 

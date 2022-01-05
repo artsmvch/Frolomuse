@@ -20,7 +20,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.frolo.billing.ProductDetails
 import com.frolo.muse.R
-import com.frolo.muse.Screen
+import com.frolo.ui.Screen
 import com.frolo.muse.inflateChild
 import kotlinx.android.synthetic.main.item_donation.view.*
 import kotlin.properties.Delegates

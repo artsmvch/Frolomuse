@@ -10,7 +10,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.frolo.muse.R
-import com.frolo.muse.StyleUtil
+import com.frolo.ui.StyleUtils
 import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.glide.*
@@ -115,7 +115,7 @@ open class AlbumFragment: AbsSongCollectionFragment<Song>(), FragmentContentInse
         app_bar_layout.addOnOffsetChangedListener(onOffsetChangedListener)
 
         view_backdrop.background = MaterialShapeDrawable().apply {
-            fillColor = ColorStateList.valueOf(StyleUtil.resolveColor(view.context, R.attr.colorPrimary))
+            fillColor = ColorStateList.valueOf(StyleUtils.resolveColor(view.context, R.attr.colorPrimary))
             shapeAppearanceModel = ShapeAppearanceModel.builder()
                 .setBottomRightCorner(CornerFamily.ROUNDED, backdropCornerRadius)
                 .build()

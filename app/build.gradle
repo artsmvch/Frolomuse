@@ -169,6 +169,13 @@ dependencies {
     // Sound wave forms
     implementation project(path: ':soundwaveform')
 
+    // Utils
+    implementation project(path: ':utils:debug-common')
+    implementation project(path: ':utils:threads-common')
+    implementation project(path: ':utils:ui')
+    implementation project(path: ':utils:stopwatch')
+    implementation project(path: ':utils:headset')
+
     def mockito_version = "3.10.0" // 2.23.0
     def mockito_kotlin_version = "2.1.0"
     // Instrumentation tests

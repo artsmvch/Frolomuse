@@ -11,7 +11,7 @@ import androidx.annotation.Nullable;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.frolo.muse.R;
-import com.frolo.muse.ThreadStrictMode;
+import com.frolo.threads.ThreadStrictMode;
 import com.frolo.muse.glide.GlideAlbumArtHelper;
 import com.frolo.muse.glide.SimpleRequestListener;
 import com.frolo.muse.model.media.Song;

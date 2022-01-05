@@ -14,7 +14,7 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.frolo.muse.ThreadStrictMode;
+import com.frolo.threads.ThreadStrictMode;
 import com.frolo.muse.util.BitmapUtil;
 import com.frolo.muse.util.CenterCropBitmapDrawable;
 

@@ -6,8 +6,8 @@ import com.frolo.player.Player
 import com.frolo.player.SimplePlayerObserver
 import com.frolo.muse.interactor.media.DispatchSongPlayedUseCase
 import com.frolo.muse.rx.SchedulerProvider
-import com.frolo.muse.stopwatch.Stopwatch
-import com.frolo.muse.stopwatch.Stopwatches
+import com.frolo.stopwatch.Stopwatch
+import com.frolo.stopwatch.Stopwatches
 import io.reactivex.disposables.CompositeDisposable
 
 

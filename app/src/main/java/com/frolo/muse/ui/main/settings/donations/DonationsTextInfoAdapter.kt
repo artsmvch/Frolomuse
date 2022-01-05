@@ -4,7 +4,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.frolo.muse.DebugUtils
+import com.frolo.debug.DebugUtils
 import com.frolo.muse.R
 import com.frolo.muse.inflateChild
 

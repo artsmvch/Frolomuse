@@ -3,7 +3,7 @@ package com.frolo.muse.ui.main
 import android.content.Context
 import android.media.AudioManager
 import androidx.recyclerview.widget.RecyclerView
-import com.frolo.muse.Screen
+import com.frolo.ui.Screen
 import com.frolo.muse.views.MarginItemDecoration
 
 private const val DEFAULT_ITEM_MARGIN_IN_DP = 2

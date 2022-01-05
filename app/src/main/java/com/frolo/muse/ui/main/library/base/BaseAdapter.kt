@@ -4,7 +4,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.frolo.muse.DebugUtils
+import com.frolo.debug.DebugUtils
 import java.util.*
 import kotlin.collections.ArrayList
 

@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.LifecycleOwner
-import com.frolo.muse.Keyboards
+import com.frolo.ui.KeyboardUtils
 import com.frolo.muse.R
 import com.frolo.muse.arch.observe
 import com.frolo.muse.model.media.Media
@@ -98,7 +98,7 @@ class SearchFragment: AbsMediaCollectionFragment<Media>(), FragmentContentInsets
     }
 
     override fun onDestroyView() {
-        Keyboards.hideFrom(this)
+        KeyboardUtils.hideFrom(this)
         super.onDestroyView()
     }
 

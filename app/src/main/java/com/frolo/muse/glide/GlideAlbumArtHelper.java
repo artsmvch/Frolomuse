@@ -19,7 +19,7 @@ import com.bumptech.glide.load.Key;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.signature.ObjectKey;
-import com.frolo.muse.ThreadStrictMode;
+import com.frolo.threads.ThreadStrictMode;
 import com.frolo.muse.arch.SingleLiveEvent;
 
 

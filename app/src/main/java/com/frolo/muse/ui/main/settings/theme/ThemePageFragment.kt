@@ -11,7 +11,7 @@ import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import com.frolo.muse.BuildConfig
 import com.frolo.muse.R
-import com.frolo.muse.Screen
+import com.frolo.ui.Screen
 import com.frolo.muse.model.ThemeUtils
 import com.frolo.muse.rx.disposeOnStopOf
 import com.frolo.muse.rx.subscribeSafely

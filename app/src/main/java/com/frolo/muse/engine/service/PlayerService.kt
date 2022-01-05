@@ -21,7 +21,7 @@ import com.frolo.muse.engine.service.PlayerService.Companion.newIntent
 import com.frolo.muse.engine.service.PlayerService.PlayerBinder
 import com.frolo.muse.engine.service.audiofx.DefaultAudioFxErrorHandler
 import com.frolo.muse.engine.service.observers.*
-import com.frolo.muse.headset.createHeadsetHandler
+import com.frolo.headset.createHeadsetHandler
 import com.frolo.muse.interactor.media.DispatchSongPlayedUseCase
 import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
 import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase

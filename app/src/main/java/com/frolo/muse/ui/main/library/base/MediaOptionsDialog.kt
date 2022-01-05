@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.frolo.muse.R
-import com.frolo.muse.StyleUtil
+import com.frolo.ui.StyleUtils
 import com.frolo.muse.model.media.Media
 import com.frolo.muse.model.menu.OptionsMenu
 import com.frolo.muse.ui.Dialogs
@@ -30,7 +30,7 @@ class MediaOptionsDialog<E: Media> constructor(
         VIEW_GENRE, SET_AS_DEFAULT, HIDE, SCAN_FILES, CREATE_SHORTCUT
     }
 
-    private val iconTint = StyleUtil.resolveColor(context, R.attr.iconImageTint)
+    private val iconTint = StyleUtils.resolveColor(context, R.attr.iconImageTint)
     private val drawableHeart: Drawable
     private val drawableFilledHeart: Drawable
 

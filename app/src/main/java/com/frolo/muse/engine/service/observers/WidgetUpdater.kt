@@ -1,7 +1,7 @@
 package com.frolo.muse.engine.service.observers
 
 import android.content.Context
-import com.frolo.muse.ThreadStrictMode
+import com.frolo.threads.ThreadStrictMode
 import com.frolo.player.AudioSource
 import com.frolo.player.Player
 import com.frolo.player.SimplePlayerObserver

@@ -7,7 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.PagerAdapter
-import com.frolo.muse.DebugUtils
+import com.frolo.debug.DebugUtils
 import com.frolo.muse.Features
 import com.frolo.muse.model.Library
 import com.frolo.muse.ui.getSectionName

@@ -13,6 +13,8 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.frolo.muse.*
 import com.frolo.muse.model.Theme
 import com.frolo.muse.model.ThemeUtils
+import com.frolo.ui.Screen
+import com.frolo.ui.StyleUtils
 import kotlinx.android.synthetic.main.item_simple_theme_page.view.*
 import kotlin.properties.Delegates
 
@@ -65,10 +67,10 @@ class SimpleThemePageAdapter(
 
         fun bind(page: ThemePage) {
             val themedContext = ThemeUtils.createThemedContext(itemView.context, page.theme)
-            val windowBackground = StyleUtil.resolveDrawable(themedContext, android.R.attr.windowBackground)
-            val primaryColor = StyleUtil.resolveColor(themedContext, R.attr.colorPrimary)
-            val secondaryColor = StyleUtil.resolveColor(themedContext, R.attr.colorSecondary)
-            val textColor = StyleUtil.resolveColorStateList(themedContext, android.R.attr.textColorPrimary)
+            val windowBackground = StyleUtils.resolveDrawable(themedContext, android.R.attr.windowBackground)
+            val primaryColor = StyleUtils.resolveColor(themedContext, R.attr.colorPrimary)
+            val secondaryColor = StyleUtils.resolveColor(themedContext, R.attr.colorSecondary)
+            val textColor = StyleUtils.resolveColorStateList(themedContext, android.R.attr.textColorPrimary)
             val themeName = ThemeUtils.getNameResourceId(page.theme)?.let { themedContext.getString(it) } ?: ""
             val isCurrentThemeDark = currentTheme.isDark
             with(itemView) {

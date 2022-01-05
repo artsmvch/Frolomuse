@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.RecyclerView
 import com.frolo.muse.R
-import com.frolo.muse.StyleUtil
+import com.frolo.ui.StyleUtils
 import com.frolo.muse.dp2px
 import com.frolo.muse.inflateChild
 import com.frolo.muse.model.media.Song
@@ -136,7 +136,7 @@ class DragSongAdapter constructor(
                 }
                 setImageResource(R.drawable.ic_drag_burger)
                 imageTintList =
-                    ColorStateList.valueOf(StyleUtil.resolveColor(context, R.attr.iconImageTint))
+                    ColorStateList.valueOf(StyleUtils.resolveColor(context, R.attr.iconImageTint))
             }
         }
 

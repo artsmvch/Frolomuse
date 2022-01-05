@@ -2,7 +2,7 @@ package com.frolo.muse.ui.base
 
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
-import com.frolo.muse.DebugUtils
+import com.frolo.debug.DebugUtils
 
 
 fun Fragment.setupNavigation(toolbar: Toolbar) {

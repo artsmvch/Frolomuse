@@ -19,12 +19,14 @@ import com.frolo.muse.di.modules.*
 import com.frolo.player.Player
 import com.frolo.player.PlayerImpl
 import com.frolo.audiofx.AudioFxImpl
+import com.frolo.debug.DebugUtils
 import com.frolo.muse.engine.PlayerWrapper
 import com.frolo.muse.logger.logLowMemory
 import com.frolo.muse.router.MutableAppRouterWrapper
 import com.frolo.muse.router.ThreadAppRouterWrapper
 import com.frolo.muse.ui.base.BaseActivity
 import com.frolo.muse.ui.main.MainActivity
+import com.frolo.threads.ThreadStrictMode
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import io.reactivex.plugins.RxJavaPlugins
@@ -59,12 +61,10 @@ class FrolomuseApp : MultiDexApplication(), ActivityWatcher {
 
         registerActivityLifecycleCallbacks(activityWatcher)
 
+        setupDebugMode()
         setupStrictMode()
-
         setupRxPlugins()
-
         setupFirebaseRemoteConfigs()
-
         setupShortcutsListener()
     }
 
@@ -86,6 +86,10 @@ class FrolomuseApp : MultiDexApplication(), ActivityWatcher {
             .miscModule(MiscModule())
             .billingModule(BillingModule(isDebug))
             .build()
+    }
+
+    private fun setupDebugMode() {
+        DebugUtils.setDebug(BuildConfig.DEBUG)
     }
 
     private fun setupStrictMode() {

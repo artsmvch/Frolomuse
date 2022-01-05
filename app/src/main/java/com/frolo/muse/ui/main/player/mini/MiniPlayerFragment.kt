@@ -10,8 +10,8 @@ import androidx.core.graphics.ColorUtils
 import androidx.lifecycle.LifecycleOwner
 import com.frolo.mediabutton.PlayButton
 import com.frolo.muse.R
-import com.frolo.muse.Screen
-import com.frolo.muse.StyleUtil
+import com.frolo.ui.Screen
+import com.frolo.ui.StyleUtils
 import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.model.media.Song
@@ -61,7 +61,7 @@ class MiniPlayerFragment : BaseFragment() {
         }
 
         pb_progress.apply {
-            val colorOnPrimarySurface = StyleUtil.resolveColor(context, R.attr.colorOnPrimarySurface)
+            val colorOnPrimarySurface = StyleUtils.resolveColor(context, R.attr.colorOnPrimarySurface)
             backgroundProgressBarColor = ColorUtils.setAlphaComponent(colorOnPrimarySurface, (0.2f * 255).toInt())
             progressBarColor = colorOnPrimarySurface
         }

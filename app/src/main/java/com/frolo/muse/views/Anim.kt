@@ -5,6 +5,7 @@ import android.view.View
 import android.view.animation.OvershootInterpolator
 
 
+@Deprecated("Create your own view animation")
 object Anim {
 
     private open class SimpleAnimatorListener: Animator.AnimatorListener {

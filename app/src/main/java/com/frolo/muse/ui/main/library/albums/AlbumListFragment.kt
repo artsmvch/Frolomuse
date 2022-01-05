@@ -8,7 +8,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.frolo.muse.R
-import com.frolo.muse.Screen
+import com.frolo.ui.Screen
 import com.frolo.muse.glide.GlideAlbumArtHelper
 import com.frolo.muse.glide.observe
 import com.frolo.muse.model.media.Album

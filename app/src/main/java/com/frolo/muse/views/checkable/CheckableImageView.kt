@@ -7,7 +7,7 @@ import android.widget.Checkable
 import android.widget.ImageView
 import androidx.annotation.ColorInt
 import com.frolo.muse.R
-import com.frolo.muse.StyleUtil
+import com.frolo.ui.StyleUtils
 import com.frolo.muse.dp2px
 import com.frolo.muse.views.InsetDrawable
 
@@ -33,8 +33,8 @@ class CheckableImageView @JvmOverloads constructor(
             } else 0
             arr.recycle()
 
-            @ColorInt val colorSecondary = StyleUtil.resolveColor(context, R.attr.colorSecondary)
-            @ColorInt val colorOnSecondary = StyleUtil.resolveColor(context, R.attr.colorOnSecondary)
+            @ColorInt val colorSecondary = StyleUtils.resolveColor(context, R.attr.colorSecondary)
+            @ColorInt val colorOnSecondary = StyleUtils.resolveColor(context, R.attr.colorOnSecondary)
             if (value == 0) {
                 CheckMarkDrawable(colorSecondary, colorOnSecondary)
             } else {

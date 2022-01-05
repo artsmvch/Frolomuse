@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.collection.LruCache;
 
-import com.frolo.muse.DebugUtils;
+import com.frolo.debug.DebugUtils;
 
 
 final class DrawableTransformationCache {

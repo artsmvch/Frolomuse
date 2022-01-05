@@ -7,7 +7,7 @@ import android.text.TextWatcher
 import android.widget.EditText
 import androidx.annotation.ColorInt
 import com.frolo.muse.R
-import com.frolo.muse.StyleUtil
+import com.frolo.ui.StyleUtils
 import kotlin.math.log10
 
 
@@ -51,8 +51,8 @@ fun EditText.limitNumberInput(maxValue: Int) {
                 }
 
         init {
-            @ColorInt val red = StyleUtil.resolveColor(editText.context, R.attr.errorTextColor)
-            @ColorInt val textColor = StyleUtil.resolveColor(editText.context, R.attr.colorOnSurface)
+            @ColorInt val red = StyleUtils.resolveColor(editText.context, R.attr.errorTextColor)
+            @ColorInt val textColor = StyleUtils.resolveColor(editText.context, R.attr.colorOnSurface)
             animator = ValueAnimator.ofInt(red, textColor).apply {
                 setEvaluator(ArgbEvaluator())
                 duration = 300

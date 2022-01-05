@@ -25,6 +25,7 @@ import com.frolo.muse.ui.base.setupNavigation
 import com.frolo.muse.ui.main.confirmShortcutCreation
 import com.frolo.muse.ui.smoothScrollToTop
 import com.frolo.muse.ui.toString
+import com.frolo.ui.StyleUtils
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.shape.CornerFamily
 import com.google.android.material.shape.MaterialShapeDrawable
@@ -129,7 +130,7 @@ class PlaylistFragment: AbsSongCollectionFragment<Song>(), FragmentContentInsets
         app_bar_layout.addOnOffsetChangedListener(onOffsetChangedListener)
 
         view_backdrop.background = MaterialShapeDrawable().apply {
-            fillColor = ColorStateList.valueOf(StyleUtil.resolveColor(view.context, R.attr.colorPrimary))
+            fillColor = ColorStateList.valueOf(StyleUtils.resolveColor(view.context, R.attr.colorPrimary))
             shapeAppearanceModel = ShapeAppearanceModel.builder()
                 .setBottomRightCorner(CornerFamily.ROUNDED, backdropCornerRadius)
                 .build()

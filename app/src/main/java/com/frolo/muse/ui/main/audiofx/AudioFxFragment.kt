@@ -28,6 +28,8 @@ import com.frolo.muse.ui.main.audiofx.adapter.PresetAdapter
 import com.frolo.muse.ui.main.audiofx.adapter.ReverbAdapter
 import com.frolo.muse.ui.main.audiofx.preset.PresetSavedEvent
 import com.frolo.muse.views.doOnItemSelected
+import com.frolo.ui.Screen
+import com.frolo.ui.StyleUtils
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import it.sephiroth.android.library.tooltip.Tooltip
@@ -324,10 +326,10 @@ class AudioFxFragment: BaseFragment(), FragmentContentInsetsListener {
                     }
 
                     val backgroundColor: Int =
-                            StyleUtil.resolveColor(view.context, R.attr.colorSurface)
+                            StyleUtils.resolveColor(view.context, R.attr.colorSurface)
 
                     val windowBackground: Drawable? =
-                            StyleUtil.resolveDrawable(view.context, android.R.attr.windowBackground)
+                            StyleUtils.resolveDrawable(view.context, android.R.attr.windowBackground)
 
                     // Calculating optimal size for the snapshot
                     // so it will be loaded faster and will consume not that much memory

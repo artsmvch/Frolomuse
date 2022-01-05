@@ -1,6 +1,7 @@
 package com.frolo.muse
 
 import android.content.Context
+import com.frolo.ui.Screen
 
 
 @Deprecated("Use Screen.dpFloat", ReplaceWith("Screen.dpFloat(context, this)"))

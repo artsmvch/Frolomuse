@@ -14,8 +14,8 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.frolo.customdrawable.squircle.SquircleColorDrawable
 import com.frolo.muse.FrolomuseApp
 import com.frolo.muse.R
-import com.frolo.muse.Screen
-import com.frolo.muse.StyleUtil
+import com.frolo.ui.Screen
+import com.frolo.ui.StyleUtils
 import com.frolo.muse.glide.makeRequest
 import com.frolo.muse.glide.squircleCrop
 import com.frolo.muse.model.media.*
@@ -54,10 +54,10 @@ class GlideThumbnailLoader constructor(
     }
 
     private fun createLayeredThumbnail(context: Context, thumbnail: Drawable): Drawable {
-        val backgroundColor = StyleUtil.resolveColor(context, R.attr.thumbnailBackgroundTint)
+        val backgroundColor = StyleUtils.resolveColor(context, R.attr.thumbnailBackgroundTint)
         val background = SquircleColorDrawable(SQUIRCLE_CURVATURE, backgroundColor)
 
-        val foregroundColor = StyleUtil.resolveColor(context, R.attr.thumbnailForegroundTint)
+        val foregroundColor = StyleUtils.resolveColor(context, R.attr.thumbnailForegroundTint)
         val coloredThumbnail = thumbnail.mutate().apply {
             setTint(foregroundColor)
         }

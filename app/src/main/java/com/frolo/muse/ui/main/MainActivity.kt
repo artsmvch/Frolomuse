@@ -28,6 +28,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProviders
 import androidx.transition.Fade
 import androidx.transition.TransitionManager
+import com.frolo.debug.DebugUtils
 import com.frolo.muse.*
 import com.frolo.muse.android.ViewAppSettingsIntent
 import com.frolo.muse.android.startActivitySafely
@@ -46,6 +47,8 @@ import com.frolo.muse.ui.main.library.LibraryFragment
 import com.frolo.muse.ui.main.library.search.SearchFragment
 import com.frolo.muse.ui.main.player.mini.MiniPlayerFragment
 import com.frolo.muse.ui.main.settings.AppBarSettingsFragment
+import com.frolo.ui.FragmentUtils
+import com.frolo.ui.StyleUtils
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehaviorSupport
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -100,32 +103,32 @@ class MainActivity : PlayerHostActivity(),
 
     @get:ColorInt
     private val colorPrimary: Int by lazy {
-        StyleUtil.resolveColor(this, R.attr.colorPrimary)
+        StyleUtils.resolveColor(this, R.attr.colorPrimary)
     }
 
     @get:ColorInt
     private val colorPrimaryDark: Int by lazy {
-        StyleUtil.resolveColor(this, R.attr.colorPrimaryDark)
+        StyleUtils.resolveColor(this, R.attr.colorPrimaryDark)
     }
 
     @get:ColorInt
     private val colorPrimarySurface: Int by lazy {
-        StyleUtil.resolveColor(this, R.attr.colorPrimarySurface)
+        StyleUtils.resolveColor(this, R.attr.colorPrimarySurface)
     }
 
     @get:ColorInt
     private val colorSurface: Int by lazy {
-        StyleUtil.resolveColor(this, R.attr.colorSurface)
+        StyleUtils.resolveColor(this, R.attr.colorSurface)
     }
 
     @get:ColorInt
     private val actionModeBackgroundColor: Int by lazy {
         try {
-            StyleUtil.resolveColor(this, R.attr.actionModeBackground)
+            StyleUtils.resolveColor(this, R.attr.actionModeBackground)
         } catch (error: Throwable) {
             // This is probably a drawable
             DebugUtils.dumpOnMainThread(error)
-            StyleUtil.resolveColor(this, android.R.attr.navigationBarColor)
+            StyleUtils.resolveColor(this, android.R.attr.navigationBarColor)
         }
     }
 
