@@ -149,11 +149,11 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 
     // Player
-    implementation project(path: ':player:audiofx:api')
-    implementation project(path: ':player:audiofx:android-impl')
-    implementation project(path: ':player:api')
-    implementation project(path: ':player:android-impl')
-    implementation project(path: ':player:data')
+    implementation project(path: ':audio:audiofx:api')
+    implementation project(path: ':audio:audiofx:android-impl')
+    implementation project(path: ':audio:player:api')
+    implementation project(path: ':audio:player:android-impl')
+    implementation project(path: ':audio:player:data')
 
     // Billing
     implementation project(path: ':billings:billing-api')

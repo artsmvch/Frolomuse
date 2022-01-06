@@ -1,13 +1,15 @@
 // Main app
 include ':app'
 
+// AudioFx
+include ':audio:audiofx:api'
+include ':audio:audiofx:android-impl'
+include ':audio:audiofx-applicable'
+
 // Player and AudioFx
-include ':player:api'
-include ':player:android-impl'
-include ':player:audiofx:api'
-include ':player:audiofx:android-impl'
-include ':player:audiofx-applicable'
-include ':player:data'
+include ':audio:player:api'
+include ':audio:player:android-impl'
+include ':audio:player:data'
 
 // Billing
 include ':billings:billing-api'
