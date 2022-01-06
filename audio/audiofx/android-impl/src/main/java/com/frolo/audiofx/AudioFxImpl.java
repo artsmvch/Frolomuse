@@ -174,32 +174,36 @@ public class AudioFxImpl implements AudioFxApplicable {
 
         try {
             Equalizer equalizer = mEqualizer;
-            if (equalizer != null)
+            if (equalizer != null) {
                 equalizer.setEnabled(enabled);
+            }
         } catch (Throwable t) {
             report(t);
         }
 
         try {
             BassBoost bassBoost = mBassBoost;
-            if (bassBoost != null)
+            if (bassBoost != null) {
                 bassBoost.setEnabled(enabled);
+            }
         } catch (Throwable t) {
             report(t);
         }
 
         try {
             Virtualizer virtualizer = mVirtualizer;
-            if (virtualizer != null)
+            if (virtualizer != null) {
                 virtualizer.setEnabled(enabled);
+            }
         } catch (Throwable t) {
             report(t);
         }
 
         try {
             PresetReverb presetReverb = mPresetReverb;
-            if (presetReverb != null)
+            if (presetReverb != null) {
                 presetReverb.setEnabled(enabled);
+            }
         } catch (Throwable t) {
             report(t);
         }
@@ -220,8 +224,9 @@ public class AudioFxImpl implements AudioFxApplicable {
     public short getMinBandLevelRange() {
         try {
             Equalizer equalizer = mEqualizer;
-            if (equalizer != null)
+            if (equalizer != null) {
                 return equalizer.getBandLevelRange()[0];
+            }
             return 0;
         } catch (Throwable t) {
             report(t);
@@ -233,8 +238,9 @@ public class AudioFxImpl implements AudioFxApplicable {
     public short getMaxBandLevelRange() {
         try {
             Equalizer equalizer = mEqualizer;
-            if (equalizer != null)
+            if (equalizer != null) {
                 return equalizer.getBandLevelRange()[1];
+            }
             return 0;
         } catch (Throwable t) {
             report(t);
@@ -246,8 +252,9 @@ public class AudioFxImpl implements AudioFxApplicable {
     public int[] getBandFreqRange(short band) {
         try {
             Equalizer equalizer = mEqualizer;
-            if (equalizer != null)
+            if (equalizer != null) {
                 return equalizer.getBandFreqRange(band);
+            }
             return getDefaultBandFreqRange(band);
         } catch (Throwable t) {
             report(t);
@@ -256,26 +263,27 @@ public class AudioFxImpl implements AudioFxApplicable {
     }
 
     private int[] getDefaultBandFreqRange(short band) {
-        if (band == 0)
-            return new int[] { 30_000, 120_000 };
-        if (band == 1)
-            return new int[] { 120_001, 460_000 };
-        if (band == 2)
-            return new int[] { 460_001, 1_800_00 };
-        if (band == 3)
-            return new int[] { 1_800_001, 7_000_000 };
-        if (band == 4)
-            return new int[] { 7_000_000, 20_000_000 };
-
-        return new int[] { 7_000_000, 20_000_000 };
+        switch (band) {
+            case 0:
+                return new int[]{30_000, 120_000};
+            case 1:
+                return new int[]{120_001, 460_000};
+            case 2:
+                return new int[]{460_001, 1_800_00};
+            case 3:
+                return new int[]{1_800_001, 7_000_000};
+            default:
+                return new int[]{7_000_000, 20_000_000};
+        }
     }
 
     @Override
     public short getNumberOfBands() {
         try {
             Equalizer equalizer = mEqualizer;
-            if (equalizer != null)
+            if (equalizer != null) {
                 return equalizer.getNumberOfBands();
+            }
             return 0;
         } catch (Throwable t) {
             report(t);
@@ -287,8 +295,9 @@ public class AudioFxImpl implements AudioFxApplicable {
     public short getBandLevel(short band) {
         try {
             Equalizer equalizer = mEqualizer;
-            if (equalizer != null)
+            if (equalizer != null) {
                 return equalizer.getBandLevel(band);
+            }
             return 0;
         } catch (Throwable t) {
             report(t);
@@ -302,8 +311,9 @@ public class AudioFxImpl implements AudioFxApplicable {
             mPersistence.saveBandLevel(band, level);
 
             Equalizer equalizer = mEqualizer;
-            if (equalizer != null)
+            if (equalizer != null) {
                 equalizer.setBandLevel(band, level);
+            }
         } catch (Throwable t) {
             report(t);
         } finally {
@@ -315,8 +325,9 @@ public class AudioFxImpl implements AudioFxApplicable {
     public List<NativePreset> getNativePresets() {
         try {
             Equalizer equalizer = mEqualizer;
-            if (equalizer == null)
+            if (equalizer == null) {
                 return new ArrayList<>(0);
+            }
 
             final int numberOfPresets = equalizer.getNumberOfPresets();
             final List<NativePreset> presets = new ArrayList<>(numberOfPresets);
@@ -433,23 +444,27 @@ public class AudioFxImpl implements AudioFxApplicable {
     public Reverb getCurrentReverb() {
         try {
             PresetReverb presetReverb = mPresetReverb;
-            if (presetReverb == null)
+            if (presetReverb == null) {
                 return Reverb.NONE;
+            }
 
             final short presetReverbIndex = presetReverb.getPreset();
-            if (presetReverbIndex == PresetReverb.PRESET_LARGEHALL)
-                return Reverb.LARGE_HALL;
-            if (presetReverbIndex == PresetReverb.PRESET_LARGEROOM)
-                return Reverb.LARGE_ROOM;
-            if (presetReverbIndex == PresetReverb.PRESET_MEDIUMHALL)
-                return Reverb.MEDIUM_HALL;
-            if (presetReverbIndex == PresetReverb.PRESET_MEDIUMROOM)
-                return Reverb.MEDIUM_ROOM;
-            if (presetReverbIndex == PresetReverb.PRESET_PLATE)
-                return Reverb.PLATE;
-            if (presetReverbIndex == PresetReverb.PRESET_SMALLROOM)
-                return Reverb.SMALL_ROOM;
-            return Reverb.NONE;
+            switch (presetReverbIndex) {
+                case PresetReverb.PRESET_LARGEHALL:
+                    return Reverb.LARGE_HALL;
+                case PresetReverb.PRESET_LARGEROOM:
+                    return Reverb.LARGE_ROOM;
+                case PresetReverb.PRESET_MEDIUMHALL:
+                    return Reverb.MEDIUM_HALL;
+                case PresetReverb.PRESET_MEDIUMROOM:
+                    return Reverb.MEDIUM_ROOM;
+                case PresetReverb.PRESET_PLATE:
+                    return Reverb.PLATE;
+                case PresetReverb.PRESET_SMALLROOM:
+                    return Reverb.SMALL_ROOM;
+                default:
+                    return Reverb.NONE;
+            }
         } catch (Throwable t) {
             report(t);
             return Reverb.NONE;
@@ -511,8 +526,9 @@ public class AudioFxImpl implements AudioFxApplicable {
     public short getBassStrength() {
         try {
             BassBoost bassBoost = mBassBoost;
-            if (bassBoost != null)
+            if (bassBoost != null) {
                 return bassBoost.getRoundedStrength();
+            }
             return 0;
         } catch (Throwable t) {
             report(t);
@@ -527,8 +543,9 @@ public class AudioFxImpl implements AudioFxApplicable {
         mPersistence.saveBassStrength(strength);
         try {
             BassBoost bassBoost = mBassBoost;
-            if (bassBoost != null)
+            if (bassBoost != null) {
                 bassBoost.setStrength(strength);
+            }
         } catch (Throwable t) {
             report(t);
         } finally {
@@ -555,8 +572,9 @@ public class AudioFxImpl implements AudioFxApplicable {
     public short getVirtualizerStrength() {
         try {
             Virtualizer virtualizer = mVirtualizer;
-            if (virtualizer != null)
+            if (virtualizer != null) {
                 return virtualizer.getRoundedStrength();
+            }
             return 0;
         } catch (Throwable t) {
             report(t);
@@ -571,8 +589,9 @@ public class AudioFxImpl implements AudioFxApplicable {
         mPersistence.saveVirtualizerStrength(strength);
         try {
             Virtualizer virtualizer = mVirtualizer;
-            if (virtualizer != null)
+            if (virtualizer != null) {
                 virtualizer.setStrength(strength);
+            }
         } catch (Throwable t) {
             report(t);
         } finally {
@@ -596,13 +615,13 @@ public class AudioFxImpl implements AudioFxApplicable {
         final boolean enabled = mPersistence.isEnabled();
 
         if (DEBUG) {
-            String msg = new StringBuilder("Applying:\n")
-                    .append("audioSessionId=").append(audioSessionId).append("\n")
-                    .append("sessionHasChanged=").append(sessionHasChanged).append("\n")
-                    .append("canOmitInitialization=").append(canOmitInitialization).append("\n")
-                    .append("priority=").append(priority).append("\n")
-                    .append("enabled=").append(enabled).append("\n")
-                    .toString();
+            String msg = new StringBuilder("Apply: \n")
+                .append("audioSessionId=").append(audioSessionId).append("\n")
+                .append("sessionHasChanged=").append(sessionHasChanged).append("\n")
+                .append("canOmitInitialization=").append(canOmitInitialization).append("\n")
+                .append("priority=").append(priority).append("\n")
+                .append("enabled=").append(enabled).append("\n")
+                .toString();
             Log.d(LOG_TAG, msg);
         }
 
@@ -610,8 +629,9 @@ public class AudioFxImpl implements AudioFxApplicable {
         if (mHasEqualizer && (!canOmitInitialization || mEqualizer == null)) {
             try {
                 Equalizer oldEqualizer = mEqualizer;
-                if (oldEqualizer != null)
+                if (oldEqualizer != null) {
                     oldEqualizer.release();
+                }
             } catch (Throwable t) {
                 report(t);
             }
@@ -661,8 +681,9 @@ public class AudioFxImpl implements AudioFxApplicable {
         if (mHasBassBoost && (!canOmitInitialization || mBassBoost == null)) {
             try {
                 BassBoost oldBassBoost = mBassBoost;
-                if (oldBassBoost != null)
+                if (oldBassBoost != null) {
                     oldBassBoost.release();
+                }
             } catch (Throwable t) {
                 report(t);
             }
@@ -683,8 +704,9 @@ public class AudioFxImpl implements AudioFxApplicable {
         if (mHasVirtualizer && (!canOmitInitialization || mVirtualizer == null)) {
             try {
                 Virtualizer oldVirtualizer = mVirtualizer;
-                if (oldVirtualizer != null)
+                if (oldVirtualizer != null) {
                     oldVirtualizer.release();
+                }
             } catch (Throwable t) {
                 report(t);
             }
@@ -708,8 +730,9 @@ public class AudioFxImpl implements AudioFxApplicable {
         if (mHasPresetReverb) {
             try {
                 PresetReverb oldPresetReverb = mPresetReverb;
-                if (oldPresetReverb != null)
+                if (oldPresetReverb != null) {
                     oldPresetReverb.release();
+                }
             } catch (Throwable t) {
                 report(t);
             }
@@ -770,8 +793,9 @@ public class AudioFxImpl implements AudioFxApplicable {
 
         try {
             Equalizer equalizer = mEqualizer;
-            if (equalizer != null)
+            if (equalizer != null) {
                 equalizer.release();
+            }
 
             mEqualizer = null;
         } catch (Throwable t) {
@@ -780,8 +804,9 @@ public class AudioFxImpl implements AudioFxApplicable {
 
         try {
             BassBoost bassBoost = mBassBoost;
-            if (bassBoost != null)
+            if (bassBoost != null) {
                 bassBoost.release();
+            }
 
             mBassBoost = null;
         } catch (Throwable t) {
@@ -790,8 +815,9 @@ public class AudioFxImpl implements AudioFxApplicable {
 
         try {
             Virtualizer virtualizer = mVirtualizer;
-            if (virtualizer != null)
+            if (virtualizer != null) {
                 virtualizer.release();
+            }
 
             mVirtualizer = null;
         } catch (Throwable t) {
@@ -800,8 +826,9 @@ public class AudioFxImpl implements AudioFxApplicable {
 
         try {
             PresetReverb presetReverb = mPresetReverb;
-            if (presetReverb != null)
+            if (presetReverb != null) {
                 presetReverb.release();
+            }
 
             mPresetReverb = null;
         } catch (Throwable t) {
