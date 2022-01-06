@@ -145,8 +145,8 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.4.31"
-    implementation "org.jetbrains.kotlin:kotlin-reflect:1.4.31"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 
     // Player
     implementation project(path: ':player:audiofx:api')
