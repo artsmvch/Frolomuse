@@ -1,7 +1,7 @@
 package com.frolo.equalizerview
 
 
-interface Equalizer {
+interface IEqualizer {
 
     val numberOfBands: Int
     val minBandLevelRange: Int

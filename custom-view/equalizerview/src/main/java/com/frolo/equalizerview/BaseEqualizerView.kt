@@ -26,7 +26,7 @@ abstract class BaseEqualizerView<V> @JvmOverloads constructor(
     defStyleRes: Int = DEFAULT_STYLE_RES_ID
 ): FrameLayout(context, attrs, defStyleAttr) where V: View, V: BaseEqualizerView.BandView {
 
-    private val equalizerObserver: Equalizer.Observer = object : Equalizer.Observer {
+    private val equalizerObserver: IEqualizer.Observer = object : IEqualizer.Observer {
         override fun onBandLevelChanged(band: Short, level: Short) {
             val container = getBandViewContainer()
             if (band >= 0 && band < container.childCount) {
@@ -36,7 +36,7 @@ abstract class BaseEqualizerView<V> @JvmOverloads constructor(
         }
     }
 
-    protected var equalizer: Equalizer? = null
+    protected var equalizer: IEqualizer? = null
         private set
 
     private val childContext: Context
@@ -141,7 +141,7 @@ abstract class BaseEqualizerView<V> @JvmOverloads constructor(
      * @param animate if true, then the changes will be animated
      */
     @JvmOverloads
-    fun setup(equalizer: Equalizer?, animate: Boolean = true) {
+    fun setup(equalizer: IEqualizer?, animate: Boolean = true) {
 
         val oldEqualizer = this.equalizer
         oldEqualizer?.unregisterObserver(equalizerObserver)
@@ -226,7 +226,7 @@ abstract class BaseEqualizerView<V> @JvmOverloads constructor(
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        val currEqualizer: Equalizer? = equalizer
+        val currEqualizer: IEqualizer? = equalizer
         if (currEqualizer != null) {
             currEqualizer.registerObserver(equalizerObserver)
             val container = getBandViewContainer()

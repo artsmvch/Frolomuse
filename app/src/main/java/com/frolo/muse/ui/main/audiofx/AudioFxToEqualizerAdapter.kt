@@ -2,12 +2,12 @@ package com.frolo.muse.ui.main.audiofx
 
 import com.frolo.audiofx.AudioFx
 import com.frolo.audiofx.SimpleAudioFxObserver
-import com.frolo.equalizerview.Equalizer
+import com.frolo.equalizerview.IEqualizer
 
 
 internal class AudioFxToEqualizerAdapter(
     private val audioFx: AudioFx
-): Equalizer {
+): IEqualizer {
 
     override val numberOfBands: Int
         get() = audioFx.numberOfBands.toInt()
@@ -30,16 +30,16 @@ internal class AudioFxToEqualizerAdapter(
         return audioFx.getBandFreqRange(band)
     }
 
-    override fun registerObserver(observer: Equalizer.Observer) {
-        audioFx.registerObserver(AudioFxObserverImpl(observer))
+    override fun registerObserver(observer: IEqualizer.Observer) {
+        audioFx.registerObserver(AudioFxObserverWrapper(observer))
     }
 
-    override fun unregisterObserver(observer: Equalizer.Observer) {
-        audioFx.unregisterObserver(AudioFxObserverImpl(observer))
+    override fun unregisterObserver(observer: IEqualizer.Observer) {
+        audioFx.unregisterObserver(AudioFxObserverWrapper(observer))
     }
 
-    private class AudioFxObserverImpl(
-        private val equalizerObserver: Equalizer.Observer
+    private class AudioFxObserverWrapper(
+        private val equalizerObserver: IEqualizer.Observer
     ): SimpleAudioFxObserver() {
 
         override fun onBandLevelChanged(audioFx: AudioFx?, band: Short, level: Short) {
@@ -51,7 +51,7 @@ internal class AudioFxToEqualizerAdapter(
         }
 
         override fun equals(other: Any?): Boolean {
-            if (other is AudioFxObserverImpl) {
+            if (other is AudioFxObserverWrapper) {
                 return equalizerObserver == other.equalizerObserver
             }
             return false
