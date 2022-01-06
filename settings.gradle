@@ -17,6 +17,7 @@ include ':billings:app-gallery-billing-impl'
 // Utils
 include ':utils:debug-common'
 include ':utils:threads-common'
+include ':utils:rx'
 include ':utils:ui'
 include ':utils:stopwatch'
 include ':utils:headset'
@@ -27,6 +28,7 @@ include ':audio-libs:soundwaveform'
 include ':audio-libs:ringdroid'
 
 // Custom views
+include ':custom-view:equalizerview'
 include ':custom-view:mediabutton'
 
 // Custom drawable

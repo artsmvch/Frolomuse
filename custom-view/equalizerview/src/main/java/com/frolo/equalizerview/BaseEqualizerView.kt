@@ -1,4 +1,4 @@
-package com.frolo.muse.ui.main.audiofx.customview
+package com.frolo.equalizerview
 
 import android.content.Context
 import android.graphics.Canvas
@@ -15,10 +15,6 @@ import androidx.annotation.ColorInt
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.graphics.ColorUtils
 import androidx.core.view.forEach
-import com.frolo.muse.R
-import com.frolo.audiofx.AudioFx
-import com.frolo.audiofx.AudioFxObserver
-import com.frolo.audiofx.SimpleAudioFxObserver
 import java.util.*
 
 
@@ -30,8 +26,8 @@ abstract class BaseEqualizerView<V> @JvmOverloads constructor(
     defStyleRes: Int = DEFAULT_STYLE_RES_ID
 ): FrameLayout(context, attrs, defStyleAttr) where V: View, V: BaseEqualizerView.BandView {
 
-    private val audioFxObserver: AudioFxObserver = object : SimpleAudioFxObserver() {
-        override fun onBandLevelChanged(audioFx: AudioFx, band: Short, level: Short) {
+    private val equalizerObserver: Equalizer.Observer = object : Equalizer.Observer {
+        override fun onBandLevelChanged(band: Short, level: Short) {
             val container = getBandViewContainer()
             if (band >= 0 && band < container.childCount) {
                 val bandView = container.getChildAt(band.toInt()) as V
@@ -40,7 +36,7 @@ abstract class BaseEqualizerView<V> @JvmOverloads constructor(
         }
     }
 
-    protected var audioFx: AudioFx? = null
+    protected var equalizer: Equalizer? = null
         private set
 
     private val childContext: Context
@@ -140,32 +136,32 @@ abstract class BaseEqualizerView<V> @JvmOverloads constructor(
     }
 
     /**
-     * Setups the view with the given `audioFx`.
-     * @param audioFx to bind with
+     * Setups the view with the given equalizer.
+     * @param equalizer to bind with
      * @param animate if true, then the changes will be animated
      */
     @JvmOverloads
-    fun setup(audioFx: AudioFx?, animate: Boolean = true) {
+    fun setup(equalizer: Equalizer?, animate: Boolean = true) {
 
-        val oldAudioFx = this.audioFx
-        oldAudioFx?.unregisterObserver(audioFxObserver)
+        val oldEqualizer = this.equalizer
+        oldEqualizer?.unregisterObserver(equalizerObserver)
 
-        this.audioFx = audioFx
+        this.equalizer = equalizer
 
         val container = getBandViewContainer()
-        if (audioFx == null) {
-            // No Audio Fx - no band views
+        if (equalizer == null) {
+            // No equalizer - no band views
             container.removeAllViews()
             return
         }
 
         if (isAttachedToWindow) {
-            audioFx.registerObserver(audioFxObserver)
+            equalizer.registerObserver(equalizerObserver)
         }
 
-        val numberOfBands = audioFx.numberOfBands.toInt()
-        val minBandLevel = audioFx.minBandLevelRange.toInt()
-        val maxBandLevel = audioFx.maxBandLevelRange.toInt()
+        val numberOfBands = equalizer.numberOfBands
+        val minBandLevel = equalizer.minBandLevelRange
+        val maxBandLevel = equalizer.maxBandLevelRange
 
         var addedBandCount = 0
         for (bandIndex in 0 until numberOfBands) {
@@ -184,8 +180,8 @@ abstract class BaseEqualizerView<V> @JvmOverloads constructor(
 
             addedBandCount++
 
-            val currentLevel = audioFx.getBandLevel(bandIndex.toShort()).toInt()
-            val frequencyRange = audioFx.getBandFreqRange(bandIndex.toShort())
+            val currentLevel = equalizer.getBandLevel(bandIndex.toShort()).toInt()
+            val frequencyRange = equalizer.getBandFreqRange(bandIndex.toShort())
 
             val listener = object : BandListener {
                 override fun onLevelChanged(bandView: BandView, level: Int) {
@@ -223,22 +219,22 @@ abstract class BaseEqualizerView<V> @JvmOverloads constructor(
 
     /**
      * Dispatches the level change of the band at [bandIndex].
-     * Inheritors must set the new [level] value for the current audio fx.
+     * Inheritors must set the new [level] value for the current equalizer.
      * Additional throttling can be applied for this action.
      */
     protected abstract fun onDispatchLevelChange(bandIndex: Int, level: Int)
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        val currAudioFx: AudioFx? = audioFx
-        if (currAudioFx != null) {
-            currAudioFx.registerObserver(audioFxObserver)
+        val currEqualizer: Equalizer? = equalizer
+        if (currEqualizer != null) {
+            currEqualizer.registerObserver(equalizerObserver)
             val container = getBandViewContainer()
-            val numberOfBands = currAudioFx.numberOfBands.toInt()
+            val numberOfBands = currEqualizer.numberOfBands.toInt()
             val viewChildCount = container.childCount
             // Actually, the number of bands must be equal to the child count
             for (i in 0 until numberOfBands.coerceAtMost(viewChildCount)) {
-                val level = currAudioFx.getBandLevel(i.toShort()).toInt()
+                val level = currEqualizer.getBandLevel(i.toShort()).toInt()
                 val bandView = container.getChildAt(i) as BandView
                 bandView.setLevel(level, false)
             }
@@ -247,7 +243,7 @@ abstract class BaseEqualizerView<V> @JvmOverloads constructor(
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
-        audioFx?.unregisterObserver(audioFxObserver)
+        equalizer?.unregisterObserver(equalizerObserver)
     }
 
     override fun dispatchDraw(canvas: Canvas) {
@@ -396,7 +392,7 @@ abstract class BaseEqualizerView<V> @JvmOverloads constructor(
     }
 
     companion object {
-        private const val DEFAULT_STYLE_RES_ID = R.style.EqualizerView_Default
+        private val DEFAULT_STYLE_RES_ID = R.style.EqualizerView_Default
         private const val DEFAULT_GRID_COLOR = Color.TRANSPARENT
         private const val DEFAULT_LEVEL_COLOR = Color.LTGRAY
 

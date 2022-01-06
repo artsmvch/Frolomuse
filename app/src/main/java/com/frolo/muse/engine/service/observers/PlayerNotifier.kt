@@ -10,8 +10,8 @@ import com.frolo.muse.engine.service.PlayerNotificationParams
 import com.frolo.muse.engine.service.PlayerNotificationSender
 import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
 import com.frolo.muse.model.media.Song
-import com.frolo.muse.rx.flowable.doOnNextIndexed
-import com.frolo.muse.rx.flowable.withDefaultItemDelayed
+import com.frolo.rx.flowable.doOnNextIndexed
+import com.frolo.rx.flowable.withDefaultItemDelayed
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable

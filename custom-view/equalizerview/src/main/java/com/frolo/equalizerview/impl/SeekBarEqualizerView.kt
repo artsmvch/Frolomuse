@@ -1,11 +1,11 @@
-package com.frolo.muse.ui.main.audiofx.customview.impl
+package com.frolo.equalizerview.impl
 
 import android.content.Context
 import android.util.AttributeSet
 import androidx.annotation.UiThread
-import com.frolo.muse.R
-import com.frolo.muse.rx.KeyedDisposableContainer
-import com.frolo.muse.ui.main.audiofx.customview.BaseEqualizerView
+import com.frolo.equalizerview.BaseEqualizerView
+import com.frolo.equalizerview.R
+import com.frolo.rx.KeyedDisposableContainer
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.processors.FlowableProcessor
@@ -46,10 +46,10 @@ class SeekBarEqualizerView @JvmOverloads constructor(
 
     @UiThread
     private fun safelySetBandLevel(bandIndex: Int, bandLevel: Int) {
-        val safeAudioFx = this.audioFx ?: return
-        val numberOfBands = safeAudioFx.numberOfBands.toInt()
+        val safeEqualizer = this.equalizer ?: return
+        val numberOfBands = safeEqualizer.numberOfBands
         if (bandIndex in 0 until numberOfBands) {
-            safeAudioFx.setBandLevel(bandIndex.toShort(), bandLevel.toShort())
+            safeEqualizer.setBandLevel(bandIndex.toShort(), bandLevel.toShort())
         }
     }
 

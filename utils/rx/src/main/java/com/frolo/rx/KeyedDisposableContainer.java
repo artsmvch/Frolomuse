@@ -1,4 +1,6 @@
-package com.frolo.muse.rx;
+package com.frolo.rx;
+
+import androidx.annotation.GuardedBy;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -17,9 +19,9 @@ public final class KeyedDisposableContainer<K> implements Disposable, Disposable
 
     private final Object mLock = new Object();
 
+    @GuardedBy("mLock")
     private final CompositeDisposable mContainer = new CompositeDisposable();
-
-    // Guarded by mLock
+    @GuardedBy("mLock")
     private final Map<Object, Disposable> mKeyedContainer = new HashMap<>();
 
     @Override

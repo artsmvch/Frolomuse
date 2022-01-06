@@ -1,4 +1,4 @@
-package com.frolo.muse.ui.main.audiofx.customview.impl
+package com.frolo.equalizerview.impl
 
 import android.animation.ValueAnimator
 import android.content.Context
@@ -13,9 +13,9 @@ import android.widget.SeekBar
 import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.core.animation.doOnEnd
-import com.frolo.muse.BuildConfig
-import com.frolo.muse.R
-import com.frolo.muse.ui.main.audiofx.customview.BaseEqualizerView
+import com.frolo.debug.DebugUtils
+import com.frolo.equalizerview.BaseEqualizerView
+import com.frolo.equalizerview.R
 import com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBar
 
 
@@ -29,7 +29,7 @@ class SeekBarBandView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ): LinearLayout(context, attrs, defStyleAttr), BaseEqualizerView.BandView {
 
-    private val isDebug = BuildConfig.DEBUG
+    private val isDebug = DebugUtils.isDebug()
 
     private val listeners = HashSet<BaseEqualizerView.BandListener>(1)
 

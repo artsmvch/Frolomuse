@@ -1,4 +1,4 @@
-package com.frolo.muse.rx.flowable;
+package com.frolo.rx.flowable;
 
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;

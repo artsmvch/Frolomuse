@@ -17,8 +17,8 @@ import com.frolo.muse.router.AppRouter
 import com.frolo.muse.repository.AlbumRepository
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.rx.SchedulerProvider
-import com.frolo.muse.rx.flowable.doOnFirst
-import com.frolo.muse.rx.flowable.timeoutForFirstElement
+import com.frolo.rx.flowable.doOnFirst
+import com.frolo.rx.flowable.timeoutForFirstElement
 import com.frolo.muse.ui.base.BaseViewModel
 import io.reactivex.Flowable
 import java.util.concurrent.TimeUnit

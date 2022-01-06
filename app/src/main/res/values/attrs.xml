@@ -99,14 +99,4 @@
     <declare-styleable name="FitSingleLineTextView">
         <attr name="maxTextSize" format="dimension"/>
     </declare-styleable>
-
-    <!--EqualizerView-->
-    <declare-styleable name="BaseEqualizerView">
-        <attr name="drawVisuals" format="boolean"/>
-        <attr name="gridColor" format="color"/>
-        <attr name="gridLineThickness" format="dimension"/>
-        <attr name="levelColor" format="color"/>
-    </declare-styleable>
-
-    <attr name="equalizerViewStyle" format="reference"/>
 </resources>

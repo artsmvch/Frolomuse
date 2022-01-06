@@ -26,7 +26,7 @@ import com.frolo.muse.model.media.Media
 import com.frolo.muse.model.media.Song
 import com.frolo.muse.model.sound.Sound
 import com.frolo.muse.rx.SchedulerProvider
-import com.frolo.muse.rx.flowable.doOnNextIndexed
+import com.frolo.rx.flowable.doOnNextIndexed
 import com.frolo.muse.ui.base.BaseViewModel
 import com.frolo.player.AudioSource
 import com.frolo.player.AudioSourceQueue

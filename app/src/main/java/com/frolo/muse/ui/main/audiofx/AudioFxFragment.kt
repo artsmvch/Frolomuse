@@ -365,7 +365,8 @@ class AudioFxFragment: BaseFragment(), FragmentContentInsetsListener {
         }
 
         bandLevelsUpdate.observeNonNull(owner) { bandLevelsUpdate ->
-            equalizer_view.setup(bandLevelsUpdate.audioFx, bandLevelsUpdate.animate)
+            val adapter = AudioFxToEqualizerAdapter(bandLevelsUpdate.audioFx)
+            equalizer_view.setup(adapter, bandLevelsUpdate.animate)
         }
 
         presets.observeNonNull(owner) { presets ->

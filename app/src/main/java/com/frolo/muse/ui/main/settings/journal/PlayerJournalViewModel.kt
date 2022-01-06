@@ -17,7 +17,7 @@ import com.frolo.muse.engine.journals.CompositePlayerJournal
 import com.frolo.muse.engine.journals.StoredInMemoryPlayerJournal
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.rx.SchedulerProvider
-import com.frolo.muse.rx.flowable.doOnNextIndexed
+import com.frolo.rx.flowable.doOnNextIndexed
 import com.frolo.muse.ui.base.BaseAndroidViewModel
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers

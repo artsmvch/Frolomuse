@@ -43,14 +43,6 @@
         <item name="android:background">@drawable/bg_main_play_button</item>
     </style>
 
-    <!--Equalizer-->
-    <style name="EqualizerView.Default" parent="">
-        <item name="drawVisuals">true</item>
-        <item name="gridColor">#3EBDBDBD</item>
-        <item name="gridLineThickness">1dp</item>
-        <item name="levelColor">?colorAccent</item>
-    </style>
-
     <!--Lyrics-->
     <style name="TextAppearance.Lyrics.Text" parent="TextAppearance.AppCompat.Body1">
         <item name="android:lineSpacingExtra">2sp</item>

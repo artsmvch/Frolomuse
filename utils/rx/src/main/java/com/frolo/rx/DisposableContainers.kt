@@ -1,4 +1,4 @@
-package com.frolo.muse.rx
+package com.frolo.rx
 
 
 typealias StringKeyedDisposableContainer = KeyedDisposableContainer<String>

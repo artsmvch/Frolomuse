@@ -164,6 +164,7 @@ dependencies {
     implementation project(path: ':material-support')
 
     // Custom views
+    implementation project(path: ':custom-view::equalizerview')
     implementation project(path: ':custom-view::mediabutton')
 
     // Custom drawables
@@ -172,6 +173,7 @@ dependencies {
     // Utils
     implementation project(path: ':utils:debug-common')
     implementation project(path: ':utils:threads-common')
+    implementation project(path: ':utils:rx')
     implementation project(path: ':utils:ui')
     implementation project(path: ':utils:stopwatch')
     implementation project(path: ':utils:headset')
@@ -235,9 +237,6 @@ dependencies {
 
     // rx
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.1'
-
-    // equalizer bars
-    implementation 'com.h6ah4i.android.widget.verticalseekbar:verticalseekbar:0.7.2'
 
     // navigation bottom bar that controls fragments stacks
     implementation 'com.ncapdevi:frag-nav:3.2.0'

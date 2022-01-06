@@ -7,7 +7,7 @@
     android:orientation="horizontal"
     android:gravity="center">
 
-    <com.frolo.muse.ui.main.audiofx.customview.impl.SeekBarEqualizerView
+    <com.frolo.equalizerview.impl.SeekBarEqualizerView
         android:id="@+id/equalizer_view"
         android:layout_weight="1"
         android:layout_width="0dp"

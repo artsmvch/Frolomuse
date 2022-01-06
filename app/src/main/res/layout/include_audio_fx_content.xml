@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <com.frolo.muse.ui.main.audiofx.customview.impl.SeekBarEqualizerView
+    <com.frolo.equalizerview.impl.SeekBarEqualizerView
         android:id="@+id/equalizer_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"

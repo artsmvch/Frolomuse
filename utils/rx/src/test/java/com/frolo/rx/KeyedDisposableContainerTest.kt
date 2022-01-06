@@ -1,4 +1,4 @@
-package com.frolo.muse.rx
+package com.frolo.rx
 
 import io.reactivex.disposables.Disposable
 import io.reactivex.disposables.Disposables
