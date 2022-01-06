@@ -1,6 +1,7 @@
 package com.frolo.audiofx;
 
-import org.jetbrains.annotations.Nullable;
+import androidx.annotation.Nullable;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 

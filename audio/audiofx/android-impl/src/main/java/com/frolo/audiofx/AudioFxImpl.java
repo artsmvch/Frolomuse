@@ -10,12 +10,10 @@ import android.media.audiofx.Virtualizer;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.frolo.audiofx.applicable.AudioFxApplicable;
 import com.frolo.vendor.ManufacturerUtils;
-
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,7 +24,7 @@ import java.util.Objects;
 /**
  * Implementation of {@link AudioFxApplicable} based on the AudioFx effects from the Android SDK.
  */
-public class AudioFxImpl implements AudioFxApplicable {
+public final class AudioFxImpl implements AudioFxApplicable {
 
     private static final String LOG_TAG = "AudioFx_Impl";
 
@@ -47,12 +45,14 @@ public class AudioFxImpl implements AudioFxApplicable {
         void onError(Throwable error);
     }
 
-    public static AudioFxImpl getInstance(@NotNull Context context, @NotNull String prefsName) {
+    @NonNull
+    public static AudioFxImpl getInstance(@NonNull Context context, @NonNull String prefsName) {
         return getInstance(context, prefsName, null);
     }
 
+    @NonNull
     public static AudioFxImpl getInstance(
-            @NotNull Context context, @NotNull String prefsName, @Nullable ErrorHandler errorHandler) {
+            @NonNull Context context, @NonNull String prefsName, @Nullable ErrorHandler errorHandler) {
         return new AudioFxImpl(context, prefsName, errorHandler);
     }
 
