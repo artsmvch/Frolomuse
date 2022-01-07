@@ -8,6 +8,8 @@ import com.frolo.muse.common.toAudioSources
 import com.frolo.muse.router.AppRouter
 import com.frolo.music.repository.GenericMediaRepository
 import com.frolo.music.model.*
+import com.frolo.music.model.test.mockSong
+import com.frolo.music.model.test.mockSongList
 import com.frolo.test.mockKT
 import com.frolo.test.mockList
 import com.nhaarman.mockitokotlin2.*

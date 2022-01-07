@@ -9,6 +9,8 @@ import com.frolo.music.model.Media
 import com.frolo.music.model.Song
 import com.frolo.music.repository.MediaRepository
 import com.frolo.muse.repository.Preferences
+import com.frolo.music.model.test.mockMedia
+import com.frolo.music.model.test.mockMediaList
 import com.nhaarman.mockitokotlin2.*
 import io.reactivex.Single
 import org.junit.Before
@@ -18,8 +20,6 @@ import org.junit.runners.JUnit4
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import com.frolo.test.mockList
-import com.frolo.muse.mockMedia
-import com.frolo.muse.mockMediaList
 
 
 @RunWith(JUnit4::class)

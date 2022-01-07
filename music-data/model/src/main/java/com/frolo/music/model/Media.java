@@ -7,7 +7,7 @@ import java.lang.annotation.RetentionPolicy;
 
 
 public interface Media {
-    @IntDef({SONG, ALBUM, ARTIST, GENRE, PLAYLIST, MY_FILE, MEDIA_FILE})
+    @IntDef({NONE, SONG, ALBUM, ARTIST, GENRE, PLAYLIST, MY_FILE, MEDIA_FILE})
     @Retention(RetentionPolicy.SOURCE)
     @interface Kind { }
     int NONE = -1;
