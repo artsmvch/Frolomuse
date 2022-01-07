@@ -6,8 +6,9 @@ import com.frolo.muse.model.menu.SortOrderMenu
 import com.frolo.music.model.SortOrder
 import com.frolo.music.repository.AlbumRepository
 import com.frolo.muse.rx.SchedulerProvider
-import com.squareup.inject.assisted.Assisted
-import com.squareup.inject.assisted.AssistedInject
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
@@ -36,7 +37,7 @@ class GetAlbumsOfArtistUseCase @AssistedInject constructor(
                 .subscribeOn(schedulerProvider.worker())
     }
 
-    @AssistedInject.Factory
+    @AssistedFactory
     interface Factory {
         fun create(artist: Artist): GetAlbumsOfArtistUseCase
     }

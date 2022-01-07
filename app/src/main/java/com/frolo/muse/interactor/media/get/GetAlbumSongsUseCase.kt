@@ -6,8 +6,9 @@ import com.frolo.music.model.Song
 import com.frolo.music.repository.AlbumChunkRepository
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.rx.SchedulerProvider
-import com.squareup.inject.assisted.Assisted
-import com.squareup.inject.assisted.AssistedInject
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import io.reactivex.Flowable
 
 
@@ -22,7 +23,7 @@ class GetAlbumSongsUseCase @AssistedInject constructor(
         return repository.getSongsFromAlbum(album, sortOrder)
     }
 
-    @AssistedInject.Factory
+    @AssistedFactory
     interface Factory {
         fun create(album: Album): GetAlbumSongsUseCase
     }

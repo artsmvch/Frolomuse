@@ -7,8 +7,9 @@ import com.frolo.music.model.MediaFile
 import com.frolo.music.repository.MediaFileRepository
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.rx.SchedulerProvider
-import com.squareup.inject.assisted.Assisted
-import com.squareup.inject.assisted.AssistedInject
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import io.reactivex.Flowable
 import io.reactivex.Single
 
@@ -38,7 +39,7 @@ class ExploreMediaBucketUseCase @AssistedInject constructor(
         return repository.getAudioFiles(bucket)
     }
 
-    @AssistedInject.Factory
+    @AssistedFactory
     interface Factory {
         fun create(bucket: MediaBucket): ExploreMediaBucketUseCase
     }

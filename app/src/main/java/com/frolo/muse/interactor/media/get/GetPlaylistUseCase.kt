@@ -8,8 +8,9 @@ import com.frolo.music.repository.PlaylistChunkRepository
 import com.frolo.music.repository.PlaylistRepository
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.rx.SchedulerProvider
-import com.squareup.inject.assisted.Assisted
-import com.squareup.inject.assisted.AssistedInject
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import io.reactivex.Completable
 import io.reactivex.Flowable
 
@@ -184,7 +185,7 @@ class GetPlaylistUseCase @AssistedInject constructor(
         return playlistChunkRepository.moveItemInPlaylist(moveOp)
     }
 
-    @AssistedInject.Factory
+    @AssistedFactory
     interface Factory {
         fun create(playlist: Playlist): GetPlaylistUseCase
     }

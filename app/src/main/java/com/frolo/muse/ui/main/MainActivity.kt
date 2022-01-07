@@ -30,6 +30,7 @@ import androidx.transition.Fade
 import androidx.transition.TransitionManager
 import com.frolo.debug.DebugUtils
 import com.frolo.muse.*
+import com.frolo.muse.BuildConfig
 import com.frolo.muse.R
 import com.frolo.muse.android.ViewAppSettingsIntent
 import com.frolo.muse.android.startActivitySafely

@@ -5,17 +5,18 @@ import com.frolo.music.model.Playlist
 import com.frolo.music.repository.GenericMediaRepository
 import com.frolo.music.repository.PlaylistRepository
 import com.frolo.muse.rx.SchedulerProvider
-import com.squareup.inject.assisted.Assisted
-import com.squareup.inject.assisted.AssistedInject
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 import io.reactivex.Flowable
 import io.reactivex.Single
 
 
 class AddMediaToPlaylistUseCase @AssistedInject constructor(
-        private val schedulerProvider: SchedulerProvider,
-        private val playlistRepository: PlaylistRepository,
-        private val genericMediaRepository: GenericMediaRepository,
-        @Assisted private val items: List<Media>
+    private val schedulerProvider: SchedulerProvider,
+    private val playlistRepository: PlaylistRepository,
+    private val genericMediaRepository: GenericMediaRepository,
+    @Assisted private val items: List<Media>
 ) {
 
     fun getPlaylists(): Flowable<List<Playlist>> {
@@ -33,7 +34,7 @@ class AddMediaToPlaylistUseCase @AssistedInject constructor(
                 .andThen(Single.just(items.count()))
     }
 
-    @AssistedInject.Factory
+    @AssistedFactory
     interface Factory {
         fun create(items: List<Media>): AddMediaToPlaylistUseCase
     }

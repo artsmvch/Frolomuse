@@ -8,8 +8,9 @@ import com.frolo.muse.router.AppRouter
 import com.frolo.muse.logger.EventLogger
 import com.frolo.music.model.Song
 import com.frolo.muse.rx.SchedulerProvider
-import com.squareup.inject.assisted.Assisted
-import com.squareup.inject.assisted.AssistedInject
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedFactory
+import dagger.assisted.AssistedInject
 
 
 class PosterVMFactory @AssistedInject constructor(
@@ -33,7 +34,7 @@ class PosterVMFactory @AssistedInject constructor(
         ) as T
     }
 
-    @AssistedInject.Factory
+    @AssistedFactory
     interface Creator {
         fun create(song: Song): PosterVMFactory
     }
