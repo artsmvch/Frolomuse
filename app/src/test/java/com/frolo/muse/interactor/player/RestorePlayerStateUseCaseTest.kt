@@ -6,11 +6,11 @@ import com.frolo.player.Player
 import com.frolo.player.AudioSourceQueue
 import com.frolo.muse.common.toAudioSource
 import com.frolo.muse.common.toAudioSources
-import com.frolo.muse.mockSong
-import com.frolo.muse.mockSongList
 import com.frolo.music.model.Album
 import com.frolo.music.model.Song
 import com.frolo.muse.repository.*
+import com.frolo.music.model.test.mockSong
+import com.frolo.music.model.test.mockSongList
 import com.frolo.music.repository.*
 import com.frolo.test.mockKT
 import com.frolo.test.mockList
@@ -68,7 +68,7 @@ class RestorePlayerStateUseCaseTest {
     fun test_restoreState_Success() {
         val id = 1L
         val album = Album(id, "album", "artist", 10)
-        val songs = mockSongList(size = 10, allowIdCollisions = false)
+        val songs = mockSongList(size = 10)
         val targetSong = songs.first()
         val songQueue = AudioSourceQueue(songs, null)
         val playbackPosition = 1337
@@ -122,10 +122,10 @@ class RestorePlayerStateUseCaseTest {
     fun test_restoreState_SuccessDefault() {
         val albumId = randomLong()
         val album = Album(albumId, "album", "artist", 0)
-        val albumSongs = mockSongList(size = 0, allowIdCollisions = false)
+        val albumSongs = mockSongList(size = 0)
         val lastPlayedSong = mockSong(albumId = albumId)
         val playbackPosition = 1337
-        val allSongs = mockSongList(size = 100, allowIdCollisions = false)
+        val allSongs = mockSongList(size = 100)
         val expectedSong = allSongs.first()
         val expectedQueue = AudioSourceQueue.create(allSongs.toAudioSources())
 
@@ -172,10 +172,10 @@ class RestorePlayerStateUseCaseTest {
     fun test_restoreState_Failure() {
         val id = 1L
         val album = Album(id, "album", "artist", 10)
-        val songs = mockSongList(size = 0, allowIdCollisions = false)
+        val songs = mockSongList(size = 0)
         val targetSong = mockKT<Song>()
         val playbackPosition = 1337
-        val allSongs = mockSongList(size = 0, allowIdCollisions = false)
+        val allSongs = mockSongList(size = 0)
 
         whenever(preferences.lastMediaCollectionType)
                 .thenReturn(-1)

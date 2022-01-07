@@ -8,6 +8,7 @@ import com.frolo.muse.model.menu.SortOrderMenu
 import com.frolo.music.model.SortOrder
 import com.frolo.music.repository.AlbumChunkRepository
 import com.frolo.muse.repository.Preferences
+import com.frolo.music.model.test.mockSong
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.whenever
@@ -23,7 +24,6 @@ import org.junit.runners.JUnit4
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import com.frolo.test.mockKT
-import com.frolo.muse.mockSong
 
 
 @RunWith(JUnit4::class)
