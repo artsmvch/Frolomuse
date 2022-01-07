@@ -12,6 +12,10 @@ public final class FragmentUtils {
         return fragment.getHost() != null;
     }
 
+    public static boolean isAttachedToActivity(@NonNull Fragment fragment) {
+        return fragment.getActivity() != null;
+    }
+
     public static boolean isInForeground(@NonNull Fragment fragment) {
         return isAttached(fragment) && fragment.isResumed() && fragment.isVisible();
     }

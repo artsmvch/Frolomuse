@@ -8,6 +8,8 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.lifecycle.LifecycleOwner
+import com.frolo.debug.DebugUtils
+import com.frolo.muse.Logger
 import com.frolo.muse.R
 import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.model.menu.ContextualMenu
@@ -20,6 +22,7 @@ import com.frolo.muse.ui.base.RESPermissionObserver
 import com.frolo.muse.ui.main.confirmDeletion
 import com.frolo.muse.ui.main.confirmShortcutCreation
 import com.frolo.music.model.Media
+import com.frolo.ui.FragmentUtils
 
 
 abstract class AbsMediaCollectionFragment <E: Media>: BaseFragment(),
@@ -39,7 +42,15 @@ abstract class AbsMediaCollectionFragment <E: Media>: BaseFragment(),
         super.onCreate(savedInstanceState)
         context?.also { safeContext ->
             RESPermissionObserver.observe(safeContext, this) {
-                viewModel.onReadPermissionGrantedSomewhere()
+                // We only should access the view model if the fragment is attached to an activity
+                // to prevent unexpected crashes while providing the view model.
+                if (FragmentUtils.isAttachedToActivity(this)) {
+                    viewModel.onReadPermissionGrantedSomewhere()
+                } else {
+                    val error = IllegalStateException("RESPermissionObserver calls at the wrong time")
+                    Logger.e(error)
+                    DebugUtils.dumpOnMainThread(error)
+                }
             }
         }
     }
