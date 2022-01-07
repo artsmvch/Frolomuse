@@ -5,7 +5,7 @@ import androidx.annotation.NonNull;
 import java.io.Serializable;
 
 
-public final  class Album implements Media, Serializable {
+public final class Album implements Media, Serializable {
     private final long id;
     private final String name;
     private final String artist;
