@@ -1,6 +1,6 @@
 package com.frolo.player;
 
-import org.jetbrains.annotations.NotNull;
+import androidx.annotation.NonNull;
 
 
 /**
@@ -21,7 +21,7 @@ public abstract class PlaybackFadingStrategy {
      * @return fading interval
      */
     @Deprecated
-    public static int getInterval(@NotNull PlaybackFadingStrategy strategy) {
+    public static int getInterval(@NonNull PlaybackFadingStrategy strategy) {
         if (strategy instanceof StaticIntervalPlaybackFading) {
             return ((StaticIntervalPlaybackFading) strategy).mInterval;
         }
@@ -33,22 +33,22 @@ public abstract class PlaybackFadingStrategy {
         return 0;
     }
 
-    @NotNull
+    @NonNull
     public static PlaybackFadingStrategy none() {
         return new NonePlaybackFading();
     }
 
-    @NotNull
+    @NonNull
     public static PlaybackFadingStrategy withStaticInterval(int interval) {
         return new StaticIntervalPlaybackFading(interval);
     }
 
-    @NotNull
+    @NonNull
     public static PlaybackFadingStrategy withPercentInterval(float percent) {
         return new PercentIntervalPlaybackFading(percent);
     }
 
-    @NotNull
+    @NonNull
     public static PlaybackFadingStrategy withSmartStaticInterval(int targetInterval) {
         return new SmartStaticIntervalPlaybackFading(targetInterval);
     }

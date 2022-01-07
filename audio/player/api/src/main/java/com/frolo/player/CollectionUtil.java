@@ -1,9 +1,10 @@
 package com.frolo.player;
 
-import org.jetbrains.annotations.Nullable;
+import androidx.annotation.Nullable;
 
 import java.util.List;
 import java.util.Objects;
+
 
 final class CollectionUtil {
 

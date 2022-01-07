@@ -1,7 +1,7 @@
 package com.frolo.player;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 
 public interface PlayerObserver {
@@ -14,33 +14,33 @@ public interface PlayerObserver {
      * @param duration duration of the current audio source
      * @param progress current playback progress
      */
-    void onPrepared(@NotNull Player player, int duration, int progress);
+    void onPrepared(@NonNull Player player, int duration, int progress);
 
     /**
      * Called when <code>player</code> starts playing.
      * @param player that starts playing
      */
-    void onPlaybackStarted(@NotNull Player player);
+    void onPlaybackStarted(@NonNull Player player);
 
     /**
      * Called when <code>player</code> pauses playback.
      * @param player that pauses playback
      */
-    void onPlaybackPaused(@NotNull Player player);
+    void onPlaybackPaused(@NonNull Player player);
 
     /**
      * Called when the user has positioned the playback at the given <code>position</code>.
      * NOTE: called only when the user changes the position himself.
      * @param player on which the user has positioned the playback at the position
      */
-    void onSoughtTo(@NotNull Player player, int position);
+    void onSoughtTo(@NonNull Player player, int position);
 
     /**
      * Called when the current audio source queue gets changed for the given <code>player</code>.
      * @param player for which the current queue is changed
      * @param queue new audio source queue
      */
-    void onQueueChanged(@NotNull Player player, @NotNull AudioSourceQueue queue);
+    void onQueueChanged(@NonNull Player player, @NonNull AudioSourceQueue queue);
 
     /**
      * Called when the current audio source gets changed for the given <code>player</code>.
@@ -48,7 +48,7 @@ public interface PlayerObserver {
      * @param item new audio source
      * @param positionInQueue position of the new audio source in the current queue
      */
-    void onAudioSourceChanged(@NotNull Player player, @Nullable AudioSource item, int positionInQueue);
+    void onAudioSourceChanged(@NonNull Player player, @Nullable AudioSource item, int positionInQueue);
 
     /**
      * Called when the current audio source item has been updated for the given <code>player</code>.
@@ -56,35 +56,35 @@ public interface PlayerObserver {
      * @param player for which the current audio source has been updated
      * @param item updated audio source value
      */
-    void onAudioSourceUpdated(@NotNull Player player, @NotNull AudioSource item);
+    void onAudioSourceUpdated(@NonNull Player player, @NonNull AudioSource item);
 
     /**
      * Called when the position of the current audio source in queue gets changed for the given <code>player</code>.
      * @param player for which the current audio source is changed
      * @param positionInQueue new position of the current audio source in the queue
      */
-    void onPositionInQueueChanged(@NotNull Player player, int positionInQueue);
+    void onPositionInQueueChanged(@NonNull Player player, int positionInQueue);
 
     /**
      * Called when the current shuffle mode gets changed for the given <code>player</code>.
      * @param player for which the current shuffle mode is changed
      * @param mode new shuffle mode
      */
-    void onShuffleModeChanged(@NotNull Player player, @Player.ShuffleMode int mode);
+    void onShuffleModeChanged(@NonNull Player player, @Player.ShuffleMode int mode);
 
     /**
      * Called when the current repeat mode gets changed for the given <code>player</code>.
      * @param player for which the current repeat mode is changed
      * @param mode new repeat mode
      */
-    void onRepeatModeChanged(@NotNull Player player, @Player.RepeatMode int mode);
+    void onRepeatModeChanged(@NonNull Player player, @Player.RepeatMode int mode);
 
     /**
      * Called when the given <code>player</code> is shutdown.
      * This is the termination state, no calls to the callback methods are expected after this.
      * @param player that is shutdown
      */
-    void onShutdown(@NotNull Player player);
+    void onShutdown(@NonNull Player player);
 
     /**
      * Called when the A-B status gets changed for the given <code>player</code>.
@@ -93,21 +93,21 @@ public interface PlayerObserver {
      * @param aPointed true if the A is pointed, false - otherwise
      * @param bPointed true if the B is pointed, false - otherwise.
      */
-    void onABChanged(@NotNull Player player, boolean aPointed, boolean bPointed);
+    void onABChanged(@NonNull Player player, boolean aPointed, boolean bPointed);
 
     /**
      * Called when the playback speed gets changed for the given <code>player</code>.
      * @param player for which the playback speed is changed
      * @param speed the new speed
      */
-    void onPlaybackSpeedChanged(@NotNull Player player, float speed);
+    void onPlaybackSpeedChanged(@NonNull Player player, float speed);
 
     /**
      * Called when the playback pitch gets changed for the given <code>player</code>.
      * @param player for which the playback pitch is changed
      * @param pitch the new pitch
      */
-    void onPlaybackPitchChanged(@NotNull Player player, float pitch);
+    void onPlaybackPitchChanged(@NonNull Player player, float pitch);
 
     /**
      * Called when an internal error has occurred in the given <code>player</code>.
@@ -115,6 +115,6 @@ public interface PlayerObserver {
      * @param player with an internal error
      * @param error internal error
      */
-    void onInternalErrorOccurred(@NotNull Player player, @NotNull Throwable error);
+    void onInternalErrorOccurred(@NonNull Player player, @NonNull Throwable error);
 
 }

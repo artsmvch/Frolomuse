@@ -1,6 +1,6 @@
 package com.frolo.player;
 
-import org.jetbrains.annotations.NotNull;
+import androidx.annotation.NonNull;
 
 
 final class MathUtil {
@@ -11,7 +11,7 @@ final class MathUtil {
         return value;
     }
 
-    static float clamp(float value, @NotNull Range range) {
+    static float clamp(float value, @NonNull Range range) {
         return clamp(value, range.min, range.max);
     }
 

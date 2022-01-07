@@ -1,12 +1,7 @@
 package com.frolo.player;
 
-import com.frolo.player.AudioSource;
-import com.frolo.player.AudioSourceQueue;
-import com.frolo.player.Player;
-import com.frolo.player.PlayerObserver;
-
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 
 /**
@@ -16,63 +11,63 @@ import org.jetbrains.annotations.Nullable;
 public abstract class SimplePlayerObserver implements PlayerObserver {
 
     @Override
-    public void onPrepared(@NotNull Player player, int duration, int progress) {
+    public void onPrepared(@NonNull Player player, int duration, int progress) {
     }
 
     @Override
-    public void onPlaybackStarted(@NotNull Player player) {
+    public void onPlaybackStarted(@NonNull Player player) {
     }
 
     @Override
-    public void onPlaybackPaused(@NotNull Player player) {
+    public void onPlaybackPaused(@NonNull Player player) {
     }
 
     @Override
-    public void onSoughtTo(@NotNull Player player, int position) {
+    public void onSoughtTo(@NonNull Player player, int position) {
     }
 
     @Override
-    public void onQueueChanged(@NotNull Player player, @NotNull AudioSourceQueue queue) {
+    public void onQueueChanged(@NonNull Player player, @NonNull AudioSourceQueue queue) {
     }
 
     @Override
-    public void onAudioSourceChanged(@NotNull Player player, @Nullable AudioSource item, int positionInQueue) {
+    public void onAudioSourceChanged(@NonNull Player player, @Nullable AudioSource item, int positionInQueue) {
     }
 
     @Override
-    public void onAudioSourceUpdated(@NotNull Player player, @NotNull AudioSource item) {
+    public void onAudioSourceUpdated(@NonNull Player player, @NonNull AudioSource item) {
     }
 
     @Override
-    public void onPositionInQueueChanged(@NotNull Player player, int positionInQueue) {
+    public void onPositionInQueueChanged(@NonNull Player player, int positionInQueue) {
     }
 
     @Override
-    public void onShuffleModeChanged(@NotNull Player player, @Player.ShuffleMode int mode) {
+    public void onShuffleModeChanged(@NonNull Player player, @Player.ShuffleMode int mode) {
     }
 
     @Override
-    public void onRepeatModeChanged(@NotNull Player player, @Player.RepeatMode int mode) {
+    public void onRepeatModeChanged(@NonNull Player player, @Player.RepeatMode int mode) {
     }
 
     @Override
-    public void onShutdown(@NotNull Player player) {
+    public void onShutdown(@NonNull Player player) {
     }
 
     @Override
-    public void onABChanged(@NotNull Player player, boolean aPointed, boolean bPointed) {
+    public void onABChanged(@NonNull Player player, boolean aPointed, boolean bPointed) {
     }
 
     @Override
-    public void onPlaybackSpeedChanged(@NotNull Player player, float speed) {
+    public void onPlaybackSpeedChanged(@NonNull Player player, float speed) {
     }
 
     @Override
-    public void onPlaybackPitchChanged(@NotNull Player player, float pitch) {
+    public void onPlaybackPitchChanged(@NonNull Player player, float pitch) {
     }
 
     @Override
-    public void onInternalErrorOccurred(@NotNull Player player, @NotNull Throwable error) {
+    public void onInternalErrorOccurred(@NonNull Player player, @NonNull Throwable error) {
     }
 
 }

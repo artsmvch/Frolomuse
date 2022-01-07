@@ -1,6 +1,6 @@
 package com.frolo.player;
 
-import org.jetbrains.annotations.NotNull;
+import androidx.annotation.NonNull;
 
 import java.io.Serializable;
 
@@ -30,7 +30,7 @@ public interface AudioSource extends Serializable {
      * NOTE: should be not null.
      * @return the metadata of the AudioSource.
      */
-    @NotNull
+    @NonNull
     AudioMetadata getMetadata();
 
 }

@@ -34,6 +34,8 @@ public final class AudioSourceQueue implements Tagged<Object, Object>, Cloneable
     private final ReadWriteLock mTagsLock = new ReentrantReadWriteLock();
     private final Map<Object, Object> mTags = new HashMap<>();
 
+    private final Shuffler<AudioSource> mShuffler = new DefaultShuffler<>();
+
     private class Invalidator implements Runnable {
         final Callback mCallback;
 
@@ -254,7 +256,7 @@ public final class AudioSourceQueue implements Tagged<Object, Object>, Cloneable
      * Shuffles the queue.
      */
     /* package */ synchronized void shuffle() {
-        Collections.shuffle(mItems);
+        mShuffler.shuffle(mItems);
         invalidateSelf();
     }
 
@@ -263,7 +265,7 @@ public final class AudioSourceQueue implements Tagged<Object, Object>, Cloneable
      * This puts the given audio source in the front only if the queue contains it.
      */
     /* package */ synchronized void shuffleWithItemInFront(AudioSource putInFront) {
-        Collections.shuffle(mItems);
+        mShuffler.shuffle(mItems);
         if (mItems.remove(putInFront)) {
             mItems.add(0, putInFront);
         }
