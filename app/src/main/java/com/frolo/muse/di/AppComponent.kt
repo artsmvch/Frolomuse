@@ -13,7 +13,7 @@ import com.frolo.muse.router.AppRouter
 import com.frolo.muse.repository.AppearancePreferences
 import com.frolo.muse.repository.LibraryPreferences
 import com.frolo.muse.repository.Preferences
-import com.frolo.muse.repository.SongRepository
+import com.frolo.music.repository.SongRepository
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.base.BaseActivity
 import com.frolo.muse.ui.main.audiofx.params.PlaybackParamsDialog

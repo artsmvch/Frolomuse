@@ -5,7 +5,7 @@ package com.frolo.muse
 import android.content.Context
 import com.frolo.muse.di.impl.local.LibraryConfiguration
 import com.frolo.music.model.SongFilter
-import com.frolo.muse.repository.SongFilterProvider
+import com.frolo.music.repository.SongFilterProvider
 import io.reactivex.Flowable
 import java.util.concurrent.Executor
 

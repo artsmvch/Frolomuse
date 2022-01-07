@@ -1,6 +1,6 @@
 package com.frolo.muse
 
-import com.frolo.muse.model.sort.SortOrder
+import com.frolo.music.model.SortOrder
 
 
 class TestSortOrder constructor(

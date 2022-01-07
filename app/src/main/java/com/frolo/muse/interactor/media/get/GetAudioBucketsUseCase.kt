@@ -1,7 +1,7 @@
 package com.frolo.muse.interactor.media.get
 
 import com.frolo.music.model.MediaBucket
-import com.frolo.muse.repository.MediaFileRepository
+import com.frolo.music.repository.MediaFileRepository
 import com.frolo.muse.rx.SchedulerProvider
 import io.reactivex.Flowable
 import javax.inject.Inject

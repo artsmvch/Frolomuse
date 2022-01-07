@@ -2,7 +2,7 @@ package com.frolo.muse.interactor.media.get
 
 import com.frolo.muse.model.Library
 import com.frolo.music.model.MyFile
-import com.frolo.muse.repository.MyFileRepository
+import com.frolo.music.repository.MyFileRepository
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.rx.SchedulerProvider
 import io.reactivex.Flowable

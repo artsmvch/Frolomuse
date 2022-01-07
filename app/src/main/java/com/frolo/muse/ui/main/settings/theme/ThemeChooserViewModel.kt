@@ -14,7 +14,7 @@ import com.frolo.muse.logger.logThemeChanged
 import com.frolo.muse.model.Theme
 import com.frolo.music.model.Album
 import com.frolo.muse.router.AppRouter
-import com.frolo.muse.repository.AlbumRepository
+import com.frolo.music.repository.AlbumRepository
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.rx.flowable.doOnFirst

@@ -5,7 +5,7 @@ import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.logFailedToTransferPlaylists
 import com.frolo.muse.logger.logPlaylistsTransferred
 import com.frolo.muse.permission.PermissionChecker
-import com.frolo.muse.repository.PlaylistRepository
+import com.frolo.music.repository.PlaylistRepository
 import com.frolo.muse.repository.PlaylistTransferPreferences
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.rx.SchedulerProvider

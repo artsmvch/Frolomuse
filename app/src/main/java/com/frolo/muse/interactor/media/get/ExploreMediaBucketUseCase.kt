@@ -4,7 +4,7 @@ import com.frolo.player.AudioSource
 import com.frolo.muse.model.Library
 import com.frolo.music.model.MediaBucket
 import com.frolo.music.model.MediaFile
-import com.frolo.muse.repository.MediaFileRepository
+import com.frolo.music.repository.MediaFileRepository
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.rx.SchedulerProvider
 import com.squareup.inject.assisted.Assisted

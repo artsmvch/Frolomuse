@@ -6,7 +6,7 @@ import com.frolo.muse.arch.SingleLiveEvent
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.logPlaylistUpdated
 import com.frolo.music.model.Playlist
-import com.frolo.muse.repository.PlaylistRepository
+import com.frolo.music.repository.PlaylistRepository
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.base.BaseViewModel
 

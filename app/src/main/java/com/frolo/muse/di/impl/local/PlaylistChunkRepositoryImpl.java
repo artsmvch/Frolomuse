@@ -3,8 +3,8 @@ package com.frolo.muse.di.impl.local;
 import com.frolo.muse.R;
 import com.frolo.music.model.Playlist;
 import com.frolo.music.model.Song;
-import com.frolo.muse.model.sort.SortOrder;
-import com.frolo.muse.repository.PlaylistChunkRepository;
+import com.frolo.music.model.SortOrder;
+import com.frolo.music.repository.PlaylistChunkRepository;
 
 import java.util.Collection;
 import java.util.Collections;

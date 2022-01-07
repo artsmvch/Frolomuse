@@ -20,7 +20,7 @@ import com.frolo.muse.model.event.MultipleDeletionConfirmation
 import com.frolo.muse.model.menu.ContextualMenu
 import com.frolo.muse.model.menu.OptionsMenu
 import com.frolo.muse.model.menu.SortOrderMenu
-import com.frolo.muse.model.sort.SortOrder
+import com.frolo.music.model.SortOrder
 import com.frolo.muse.permission.PermissionChecker
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.base.BaseViewModel

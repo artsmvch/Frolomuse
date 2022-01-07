@@ -1,8 +1,8 @@
 package com.frolo.muse.di.impl.local;
 
 import com.frolo.muse.R;
-import com.frolo.muse.model.sort.SortOrder;
-import com.frolo.muse.repository.AlbumChunkRepository;
+import com.frolo.music.model.SortOrder;
+import com.frolo.music.repository.AlbumChunkRepository;
 
 import java.util.List;
 

@@ -4,8 +4,8 @@ import com.frolo.muse.router.AppRouter
 import com.frolo.muse.model.Library
 import com.frolo.music.model.Playlist
 import com.frolo.music.model.Song
-import com.frolo.muse.repository.PlaylistChunkRepository
-import com.frolo.muse.repository.PlaylistRepository
+import com.frolo.music.repository.PlaylistChunkRepository
+import com.frolo.music.repository.PlaylistRepository
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.rx.SchedulerProvider
 import com.squareup.inject.assisted.Assisted

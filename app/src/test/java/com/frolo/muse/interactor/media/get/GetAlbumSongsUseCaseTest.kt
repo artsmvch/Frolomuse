@@ -5,8 +5,8 @@ import com.frolo.muse.model.Library
 import com.frolo.music.model.Album
 import com.frolo.music.model.Song
 import com.frolo.muse.model.menu.SortOrderMenu
-import com.frolo.muse.model.sort.SortOrder
-import com.frolo.muse.repository.AlbumChunkRepository
+import com.frolo.music.model.SortOrder
+import com.frolo.music.repository.AlbumChunkRepository
 import com.frolo.muse.repository.Preferences
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.eq

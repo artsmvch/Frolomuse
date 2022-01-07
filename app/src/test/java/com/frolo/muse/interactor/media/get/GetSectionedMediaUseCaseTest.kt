@@ -6,7 +6,7 @@ import com.frolo.muse.mockMediaList
 import com.frolo.muse.model.Library
 import com.frolo.music.model.Media
 import com.frolo.muse.model.menu.SortOrderMenu
-import com.frolo.muse.repository.MediaRepository
+import com.frolo.music.repository.MediaRepository
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.rx.SchedulerProvider
 import com.nhaarman.mockitokotlin2.doReturn

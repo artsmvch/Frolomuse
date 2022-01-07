@@ -10,8 +10,8 @@ import com.frolo.muse.BuildConfig;
 import com.frolo.music.model.Media;
 import com.frolo.music.model.Song;
 import com.frolo.music.model.SongFilter;
-import com.frolo.muse.model.sort.SortOrder;
-import com.frolo.muse.repository.MediaRepository;
+import com.frolo.music.model.SortOrder;
+import com.frolo.music.repository.MediaRepository;
 
 import java.util.ArrayList;
 import java.util.Collection;

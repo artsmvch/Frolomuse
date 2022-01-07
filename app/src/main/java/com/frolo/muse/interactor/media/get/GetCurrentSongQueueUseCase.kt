@@ -4,7 +4,7 @@ import com.frolo.muse.common.toSongs
 import com.frolo.player.Player
 import com.frolo.music.model.Song
 import com.frolo.muse.model.menu.SortOrderMenu
-import com.frolo.muse.model.sort.SortOrder
+import com.frolo.music.model.SortOrder
 import com.frolo.muse.rx.SchedulerProvider
 import io.reactivex.Completable
 import io.reactivex.Flowable

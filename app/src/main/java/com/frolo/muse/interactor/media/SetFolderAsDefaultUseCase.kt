@@ -1,7 +1,7 @@
 package com.frolo.muse.interactor.media
 
 import com.frolo.music.model.MyFile
-import com.frolo.muse.repository.MyFileRepository
+import com.frolo.music.repository.MyFileRepository
 import com.frolo.muse.rx.SchedulerProvider
 import io.reactivex.Completable
 import javax.inject.Inject

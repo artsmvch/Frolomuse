@@ -14,7 +14,7 @@ import android.text.style.ForegroundColorSpan
 import android.text.SpannableString
 import android.view.MenuItem
 import androidx.core.content.ContextCompat
-import com.frolo.muse.model.sort.SortOrder
+import com.frolo.music.model.SortOrder
 
 
 private fun MenuItem.setEnabledCompat(enabled: Boolean, context: Context) {

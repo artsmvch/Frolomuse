@@ -2,7 +2,7 @@ package com.frolo.muse.interactor.media
 
 import com.frolo.muse.router.AppRouter
 import com.frolo.music.model.Media
-import com.frolo.muse.repository.MediaRepository
+import com.frolo.music.repository.MediaRepository
 import com.frolo.muse.rx.SchedulerProvider
 import io.reactivex.Completable
 

@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.frolo.muse.di.AppComponent
 import com.frolo.muse.logger.EventLogger
 import com.frolo.music.model.Playlist
-import com.frolo.muse.repository.PlaylistRepository
+import com.frolo.music.repository.PlaylistRepository
 import com.frolo.muse.rx.SchedulerProvider
 import javax.inject.Inject
 

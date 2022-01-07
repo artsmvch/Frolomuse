@@ -3,7 +3,7 @@ package com.frolo.muse.interactor.media.get
 import com.frolo.muse.model.Library
 import com.frolo.music.model.Album
 import com.frolo.music.model.Song
-import com.frolo.muse.repository.AlbumChunkRepository
+import com.frolo.music.repository.AlbumChunkRepository
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.rx.SchedulerProvider
 import com.squareup.inject.assisted.Assisted

@@ -2,7 +2,7 @@ package com.frolo.muse.model.menu;
 
 import androidx.annotation.Nullable;
 
-import com.frolo.muse.model.sort.SortOrder;
+import com.frolo.music.model.SortOrder;
 
 import java.util.List;
 

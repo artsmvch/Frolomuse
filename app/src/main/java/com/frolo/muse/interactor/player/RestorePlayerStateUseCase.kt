@@ -6,6 +6,7 @@ import com.frolo.player.AudioSourceQueue
 import com.frolo.player.AudioSource
 import com.frolo.muse.repository.*
 import com.frolo.muse.rx.SchedulerProvider
+import com.frolo.music.repository.*
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single

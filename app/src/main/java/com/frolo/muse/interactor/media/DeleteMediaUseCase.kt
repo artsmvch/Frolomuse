@@ -7,8 +7,8 @@ import com.frolo.muse.model.event.DeletionType
 import com.frolo.music.model.Media
 import com.frolo.music.model.Playlist
 import com.frolo.music.model.Song
-import com.frolo.muse.repository.MediaRepository
-import com.frolo.muse.repository.PlaylistChunkRepository
+import com.frolo.music.repository.MediaRepository
+import com.frolo.music.repository.PlaylistChunkRepository
 import com.frolo.muse.rx.SchedulerProvider
 import io.reactivex.Completable
 

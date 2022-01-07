@@ -4,8 +4,8 @@ import com.frolo.muse.Features;
 import com.frolo.muse.R;
 import com.frolo.music.model.Playlist;
 import com.frolo.music.model.Song;
-import com.frolo.muse.model.sort.SortOrder;
-import com.frolo.muse.repository.PlaylistRepository;
+import com.frolo.music.model.SortOrder;
+import com.frolo.music.repository.PlaylistRepository;
 
 import java.util.ArrayList;
 import java.util.Arrays;

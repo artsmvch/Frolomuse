@@ -6,7 +6,7 @@ import com.frolo.player.AudioSourceQueue
 import com.frolo.muse.common.toAudioSource
 import com.frolo.muse.common.toAudioSources
 import com.frolo.muse.router.AppRouter
-import com.frolo.muse.repository.GenericMediaRepository
+import com.frolo.music.repository.GenericMediaRepository
 import com.frolo.music.model.*
 import com.frolo.test.mockKT
 import com.frolo.test.mockList

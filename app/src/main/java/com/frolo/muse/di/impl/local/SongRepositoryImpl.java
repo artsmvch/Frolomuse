@@ -7,8 +7,8 @@ import com.frolo.music.model.Genre;
 import com.frolo.music.model.Playlist;
 import com.frolo.music.model.Song;
 import com.frolo.music.model.SongFilter;
-import com.frolo.muse.model.sort.SortOrder;
-import com.frolo.muse.repository.SongRepository;
+import com.frolo.music.model.SortOrder;
+import com.frolo.music.repository.SongRepository;
 
 import java.util.ArrayList;
 import java.util.Collection;

@@ -1,7 +1,7 @@
 package com.frolo.muse.interactor.media
 
 import com.frolo.music.model.Song
-import com.frolo.muse.repository.SongRepository
+import com.frolo.music.repository.SongRepository
 import com.frolo.muse.rx.SchedulerProvider
 import io.reactivex.Completable
 

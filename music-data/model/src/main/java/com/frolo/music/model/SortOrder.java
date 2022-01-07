@@ -1,6 +1,6 @@
-package com.frolo.muse.model.sort;
+package com.frolo.music.model;
 
-import org.jetbrains.annotations.Nullable;
+import androidx.annotation.Nullable;
 
 import java.util.List;
 import java.util.Objects;
@@ -71,4 +71,8 @@ public abstract class SortOrder {
         return Objects.equals(getKey(), other.getKey()) && Objects.equals(getLocalizedName(), other.getLocalizedName());
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(getKey(), getLocalizedName());
+    }
 }

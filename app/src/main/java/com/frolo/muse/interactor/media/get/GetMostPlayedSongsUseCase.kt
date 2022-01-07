@@ -2,8 +2,8 @@ package com.frolo.muse.interactor.media.get
 
 import com.frolo.music.model.SongWithPlayCount
 import com.frolo.muse.model.menu.SortOrderMenu
-import com.frolo.muse.model.sort.SortOrder
-import com.frolo.muse.repository.SongWithPlayCountRepository
+import com.frolo.music.model.SortOrder
+import com.frolo.music.repository.SongWithPlayCountRepository
 import com.frolo.muse.rx.SchedulerProvider
 import io.reactivex.Completable
 import io.reactivex.Flowable

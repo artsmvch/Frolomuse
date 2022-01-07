@@ -1,10 +1,10 @@
-package com.frolo.muse.repository;
+package com.frolo.music.repository;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.frolo.music.model.Playlist;
 import com.frolo.music.model.Song;
-
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 
@@ -38,7 +38,7 @@ public interface PlaylistChunkRepository extends SongRepository {
         /**
          * Target song item that is being moved.
          */
-        @NotNull
+        @NonNull
         public final Song target;
         /**
          * The song that will be 'previous' to the target after the movement completes.
@@ -51,7 +51,7 @@ public interface PlaylistChunkRepository extends SongRepository {
         @Nullable
         public final Song next;
 
-        public MoveOp(@NotNull Song target, @Nullable Song previous, @Nullable Song next) {
+        public MoveOp(@NonNull Song target, @Nullable Song previous, @Nullable Song next) {
             this.target = target;
             this.previous = previous;
             this.next = next;

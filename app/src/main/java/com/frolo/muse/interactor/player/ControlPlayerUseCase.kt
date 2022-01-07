@@ -6,8 +6,8 @@ import com.frolo.player.Player
 import com.frolo.music.model.Album
 import com.frolo.music.model.Artist
 import com.frolo.music.model.Genre
-import com.frolo.muse.repository.AlbumRepository
-import com.frolo.muse.repository.ArtistRepository
+import com.frolo.music.repository.AlbumRepository
+import com.frolo.music.repository.ArtistRepository
 import com.frolo.muse.rx.SchedulerProvider
 import io.reactivex.Single
 import javax.inject.Inject

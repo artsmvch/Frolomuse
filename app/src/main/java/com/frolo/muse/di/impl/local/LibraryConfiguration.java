@@ -4,7 +4,7 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 
-import com.frolo.muse.repository.SongFilterProvider;
+import com.frolo.music.repository.SongFilterProvider;
 
 import java.util.concurrent.Executor;
 

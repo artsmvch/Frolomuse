@@ -2,8 +2,8 @@ package com.frolo.muse.interactor.media
 
 import com.frolo.music.model.Media
 import com.frolo.music.model.Playlist
-import com.frolo.muse.repository.GenericMediaRepository
-import com.frolo.muse.repository.PlaylistRepository
+import com.frolo.music.repository.GenericMediaRepository
+import com.frolo.music.repository.PlaylistRepository
 import com.frolo.muse.rx.SchedulerProvider
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject

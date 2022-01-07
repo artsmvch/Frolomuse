@@ -1,6 +1,4 @@
-package com.frolo.muse.repository;
-
+package com.frolo.music.repository;
 
 public interface ArtistChunkRepository extends SongRepository {
-
 }

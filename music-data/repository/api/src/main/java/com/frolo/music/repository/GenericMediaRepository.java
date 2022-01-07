@@ -1,4 +1,4 @@
-package com.frolo.muse.repository;
+package com.frolo.music.repository;
 
 import com.frolo.music.model.Media;
 

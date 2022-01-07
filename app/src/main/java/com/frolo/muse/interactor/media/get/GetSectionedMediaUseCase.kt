@@ -3,8 +3,8 @@ package com.frolo.muse.interactor.media.get
 import com.frolo.muse.model.Library
 import com.frolo.music.model.Media
 import com.frolo.muse.model.menu.SortOrderMenu
-import com.frolo.muse.model.sort.SortOrder
-import com.frolo.muse.repository.MediaRepository
+import com.frolo.music.model.SortOrder
+import com.frolo.music.repository.MediaRepository
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.rx.SchedulerProvider
 import io.reactivex.Completable

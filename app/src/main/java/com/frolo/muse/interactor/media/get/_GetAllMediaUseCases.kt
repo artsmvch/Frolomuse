@@ -6,6 +6,7 @@ import com.frolo.muse.model.Library
 import com.frolo.muse.repository.*
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.music.model.*
+import com.frolo.music.repository.*
 import io.reactivex.Flowable
 
 

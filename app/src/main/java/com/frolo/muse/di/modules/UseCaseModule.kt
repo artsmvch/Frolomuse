@@ -12,6 +12,7 @@ import com.frolo.muse.interactor.rate.RateUseCase
 import com.frolo.muse.repository.*
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.music.model.*
+import com.frolo.music.repository.*
 import com.squareup.inject.assisted.dagger2.AssistedModule
 import dagger.Module
 import dagger.Provides

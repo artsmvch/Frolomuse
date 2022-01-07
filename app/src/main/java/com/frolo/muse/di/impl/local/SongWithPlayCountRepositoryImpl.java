@@ -3,9 +3,9 @@ package com.frolo.muse.di.impl.local;
 import com.frolo.music.model.Playlist;
 import com.frolo.music.model.Song;
 import com.frolo.music.model.SongWithPlayCount;
-import com.frolo.muse.model.sort.SortOrder;
-import com.frolo.muse.repository.SongRepository;
-import com.frolo.muse.repository.SongWithPlayCountRepository;
+import com.frolo.music.model.SortOrder;
+import com.frolo.music.repository.SongRepository;
+import com.frolo.music.repository.SongWithPlayCountRepository;
 
 import org.reactivestreams.Publisher;
 

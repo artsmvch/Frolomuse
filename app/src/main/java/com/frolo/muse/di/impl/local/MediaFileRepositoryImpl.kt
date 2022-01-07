@@ -8,9 +8,9 @@ import com.frolo.music.model.MediaBucket
 import com.frolo.music.model.MediaFile
 import com.frolo.music.model.Playlist
 import com.frolo.music.model.Song
-import com.frolo.muse.model.sort.SortOrder
-import com.frolo.muse.repository.MediaFileRepository
-import com.frolo.muse.repository.SongRepository
+import com.frolo.music.model.SortOrder
+import com.frolo.music.repository.MediaFileRepository
+import com.frolo.music.repository.SongRepository
 import com.frolo.rxcontent.CursorMapper
 import com.frolo.rxcontent.RxContent
 import io.reactivex.Completable

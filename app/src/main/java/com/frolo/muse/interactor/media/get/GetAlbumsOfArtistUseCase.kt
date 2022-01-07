@@ -3,8 +3,8 @@ package com.frolo.muse.interactor.media.get
 import com.frolo.music.model.Album
 import com.frolo.music.model.Artist
 import com.frolo.muse.model.menu.SortOrderMenu
-import com.frolo.muse.model.sort.SortOrder
-import com.frolo.muse.repository.AlbumRepository
+import com.frolo.music.model.SortOrder
+import com.frolo.music.repository.AlbumRepository
 import com.frolo.muse.rx.SchedulerProvider
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject

@@ -1,9 +1,9 @@
-package com.frolo.muse.repository;
+package com.frolo.music.repository;
 
 import com.frolo.music.model.Media;
 import com.frolo.music.model.Playlist;
 import com.frolo.music.model.Song;
-import com.frolo.muse.model.sort.SortOrder;
+import com.frolo.music.model.SortOrder;
 
 import java.util.Collection;
 import java.util.List;

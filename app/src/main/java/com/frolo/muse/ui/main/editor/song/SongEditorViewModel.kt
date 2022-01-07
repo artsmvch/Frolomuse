@@ -17,7 +17,7 @@ import com.frolo.player.Player
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.logSongUpdated
 import com.frolo.music.model.Song
-import com.frolo.muse.repository.SongRepository
+import com.frolo.music.repository.SongRepository
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.base.BaseAndroidViewModel
 import io.reactivex.Completable

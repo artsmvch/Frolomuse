@@ -2,6 +2,7 @@ package com.frolo.muse.repository
 
 import com.frolo.music.model.SongFilter
 import com.frolo.music.model.SongType
+import com.frolo.music.repository.SongFilterProvider
 import io.reactivex.Completable
 import io.reactivex.Flowable
 

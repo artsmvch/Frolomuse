@@ -6,8 +6,8 @@ import com.frolo.player.prepareByTarget
 import com.frolo.muse.common.toAudioSource
 import com.frolo.music.model.Media
 import com.frolo.muse.router.AppRouter
-import com.frolo.muse.repository.*
 import com.frolo.muse.rx.SchedulerProvider
+import com.frolo.music.repository.*
 import io.reactivex.Completable
 import javax.inject.Inject
 

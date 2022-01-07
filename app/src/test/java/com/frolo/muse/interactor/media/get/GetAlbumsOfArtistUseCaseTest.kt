@@ -6,7 +6,7 @@ import com.frolo.music.model.Album
 import com.frolo.music.model.Artist
 import com.frolo.music.model.Media
 import com.frolo.muse.model.menu.SortOrderMenu
-import com.frolo.muse.repository.AlbumRepository
+import com.frolo.music.repository.AlbumRepository
 import com.frolo.test.mockKT
 import com.frolo.test.mockList
 import com.nhaarman.mockitokotlin2.any

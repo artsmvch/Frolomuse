@@ -8,7 +8,7 @@ import androidx.annotation.StringRes;
 
 import com.frolo.muse.Features;
 import com.frolo.muse.LocaleHelper;
-import com.frolo.muse.model.sort.SortOrder;
+import com.frolo.music.model.SortOrder;
 
 
 final class SortOrderImpl extends SortOrder {
