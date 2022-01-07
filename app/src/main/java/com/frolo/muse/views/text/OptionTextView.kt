@@ -9,44 +9,50 @@ import android.util.AttributeSet
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
+import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.core.view.updateLayoutParams
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator
 import com.frolo.muse.R
-import kotlinx.android.synthetic.main.merge_option_text_view.view.*
 
 
 class OptionTextView @JvmOverloads constructor(
-    context: Context, attrs:
-    AttributeSet? = null,
+    context: Context,
+    attrs: AttributeSet? = null,
     defStyleAttr: Int = R.attr.optionTextViewStyle,
     defStyleRes: Int = R.style.Base_AppTheme_OptionTextView
 ): LinearLayout(context, attrs, defStyleAttr, defStyleRes) {
 
+    // Child views
+    private val iconImageView: ImageView
+    private val titleTextView: TextView
+
     private var iconScaleAnim: Animator? = null
+
     private var iconScale: Float = 1f
         set(value) {
             field = value
-            imv_icon.scaleX = value
-            imv_icon.scaleY = value
+            iconImageView.scaleX = value
+            iconImageView.scaleY = value
         }
 
     var optionTitle: String? = null
         set(value) {
             field = value
-            tv_title.text = value
+            titleTextView.text = value
         }
 
     var optionIcon: Drawable? = null
         set(value) {
             field = value
-            imv_icon.setImageDrawable(value)
+            iconImageView.setImageDrawable(value)
         }
 
     var optionIconSize: Int = 0
         set(value) {
             field = value
-            imv_icon.updateLayoutParams<MarginLayoutParams> {
+            iconImageView.updateLayoutParams<MarginLayoutParams> {
                 width = value
                 height = value
             }
@@ -55,7 +61,7 @@ class OptionTextView @JvmOverloads constructor(
     var optionIconPadding: Int = 0
         set(value) {
             field = value
-            imv_icon.updateLayoutParams<MarginLayoutParams> {
+            iconImageView.updateLayoutParams<MarginLayoutParams> {
                 marginEnd = value
             }
         }
@@ -65,7 +71,18 @@ class OptionTextView @JvmOverloads constructor(
         gravity = Gravity.CENTER_VERTICAL
 
         View.inflate(context, R.layout.merge_option_text_view, this)
+        iconImageView = findViewById(R.id.imv_icon)
+        titleTextView = findViewById(R.id.tv_title)
 
+        initAttrs(context, attrs, defStyleAttr, defStyleRes)
+    }
+
+    private fun initAttrs(
+        context: Context,
+        attrs: AttributeSet?,
+        defStyleAttr: Int,
+        defStyleRes: Int
+    ) {
         val arr = context.theme.obtainStyledAttributes(
                 attrs, R.styleable.OptionTextView, defStyleAttr, defStyleRes)
 
