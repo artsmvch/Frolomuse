@@ -12,7 +12,7 @@ import com.frolo.muse.logger.ProductOfferUiElementSource
 import com.frolo.muse.logger.logProductOffered
 import com.frolo.muse.logger.logThemeChanged
 import com.frolo.muse.model.Theme
-import com.frolo.muse.model.media.Album
+import com.frolo.music.model.Album
 import com.frolo.muse.router.AppRouter
 import com.frolo.muse.repository.AlbumRepository
 import com.frolo.muse.repository.Preferences

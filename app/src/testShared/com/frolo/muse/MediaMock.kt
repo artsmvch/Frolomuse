@@ -1,9 +1,9 @@
 package com.frolo.muse
 
-import com.frolo.muse.model.media.Media
-import com.frolo.muse.model.media.Song
-import com.frolo.muse.model.media.SongType
-import com.frolo.muse.model.media.Songs
+import com.frolo.music.model.Media
+import com.frolo.music.model.Song
+import com.frolo.music.model.SongType
+import com.frolo.music.model.Songs
 import com.frolo.test.*
 import com.nhaarman.mockitokotlin2.mock
 

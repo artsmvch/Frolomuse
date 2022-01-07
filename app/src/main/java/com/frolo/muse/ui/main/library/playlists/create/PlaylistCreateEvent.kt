@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import com.frolo.muse.model.media.Playlist
+import com.frolo.music.model.Playlist
 
 
 class PlaylistCreateEvent private constructor(

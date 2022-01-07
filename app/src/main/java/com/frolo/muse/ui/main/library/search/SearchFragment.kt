@@ -9,7 +9,7 @@ import androidx.lifecycle.LifecycleOwner
 import com.frolo.ui.KeyboardUtils
 import com.frolo.muse.R
 import com.frolo.muse.arch.observe
-import com.frolo.muse.model.media.Media
+import com.frolo.music.model.Media
 import com.frolo.muse.thumbnails.provideThumbnailLoader
 import com.frolo.muse.ui.base.FragmentContentInsetsListener
 import com.frolo.muse.ui.main.library.base.AbsMediaCollectionFragment

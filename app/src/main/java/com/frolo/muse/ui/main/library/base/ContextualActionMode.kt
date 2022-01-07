@@ -5,7 +5,7 @@ import android.view.MenuItem
 import androidx.appcompat.view.ActionMode
 import com.frolo.muse.BuildConfig
 import com.frolo.muse.R
-import com.frolo.muse.model.media.Media
+import com.frolo.music.model.Media
 import com.frolo.muse.model.menu.ContextualMenu
 
 

@@ -11,7 +11,7 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProviders
 import com.frolo.ui.StyleUtils
 import com.frolo.muse.di.appComponent
-import com.frolo.muse.model.media.Album
+import com.frolo.music.model.Album
 import com.frolo.muse.ui.main.library.albums.album.AlbumFragment
 import com.frolo.muse.ui.main.library.albums.album.AlbumVMFactory
 import com.frolo.muse.ui.main.library.albums.album.AlbumViewModel

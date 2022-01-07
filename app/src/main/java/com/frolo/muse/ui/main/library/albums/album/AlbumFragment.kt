@@ -14,8 +14,8 @@ import com.frolo.ui.StyleUtils
 import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.glide.*
-import com.frolo.muse.model.media.Album
-import com.frolo.muse.model.media.Song
+import com.frolo.music.model.Album
+import com.frolo.music.model.Song
 import com.frolo.muse.dp2px
 import com.frolo.muse.thumbnails.provideThumbnailLoader
 import com.frolo.muse.ui.base.FragmentContentInsetsListener

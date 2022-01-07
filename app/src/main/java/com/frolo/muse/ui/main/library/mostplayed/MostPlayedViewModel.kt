@@ -7,7 +7,7 @@ import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
 import com.frolo.muse.interactor.media.get.GetMostPlayedSongsUseCase
 import com.frolo.muse.interactor.media.shortcut.CreateShortcutUseCase
 import com.frolo.muse.logger.EventLogger
-import com.frolo.muse.model.media.SongWithPlayCount
+import com.frolo.music.model.SongWithPlayCount
 import com.frolo.muse.router.AppRouter
 import com.frolo.muse.permission.PermissionChecker
 import com.frolo.muse.rx.SchedulerProvider

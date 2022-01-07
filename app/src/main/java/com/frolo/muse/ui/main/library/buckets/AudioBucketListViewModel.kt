@@ -7,7 +7,7 @@ import com.frolo.muse.arch.call
 import com.frolo.muse.arch.combine
 import com.frolo.muse.interactor.media.get.GetAudioBucketsUseCase
 import com.frolo.muse.logger.EventLogger
-import com.frolo.muse.model.media.MediaBucket
+import com.frolo.music.model.MediaBucket
 import com.frolo.muse.permission.PermissionChecker
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.base.BaseViewModel

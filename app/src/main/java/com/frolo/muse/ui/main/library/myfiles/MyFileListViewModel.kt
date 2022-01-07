@@ -19,7 +19,7 @@ import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.logFilesHidden
 import com.frolo.muse.logger.logFilesScanned
 import com.frolo.muse.logger.logFolderSetAsDefault
-import com.frolo.muse.model.media.MyFile
+import com.frolo.music.model.MyFile
 import com.frolo.muse.permission.PermissionChecker
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.main.library.base.AbsMediaCollectionViewModel
@@ -49,19 +49,19 @@ class MyFileListViewModel @Inject constructor(
     appRouter: AppRouter,
     private val eventLogger: EventLogger
 ): AbsMediaCollectionViewModel<MyFile>(
-        permissionChecker,
-        getAllMyFilesUseCase,
-        getMediaMenuUseCase,
-        clickMediaUseCase,
-        playMediaUseCase,
-        shareMediaUseCase,
-        deleteMediaUseCase,
-        getIsFavouriteUseCase,
-        changeFavouriteUseCase,
-        createShortcutUseCase,
-        schedulerProvider,
-        appRouter,
-        eventLogger
+    permissionChecker,
+    getAllMyFilesUseCase,
+    getMediaMenuUseCase,
+    clickMediaUseCase,
+    playMediaUseCase,
+    shareMediaUseCase,
+    deleteMediaUseCase,
+    getIsFavouriteUseCase,
+    changeFavouriteUseCase,
+    createShortcutUseCase,
+    schedulerProvider,
+    appRouter,
+    eventLogger
 ) {
 
     private var browserSubscription: Subscription? = null

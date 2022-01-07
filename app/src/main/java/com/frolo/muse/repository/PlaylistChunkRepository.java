@@ -1,7 +1,7 @@
 package com.frolo.muse.repository;
 
-import com.frolo.muse.model.media.Playlist;
-import com.frolo.muse.model.media.Song;
+import com.frolo.music.model.Playlist;
+import com.frolo.music.model.Song;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

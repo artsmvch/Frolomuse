@@ -4,7 +4,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.frolo.muse.R
 import com.frolo.muse.inflateChild
-import com.frolo.muse.model.media.MediaBucket
+import com.frolo.music.model.MediaBucket
 import com.frolo.muse.ui.main.library.base.BaseAdapter
 import com.frolo.muse.ui.main.library.base.sectionIndexAt
 import com.l4digital.fastscroll.FastScroller

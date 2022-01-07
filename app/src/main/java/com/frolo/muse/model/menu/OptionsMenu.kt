@@ -1,6 +1,6 @@
 package com.frolo.muse.model.menu
 
-import com.frolo.muse.model.media.Media
+import com.frolo.music.model.Media
 
 data class OptionsMenu<E : Media> constructor(
     val item: E,

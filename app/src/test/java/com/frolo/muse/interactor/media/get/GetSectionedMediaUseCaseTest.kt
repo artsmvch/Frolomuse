@@ -4,7 +4,7 @@ import com.frolo.muse.TestSchedulerProvider
 import com.frolo.muse.TestSortOrder
 import com.frolo.muse.mockMediaList
 import com.frolo.muse.model.Library
-import com.frolo.muse.model.media.Media
+import com.frolo.music.model.Media
 import com.frolo.muse.model.menu.SortOrderMenu
 import com.frolo.muse.repository.MediaRepository
 import com.frolo.muse.repository.Preferences

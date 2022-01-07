@@ -1,7 +1,7 @@
 package com.frolo.muse.ui.main.library.myfiles
 
 import androidx.collection.LruCache
-import com.frolo.muse.model.media.MyFile
+import com.frolo.music.model.MyFile
 
 
 class MyFileCache constructor(

@@ -7,7 +7,7 @@ import com.frolo.muse.common.toSongType
 import com.frolo.player.AudioSource
 import com.frolo.player.AudioSourceQueue
 import com.frolo.player.Player
-import com.frolo.muse.model.media.SongType
+import com.frolo.music.model.SongType
 
 
 @WorkerThread

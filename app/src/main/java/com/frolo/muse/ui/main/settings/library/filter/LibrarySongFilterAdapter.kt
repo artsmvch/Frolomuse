@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.frolo.muse.R
 import com.frolo.muse.inflateChild
-import com.frolo.muse.model.media.SongType
+import com.frolo.music.model.SongType
 import kotlinx.android.synthetic.main.item_library_song_filter_checkbox.view.*
 import kotlin.properties.Delegates
 

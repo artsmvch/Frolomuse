@@ -4,9 +4,9 @@ import com.frolo.muse.common.toAudioSources
 import com.frolo.player.Player
 import com.frolo.muse.kotlin.containsInstanceOf
 import com.frolo.muse.model.event.DeletionType
-import com.frolo.muse.model.media.Media
-import com.frolo.muse.model.media.Playlist
-import com.frolo.muse.model.media.Song
+import com.frolo.music.model.Media
+import com.frolo.music.model.Playlist
+import com.frolo.music.model.Song
 import com.frolo.muse.repository.MediaRepository
 import com.frolo.muse.repository.PlaylistChunkRepository
 import com.frolo.muse.rx.SchedulerProvider

@@ -15,7 +15,7 @@ import com.frolo.muse.interactor.player.OpenAudioSourceUseCase
 import com.frolo.muse.interactor.player.RestorePlayerStateUseCase
 import com.frolo.muse.interactor.rate.RateUseCase
 import com.frolo.muse.logger.*
-import com.frolo.muse.model.media.Media
+import com.frolo.music.model.Media
 import com.frolo.muse.permission.PermissionChecker
 import com.frolo.muse.repository.AppearancePreferences
 import com.frolo.muse.repository.RemoteConfigRepository

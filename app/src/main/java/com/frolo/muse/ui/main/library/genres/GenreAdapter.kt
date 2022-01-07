@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import com.frolo.muse.R
 import com.frolo.muse.inflateChild
-import com.frolo.muse.model.media.Genre
+import com.frolo.music.model.Genre
 import com.frolo.muse.thumbnails.ThumbnailLoader
 import com.frolo.muse.ui.getNameString
 import com.frolo.muse.ui.main.library.base.BaseAdapter
@@ -31,11 +31,11 @@ class GenreAdapter(
     ) = GenreViewHolder(parent.inflateChild(R.layout.item_genre))
 
     override fun onBindViewHolder(
-        holder: GenreViewHolder,
-        position: Int,
-        item: Genre,
-        selected: Boolean,
-        selectionChanged: Boolean
+            holder: GenreViewHolder,
+            position: Int,
+            item: Genre,
+            selected: Boolean,
+            selectionChanged: Boolean
     ) {
 
         with(holder.itemView as MediaConstraintLayout) {

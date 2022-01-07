@@ -2,7 +2,7 @@ package com.frolo.muse.ui.main.library.search.adapter
 
 import android.view.View
 import com.frolo.muse.R
-import com.frolo.muse.model.media.Album
+import com.frolo.music.model.Album
 import com.frolo.muse.thumbnails.ThumbnailLoader
 import com.frolo.muse.ui.getArtistString
 import com.frolo.muse.ui.getNameString

@@ -1,4 +1,4 @@
-package com.frolo.muse.model.media
+package com.frolo.music.model
 
 import java.io.Serializable
 

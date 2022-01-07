@@ -18,14 +18,14 @@ import androidx.annotation.RequiresApi;
 
 import com.frolo.muse.BuildConfig;
 import com.frolo.muse.FrolomuseApp;
-import com.frolo.muse.model.media.Album;
-import com.frolo.muse.model.media.Artist;
-import com.frolo.muse.model.media.Genre;
-import com.frolo.muse.model.media.Media;
-import com.frolo.muse.model.media.MediaFile;
-import com.frolo.muse.model.media.MyFile;
-import com.frolo.muse.model.media.Playlist;
-import com.frolo.muse.model.media.Song;
+import com.frolo.music.model.Album;
+import com.frolo.music.model.Artist;
+import com.frolo.music.model.Genre;
+import com.frolo.music.model.Media;
+import com.frolo.music.model.MediaFile;
+import com.frolo.music.model.MyFile;
+import com.frolo.music.model.Playlist;
+import com.frolo.music.model.Song;
 
 import java.io.File;
 import java.util.ArrayList;

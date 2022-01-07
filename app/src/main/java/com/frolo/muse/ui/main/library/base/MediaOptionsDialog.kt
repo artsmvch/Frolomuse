@@ -8,7 +8,7 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import com.frolo.muse.R
 import com.frolo.ui.StyleUtils
-import com.frolo.muse.model.media.Media
+import com.frolo.music.model.Media
 import com.frolo.muse.model.menu.OptionsMenu
 import com.frolo.muse.ui.Dialogs
 import com.frolo.muse.ui.getName

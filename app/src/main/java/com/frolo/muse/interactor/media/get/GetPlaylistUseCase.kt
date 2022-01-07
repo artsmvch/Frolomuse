@@ -2,8 +2,8 @@ package com.frolo.muse.interactor.media.get
 
 import com.frolo.muse.router.AppRouter
 import com.frolo.muse.model.Library
-import com.frolo.muse.model.media.Playlist
-import com.frolo.muse.model.media.Song
+import com.frolo.music.model.Playlist
+import com.frolo.music.model.Song
 import com.frolo.muse.repository.PlaylistChunkRepository
 import com.frolo.muse.repository.PlaylistRepository
 import com.frolo.muse.repository.Preferences

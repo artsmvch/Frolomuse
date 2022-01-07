@@ -8,16 +8,16 @@ import android.net.Uri;
 import android.provider.MediaStore;
 
 import com.frolo.muse.content.AppMediaStore;
-import com.frolo.muse.model.media.Album;
-import com.frolo.muse.model.media.Artist;
-import com.frolo.muse.model.media.Genre;
-import com.frolo.muse.model.media.MediaFile;
-import com.frolo.muse.model.media.MyFile;
-import com.frolo.muse.model.media.Playlist;
-import com.frolo.muse.model.media.Song;
-import com.frolo.muse.model.media.SongComparators;
-import com.frolo.muse.model.media.SongFilter;
-import com.frolo.muse.model.media.SongWithPlayCount;
+import com.frolo.music.model.Album;
+import com.frolo.music.model.Artist;
+import com.frolo.music.model.Genre;
+import com.frolo.music.model.MediaFile;
+import com.frolo.music.model.MyFile;
+import com.frolo.music.model.Playlist;
+import com.frolo.music.model.Song;
+import com.frolo.music.model.SongComparators;
+import com.frolo.music.model.SongFilter;
+import com.frolo.music.model.SongWithPlayCount;
 import com.frolo.rxcontent.CursorMapper;
 import com.frolo.rxcontent.RxContent;
 

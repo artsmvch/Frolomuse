@@ -1,4 +1,4 @@
-package com.frolo.muse.model.media;
+package com.frolo.music.model;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -52,8 +52,7 @@ public class MyFile implements Media, Serializable {
         if (this == obj) return true;
         if (obj != null && (obj instanceof MyFile)) {
             MyFile another = (MyFile) obj;
-            return isSongFile == another.isSongFile
-                    && file.equals(another.file);
+            return isSongFile == another.isSongFile && file.equals(another.file);
         } else {
             return false;
         }
@@ -61,8 +60,7 @@ public class MyFile implements Media, Serializable {
 
     @Override
     public int hashCode() {
-        File javaFile = getJavaFile();
-        return javaFile.getAbsolutePath().hashCode();
+        return getJavaFile().hashCode();
     }
 
     @Override

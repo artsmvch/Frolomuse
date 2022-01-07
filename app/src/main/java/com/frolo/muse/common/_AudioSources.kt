@@ -2,8 +2,8 @@ package com.frolo.muse.common
 
 import com.frolo.player.AudioSource
 import com.frolo.player.AudioType
-import com.frolo.muse.model.media.Song
-import com.frolo.muse.model.media.SongType
+import com.frolo.music.model.Song
+import com.frolo.music.model.SongType
 
 
 val AudioSource.audioType: AudioType get() = metadata.audioType

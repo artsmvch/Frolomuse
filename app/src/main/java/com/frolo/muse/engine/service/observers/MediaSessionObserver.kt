@@ -9,7 +9,7 @@ import com.frolo.player.AudioSource
 import com.frolo.player.Player
 import com.frolo.player.SimplePlayerObserver
 import com.frolo.muse.engine.service.setMetadata
-import com.frolo.muse.model.media.Song
+import com.frolo.music.model.Song
 import com.frolo.muse.rx.subscribeSafely
 import io.reactivex.Flowable
 import io.reactivex.android.schedulers.AndroidSchedulers

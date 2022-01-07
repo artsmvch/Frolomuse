@@ -11,7 +11,7 @@ import com.frolo.muse.R
 import com.frolo.ui.Screen
 import com.frolo.muse.glide.GlideAlbumArtHelper
 import com.frolo.muse.glide.observe
-import com.frolo.muse.model.media.Album
+import com.frolo.music.model.Album
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.thumbnails.provideThumbnailLoader
 import com.frolo.muse.ui.ShotLayoutAnimationController

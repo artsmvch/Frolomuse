@@ -1,11 +1,11 @@
-package com.frolo.muse.model.media;
-
+package com.frolo.music.model;
 
 import androidx.annotation.NonNull;
 
 import java.io.Serializable;
 
-public class Genre implements Media, Serializable {
+
+public final class Genre implements Media, Serializable {
     private final long id;
     private final String name;
 

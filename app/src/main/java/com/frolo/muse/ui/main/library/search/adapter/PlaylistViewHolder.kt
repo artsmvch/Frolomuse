@@ -1,7 +1,7 @@
 package com.frolo.muse.ui.main.library.search.adapter
 
 import android.view.View
-import com.frolo.muse.model.media.Playlist
+import com.frolo.music.model.Playlist
 import com.frolo.muse.thumbnails.ThumbnailLoader
 import com.frolo.muse.ui.getDateAddedString
 import com.frolo.muse.ui.getNameString
@@ -17,10 +17,10 @@ class PlaylistViewHolder(
     override val viewOptionsMenu: View? = itemView.view_options_menu
 
     fun bind(
-        item: Playlist,
-        selected: Boolean,
-        selectionChanged: Boolean,
-        query: String
+            item: Playlist,
+            selected: Boolean,
+            selectionChanged: Boolean,
+            query: String
     ) {
 
         with(itemView) {

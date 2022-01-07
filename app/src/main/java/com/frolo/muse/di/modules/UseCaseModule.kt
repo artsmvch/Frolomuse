@@ -9,9 +9,9 @@ import com.frolo.muse.interactor.media.get.*
 import com.frolo.muse.interactor.player.ControlPlayerUseCase
 import com.frolo.muse.interactor.player.RestorePlayerStateUseCase
 import com.frolo.muse.interactor.rate.RateUseCase
-import com.frolo.muse.model.media.*
 import com.frolo.muse.repository.*
 import com.frolo.muse.rx.SchedulerProvider
+import com.frolo.music.model.*
 import com.squareup.inject.assisted.dagger2.AssistedModule
 import dagger.Module
 import dagger.Provides

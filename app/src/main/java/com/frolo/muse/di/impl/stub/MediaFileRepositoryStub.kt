@@ -1,10 +1,10 @@
 package com.frolo.muse.di.impl.stub
 
 import com.frolo.muse.ThrowableUtils
-import com.frolo.muse.model.media.MediaBucket
-import com.frolo.muse.model.media.MediaFile
-import com.frolo.muse.model.media.Playlist
-import com.frolo.muse.model.media.Song
+import com.frolo.music.model.MediaBucket
+import com.frolo.music.model.MediaFile
+import com.frolo.music.model.Playlist
+import com.frolo.music.model.Song
 import com.frolo.muse.model.sort.SortOrder
 import com.frolo.muse.repository.MediaFileRepository
 import io.reactivex.Completable

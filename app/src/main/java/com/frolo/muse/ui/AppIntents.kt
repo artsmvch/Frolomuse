@@ -10,7 +10,7 @@ import com.frolo.muse.OS
 import com.frolo.muse.R
 import com.frolo.muse.android.ViewAppInStoreIntent
 import com.frolo.muse.android.resolveUri
-import com.frolo.muse.model.media.Song
+import com.frolo.music.model.Song
 import java.io.File
 
 

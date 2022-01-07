@@ -11,7 +11,7 @@ import com.frolo.muse.logger.logFailedToGetLyrics
 import com.frolo.muse.logger.logLyricsSaved
 import com.frolo.muse.logger.logLyricsViewed
 import com.frolo.muse.model.lyrics.Lyrics
-import com.frolo.muse.model.media.Song
+import com.frolo.music.model.Song
 import com.frolo.muse.network.NetworkHelper
 import com.frolo.muse.repository.LyricsLocalRepository
 import com.frolo.muse.repository.LyricsRemoteRepository

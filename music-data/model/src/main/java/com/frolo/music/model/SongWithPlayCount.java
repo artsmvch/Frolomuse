@@ -1,6 +1,6 @@
-package com.frolo.muse.model.media;
+package com.frolo.music.model;
 
-import org.jetbrains.annotations.Nullable;
+import androidx.annotation.Nullable;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -50,6 +50,11 @@ public final class SongWithPlayCount implements Song, Serializable {
         if (!(obj instanceof SongWithPlayCount)) return false;
         SongWithPlayCount another = (SongWithPlayCount) obj;
         return playCount == another.playCount && Objects.equals(song, another.song);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(song, playCount, lastPlayTime);
     }
 
     @Override

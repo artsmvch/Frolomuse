@@ -7,8 +7,8 @@ import com.frolo.muse.di.Exec
 import com.frolo.muse.di.impl.local.*
 import com.frolo.muse.di.impl.sound.bass.BASSSoundResolverImpl
 import com.frolo.muse.di.impl.stub.MediaFileRepositoryStub
-import com.frolo.muse.model.media.*
 import com.frolo.muse.repository.*
+import com.frolo.music.model.*
 import dagger.Module
 import dagger.Provides
 import java.util.concurrent.Executor

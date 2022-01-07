@@ -30,6 +30,7 @@ import androidx.transition.Fade
 import androidx.transition.TransitionManager
 import com.frolo.debug.DebugUtils
 import com.frolo.muse.*
+import com.frolo.muse.R
 import com.frolo.muse.android.ViewAppSettingsIntent
 import com.frolo.muse.android.startActivitySafely
 import com.frolo.muse.arch.observe
@@ -47,6 +48,7 @@ import com.frolo.muse.ui.main.library.LibraryFragment
 import com.frolo.muse.ui.main.library.search.SearchFragment
 import com.frolo.muse.ui.main.player.mini.MiniPlayerFragment
 import com.frolo.muse.ui.main.settings.AppBarSettingsFragment
+import com.frolo.music.model.*
 import com.frolo.ui.FragmentUtils
 import com.frolo.ui.StyleUtils
 import com.google.android.material.bottomsheet.BottomSheetBehavior

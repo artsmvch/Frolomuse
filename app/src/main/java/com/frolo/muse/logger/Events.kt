@@ -5,8 +5,8 @@ import com.frolo.billing.ProductId
 import com.frolo.muse.billing.TrialStatus
 import com.frolo.muse.billing.TrialStatus.*
 import com.frolo.muse.model.Theme
-import com.frolo.muse.model.media.Media
-import com.frolo.muse.model.media.Song
+import com.frolo.music.model.Media
+import com.frolo.music.model.Song
 
 /**
  * Convenient methods for logging main events in the App.

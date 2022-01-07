@@ -30,7 +30,7 @@ import com.frolo.player.AudioSource
 import com.frolo.player.Player
 import com.frolo.muse.glide.GlideAlbumArtHelper
 import com.frolo.muse.glide.observe
-import com.frolo.muse.model.media.Song
+import com.frolo.music.model.Song
 import com.frolo.muse.ui.asDurationInMs
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.getAlbumEditorOptionText

@@ -5,8 +5,8 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProviders
 import com.frolo.muse.R
 import com.frolo.muse.arch.observeNonNull
-import com.frolo.muse.model.media.Playlist
-import com.frolo.muse.model.media.Song
+import com.frolo.music.model.Playlist
+import com.frolo.music.model.Song
 import com.frolo.muse.ui.base.withNullableArg
 import com.frolo.muse.ui.main.library.base.inputname.AbsInputNameDialog
 

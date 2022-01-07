@@ -1,9 +1,10 @@
-package com.frolo.muse.model.media;
+package com.frolo.music.model;
 
 import androidx.annotation.IntDef;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+
 
 public interface Media {
     @IntDef({SONG, ALBUM, ARTIST, GENRE, PLAYLIST, MY_FILE, MEDIA_FILE})

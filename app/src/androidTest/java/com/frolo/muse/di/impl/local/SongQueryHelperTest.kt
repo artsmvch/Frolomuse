@@ -3,8 +3,8 @@ package com.frolo.muse.di.impl.local
 import android.provider.MediaStore.Audio.Media.*
 import com.frolo.muse.OS
 import com.frolo.muse.model.media.SongFeatures
-import com.frolo.muse.model.media.SongFilter
-import com.frolo.muse.model.media.SongType
+import com.frolo.music.model.SongFilter
+import com.frolo.music.model.SongType
 import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertEquals
 import org.junit.Test

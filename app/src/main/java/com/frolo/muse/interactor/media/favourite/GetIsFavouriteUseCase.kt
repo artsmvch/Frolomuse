@@ -1,6 +1,6 @@
 package com.frolo.muse.interactor.media.favourite
 
-import com.frolo.muse.model.media.Media
+import com.frolo.music.model.Media
 import com.frolo.muse.repository.MediaRepository
 import com.frolo.muse.rx.SchedulerProvider
 import io.reactivex.Flowable

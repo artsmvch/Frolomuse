@@ -4,7 +4,7 @@ import android.graphics.Bitmap
 import android.media.MediaMetadata
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaSessionCompat
-import com.frolo.muse.model.media.Song
+import com.frolo.music.model.Song
 
 
 /**

@@ -7,7 +7,7 @@ import android.net.Uri
 import android.renderscript.RSRuntimeException
 import androidx.core.content.ContextCompat
 import com.frolo.muse.R
-import com.frolo.muse.model.media.Song
+import com.frolo.music.model.Song
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.getAlbumString
 import com.frolo.muse.ui.getNameString

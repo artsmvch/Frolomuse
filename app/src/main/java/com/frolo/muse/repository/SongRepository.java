@@ -1,10 +1,10 @@
 package com.frolo.muse.repository;
 
-import com.frolo.muse.model.media.Album;
-import com.frolo.muse.model.media.Artist;
-import com.frolo.muse.model.media.Genre;
-import com.frolo.muse.model.media.Playlist;
-import com.frolo.muse.model.media.Song;
+import com.frolo.music.model.Album;
+import com.frolo.music.model.Artist;
+import com.frolo.music.model.Genre;
+import com.frolo.music.model.Playlist;
+import com.frolo.music.model.Song;
 
 import java.util.List;
 

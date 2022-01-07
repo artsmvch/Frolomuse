@@ -5,9 +5,9 @@ import com.frolo.player.Player
 import com.frolo.player.prepareByTarget
 import com.frolo.muse.common.toAudioSource
 import com.frolo.muse.router.AppRouter
-import com.frolo.muse.model.media.*
 import com.frolo.muse.repository.GenericMediaRepository
 import com.frolo.muse.rx.SchedulerProvider
+import com.frolo.music.model.*
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.functions.BiFunction

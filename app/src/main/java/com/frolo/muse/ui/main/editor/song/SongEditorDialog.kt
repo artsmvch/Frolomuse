@@ -18,7 +18,7 @@ import com.frolo.muse.R
 import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.glide.makeRequest
-import com.frolo.muse.model.media.Song
+import com.frolo.music.model.Song
 import com.frolo.muse.ui.base.BaseDialogFragment
 import com.frolo.muse.ui.base.serializableArg
 import com.frolo.muse.ui.base.withArg

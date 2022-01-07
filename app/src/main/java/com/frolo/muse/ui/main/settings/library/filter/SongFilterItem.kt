@@ -1,6 +1,6 @@
 package com.frolo.muse.ui.main.settings.library.filter
 
-import com.frolo.muse.model.media.SongType
+import com.frolo.music.model.SongType
 
 
 data class SongFilterItem(

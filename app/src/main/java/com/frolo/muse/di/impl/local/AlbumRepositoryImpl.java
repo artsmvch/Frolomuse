@@ -1,10 +1,10 @@
 package com.frolo.muse.di.impl.local;
 
 import com.frolo.muse.R;
-import com.frolo.muse.model.media.Album;
-import com.frolo.muse.model.media.Artist;
-import com.frolo.muse.model.media.Playlist;
-import com.frolo.muse.model.media.Song;
+import com.frolo.music.model.Album;
+import com.frolo.music.model.Artist;
+import com.frolo.music.model.Playlist;
+import com.frolo.music.model.Song;
 import com.frolo.muse.model.sort.SortOrder;
 import com.frolo.muse.repository.AlbumRepository;
 

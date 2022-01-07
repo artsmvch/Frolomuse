@@ -5,8 +5,8 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 
-import com.frolo.muse.model.media.Genre;
-import com.frolo.muse.model.media.SongFilter;
+import com.frolo.music.model.Genre;
+import com.frolo.music.model.SongFilter;
 import com.frolo.rxcontent.CursorMapper;
 import com.frolo.rxcontent.RxContent;
 

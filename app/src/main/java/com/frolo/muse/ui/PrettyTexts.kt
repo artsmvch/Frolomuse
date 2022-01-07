@@ -8,6 +8,7 @@ import com.frolo.muse.Features
 import com.frolo.muse.R
 import com.frolo.muse.model.Library
 import com.frolo.muse.model.media.*
+import com.frolo.music.model.*
 import java.text.SimpleDateFormat
 import java.util.*
 

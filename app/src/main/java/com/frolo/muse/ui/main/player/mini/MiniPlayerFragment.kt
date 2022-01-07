@@ -14,7 +14,7 @@ import com.frolo.ui.Screen
 import com.frolo.ui.StyleUtils
 import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
-import com.frolo.muse.model.media.Song
+import com.frolo.music.model.Song
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.getNameString
 import com.frolo.muse.views.text.FitSingleLineTextView

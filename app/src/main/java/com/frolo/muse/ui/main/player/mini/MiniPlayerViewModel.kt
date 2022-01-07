@@ -9,7 +9,7 @@ import com.frolo.player.AudioSource
 import com.frolo.player.Player
 import com.frolo.player.SimplePlayerObserver
 import com.frolo.muse.logger.EventLogger
-import com.frolo.muse.model.media.Song
+import com.frolo.music.model.Song
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.base.BaseViewModel
 import com.frolo.muse.ui.main.player.PlayerProgressObserver

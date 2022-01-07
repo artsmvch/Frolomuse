@@ -1,6 +1,6 @@
 package com.frolo.muse.model.event
 
-import com.frolo.muse.model.media.Media
+import com.frolo.music.model.Media
 
 
 /**

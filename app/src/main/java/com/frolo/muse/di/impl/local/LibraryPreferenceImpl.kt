@@ -2,8 +2,8 @@ package com.frolo.muse.di.impl.local
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.frolo.muse.model.media.SongFilter
-import com.frolo.muse.model.media.SongType
+import com.frolo.music.model.SongFilter
+import com.frolo.music.model.SongType
 import com.frolo.muse.repository.LibraryPreferences
 import com.frolo.rxpreference.RxPreference
 import io.reactivex.Completable

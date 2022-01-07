@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import com.frolo.debug.DebugUtils
 import com.frolo.muse.R
 import com.frolo.muse.inflateChild
-import com.frolo.muse.model.media.Album
+import com.frolo.music.model.Album
 import com.frolo.muse.thumbnails.ThumbnailLoader
 import com.frolo.muse.ui.getNumberOfTracksString
 import com.frolo.muse.ui.main.library.base.BaseAdapter

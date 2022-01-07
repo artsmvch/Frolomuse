@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.RecyclerView
 import com.frolo.muse.R
-import com.frolo.muse.model.media.Playlist
+import com.frolo.music.model.Playlist
 import com.frolo.muse.ui.main.library.FabCallback
 import com.frolo.muse.ui.main.library.base.SimpleMediaCollectionFragment
 import com.frolo.muse.dp2px

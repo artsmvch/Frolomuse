@@ -5,7 +5,7 @@ package com.frolo.muse.database
 import androidx.test.InstrumentationRegistry
 import androidx.test.runner.AndroidJUnit4
 import com.frolo.muse.di.impl.local.PlaylistDatabaseManager
-import com.frolo.muse.model.media.Song
+import com.frolo.music.model.Song
 import org.junit.Test
 import org.junit.runner.RunWith
 import com.frolo.muse.mockSongList

@@ -1,8 +1,8 @@
 package com.frolo.muse.interactor.media.get
 
 import com.frolo.muse.model.Library
-import com.frolo.muse.model.media.Genre
-import com.frolo.muse.model.media.Song
+import com.frolo.music.model.Genre
+import com.frolo.music.model.Song
 import com.frolo.muse.repository.GenreChunkRepository
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.rx.SchedulerProvider

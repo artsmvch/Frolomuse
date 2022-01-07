@@ -1,6 +1,6 @@
 package com.frolo.muse.repository;
 
-import com.frolo.muse.model.media.MyFile;
+import com.frolo.music.model.MyFile;
 
 import java.util.List;
 

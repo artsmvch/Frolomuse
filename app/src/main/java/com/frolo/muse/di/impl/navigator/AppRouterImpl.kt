@@ -3,7 +3,6 @@ package com.frolo.muse.di.impl.navigator
 import com.frolo.muse.FrolomuseApp
 import com.frolo.billing.ProductId
 import com.frolo.muse.router.AppRouter
-import com.frolo.muse.model.media.*
 import com.frolo.muse.rx.subscribeSafely
 import com.frolo.muse.ui.*
 import com.frolo.muse.ui.main.MainActivity
@@ -25,6 +24,7 @@ import com.frolo.muse.ui.main.settings.donations.DonationsFragment
 import com.frolo.muse.ui.main.settings.playback.PlaybackFadingDialog
 import com.frolo.muse.ui.main.settings.premium.BuyPremiumDialog
 import com.frolo.muse.ui.main.settings.theme.ThemeChooserFragment
+import com.frolo.music.model.*
 import java.io.File
 
 

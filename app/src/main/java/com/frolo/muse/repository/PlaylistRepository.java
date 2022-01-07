@@ -1,7 +1,7 @@
 package com.frolo.muse.repository;
 
 
-import com.frolo.muse.model.media.Playlist;
+import com.frolo.music.model.Playlist;
 
 import io.reactivex.Completable;
 import io.reactivex.Flowable;

@@ -148,6 +148,11 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 
+    // Music data
+    implementation project(path: ':music-data:model')
+    implementation project(path: ':music-data:repository:api')
+    implementation project(path: ':music-data:repository:android-impl')
+
     // Player
     implementation project(path: ':audio:audiofx:api')
     implementation project(path: ':audio:audiofx:android-impl')

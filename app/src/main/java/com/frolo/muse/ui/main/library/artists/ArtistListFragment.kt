@@ -6,7 +6,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.lifecycle.LifecycleOwner
 import com.frolo.muse.R
-import com.frolo.muse.model.media.Artist
+import com.frolo.music.model.Artist
 import com.frolo.muse.thumbnails.provideThumbnailLoader
 import com.frolo.muse.ui.main.library.base.SimpleMediaCollectionFragment
 

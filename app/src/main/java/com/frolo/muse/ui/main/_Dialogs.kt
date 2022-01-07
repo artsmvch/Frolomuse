@@ -9,9 +9,9 @@ import com.frolo.muse.R
 import com.frolo.muse.model.event.DeletionConfirmation
 import com.frolo.muse.model.event.DeletionType
 import com.frolo.muse.model.event.MultipleDeletionConfirmation
-import com.frolo.muse.model.media.Media
-import com.frolo.muse.model.media.Playlist
-import com.frolo.muse.model.media.Song
+import com.frolo.music.model.Media
+import com.frolo.music.model.Playlist
+import com.frolo.music.model.Song
 import com.frolo.muse.ui.getDeletionConfirmationMessage
 import com.frolo.muse.ui.getName
 import com.google.android.material.dialog.MaterialAlertDialogBuilder

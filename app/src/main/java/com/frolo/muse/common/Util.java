@@ -8,9 +8,9 @@ import com.frolo.player.AudioMetadata;
 import com.frolo.player.AudioSource;
 import com.frolo.player.AudioType;
 import com.frolo.player.data.MediaStoreRow;
-import com.frolo.muse.model.media.Media;
-import com.frolo.muse.model.media.Song;
-import com.frolo.muse.model.media.SongType;
+import com.frolo.music.model.Media;
+import com.frolo.music.model.Song;
+import com.frolo.music.model.SongType;
 
 import org.jetbrains.annotations.NotNull;
 

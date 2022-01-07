@@ -2,9 +2,9 @@ package com.frolo.muse.interactor.media.get
 
 import com.frolo.muse.TestSchedulerProvider
 import com.frolo.muse.TestSortOrder
-import com.frolo.muse.model.media.Album
-import com.frolo.muse.model.media.Artist
-import com.frolo.muse.model.media.Media
+import com.frolo.music.model.Album
+import com.frolo.music.model.Artist
+import com.frolo.music.model.Media
 import com.frolo.muse.model.menu.SortOrderMenu
 import com.frolo.muse.repository.AlbumRepository
 import com.frolo.test.mockKT

@@ -6,7 +6,7 @@ import com.frolo.muse.interactor.poster.CreatePosterUseCase
 import com.frolo.muse.interactor.poster.SavePosterUseCase
 import com.frolo.muse.router.AppRouter
 import com.frolo.muse.logger.EventLogger
-import com.frolo.muse.model.media.Song
+import com.frolo.music.model.Song
 import com.frolo.muse.rx.SchedulerProvider
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject

@@ -5,8 +5,8 @@ import com.frolo.player.Player
 import com.frolo.player.AudioSourceQueue
 import com.frolo.muse.common.toAudioSource
 import com.frolo.muse.common.toAudioSources
-import com.frolo.muse.model.media.Media
-import com.frolo.muse.model.media.Song
+import com.frolo.music.model.Media
+import com.frolo.music.model.Song
 import com.frolo.muse.repository.MediaRepository
 import com.frolo.muse.repository.Preferences
 import com.nhaarman.mockitokotlin2.*

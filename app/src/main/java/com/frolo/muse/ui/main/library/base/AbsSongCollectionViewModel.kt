@@ -15,8 +15,8 @@ import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
 import com.frolo.muse.interactor.media.get.GetMediaUseCase
 import com.frolo.muse.interactor.media.shortcut.CreateShortcutUseCase
 import com.frolo.muse.logger.EventLogger
-import com.frolo.muse.model.media.Song
-import com.frolo.muse.model.media.SongCountWithTotalDuration
+import com.frolo.music.model.Song
+import com.frolo.music.model.SongCountWithTotalDuration
 import com.frolo.muse.permission.PermissionChecker
 import com.frolo.muse.rx.SchedulerProvider
 import io.reactivex.Single

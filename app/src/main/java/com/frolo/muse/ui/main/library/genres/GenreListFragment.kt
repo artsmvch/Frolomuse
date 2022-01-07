@@ -5,9 +5,8 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import com.frolo.muse.R
-import com.frolo.muse.model.media.Genre
+import com.frolo.music.model.Genre
 import com.frolo.muse.thumbnails.provideThumbnailLoader
-import com.frolo.muse.ui.main.library.base.BaseAdapter
 import com.frolo.muse.ui.main.library.base.SimpleMediaCollectionFragment
 
 

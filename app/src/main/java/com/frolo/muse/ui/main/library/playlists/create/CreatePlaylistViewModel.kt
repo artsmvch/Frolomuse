@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import com.frolo.muse.arch.SingleLiveEvent
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.logPlaylistCreated
-import com.frolo.muse.model.media.Playlist
-import com.frolo.muse.model.media.Song
+import com.frolo.music.model.Playlist
+import com.frolo.music.model.Song
 import com.frolo.muse.repository.PlaylistRepository
 import com.frolo.muse.repository.SongRepository
 import com.frolo.muse.rx.SchedulerProvider

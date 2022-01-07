@@ -1,6 +1,6 @@
 package com.frolo.muse.ui.main.library.base
 
-import com.frolo.muse.model.media.Media
+import com.frolo.music.model.Media
 
 
 /**

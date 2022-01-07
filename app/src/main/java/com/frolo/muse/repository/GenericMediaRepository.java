@@ -1,6 +1,6 @@
 package com.frolo.muse.repository;
 
-import com.frolo.muse.model.media.Media;
+import com.frolo.music.model.Media;
 
 
 public interface GenericMediaRepository extends MediaRepository<Media> {

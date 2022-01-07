@@ -9,8 +9,8 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.frolo.muse.R
-import com.frolo.muse.model.media.Album
-import com.frolo.muse.model.media.Artist
+import com.frolo.music.model.Album
+import com.frolo.music.model.Artist
 import com.frolo.muse.ui.base.withArg
 import com.frolo.muse.ui.main.library.base.AbsMediaCollectionFragment
 import com.frolo.muse.ui.main.library.base.BaseAdapter

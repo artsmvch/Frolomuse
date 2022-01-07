@@ -7,9 +7,9 @@ import com.frolo.muse.arch.combine
 import com.frolo.muse.interactor.media.AddSongToPlaylistUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.logSongsAddedToPlaylist
-import com.frolo.muse.model.media.Playlist
+import com.frolo.music.model.Playlist
 import com.frolo.muse.model.media.SelectableSongQuery
-import com.frolo.muse.model.media.Song
+import com.frolo.music.model.Song
 import com.frolo.muse.router.AppRouter
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.base.BaseViewModel

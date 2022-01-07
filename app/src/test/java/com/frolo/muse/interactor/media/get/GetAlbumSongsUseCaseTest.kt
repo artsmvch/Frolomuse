@@ -2,8 +2,8 @@ package com.frolo.muse.interactor.media.get
 
 import com.frolo.muse.*
 import com.frolo.muse.model.Library
-import com.frolo.muse.model.media.Album
-import com.frolo.muse.model.media.Song
+import com.frolo.music.model.Album
+import com.frolo.music.model.Song
 import com.frolo.muse.model.menu.SortOrderMenu
 import com.frolo.muse.model.sort.SortOrder
 import com.frolo.muse.repository.AlbumChunkRepository

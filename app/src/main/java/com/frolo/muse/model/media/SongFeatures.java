@@ -1,6 +1,7 @@
 package com.frolo.muse.model.media;
 
 import com.frolo.muse.OS;
+import com.frolo.music.model.SongType;
 
 import org.jetbrains.annotations.NotNull;
 

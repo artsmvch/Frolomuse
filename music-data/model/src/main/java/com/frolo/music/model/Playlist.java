@@ -1,10 +1,10 @@
-package com.frolo.muse.model.media;
+package com.frolo.music.model;
 
 import java.io.Serializable;
 import java.util.Objects;
 
 
-public class Playlist implements Media, Serializable {
+public final class Playlist implements Media, Serializable {
 
     private final long id;
     private final boolean isFromSharedStorage;
@@ -61,7 +61,7 @@ public class Playlist implements Media, Serializable {
 
     @Override
     public int getKind() {
-        return Media.PLAYLIST;
+        return PLAYLIST;
     }
 
     @Override

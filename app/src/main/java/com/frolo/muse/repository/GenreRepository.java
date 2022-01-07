@@ -1,6 +1,6 @@
 package com.frolo.muse.repository;
 
-import com.frolo.muse.model.media.Genre;
+import com.frolo.music.model.Genre;
 
 import io.reactivex.Single;
 

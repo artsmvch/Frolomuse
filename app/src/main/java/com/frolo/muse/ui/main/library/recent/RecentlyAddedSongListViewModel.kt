@@ -12,7 +12,7 @@ import com.frolo.muse.interactor.media.get.GetRecentlyAddedSongUseCase
 import com.frolo.muse.interactor.media.shortcut.CreateShortcutUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.model.Recently
-import com.frolo.muse.model.media.Song
+import com.frolo.music.model.Song
 import com.frolo.muse.model.menu.RecentPeriodMenu
 import com.frolo.muse.permission.PermissionChecker
 import com.frolo.muse.rx.SchedulerProvider
@@ -36,20 +36,20 @@ class RecentlyAddedSongListViewModel @Inject constructor(
     appRouter: AppRouter,
     eventLogger: EventLogger
 ): AbsSongCollectionViewModel<Song>(
-        player,
-        permissionChecker,
-        getRecentlyAddedSongUseCase,
-        getMediaMenuUseCase,
-        clickMediaUseCase,
-        playMediaUseCase,
-        shareMediaUseCase,
-        deleteMediaUseCase,
-        getIsFavouriteUseCase,
-        changeFavouriteUseCase,
-        createShortcutUseCase,
-        schedulerProvider,
-        appRouter,
-        eventLogger
+    player,
+    permissionChecker,
+    getRecentlyAddedSongUseCase,
+    getMediaMenuUseCase,
+    clickMediaUseCase,
+    playMediaUseCase,
+    shareMediaUseCase,
+    deleteMediaUseCase,
+    getIsFavouriteUseCase,
+    changeFavouriteUseCase,
+    createShortcutUseCase,
+    schedulerProvider,
+    appRouter,
+    eventLogger
 ) {
 
     private val _openRecentPeriodMenuEvent: MutableLiveData<RecentPeriodMenu> = SingleLiveEvent()

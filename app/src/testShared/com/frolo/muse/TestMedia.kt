@@ -1,6 +1,6 @@
 package com.frolo.muse
 
-import com.frolo.muse.model.media.Media
+import com.frolo.music.model.Media
 
 
 class TestMedia constructor(private val _id: Long): Media {

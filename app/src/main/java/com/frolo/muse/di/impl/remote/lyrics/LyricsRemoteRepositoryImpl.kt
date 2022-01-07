@@ -2,7 +2,7 @@ package com.frolo.muse.di.impl.remote.lyrics
 
 import androidx.collection.LruCache
 import com.frolo.muse.model.lyrics.Lyrics
-import com.frolo.muse.model.media.Song
+import com.frolo.music.model.Song
 import com.frolo.muse.repository.LyricsRemoteRepository
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers

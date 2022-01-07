@@ -1,9 +1,12 @@
 package com.frolo.muse.model.media;
 
+import com.frolo.music.model.Song;
+
 import java.util.List;
 import java.util.Set;
 
-public class SelectableSongQuery {
+
+public final class SelectableSongQuery {
     private final List<Song> allItems;
     private final Set<Song> selection;
 

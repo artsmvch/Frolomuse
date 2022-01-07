@@ -1,7 +1,7 @@
 package com.frolo.muse.repository
 
-import com.frolo.muse.model.media.MediaBucket
-import com.frolo.muse.model.media.MediaFile
+import com.frolo.music.model.MediaBucket
+import com.frolo.music.model.MediaFile
 import io.reactivex.Flowable
 
 

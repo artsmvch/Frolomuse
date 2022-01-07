@@ -13,9 +13,9 @@ import com.frolo.muse.interactor.media.get.GetPlaylistUseCase
 import com.frolo.muse.interactor.media.shortcut.CreateShortcutUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.logShortcutCreated
-import com.frolo.muse.model.media.Media
-import com.frolo.muse.model.media.Playlist
-import com.frolo.muse.model.media.Song
+import com.frolo.music.model.Media
+import com.frolo.music.model.Playlist
+import com.frolo.music.model.Song
 import com.frolo.muse.permission.PermissionChecker
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.main.library.base.AbsSongCollectionViewModel
@@ -40,20 +40,20 @@ class PlaylistViewModel constructor(
     private val appRouter: AppRouter,
     private val eventLogger: EventLogger
 ): AbsSongCollectionViewModel<Song>(
-        player,
-        permissionChecker,
-        getPlaylistUseCase,
-        getMediaMenuUseCase,
-        clickMediaUseCase,
-        playMediaUseCase,
-        shareMediaUseCase,
-        deleteMediaUseCase,
-        getIsFavouriteUseCase,
-        changeFavouriteUseCase,
-        createSongShortcutUseCase,
-        schedulerProvider,
-        appRouter,
-        eventLogger
+    player,
+    permissionChecker,
+    getPlaylistUseCase,
+    getMediaMenuUseCase,
+    clickMediaUseCase,
+    playMediaUseCase,
+    shareMediaUseCase,
+    deleteMediaUseCase,
+    getIsFavouriteUseCase,
+    changeFavouriteUseCase,
+    createSongShortcutUseCase,
+    schedulerProvider,
+    appRouter,
+    eventLogger
 ), AssociatedWithMediaItem {
 
     private val _playlist: MutableLiveData<Playlist> by lazy {

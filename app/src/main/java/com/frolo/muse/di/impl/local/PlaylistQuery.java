@@ -8,7 +8,7 @@ import android.net.Uri;
 import android.provider.MediaStore;
 
 import com.frolo.muse.R;
-import com.frolo.muse.model.media.Playlist;
+import com.frolo.music.model.Playlist;
 import com.frolo.rxcontent.CursorMapper;
 import com.frolo.rxcontent.RxContent;
 

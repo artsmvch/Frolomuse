@@ -6,8 +6,8 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.frolo.muse.R
-import com.frolo.muse.model.media.Artist
-import com.frolo.muse.model.media.Song
+import com.frolo.music.model.Artist
+import com.frolo.music.model.Song
 import com.frolo.muse.thumbnails.provideThumbnailLoader
 import com.frolo.muse.ui.base.FragmentContentInsetsListener
 import com.frolo.muse.ui.base.withArg

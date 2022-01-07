@@ -1,7 +1,7 @@
 package com.frolo.muse.thumbnails
 
 import android.widget.ImageView
-import com.frolo.muse.model.media.*
+import com.frolo.music.model.*
 
 
 object StubThumbnailLoader : ThumbnailLoader {

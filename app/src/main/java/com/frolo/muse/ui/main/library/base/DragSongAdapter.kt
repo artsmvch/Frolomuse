@@ -10,7 +10,7 @@ import com.frolo.muse.R
 import com.frolo.ui.StyleUtils
 import com.frolo.muse.dp2px
 import com.frolo.muse.inflateChild
-import com.frolo.muse.model.media.Song
+import com.frolo.music.model.Song
 import com.frolo.muse.thumbnails.ThumbnailLoader
 import com.frolo.muse.ui.base.adapter.ItemTouchHelperAdapter
 import com.frolo.muse.ui.getArtistString

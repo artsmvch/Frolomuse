@@ -4,7 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import com.frolo.muse.model.media.Playlist
+import com.frolo.music.model.Playlist
 
 
 class SongsAddedToPlaylistEvent private constructor(

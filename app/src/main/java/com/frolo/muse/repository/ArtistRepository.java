@@ -1,6 +1,6 @@
 package com.frolo.muse.repository;
 
-import com.frolo.muse.model.media.Artist;
+import com.frolo.music.model.Artist;
 
 public interface ArtistRepository extends MediaRepository<Artist> {
 }

@@ -11,8 +11,8 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.frolo.muse.R
 import com.frolo.muse.arch.observeNonNull
-import com.frolo.muse.model.media.Media
-import com.frolo.muse.model.media.Playlist
+import com.frolo.music.model.Media
+import com.frolo.music.model.Playlist
 import com.frolo.muse.ui.base.BaseDialogFragment
 import com.frolo.muse.ui.base.withArg
 import com.frolo.muse.ui.main.library.base.BaseAdapter

@@ -1,6 +1,6 @@
 package com.frolo.muse.interactor.media.get
 
-import com.frolo.muse.model.media.Media
+import com.frolo.music.model.Media
 import com.frolo.muse.model.menu.SortOrderMenu
 import com.frolo.muse.model.sort.SortOrder
 import com.frolo.muse.repository.GenericMediaRepository

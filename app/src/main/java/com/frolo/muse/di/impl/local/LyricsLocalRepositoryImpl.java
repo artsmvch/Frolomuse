@@ -9,7 +9,7 @@ import android.net.Uri;
 
 import com.frolo.muse.content.AppMediaStore;
 import com.frolo.muse.model.lyrics.Lyrics;
-import com.frolo.muse.model.media.Song;
+import com.frolo.music.model.Song;
 import com.frolo.muse.repository.LyricsLocalRepository;
 
 import java.util.concurrent.Callable;

@@ -1,10 +1,7 @@
 package com.frolo.muse.ui.main.library.search.adapter
 
 import android.view.View
-import com.bumptech.glide.RequestManager
-import com.frolo.muse.R
-import com.frolo.muse.glide.makeRequest
-import com.frolo.muse.model.media.Song
+import com.frolo.music.model.Song
 import com.frolo.muse.thumbnails.ThumbnailLoader
 import com.frolo.muse.ui.getAlbumString
 import com.frolo.muse.ui.getDurationString

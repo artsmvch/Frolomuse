@@ -8,7 +8,7 @@ import com.frolo.muse.TestLibraryConfiguration
 import com.frolo.muse.di.impl.local.PlaylistDatabaseManager
 import com.frolo.muse.di.impl.local.SongRepositoryImpl
 import com.frolo.muse.kotlin.moveItem
-import com.frolo.muse.model.media.Song
+import com.frolo.music.model.Song
 import junit.framework.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith

@@ -5,8 +5,8 @@ import com.frolo.muse.arch.SingleLiveEvent
 import com.frolo.muse.interactor.media.shortcut.CreateShortcutUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.logShortcutCreated
-import com.frolo.muse.model.media.Artist
-import com.frolo.muse.model.media.Media
+import com.frolo.music.model.Artist
+import com.frolo.music.model.Media
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.base.BaseViewModel
 

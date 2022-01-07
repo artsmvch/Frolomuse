@@ -6,7 +6,7 @@ import com.frolo.muse.di.AppComponent
 import com.frolo.muse.router.AppRouter
 import com.frolo.muse.interactor.media.AddMediaToPlaylistUseCase
 import com.frolo.muse.logger.EventLogger
-import com.frolo.muse.model.media.Media
+import com.frolo.music.model.Media
 import com.frolo.muse.rx.SchedulerProvider
 import javax.inject.Inject
 

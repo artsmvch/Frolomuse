@@ -14,7 +14,7 @@ import androidx.annotation.NonNull;
 
 import com.frolo.muse.BuildConfig;
 import com.frolo.muse.content.AppMediaStore;
-import com.frolo.muse.model.media.MyFile;
+import com.frolo.music.model.MyFile;
 import com.frolo.rxcontent.CursorMapper;
 import com.frolo.rxcontent.RxContent;
 

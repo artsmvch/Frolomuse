@@ -1,7 +1,7 @@
-package com.frolo.muse.model.media;
+package com.frolo.music.model;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -31,19 +31,19 @@ public final class SongFilter {
             NAME_PIECE_NOT_SET, FOLDER_PATH_NOT_SET, FILEPATH_NOT_SET,
             ID_NOT_SET, ID_NOT_SET, ID_NOT_SET, DURATION_NOT_SET, DURATION_NOT_SET, TIME_NOT_SET);
 
-    @NotNull
+    @NonNull
     public static SongFilter allEnabled() {
         return ALL_ENABLED;
     }
 
-    @NotNull
+    @NonNull
     public static SongFilter ofNamePiece(@Nullable String titleFilter) {
         return new SongFilter(ALL_SONG_TYPES, titleFilter, FOLDER_PATH_NOT_SET, FILEPATH_NOT_SET,
                 ID_NOT_SET, ID_NOT_SET, ID_NOT_SET, DURATION_NOT_SET, DURATION_NOT_SET, TIME_NOT_SET);
     }
 
     // Properties
-    @NotNull
+    @NonNull
     private final Set<SongType> types;
 
     private final long albumId;
@@ -63,7 +63,7 @@ public final class SongFilter {
     private final long timeAdded;
 
     SongFilter(
-            @NotNull Set<SongType> types, @Nullable String namePiece,
+            @NonNull Set<SongType> types, @Nullable String namePiece,
             @Nullable String folderPath, @Nullable String filepath,
             long albumId, long artistId, long genreId,
             long minDuration, long maxDuration,
@@ -97,7 +97,7 @@ public final class SongFilter {
             && timeAdded == TIME_NOT_SET;
     }
 
-    @NotNull
+    @NonNull
     public Set<SongType> getTypes() {
         return types;
     }
@@ -164,7 +164,7 @@ public final class SongFilter {
                 folderPath, filepath, minDuration, maxDuration, timeAdded);
     }
 
-    @NotNull
+    @NonNull
     public Builder newBuilder() {
         Builder builder = new Builder();
         builder.setOnlyTypes(types);
@@ -197,19 +197,19 @@ public final class SongFilter {
             types = new HashSet<>(ALL_SONG_TYPES);
         }
 
-        public Builder setOnlyType(@NotNull SongType type) {
+        public Builder setOnlyType(@NonNull SongType type) {
             this.types.clear();
             this.types.add(type);
             return this;
         }
 
-        public Builder setOnlyTypes(@NotNull Collection<SongType> types) {
+        public Builder setOnlyTypes(@NonNull Collection<SongType> types) {
             this.types.clear();
             this.types.addAll(types);
             return this;
         }
 
-        public Builder setOnlyTypes(@NotNull SongType... types) {
+        public Builder setOnlyTypes(@NonNull SongType... types) {
             this.types.clear();
             this.types.addAll(Arrays.asList(types));
             return this;
@@ -226,7 +226,7 @@ public final class SongFilter {
             return this;
         }
 
-        public Builder addType(@NotNull SongType type) {
+        public Builder addType(@NonNull SongType type) {
             types.add(type);
             return this;
         }
@@ -276,7 +276,7 @@ public final class SongFilter {
             return this;
         }
 
-        @NotNull
+        @NonNull
         public SongFilter build() {
             return new SongFilter(types, namePiece, folderPath, filepath,
                     albumId, artistId, genreId, minDuration, maxDuration, timeAdded);

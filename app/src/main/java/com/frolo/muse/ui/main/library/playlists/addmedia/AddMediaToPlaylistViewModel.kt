@@ -7,7 +7,7 @@ import com.frolo.muse.router.AppRouter
 import com.frolo.muse.interactor.media.AddMediaToPlaylistUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.logMediaAddedToPlaylist
-import com.frolo.muse.model.media.Playlist
+import com.frolo.music.model.Playlist
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.base.BaseViewModel
 

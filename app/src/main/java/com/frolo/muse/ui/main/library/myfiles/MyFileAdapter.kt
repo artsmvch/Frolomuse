@@ -6,7 +6,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import com.frolo.muse.R
 import com.frolo.muse.inflateChild
-import com.frolo.muse.model.media.MyFile
+import com.frolo.music.model.MyFile
 import com.frolo.muse.thumbnails.ThumbnailLoader
 import com.frolo.muse.ui.base.PlayStateAwareAdapter
 import com.frolo.muse.ui.getNameString

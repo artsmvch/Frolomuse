@@ -10,7 +10,7 @@ import com.frolo.muse.interactor.media.get.SearchMediaUseCase
 import com.frolo.muse.interactor.media.shortcut.CreateShortcutUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.logMediaSearchUsed
-import com.frolo.muse.model.media.Media
+import com.frolo.music.model.Media
 import com.frolo.muse.permission.PermissionChecker
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.main.library.base.AbsMediaCollectionViewModel
@@ -20,19 +20,19 @@ import javax.inject.Inject
 
 
 class SearchViewModel @Inject constructor(
-    permissionChecker: PermissionChecker,
-    searchMediaUseCase: SearchMediaUseCase,
-    getMediaMenuUseCase: GetMediaMenuUseCase<Media>,
-    clickMediaUseCase: ClickMediaUseCase<Media>,
-    playMediaUseCase: PlayMediaUseCase<Media>,
-    shareMediaUseCase: ShareMediaUseCase<Media>,
-    deleteMediaUseCase: DeleteMediaUseCase<Media>,
-    getIsFavouriteUseCase: GetIsFavouriteUseCase<Media>,
-    changeFavouriteUseCase: ChangeFavouriteUseCase<Media>,
-    createShortcutUseCase: CreateShortcutUseCase<Media>,
-    schedulerProvider: SchedulerProvider,
-    appRouter: AppRouter,
-    private val eventLogger: EventLogger
+        permissionChecker: PermissionChecker,
+        searchMediaUseCase: SearchMediaUseCase,
+        getMediaMenuUseCase: GetMediaMenuUseCase<Media>,
+        clickMediaUseCase: ClickMediaUseCase<Media>,
+        playMediaUseCase: PlayMediaUseCase<Media>,
+        shareMediaUseCase: ShareMediaUseCase<Media>,
+        deleteMediaUseCase: DeleteMediaUseCase<Media>,
+        getIsFavouriteUseCase: GetIsFavouriteUseCase<Media>,
+        changeFavouriteUseCase: ChangeFavouriteUseCase<Media>,
+        createShortcutUseCase: CreateShortcutUseCase<Media>,
+        schedulerProvider: SchedulerProvider,
+        appRouter: AppRouter,
+        private val eventLogger: EventLogger
 ): AbsMediaCollectionViewModel<Media>(
         permissionChecker,
         searchMediaUseCase,

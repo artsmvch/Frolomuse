@@ -14,7 +14,7 @@ import com.frolo.muse.R;
 import com.frolo.threads.ThreadStrictMode;
 import com.frolo.muse.glide.GlideAlbumArtHelper;
 import com.frolo.muse.glide.SimpleRequestListener;
-import com.frolo.muse.model.media.Song;
+import com.frolo.music.model.Song;
 
 import java.util.concurrent.Future;
 

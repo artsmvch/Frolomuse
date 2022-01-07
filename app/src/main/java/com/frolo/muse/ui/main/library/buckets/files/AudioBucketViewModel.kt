@@ -12,8 +12,8 @@ import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
 import com.frolo.muse.interactor.media.get.ExploreMediaBucketUseCase
 import com.frolo.muse.interactor.media.shortcut.CreateShortcutUseCase
 import com.frolo.muse.logger.EventLogger
-import com.frolo.muse.model.media.MediaBucket
-import com.frolo.muse.model.media.MediaFile
+import com.frolo.music.model.MediaBucket
+import com.frolo.music.model.MediaFile
 import com.frolo.muse.router.AppRouter
 import com.frolo.muse.permission.PermissionChecker
 import com.frolo.muse.rx.SchedulerProvider

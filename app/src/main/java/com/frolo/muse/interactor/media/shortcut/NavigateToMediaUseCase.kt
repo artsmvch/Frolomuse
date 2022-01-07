@@ -4,7 +4,7 @@ import com.frolo.muse.common.AudioSourceQueue
 import com.frolo.player.Player
 import com.frolo.player.prepareByTarget
 import com.frolo.muse.common.toAudioSource
-import com.frolo.muse.model.media.Media
+import com.frolo.music.model.Media
 import com.frolo.muse.router.AppRouter
 import com.frolo.muse.repository.*
 import com.frolo.muse.rx.SchedulerProvider

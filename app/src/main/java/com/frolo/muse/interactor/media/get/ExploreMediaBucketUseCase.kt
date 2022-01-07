@@ -2,8 +2,8 @@ package com.frolo.muse.interactor.media.get
 
 import com.frolo.player.AudioSource
 import com.frolo.muse.model.Library
-import com.frolo.muse.model.media.MediaBucket
-import com.frolo.muse.model.media.MediaFile
+import com.frolo.music.model.MediaBucket
+import com.frolo.music.model.MediaFile
 import com.frolo.muse.repository.MediaFileRepository
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.rx.SchedulerProvider

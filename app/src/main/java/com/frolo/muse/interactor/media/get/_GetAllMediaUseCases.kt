@@ -3,9 +3,9 @@
 package com.frolo.muse.interactor.media.get
 
 import com.frolo.muse.model.Library
-import com.frolo.muse.model.media.*
 import com.frolo.muse.repository.*
 import com.frolo.muse.rx.SchedulerProvider
+import com.frolo.music.model.*
 import io.reactivex.Flowable
 
 

@@ -12,9 +12,9 @@ import com.frolo.muse.interactor.media.get.GetAlbumSongsUseCase
 import com.frolo.muse.interactor.media.shortcut.CreateShortcutUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.logShortcutCreated
-import com.frolo.muse.model.media.Album
-import com.frolo.muse.model.media.Media
-import com.frolo.muse.model.media.Song
+import com.frolo.music.model.Album
+import com.frolo.music.model.Media
+import com.frolo.music.model.Song
 import com.frolo.muse.permission.PermissionChecker
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.main.library.base.AbsSongCollectionViewModel

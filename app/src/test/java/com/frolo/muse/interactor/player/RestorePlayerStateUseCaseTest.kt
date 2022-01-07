@@ -8,8 +8,8 @@ import com.frolo.muse.common.toAudioSource
 import com.frolo.muse.common.toAudioSources
 import com.frolo.muse.mockSong
 import com.frolo.muse.mockSongList
-import com.frolo.muse.model.media.Album
-import com.frolo.muse.model.media.Song
+import com.frolo.music.model.Album
+import com.frolo.music.model.Song
 import com.frolo.muse.repository.*
 import com.frolo.test.mockKT
 import com.frolo.test.mockList

@@ -12,9 +12,10 @@ import androidx.core.graphics.ColorUtils
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.frolo.muse.*
-import com.frolo.muse.model.media.*
+import com.frolo.muse.R
 import com.frolo.muse.thumbnails.ThumbnailLoader
 import com.frolo.muse.ui.main.library.base.BaseAdapter
+import com.frolo.music.model.*
 import com.frolo.ui.Screen
 import com.frolo.ui.StyleUtils
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter

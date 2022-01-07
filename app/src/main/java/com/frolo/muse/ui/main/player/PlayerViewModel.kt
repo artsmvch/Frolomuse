@@ -21,9 +21,9 @@ import com.frolo.muse.logger.logPlayerOptionsMenuShown
 import com.frolo.muse.model.ABState
 import com.frolo.muse.model.event.DeletionConfirmation
 import com.frolo.muse.model.event.DeletionType
-import com.frolo.muse.model.media.Album
-import com.frolo.muse.model.media.Media
-import com.frolo.muse.model.media.Song
+import com.frolo.music.model.Album
+import com.frolo.music.model.Media
+import com.frolo.music.model.Song
 import com.frolo.muse.model.sound.Sound
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.rx.flowable.doOnNextIndexed

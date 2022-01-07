@@ -1,7 +1,7 @@
 package com.frolo.muse.router
 
 import com.frolo.billing.ProductId
-import com.frolo.muse.model.media.*
+import com.frolo.music.model.*
 import java.io.File
 
 

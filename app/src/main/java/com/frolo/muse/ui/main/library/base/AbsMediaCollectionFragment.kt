@@ -10,7 +10,6 @@ import androidx.appcompat.view.ActionMode
 import androidx.lifecycle.LifecycleOwner
 import com.frolo.muse.R
 import com.frolo.muse.arch.observeNonNull
-import com.frolo.muse.model.media.*
 import com.frolo.muse.model.menu.ContextualMenu
 import com.frolo.muse.model.menu.OptionsMenu
 import com.frolo.muse.model.menu.SortOrderMenu
@@ -20,6 +19,7 @@ import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.base.RESPermissionObserver
 import com.frolo.muse.ui.main.confirmDeletion
 import com.frolo.muse.ui.main.confirmShortcutCreation
+import com.frolo.music.model.Media
 
 
 abstract class AbsMediaCollectionFragment <E: Media>: BaseFragment(),

@@ -1,7 +1,7 @@
 package com.frolo.muse.ui.main.library.search.adapter
 
 import android.view.View
-import com.frolo.muse.model.media.Artist
+import com.frolo.music.model.Artist
 import com.frolo.muse.thumbnails.ThumbnailLoader
 import com.frolo.muse.ui.getNameString
 import com.frolo.muse.ui.getNumberOfAlbumsString

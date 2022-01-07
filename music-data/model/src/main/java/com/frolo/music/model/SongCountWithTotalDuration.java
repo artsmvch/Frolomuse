@@ -1,4 +1,6 @@
-package com.frolo.muse.model.media;
+package com.frolo.music.model;
+
+import java.util.Objects;
 
 
 /**
@@ -38,8 +40,15 @@ public final class SongCountWithTotalDuration {
     }
 
     @Override
-    public String toString() {
-        return "[song_count=" + songCount + "; total_duration=" + totalDuration + "]";
+    public int hashCode() {
+        return Objects.hash(songCount, totalDuration);
     }
 
+    @Override
+    public String toString() {
+        return "SongCountWithTotalDuration{" +
+                "songCount=" + songCount +
+                ", totalDuration=" + totalDuration +
+                '}';
+    }
 }

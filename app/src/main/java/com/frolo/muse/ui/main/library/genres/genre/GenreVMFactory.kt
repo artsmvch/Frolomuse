@@ -11,8 +11,8 @@ import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
 import com.frolo.muse.interactor.media.get.GetGenreSongsUseCase
 import com.frolo.muse.interactor.media.shortcut.CreateShortcutUseCase
 import com.frolo.muse.logger.EventLogger
-import com.frolo.muse.model.media.Genre
-import com.frolo.muse.model.media.Song
+import com.frolo.music.model.Genre
+import com.frolo.music.model.Song
 import com.frolo.muse.permission.PermissionChecker
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.rx.SchedulerProvider
@@ -20,8 +20,8 @@ import javax.inject.Inject
 
 
 class GenreVMFactory constructor(
-        appComponent: AppComponent,
-        private val genreArg: Genre
+    appComponent: AppComponent,
+    private val genreArg: Genre
 ): ViewModelProvider.Factory {
 
     @Inject

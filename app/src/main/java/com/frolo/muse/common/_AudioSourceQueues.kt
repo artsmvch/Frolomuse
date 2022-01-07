@@ -2,7 +2,8 @@ package com.frolo.muse.common
 
 import com.frolo.player.AudioSource
 import com.frolo.player.AudioSourceQueue
-import com.frolo.muse.model.media.*
+import com.frolo.music.model.Media
+import com.frolo.music.model.Song
 
 
 val TAG_ASSOCIATED_MEDIA = Any()

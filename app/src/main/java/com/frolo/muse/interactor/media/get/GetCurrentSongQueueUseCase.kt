@@ -2,7 +2,7 @@ package com.frolo.muse.interactor.media.get
 
 import com.frolo.muse.common.toSongs
 import com.frolo.player.Player
-import com.frolo.muse.model.media.Song
+import com.frolo.music.model.Song
 import com.frolo.muse.model.menu.SortOrderMenu
 import com.frolo.muse.model.sort.SortOrder
 import com.frolo.muse.rx.SchedulerProvider

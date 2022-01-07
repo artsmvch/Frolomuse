@@ -14,7 +14,7 @@ import com.frolo.muse.glide.GlideAlbumArtHelper
 import com.frolo.muse.glide.makeRequestAsBitmap
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.logAlbumUpdated
-import com.frolo.muse.model.media.Album
+import com.frolo.music.model.Album
 import com.frolo.muse.repository.AlbumRepository
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.base.BaseAndroidViewModel

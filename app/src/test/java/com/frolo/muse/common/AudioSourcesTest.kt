@@ -6,7 +6,7 @@ import com.frolo.player.data.AudioSources
 import com.frolo.player.AudioType
 import com.frolo.muse.mockAudioSource
 import com.frolo.muse.mockSong
-import com.frolo.muse.model.media.Song
+import com.frolo.music.model.Song
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith

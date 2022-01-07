@@ -11,8 +11,8 @@ import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.logLibrarySongFilterSaved
 import com.frolo.muse.logger.logLibrarySongFilterViewed
 import com.frolo.muse.model.media.SongFeatures
-import com.frolo.muse.model.media.SongFilter
-import com.frolo.muse.model.media.SongType
+import com.frolo.music.model.SongFilter
+import com.frolo.music.model.SongType
 import com.frolo.muse.repository.LibraryPreferences
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.base.BaseViewModel

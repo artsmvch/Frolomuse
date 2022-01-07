@@ -1,6 +1,8 @@
 package com.frolo.muse.model.media
 
 import com.frolo.muse.mockSong
+import com.frolo.music.model.Song
+import com.frolo.music.model.SongComparators
 import junit.framework.Assert.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith

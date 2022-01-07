@@ -12,14 +12,14 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import com.frolo.debug.DebugUtils;
-import com.frolo.muse.model.media.Album;
-import com.frolo.muse.model.media.Artist;
-import com.frolo.muse.model.media.Genre;
-import com.frolo.muse.model.media.Song;
+import com.frolo.music.model.Album;
+import com.frolo.music.model.Artist;
+import com.frolo.music.model.Genre;
+import com.frolo.music.model.Song;
 import com.frolo.muse.model.media.SongFeatures;
-import com.frolo.muse.model.media.SongFilter;
-import com.frolo.muse.model.media.SongType;
-import com.frolo.muse.model.media.Songs;
+import com.frolo.music.model.SongFilter;
+import com.frolo.music.model.SongType;
+import com.frolo.music.model.Songs;
 import com.frolo.rxcontent.CursorMapper;
 
 import java.util.ArrayList;

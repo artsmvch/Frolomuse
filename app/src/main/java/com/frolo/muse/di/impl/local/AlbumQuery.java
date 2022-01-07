@@ -8,8 +8,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.provider.MediaStore;
 
-import com.frolo.muse.model.media.Album;
-import com.frolo.muse.model.media.SongFilter;
+import com.frolo.music.model.Album;
+import com.frolo.music.model.SongFilter;
 import com.frolo.rxcontent.CursorMapper;
 import com.frolo.rxcontent.RxContent;
 

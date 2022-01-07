@@ -7,9 +7,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 
 import com.frolo.muse.BuildConfig;
-import com.frolo.muse.model.media.Media;
-import com.frolo.muse.model.media.Song;
-import com.frolo.muse.model.media.SongFilter;
+import com.frolo.music.model.Media;
+import com.frolo.music.model.Song;
+import com.frolo.music.model.SongFilter;
 import com.frolo.muse.model.sort.SortOrder;
 import com.frolo.muse.repository.MediaRepository;
 

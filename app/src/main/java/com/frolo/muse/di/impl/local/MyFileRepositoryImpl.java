@@ -5,10 +5,10 @@ import android.content.SharedPreferences;
 
 import com.frolo.muse.BuildConfig;
 import com.frolo.muse.R;
-import com.frolo.muse.model.media.MyFile;
-import com.frolo.muse.model.media.Playlist;
-import com.frolo.muse.model.media.Song;
-import com.frolo.muse.model.media.SongFilter;
+import com.frolo.music.model.MyFile;
+import com.frolo.music.model.Playlist;
+import com.frolo.music.model.Song;
+import com.frolo.music.model.SongFilter;
 import com.frolo.muse.model.sort.SortOrder;
 import com.frolo.muse.repository.MyFileRepository;
 

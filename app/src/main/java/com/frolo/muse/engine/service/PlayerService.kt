@@ -26,7 +26,7 @@ import com.frolo.muse.interactor.media.DispatchSongPlayedUseCase
 import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
 import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
 import com.frolo.muse.interactor.player.RestorePlayerStateUseCase
-import com.frolo.muse.model.media.Song
+import com.frolo.music.model.Song
 import com.frolo.muse.model.playback.PlaybackFadingParams
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.repository.PresetRepository

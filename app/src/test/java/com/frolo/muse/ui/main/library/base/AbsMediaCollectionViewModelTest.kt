@@ -7,7 +7,7 @@ import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
 import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
 import com.frolo.muse.interactor.media.get.GetMediaUseCase
 import com.frolo.muse.interactor.media.shortcut.CreateShortcutUseCase
-import com.frolo.muse.model.media.Media
+import com.frolo.music.model.Media
 import com.frolo.muse.model.menu.ContextualMenu
 import com.frolo.muse.router.TestAppRouter
 import com.frolo.muse.permission.PermissionChecker

@@ -8,7 +8,7 @@ import com.bumptech.glide.RequestManager
 import com.frolo.muse.R
 import com.frolo.muse.glide.makeRequest
 import com.frolo.muse.inflateChild
-import com.frolo.muse.model.media.Album
+import com.frolo.music.model.Album
 import com.frolo.muse.screenWidth
 import com.frolo.muse.ui.getNameString
 import com.frolo.muse.ui.main.library.base.BaseAdapter

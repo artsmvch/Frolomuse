@@ -15,6 +15,9 @@ import com.frolo.muse.database.FrolomuseDatabase
 import com.frolo.muse.database.entity.*
 import com.frolo.muse.kotlin.contains
 import com.frolo.muse.model.media.*
+import com.frolo.music.model.Playlist
+import com.frolo.music.model.Song
+import com.frolo.music.model.SongType
 import com.frolo.rxcontent.RxContent
 import io.reactivex.Completable
 import io.reactivex.Flowable

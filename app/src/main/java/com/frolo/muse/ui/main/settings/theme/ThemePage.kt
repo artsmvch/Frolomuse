@@ -3,7 +3,7 @@ package com.frolo.muse.ui.main.settings.theme
 import android.os.Parcel
 import android.os.Parcelable
 import com.frolo.muse.model.Theme
-import com.frolo.muse.model.media.Album
+import com.frolo.music.model.Album
 
 
 data class ThemePage(

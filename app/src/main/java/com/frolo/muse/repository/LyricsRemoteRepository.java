@@ -1,7 +1,7 @@
 package com.frolo.muse.repository;
 
 import com.frolo.muse.model.lyrics.Lyrics;
-import com.frolo.muse.model.media.Song;
+import com.frolo.music.model.Song;
 
 import io.reactivex.Single;
 

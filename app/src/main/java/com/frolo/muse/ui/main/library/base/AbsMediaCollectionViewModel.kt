@@ -17,7 +17,6 @@ import com.frolo.muse.logger.logShortcutCreated
 import com.frolo.muse.model.event.DeletionConfirmation
 import com.frolo.muse.model.event.DeletionType
 import com.frolo.muse.model.event.MultipleDeletionConfirmation
-import com.frolo.muse.model.media.*
 import com.frolo.muse.model.menu.ContextualMenu
 import com.frolo.muse.model.menu.OptionsMenu
 import com.frolo.muse.model.menu.SortOrderMenu
@@ -25,6 +24,7 @@ import com.frolo.muse.model.sort.SortOrder
 import com.frolo.muse.permission.PermissionChecker
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.base.BaseViewModel
+import com.frolo.music.model.*
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.disposables.Disposable

@@ -3,8 +3,8 @@ package com.frolo.muse.di.impl.local;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.frolo.muse.model.media.Playlist;
-import com.frolo.muse.model.media.Song;
+import com.frolo.music.model.Playlist;
+import com.frolo.music.model.Song;
 
 import java.util.List;
 

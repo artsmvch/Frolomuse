@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import com.frolo.muse.model.media.Album
+import com.frolo.music.model.Album
 
 
 class AlbumUpdateEvent private constructor(

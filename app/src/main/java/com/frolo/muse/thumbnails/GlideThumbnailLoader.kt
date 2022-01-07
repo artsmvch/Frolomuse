@@ -18,8 +18,8 @@ import com.frolo.ui.Screen
 import com.frolo.ui.StyleUtils
 import com.frolo.muse.glide.makeRequest
 import com.frolo.muse.glide.squircleCrop
-import com.frolo.muse.model.media.*
 import com.frolo.muse.repository.AppearancePreferences
+import com.frolo.music.model.*
 
 
 @UiThread

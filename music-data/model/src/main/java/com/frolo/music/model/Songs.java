@@ -1,12 +1,4 @@
-package com.frolo.muse.model.media;
-
-import android.content.ContentUris;
-import android.net.Uri;
-import android.provider.MediaStore;
-
-import com.frolo.player.data.MediaStoreRow;
-
-import org.jetbrains.annotations.NotNull;
+package com.frolo.music.model;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -14,9 +6,7 @@ import java.util.Objects;
 
 public final class Songs {
 
-    public static final Uri CONTENT_URI = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-
-    private static class SimpleSong implements Song, Serializable, MediaStoreRow {
+    private static class SimpleSong implements Song, Serializable {
 
         final long id;
         final SongType songType;
@@ -144,12 +134,6 @@ public final class Songs {
         @Override
         public int getTrackNumber() {
             return trackNumber;
-        }
-
-        @NotNull
-        @Override
-        public Uri getUri() {
-            return ContentUris.withAppendedId(CONTENT_URI, id);
         }
     }
 

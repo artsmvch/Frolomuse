@@ -11,8 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.frolo.muse.*
 import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
-import com.frolo.muse.model.media.Playlist
-import com.frolo.muse.model.media.Song
+import com.frolo.music.model.Playlist
+import com.frolo.music.model.Song
 import com.frolo.muse.ui.base.adapter.SimpleItemTouchHelperCallback
 import com.frolo.muse.ui.base.withArg
 import com.frolo.muse.ui.main.library.base.DragSongAdapter

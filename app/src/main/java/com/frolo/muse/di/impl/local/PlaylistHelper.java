@@ -10,10 +10,10 @@ import android.os.HandlerThread;
 import android.provider.BaseColumns;
 import android.provider.MediaStore;
 
-import com.frolo.muse.model.media.Media;
-import com.frolo.muse.model.media.MyFile;
-import com.frolo.muse.model.media.Song;
-import com.frolo.muse.model.media.UnknownMediaException;
+import com.frolo.music.model.Media;
+import com.frolo.music.model.MyFile;
+import com.frolo.music.model.Song;
+import com.frolo.music.model.UnknownMediaException;
 
 import java.util.ArrayList;
 import java.util.Collection;

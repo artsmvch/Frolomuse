@@ -3,12 +3,12 @@ package com.frolo.muse.interactor.media
 import com.frolo.muse.Features
 import com.frolo.muse.common.toAudioSource
 import com.frolo.player.Player
-import com.frolo.muse.model.media.*
 import com.frolo.muse.model.menu.ContextualMenu
 import com.frolo.muse.model.menu.OptionsMenu
 import com.frolo.muse.repository.MediaRepository
 import com.frolo.muse.repository.RemoteConfigRepository
 import com.frolo.muse.rx.SchedulerProvider
+import com.frolo.music.model.*
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.functions.Function

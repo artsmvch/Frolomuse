@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.frolo.muse.R
-import com.frolo.muse.model.media.Media
+import com.frolo.music.model.Media
 import com.frolo.muse.ui.ShotLayoutAnimationController
 import com.frolo.muse.ui.base.FragmentContentInsetsListener
 import com.frolo.muse.ui.main.addLinearItemMargins

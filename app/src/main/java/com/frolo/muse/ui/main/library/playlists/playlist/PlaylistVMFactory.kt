@@ -11,8 +11,8 @@ import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
 import com.frolo.muse.interactor.media.get.GetPlaylistUseCase
 import com.frolo.muse.interactor.media.shortcut.CreateShortcutUseCase
 import com.frolo.muse.logger.EventLogger
-import com.frolo.muse.model.media.Playlist
-import com.frolo.muse.model.media.Song
+import com.frolo.music.model.Playlist
+import com.frolo.music.model.Song
 import com.frolo.muse.permission.PermissionChecker
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.rx.SchedulerProvider
@@ -20,8 +20,8 @@ import javax.inject.Inject
 
 
 class PlaylistVMFactory constructor(
-        appComponent: AppComponent,
-        playlistArg: Playlist
+    appComponent: AppComponent,
+    playlistArg: Playlist
 ): ViewModelProvider.Factory {
 
     @Inject

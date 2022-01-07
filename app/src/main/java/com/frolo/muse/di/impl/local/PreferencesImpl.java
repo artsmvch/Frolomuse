@@ -12,7 +12,7 @@ import com.frolo.muse.model.Recently;
 import com.frolo.muse.model.Theme;
 import com.frolo.muse.model.VisualizerRendererType;
 import com.frolo.muse.model.playback.PlaybackFadingParams;
-import com.frolo.muse.model.media.Media;
+import com.frolo.music.model.Media;
 import com.frolo.muse.repository.Preferences;
 import com.frolo.rxpreference.RxOptional;
 import com.frolo.rxpreference.RxPreference;

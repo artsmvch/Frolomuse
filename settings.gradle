@@ -1,6 +1,11 @@
 // Main app
 include ':app'
 
+// Music data
+include ':music-data:model'
+include ':music-data:repository:api'
+include ':music-data:repository:android-impl'
+
 // AudioFx
 include ':audio:audiofx:api'
 include ':audio:audiofx:android-impl'
