@@ -4,32 +4,43 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.View
+import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.TextView
 import com.frolo.muse.R
-import kotlinx.android.synthetic.main.merge_placeholder.view.*
 
 
 class PlaceholderView @JvmOverloads constructor(
-        context: Context,
-        attrs: AttributeSet? = null,
-        defStyleAttr: Int = 0
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
 ): LinearLayout(context, attrs, defStyleAttr) {
+
+    private val iconImageView: ImageView
+    private val messageTextView: TextView
 
     init {
         orientation = VERTICAL
         gravity = Gravity.CENTER
         View.inflate(context, R.layout.merge_placeholder, this)
+        iconImageView = findViewById(R.id.imv_icon)
+        messageTextView = findViewById(R.id.tv_message)
+        initAttrs(context, attrs, defStyleAttr)
     }
 
-    init {
-        val ta = context.obtainStyledAttributes(attrs, R.styleable.PlaceholderView, 0, 0)
+    private fun initAttrs(
+        context: Context,
+        attrs: AttributeSet?,
+        defStyleAttr: Int
+    ) {
+        val ta = context.obtainStyledAttributes(attrs, R.styleable.PlaceholderView, defStyleAttr, 0)
         try {
             ta.getDrawable(R.styleable.PlaceholderView_image)?.apply {
-                imv_icon.setImageDrawable(this)
+                iconImageView.setImageDrawable(this)
             }
 
             ta.getString(R.styleable.PlaceholderView_message)?.apply {
-                tv_message.text = this
+                messageTextView.text = this
             }
         } finally {
             ta.recycle()
