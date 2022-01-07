@@ -6,8 +6,8 @@ import android.media.AudioFocusRequest;
 import android.media.AudioManager;
 import android.os.Build;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
@@ -16,12 +16,12 @@ import java.util.concurrent.atomic.AtomicReference;
 final class AudioFocusRequesterImpl
         implements AudioFocusRequester, AudioManager.OnAudioFocusChangeListener {
 
-    public static AudioFocusRequester create(@NotNull Context context, @NotNull Player player) {
+    public static AudioFocusRequester create(@NonNull Context context, @NonNull Player player) {
         final AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         return new AudioFocusRequesterImpl(audioManager, player);
     }
 
-    @NotNull
+    @NonNull
     private final Player mPlayer;
     @Nullable
     private final AudioManager mAudioManager;
@@ -34,7 +34,7 @@ final class AudioFocusRequesterImpl
     private final AtomicReference<AudioFocusRequest> mAudioFocusRequest =
             new AtomicReference<AudioFocusRequest>();
 
-    private AudioFocusRequesterImpl(@Nullable AudioManager audioManager, @NotNull Player player) {
+    private AudioFocusRequesterImpl(@Nullable AudioManager audioManager, @NonNull Player player) {
         mAudioManager = audioManager;
         mPlayer = player;
     }

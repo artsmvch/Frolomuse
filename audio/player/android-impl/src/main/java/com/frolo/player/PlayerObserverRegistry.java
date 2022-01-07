@@ -5,8 +5,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.util.Collection;
 import java.util.concurrent.CopyOnWriteArraySet;
@@ -27,7 +27,7 @@ final class PlayerObserverRegistry {
      * @param debug debug mode
      * @return a new instance of {@link PlayerObserverRegistry}
      */
-    static PlayerObserverRegistry create(@NotNull Context context, @NotNull Player player, boolean debug) {
+    static PlayerObserverRegistry create(@NonNull Context context, @NonNull Player player, boolean debug) {
         return new PlayerObserverRegistry(context, player, debug);
     }
 
@@ -56,7 +56,7 @@ final class PlayerObserverRegistry {
         }
 
         @Override
-        public void handleMessage(@NotNull Message msg) {
+        public void handleMessage(@NonNull Message msg) {
 
             switch (msg.what) {
                 case MSG_PREPARED: {
@@ -188,18 +188,18 @@ final class PlayerObserverRegistry {
 
     private final DispatcherHandler mHandler;
 
-    @NotNull
+    @NonNull
     private final Player mPlayer;
 
     private final boolean mDebug;
 
-    private PlayerObserverRegistry(@NotNull Context context, @NotNull Player player, boolean debug) {
+    private PlayerObserverRegistry(@NonNull Context context, @NonNull Player player, boolean debug) {
         mPlayer = player;
         mDebug = debug;
         mHandler = new DispatcherHandler(context.getMainLooper());
     }
 
-    @NotNull
+    @NonNull
     Player getPlayer() {
         return mPlayer;
     }
@@ -251,7 +251,7 @@ final class PlayerObserverRegistry {
      *
      * @param message to dispatch
      */
-    private void dispatch(@NotNull Message message) {
+    private void dispatch(@NonNull Message message) {
         // TODO: leave as is?
         message.sendToTarget();
 //        if (mHandler.getLooper().isCurrentThread()) {
@@ -294,7 +294,7 @@ final class PlayerObserverRegistry {
         dispatch(message);
     }
 
-    synchronized void dispatchQueueChanged(@NotNull AudioSourceQueue queue) {
+    synchronized void dispatchQueueChanged(@NonNull AudioSourceQueue queue) {
         mHandler.removeMessages(DispatcherHandler.MSG_QUEUE_CHANGED);
 
         final Message message =
@@ -311,7 +311,7 @@ final class PlayerObserverRegistry {
         dispatch(message);
     }
 
-    synchronized void dispatchAudioSourceUpdated(@NotNull AudioSource item) {
+    synchronized void dispatchAudioSourceUpdated(@NonNull AudioSource item) {
         mHandler.removeMessages(DispatcherHandler.MSG_CURRENT_ITEM_UPDATED);
 
         final Message message =
@@ -384,13 +384,13 @@ final class PlayerObserverRegistry {
         dispatch(message);
     }
 
-    synchronized void dispatchInternalErrorOccurred(@NotNull Throwable error) {
+    synchronized void dispatchInternalErrorOccurred(@NonNull Throwable error) {
         final Message message =
                 mHandler.obtainMessage(DispatcherHandler.MSG_INTERNAL_ERROR_OCCURRED, error);
         dispatch(message);
     }
 
-    synchronized void post(@NotNull Runnable r) {
+    synchronized void post(@NonNull Runnable r) {
         mHandler.post(r);
     }
 

@@ -4,8 +4,8 @@ import android.os.Debug;
 import android.os.SystemClock;
 import android.util.Log;
 
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.util.Objects;
 
@@ -22,15 +22,16 @@ final class MeasuredPlayerObserver implements PlayerObserver {
     private static final long UNACCEPTABLE_TIME = 400L;
     private static final long CRITICAL_TIME = 50L;
 
-    @NotNull
-    static PlayerObserver wrap(@NotNull PlayerObserver delegate) {
+    @NonNull
+    static PlayerObserver wrap(@NonNull PlayerObserver delegate) {
         return new MeasuredPlayerObserver(delegate);
     }
 
-    private static String getName(@NotNull PlayerObserver delegate) {
+    private static String getName(@NonNull PlayerObserver delegate) {
         final String clazzName = delegate.getClass().getName();
-        if (clazzName == null || clazzName.isEmpty())
+        if (clazzName == null || clazzName.isEmpty()) {
             return "NO_NAME";
+        }
 
         return clazzName;
     }
@@ -45,22 +46,22 @@ final class MeasuredPlayerObserver implements PlayerObserver {
         }
     }
 
-    @NotNull
+    @NonNull
     private final PlayerObserver mDelegate;
 
     private final String mDelegateName;
 
-    private MeasuredPlayerObserver(@NotNull PlayerObserver delegate) {
+    private MeasuredPlayerObserver(@NonNull PlayerObserver delegate) {
         mDelegate = delegate;
         mDelegateName = getName(delegate);
     }
 
-    @NotNull
+    @NonNull
     private Measurement start(String action) {
         return new Measurement(action, SystemClock.uptimeMillis());
     }
 
-    private void end(@NotNull Measurement m) {
+    private void end(@NonNull Measurement m) {
         final long endTime = SystemClock.uptimeMillis();
         handle(m.mAction, endTime - m.mStartTime);
     }
@@ -88,105 +89,105 @@ final class MeasuredPlayerObserver implements PlayerObserver {
     }
 
     @Override
-    public void onPrepared(@NotNull Player player, int duration, int progress) {
+    public void onPrepared(@NonNull Player player, int duration, int progress) {
         final Measurement m = start("onPrepared");
         mDelegate.onPrepared(player, duration, progress);
         end(m);
     }
 
     @Override
-    public void onPlaybackStarted(@NotNull Player player) {
+    public void onPlaybackStarted(@NonNull Player player) {
         final Measurement m = start("onPlaybackStarted");
         mDelegate.onPlaybackStarted(player);
         end(m);
     }
 
     @Override
-    public void onPlaybackPaused(@NotNull Player player) {
+    public void onPlaybackPaused(@NonNull Player player) {
         final Measurement m = start("onPlaybackPaused");
         mDelegate.onPlaybackPaused(player);
         end(m);
     }
 
     @Override
-    public void onSoughtTo(@NotNull Player player, int position) {
+    public void onSoughtTo(@NonNull Player player, int position) {
         final Measurement m = start("onSoughtTo");
         mDelegate.onSoughtTo(player, position);
         end(m);
     }
 
     @Override
-    public void onQueueChanged(@NotNull Player player, @NotNull AudioSourceQueue queue) {
+    public void onQueueChanged(@NonNull Player player, @NonNull AudioSourceQueue queue) {
         final Measurement m = start("onQueueChanged");
         mDelegate.onQueueChanged(player, queue);
         end(m);
     }
 
     @Override
-    public void onAudioSourceChanged(@NotNull Player player, @Nullable AudioSource item, int positionInQueue) {
+    public void onAudioSourceChanged(@NonNull Player player, @Nullable AudioSource item, int positionInQueue) {
         final Measurement m = start("onAudioSourceChanged");
         mDelegate.onAudioSourceChanged(player, item, positionInQueue);
         end(m);
     }
 
     @Override
-    public void onAudioSourceUpdated(@NotNull Player player, @NotNull AudioSource item) {
+    public void onAudioSourceUpdated(@NonNull Player player, @NonNull AudioSource item) {
         final Measurement m = start("onAudioSourceUpdated");
         mDelegate.onAudioSourceUpdated(player, item);
         end(m);
     }
 
     @Override
-    public void onPositionInQueueChanged(@NotNull Player player, int positionInQueue) {
+    public void onPositionInQueueChanged(@NonNull Player player, int positionInQueue) {
         final Measurement m = start("onPositionInQueueChanged");
         mDelegate.onPositionInQueueChanged(player, positionInQueue);
         end(m);
     }
 
     @Override
-    public void onShuffleModeChanged(@NotNull Player player, int mode) {
+    public void onShuffleModeChanged(@NonNull Player player, int mode) {
         final Measurement m = start("onShuffleModeChanged");
         mDelegate.onShuffleModeChanged(player, mode);
         end(m);
     }
 
     @Override
-    public void onRepeatModeChanged(@NotNull Player player, int mode) {
+    public void onRepeatModeChanged(@NonNull Player player, int mode) {
         final Measurement m = start("onRepeatModeChanged");
         mDelegate.onRepeatModeChanged(player, mode);
         end(m);
     }
 
     @Override
-    public void onShutdown(@NotNull Player player) {
+    public void onShutdown(@NonNull Player player) {
         final Measurement m = start("onShutdown");
         mDelegate.onShutdown(player);
         end(m);
     }
 
     @Override
-    public void onABChanged(@NotNull Player player, boolean aPointed, boolean bPointed) {
+    public void onABChanged(@NonNull Player player, boolean aPointed, boolean bPointed) {
         final Measurement m = start("onABChanged");
         mDelegate.onABChanged(player, aPointed, bPointed);
         end(m);
     }
 
     @Override
-    public void onPlaybackSpeedChanged(@NotNull Player player, float speed) {
+    public void onPlaybackSpeedChanged(@NonNull Player player, float speed) {
         final Measurement m = start("onPlaybackSpeedChanged");
         mDelegate.onPlaybackSpeedChanged(player, speed);
         end(m);
     }
 
     @Override
-    public void onPlaybackPitchChanged(@NotNull Player player, float pitch) {
+    public void onPlaybackPitchChanged(@NonNull Player player, float pitch) {
         final Measurement m = start("onPlaybackPitchChanged");
         mDelegate.onPlaybackPitchChanged(player, pitch);
         end(m);
     }
 
     @Override
-    public void onInternalErrorOccurred(@NotNull Player player, @NotNull Throwable error) {
+    public void onInternalErrorOccurred(@NonNull Player player, @NonNull Throwable error) {
         final Measurement m = start("onInternalErrorOccurred");
         mDelegate.onInternalErrorOccurred(player, error);
         end(m);

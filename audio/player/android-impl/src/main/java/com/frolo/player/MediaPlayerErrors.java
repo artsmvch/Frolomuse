@@ -2,12 +2,12 @@ package com.frolo.player;
 
 import android.media.MediaPlayer;
 
-import org.jetbrains.annotations.NotNull;
+import androidx.annotation.NonNull;
 
 
 final class MediaPlayerErrors {
 
-    @NotNull
+    @NonNull
     static String getWhatMessage(int what) {
         switch (what) {
             case MediaPlayer.MEDIA_ERROR_IO:
@@ -29,7 +29,7 @@ final class MediaPlayerErrors {
         }
     }
 
-    @NotNull
+    @NonNull
     static String getErrorMessage(int what, int extra) {
         return "what=" + getWhatMessage(what) + ", extra=" + extra;
     }

@@ -13,14 +13,13 @@ import android.os.PowerManager;
 import android.os.SystemClock;
 
 import androidx.annotation.GuardedBy;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.frolo.audiofx.AudioFx;
 import com.frolo.audiofx.applicable.AudioFxApplicable;
 import com.frolo.player.data.AudioSources;
 import com.frolo.player.data.MediaStoreRow;
-
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -76,7 +75,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
      */
     public static final class Builder {
         private final Context mContext;
-        @NotNull
+        @NonNull
         private AudioFxApplicable mAudioFx;
         private boolean mDebug = false;
         private PlayerJournal mJournal;
@@ -88,7 +87,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
         private PlaybackFadingStrategy mPlaybackFadingStrategy;
         private final List<PlayerObserver> mObservers = new ArrayList<>();
 
-        private Builder(@NotNull Context context, @NotNull AudioFxApplicable audioFx) {
+        private Builder(@NonNull Context context, @NonNull AudioFxApplicable audioFx) {
             mContext = context;
             mAudioFx = audioFx;
         }
@@ -127,12 +126,12 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
             return self();
         }
 
-        public Builder addObserver(@NotNull PlayerObserver observer) {
+        public Builder addObserver(@NonNull PlayerObserver observer) {
             mObservers.add(observer);
             return self();
         }
 
-        @NotNull
+        @NonNull
         public PlayerImpl build() {
             if (mAudioFx == null) {
                 if (mDebug) {
@@ -145,8 +144,8 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
         }
     }
 
-    @NotNull
-    public static Builder newBuilder(@NotNull Context context, @NotNull AudioFxApplicable audioFx) {
+    @NonNull
+    public static Builder newBuilder(@NonNull Context context, @NonNull AudioFxApplicable audioFx) {
         return new Builder(context, audioFx);
     }
 
@@ -158,7 +157,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
 
         final Runnable mTask;
 
-        EngineTaskWrapper(@NotNull Runnable task) {
+        EngineTaskWrapper(@NonNull Runnable task) {
             mTask = task;
         }
 
@@ -187,19 +186,19 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
      * The method is a little bit blocking, it's better not to call it on the main thread.
      * @return a new engine handler
      */
-    @NotNull
+    @NonNull
     static Handler createEngineHandler() {
         final HandlerThread thread = new HandlerThread("PlayerEngine");
         thread.start();
         return new Handler(thread.getLooper());
     }
 
-    @NotNull
+    @NonNull
     static Handler createEventHandler() {
         return new Handler(Looper.getMainLooper());
     }
 
-    @NotNull
+    @NonNull
     private static String info(@Nullable AudioSourceQueue queue) {
         if (queue == null) {
             return "Queue[null]";
@@ -208,7 +207,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
         return "Queue[name=" + queue + ", length=" + queue.getLength() + "]";
     }
 
-    @NotNull
+    @NonNull
     private static String info(@Nullable AudioSource audioSource) {
         if (audioSource == null) {
             return "AudioSource[null]";
@@ -248,19 +247,19 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
     private final boolean mUseWakeLocks;
 
     // Player journal
-    @NotNull
+    @NonNull
     private final PlayerJournal mPlayerJournal;
 
     // Audio Focus Requester
-    @NotNull
+    @NonNull
     private final AudioFocusRequester mAudioFocusRequester;
 
     // AudioFx
-    @NotNull
+    @NonNull
     private final AudioFxApplicable mAudioFx;
 
     // Observer Registry
-    @NotNull
+    @NonNull
     private final PlayerObserverRegistry mObserverRegistry;
 
     // Engine
@@ -299,7 +298,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
     // Internal state
     @Nullable
     private volatile AudioSourceQueue mOriginQueue = null;
-    @NotNull
+    @NonNull
     private volatile AudioSourceQueue mCurrentQueue = AudioSourceQueue.empty();
     @Nullable
     private volatile AudioSource mCurrentItem = null;
@@ -314,7 +313,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
     private volatile int mShuffleMode = Player.SHUFFLE_OFF;
 
     // AB Engine
-    @NotNull
+    @NonNull
     private final ABEngine mABEngine = new ABEngine();
 
     // Playback Fading
@@ -328,7 +327,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
     private volatile boolean mIsPlaybackPitchPersisted = false;
     private volatile float mPlaybackPitch = PITCH_NORMAL;
 
-    private PlayerImpl(@NotNull Builder builder) {
+    private PlayerImpl(@NonNull Builder builder) {
         mContext = builder.mContext;
 
         mDebug = builder.mDebug;
@@ -387,7 +386,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
      * @param token to associate the task with
      * @param cancelPrevious if true, then all pending tasks associated with the given token will be cancelled
      */
-    private void processEngineTask(@NotNull Runnable task, @Nullable Object token, boolean cancelPrevious) {
+    private void processEngineTask(@NonNull Runnable task, @Nullable Object token, boolean cancelPrevious) {
         synchronized (mEngineTasksLock) {
             if (cancelPrevious) {
                 // Cancelling all the pending tasks associated with the token.
@@ -405,7 +404,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
      * This does not cancel any pending task, it only queues the given task for processing.
      * @param task to process
      */
-    private void processEngineTask(@NotNull Runnable task) {
+    private void processEngineTask(@NonNull Runnable task) {
         processEngineTask(task, null, false);
     }
 
@@ -426,7 +425,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
      * @deprecated the action can be cancelled by calling {@link PlayerImpl#processEngineTask(Runnable, Object, boolean)} method
      */
     @Deprecated
-    public void postOnEngineThread(@NotNull Runnable action) {
+    public void postOnEngineThread(@NonNull Runnable action) {
         processEngineTask(action);
     }
 
@@ -438,7 +437,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
      * @deprecated if delayed, the action can be cancelled by calling {@link PlayerImpl#processEngineTask(Runnable, Object, boolean)} method
      */
     @Deprecated
-    public void postOnEventThread(@NotNull Runnable action, boolean delayed) {
+    public void postOnEventThread(@NonNull Runnable action, boolean delayed) {
         if (delayed) {
             final Runnable task = new Runnable() {
                 @Override
@@ -503,7 +502,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
         return mShutdown.get();
     }
 
-    @NotNull
+    @NonNull
     protected final Context getContext() {
         return mContext;
     }
@@ -567,7 +566,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
      * {@link PlayerImpl#mOnCompletionListener} is used as the completion handler.
      * @return an new instance of {@link MediaPlayer}.
      */
-    @NotNull
+    @NonNull
     private MediaPlayer createEngine() {
         final MediaPlayer engine = new MediaPlayer();
 
@@ -686,7 +685,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
         };
     }
 
-    @NotNull
+    @NonNull
     private Runnable _reset() {
         return new Runnable() {
             @Override
@@ -725,7 +724,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
         };
     }
 
-    @NotNull
+    @NonNull
     private Runnable _skipToNext(final boolean byUser) {
         return new Runnable() {
             @Override
@@ -778,7 +777,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
         };
     }
 
-    @NotNull
+    @NonNull
     private Runnable _handleSource(@Nullable final AudioSource item, final int playbackPosition, final boolean startPlaying) {
         return new Runnable() {
             @Override
@@ -902,18 +901,18 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
     }
 
     @Override
-    public void registerObserver(@NotNull PlayerObserver observer) {
+    public void registerObserver(@NonNull PlayerObserver observer) {
         if (isShutdown()) return;
         mObserverRegistry.register(observer);
     }
 
     @Override
-    public void unregisterObserver(@NotNull PlayerObserver observer) {
+    public void unregisterObserver(@NonNull PlayerObserver observer) {
         if (isShutdown()) return;
         mObserverRegistry.unregister(observer);
     }
 
-    private Runnable _prepareByPosition(@NotNull AudioSourceQueue queue, int positionInQueue, boolean startPlaying, int playbackPosition) {
+    private Runnable _prepareByPosition(@NonNull AudioSourceQueue queue, int positionInQueue, boolean startPlaying, int playbackPosition) {
         return new Runnable() {
             @Override
             public void run() {
@@ -967,8 +966,8 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
 
     @Override
     public void prepareByTarget(
-            @NotNull final AudioSourceQueue queue,
-            @NotNull final AudioSource target,
+            @NonNull final AudioSourceQueue queue,
+            @NonNull final AudioSource target,
             final boolean startPlaying,
             final int playbackPosition) {
 
@@ -987,7 +986,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
 
     @Override
     public void prepareByPosition(
-            @NotNull AudioSourceQueue queue,
+            @NonNull AudioSourceQueue queue,
             int positionInQueue,
             boolean startPlaying,
             int playbackPosition) {
@@ -1105,7 +1104,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
     }
 
     @Override
-    public void skipTo(@NotNull final AudioSource item, final boolean forceStartPlaying) {
+    public void skipTo(@NonNull final AudioSource item, final boolean forceStartPlaying) {
         if (isShutdown()) return;
 
         final Runnable task = new Runnable() {
@@ -1268,7 +1267,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
         }
     }
 
-    @NotNull
+    @NonNull
     private Runnable _start() {
         return new Runnable() {
             @Override
@@ -1405,7 +1404,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
     }
 
     @Override
-    public void update(@NotNull final AudioSource item) {
+    public void update(@NonNull final AudioSource item) {
         if (isShutdown()) return;
 
         final Runnable task = new Runnable() {
@@ -1504,7 +1503,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
     }
 
     @Override
-    public void removeAll(@NotNull final Collection<? extends AudioSource> items) {
+    public void removeAll(@NonNull final Collection<? extends AudioSource> items) {
         if (isShutdown()) return;
 
         final Runnable task = new Runnable() {
@@ -1548,12 +1547,12 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
     }
 
     @Override
-    public void add(@NotNull AudioSource item) {
+    public void add(@NonNull AudioSource item) {
         addAll(Collections.singletonList(item));
     }
 
     @Override
-    public void addAll(@NotNull final List<? extends AudioSource> items) {
+    public void addAll(@NonNull final List<? extends AudioSource> items) {
         if (isShutdown()) return;
 
         final Runnable task = new Runnable() {
@@ -1587,12 +1586,12 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
     }
 
     @Override
-    public void addNext(@NotNull AudioSource item) {
+    public void addNext(@NonNull AudioSource item) {
         addAllNext(Collections.singletonList(item));
     }
 
     @Override
-    public void addAllNext(@NotNull final List<? extends AudioSource> items) {
+    public void addAllNext(@NonNull final List<? extends AudioSource> items) {
         if (isShutdown()) return;
 
         final Runnable task = new Runnable() {
@@ -1684,7 +1683,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
         processEngineTask(task);
     }
 
-    @NotNull
+    @NonNull
     @Override
     public final AudioFx getAudioFx() {
         return mAudioFx;
