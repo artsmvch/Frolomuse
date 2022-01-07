@@ -10,8 +10,8 @@ import kotlin.math.max
 
 
 class CheckMarkDrawable constructor(
-        private val backgroundColor: Int,
-        private val checkMarkColor: Int
+    private val backgroundColor: Int,
+    private val checkMarkColor: Int
 ) : Drawable(), Animatable {
 
     private val checkMarkPath = Path()

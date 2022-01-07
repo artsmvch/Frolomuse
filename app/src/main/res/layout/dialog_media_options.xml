@@ -15,9 +15,9 @@
         android:layout_marginBottom="16dp"
         android:layout_gravity="center_horizontal"
         android:src="@drawable/ic_hook"
-        android:tint="?iconImageTint"
         android:scaleType="centerInside"
-        android:alpha="0.6"/>
+        android:alpha="0.6"
+        app:tint="?iconImageTint" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_media_name"
@@ -57,9 +57,9 @@
             android:layout_height="50dp"
             android:padding="16dp"
             android:background="?selectableItemBackgroundBorderless"
-            android:tint="?attr/iconImageTint"
             android:src="@drawable/ic_share"
-            android:id="@+id/btn_share"/>
+            android:id="@+id/btn_share"
+            app:tint="?attr/iconImageTint" />
 
         <ImageView
             app:layout_constraintStart_toEndOf="@id/btn_share"
@@ -70,9 +70,9 @@
             android:layout_height="50dp"
             android:padding="16dp"
             android:background="?selectableItemBackgroundBorderless"
-            android:tint="?attr/iconImageTint"
             android:src="@drawable/ic_trash"
-            android:id="@+id/btn_delete"/>
+            android:id="@+id/btn_delete"
+            app:tint="?attr/iconImageTint" />
 
         <ImageView
             app:layout_constraintStart_toEndOf="@id/btn_delete"

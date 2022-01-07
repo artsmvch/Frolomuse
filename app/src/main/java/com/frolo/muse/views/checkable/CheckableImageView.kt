@@ -4,8 +4,8 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.widget.Checkable
-import android.widget.ImageView
 import androidx.annotation.ColorInt
+import androidx.appcompat.widget.AppCompatImageView
 import com.frolo.muse.R
 import com.frolo.ui.StyleUtils
 import com.frolo.muse.dp2px
@@ -13,10 +13,10 @@ import com.frolo.muse.views.InsetDrawable
 
 
 class CheckableImageView @JvmOverloads constructor(
-        context: Context,
-        attrs: AttributeSet? = null,
-        defStyleAttr: Int = 0
-): ImageView(context, attrs, defStyleAttr), Checkable {
+    context: Context,
+    attrs: AttributeSet? = null,
+    defStyleAttr: Int = 0
+): AppCompatImageView(context, attrs, defStyleAttr), Checkable {
 
     private var targetDrawable: Drawable? = null
     private var checkFlipDrawable: CheckFlipDrawable? = null

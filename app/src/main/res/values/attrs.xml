@@ -14,14 +14,6 @@
     <attr name="thumbnailBackgroundTint" format="color"/>
     <!--Snowfall-->
     <attr name="snowflakeTint" format="color"/>
-
-    <declare-styleable name="ControllerView">
-        <attr name="label" format="string"/>
-    </declare-styleable>
-
-    <declare-styleable name="RoundedCornerImageView">
-        <attr name="imageCornerRadius" format="dimension"/>
-    </declare-styleable>
     
     <declare-styleable name="CheckableImageView">
         <attr name="checkMarkShape" format="enum">

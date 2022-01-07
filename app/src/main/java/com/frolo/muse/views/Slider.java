@@ -1,8 +1,8 @@
 package com.frolo.muse.views;
 
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 
 public abstract class Slider extends RecyclerView.OnScrollListener {
     private final static int HIDE_THRESHOLD = 20;
@@ -26,13 +26,9 @@ public abstract class Slider extends RecyclerView.OnScrollListener {
         }
     }
 
-    // to override
     public void onSlideUp() {
-
     }
 
-    // to override
     public void onSlideDown() {
-
     }
 }

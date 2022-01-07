@@ -1,6 +1,5 @@
 package com.frolo.muse.views;
 
-
 import android.content.Context;
 import android.os.Build;
 import android.util.AttributeSet;
@@ -10,7 +9,9 @@ import android.widget.LinearLayout;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
+
 public class TouchableLinearLayout extends LinearLayout {
+
     private boolean enabled = true;
     private OnTryTouchingListener listener;
 

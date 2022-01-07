@@ -13,8 +13,8 @@ import androidx.annotation.UiThread
 
 @UiThread
 class CheckFlipDrawable constructor(
-        private var target: Drawable? = null,
-        private val checkMark: Drawable
+    private var target: Drawable? = null,
+    private val checkMark: Drawable
 ) : Drawable() {
 
     // state of flipper

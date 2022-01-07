@@ -1,6 +1,5 @@
 package com.frolo.muse.views.visualizer;
 
-
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:parentTag="android.widget.LinearLayout">
 
@@ -8,7 +9,7 @@
         android:id="@+id/imv_icon"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:tint="?iconImageTint"/>
+        app:tint="?iconImageTint" />
 
     <TextView
         android:id="@+id/tv_title"
