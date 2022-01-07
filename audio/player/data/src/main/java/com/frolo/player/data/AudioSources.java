@@ -4,11 +4,11 @@ import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.MediaStore;
 
+import androidx.annotation.NonNull;
+
 import com.frolo.player.AudioMetadata;
 import com.frolo.player.AudioSource;
 import com.frolo.player.AudioType;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
@@ -138,13 +138,13 @@ public final class AudioSources {
             return source;
         }
 
-        @NotNull
+        @NonNull
         @Override
         public AudioMetadata getMetadata() {
             return metadata;
         }
 
-        @NotNull
+        @NonNull
         @Override
         public Uri getUri() {
             return ContentUris.withAppendedId(CONTENT_URI, id);
@@ -163,17 +163,17 @@ public final class AudioSources {
 
     }
 
-    @NotNull
-    public static AudioSource createAudioSource(long id, @NotNull String source, @NotNull AudioMetadata metadata) {
+    @NonNull
+    public static AudioSource createAudioSource(long id, @NonNull String source, @NonNull AudioMetadata metadata) {
         return new SimpleAudioSource(id, source, metadata);
     }
 
-    @NotNull
-    public static AudioSource copyAudioSource(@NotNull AudioSource other) {
+    @NonNull
+    public static AudioSource copyAudioSource(@NonNull AudioSource other) {
         return createAudioSource(other.getId(), other.getSource(), copyMetadata(other.getMetadata()));
     }
 
-    @NotNull
+    @NonNull
     public static AudioMetadata createMetadata(
         AudioType audioType,
         String title,
@@ -190,8 +190,8 @@ public final class AudioSources {
                 artistId, artist, genre, duration, year, trackNumber);
     }
 
-    @NotNull
-    public static AudioMetadata copyMetadata(@NotNull AudioMetadata metadata) {
+    @NonNull
+    public static AudioMetadata copyMetadata(@NonNull AudioMetadata metadata) {
         return createMetadata(
             metadata.getAudioType(),
             metadata.getTitle(),
@@ -206,7 +206,7 @@ public final class AudioSources {
         );
     }
 
-    public static boolean areSourcesTheSame(@NotNull AudioSource item1, @NotNull AudioSource item2) {
+    public static boolean areSourcesTheSame(@NonNull AudioSource item1, @NonNull AudioSource item2) {
         return Objects.equals(item1.getSource(), item2.getSource());
     }
 
