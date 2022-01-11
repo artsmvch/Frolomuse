@@ -3,6 +3,7 @@ package com.frolo.muse.engine.service
 import android.app.*
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ServiceInfo
 import android.os.*
 import android.support.v4.media.session.MediaSessionCompat
 import android.widget.RemoteViews
@@ -483,7 +484,13 @@ class PlayerService: RxService(), PlayerNotificationSender {
             return
         }
 
-        startForeground(NOTIFICATION_ID_PLAYBACK, buildPlayerNotification(params))
+        val notification = buildPlayerNotification(params)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            startForeground(NOTIFICATION_ID_PLAYBACK, notification,
+                    ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK)
+        } else {
+            startForeground(NOTIFICATION_ID_PLAYBACK, notification)
+        }
 
         // We're about to post the notification. It's not cancelled now
         notificationCancelled = false
