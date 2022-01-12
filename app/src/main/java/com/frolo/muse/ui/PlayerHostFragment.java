@@ -16,13 +16,16 @@ import com.frolo.muse.engine.service.PlayerService;
 
 
 /**
- * Retained fragment that binds player service to the application context and holds the reference to the connected player.
- * Activity can use it to avoid binding the service to activity's context as it may cause problems with rotation etc.
+ * Retained fragment that binds the player service to the application context
+ * and holds the reference to the connected player. An activity can use it
+ * to avoid binding the service to activity's context as it may cause problems
+ * with configuration changes etc.
  *
- * The fragment binds the service to the application context in <code>onCreate</code> and unbinds in <code>onDestroy</code>.
- * Unbinding is in <code>onDestroy</code> because this method is called only once since the fragment instance is retained (See {@link Fragment#setRetainInstance(boolean)}).
+ * The fragment binds the service to the application context in <code>onCreate</code>
+ * and unbinds in <code>onDestroy</code>.
  *
- * As the target context the application context is chosen as it lives as long as the app is running and no leak may occur in this case.
+ * As the target context the application context is chosen cause it lives as long as the app is running
+ * and no memory leak may occur in this case.
  */
 public final class PlayerHostFragment extends Fragment {
 
