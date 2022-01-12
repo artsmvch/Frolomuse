@@ -1,12 +1,10 @@
 package com.frolo.muse.ui.main.audiofx.params
 
 import android.app.Dialog
-import android.os.Build
 import android.os.Bundle
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.CompoundButton
-import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
 import com.frolo.muse.R
@@ -16,7 +14,6 @@ import com.frolo.muse.views.doOnProgressChanged
 import kotlinx.android.synthetic.main.dialog_playback_params.*
 
 
-@RequiresApi(Build.VERSION_CODES.M)
 class PlaybackParamsDialog : BaseDialogFragment() {
 
     private val viewModel: PlaybackParamsViewModel by viewModel()
@@ -38,11 +35,11 @@ class PlaybackParamsDialog : BaseDialogFragment() {
             val width = resources.displayMetrics.widthPixels
             setupDialogSize(this, (width * 19) / 20, ViewGroup.LayoutParams.WRAP_CONTENT)
 
-            loadUI(this)
+            loadUi(this)
         }
     }
 
-    private fun loadUI(dialog: Dialog) = with(dialog) {
+    private fun loadUi(dialog: Dialog) = with(dialog) {
         sb_speed.apply {
             // speed range 0..2, controller range 0...200
             max = 200

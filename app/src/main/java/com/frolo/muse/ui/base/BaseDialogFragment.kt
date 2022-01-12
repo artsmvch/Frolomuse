@@ -11,11 +11,12 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.core.os.postDelayed
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.frolo.muse.FrolomuseApp
 import com.frolo.muse.R
 import com.frolo.muse.Logger
-import com.frolo.muse.di.modules.ViewModelModule
+import com.frolo.muse.di.appComponent
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.repository.Preferences
 import com.tbruyelle.rxpermissions2.RxPermissions
@@ -33,7 +34,7 @@ abstract class BaseDialogFragment : AppCompatDialogFragment() {
 
     // The following members are supposed to be injected
     private var prefs: Preferences? = null
-    private var vmFactory: ViewModelModule.ViewModelFactory? = null
+    private var vmFactory: ViewModelProvider.Factory? = null
     private var eventLogger: EventLogger? = null
 
     override fun onAttach(context: Context) {
@@ -57,7 +58,7 @@ abstract class BaseDialogFragment : AppCompatDialogFragment() {
     //<editor-fold desc="Injectors">
     internal fun prefs(): Lazy<Preferences> = lazy {
         if (prefs == null) {
-            prefs = requireFrolomuseApp().appComponent.providePreferences()
+            prefs = appComponent.providePreferences()
         }
 
         prefs ?:
@@ -66,7 +67,7 @@ abstract class BaseDialogFragment : AppCompatDialogFragment() {
 
     internal inline fun <reified T : ViewModel> viewModel(): Lazy<T> = lazy {
         if (vmFactory == null) {
-            vmFactory = requireFrolomuseApp().appComponent.provideVMFactory()
+            vmFactory = appComponent.provideViewModelFactory()
         }
 
         val factory = vmFactory ?:
@@ -78,7 +79,7 @@ abstract class BaseDialogFragment : AppCompatDialogFragment() {
 
     internal fun eventLogger(): Lazy<EventLogger> = lazy {
         if (eventLogger == null) {
-            eventLogger = requireFrolomuseApp().appComponent.provideEventLogger()
+            eventLogger = appComponent.provideEventLogger()
         }
 
         eventLogger ?:

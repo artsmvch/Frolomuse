@@ -34,7 +34,7 @@ class ThemePreviewFragment : AlbumFragment() {
     }
 
     override val viewModel: AlbumViewModel by lazy {
-        val vmFactory = AlbumVMFactory(appComponent, album)
+        val vmFactory = AlbumVMFactory(appComponent, appComponent, album)
         // Try using the parent fragment (if any) as the scope for the view model,
         // so that the album and songs are shared and loaded only once.
         ViewModelProviders.of(parentFragment ?: this, vmFactory)

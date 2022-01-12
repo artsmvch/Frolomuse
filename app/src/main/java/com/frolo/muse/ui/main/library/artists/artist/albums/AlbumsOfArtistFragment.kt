@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.frolo.muse.R
+import com.frolo.muse.di.appComponent
 import com.frolo.music.model.Album
 import com.frolo.music.model.Artist
 import com.frolo.muse.ui.base.withArg
@@ -25,7 +26,7 @@ class AlbumsOfArtistFragment : AbsMediaCollectionFragment<Album>() {
 
     override val viewModel: AlbumsOfArtistViewModel by lazy {
         val artist = requireArguments().getSerializable(ARG_ARTIST) as Artist
-        val vmFactory = AlbumsOfArtistVMFactory(requireFrolomuseApp().appComponent, artist)
+        val vmFactory = AlbumsOfArtistVMFactory(appComponent, appComponent, artist)
         ViewModelProviders.of(this, vmFactory)
                 .get(AlbumsOfArtistViewModel::class.java)
     }

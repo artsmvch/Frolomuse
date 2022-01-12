@@ -5,6 +5,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProviders
 import com.frolo.muse.R
 import com.frolo.muse.arch.observeNonNull
+import com.frolo.muse.di.appComponent
 import com.frolo.music.model.Playlist
 import com.frolo.muse.ui.base.serializableArg
 import com.frolo.muse.ui.base.withArg
@@ -14,7 +15,7 @@ import com.frolo.muse.ui.main.library.base.inputname.AbsInputNameDialog
 class PlaylistEditorDialog : AbsInputNameDialog() {
 
     private val viewModel: PlaylistEditorViewModel by lazy {
-        val vmFactory = PlaylistEditorVMFactory(requireFrolomuseApp().appComponent, playlist)
+        val vmFactory = PlaylistEditorVMFactory(appComponent, playlist)
         ViewModelProviders.of(this, vmFactory)
                 .get(PlaylistEditorViewModel::class.java)
     }

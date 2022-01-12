@@ -10,6 +10,7 @@ import com.frolo.muse.R
 import com.frolo.ui.StyleUtils
 import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
+import com.frolo.muse.di.appComponent
 import com.frolo.muse.dp2px
 import com.frolo.music.model.Genre
 import com.frolo.music.model.Song
@@ -37,7 +38,7 @@ class GenreFragment: AbsSongCollectionFragment<Song>(), FragmentContentInsetsLis
 
     override val viewModel: GenreViewModel by lazy {
         val genre = requireArguments().getSerializable(ARG_GENRE) as Genre
-        val vmFactory = GenreVMFactory(requireFrolomuseApp().appComponent, genre)
+        val vmFactory = GenreVMFactory(appComponent, appComponent, genre)
         ViewModelProviders.of(this, vmFactory)
                 .get(GenreViewModel::class.java)
     }

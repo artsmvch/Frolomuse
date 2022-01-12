@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.frolo.muse.*
 import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
+import com.frolo.muse.di.appComponent
 import com.frolo.music.model.Playlist
 import com.frolo.music.model.Song
 import com.frolo.muse.ui.base.adapter.SimpleItemTouchHelperCallback
@@ -40,7 +41,7 @@ class PlaylistFragment: AbsSongCollectionFragment<Song>(), FragmentContentInsets
 
     override val viewModel: PlaylistViewModel by lazy {
         val playlist = requireArguments().getSerializable(ARG_PLAYLIST) as Playlist
-        val vmFactory = PlaylistVMFactory(requireFrolomuseApp().appComponent, playlist)
+        val vmFactory = PlaylistVMFactory(appComponent, appComponent, playlist)
         ViewModelProviders.of(this, vmFactory)
                 .get(PlaylistViewModel::class.java)
     }

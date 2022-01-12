@@ -35,6 +35,7 @@ import com.frolo.muse.R
 import com.frolo.muse.android.ViewAppSettingsIntent
 import com.frolo.muse.android.startActivitySafely
 import com.frolo.muse.arch.observe
+import com.frolo.muse.di.appComponent
 import com.frolo.player.Player
 import com.frolo.muse.model.media.*
 import com.frolo.muse.rx.disposeOnDestroyOf
@@ -75,7 +76,7 @@ class MainActivity : PlayerHostActivity(),
 
     // Reference to the presentation layer
     private val viewModel: MainViewModel by lazy {
-        val vmFactory = requireFrolomuseApp().appComponent.provideVMFactory()
+        val vmFactory = appComponent.provideViewModelFactory()
         ViewModelProviders.of(this, vmFactory).get(MainViewModel::class.java)
     }
 

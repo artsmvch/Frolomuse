@@ -2,7 +2,8 @@ package com.frolo.muse.ui.main.library.buckets.files
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.frolo.muse.di.AppComponent
+import com.frolo.muse.di.ComponentInjector
+import com.frolo.muse.di.ComponentProvider
 import com.frolo.player.Player
 import com.frolo.muse.interactor.media.*
 import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
@@ -21,7 +22,8 @@ import javax.inject.Inject
 
 
 class AudioBucketVMFactory constructor(
-    appComponent: AppComponent,
+    injector: ComponentInjector,
+    provider: ComponentProvider,
     bucketArg: MediaBucket
 ): ViewModelProvider.Factory {
 
@@ -59,10 +61,10 @@ class AudioBucketVMFactory constructor(
     internal lateinit var eventLogger: EventLogger
 
     init {
-        appComponent.inject(this)
-        exploreMediaBucketUseCase = appComponent
-                .provideExploreMediaBucketUseCaseFactory()
-                .create(bucketArg)
+        injector.inject(this)
+        exploreMediaBucketUseCase = provider
+            .provideExploreMediaBucketUseCaseFactory()
+            .create(bucketArg)
     }
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {

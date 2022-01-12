@@ -17,6 +17,7 @@ import com.frolo.muse.R
 import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.billing.TrialStatus
+import com.frolo.muse.di.appComponent
 import com.frolo.muse.ui.base.BaseDialogFragment
 import com.frolo.muse.ui.base.castHost
 import com.frolo.muse.views.RecyclerViewDividers
@@ -29,7 +30,6 @@ class BuyPremiumDialog : BaseDialogFragment() {
     private val viewModel: BuyPremiumViewModel by lazy {
         val args = requireArguments()
         val allowTrialActivation = args.getBoolean(ARG_ALLOW_TRIAL_ACTIVATION, true)
-        val appComponent = requireFrolomuseApp().appComponent
         val vmFactory = BuyPremiumVMFactory(appComponent, allowTrialActivation)
         ViewModelProviders.of(this, vmFactory)[BuyPremiumViewModel::class.java]
     }

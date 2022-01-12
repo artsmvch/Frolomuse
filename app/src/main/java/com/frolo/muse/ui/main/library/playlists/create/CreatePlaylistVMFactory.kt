@@ -2,7 +2,7 @@ package com.frolo.muse.ui.main.library.playlists.create
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.frolo.muse.di.AppComponent
+import com.frolo.muse.di.ComponentInjector
 import com.frolo.muse.logger.EventLogger
 import com.frolo.music.model.Song
 import com.frolo.music.repository.PlaylistRepository
@@ -12,8 +12,8 @@ import javax.inject.Inject
 
 
 class CreatePlaylistVMFactory constructor(
-        appComponent: AppComponent,
-        private val songsToAdd: List<Song>? = null
+    injector: ComponentInjector,
+    private val songsToAdd: List<Song>? = null
 ): ViewModelProvider.Factory {
 
     @Inject
@@ -26,17 +26,17 @@ class CreatePlaylistVMFactory constructor(
     internal lateinit var eventLogger: EventLogger
 
     init {
-        appComponent.inject(this)
+        injector.inject(this)
     }
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         @Suppress("UNCHECKED_CAST")
         return CreatePlaylistViewModel(
-                schedulerProvider,
-                playlistRepository,
-                songRepository,
-                eventLogger,
-                songsToAdd ?: emptyList()
+            schedulerProvider,
+            playlistRepository,
+            songRepository,
+            eventLogger,
+            songsToAdd ?: emptyList()
         ) as T
     }
 

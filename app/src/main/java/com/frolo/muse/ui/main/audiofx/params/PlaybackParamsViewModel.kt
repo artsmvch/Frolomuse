@@ -1,7 +1,5 @@
 package com.frolo.muse.ui.main.audiofx.params
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.frolo.muse.arch.liveDataOf
@@ -21,7 +19,6 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 
-@RequiresApi(Build.VERSION_CODES.M)
 class PlaybackParamsViewModel @Inject constructor(
     private val player: Player,
     private val premiumManager: PremiumManager,

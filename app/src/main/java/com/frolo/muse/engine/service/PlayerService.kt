@@ -12,7 +12,6 @@ import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import com.frolo.audiofx.applicable.AudioFxApplicable
 import com.frolo.muse.BuildConfig
-import com.frolo.muse.FrolomuseApp
 import com.frolo.muse.Logger
 import com.frolo.muse.R
 import com.frolo.muse.common.*
@@ -23,6 +22,7 @@ import com.frolo.muse.engine.service.PlayerService.PlayerBinder
 import com.frolo.muse.engine.service.audiofx.DefaultAudioFxErrorHandler
 import com.frolo.muse.engine.service.observers.*
 import com.frolo.headset.createHeadsetHandler
+import com.frolo.muse.di.appComponent
 import com.frolo.muse.interactor.media.DispatchSongPlayedUseCase
 import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
 import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
@@ -173,7 +173,7 @@ class PlayerService: RxService(), PlayerNotificationSender {
         super.onCreate()
 
         // First, inject dependencies
-        FrolomuseApp.from(this).appComponent.inject(this)
+        appComponent.inject(this)
 
         // Setting up media session
         mediaSession = MediaSessionCompat(applicationContext, "frolomuse:player_service").apply {

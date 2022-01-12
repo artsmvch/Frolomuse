@@ -38,8 +38,7 @@ class LocalDataModule {
 
     @Provides
     fun provideSongWithPlayCountMediaRepository(
-            repository: SongWithPlayCountRepository
-    ): MediaRepository<SongWithPlayCount> {
+            repository: SongWithPlayCountRepository): MediaRepository<SongWithPlayCount> {
         return repository
     }
 

@@ -24,78 +24,64 @@ abstract class UseCaseModule {
     @Module
     companion object {
 
-        /*GetAllMediaUseCase*/
+        /* **********************************
+        * ***** Get All Media Use Cases *****
+        * ******************************** */
+
         @Provides
         @JvmStatic
         fun provideGetAllArtistsUseCase(
-                schedulerProvider: SchedulerProvider,
-                repository: ArtistRepository,
-                preferences: Preferences
+            schedulerProvider: SchedulerProvider,
+            repository: ArtistRepository,
+            preferences: Preferences
         ): GetAllMediaUseCase<Artist> {
-            return GetAllArtistsUseCase(
-                    schedulerProvider,
-                    repository,
-                    preferences
-            )
+            return GetAllArtistsUseCase(schedulerProvider, repository, preferences)
         }
 
         @Provides
         @JvmStatic
         fun provideGetAllGenresUseCase(
-                schedulerProvider: SchedulerProvider,
-                repository: GenreRepository,
-                preferences: Preferences
+            schedulerProvider: SchedulerProvider,
+            repository: GenreRepository,
+            preferences: Preferences
         ): GetAllMediaUseCase<Genre> {
-            return GetAllGenresUseCase(
-                    schedulerProvider,
-                    repository,
-                    preferences
-            )
+            return GetAllGenresUseCase(schedulerProvider, repository, preferences)
         }
 
         @Provides
         @JvmStatic
         fun provideGetAllPlaylistsUseCase(
-                schedulerProvider: SchedulerProvider,
-                repository: PlaylistRepository,
-                preferences: Preferences
+            schedulerProvider: SchedulerProvider,
+            repository: PlaylistRepository,
+            preferences: Preferences
         ): GetAllMediaUseCase<Playlist> {
-            return GetAllPlaylistsUseCase(
-                    schedulerProvider,
-                    repository,
-                    preferences
-            )
+            return GetAllPlaylistsUseCase(schedulerProvider, repository, preferences)
         }
 
         @Provides
         @JvmStatic
         fun provideGetAllAlbumsUseCase(
-                schedulerProvider: SchedulerProvider,
-                repository: AlbumRepository,
-                preferences: Preferences
+            schedulerProvider: SchedulerProvider,
+            repository: AlbumRepository,
+            preferences: Preferences
         ): GetAllMediaUseCase<Album> {
-            return GetAllAlbumsUseCase(
-                    schedulerProvider,
-                    repository,
-                    preferences
-            )
+            return GetAllAlbumsUseCase(schedulerProvider, repository, preferences)
         }
 
         @Provides
         @JvmStatic
         fun provideGetAllSongsUseCase(
-                schedulerProvider: SchedulerProvider,
-                repository: SongRepository,
-                preferences: Preferences
+            schedulerProvider: SchedulerProvider,
+            repository: SongRepository,
+            preferences: Preferences
         ): GetAllMediaUseCase<Song> {
-            return GetAllSongsUseCase(
-                    schedulerProvider,
-                    repository,
-                    preferences
-            )
+            return GetAllSongsUseCase(schedulerProvider, repository, preferences)
         }
 
-        /*GetMediaMenuUseCase*/
+        /* **********************************
+        * **** Get Media Menu Use Cases *****
+        * ******************************** */
+
         @Provides
         @JvmStatic
         fun provideGetMediaMenuUseCase(
@@ -104,12 +90,8 @@ abstract class UseCaseModule {
             remoteConfigRepository: RemoteConfigRepository,
             player: Player
         ): GetMediaMenuUseCase<Media> {
-            return GetMediaMenuUseCase<Media>(
-                schedulerProvider,
-                genericMediaRepository,
-                remoteConfigRepository,
-                player
-            )
+            return GetMediaMenuUseCase<Media>(schedulerProvider, genericMediaRepository,
+                    remoteConfigRepository,player)
         }
 
         @Provides
@@ -120,12 +102,8 @@ abstract class UseCaseModule {
             remoteConfigRepository: RemoteConfigRepository,
             player: Player
         ): GetMediaMenuUseCase<Artist> {
-            return GetMediaMenuUseCase<Artist>(
-                schedulerProvider,
-                artistRepository,
-                remoteConfigRepository,
-                player
-            )
+            return GetMediaMenuUseCase<Artist>(schedulerProvider, artistRepository,
+                    remoteConfigRepository, player)
         }
 
         @Provides
@@ -136,12 +114,8 @@ abstract class UseCaseModule {
             remoteConfigRepository: RemoteConfigRepository,
             player: Player
         ): GetMediaMenuUseCase<Album> {
-            return GetMediaMenuUseCase<Album>(
-                schedulerProvider,
-                albumRepository,
-                remoteConfigRepository,
-                player
-            )
+            return GetMediaMenuUseCase<Album>(schedulerProvider, albumRepository,
+                    remoteConfigRepository, player)
         }
 
         @Provides
@@ -152,12 +126,8 @@ abstract class UseCaseModule {
             remoteConfigRepository: RemoteConfigRepository,
             player: Player
         ): GetMediaMenuUseCase<Genre> {
-            return GetMediaMenuUseCase<Genre>(
-                schedulerProvider,
-                genreRepository,
-                remoteConfigRepository,
-                player
-            )
+            return GetMediaMenuUseCase<Genre>(schedulerProvider, genreRepository,
+                    remoteConfigRepository, player)
         }
 
         @Provides
@@ -168,12 +138,8 @@ abstract class UseCaseModule {
             remoteConfigRepository: RemoteConfigRepository,
             player: Player
         ): GetMediaMenuUseCase<Playlist> {
-            return GetMediaMenuUseCase<Playlist>(
-                schedulerProvider,
-                playlistRepository,
-                remoteConfigRepository,
-                player
-            )
+            return GetMediaMenuUseCase<Playlist>(schedulerProvider, playlistRepository,
+                    remoteConfigRepository, player)
         }
 
         @Provides
@@ -184,28 +150,20 @@ abstract class UseCaseModule {
             remoteConfigRepository: RemoteConfigRepository,
             player: Player
         ): GetMediaMenuUseCase<Song> {
-            return GetMediaMenuUseCase<Song>(
-                schedulerProvider,
-                songRepository,
-                remoteConfigRepository,
-                player
-            )
+            return GetMediaMenuUseCase<Song>(schedulerProvider, songRepository,
+                    remoteConfigRepository, player)
         }
 
         @Provides
         @JvmStatic
         fun provideGetSongWithPlayCountMenuUseCase(
             schedulerProvider: SchedulerProvider,
-            dongWithPlayCountRepository: SongWithPlayCountRepository,
+            songWithPlayCountRepository: SongWithPlayCountRepository,
             remoteConfigRepository: RemoteConfigRepository,
             player: Player
         ): GetMediaMenuUseCase<SongWithPlayCount> {
-            return GetMediaMenuUseCase<SongWithPlayCount>(
-                schedulerProvider,
-                dongWithPlayCountRepository,
-                remoteConfigRepository,
-                player
-            )
+            return GetMediaMenuUseCase<SongWithPlayCount>(schedulerProvider,
+                    songWithPlayCountRepository, remoteConfigRepository, player)
         }
 
         @Provides
@@ -216,12 +174,8 @@ abstract class UseCaseModule {
             remoteConfigRepository: RemoteConfigRepository,
             player: Player
         ): GetMediaMenuUseCase<MyFile> {
-            return GetMediaMenuUseCase<MyFile>(
-                schedulerProvider,
-                myFileRepository,
-                remoteConfigRepository,
-                player
-            )
+            return GetMediaMenuUseCase<MyFile>(schedulerProvider, myFileRepository,
+                    remoteConfigRepository, player)
         }
 
         @Provides
@@ -232,15 +186,14 @@ abstract class UseCaseModule {
             remoteConfigRepository: RemoteConfigRepository,
             player: Player
         ): GetMediaMenuUseCase<MediaFile> {
-            return GetMediaMenuUseCase<MediaFile>(
-                schedulerProvider,
-                mediaFileRepository,
-                remoteConfigRepository,
-                player
-            )
+            return GetMediaMenuUseCase<MediaFile>(schedulerProvider, mediaFileRepository,
+                    remoteConfigRepository, player)
         }
 
-        /*ClickMediaUseCase*/
+        /* **********************************
+        * ****** Click Media Use Cases ******
+        * ******************************** */
+
         @Provides
         @JvmStatic
         fun provideClickMediaUseCase(
@@ -340,134 +293,104 @@ abstract class UseCaseModule {
             return ClickMediaUseCase<MediaFile>(schedulerProvider, player, repository, appRouter)
         }
 
-        /*PlayMediaUseCase*/
+        /* **********************************
+        * **** Play Media Menu Use Cases ****
+        * ******************************** */
+
         @Provides
         @JvmStatic
         fun providePlayMediaUseCase(
-                schedulerProvider: SchedulerProvider,
-                repository: GenericMediaRepository,
-                player: Player
+            schedulerProvider: SchedulerProvider,
+            repository: GenericMediaRepository,
+            player: Player
         ): PlayMediaUseCase<Media> {
-            return PlayMediaUseCase<Media>(
-                    schedulerProvider,
-                    repository,
-                    player
-            )
+            return PlayMediaUseCase<Media>(schedulerProvider, repository, player)
         }
 
         @Provides
         @JvmStatic
         fun providePlayArtistUseCase(
-                schedulerProvider: SchedulerProvider,
-                repository: ArtistRepository,
-                player: Player
+            schedulerProvider: SchedulerProvider,
+            repository: ArtistRepository,
+            player: Player
         ): PlayMediaUseCase<Artist> {
-            return PlayMediaUseCase<Artist>(
-                    schedulerProvider,
-                    repository,
-                    player
-            )
+            return PlayMediaUseCase<Artist>(schedulerProvider, repository, player)
         }
 
         @Provides
         @JvmStatic
         fun providePlayAlbumUseCase(
-                schedulerProvider: SchedulerProvider,
-                repository: AlbumRepository,
-                player: Player
+            schedulerProvider: SchedulerProvider,
+            repository: AlbumRepository,
+            player: Player
         ): PlayMediaUseCase<Album> {
-            return PlayMediaUseCase<Album>(
-                    schedulerProvider,
-                    repository,
-                    player
-            )
+            return PlayMediaUseCase<Album>(schedulerProvider, repository, player)
         }
 
         @Provides
         @JvmStatic
         fun providePlayGenreUseCase(
-                schedulerProvider: SchedulerProvider,
-                repository: GenreRepository,
-                player: Player
+            schedulerProvider: SchedulerProvider,
+            repository: GenreRepository,
+            player: Player
         ): PlayMediaUseCase<Genre> {
-            return PlayMediaUseCase<Genre>(
-                    schedulerProvider,
-                    repository,
-                    player
-            )
+            return PlayMediaUseCase<Genre>(schedulerProvider, repository, player)
         }
 
         @Provides
         @JvmStatic
         fun providePlayPlaylistUseCase(
-                schedulerProvider: SchedulerProvider,
-                repository: PlaylistRepository,
-                player: Player
+            schedulerProvider: SchedulerProvider,
+            repository: PlaylistRepository,
+            player: Player
         ): PlayMediaUseCase<Playlist> {
-            return PlayMediaUseCase<Playlist>(
-                    schedulerProvider,
-                    repository,
-                    player
-            )
+            return PlayMediaUseCase<Playlist>(schedulerProvider, repository, player)
         }
 
         @Provides
         @JvmStatic
         fun providePlaySongUseCase(
-                schedulerProvider: SchedulerProvider,
-                repository: SongRepository,
-                player: Player
+            schedulerProvider: SchedulerProvider,
+            repository: SongRepository,
+            player: Player
         ): PlayMediaUseCase<Song> {
-            return PlayMediaUseCase<Song>(
-                    schedulerProvider,
-                    repository,
-                    player
-            )
+            return PlayMediaUseCase<Song>(schedulerProvider, repository, player)
         }
 
         @Provides
         @JvmStatic
         fun providePlaySongWithPlayCountUseCase(
-                schedulerProvider: SchedulerProvider,
-                repository: SongWithPlayCountRepository,
-                player: Player
+            schedulerProvider: SchedulerProvider,
+            repository: SongWithPlayCountRepository,
+            player: Player
         ): PlayMediaUseCase<SongWithPlayCount> {
-            return PlayMediaUseCase<SongWithPlayCount>(
-                    schedulerProvider,
-                    repository,
-                    player
-            )
+            return PlayMediaUseCase<SongWithPlayCount>(schedulerProvider, repository, player)
         }
 
         @Provides
         @JvmStatic
         fun providePlayMyFileUseCase(
-                schedulerProvider: SchedulerProvider,
-                repository: MyFileRepository,
-                player: Player
+            schedulerProvider: SchedulerProvider,
+            repository: MyFileRepository,
+            player: Player
         ): PlayMediaUseCase<MyFile> {
-            return PlayMediaUseCase<MyFile>(
-                    schedulerProvider,
-                    repository,
-                    player
-            )
+            return PlayMediaUseCase<MyFile>(schedulerProvider, repository, player)
         }
 
         @Provides
         @JvmStatic
         fun providePlayMediaFileUseCase(
-                schedulerProvider: SchedulerProvider,
-                repository: MediaFileRepository,
-                player: Player
+            schedulerProvider: SchedulerProvider,
+            repository: MediaFileRepository,
+            player: Player
         ): PlayMediaUseCase<MediaFile> {
-            return PlayMediaUseCase<MediaFile>(
-                    schedulerProvider,
-                    repository,
-                    player
-            )
+            return PlayMediaUseCase<MediaFile>(schedulerProvider, repository, player)
         }
 
-        /*ShareMediaUseCase*/
+        /* **********************************
+        * ***** Share Media Use Cases *****
+        * ******************************** */
+
         @Provides
         @JvmStatic
         fun provideShareMediaUseCase(
@@ -475,11 +398,7 @@ abstract class UseCaseModule {
             repository: GenericMediaRepository,
             appRouter: AppRouter
         ): ShareMediaUseCase<Media> {
-            return ShareMediaUseCase<Media>(
-                    schedulerProvider,
-                    repository,
-                    appRouter
-            )
+            return ShareMediaUseCase<Media>(schedulerProvider, repository, appRouter)
         }
 
         @Provides
@@ -489,11 +408,7 @@ abstract class UseCaseModule {
             repository: ArtistRepository,
             appRouter: AppRouter
         ): ShareMediaUseCase<Artist> {
-            return ShareMediaUseCase<Artist>(
-                    schedulerProvider,
-                    repository,
-                    appRouter
-            )
+            return ShareMediaUseCase<Artist>(schedulerProvider, repository, appRouter)
         }
 
         @Provides
@@ -503,11 +418,7 @@ abstract class UseCaseModule {
             repository: AlbumRepository,
             appRouter: AppRouter
         ): ShareMediaUseCase<Album> {
-            return ShareMediaUseCase<Album>(
-                    schedulerProvider,
-                    repository,
-                    appRouter
-            )
+            return ShareMediaUseCase<Album>(schedulerProvider, repository, appRouter)
         }
 
         @Provides
@@ -517,11 +428,7 @@ abstract class UseCaseModule {
             repository: GenreRepository,
             appRouter: AppRouter
         ): ShareMediaUseCase<Genre> {
-            return ShareMediaUseCase<Genre>(
-                    schedulerProvider,
-                    repository,
-                    appRouter
-            )
+            return ShareMediaUseCase<Genre>(schedulerProvider, repository, appRouter)
         }
 
         @Provides
@@ -531,11 +438,7 @@ abstract class UseCaseModule {
             repository: PlaylistRepository,
             appRouter: AppRouter
         ): ShareMediaUseCase<Playlist> {
-            return ShareMediaUseCase<Playlist>(
-                    schedulerProvider,
-                    repository,
-                    appRouter
-            )
+            return ShareMediaUseCase<Playlist>(schedulerProvider, repository, appRouter)
         }
 
         @Provides
@@ -545,11 +448,7 @@ abstract class UseCaseModule {
             repository: SongRepository,
             appRouter: AppRouter
         ): ShareMediaUseCase<Song> {
-            return ShareMediaUseCase<Song>(
-                    schedulerProvider,
-                    repository,
-                    appRouter
-            )
+            return ShareMediaUseCase<Song>(schedulerProvider, repository,appRouter)
         }
 
         @Provides
@@ -559,11 +458,7 @@ abstract class UseCaseModule {
             repository: SongWithPlayCountRepository,
             appRouter: AppRouter
         ): ShareMediaUseCase<SongWithPlayCount> {
-            return ShareMediaUseCase<SongWithPlayCount>(
-                    schedulerProvider,
-                    repository,
-                    appRouter
-            )
+            return ShareMediaUseCase<SongWithPlayCount>(schedulerProvider, repository, appRouter)
         }
 
         @Provides
@@ -573,11 +468,7 @@ abstract class UseCaseModule {
             repository: MyFileRepository,
             appRouter: AppRouter
         ): ShareMediaUseCase<MyFile> {
-            return ShareMediaUseCase<MyFile>(
-                    schedulerProvider,
-                    repository,
-                    appRouter
-            )
+            return ShareMediaUseCase<MyFile>(schedulerProvider, repository, appRouter)
         }
 
         @Provides
@@ -587,14 +478,13 @@ abstract class UseCaseModule {
             repository: MediaFileRepository,
             appRouter: AppRouter
         ): ShareMediaUseCase<MediaFile> {
-            return ShareMediaUseCase<MediaFile>(
-                    schedulerProvider,
-                    repository,
-                    appRouter
-            )
+            return ShareMediaUseCase<MediaFile>(schedulerProvider, repository, appRouter)
         }
 
-        /*DeleteMediaUseCase*/
+        /* **********************************
+        * ***** Delete Media Use Cases ******
+        * ******************************** */
+
         @Provides
         @JvmStatic
         fun provideDeleteMediaUseCase(
@@ -603,12 +493,7 @@ abstract class UseCaseModule {
             playlistChunkRepository: PlaylistChunkRepository,
             player: Player
         ): DeleteMediaUseCase<Media> {
-            return DeleteMediaUseCase<Media>(
-                schedulerProvider,
-                repository,
-                playlistChunkRepository,
-                player
-            )
+            return DeleteMediaUseCase<Media>(schedulerProvider, repository, playlistChunkRepository, player)
         }
 
         @Provides
@@ -619,12 +504,7 @@ abstract class UseCaseModule {
             playlistChunkRepository: PlaylistChunkRepository,
             player: Player
         ): DeleteMediaUseCase<Artist> {
-            return DeleteMediaUseCase<Artist>(
-                schedulerProvider,
-                repository,
-                playlistChunkRepository,
-                player
-            )
+            return DeleteMediaUseCase<Artist>(schedulerProvider, repository,playlistChunkRepository, player)
         }
 
         @Provides
@@ -635,12 +515,7 @@ abstract class UseCaseModule {
             playlistChunkRepository: PlaylistChunkRepository,
             player: Player
         ): DeleteMediaUseCase<Album> {
-            return DeleteMediaUseCase<Album>(
-                schedulerProvider,
-                repository,
-                playlistChunkRepository,
-                player
-            )
+            return DeleteMediaUseCase<Album>(schedulerProvider, repository, playlistChunkRepository, player)
         }
 
         @Provides
@@ -651,12 +526,7 @@ abstract class UseCaseModule {
             playlistChunkRepository: PlaylistChunkRepository,
             player: Player
         ): DeleteMediaUseCase<Genre> {
-            return DeleteMediaUseCase<Genre>(
-                schedulerProvider,
-                repository,
-                playlistChunkRepository,
-                player
-            )
+            return DeleteMediaUseCase<Genre>(schedulerProvider, repository, playlistChunkRepository, player)
         }
 
         @Provides
@@ -667,12 +537,7 @@ abstract class UseCaseModule {
             playlistChunkRepository: PlaylistChunkRepository,
             player: Player
         ): DeleteMediaUseCase<Playlist> {
-            return DeleteMediaUseCase<Playlist>(
-                schedulerProvider,
-                repository,
-                playlistChunkRepository,
-                player
-            )
+            return DeleteMediaUseCase<Playlist>(schedulerProvider, repository, playlistChunkRepository, player)
         }
 
         @Provides
@@ -683,12 +548,7 @@ abstract class UseCaseModule {
             playlistChunkRepository: PlaylistChunkRepository,
             player: Player
         ): DeleteMediaUseCase<Song> {
-            return DeleteMediaUseCase<Song>(
-                schedulerProvider,
-                repository,
-                playlistChunkRepository,
-                player
-            )
+            return DeleteMediaUseCase<Song>(schedulerProvider, repository, playlistChunkRepository, player)
         }
 
         @Provides
@@ -699,12 +559,8 @@ abstract class UseCaseModule {
             playlistChunkRepository: PlaylistChunkRepository,
             player: Player
         ): DeleteMediaUseCase<SongWithPlayCount> {
-            return DeleteMediaUseCase<SongWithPlayCount>(
-                schedulerProvider,
-                repository,
-                playlistChunkRepository,
-                player
-            )
+            return DeleteMediaUseCase<SongWithPlayCount>(schedulerProvider, repository,
+                    playlistChunkRepository, player)
         }
 
         @Provides
@@ -715,140 +571,109 @@ abstract class UseCaseModule {
             playlistChunkRepository: PlaylistChunkRepository,
             player: Player
         ): DeleteMediaUseCase<MyFile> {
-            return DeleteMediaUseCase<MyFile>(
-                schedulerProvider,
-                repository,
-                playlistChunkRepository,
-                player
-            )
+            return DeleteMediaUseCase<MyFile>(schedulerProvider, repository, playlistChunkRepository, player)
         }
 
         @Provides
         @JvmStatic
         fun provideDeleteMediaFileUseCase(
-                schedulerProvider: SchedulerProvider,
-                repository: MediaFileRepository,
-                playlistChunkRepository: PlaylistChunkRepository,
-                player: Player
+            schedulerProvider: SchedulerProvider,
+            repository: MediaFileRepository,
+            playlistChunkRepository: PlaylistChunkRepository,
+            player: Player
         ): DeleteMediaUseCase<MediaFile> {
-            return DeleteMediaUseCase<MediaFile>(
-                    schedulerProvider,
-                    repository,
-                    playlistChunkRepository,
-                    player
-            )
+            return DeleteMediaUseCase<MediaFile>(schedulerProvider, repository, playlistChunkRepository, player)
         }
 
-        /*ChangeFavouriteUseCase*/
+        /* **********************************
+        * *** Change Favourite Use Cases ****
+        * ******************************** */
+
         @Provides
         @JvmStatic
         fun provideChangeFavouriteMediaUseCase(
-                schedulerProvider: SchedulerProvider,
-                repository: GenericMediaRepository
+            schedulerProvider: SchedulerProvider,
+            repository: GenericMediaRepository
         ): ChangeFavouriteUseCase<Media> {
-            return ChangeFavouriteUseCase(
-                    schedulerProvider,
-                    repository
-            )
+            return ChangeFavouriteUseCase(schedulerProvider, repository)
         }
 
         @Provides
         @JvmStatic
         fun provideChangeFavouriteArtistUseCase(
-                schedulerProvider: SchedulerProvider,
-                repository: ArtistRepository
+            schedulerProvider: SchedulerProvider,
+            repository: ArtistRepository
         ): ChangeFavouriteUseCase<Artist> {
-            return ChangeFavouriteUseCase(
-                    schedulerProvider,
-                    repository
-            )
+            return ChangeFavouriteUseCase(schedulerProvider, repository)
         }
 
         @Provides
         @JvmStatic
         fun provideChangeFavouriteAlbumUseCase(
-                schedulerProvider: SchedulerProvider,
-                repository: AlbumRepository
+            schedulerProvider: SchedulerProvider,
+            repository: AlbumRepository
         ): ChangeFavouriteUseCase<Album> {
-            return ChangeFavouriteUseCase(
-                    schedulerProvider,
-                    repository
-            )
+            return ChangeFavouriteUseCase(schedulerProvider, repository)
         }
 
         @Provides
         @JvmStatic
         fun provideChangeFavouriteGenreUseCase(
-                schedulerProvider: SchedulerProvider,
-                repository: GenreRepository
+            schedulerProvider: SchedulerProvider,
+            repository: GenreRepository
         ): ChangeFavouriteUseCase<Genre> {
-            return ChangeFavouriteUseCase(
-                    schedulerProvider,
-                    repository
-            )
+            return ChangeFavouriteUseCase(schedulerProvider, repository)
         }
 
         @Provides
         @JvmStatic
         fun provideChangeFavouritePlaylistUseCase(
-                schedulerProvider: SchedulerProvider,
-                repository: PlaylistRepository
+            schedulerProvider: SchedulerProvider,
+            repository: PlaylistRepository
         ): ChangeFavouriteUseCase<Playlist> {
-            return ChangeFavouriteUseCase(
-                    schedulerProvider,
-                    repository
-            )
+            return ChangeFavouriteUseCase(schedulerProvider, repository)
         }
 
         @Provides
         @JvmStatic
         fun provideChangeFavouriteSongUseCase(
-                schedulerProvider: SchedulerProvider,
-                repository: SongRepository
+            schedulerProvider: SchedulerProvider,
+            repository: SongRepository
         ): ChangeFavouriteUseCase<Song> {
-            return ChangeFavouriteUseCase(
-                    schedulerProvider,
-                    repository
-            )
+            return ChangeFavouriteUseCase(schedulerProvider, repository)
         }
 
         @Provides
         @JvmStatic
         fun provideChangeFavouriteSongWithPlayCountUseCase(
-                schedulerProvider: SchedulerProvider,
-                repository: SongWithPlayCountRepository
+            schedulerProvider: SchedulerProvider,
+            repository: SongWithPlayCountRepository
         ): ChangeFavouriteUseCase<SongWithPlayCount> {
-            return ChangeFavouriteUseCase(
-                    schedulerProvider,
-                    repository
-            )
+            return ChangeFavouriteUseCase(schedulerProvider, repository)
         }
 
         @Provides
         @JvmStatic
         fun provideChangeFavouriteMyFileUseCase(
-                schedulerProvider: SchedulerProvider,
-                repository: MyFileRepository
+            schedulerProvider: SchedulerProvider,
+            repository: MyFileRepository
         ): ChangeFavouriteUseCase<MyFile> {
-            return ChangeFavouriteUseCase(
-                    schedulerProvider,
-                    repository
-            )
+            return ChangeFavouriteUseCase(schedulerProvider, repository)
         }
 
         @Provides
         @JvmStatic
         fun provideChangeFavouriteMediaFileUseCase(
-                schedulerProvider: SchedulerProvider,
-                repository: MediaFileRepository
+            schedulerProvider: SchedulerProvider,
+            repository: MediaFileRepository
         ): ChangeFavouriteUseCase<MediaFile> {
-            return ChangeFavouriteUseCase(
-                    schedulerProvider,
-                    repository
-            )
+            return ChangeFavouriteUseCase(schedulerProvider, repository)
         }
 
-        /*rate*/
+        /* **********************************
+        * ********** Rate Use Case **********
+        * ******************************** */
+
         @Singleton
         @Provides
         @JvmStatic
@@ -857,13 +682,13 @@ abstract class UseCaseModule {
             preferences: Preferences,
             appRouter: AppRouter
         ): RateUseCase {
-            return RateUseCase(
-                    schedulerProvider,
-                    preferences,
-                    appRouter)
+            return RateUseCase(schedulerProvider, preferences, appRouter)
         }
 
-        /*restore player state*/
+        /* **********************************
+        * ** Restore Player State Use Case **
+        * ******************************** */
+
         @Singleton
         @Provides
         @JvmStatic
@@ -887,7 +712,9 @@ abstract class UseCaseModule {
             )
         }
 
-        /*control player*/
+        /* **********************************
+        * ***** Control Player Use Case *****
+        * ******************************** */
         @Singleton
         @Provides
         @JvmStatic
@@ -897,26 +724,25 @@ abstract class UseCaseModule {
             albumRepository: AlbumRepository,
             artistRepository: ArtistRepository
         ): ControlPlayerUseCase {
-            return ControlPlayerUseCase(
-                    player,
-                    schedulerProvider,
-                    albumRepository,
-                    artistRepository)
+            return ControlPlayerUseCase(player, schedulerProvider, albumRepository, artistRepository)
         }
 
-        /*Song play count*/
+        /* **********************************
+        * **** Song Play Count Use Case ****
+        * ******************************** */
         @Provides
         @Singleton
         @JvmStatic
         fun provideDispatchSongPlayedUseCase(
-                schedulerProvider: SchedulerProvider,
-                songRepository: SongRepository
+            schedulerProvider: SchedulerProvider,
+            songRepository: SongRepository
         ): DispatchSongPlayedUseCase {
-            return DispatchSongPlayedUseCase(
-                    schedulerProvider,
-                    songRepository)
+            return DispatchSongPlayedUseCase(schedulerProvider, songRepository)
         }
 
+        /* **********************************
+        * ******** Features Use Case ********
+        * ******************************** */
         @Provides
         @Singleton
         @JvmStatic
@@ -928,19 +754,5 @@ abstract class UseCaseModule {
             return FeaturesUseCase(remoteConfigRepository, lyricsRemoteRepository, schedulerProvider)
         }
     }
-
-//    @Singleton
-//    @Binds
-//    abstract fun bindRestorePlayerStateUseCase(
-//            useCase: RestorePlayerStateUseCase): RestorePlayerStateUseCase
-//
-//    @Singleton
-//    @Binds
-//    abstract fun bindRateUseCase(useCase: RateUseCase): RateUseCase
-//
-//    @Singleton
-//    @Binds
-//    abstract fun bindControlPlayerUseCase(
-//            useCase: ControlPlayerUseCase): ControlPlayerUseCase
 
 }

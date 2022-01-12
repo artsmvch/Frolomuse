@@ -2,7 +2,8 @@ package com.frolo.muse.ui.main.library.artists.artist.albums
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.frolo.muse.di.AppComponent
+import com.frolo.muse.di.ComponentInjector
+import com.frolo.muse.di.ComponentProvider
 import com.frolo.muse.router.AppRouter
 import com.frolo.muse.interactor.media.*
 import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
@@ -18,8 +19,9 @@ import javax.inject.Inject
 
 
 class AlbumsOfArtistVMFactory constructor(
-        appComponent: AppComponent,
-        artist: Artist
+    injector: ComponentInjector,
+    provider: ComponentProvider,
+    artist: Artist
 ): ViewModelProvider.Factory {
 
     @Inject
@@ -50,28 +52,28 @@ class AlbumsOfArtistVMFactory constructor(
     internal lateinit var eventLogger: EventLogger
 
     init {
-        appComponent.inject(this)
-        getAlbumsOfArtistUseCase = appComponent
-                .provideGetAlbumsOfArtistUseCaseFactory()
-                .create(artist)
+        injector.inject(this)
+        getAlbumsOfArtistUseCase = provider
+            .provideGetAlbumsOfArtistUseCaseFactory()
+            .create(artist)
     }
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         @Suppress("UNCHECKED_CAST")
         return AlbumsOfArtistViewModel(
-                permissionChecker,
-                getAlbumsOfArtistUseCase,
-                getMediaMenuUseCase,
-                clickMediaUseCase,
-                playMediaUseCase,
-                shareMediaUseCase,
-                deleteMediaUseCase,
-                getIsFavouriteUseCase,
-                changeFavouriteUseCase,
-                createShortcutUseCase,
-                schedulerProvider,
-                appRouter,
-                eventLogger
+            permissionChecker,
+            getAlbumsOfArtistUseCase,
+            getMediaMenuUseCase,
+            clickMediaUseCase,
+            playMediaUseCase,
+            shareMediaUseCase,
+            deleteMediaUseCase,
+            getIsFavouriteUseCase,
+            changeFavouriteUseCase,
+            createShortcutUseCase,
+            schedulerProvider,
+            appRouter,
+            eventLogger
         ) as T
     }
 

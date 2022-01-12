@@ -14,6 +14,7 @@ import com.frolo.muse.BuildConfig
 import com.frolo.muse.R
 import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
+import com.frolo.muse.di.appComponent
 import com.frolo.music.model.Song
 import com.frolo.muse.ui.base.BaseDialogFragment
 import com.frolo.muse.ui.base.withArg
@@ -33,7 +34,7 @@ class LyricsDialogFragment: BaseDialogFragment() {
 
     private val viewModel: LyricsViewModel by lazy {
         val song = requireArguments().getSerializable(ARG_SONG) as Song
-        val vmFactory = LyricsVMFactory(requireFrolomuseApp().appComponent, song)
+        val vmFactory = LyricsVMFactory(appComponent, song)
         ViewModelProviders.of(this, vmFactory)
                 .get(LyricsViewModel::class.java)
     }

@@ -8,9 +8,9 @@ import io.reactivex.Completable
 
 
 class ShareMediaUseCase <E: Media> constructor(
-        private val schedulerProvider: SchedulerProvider,
-        private val repository: MediaRepository<E>,
-        private val appRouter: AppRouter
+    private val schedulerProvider: SchedulerProvider,
+    private val repository: MediaRepository<E>,
+    private val appRouter: AppRouter
 ) {
 
     fun share(item: E): Completable {
@@ -19,12 +19,12 @@ class ShareMediaUseCase <E: Media> constructor(
 
     fun share(items: Collection<E>): Completable {
         return repository.collectSongs(items)
-                .subscribeOn(schedulerProvider.worker())
-                .observeOn(schedulerProvider.main())
-                .doOnSuccess { songs ->
-                    appRouter.shareSongs(songs)
-                }
-                .ignoreElement()
+            .subscribeOn(schedulerProvider.worker())
+            .observeOn(schedulerProvider.main())
+            .doOnSuccess { songs ->
+                appRouter.shareSongs(songs)
+            }
+            .ignoreElement()
     }
 
 }

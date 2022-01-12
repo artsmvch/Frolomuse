@@ -3,7 +3,7 @@ package com.frolo.muse.ui.main.editor.album
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.frolo.muse.FrolomuseApp
-import com.frolo.muse.di.AppComponent
+import com.frolo.muse.di.ComponentInjector
 import com.frolo.muse.logger.EventLogger
 import com.frolo.music.model.Album
 import com.frolo.music.repository.AlbumRepository
@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 
 class AlbumEditorVMFactory constructor(
-    appComponent: AppComponent,
+    injector: ComponentInjector,
     private val album: Album
 ): ViewModelProvider.Factory {
 
@@ -26,7 +26,7 @@ class AlbumEditorVMFactory constructor(
     internal lateinit var eventLogger: EventLogger
 
     init {
-        appComponent.inject(this)
+        injector.inject(this)
     }
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {

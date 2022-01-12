@@ -2,7 +2,7 @@ package com.frolo.muse.ui.main.player.lyrics
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.frolo.muse.di.AppComponent
+import com.frolo.muse.di.ComponentInjector
 import com.frolo.muse.logger.EventLogger
 import com.frolo.music.model.Song
 import com.frolo.muse.network.NetworkHelper
@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 
 class LyricsVMFactory constructor(
-    appComponent: AppComponent,
+    injector: ComponentInjector,
     private val song: Song
 ): ViewModelProvider.Factory {
 
@@ -29,7 +29,7 @@ class LyricsVMFactory constructor(
     internal lateinit var eventLogger: EventLogger
 
     init {
-        appComponent.inject(this)
+        injector.inject(this)
     }
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {

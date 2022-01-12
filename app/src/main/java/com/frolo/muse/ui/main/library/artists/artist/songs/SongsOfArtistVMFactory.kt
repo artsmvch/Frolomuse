@@ -2,7 +2,8 @@ package com.frolo.muse.ui.main.library.artists.artist.songs
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.frolo.muse.di.AppComponent
+import com.frolo.muse.di.ComponentInjector
+import com.frolo.muse.di.ComponentProvider
 import com.frolo.player.Player
 import com.frolo.muse.router.AppRouter
 import com.frolo.muse.interactor.media.*
@@ -20,8 +21,9 @@ import javax.inject.Inject
 
 
 class SongsOfArtistVMFactory constructor(
-        appComponent: AppComponent,
-        private val artist: Artist
+    injector: ComponentInjector,
+    provider: ComponentProvider,
+    private val artist: Artist
 ): ViewModelProvider.Factory {
 
     @Inject
@@ -56,30 +58,30 @@ class SongsOfArtistVMFactory constructor(
     internal lateinit var eventLogger: EventLogger
 
     init {
-        appComponent.inject(this)
-        getArtistSongsUseCase = appComponent
-                .provideGetSongsOfArtistUseCaseFactory()
-                .create(artist)
+        injector.inject(this)
+        getArtistSongsUseCase = provider
+            .provideGetSongsOfArtistUseCaseFactory()
+            .create(artist)
     }
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         @Suppress("UNCHECKED_CAST")
         return SongsOfArtistViewModel(
-                player,
-                permissionChecker,
-                getArtistSongsUseCase,
-                getMediaMenuUseCase,
-                clickMediaUseCase,
-                playMediaUseCase,
-                shareMediaUseCase,
-                deleteMediaUseCase,
-                getIsFavouriteUseCase,
-                changeFavouriteUseCase,
-                createShortcutUseCase,
-                schedulerProvider,
-                appRouter,
-                eventLogger,
-                artist
+            player,
+            permissionChecker,
+            getArtistSongsUseCase,
+            getMediaMenuUseCase,
+            clickMediaUseCase,
+            playMediaUseCase,
+            shareMediaUseCase,
+            deleteMediaUseCase,
+            getIsFavouriteUseCase,
+            changeFavouriteUseCase,
+            createShortcutUseCase,
+            schedulerProvider,
+            appRouter,
+            eventLogger,
+            artist
         ) as T
     }
 

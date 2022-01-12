@@ -15,6 +15,7 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.frolo.muse.R
 import com.frolo.muse.arch.observeNonNull
+import com.frolo.muse.di.appComponent
 import com.frolo.music.model.Song
 import com.frolo.muse.ui.base.BaseDialogFragment
 import com.frolo.muse.ui.base.withArg
@@ -27,8 +28,7 @@ class PosterDialog: BaseDialogFragment() {
 
     private val viewModel: PosterViewModel by lazy {
         val song = requireArguments().getSerializable(ARG_SONG) as Song
-        val vmFactory = requireFrolomuseApp()
-            .appComponent
+        val vmFactory = appComponent
             .providePosterVMFactoryCreator()
             .create(song)
 

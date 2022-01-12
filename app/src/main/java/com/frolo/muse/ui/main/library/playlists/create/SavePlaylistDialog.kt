@@ -5,6 +5,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProviders
 import com.frolo.muse.R
 import com.frolo.muse.arch.observeNonNull
+import com.frolo.muse.di.appComponent
 import com.frolo.music.model.Playlist
 import com.frolo.music.model.Song
 import com.frolo.muse.ui.base.withNullableArg
@@ -24,7 +25,7 @@ class SavePlaylistDialog : AbsInputNameDialog() {
     private val viewModel: CreatePlaylistViewModel by lazy {
         @Suppress("UNCHECKED_CAST")
         val songsToAdd = requireArguments().getSerializable(ARG_SONGS) as? List<Song>
-        val vmFactory = CreatePlaylistVMFactory(requireFrolomuseApp().appComponent, songsToAdd)
+        val vmFactory = CreatePlaylistVMFactory(appComponent, songsToAdd)
         ViewModelProviders.of(this, vmFactory)
                 .get(CreatePlaylistViewModel::class.java)
     }

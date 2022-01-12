@@ -12,12 +12,12 @@ import androidx.annotation.MainThread
 import androidx.annotation.RequiresApi
 import androidx.annotation.WorkerThread
 import androidx.core.app.NotificationCompat
-import com.frolo.muse.FrolomuseApp
 import com.frolo.muse.Logger
 import com.frolo.muse.R
 import com.frolo.muse.android.ViewAppInStoreIntent
 import com.frolo.muse.android.canStartActivity
 import com.frolo.muse.android.notificationManager
+import com.frolo.muse.di.appComponent
 import com.frolo.muse.repository.FirebasePreferences
 import com.frolo.muse.ui.main.MainActivity
 import com.google.firebase.messaging.FirebaseMessagingService
@@ -35,7 +35,7 @@ class SimpleFirebaseMessagingService : FirebaseMessagingService() {
 
     override fun onCreate() {
         super.onCreate()
-        (application as FrolomuseApp).appComponent.inject(this)
+        appComponent.inject(this)
         mainHandler = Handler(mainLooper)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createNotificationChannel()

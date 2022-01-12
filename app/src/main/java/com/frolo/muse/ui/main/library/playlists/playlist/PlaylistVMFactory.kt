@@ -2,7 +2,8 @@ package com.frolo.muse.ui.main.library.playlists.playlist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.frolo.muse.di.AppComponent
+import com.frolo.muse.di.ComponentInjector
+import com.frolo.muse.di.ComponentProvider
 import com.frolo.player.Player
 import com.frolo.muse.router.AppRouter
 import com.frolo.muse.interactor.media.*
@@ -20,7 +21,8 @@ import javax.inject.Inject
 
 
 class PlaylistVMFactory constructor(
-    appComponent: AppComponent,
+    injector: ComponentInjector,
+    provider: ComponentProvider,
     playlistArg: Playlist
 ): ViewModelProvider.Factory {
 
@@ -58,30 +60,30 @@ class PlaylistVMFactory constructor(
     internal lateinit var eventLogger: EventLogger
 
     init {
-        appComponent.inject(this)
-        getPlaylistUseCase = appComponent
-                .provideGetPlaylistSongsUseCaseFactory()
-                .create(playlistArg)
+        injector.inject(this)
+        getPlaylistUseCase = provider
+            .provideGetPlaylistSongsUseCaseFactory()
+            .create(playlistArg)
     }
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         @Suppress("UNCHECKED_CAST")
         return PlaylistViewModel(
-                player,
-                permissionChecker,
-                getPlaylistUseCase,
-                getMediaMenuUseCase,
-                clickMediaUseCase,
-                playMediaUseCase,
-                shareMediaUseCase,
-                deleteMediaUseCase,
-                getIsFavouriteUseCase,
-                changeFavouriteUseCase,
-                createSongShortcutUseCase,
-                createPlaylistShortcutUseCase,
-                schedulerProvider,
-                appRouter,
-                eventLogger
+            player,
+            permissionChecker,
+            getPlaylistUseCase,
+            getMediaMenuUseCase,
+            clickMediaUseCase,
+            playMediaUseCase,
+            shareMediaUseCase,
+            deleteMediaUseCase,
+            getIsFavouriteUseCase,
+            changeFavouriteUseCase,
+            createSongShortcutUseCase,
+            createPlaylistShortcutUseCase,
+            schedulerProvider,
+            appRouter,
+            eventLogger
         ) as T
     }
 

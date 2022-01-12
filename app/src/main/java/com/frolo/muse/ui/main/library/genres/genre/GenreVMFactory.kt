@@ -2,7 +2,8 @@ package com.frolo.muse.ui.main.library.genres.genre
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.frolo.muse.di.AppComponent
+import com.frolo.muse.di.ComponentInjector
+import com.frolo.muse.di.ComponentProvider
 import com.frolo.player.Player
 import com.frolo.muse.router.AppRouter
 import com.frolo.muse.interactor.media.*
@@ -20,7 +21,8 @@ import javax.inject.Inject
 
 
 class GenreVMFactory constructor(
-    appComponent: AppComponent,
+    injector: ComponentInjector,
+    provider: ComponentProvider,
     private val genreArg: Genre
 ): ViewModelProvider.Factory {
 
@@ -58,10 +60,10 @@ class GenreVMFactory constructor(
     internal lateinit var eventLogger: EventLogger
 
     init {
-        appComponent.inject(this)
-        getGenreSongsUseCase = appComponent
-                .provideGetGenreSongsUseCaseFactory()
-                .create(genreArg)
+        injector.inject(this)
+        getGenreSongsUseCase = provider
+            .provideGetGenreSongsUseCaseFactory()
+            .create(genreArg)
     }
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {

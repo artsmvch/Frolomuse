@@ -31,37 +31,48 @@ import com.frolo.muse.ui.main.settings.library.filter.LibrarySongFilterViewModel
 import com.frolo.muse.ui.main.settings.theme.ThemeChooserViewModel
 import dagger.Binds
 import dagger.Module
+import dagger.Provides
 import dagger.multibindings.IntoMap
 import javax.inject.Inject
 import javax.inject.Provider
 import javax.inject.Singleton
 
 /**
- * In this module, a common VM factory provided.
- * If there is a ViewModel of a type A that depends on some static repositories only,
- * then the VM factory from this module can construct this ViewModel.
- * If a ViewModel of a type B depends on some dynamic arguments, i.e. some item id or a localized string,
- * then the VM factory from this module cannot construct the ViewModel and a custom factory will be needed.
+ * In this module, a shared ViewModel factory is provided.
+ *
+ * The factory from this module can only create view model instances that depend
+ * on the instances provided in the same graph.
+ *
+ * If you need to create a view model that depends on a dynamic argument,
+ * that is not provided by the graph (some string value etc.),
+ * then a custom factory is required.
  */
 @Module
 abstract class ViewModelModule {
 
     @Singleton
     class ViewModelFactory @Inject constructor(
-            private val viewModels: MutableMap<Class<out ViewModel>, Provider<ViewModel>>
+        private val providers: MutableMap<Class<out ViewModel>, Provider<ViewModel>>
     ): ViewModelProvider.Factory {
 
-        @Suppress("UNCHECKED_CAST")
+        @Suppress("UNCHECKED_CAST", "FoldInitializerAndIfToElvis")
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            val provider = viewModels[modelClass]
+            val provider = providers[modelClass]
 
             if (provider == null) {
-                throw IllegalArgumentException(
-                    "Provider for $modelClass not found. You may have forgotten to declare bind method in this module"
-                )
+                throw IllegalArgumentException("Provider for $modelClass not found. " +
+                        "You may have forgotten to declare a bind method in this module")
             }
 
-            return provider.get() as T
+            val instance = provider.get()
+
+            if (!modelClass.isInstance(instance)) {
+                throw IllegalArgumentException("Provider returned a view model of wrong type: " +
+                        "expected $modelClass, but got ${instance.javaClass}. " +
+                        "Check ${ViewModelKey::class} annotation on the bind method.")
+            }
+
+            return instance as T
         }
     }
 
@@ -194,5 +205,13 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(DonationsViewModel::class)
     abstract fun bindDonationsViewModel(viewModel: DonationsViewModel): ViewModel
+
+    companion object {
+        @JvmStatic
+        @Provides
+        fun provideViewModelFactory(sharedFactory: ViewModelFactory): ViewModelProvider.Factory {
+            return sharedFactory
+        }
+    }
 
 }

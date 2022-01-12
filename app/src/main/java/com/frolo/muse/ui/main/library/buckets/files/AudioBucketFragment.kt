@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.frolo.muse.R
 import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
+import com.frolo.muse.di.appComponent
 import com.frolo.music.model.MediaBucket
 import com.frolo.music.model.MediaFile
 import com.frolo.muse.thumbnails.provideThumbnailLoader
@@ -34,8 +35,7 @@ class AudioBucketFragment : AbsMediaCollectionFragment<MediaFile>(), FragmentCon
     private val bucketArg by serializableArg<MediaBucket>(ARG_BUCKET)
 
     override val viewModel: AudioBucketViewModel by lazy {
-        val appComponent = requireFrolomuseApp().appComponent
-        val vmFactory = AudioBucketVMFactory(appComponent, bucketArg)
+        val vmFactory = AudioBucketVMFactory(appComponent, appComponent, bucketArg)
         ViewModelProviders.of(this, vmFactory).get(AudioBucketViewModel::class.java)
     }
 

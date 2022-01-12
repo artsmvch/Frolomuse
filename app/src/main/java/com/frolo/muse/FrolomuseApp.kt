@@ -20,6 +20,7 @@ import com.frolo.player.Player
 import com.frolo.player.PlayerImpl
 import com.frolo.audiofx.AudioFxImpl
 import com.frolo.debug.DebugUtils
+import com.frolo.muse.di.appComponent
 import com.frolo.muse.engine.PlayerWrapper
 import com.frolo.muse.logger.logLowMemory
 import com.frolo.muse.router.MutableAppRouterWrapper
@@ -37,21 +38,14 @@ class FrolomuseApp : MultiDexApplication(), ActivityWatcher {
 
     private val isDebug: Boolean get() = BuildConfig.DEBUG
 
-    @Deprecated("Use AppComponentBridge")
-    lateinit var appComponent: AppComponent
-        private set
-
     private lateinit var uiHandler: Handler
 
     private val preferences by lazy { appComponent.providePreferences() }
     private val eventLogger by lazy { appComponent.provideEventLogger() }
-
-    private val activityWatcher by lazy {
-        FrolomuseActivityWatcher(preferences, eventLogger)
-    }
+    private val activityWatcher by lazy { FrolomuseActivityWatcher(preferences, eventLogger) }
 
     private val playerWrapper = PlayerWrapper(enableStrictMode = isDebug)
-    private val navigatorWrapper = MutableAppRouterWrapper()
+    private val appRouterWrapper = MutableAppRouterWrapper()
 
     override fun onCreate() {
         super.onCreate()
@@ -72,7 +66,6 @@ class FrolomuseApp : MultiDexApplication(), ActivityWatcher {
     private fun initAppComponent() {
         val instance = buildAppComponent()
         initAppComponent(instance)
-        appComponent = instance
     }
 
     private fun buildAppComponent(): AppComponent {
@@ -81,7 +74,7 @@ class FrolomuseApp : MultiDexApplication(), ActivityWatcher {
             .playerModule(PlayerModule(playerWrapper, isDebug))
             .localDataModule(LocalDataModule())
             .remoteDataModule(RemoteDataModule())
-            .navigationModule(NavigationModule(navigatorWrapper))
+            .routerModule(RouterModule(appRouterWrapper))
             .eventLoggerModule(EventLoggerModule(isDebug))
             .networkModule(NetworkModule())
             .miscModule(MiscModule())
@@ -198,11 +191,11 @@ class FrolomuseApp : MultiDexApplication(), ActivityWatcher {
     fun onFragmentNavigatorCreated(activity: MainActivity) {
         val routerImpl = AppRouterImpl(activity)
         val uiThreadRouter = ThreadAppRouterWrapper(routerImpl, uiHandler)
-        navigatorWrapper.attachBase(uiThreadRouter)
+        appRouterWrapper.attachBase(uiThreadRouter)
     }
 
     fun onFragmentNavigatorDestroyed() {
-        navigatorWrapper.detachBase()
+        appRouterWrapper.detachBase()
     }
 
     //region Activity watcher

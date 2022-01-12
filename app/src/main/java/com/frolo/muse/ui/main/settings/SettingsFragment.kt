@@ -14,7 +14,6 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.preference.CheckBoxPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import com.frolo.muse.FrolomuseApp
 import com.frolo.muse.BuildConfig
 import com.frolo.muse.Features
 import com.frolo.muse.R
@@ -76,10 +75,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
     private val donatePreference: Preference? get() = findPreference("donate")
 
     private val settingsViewModel: SettingsViewModel by lazy {
-        val appComponent = requireContext().let { context ->
-            FrolomuseApp.from(context).appComponent
-        }
-        val viewModelFactory = appComponent.provideVMFactory()
+        val viewModelFactory = appComponent.provideViewModelFactory()
         ViewModelProviders.of(this, viewModelFactory)[SettingsViewModel::class.java]
     }
 

@@ -22,14 +22,14 @@ class ControlPlayerUseCase @Inject constructor(
 
     fun getAlbum(): Single<Album> {
         return Single.fromCallable { player.getCurrent()?.albumId }
-                .flatMap { id -> albumRepository.getItem(id).firstOrError() }
-                .subscribeOn(schedulerProvider.worker())
+            .flatMap { id -> albumRepository.getItem(id).firstOrError() }
+            .subscribeOn(schedulerProvider.worker())
     }
 
     fun getArtist(): Single<Artist> {
         return Single.fromCallable { player.getCurrent()?.artistId }
-                .flatMap { id -> artistRepository.getItem(id).firstOrError() }
-                .subscribeOn(schedulerProvider.worker())
+            .flatMap { id -> artistRepository.getItem(id).firstOrError() }
+            .subscribeOn(schedulerProvider.worker())
     }
 
     fun getGenre(): Single<Genre> {

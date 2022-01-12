@@ -2,7 +2,7 @@ package com.frolo.muse.ui.main.audiofx.preset
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.frolo.muse.di.AppComponent
+import com.frolo.muse.di.ComponentInjector
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.repository.PresetRepository
 import com.frolo.muse.rx.SchedulerProvider
@@ -10,8 +10,8 @@ import javax.inject.Inject
 
 
 class SavePresetVMFactory constructor(
-        appComponent: AppComponent,
-        private val bandLevels: ShortArray
+    injector: ComponentInjector,
+    private val bandLevels: ShortArray
 ): ViewModelProvider.Factory {
 
     @Inject
@@ -22,16 +22,16 @@ class SavePresetVMFactory constructor(
     internal lateinit var eventLogger: EventLogger
 
     init {
-        appComponent.inject(this)
+        injector.inject(this)
     }
 
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         @Suppress("UNCHECKED_CAST")
         return SavePresetViewModel(
-                schedulerProvider,
-                repository,
-                eventLogger,
-                bandLevels
+            schedulerProvider,
+            repository,
+            eventLogger,
+            bandLevels
         ) as T
     }
 

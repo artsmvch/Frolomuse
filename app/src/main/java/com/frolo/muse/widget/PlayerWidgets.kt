@@ -18,6 +18,8 @@ import com.frolo.muse.R
 import com.frolo.muse.common.albumId
 import com.frolo.muse.common.title
 import com.frolo.muse.common.toAudioSource
+import com.frolo.muse.di.ComponentProvider
+import com.frolo.muse.di.appComponent
 import com.frolo.player.AudioSource
 import com.frolo.player.Player
 import com.frolo.muse.engine.service.PlayerService
@@ -80,9 +82,9 @@ private fun getPlayerWidgetParams(context: Context, player: Player?): PlayerWidg
         // There is no active player
         val frolomuseApp = context.applicationContext as? FrolomuseApp
         if (frolomuseApp != null) {
-            val appComponent = frolomuseApp.appComponent
-            val preferences = appComponent.providePreferences()
-            val songRepository = appComponent.provideSongRepository()
+            val provider: ComponentProvider = appComponent
+            val preferences = provider.providePreferences()
+            val songRepository = provider.provideSongRepository()
             currItem = try {
                 val lastSongId = preferences.lastSongId
                 songRepository.getItem(lastSongId)

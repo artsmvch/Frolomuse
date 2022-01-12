@@ -1,7 +1,7 @@
 package com.frolo.muse.di.impl.navigator
 
-import com.frolo.muse.FrolomuseApp
 import com.frolo.billing.ProductId
+import com.frolo.muse.di.appComponent
 import com.frolo.muse.router.AppRouter
 import com.frolo.muse.rx.subscribeSafely
 import com.frolo.muse.ui.*
@@ -172,8 +172,7 @@ class AppRouterImpl(private val root: MainActivity) : AppRouter {
     }
 
     override fun launchBillingFlow(productId: ProductId) {
-        FrolomuseApp.from(root)
-            .appComponent
+        appComponent
             .provideBillingManager()
             .launchBillingFlow(productId)
             .subscribeSafely()
