@@ -15,8 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.frolo.threads.ThreadStrictMode;
-import com.frolo.muse.util.BitmapUtil;
-import com.frolo.muse.util.CenterCropBitmapDrawable;
+import com.frolo.ui.bitmaps.BitmapUtils;
+import com.frolo.ui.bitmaps.CenterCropBitmapDrawable;
 
 import java.util.concurrent.Callable;
 
@@ -121,7 +121,7 @@ public final class Snapshots {
                     try {
                         // If the intrinsic width and height are positive, then we cat try to create a center cropped bitmap from it
                         if (background.getIntrinsicWidth() > 0 && background.getIntrinsicHeight() > 0) {
-                            final Bitmap backgroundBitmap = BitmapUtil.getBitmap(background);
+                            final Bitmap backgroundBitmap = BitmapUtils.getBitmap(background);
                             final Drawable centerCropBackground =
                                     new CenterCropBitmapDrawable(resources, backgroundBitmap, width, height);
                             centerCropBackground.draw(resultCanvas);
@@ -189,7 +189,7 @@ public final class Snapshots {
                     try {
                         // If the intrinsic width and height are positive, then we cat try to create a center cropped bitmap from it
                         if (background.getIntrinsicWidth() > 0 && background.getIntrinsicHeight() > 0) {
-                            final Bitmap backgroundBitmap = BitmapUtil.getBitmap(background);
+                            final Bitmap backgroundBitmap = BitmapUtils.getBitmap(background);
                             final Drawable centerCropBackground =
                                     new CenterCropBitmapDrawable(resources, backgroundBitmap, width, height);
                             centerCropBackground.draw(resultCanvas);

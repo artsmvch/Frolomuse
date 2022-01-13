@@ -11,7 +11,7 @@ import com.frolo.music.model.Song
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.getAlbumString
 import com.frolo.muse.ui.getNameString
-import com.frolo.muse.util.BitmapUtil
+import com.frolo.ui.bitmaps.BitmapUtils
 import io.reactivex.Single
 import jp.wasabeef.glide.transformations.internal.FastBlur
 import jp.wasabeef.glide.transformations.internal.RSBlur
@@ -113,8 +113,8 @@ class CreatePosterUseCase @Inject constructor(
 
         // App brand icon
         ContextCompat.getDrawable(context, R.mipmap.ic_launcher_round)?.also { drawable ->
-            val iconBitmap = BitmapUtil.getBitmap(drawable, iconSize, iconSize)
-            val roundedIconBitmap = BitmapUtil.createRoundedBitmap(iconBitmap, iconSize / 2f)
+            val iconBitmap = BitmapUtils.getBitmap(drawable, iconSize, iconSize)
+            val roundedIconBitmap = BitmapUtils.createRoundedBitmap(iconBitmap, iconSize / 2f)
             if (iconBitmap != roundedIconBitmap){
                 iconBitmap.recycle()
             }

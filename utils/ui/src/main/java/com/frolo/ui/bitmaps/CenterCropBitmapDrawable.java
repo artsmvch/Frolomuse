@@ -1,4 +1,4 @@
-package com.frolo.muse.util;
+package com.frolo.ui.bitmaps;
 
 import android.content.res.Resources;
 import android.graphics.Bitmap;

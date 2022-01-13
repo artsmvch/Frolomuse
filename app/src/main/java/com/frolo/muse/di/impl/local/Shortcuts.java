@@ -37,7 +37,7 @@ import com.frolo.music.model.Playlist;
 import com.frolo.music.model.Song;
 import com.frolo.music.model.UnknownMediaException;
 import com.frolo.muse.ui.main.MainActivity;
-import com.frolo.muse.util.BitmapUtil;
+import com.frolo.ui.bitmaps.BitmapUtils;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -244,7 +244,7 @@ final class Shortcuts {
                         cornerRadiusInDp,
                         context.getResources().getDisplayMetrics()
                     );
-            final Bitmap rounded = BitmapUtil.createRoundedBitmap(scaled, cornerRadiusInPx);
+            final Bitmap rounded = BitmapUtils.createRoundedBitmap(scaled, cornerRadiusInPx);
 
             if (scaled != rounded) {
                 scaled.recycle();

@@ -1,4 +1,4 @@
-package com.frolo.muse.util;
+package com.frolo.ui.bitmaps;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -17,9 +17,7 @@ import androidx.annotation.WorkerThread;
 import com.frolo.threads.ThreadStrictMode;
 
 
-public final class BitmapUtil {
-    private BitmapUtil() {
-    }
+public final class BitmapUtils {
 
     @WorkerThread
     public static Bitmap getBitmap(Drawable drawable, int overrideWidth, int overrideHeight) {
@@ -88,4 +86,6 @@ public final class BitmapUtil {
         return output;
     }
 
+    private BitmapUtils() {
+    }
 }
