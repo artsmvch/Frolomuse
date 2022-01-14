@@ -68,7 +68,6 @@ class AlbumCardAdapter constructor(
             target: Target<Drawable>?,
             isFirstResource: Boolean
         ): Boolean {
-
             with(itemView) {
                 pb_loading.visibility = View.INVISIBLE
                 cv_album_art.visibility = View.VISIBLE
@@ -83,7 +82,6 @@ class AlbumCardAdapter constructor(
             dataSource: DataSource?,
             isFirstResource: Boolean
         ): Boolean {
-
             with(itemView) {
                 pb_loading.visibility = View.INVISIBLE
                 cv_album_art.visibility = View.VISIBLE
@@ -98,9 +96,14 @@ class AlbumCardAdapter constructor(
             // The error drawable is a large PNG,
             // so we need to load it through a split request
             // in order to resize correctly and avoid OOM errors.
-            val errorRequest = requestManager.load(R.drawable.art_placeholder).skipMemoryCache(false)
+            val errorRequest = requestManager
+                .load(R.drawable.art_placeholder)
+                .skipMemoryCache(false)
 
             requestManager.makeRequest(item?.albumId ?: -1)
+                // The memory cache is not that important for this adapter,
+                // but disabling it here may help avoid OOM errors.
+                .skipMemoryCache(true)
                 .placeholder(null)
                 .error(errorRequest)
                 .addListener(this@AlbumArtViewHolder)

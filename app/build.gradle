@@ -184,6 +184,9 @@ dependencies {
     implementation project(path: ':utils:stopwatch')
     implementation project(path: ':utils:headset')
 
+    // Vendor
+    implementation project(path: ':vendor')
+
     // Audio libs
     implementation project(path: ':audio-libs:my_id3')
     //implementation group: 'org', name: 'jaudiotagger', version: '2.0.3' // https://mvnrepository.com/artifact/org/jaudiotagger
