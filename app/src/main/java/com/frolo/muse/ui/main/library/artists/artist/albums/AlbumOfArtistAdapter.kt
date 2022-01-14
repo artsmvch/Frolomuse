@@ -6,7 +6,7 @@ import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.RequestManager
 import com.frolo.muse.R
-import com.frolo.muse.glide.makeRequest
+import com.frolo.muse.glide.makeAlbumArtRequest
 import com.frolo.muse.inflateChild
 import com.frolo.music.model.Album
 import com.frolo.muse.screenWidth
@@ -46,7 +46,7 @@ class AlbumOfArtistAdapter constructor(
     ) = with(holder.itemView) {
         tv_album_name.text = item.getNameString(resources)
 
-        requestManager.makeRequest(item.id)
+        requestManager.makeAlbumArtRequest(item.id)
             .placeholder(R.drawable.ic_framed_album)
             .error(R.drawable.ic_framed_album)
             .into(imv_album_art)

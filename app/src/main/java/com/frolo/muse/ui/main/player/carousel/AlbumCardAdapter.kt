@@ -16,7 +16,7 @@ import com.bumptech.glide.request.target.Target
 import com.frolo.muse.*
 import com.frolo.muse.common.albumId
 import com.frolo.player.AudioSource
-import com.frolo.muse.glide.makeRequest
+import com.frolo.muse.glide.makeAlbumArtRequest
 import com.google.android.material.card.CardViewSupport
 import kotlinx.android.synthetic.main.include_square_album_art.view.*
 import kotlin.math.max
@@ -100,7 +100,7 @@ class AlbumCardAdapter constructor(
                 .load(R.drawable.art_placeholder)
                 .skipMemoryCache(false)
 
-            requestManager.makeRequest(item?.albumId ?: -1)
+            requestManager.makeAlbumArtRequest(item?.albumId)
                 // The memory cache is not that important for this adapter,
                 // but disabling it here may help avoid OOM errors.
                 .skipMemoryCache(true)

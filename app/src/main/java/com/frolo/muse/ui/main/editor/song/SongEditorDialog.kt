@@ -18,7 +18,7 @@ import com.frolo.muse.R
 import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.di.appComponent
-import com.frolo.muse.glide.makeRequest
+import com.frolo.muse.glide.makeAlbumArtRequest
 import com.frolo.music.model.Song
 import com.frolo.muse.ui.base.BaseDialogFragment
 import com.frolo.muse.ui.base.serializableArg
@@ -84,7 +84,7 @@ class SongEditorDialog: BaseDialogFragment() {
         tv_filepath.text = song.source
 
         Glide.with(this@SongEditorDialog)
-            .makeRequest(song.albumId)
+            .makeAlbumArtRequest(song.albumId)
             .circleCrop()
             .placeholder(R.drawable.ic_framed_music_note)
             .error(R.drawable.ic_framed_music_note)

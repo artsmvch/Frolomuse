@@ -85,10 +85,10 @@ public final class GlideAlbumArtHelper {
     //endregion
 
     // This is the signature keys, used by Glide to distinguish between requests to the same source.
-    private LongSparseArray<ObjectKey> mKeys = new LongSparseArray<>();
+    private final LongSparseArray<ObjectKey> mKeys = new LongSparseArray<>();
 
     // Shared live data that notifies observers about album art changes.
-    private SingleLiveEvent<Long> mAlbumArtChangedEvent = new SingleLiveEvent<>();
+    private final SingleLiveEvent<Long> mAlbumArtChangedEvent = new SingleLiveEvent<>();
 
     private GlideAlbumArtHelper() {
     }
@@ -121,7 +121,7 @@ public final class GlideAlbumArtHelper {
      * Invalidates the key for the given <code>albumId</code> by simply creating a new one
      * and putting it in {@link GlideAlbumArtHelper#mKeys}.
      * This also emits an event to {@link GlideAlbumArtHelper#mAlbumArtChangedEvent}
-     * letting observers know that the album art with the id <code>albumId</code> has changed.
+     * letting observers know that the album art with the <code>albumId</code> ID has changed.
      *
      * Should be called on {@link UiThread}.
      *

@@ -16,7 +16,7 @@ import com.frolo.muse.R
 import com.frolo.muse.di.appComponent
 import com.frolo.ui.Screen
 import com.frolo.ui.StyleUtils
-import com.frolo.muse.glide.makeRequest
+import com.frolo.muse.glide.makeAlbumArtRequest
 import com.frolo.muse.glide.squircleCrop
 import com.frolo.muse.repository.AppearancePreferences
 import com.frolo.music.model.*
@@ -74,7 +74,7 @@ class GlideThumbnailLoader constructor(
 
     override fun loadSongThumbnail(song: Song, target: ImageView) {
         val placeholder = getThumbnailFromResource(target.context, R.drawable.ic_framed_music_note)
-        requestManager.makeRequest(song.albumId)
+        requestManager.makeAlbumArtRequest(song.albumId)
             .placeholder(placeholder)
             .error(placeholder)
             .squircleCrop(SQUIRCLE_CURVATURE)
@@ -82,14 +82,14 @@ class GlideThumbnailLoader constructor(
     }
 
     override fun loadAlbumThumbnail(album: Album, target: ImageView) {
-        requestManager.makeRequest(album.id)
+        requestManager.makeAlbumArtRequest(album.id)
             .placeholder(R.drawable.ic_framed_album)
             .error(R.drawable.ic_framed_album)
             .into(target)
     }
 
     override fun loadRawAlbumThumbnail(album: Album, target: ImageView) {
-        requestManager.makeRequest(album.id)
+        requestManager.makeAlbumArtRequest(album.id)
             .placeholder(R.drawable.ic_framed_album)
             .error(R.drawable.ic_framed_album)
             .transition(DrawableTransitionOptions.withCrossFade(200))

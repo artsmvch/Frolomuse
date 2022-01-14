@@ -186,7 +186,7 @@ open class AlbumFragment: AbsSongCollectionFragment<Song>(), FragmentContentInse
             requestOptions.theme(safeTheme)
         }
         Glide.with(this@AlbumFragment)
-            .makeRequestAsBitmap(albumId)
+            .makeAlbumArtRequestAsBitmap(albumId)
             .placeholder(R.drawable.ic_album_200dp)
             .error(R.drawable.ic_album_200dp)
             .apply(requestOptions)

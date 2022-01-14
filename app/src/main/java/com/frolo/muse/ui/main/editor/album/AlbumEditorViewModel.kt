@@ -11,7 +11,7 @@ import com.frolo.muse.arch.SingleLiveEvent
 import com.frolo.muse.arch.call
 import com.frolo.muse.arch.map
 import com.frolo.muse.glide.GlideAlbumArtHelper
-import com.frolo.muse.glide.makeRequestAsBitmap
+import com.frolo.muse.glide.makeAlbumArtRequestAsBitmap
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.logAlbumUpdated
 import com.frolo.music.model.Album
@@ -140,7 +140,7 @@ class AlbumEditorViewModel constructor(
     }
 
     private fun createAlbumArtSource(album: Album): Single<BitmapResult> {
-        val request = Glide.with(frolomuseApp).makeRequestAsBitmap(album.id)
+        val request = Glide.with(frolomuseApp).makeAlbumArtRequestAsBitmap(album.id)
         return Single.fromCallable {
             try {
                 val bitmap = request.submit().get()
