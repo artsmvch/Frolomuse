@@ -59,7 +59,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
     }
 
     private val appRouter: AppRouter by lazy {
-        appComponent.provideNavigator()
+        appComponent.provideAppRouter()
     }
 
     private val eventLogger: EventLogger by lazy {

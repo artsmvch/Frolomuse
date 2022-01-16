@@ -23,7 +23,7 @@ interface ComponentProvider {
 
     // Misc
     fun provideSchedulerProvider(): SchedulerProvider
-    fun provideNavigator(): AppRouter
+    fun provideAppRouter(): AppRouter
     fun providePreferences(): Preferences
     fun provideLibraryPreferences(): LibraryPreferences
     fun provideAppearancePreferences(): AppearancePreferences

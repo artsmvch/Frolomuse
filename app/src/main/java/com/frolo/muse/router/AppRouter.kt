@@ -5,6 +5,9 @@ import com.frolo.music.model.*
 import java.io.File
 
 
+/**
+ * Router to all screens in the app.
+ */
 interface AppRouter {
     fun goToStore()
 

@@ -69,22 +69,22 @@ class GenreVMFactory constructor(
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         @Suppress("UNCHECKED_CAST")
         return GenreViewModel(
-                player,
-                permissionChecker,
-                getGenreSongsUseCase,
-                getMediaMenuUseCase,
-                clickMediaUseCase,
-                playMediaUseCase,
-                shareMediaUseCase,
-                deleteMediaUseCase,
-                getIsFavouriteUseCase,
-                changeFavouriteUseCase,
-                createSongShortcutUseCase,
-                createGenreShortcutUseCase,
-                schedulerProvider,
-                appRouter,
-                eventLogger,
-                genreArg
+            player,
+            permissionChecker,
+            getGenreSongsUseCase,
+            getMediaMenuUseCase,
+            clickMediaUseCase,
+            playMediaUseCase,
+            shareMediaUseCase,
+            deleteMediaUseCase,
+            getIsFavouriteUseCase,
+            changeFavouriteUseCase,
+            createSongShortcutUseCase,
+            createGenreShortcutUseCase,
+            schedulerProvider,
+            appRouter,
+            eventLogger,
+            genreArg
         ) as T
     }
 

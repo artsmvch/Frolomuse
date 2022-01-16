@@ -1,5 +1,6 @@
 package com.frolo.muse.ui.main.editor.song
 
+import android.app.Application
 import android.content.ContentUris
 import android.content.Context
 import android.media.MediaScannerConnection
@@ -10,7 +11,6 @@ import androidx.annotation.RequiresApi
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.frolo.muse.FrolomuseApp
 import com.frolo.muse.arch.SingleLiveEvent
 import com.frolo.muse.common.toAudioSource
 import com.frolo.player.Player
@@ -30,7 +30,7 @@ import java.util.concurrent.TimeUnit
 
 @Suppress("FunctionName")
 class SongEditorViewModel constructor(
-    application: FrolomuseApp,
+    application: Application,
     private val player: Player,
     private val schedulerProvider: SchedulerProvider,
     private val repository: SongRepository,
@@ -225,9 +225,8 @@ class SongEditorViewModel constructor(
     @WorkerThread
     private fun scanSync(file: File) {
         val countDownLatch = CountDownLatch(1)
-        val context = getApplication<FrolomuseApp>()
         val paths = arrayOf(file.absolutePath)
-        MediaScannerConnection.scanFile(context, paths, null) { _, _ ->
+        MediaScannerConnection.scanFile(justContext, paths, null) { _, _ ->
             // Scan completed, counting down the latch
             countDownLatch.countDown()
         }
