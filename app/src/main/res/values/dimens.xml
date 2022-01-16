@@ -21,6 +21,10 @@
     <dimen name="fragment_content_right_inset">0dp</dimen>
     <dimen name="fragment_content_bottom_inset">56dp</dimen>
 
+    <!--Backdrop tongue-->
+    <dimen name="backdrop_large_tongue_corner_radius">72dp</dimen>
+    <dimen name="backdrop_shallow_tongue_corner_radius">16dp</dimen>
+
     <!--Dividers-->
     <dimen name="app_divider_size">1dp</dimen>
     <dimen name="app_thin_divider_size">0.5dp</dimen>

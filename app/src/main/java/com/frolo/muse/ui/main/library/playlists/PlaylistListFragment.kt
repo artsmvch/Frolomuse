@@ -11,8 +11,8 @@ import com.frolo.muse.R
 import com.frolo.music.model.Playlist
 import com.frolo.muse.ui.main.library.ActionButtonCallback
 import com.frolo.muse.ui.main.library.base.SimpleMediaCollectionFragment
-import com.frolo.muse.dp2px
 import com.frolo.muse.thumbnails.provideThumbnailLoader
+import com.frolo.ui.Screen
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
@@ -23,9 +23,7 @@ class PlaylistListFragment: SimpleMediaCollectionFragment<Playlist>(),
 
     override val adapter by lazy { PlaylistAdapter(provideThumbnailLoader())}
 
-    private val additionalBottomPadding: Int by lazy {
-        72f.dp2px(requireContext()).toInt()
-    }
+    private val extraBottomPadding: Int by lazy { Screen.dp(requireContext(), 72) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,7 +68,7 @@ class PlaylistListFragment: SimpleMediaCollectionFragment<Playlist>(),
 
         requireListView().apply {
             clipToPadding = false
-            updatePadding(bottom = bottom + additionalBottomPadding)
+            updatePadding(bottom = bottom + extraBottomPadding)
         }
     }
 

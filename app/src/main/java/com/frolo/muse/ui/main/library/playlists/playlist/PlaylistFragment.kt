@@ -87,7 +87,9 @@ class PlaylistFragment: AbsSongCollectionFragment<Song>(), FragmentContentInsets
             }
         }
 
-    private val backdropCornerRadius: Float by lazy { 72f.dp2px(requireContext()) }
+    private val backdropCornerRadius: Float by lazy {
+        resources.getDimension(R.dimen.backdrop_large_tongue_corner_radius)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

@@ -11,7 +11,6 @@ import com.frolo.muse.R
 import com.frolo.ui.StyleUtils
 import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.di.appComponent
-import com.frolo.muse.dp2px
 import com.frolo.music.model.Artist
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.base.serializableArg
@@ -47,7 +46,9 @@ class ArtistFragment: BaseFragment() {
             }
         }
 
-    private val backdropCornerRadius: Float by lazy { 16f.dp2px(requireContext()) }
+    private val backdropCornerRadius: Float by lazy {
+        resources.getDimension(R.dimen.backdrop_shallow_tongue_corner_radius)
+    }
 
     private val viewModel: ArtistViewModel by lazy {
         val artist = requireArguments().getSerializable(ARG_ARTIST) as Artist

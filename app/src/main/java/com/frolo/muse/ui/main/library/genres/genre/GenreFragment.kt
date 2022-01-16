@@ -11,7 +11,6 @@ import com.frolo.ui.StyleUtils
 import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.di.appComponent
-import com.frolo.muse.dp2px
 import com.frolo.music.model.Genre
 import com.frolo.music.model.Song
 import com.frolo.muse.thumbnails.provideThumbnailLoader
@@ -45,7 +44,9 @@ class GenreFragment: AbsSongCollectionFragment<Song>(), FragmentContentInsetsLis
 
     override val adapter by lazy { SongAdapter<Song>(provideThumbnailLoader()) }
 
-    private val backdropCornerRadius: Float by lazy { 72f.dp2px(requireContext()) }
+    private val backdropCornerRadius: Float by lazy {
+        resources.getDimension(R.dimen.backdrop_large_tongue_corner_radius)
+    }
 
     private val onOffsetChangedListener: AppBarLayout.OnOffsetChangedListener =
         AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->

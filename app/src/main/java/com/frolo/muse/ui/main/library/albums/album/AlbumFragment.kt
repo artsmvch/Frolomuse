@@ -17,7 +17,6 @@ import com.frolo.muse.di.appComponent
 import com.frolo.muse.glide.*
 import com.frolo.music.model.Album
 import com.frolo.music.model.Song
-import com.frolo.muse.dp2px
 import com.frolo.muse.thumbnails.provideThumbnailLoader
 import com.frolo.muse.ui.base.FragmentContentInsetsListener
 import com.frolo.muse.ui.base.setupNavigation
@@ -62,7 +61,9 @@ open class AlbumFragment: AbsSongCollectionFragment<Song>(), FragmentContentInse
 
     override val adapter by lazy { SongOfAlbumAdapter(provideThumbnailLoader()) }
 
-    private val backdropCornerRadius: Float by lazy { 72f.dp2px(requireContext()) }
+    private val backdropCornerRadius: Float by lazy {
+        resources.getDimension(R.dimen.backdrop_large_tongue_corner_radius)
+    }
 
     private var isPlayButtonAlwaysVisible: Boolean = false
 
