@@ -9,7 +9,7 @@ import androidx.core.view.updatePadding
 import androidx.recyclerview.widget.RecyclerView
 import com.frolo.muse.R
 import com.frolo.music.model.Playlist
-import com.frolo.muse.ui.main.library.FabCallback
+import com.frolo.muse.ui.main.library.ActionButtonCallback
 import com.frolo.muse.ui.main.library.base.SimpleMediaCollectionFragment
 import com.frolo.muse.dp2px
 import com.frolo.muse.thumbnails.provideThumbnailLoader
@@ -17,7 +17,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
 class PlaylistListFragment: SimpleMediaCollectionFragment<Playlist>(),
-        FabCallback {
+        ActionButtonCallback {
 
     override val viewModel: PlaylistListViewModel by viewModel()
 
@@ -51,13 +51,13 @@ class PlaylistListFragment: SimpleMediaCollectionFragment<Playlist>(),
         }
     }
 
-    override fun isUsingFab() = true
+    override fun requiresActionButton(): Boolean = true
 
-    override fun decorateFab(fab: FloatingActionButton) {
-        fab.setImageResource(R.drawable.ic_plus)
+    override fun onDecorateActionButton(button: FloatingActionButton) {
+        button.setImageResource(R.drawable.ic_plus)
     }
 
-    override fun handleClickOnFab() {
+    override fun onHandleActionButtonClick() {
         viewModel.onCreatePlaylistButtonClicked()
     }
 

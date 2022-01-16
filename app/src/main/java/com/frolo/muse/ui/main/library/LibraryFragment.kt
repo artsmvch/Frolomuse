@@ -99,11 +99,7 @@ class LibraryFragment: BaseFragment(),
         tl_sections.setupWithViewPager(vp_sections)
 
         fab_action.setOnClickListener {
-            val adapter = vp_sections.adapter as? LibraryPageAdapter
-            val currFragment = adapter?.getPageAt(vp_sections.currentItem)
-            if (currFragment is FabCallback && currFragment.isUsingFab()) {
-                currFragment.handleClickOnFab()
-            }
+            dispatchClickOnFab()
         }
 
         invalidateFab()
@@ -154,11 +150,18 @@ class LibraryFragment: BaseFragment(),
 
     private fun invalidateFab() {
         val currFragment = peekCurrentPage()
-        if (currFragment is FabCallback && currFragment.isUsingFab()) {
-            currFragment.decorateFab(fab_action)
+        if (currFragment is ActionButtonCallback && currFragment.requiresActionButton()) {
+            currFragment.onDecorateActionButton(fab_action)
             fab_action.show()
         } else {
             fab_action.hide()
+        }
+    }
+
+    private fun dispatchClickOnFab() {
+        val currFragment = peekCurrentPage()
+        if (currFragment is ActionButtonCallback && currFragment.requiresActionButton()) {
+            currFragment.onHandleActionButtonClick()
         }
     }
 
