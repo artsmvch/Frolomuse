@@ -139,7 +139,8 @@ final class TimedScanner {
 
         final String path = mPendingPaths.poll();
 
-        if (mPendingPaths.isEmpty()) {
+        if (path == null) {
+            // The queue is empty
             disposeInternal(true);
         } else {
             if (DEBUG) Log.d(LOG_TAG, "Scanning " + path + ". " + mPendingPaths.size() + " paths left");
