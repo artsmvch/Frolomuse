@@ -2,6 +2,10 @@ package com.frolo.muse.common
 
 import com.frolo.player.Player
 
+/**
+ * 10 seconds for the fast seek forward / backward.
+ */
+private const val FAST_SEEK_SHIFT = 10_000
 
 fun Player.switchToNextRepeatMode() {
     val nextMode = when(getRepeatMode()) {
@@ -29,4 +33,12 @@ fun Player.pointNextABPoint() {
         isBPointed().not() -> pointB(position)
         else -> resetAB()
     }
+}
+
+fun Player.rewindForward() {
+    this.rewindForward(FAST_SEEK_SHIFT)
+}
+
+fun Player.rewindBackward() {
+    this.rewindBackward(FAST_SEEK_SHIFT)
 }

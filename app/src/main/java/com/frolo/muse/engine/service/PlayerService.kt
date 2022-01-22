@@ -113,28 +113,10 @@ class PlayerService: RxService(), PlayerNotificationSender {
         player.pause()
     }
 
-    // MediaSession is used to control buttons clicks from headsets and playback notifications.
+    // MediaSession is used to control buttons clicks from headsets and playback notifications
     private lateinit var mediaSession: MediaSessionCompat
-    private val mediaSessionCallback = object : MediaSessionCallback() {
-        override fun onTogglePlayback() {
-            player.toggle()
-        }
-
-        override fun onSkipToNext() {
-            player.skipToNext()
-        }
-
-        override fun onSkipToPrevious() {
-            player.skipToPrevious()
-        }
-
-        override fun onSeekTo(pos: Long) {
-            player.seekTo(pos.toInt())
-        }
-    }
 
     //region Service binding
-
     override fun onBind(intent: Intent?): IBinder {
         isBound = true
         Logger.d(TAG, "Service gets bound")
@@ -179,7 +161,6 @@ class PlayerService: RxService(), PlayerNotificationSender {
         mediaSession = MediaSessionCompat(applicationContext, "frolomuse:player_service").apply {
             setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS)
             isActive = true
-            setCallback(mediaSessionCallback)
             setEmptyMetadata()
         }
 
@@ -216,6 +197,8 @@ class PlayerService: RxService(), PlayerNotificationSender {
 
         // Attaching media session observer
         MediaSessionObserver.attach(this, mediaSession, player)
+        // Headset buttons handler
+        mediaSession.setCallback(MediaSessionCallbackImpl(player))
 
         // Subscribing on the headset status changes
         headsetHandler.subscribe(this)

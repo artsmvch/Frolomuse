@@ -283,7 +283,7 @@ class PlayerViewModel @Inject constructor(
     }
 
     fun onSkipToNextButtonLongClicked() {
-        player.rewindForward(10_000)
+        player.rewindForward()
         _playbackProgress.value = player.getProgress()
     }
 
@@ -292,7 +292,7 @@ class PlayerViewModel @Inject constructor(
     }
 
     fun onSkipToPreviousButtonLongClicked() {
-        player.rewindBackward(10_000)
+        player.rewindBackward()
         _playbackProgress.value = player.getProgress()
     }
 

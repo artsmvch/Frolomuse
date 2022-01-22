@@ -231,7 +231,7 @@ dependencies {
     implementation 'androidx.palette:palette:1.0.0'
     // MediaCompat
     implementation 'androidx.core:core:1.2.0'
-    implementation 'androidx.media:media:1.1.0'
+    implementation 'androidx.media:media:1.4.3'
 
     // Useful kotlin extensions
     implementation "androidx.core:core-ktx:1.2.0"

@@ -22,8 +22,16 @@ class MediaSessionObserver private constructor(
     private val mediaSession: MediaSessionCompat
 ): SimplePlayerObserver() {
 
-    private var songDisposable: Disposable? = null
+    @PlaybackStateCompat.Actions
+    private val supportedActions: Long =
+        PlaybackStateCompat.ACTION_PLAY or
+            PlaybackStateCompat.ACTION_PAUSE or
+            PlaybackStateCompat.ACTION_PLAY_PAUSE or
+            PlaybackStateCompat.ACTION_SEEK_TO or
+            PlaybackStateCompat.ACTION_SKIP_TO_NEXT or
+            PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS
 
+    private var songDisposable: Disposable? = null
     private var progressDisposable: Disposable? = null
 
     /**
@@ -109,16 +117,34 @@ class MediaSessionObserver private constructor(
     @MainThread
     private fun setUndefinedPlaybackState() {
         val playbackState = PlaybackStateCompat.Builder()
+            // All the actions are still available; important for headsets!
+            .setActions(supportedActions)
+            .setState(
+                // no state
+                PlaybackStateCompat.STATE_NONE,
+                // no position
+                PlaybackStateCompat.PLAYBACK_POSITION_UNKNOWN,
+                // no speed
+                0f
+            )
             .build()
         mediaSession.setPlaybackState(playbackState)
     }
 
     @MainThread
     private fun setPlaybackState(isPlaying: Boolean, progress: Long, speed: Float) {
-        val state = if (isPlaying) PlaybackStateCompat.STATE_PLAYING else PlaybackStateCompat.STATE_PAUSED
+        val state: Int
+        val actualSpeed: Float
+        if (isPlaying) {
+            state = PlaybackStateCompat.STATE_PLAYING
+            actualSpeed = speed
+        } else {
+            state = PlaybackStateCompat.STATE_PAUSED
+            actualSpeed = 0f
+        }
         val playbackState = PlaybackStateCompat.Builder()
-            .setActions(PlaybackStateCompat.ACTION_SEEK_TO)
-            .setState(state, progress, speed)
+            .setActions(supportedActions)
+            .setState(state, progress, actualSpeed)
             .build()
         mediaSession.setPlaybackState(playbackState)
     }
