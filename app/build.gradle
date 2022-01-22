@@ -48,10 +48,7 @@ android {
         resValue "string", "app_name", "Frolomuse"
 
         buildConfigField "String", "BUILD_TIME", "\"${getDate()}\""
-
-        buildConfigField "String", "FLURRY_KEY", "\"P5FNPGFXNB6WGXP8RWND\""
         buildConfigField "String", "DEVELOPER_EMAIL", "\"alexei.artsimovich@gmail.com\""
-
         buildConfigField ('int', "SOUND_FRAME_GAIN_COUNT", "100")
 
         vectorDrawables.useSupportLibrary = true
@@ -208,11 +205,6 @@ dependencies {
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockito_kotlin_version"
     testImplementation "androidx.arch.core:core-testing:2.1.0"
     testImplementation project(path: ':test-tools')
-
-    // Flurry analytics
-    implementation('com.flurry.android:analytics:13.0.1') {
-        transitive = true
-    }
 
     // multi dex
     implementation 'androidx.multidex:multidex:2.0.1'

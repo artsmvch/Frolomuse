@@ -3,7 +3,8 @@ package com.frolo.muse.logger;
 import java.util.List;
 import java.util.Map;
 
-class CompositeEventLogger implements EventLogger {
+
+final class CompositeEventLogger implements EventLogger {
     private final List<EventLogger> loggers;
 
     CompositeEventLogger(List<EventLogger> loggers) {

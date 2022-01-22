@@ -9,16 +9,8 @@ import java.util.Arrays;
 public final class EventLoggerFactory {
     private EventLoggerFactory() { }
 
-    public static EventLogger createFlurry(Context context) {
-        return new FlurryEventLogger(context);
-    }
-
     public static EventLogger createFirebase(Context context) {
         return new FirebaseEventLogger(context);
-    }
-
-    public static EventLogger createMute() {
-        return new MuteEventLogger();
     }
 
     public static EventLogger createConsole() {

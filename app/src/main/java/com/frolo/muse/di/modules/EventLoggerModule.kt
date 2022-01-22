@@ -20,11 +20,8 @@ class EventLoggerModule(private val debug: Boolean) {
             return EventLoggerFactory.createConsole()
         }
 
-        // Currently, analytics is tracked using Firebase and Flurry (release builds only)
-        return EventLoggerFactory.compose(
-            EventLoggerFactory.createFlurry(context),
-            EventLoggerFactory.createFirebase(context)
-        )
+        // Analytics is tracked using Firebase (release builds only)
+        return EventLoggerFactory.createFirebase(context)
     }
 
 }

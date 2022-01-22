@@ -15,8 +15,9 @@ final class ConsoleEventLogger implements EventLogger {
 
     @Nullable
     private String getParamsString(@Nullable final Map<String, String> params) {
-        if (params == null || params.size() == 0)
+        if (params == null || params.size() == 0) {
             return null;
+        }
 
         final StringBuilder sb = new StringBuilder();
 
