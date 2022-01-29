@@ -25,8 +25,7 @@ def version_patch = 5
 android {
     signingConfigs {
         release {
-            def releaseConfigs = loadProperties("$rootDir/app/config/release/config.properties")
-
+            def releaseConfigs = loadProperties("${project.projectDir}/signing.properties")
             storeFile file(releaseConfigs['storeFile'])
             storePassword releaseConfigs['storePassword']
             keyAlias releaseConfigs['keyAlias']
