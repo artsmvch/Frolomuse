@@ -9,6 +9,7 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 
 class SingleLiveEvent<T> : MutableLiveData<T>() {
+
     private val observers = CopyOnWriteArraySet<ObserverWrapper<in T>>()
 
     @MainThread
@@ -26,37 +27,26 @@ class SingleLiveEvent<T> : MutableLiveData<T>() {
     override fun removeObserver(observer: Observer<in T>) {
         val wrapper = ObserverWrapper(observer)
         observers.remove(wrapper)
-        super.removeObserver(observer)
+        super.removeObserver(wrapper)
     }
 
     @MainThread
     override fun setValue(t: T?) {
-        observers.forEach { it.newValue() }
+        observers.forEach { it.onSetValue() }
         super.setValue(t)
     }
 
-    private class ObserverWrapper<T>(private val observer: Observer<T>) : Observer<T> {
-        private val pending = AtomicBoolean(false)
+    private class ObserverWrapper<T>(observer: Observer<T>) : AbsObserverWrapper<T>(observer) {
+        private val isPending = AtomicBoolean(false)
 
-        override fun onChanged(t: T?) {
-            if (pending.compareAndSet(true, false)) {
-                observer.onChanged(t)
+        override fun onChanged(value: T?) {
+            if (isPending.compareAndSet(true, false)) {
+                wrapped.onChanged(value)
             }
         }
 
-        fun newValue() {
-            pending.set(true)
-        }
-
-        override fun hashCode(): Int {
-            return observer.hashCode()
-        }
-
-        override fun equals(other: Any?): Boolean {
-            if (other is ObserverWrapper<*>) {
-                return observer == other.observer
-            }
-            return false
+        fun onSetValue() {
+            isPending.set(true)
         }
     }
 }

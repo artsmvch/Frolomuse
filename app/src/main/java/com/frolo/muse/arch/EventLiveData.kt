@@ -7,12 +7,12 @@ import androidx.lifecycle.Observer
 
 /**
  * A LiveData implementation that dispatches data to only one observer.
- * Typically, this will be the first observer to register using the [observe] and [observeForever] methods.
- * TODO: check if observers are removed properly here
+ * Typically, this will be the first observer to register using the [observe]
+ * and [observeForever] methods.
  */
 class EventLiveData <T> : LiveData<T>() {
 
-    private var consumed: Boolean = true
+    private var isConsumed: Boolean = true
 
     override fun observe(owner: LifecycleOwner, observer: Observer<in T>) {
         super.observe(owner, ObserverWrapper(observer))
@@ -23,16 +23,16 @@ class EventLiveData <T> : LiveData<T>() {
     }
 
     public override fun setValue(value: T) {
-        consumed = false
+        isConsumed = false
         super.setValue(value)
     }
 
-    private inner class ObserverWrapper<T> constructor(val observer: Observer<T>) : Observer<T> {
+    private inner class ObserverWrapper<T>(observer: Observer<T>) : AbsObserverWrapper<T>(observer) {
 
-        override fun onChanged(t: T?) {
-            if (!consumed) {
-                observer.onChanged(t)
-                consumed = true
+        override fun onChanged(value: T?) {
+            if (!isConsumed) {
+                wrapped.onChanged(value)
+                isConsumed = true
             }
         }
 
