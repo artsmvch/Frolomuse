@@ -79,9 +79,11 @@ class ThemeChooserFragment : BaseFragment(), FragmentContentInsetsListener, Them
 
         themeViewPager?.apply {
             ThemePageCarouselHelper.setup(this)
-            adapter = ThemePageFragmentAdapter(hostFragment).also {
-                absThemePageAdapter = it
-            }
+            // https://issuetracker.google.com/issues/154751401
+            adapter = ThemePageFragmentAdapter(
+                fragmentManager = childFragmentManager,
+                lifecycle = viewLifecycleOwner.lifecycle
+            ).also { absThemePageAdapter = it }
             registerOnPageChangeCallback(themePageCallback)
             requestTransform()
         }
@@ -126,7 +128,11 @@ class ThemeChooserFragment : BaseFragment(), FragmentContentInsetsListener, Them
     }
 
     override fun onDestroyView() {
-        themeViewPager?.unregisterOnPageChangeCallback(themePageCallback)
+        themeViewPager?.apply {
+            // https://issuetracker.google.com/issues/154751401
+            adapter = null
+            unregisterOnPageChangeCallback(themePageCallback)
+        }
         super.onDestroyView()
     }
 

@@ -1,13 +1,18 @@
 package com.frolo.muse.ui.main.settings.theme
 
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.Lifecycle
 import androidx.recyclerview.widget.DiffUtil
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.adapter.FragmentViewHolder
 import kotlin.properties.Delegates
 
 
-class ThemePageFragmentAdapter(private val fragment: Fragment) : FragmentStateAdapter(fragment), AbsThemePageAdapter {
+class ThemePageFragmentAdapter(
+    private val fragmentManager: FragmentManager,
+    private val lifecycle: Lifecycle
+) : FragmentStateAdapter(fragmentManager, lifecycle), AbsThemePageAdapter {
 
     override var pages: List<ThemePage> by Delegates.observable(emptyList()) { _, oldList, newList ->
         val diffCallback = ThemePageItemDiffCallback(oldList, newList)
@@ -38,7 +43,7 @@ class ThemePageFragmentAdapter(private val fragment: Fragment) : FragmentStateAd
         if (payloads.isNotEmpty()) {
             // I hate android devs, why should I do this and why can't it work properly right away?
             val tag: String = "f" + holder.itemId
-            val childFragment: Fragment? = fragment.childFragmentManager.findFragmentByTag(tag)
+            val childFragment: Fragment? = fragmentManager.findFragmentByTag(tag)
             if (childFragment is ThemePageFragment) {
                 childFragment.updateArgument(pages[position])
             } else {
