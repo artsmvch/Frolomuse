@@ -15,10 +15,7 @@ import com.frolo.muse.arch.observeNonNull
 import com.frolo.music.model.MediaBucket
 import com.frolo.muse.ui.ScrolledToTop
 import com.frolo.muse.ui.ShotLayoutAnimationController
-import com.frolo.muse.ui.base.BackPressHandler
-import com.frolo.muse.ui.base.BaseFragment
-import com.frolo.muse.ui.base.FragmentContentInsetsListener
-import com.frolo.muse.ui.base.RESPermissionObserver
+import com.frolo.muse.ui.base.*
 import com.frolo.muse.ui.main.addLinearItemMargins
 import com.frolo.muse.ui.main.library.base.BaseAdapter
 import com.frolo.muse.ui.main.library.buckets.files.AudioBucketFragment
@@ -51,8 +48,10 @@ class AudioBucketListFragment : BaseFragment(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        context?.also { safeContext ->
-            RESPermissionObserver.observe(safeContext, this) {
+        RESPermissionBus.dispatcher.observe(this) {
+            // We only should access the view model if the fragment is attached to an activity
+            // to prevent unexpected crashes while providing the view model.
+            if (FragmentUtils.isAttachedToActivity(this)) {
                 viewModel.onRESPermissionGranted()
             }
         }

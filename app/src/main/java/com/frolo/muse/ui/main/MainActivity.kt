@@ -334,7 +334,7 @@ class MainActivity : PlayerHostActivity(),
             if (index >= 0) {
                 if (grantResults[index] == PackageManager.PERMISSION_GRANTED) {
                     viewModel.onRESPermissionGranted()
-                    RESPermissionObserver.dispatchGranted(this)
+                    RESPermissionBus.dispatch()
                 } else {
                     viewModel.onRESPermissionDenied()
                 }

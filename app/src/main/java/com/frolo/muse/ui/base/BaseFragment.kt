@@ -140,9 +140,7 @@ abstract class BaseFragment: Fragment() {
             requestRxPermissions(Manifest.permission.READ_EXTERNAL_STORAGE) { granted ->
                 if (granted) {
                     action.invoke()
-                    context?.also { safeContext ->
-                        RESPermissionObserver.dispatchGranted(safeContext)
-                    }
+                    RESPermissionBus.dispatch()
                 }
             }
         }
@@ -173,9 +171,7 @@ abstract class BaseFragment: Fragment() {
         requestRxPermissions(*permissions) { granted ->
             if (granted) {
                 action.invoke()
-                context?.also { safeContext ->
-                    RESPermissionObserver.dispatchGranted(safeContext)
-                }
+                RESPermissionBus.dispatch()
             }
         }
     }
