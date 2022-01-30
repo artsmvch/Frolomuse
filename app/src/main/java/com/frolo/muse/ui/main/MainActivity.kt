@@ -167,6 +167,21 @@ class MainActivity : PlayerHostActivity(),
                         fragmentContentInsets.right, fragmentContentInsets.bottom)
                 }
             }
+
+            override fun onFragmentDestroyed(fm: FragmentManager, fragment: Fragment) {
+                // https://github.com/ncapdevi/FragNav/issues/246
+                maybeClearDialogFragment(fragment)
+            }
+
+            private fun maybeClearDialogFragment(destroyedFragment: Fragment) {
+                kotlin.runCatching {
+                    fragNavController?.doIfStateNotSaved {
+                        if (this.currentDialogFrag == destroyedFragment) {
+                            this.clearDialogFragment()
+                        }
+                    }
+                }
+            }
         }
 
     private var notHandledIntent: Intent? = null
