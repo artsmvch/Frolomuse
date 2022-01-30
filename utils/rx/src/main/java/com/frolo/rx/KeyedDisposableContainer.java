@@ -24,6 +24,13 @@ public final class KeyedDisposableContainer<K> implements Disposable, Disposable
     @GuardedBy("mLock")
     private final Map<Object, Disposable> mKeyedContainer = new HashMap<>();
 
+    public void clear() {
+        synchronized (mLock) {
+            mContainer.clear();
+            mKeyedContainer.clear();
+        }
+    }
+
     @Override
     public void dispose() {
         synchronized (mLock) {

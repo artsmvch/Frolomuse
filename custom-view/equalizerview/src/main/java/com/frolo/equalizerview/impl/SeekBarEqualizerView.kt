@@ -24,9 +24,17 @@ class SeekBarEqualizerView @JvmOverloads constructor(
 
     private val levelDispatcherScheduler: Scheduler get() = AndroidSchedulers.mainThread()
     private val bandLevelProcessors = HashMap<Int, FlowableProcessor<Int>>()
-    private val internalDisposables = KeyedDisposableContainer<Int>()
+    private val levelDispatcherDisposables = KeyedDisposableContainer<Int>()
 
-    private fun getBandLevelProcessor(bandIndex: Int): FlowableProcessor<Int> {
+    private fun getBandLevelProcessor(bandIndex: Int): FlowableProcessor<Int>? {
+        if (!isAttachedToWindow) {
+            // If the view is not attached to window, then we don't provide
+            // a flowable processor for band level dispatching. This way,
+            // we can control the resources and be sure, that the rx sources
+            // don't hold references to this view when it is detached,
+            // so there are no possible memory leaks.
+            return null
+        }
         return bandLevelProcessors.getOrPut(bandIndex) {
             PublishProcessor.create<Int>().also { processor ->
                 processor
@@ -37,7 +45,7 @@ class SeekBarEqualizerView @JvmOverloads constructor(
                         safelySetBandLevel(bandIndex, bandLevel)
                     }
                     .also { disposable ->
-                        internalDisposables.add(bandIndex, disposable)
+                        levelDispatcherDisposables.add(bandIndex, disposable)
                     }
             }
 
@@ -58,7 +66,18 @@ class SeekBarEqualizerView @JvmOverloads constructor(
     }
 
     override fun onDispatchLevelChange(bandIndex: Int, level: Int) {
-        getBandLevelProcessor(bandIndex).onNext(level)
+        getBandLevelProcessor(bandIndex)?.onNext(level)
+    }
+
+    override fun onDetachedFromWindow() {
+        super.onDetachedFromWindow()
+        clearResources()
+    }
+
+    private fun clearResources() {
+        bandLevelProcessors.values.forEach { it.onComplete() }
+        bandLevelProcessors.clear()
+        levelDispatcherDisposables.clear()
     }
 
     companion object {
