@@ -74,10 +74,12 @@ class GlideThumbnailLoader constructor(
 
     override fun loadSongThumbnail(song: Song, target: ImageView) {
         val placeholder = getThumbnailFromResource(target.context, R.drawable.ic_framed_music_note)
+        val size = target.resources.getDimension(R.dimen.media_item_art_size).toInt()
         requestManager.makeAlbumArtRequest(song.albumId)
             .placeholder(placeholder)
             .error(placeholder)
             .squircleCrop(SQUIRCLE_CURVATURE)
+            .override(size)
             .into(target)
     }
 
