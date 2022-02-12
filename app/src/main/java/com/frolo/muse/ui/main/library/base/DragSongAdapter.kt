@@ -47,7 +47,7 @@ class DragSongAdapter constructor(
         }
 
     override fun onItemMove(fromPosition: Int, toPosition: Int) {
-        moveItem(fromPosition, toPosition)
+        moveItemImmediately(fromPosition, toPosition)
     }
 
     override fun onDragEndedWithResult(fromPosition: Int, toPosition: Int) {
@@ -58,7 +58,7 @@ class DragSongAdapter constructor(
 
     override fun onItemDismiss(position: Int) {
         onDragListener?.onItemDismissed(position)
-        remove(position)
+        removeItemImmediately(position)
     }
 
     override fun getItemViewType(position: Int): Int {

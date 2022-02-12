@@ -1,7 +1,6 @@
 package com.frolo.muse.ui.main.library.playlists.addmedia
 
 import android.app.Dialog
-import android.content.Context
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +17,6 @@ import com.frolo.muse.ui.base.BaseDialogFragment
 import com.frolo.muse.ui.base.withArg
 import com.frolo.muse.ui.main.library.base.BaseAdapter
 import com.frolo.muse.ui.main.library.playlists.addmedia.adapter.SimplePlaylistAdapter
-import com.frolo.muse.ui.main.library.playlists.create.PlaylistCreateEvent
 import com.frolo.muse.views.Anim
 import kotlinx.android.synthetic.main.dialog_add_media_to_playlist.*
 
@@ -50,15 +48,6 @@ class AddMediaToPlaylistDialog : BaseDialogFragment() {
         }
     }
 
-    private lateinit var playlistCreateEvent: PlaylistCreateEvent
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        playlistCreateEvent = PlaylistCreateEvent.register(context) { playlist ->
-            adapter.add(playlist)
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -81,11 +70,6 @@ class AddMediaToPlaylistDialog : BaseDialogFragment() {
 
             loadUI(this)
         }
-    }
-
-    override fun onDetach() {
-        playlistCreateEvent.unregister(requireContext())
-        super.onDetach()
     }
 
     private fun loadUI(dialog: Dialog) = with(dialog) {

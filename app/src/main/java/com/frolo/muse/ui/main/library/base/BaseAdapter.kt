@@ -2,8 +2,7 @@ package com.frolo.muse.ui.main.library.base
 
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.*
 import com.frolo.debug.DebugUtils
 import java.util.*
 import kotlin.collections.ArrayList
@@ -16,13 +15,40 @@ abstract class BaseAdapter<E, VH> constructor(
     private data class Node<E>(val item: E, val selected: Boolean = false)
 
     interface Listener<E> {
+        /**
+         * Called when the [item] at [position] is clicked.
+         */
         fun onItemClick(item: E, position: Int)
+
+        /**
+         * Called when the [item] at [position] is long clicked.
+         */
         fun onItemLongClick(item: E, position: Int)
+
+        /**
+         * Called when the options menu for the [item] at [position] is clicked.
+         */
         fun onOptionsMenuClick(item: E, position: Int)
     }
 
     var listener: Listener<E>? = null
     private var nodes = ArrayList<Node<E>>()
+
+    // Async list differ
+    private val asyncListDiffer: AsyncListDiffer<Node<E>>? by lazy {
+        itemCallback?.let(::createAsyncListDiffer)
+    }
+    // Indicates whether a new list is being submitted in this adapter.
+    private var isSubmittingList: Boolean = false
+    // Callbacks to be run when a new list is submitted in this adapter. The order matters.
+    private val submitCallbacks = LinkedList<Runnable>()
+
+    private fun createAsyncListDiffer(itemCallback: DiffUtil.ItemCallback<E>): AsyncListDiffer<Node<E>> {
+        val callback = AdapterListUpdateCallback(this)
+        val config = AsyncDifferConfig.Builder(NodeItemCallback(itemCallback))
+            .build()
+        return AsyncListDiffer(callback, config)
+    }
 
     fun getSnapshot(): List<E> = nodes.map { node -> node.item }
 
@@ -31,40 +57,72 @@ abstract class BaseAdapter<E, VH> constructor(
      * Call it only if no data changed, but the items should be rebound.
      * For instance, if you want to reload images or something else.
      */
+    @Deprecated("", ReplaceWith("notifyDataSetChanged()"))
     fun forceResubmit() {
         notifyDataSetChanged()
     }
 
-    fun submit(list: List<E>) {
+    fun submit(list: List<E>, callback: Runnable = EMPTY_CALLBACK) {
         val newNodes = ArrayList<Node<E>>(list.size).also { newNodeList ->
             list.mapTo(newNodeList) { item -> Node(item, false) }
         }
 
-        submitImpl(newNodes)
+        submitImpl(newNodes, callback)
     }
 
-    fun submit(list: List<E>, selectedItem: Collection<E>) {
+    fun submit(list: List<E>, selectedItem: Collection<E>, callback: Runnable = EMPTY_CALLBACK) {
         val newNodes = ArrayList<Node<E>>(nodes.size).also { newNodeList ->
             list.mapTo(newNodeList) { item -> Node(item, selectedItem.contains(item)) }
         }
 
-        submitImpl(newNodes)
+        submitImpl(newNodes, callback)
     }
 
-    private fun submitImpl(newNodes: ArrayList<Node<E>>) {
-        if (itemCallback != null) {
-            val callback = NodeCallback(nodes, newNodes, itemCallback)
-            val diffResult = DiffUtil.calculateDiff(callback)
-            nodes = newNodes
-            diffResult.dispatchUpdatesTo(this)
+    private fun submitImpl(newNodes: ArrayList<Node<E>>, callback: Runnable = EMPTY_CALLBACK) {
+        val differ = asyncListDiffer
+        if (differ != null) {
+            val callbackWrapper = Runnable {
+                nodes = newNodes
+                isSubmittingList = false
+                // Notify callbacks
+                submitCallbacks.forEach { it.run() }
+                submitCallbacks.clear()
+            }
+            isSubmittingList = true
+            submitCallbacks.add(callback)
+            differ.submitList(newNodes, callbackWrapper)
         } else {
+            isSubmittingList = true
             nodes = newNodes
             notifyDataSetChanged()
+            isSubmittingList = false
+            // Notify callbacks
+            submitCallbacks.add(callback)
+            submitCallbacks.forEach { it.run() }
+            submitCallbacks.clear()
         }
     }
 
-    fun submitSelection(selectedItems: Collection<E>) {
-        // TODO: optimization required
+    /**
+     * Runs [callback] when the dataset has been submitted and is stable
+     * meaning that there is no pending list to be displayed.
+     *
+     * If a diff result is being calculated against a list previously submitted
+     * using the [submitImpl] method, then the callback will fire when the result
+     * dispatches updates to this adapter.
+     *
+     * This method is useful when you need to ensure that the adapter updates
+     * in a consistent manner, namely the order of updates.
+     */
+    protected fun runOnSubmit(callback: Runnable) {
+        if (isSubmittingList) {
+            submitCallbacks.add(callback)
+        } else {
+            callback.run()
+        }
+    }
+
+    fun submitSelection(selectedItems: Collection<E>) = runOnSubmit {
         for (index in nodes.indices) {
             val node = nodes[index]
             val selected = selectedItems.contains(node.item)
@@ -78,9 +136,7 @@ abstract class BaseAdapter<E, VH> constructor(
 
     fun getItemAt(position: Int): E = nodes[position].item
 
-    fun indexOf(item: E) = nodes.indexOfFirst { node -> node.item == item }
-
-    fun moveItem(fromPosition: Int, toPosition: Int) {
+    protected fun moveItemImmediately(fromPosition: Int, toPosition: Int) {
         if (fromPosition < 0 || fromPosition >= nodes.size
                 || toPosition < 0 || toPosition >= nodes.size) {
             // Positions are out of bounds
@@ -101,24 +157,11 @@ abstract class BaseAdapter<E, VH> constructor(
         notifyItemMoved(fromPosition, toPosition)
     }
 
-    operator fun set(position: Int, item: E) {
-        nodes[position] = nodes[position].copy(item = item)
-        notifyItemChanged(position, SELECTION_CHANGED_PAYLOAD)
-    }
-
-    fun remove(position: Int) {
-        nodes.removeAt(position)
-        notifyItemRemoved(position)
-    }
-
-    fun add(position: Int, item: E) {
-        nodes.add(position, Node(item))
-        notifyItemInserted(position)
-    }
-
-    fun add(item: E) {
-        nodes.add(Node(item))
-        notifyItemInserted(nodes.size - 1)
+    protected fun removeItemImmediately(position: Int) {
+        if (nodes.indices.contains(position)) {
+            nodes.removeAt(position)
+            notifyItemRemoved(position)
+        }
     }
 
     final override fun getItemCount() = nodes.count()
@@ -126,20 +169,20 @@ abstract class BaseAdapter<E, VH> constructor(
     final override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
         return onCreateBaseViewHolder(parent, viewType).apply {
             itemView.setOnClickListener {
-                val position = adapterPosition
+                val position = bindingAdapterPosition
                 if (position in 0 until itemCount) {
                     listener?.onItemClick(getItemAt(position), position)
                 }
             }
             itemView.setOnLongClickListener {
-                val position = adapterPosition
+                val position = bindingAdapterPosition
                 if (position in 0 until itemCount) {
                     listener?.onItemLongClick(getItemAt(position), position)
                 }
                 true
             }
             viewOptionsMenu?.setOnClickListener {
-                val position = adapterPosition
+                val position = bindingAdapterPosition
                 if (position in 0 until itemCount) {
                     listener?.onOptionsMenuClick(getItemAt(position), position)
                 }
@@ -166,43 +209,32 @@ abstract class BaseAdapter<E, VH> constructor(
         abstract val viewOptionsMenu: View?
     }
 
-    private class NodeCallback<E> constructor(
-        private val oldNodes: List<Node<E>>,
-        private val newNodes: List<Node<E>>,
-        private val itemCallback: DiffUtil.ItemCallback<E>
-    ): DiffUtil.Callback() {
+    private class NodeItemCallback<E>(
+        private val backing: DiffUtil.ItemCallback<E>
+    ): DiffUtil.ItemCallback<Node<E>>() {
 
-        override fun getOldListSize() = oldNodes.size
-
-        override fun getNewListSize() = newNodes.size
-
-        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            val oldNode = oldNodes[oldItemPosition]
-            val newNode = newNodes[newItemPosition]
-            return itemCallback.areItemsTheSame(oldNode.item, newNode.item)
+        override fun areItemsTheSame(oldNode: Node<E>, newNode: Node<E>): Boolean {
+            return backing.areItemsTheSame(oldNode.item, newNode.item)
         }
 
-        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            val oldNode = oldNodes[oldItemPosition]
-            val newNode = newNodes[newItemPosition]
+        override fun areContentsTheSame(oldNode: Node<E>, newNode: Node<E>): Boolean {
             return oldNode.selected == newNode.selected
-                    && itemCallback.areContentsTheSame(oldNode.item, newNode.item)
+                    && backing.areContentsTheSame(oldNode.item, newNode.item)
         }
 
-        override fun getChangePayload(oldItemPosition: Int, newItemPosition: Int): Any? {
-            val oldNode = oldNodes[oldItemPosition]
-            val newNode = newNodes[newItemPosition]
+        override fun getChangePayload(oldNode: Node<E>, newNode: Node<E>): Any? {
             return if (oldNode.selected != newNode.selected) {
                 SELECTION_CHANGED_PAYLOAD
             } else {
-                itemCallback.getChangePayload(oldNode.item, newNode.item)
+                backing.getChangePayload(oldNode.item, newNode.item)
             }
         }
-
     }
 
     companion object {
         private val SELECTION_CHANGED_PAYLOAD = Any()
+
+        private val EMPTY_CALLBACK = Runnable { /* nothing */ }
     }
 
 }

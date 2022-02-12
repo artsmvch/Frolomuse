@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.item_song.view.*
 
 open class SongAdapter<S: Song> constructor(
     private val thumbnailLoader: ThumbnailLoader,
-    private val itemCallback: DiffUtil.ItemCallback<S>? = SongItemCallback<S>()
+    private val itemCallback: DiffUtil.ItemCallback<S> = SongItemCallback<S>()
 ): PlayStateAwareAdapter<S, SongAdapter.SongViewHolder>(itemCallback), FastScroller.SectionIndexer {
 
     override fun getItemId(position: Int) = getItemAt(position).id

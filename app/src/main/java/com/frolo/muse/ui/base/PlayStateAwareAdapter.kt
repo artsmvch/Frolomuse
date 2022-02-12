@@ -6,7 +6,9 @@ import com.frolo.muse.ui.main.library.base.BaseAdapter
 
 
 abstract class PlayStateAwareAdapter<E, VH: BaseAdapter.BaseViewHolder>(
-    itemCallback: DiffUtil.ItemCallback<E>? = null
+    // The diff item callback must be non-null, so that
+    // we can correctly determine the play position moves
+    itemCallback: DiffUtil.ItemCallback<E>
 ) : BaseAdapter<E, VH>(itemCallback) {
 
     /**
@@ -74,25 +76,24 @@ abstract class PlayStateAwareAdapter<E, VH: BaseAdapter.BaseViewHolder>(
         super.unregisterAdapterDataObserver(observer)
     }
 
-    inline fun retainPlayState(action: PlayStateAwareAdapter<E, VH>.() -> Unit) {
-        val playPosition = this.playPosition
-        val isPlaying = this.isPlaying
-        this.action()
-        setPlayState(playPosition, isPlaying)
-    }
-
     fun submitAndRetainPlayState(list: List<E>) {
-        retainPlayState { submit(list) }
+        val savedPlayPosition = this.playPosition
+        val savedIsPlaying = this.isPlaying
+        val callback = Runnable {
+            playPosition = savedPlayPosition
+            isPlaying = savedIsPlaying
+        }
+        submit(list, callback)
     }
 
     private fun isValidPosition(position: Int): Boolean {
         return position in 0 until itemCount
     }
 
-    fun setPlayState(playPosition: Int, isPlaying: Boolean) {
+    fun setPlayState(playPosition: Int, isPlaying: Boolean) = runOnSubmit {
         if (this.playPosition == playPosition && this.isPlaying == isPlaying) {
             // No changes.
-            return
+            return@runOnSubmit
         }
 
         if (this.playPosition != playPosition) {
@@ -116,10 +117,10 @@ abstract class PlayStateAwareAdapter<E, VH: BaseAdapter.BaseViewHolder>(
         }
     }
 
-    fun setPlaying(isPlaying: Boolean) {
+    fun setPlaying(isPlaying: Boolean) = runOnSubmit {
         if (this.isPlaying == isPlaying) {
             // No changes.
-            return
+            return@runOnSubmit
         }
 
         this.isPlaying = isPlaying

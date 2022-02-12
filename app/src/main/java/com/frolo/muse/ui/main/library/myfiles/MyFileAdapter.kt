@@ -69,7 +69,7 @@ class MyFileAdapter constructor(
 
     class ItemDiffCallback : DiffUtil.ItemCallback<MyFile>() {
         override fun areItemsTheSame(oldItem: MyFile, newItem: MyFile): Boolean {
-            return oldItem.javaFile?.absolutePath == newItem.javaFile?.absolutePath
+            return oldItem.javaFile == newItem.javaFile
         }
 
         override fun areContentsTheSame(oldItem: MyFile, newItem: MyFile): Boolean {
