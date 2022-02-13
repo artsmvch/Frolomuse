@@ -77,11 +77,12 @@ abstract class PlayStateAwareAdapter<E, VH: BaseAdapter.BaseViewHolder>(
     }
 
     fun submitAndRetainPlayState(list: List<E>) {
+        // Remember the current play state
         val savedPlayPosition = this.playPosition
         val savedIsPlaying = this.isPlaying
         val callback = Runnable {
-            playPosition = savedPlayPosition
-            isPlaying = savedIsPlaying
+            // Restore the play state immediately
+            setPlayStateImmediately(savedPlayPosition, savedIsPlaying)
         }
         submit(list, callback)
     }
@@ -91,9 +92,13 @@ abstract class PlayStateAwareAdapter<E, VH: BaseAdapter.BaseViewHolder>(
     }
 
     fun setPlayState(playPosition: Int, isPlaying: Boolean) = runOnSubmit {
+        setPlayStateImmediately(playPosition, isPlaying)
+    }
+
+    private fun setPlayStateImmediately(playPosition: Int, isPlaying: Boolean) {
         if (this.playPosition == playPosition && this.isPlaying == isPlaying) {
             // No changes.
-            return@runOnSubmit
+            return
         }
 
         if (this.playPosition != playPosition) {
