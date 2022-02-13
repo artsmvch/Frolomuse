@@ -24,7 +24,7 @@ class AddSongToPlaylistUseCase @AssistedInject constructor(
 
     fun search(query: String): Flowable<List<Song>> {
         return songRepository.getFilteredItems(query)
-                .subscribeOn(schedulerProvider.worker())
+            .subscribeOn(schedulerProvider.worker())
     }
 
     fun addSongs(songs: Collection<Song>): Completable {

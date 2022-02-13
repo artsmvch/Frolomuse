@@ -30,8 +30,8 @@ class GetMostPlayedSongsUseCase @Inject constructor(
 
     override fun getMediaList(): Flowable<List<SongWithPlayCount>> {
         return repository.allItems
-                .map { list -> list.sortedByDescending { it.playCount } }
-                .subscribeOn(schedulerProvider.worker())
+            .map { list -> list.sortedByDescending { it.playCount } }
+            .subscribeOn(schedulerProvider.worker())
     }
 
 }

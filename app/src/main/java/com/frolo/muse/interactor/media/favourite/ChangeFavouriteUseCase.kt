@@ -7,12 +7,12 @@ import io.reactivex.Completable
 
 
 class ChangeFavouriteUseCase <E: Media> constructor(
-        private val schedulerProvider: SchedulerProvider,
-        private val repository: MediaRepository<E>
+    private val schedulerProvider: SchedulerProvider,
+    private val repository: MediaRepository<E>
 ) {
 
     fun changeFavourite(item: E): Completable =
-            repository.changeFavourite(item)
-                    .subscribeOn(schedulerProvider.worker())
+        repository.changeFavourite(item)
+            .subscribeOn(schedulerProvider.worker())
 
 }

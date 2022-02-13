@@ -8,12 +8,12 @@ import javax.inject.Inject
 
 
 class GetIsFavouriteUseCase<T: Media> @Inject constructor(
-        private val repository: MediaRepository<T>,
-        private val schedulerProvider: SchedulerProvider
+    private val repository: MediaRepository<T>,
+    private val schedulerProvider: SchedulerProvider
 ) {
 
     fun isFavourite(item: T): Flowable<Boolean> =
-            repository.isFavourite(item)
-                    .subscribeOn(schedulerProvider.worker())
+        repository.isFavourite(item)
+            .subscribeOn(schedulerProvider.worker())
 
 }

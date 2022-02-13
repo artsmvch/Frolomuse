@@ -8,13 +8,13 @@ import javax.inject.Inject
 
 
 class GetHiddenFilesUseCase @Inject constructor(
-        private val repository: MyFileRepository,
-        private val schedulerProvider: SchedulerProvider
+    private val repository: MyFileRepository,
+    private val schedulerProvider: SchedulerProvider
 ) {
 
     fun getHiddenFiles(): Flowable<List<MyFile>> {
         return repository.hiddenFiles
-                .subscribeOn(schedulerProvider.worker())
+            .subscribeOn(schedulerProvider.worker())
     }
 
 }

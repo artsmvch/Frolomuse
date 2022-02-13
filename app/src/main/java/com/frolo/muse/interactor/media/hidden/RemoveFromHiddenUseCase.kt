@@ -8,13 +8,13 @@ import javax.inject.Inject
 
 
 class RemoveFromHiddenUseCase @Inject constructor(
-        private val repository: MyFileRepository,
-        private val schedulerProvider: SchedulerProvider
+    private val repository: MyFileRepository,
+    private val schedulerProvider: SchedulerProvider
 ) {
 
     fun removeFromHidden(item: MyFile): Completable {
         return repository.setFileHidden(item, false)
-                .subscribeOn(schedulerProvider.worker())
+            .subscribeOn(schedulerProvider.worker())
     }
 
 }

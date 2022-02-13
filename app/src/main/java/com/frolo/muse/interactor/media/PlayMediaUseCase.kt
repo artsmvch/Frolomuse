@@ -13,9 +13,9 @@ import io.reactivex.Completable
 
 
 class PlayMediaUseCase<E: Media> constructor(
-        private val schedulerProvider: SchedulerProvider,
-        private val repository: MediaRepository<E>,
-        private val player: Player
+    private val schedulerProvider: SchedulerProvider,
+    private val repository: MediaRepository<E>,
+    private val player: Player
 ) {
 
     private fun processPlay(songs: List<Song>, associatedMediaItem: Media?) {
@@ -35,9 +35,9 @@ class PlayMediaUseCase<E: Media> constructor(
 
     fun play(items: Collection<E>, associatedMediaItem: Media? = null): Completable {
         return repository.collectSongs(items)
-                .subscribeOn(schedulerProvider.worker())
-                .doOnSuccess { songs -> processPlay(songs, associatedMediaItem) }
-                .ignoreElement()
+            .subscribeOn(schedulerProvider.worker())
+            .doOnSuccess { songs -> processPlay(songs, associatedMediaItem) }
+            .ignoreElement()
     }
 
     fun playNext(item: E): Completable {
@@ -46,11 +46,11 @@ class PlayMediaUseCase<E: Media> constructor(
 
     fun playNext(items: Collection<E>): Completable {
         return repository.collectSongs(items)
-                .subscribeOn(schedulerProvider.worker())
-                .observeOn(schedulerProvider.computation())
-                .map { songs -> songs.toAudioSources() }
-                .doOnSuccess { audioSources -> player.addAllNext(audioSources) }
-                .ignoreElement()
+            .subscribeOn(schedulerProvider.worker())
+            .observeOn(schedulerProvider.computation())
+            .map { songs -> songs.toAudioSources() }
+            .doOnSuccess { audioSources -> player.addAllNext(audioSources) }
+            .ignoreElement()
     }
 
     fun addToQueue(item: E): Completable {
@@ -59,11 +59,11 @@ class PlayMediaUseCase<E: Media> constructor(
 
     fun addToQueue(items: Collection<E>): Completable {
         return repository.collectSongs(items)
-                .subscribeOn(schedulerProvider.worker())
-                .observeOn(schedulerProvider.computation())
-                .map { songs -> songs.toAudioSources() }
-                .doOnSuccess { audioSources -> player.addAll(audioSources) }
-                .ignoreElement()
+            .subscribeOn(schedulerProvider.worker())
+            .observeOn(schedulerProvider.computation())
+            .map { songs -> songs.toAudioSources() }
+            .doOnSuccess { audioSources -> player.addAll(audioSources) }
+            .ignoreElement()
     }
 
 }

@@ -36,74 +36,75 @@ class ClickMediaUseCase <E: Media> constructor(
     fun click(item: E, fromCollection: Collection<E>, associatedMediaItem: Media? = null): Completable = when(item.kind) {
         Media.SONG -> {
             Single.fromCallable { fromCollection.filterIsInstance<Song>() }
-                    .subscribeOn(schedulerProvider.computation())
-                    .doOnSuccess { songs ->
-                        processPlay(item as Song, songs, true, associatedMediaItem)
-                    }
-                    .ignoreElement()
+                .subscribeOn(schedulerProvider.computation())
+                .doOnSuccess { songs ->
+                    processPlay(item as Song, songs, true, associatedMediaItem)
+                }
+                .ignoreElement()
         }
 
         Media.ALBUM -> {
             Single.fromCallable { item as Album }
-                    .observeOn(schedulerProvider.main())
-                    .doOnSuccess { appRouter.openAlbum(it) }
-                    .ignoreElement()
+                .observeOn(schedulerProvider.main())
+                .doOnSuccess { appRouter.openAlbum(it) }
+                .ignoreElement()
         }
 
         Media.ARTIST -> {
             Single.fromCallable { item as Artist }
-                    .observeOn(schedulerProvider.main())
-                    .doOnSuccess { appRouter.openArtist(it) }
-                    .ignoreElement()
+                .observeOn(schedulerProvider.main())
+                .doOnSuccess { appRouter.openArtist(it) }
+                .ignoreElement()
         }
 
         Media.GENRE -> {
             Single.fromCallable { item as Genre }
-                    .observeOn(schedulerProvider.main())
-                    .doOnSuccess { appRouter.openGenre(it) }
-                    .ignoreElement()
+                .observeOn(schedulerProvider.main())
+                .doOnSuccess { appRouter.openGenre(it) }
+                .ignoreElement()
         }
 
         Media.PLAYLIST -> {
             Single.fromCallable { item as Playlist }
-                    .observeOn(schedulerProvider.main())
-                    .doOnSuccess { appRouter.openPlaylist(it) }
-                    .ignoreElement()
+                .observeOn(schedulerProvider.main())
+                .doOnSuccess { appRouter.openPlaylist(it) }
+                .ignoreElement()
         }
 
         Media.MY_FILE -> {
             Single.fromCallable { item as MyFile }
-                    .flatMapCompletable { myFile -> when {
-                        myFile.isDirectory -> Completable.complete()
-                                .observeOn(schedulerProvider.main())
-                                .doOnComplete { appRouter.openMyFile(myFile) }
+                .flatMapCompletable { myFile -> when {
+                    myFile.isDirectory -> Completable.complete()
+                        .observeOn(schedulerProvider.main())
+                        .doOnComplete { appRouter.openMyFile(myFile) }
 
-                        myFile.isSongFile -> genericMediaRepository.collectSongs(myFile)
-                            .subscribeOn(schedulerProvider.worker())
-                            // Since the item is a song file itself then we create a collection of just 1 item
-                            .map { songs -> songs.first() }
-                            .flatMap { targetSong ->
-                                val sources = fromCollection.filter { it is MyFile && it.isSongFile }
-                                        .map { myFile ->
-                                            genericMediaRepository.collectSongs(myFile).onErrorReturnItem(emptyList())
-                                        }
+                    myFile.isSongFile -> genericMediaRepository.collectSongs(myFile)
+                        .subscribeOn(schedulerProvider.worker())
+                        // Since the item is a song file itself then we create a collection of just 1 item
+                        .map { songs -> songs.first() }
+                        .flatMap { targetSong ->
+                            val sources = fromCollection
+                                .filter { it is MyFile && it.isSongFile }
+                                .map { myFile ->
+                                    genericMediaRepository.collectSongs(myFile).onErrorReturnItem(emptyList())
+                                }
 
-                                Single.zip(
-                                        sources,
-                                        Function<Array<*>, List<Song>> { arr ->
-                                            arr.filter { it is List<*> && it.size == 1 }
-                                                    .map { (it as List<*>).first() as Song }
-                                        })
-                                        .onErrorResumeNext(Single.just(listOf(targetSong)))
-                                        .map { songs -> targetSong to songs }
-                            }
-                            .doOnSuccess { pair ->
-                                processPlay(pair.first, pair.second, true, associatedMediaItem)
-                            }
-                            .ignoreElement()
+                            Single.zip(
+                                sources,
+                                Function<Array<*>, List<Song>> { arr ->
+                                    arr.filter { it is List<*> && it.size == 1 }
+                                            .map { (it as List<*>).first() as Song }
+                                })
+                                .onErrorResumeNext(Single.just(listOf(targetSong)))
+                                .map { songs -> targetSong to songs }
+                        }
+                        .doOnSuccess { pair ->
+                            processPlay(pair.first, pair.second, true, associatedMediaItem)
+                        }
+                        .ignoreElement()
 
-                        else -> Completable.complete()
-                    } }
+                    else -> Completable.complete()
+                } }
         }
 
         Media.MEDIA_FILE -> {

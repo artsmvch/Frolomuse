@@ -13,7 +13,7 @@ class DispatchSongPlayedUseCase constructor(
 
     fun dispatchSongPlayed(song: Song): Completable {
         return songRepository.addSongPlayCount(song, 1)
-                .subscribeOn(schedulerProvider.worker())
+            .subscribeOn(schedulerProvider.worker())
     }
 
 }

@@ -21,7 +21,7 @@ class AddMediaToPlaylistUseCase @AssistedInject constructor(
 
     fun getPlaylists(): Flowable<List<Playlist>> {
         return playlistRepository.allItems
-                .subscribeOn(schedulerProvider.worker())
+            .subscribeOn(schedulerProvider.worker())
     }
 
     /**
