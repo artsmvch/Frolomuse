@@ -38,17 +38,17 @@ class SongEditorViewModel constructor(
     private val songArg: Song
 ): BaseAndroidViewModel(application, eventLogger) {
 
-    private val _title = MutableLiveData<String>(songArg.title)
-    val title: LiveData<String> get() = _title
+    private val _title = MutableLiveData<String?>(songArg.title)
+    val title: LiveData<String?> get() = _title
 
-    private val _album = MutableLiveData<String>(songArg.album)
-    val album: LiveData<String> get() = _album
+    private val _album = MutableLiveData<String?>(songArg.album)
+    val album: LiveData<String?> get() = _album
 
-    private val _artist = MutableLiveData<String>(songArg.artist)
-    val artist: LiveData<String> get() = _artist
+    private val _artist = MutableLiveData<String?>(songArg.artist)
+    val artist: LiveData<String?> get() = _artist
 
-    private val _genre = MutableLiveData<String>(songArg.genre)
-    val genre: LiveData<String> get() = _genre
+    private val _genre = MutableLiveData<String?>(songArg.genre)
+    val genre: LiveData<String?> get() = _genre
 
     private val _handleWriteRequestEvent = SingleLiveEvent<Song>()
     val handleWriteRequestEvent: LiveData<Song> get() = _handleWriteRequestEvent

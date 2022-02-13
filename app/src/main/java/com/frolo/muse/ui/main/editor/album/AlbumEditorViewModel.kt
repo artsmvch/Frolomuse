@@ -40,7 +40,7 @@ class AlbumEditorViewModel constructor(
 
     private var _activated: Boolean = false
 
-    private val _pickedArtFilepath = MutableLiveData<String>(null)
+    private val _pickedArtFilepath = MutableLiveData<String?>(null)
 
     private val originalArt: LiveData<Bitmap> = MutableLiveData<Bitmap>().apply {
         createAlbumArtSource(albumArg)

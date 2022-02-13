@@ -106,7 +106,7 @@ class AudioFxViewModel @Inject constructor(
     private val _audioSessionId = MutableLiveData<Int>()
     val audioSessionId: LiveData<Int> get() = _audioSessionId
 
-    private val _currentAudioSource = MutableLiveData<AudioSource>(player.getCurrent())
+    private val _currentAudioSource = MutableLiveData<AudioSource?>(player.getCurrent())
 
     // Available status
     private val _equalizerAvailable = MutableLiveData<Boolean>(audioFx.hasEqualizer())
