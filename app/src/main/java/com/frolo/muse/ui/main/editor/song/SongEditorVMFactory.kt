@@ -32,7 +32,7 @@ class SongEditorVMFactory constructor(
         injector.inject(this)
     }
 
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
         @Suppress("UNCHECKED_CAST")
         return SongEditorViewModel(
             application,

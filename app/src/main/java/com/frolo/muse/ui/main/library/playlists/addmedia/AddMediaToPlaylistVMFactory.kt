@@ -34,7 +34,7 @@ class AddMediaToPlaylistVMFactory constructor(
             .create(itemsArg)
     }
 
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
         @Suppress("UNCHECKED_CAST")
         return AddMediaToPlaylistViewModel(
             addMediaToPlaylistUseCase,

@@ -58,7 +58,7 @@ class AlbumsOfArtistVMFactory constructor(
             .create(artist)
     }
 
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
         @Suppress("UNCHECKED_CAST")
         return AlbumsOfArtistViewModel(
             permissionChecker,

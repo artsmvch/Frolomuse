@@ -56,7 +56,7 @@ abstract class ViewModelModule {
     ): ViewModelProvider.Factory {
 
         @Suppress("UNCHECKED_CAST", "FoldInitializerAndIfToElvis")
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
             val provider = providers[modelClass]
 
             if (provider == null) {

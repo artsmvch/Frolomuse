@@ -22,7 +22,7 @@ class PosterVMFactory @AssistedInject constructor(
     @Assisted private val song: Song
 ): ViewModelProvider.Factory {
 
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
         @Suppress("UNCHECKED_CAST")
         return PosterViewModel(
             createPosterUseCase,

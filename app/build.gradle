@@ -210,7 +210,7 @@ dependencies {
 
     // architecture
     implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel:2.1.0'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1'
     kapt "android.arch.lifecycle:compiler:1.1.1"
 
     // Compat support and Material design
