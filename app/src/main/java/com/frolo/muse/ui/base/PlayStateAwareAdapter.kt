@@ -23,6 +23,11 @@ abstract class PlayStateAwareAdapter<E, VH: BaseAdapter.BaseViewHolder>(
     var isPlaying: Boolean = false
         private set
 
+    // The last set value of 'play position'
+    private var lastSetPlayPosition: Int? = null
+    // The last set value of the 'is playing'
+    private var lastSetIsPlaying: Boolean? = null
+
     private val playStateObserver = object : RecyclerView.AdapterDataObserver() {
         override fun onItemRangeMoved(fromPosition: Int, toPosition: Int, itemCount: Int) {
             // Shift the play position if needed.
@@ -78,8 +83,8 @@ abstract class PlayStateAwareAdapter<E, VH: BaseAdapter.BaseViewHolder>(
 
     fun submitAndRetainPlayState(list: List<E>) {
         // Remember the current play state
-        val savedPlayPosition = this.playPosition
-        val savedIsPlaying = this.isPlaying
+        val savedPlayPosition = lastSetPlayPosition ?: this.playPosition
+        val savedIsPlaying = lastSetIsPlaying ?: this.isPlaying
         val callback = Runnable {
             // Restore the play state immediately
             setPlayStateImmediately(savedPlayPosition, savedIsPlaying)
@@ -91,8 +96,12 @@ abstract class PlayStateAwareAdapter<E, VH: BaseAdapter.BaseViewHolder>(
         return position in 0 until itemCount
     }
 
-    fun setPlayState(playPosition: Int, isPlaying: Boolean) = runOnSubmit {
-        setPlayStateImmediately(playPosition, isPlaying)
+    fun setPlayState(playPosition: Int, isPlaying: Boolean) {
+        lastSetPlayPosition = playPosition
+        lastSetIsPlaying = isPlaying
+        runOnSubmit {
+            setPlayStateImmediately(playPosition, isPlaying)
+        }
     }
 
     private fun setPlayStateImmediately(playPosition: Int, isPlaying: Boolean) {
@@ -122,10 +131,17 @@ abstract class PlayStateAwareAdapter<E, VH: BaseAdapter.BaseViewHolder>(
         }
     }
 
-    fun setPlaying(isPlaying: Boolean) = runOnSubmit {
+    fun setPlaying(isPlaying: Boolean) {
+        lastSetIsPlaying = isPlaying
+        runOnSubmit {
+            setPlayingImmediately(isPlaying)
+        }
+    }
+
+    private fun setPlayingImmediately(isPlaying: Boolean) {
         if (this.isPlaying == isPlaying) {
             // No changes.
-            return@runOnSubmit
+            return
         }
 
         this.isPlaying = isPlaying

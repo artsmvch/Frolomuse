@@ -136,14 +136,14 @@ abstract class BaseAdapter<E, VH> constructor(
 
     fun getItemAt(position: Int): E = nodes[position].item
 
-    protected fun moveItemImmediately(fromPosition: Int, toPosition: Int) {
+    protected fun moveItem(fromPosition: Int, toPosition: Int) = runOnSubmit {
         if (fromPosition < 0 || fromPosition >= nodes.size
                 || toPosition < 0 || toPosition >= nodes.size) {
             // Positions are out of bounds
             val error = IllegalArgumentException("Failed to move item from position $fromPosition " +
                     "to position $toPosition; list size is ${nodes.size}")
             DebugUtils.dumpOnMainThread(error)
-            return
+            return@runOnSubmit
         }
         if (fromPosition < toPosition) {
             for (i in fromPosition until toPosition) {
@@ -157,7 +157,7 @@ abstract class BaseAdapter<E, VH> constructor(
         notifyItemMoved(fromPosition, toPosition)
     }
 
-    protected fun removeItemImmediately(position: Int) {
+    protected fun removeItemAt(position: Int) = runOnSubmit {
         if (nodes.indices.contains(position)) {
             nodes.removeAt(position)
             notifyItemRemoved(position)

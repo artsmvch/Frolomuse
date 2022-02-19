@@ -68,7 +68,7 @@ class LibrarySectionAdapter constructor(
     }
 
     override fun onItemMove(fromPosition: Int, toPosition: Int) {
-        moveItemImmediately(fromPosition, toPosition)
+        moveItem(fromPosition, toPosition)
     }
 
     override fun onDragEndedWithResult(fromPosition: Int, toPosition: Int) {
