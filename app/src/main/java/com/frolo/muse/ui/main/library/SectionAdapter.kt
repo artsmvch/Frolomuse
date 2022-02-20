@@ -13,11 +13,12 @@ import com.frolo.muse.ui.main.library.playlists.PlaylistListFragment
 import com.frolo.muse.ui.main.library.recent.RecentlyAddedSongListFragment
 import com.frolo.muse.ui.main.library.songs.SongListFragment
 
+
 // Will be used when the library migrates from ViewPager to ViewPager2
 @Deprecated("Only until we migrate to ViewPager2")
 class SectionAdapter constructor(
-        host: Fragment,
-        val sections: List<@Library.Section Int>
+    host: Fragment,
+    val sections: List<@Library.Section Int>
 ) : FragmentStateAdapter(host) {
 
     // holding initiated fragments

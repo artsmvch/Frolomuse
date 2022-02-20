@@ -20,51 +20,53 @@ import javax.inject.Inject
 
 
 class SearchViewModel @Inject constructor(
-        permissionChecker: PermissionChecker,
-        searchMediaUseCase: SearchMediaUseCase,
-        getMediaMenuUseCase: GetMediaMenuUseCase<Media>,
-        clickMediaUseCase: ClickMediaUseCase<Media>,
-        playMediaUseCase: PlayMediaUseCase<Media>,
-        shareMediaUseCase: ShareMediaUseCase<Media>,
-        deleteMediaUseCase: DeleteMediaUseCase<Media>,
-        getIsFavouriteUseCase: GetIsFavouriteUseCase<Media>,
-        changeFavouriteUseCase: ChangeFavouriteUseCase<Media>,
-        createShortcutUseCase: CreateShortcutUseCase<Media>,
-        schedulerProvider: SchedulerProvider,
-        appRouter: AppRouter,
-        private val eventLogger: EventLogger
+    permissionChecker: PermissionChecker,
+    searchMediaUseCase: SearchMediaUseCase,
+    getMediaMenuUseCase: GetMediaMenuUseCase<Media>,
+    clickMediaUseCase: ClickMediaUseCase<Media>,
+    playMediaUseCase: PlayMediaUseCase<Media>,
+    shareMediaUseCase: ShareMediaUseCase<Media>,
+    deleteMediaUseCase: DeleteMediaUseCase<Media>,
+    getIsFavouriteUseCase: GetIsFavouriteUseCase<Media>,
+    changeFavouriteUseCase: ChangeFavouriteUseCase<Media>,
+    createShortcutUseCase: CreateShortcutUseCase<Media>,
+    schedulerProvider: SchedulerProvider,
+    appRouter: AppRouter,
+    private val eventLogger: EventLogger
 ): AbsMediaCollectionViewModel<Media>(
-        permissionChecker,
-        searchMediaUseCase,
-        getMediaMenuUseCase,
-        clickMediaUseCase,
-        playMediaUseCase,
-        shareMediaUseCase,
-        deleteMediaUseCase,
-        getIsFavouriteUseCase,
-        changeFavouriteUseCase,
-        createShortcutUseCase,
-        schedulerProvider,
-        appRouter,
-        eventLogger) {
+    permissionChecker,
+    searchMediaUseCase,
+    getMediaMenuUseCase,
+    clickMediaUseCase,
+    playMediaUseCase,
+    shareMediaUseCase,
+    deleteMediaUseCase,
+    getIsFavouriteUseCase,
+    changeFavouriteUseCase,
+    createShortcutUseCase,
+    schedulerProvider,
+    appRouter,
+    eventLogger
+) {
 
     private var queryCount: Int = 0
 
     private val publisher: PublishProcessor<String> by lazy {
         PublishProcessor.create<String>().also { publisher ->
-            publisher.debounce(200, TimeUnit.MILLISECONDS)
-                    .filter { query -> query.isNotEmpty() }
-                    .distinctUntilChanged()
-                    .switchMap { query ->
-                        searchMediaUseCase.search(query)
-                                .map { items -> query to items }
-                    }
-                    .observeOn(schedulerProvider.main())
-                    .subscribeFor { pair ->
-                        queryCount++
-                        _query.value = pair.first
-                        submitMediaList(pair.second)
-                    }
+            publisher.debounce(200L, TimeUnit.MILLISECONDS)
+                .filter { query -> query.isNotEmpty() }
+                .distinctUntilChanged()
+                .switchMap { query ->
+                    searchMediaUseCase
+                        .search(query)
+                        .map { items -> query to items }
+                }
+                .observeOn(schedulerProvider.main())
+                .subscribeFor { pair ->
+                    queryCount++
+                    _query.value = pair.first
+                    submitMediaList(pair.second)
+                }
         }
     }
 

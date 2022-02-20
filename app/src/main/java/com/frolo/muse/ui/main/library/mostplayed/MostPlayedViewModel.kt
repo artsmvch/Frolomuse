@@ -45,20 +45,20 @@ class MostPlayedViewModel @Inject constructor(
     appRouter: AppRouter,
     eventLogger: EventLogger
 ): AbsSongCollectionViewModel<SongWithPlayCount>(
-        player,
-        permissionChecker,
-        getMostPlayedUseCase,
-        getMediaMenuUseCase,
-        clickMediaUseCase,
-        playMediaUseCase,
-        shareMediaUseCase,
-        deleteMediaUseCase,
-        getIsFavouriteUseCase,
-        changeFavouriteUseCase,
-        createShortcutUseCase,
-        schedulerProvider,
-        appRouter,
-        eventLogger
+    player,
+    permissionChecker,
+    getMostPlayedUseCase,
+    getMediaMenuUseCase,
+    clickMediaUseCase,
+    playMediaUseCase,
+    shareMediaUseCase,
+    deleteMediaUseCase,
+    getIsFavouriteUseCase,
+    changeFavouriteUseCase,
+    createShortcutUseCase,
+    schedulerProvider,
+    appRouter,
+    eventLogger
 ) {
 
     private companion object {
