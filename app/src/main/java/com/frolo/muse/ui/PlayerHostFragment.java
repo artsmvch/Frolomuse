@@ -126,8 +126,6 @@ public final class PlayerHostFragment extends Fragment {
     public void onDestroy() {
         Context appContext = requireContext().getApplicationContext();
         appContext.unbindService(mConn);
-
-        // TODO: note that the player has been disconnected
         noteServiceDisconnected();
 
         super.onDestroy();

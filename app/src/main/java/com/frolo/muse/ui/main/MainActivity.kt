@@ -37,7 +37,6 @@ import com.frolo.muse.android.startActivitySafely
 import com.frolo.muse.arch.observe
 import com.frolo.muse.di.appComponent
 import com.frolo.player.Player
-import com.frolo.muse.model.media.*
 import com.frolo.muse.rx.disposeOnDestroyOf
 import com.frolo.muse.rx.subscribeSafely
 import com.frolo.muse.ui.PlayerHostActivity
@@ -447,15 +446,17 @@ class MainActivity : PlayerHostActivity(),
     }
 
     override fun playerDidConnect(player: Player) {
-        requireFrolomuseApp().onPlayerConnected(player)
+        (application as PlayerUiConnectionCallback)
+            .onPlayerConnectedToUi(this, player)
         viewModel.onPlayerConnected(player)
         maybeInitializeFragments(player, lastSavedInstanceState)
     }
 
     override fun playerDidDisconnect(player: Player) {
         viewModel.onPlayerDisconnected()
-        requireFrolomuseApp().onPlayerDisconnected()
         finish()
+        (application as PlayerUiConnectionCallback)
+            .onPlayerDisconnectedFromUi(this, player)
     }
 
     /**

@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import java.util.Collection;
+import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 
@@ -29,6 +30,10 @@ final class PlayerObserverRegistry {
      */
     static PlayerObserverRegistry create(@NonNull Context context, @NonNull Player player, boolean debug) {
         return new PlayerObserverRegistry(context, player, debug);
+    }
+
+    private static <E> Set<E> createThreadSafeSet() {
+        return new CopyOnWriteArraySet<>();
     }
 
     private static final int ARG_NOTHING = 0;
@@ -184,7 +189,7 @@ final class PlayerObserverRegistry {
         }
     }
 
-    private final CopyOnWriteArraySet<PlayerObserver> mObservers = new CopyOnWriteArraySet<>();
+    private final Set<PlayerObserver> mObservers = createThreadSafeSet();
 
     private final DispatcherHandler mHandler;
 

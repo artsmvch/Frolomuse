@@ -29,12 +29,13 @@ import com.frolo.muse.ui.base.BaseActivity
 import com.frolo.muse.ui.main.MainActivity
 import com.frolo.threads.HandlerExecutor
 import com.frolo.threads.ThreadStrictMode
+import com.frolo.ui.ActivityUtils
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import io.reactivex.plugins.RxJavaPlugins
 
 
-class FrolomuseApp : MultiDexApplication(), ActivityWatcher {
+class FrolomuseApp : MultiDexApplication(), ActivityWatcher, PlayerUiConnectionCallback {
 
     private val isDebug: Boolean get() = BuildConfig.DEBUG
 
@@ -180,13 +181,21 @@ class FrolomuseApp : MultiDexApplication(), ActivityWatcher {
         }
     }
 
-    fun onPlayerConnected(player: Player) {
+    //region PlayerUiConnectionCallback
+    override fun onPlayerConnectedToUi(uiComponent: Activity, player: Player) {
         playerWrapper.attachBase(player)
     }
 
-    fun onPlayerDisconnected() {
-        playerWrapper.detachBase()
+    override fun onPlayerDisconnectedFromUi(uiComponent: Activity, player: Player) {
+        // In order to avoid memory leaks, we do not want to detach the base until
+        // all the fragments and their view models in the activity component have
+        // released their resources associated with the disconnected player.
+        // In this case, we wait until the activity is finally destroyed.
+        ActivityUtils.runOnFinalDestroy(uiComponent) {
+            playerWrapper.detachBase()
+        }
     }
+    //endregion
 
     fun onFragmentNavigatorCreated(activity: MainActivity) {
         val routerImpl = AppRouterImpl(activity)
@@ -236,7 +245,8 @@ class FrolomuseApp : MultiDexApplication(), ActivityWatcher {
         fun from(context: Context): FrolomuseApp {
             val applicationContext: Context = context.applicationContext
             if (applicationContext !is FrolomuseApp) {
-                throw NullPointerException("Application context is not an instance of ${FrolomuseApp::class.java.simpleName}")
+                throw NullPointerException("Application context is not an instance " +
+                        "of ${FrolomuseApp::class.java.simpleName}")
             }
             return applicationContext
         }
