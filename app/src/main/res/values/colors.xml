@@ -29,4 +29,7 @@
     <color name="greeting_color1">#0C6ADD</color>
     <color name="greeting_color2">#8E10DC</color>
     <color name="greeting_color3">#CF0C61</color>
+
+    <!--Splash-->
+    <color name="splash_background">#FFFFFF</color>
 </resources>
