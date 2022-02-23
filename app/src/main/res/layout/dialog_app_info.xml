@@ -2,6 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -14,7 +15,7 @@
         android:layout_height="80dp"
         android:layout_margin="32dp"
         android:src="@drawable/ic_music_note_48dp"
-        android:tint="?colorAccent"/>
+        app:tint="?colorAccent" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:layout_width="wrap_content"
@@ -29,4 +30,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:textAppearance="?textAppearanceBody2"/>
+
+    <ImageView
+        android:id="@+id/imv_firebase_logo"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:src="@drawable/ic_firebase_logo"
+        tools:visibility="visible"/>
 </LinearLayout>

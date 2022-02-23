@@ -5,7 +5,7 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'com.google.firebase.crashlytics'
 
 
-// Loads properties from the giving filepath
+// Loads properties from the giving filepath.
 ext.loadProperties = { filepath ->
     def propertiesFile = new File(filepath)
     def properties = new Properties()
@@ -13,14 +13,26 @@ ext.loadProperties = { filepath ->
     return properties
 }
 
-static def getDate() {
-    return new Date().format('yyyyMMddHHmmss')
+// Loads properties from the giving filepath, or simply
+// returns empty properties if the file does not exist.
+ext.optionallyLoadProperties = { filepath ->
+    try {
+        return loadProperties(filepath)
+    } catch (IOException ignored) {
+        return new Properties()
+    }
 }
 
 def version_code = 132
 def version_major = 6
 def version_minor = 2
 def version_patch = 9
+def version_name = "${version_major}.${version_minor}.${version_patch}"
+
+def script_time = new Date().format('MM.dd.yyyy:HH.mm.ss')
+def google_services_properties =
+        optionallyLoadProperties("${project.projectDir}/google-services.properties")
+def google_services_enabled = google_services_properties['enabled'] == 'true'
 
 android {
     signingConfigs {
@@ -46,7 +58,8 @@ android {
 
         resValue "string", "app_name", "Frolomuse"
 
-        buildConfigField "String", "BUILD_TIME", "\"${getDate()}\""
+        buildConfigField "Boolean", "GOOGLE_SERVICES_ENABLED", "$google_services_enabled"
+        buildConfigField "String", "BUILD_SCRIPT_TIME", "\"${script_time}\""
         buildConfigField "String", "DEVELOPER_EMAIL", "\"alexei.artsimovich@gmail.com\""
         buildConfigField ('int', "SOUND_FRAME_GAIN_COUNT", "100")
 
@@ -100,7 +113,7 @@ android {
 
     applicationVariants.all { variant ->
         variant.outputs.all {
-            outputFileName = "Frolomuse-${variant.name}-${version_major}.${version_minor}.${version_patch}-${getDate()}.apk"
+            outputFileName = "Frolomuse-${variant.name}-${version_name}-${script_time}.apk"
         }
     }
 
@@ -305,7 +318,9 @@ dependencies {
     implementation 'com.airbnb.android:lottie:4.2.2'
 }
 
-apply plugin: 'com.google.gms.google-services'
+if (google_services_enabled) {
+    apply plugin: 'com.google.gms.google-services'
+}
 
 if (project.hasProperty('kapt')) {
     // Reference for 'kapt' DSL: https://kotlinlang.org/docs/reference/kapt.html#java-compiler-options

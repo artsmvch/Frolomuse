@@ -8,6 +8,7 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.view.animation.OvershootInterpolator
 import android.widget.TextView
+import androidx.core.view.isVisible
 import com.frolo.muse.BuildConfig
 import com.frolo.muse.R
 import com.frolo.muse.logger.EventLogger
@@ -27,6 +28,8 @@ class AppInfoDialog : BaseDialogFragment() {
      */
     private var appIconClickCount: Int = 0
 
+    private var fullVersionShown: Boolean = false
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         anim = AnimationUtils.loadAnimation(context, R.anim.rotation_overshot).apply {
@@ -38,7 +41,7 @@ class AppInfoDialog : BaseDialogFragment() {
         return super.onCreateDialog(savedInstanceState).apply {
             requestWindowFeature(Window.FEATURE_NO_TITLE)
             setContentView(R.layout.dialog_app_info)
-            loadUI(this)
+            loadUi(this)
         }
     }
 
@@ -47,7 +50,7 @@ class AppInfoDialog : BaseDialogFragment() {
         super.onDestroy()
     }
 
-    private fun loadUI(dialog: Dialog) = with(dialog) {
+    private fun loadUi(dialog: Dialog) = with(dialog) {
         ts_version.apply {
             ts_version.setFactory { TextView(context) }
             setInAnimation(context, R.anim.fade_in)
@@ -63,16 +66,18 @@ class AppInfoDialog : BaseDialogFragment() {
     }
 
     private fun maybeShowFullBuildVersion() = dialog?.apply {
-        if (appIconClickCount >= 15) {
-            val fullBuildVersion = "${BuildConfig.VERSION_NAME}(${BuildConfig.BUILD_TIME})"
+        if (appIconClickCount >= 15 && !fullVersionShown) {
+            val fullBuildVersion = "${BuildConfig.VERSION_NAME}(${BuildConfig.BUILD_SCRIPT_TIME})"
             ts_version.setText(fullBuildVersion)
+            imv_firebase_logo.isVisible = BuildConfig.GOOGLE_SERVICES_ENABLED
+            fullVersionShown = true
         }
     }
 
     companion object {
 
         // Factory
-        fun newInstance() = AppInfoDialog()
+        fun newInstance(): AppInfoDialog = AppInfoDialog()
 
     }
 
