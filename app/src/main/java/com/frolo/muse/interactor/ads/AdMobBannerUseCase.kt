@@ -28,7 +28,7 @@ class AdMobBannerUseCase @Inject constructor(
 
     // The default library banner id, hardcoded in the app code.
     private fun getDefaultLibraryBannerId(): String {
-        return context.getString(R.string.ad_mob_library_unit_id)
+        error("Not implemented")
     }
 
     fun getLibraryBannerState(): Flowable<BannerState> {
@@ -36,7 +36,7 @@ class AdMobBannerUseCase @Inject constructor(
         if (testAdMob) {
             val state = BannerState(
                 canBeShown = true,
-                bannerId = context.getString(R.string.ad_mob_test_unit_id)
+                bannerId = getDefaultLibraryBannerId()
             )
             remoteConfigsSource = Flowable.just(state)
         } else {
