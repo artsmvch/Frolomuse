@@ -148,19 +148,16 @@ class CreatePosterUseCase @Inject constructor(
                 val options = BitmapFactory.Options().apply { inJustDecodeBounds = true }
                 // here, only the options will be resolved
                 BitmapFactory.decodeFileDescriptor(it.fileDescriptor, null, options)
-
                 val optimalOptions = getOptimalOptions(options)
-
                 // now we can decode the bitmap
                 BitmapFactory.decodeFileDescriptor(it.fileDescriptor, null, optimalOptions)
             }
         } catch (e: Throwable) {
+            val resId = R.drawable.poster
             val options = BitmapFactory.Options().apply { inJustDecodeBounds = true }
-            BitmapFactory.decodeResource(context.resources, R.drawable.art, options)
-
+            BitmapFactory.decodeResource(context.resources, resId, options)
             val optimalOptions = getOptimalOptions(options)
-
-            BitmapFactory.decodeResource(context.resources, R.drawable.art, optimalOptions)
+            BitmapFactory.decodeResource(context.resources, resId, optimalOptions)
         }
     }
 
