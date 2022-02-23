@@ -8,12 +8,15 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.view.animation.OvershootInterpolator
 import android.widget.TextView
+import androidx.annotation.DrawableRes
 import androidx.core.view.isVisible
+import com.frolo.debug.DebugUtils
 import com.frolo.muse.BuildConfig
 import com.frolo.muse.R
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.logEasterEggFound
 import com.frolo.muse.ui.base.BaseDialogFragment
+import com.frolo.ui.StyleUtils
 import kotlinx.android.synthetic.main.dialog_app_info.*
 
 
@@ -69,7 +72,19 @@ class AppInfoDialog : BaseDialogFragment() {
         if (appIconClickCount >= 15 && !fullVersionShown) {
             val fullBuildVersion = "${BuildConfig.VERSION_NAME}(${BuildConfig.BUILD_SCRIPT_TIME})"
             ts_version.setText(fullBuildVersion)
+
+            val isLightTheme = try {
+                StyleUtils.resolveBool(this.context, R.attr.isLightTheme)
+            } catch (e: Throwable) {
+                DebugUtils.dumpOnMainThread(e)
+                false
+            }
+            @DrawableRes val logoResId: Int =
+                if (isLightTheme) R.drawable.ic_firebase_logo_light
+                else R.drawable.ic_firebase_logo_dark
+            imv_firebase_logo.setImageResource(logoResId)
             imv_firebase_logo.isVisible = BuildConfig.GOOGLE_SERVICES_ENABLED
+
             fullVersionShown = true
         }
     }

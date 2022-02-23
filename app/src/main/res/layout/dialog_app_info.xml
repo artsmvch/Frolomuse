@@ -36,6 +36,6 @@
         android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        android:src="@drawable/ic_firebase_logo"
-        tools:visibility="visible"/>
+        tools:visibility="visible"
+        tools:src="@drawable/ic_firebase_logo_light"/>
 </LinearLayout>
