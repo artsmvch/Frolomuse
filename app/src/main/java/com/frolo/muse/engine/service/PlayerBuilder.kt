@@ -1,6 +1,5 @@
 package com.frolo.muse.engine.service
 
-import android.annotation.SuppressLint
 import android.app.Service
 import android.support.v4.media.session.MediaSessionCompat
 import com.frolo.audiofx.AudioFxImpl
@@ -19,6 +18,7 @@ import com.frolo.player.PlaybackFadingStrategy
 import com.frolo.player.Player
 import com.frolo.player.PlayerImpl
 import com.frolo.player.PlayerJournal
+import io.reactivex.disposables.CompositeDisposable
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicBoolean
@@ -38,6 +38,14 @@ class PlayerBuilder @Inject constructor(
 ) {
 
     fun build(): Player {
+        val startTime = System.currentTimeMillis()
+        val instance = buildImpl()
+        val elapsedTime = System.currentTimeMillis() - startTime
+        Logger.d(LOG_TAG, "Built player instance for $elapsedTime millis")
+        return instance
+    }
+
+    private fun buildImpl(): Player {
         val audioFx: AudioFxApplicable = AudioFxImpl.getInstance(
             service, Const.AUDIO_FX_PREFERENCES, DefaultAudioFxErrorHandler())
 
@@ -62,13 +70,13 @@ class PlayerBuilder @Inject constructor(
         return player
     }
 
-    @SuppressLint("CheckResult")
     private fun loadPreParams(timeoutMillis: Long): PreParams {
         val countDownLatch = CountDownLatch(2)
 
         val wakeLockEnabledRef = AtomicBoolean(false)
         val playbackFadingParamsRef = AtomicReference<PlaybackFadingParams>(null)
 
+        val disposables = CompositeDisposable()
         remoteConfigRepository.isPlayerWakeLockEnabled()
             .timeout(timeoutMillis, TimeUnit.MILLISECONDS)
             .doFinally { countDownLatch.countDown() }
@@ -76,7 +84,7 @@ class PlayerBuilder @Inject constructor(
                 { enabled -> wakeLockEnabledRef.set(enabled) },
                 { err -> logOrFail(err) }
             )
-
+            .let(disposables::add)
         preferences.playbackFadingParams
             .first(PlaybackFadingParams.none())
             .timeout(timeoutMillis, TimeUnit.MILLISECONDS)
@@ -85,12 +93,14 @@ class PlayerBuilder @Inject constructor(
                 { params -> playbackFadingParamsRef.set(params) },
                 { err -> logOrFail(err) }
             )
+            .let(disposables::add)
 
         try {
             countDownLatch.await(timeoutMillis, TimeUnit.MILLISECONDS)
         } catch (err: Throwable) {
             logOrFail(err)
         }
+        disposables.dispose()
 
         val playbackFadingParams = playbackFadingParamsRef.get() ?: PlaybackFadingParams.none()
 
@@ -105,7 +115,7 @@ class PlayerBuilder @Inject constructor(
 
     private fun logOrFail(err: Throwable) {
         DebugUtils.dumpOnMainThread(err)
-        Logger.e(err)
+        Logger.e(LOG_TAG, err)
     }
 
     private class PreParams(
@@ -114,5 +124,9 @@ class PlayerBuilder @Inject constructor(
         val repeatMode: Int,
         val shuffleMode: Int
     )
+
+    private companion object {
+        private const val LOG_TAG = "PlayerBuilder"
+    }
 
 }
