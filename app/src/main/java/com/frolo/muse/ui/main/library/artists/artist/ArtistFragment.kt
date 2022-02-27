@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.frolo.muse.R
 import com.frolo.ui.StyleUtils
 import com.frolo.muse.arch.observeNonNull
-import com.frolo.muse.di.appComponent
+import com.frolo.muse.di.activityComponent
 import com.frolo.music.model.Artist
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.base.serializableArg
@@ -52,7 +52,7 @@ class ArtistFragment: BaseFragment() {
 
     private val viewModel: ArtistViewModel by lazy {
         val artist = requireArguments().getSerializable(ARG_ARTIST) as Artist
-        val vmFactory = ArtistVMFactory(appComponent, artist)
+        val vmFactory = ArtistVMFactory(activityComponent, artist)
         ViewModelProviders.of(this, vmFactory).get(ArtistViewModel::class.java)
     }
 

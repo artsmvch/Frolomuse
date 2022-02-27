@@ -5,7 +5,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProviders
 import com.frolo.muse.R
 import com.frolo.muse.arch.observeNonNull
-import com.frolo.muse.di.appComponent
+import com.frolo.muse.di.activityComponent
 import com.frolo.music.model.Playlist
 import com.frolo.music.model.Song
 import com.frolo.muse.ui.base.withNullableArg
@@ -19,15 +19,15 @@ class SavePlaylistDialog : AbsInputNameDialog() {
 
         // Factory
         fun newInstance(songs: ArrayList<Song>? = null) = SavePlaylistDialog()
-                .withNullableArg(ARG_SONGS, songs)
+            .withNullableArg(ARG_SONGS, songs)
     }
 
     private val viewModel: CreatePlaylistViewModel by lazy {
         @Suppress("UNCHECKED_CAST")
         val songsToAdd = requireArguments().getSerializable(ARG_SONGS) as? List<Song>
-        val vmFactory = CreatePlaylistVMFactory(appComponent, songsToAdd)
+        val vmFactory = CreatePlaylistVMFactory(activityComponent, songsToAdd)
         ViewModelProviders.of(this, vmFactory)
-                .get(CreatePlaylistViewModel::class.java)
+            .get(CreatePlaylistViewModel::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

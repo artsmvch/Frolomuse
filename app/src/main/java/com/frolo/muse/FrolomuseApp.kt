@@ -11,52 +11,36 @@ import android.os.StrictMode
 import android.os.strictmode.Violation
 import androidx.multidex.MultiDexApplication
 import com.frolo.muse.broadcast.Broadcasts
-import com.frolo.muse.di.AppComponent
-import com.frolo.muse.di.DaggerAppComponent
-import com.frolo.muse.di.impl.navigator.AppRouterImpl
-import com.frolo.muse.di.initAppComponent
 import com.frolo.muse.di.modules.*
-import com.frolo.player.Player
 import com.frolo.player.PlayerImpl
 import com.frolo.audiofx.AudioFxImpl
 import com.frolo.debug.DebugUtils
-import com.frolo.muse.di.appComponent
-import com.frolo.muse.engine.PlayerWrapper
+import com.frolo.muse.di.*
 import com.frolo.muse.logger.logLowMemory
-import com.frolo.muse.router.MutableAppRouterWrapper
-import com.frolo.muse.router.ThreadAppRouterWrapper
 import com.frolo.muse.ui.base.BaseActivity
-import com.frolo.muse.ui.main.MainActivity
 import com.frolo.threads.HandlerExecutor
 import com.frolo.threads.ThreadStrictMode
-import com.frolo.ui.ActivityUtils
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import io.reactivex.plugins.RxJavaPlugins
 
 
-class FrolomuseApp : MultiDexApplication(), ActivityWatcher, PlayerUiConnectionCallback {
-
-    private val isDebug: Boolean get() = BuildConfig.DEBUG
+class FrolomuseApp : MultiDexApplication(),
+    ActivityWatcher,
+    ApplicationComponentHolder {
 
     private lateinit var uiHandler: Handler
 
-    private val preferences by lazy { appComponent.providePreferences() }
-    private val eventLogger by lazy { appComponent.provideEventLogger() }
+    private val preferences by lazy { applicationComponent.providePreferences() }
+    private val eventLogger by lazy { applicationComponent.provideEventLogger() }
     private val activityWatcher by lazy { FrolomuseActivityWatcher(preferences, eventLogger) }
 
-    private val playerWrapper = PlayerWrapper(enableStrictMode = isDebug)
-    private val appRouterWrapper = MutableAppRouterWrapper()
+    override val applicationComponent: ApplicationComponent by lazy { buildApplicationComponent() }
 
     override fun onCreate() {
         super.onCreate()
-
-        initAppComponent()
-
         uiHandler = Handler(mainLooper)
-
         registerActivityLifecycleCallbacks(activityWatcher)
-
         setupDebugMode()
         setupStrictMode()
         setupRxPlugins()
@@ -64,22 +48,13 @@ class FrolomuseApp : MultiDexApplication(), ActivityWatcher, PlayerUiConnectionC
         setupShortcutsListener()
     }
 
-    private fun initAppComponent() {
-        val instance = buildAppComponent()
-        initAppComponent(instance)
-    }
-
-    private fun buildAppComponent(): AppComponent {
-        return DaggerAppComponent.builder()
-            .appModule(AppModule(this))
-            .playerModule(PlayerModule(playerWrapper, isDebug))
+    private fun buildApplicationComponent(): ApplicationComponent {
+        return DaggerApplicationComponent.builder()
+            .applicationModule(ApplicationModule(this))
             .localDataModule(LocalDataModule())
             .remoteDataModule(RemoteDataModule())
-            .routerModule(RouterModule(appRouterWrapper))
-            .eventLoggerModule(EventLoggerModule(isDebug))
-            .networkModule(NetworkModule())
-            .miscModule(MiscModule())
-            .billingModule(BillingModule(isDebug))
+            .miscModule(MiscModule(BuildInfo.isDebug()))
+            .billingModule(BillingModule(BuildInfo.isDebug()))
             .build()
     }
 
@@ -88,7 +63,7 @@ class FrolomuseApp : MultiDexApplication(), ActivityWatcher, PlayerUiConnectionC
     }
 
     private fun setupStrictMode() {
-        if (isDebug) {
+        if (BuildInfo.isDebug()) {
             StrictMode.ThreadPolicy.Builder()
                 .detectDiskReads()
                 .detectDiskWrites()
@@ -133,12 +108,6 @@ class FrolomuseApp : MultiDexApplication(), ActivityWatcher, PlayerUiConnectionC
     }
 
     private fun showViolation(violation: Violation?) {
-        if (isDebug) {
-            // TODO: find a better way to report violation
-//            foregroundActivity?.also { context ->
-//                Toast.makeText(context, violation?.toString().orEmpty(), Toast.LENGTH_LONG).show()
-//            }
-        }
     }
 
     private fun setupRxPlugins() {
@@ -181,34 +150,7 @@ class FrolomuseApp : MultiDexApplication(), ActivityWatcher, PlayerUiConnectionC
         }
     }
 
-    //region PlayerUiConnectionCallback
-    override fun onPlayerConnectedToUi(uiComponent: Activity, player: Player) {
-        playerWrapper.attachBase(player)
-    }
-
-    override fun onPlayerDisconnectedFromUi(uiComponent: Activity, player: Player) {
-        // In order to avoid memory leaks, we do not want to detach the base until
-        // all the fragments and their view models in the activity component have
-        // released their resources associated with the disconnected player.
-        // In this case, we wait until the activity is finally destroyed.
-        ActivityUtils.runOnFinalDestroy(uiComponent) {
-            playerWrapper.detachBase()
-        }
-    }
-    //endregion
-
-    fun onFragmentNavigatorCreated(activity: MainActivity) {
-        val routerImpl = AppRouterImpl(activity)
-        val uiThreadRouter = ThreadAppRouterWrapper(routerImpl, uiHandler)
-        appRouterWrapper.attachBase(uiThreadRouter)
-    }
-
-    fun onFragmentNavigatorDestroyed() {
-        appRouterWrapper.detachBase()
-    }
-
     //region Activity watcher
-
     override fun getCreatedActivities(): List<Activity> {
         return activityWatcher.createdActivities
     }
@@ -224,14 +166,13 @@ class FrolomuseApp : MultiDexApplication(), ActivityWatcher, PlayerUiConnectionC
     override fun getForegroundActivity(): Activity? {
         return activityWatcher.foregroundActivity
     }
-
     //endregion
 
     override fun onLowMemory() {
         super.onLowMemory()
         eventLogger.logLowMemory()
         Logger.w(LOG_TAG, "Low memory!")
-        if (isDebug) {
+        if (BuildInfo.isDebug()) {
             runOnForegroundActivity {
                 postMessage("Low memory!")
             }

@@ -2,8 +2,8 @@ package com.frolo.muse.ui.main.library.playlists.playlist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.frolo.muse.di.ComponentInjector
-import com.frolo.muse.di.ComponentProvider
+import com.frolo.muse.di.ActivityComponentInjector
+import com.frolo.muse.di.ActivityComponentProvider
 import com.frolo.player.Player
 import com.frolo.muse.router.AppRouter
 import com.frolo.muse.interactor.media.*
@@ -21,8 +21,8 @@ import javax.inject.Inject
 
 
 class PlaylistVMFactory constructor(
-    injector: ComponentInjector,
-    provider: ComponentProvider,
+    injector: ActivityComponentInjector,
+    provider: ActivityComponentProvider,
     playlistArg: Playlist
 ): ViewModelProvider.Factory {
 

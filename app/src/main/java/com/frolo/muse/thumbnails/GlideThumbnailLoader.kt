@@ -13,12 +13,10 @@ import com.bumptech.glide.RequestManager
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.frolo.customdrawable.squircle.SquircleColorDrawable
 import com.frolo.muse.R
-import com.frolo.muse.di.appComponent
 import com.frolo.ui.Screen
 import com.frolo.ui.StyleUtils
 import com.frolo.muse.glide.makeAlbumArtRequest
 import com.frolo.muse.glide.squircleCrop
-import com.frolo.muse.repository.AppearancePreferences
 import com.frolo.music.model.*
 
 
@@ -29,10 +27,6 @@ class GlideThumbnailLoader constructor(
 
     // Must only be lazily
     private val requestManager: RequestManager by lazy { Glide.with(fragment) }
-
-    private val appearancePreferences: AppearancePreferences by lazy {
-        appComponent.provideAppearancePreferences()
-    }
 
     // Cache
     private val thumbnailCache = DrawableTransformationCache()

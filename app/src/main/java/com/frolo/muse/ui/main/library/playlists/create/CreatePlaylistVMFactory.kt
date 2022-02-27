@@ -2,7 +2,7 @@ package com.frolo.muse.ui.main.library.playlists.create
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.frolo.muse.di.ComponentInjector
+import com.frolo.muse.di.ActivityComponentInjector
 import com.frolo.muse.logger.EventLogger
 import com.frolo.music.model.Song
 import com.frolo.music.repository.PlaylistRepository
@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 
 class CreatePlaylistVMFactory constructor(
-    injector: ComponentInjector,
+    injector: ActivityComponentInjector,
     private val songsToAdd: List<Song>? = null
 ): ViewModelProvider.Factory {
 

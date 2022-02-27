@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.frolo.muse.arch.SingleLiveEvent
 import com.frolo.muse.arch.map
 import com.frolo.muse.common.toSongs
-import com.frolo.muse.di.Exec
+import com.frolo.muse.di.ExecutorQualifier
 import com.frolo.player.AudioSource
 import com.frolo.player.Player
 import com.frolo.player.AudioSourceQueue
@@ -31,7 +31,8 @@ import kotlin.math.max
 
 
 class CurrSongQueueViewModel @Inject constructor(
-    @Exec(Exec.Type.MAIN) private val mainThreadExecutor: Executor,
+    @ExecutorQualifier(ExecutorQualifier.Type.MAIN)
+    private val mainThreadExecutor: Executor,
     private val player: Player,
     permissionChecker: PermissionChecker,
     getCurrentSongQueueUseCase: GetCurrentSongQueueUseCase,

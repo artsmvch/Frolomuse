@@ -2,7 +2,7 @@ package com.frolo.muse.ui.main.editor.playlist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.frolo.muse.di.ComponentInjector
+import com.frolo.muse.di.ActivityComponentInjector
 import com.frolo.muse.logger.EventLogger
 import com.frolo.music.model.Playlist
 import com.frolo.music.repository.PlaylistRepository
@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 
 class PlaylistEditorVMFactory constructor(
-    injector: ComponentInjector,
+    injector: ActivityComponentInjector,
     private val playlist: Playlist
 ): ViewModelProvider.Factory {
 

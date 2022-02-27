@@ -8,7 +8,7 @@ import com.frolo.muse.arch.combine
 import com.frolo.muse.arch.liveDataOf
 import com.frolo.muse.arch.map
 import com.frolo.muse.common.*
-import com.frolo.muse.di.Exec
+import com.frolo.muse.di.ExecutorQualifier
 import com.frolo.muse.interactor.feature.FeaturesUseCase
 import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
 import com.frolo.muse.interactor.media.DeleteMediaUseCase
@@ -38,7 +38,7 @@ import javax.inject.Inject
 
 class PlayerViewModel @Inject constructor(
     private val player: Player,
-    @Exec(Exec.Type.MAIN) private val mainThreadExecutor: Executor,
+    @ExecutorQualifier(ExecutorQualifier.Type.MAIN) private val mainThreadExecutor: Executor,
     private val schedulerProvider: SchedulerProvider,
     private val getIsFavouriteUseCase: GetIsFavouriteUseCase<Song>,
     private val changeFavouriteUseCase: ChangeFavouriteUseCase<Song>,

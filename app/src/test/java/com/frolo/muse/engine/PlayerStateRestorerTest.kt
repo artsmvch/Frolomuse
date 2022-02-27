@@ -1,4 +1,4 @@
-package com.frolo.muse.interactor.player
+package com.frolo.muse.engine
 
 import com.frolo.muse.TestSchedulerProvider
 import com.frolo.muse.common.AudioSourceQueue
@@ -28,7 +28,7 @@ import org.mockito.MockitoAnnotations
 
 
 @RunWith(JUnit4::class)
-class RestorePlayerStateUseCaseTest {
+class PlayerStateRestorerTest {
 
     private val schedulerProvider = TestSchedulerProvider.SHARED
 
@@ -45,7 +45,7 @@ class RestorePlayerStateUseCaseTest {
     @Mock
     private lateinit var preferences: Preferences
 
-    private lateinit var restorePlayerStateUseCase: RestorePlayerStateUseCase
+    private lateinit var playerStateRestorer: PlayerStateRestorer
 
     @Mock
     private lateinit var player: Player
@@ -53,14 +53,14 @@ class RestorePlayerStateUseCaseTest {
     @Before
     fun setup() {
         MockitoAnnotations.initMocks(this)
-        restorePlayerStateUseCase = RestorePlayerStateUseCase(
-                schedulerProvider,
-                songRepository,
-                albumRepository,
-                artistRepository,
-                genreRepository,
-                playlistRepository,
-                preferences
+        playerStateRestorer = PlayerStateRestorer(
+            schedulerProvider,
+            songRepository,
+            albumRepository,
+            artistRepository,
+            genreRepository,
+            playlistRepository,
+            preferences
         )
     }
 
@@ -74,39 +74,39 @@ class RestorePlayerStateUseCaseTest {
         val playbackPosition = 1337
 
         whenever(preferences.lastMediaCollectionType)
-                .thenReturn(-1)
+            .thenReturn(-1)
 
         whenever(preferences.lastMediaCollectionId)
-                .thenReturn(id)
+            .thenReturn(id)
 
         whenever(preferences.lastMediaCollectionItemIds)
-                .thenReturn(Flowable.just(songs.map { song -> song.id }))
+            .thenReturn(Flowable.just(songs.map { song -> song.id }))
 
         whenever(albumRepository.getItem(eq(id)))
-                .thenReturn(Flowable.just(album))
+            .thenReturn(Flowable.just(album))
 
         whenever(albumRepository.collectSongs(eq(album)))
-                .thenReturn(Single.just(songs))
+            .thenReturn(Single.just(songs))
 
         whenever(preferences.lastSongId)
-                .thenReturn(targetSong.id)
+            .thenReturn(targetSong.id)
 
         whenever(preferences.lastPlaybackPosition)
-                .thenReturn(playbackPosition)
+            .thenReturn(playbackPosition)
 
         whenever(songRepository.allItems)
-                .thenReturn(Flowable.just(mockList(size = 100)))
+            .thenReturn(Flowable.just(mockList(size = 100)))
 
         whenever(songRepository.getSongsOptionally(eq(songs.map { song -> song.id })))
-                .thenReturn(Flowable.just(songs))
+            .thenReturn(Flowable.just(songs))
 
         whenever(songRepository.getItem(eq(targetSong.id)))
-                .thenReturn(Flowable.just(targetSong))
+            .thenReturn(Flowable.just(targetSong))
 
         val observer = TestObserver.create<Unit>()
 
-        restorePlayerStateUseCase.restorePlayerStateIfNeeded(player)
-                .subscribe(observer)
+        playerStateRestorer.restorePlayerStateIfNeeded(player)
+            .subscribe(observer)
 
         observer.assertComplete()
 
@@ -130,36 +130,36 @@ class RestorePlayerStateUseCaseTest {
         val expectedQueue = AudioSourceQueue.create(allSongs.toAudioSources())
 
         whenever(preferences.lastMediaCollectionType)
-                .thenReturn(-1)
+            .thenReturn(-1)
 
         whenever(preferences.lastMediaCollectionId)
-                .thenReturn(albumId)
+            .thenReturn(albumId)
 
         whenever(preferences.lastMediaCollectionItemIds)
-                .thenReturn(Flowable.just(albumSongs.map { song -> song.id }))
+            .thenReturn(Flowable.just(albumSongs.map { song -> song.id }))
 
         whenever(albumRepository.getItem(eq(albumId)))
-                .thenReturn(Flowable.just(album))
+            .thenReturn(Flowable.just(album))
 
         whenever(albumRepository.collectSongs(eq(album)))
-                .thenReturn(Single.just(albumSongs))
+            .thenReturn(Single.just(albumSongs))
 
         whenever(preferences.lastSongId)
-                .thenReturn(lastPlayedSong.id)
+            .thenReturn(lastPlayedSong.id)
 
         whenever(preferences.lastPlaybackPosition)
-                .thenReturn(playbackPosition)
+            .thenReturn(playbackPosition)
 
         whenever(songRepository.allItems)
-                .thenReturn(Flowable.just(allSongs))
+            .thenReturn(Flowable.just(allSongs))
 
         whenever(songRepository.getItem(eq(lastPlayedSong.id)))
-                .thenReturn(Flowable.just(lastPlayedSong))
+            .thenReturn(Flowable.just(lastPlayedSong))
 
         val observer = TestObserver.create<Unit>()
 
-        restorePlayerStateUseCase.restorePlayerStateIfNeeded(player)
-                .subscribe(observer)
+        playerStateRestorer.restorePlayerStateIfNeeded(player)
+            .subscribe(observer)
 
         observer.assertComplete()
 
@@ -178,41 +178,41 @@ class RestorePlayerStateUseCaseTest {
         val allSongs = mockSongList(size = 0)
 
         whenever(preferences.lastMediaCollectionType)
-                .thenReturn(-1)
+            .thenReturn(-1)
 
         whenever(preferences.lastMediaCollectionId)
-                .thenReturn(id)
+            .thenReturn(id)
 
         whenever(preferences.lastMediaCollectionItemIds)
-                .thenReturn(Flowable.just(songs.map { song -> song.id }))
+            .thenReturn(Flowable.just(songs.map { song -> song.id }))
 
         whenever(albumRepository.getItem(eq(id)))
-                .thenReturn(Flowable.just(album))
+            .thenReturn(Flowable.just(album))
 
         whenever(albumRepository.collectSongs(eq(album)))
-                .thenReturn(Single.just(songs))
+            .thenReturn(Single.just(songs))
 
         whenever(preferences.lastSongId)
-                .thenReturn(targetSong.id)
+            .thenReturn(targetSong.id)
 
         whenever(preferences.lastPlaybackPosition)
-                .thenReturn(playbackPosition)
+            .thenReturn(playbackPosition)
 
         whenever(songRepository.allItems)
-                .thenReturn(Flowable.just(allSongs))
+            .thenReturn(Flowable.just(allSongs))
 
         whenever(songRepository.getItem(eq(targetSong.id)))
-                .thenReturn(Flowable.just(targetSong))
+            .thenReturn(Flowable.just(targetSong))
 
         val observer = TestObserver.create<Unit>()
 
-        restorePlayerStateUseCase.restorePlayerStateIfNeeded(player)
-                .subscribe(observer)
+        playerStateRestorer.restorePlayerStateIfNeeded(player)
+            .subscribe(observer)
 
         observer.assertError(IndexOutOfBoundsException::class.java)
 
         verify(player, never())
-                .prepareByTarget(any(), any(), any(), any())
+            .prepareByTarget(any(), any(), any(), any())
     }
 
 }

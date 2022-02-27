@@ -3,7 +3,8 @@ package com.frolo.muse.di.modules
 import android.content.Context
 import android.os.Build
 import com.frolo.muse.BuildConfig
-import com.frolo.muse.di.Exec
+import com.frolo.muse.di.ApplicationScope
+import com.frolo.muse.di.ExecutorQualifier
 import com.frolo.muse.di.impl.local.*
 import com.frolo.muse.di.impl.sound.bass.BASSSoundResolverImpl
 import com.frolo.muse.di.impl.stub.MediaFileRepositoryStub
@@ -13,18 +14,17 @@ import com.frolo.music.repository.*
 import dagger.Module
 import dagger.Provides
 import java.util.concurrent.Executor
-import javax.inject.Singleton
 
 
 @Module
 class LocalDataModule {
-    @Singleton
+    @ApplicationScope
     @Provides
     fun providePreferences(context: Context): Preferences {
         return PreferencesImpl(context)
     }
 
-    @Singleton
+    @ApplicationScope
     @Provides
     fun provideFirebasePreferences(context: Context): FirebasePreferences {
         return FirebasePreferencesImpl(context)
@@ -78,7 +78,7 @@ class LocalDataModule {
     }
     //endregion
 
-    @Singleton
+    @ApplicationScope
     @Provides
     fun provideLibraryPreferences(context: Context): LibraryPreferences {
         return LibraryPreferenceImpl(context)
@@ -93,12 +93,12 @@ class LocalDataModule {
     fun provideLibraryConfiguration(
         context: Context,
         songFilterProvider: SongFilterProvider,
-        @Exec(Exec.Type.QUERY) executor: Executor,
+        @ExecutorQualifier(ExecutorQualifier.Type.QUERY) executor: Executor,
     ): LibraryConfiguration {
         return LibraryConfiguration(context, songFilterProvider, executor)
     }
 
-    @Singleton
+    @ApplicationScope
     @Provides
     fun provideSongRepository(configuration: LibraryConfiguration): SongRepository {
         return SongRepositoryImpl(configuration)
@@ -112,61 +112,61 @@ class LocalDataModule {
         return SongWithPlayCountRepositoryImpl(configuration, repository)
     }
 
-    @Singleton
+    @ApplicationScope
     @Provides
     fun provideAlbumRepository(configuration: LibraryConfiguration): AlbumRepository {
         return AlbumRepositoryImpl(configuration)
     }
 
-    @Singleton
+    @ApplicationScope
     @Provides
     fun provideArtistRepository(configuration: LibraryConfiguration): ArtistRepository {
         return ArtistRepositoryImpl(configuration)
     }
 
-    @Singleton
+    @ApplicationScope
     @Provides
     fun provideGenreRepository(configuration: LibraryConfiguration): GenreRepository {
         return GenreRepositoryImpl(configuration)
     }
 
-    @Singleton
+    @ApplicationScope
     @Provides
     fun provideAlbumChunkRepository(configuration: LibraryConfiguration): AlbumChunkRepository {
         return AlbumChunkRepositoryImpl(configuration)
     }
 
-    @Singleton
+    @ApplicationScope
     @Provides
     fun provideArtistChunkRepository(configuration: LibraryConfiguration): ArtistChunkRepository {
         return ArtistChunkRepositoryImpl(configuration)
     }
 
-    @Singleton
+    @ApplicationScope
     @Provides
     fun provideGenreChunkRepository(configuration: LibraryConfiguration): GenreChunkRepository {
         return GenreChunkRepositoryImpl(configuration)
     }
 
-    @Singleton
+    @ApplicationScope
     @Provides
     fun providePlaylistChunkRepository(configuration: LibraryConfiguration): PlaylistChunkRepository {
         return PlaylistChunkRepositoryImpl(configuration)
     }
 
-    @Singleton
+    @ApplicationScope
     @Provides
     fun providePlaylistRepository(configuration: LibraryConfiguration): PlaylistRepository {
         return PlaylistRepositoryImpl(configuration)
     }
 
-    @Singleton
+    @ApplicationScope
     @Provides
     fun provideMyFileRepository(configuration: LibraryConfiguration): MyFileRepository {
         return MyFileRepositoryImpl(configuration)
     }
 
-    @Singleton
+    @ApplicationScope
     @Provides
     fun provideMediaFileRepository(
         configuration: LibraryConfiguration,
@@ -179,13 +179,13 @@ class LocalDataModule {
         }
     }
 
-    @Singleton
+    @ApplicationScope
     @Provides
     fun provideLyricsLocalRepository(context: Context): LyricsLocalRepository {
         return LyricsLocalRepositoryImpl(context)
     }
 
-    @Singleton
+    @ApplicationScope
     @Provides
     fun provideGenericMediaRepository(
         context: Context,
@@ -209,31 +209,31 @@ class LocalDataModule {
         )
     }
 
-    @Singleton
+    @ApplicationScope
     @Provides
     fun providePresetRepository(context: Context): PresetRepository {
         return PresetRepositoryImpl(context)
     }
 
-    @Singleton
+    @ApplicationScope
     @Provides
     fun provideSoundResolver(): SoundResolver {
         return BASSSoundResolverImpl(BuildConfig.SOUND_FRAME_GAIN_COUNT)
     }
 
-    @Singleton
+    @ApplicationScope
     @Provides
     fun provideTooltipManager(context: Context): TooltipManager {
         return TooltipManagerImpl(context)
     }
 
-    @Singleton
+    @ApplicationScope
     @Provides
     fun providePlaylistTransferPreferences(context: Context): PlaylistTransferPreferences {
         return PlaylistTransferPreferencesImpl(context)
     }
 
-    @Singleton
+    @ApplicationScope
     @Provides
     fun provideAppearancePreferences(context: Context): AppearancePreferences {
         return AppearancePreferencesImpl(context)

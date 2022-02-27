@@ -7,10 +7,11 @@ import com.frolo.billing.playstore.PlayStoreBillingManagerImpl
 import com.frolo.billing.playstore.ForegroundActivityWatcher
 import com.frolo.muse.FrolomuseApp
 import com.frolo.muse.billing.TrialManager
+import com.frolo.muse.di.ApplicationScope
 import com.frolo.muse.interactor.billing.PremiumManager
 import dagger.Module
 import dagger.Provides
-import javax.inject.Singleton
+
 
 @Module
 class BillingModule constructor(
@@ -18,7 +19,7 @@ class BillingModule constructor(
 ) {
 
     @Provides
-    @Singleton
+    @ApplicationScope
     fun provideBillingManager(app: FrolomuseApp): BillingManager {
         val foregroundActivityWatcher = object : ForegroundActivityWatcher {
             override val context: Context get() = app

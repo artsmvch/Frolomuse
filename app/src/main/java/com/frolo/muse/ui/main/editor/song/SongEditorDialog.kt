@@ -17,7 +17,7 @@ import com.bumptech.glide.Glide
 import com.frolo.muse.R
 import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
-import com.frolo.muse.di.appComponent
+import com.frolo.muse.di.activityComponent
 import com.frolo.muse.glide.makeAlbumArtRequest
 import com.frolo.music.model.Song
 import com.frolo.muse.ui.base.BaseDialogFragment
@@ -31,9 +31,9 @@ import kotlinx.android.synthetic.main.dialog_song_editor.*
 class SongEditorDialog: BaseDialogFragment() {
 
     private val viewModel: SongEditorViewModel by lazy {
-        val vmFactory = SongEditorVMFactory(appComponent, song)
+        val vmFactory = SongEditorVMFactory(activityComponent, song)
         ViewModelProviders.of(this, vmFactory)
-                .get(SongEditorViewModel::class.java)
+            .get(SongEditorViewModel::class.java)
     }
 
     private val song: Song by serializableArg(ARG_SONG)

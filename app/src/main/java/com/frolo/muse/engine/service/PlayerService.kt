@@ -10,34 +10,24 @@ import android.widget.RemoteViews
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
-import com.frolo.audiofx.applicable.AudioFxApplicable
 import com.frolo.muse.BuildConfig
 import com.frolo.muse.Logger
 import com.frolo.muse.R
 import com.frolo.muse.common.*
-import com.frolo.muse.engine.*
-import com.frolo.audiofx.AudioFxImpl
 import com.frolo.muse.engine.service.PlayerService.Companion.newIntent
 import com.frolo.muse.engine.service.PlayerService.PlayerBinder
-import com.frolo.muse.engine.service.audiofx.DefaultAudioFxErrorHandler
-import com.frolo.muse.engine.service.observers.*
 import com.frolo.headset.createHeadsetHandler
-import com.frolo.muse.di.appComponent
-import com.frolo.muse.interactor.media.DispatchSongPlayedUseCase
-import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
-import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
-import com.frolo.muse.interactor.player.RestorePlayerStateUseCase
+import com.frolo.muse.di.ServiceComponent
+import com.frolo.muse.di.applicationComponent
+import com.frolo.muse.di.modules.ServiceModule
+import com.frolo.muse.engine.PlayerStateRestorer
+import com.frolo.muse.interactor.media.favourite.ChangeSongFavStatusUseCase
 import com.frolo.music.model.Song
-import com.frolo.muse.model.playback.PlaybackFadingParams
 import com.frolo.muse.repository.Preferences
-import com.frolo.muse.repository.PresetRepository
-import com.frolo.muse.repository.RemoteConfigRepository
 import com.frolo.muse.rx.RxService
-import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.sleeptimer.PlayerSleepTimer
 import com.frolo.muse.ui.main.MainActivity
 import com.frolo.player.*
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 
@@ -71,24 +61,14 @@ class PlayerService: RxService(), PlayerNotificationSender {
 
     private lateinit var player: Player
 
-    @Inject
-    lateinit var playerJournal: PlayerJournal
+    private lateinit var serviceComponent: ServiceComponent
+
     @Inject
     lateinit var preferences: Preferences
     @Inject
-    lateinit var presetRepository: PresetRepository
+    lateinit var changeSongFavStatusUseCase: ChangeSongFavStatusUseCase
     @Inject
-    lateinit var remoteConfigRepository: RemoteConfigRepository
-    @Inject
-    lateinit var schedulerProvider: SchedulerProvider
-    @Inject
-    lateinit var dispatchSongPlayedUseCase: DispatchSongPlayedUseCase
-    @Inject
-    lateinit var getIsFavouriteUseCase: GetIsFavouriteUseCase<Song>
-    @Inject
-    lateinit var changeFavouriteUseCase: ChangeFavouriteUseCase<Song>
-    @Inject
-    lateinit var restorePlayerStateUseCase: RestorePlayerStateUseCase
+    lateinit var playerStateRestorer: PlayerStateRestorer
 
     // HeadsetHandler is used to handle the status of the headset (connected, disconnected, etc.)
     private val headsetHandler = createHeadsetHandler(
@@ -154,15 +134,15 @@ class PlayerService: RxService(), PlayerNotificationSender {
     override fun onCreate() {
         super.onCreate()
 
-        // First, inject dependencies
-        appComponent.inject(this)
-
         // Setting up media session
         mediaSession = MediaSessionCompat(applicationContext, "frolomuse:player_service").apply {
             setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS)
             isActive = true
             setEmptyMetadata()
         }
+
+        serviceComponent = buildServiceComponent()
+        serviceComponent.inject(this)
 
         // The promise notification must be posted asap.
         // Why? Because initialization may take some time.
@@ -173,30 +153,8 @@ class PlayerService: RxService(), PlayerNotificationSender {
             postPromiseNotification()
         }
 
-        // Creating AudioFx
-        val audioFx: AudioFxApplicable = AudioFxImpl.getInstance(
-                this, Const.AUDIO_FX_PREFERENCES, DefaultAudioFxErrorHandler())
+        player = serviceComponent.providePlayerBuilder().build()
 
-        // Building player instance
-        player = PlayerImpl.newBuilder(this, audioFx)
-            .setDebug(BuildConfig.DEBUG)
-            .setPlayerJournal(playerJournal)
-            .setUseWakeLocks(quicklyGetIsPlayerWakeLockEnabled())
-            // Setting up repeat and shuffle modes
-            .setRepeatMode(preferences.loadRepeatMode())
-            .setShuffleMode(preferences.loadShuffleMode())
-            // Setting up playback fading strategy
-            .setPlaybackFadingStrategy(quicklyRestorePlaybackFadingStrategy())
-            // Adding all the necessary observers
-            .addObserver(InternalErrorHandler(this))
-            .addObserver(PlayerStateSaver(preferences))
-            .addObserver(SongPlayCounter(schedulerProvider, dispatchSongPlayedUseCase))
-            .addObserver(WidgetUpdater(this))
-            .addObserver(PlayerNotifier(this, getIsFavouriteUseCase, this))
-            .build()
-
-        // Attaching media session observer
-        MediaSessionObserver.attach(this, mediaSession, player)
         // Headset buttons handler
         mediaSession.setCallback(MediaSessionCallbackImpl(player))
 
@@ -209,30 +167,13 @@ class PlayerService: RxService(), PlayerNotificationSender {
         Logger.d(TAG, "Service created")
     }
 
-    private fun quicklyGetIsPlayerWakeLockEnabled(): Boolean {
-        return try {
-            remoteConfigRepository.isPlayerWakeLockEnabled()
-                .timeout(1, TimeUnit.SECONDS)
-                .blockingGet()
-        } catch (err: Throwable) {
-            Logger.e(err)
-            false
-        }
-    }
-
-    private fun quicklyRestorePlaybackFadingStrategy(): PlaybackFadingStrategy {
-        // Safely restoring the playback fading
-        val params: PlaybackFadingParams = try {
-            preferences.playbackFadingParams
-                .first(PlaybackFadingParams.none())
-                .timeout(3, TimeUnit.SECONDS)
-                .blockingGet()
-        } catch (err: Throwable) {
-            Logger.e(err)
-            if (DEBUG) throw err
-            PlaybackFadingParams.none()
-        }
-        return PlaybackFadingStrategy.withSmartStaticInterval(params.interval)
+    private fun buildServiceComponent(): ServiceComponent {
+        val serviceModule = ServiceModule(
+            service = this,
+            mediaSession = mediaSession,
+            notificationSender = this
+        )
+        return applicationComponent.serviceComponent(serviceModule)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -267,7 +208,7 @@ class PlayerService: RxService(), PlayerNotificationSender {
 
             COMMAND_CHANGE_FAV -> {
                 (intent.getSerializableExtra(EXTRA_SONG) as? Song)?.also { safeSong ->
-                    changeFavouriteUseCase.changeFavourite(safeSong).subscribeSafely()
+                    changeSongFavStatusUseCase.changeSongFavStatus(safeSong).subscribeSafely()
                 }
             }
         }
@@ -282,25 +223,19 @@ class PlayerService: RxService(), PlayerNotificationSender {
 
     override fun onDestroy() {
         Logger.d(TAG, "Service died. Cleaning callbacks")
-
         // Shutting down the player and disposing all the resources.
         // The player shutdown call should clear its observers by itself.
-
         player.shutdown()
-
         mediaSession.release()
-
         headsetHandler.dispose()
-
         unregisterReceiver(sleepTimerHandler)
-
         super.onDestroy()
     }
 
     private fun Player.performIntentAction(requireNonEmptyQueue: Boolean, action: Player.() -> Unit) {
         val queue = getCurrentQueue()
         if (requireNonEmptyQueue && queue.isNullOrEmpty()) {
-            restorePlayerStateUseCase
+            playerStateRestorer
                 .restorePlayerStateIfNeeded(this)
                 .doOnComplete { this.action() }
                 .subscribeSafely()

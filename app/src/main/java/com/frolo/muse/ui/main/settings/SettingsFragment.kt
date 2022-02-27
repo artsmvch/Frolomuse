@@ -19,7 +19,7 @@ import com.frolo.muse.Features
 import com.frolo.muse.R
 import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
-import com.frolo.muse.di.appComponent
+import com.frolo.muse.di.activityComponent
 import com.frolo.muse.logger.*
 import com.frolo.muse.mediascan.MediaScanService
 import com.frolo.muse.router.AppRouter
@@ -47,23 +47,23 @@ class SettingsFragment : PreferenceFragmentCompat(),
         ScrolledToTop {
 
     private val schedulerProvider: SchedulerProvider by lazy {
-        appComponent.provideSchedulerProvider()
+        activityComponent.provideSchedulerProvider()
     }
 
     private val preferences: Preferences by lazy {
-        appComponent.providePreferences()
+        activityComponent.providePreferences()
     }
 
     private val appearancePreferences: AppearancePreferences by lazy {
-        appComponent.provideAppearancePreferences()
+        activityComponent.provideAppearancePreferences()
     }
 
     private val appRouter: AppRouter by lazy {
-        appComponent.provideAppRouter()
+        activityComponent.provideAppRouter()
     }
 
     private val eventLogger: EventLogger by lazy {
-        appComponent.provideEventLogger()
+        activityComponent.provideEventLogger()
     }
 
     private val buyPremiumPreference: Preference? get() = findPreference("buy_premium")
@@ -75,7 +75,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
     private val donatePreference: Preference? get() = findPreference("donate")
 
     private val settingsViewModel: SettingsViewModel by lazy {
-        val viewModelFactory = appComponent.provideViewModelFactory()
+        val viewModelFactory = activityComponent.provideViewModelFactory()
         ViewModelProviders.of(this, viewModelFactory)[SettingsViewModel::class.java]
     }
 

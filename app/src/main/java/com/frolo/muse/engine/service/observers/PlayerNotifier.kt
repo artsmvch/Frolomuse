@@ -8,8 +8,8 @@ import com.frolo.player.Player
 import com.frolo.player.SimplePlayerObserver
 import com.frolo.muse.engine.service.PlayerNotificationParams
 import com.frolo.muse.engine.service.PlayerNotificationSender
-import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
 import com.frolo.music.model.Song
+import com.frolo.music.repository.SongRepository
 import com.frolo.rx.flowable.doOnNextIndexed
 import com.frolo.rx.flowable.withDefaultItemDelayed
 import io.reactivex.Flowable
@@ -27,7 +27,7 @@ import java.util.concurrent.atomic.AtomicReference
  */
 class PlayerNotifier constructor(
     private val context: Context,
-    private val getIsFavouriteUseCase: GetIsFavouriteUseCase<Song>,
+    private val songRepository: SongRepository,
     private val sender: PlayerNotificationSender
 ): SimplePlayerObserver() {
 
@@ -75,7 +75,7 @@ class PlayerNotifier constructor(
             .onErrorReturnItem(defaultParams)
             .flatMapPublisher { playerNtf ->
                 if (song != null) {
-                    getIsFavouriteUseCase.isFavourite(song)
+                    songRepository.isFavourite(song)
                         .map { isFav -> playerNtf.copy(isFavourite = isFav) }
                 } else {
                     // If the song is null, then we use the default notification

@@ -1,5 +1,6 @@
 package com.frolo.muse.di.modules
 
+import com.frolo.muse.di.ActivityScope
 import com.frolo.player.Player
 import com.frolo.muse.interactor.feature.FeaturesUseCase
 import com.frolo.muse.router.AppRouter
@@ -7,7 +8,6 @@ import com.frolo.muse.interactor.media.*
 import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
 import com.frolo.muse.interactor.media.get.*
 import com.frolo.muse.interactor.player.ControlPlayerUseCase
-import com.frolo.muse.interactor.player.RestorePlayerStateUseCase
 import com.frolo.muse.interactor.rate.RateUseCase
 import com.frolo.muse.repository.*
 import com.frolo.muse.rx.SchedulerProvider
@@ -15,11 +15,10 @@ import com.frolo.music.model.*
 import com.frolo.music.repository.*
 import dagger.Module
 import dagger.Provides
-import javax.inject.Singleton
 
 
 @Module
-abstract class UseCaseModule {
+abstract class ActivityUseCaseModule {
 
     @Module
     companion object {
@@ -592,89 +591,80 @@ abstract class UseCaseModule {
         @Provides
         @JvmStatic
         fun provideChangeFavouriteMediaUseCase(
-            schedulerProvider: SchedulerProvider,
             repository: GenericMediaRepository
         ): ChangeFavouriteUseCase<Media> {
-            return ChangeFavouriteUseCase(schedulerProvider, repository)
+            return ChangeFavouriteUseCase(repository)
         }
 
         @Provides
         @JvmStatic
         fun provideChangeFavouriteArtistUseCase(
-            schedulerProvider: SchedulerProvider,
             repository: ArtistRepository
         ): ChangeFavouriteUseCase<Artist> {
-            return ChangeFavouriteUseCase(schedulerProvider, repository)
+            return ChangeFavouriteUseCase(repository)
         }
 
         @Provides
         @JvmStatic
         fun provideChangeFavouriteAlbumUseCase(
-            schedulerProvider: SchedulerProvider,
             repository: AlbumRepository
         ): ChangeFavouriteUseCase<Album> {
-            return ChangeFavouriteUseCase(schedulerProvider, repository)
+            return ChangeFavouriteUseCase(repository)
         }
 
         @Provides
         @JvmStatic
         fun provideChangeFavouriteGenreUseCase(
-            schedulerProvider: SchedulerProvider,
             repository: GenreRepository
         ): ChangeFavouriteUseCase<Genre> {
-            return ChangeFavouriteUseCase(schedulerProvider, repository)
+            return ChangeFavouriteUseCase(repository)
         }
 
         @Provides
         @JvmStatic
         fun provideChangeFavouritePlaylistUseCase(
-            schedulerProvider: SchedulerProvider,
             repository: PlaylistRepository
         ): ChangeFavouriteUseCase<Playlist> {
-            return ChangeFavouriteUseCase(schedulerProvider, repository)
+            return ChangeFavouriteUseCase(repository)
         }
 
         @Provides
         @JvmStatic
         fun provideChangeFavouriteSongUseCase(
-            schedulerProvider: SchedulerProvider,
             repository: SongRepository
         ): ChangeFavouriteUseCase<Song> {
-            return ChangeFavouriteUseCase(schedulerProvider, repository)
+            return ChangeFavouriteUseCase(repository)
         }
 
         @Provides
         @JvmStatic
         fun provideChangeFavouriteSongWithPlayCountUseCase(
-            schedulerProvider: SchedulerProvider,
             repository: SongWithPlayCountRepository
         ): ChangeFavouriteUseCase<SongWithPlayCount> {
-            return ChangeFavouriteUseCase(schedulerProvider, repository)
+            return ChangeFavouriteUseCase(repository)
         }
 
         @Provides
         @JvmStatic
         fun provideChangeFavouriteMyFileUseCase(
-            schedulerProvider: SchedulerProvider,
             repository: MyFileRepository
         ): ChangeFavouriteUseCase<MyFile> {
-            return ChangeFavouriteUseCase(schedulerProvider, repository)
+            return ChangeFavouriteUseCase(repository)
         }
 
         @Provides
         @JvmStatic
         fun provideChangeFavouriteMediaFileUseCase(
-            schedulerProvider: SchedulerProvider,
             repository: MediaFileRepository
         ): ChangeFavouriteUseCase<MediaFile> {
-            return ChangeFavouriteUseCase(schedulerProvider, repository)
+            return ChangeFavouriteUseCase(repository)
         }
 
         /* **********************************
         * ********** Rate Use Case **********
         * ******************************** */
 
-        @Singleton
+        @ActivityScope
         @Provides
         @JvmStatic
         fun provideRateUseCase(
@@ -686,36 +676,9 @@ abstract class UseCaseModule {
         }
 
         /* **********************************
-        * ** Restore Player State Use Case **
-        * ******************************** */
-
-        @Singleton
-        @Provides
-        @JvmStatic
-        fun provideRestorePlayerStateUseCase(
-            schedulerProvider: SchedulerProvider,
-            songRepository: SongRepository,
-            albumRepository: AlbumRepository,
-            artistRepository: ArtistRepository,
-            genreRepository: GenreRepository,
-            playlistRepository: PlaylistRepository,
-            preferences: Preferences
-        ): RestorePlayerStateUseCase {
-            return RestorePlayerStateUseCase(
-                schedulerProvider,
-                songRepository,
-                albumRepository,
-                artistRepository,
-                genreRepository,
-                playlistRepository,
-                preferences
-            )
-        }
-
-        /* **********************************
         * ***** Control Player Use Case *****
         * ******************************** */
-        @Singleton
+        @ActivityScope
         @Provides
         @JvmStatic
         fun provideControlPlayerUseCase(
@@ -731,7 +694,7 @@ abstract class UseCaseModule {
         * **** Song Play Count Use Case ****
         * ******************************** */
         @Provides
-        @Singleton
+        @ActivityScope
         @JvmStatic
         fun provideDispatchSongPlayedUseCase(
             schedulerProvider: SchedulerProvider,
@@ -744,7 +707,7 @@ abstract class UseCaseModule {
         * ******** Features Use Case ********
         * ******************************** */
         @Provides
-        @Singleton
+        @ActivityScope
         @JvmStatic
         fun provideFeaturesUseCase(
             remoteConfigRepository: RemoteConfigRepository,

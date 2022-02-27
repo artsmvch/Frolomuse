@@ -33,9 +33,16 @@ import com.frolo.muse.*
 import com.frolo.muse.BuildConfig
 import com.frolo.muse.R
 import com.frolo.muse.android.ViewAppSettingsIntent
+import com.frolo.muse.android.getIntExtraOrNull
+import com.frolo.muse.android.getIntOrNull
 import com.frolo.muse.android.startActivitySafely
 import com.frolo.muse.arch.observe
-import com.frolo.muse.di.appComponent
+import com.frolo.muse.di.ActivityComponent
+import com.frolo.muse.di.ActivityComponentHolder
+import com.frolo.muse.di.applicationComponent
+import com.frolo.muse.di.impl.navigator.AppRouterImpl
+import com.frolo.muse.di.modules.ActivityModule
+import com.frolo.muse.engine.PlayerWrapper
 import com.frolo.player.Player
 import com.frolo.muse.rx.disposeOnDestroyOf
 import com.frolo.muse.rx.subscribeSafely
@@ -50,6 +57,7 @@ import com.frolo.muse.ui.main.library.search.SearchFragment
 import com.frolo.muse.ui.main.player.mini.MiniPlayerFragment
 import com.frolo.muse.ui.main.settings.AppBarSettingsFragment
 import com.frolo.music.model.*
+import com.frolo.ui.ActivityUtils
 import com.frolo.ui.FragmentUtils
 import com.frolo.ui.StyleUtils
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -67,22 +75,23 @@ import kotlin.math.max
 import kotlin.math.pow
 
 
-// TODO: show some splash until the player is connected and the fragment are loaded
 class MainActivity : PlayerHostActivity(),
         SimpleFragmentNavigator,
         PlayerSheetCallback,
-        ThemeHandler {
+        ThemeHandler,
+        ActivityComponentHolder {
 
-    // Reference to the presentation layer
+    private val playerWrapper = PlayerWrapper(enableStrictMode = BuildInfo.isDebug())
+
+    override val activityComponent: ActivityComponent by lazy { buildActivityComponent() }
+
     private val viewModel: MainViewModel by lazy {
-        val vmFactory = appComponent.provideViewModelFactory()
+        val vmFactory = activityComponent.provideViewModelFactory()
         ViewModelProviders.of(this, vmFactory).get(MainViewModel::class.java)
     }
 
     // Fragment controller
-    private var fragNavControllerInitialized: Boolean = false
     private var fragNavController: FragNavController? = null
-    private var currTabIndex: Int = TAB_INDEX_DEFAULT
 
     // Rate Dialog
     private var rateDialog: Dialog? = null
@@ -187,41 +196,30 @@ class MainActivity : PlayerHostActivity(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_main)
-
-        loadUI()
-
-        // we need to determine the index
-        currTabIndex = if (savedInstanceState != null && savedInstanceState.containsKey(EXTRA_TAB_INDEX)) {
-            savedInstanceState.getInt(EXTRA_TAB_INDEX, TAB_INDEX_DEFAULT)
-        } else {
-            intent?.getIntExtra(EXTRA_TAB_INDEX, TAB_INDEX_DEFAULT) ?: TAB_INDEX_DEFAULT
-        }
-
-        requireFrolomuseApp().onFragmentNavigatorCreated(this)
-
-        observeViewModel(this)
-
+        loadUi()
         supportFragmentManager.registerFragmentLifecycleCallbacks(fragmentLifecycleCallbacks, true)
-
         observeScanStatus()
-
         maybeInitializeFragments(player, savedInstanceState)
-
-        // TODO: need to postpone the handling of the intent cause fragments may not be initialized
         handleIntent(intent)
-
-        // TODO: uncomment this when you need to show the greetings
-        //maybeShowGreetings()
-
+        observeViewModel(this)
         if (savedInstanceState == null) {
             viewModel.onFirstCreate()
         }
     }
 
+    private fun buildActivityComponent(): ActivityComponent {
+        return applicationComponent.activityComponent(
+            activityModule = ActivityModule(
+                player = playerWrapper,
+                router = AppRouterImpl(this)
+            )
+        )
+    }
+
     private fun maybeShowGreetings() {
-        preferences.shouldShowGreetings()
+        preferences
+            .shouldShowGreetings()
             .first(false)
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSuccess { shouldShow -> if (shouldShow) GreetingsActivity.show(this) }
@@ -229,7 +227,7 @@ class MainActivity : PlayerHostActivity(),
             .disposeOnDestroyOf(this)
     }
 
-    private fun loadUI() {
+    private fun loadUi() {
         bottom_navigation_view.background = MaterialShapeDrawable().apply {
             fillColor = ColorStateList.valueOf(colorSurface)
             shapeAppearanceModel = ShapeAppearanceModel.builder()
@@ -273,9 +271,7 @@ class MainActivity : PlayerHostActivity(),
 
     override fun onStart() {
         super.onStart()
-
         viewModel.onStart()
-
         // The best place to re-try initializing fragments, because after calling
         // super.onStart(), the state of the fragment manager is not saved.
         maybeInitializeFragments(player, lastSavedInstanceState)
@@ -293,11 +289,6 @@ class MainActivity : PlayerHostActivity(),
 
     override fun onStop() {
         viewModel.onStop()
-
-        if (isFinishing) {
-            supportFragmentManager.unregisterFragmentLifecycleCallbacks(fragmentLifecycleCallbacks)
-        }
-
         super.onStop()
     }
 
@@ -307,7 +298,6 @@ class MainActivity : PlayerHostActivity(),
             removeBottomSheetCallback(bottomSheetCallback)
         }
         supportFragmentManager.unregisterFragmentLifecycleCallbacks(fragmentLifecycleCallbacks)
-        requireFrolomuseApp().onFragmentNavigatorDestroyed()
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -349,7 +339,9 @@ class MainActivity : PlayerHostActivity(),
 
     public override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putInt(EXTRA_TAB_INDEX, currTabIndex)
+        fragNavController?.currentStackIndex?.also { stackIndex ->
+            outState.putInt(EXTRA_TAB_INDEX, stackIndex)
+        }
         fragNavController?.onSaveInstanceState(outState)
     }
 
@@ -446,17 +438,22 @@ class MainActivity : PlayerHostActivity(),
     }
 
     override fun playerDidConnect(player: Player) {
-        (application as PlayerUiConnectionCallback)
-            .onPlayerConnectedToUi(this, player)
+        playerWrapper.attachBase(player)
         viewModel.onPlayerConnected(player)
         maybeInitializeFragments(player, lastSavedInstanceState)
     }
 
     override fun playerDidDisconnect(player: Player) {
         viewModel.onPlayerDisconnected()
+        // In order to avoid memory leaks, we do not want to detach the base until
+        // all the fragments and their view models in the activity component have
+        // released their resources associated with the disconnected player.
+        // In this case, we wait until the activity is finally destroyed.
+        ActivityUtils.runOnFinalDestroy(this) {
+            playerWrapper.detachBase()
+        }
+        // The player is disconnected. No need to stay here anymore.
         finish()
-        (application as PlayerUiConnectionCallback)
-            .onPlayerDisconnectedFromUi(this, player)
     }
 
     /**
@@ -469,16 +466,22 @@ class MainActivity : PlayerHostActivity(),
             return false
         }
 
-        if (fragNavControllerInitialized) {
+        if (fragNavController != null) {
+            // It was initialized before.
             return false
         }
 
         val fragmentManager = supportFragmentManager
-
         if (fragmentManager.isStateSaved) {
             // FragmentManager's state is saved, we cannot perform any operation on it.
             return false
         }
+
+        // Extracting tab index, if any
+        val tabIndex: Int =
+            savedInstanceState?.getIntOrNull(EXTRA_TAB_INDEX) ?:
+            notHandledIntent?.getIntExtraOrNull(EXTRA_TAB_INDEX) ?:
+            TAB_INDEX_DEFAULT
 
         fragNavController = FragNavController(fragmentManager, R.id.container).apply {
             defaultTransactionOptions = FragNavTransactionOptions
@@ -506,32 +509,28 @@ class MainActivity : PlayerHostActivity(),
 
             }
 
-            initialize(currTabIndex, savedInstanceState)
+            initialize(tabIndex, savedInstanceState)
         }
 
         bottom_navigation_view.setOnNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.nav_library -> {
                     fragNavController?.doIfStateNotSaved { switchTab(INDEX_LIBRARY) }
-                    currTabIndex = 0
                     true
                 }
 
                 R.id.nav_equalizer -> {
                     fragNavController?.doIfStateNotSaved { switchTab(INDEX_EQUALIZER) }
-                    currTabIndex = 1
                     true
                 }
 
                 R.id.nav_search -> {
                     fragNavController?.doIfStateNotSaved { switchTab(INDEX_SEARCH) }
-                    currTabIndex = 2
                     true
                 }
 
                 R.id.nav_settings -> {
                     fragNavController?.doIfStateNotSaved { switchTab(INDEX_SETTINGS) }
-                    currTabIndex = 3
                     true
                 }
 
@@ -558,7 +557,7 @@ class MainActivity : PlayerHostActivity(),
             }
         }
 
-        val targetMenuId = getBottomMenuItemId(currTabIndex)
+        val targetMenuId = getBottomMenuItemId(tabIndex)
         if (bottom_navigation_view.selectedItemId != targetMenuId) {
             bottom_navigation_view.selectedItemId = targetMenuId
         }
@@ -582,8 +581,6 @@ class MainActivity : PlayerHostActivity(),
             }
         }
 
-        fragNavControllerInitialized = true
-
         notHandledIntent?.also { safeIntent ->
             handleIntent(safeIntent)
         }
@@ -599,7 +596,8 @@ class MainActivity : PlayerHostActivity(),
             INDEX_SEARCH ->     R.id.nav_search
             INDEX_SETTINGS ->   R.id.nav_settings
             else -> {
-                DebugUtils.dumpOnMainThread(IllegalStateException("Unexpected tab index: $currTabIndex"))
+                DebugUtils.dumpOnMainThread(IllegalStateException(
+                    "Unexpected tab index: $tabIndex"))
                 R.id.nav_library
             }
         }
@@ -612,8 +610,9 @@ class MainActivity : PlayerHostActivity(),
      * it will be handled later when the fragments are initialized.
      */
     private fun handleIntent(intent: Intent) {
-        if (!fragNavControllerInitialized) {
-            // Fragments are not initialized yet
+        val safeNavController = fragNavController
+        if (safeNavController == null || safeNavController.isStateSaved) {
+            // Fragments are not initialized yet, or the state is saved
             notHandledIntent = intent
             return
         }
@@ -631,15 +630,15 @@ class MainActivity : PlayerHostActivity(),
             val mediaId = intent.getLongExtra(EXTRA_NAV_MEDIA_ID, Media.NO_ID)
             viewModel.onNavigateToMediaIntent(kindOfMedia, mediaId)
         } else {
-            // TODO: Actually this also must have a specific action
+            val currTabIndex = safeNavController.currentStackIndex
             val tabIndexExtra = intent.getIntExtra(EXTRA_TAB_INDEX, currTabIndex)
             if (tabIndexExtra != currTabIndex) {
                 bottom_navigation_view.selectedItemId = when (tabIndexExtra) {
-                    INDEX_LIBRARY -> R.id.nav_library
-                    INDEX_EQUALIZER -> R.id.nav_equalizer
-                    INDEX_SEARCH -> R.id.nav_search
-                    INDEX_SETTINGS -> R.id.nav_settings
-                    else -> R.id.nav_library
+                    INDEX_LIBRARY ->    R.id.nav_library
+                    INDEX_EQUALIZER ->  R.id.nav_equalizer
+                    INDEX_SEARCH ->     R.id.nav_search
+                    INDEX_SETTINGS ->   R.id.nav_settings
+                    else ->             R.id.nav_library
                 }
             }
         }

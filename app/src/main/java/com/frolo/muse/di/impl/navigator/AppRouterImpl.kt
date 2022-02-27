@@ -1,9 +1,6 @@
 package com.frolo.muse.di.impl.navigator
 
-import com.frolo.billing.ProductId
-import com.frolo.muse.di.appComponent
 import com.frolo.muse.router.AppRouter
-import com.frolo.muse.rx.subscribeSafely
 import com.frolo.muse.ui.*
 import com.frolo.muse.ui.main.MainActivity
 import com.frolo.muse.ui.main.audiofx.params.PlaybackParamsDialog
@@ -28,7 +25,9 @@ import com.frolo.music.model.*
 import java.io.File
 
 
-class AppRouterImpl(private val root: MainActivity) : AppRouter {
+class AppRouterImpl constructor(
+    private val root: MainActivity
+) : AppRouter {
 
     override fun goToStore() {
         root.goToStore()
@@ -169,13 +168,6 @@ class AppRouterImpl(private val root: MainActivity) : AppRouter {
     override fun offerToBuyPremium(allowTrialActivation: Boolean) {
         val dialog = BuyPremiumDialog.newInstance(allowTrialActivation)
         root.pushDialog(dialog)
-    }
-
-    override fun launchBillingFlow(productId: ProductId) {
-        appComponent
-            .provideBillingManager()
-            .launchBillingFlow(productId)
-            .subscribeSafely()
     }
 
     override fun openDonations() {

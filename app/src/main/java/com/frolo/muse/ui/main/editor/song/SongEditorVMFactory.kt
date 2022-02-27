@@ -3,7 +3,7 @@ package com.frolo.muse.ui.main.editor.song
 import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.frolo.muse.di.ComponentInjector
+import com.frolo.muse.di.ActivityComponentInjector
 import com.frolo.player.Player
 import com.frolo.muse.logger.EventLogger
 import com.frolo.music.model.Song
@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 
 class SongEditorVMFactory constructor(
-    injector: ComponentInjector,
+    injector: ActivityComponentInjector,
     private val song: Song
 ): ViewModelProvider.Factory {
 

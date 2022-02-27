@@ -4,8 +4,8 @@ import com.frolo.muse.common.toSong
 import com.frolo.player.AudioSource
 import com.frolo.player.Player
 import com.frolo.player.SimplePlayerObserver
-import com.frolo.muse.interactor.media.DispatchSongPlayedUseCase
 import com.frolo.muse.rx.SchedulerProvider
+import com.frolo.music.repository.SongRepository
 import com.frolo.stopwatch.Stopwatch
 import com.frolo.stopwatch.Stopwatches
 import io.reactivex.disposables.CompositeDisposable
@@ -20,7 +20,7 @@ import io.reactivex.disposables.CompositeDisposable
  */
 class SongPlayCounter constructor(
     private val schedulerProvider: SchedulerProvider,
-    private val dispatchSongPlayedUseCase: DispatchSongPlayedUseCase
+    private val songRepository: SongRepository
 ): SimplePlayerObserver() {
 
     private val internalDisposables = CompositeDisposable()
@@ -51,7 +51,7 @@ class SongPlayCounter constructor(
         if (isPlayed && !wasCurrentItemChecked) {
             wasCurrentItemChecked = true
             currentItem?.also { safeItem ->
-                dispatchSongPlayedUseCase.dispatchSongPlayed(safeItem.toSong())
+                songRepository.addSongPlayCount(safeItem.toSong(), 1)
                     .observeOn(schedulerProvider.main())
                     .doOnSubscribe { internalDisposables.add(it) }
                     .subscribe()

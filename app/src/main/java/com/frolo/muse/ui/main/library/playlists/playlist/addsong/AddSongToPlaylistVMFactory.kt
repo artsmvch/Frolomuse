@@ -2,8 +2,8 @@ package com.frolo.muse.ui.main.library.playlists.playlist.addsong
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.frolo.muse.di.ComponentInjector
-import com.frolo.muse.di.ComponentProvider
+import com.frolo.muse.di.ActivityComponentInjector
+import com.frolo.muse.di.ActivityComponentProvider
 import com.frolo.muse.interactor.media.AddSongToPlaylistUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.music.model.Playlist
@@ -13,8 +13,8 @@ import javax.inject.Inject
 
 
 class AddSongToPlaylistVMFactory constructor(
-    injector: ComponentInjector,
-    provider: ComponentProvider,
+    injector: ActivityComponentInjector,
+    provider: ActivityComponentProvider,
     playlistArg: Playlist
 ): ViewModelProvider.Factory {
 

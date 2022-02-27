@@ -5,6 +5,7 @@ import com.frolo.billing.appgallery.AppGalleryBillingManagerImpl
 import com.frolo.muse.FrolomuseApp
 import com.frolo.muse.billing.TrialManager
 import com.frolo.muse.interactor.billing.PremiumManager
+import com.frolo.muse.di.ApplicationScope
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -15,7 +16,7 @@ class BillingModule constructor(
 ) {
 
     @Provides
-    @Singleton
+    @ApplicationScope
     fun provideBillingManager(app: FrolomuseApp): BillingManager {
         return AppGalleryBillingManagerImpl(isDebug)
     }

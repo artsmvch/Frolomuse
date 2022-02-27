@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.frolo.muse.arch.EventLiveData
 import com.frolo.muse.arch.SingleLiveEvent
 import com.frolo.muse.arch.call
+import com.frolo.muse.engine.PlayerStateRestorer
 import com.frolo.player.Player
 import com.frolo.muse.interactor.billing.PremiumManager
 import com.frolo.muse.interactor.feature.FeaturesUseCase
@@ -12,7 +13,6 @@ import com.frolo.muse.interactor.firebase.SyncFirebaseMessagingTokenUseCase
 import com.frolo.muse.interactor.media.TransferPlaylistsUseCase
 import com.frolo.muse.interactor.media.shortcut.NavigateToMediaUseCase
 import com.frolo.muse.interactor.player.OpenAudioSourceUseCase
-import com.frolo.muse.interactor.player.RestorePlayerStateUseCase
 import com.frolo.muse.interactor.rate.RateUseCase
 import com.frolo.muse.logger.*
 import com.frolo.music.model.Media
@@ -38,7 +38,7 @@ import javax.inject.Inject
  */
 class MainViewModel @Inject constructor(
     private val rateUseCase: RateUseCase,
-    private val restorePlayerStateUseCase: RestorePlayerStateUseCase,
+    private val playerStateRestorer: PlayerStateRestorer,
     private val openAudioSourceUseCase: OpenAudioSourceUseCase,
     private val navigateToMediaUseCase: NavigateToMediaUseCase,
     private val syncFirebaseMessagingTokenUseCase: SyncFirebaseMessagingTokenUseCase,
@@ -94,7 +94,7 @@ class MainViewModel @Inject constructor(
         val player: Player = _player ?: return
 
         if (permissionChecker.isQueryMediaContentPermissionGranted) {
-            restorePlayerStateUseCase
+            playerStateRestorer
                 .restorePlayerStateIfNeeded(player)
                 .observeOn(schedulerProvider.main())
                 .subscribe(

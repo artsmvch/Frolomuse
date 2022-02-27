@@ -8,7 +8,7 @@ import android.view.Window
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.frolo.muse.*
-import com.frolo.muse.di.appComponent
+import com.frolo.muse.di.applicationComponent
 import com.frolo.muse.model.ThemeUtils
 import com.frolo.muse.repository.Preferences
 import com.frolo.ui.SystemBarUtils
@@ -25,8 +25,7 @@ abstract class BaseActivity: AppCompatActivity() {
 
     override fun attachBaseContext(newBase: Context?) {
         if (Features.isLanguageChooserFeatureAvailable() && newBase != null) {
-            appComponent.inject(this)
-
+            newBase.applicationComponent.inject(this)
             // First, get the language from the preferences
             var targetLang: String? = preferences.language
             if (targetLang.isNullOrEmpty()) {
@@ -45,7 +44,7 @@ abstract class BaseActivity: AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        appComponent.inject(this)
+        applicationComponent.inject(this)
         applySavedTheme()
         super.onCreate(savedInstanceState)
     }

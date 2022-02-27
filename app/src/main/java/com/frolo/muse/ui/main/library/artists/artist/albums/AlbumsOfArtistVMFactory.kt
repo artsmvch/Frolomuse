@@ -2,8 +2,8 @@ package com.frolo.muse.ui.main.library.artists.artist.albums
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.frolo.muse.di.ComponentInjector
-import com.frolo.muse.di.ComponentProvider
+import com.frolo.muse.di.ActivityComponentInjector
+import com.frolo.muse.di.ActivityComponentProvider
 import com.frolo.muse.router.AppRouter
 import com.frolo.muse.interactor.media.*
 import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
@@ -19,8 +19,8 @@ import javax.inject.Inject
 
 
 class AlbumsOfArtistVMFactory constructor(
-    injector: ComponentInjector,
-    provider: ComponentProvider,
+    injector: ActivityComponentInjector,
+    provider: ActivityComponentProvider,
     artist: Artist
 ): ViewModelProvider.Factory {
 

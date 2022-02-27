@@ -2,8 +2,8 @@ package com.frolo.muse.ui.main.library.playlists.addmedia
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.frolo.muse.di.ComponentInjector
-import com.frolo.muse.di.ComponentProvider
+import com.frolo.muse.di.ActivityComponentInjector
+import com.frolo.muse.di.ActivityComponentProvider
 import com.frolo.muse.router.AppRouter
 import com.frolo.muse.interactor.media.AddMediaToPlaylistUseCase
 import com.frolo.muse.logger.EventLogger
@@ -13,8 +13,8 @@ import javax.inject.Inject
 
 
 class AddMediaToPlaylistVMFactory constructor(
-    injector: ComponentInjector,
-    provider: ComponentProvider,
+    injector: ActivityComponentInjector,
+    provider: ActivityComponentProvider,
     itemsArg: List<Media>
 ): ViewModelProvider.Factory {
 

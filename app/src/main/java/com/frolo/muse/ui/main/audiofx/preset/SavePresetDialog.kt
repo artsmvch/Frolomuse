@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.frolo.muse.R
 import com.frolo.muse.arch.observeNonNull
 import com.frolo.audiofx.CustomPreset
-import com.frolo.muse.di.appComponent
+import com.frolo.muse.di.activityComponent
 import com.frolo.muse.ui.main.library.base.inputname.AbsInputNameDialog
 
 
@@ -29,7 +29,7 @@ class SavePresetDialog : AbsInputNameDialog() {
 
     private val viewModel: SavePresetViewModel by lazy {
         val bandLevels = getLevelsArg(requireArguments())
-        val vmFactory = SavePresetVMFactory(appComponent, bandLevels)
+        val vmFactory = SavePresetVMFactory(activityComponent, bandLevels)
         ViewModelProviders.of(this, vmFactory)
                 .get(SavePresetViewModel::class.java)
     }

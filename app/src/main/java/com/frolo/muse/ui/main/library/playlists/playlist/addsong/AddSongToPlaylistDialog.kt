@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.frolo.muse.R
 import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
-import com.frolo.muse.di.appComponent
+import com.frolo.muse.di.activityComponent
 import com.frolo.music.model.Playlist
 import com.frolo.music.model.Song
 import com.frolo.muse.thumbnails.provideThumbnailLoader
@@ -25,7 +25,7 @@ class AddSongToPlaylistDialog: BaseDialogFragment() {
 
     private val viewModel: AddSongToPlaylistViewModel by lazy {
         val playlist = requireArguments().getSerializable(ARG_PLAYLIST) as Playlist
-        val vmFactory = AddSongToPlaylistVMFactory(appComponent, appComponent, playlist)
+        val vmFactory = AddSongToPlaylistVMFactory(activityComponent, activityComponent, playlist)
         ViewModelProviders.of(this, vmFactory)
                 .get(AddSongToPlaylistViewModel::class.java)
     }

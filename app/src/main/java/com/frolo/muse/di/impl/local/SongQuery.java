@@ -20,6 +20,7 @@ import com.frolo.music.model.SongFilter;
 import com.frolo.music.model.SongWithPlayCount;
 import com.frolo.rxcontent.CursorMapper;
 import com.frolo.rxcontent.RxContent;
+import com.frolo.threads.ThreadStrictMode;
 
 import org.reactivestreams.Publisher;
 
@@ -343,7 +344,8 @@ import io.reactivex.functions.Function;
     }
 
     static Completable changeFavourite(ContentResolver resolver, Song item) {
-        return Completable.fromCallable((Callable<Boolean>) () -> {
+        Completable source = Completable.fromCallable((Callable<Boolean>) () -> {
+            ThreadStrictMode.assertBackground();
             Uri uri = ContentUris.withAppendedId(AppMediaStore.Favourites.getContentUri(), item.getId());
             Cursor cursor = resolver.query(uri, new String[0], null, null, null);
 
@@ -383,11 +385,12 @@ import io.reactivex.functions.Function;
                 return false;
             }
         });
+        return source.subscribeOn(ContentExecutors.workerScheduler());
     }
 
     static Completable update(
             ContentResolver resolver, Song item, String title, String album, String artist, String genre) {
-        return Completable.fromAction(() -> {
+        Completable source = Completable.fromAction(() -> {
             ContentValues cv = new ContentValues();
             cv.put(MediaStore.Audio.Media.TITLE, title);
             cv.put(MediaStore.Audio.Media.ALBUM, album);
@@ -404,6 +407,7 @@ import io.reactivex.functions.Function;
                 // TODO: throw an exception if it failed to update
             }
         });
+        return source.subscribeOn(ContentExecutors.workerScheduler());
     }
 
     //region SongWithPlayCount queries
@@ -437,7 +441,9 @@ import io.reactivex.functions.Function;
                 emitter.onNext(targetPath);
             }
         }, BackpressureStrategy.LATEST)
+            .observeOn(ContentExecutors.workerScheduler())
             .map(ignored -> {
+                ThreadStrictMode.assertBackground();
                 final Uri uri = AppMediaStore.SongPlayCount.getContentUri();
 
                 final String[] projection = new String[] {
@@ -529,7 +535,8 @@ import io.reactivex.functions.Function;
     }
 
     static Completable addSongPlayCount(ContentResolver resolver, Song song, int delta) {
-        return Completable.fromAction(() -> {
+        Completable source = Completable.fromAction(() -> {
+            ThreadStrictMode.assertBackground();
             final Uri uri = AppMediaStore.SongPlayCount.getContentUri();
             final String[] projection = new String[] { AppMediaStore.SongPlayCount.PLAY_COUNT };
             final String selection = AppMediaStore.SongPlayCount.ABSOLUTE_PATH + "=?";
@@ -578,6 +585,7 @@ import io.reactivex.functions.Function;
 
             SongPlayCounter.dispatchChanged(song.getSource());
         });
+        return source.subscribeOn(ContentExecutors.workerScheduler());
     }
 
     //endregion

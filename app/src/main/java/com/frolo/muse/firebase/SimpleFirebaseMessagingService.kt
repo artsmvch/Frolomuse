@@ -17,25 +17,23 @@ import com.frolo.muse.R
 import com.frolo.muse.android.ViewAppInStoreIntent
 import com.frolo.muse.android.canStartActivity
 import com.frolo.muse.android.notificationManager
-import com.frolo.muse.di.appComponent
+import com.frolo.muse.di.applicationComponent
 import com.frolo.muse.repository.FirebasePreferences
 import com.frolo.muse.ui.main.MainActivity
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import org.json.JSONObject
-import javax.inject.Inject
 
 
 class SimpleFirebaseMessagingService : FirebaseMessagingService() {
 
-    @Inject
-    lateinit var firebasePreferences: FirebasePreferences
+    private lateinit var firebasePreferences: FirebasePreferences
 
     private lateinit var mainHandler: Handler
 
     override fun onCreate() {
         super.onCreate()
-        appComponent.inject(this)
+        firebasePreferences = applicationComponent.provideFirebasePreferences()
         mainHandler = Handler(mainLooper)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createNotificationChannel()

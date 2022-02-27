@@ -18,7 +18,7 @@ import com.frolo.muse.R
 import com.frolo.muse.UriPathDetector
 import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
-import com.frolo.muse.di.appComponent
+import com.frolo.muse.di.activityComponent
 import com.frolo.music.model.Album
 import com.frolo.muse.ui.base.BaseDialogFragment
 import com.frolo.muse.ui.base.withArg
@@ -33,9 +33,9 @@ class AlbumEditorDialog : BaseDialogFragment() {
 
     private val viewModel: AlbumEditorViewModel by lazy {
         val album = requireArguments().getSerializable(ARG_ALBUM) as Album
-        val vmFactory = AlbumEditorVMFactory(appComponent, album)
+        val vmFactory = AlbumEditorVMFactory(activityComponent, album)
         ViewModelProviders.of(this, vmFactory)
-                .get(AlbumEditorViewModel::class.java)
+            .get(AlbumEditorViewModel::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

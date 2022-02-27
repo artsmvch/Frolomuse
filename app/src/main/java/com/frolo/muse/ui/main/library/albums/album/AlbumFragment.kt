@@ -13,7 +13,7 @@ import com.frolo.muse.R
 import com.frolo.ui.StyleUtils
 import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
-import com.frolo.muse.di.appComponent
+import com.frolo.muse.di.activityComponent
 import com.frolo.muse.glide.*
 import com.frolo.music.model.Album
 import com.frolo.music.model.Song
@@ -54,9 +54,9 @@ open class AlbumFragment: AbsSongCollectionFragment<Song>(), FragmentContentInse
 
     override val viewModel: AlbumViewModel by lazy {
         val album = requireArguments().getSerializable(ARG_ALBUM) as Album
-        val vmFactory = AlbumVMFactory(appComponent, appComponent, album)
+        val vmFactory = AlbumVMFactory(activityComponent, activityComponent, album)
         ViewModelProviders.of(this, vmFactory)
-                .get(AlbumViewModel::class.java)
+            .get(AlbumViewModel::class.java)
     }
 
     override val adapter by lazy { SongOfAlbumAdapter(provideThumbnailLoader()) }

@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.frolo.muse.R
 import com.frolo.muse.arch.observeNonNull
-import com.frolo.muse.di.appComponent
+import com.frolo.muse.di.activityComponent
 import com.frolo.music.model.Media
 import com.frolo.music.model.Playlist
 import com.frolo.muse.ui.base.BaseDialogFragment
@@ -27,7 +27,7 @@ class AddMediaToPlaylistDialog : BaseDialogFragment() {
         @Suppress("UNCHECKED_CAST")
         val mediaList = requireArguments()
                 .getSerializable(ARG_MEDIA_LIST) as ArrayList<Media>
-        val vmFactory = AddMediaToPlaylistVMFactory(appComponent, appComponent, mediaList)
+        val vmFactory = AddMediaToPlaylistVMFactory(activityComponent, activityComponent, mediaList)
         ViewModelProviders.of(this, vmFactory)
                 .get(AddMediaToPlaylistViewModel::class.java)
     }

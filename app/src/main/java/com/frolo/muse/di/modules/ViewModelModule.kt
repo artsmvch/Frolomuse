@@ -2,6 +2,7 @@ package com.frolo.muse.di.modules
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.frolo.muse.di.ActivityScope
 import com.frolo.muse.di.ViewModelKey
 import com.frolo.muse.ui.main.MainViewModel
 import com.frolo.muse.ui.main.audiofx.AudioFxViewModel
@@ -35,7 +36,6 @@ import dagger.Provides
 import dagger.multibindings.IntoMap
 import javax.inject.Inject
 import javax.inject.Provider
-import javax.inject.Singleton
 
 /**
  * In this module, a shared ViewModel factory is provided.
@@ -50,7 +50,7 @@ import javax.inject.Singleton
 @Module
 abstract class ViewModelModule {
 
-    @Singleton
+    @ActivityScope
     class ViewModelFactory @Inject constructor(
         private val providers: MutableMap<Class<out ViewModel>, Provider<ViewModel>>
     ): ViewModelProvider.Factory {

@@ -6,7 +6,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import com.frolo.muse.di.appComponent
+import com.frolo.muse.di.applicationComponent
 import com.frolo.player.Player
 import com.frolo.muse.engine.service.PlayerService
 import com.frolo.muse.logger.EventLogger
@@ -50,7 +50,7 @@ class PlayerWidgetProvider : AppWidgetProvider() {
     }
 
     private fun getEventLogger(context: Context): EventLogger? {
-        return appComponent.provideEventLogger()
+        return context.applicationComponent.provideEventLogger()
     }
 
     companion object {

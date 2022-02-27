@@ -15,7 +15,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.frolo.muse.FrolomuseApp
 import com.frolo.muse.R
 import com.frolo.muse.Logger
-import com.frolo.muse.di.appComponent
+import com.frolo.muse.di.activityComponent
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.repository.Preferences
 import com.tbruyelle.rxpermissions2.RxPermissions
@@ -77,7 +77,7 @@ abstract class BaseFragment: Fragment() {
     //<editor-fold desc="Injectors">
     internal fun prefs(): Lazy<Preferences> = lazy {
         if (prefs == null) {
-            prefs = appComponent.providePreferences()
+            prefs = activityComponent.providePreferences()
         }
 
         prefs ?:
@@ -86,7 +86,7 @@ abstract class BaseFragment: Fragment() {
 
     internal inline fun <reified T : ViewModel> viewModel(): Lazy<T> = lazy {
         if (vmFactory == null) {
-            vmFactory = appComponent.provideViewModelFactory()
+            vmFactory = activityComponent.provideViewModelFactory()
         }
 
         val factory = vmFactory ?:
@@ -98,7 +98,7 @@ abstract class BaseFragment: Fragment() {
 
     internal fun eventLogger(): Lazy<EventLogger> = lazy {
         if (eventLogger == null) {
-            eventLogger = appComponent.provideEventLogger()
+            eventLogger = activityComponent.provideEventLogger()
         }
 
         eventLogger ?:

@@ -2,7 +2,7 @@ package com.frolo.muse.ui.main.library.artists.artist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.frolo.muse.di.ComponentInjector
+import com.frolo.muse.di.ActivityComponentInjector
 import com.frolo.muse.interactor.media.shortcut.CreateShortcutUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.music.model.Artist
@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 
 class ArtistVMFactory constructor(
-    injector: ComponentInjector,
+    injector: ActivityComponentInjector,
     private val artist: Artist
 ): ViewModelProvider.Factory {
 

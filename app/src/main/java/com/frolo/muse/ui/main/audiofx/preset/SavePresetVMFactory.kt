@@ -2,7 +2,7 @@ package com.frolo.muse.ui.main.audiofx.preset
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.frolo.muse.di.ComponentInjector
+import com.frolo.muse.di.ActivityComponentInjector
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.repository.PresetRepository
 import com.frolo.muse.rx.SchedulerProvider
@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 
 class SavePresetVMFactory constructor(
-    injector: ComponentInjector,
+    injector: ActivityComponentInjector,
     private val bandLevels: ShortArray
 ): ViewModelProvider.Factory {
 

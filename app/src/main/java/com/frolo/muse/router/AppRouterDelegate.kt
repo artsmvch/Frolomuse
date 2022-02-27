@@ -1,6 +1,5 @@
 package com.frolo.muse.router
 
-import com.frolo.billing.ProductId
 import com.frolo.music.model.*
 import java.io.File
 
@@ -127,10 +126,6 @@ abstract class AppRouterDelegate : AppRouter {
 
     override fun offerToBuyPremium(allowTrialActivation: Boolean) {
         delegate { it.offerToBuyPremium(allowTrialActivation) }
-    }
-
-    override fun launchBillingFlow(productId: ProductId) {
-        delegate { it.launchBillingFlow(productId) }
     }
 
     override fun openDonations() {

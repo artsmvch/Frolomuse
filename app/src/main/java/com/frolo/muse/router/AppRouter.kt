@@ -1,6 +1,5 @@
 package com.frolo.muse.router
 
-import com.frolo.billing.ProductId
 import com.frolo.music.model.*
 import java.io.File
 
@@ -68,8 +67,6 @@ interface AppRouter {
     fun openThemeChooser()
 
     fun offerToBuyPremium(allowTrialActivation: Boolean)
-
-    fun launchBillingFlow(productId: ProductId)
 
     fun openDonations()
 
