@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import com.frolo.muse.di.applicationComponent
+import com.frolo.muse.engine.PlayerHolder
 import com.frolo.player.Player
 import com.frolo.muse.engine.service.PlayerService
 import com.frolo.muse.logger.EventLogger
@@ -27,7 +28,7 @@ class PlayerWidgetProvider : AppWidgetProvider() {
 
     private fun peekPlayer(context: Context): Player? {
         val binder = peekService(context, Intent(context, PlayerService::class.java))
-        return (binder as? PlayerService.PlayerBinder)?.service as? Player
+        return (binder as? PlayerHolder)?.player as? Player
     }
 
     override fun onEnabled(context: Context) {

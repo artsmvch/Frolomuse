@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.frolo.muse.engine.PlayerHolder;
 import com.frolo.player.Player;
 import com.frolo.muse.engine.service.PlayerService;
 
@@ -59,9 +60,9 @@ public final class PlayerHostFragment extends Fragment {
     }
 
     private void noteServiceConnected(IBinder service) {
-        if (service != null && service instanceof PlayerService.PlayerBinder) {
+        if (service != null && service instanceof PlayerHolder) {
             mPlayerServiceBound = true;
-            Player playerInstance = ((PlayerService.PlayerBinder) service).getService();
+            Player playerInstance = ((PlayerHolder) service).getPlayer();
             mPlayer = playerInstance;
             if (mConnHandler != null) {
                 mConnHandler.onPlayerConnected(playerInstance);

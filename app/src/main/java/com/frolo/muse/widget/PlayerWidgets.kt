@@ -22,8 +22,8 @@ import com.frolo.muse.di.ApplicationComponent
 import com.frolo.muse.di.applicationComponent
 import com.frolo.player.AudioSource
 import com.frolo.player.Player
-import com.frolo.muse.engine.service.PlayerService
 import com.frolo.muse.engine.service.PlayerService.Companion.newIntentFromWidget
+import com.frolo.muse.engine.service.PlayerServiceCmd
 import com.frolo.muse.glide.GlideAlbumArtHelper
 import com.frolo.muse.ui.main.MainActivity.Companion.newIntent
 import java.util.concurrent.TimeUnit
@@ -209,23 +209,23 @@ private fun PlayerRemoteViews(
     remoteViews.setTextViewTextSize(R.id.tv_song_name, TypedValue.COMPLEX_UNIT_SP, songNameTextSizeInSp)
 
     // the play button
-    val toggleIntent = newIntentFromWidget(context, PlayerService.COMMAND_TOGGLE)
+    val toggleIntent = newIntentFromWidget(context, PlayerServiceCmd.CMD_TOGGLE)
     val togglePi = PendingIntent(context, RC_COMMAND_TOGGLE, toggleIntent, PendingIntent.FLAG_UPDATE_CURRENT)
     remoteViews.setOnClickPendingIntent(R.id.btn_play, togglePi)
 
     // the previous button
-    val previousIntent = newIntentFromWidget(context, PlayerService.COMMAND_SKIP_TO_PREVIOUS)
+    val previousIntent = newIntentFromWidget(context, PlayerServiceCmd.CMD_SKIP_TO_PREVIOUS)
     val previousPi = PendingIntent(context, RC_COMMAND_SKIP_TO_PREVIOUS, previousIntent, PendingIntent.FLAG_UPDATE_CURRENT)
     remoteViews.setOnClickPendingIntent(R.id.btn_skip_to_previous, previousPi)
 
     // the next button
-    val nextIntent = newIntentFromWidget(context, PlayerService.COMMAND_SKIP_TO_NEXT)
+    val nextIntent = newIntentFromWidget(context, PlayerServiceCmd.CMD_SKIP_TO_NEXT)
     val nextPi = PendingIntent(context, RC_COMMAND_SKIP_TO_NEXT, nextIntent, PendingIntent.FLAG_UPDATE_CURRENT)
     remoteViews.setOnClickPendingIntent(R.id.btn_skip_to_next, nextPi)
 
     if (hasRoomForRepeatAndShuffleModes) {
         // the repeat mode
-        val repeatModeIntent = newIntentFromWidget(context, PlayerService.COMMAND_SWITCH_TO_NEXT_REPEAT_MODE)
+        val repeatModeIntent = newIntentFromWidget(context, PlayerServiceCmd.CMD_CHANGE_REPEAT_MODE)
         val repeatModePi = PendingIntent(context, RC_COMMAND_SWITCH_TO_NEXT_REPEAT_MODE, repeatModeIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         remoteViews.setOnClickPendingIntent(R.id.btn_repeat_mode, repeatModePi)
         val repeatModeIconRes = when (params.repeatMode) {
@@ -238,7 +238,7 @@ private fun PlayerRemoteViews(
         remoteViews.setViewVisibility(R.id.btn_repeat_mode, View.VISIBLE)
 
         // the shuffle mode
-        val shuffleModeIntent = newIntentFromWidget(context, PlayerService.COMMAND_SWITCH_TO_NEXT_SHUFFLE_MODE)
+        val shuffleModeIntent = newIntentFromWidget(context, PlayerServiceCmd.CMD_CHANGE_SHUFFLE_MODE)
         val shuffleModePi = PendingIntent(context, RC_COMMAND_SWITCH_TO_NEXT_SHUFFLE_MODE, shuffleModeIntent, PendingIntent.FLAG_UPDATE_CURRENT)
         remoteViews.setOnClickPendingIntent(R.id.btn_shuffle_mode, shuffleModePi)
         val shuffleModeIconRes = when (params.shuffleMode) {
