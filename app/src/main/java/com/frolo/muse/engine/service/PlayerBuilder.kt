@@ -1,5 +1,6 @@
 package com.frolo.muse.engine.service
 
+import android.annotation.SuppressLint
 import android.app.Service
 import android.support.v4.media.session.MediaSessionCompat
 import com.frolo.audiofx.AudioFxImpl
@@ -18,7 +19,10 @@ import com.frolo.player.PlaybackFadingStrategy
 import com.frolo.player.Player
 import com.frolo.player.PlayerImpl
 import com.frolo.player.PlayerJournal
+import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
+import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.atomic.AtomicReference
 import javax.inject.Inject
 
 
@@ -34,20 +38,18 @@ class PlayerBuilder @Inject constructor(
 ) {
 
     fun build(): Player {
-        // Creating AudioFx
         val audioFx: AudioFxApplicable = AudioFxImpl.getInstance(
             service, Const.AUDIO_FX_PREFERENCES, DefaultAudioFxErrorHandler())
+
+        val preParams = loadPreParams(timeoutMillis = 2000L)
 
         val player = PlayerImpl.newBuilder(service, audioFx)
             .setDebug(BuildConfig.DEBUG)
             .setPlayerJournal(playerJournal)
-            .setUseWakeLocks(quicklyGetIsPlayerWakeLockEnabled())
-            // Setting up repeat and shuffle modes
-            .setRepeatMode(preferences.loadRepeatMode())
-            .setShuffleMode(preferences.loadShuffleMode())
-            // Setting up playback fading strategy
-            .setPlaybackFadingStrategy(quicklyRestorePlaybackFadingStrategy())
-            // Adding all the necessary observers
+            .setUseWakeLocks(preParams.wakeLockEnabled)
+            .setRepeatMode(preParams.repeatMode)
+            .setShuffleMode(preParams.shuffleMode)
+            .setPlaybackFadingStrategy(preParams.playbackFadingStrategy)
             .addObserver(InternalErrorHandler(service))
             .addObserver(PlayerStateSaver(preferences))
             .addObserver(SongPlayCounter(schedulerProvider, songRepository))
@@ -60,30 +62,57 @@ class PlayerBuilder @Inject constructor(
         return player
     }
 
-    private fun quicklyGetIsPlayerWakeLockEnabled(): Boolean {
-        return try {
-            remoteConfigRepository.isPlayerWakeLockEnabled()
-                .timeout(1, TimeUnit.SECONDS)
-                .blockingGet()
+    @SuppressLint("CheckResult")
+    private fun loadPreParams(timeoutMillis: Long): PreParams {
+        val countDownLatch = CountDownLatch(2)
+
+        val wakeLockEnabledRef = AtomicBoolean(false)
+        val playbackFadingParamsRef = AtomicReference<PlaybackFadingParams>(null)
+
+        remoteConfigRepository.isPlayerWakeLockEnabled()
+            .timeout(timeoutMillis, TimeUnit.MILLISECONDS)
+            .doFinally { countDownLatch.countDown() }
+            .subscribe(
+                { enabled -> wakeLockEnabledRef.set(enabled) },
+                { err -> logOrFail(err) }
+            )
+
+        preferences.playbackFadingParams
+            .first(PlaybackFadingParams.none())
+            .timeout(timeoutMillis, TimeUnit.MILLISECONDS)
+            .doFinally { countDownLatch.countDown() }
+            .subscribe(
+                { params -> playbackFadingParamsRef.set(params) },
+                { err -> logOrFail(err) }
+            )
+
+        try {
+            countDownLatch.await(timeoutMillis, TimeUnit.MILLISECONDS)
         } catch (err: Throwable) {
-            Logger.e(err)
-            false
+            logOrFail(err)
         }
+
+        val playbackFadingParams = playbackFadingParamsRef.get() ?: PlaybackFadingParams.none()
+
+        return PreParams(
+            wakeLockEnabled = wakeLockEnabledRef.get(),
+            playbackFadingStrategy = PlaybackFadingStrategy
+                .withSmartStaticInterval(playbackFadingParams.interval),
+            repeatMode = preferences.loadRepeatMode(),
+            shuffleMode = preferences.loadShuffleMode()
+        )
     }
 
-    private fun quicklyRestorePlaybackFadingStrategy(): PlaybackFadingStrategy {
-        // Safely restoring the playback fading
-        val params: PlaybackFadingParams = try {
-            preferences.playbackFadingParams
-                .first(PlaybackFadingParams.none())
-                .timeout(3, TimeUnit.SECONDS)
-                .blockingGet()
-        } catch (err: Throwable) {
-            Logger.e(err)
-            DebugUtils.dumpOnMainThread(err)
-            PlaybackFadingParams.none()
-        }
-        return PlaybackFadingStrategy.withSmartStaticInterval(params.interval)
+    private fun logOrFail(err: Throwable) {
+        DebugUtils.dumpOnMainThread(err)
+        Logger.e(err)
     }
+
+    private class PreParams(
+        val wakeLockEnabled: Boolean,
+        val playbackFadingStrategy: PlaybackFadingStrategy,
+        val repeatMode: Int,
+        val shuffleMode: Int
+    )
 
 }

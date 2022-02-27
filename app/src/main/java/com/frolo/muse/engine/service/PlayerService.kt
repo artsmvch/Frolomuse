@@ -96,7 +96,6 @@ class PlayerService: RxService(), PlayerNotificationSender {
     // MediaSession is used to control buttons clicks from headsets and playback notifications
     private lateinit var mediaSession: MediaSessionCompat
 
-    //region Service binding
     override fun onBind(intent: Intent?): IBinder {
         isBound = true
         Logger.d(TAG, "Service gets bound")
@@ -115,7 +114,6 @@ class PlayerService: RxService(), PlayerNotificationSender {
             // Service is unbound and not in foreground. We don't know why it got unbound.
             // The user may have closed the app or the system killed activities due to low memory. Who knows.
             // Give it the last chance to be alive? NO!
-
             Logger.w(TAG, "Service is not in foreground. STOP IT!")
             // The service is not in foreground. It may live only 60 seconds if it's Android API v26+
             // There is no sense to continue running at all: no bound clients and no notification.
@@ -126,45 +124,30 @@ class PlayerService: RxService(), PlayerNotificationSender {
         return true
     }
 
-    //endregion
-
-    /**
-     * Initializing all resources here
-     */
     override fun onCreate() {
         super.onCreate()
+        mediaSession = buildMediaSession()
+        serviceComponent = buildServiceComponent()
+        serviceComponent.inject(this)
+        // Android 8.1 requirements
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            createPlaybackNotificationChannel()
+            sendPrimaryNotification()
+        }
+        player = serviceComponent.providePlayerBuilder().build()
+        mediaSession.setCallback(MediaSessionCallbackImpl(player))
+        headsetHandler.subscribe(this)
+        registerReceiver(sleepTimerHandler, PlayerSleepTimer.createIntentFilter())
+        Logger.d(TAG, "Service created")
+    }
 
-        // Setting up media session
-        mediaSession = MediaSessionCompat(applicationContext, "frolomuse:player_service").apply {
+    private fun buildMediaSession(): MediaSessionCompat {
+        val tag: String = "frolomuse:player_service"
+        return MediaSessionCompat(applicationContext, tag).apply {
             setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS)
             isActive = true
             setEmptyMetadata()
         }
-
-        serviceComponent = buildServiceComponent()
-        serviceComponent.inject(this)
-
-        // The promise notification must be posted asap.
-        // Why? Because initialization may take some time.
-        // And I want to be sure that it will not crash due to the Foreground service policy.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            // Creating notification channel
-            createPlaybackNotificationChannel()
-            postPromiseNotification()
-        }
-
-        player = serviceComponent.providePlayerBuilder().build()
-
-        // Headset buttons handler
-        mediaSession.setCallback(MediaSessionCallbackImpl(player))
-
-        // Subscribing on the headset status changes
-        headsetHandler.subscribe(this)
-
-        // Subscribing on the Sleep Timer
-        registerReceiver(sleepTimerHandler, PlayerSleepTimer.createIntentFilter())
-
-        Logger.d(TAG, "Service created")
     }
 
     private fun buildServiceComponent(): ServiceComponent {
@@ -177,12 +160,8 @@ class PlayerService: RxService(), PlayerNotificationSender {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-
         if (intent == null) return START_STICKY
-
         val calledFromWidget = intent.getBooleanExtra(EXTRA_CALLED_FROM_WIDGET, false)
-
-        // Checking which command was the given to the player
         when (intent.getIntExtra(EXTRA_COMMAND, COMMAND_EMPTY)) {
             COMMAND_SKIP_TO_PREVIOUS -> {
                 player.performIntentAction(calledFromWidget) { skipToPrevious() }
@@ -223,7 +202,6 @@ class PlayerService: RxService(), PlayerNotificationSender {
 
     override fun onDestroy() {
         Logger.d(TAG, "Service died. Cleaning callbacks")
-        // Shutting down the player and disposing all the resources.
         // The player shutdown call should clear its observers by itself.
         player.shutdown()
         mediaSession.release()
@@ -232,7 +210,10 @@ class PlayerService: RxService(), PlayerNotificationSender {
         super.onDestroy()
     }
 
-    private fun Player.performIntentAction(requireNonEmptyQueue: Boolean, action: Player.() -> Unit) {
+    private inline fun Player.performIntentAction(
+        requireNonEmptyQueue: Boolean,
+        crossinline action: Player.() -> Unit
+    ) {
         val queue = getCurrentQueue()
         if (requireNonEmptyQueue && queue.isNullOrEmpty()) {
             playerStateRestorer
@@ -276,8 +257,8 @@ class PlayerService: RxService(), PlayerNotificationSender {
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun postPromiseNotification() {
-        startForeground(NOTIFICATION_ID_PLAYBACK, buildPromiseNotification())
+    private fun sendPrimaryNotification() {
+        startForeground(NOTIFICATION_ID_PLAYBACK, buildPrimaryNotification())
     }
 
     private fun cancelNotification() {
@@ -294,7 +275,7 @@ class PlayerService: RxService(), PlayerNotificationSender {
         }
     }
 
-    private fun buildPromiseNotification(): Notification {
+    private fun buildPrimaryNotification(): Notification {
         return buildPlayerNotification(PlayerNotificationParams.NONE)
     }
 
