@@ -5,9 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.*
 import androidx.core.content.ContextCompat
-import com.frolo.muse.common.*
 import com.frolo.muse.engine.service.PlayerService.Companion.newIntent
-import com.frolo.player.*
 
 
 /**
@@ -15,7 +13,8 @@ import com.frolo.player.*
  *
  * Here is the whole logic of playing, navigating and dispatching events.
  *
- * Communication with the service can be through binding to [PlayerBinder] or intents (see [newIntent]]).
+ * Communication with the service can be through binding to a special binder
+ * returned by the [PlayerServiceDelegate.onBind] method or intents (see [newIntent]]).
  *
  * A little tutorial for this service.
  * When the service creates, it starts foreground by posting a notification;
