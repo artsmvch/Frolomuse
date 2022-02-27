@@ -140,8 +140,6 @@ final class PlayerObserverRegistry {
                     for (PlayerObserver observer : mObservers) {
                         observer.onShutdown(getPlayer());
                     }
-                    // Automatic removal of all observers after the shutdown
-                    mObservers.clear();
                     break;
                 }
 
@@ -245,7 +243,7 @@ final class PlayerObserverRegistry {
         mObservers.remove(wrapIfNeeded(observer));
     }
 
-    void clear() {
+    void unregisterAll() {
         mObservers.clear();
     }
 
