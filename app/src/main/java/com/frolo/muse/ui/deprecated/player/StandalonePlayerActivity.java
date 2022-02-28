@@ -1,4 +1,4 @@
-package com.frolo.muse.ui.player;
+package com.frolo.muse.ui.deprecated.player;
 
 import android.Manifest;
 import android.content.ContentResolver;

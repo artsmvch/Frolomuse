@@ -99,7 +99,7 @@
             android:launchMode="singleTask"/>
 
         <activity
-            android:name=".ui.player.StandalonePlayerActivity"
+            android:name=".ui.deprecated.player.StandalonePlayerActivity"
             android:theme="@style/AppTheme.Player.Deprecated.Activity"
             android:configChanges="orientation|screenSize"
             android:exported="true">
