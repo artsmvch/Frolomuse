@@ -7,16 +7,12 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
-import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.view.animation.DecelerateInterpolator
-import androidx.annotation.ColorInt
-import androidx.annotation.Dimension
 import androidx.annotation.IdRes
-import androidx.annotation.Px
 import androidx.appcompat.view.ActionMode
 import androidx.core.app.ActivityCompat
 import androidx.core.graphics.ColorUtils
@@ -30,7 +26,6 @@ import androidx.transition.Fade
 import androidx.transition.TransitionManager
 import com.frolo.debug.DebugUtils
 import com.frolo.muse.*
-import com.frolo.muse.BuildConfig
 import com.frolo.muse.R
 import com.frolo.muse.android.ViewAppSettingsIntent
 import com.frolo.muse.android.getIntExtraOrNull
@@ -44,14 +39,11 @@ import com.frolo.muse.di.impl.navigator.AppRouterImpl
 import com.frolo.muse.di.modules.ActivityModule
 import com.frolo.muse.engine.PlayerWrapper
 import com.frolo.player.Player
-import com.frolo.muse.rx.disposeOnDestroyOf
-import com.frolo.muse.rx.subscribeSafely
 import com.frolo.muse.ui.PlayerHostActivity
 import com.frolo.muse.ui.ScrolledToTop
 import com.frolo.muse.ui.ThemeHandler
 import com.frolo.muse.ui.base.*
 import com.frolo.muse.ui.main.audiofx.AudioFxFragment
-import com.frolo.muse.ui.main.greeting.GreetingsActivity
 import com.frolo.muse.ui.main.library.LibraryFragment
 import com.frolo.muse.ui.main.library.search.SearchFragment
 import com.frolo.muse.ui.main.player.mini.MiniPlayerFragment
@@ -59,7 +51,6 @@ import com.frolo.muse.ui.main.settings.AppBarSettingsFragment
 import com.frolo.music.model.*
 import com.frolo.ui.ActivityUtils
 import com.frolo.ui.FragmentUtils
-import com.frolo.ui.StyleUtils
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehaviorSupport
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -68,7 +59,6 @@ import com.google.android.material.shape.MaterialShapeDrawable
 import com.google.android.material.shape.ShapeAppearanceModel
 import com.ncapdevi.fragnav.FragNavController
 import com.ncapdevi.fragnav.FragNavTransactionOptions
-import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 import kotlin.math.max
@@ -90,17 +80,16 @@ class MainActivity : PlayerHostActivity(),
         ViewModelProviders.of(this, vmFactory).get(MainViewModel::class.java)
     }
 
-    // Fragment controller
     private var fragNavController: FragNavController? = null
+    private val activeActionModes = LinkedList<ActionMode>()
+    private var playerSheetFragment: PlayerSheetFragment? = null
 
-    // Rate Dialog
     private var rateDialog: Dialog? = null
-
-    // RES Permission Explanation
     private var resPermissionExplanationDialog: Dialog? = null
 
-    // Active support action mode
-    private val activeActionModes = LinkedList<ActionMode>()
+    private val properties by lazy { MainActivityProperties(this) }
+
+    private var pendingIntent: Intent? = null
 
     private val bottomSheetCallback: BottomSheetBehavior.BottomSheetCallback =
         object : BottomSheetBehavior.BottomSheetCallback() {
@@ -111,68 +100,12 @@ class MainActivity : PlayerHostActivity(),
             override fun onStateChanged(bottomSheet: View, newState: Int) = Unit
         }
 
-    private var playerSheetFragment: PlayerSheetFragment? = null
-
-    @get:ColorInt
-    private val colorPrimary: Int by lazy {
-        StyleUtils.resolveColor(this, R.attr.colorPrimary)
-    }
-
-    @get:ColorInt
-    private val colorPrimaryDark: Int by lazy {
-        StyleUtils.resolveColor(this, R.attr.colorPrimaryDark)
-    }
-
-    @get:ColorInt
-    private val colorPrimarySurface: Int by lazy {
-        StyleUtils.resolveColor(this, R.attr.colorPrimarySurface)
-    }
-
-    @get:ColorInt
-    private val colorSurface: Int by lazy {
-        StyleUtils.resolveColor(this, R.attr.colorSurface)
-    }
-
-    @get:ColorInt
-    private val actionModeBackgroundColor: Int by lazy {
-        try {
-            StyleUtils.resolveColor(this, R.attr.actionModeBackground)
-        } catch (error: Throwable) {
-            // This is probably a drawable
-            DebugUtils.dumpOnMainThread(error)
-            StyleUtils.resolveColor(this, android.R.attr.navigationBarColor)
-        }
-    }
-
-    @get:Px
-    private val playerSheetPeekHeight: Int by lazy {
-        resources.getDimension(R.dimen.player_sheet_peek_height).toInt()
-    }
-
-    @get:Px
-    private val playerSheetCornerRadius: Int by lazy {
-        resources.getDimension(R.dimen.player_sheet_corner_radius).toInt()
-    }
-
-    @get:Dimension
-    private val bottomNavigationCornerRadius: Float by lazy {
-        resources.getDimension(R.dimen.bottom_navigation_bar_corner_radius)
-    }
-
-    private val fragmentContentInsets: Rect by lazy {
-        val left = resources.getDimension(R.dimen.fragment_content_left_inset).toInt()
-        val top = resources.getDimension(R.dimen.fragment_content_top_inset).toInt()
-        val right = resources.getDimension(R.dimen.fragment_content_right_inset).toInt()
-        val bottom = resources.getDimension(R.dimen.fragment_content_bottom_inset).toInt()
-        Rect(left, top, right, bottom)
-    }
-
     private val fragmentLifecycleCallbacks: FragmentManager.FragmentLifecycleCallbacks =
         object : FragmentManager.FragmentLifecycleCallbacks() {
             override fun onFragmentViewCreated(fm: FragmentManager, f: Fragment, v: View, savedInstanceState: Bundle?) {
                 if (f is FragmentContentInsetsListener) {
-                    f.applyContentInsets(fragmentContentInsets.left, fragmentContentInsets.top,
-                        fragmentContentInsets.right, fragmentContentInsets.bottom)
+                    val insets = properties.fragmentContentInsets
+                    f.applyContentInsets(insets.left, insets.top, insets.right, insets.bottom)
                 }
             }
 
@@ -191,8 +124,6 @@ class MainActivity : PlayerHostActivity(),
                 }
             }
         }
-
-    private var notHandledIntent: Intent? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -217,30 +148,20 @@ class MainActivity : PlayerHostActivity(),
         )
     }
 
-    private fun maybeShowGreetings() {
-        preferences
-            .shouldShowGreetings()
-            .first(false)
-            .observeOn(AndroidSchedulers.mainThread())
-            .doOnSuccess { shouldShow -> if (shouldShow) GreetingsActivity.show(this) }
-            .subscribeSafely()
-            .disposeOnDestroyOf(this)
-    }
-
     private fun loadUi() {
         bottom_navigation_view.background = MaterialShapeDrawable().apply {
-            fillColor = ColorStateList.valueOf(colorSurface)
+            fillColor = ColorStateList.valueOf(properties.colorSurface)
             shapeAppearanceModel = ShapeAppearanceModel.builder()
-                .setTopLeftCorner(CornerFamily.ROUNDED, bottomNavigationCornerRadius)
-                .setTopRightCorner(CornerFamily.ROUNDED, bottomNavigationCornerRadius)
+                .setTopLeftCorner(CornerFamily.ROUNDED, properties.bottomNavigationCornerRadius)
+                .setTopRightCorner(CornerFamily.ROUNDED, properties.bottomNavigationCornerRadius)
                 .build()
         }
 
         sliding_player_layout.background = MaterialShapeDrawable().apply {
-            fillColor = ColorStateList.valueOf(colorPrimarySurface)
+            fillColor = ColorStateList.valueOf(properties.colorPrimarySurface)
             shapeAppearanceModel = ShapeAppearanceModel.builder()
-                .setTopLeftCorner(CornerFamily.ROUNDED, bottomNavigationCornerRadius)
-                .setTopRightCorner(CornerFamily.ROUNDED, bottomNavigationCornerRadius)
+                .setTopLeftCorner(CornerFamily.ROUNDED, properties.bottomNavigationCornerRadius)
+                .setTopRightCorner(CornerFamily.ROUNDED, properties.bottomNavigationCornerRadius)
                 .build()
         }
         with(BottomSheetBehavior.from(sliding_player_layout)) {
@@ -480,13 +401,15 @@ class MainActivity : PlayerHostActivity(),
         // Extracting tab index, if any
         val tabIndex: Int =
             savedInstanceState?.getIntOrNull(EXTRA_TAB_INDEX) ?:
-            notHandledIntent?.getIntExtraOrNull(EXTRA_TAB_INDEX) ?:
+            pendingIntent?.getIntExtraOrNull(EXTRA_TAB_INDEX) ?:
             TAB_INDEX_DEFAULT
 
         fragNavController = FragNavController(fragmentManager, R.id.container).apply {
             defaultTransactionOptions = FragNavTransactionOptions
                 .newBuilder()
-                .customAnimations(R.anim.screen_fade_in, R.anim.screen_fade_out, R.anim.screen_fade_in, R.anim.screen_fade_out)
+                .customAnimations(
+                    R.anim.screen_fade_in, R.anim.screen_fade_out,
+                    R.anim.screen_fade_in, R.anim.screen_fade_out)
                 .build()
 
             rootFragmentListener = object : FragNavController.RootFragmentListener {
@@ -499,9 +422,8 @@ class MainActivity : PlayerHostActivity(),
                         INDEX_SEARCH ->     SearchFragment.newInstance()
                         INDEX_SETTINGS ->   AppBarSettingsFragment.newInstance()
                         else -> {
-                            if (isDebug) {
-                                throw IllegalStateException("Unexpected root index: $index")
-                            }
+                            DebugUtils.dumpOnMainThread(IllegalStateException(
+                                "Unexpected root index: $index"))
                             Fragment()
                         }
                     }
@@ -577,11 +499,11 @@ class MainActivity : PlayerHostActivity(),
 
         sliding_player_layout.doOnLayout { v ->
             with(BottomSheetBehavior.from(v)) {
-                peekHeight = playerSheetPeekHeight
+                peekHeight = properties.playerSheetPeekHeight
             }
         }
 
-        notHandledIntent?.also { safeIntent ->
+        pendingIntent?.also { safeIntent ->
             handleIntent(safeIntent)
         }
 
@@ -613,12 +535,12 @@ class MainActivity : PlayerHostActivity(),
         val safeNavController = fragNavController
         if (safeNavController == null || safeNavController.isStateSaved) {
             // Fragments are not initialized yet, or the state is saved
-            notHandledIntent = intent
+            pendingIntent = intent
             return
         }
 
         // Need to clean it to prevent double-handling
-        notHandledIntent = null
+        pendingIntent = null
 
         if (intent.getBooleanExtra(EXTRA_INTENT_HANDLED, false)) {
             // This intent has already been handled
@@ -700,7 +622,6 @@ class MainActivity : PlayerHostActivity(),
 
     private fun explainNeedForRESPermission() {
         resPermissionExplanationDialog?.cancel()
-
         resPermissionExplanationDialog = MaterialAlertDialogBuilder(this)
             .setTitle(R.string.permission_denied)
             .setMessage(R.string.need_for_res_permission_explanation)
@@ -782,11 +703,11 @@ class MainActivity : PlayerHostActivity(),
 
         (sliding_player_layout.background as? MaterialShapeDrawable)?.apply {
             val blendRatio = max(0f, 1f - slideOffset * 2)
-            val blendedColor = ColorUtils.blendARGB(colorSurface, colorPrimarySurface, blendRatio)
+            val blendedColor = ColorUtils.blendARGB(properties.colorSurface,
+                properties.colorPrimarySurface, blendRatio)
             fillColor = ColorStateList.valueOf(blendedColor)
 
-            val factoredCornerRadius = playerSheetCornerRadius * (1 - slideOffset)
-            Logger.d("MainActivitySlide", "cornerRadius=$factoredCornerRadius")
+            val factoredCornerRadius = properties.playerSheetCornerRadius * (1 - slideOffset)
             this.shapeAppearanceModel = ShapeAppearanceModel.builder()
                 .setTopLeftCorner(CornerFamily.ROUNDED, factoredCornerRadius)
                 .setTopRightCorner(CornerFamily.ROUNDED, factoredCornerRadius)
@@ -814,36 +735,32 @@ class MainActivity : PlayerHostActivity(),
     override fun onSupportActionModeStarted(mode: ActionMode) {
         super.onSupportActionModeStarted(mode)
         activeActionModes.add(mode)
-        window?.statusBarColor = actionModeBackgroundColor
+        window?.statusBarColor = properties.actionModeBackgroundColor
     }
 
     override fun onSupportActionModeFinished(mode: ActionMode) {
         super.onSupportActionModeFinished(mode)
         activeActionModes.remove(mode)
         if (activeActionModes.isEmpty()) {
-            window?.statusBarColor = colorPrimaryDark
+            window?.statusBarColor = properties.colorPrimaryDark
         }
     }
 
     override fun handleThemeChange() {
-        if (notHandledIntent != null) {
+        if (pendingIntent != null) {
             // Saving the not handled intent
-            intent = notHandledIntent
+            intent = pendingIntent
         }
         recreate()
     }
 
     companion object {
 
-        private val isDebug: Boolean = BuildConfig.DEBUG
-
         private const val RC_READ_STORAGE = 1043
 
         // Fragment tags
         private const val FRAG_TAG_PLAYER_SHEET = "com.frolo.muse.ui.main.PLAYER_SHEET"
         private const val FRAG_TAG_MIN_PLAYER = "com.frolo.muse.ui.main.MINI_PLAYER"
-
-        //private const val ACTION_NAV_MEDIA = "com.frolo.muse.ui.main.ACTION_NAV_MEDIA"
 
         private const val EXTRA_INTENT_HANDLED = "com.frolo.muse.ui.main.INTENT_HANDLED"
         private const val EXTRA_OPEN_PLAYER = "com.frolo.muse.ui.main.OPEN_PLAYER"
@@ -862,49 +779,45 @@ class MainActivity : PlayerHostActivity(),
             if (!isStateSaved) block.invoke(this)
         }
 
-        //region Intent factories
-
         @JvmStatic
         fun newIntent(context: Context, tabIndex: Int = INDEX_LIBRARY): Intent =
-                Intent(context, MainActivity::class.java).putExtra(EXTRA_TAB_INDEX, tabIndex)
+            Intent(context, MainActivity::class.java).putExtra(EXTRA_TAB_INDEX, tabIndex)
 
         @JvmStatic
         fun newIntent(context: Context, openPlayer: Boolean): Intent =
-                Intent(context, MainActivity::class.java).putExtra(EXTRA_OPEN_PLAYER, openPlayer)
+            Intent(context, MainActivity::class.java).putExtra(EXTRA_OPEN_PLAYER, openPlayer)
 
         private fun newNavMediaIntent(context: Context, media: Media): Intent {
             return Intent(context, MainActivity::class.java)
-                    .setAction(Intent.ACTION_MAIN)
-                    //.addCategory(Intent.CATEGORY_DEFAULT)
-                    .putExtra(EXTRA_NAV_KIND_OF_MEDIA, media.kind)
-                    .putExtra(EXTRA_NAV_MEDIA_ID, media.id)
+                .setAction(Intent.ACTION_MAIN)
+                //.addCategory(Intent.CATEGORY_DEFAULT)
+                .putExtra(EXTRA_NAV_KIND_OF_MEDIA, media.kind)
+                .putExtra(EXTRA_NAV_MEDIA_ID, media.id)
         }
 
         @JvmStatic
         fun newSongIntent(context: Context, song: Song): Intent =
-                newNavMediaIntent(context, song)
+            newNavMediaIntent(context, song)
 
         @JvmStatic
         fun newAlbumIntent(context: Context, album: Album): Intent =
-                newNavMediaIntent(context, album)
+            newNavMediaIntent(context, album)
 
         @JvmStatic
         fun newArtistIntent(context: Context, artist: Artist): Intent =
-                newNavMediaIntent(context, artist)
+            newNavMediaIntent(context, artist)
 
         @JvmStatic
         fun newGenreIntent(context: Context, genre: Genre): Intent =
-                newNavMediaIntent(context, genre)
+            newNavMediaIntent(context, genre)
 
         @JvmStatic
         fun newPlaylistIntent(context: Context, playlist: Playlist): Intent =
-                newNavMediaIntent(context, playlist)
+            newNavMediaIntent(context, playlist)
 
         @JvmStatic
         fun newMyFileIntent(context: Context, myFile: MyFile): Intent =
-                newNavMediaIntent(context, myFile)
-
-        //endregion
+            newNavMediaIntent(context, myFile)
     }
 
 }
