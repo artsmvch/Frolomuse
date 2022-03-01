@@ -256,10 +256,19 @@ internal class PlayerServiceDelegate(
     }
 
     private fun buildPrimaryNotification(): Notification {
-        return buildPlayerNotification(PlayerNotificationParams.NONE)
+        return obtainPlayerNotificationBuilder(PlayerNotificationParams.NONE).build()
     }
 
     private fun buildPlayerNotification(params: PlayerNotificationParams): Notification {
+        val builder = obtainPlayerNotificationBuilder(params)
+        // The public version is the same
+        val publicNotification = builder.build()
+        return builder
+            .setPublicVersion(publicNotification)
+            .build()
+    }
+
+    private fun obtainPlayerNotificationBuilder(params: PlayerNotificationParams): NotificationCompat.Builder {
         val context: Context = service
         val item = params.item
         val art = params.art
@@ -312,7 +321,7 @@ internal class PlayerServiceDelegate(
             setLargeIcon(art)
         }
 
-        return notificationBuilder.build()
+        return notificationBuilder
     }
 
     override fun sendPlayerNotification(params: PlayerNotificationParams, forced: Boolean) {
