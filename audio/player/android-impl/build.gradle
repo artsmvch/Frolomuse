@@ -37,7 +37,7 @@ dependencies {
     api project(path: ':audio:audiofx-applicable')
     implementation project(path: ':audio:player:data')
 
-    implementation 'androidx.annotation:annotation:1.3.0'
+    implementation deps.support.annotation
 
     // Instrumentation tests
     androidTestImplementation "com.android.support.test:runner:1.0.2"

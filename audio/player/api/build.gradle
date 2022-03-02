@@ -31,7 +31,7 @@ android {
 dependencies {
     api project(path: ':audio:audiofx:api')
 
-    implementation 'androidx.annotation:annotation:1.3.0'
+    implementation deps.support.annotation
 
     testImplementation 'junit:junit:4.12'
 }

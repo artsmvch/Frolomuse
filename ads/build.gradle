@@ -22,10 +22,9 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
     // AdMob
-    implementation 'com.google.android.gms:play-services-ads:20.2.0'
+    implementation deps.gms.ads
 
 }

@@ -30,7 +30,7 @@ android {
 dependencies {
     implementation project(path: ':test-tools')
 
-    implementation 'androidx.annotation:annotation:1.3.0'
+    implementation deps.support.annotation
 
     // Unit tests
     testImplementation 'junit:junit:4.13.2'
