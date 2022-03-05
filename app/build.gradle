@@ -52,7 +52,7 @@ android {
         minSdkVersion 23
         targetSdkVersion 30
         versionCode version_code
-        versionName "${version_major}.${version_minor}.${version_patch}"
+        versionName version_name
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         setProperty("archivesBaseName", applicationId + "-v" + versionCode + "(" + versionName + ")")
         multiDexEnabled true
@@ -103,12 +103,10 @@ android {
     productFlavors {
         // Version for Play Store
         playStore {
-
         }
 
         // Version for App Gallery
         appGallery {
-
         }
     }
 
