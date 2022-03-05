@@ -32,7 +32,8 @@ def version_name = "${version_major}.${version_minor}.${version_patch}"
 def script_time = new Date().format('MM.dd.yyyy:HH.mm.ss')
 def google_services_properties =
         optionallyLoadProperties("${project.projectDir}/google-services.properties")
-def google_services_enabled = google_services_properties['enabled'] == 'true'
+def google_services_enabled =
+        google_services_properties['com.frolo.muse.google_services_enabled'] == 'true'
 
 android {
     signingConfigs {
