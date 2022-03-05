@@ -53,6 +53,11 @@ ext {
 
         playstore : [
             billing:                "com.android.billingclient:billing-ktx:3.0.3"
+        ],
+
+        di: [
+            dagger:                 "com.google.dagger:dagger:2.40.5",
+            daggerCompiler:         "com.google.dagger:dagger-compiler:2.40.5"
         ]
     ]
 }

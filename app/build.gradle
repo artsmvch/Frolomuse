@@ -250,6 +250,10 @@ dependencies {
     implementation deps.rxJava2.rxJava
     implementation deps.rxJava2.rxAndroid
 
+    // DI
+    implementation deps.di.dagger
+    kapt deps.di.daggerCompiler
+
     // Firebase
     implementation platform(deps.firebase.bom)
     implementation deps.firebase.core
@@ -257,53 +261,35 @@ dependencies {
     implementation deps.firebase.config
     implementation deps.firebase.messaging
 
-    // navigation bottom bar that controls fragments stacks
+    // Fragment navigation
     implementation 'com.ncapdevi:frag-nav:3.2.0'
-
     // Glide
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     kapt 'com.github.bumptech.glide:compiler:4.11.0'
     // Glide transformations
     implementation 'jp.wasabeef:glide-transformations:4.0.0'
-
     // Sticky headers recycler view
     implementation 'com.timehop.stickyheadersrecyclerview:library:0.4.3@aar'
-
-    // alphabet index fast scroller
+    // Alphabet index fast scroller
     implementation 'com.l4digital.fastscroll:fastscroll:2.0.1'
-
-    // For runtime permissions
+    // Runtime permissions
     implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
-
-    // DI
-    def dagger_version = '2.40.5'
-    implementation "com.google.dagger:dagger:$dagger_version"
-    kapt "com.google.dagger:dagger-compiler:$dagger_version"
-
-    // RxAdapter ContentResolver and SharedPreferences
+    // RxAdapter for ContentResolver and SharedPreferences
     implementation 'com.github.alexei-frolo:RxContent:1.0.3'
-
     // Circular Progress Bar
     implementation 'com.mikhaellopez:circularprogressbar:3.0.3'
-
     // Gesture Image View
     implementation 'com.alexvasilkov:gesture-views:2.6.0'
-
     // ViewPager2 indicator
     implementation 'com.github.zhpanvip:viewpagerindicator:1.0.7'
-
     // Jsoup (HTML parser)
     implementation 'org.jsoup:jsoup:1.13.1'
-
     // Tooltips
     implementation 'com.github.sephiroth74:android-target-tooltip:release-1.3.15'
-
     // Waveform Seek Bar
     implementation 'com.github.alexei-frolo:WaveformSeekBar:1.1'
-
     // Falling snow view
     implementation 'com.github.jetradarmobile:android-snowfall:1.2.1'
-
     // Lottie animation
     implementation 'com.airbnb.android:lottie:4.2.2'
 }
