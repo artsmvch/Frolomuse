@@ -84,7 +84,6 @@ class ColdStartInitializer @Inject constructor(
         setupRxPlugins()
         setupFirebase()
         setupShortcutsListener()
-        noteAppLaunch()
     }
 
     private fun setupDebugMode() {
