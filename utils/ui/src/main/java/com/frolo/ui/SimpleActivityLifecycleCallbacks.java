@@ -8,7 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 
-/* package-private */ abstract class SimpleActivityLifecycleCallbacks
+public abstract class SimpleActivityLifecycleCallbacks
         implements Application.ActivityLifecycleCallbacks {
 
     @Override

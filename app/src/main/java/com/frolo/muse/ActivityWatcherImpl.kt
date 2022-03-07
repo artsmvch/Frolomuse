@@ -4,22 +4,14 @@ import android.app.Activity
 import android.app.Application
 import android.os.Bundle
 import androidx.annotation.AnyThread
-import com.frolo.muse.logger.EventLogger
-import com.frolo.muse.logger.logAppLaunched
-import com.frolo.muse.repository.Preferences
 import java.util.*
 
 
-class FrolomuseActivityWatcher(
-    private val preferences: Preferences,
-    private val eventLogger: EventLogger
-): Application.ActivityLifecycleCallbacks, ActivityWatcher {
+class ActivityWatcherImpl: Application.ActivityLifecycleCallbacks, ActivityWatcher {
 
     private val _createdActivities = Collections.synchronizedList(ArrayList<Activity>())
     private val _startedActivities = Collections.synchronizedList(ArrayList<Activity>())
     private val _resumedActivities = Collections.synchronizedList(ArrayList<Activity>())
-
-    private var activityResumeCount: Int = 0
 
     @AnyThread
     override fun getCreatedActivities(): List<Activity> {
@@ -54,11 +46,6 @@ class FrolomuseActivityWatcher(
     override fun onActivityResumed(activity: Activity) {
         Logger.d(LOG_TAG, "On activity resumed: $activity")
         _resumedActivities.add(activity)
-        if (activityResumeCount == 0) {
-            // This is the first resume, we consider it as the actual launch of the app
-            noteAppLaunch()
-        }
-        activityResumeCount++
     }
 
     override fun onActivityPaused(activity: Activity) {
@@ -80,15 +67,8 @@ class FrolomuseActivityWatcher(
         _createdActivities.remove(activity)
     }
 
-    private fun noteAppLaunch() {
-        val totalLaunchCount = preferences.launchCount + 1 // +1 for the current launch
-        preferences.launchCount = totalLaunchCount
-        eventLogger.logAppLaunched(totalLaunchCount)
-        Logger.d(LOG_TAG, "Noted app launch: $totalLaunchCount")
-    }
-
     companion object {
-        private const val LOG_TAG = "FrolomuseActivityWatcher"
+        private const val LOG_TAG = "ActivityWatcherImpl"
     }
 
 }
