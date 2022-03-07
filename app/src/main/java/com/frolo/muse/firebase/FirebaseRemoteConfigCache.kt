@@ -2,6 +2,7 @@ package com.frolo.muse.firebase
 
 import android.annotation.SuppressLint
 import androidx.annotation.GuardedBy
+import com.frolo.muse.BuildConfig
 import com.frolo.muse.Logger
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigValue
 import com.google.firebase.remoteconfig.ktx.get
@@ -56,6 +57,9 @@ object FirebaseRemoteConfigCache {
         fetch: Boolean,
         minimumFetchIntervalInSeconds: Long? = null
     ): Single<FirebaseRemoteConfigValue> {
+        if (!BuildConfig.GOOGLE_SERVICES_ENABLED) {
+            return Single.error(UnsupportedOperationException("Firebase is not enabled"))
+        }
         val configSource = if (fetch) {
             FirebaseRemoteConfigUtil.fetchAndActivate(minimumFetchIntervalInSeconds)
         } else {

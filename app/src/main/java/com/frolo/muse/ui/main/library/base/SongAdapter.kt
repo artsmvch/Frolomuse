@@ -88,20 +88,16 @@ open class SongAdapter<S: Song> constructor(
         }
     }
 
-    class SongItemCallback<S: Song> : DiffUtil.ItemCallback<S>() {
+    private class SongItemCallback<S: Song> : DiffUtil.ItemCallback<S>() {
         override fun areItemsTheSame(oldItem: S, newItem: S): Boolean {
             return oldItem.id == newItem.id
         }
 
         override fun areContentsTheSame(oldItem: S, newItem: S): Boolean {
-            return oldItem.artistId == newItem.artistId &&
+            return oldItem.duration == newItem.duration &&
                 oldItem.albumId == newItem.albumId &&
-                oldItem.duration == newItem.duration &&
-                oldItem.trackNumber == newItem.trackNumber &&
                 oldItem.title == newItem.title &&
-                oldItem.album == newItem.album &&
-                oldItem.artist == newItem.artist &&
-                oldItem.genre == newItem.genre
+                oldItem.artist == newItem.artist
         }
     }
 

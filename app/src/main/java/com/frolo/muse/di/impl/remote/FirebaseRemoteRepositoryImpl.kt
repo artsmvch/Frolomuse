@@ -9,7 +9,7 @@ import io.reactivex.Single
 class FirebaseRemoteRepositoryImpl : FirebaseRemoteRepository {
 
     override fun getMessagingToken(): Single<String> {
-        return FirebaseMessaging.getInstance().token.toSingle()
+        return Single.defer { FirebaseMessaging.getInstance().token.toSingle() }
     }
 
 }

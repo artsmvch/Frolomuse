@@ -3,7 +3,6 @@ package com.frolo.muse.ui.main.audiofx
 import android.content.Context
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
-import android.os.Build
 import android.os.Bundle
 import android.util.Size
 import android.view.*
@@ -77,28 +76,17 @@ class AudioFxFragment: BaseFragment(), FragmentContentInsetsListener {
     ): View = inflater.inflate(R.layout.fragment_audio_fx, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
         tb_actions.apply {
             setTitle(R.string.nav_equalizer)
-
             inflateMenu(R.menu.fragment_audio_fx)
-
             menu.findItem(R.id.action_playback_params)?.also { safeMenuItem ->
-                // this option is available only for Android API versions M (Marshmallow) and higher
-                safeMenuItem.isVisible = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-
                 safeMenuItem.setOnMenuItemClickListener {
                     viewModel.onPlaybackParamsOptionSelected()
                     true
                 }
             }
-
             menu.findItem(R.id.action_switch_audio_fx)?.also { safeMenuItem ->
                 val switchView = safeMenuItem.actionView as CompoundButton
-
-                // Here, we configure the switch.
-
-                // The listener
                 switchView.setOnCheckedChangeListener(onStatusCheckedChangeListener)
 
                 // The next line disables the save-restore mechanism for this switch view.
@@ -106,6 +94,7 @@ class AudioFxFragment: BaseFragment(), FragmentContentInsetsListener {
                 // when restoring views in this fragment.
                 switchView.isSaveEnabled = false
 
+                // Hold the ref to this switch for further usage
                 enableStatusSwitchView = switchView
             }
         }
@@ -126,7 +115,7 @@ class AudioFxFragment: BaseFragment(), FragmentContentInsetsListener {
             }
         }
 
-        // making the content under the overlay not clickable
+        // Make the content under the overlay not clickable
         fl_overlay.setOnClickListener { /* no-op */ }
     }
 

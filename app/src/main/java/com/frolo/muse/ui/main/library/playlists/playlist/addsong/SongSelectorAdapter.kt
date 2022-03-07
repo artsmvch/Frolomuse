@@ -3,6 +3,7 @@ package com.frolo.muse.ui.main.library.playlists.playlist.addsong
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.DiffUtil
 import com.frolo.muse.R
 import com.frolo.muse.inflateChild
 import com.frolo.music.model.Song
@@ -14,7 +15,8 @@ import com.frolo.muse.ui.main.library.base.SongAdapter
 import kotlinx.android.synthetic.main.item_select_song.view.*
 
 
-class SongSelectorAdapter(thumbnailLoader: ThumbnailLoader): SongAdapter<Song>(thumbnailLoader) {
+class SongSelectorAdapter(thumbnailLoader: ThumbnailLoader):
+    SongAdapter<Song>(thumbnailLoader, SongItemCallback()) {
 
     override fun onCreateBaseViewHolder(parent: ViewGroup, viewType: Int) =
             SongSelectorViewHolder(parent.inflateChild(R.layout.item_select_song))
@@ -45,6 +47,18 @@ class SongSelectorAdapter(thumbnailLoader: ThumbnailLoader): SongAdapter<Song>(t
             val drawable =
                     ContextCompat.getDrawable(itemView.context, R.drawable.ic_framed_music_note)
             itemView.chb_select_song.setImageDrawable(drawable)
+        }
+    }
+
+    private class SongItemCallback : DiffUtil.ItemCallback<Song>() {
+        override fun areItemsTheSame(oldItem: Song, newItem: Song): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: Song, newItem: Song): Boolean {
+            return oldItem.duration == newItem.duration &&
+                oldItem.title == newItem.title &&
+                oldItem.artist == newItem.artist
         }
     }
 
