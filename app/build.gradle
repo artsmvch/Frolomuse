@@ -258,6 +258,9 @@ dependencies {
     implementation deps.firebase.config
     implementation deps.firebase.messaging
 
+    // Work
+    implementation deps.work.runtime
+
     // Fragment navigation
     implementation 'com.ncapdevi:frag-nav:3.2.0'
     // Glide

@@ -58,6 +58,10 @@ ext {
         di: [
             dagger:                 "com.google.dagger:dagger:2.40.5",
             daggerCompiler:         "com.google.dagger:dagger-compiler:2.40.5"
+        ],
+
+        work: [
+            runtime:            "androidx.work:work-runtime-ktx:2.7.1"
         ]
     ]
 }

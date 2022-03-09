@@ -16,6 +16,7 @@ import com.frolo.muse.di.ApplicationScope
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.logAppLaunched
 import com.frolo.muse.logger.logLowMemory
+import com.frolo.muse.mediascan.scheduleMediaScanWork
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.ui.base.BaseActivity
 import com.frolo.player.PlayerImpl
@@ -26,7 +27,6 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import io.reactivex.plugins.RxJavaPlugins
 import java.util.concurrent.TimeUnit
-import java.util.concurrent.atomic.AtomicBoolean
 import javax.inject.Inject
 
 
@@ -84,6 +84,7 @@ class ColdStartInitializer @Inject constructor(
         setupRxPlugins()
         setupFirebase()
         setupShortcutsListener()
+        //setupMediaScanWork()
     }
 
     private fun setupDebugMode() {
@@ -172,6 +173,10 @@ class ColdStartInitializer @Inject constructor(
         }
         val intentFilter = IntentFilter(targetAction)
         application.registerReceiver(receiver, intentFilter)
+    }
+
+    private fun setupMediaScanWork() {
+        scheduleMediaScanWork(application)
     }
 
     private fun runOnForegroundActivity(action: BaseActivity.() -> Unit) {
