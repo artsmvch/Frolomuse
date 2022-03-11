@@ -83,9 +83,9 @@ public class MediaScanService extends Service {
 
     private static class ScannerInfo {
         final int startId;
-        final TimedScanner scanner;
+        final Scanner scanner;
 
-        ScannerInfo(int startId, TimedScanner scanner) {
+        ScannerInfo(int startId, Scanner scanner) {
             this.startId = startId;
             this.scanner = scanner;
         }
@@ -151,7 +151,7 @@ public class MediaScanService extends Service {
         if (DEBUG) Log.d(LOG_TAG, "Handle intent: " + action);
 
         if (ACTION_CANCEL_SCAN_MEDIA.equals(action)) {
-            disposeAllScanners();
+            cancelAllScanners();
 
             stopForeground(true);
             stopSelf();
@@ -159,7 +159,7 @@ public class MediaScanService extends Service {
             return START_NOT_STICKY;
         } else if (ACTION_SCAN_MEDIA.equals(action)) {
 
-            disposeAllScanners();
+            cancelAllScanners();
 
             handleScanPreparation(startId);
 
@@ -181,7 +181,7 @@ public class MediaScanService extends Service {
         super.onDestroy();
         if (DEBUG) Log.d(LOG_TAG, "Destroying service");
 
-        disposeAllScanners();
+        cancelAllScanners();
 
         stopForeground(true);
 
@@ -200,27 +200,13 @@ public class MediaScanService extends Service {
     }
 
     /**
-     * Disposes and removes the scanner that is associated with the given <code>startId</code>.
-     * @param startId id of the command
+     * Cancels all active scanners and removes them then.
      */
-    private void disposeScanner(int startId) {
-        synchronized (mScanners) {
-            ScannerInfo item = mScanners.get(startId);
-            if (item != null) {
-                item.scanner.dispose();
-                mScanners.remove(startId);
-            }
-        }
-    }
-
-    /**
-     * Disposes all active scanners and removes them then.
-     */
-    private void disposeAllScanners() {
+    private void cancelAllScanners() {
         synchronized (mScanners) {
             for (int i = 0; i < mScanners.size(); i++) {
                 ScannerInfo item = mScanners.valueAt(i);
-                item.scanner.dispose();
+                item.scanner.cancel();
             }
             mScanners.clear();
         }
@@ -302,15 +288,15 @@ public class MediaScanService extends Service {
         // See https://stackoverflow.com/questions/5739140/mediascannerconnection-produces-android-app-serviceconnectionleaked
         final Context appContext = getApplicationContext();
 
-        final TimedScanner.ScanCallback callback = new TimedScanner.ScanCallback() {
+        final Scanner.Callback callback = new Scanner.Callback() {
             @Override
             public void onScanStarted() {
                 handleScanStarted(startId, files.size());
             }
 
             @Override
-            public void onProgressChanged(int total, int progress) {
-                handleProgressChanged(startId, total, progress);
+            public void onScanProgressChanged(int total, int progress) {
+                handleScanProgressChanged(startId, total, progress);
             }
 
             @Override
@@ -324,15 +310,14 @@ public class MediaScanService extends Service {
             }
         };
 
-        final TimedScanner scanner = TimedScanner.create(
-                appContext, mMainHandler, files, SCAN_TIMEOUT, callback);
+        final Scanner scanner = Scanners.createTimedScanner(appContext, files, SCAN_TIMEOUT, callback);
 
         final ScannerInfo info = new ScannerInfo(startId, scanner);
         synchronized (mScanners) {
             ScannerInfo oldInfo = mScanners.get(startId);
             if (oldInfo != null) {
                 // abort old scanner
-                oldInfo.scanner.dispose();
+                oldInfo.scanner.cancel();
             }
 
             // start new scanner
@@ -369,7 +354,7 @@ public class MediaScanService extends Service {
         }
     }
 
-    private void handleProgressChanged(int startId, int total, int progress) {
+    private void handleScanProgressChanged(int startId, int total, int progress) {
         if (DEBUG) Log.d(LOG_TAG, String.format("Progress changed: startId=%d, total=%d, progress=%d. Created=%b", startId, total, progress, mCreated));
 
         if (mNotificationManager != null) {
