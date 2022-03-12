@@ -101,7 +101,6 @@ class MediaScanService : Service() {
         super.onDestroy()
         cancelAllScanners()
         isAlive = false
-        //notificationManager?.cancel(NOTIFICATION_ID_MEDIA_SCANNER)
         notificationManager = null
         engineHandler?.removeCallbacksAndMessages(null)
         engineHandler = null
