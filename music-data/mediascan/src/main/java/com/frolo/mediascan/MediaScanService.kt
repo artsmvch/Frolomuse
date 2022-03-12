@@ -38,9 +38,8 @@ class MediaScanService : Service() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createNotificationChannel()
         }
-        // Do not forget to start foreground!
         val notification = createPreparationNotification()
-        startForeground(NOTIFICATION_ID_MEDIA_SCANNER, notification)
+        notificationManager?.notify(NOTIFICATION_ID_MEDIA_SCANNER, notification)
 
         val thread = HandlerThread("MediaScanner", Process.THREAD_PRIORITY_DEFAULT)
         thread.start()
@@ -73,7 +72,7 @@ class MediaScanService : Service() {
         if (DEBUG) Log.d(LOG_TAG, "Handle intent: $action")
         if (ACTION_CANCEL_SCAN_MEDIA == action) {
             cancelAllScanners()
-            stopForeground(true)
+            notificationManager?.cancel(NOTIFICATION_ID_MEDIA_SCANNER)
             stopSelf()
             return START_NOT_STICKY
         } else if (ACTION_SCAN_MEDIA == action) {
@@ -101,8 +100,8 @@ class MediaScanService : Service() {
     override fun onDestroy() {
         super.onDestroy()
         cancelAllScanners()
-        stopForeground(true)
         isAlive = false
+        notificationManager?.cancel(NOTIFICATION_ID_MEDIA_SCANNER)
         notificationManager = null
         engineHandler?.removeCallbacksAndMessages(null)
         engineHandler = null
