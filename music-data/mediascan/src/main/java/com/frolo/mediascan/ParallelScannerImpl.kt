@@ -38,7 +38,7 @@ internal class ParallelScannerImpl(
                 }
             }
 
-            override fun onScanCompleted(path: String, uri: Uri) {
+            override fun onScanCompleted(path: String?, uri: Uri?) {
                 if (isCancelled.get()) {
                     return
                 }

@@ -43,7 +43,7 @@ internal class GradualScannerImpl constructor(
                 }
             }
 
-            override fun onScanCompleted(path: String, uri: Uri) {
+            override fun onScanCompleted(path: String?, uri: Uri?) {
                 if (path != currentPath.get()) {
                     // That's not the path we're expecting
                     return
