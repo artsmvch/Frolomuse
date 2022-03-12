@@ -70,7 +70,7 @@ internal class MediaScanWorker(context: Context, params: WorkerParameters): Work
                 waiter.countDown()
             }
         }
-        val timedScanner = Scanners.createTimedScanner(applicationContext, files, fileTimeoutMillis, callback)
+        val timedScanner = Scanners.createGradualScanner(applicationContext, files, fileTimeoutMillis, callback)
         timedScanner.start()
         waiter.await(files.size * fileTimeoutMillis, TimeUnit.MILLISECONDS)
         return Result.success()
