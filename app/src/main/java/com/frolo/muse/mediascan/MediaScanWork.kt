@@ -1,8 +1,6 @@
 package com.frolo.muse.mediascan
 
 import android.content.Context
-import android.os.Handler
-import android.os.Looper
 import androidx.annotation.WorkerThread
 import androidx.work.*
 import com.frolo.muse.Logger
@@ -54,13 +52,12 @@ internal class MediaScanWorker(context: Context, params: WorkerParameters): Work
         ThreadStrictMode.assertBackground()
         val fileTimeoutMillis = FILE_SCAN_TIMEOUT_MS
         val waiter = CountDownLatch(1)
-        val handler = Handler(Looper.getMainLooper())
-        val callback = object : TimedScanner.ScanCallback {
+        val callback = object : Scanner.Callback {
             override fun onScanStarted() {
                 Logger.d(LOG_TAG, "Scan started")
             }
 
-            override fun onProgressChanged(total: Int, progress: Int) {
+            override fun onScanProgressChanged(total: Int, progress: Int) {
             }
 
             override fun onScanCompleted() {
@@ -73,8 +70,7 @@ internal class MediaScanWorker(context: Context, params: WorkerParameters): Work
                 waiter.countDown()
             }
         }
-        val timedScanner = TimedScanner.create(applicationContext,
-            handler, files, fileTimeoutMillis, callback)
+        val timedScanner = Scanners.createTimedScanner(applicationContext, files, fileTimeoutMillis, callback)
         timedScanner.start()
         waiter.await(files.size * fileTimeoutMillis, TimeUnit.MILLISECONDS)
         return Result.success()
