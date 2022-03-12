@@ -334,12 +334,6 @@
     <string name="playback_channel_name">Lecture</string>
     <string name="playback_channel_desc">Avertit de l\'état actuel de la lecture</string>
 
-    <!--Media scanner notification-->
-    <string name="media_scanner_channel_name">Scanner de média</string>
-    <string name="media_scanner_channel_desc">Notifie sur l\'analyse de la bibliothèque multimédia sur le périphérique</string>
-    <!--Media scanner-->
-    <string name="scanning_media_storage">La médiathèque est en cours d\'analyse. S\'il vous plaît, attendez…</string>
-    <string name="preparing_files_to_scan">Préparation des fichiers pour la numérisation. S\'il vous plaît, attendez…</string>
     <string name="scanning_started">La numérisation a commencé</string>
     <string name="scanning_completed">Numérisation terminée</string>
     <string name="rescan_media_library">Nouvelle analyse de la médiathèque</string>

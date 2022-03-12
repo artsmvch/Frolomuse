@@ -1,4 +1,4 @@
-package com.frolo.muse.mediascan
+package com.frolo.mediascan
 
 import android.app.*
 import android.content.Context
@@ -14,20 +14,13 @@ import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import androidx.core.util.forEach
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import com.frolo.muse.BuildConfig
-import com.frolo.muse.R
+import com.frolo.debug.DebugUtils
 import com.frolo.threads.ThreadStrictMode
 import java.lang.Exception
 import java.util.ArrayList
 
 
 class MediaScanService : Service() {
-
-    private class ScannerInfo(
-        val startId: Int,
-        val fullRescan: Boolean,
-        val scanner: Scanner
-    )
 
     private var isAlive = false
     private var notificationManager: NotificationManager? = null
@@ -299,8 +292,14 @@ class MediaScanService : Service() {
             .build()
     }
 
+    private class ScannerInfo(
+        val startId: Int,
+        val fullRescan: Boolean,
+        val scanner: Scanner
+    )
+
     companion object {
-        private val DEBUG = BuildConfig.DEBUG
+        private val DEBUG = DebugUtils.isDebug()
         private val LOG_TAG = MediaScanService::class.java.simpleName
 
         // Timeout for one-file-scan

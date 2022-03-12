@@ -327,12 +327,6 @@
     <string name="playback_channel_name">再生</string>
     <string name="playback_channel_desc">現在の再生ステータスを通知します</string>
 
-    <!--Media scanner notification-->
-    <string name="media_scanner_channel_name">メディアスキャナー</string>
-    <string name="media_scanner_channel_desc">デバイス上のメディアライブラリのスキャンについて通知します</string>
-    <!--Media scanner-->
-    <string name="scanning_media_storage">スキャン中のメディアライブラリ。 お待ちください…</string>
-    <string name="preparing_files_to_scan">スキャンのためのファイルの準備 お待ちください …</string>
     <string name="scanning_started">スキャン開始</string>
     <string name="scanning_completed">スキャン完了</string>
     <string name="rescan_media_library">メディアライブラリの再スキャン</string>

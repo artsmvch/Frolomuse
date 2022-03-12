@@ -16,7 +16,7 @@ import com.frolo.muse.di.ApplicationScope
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.logAppLaunched
 import com.frolo.muse.logger.logLowMemory
-import com.frolo.muse.mediascan.scheduleMediaScanWork
+import com.frolo.mediascan.scheduleMediaScanWork
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.ui.base.BaseActivity
 import com.frolo.player.PlayerImpl

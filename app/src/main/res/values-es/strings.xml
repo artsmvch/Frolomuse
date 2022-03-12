@@ -334,12 +334,6 @@
     <string name="playback_channel_name">Reproducción</string>
     <string name="playback_channel_desc">Notifica sobre el estado de reproducción actual</string>
 
-    <!--Media scanner notification-->
-    <string name="media_scanner_channel_name">Escáner de medios</string>
-    <string name="media_scanner_channel_desc">Notifica sobre el escaneo de la biblioteca de medios en el dispositivo</string>
-    <!--Media scanner-->
-    <string name="scanning_media_storage">La biblioteca de medios está siendo escaneada. Por favor espera…</string>
-    <string name="preparing_files_to_scan">Preparando archivos para escanear. Por favor espera…</string>
     <string name="scanning_started">Escaneo iniciado</string>
     <string name="scanning_completed">Escaneo completado</string>
     <string name="rescan_media_library">Volver a escanear la biblioteca de medios</string>

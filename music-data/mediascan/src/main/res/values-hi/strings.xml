@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="media_scanner_channel_name">मीडिया स्कैनर</string>
+    <string name="media_scanner_channel_desc">डिवाइस पर मीडिया लाइब्रेरी को स्कैन करने के बारे में सूचित करता है</string>
+    <string name="scanning_media_storage">मीडिया लाइब्रेरी को स्कैन किया जा रहा है। कृपया प्रतीक्षा करें…</string>
+    <string name="preparing_files_to_scan">स्कैनिंग के लिए फाइल तैयार करना। कृपया प्रतीक्षा करें…</string>
+</resources>

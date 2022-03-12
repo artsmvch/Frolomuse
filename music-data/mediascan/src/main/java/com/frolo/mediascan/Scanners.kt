@@ -1,4 +1,4 @@
-package com.frolo.muse.mediascan
+package com.frolo.mediascan
 
 import android.content.Context
 import android.media.MediaScannerConnection
@@ -7,7 +7,7 @@ import android.os.Handler
 import android.os.SystemClock
 import android.util.Log
 import androidx.annotation.AnyThread
-import com.frolo.muse.BuildConfig
+import com.frolo.debug.DebugUtils
 import java.util.concurrent.BlockingQueue
 import java.util.concurrent.LinkedBlockingQueue
 import java.util.concurrent.atomic.AtomicBoolean
@@ -148,7 +148,7 @@ private class TimedScanner constructor(
     }
 
     companion object {
-        private val DEBUG = BuildConfig.DEBUG
+        private val DEBUG = DebugUtils.isDebug()
         private val LOG_TAG = TimedScanner::class.java.simpleName
     }
 }

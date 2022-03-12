@@ -327,12 +327,6 @@
     <string name="playback_channel_name">回放</string>
     <string name="playback_channel_desc">通知當前播放狀態</string>
 
-    <!--Media scanner notification-->
-    <string name="media_scanner_channel_name">媒體掃描儀</string>
-    <string name="media_scanner_channel_desc">通知設備上的掃描媒體庫</string>
-    <!--Media scanner-->
-    <string name="scanning_media_storage">正在掃描媒體庫。 請耐心等待…</string>
-    <string name="preparing_files_to_scan">準備文件進行掃描。 請耐心等待…</string>
     <string name="scanning_started">掃描開始了</string>
     <string name="scanning_completed">掃描完成</string>
     <string name="rescan_media_library">重新掃描媒體庫</string>

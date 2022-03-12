@@ -1,4 +1,4 @@
-package com.frolo.muse.mediascan
+package com.frolo.mediascan
 
 interface Scanner {
     fun start()

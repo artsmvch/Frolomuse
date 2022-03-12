@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="ProgressBar.Horizontal.MediaScan.Preparing" parent="Widget.AppCompat.ProgressBar.Horizontal">
+        <item name="android:indeterminate">true</item>
+        <item name="android:indeterminateTint">@color/media_scan_notification_accent</item>
+        <item name="android:indeterminateTintMode">src_in</item>
+    </style>
+
+    <style name="ProgressBar.Horizontal.MediaScan.Scanning" parent="Widget.AppCompat.ProgressBar.Horizontal">
+        <item name="android:indeterminate">false</item>
+        <item name="android:progressTint">@color/media_scan_notification_accent</item>
+        <item name="android:progressTintMode">src_in</item>
+    </style>
+
+    <style name="TextAppearance.MediaScan.Body" parent="TextAppearance.MaterialComponents.Body2">
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <style name="TextAppearance.MediaScan.Button" parent="TextAppearance.MaterialComponents.Button">
+        <item name="android:textColor">@color/media_scan_notification_accent</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+</resources>

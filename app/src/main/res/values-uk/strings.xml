@@ -340,12 +340,6 @@
     <string name="playback_channel_name">Відтворення</string>
     <string name="playback_channel_desc">Повідомляє про поточний стан відтворення</string>
 
-    <!--Media scanner notification-->
-    <string name="media_scanner_channel_name">Медіа-сканер</string>
-    <string name="media_scanner_channel_desc">Повідомляє про сканування медіатеки на пристрої</string>
-    <!--Media scanner-->
-    <string name="scanning_media_storage">Медіатека сканується. Будь ласка, зачекайте…</string>
-    <string name="preparing_files_to_scan">Підготовка файлів до сканування. Будь ласка, зачекайте…</string>
     <string name="scanning_started">Сканування розпочато</string>
     <string name="scanning_completed">Сканування завершено</string>
     <string name="rescan_media_library">Сканувати медіатеку</string>

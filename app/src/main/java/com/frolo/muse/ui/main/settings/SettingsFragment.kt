@@ -21,7 +21,7 @@ import com.frolo.muse.arch.observe
 import com.frolo.muse.arch.observeNonNull
 import com.frolo.muse.di.activityComponent
 import com.frolo.muse.logger.*
-import com.frolo.muse.mediascan.MediaScanService
+import com.frolo.mediascan.MediaScanService
 import com.frolo.muse.router.AppRouter
 import com.frolo.muse.repository.AppearancePreferences
 import com.frolo.muse.repository.Preferences

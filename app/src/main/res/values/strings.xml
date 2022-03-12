@@ -336,12 +336,6 @@
     <string name="playback_channel_name">Playback</string>
     <string name="playback_channel_desc">Notifies about current playback status</string>
 
-    <!--Media scanner notification-->
-    <string name="media_scanner_channel_name">Media scanner</string>
-    <string name="media_scanner_channel_desc">Notifies about scanning media library on the device</string>
-    <!--Media scanner-->
-    <string name="scanning_media_storage">Media library is being scanned. Please wait…</string>
-    <string name="preparing_files_to_scan">Preparing files for scanning. Please wait…</string>
     <string name="scanning_started">Scanning started</string>
     <string name="scanning_completed">Scanning completed</string>
     <string name="rescan_media_library">Rescan media library</string>

@@ -1,4 +1,4 @@
-package com.frolo.muse.mediascan;
+package com.frolo.mediascan;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -11,7 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.WorkerThread;
 
-import com.frolo.muse.BuildConfig;
+import com.frolo.debug.DebugUtils;
+import com.frolo.threads.ThreadStrictMode;
 
 import java.io.File;
 import java.net.URLConnection;
@@ -44,7 +45,7 @@ final class AudioFileCollector {
     }
 
     private void logError(Throwable err) {
-        if (BuildConfig.DEBUG) Log.e("AudioFileCollector", "", err);
+        if (DebugUtils.isDebug()) Log.e("AudioFileCollector", "", err);
     }
 
     /**
@@ -54,6 +55,7 @@ final class AudioFileCollector {
      */
     @WorkerThread
     List<String> collectAll() {
+        ThreadStrictMode.assertBackground();
         final String absolutePath = Environment.getExternalStorageDirectory().getAbsolutePath();
         if (isEmpty(absolutePath)) {
             return Collections.emptyList();
@@ -77,6 +79,7 @@ final class AudioFileCollector {
      */
     @WorkerThread
     List<String> collectFrom(@NonNull List<String> targetFiles) {
+        ThreadStrictMode.assertBackground();
         final List<String> list = new ArrayList<>();
         for (String filepath : targetFiles) {
             collectAudioFiles(filepath, list);

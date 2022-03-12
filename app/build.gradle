@@ -159,6 +159,7 @@ dependencies {
     implementation project(path: ':music-data:model')
     implementation project(path: ':music-data:repository:api')
     implementation project(path: ':music-data:repository:android-impl')
+    implementation project(path: ':music-data:mediascan')
 
     // Player
     implementation project(path: ':audio:audiofx:api')
@@ -257,9 +258,6 @@ dependencies {
     implementation deps.firebase.crashlytics
     implementation deps.firebase.config
     implementation deps.firebase.messaging
-
-    // Work
-    implementation deps.work.runtime
 
     // Fragment navigation
     implementation 'com.ncapdevi:frag-nav:3.2.0'

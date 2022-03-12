@@ -1,19 +1,19 @@
-package com.frolo.muse.mediascan
+package com.frolo.mediascan
 
 import android.content.Context
+import android.util.Log
 import androidx.annotation.WorkerThread
 import androidx.work.*
-import com.frolo.muse.Logger
 import com.frolo.threads.ThreadStrictMode
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 
 private const val LOG_TAG = "MediaScanWork"
 
-private const val WORK_NAME_SCAN_ALL  = "com.frolo.muse.mediascan.WORK_NAME_SCAN_ALL"
+private const val WORK_NAME_SCAN_ALL  = "com.frolo.mediascan.WORK_NAME_SCAN_ALL"
 
-private const val ARG_TARGET_PATHS = "com.frolo.muse.mediascan.target_paths"
-private const val ARG_SCAN_ALL_PATHS = "com.frolo.muse.mediascan.scan_all_paths"
+private const val ARG_TARGET_PATHS = "com.frolo.mediascan.target_paths"
+private const val ARG_SCAN_ALL_PATHS = "com.frolo.mediascan.scan_all_paths"
 
 private const val FILE_SCAN_TIMEOUT_MS = 10_000L
 
@@ -54,19 +54,19 @@ internal class MediaScanWorker(context: Context, params: WorkerParameters): Work
         val waiter = CountDownLatch(1)
         val callback = object : Scanner.Callback {
             override fun onScanStarted() {
-                Logger.d(LOG_TAG, "Scan started")
+                Log.d(LOG_TAG, "Scan started")
             }
 
             override fun onScanProgressChanged(total: Int, progress: Int) {
             }
 
             override fun onScanCompleted() {
-                Logger.d(LOG_TAG, "Scan completed")
+                Log.d(LOG_TAG, "Scan completed")
                 waiter.countDown()
             }
 
             override fun onScanCancelled() {
-                Logger.d(LOG_TAG, "Scan cancelled")
+                Log.d(LOG_TAG, "Scan cancelled")
                 waiter.countDown()
             }
         }

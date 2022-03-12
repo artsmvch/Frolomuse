@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="media_scanner_channel_name">Pemindai media</string>
+    <string name="media_scanner_channel_desc">Memberitahu tentang pemindaian pustaka media pada perangkat</string>
+    <string name="scanning_media_storage">Pustaka media sedang dipindai. Mohon tunggu…</string>
+    <string name="preparing_files_to_scan">Mempersiapkan file untuk pemindaian. Mohon tunggu…</string>
+</resources>

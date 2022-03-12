@@ -5,6 +5,7 @@ include ':app'
 include ':music-data:model'
 include ':music-data:repository:api'
 include ':music-data:repository:android-impl'
+include ':music-data:mediascan'
 
 // AudioFx
 include ':audio:audiofx:api'

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="media_scanner_channel_name">Scanner de média</string>
+    <string name="media_scanner_channel_desc">Notifie sur l\'analyse de la bibliothèque multimédia sur le périphérique</string>
+    <string name="scanning_media_storage">La médiathèque est en cours d\'analyse. S\'il vous plaît, attendez…</string>
+    <string name="preparing_files_to_scan">Préparation des fichiers pour la numérisation. S\'il vous plaît, attendez…</string>
+</resources>

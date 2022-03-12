@@ -333,12 +333,6 @@
     <string name="playback_channel_name">Geri çalma</string>
     <string name="playback_channel_desc">Geçerli oynatma durumu hakkında uyarır</string>
 
-    <!--Media scanner notification-->
-    <string name="media_scanner_channel_name">Medya tarayıcı</string>
-    <string name="media_scanner_channel_desc">Cihazdaki medya kitaplığının taranması hakkında bilgi verir</string>
-    <!--Media scanner-->
-    <string name="scanning_media_storage">Medya kütüphanesi taranıyor. Lütfen bekle…</string>
-    <string name="preparing_files_to_scan">Dosyaları taramaya hazırlama Lütfen bekle…</string>
     <string name="scanning_started">Tarama başladı</string>
     <string name="scanning_completed">Tarama tamamlandı</string>
     <string name="rescan_media_library">Medya kitaplığını yeniden tara</string>

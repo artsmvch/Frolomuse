@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="media_scanner_channel_name">Medya tarayıcı</string>
+    <string name="media_scanner_channel_desc">Cihazdaki medya kitaplığının taranması hakkında bilgi verir</string>
+    <string name="scanning_media_storage">Medya kütüphanesi taranıyor. Lütfen bekle…</string>
+    <string name="preparing_files_to_scan">Dosyaları taramaya hazırlama Lütfen bekle…</string>
+</resources>

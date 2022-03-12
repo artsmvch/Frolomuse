@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.frolo.mediascan">
+
+    <application>
+        <service
+            android:stopWithTask="true"
+            android:name="com.frolo.mediascan.MediaScanService"
+            android:exported="false" />
+    </application>
+</manifest>

@@ -334,12 +334,6 @@
     <string name="playback_channel_name">Reprodução</string>
     <string name="playback_channel_desc">Notifica sobre o status atual da reprodução</string>
 
-    <!--Media scanner notification-->
-    <string name="media_scanner_channel_name">Scanner de mídia</string>
-    <string name="media_scanner_channel_desc">Notícia sobre a biblioteca de mídia de digitalização no dispositivo</string>
-    <!--Media scanner-->
-    <string name="scanning_media_storage">Biblioteca de mídia de digitalização em andamento. Por favor, espere…</string>
-    <string name="preparing_files_to_scan">Preparando arquivos para varredura. Por favor, espere…</string>
     <string name="scanning_started">Digitalização iniciada</string>
     <string name="scanning_completed">Digitalização concluída</string>
     <string name="rescan_media_library">Verificar novamente a biblioteca de mídia</string>
