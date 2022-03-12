@@ -192,7 +192,7 @@ class MediaScanService : Service() {
 
             override fun onScanCancelled() = onScanCancelled(startId)
         }
-        val newScanner = Scanners.createTimedScanner(appContext, files, SCAN_TIMEOUT_MILLIS, callback)
+        val newScanner = Scanners.createGradualScanner(appContext, files, SCAN_TIMEOUT_MILLIS, callback)
         val newScannerInfo = ScannerInfo(startId, fullRescan, newScanner)
         synchronized(scanners) {
             scanners[startId]?.also { oldScannerInfo ->
