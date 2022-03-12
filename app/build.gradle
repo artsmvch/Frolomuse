@@ -159,6 +159,7 @@ dependencies {
     implementation project(path: ':music-data:model')
     implementation project(path: ':music-data:repository:api')
     implementation project(path: ':music-data:repository:android-impl')
+    implementation project(path: ':music-data:mediascan')
 
     // Player
     implementation project(path: ':audio:audiofx:api')

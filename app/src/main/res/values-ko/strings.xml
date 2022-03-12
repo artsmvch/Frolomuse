@@ -328,12 +328,6 @@
     <string name="playback_channel_name">재생</string>
     <string name="playback_channel_desc">현재 재생 상태를 알려줍니다</string>
 
-    <!--Media scanner notification-->
-    <string name="media_scanner_channel_name">미디어 스캐너</string>
-    <string name="media_scanner_channel_desc">장치에서 미디어 라이브러리 스캔에 대한 알림</string>
-    <!--Media scanner-->
-    <string name="scanning_media_storage">미디어 라이브러리를 스캔 중입니다. 기다려주세요…</string>
-    <string name="preparing_files_to_scan">스캔 할 파일을 준비 중입니다. 기다려주세요…</string>
     <string name="scanning_started">스캔 시작</string>
     <string name="scanning_completed">스캔 완료</string>
     <string name="rescan_media_library">미디어 라이브러리 재검색</string>

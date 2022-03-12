@@ -34,7 +34,9 @@ public final class Logger {
      * @param t error
      */
     private static void report(Throwable t) {
-        FirebaseCrashlytics.getInstance().recordException(t);
+        if (BuildConfig.GOOGLE_SERVICES_ENABLED) {
+            FirebaseCrashlytics.getInstance().recordException(t);
+        }
     }
 
     public static void e(Throwable throwable) {

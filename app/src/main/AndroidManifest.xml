@@ -33,11 +33,6 @@
             android:exported="false" />
 
         <service
-            android:stopWithTask="true"
-            android:name="com.frolo.muse.mediascan.MediaScanService"
-            android:exported="false" />
-
-        <service
             android:name="com.frolo.muse.firebase.SimpleFirebaseMessagingService"
             android:exported="false">
             <intent-filter>

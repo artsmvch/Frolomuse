@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="media_scanner_channel_name">メディアスキャナー</string>
+    <string name="media_scanner_channel_desc">デバイス上のメディアライブラリのスキャンについて通知します</string>
+    <string name="scanning_media_storage">スキャン中のメディアライブラリ。 お待ちください…</string>
+    <string name="preparing_files_to_scan">スキャンのためのファイルの準備 お待ちください …</string>
+</resources>

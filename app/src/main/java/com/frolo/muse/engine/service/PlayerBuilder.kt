@@ -5,7 +5,7 @@ import android.support.v4.media.session.MediaSessionCompat
 import com.frolo.audiofx.AudioFxImpl
 import com.frolo.audiofx.applicable.AudioFxApplicable
 import com.frolo.debug.DebugUtils
-import com.frolo.muse.BuildConfig
+import com.frolo.muse.BuildInfo
 import com.frolo.muse.Logger
 import com.frolo.muse.engine.service.audiofx.DefaultAudioFxErrorHandler
 import com.frolo.muse.engine.service.observers.*
@@ -49,10 +49,10 @@ class PlayerBuilder @Inject constructor(
         val audioFx: AudioFxApplicable = AudioFxImpl.getInstance(
             service, Const.AUDIO_FX_PREFERENCES, DefaultAudioFxErrorHandler())
 
-        val preParams = loadPreParams(timeoutMillis = 2000L)
+        val preParams = loadPreParams(timeoutMillis = getTimeoutMillis())
 
         val player = PlayerImpl.newBuilder(service, audioFx)
-            .setDebug(BuildConfig.DEBUG)
+            .setDebug(BuildInfo.isDebug())
             .setPlayerJournal(playerJournal)
             .setUseWakeLocks(preParams.wakeLockEnabled)
             .setRepeatMode(preParams.repeatMode)
@@ -68,6 +68,15 @@ class PlayerBuilder @Inject constructor(
         MediaSessionObserver.attach(service, mediaSession, player)
 
         return player
+    }
+
+    private fun getTimeoutMillis(): Long {
+        return if (BuildInfo.isDebug()) {
+            4000L
+        } else {
+            // Let's not torture users. This should not block the cold start.
+            2000L
+        }
     }
 
     private fun loadPreParams(timeoutMillis: Long): PreParams {

@@ -9,7 +9,7 @@ import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import com.frolo.muse.mediascan.MediaScanService
+import com.frolo.mediascan.MediaScanService
 import java.lang.ref.WeakReference
 
 

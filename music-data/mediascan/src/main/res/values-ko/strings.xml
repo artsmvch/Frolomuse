@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="media_scanner_channel_name">미디어 스캐너</string>
+    <string name="media_scanner_channel_desc">장치에서 미디어 라이브러리 스캔에 대한 알림</string>
+    <string name="scanning_media_storage">미디어 라이브러리를 스캔 중입니다. 기다려주세요…</string>
+    <string name="preparing_files_to_scan">스캔 할 파일을 준비 중입니다. 기다려주세요…</string>
+</resources>

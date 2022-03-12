@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="media_scanner_channel_name">Escáner de medios</string>
+    <string name="media_scanner_channel_desc">Notifica sobre el escaneo de la biblioteca de medios en el dispositivo</string>
+    <string name="scanning_media_storage">La biblioteca de medios está siendo escaneada. Por favor espera…</string>
+    <string name="preparing_files_to_scan">Preparando archivos para escanear. Por favor espera…</string>
+</resources>

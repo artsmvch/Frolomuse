@@ -346,12 +346,6 @@
     <string name="playback_channel_name">Воспроизведение</string>
     <string name="playback_channel_desc">Уведомляет о текущем статусе воспроизведения</string>
 
-    <!--Media scanner notification-->
-    <string name="media_scanner_channel_name">Медиа-сканер</string>
-    <string name="media_scanner_channel_desc">Уведомляет о сканировании медиатеки на устройстве</string>
-    <!--Media scanner-->
-    <string name="scanning_media_storage">Медиатека сканируется. Пожалуйста, подождите…</string>
-    <string name="preparing_files_to_scan">Подготовка файлов для сканирования. Пожалуйста, подождите…</string>
     <string name="scanning_started">Сканирование началось</string>
     <string name="scanning_completed">Сканирование завершено</string>
     <string name="rescan_media_library">Просканировать медиатеку</string>

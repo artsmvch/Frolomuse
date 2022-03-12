@@ -10,6 +10,10 @@ import java.util.concurrent.Executors
 /**
  * Helper class for wrapping methods in [FirebaseRemoteConfig] in Rx and  other useful stuff.
  */
+@Deprecated(
+    message = "Use repository pattern",
+    replaceWith = ReplaceWith("RemoteConfigRepository"),
+)
 object AdMobs {
 
     private const val KEY_AD_MOB_INIT_ON_COLD_START = "ad_mob_init_on_cold_start"

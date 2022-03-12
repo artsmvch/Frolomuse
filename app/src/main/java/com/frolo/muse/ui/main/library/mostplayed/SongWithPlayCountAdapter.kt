@@ -2,6 +2,7 @@ package com.frolo.muse.ui.main.library.mostplayed
 
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import com.frolo.muse.R
 import com.frolo.muse.inflateChild
 import com.frolo.music.model.SongWithPlayCount
@@ -19,7 +20,7 @@ import kotlinx.android.synthetic.main.item_song_with_play_count.view.*
 
 class SongWithPlayCountAdapter constructor(
     private val thumbnailLoader: ThumbnailLoader,
-): SongAdapter<SongWithPlayCount>(thumbnailLoader) {
+): SongAdapter<SongWithPlayCount>(thumbnailLoader, SongWithPlayCountItemCallback()) {
 
     private companion object {
         const val VIEW_TYPE_DEFAULT = 0
@@ -87,6 +88,21 @@ class SongWithPlayCountAdapter constructor(
         }
 
         override val viewOptionsMenu: View? = itemView.view_options_menu
+    }
+
+    private class SongWithPlayCountItemCallback : DiffUtil.ItemCallback<SongWithPlayCount>() {
+        override fun areItemsTheSame(oldItem: SongWithPlayCount, newItem: SongWithPlayCount): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: SongWithPlayCount, newItem: SongWithPlayCount): Boolean {
+            return oldItem.duration == newItem.duration &&
+                oldItem.albumId == newItem.albumId &&
+                oldItem.title == newItem.title &&
+                oldItem.artist == newItem.artist &&
+                oldItem.playCount == newItem.playCount &&
+                oldItem.lastPlayTime == newItem.lastPlayTime
+        }
     }
 
 }

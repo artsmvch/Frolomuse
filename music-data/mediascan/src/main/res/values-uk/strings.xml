@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="media_scanner_channel_name">Медіа-сканер</string>
+    <string name="media_scanner_channel_desc">Повідомляє про сканування медіатеки на пристрої</string>
+    <string name="scanning_media_storage">Медіатека сканується. Будь ласка, зачекайте…</string>
+    <string name="preparing_files_to_scan">Підготовка файлів до сканування. Будь ласка, зачекайте…</string>
+</resources>
