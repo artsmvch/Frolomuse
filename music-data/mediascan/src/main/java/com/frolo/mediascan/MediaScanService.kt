@@ -39,7 +39,7 @@ class MediaScanService : Service() {
             createNotificationChannel()
         }
         val notification = createPreparationNotification()
-        notificationManager?.notify(NOTIFICATION_ID_MEDIA_SCANNER, notification)
+        startForeground(NOTIFICATION_ID_MEDIA_SCANNER, notification)
 
         val thread = HandlerThread("MediaScanner", Process.THREAD_PRIORITY_DEFAULT)
         thread.start()
@@ -72,7 +72,7 @@ class MediaScanService : Service() {
         if (DEBUG) Log.d(LOG_TAG, "Handle intent: $action")
         if (ACTION_CANCEL_SCAN_MEDIA == action) {
             cancelAllScanners()
-            notificationManager?.cancel(NOTIFICATION_ID_MEDIA_SCANNER)
+            stopForeground(true)
             stopSelf()
             return START_NOT_STICKY
         } else if (ACTION_SCAN_MEDIA == action) {
@@ -101,7 +101,7 @@ class MediaScanService : Service() {
         super.onDestroy()
         cancelAllScanners()
         isAlive = false
-        notificationManager?.cancel(NOTIFICATION_ID_MEDIA_SCANNER)
+        //notificationManager?.cancel(NOTIFICATION_ID_MEDIA_SCANNER)
         notificationManager = null
         engineHandler?.removeCallbacksAndMessages(null)
         engineHandler = null
@@ -141,7 +141,7 @@ class MediaScanService : Service() {
     ) {
         val task = Runnable {
             ThreadStrictMode.assertBackground()
-            if (DEBUG) Log.w(LOG_TAG, "Collect files to scan...")
+            if (DEBUG) Log.d(LOG_TAG, "Collect files to scan...")
             val files: List<String> = try {
                 val collector = AudioFileCollector.get(this@MediaScanService)
                 when {
@@ -208,7 +208,7 @@ class MediaScanService : Service() {
         ThreadStrictMode.assertMain()
         if (DEBUG) Log.d(LOG_TAG, "Prepare: startId=$startId")
         val notification = createPreparationNotification()
-        notificationManager?.notify(NOTIFICATION_ID_MEDIA_SCANNER, notification)
+        startForeground(NOTIFICATION_ID_MEDIA_SCANNER, notification)
     }
 
     @MainThread
@@ -221,7 +221,7 @@ class MediaScanService : Service() {
             LocalBroadcastManager.getInstance(this).sendBroadcast(statusIntent)
         }
         val notification = createProgressNotification(totalCount, 0)
-        notificationManager?.notify(NOTIFICATION_ID_MEDIA_SCANNER, notification)
+        startForeground(NOTIFICATION_ID_MEDIA_SCANNER, notification)
     }
 
     @MainThread
@@ -230,7 +230,7 @@ class MediaScanService : Service() {
         if (DEBUG) Log.d(LOG_TAG, "Scan progress changed: " +
                 "startId=$startId, totalCount=$totalCount, progress=$progress")
         val notification = createProgressNotification(totalCount, progress)
-        notificationManager?.notify(NOTIFICATION_ID_MEDIA_SCANNER, notification)
+        startForeground(NOTIFICATION_ID_MEDIA_SCANNER, notification)
     }
 
     @MainThread
