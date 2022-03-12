@@ -307,11 +307,9 @@ class MediaScanService : Service() {
         private const val RC_CANCEL = 3731
 
         // Used for broadcasting
-        const val ACTION_MEDIA_SCANNING_STATUS =
-            "com.frolo.muse.mediascan.ACTION_MEDIA_SCANNING_STATUS"
-        private const val ACTION_SCAN_MEDIA = "com.frolo.muse.mediascan.ACTION_SCAN_MEDIA"
-        private const val ACTION_CANCEL_SCAN_MEDIA =
-            "com.frolo.muse.mediascan.ACTION_CANCEL_SCAN_MEDIA"
+        const val ACTION_MEDIA_SCANNING_STATUS = "com.frolo.mediascan.ACTION_MEDIA_SCANNING_STATUS"
+        private const val ACTION_SCAN_MEDIA = "com.frolo.mediascan.ACTION_SCAN_MEDIA"
+        private const val ACTION_CANCEL_SCAN_MEDIA = "com.frolo.mediascan.ACTION_CANCEL_SCAN_MEDIA"
 
         const val EXTRA_MEDIA_SCANNING_STARTED = "media_scanning_started"
         const val EXTRA_MEDIA_SCANNING_COMPLETED = "media_scanning_completed"
