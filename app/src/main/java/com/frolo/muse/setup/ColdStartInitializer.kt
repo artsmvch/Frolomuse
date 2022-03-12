@@ -66,7 +66,9 @@ class ColdStartInitializer @Inject constructor(
     fun init() {
         ThreadStrictMode.assertMain()
         if (isInitialized) {
-            throw IllegalStateException("Cold start already initialized")
+            val error = IllegalStateException("Cold start already initialized")
+            DebugUtils.dumpOnMainThread(error)
+            return
         }
         val startTimeMillis = System.currentTimeMillis()
         initImpl()
