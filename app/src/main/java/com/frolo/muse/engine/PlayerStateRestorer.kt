@@ -33,7 +33,7 @@ class PlayerStateRestorer @Inject constructor(
     private fun getDefaultPlayerState(): Single<PlayerState> {
         return songRepository.allItems
             .firstOrError()
-            .map { songs -> AudioSourceQueue(songs, null) }
+            .flatMap { songs -> createAudioSourceQueue(songs, null) }
             .map { queue ->
                 PlayerState(
                     queue = queue,
@@ -47,7 +47,7 @@ class PlayerStateRestorer @Inject constructor(
     private fun forceRestorePlayerState(player: Player): Completable {
         val queueSource: Flowable<AudioSourceQueue> = preferences.lastMediaCollectionItemIds
             .switchMap { ids -> songRepository.getSongsOptionally(ids) }
-            .map { songs -> AudioSourceQueue(songs, null) }
+            .switchMapSingle { songs -> createAudioSourceQueue(songs, null) }
             .doOnNext { queue ->
                 if (queue.isEmpty) {
                     throw NullPointerException("Queue is empty")
@@ -57,30 +57,30 @@ class PlayerStateRestorer @Inject constructor(
         val queueFallbackSource: Flowable<AudioSourceQueue> = when (preferences.lastMediaCollectionType) {
             /* deprecated */ 1 -> albumRepository.getItem(preferences.lastMediaCollectionId)
                 .flatMapSingle { album ->
-                    albumRepository.collectSongs(album).map { songs -> AudioSourceQueue(songs, album) }
+                    albumRepository.collectSongs(album).flatMap { songs -> createAudioSourceQueue(songs, album) }
                 }
 
             /* deprecated */ 2 -> artistRepository.getItem(preferences.lastMediaCollectionId)
                 .flatMapSingle { artist ->
-                    artistRepository.collectSongs(artist).map { songs -> AudioSourceQueue(songs, artist) }
+                    artistRepository.collectSongs(artist).flatMap { songs -> createAudioSourceQueue(songs, artist) }
                 }
 
             /* deprecated */ 3 -> genreRepository.getItem(preferences.lastMediaCollectionId)
                 .flatMapSingle { genre ->
-                    genreRepository.collectSongs(genre).map { songs -> AudioSourceQueue(songs, genre) }
+                    genreRepository.collectSongs(genre).flatMap { songs -> createAudioSourceQueue(songs, genre) }
                 }
 
             /* deprecated */ 4 -> playlistRepository.getItem(preferences.lastMediaCollectionId)
                 .flatMapSingle { playlist ->
-                    playlistRepository.collectSongs(playlist).map { songs -> AudioSourceQueue(songs, playlist) }
+                    playlistRepository.collectSongs(playlist).flatMap { songs -> createAudioSourceQueue(songs, playlist) }
                 }
 
-            /* deprecated */ 7 -> songRepository.allFavouriteItems.map { songs ->
-                AudioSourceQueue(songs, null)
+            /* deprecated */ 7 -> songRepository.allFavouriteItems.flatMapSingle { songs ->
+                createAudioSourceQueue(songs, null)
             }
 
-            else -> songRepository.allItems.map { songs ->
-                AudioSourceQueue(songs, null)
+            else -> songRepository.allItems.flatMapSingle { songs ->
+                createAudioSourceQueue(songs, null)
             }
         }
 

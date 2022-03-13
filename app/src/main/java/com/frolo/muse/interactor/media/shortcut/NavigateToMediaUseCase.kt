@@ -1,6 +1,6 @@
 package com.frolo.muse.interactor.media.shortcut
 
-import com.frolo.muse.common.AudioSourceQueue
+import com.frolo.muse.common.blockingCreateAudioSourceQueue
 import com.frolo.player.Player
 import com.frolo.player.prepareByTarget
 import com.frolo.muse.common.toAudioSource
@@ -72,7 +72,7 @@ class NavigateToMediaUseCase @Inject constructor(
                 .observeOn(schedulerProvider.main())
                 .firstOrError()
                 .doOnSuccess { song ->
-                    val queue = AudioSourceQueue(song)
+                    val queue = blockingCreateAudioSourceQueue(song)
                     player.prepareByTarget(queue, song.toAudioSource(), true)
                     appRouter.openPlayer()
                 }

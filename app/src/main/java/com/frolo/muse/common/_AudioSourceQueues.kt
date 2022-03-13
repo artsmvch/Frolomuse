@@ -4,6 +4,8 @@ import com.frolo.player.AudioSource
 import com.frolo.player.AudioSourceQueue
 import com.frolo.music.model.Media
 import com.frolo.music.model.Song
+import io.reactivex.Single
+import io.reactivex.schedulers.Schedulers
 
 
 val TAG_ASSOCIATED_MEDIA = Any()
@@ -48,8 +50,7 @@ inline fun <T> AudioSourceQueue.map(transform: (AudioSource) -> T): List<T> {
     return snapshot.map(transform)
 }
 
-@Suppress("FunctionName")
-fun AudioSourceQueue(songs: List<Song>, associatedMediaItem: Media?): AudioSourceQueue {
+fun blockingCreateAudioSourceQueue(songs: List<Song>, associatedMediaItem: Media?): AudioSourceQueue {
     val audioSources = songs.toAudioSources()
     val queue = AudioSourceQueue.create(audioSources)
     if (associatedMediaItem != null) {
@@ -58,9 +59,15 @@ fun AudioSourceQueue(songs: List<Song>, associatedMediaItem: Media?): AudioSourc
     return queue
 }
 
-@Suppress("FunctionName")
-fun AudioSourceQueue(song: Song): AudioSourceQueue {
-    return AudioSourceQueue(listOf(song), song)
+fun blockingCreateAudioSourceQueue(song: Song): AudioSourceQueue {
+    return blockingCreateAudioSourceQueue(listOf(song), song)
+}
+
+fun createAudioSourceQueue(songs: List<Song>, associatedMediaItem: Media?): Single<AudioSourceQueue> {
+    val source = Single.fromCallable {
+        blockingCreateAudioSourceQueue(songs, associatedMediaItem)
+    }
+    return source.subscribeOn(Schedulers.computation())
 }
 
 val AudioSourceQueue.associatedMedia: Media?

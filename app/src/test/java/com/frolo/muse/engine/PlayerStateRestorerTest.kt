@@ -1,7 +1,7 @@
 package com.frolo.muse.engine
 
 import com.frolo.muse.TestSchedulerProvider
-import com.frolo.muse.common.AudioSourceQueue
+import com.frolo.muse.common.blockingCreateAudioSourceQueue
 import com.frolo.player.Player
 import com.frolo.player.AudioSourceQueue
 import com.frolo.muse.common.toAudioSource
@@ -70,7 +70,7 @@ class PlayerStateRestorerTest {
         val album = Album(id, "album", "artist", 10)
         val songs = mockSongList(size = 10)
         val targetSong = songs.first()
-        val songQueue = AudioSourceQueue(songs, null)
+        val songQueue = blockingCreateAudioSourceQueue(songs, null)
         val playbackPosition = 1337
 
         whenever(preferences.lastMediaCollectionType)

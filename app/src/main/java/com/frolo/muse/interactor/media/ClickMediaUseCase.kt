@@ -1,6 +1,6 @@
 package com.frolo.muse.interactor.media
 
-import com.frolo.muse.common.AudioSourceQueue
+import com.frolo.muse.common.createAudioSourceQueue
 import com.frolo.player.Player
 import com.frolo.player.prepareByTarget
 import com.frolo.muse.common.toAudioSource
@@ -21,15 +21,20 @@ class ClickMediaUseCase <E: Media> constructor(
     private val appRouter: AppRouter
 ) {
 
-    private fun processPlay(target: Song, songs: List<Song>, toggleIfSameSong: Boolean, associatedMediaItem: Media?) {
+    private fun playOrToggle(
+        target: Song,
+        songs: List<Song>,
+        associatedMediaItem: Media?
+    ): Completable {
         val currentAudioSource = player.getCurrent()
-        if (toggleIfSameSong && currentAudioSource?.id == target.id) {
-            // if we've chosen the same song that is currently being played then toggle the playback
-            player.toggle()
+        return if (currentAudioSource?.id == target.id) {
+            Completable.fromAction { player.toggle() }
         } else {
-            // otherwise, create a new audio source queue and start playing it
-            val queue = AudioSourceQueue(songs, associatedMediaItem)
-            player.prepareByTarget(queue, target.toAudioSource(), true)
+            createAudioSourceQueue(songs, associatedMediaItem)
+                .doOnSuccess { queue ->
+                    player.prepareByTarget(queue, target.toAudioSource(), true)
+                }
+                .ignoreElement()
         }
     }
 
@@ -37,10 +42,9 @@ class ClickMediaUseCase <E: Media> constructor(
         Media.SONG -> {
             Single.fromCallable { fromCollection.filterIsInstance<Song>() }
                 .subscribeOn(schedulerProvider.computation())
-                .doOnSuccess { songs ->
-                    processPlay(item as Song, songs, true, associatedMediaItem)
+                .flatMapCompletable { songs ->
+                    playOrToggle(item as Song, songs, associatedMediaItem)
                 }
-                .ignoreElement()
         }
 
         Media.ALBUM -> {
@@ -98,10 +102,9 @@ class ClickMediaUseCase <E: Media> constructor(
                                 .onErrorResumeNext(Single.just(listOf(targetSong)))
                                 .map { songs -> targetSong to songs }
                         }
-                        .doOnSuccess { pair ->
-                            processPlay(pair.first, pair.second, true, associatedMediaItem)
+                        .flatMapCompletable { pair ->
+                            playOrToggle(pair.first, pair.second, associatedMediaItem)
                         }
-                        .ignoreElement()
 
                     else -> Completable.complete()
                 } }
@@ -119,10 +122,9 @@ class ClickMediaUseCase <E: Media> constructor(
                 song to songList
             }
             Single.zip(source1, source2, zipper)
-                .doOnSuccess { pair ->
-                    processPlay(pair.first, pair.second, true, associatedMediaItem)
+                .flatMapCompletable { pair ->
+                    playOrToggle(pair.first, pair.second, associatedMediaItem)
                 }
-                .ignoreElement()
         }
 
         else -> Completable.error(UnknownMediaException(item))

@@ -1,6 +1,6 @@
 package com.frolo.muse.interactor.player
 
-import com.frolo.muse.common.AudioSourceQueue
+import com.frolo.muse.common.blockingCreateAudioSourceQueue
 import com.frolo.player.prepareByTarget
 import com.frolo.muse.common.toAudioSource
 import com.frolo.player.Player
@@ -20,7 +20,7 @@ class OpenAudioSourceUseCase @Inject constructor(
     fun openAudioSource(player: Player, source: String): Completable {
         return songRepository.getSong(source)
             .doOnSuccess { song ->
-                val queue = AudioSourceQueue(song)
+                val queue = blockingCreateAudioSourceQueue(song)
                 player.prepareByTarget(queue, song.toAudioSource(), true)
             }
             .ignoreElement()

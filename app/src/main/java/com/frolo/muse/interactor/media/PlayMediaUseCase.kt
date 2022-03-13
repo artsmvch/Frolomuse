@@ -1,12 +1,11 @@
 package com.frolo.muse.interactor.media
 
-import com.frolo.muse.common.AudioSourceQueue
+import com.frolo.muse.common.createAudioSourceQueue
 import com.frolo.player.Player
 import com.frolo.player.prepareByTarget
 import com.frolo.muse.common.toAudioSources
 import com.frolo.player.AudioSource
 import com.frolo.music.model.Media
-import com.frolo.music.model.Song
 import com.frolo.music.repository.MediaRepository
 import com.frolo.muse.rx.SchedulerProvider
 import io.reactivex.Completable
@@ -18,25 +17,19 @@ class PlayMediaUseCase<E: Media> constructor(
     private val player: Player
 ) {
 
-    private fun processPlay(songs: List<Song>, associatedMediaItem: Media?) {
-        val songQueue = AudioSourceQueue(songs, associatedMediaItem)
-        val first: AudioSource? = songQueue.let { queue ->
-            if (queue.isEmpty) null
-            else queue.getItemAt(0)
-        }
-        if (first != null) {
-            player.prepareByTarget(songQueue, first, true)
-        }
-    }
-
     fun play(item: E, associatedMediaItem: Media? = null): Completable {
         return play(listOf(item), associatedMediaItem)
     }
 
     fun play(items: Collection<E>, associatedMediaItem: Media? = null): Completable {
         return repository.collectSongs(items)
-            .subscribeOn(schedulerProvider.worker())
-            .doOnSuccess { songs -> processPlay(songs, associatedMediaItem) }
+            .flatMap { songs -> createAudioSourceQueue(songs, associatedMediaItem) }
+            .doOnSuccess { queue ->
+                val first: AudioSource? = if (!queue.isEmpty) queue.getItemAt(0) else null
+                if (first != null) {
+                    player.prepareByTarget(queue, first, true)
+                }
+            }
             .ignoreElement()
     }
 
