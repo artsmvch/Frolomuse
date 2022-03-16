@@ -77,6 +77,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
         private final Context mContext;
         @NonNull
         private AudioFxApplicable mAudioFx;
+        private AudioFocusRequester.Factory mAudioFocusRequesterFactory;
         private boolean mDebug = false;
         private PlayerJournal mJournal;
         private boolean mUseWakeLocks;
@@ -98,6 +99,11 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
 
         public Builder setDebug(boolean debug) {
             mDebug = debug;
+            return self();
+        }
+
+        public Builder setAudioFocusRequesterFactory(@NonNull AudioFocusRequester.Factory factory) {
+            mAudioFocusRequesterFactory = factory;
             return self();
         }
 
@@ -250,9 +256,11 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
     @NonNull
     private final PlayerJournal mPlayerJournal;
 
-    // Audio Focus Requester
+    // Audio focus requester factory: the requester is created lazily
     @NonNull
-    private final AudioFocusRequester mAudioFocusRequester;
+    private final AudioFocusRequester.Factory mAudioFocusRequesterFactory;
+    @GuardedBy("mAudioFocusRequesterFactory")
+    private AudioFocusRequester mAudioFocusRequester = null;
 
     // AudioFx
     @NonNull
@@ -338,7 +346,9 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
 
         mPlayerJournal = builder.mJournal != null ? builder.mJournal : PlayerJournal.EMPTY;
 
-        mAudioFocusRequester = AudioFocusRequesterImpl.create(builder.mContext, this);
+        mAudioFocusRequesterFactory = builder.mAudioFocusRequesterFactory != null
+                ? builder.mAudioFocusRequesterFactory
+                : AudioFocusRequesterImpl.obtainFactory(builder.mContext);
 
         mAudioFx = builder.mAudioFx;
 
@@ -375,6 +385,18 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
                 ? (PlayerException) error
                 : new PlayerException(error);
         mObserverRegistry.dispatchInternalErrorOccurred(playerException);
+    }
+
+    @NonNull
+    private AudioFocusRequester getAudioFocusRequester() {
+        synchronized (mAudioFocusRequesterFactory) {
+            AudioFocusRequester requester = mAudioFocusRequester;
+            if (requester == null) {
+                requester = mAudioFocusRequesterFactory.create(this);
+                mAudioFocusRequester = requester;
+            }
+            return requester;
+        }
     }
 
     /**
@@ -478,7 +500,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
      */
     private boolean tryRequestAudioFocus() {
         try {
-            boolean result = mAudioFocusRequester.requestAudioFocus();
+            boolean result = getAudioFocusRequester().requestAudioFocus();
             mPlayerJournal.logMessage("Request audio focus: result=" + result);
             return result;
         } catch (Throwable error) {

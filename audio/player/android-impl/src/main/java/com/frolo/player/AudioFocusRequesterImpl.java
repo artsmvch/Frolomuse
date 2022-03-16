@@ -16,6 +16,10 @@ import java.util.concurrent.atomic.AtomicReference;
 final class AudioFocusRequesterImpl
         implements AudioFocusRequester, AudioManager.OnAudioFocusChangeListener {
 
+    public static AudioFocusRequester.Factory obtainFactory(@NonNull Context context) {
+        return player -> create(context, player);
+    }
+
     public static AudioFocusRequester create(@NonNull Context context, @NonNull Player player) {
         final AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         return new AudioFocusRequesterImpl(audioManager, player);
