@@ -29,7 +29,7 @@ class PlayerWrapper constructor(
         return instance
     }
 
-    val wrapped: Player? get() = delegate
+    val wrapped: Player? get() = delegateRef.get()
 
     fun attachBase(player: Player) {
         delegateRef.set(player)

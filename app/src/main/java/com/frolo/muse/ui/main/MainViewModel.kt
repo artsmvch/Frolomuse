@@ -1,11 +1,13 @@
 package com.frolo.muse.ui.main
 
+import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.frolo.muse.arch.EventLiveData
 import com.frolo.muse.arch.SingleLiveEvent
 import com.frolo.muse.arch.call
 import com.frolo.muse.engine.PlayerStateRestorer
+import com.frolo.muse.engine.PlayerWrapper
 import com.frolo.player.Player
 import com.frolo.muse.interactor.billing.PremiumManager
 import com.frolo.muse.interactor.feature.FeaturesUseCase
@@ -20,7 +22,7 @@ import com.frolo.muse.permission.PermissionChecker
 import com.frolo.muse.repository.AppearancePreferences
 import com.frolo.muse.repository.RemoteConfigRepository
 import com.frolo.muse.rx.SchedulerProvider
-import com.frolo.muse.ui.base.BaseViewModel
+import com.frolo.muse.ui.PlayerHostViewModel
 import io.reactivex.Flowable
 import io.reactivex.disposables.Disposable
 import javax.inject.Inject
@@ -37,6 +39,8 @@ import javax.inject.Inject
  * P.S. RES stands for Read-External-Storage.
  */
 class MainViewModel @Inject constructor(
+    application: Application,
+    playerWrapper: PlayerWrapper,
     private val rateUseCase: RateUseCase,
     private val playerStateRestorer: PlayerStateRestorer,
     private val openAudioSourceUseCase: OpenAudioSourceUseCase,
@@ -50,11 +54,7 @@ class MainViewModel @Inject constructor(
     private val appearancePreferences: AppearancePreferences,
     private val remoteConfigRepository: RemoteConfigRepository,
     private val eventLogger: EventLogger
-): BaseViewModel(eventLogger) {
-
-    // Internal
-    @Volatile
-    private var _player: Player? = null
+): PlayerHostViewModel(application, playerWrapper, eventLogger) {
 
     @Volatile
     private var _pendingReadStoragePermissionResult: Boolean = false
@@ -91,7 +91,7 @@ class MainViewModel @Inject constructor(
     }
 
     private fun tryRestorePlayerStateIfNeeded() {
-        val player: Player = _player ?: return
+        val player: Player = this.player ?: return
 
         if (permissionChecker.isQueryMediaContentPermissionGranted) {
             playerStateRestorer
@@ -113,7 +113,7 @@ class MainViewModel @Inject constructor(
 
     private fun tryHandlePendingAudioSourceIntentIfNeeded() {
         val source: String = _pendingAudioSourceIntent ?: return
-        val player: Player = _player ?: return
+        val player: Player = this.player ?: return
 
         if (permissionChecker.isQueryMediaContentPermissionGranted) {
             openAudioSourceUseCase.openAudioSource(player, source)
@@ -215,20 +215,10 @@ class MainViewModel @Inject constructor(
 
     //endregion
 
-
-    //region Player
-
-    fun onPlayerConnected(player: Player) {
-        _player = player
+    override fun onPlayerConnected(player: Player) {
+        super.onPlayerConnected(player)
         tryRestorePlayerStateIfNeeded()
     }
-
-    fun onPlayerDisconnected() {
-        _player = null
-    }
-
-    //endregion
-
 
     //region Read Storage Permission
 

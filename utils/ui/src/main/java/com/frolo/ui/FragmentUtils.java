@@ -28,6 +28,12 @@ public final class FragmentUtils {
         transaction.commitNow();
     }
 
+    public static void popAllBackStackEntriesImmediate(@NonNull FragmentManager manager) {
+        for (int i = 0; i < manager.getBackStackEntryCount(); i++) {
+            manager.popBackStackImmediate();
+        }
+    }
+
     private FragmentUtils() {
     }
 }

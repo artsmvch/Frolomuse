@@ -1,24 +1,18 @@
 package com.frolo.muse.di.modules
 
 import com.frolo.audiofx.AudioFx
-import com.frolo.muse.router.AppRouter
+import com.frolo.muse.engine.PlayerWrapper
 import com.frolo.player.Player
 import dagger.Module
 import dagger.Provides
 
 
 @Module
-class ActivityModule constructor(
-    private val player: Player,
-    private val router: AppRouter
-) {
+class ActivityModule {
 
     @Provides
-    fun providePlayer(): Player = player
+    fun providePlayer(playerWrapper: PlayerWrapper): Player = playerWrapper
 
     @Provides
-    fun provideAudioFx(): AudioFx = player.getAudioFx()
-
-    @Provides
-    fun provideRouter(): AppRouter = router
+    fun provideAudioFx(player: Player): AudioFx = player.getAudioFx()
 }

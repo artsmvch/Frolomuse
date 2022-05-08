@@ -71,4 +71,8 @@ interface AppRouter {
     fun openDonations()
 
     fun goBack()
+
+    fun interface Provider {
+        fun getRouter(): AppRouter
+    }
 }

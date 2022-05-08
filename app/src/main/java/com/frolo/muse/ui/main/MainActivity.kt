@@ -37,9 +37,9 @@ import com.frolo.muse.di.ActivityComponentHolder
 import com.frolo.muse.di.applicationComponent
 import com.frolo.muse.di.impl.navigator.AppRouterImpl
 import com.frolo.muse.di.modules.ActivityModule
-import com.frolo.muse.engine.PlayerWrapper
+import com.frolo.muse.router.AppRouter
+import com.frolo.muse.router.AppRouterStub
 import com.frolo.player.Player
-import com.frolo.muse.ui.PlayerHostActivity
 import com.frolo.muse.ui.ScrolledToTop
 import com.frolo.muse.ui.ThemeHandler
 import com.frolo.muse.ui.base.*
@@ -65,20 +65,29 @@ import kotlin.math.max
 import kotlin.math.pow
 
 
-class MainActivity : PlayerHostActivity(),
+class MainActivity : BaseActivity(),
         SimpleFragmentNavigator,
         PlayerSheetCallback,
         ThemeHandler,
-        ActivityComponentHolder {
-
-    private val playerWrapper = PlayerWrapper(enableStrictMode = BuildInfo.isDebug())
+        ActivityComponentHolder,
+        AppRouter.Provider {
 
     override val activityComponent: ActivityComponent by lazy { buildActivityComponent() }
+
+    private val appRouter by lazy {
+        AppRouterImpl(
+            context = this,
+            navigator = this,
+            expandSlidingPlayer = { expandSlidingPlayer() }
+        )
+    }
 
     private val viewModel: MainViewModel by lazy {
         val vmFactory = activityComponent.provideViewModelFactory()
         ViewModelProviders.of(this, vmFactory).get(MainViewModel::class.java)
     }
+
+    private var lastSavedInstanceState: Bundle? = null
 
     private var fragNavController: FragNavController? = null
     private val activeActionModes = LinkedList<ActionMode>()
@@ -126,14 +135,15 @@ class MainActivity : PlayerHostActivity(),
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        lastSavedInstanceState = savedInstanceState
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         loadUi()
         supportFragmentManager.registerFragmentLifecycleCallbacks(fragmentLifecycleCallbacks, true)
-        observeScanStatus()
-        maybeInitializeFragments(player, savedInstanceState)
+        observePlayerState()
         handleIntent(intent)
         observeViewModel(this)
+        observeScanStatus()
         if (savedInstanceState == null) {
             viewModel.onFirstCreate()
         }
@@ -141,11 +151,16 @@ class MainActivity : PlayerHostActivity(),
 
     private fun buildActivityComponent(): ActivityComponent {
         return applicationComponent.activityComponent(
-            activityModule = ActivityModule(
-                player = playerWrapper,
-                router = AppRouterImpl(this)
-            )
+            activityModule = ActivityModule()
         )
+    }
+
+    override fun getRouter(): AppRouter {
+        if (ActivityUtils.isFinishingOrDestroyed(this)) {
+            // At this point, the activity's router is no longer valid
+            return AppRouterStub()
+        }
+        return appRouter
     }
 
     private fun loadUi() {
@@ -195,7 +210,7 @@ class MainActivity : PlayerHostActivity(),
         viewModel.onStart()
         // The best place to re-try initializing fragments, because after calling
         // super.onStart(), the state of the fragment manager is not saved.
-        maybeInitializeFragments(player, lastSavedInstanceState)
+        maybeInitializeFragments(viewModel.player, lastSavedInstanceState)
     }
 
     override fun onResume() {
@@ -219,6 +234,7 @@ class MainActivity : PlayerHostActivity(),
             removeBottomSheetCallback(bottomSheetCallback)
         }
         supportFragmentManager.unregisterFragmentLifecycleCallbacks(fragmentLifecycleCallbacks)
+        lastSavedInstanceState = null
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -356,25 +372,6 @@ class MainActivity : PlayerHostActivity(),
         fragNavController?.doIfStateNotSaved {
             showDialogFragment(newDialog)
         }
-    }
-
-    override fun playerDidConnect(player: Player) {
-        playerWrapper.attachBase(player)
-        viewModel.onPlayerConnected(player)
-        maybeInitializeFragments(player, lastSavedInstanceState)
-    }
-
-    override fun playerDidDisconnect(player: Player) {
-        viewModel.onPlayerDisconnected()
-        // In order to avoid memory leaks, we do not want to detach the base until
-        // all the fragments and their view models in the activity component have
-        // released their resources associated with the disconnected player.
-        // In this case, we wait until the activity is finally destroyed.
-        ActivityUtils.runOnFinalDestroy(this) {
-            playerWrapper.detachBase()
-        }
-        // The player is disconnected. No need to stay here anymore.
-        finish()
     }
 
     /**
@@ -669,7 +666,27 @@ class MainActivity : PlayerHostActivity(),
         }
     }
 
-    fun expandSlidingPlayer() {
+    private fun observePlayerState() {
+        val owner = PlayerStateLifecycleOwner(this)
+        viewModel.playerLiveData.observe(owner) { player: Player? ->
+            if (player != null) {
+                // The player is connected: let's try initializing fragments
+                maybeInitializeFragments(player, lastSavedInstanceState)
+            } else {
+                // The player is disconnected: no need to stay here anymore
+                FragmentUtils.popAllBackStackEntriesImmediate(supportFragmentManager)
+                FragmentUtils.removeAllFragmentsNow(supportFragmentManager)
+                lastSavedInstanceState = null
+            }
+        }
+        viewModel.isDisconnectedLiveData.observe(owner) { isDisconnected: Boolean? ->
+            if (isDisconnected == true) {
+                finish()
+            }
+        }
+    }
+
+    private fun expandSlidingPlayer() {
         fragNavController?.doIfStateNotSaved {
             // Wrapping in a try-catch, because sometimes it crashes
             try {

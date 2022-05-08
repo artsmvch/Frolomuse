@@ -2,7 +2,6 @@ package com.frolo.muse.di.modules
 
 import android.content.Context
 import com.frolo.muse.ActivityWatcher
-import com.frolo.muse.FrolomuseApp
 import com.frolo.muse.billing.TrialManager
 import com.frolo.muse.billing.TrialManagerImpl
 import com.frolo.muse.di.ApplicationScope
@@ -61,9 +60,6 @@ class MiscModule constructor(private val isDebug: Boolean) {
     fun provideQueryExecutor(): Executor {
         return Executors.newCachedThreadPool()
     }
-
-    @Provides
-    fun provideActivityWatcher(app: FrolomuseApp): ActivityWatcher = app
 
     @ApplicationScope
     @Provides

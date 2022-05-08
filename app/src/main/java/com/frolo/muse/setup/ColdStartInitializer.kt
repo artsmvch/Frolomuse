@@ -17,6 +17,7 @@ import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.logAppLaunched
 import com.frolo.muse.logger.logLowMemory
 import com.frolo.mediascan.scheduleMediaScanWork
+import com.frolo.muse.engine.PlayerWrapper
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.ui.base.BaseActivity
 import com.frolo.player.PlayerImpl
@@ -122,6 +123,7 @@ class ColdStartInitializer @Inject constructor(
                 .setClassInstanceLimit(ColdStartInitializer::class.java, 1)
                 .setClassInstanceLimit(PlayerImpl::class.java, 1)
                 .setClassInstanceLimit(AudioFxImpl::class.java, 1)
+                .setClassInstanceLimit(PlayerWrapper::class.java, 1)
                 .penaltyLog()
                 .run {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
