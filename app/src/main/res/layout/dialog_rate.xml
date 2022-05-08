@@ -30,7 +30,7 @@
             android:layout_marginTop="16dp">
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/btn_no"
+                android:id="@+id/btn_negative"
                 android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:layout_weight="1"
@@ -42,7 +42,7 @@
                 android:background="?selectableItemBackground"/>
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/btn_rate"
+                android:id="@+id/btn_positive"
                 android:layout_height="match_parent"
                 android:layout_width="0dp"
                 android:layout_weight="2"
@@ -57,7 +57,7 @@
         </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/btn_remind_later"
+            android:id="@+id/btn_neutral"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:layout_margin="8dp"

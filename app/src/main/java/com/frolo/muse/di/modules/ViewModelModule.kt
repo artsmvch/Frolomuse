@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.frolo.muse.di.ActivityScope
 import com.frolo.muse.di.ViewModelKey
+import com.frolo.muse.rating.RatingViewModel
 import com.frolo.muse.ui.main.MainViewModel
 import com.frolo.muse.ui.main.audiofx.AudioFxViewModel
 import com.frolo.muse.ui.main.audiofx.params.PlaybackParamsViewModel
@@ -205,6 +206,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(DonationsViewModel::class)
     abstract fun bindDonationsViewModel(viewModel: DonationsViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(RatingViewModel::class)
+    abstract fun bindRatingViewModel(viewModel: RatingViewModel): ViewModel
 
     companion object {
         @JvmStatic

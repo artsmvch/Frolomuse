@@ -9,16 +9,16 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 
-class RateUseCase @Inject constructor(
-        private val schedulerProvider: SchedulerProvider,
-        private val preferences: Preferences,
-        private val appRouter: AppRouter
+class RatingUseCase @Inject constructor(
+    private val schedulerProvider: SchedulerProvider,
+    private val preferences: Preferences,
+    private val appRouter: AppRouter
 ) {
 
     /**
      * Checks if it's time to ask for rating
      */
-    private fun needRate(): Boolean {
+    private fun isRatingRequestedImpl(): Boolean {
         return if (preferences.rated) {
             // rated already
             false
@@ -28,32 +28,34 @@ class RateUseCase @Inject constructor(
         }
     }
 
-    fun checkIfRateNeeded(): Single<Boolean> {
-        return if (needRate()) {
+    fun isRatingRequested(): Single<Boolean> {
+        return if (isRatingRequestedImpl()) {
             Completable.timer(1, TimeUnit.MINUTES)
-                    .andThen(Single.just(needRate()))
-                    .subscribeOn(schedulerProvider.computation())
-        } else Single.just(false)
+                .andThen(Single.just(isRatingRequestedImpl()))
+                .subscribeOn(schedulerProvider.computation())
+        } else {
+            Single.just(false)
+        }
     }
 
-    fun rate() {
+    fun positiveAnswer() {
         // Rated! Thanks
         preferences.rated = true
         appRouter.goToStore()
     }
 
-    fun dismissRate() {
+    fun negativeAnswer() {
         // it must be a fucking PIG if he(she) doesn't want to rate my App but still using it
         val minCountForRatingRequest = preferences.launchCount * 3 // ask again after 3x additional launches
         preferences.minLaunchCountForRatingRequest = minCountForRatingRequest
     }
 
-    fun askLater() {
+    fun neutralAnswer() {
         val minCountForRatingRequest = preferences.launchCount + 5 // ask again after 5 additional launches
         preferences.minLaunchCountForRatingRequest = minCountForRatingRequest
     }
 
-    fun cancelRate() {
+    fun cancel() {
         val minCountForRatingRequest = preferences.launchCount + 3 // ask again after 3 additional launches
         preferences.minLaunchCountForRatingRequest = minCountForRatingRequest
     }

@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.frolo.muse.arch.EventLiveData
-import com.frolo.muse.arch.SingleLiveEvent
 import com.frolo.muse.arch.call
 import com.frolo.muse.engine.PlayerStateRestorer
 import com.frolo.muse.engine.PlayerWrapper
@@ -15,7 +14,6 @@ import com.frolo.muse.interactor.firebase.SyncFirebaseMessagingTokenUseCase
 import com.frolo.muse.interactor.media.TransferPlaylistsUseCase
 import com.frolo.muse.interactor.media.shortcut.NavigateToMediaUseCase
 import com.frolo.muse.interactor.player.OpenAudioSourceUseCase
-import com.frolo.muse.interactor.rate.RateUseCase
 import com.frolo.muse.logger.*
 import com.frolo.music.model.Media
 import com.frolo.muse.permission.PermissionChecker
@@ -24,7 +22,6 @@ import com.frolo.muse.repository.RemoteConfigRepository
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.PlayerHostViewModel
 import io.reactivex.Flowable
-import io.reactivex.disposables.Disposable
 import javax.inject.Inject
 
 
@@ -41,7 +38,6 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     application: Application,
     playerWrapper: PlayerWrapper,
-    private val rateUseCase: RateUseCase,
     private val playerStateRestorer: PlayerStateRestorer,
     private val openAudioSourceUseCase: OpenAudioSourceUseCase,
     private val navigateToMediaUseCase: NavigateToMediaUseCase,
@@ -61,8 +57,6 @@ class MainViewModel @Inject constructor(
 
     private var _pendingAudioSourceIntent: String? = null
 
-    private var askToRateDisposable: Disposable? = null
-
     private val _askRESPermissionsEvent = EventLiveData<Unit>()
     val askRESPermissionsEvent: LiveData<Unit> get() = _askRESPermissionsEvent
 
@@ -71,9 +65,6 @@ class MainViewModel @Inject constructor(
 
     private val _openPermissionSettingsEvent = EventLiveData<Unit>()
     val openPermissionSettingsEvent: LiveData<Unit> get() = _openPermissionSettingsEvent
-
-    private val _askToRateEvent = SingleLiveEvent<Unit>()
-    val askToRateEvent: LiveData<Unit> get() = _askToRateEvent
 
     val isSnowfallEnabled: LiveData<Boolean> by lazy {
         MutableLiveData<Boolean>().apply {
@@ -168,52 +159,8 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    fun onResume() {
-        rateUseCase
-            .checkIfRateNeeded()
-            .observeOn(schedulerProvider.main())
-            .doOnSubscribe { d ->
-                askToRateDisposable?.dispose()
-                askToRateDisposable = d
-            }
-            .subscribeFor { needRate ->
-                if (needRate) {
-                    _askToRateEvent.call()
-                }
-            }
-    }
-
-    fun onPause() {
-        askToRateDisposable?.dispose()
-    }
-
     fun onStop() {
-        // no actions
     }
-
-    //region Rate dialog
-
-    fun onRateDialogAnswerYes() {
-        rateUseCase.rate()
-        eventLogger.logRateDialogAnswered(RATE_DIALOG_ANSWER_YES)
-    }
-
-    fun onRateDialogAnswerNo() {
-        rateUseCase.dismissRate()
-        eventLogger.logRateDialogAnswered(RATE_DIALOG_ANSWER_NO)
-    }
-
-    fun onRateDialogAnswerRemindLater() {
-        rateUseCase.askLater()
-        eventLogger.logRateDialogAnswered(RATE_DIALOG_ANSWER_REMIND_LATER)
-    }
-
-    fun onCancelledRateDialog() {
-        rateUseCase.cancelRate()
-        eventLogger.logRateDialogCancelled()
-    }
-
-    //endregion
 
     override fun onPlayerConnected(player: Player) {
         super.onPlayerConnected(player)
@@ -257,10 +204,5 @@ class MainViewModel @Inject constructor(
     fun onOpenAudioSourceIntent(source: String) {
         _pendingAudioSourceIntent = source
         tryHandlePendingAudioSourceIntentIfNeeded()
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        askToRateDisposable?.dispose()
     }
 }

@@ -1,4 +1,4 @@
-package com.frolo.muse.ui.main
+package com.frolo.muse.rating
 
 import android.app.Dialog
 import android.content.Context
@@ -9,12 +9,15 @@ import com.frolo.muse.R
 import kotlinx.android.synthetic.main.dialog_rate.*
 
 
-class RateDialog constructor(
+internal class RatingDialog constructor(
     context: Context,
-    private val onButtonPressed: (dialog: RateDialog, what: Button) -> Unit
+    private val onButtonPressed: (
+        dialog: RatingDialog,
+        what: Button
+    ) -> Unit
 ): Dialog(context) {
 
-    enum class Button { NO, REMIND_LATER, RATE }
+    enum class Button { POSITIVE, NEGATIVE, NEUTRAL }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,7 +25,7 @@ class RateDialog constructor(
         setContentView(R.layout.dialog_rate)
         setupDialogSize()
         setupDialogBackground()
-        loadUI(this)
+        loadUi(this)
     }
 
     private fun setupDialogSize() {
@@ -42,17 +45,17 @@ class RateDialog constructor(
         }
     }
 
-    private fun loadUI(dialog: Dialog) = with(dialog) {
-        btn_no.setOnClickListener {
-            dispatchButtonPressed(Button.NO)
+    private fun loadUi(dialog: Dialog) = with(dialog) {
+        btn_positive.setOnClickListener {
+            dispatchButtonPressed(Button.POSITIVE)
         }
 
-        btn_rate.setOnClickListener {
-            dispatchButtonPressed(Button.RATE)
+        btn_negative.setOnClickListener {
+            dispatchButtonPressed(Button.NEGATIVE)
         }
 
-        btn_remind_later.setOnClickListener {
-            dispatchButtonPressed(Button.REMIND_LATER)
+        btn_neutral.setOnClickListener {
+            dispatchButtonPressed(Button.NEUTRAL)
         }
     }
 

@@ -8,7 +8,7 @@ import com.frolo.muse.interactor.media.*
 import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
 import com.frolo.muse.interactor.media.get.*
 import com.frolo.muse.interactor.player.ControlPlayerUseCase
-import com.frolo.muse.interactor.rate.RateUseCase
+import com.frolo.muse.interactor.rate.RatingUseCase
 import com.frolo.muse.repository.*
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.music.model.*
@@ -661,7 +661,7 @@ abstract class ActivityUseCaseModule {
         }
 
         /* **********************************
-        * ********** Rate Use Case **********
+        * ********* Rating Use Case *********
         * ******************************** */
 
         @ActivityScope
@@ -671,8 +671,8 @@ abstract class ActivityUseCaseModule {
             schedulerProvider: SchedulerProvider,
             preferences: Preferences,
             appRouter: AppRouter
-        ): RateUseCase {
-            return RateUseCase(schedulerProvider, preferences, appRouter)
+        ): RatingUseCase {
+            return RatingUseCase(schedulerProvider, preferences, appRouter)
         }
 
         /* **********************************

@@ -37,6 +37,7 @@ import com.frolo.muse.di.ActivityComponentHolder
 import com.frolo.muse.di.applicationComponent
 import com.frolo.muse.di.impl.navigator.AppRouterImpl
 import com.frolo.muse.di.modules.ActivityModule
+import com.frolo.muse.rating.RatingFragment
 import com.frolo.muse.router.AppRouter
 import com.frolo.muse.router.AppRouterStub
 import com.frolo.player.Player
@@ -93,7 +94,6 @@ class MainActivity : BaseActivity(),
     private val activeActionModes = LinkedList<ActionMode>()
     private var playerSheetFragment: PlayerSheetFragment? = null
 
-    private var rateDialog: Dialog? = null
     private var resPermissionExplanationDialog: Dialog? = null
 
     private val properties by lazy { MainActivityProperties(this) }
@@ -211,16 +211,6 @@ class MainActivity : BaseActivity(),
         // The best place to re-try initializing fragments, because after calling
         // super.onStart(), the state of the fragment manager is not saved.
         maybeInitializeFragments(viewModel.player, lastSavedInstanceState)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        viewModel.onResume()
-    }
-
-    override fun onPause() {
-        super.onPause()
-        viewModel.onPause()
     }
 
     override fun onStop() {
@@ -491,6 +481,8 @@ class MainActivity : BaseActivity(),
             .replace(R.id.mini_player_container, MiniPlayerFragment(), FRAG_TAG_MIN_PLAYER)
             .commit()
 
+        RatingFragment.install(this)
+
         // Finally the root layout can be visible
         cl_root.visibility = View.VISIBLE
 
@@ -578,35 +570,6 @@ class MainActivity : BaseActivity(),
         intent.putExtra(EXTRA_INTENT_HANDLED, true)
     }
 
-    private fun showRateDialog() {
-        rateDialog?.dismiss()
-
-        // First, check if there is an already shown dialog
-        fragNavController?.doIfStateNotSaved {
-            val currDialog = this.currentDialogFrag
-            if (currDialog != null && currDialog.isShowing) {
-                // It's better not to show the Rate dialog over the existing dialog
-                return
-            }
-        }
-
-        val dialog = RateDialog(this) { dialog, what ->
-            dialog.dismiss()
-            when (what) {
-                RateDialog.Button.RATE -> viewModel.onRateDialogAnswerYes()
-
-                RateDialog.Button.NO -> viewModel.onRateDialogAnswerNo()
-
-                RateDialog.Button.REMIND_LATER -> viewModel.onRateDialogAnswerRemindLater()
-            }
-        }
-
-        rateDialog = dialog.apply {
-            setOnCancelListener { viewModel.onCancelledRateDialog() }
-            show()
-        }
-    }
-
     private fun requestRESPermission() {
         val permission = Manifest.permission.READ_EXTERNAL_STORAGE
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M
@@ -646,10 +609,6 @@ class MainActivity : BaseActivity(),
             }
         }
 
-        askToRateEvent.observe(owner) {
-            showRateDialog()
-        }
-
         askRESPermissionsEvent.observe(owner) {
             requestRESPermission()
         }
@@ -667,8 +626,7 @@ class MainActivity : BaseActivity(),
     }
 
     private fun observePlayerState() {
-        val owner = PlayerStateLifecycleOwner(this)
-        viewModel.playerLiveData.observe(owner) { player: Player? ->
+        viewModel.playerLiveData.observe(this) { player: Player? ->
             if (player != null) {
                 // The player is connected: let's try initializing fragments
                 maybeInitializeFragments(player, lastSavedInstanceState)
@@ -679,7 +637,7 @@ class MainActivity : BaseActivity(),
                 lastSavedInstanceState = null
             }
         }
-        viewModel.isDisconnectedLiveData.observe(owner) { isDisconnected: Boolean? ->
+        viewModel.isDisconnectedLiveData.observe(this) { isDisconnected: Boolean? ->
             if (isDisconnected == true) {
                 finish()
             }
