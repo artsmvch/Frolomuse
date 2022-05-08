@@ -1,5 +1,6 @@
 package com.frolo.muse.router
 
+import com.frolo.debug.DebugUtils
 import com.frolo.music.model.*
 import java.io.File
 
@@ -8,7 +9,13 @@ class AppRouterDelegate(
     private val delegateLambda: () -> AppRouter?
 ) : AppRouter {
 
-    private val delegate: AppRouter? get() = delegateLambda.invoke()
+    private val delegate: AppRouter? get() {
+        val instance = delegateLambda.invoke()
+        if (instance == null) {
+            DebugUtils.dumpOnMainThread(NullPointerException("Delegate not attached"))
+        }
+        return instance
+    }
 
     override fun goToStore() {
         delegate?.goToStore()
