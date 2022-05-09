@@ -238,4 +238,10 @@ class LocalDataModule {
     fun provideAppearancePreferences(context: Context): AppearancePreferences {
         return AppearancePreferencesImpl(context)
     }
+
+    @ApplicationScope
+    @Provides
+    fun provideRatingPreferences(context: Context, preferences: Preferences): RatingPreferences {
+        return RatingPreferencesImpl(context, preferences)
+    }
 }

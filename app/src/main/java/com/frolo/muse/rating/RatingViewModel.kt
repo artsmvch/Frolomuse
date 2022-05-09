@@ -44,21 +44,37 @@ class RatingViewModel @Inject constructor(
 
     fun onPositiveAnswer() {
         ratingUseCase.positiveAnswer()
-        eventLogger.logRateDialogAnswered(RATE_DIALOG_ANSWER_YES)
+            .observeOn(schedulerProvider.main())
+            .doOnComplete {
+                eventLogger.logRateDialogAnswered(RATE_DIALOG_ANSWER_YES)
+            }
+            .subscribeFor(key = "positive_answer") { }
     }
 
     fun onNegativeAnswer() {
         ratingUseCase.negativeAnswer()
-        eventLogger.logRateDialogAnswered(RATE_DIALOG_ANSWER_NO)
+            .observeOn(schedulerProvider.main())
+            .doOnComplete {
+                eventLogger.logRateDialogAnswered(RATE_DIALOG_ANSWER_NO)
+            }
+            .subscribeFor(key = "negative_answer") { }
     }
 
     fun onNeutralAnswer() {
         ratingUseCase.neutralAnswer()
-        eventLogger.logRateDialogAnswered(RATE_DIALOG_ANSWER_REMIND_LATER)
+            .observeOn(schedulerProvider.main())
+            .doOnComplete {
+                eventLogger.logRateDialogAnswered(RATE_DIALOG_ANSWER_REMIND_LATER)
+            }
+            .subscribeFor(key = "neutral_answer") { }
     }
 
     fun onCancel() {
         ratingUseCase.cancel()
-        eventLogger.logRateDialogCancelled()
+            .observeOn(schedulerProvider.main())
+            .doOnComplete {
+                eventLogger.logRateDialogCancelled()
+            }
+            .subscribeFor(key = "cancel") { }
     }
 }

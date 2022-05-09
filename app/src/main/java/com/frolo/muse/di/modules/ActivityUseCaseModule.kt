@@ -670,9 +670,10 @@ abstract class ActivityUseCaseModule {
         fun provideRateUseCase(
             schedulerProvider: SchedulerProvider,
             preferences: Preferences,
+            ratingPreferences: RatingPreferences,
             appRouter: AppRouter
         ): RatingUseCase {
-            return RatingUseCase(schedulerProvider, preferences, appRouter)
+            return RatingUseCase(schedulerProvider, preferences, ratingPreferences, appRouter)
         }
 
         /* **********************************

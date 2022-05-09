@@ -43,8 +43,10 @@ public class PreferencesImpl implements Preferences {
     private static final String KEY_TOTAL_LAUNCH_COUNT = "open_count";
     // how many times should the app be opened to ask the user to rate it;
     // this value should be increased each time the button 'ask later' pressed
+    @Deprecated
     private static final String KEY_OPEN_COUNT_TO_RATE = "open count to rate";
     // true if rated OR rating denied - false otherwise
+    @Deprecated
     private static final String KEY_RATED = "rated";
 
     private static final String KEY_LAST_MEDIA_COLLECTION_TYPE = "last_media_collection_type";
@@ -315,18 +317,22 @@ public class PreferencesImpl implements Preferences {
         preferences.edit().putInt(KEY_TOTAL_LAUNCH_COUNT, count).apply();
     }
 
+    @Deprecated
     public int getMinLaunchCountForRatingRequest() {
         return preferences.getInt(KEY_OPEN_COUNT_TO_RATE, 5);
     }
 
+    @Deprecated
     public void setMinLaunchCountForRatingRequest(int count) {
         preferences.edit().putInt(KEY_OPEN_COUNT_TO_RATE, count).apply();
     }
 
+    @Deprecated
     public boolean getRated() {
         return preferences.getBoolean(KEY_RATED, false);
     }
 
+    @Deprecated
     public void setRated(boolean rated) {
         preferences.edit().putBoolean(KEY_RATED, rated).apply();
     }

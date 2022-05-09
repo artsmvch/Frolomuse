@@ -62,10 +62,14 @@ public interface Preferences {
     int getLaunchCount();
     void setLaunchCount(int count);
 
+    @Deprecated
     int getMinLaunchCountForRatingRequest();
+    @Deprecated
     void setMinLaunchCountForRatingRequest(int count);
 
+    @Deprecated
     boolean getRated();
+    @Deprecated
     void setRated(boolean rated);
 
     @Deprecated
