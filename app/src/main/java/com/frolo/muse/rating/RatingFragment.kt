@@ -69,5 +69,17 @@ internal class RatingFragment : BaseFragment() {
                 }
             }
         }
+
+        fun uninstall(activity: FragmentActivity) {
+            val fragmentManager = activity.supportFragmentManager
+            if (!fragmentManager.isStateSaved) {
+                val currFragment = fragmentManager.findFragmentByTag(FRAGMENT_TAG)
+                if (currFragment != null) {
+                    fragmentManager.beginTransaction()
+                        .remove(currFragment)
+                        .commitNow()
+                }
+            }
+        }
     }
 }
