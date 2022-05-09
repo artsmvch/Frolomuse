@@ -40,6 +40,7 @@ import com.frolo.muse.di.modules.ActivityModule
 import com.frolo.muse.rating.RatingFragment
 import com.frolo.muse.router.AppRouter
 import com.frolo.muse.router.AppRouterStub
+import com.frolo.muse.ui.PlayerHostViewModel
 import com.frolo.player.Player
 import com.frolo.muse.ui.ScrolledToTop
 import com.frolo.muse.ui.ThemeHandler
@@ -626,15 +627,18 @@ class MainActivity : BaseActivity(),
     }
 
     private fun observePlayerState() {
+        val viewModel: PlayerHostViewModel = this.viewModel
+        if (viewModel.player == null) {
+            // Check immediately if the player is null
+            clearAllFragmentsAndState()
+        }
         viewModel.playerLiveData.observe(this) { player: Player? ->
             if (player != null) {
                 // The player is connected: let's try initializing fragments
                 maybeInitializeFragments(player, lastSavedInstanceState)
             } else {
                 // The player is disconnected: no need to stay here anymore
-                FragmentUtils.popAllBackStackEntriesImmediate(supportFragmentManager)
-                FragmentUtils.removeAllFragmentsNow(supportFragmentManager)
-                lastSavedInstanceState = null
+                clearAllFragmentsAndState()
             }
         }
         viewModel.isDisconnectedLiveData.observe(this) { isDisconnected: Boolean? ->
@@ -642,6 +646,12 @@ class MainActivity : BaseActivity(),
                 finish()
             }
         }
+    }
+
+    private fun clearAllFragmentsAndState() {
+        FragmentUtils.popAllBackStackEntriesImmediate(supportFragmentManager)
+        FragmentUtils.removeAllFragmentsNow(supportFragmentManager)
+        lastSavedInstanceState = null
     }
 
     private fun expandSlidingPlayer() {
