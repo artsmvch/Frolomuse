@@ -117,6 +117,8 @@ public class PlayerHostViewModel extends BaseAndroidViewModel {
         // We delay detaching the player from the wrapper because all child
         // component view models (like fragments) are cleared after this one
         // and they may still need to use the player.
+        // NOTE: If you are going to change this, make sure the component handles
+        // recreation properly due to configuration changes and the out-of-memory killer.
         ThreadUtils.postOnMainThread(this::noteServiceDisconnected);
     }
 }
