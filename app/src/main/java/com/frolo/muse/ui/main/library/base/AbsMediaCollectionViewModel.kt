@@ -14,6 +14,7 @@ import com.frolo.muse.interactor.media.get.GetMediaUseCase
 import com.frolo.muse.interactor.media.shortcut.CreateShortcutUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.logShortcutCreated
+import com.frolo.muse.memory.MemoryObserver
 import com.frolo.muse.model.event.DeletionConfirmation
 import com.frolo.muse.model.event.DeletionType
 import com.frolo.muse.model.event.MultipleDeletionConfirmation
@@ -46,7 +47,7 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
     private val schedulerProvider: SchedulerProvider,
     private val appRouter: AppRouter,
     private val eventLogger: EventLogger
-): BaseViewModel(eventLogger) {
+): BaseViewModel(eventLogger), MemoryObserver {
 
     // Private flags
 
@@ -720,6 +721,14 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
     protected fun closeOptionsMenu() {
         val event = _openOptionsMenuEvent.value ?: return
         _closeOptionsMenuEvent.value = event
+    }
+
+    override fun noteLowMemory() {
+        if (!mediaList.hasActiveObservers()) {
+            cancelSubscription()
+            _mediaList.value = null
+            _mediaListFetched = false
+        }
     }
 
     override fun onCleared() {

@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.frolo.muse.di.ActivityScope
 import com.frolo.muse.di.ViewModelKey
+import com.frolo.muse.memory.MemoryObserver
+import com.frolo.muse.memory.MemoryObserverRegistry
 import com.frolo.muse.rating.RatingViewModel
 import com.frolo.muse.ui.main.MainViewModel
 import com.frolo.muse.ui.main.audiofx.AudioFxViewModel
@@ -53,7 +55,8 @@ abstract class ViewModelModule {
 
     @ActivityScope
     class ViewModelFactory @Inject constructor(
-        private val providers: MutableMap<Class<out ViewModel>, Provider<ViewModel>>
+        private val providers: MutableMap<Class<out ViewModel>, Provider<ViewModel>>,
+        private val memoryObserverRegistry: MemoryObserverRegistry
     ): ViewModelProvider.Factory {
 
         @Suppress("UNCHECKED_CAST", "FoldInitializerAndIfToElvis")
@@ -71,6 +74,10 @@ abstract class ViewModelModule {
                 throw IllegalArgumentException("Provider returned a view model of wrong type: " +
                         "expected $modelClass, but got ${instance.javaClass}. " +
                         "Check ${ViewModelKey::class} annotation on the bind method.")
+            }
+
+            if (instance is MemoryObserver) {
+                memoryObserverRegistry.addWeakObserver(instance)
             }
 
             return instance as T
