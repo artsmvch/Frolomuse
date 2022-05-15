@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.frolo.muse.di.ActivityScope
 import com.frolo.muse.di.ViewModelKey
-import com.frolo.muse.memory.MemoryObserver
-import com.frolo.muse.memory.MemoryObserverRegistry
+import com.frolo.muse.memory.MemoryWatcher
+import com.frolo.muse.memory.MemoryWatcherRegistry
 import com.frolo.muse.rating.RatingViewModel
 import com.frolo.muse.ui.main.MainViewModel
 import com.frolo.muse.ui.main.audiofx.AudioFxViewModel
@@ -56,7 +56,7 @@ abstract class ViewModelModule {
     @ActivityScope
     class ViewModelFactory @Inject constructor(
         private val providers: MutableMap<Class<out ViewModel>, Provider<ViewModel>>,
-        private val memoryObserverRegistry: MemoryObserverRegistry
+        private val memoryWatcherRegistry: MemoryWatcherRegistry
     ): ViewModelProvider.Factory {
 
         @Suppress("UNCHECKED_CAST", "FoldInitializerAndIfToElvis")
@@ -76,8 +76,8 @@ abstract class ViewModelModule {
                         "Check ${ViewModelKey::class} annotation on the bind method.")
             }
 
-            if (instance is MemoryObserver) {
-                memoryObserverRegistry.addWeakObserver(instance)
+            if (instance is MemoryWatcher) {
+                memoryWatcherRegistry.addWeakWatcher(instance)
             }
 
             return instance as T

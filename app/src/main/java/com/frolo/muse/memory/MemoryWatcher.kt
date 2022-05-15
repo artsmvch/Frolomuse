@@ -1,5 +1,5 @@
 package com.frolo.muse.memory
 
-interface MemoryObserver {
+interface MemoryWatcher {
     fun noteLowMemory()
 }

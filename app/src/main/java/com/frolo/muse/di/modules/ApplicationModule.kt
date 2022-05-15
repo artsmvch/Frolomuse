@@ -7,9 +7,8 @@ import com.frolo.muse.BuildInfo
 import com.frolo.muse.FrolomuseApp
 import com.frolo.muse.di.ApplicationScope
 import com.frolo.muse.engine.PlayerWrapper
-import com.frolo.muse.memory.MemoryObserverRegistry
-import com.frolo.muse.memory.MemoryObserverRegistryImpl
-import com.frolo.muse.memory.MemoryObserverRegistryStub
+import com.frolo.muse.memory.MemoryWatcherRegistry
+import com.frolo.muse.memory.MemoryWatcherRegistryStub
 import com.frolo.muse.router.AppRouter
 import dagger.Module
 import dagger.Provides
@@ -42,9 +41,9 @@ class ApplicationModule(private val frolomuseApp: FrolomuseApp) {
 
     @ApplicationScope
     @Provides
-    fun provideMemoryObserverRegistry(application: Application): MemoryObserverRegistry {
+    fun provideMemoryObserverRegistry(application: Application): MemoryWatcherRegistry {
         //return MemoryObserverRegistryImpl(application).apply { activate() }
-        return MemoryObserverRegistryStub
+        return MemoryWatcherRegistryStub
     }
 
 }

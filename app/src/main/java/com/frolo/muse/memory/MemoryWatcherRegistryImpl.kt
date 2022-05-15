@@ -6,16 +6,16 @@ import android.content.res.Configuration
 import java.util.*
 
 
-class MemoryObserverRegistryImpl(
+class MemoryWatcherRegistryImpl(
     private val application: Application
-) : MemoryObserverRegistry {
+) : MemoryWatcherRegistry {
 
     private val componentCallbacks = object : ComponentCallbacks2 {
         override fun onConfigurationChanged(newConfig: Configuration) {
         }
 
         override fun onLowMemory() {
-            weakObservers.forEach { observer ->
+            weakWatchers.forEach { observer ->
                 observer.noteLowMemory()
             }
         }
@@ -25,7 +25,7 @@ class MemoryObserverRegistryImpl(
 
     }
 
-    private val weakObservers = Collections.newSetFromMap(WeakHashMap<MemoryObserver, Boolean>())
+    private val weakWatchers = Collections.newSetFromMap(WeakHashMap<MemoryWatcher, Boolean>())
 
     fun activate() {
         application.registerComponentCallbacks(componentCallbacks)
@@ -35,11 +35,11 @@ class MemoryObserverRegistryImpl(
         application.unregisterComponentCallbacks(componentCallbacks)
     }
 
-    override fun addWeakObserver(observer: MemoryObserver) {
-        weakObservers.add(observer)
+    override fun addWeakWatcher(watcher: MemoryWatcher) {
+        weakWatchers.add(watcher)
     }
 
-    override fun removeWeakObserver(observer: MemoryObserver) {
-        weakObservers.remove(observer)
+    override fun removeWeakWatcher(watcher: MemoryWatcher) {
+        weakWatchers.remove(watcher)
     }
 }
