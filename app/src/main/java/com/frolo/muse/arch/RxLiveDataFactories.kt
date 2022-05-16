@@ -8,6 +8,12 @@ import io.reactivex.disposables.Disposable
 
 private val EMPTY_CONSUMER: (Any) -> Unit = { }
 
+/**
+ * Subscribes to the [source] when this live data becomes active,
+ * meaning it has at least one active observer;
+ * And disposes the subscription if the live data becomes inactive.
+ * All emitted elements are published to the live data.
+ */
 fun <T> createLiveData(
     source: Flowable<T>,
     onError: ((Throwable) -> Unit) = EMPTY_CONSUMER
@@ -22,12 +28,17 @@ fun <T> createLiveData(
 
         fun maybeSubscribe() {
             if (completed) {
+                // The publisher has completed the emission earlier,
+                // all elements have been sent to the live data
+                // so we do not need to subscribe again.
                 return
             }
             disposable?.dispose()
             disposable = source
                 .subscribe(
                     { value ->
+                        // We don't know on which scheduler the source is being
+                        // observed, so we post the value to the main thread.
                         postValue(value)
                     },
                     { error ->
@@ -59,5 +70,10 @@ fun <T> createLiveData(
 
 fun <T> createLiveData(
     source: Maybe<T>,
+    onError: ((Throwable) -> Unit) = EMPTY_CONSUMER
+): LiveData<T> = createLiveData(source.toFlowable(), onError)
+
+fun <T> createLiveData(
+    source: Completable,
     onError: ((Throwable) -> Unit) = EMPTY_CONSUMER
 ): LiveData<T> = createLiveData(source.toFlowable(), onError)
