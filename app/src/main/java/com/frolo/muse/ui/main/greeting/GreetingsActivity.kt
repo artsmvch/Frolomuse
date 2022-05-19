@@ -107,7 +107,7 @@ class GreetingsActivity : BaseActivity(), GreetingsFragment.OnGreetingFinishedLi
     }
 
     companion object {
-        private const val FRAGMENT_TAG_GREETINGS = "com.frolo.muse.ui.main.greeting.greetings"
+        private const val FRAGMENT_TAG_GREETINGS = "com.frolo.muse.ui.main.greeting:greetings"
 
         private val containerId: Int = View.generateViewId()
 

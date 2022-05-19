@@ -36,7 +36,6 @@ class TestAppRouter : AppRouter {
     override fun openPlaybackFadingParams() = Unit
     override fun openThemeChooser() = Unit
     override fun offerToBuyPremium(allowTrialActivation: Boolean) = Unit
-    override fun launchBillingFlow(productId: ProductId) = Unit
     override fun openDonations() = Unit
     override fun goBack() = Unit
 }

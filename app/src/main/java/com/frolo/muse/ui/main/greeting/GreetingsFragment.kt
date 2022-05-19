@@ -124,7 +124,7 @@ class GreetingsFragment : BaseFragment() {
 
     private fun updateButtons(selectedPosition: Int) {
         val transition = Fade().apply {
-            duration = 300
+            duration = 150
         }
         TransitionManager.beginDelayedTransition(fl_buttons, transition)
         val itemCount = view_pager.adapter?.itemCount ?: 0

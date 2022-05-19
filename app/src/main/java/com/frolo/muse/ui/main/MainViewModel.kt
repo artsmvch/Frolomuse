@@ -18,10 +18,13 @@ import com.frolo.muse.logger.*
 import com.frolo.music.model.Media
 import com.frolo.muse.permission.PermissionChecker
 import com.frolo.muse.repository.AppearancePreferences
+import com.frolo.muse.repository.Preferences
 import com.frolo.muse.repository.RemoteConfigRepository
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.PlayerHostViewModel
 import io.reactivex.Flowable
+import io.reactivex.disposables.Disposable
+import org.reactivestreams.Subscription
 import javax.inject.Inject
 
 
@@ -49,6 +52,7 @@ class MainViewModel @Inject constructor(
     private val permissionChecker: PermissionChecker,
     private val appearancePreferences: AppearancePreferences,
     private val remoteConfigRepository: RemoteConfigRepository,
+    private val preferences: Preferences,
     private val eventLogger: EventLogger
 ): PlayerHostViewModel(application, playerWrapper, eventLogger) {
 
@@ -80,6 +84,24 @@ class MainViewModel @Inject constructor(
                 }
         }
     }
+
+    private var showGreetingsDisposable: Disposable? = null
+    private val _showGreetingsEvent = EventLiveData<Boolean>().apply {
+        preferences.shouldShowGreetings()
+            .firstOrError()
+            .observeOn(schedulerProvider.main())
+            .doOnSubscribe { disposable ->
+                showGreetingsDisposable?.dispose()
+                showGreetingsDisposable = disposable
+            }
+            .doFinally {
+                showGreetingsDisposable = null
+            }
+            .subscribeFor { show ->
+                setValue(show)
+            }
+    }
+    val showGreetingsEvent: LiveData<Boolean> get() = _showGreetingsEvent
 
     private fun tryRestorePlayerStateIfNeeded() {
         val player: Player = this.player ?: return

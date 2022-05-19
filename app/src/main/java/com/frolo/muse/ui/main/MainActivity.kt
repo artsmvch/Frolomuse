@@ -46,6 +46,7 @@ import com.frolo.muse.ui.ScrolledToTop
 import com.frolo.muse.ui.ThemeHandler
 import com.frolo.muse.ui.base.*
 import com.frolo.muse.ui.main.audiofx.AudioFxFragment
+import com.frolo.muse.ui.main.greeting.GreetingsActivity
 import com.frolo.muse.ui.main.library.LibraryFragment
 import com.frolo.muse.ui.main.library.search.SearchFragment
 import com.frolo.muse.ui.main.player.mini.MiniPlayerFragment
@@ -607,6 +608,12 @@ class MainActivity : BaseActivity(),
                 snowfall_view.visibility = View.VISIBLE
             } else {
                 snowfall_view.visibility = View.GONE
+            }
+        }
+
+        showGreetingsEvent.observe(owner) { show ->
+            if (show == true) {
+                //GreetingsActivity.show(this@MainActivity)
             }
         }
 
