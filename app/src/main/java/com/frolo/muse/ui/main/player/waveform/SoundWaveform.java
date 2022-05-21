@@ -2,33 +2,33 @@ package com.frolo.muse.ui.main.player.waveform;
 
 import androidx.annotation.NonNull;
 
-import com.frolo.muse.model.sound.Sound;
+import com.frolo.muse.model.sound.SoundWave;
 import com.frolo.waveformseekbar.WaveformSeekBar;
 
 /**
- * A Waveform implementation based on {@link Sound}.
- * All methods delegate the call to the Sound object.
+ * A Waveform implementation based on {@link SoundWave}.
+ * All methods delegate the call to the SoundWave object.
  */
 public class SoundWaveform implements WaveformSeekBar.Waveform {
 
-    private final Sound sound;
+    private final SoundWave soundWave;
 
-    public SoundWaveform(@NonNull Sound sound) {
-        this.sound = sound;
+    public SoundWaveform(@NonNull SoundWave soundWave) {
+        this.soundWave = soundWave;
     }
 
     @Override
     public int getWaveCount() {
-        return sound.getFrameCount();
+        return soundWave.length();
     }
 
     @Override
     public int getWaveAt(int index) {
-        return sound.getFrameGainAt(index);
+        return soundWave.getLevelAt(index);
     }
 
     @Override
     public int getMaxWave() {
-        return sound.getMaxFrameGain();
+        return soundWave.getMaxLevel();
     }
 }

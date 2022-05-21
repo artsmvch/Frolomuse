@@ -14,7 +14,7 @@ import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
 import com.frolo.muse.interactor.media.DeleteMediaUseCase
 import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
 import com.frolo.muse.interactor.player.ControlPlayerUseCase
-import com.frolo.muse.interactor.player.ResolveSoundUseCase
+import com.frolo.muse.interactor.player.ResolveSoundWaveUseCase
 import com.frolo.muse.router.AppRouter
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.logPlayerOptionsMenuShown
@@ -24,7 +24,7 @@ import com.frolo.muse.model.event.DeletionType
 import com.frolo.music.model.Album
 import com.frolo.music.model.Media
 import com.frolo.music.model.Song
-import com.frolo.muse.model.sound.Sound
+import com.frolo.muse.model.sound.SoundWave
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.rx.flowable.doOnNextIndexed
 import com.frolo.muse.ui.base.BaseViewModel
@@ -44,7 +44,7 @@ class PlayerViewModel @Inject constructor(
     private val changeFavouriteUseCase: ChangeFavouriteUseCase<Song>,
     private val deleteMediaUseCase: DeleteMediaUseCase<Song>,
     private val controlPlayerUseCase: ControlPlayerUseCase,
-    private val resolveSoundUseCase: ResolveSoundUseCase,
+    private val resolveSoundWaveUseCase: ResolveSoundWaveUseCase,
     private val featuresUseCase: FeaturesUseCase,
     private val appRouter: AppRouter,
     private val eventLogger: EventLogger
@@ -126,16 +126,16 @@ class PlayerViewModel @Inject constructor(
     val playerControllersEnabled: LiveData<Boolean> =
         song.map(false) { song: Song? -> song != null }
 
-    val sound: LiveData<Sound> =
+    val soundWave: LiveData<SoundWave> =
         Transformations.switchMap(song) { song ->
             val source: String? = song?.source
 
-            if (source == null) liveDataOf<Sound>(null)
-            else MutableLiveData<Sound>().apply {
-                resolveSoundUseCase.resolve(source)
+            if (source == null) liveDataOf<SoundWave>(null)
+            else MutableLiveData<SoundWave>().apply {
+                resolveSoundWaveUseCase.resolveSoundWave(source)
                     .observeOn(schedulerProvider.main())
                     .doOnError { value = null }
-                    .subscribeFor(key = "resolve_sound") { sound ->
+                    .subscribeFor(key = "resolve_sound_wave") { sound ->
                         value = sound
                     }
             }

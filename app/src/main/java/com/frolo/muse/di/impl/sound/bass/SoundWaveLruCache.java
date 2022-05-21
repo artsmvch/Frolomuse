@@ -3,10 +3,10 @@ package com.frolo.muse.di.impl.sound.bass;
 import androidx.annotation.NonNull;
 import androidx.collection.LruCache;
 
-import com.frolo.muse.model.sound.Sound;
+import com.frolo.muse.model.sound.SoundWave;
 
 
-final class SoundLruCache extends LruCache<String, Sound> {
+final class SoundWaveLruCache extends LruCache<String, SoundWave> {
 
     /**
      * This is how many bytes one level takes. Since a level is
@@ -17,13 +17,13 @@ final class SoundLruCache extends LruCache<String, Sound> {
         return 4;
     }
 
-    SoundLruCache(int maxSize) {
+    SoundWaveLruCache(int maxSize) {
         super(maxSize);
     }
 
     @Override
-    protected int sizeOf(@NonNull String key, @NonNull Sound value) {
-        return value.getFrameCount() * getLevelSize();
+    protected int sizeOf(@NonNull String key, @NonNull SoundWave value) {
+        return value.length() * getLevelSize();
     }
 
 }

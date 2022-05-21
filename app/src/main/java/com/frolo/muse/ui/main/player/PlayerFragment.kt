@@ -467,12 +467,12 @@ class PlayerFragment: BaseFragment() {
             btn_ab.markControllerEnabled(enabled)
         }
 
-        sound.observe(owner) { sound ->
-            if (sound != null) {
-                val waveform = SoundWaveform(sound)
+        soundWave.observe(owner) { soundWave ->
+            if (soundWave != null) {
+                val waveform = SoundWaveform(soundWave)
                 waveform_seek_bar.setWaveform(waveform, true)
             } else {
-                val waveform = StaticWaveform(BuildConfig.SOUND_FRAME_GAIN_COUNT, 1, 10)
+                val waveform = StaticWaveform(100, 1, 10)
                 waveform_seek_bar.setWaveform(waveform, true)
             }
         }

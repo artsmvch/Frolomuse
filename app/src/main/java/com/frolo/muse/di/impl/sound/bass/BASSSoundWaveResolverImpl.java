@@ -3,8 +3,9 @@ package com.frolo.muse.di.impl.sound.bass;
 import android.util.Log;
 
 import com.frolo.muse.BuildConfig;
-import com.frolo.muse.model.sound.Sound;
-import com.frolo.muse.repository.SoundResolver;
+import com.frolo.muse.model.sound.SoundWave;
+import com.frolo.muse.repository.SoundWaveResolver;
+import com.frolo.threads.ThreadStrictMode;
 import com.un4seen.bass.BASS;
 
 import java.util.Arrays;
@@ -14,7 +15,7 @@ import io.reactivex.Flowable;
 import io.reactivex.schedulers.Schedulers;
 
 
-public class BASSSoundResolverImpl implements SoundResolver {
+public final class BASSSoundWaveResolverImpl implements SoundWaveResolver {
 
     private static final boolean DEBUG = BuildConfig.DEBUG;
     private static final String LOG_TAG = "BASSSoundResolverImpl";
@@ -31,11 +32,11 @@ public class BASSSoundResolverImpl implements SoundResolver {
         }
     }
 
-    private static int calcSoundCacheSize(int levelCount) {
+    private static int calcSoundWaveCacheSize(int levelCount) {
         // The maximum allowed capacity is 64 kilobytes
         final int maxAllowedSize = 64 * 1024;
         // We want the cache to be able to store at least 100 items
-        final int preferredCacheSize = 100 * levelCount * SoundLruCache.getLevelSize();
+        final int preferredCacheSize = 100 * levelCount * SoundWaveLruCache.getLevelSize();
         return Math.min(maxAllowedSize, preferredCacheSize);
     }
 
@@ -86,47 +87,48 @@ public class BASSSoundResolverImpl implements SoundResolver {
 
     private final int levelCount;
 
-    private final SoundLruCache cache;
+    private final SoundWaveLruCache cache;
 
-    public BASSSoundResolverImpl(int levelCount) {
+    public BASSSoundWaveResolverImpl(int levelCount) {
         this.levelCount = levelCount;
-        this.cache = new SoundLruCache(calcSoundCacheSize(levelCount));
+        this.cache = new SoundWaveLruCache(calcSoundWaveCacheSize(levelCount));
         initNativeLibrary();
     }
 
     @Override
-    public Flowable<Sound> resolve(final String filepath) {
-        Flowable<Sound> source = Flowable.fromCallable(new Callable<Sound>() {
+    public Flowable<SoundWave> resolveSoundWave(final String filepath) {
+        Flowable<SoundWave> source = Flowable.fromCallable(new Callable<SoundWave>() {
             @Override
-            public Sound call() throws Exception {
+            public SoundWave call() throws Exception {
+                ThreadStrictMode.assertBackground();
                 // Checking the cache first
-                final Sound cachedValue = cache.get(filepath);
+                final SoundWave cachedValue = cache.get(filepath);
                 if (cachedValue != null) {
                     return cachedValue;
                 }
 
                 // No cached value, creating a new one
-                final Sound sound = blockingResolveImpl(filepath, levelCount);
+                final SoundWave soundWave = blockingResolveImpl(filepath, levelCount);
 
                 // Putting it in the cache for further optimization
-                cache.put(filepath, sound);
+                cache.put(filepath, soundWave);
 
-                return sound;
+                return soundWave;
             }
         });
 
         return source.subscribeOn(Schedulers.io());
     }
 
-    private Sound blockingResolveImpl(String filename, int levelCount) throws Exception {
+    private SoundWave blockingResolveImpl(String filename, int levelCount) throws Exception {
         if (levelCount < 0) {
             throw new IllegalArgumentException("Invalid level count: " + levelCount);
         }
 
         if (levelCount == 0) {
-            int[] frameGains = new int[0];
-            int maxFrameGain = 1;
-            return new SoundImpl(frameGains, maxFrameGain);
+            int[] levels = new int[0];
+            int maxLevel = 1;
+            return new SoundWaveImpl(levels, maxLevel);
         }
 
         final int chan = BASS.BASS_StreamCreateFile(filename, 0L, 0L, BASS.BASS_STREAM_DECODE | BASS.BASS_STREAM_PRESCAN);
@@ -174,10 +176,10 @@ public class BASSSoundResolverImpl implements SoundResolver {
             //throw new Exception("Failed to read levels");
             int[] newLevels = new int[levelCount];
             Arrays.fill(newLevels, 1);
-            return new SoundImpl(newLevels, 10);
+            return new SoundWaveImpl(newLevels, 10);
         }
 
-        return new SoundImpl(levels, maxLevel);
+        return new SoundWaveImpl(levels, maxLevel);
     }
 
     private boolean areLevelsOK(int[] levels) {

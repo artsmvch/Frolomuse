@@ -2,11 +2,10 @@ package com.frolo.muse.di.modules
 
 import android.content.Context
 import android.os.Build
-import com.frolo.muse.BuildConfig
 import com.frolo.muse.di.ApplicationScope
 import com.frolo.muse.di.ExecutorQualifier
 import com.frolo.muse.di.impl.local.*
-import com.frolo.muse.di.impl.sound.bass.BASSSoundResolverImpl
+import com.frolo.muse.di.impl.sound.bass.BASSSoundWaveResolverImpl
 import com.frolo.muse.di.impl.stub.MediaFileRepositoryStub
 import com.frolo.muse.repository.*
 import com.frolo.music.model.*
@@ -217,8 +216,8 @@ class LocalDataModule {
 
     @ApplicationScope
     @Provides
-    fun provideSoundResolver(): SoundResolver {
-        return BASSSoundResolverImpl(BuildConfig.SOUND_FRAME_GAIN_COUNT)
+    fun provideSoundResolver(): SoundWaveResolver {
+        return BASSSoundWaveResolverImpl(SoundWaveResolver.DEFAULT_LEVEL_COUNT)
     }
 
     @ApplicationScope
