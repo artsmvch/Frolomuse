@@ -12,7 +12,7 @@ import com.frolo.muse.R
 import com.frolo.ui.StyleUtils
 
 
-internal class MainActivityProperties(
+internal class MainScreenProperties(
     private val activity: Activity
 ) {
 

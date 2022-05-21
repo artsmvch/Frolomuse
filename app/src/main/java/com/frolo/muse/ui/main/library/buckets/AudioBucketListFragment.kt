@@ -26,7 +26,7 @@ import kotlinx.android.synthetic.main.fragment_base_list.*
 
 class AudioBucketListFragment : BaseFragment(),
         BucketCallback,
-        BackPressHandler,
+        OnBackPressedHandler,
         FragmentContentInsetsListener,
         ScrolledToTop {
 
@@ -95,7 +95,7 @@ class AudioBucketListFragment : BaseFragment(),
         leaveBucketImpl()
     }
 
-    override fun onBackPress(): Boolean {
+    override fun handleOnBackPressed(): Boolean {
         return leaveBucketImpl()
     }
 

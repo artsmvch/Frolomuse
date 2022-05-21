@@ -15,7 +15,7 @@ import com.frolo.muse.R
 import com.frolo.muse.model.Library
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.ui.ScrolledToTop
-import com.frolo.muse.ui.base.BackPressHandler
+import com.frolo.muse.ui.base.OnBackPressedHandler
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.base.FragmentContentInsetsListener
 import com.frolo.muse.util.CollectionUtil
@@ -23,7 +23,7 @@ import kotlinx.android.synthetic.main.fragment_library.*
 
 
 class LibraryFragment: BaseFragment(),
-        BackPressHandler,
+        OnBackPressedHandler,
         FragmentContentInsetsListener,
         ScrolledToTop {
 
@@ -132,12 +132,12 @@ class LibraryFragment: BaseFragment(),
         super.onDestroyView()
     }
 
-    override fun onBackPress(): Boolean {
+    override fun handleOnBackPressed(): Boolean {
         val position = vp_sections.currentItem
         val adapter = vp_sections.adapter as? LibraryPageAdapter ?: return false
         val page = adapter.getPageAt(position)
-        if (page is BackPressHandler && FragmentUtils.isInForeground(page)) {
-            return page.onBackPress()
+        if (page is OnBackPressedHandler && FragmentUtils.isInForeground(page)) {
+            return page.handleOnBackPressed()
         }
         return false
     }

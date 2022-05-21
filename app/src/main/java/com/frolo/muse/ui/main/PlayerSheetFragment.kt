@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.core.view.doOnLayout
 import com.frolo.muse.R
 import com.frolo.ui.StyleUtils
-import com.frolo.muse.ui.base.BackPressHandler
+import com.frolo.muse.ui.base.OnBackPressedHandler
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.main.player.PlayerFragment
 import com.frolo.muse.ui.main.player.TouchFrameLayout
@@ -18,7 +18,7 @@ import kotlin.math.pow
 
 
 class PlayerSheetFragment : BaseFragment(),
-        BackPressHandler,
+        OnBackPressedHandler,
         CurrSongQueueFragment.OnCloseIconClickListener {
 
     private val playerSheetCallback: PlayerSheetCallback?
@@ -112,7 +112,7 @@ class PlayerSheetFragment : BaseFragment(),
         super.onDestroyView()
     }
 
-    override fun onBackPress(): Boolean {
+    override fun handleOnBackPressed(): Boolean {
         return BottomSheetBehavior.from(bottom_sheet_current_song_queue).run {
             if (state != BottomSheetBehavior.STATE_COLLAPSED) {
                 state = BottomSheetBehavior.STATE_COLLAPSED

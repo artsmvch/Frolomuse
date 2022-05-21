@@ -11,7 +11,7 @@ import com.frolo.mediascan.MediaScanService
 import com.frolo.music.model.MyFile
 import com.frolo.muse.thumbnails.provideThumbnailLoader
 import com.frolo.muse.ui.ShotLayoutAnimationController
-import com.frolo.muse.ui.base.BackPressHandler
+import com.frolo.muse.ui.base.OnBackPressedHandler
 import com.frolo.muse.ui.base.FragmentContentInsetsListener
 import com.frolo.muse.ui.getNameAsRootString
 import com.frolo.muse.ui.main.addLinearItemMargins
@@ -28,7 +28,7 @@ import kotlinx.android.synthetic.main.fragment_my_file_list.*
     replaceWith = ReplaceWith("AudioBucketListFragment")
 )
 class MyFileListFragment: AbsMediaCollectionFragment<MyFile>(),
-        BackPressHandler,
+        OnBackPressedHandler,
         FragmentContentInsetsListener {
 
     override val viewModel: MyFileListViewModel by viewModel()

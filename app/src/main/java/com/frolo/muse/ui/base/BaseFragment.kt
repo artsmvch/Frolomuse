@@ -1,6 +1,7 @@
 package com.frolo.muse.ui.base
 
 import android.Manifest
+import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.os.AsyncTask
@@ -18,6 +19,8 @@ import com.frolo.muse.Logger
 import com.frolo.muse.di.activityComponent
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.repository.Preferences
+import com.frolo.muse.toast.DefaultToastManager
+import com.frolo.muse.toast.ToastManager
 import com.tbruyelle.rxpermissions2.RxPermissions
 import io.reactivex.disposables.Disposable
 
@@ -45,9 +48,13 @@ abstract class BaseFragment: Fragment() {
     private var vmFactory: ViewModelProvider.Factory? = null
     private var eventLogger: EventLogger? = null
 
+    protected var toastManager: ToastManager? = null
+        private set
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         rxPermissions = RxPermissions(this)
+        toastManager = (context as? Activity)?.let(::DefaultToastManager)
     }
 
     override fun onStop() {
@@ -72,6 +79,7 @@ abstract class BaseFragment: Fragment() {
     override fun onDetach() {
         super.onDetach()
         rxPermissions = null
+        toastManager = null
     }
 
     //<editor-fold desc="Injectors">
