@@ -16,7 +16,7 @@ import com.frolo.muse.model.ThemeUtils
 import com.frolo.muse.rx.disposeOnStopOf
 import com.frolo.muse.rx.subscribeSafely
 import com.frolo.muse.ui.base.BaseFragment
-import com.frolo.muse.ui.base.castHost
+import com.frolo.muse.ui.base.tryHostAs
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_theme_page.*
@@ -43,7 +43,7 @@ class ThemePageFragment : BaseFragment() {
      */
     private var overriddenArgument: ThemePage? = null
 
-    private val callback: ThemePageCallback? get() = castHost()
+    private val callback: ThemePageCallback? get() = tryHostAs()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

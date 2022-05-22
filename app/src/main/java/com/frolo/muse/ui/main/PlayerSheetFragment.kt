@@ -9,6 +9,7 @@ import com.frolo.muse.R
 import com.frolo.ui.StyleUtils
 import com.frolo.muse.ui.base.OnBackPressedHandler
 import com.frolo.muse.ui.base.BaseFragment
+import com.frolo.muse.ui.base.tryHostAs
 import com.frolo.muse.ui.main.player.PlayerFragment
 import com.frolo.muse.ui.main.player.TouchFrameLayout
 import com.frolo.muse.ui.main.player.current.CurrSongQueueFragment
@@ -22,7 +23,7 @@ class PlayerSheetFragment : BaseFragment(),
         CurrSongQueueFragment.OnCloseIconClickListener {
 
     private val playerSheetCallback: PlayerSheetCallback?
-        get() = activity as? PlayerSheetCallback
+        get() = tryHostAs<PlayerSheetCallback>()
 
     // BottomSheet: CurrentSongQueue
     private val bottomSheetCallback =
@@ -58,13 +59,11 @@ class PlayerSheetFragment : BaseFragment(),
     ): View = inflater.inflate(R.layout.fragment_player_sheet, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
-        val behavior = BottomSheetBehavior.from(bottom_sheet_current_song_queue)
-            .apply {
-                addBottomSheetCallback(bottomSheetCallback)
-                state = BottomSheetBehavior.STATE_COLLAPSED
-                bottomSheetCallback.onSlide(bottom_sheet_current_song_queue, 0.0f)
-            }
+        val behavior = BottomSheetBehavior.from(bottom_sheet_current_song_queue).apply {
+            addBottomSheetCallback(bottomSheetCallback)
+            state = BottomSheetBehavior.STATE_COLLAPSED
+            bottomSheetCallback.onSlide(bottom_sheet_current_song_queue, 0.0f)
+        }
 
         view.doOnLayout {
             behavior.peekHeight =
@@ -77,7 +76,7 @@ class PlayerSheetFragment : BaseFragment(),
                     playerSheetCallback?.setPlayerSheetDraggable(false)
                 }
 
-                override fun onTouchRelease() {
+                override fun onTouchUp() {
                     playerSheetCallback?.setPlayerSheetDraggable(false)
                 }
             }
@@ -85,7 +84,7 @@ class PlayerSheetFragment : BaseFragment(),
         childFragmentManager.beginTransaction()
             .replace(R.id.container_player, PlayerFragment.newInstance())
             .replace(R.id.container_current_song_queue, CurrSongQueueFragment.newInstance())
-            .commit()
+            .commitNow()
 
         layout_hook.setOnClickListener {
             behavior.state = BottomSheetBehavior.STATE_EXPANDED
@@ -104,11 +103,9 @@ class PlayerSheetFragment : BaseFragment(),
     }
 
     override fun onDestroyView() {
-        BottomSheetBehavior.from(bottom_sheet_current_song_queue)
-            .apply {
-                removeBottomSheetCallback(bottomSheetCallback)
-            }
-
+        BottomSheetBehavior.from(bottom_sheet_current_song_queue).apply {
+            removeBottomSheetCallback(bottomSheetCallback)
+        }
         super.onDestroyView()
     }
 

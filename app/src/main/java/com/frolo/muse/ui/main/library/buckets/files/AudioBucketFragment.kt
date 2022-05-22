@@ -18,7 +18,7 @@ import com.frolo.music.model.MediaFile
 import com.frolo.muse.thumbnails.provideThumbnailLoader
 import com.frolo.muse.ui.ShotLayoutAnimationController
 import com.frolo.muse.ui.base.FragmentContentInsetsListener
-import com.frolo.muse.ui.base.castHost
+import com.frolo.muse.ui.base.tryHostAs
 import com.frolo.muse.ui.base.serializableArg
 import com.frolo.muse.ui.base.withArg
 import com.frolo.muse.ui.main.addLinearItemMargins
@@ -57,7 +57,7 @@ class AudioBucketFragment : AbsMediaCollectionFragment<MediaFile>(), FragmentCon
         }
     }
 
-    private val bucketCallback: BucketCallback? get() = castHost<BucketCallback>()
+    private val bucketCallback: BucketCallback? get() = tryHostAs<BucketCallback>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
