@@ -1,4 +1,4 @@
-package com.frolo.muse.ui.main.greeting
+package com.frolo.muse.ui.main.onboarding
 
 import android.content.Context
 import android.util.AttributeSet

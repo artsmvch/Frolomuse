@@ -202,7 +202,7 @@ class ColdStartInitializer @Inject constructor(
 
     private fun noteAppLaunch() {
         val totalLaunchCount = preferences.launchCount + 1 // +1 for the current launch
-        preferences.launchCount = totalLaunchCount
+        preferences.setLaunchCount(totalLaunchCount)
         eventLogger.logAppLaunched(totalLaunchCount)
         Logger.d(LOG_TAG, "App launched for the $totalLaunchCount time")
     }

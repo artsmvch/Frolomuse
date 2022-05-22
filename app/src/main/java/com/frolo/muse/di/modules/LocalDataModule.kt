@@ -243,4 +243,19 @@ class LocalDataModule {
     fun provideRatingPreferences(context: Context, preferences: Preferences): RatingPreferences {
         return RatingPreferencesImpl(context, preferences)
     }
+
+    @ApplicationScope
+    @Provides
+    fun provideAppLaunchInfoProvider(preferences: Preferences): AppLaunchInfoProvider {
+        return preferences
+    }
+
+    @ApplicationScope
+    @Provides
+    fun provideOnboardingPreferences(
+        context: Context,
+        launchInfoProvider: AppLaunchInfoProvider
+    ): OnboardingPreferences {
+        return OnboardingPreferencesImpl(context, launchInfoProvider)
+    }
 }

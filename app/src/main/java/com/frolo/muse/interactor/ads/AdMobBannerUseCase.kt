@@ -3,14 +3,13 @@ package com.frolo.muse.interactor.ads
 import android.content.Context
 import androidx.annotation.MainThread
 import com.frolo.muse.BuildConfig
-import com.frolo.muse.R
 import com.frolo.muse.admob.AdMobs
 import com.frolo.muse.admob.BannerState
 import com.frolo.muse.android.firstPackageInstallTime
 import com.frolo.muse.billing.Products
 import com.frolo.muse.billing.TrialStatus
 import com.frolo.muse.interactor.billing.PremiumManager
-import com.frolo.muse.repository.Preferences
+import com.frolo.muse.repository.AppLaunchInfoProvider
 import com.frolo.muse.rx.SchedulerProvider
 import io.reactivex.Flowable
 import io.reactivex.functions.Function3
@@ -20,7 +19,7 @@ import javax.inject.Inject
 class AdMobBannerUseCase @Inject constructor(
     private val context: Context,
     private val premiumManager: PremiumManager,
-    private val preferences: Preferences,
+    private val launchInfoProvider: AppLaunchInfoProvider,
     private val schedulerProvider: SchedulerProvider
 ) {
 
@@ -88,7 +87,7 @@ class AdMobBannerUseCase @Inject constructor(
             return false
         }
 
-        val launchCount = preferences.launchCount
+        val launchCount = launchInfoProvider.launchCount
         if (config.thresholdOpenCount != null && launchCount < config.thresholdOpenCount) {
             return false
         }

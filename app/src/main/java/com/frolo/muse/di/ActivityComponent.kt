@@ -10,6 +10,7 @@ import com.frolo.muse.interactor.media.get.*
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.repository.AppearancePreferences
 import com.frolo.muse.repository.LibraryPreferences
+import com.frolo.muse.repository.OnboardingPreferences
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.router.AppRouter
 import com.frolo.muse.rx.SchedulerProvider
@@ -70,6 +71,7 @@ interface ActivityComponentProvider {
     fun providePreferences(): Preferences
     fun provideLibraryPreferences(): LibraryPreferences
     fun provideAppearancePreferences(): AppearancePreferences
+    fun provideOnboardingPreferences(): OnboardingPreferences
     fun provideViewModelFactory(): ViewModelProvider.Factory
     fun provideEventLogger(): EventLogger
     fun providePlayerJournal(): PlayerJournal

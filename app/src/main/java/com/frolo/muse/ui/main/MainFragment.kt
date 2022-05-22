@@ -59,6 +59,7 @@ import com.google.android.material.shape.ShapeAppearanceModel
 import com.ncapdevi.fragnav.FragNavController
 import com.ncapdevi.fragnav.FragNavTransactionOptions
 import kotlinx.android.synthetic.main.fragment_main.*
+import kotlinx.android.synthetic.main.fragment_main_content.*
 import kotlin.math.max
 import kotlin.math.pow
 
@@ -228,6 +229,10 @@ class MainFragment :
         mini_player_container.setOnClickListener {
             expandSlidingPlayer()
         }
+
+        // Hide the content layout until fragments are initialized
+        content_layout.visibility = View.INVISIBLE
+        progress.visibility = View.VISIBLE
     }
 
     private fun observeScanStatus(context: Context, owner: LifecycleOwner) {
@@ -432,8 +437,9 @@ class MainFragment :
 
         RatingFragment.install(fragmentManager)
 
-        // Finally the root layout can be visible
-        root_layout.visibility = View.VISIBLE
+        // Finally the content layout can be visible
+        content_layout.visibility = View.VISIBLE
+        progress.visibility = View.GONE
 
         sliding_player_layout.doOnLayout { v ->
             with(BottomSheetBehavior.from(v)) {
@@ -559,17 +565,11 @@ class MainFragment :
                 duration = 150L
                 addTarget(snowfall_view)
             }
-            TransitionManager.beginDelayedTransition(root_layout, transition)
+            TransitionManager.beginDelayedTransition(content_layout as ViewGroup, transition)
             if (isEnabled == true) {
                 snowfall_view.visibility = View.VISIBLE
             } else {
                 snowfall_view.visibility = View.GONE
-            }
-        }
-
-        showGreetingsEvent.observe(owner) { show ->
-            if (show == true) {
-                //GreetingsActivity.show(this@MainActivity)
             }
         }
 

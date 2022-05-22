@@ -1,4 +1,4 @@
-package com.frolo.muse.ui.main.greeting
+package com.frolo.muse.ui.main.onboarding
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -19,16 +19,16 @@ import com.frolo.muse.dp2px
 import com.frolo.muse.ui.base.BaseFragment
 import com.zhpan.indicator.enums.IndicatorSlideMode
 import com.zhpan.indicator.enums.IndicatorStyle
-import kotlinx.android.synthetic.main.fragment_greetings.*
+import kotlinx.android.synthetic.main.fragment_onboarding.*
 
 
-class GreetingsFragment : BaseFragment() {
+class OnboardingFragment : BaseFragment() {
 
-    private val onGreetingFinishedListener: OnGreetingFinishedListener?
-        get() = activity as? OnGreetingFinishedListener ?: parentFragment as? OnGreetingFinishedListener
+    private val onOnboardingFinishedListener: OnOnboardingFinishedListener?
+        get() = activity as? OnOnboardingFinishedListener ?: parentFragment as? OnOnboardingFinishedListener
 
-    private val pageInfoItems: List<GreetingPageInfo>? by lazy {
-        arguments?.getParcelableArrayList<GreetingPageInfo>(ARG_PAGE_INFO_ITEMS)
+    private val pageInfoItems: List<OnboardingPageInfo>? by lazy {
+        arguments?.getParcelableArrayList<OnboardingPageInfo>(ARG_PAGE_INFO_ITEMS)
     }
 
     private val onPageChangeCallback = object : ViewPager2.OnPageChangeCallback() {
@@ -45,11 +45,11 @@ class GreetingsFragment : BaseFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.fragment_greetings, container, false)
+    ): View? = inflater.inflate(R.layout.fragment_onboarding, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         view_pager.apply {
-            adapter = GreetingPageAdapter(pageInfoItems.orEmpty())
+            adapter = OnboardingPageAdapter(pageInfoItems.orEmpty())
             registerOnPageChangeCallback(onPageChangeCallback)
             // workaround for the ViewPager2
             getChildAt(0)?.overScrollMode = View.OVER_SCROLL_NEVER
@@ -65,11 +65,11 @@ class GreetingsFragment : BaseFragment() {
         }
 
         btn_skip.setOnClickListener {
-            onGreetingFinishedListener?.onGreetingFinished()
+            onOnboardingFinishedListener?.onOnboardingFinished(OnboardingResult.Skipped)
         }
 
         btn_done.setOnClickListener {
-            onGreetingFinishedListener?.onGreetingFinished()
+            onOnboardingFinishedListener?.onOnboardingFinished(OnboardingResult.Passed)
         }
 
         btn_next.setOnClickListener {
@@ -82,7 +82,7 @@ class GreetingsFragment : BaseFragment() {
 
         val backgroundArtView = ImageView(context).also { v ->
             Glide.with(this)
-                .load(R.drawable.png_greeting_background)
+                .load(R.drawable.png_onboarding_background)
                 //.transform(Rotate(90))
                 .into(v)
             v.scaleType = ImageView.ScaleType.CENTER_CROP
@@ -145,14 +145,14 @@ class GreetingsFragment : BaseFragment() {
         view_pager.unregisterOnPageChangeCallback(onPageChangeCallback)
     }
 
-    interface OnGreetingFinishedListener {
-        fun onGreetingFinished()
+    interface OnOnboardingFinishedListener {
+        fun onOnboardingFinished(result: OnboardingResult)
     }
 
     companion object {
         private const val ARG_PAGE_INFO_ITEMS = "page_info_items"
 
-        fun newInstance(items: ArrayList<GreetingPageInfo>) = GreetingsFragment().apply {
+        fun newInstance(items: ArrayList<OnboardingPageInfo>) = OnboardingFragment().apply {
             arguments = bundleOf(ARG_PAGE_INFO_ITEMS to items)
         }
     }

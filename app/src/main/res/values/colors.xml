@@ -26,9 +26,9 @@
     <color name="widget_color_disabled">#7e7e7e</color>
 
     <!--Onboarding-->
-    <color name="greeting_color1">#0C82DD</color>
-    <color name="greeting_color2">#9510DC</color>
-    <color name="greeting_color3">#CF0C61</color>
+    <color name="onboarding_color1">#0C82DD</color>
+    <color name="onboarding_color2">#9510DC</color>
+    <color name="onboarding_color3">#CF0C61</color>
 
     <!--Splash-->
     <color name="splash_background">#FFFFFF</color>

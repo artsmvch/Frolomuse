@@ -90,8 +90,18 @@
         </activity>
 
         <activity
-            android:name=".ui.main.greeting.GreetingsActivity"
-            android:launchMode="singleTask"/>
+            android:name=".ui.main.onboarding.OnboardingActivity"
+            android:launchMode="singleTask"
+            android:exported="true">
+            <intent-filter>
+                <category android:name="android.intent.category.BROWSABLE" />
+                <action android:name="android.intent.action.VIEW" />
+                <data android:scheme="https" />
+                <data android:scheme="http" />
+                <data android:host="frolomuse" />
+                <data android:path="/onboarding" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".ui.deprecated.player.StandalonePlayerActivity"
