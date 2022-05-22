@@ -232,7 +232,7 @@ class MainFragment :
 
         // Hide the content layout until fragments are initialized
         content_layout.visibility = View.INVISIBLE
-        progress.visibility = View.VISIBLE
+        progress.show()
     }
 
     private fun observeScanStatus(context: Context, owner: LifecycleOwner) {
@@ -439,7 +439,7 @@ class MainFragment :
 
         // Finally the content layout can be visible
         content_layout.visibility = View.VISIBLE
-        progress.visibility = View.GONE
+        progress.hide()
 
         sliding_player_layout.doOnLayout { v ->
             with(BottomSheetBehavior.from(v)) {
