@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -46,6 +47,7 @@ import com.frolo.muse.ui.main.library.LibraryFragment
 import com.frolo.muse.ui.main.library.search.SearchFragment
 import com.frolo.muse.ui.main.player.mini.MiniPlayerFragment
 import com.frolo.muse.ui.main.settings.AppBarSettingsFragment
+import com.frolo.muse.util.LinkUtils
 import com.frolo.music.model.Media
 import com.frolo.player.Player
 import com.frolo.ui.FragmentUtils
@@ -482,6 +484,12 @@ class MainFragment :
         }
     }
 
+    private fun switchToTab(index: Int) {
+        view ?: return
+        bottom_navigation_view.selectedItemId = getBottomMenuItemId(index)
+        performNavActon { clearStack() }
+    }
+
     /**
      * Handles [intent]. If the fragments were not initialized yet then
      * this method does nothing but marks [intent] as pending so that
@@ -503,34 +511,85 @@ class MainFragment :
             return false
         }
 
+        actualHandleIntent(safeNavController, intent)
+
+        // Mark this intent as handled
+        intent.putExtra(EXTRA_INTENT_HANDLED, true)
+        return true
+    }
+
+    private fun actualHandleIntent(navController: FragNavController, intent: Intent): Boolean {
+        if (handleActionViewLink(intent)) {
+            return true
+        }
+        if (handleActionViewContent(intent)) {
+            return true
+        }
+        if (handleNavigateToMediaIntent(intent)) {
+            return true
+        }
+
+        val currTabIndex = navController.currentStackIndex
+        val tabIndexExtra = intent.getIntExtra(EXTRA_TAB_INDEX, currTabIndex)
+        if (tabIndexExtra != currTabIndex) {
+            bottom_navigation_view.selectedItemId = getBottomMenuItemId(tabIndexExtra)
+        }
+        if (intent.getBooleanExtra(EXTRA_OPEN_PLAYER, false)) {
+            expandSlidingPlayer()
+        }
+        return true
+    }
+
+    private fun handleActionViewLink(intent: Intent): Boolean {
+        if (intent.action != Intent.ACTION_VIEW
+            || intent.scheme?.let(LinkUtils::isHttpScheme) != true) {
+            return false
+        }
+        val uri: Uri = intent.data ?: return false
+        when (uri.pathSegments?.getOrNull(0)) {
+            "play",
+            "player" -> {
+                expandSlidingPlayer()
+                return true
+            }
+            "library" -> {
+                switchToTab(INDEX_LIBRARY)
+                return true
+            }
+            "equalizer" -> {
+                switchToTab(INDEX_EQUALIZER)
+                return true
+            }
+            "search" -> {
+                switchToTab(INDEX_SEARCH)
+                return true
+            }
+            "settings" -> {
+                switchToTab(INDEX_SETTINGS)
+                return true
+            }
+            else -> return false
+        }
+    }
+
+    private fun handleActionViewContent(intent: Intent): Boolean {
+        if (intent.action != Intent.ACTION_VIEW
+            || intent.scheme?.let(LinkUtils::isContentScheme) != true) {
+            return false
+        }
+        val path = intent.data?.path ?: return false
+        viewModel.onOpenAudioSourceIntent(path)
+        return true
+    }
+
+    private fun handleNavigateToMediaIntent(intent: Intent): Boolean {
         if (intent.hasExtra(EXTRA_NAV_KIND_OF_MEDIA) && intent.hasExtra(EXTRA_NAV_MEDIA_ID)) {
             val kindOfMedia = intent.getIntExtra(EXTRA_NAV_KIND_OF_MEDIA, Media.NONE)
             val mediaId = intent.getLongExtra(EXTRA_NAV_MEDIA_ID, Media.NO_ID)
             viewModel.onNavigateToMediaIntent(kindOfMedia, mediaId)
-        } else {
-            val currTabIndex = safeNavController.currentStackIndex
-            val tabIndexExtra = intent.getIntExtra(EXTRA_TAB_INDEX, currTabIndex)
-            if (tabIndexExtra != currTabIndex) {
-                bottom_navigation_view.selectedItemId = getBottomMenuItemId(tabIndexExtra)
-            }
+            return true
         }
-
-        // Check if we need to open the player screen
-        if (intent.getBooleanExtra(EXTRA_OPEN_PLAYER, false)) {
-            expandSlidingPlayer()
-        }
-
-        // Check if we need to open an audio source
-        val uri = intent.data
-        val action = intent.action
-        if (action == Intent.ACTION_VIEW && uri?.scheme == ContentResolver.SCHEME_FILE) {
-            uri.path?.apply { viewModel.onOpenAudioSourceIntent(this) }
-        }
-
-        // Mark this intent as handled
-        intent.putExtra(EXTRA_INTENT_HANDLED, true)
-
-        return true
+        return false
     }
 
     private fun requestRESPermission() {

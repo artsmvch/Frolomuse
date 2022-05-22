@@ -7,33 +7,31 @@ import com.frolo.muse.arch.EventLiveData
 import com.frolo.muse.arch.call
 import com.frolo.muse.engine.PlayerStateRestorer
 import com.frolo.muse.engine.PlayerWrapper
-import com.frolo.player.Player
 import com.frolo.muse.interactor.billing.PremiumManager
 import com.frolo.muse.interactor.feature.FeaturesUseCase
 import com.frolo.muse.interactor.firebase.SyncFirebaseMessagingTokenUseCase
 import com.frolo.muse.interactor.media.TransferPlaylistsUseCase
 import com.frolo.muse.interactor.media.shortcut.NavigateToMediaUseCase
 import com.frolo.muse.interactor.player.OpenAudioSourceUseCase
-import com.frolo.muse.logger.*
-import com.frolo.music.model.Media
+import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.permission.PermissionChecker
 import com.frolo.muse.repository.AppearancePreferences
 import com.frolo.muse.repository.RemoteConfigRepository
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.PlayerHostViewModel
+import com.frolo.music.model.Media
+import com.frolo.player.Player
 import io.reactivex.Flowable
 import javax.inject.Inject
 
 
 /**
- * The main view model associated to all screens in the app.
+ * The main view model associated with the root screen of the app.
  *
  * The main purpose of this view model is:
- * 1) aks to rate the app;
- * 2) check the RES permission;
- * 3) handle the player connections.
- *
- * P.S. RES stands for Read-External-Storage.
+ * 1) check the RES permission (Read External Storage);
+ * 2) handle connection to the player;
+ * 3) handle intents;
  */
 class MainViewModel @Inject constructor(
     application: Application,
