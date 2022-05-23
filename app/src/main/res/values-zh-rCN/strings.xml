@@ -1,0 +1,442 @@
+<resources>
+    <string name="preference_screen" translatable="false">首选屏幕</string>
+    <string name="ab" translatable="false">A-B</string>
+    <string name="ok">OK</string>
+    <string name="create">创建</string>
+    <string name="loading">加载中…</string>
+    <string name="cancel">取消</string>
+    <string name="save">保存</string>
+    <string name="saved">已保存</string>
+    <string name="checkout_this_track">使用现代化的Frolomuse音乐播放器查看 %s!</string>
+    <string name="share_track">分享歌曲</string>
+    <string name="share_tracks">分享音频集</string>
+    <string name="sorry_exception">抱歉，出了点差错</string>
+    <string name="app_prefs">应用偏好</string>
+    <string name="about">关于</string>
+    <string name="current_playlist_is_empty">当前播放列表为空\n
+        请重新选择</string>
+    <string name="pick_image">选取图片</string>
+    <string name="file">文件</string>
+    <string name="added_to_queue">添加到队列</string>
+    <string name="deleted">已删除</string>
+    <string name="will_be_played_next">接下来播放</string>
+    <string name="set_as_default">设为默认</string>
+    <string name="folder_is_default_message">文件浏览器现在将从此目录打开</string>
+    <string name="hide">隐藏</string>
+    <string name="message_one_file_hidden">文件已被隐藏，你可以从设置中将其复原。</string>
+    <string name="message_multiple_files_hidden">所选文件已被隐藏，你可以从设置中将它们复原。</string>
+    <string name="scan_files">扫描文件</string>
+
+    <!--Hidden files-->
+    <string name="hidden_files">隐藏文件</string>
+    <string name="hidden_files_desc">从浏览器中隐藏的文件</string>
+    <string name="hidden_files_placeholder_message">
+        当前没有隐藏文件。 要隐藏文件，在浏览器中勾选对应选项。
+    </string>
+
+    <!--Errors-->
+
+    <!--Sort orders-->
+    <string name="sort">排序</string>
+    <string name="ascending">升序</string>
+    <string name="sort_by_default">默认</string>
+    <string name="sort_by_name">按名称</string>
+    <string name="sort_by_artist">按艺术家</string>
+    <string name="sort_by_album">按专辑</string>
+    <string name="sort_by_number_of_songs">按歌曲数量</string>
+    <string name="sort_by_number_of_tracks">按歌曲数量</string>
+    <string name="sort_by_number_of_albums">按专辑数量</string>
+    <string name="sort_by_date_added">按添加时间</string>
+    <string name="sort_by_date_modified">按修改时间</string>
+    <string name="sort_by_filename">按文件名</string>
+    <string name="sort_by_play_order">按播放顺序</string>
+    <string name="sort_by_duration">按时长</string>
+
+    <!--Rating-->
+    <string name="would_you_rate">你是否愿意为此APP五星好评？</string>
+    <string name="no">否</string>
+    <string name="remind_me_later">下次再问</string>
+    <string name="rate">是的，我喜欢它！</string>
+
+    <string name="now_playing">正在播放</string>
+    <string name="queue">队列</string>
+    <string name="current_song_queue">当前歌曲队列</string>
+    <string name="save_as_playlist">保存为播放列表</string>
+    <string name="no_songs_in_queue">队列中没有歌曲</string>
+    <string name="track">歌曲</string>
+    <string name="album">专辑</string>
+    <string name="artist">艺术家</string>
+    <string name="genre">流派</string>
+
+    <!--AddMediaToPlaylist-->
+    <string name="select_playlist">选取播放列表</string>
+    <string name="select_playlist_to_which_you_want_to_add_music">
+        选择你想要添加歌曲的播放列表
+    </string>
+
+    <!--AddSongToPlaylist-->
+    <string name="add_song_to_s_playlist_hint">
+        选择你准备向 \"%s\" 播放列表添加的歌曲，然后点击 \'添加到播放列表\' 按钮
+    </string>
+
+    <!--Plurals-->
+    <plurals name="s_songs_selected">
+        <item quantity="one">已选中 %d 首歌曲</item>
+        <item quantity="other">已选中 %d 首歌曲</item>
+    </plurals>
+
+    <plurals name="s_songs">
+        <item quantity="one">%d 首歌曲</item>
+        <item quantity="other">%d 首歌曲</item>
+    </plurals>
+
+    <plurals name="s_hours">
+        <item quantity="one">%d 小时</item>
+        <item quantity="other">%d 小时</item>
+    </plurals>
+
+    <plurals name="s_minutes">
+        <item quantity="one">%d 分钟</item>
+        <item quantity="other">%d 分钟</item>
+    </plurals>
+
+    <plurals name="s_seconds">
+        <item quantity="one">%d 秒</item>
+        <item quantity="other">%d 秒</item>
+    </plurals>
+
+    <string name="select_all">全部选取</string>
+
+    <!--placeholders-->
+    <string name="placeholder_unknown">未知</string>
+    <string name="placeholder_zero_duration">0:00</string>
+    <string name="placeholder_freq_range">0.00 hz</string>
+
+    <!--options menu-->
+    <string name="play">播放</string>
+    <string name="edit">编辑</string>
+    <string name="delete">删除</string>
+    <string name="delete_from_playlist">从播放列表中删除</string>
+    <string name="delete_from_device">从设备中删除</string>
+    <string name="add_to_playlist">添加到播放列表</string>
+    <string name="share">分享</string>
+    <string name="playlist">播放列表</string>
+    <string name="add_to_queue">添加到队列</string>
+    <string name="edit_song_tags">编辑歌曲标签</string>
+    <string name="edit_album_cover">编辑专辑封面</string>
+    <string name="view_album_cover">查看专辑封面</string>
+    <string name="view_album">查看专辑</string>
+    <string name="view_artist">查看艺术家</string>
+    <string name="create_poster">创建海报</string>
+    <string name="play_next">接下来播放</string>
+    <string name="cut_ringtone">剪辑铃声</string>
+    <string name="add_song">添加歌曲</string>
+    <string name="remove_from_queue">移出当前队列</string>
+
+    <!--deletion confirmation-->
+    <string name="confirmation">确认</string>
+    <string name="confirmation_delete_item">你确定想要删除此条目吗？</string>
+    <string name="confirmation_delete_items">你确定想要删除这些条目吗？</string>
+    <string name="confirmation_delete_item_and_related_song_files">
+        你确定想要删除此条目吗？ 其中包含的所有音乐文件也都将被删除。
+    </string>
+    <string name="confirmation_delete_items_and_related_song_files">
+        你确定想要删除这些条目吗？ 它们中包含的所有音乐文件也都将被删除。
+    </string>
+
+    <!--titles for main view pager-->
+    <string name="all_songs">所有音乐</string>
+    <string name="songs">歌曲</string>
+    <string name="artists">艺术家</string>
+    <string name="genres">流派</string>
+    <string name="albums">专辑</string>
+    <string name="playlists">播放列表</string>
+    <string name="folders">文件夹</string>
+    <string name="recently_added">最近添加</string>
+    <string name="most_played">最常播放</string>
+
+    <!--counting tracks, albums, genres and etc.-->
+    <string name="number_of_albums">%d 张专辑</string>
+    <string name="one_album">1 张专辑</string>
+    <string name="no_albums">没有专辑</string>
+    <string name="no_tracks">没有歌曲</string>
+    <string name="one_track">1 首歌曲</string>
+    <string name="number_of_tracks">%d 首歌曲</string>
+
+    <!--recently added-->
+    <string name="added">添加</string>
+    <string name="recent_period">最近</string>
+    <string name="for_last_hour">一小时前</string>
+    <string name="for_last_day">一天前</string>
+    <string name="for_last_week">一周前</string>
+    <string name="for_last_month">一个月前</string>
+    <string name="for_last_year">一年前 year</string>
+
+    <!--play count-->
+    <string name="not_played_yet">未曾播放过</string>
+    <string name="last_time_s">上次播放时间: %s</string>
+    <plurals name="played_s_times">
+        <item quantity="one">已播放 %d 次</item>
+        <item quantity="other">已播放 %d 次</item>
+    </plurals>
+
+    <!--navigation drawer menu-->
+    <string name="nav_library">库</string>
+    <string name="nav_equalizer">均衡器</string>
+    <string name="nav_settings">设置</string>
+    <string name="nav_search">查找</string>
+    <string name="nav_favourite">收藏</string>
+
+    <!--app preferences-->
+    <string name="playback_settings">播放</string>
+    <string name="library_settings">库</string>
+    <string name="appearance_settings">外观</string>
+    <string name="about_app_settings">关于</string>
+
+    <string name="version">应用版本</string>
+    <string name="licenses">许可证</string>
+
+    <string name="app_theme_desc">选取并应用主题</string>
+    <string name="page_s_of_s">%d / %d</string>
+    <string name="apply_theme">应用主题</string>
+    <string name="applied">已应用</string>
+    <string name="dark_red_theme">深红主题</string>
+    <string name="light_blue_theme">亮蓝主题</string>
+    <string name="light_pink_theme">亮粉主题</string>
+    <string name="dark_blue_theme">深蓝主题</string>
+    <string name="dark_especial_theme">极黑主题</string>
+    <string name="dark_purple_theme">黑紫主题</string>
+    <string name="dark_orange_theme">黑橙主题</string>
+    <string name="dark_green_theme">黑绿主题</string>
+
+    <!--Headphones settings-->
+    <string name="pause_playback">暂停播放</string>
+    <string name="resume_playback">继续播放</string>
+    <string name="pause_when_headphones_are_disconnected">
+        当耳机断开时暂停播放
+    </string>
+    <string name="resume_when_headphones_are_connected">
+        当耳机连接时继续播放
+    </string>
+
+    <string name="sleep_timer">睡眠定时器</string>
+    <string name="sleep_time_description">设置一个定时器以自动停止播放</string>
+    <string name="you_have_already_set_up_sleep_timer">你已经设置了一个定时器。
+        \n是否想要复位当前定时器，或者设置一个新的？</string>
+    <string name="reset_sleep_timer">复位</string>
+    <string name="new_sleep_timer">设置新的定时器</string>
+    <string name="rate_this_app">为此APP评分</string>
+    <string name="rate_this_app_if_you_want">如果你喜欢此app可以在Play市场上为它评分</string>
+    <string name="share_this_app">分享此app</string>
+    <string name="share_this_app_if_you_want">如果你将此app分享给朋友，你将帮助它成长。</string>
+    <string name="checkout_out">查看现代化音乐播放器 Frolomuse！</string>
+    <string name="hint_zero_time" translatable="false">0</string>
+    <string name="help_with_translations">帮助翻译</string>
+    <string name="help_with_translations_desc">如果你想要帮助翻译请点击此处</string>
+    <string name="library_sections">库节点</string>
+    <string name="library_sections_desc">你想要看到的媒体库节点以及它们的顺序</string>
+    <!--Sleep Timer-->
+    <string name="sleep_timer_is_set">已设置睡眠计时器</string>
+    <string name="sleep_timer_is_off">已关闭睡眠计时器</string>
+    <string name="rescan_media_library_desc">扫描媒体库以发现新的音频文件</string>
+    <!--Playback fading-->
+    <string name="playback_fading">播放时淡入淡出</string>
+    <string name="playback_fading_desc">控制播放音乐时的淡入淡效果</string>
+    <string name="playback_fading_full_desc">
+        此处控制播放音乐时如何淡入淡出。\n 你可以使用下面的滑块设置一个合适的持续时间，持续时间 "0" 意味着没有淡入淡出效果。
+    </string>
+    <string name="playback_fading_duration">持续时间</string>
+    <!--Library song filter-->
+    <string name="library_song_filter_pref_title">歌曲类型过滤器</string>
+    <string name="library_song_filter_pref_description">指定库中应该展示的歌曲种类</string>
+    <string name="library_song_filter_title">歌曲类型过滤器</string>
+    <string name="library_song_filter_type_music">音乐</string>
+    <string name="library_song_filter_type_podcast">播客</string>
+    <string name="library_song_filter_type_ringtone">铃声</string>
+    <string name="library_song_filter_type_alarm">闹铃</string>
+    <string name="library_song_filter_type_notification">通知</string>
+    <string name="library_song_filter_type_audiobook">有声读物</string>
+
+    <!--create and edit playlist-->
+    <string name="save_playlist">保存播放列表</string>
+    <string name="edit_playlist">编辑播放列表</string>
+    <string name="playlist_name">播放列表名称</string>
+    <string name="name_is_empty">名称不能为空</string>
+    <string name="such_name_already_exists">该名称已存在</string>
+
+    <!--AudioFx-->
+    <string name="audio_fx_switch_tooltip">打开以启用音效</string>
+    <string name="no_audio_effects_available">无音效</string>
+    <string name="no_audio_effects_available_desc">
+        我们无法找到任何可用音效。请启用Android系统提供的默认音效。
+    </string>
+    <string name="no_audio_is_playing_now">当前未播放音乐</string>
+    <string name="no_audio_is_playing_now_desc">
+        你首先需要播放歌曲才能调整声音。
+    </string>
+
+    <!--create preset-->
+    <string name="save_preset">保存为预设</string>
+    <string name="preset_name">预设名称</string>
+
+    <!--equalizer-->
+    <string name="freq_range">%s hz</string>
+    <string name="nothing_to_show">无可供展示的内容</string>
+    <string name="bass">低音</string>
+    <string name="virtualizer">虚化器</string>
+    <string name="show_visualizer">显示虚化器</string>
+    <!--playback params-->
+    <string name="playback_params">播放参数</string>
+    <string name="speed">速度</string>
+    <string name="pitch">音高</string>
+    <string name="reset_playback_params_when_switching_song">随切换歌曲重置设置</string>
+    <string name="normalize">重设为标准值</string>
+
+    <!--media file editor-->
+    <string name="song_name_layout">歌名</string>
+    <string name="album_name_layout">专辑</string>
+    <string name="genre_name_layout">流派</string>
+    <string name="artist_name_layout">艺术家</string>
+    <string name="delete_album_art_confirmation">
+        你想要删除此专辑的封面吗？
+    </string>
+    <string name="no_album_art">无专辑封面</string>
+    <string name="pick_new_album_art">重新选取</string>
+
+    <string name="app_theme">App 主题</string>
+    <string name="third_part_libs">第三方库</string>
+    <string name="album_grid">专辑格栅</string>
+    <string name="show_album_grid">使用格栅显示专辑</string>
+
+    <!--Preset-->
+    <string name="preset">预设</string>
+    <string name="preset_none">无</string>
+    <string name="preset_normal">正常</string>
+    <string name="preset_rock">摇滚</string>
+    <string name="preset_heavy_metal">重金属</string>
+    <string name="preset_classical">古典</string>
+    <string name="preset_folk">民谣</string>
+    <string name="preset_flat">水平</string>
+    <string name="preset_dance">舞曲</string>
+    <string name="preset_hip_hop">嘻哈</string>
+    <string name="preset_jazz">爵士</string>
+    <string name="preset_pop">流行</string>
+
+    <!--Preset reverb-->
+    <string name="preset_reverb">混响</string>
+    <string name="preset_reverb_none">无</string>
+    <string name="preset_reverb_large_hall">大厅</string>
+    <string name="preset_reverb_large_room">大房间</string>
+    <string name="preset_reverb_medium_hall">中厅</string>
+    <string name="preset_reverb_medium_room">中等房间</string>
+    <string name="preset_reverb_plate">板式</string>
+    <string name="preset_reverb_small_rooom">小房间</string>
+
+    <!--Playback notification-->
+    <string name="playback_channel_name">音乐播放</string>
+    <string name="playback_channel_desc">有关当前播放状态的通知</string>
+
+    <string name="scanning_started">开始扫描</string>
+    <string name="scanning_completed">扫描完成</string>
+    <string name="rescan_media_library">重新扫描媒体库</string>
+    <string name="do_you_want_to_rescan_media_library">是否要想重新扫描媒体库？</string>
+
+    <!--Shortcuts-->
+    <string name="create_shortcut">创建快捷方式</string>
+    <string name="create_shortcut_on_home_screen">在主屏幕上创建快捷方式</string>
+    <string name="shortcut_created">快捷方式已创建</string>
+    <string name="do_you_want_to_create_shortcut_for_s">
+        是否想要为 %s 在主屏幕上创建快捷方式？
+    </string>
+
+    <!--MinAudioFileDuration-->
+    <string name="exclude_short_songs">排除短歌</string>
+    <string name="exclude_short_songs_desc">从库搜索中排除短歌</string>
+    <string name="specify_min_audio_file_duration">
+		指定最短音乐时长，短于此时长的音频文件将被从库搜索中排除。
+		如果此值为空或 0:0 则不会排除任何音频文件。
+        \n\n<b>注意: 如果指定此值，接下来库会工作得稍慢（专辑、艺术家、流派的加载会变慢）。
+        输入 0:0 可移除此设置</b>
+    </string>
+
+    <!--RES permission-->
+    <string name="permission_denied">权限遭拒</string>
+    <string name="grant_res_permission">授权</string>
+    <string name="need_for_res_permission_explanation">
+		若无此权限，该应用程序将无法从设备中浏览音乐，你是否想要进行授权？
+    </string>
+
+    <!--PlayerJournal-->
+    <string name="player_journal">播放器日志</string>
+    <string name="player_journal_desc">显示播放器日志中的所有消息</string>
+    <string name="send_player_logs">发送</string>
+    <string name="copy_player_logs_to_clipboard">复制</string>
+    <string name="player_logs">播放器日志</string>
+    <string name="copied">已复制</string>
+
+    <!--Push notifications-->
+    <string name="push_notifications_channel_name">推送通知</string>
+    <string name="push_notifications_channel_desc">包含新闻及app更新等实用信息</string>
+
+    <!--Lyrics-->
+    <string name="view_lyrics">查看歌词</string>
+    <string name="lyrics_not_tap_to_write">未找到文档，点击此处自己编写</string>
+
+    <!--Premium-->
+    <string name="buy_premium">购买高级版</string>
+    <string name="buy_premium_desc">移除广告并解锁高级特性</string>
+    <string name="premium_dialog_title">高级版</string>
+    <string-array name="premium_benefits">
+        <item>移除所有广告</item>
+        <!--        <item>解锁播放时淡入淡出</item>-->
+        <item>解锁播放速度及音高调整</item>
+        <item>解锁所有主题</item>
+        <item>以及对未来升级带来的所有新特性的完全自由使用</item>
+    </string-array>
+    <string name="premium_benefit_support_dev">支持此项目的开发</string>
+    <string name="one_time_purchase">一次购买，永久使用</string>
+    <string name="buy_premium_for_s">购买 %s</string>
+    <string name="buy">购买</string>
+    <string name="premium_trial_desc_s">激活试用版 (%s) 并体验高级功能</string>
+    <plurals name="days">
+        <item quantity="one">%d 天</item>
+        <item quantity="other">%d 天</item>
+    </plurals>
+    <string name="activate_premium_trial">激活试用</string>
+    <string name="premium_trial_activated">高级版试用已激活</string>
+
+    <!--Snowfall-->
+    <string name="snowfall">降雪</string>
+    <string name="snowfall_desc">打开异想天开的降雪效果来营造冬日的氛围</string>
+
+    <!--Donations-->
+    <string name="donations_title">馈赠</string>
+    <string name="donations_subtitle">为此项目的开发做一点小小的馈赠</string>
+    <string name="donations_headline">谢谢你选择我们！</string>
+    <string name="donations_info_text">我们为此app尽自己最大的努力，并希望它能继续保持无广告。如果你愿意帮助此项目成长，你可以做出一点小小的馈赠。</string>
+    <string name="rate_on_play_store">在Play商店中评分</string>
+    <string name="donate_thanks">感谢您！</string>
+    <string name="donate_coffee">一杯咖啡</string>
+    <string name="donate_pizza">一份披萨</string>
+    <string name="donate_movie_ticket">一张电影票</string>
+    <string name="donate_meal">一份餐点</string>
+    <string name="donate_gym">健身房会员</string>
+
+    <!--Onboarding-->
+    <string name="skip">跳过</string>
+    <string name="done">完成</string>
+    <string name="next">下一步</string>
+    <string name="greeting1_title">卓越的音乐播放器</string>
+    <string name="greeting1_desc">
+        简单实用的设计，以及从您的设备上极速加载歌曲，将为您带来聆听音乐的享受。
+    </string>
+    <string name="greeting2_title">强悍的均衡器</string>
+    <string name="greeting2_desc">
+		使用5频段均衡、混响、低音和虚拟化来定制你所钟爱的声音。
+
+    </string>
+    <string name="greeting3_title">完全免费</string>
+    <string name="greeting3_desc">
+		我们想要此应用程序继续开发并保持免费，此应用中含有少量的广告。
+    </string>
+</resources>
