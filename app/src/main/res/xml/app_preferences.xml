@@ -162,5 +162,15 @@
             android:key="reset_premium_trial"
             android:title="Reset premium trial"
             android:summary="Reset premium trial. DO NOT USE IN PRODUCTION"/>
+
+        <Preference
+            android:key="clear_user_data"
+            android:title="Clear user data"
+            android:summary="Erases application data from disk"/>
+
+        <Preference
+            android:key="kill_process"
+            android:title="Kill process"
+            android:summary="Kill the current process"/>
     </androidx.preference.PreferenceCategory>
 </androidx.preference.PreferenceScreen>
