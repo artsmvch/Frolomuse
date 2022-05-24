@@ -7,8 +7,18 @@ import com.frolo.audiofx.AudioFx
 interface Player {
     fun registerObserver(observer: PlayerObserver)
     fun unregisterObserver(observer: PlayerObserver)
-    fun prepareByTarget(queue: AudioSourceQueue, target: AudioSource, startPlaying: Boolean, playbackPosition: Int)
-    fun prepareByPosition(queue: AudioSourceQueue, positionInQueue: Int, startPlaying: Boolean, playbackPosition: Int)
+    fun prepareByTarget(
+        queue: AudioSourceQueue,
+        target: AudioSource,
+        startPlaying: Boolean,
+        playbackPosition: Int
+    )
+    fun prepareByPosition(
+        queue: AudioSourceQueue,
+        positionInQueue: Int,
+        startPlaying: Boolean,
+        playbackPosition: Int
+    )
     fun isShutdown(): Boolean
     fun shutdown()
     fun skipToPrevious()
@@ -63,12 +73,22 @@ interface Player {
 
     @IntDef(SHUFFLE_OFF, SHUFFLE_ON)
     @Retention(AnnotationRetention.SOURCE)
-    @Target(AnnotationTarget.FIELD, AnnotationTarget.VALUE_PARAMETER, AnnotationTarget.FUNCTION, AnnotationTarget.LOCAL_VARIABLE)
+    @Target(
+        AnnotationTarget.FIELD,
+        AnnotationTarget.VALUE_PARAMETER,
+        AnnotationTarget.FUNCTION,
+        AnnotationTarget.LOCAL_VARIABLE
+    )
     annotation class ShuffleMode
 
     @IntDef(REPEAT_OFF, REPEAT_ONE, REPEAT_PLAYLIST)
     @Retention(AnnotationRetention.SOURCE)
-    @Target(AnnotationTarget.FIELD, AnnotationTarget.VALUE_PARAMETER, AnnotationTarget.FUNCTION, AnnotationTarget.LOCAL_VARIABLE)
+    @Target(
+        AnnotationTarget.FIELD,
+        AnnotationTarget.VALUE_PARAMETER,
+        AnnotationTarget.FUNCTION,
+        AnnotationTarget.LOCAL_VARIABLE
+    )
     annotation class RepeatMode
 
     companion object {
