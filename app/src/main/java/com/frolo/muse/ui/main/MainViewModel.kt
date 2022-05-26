@@ -82,7 +82,7 @@ class MainViewModel @Inject constructor(
 
     private fun tryRestorePlayerStateIfNeeded() {
         val safePlayer: Player = this.player ?: return
-        if (permissionChecker.isQueryMediaContentPermissionGranted) {
+        if (!permissionChecker.isQueryMediaContentPermissionGranted) {
             tryRequestRESPermission()
             return
         }
@@ -103,7 +103,7 @@ class MainViewModel @Inject constructor(
     private fun tryHandlePendingAudioSourceIntentIfNeeded() {
         val safeSource: String = pendingAudioSourceIntent ?: return
         val safePlayer: Player = this.player ?: return
-        if (permissionChecker.isQueryMediaContentPermissionGranted) {
+        if (!permissionChecker.isQueryMediaContentPermissionGranted) {
             tryRequestRESPermission()
             return
         }
