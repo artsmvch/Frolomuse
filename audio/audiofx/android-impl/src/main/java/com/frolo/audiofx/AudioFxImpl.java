@@ -58,7 +58,7 @@ public final class AudioFxImpl implements AudioFxApplicable {
         return new AudioFxImpl(context, prefsName, errorHandler);
     }
 
-    private static short clamp(short minValue, short maxValue, short value) {
+    private static short clamp(short value, short minValue, short maxValue) {
         if (value < minValue) return minValue;
         if (value > maxValue) return maxValue;
         return value;
@@ -541,7 +541,7 @@ public final class AudioFxImpl implements AudioFxApplicable {
     @Override
     public void setBassStrength(short strength) {
         // validating
-        strength = clamp(getMinBassStrength(), getMaxBassStrength(), strength);
+        strength = clamp(strength, getMinBassStrength(), getMaxBassStrength());
         mPersistence.saveBassStrength(strength);
         try {
             BassBoost bassBoost = mBassBoost;
@@ -587,7 +587,7 @@ public final class AudioFxImpl implements AudioFxApplicable {
     @Override
     public void setVirtualizerStrength(short strength) {
         // validating
-        strength = clamp(getMinVirtualizerStrength(), getMaxVirtualizerStrength(), strength);
+        strength = clamp(strength, getMinVirtualizerStrength(), getMaxVirtualizerStrength());
         mPersistence.saveVirtualizerStrength(strength);
         try {
             Virtualizer virtualizer = mVirtualizer;
