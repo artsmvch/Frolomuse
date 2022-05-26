@@ -144,19 +144,19 @@ internal class PlayerServiceDelegate(
         val isWidgetCall = intent.getBooleanExtra(EXTRA_IS_WIDGET_CALL, false)
         when (intent.getIntExtra(EXTRA_CMD, PlayerServiceCmd.CMD_NO_OP)) {
             PlayerServiceCmd.CMD_SKIP_TO_PREVIOUS -> {
-                runOnPlayer(isWidgetCall) { skipToPrevious() }
+                runOnPlayer(isWidgetCall, Player::skipToPrevious)
             }
             PlayerServiceCmd.CMD_SKIP_TO_NEXT -> {
-                runOnPlayer(isWidgetCall) { skipToNext() }
+                runOnPlayer(isWidgetCall, Player::skipToNext)
             }
             PlayerServiceCmd.CMD_TOGGLE -> {
-                runOnPlayer(isWidgetCall) { toggle() }
+                runOnPlayer(isWidgetCall, Player::toggle)
             }
             PlayerServiceCmd.CMD_CHANGE_REPEAT_MODE -> {
-                runOnPlayer(isWidgetCall) { switchToNextRepeatMode() }
+                runOnPlayer(isWidgetCall, Player::switchToNextRepeatMode)
             }
             PlayerServiceCmd.CMD_CHANGE_SHUFFLE_MODE -> {
-                runOnPlayer(isWidgetCall) { switchToNextShuffleMode() }
+                runOnPlayer(isWidgetCall, Player::switchToNextShuffleMode)
             }
             PlayerServiceCmd.CMD_CANCEL_NOTIFICATION -> {
                 cancelNotification()
