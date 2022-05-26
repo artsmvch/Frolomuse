@@ -632,7 +632,7 @@ class MainFragment :
             }
         }
 
-        askRESPermissionsEvent.observe(owner) {
+        requestRESPermissionsEvent.observe(owner) {
             requestRESPermission()
         }
 
