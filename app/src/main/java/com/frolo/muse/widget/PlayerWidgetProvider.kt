@@ -28,7 +28,7 @@ class PlayerWidgetProvider : AppWidgetProvider() {
 
     private fun peekPlayer(context: Context): Player? {
         val binder = peekService(context, Intent(context, PlayerService::class.java))
-        return (binder as? PlayerHolder)?.player as? Player
+        return (binder as? PlayerHolder)?.peekPlayer()
     }
 
     override fun onEnabled(context: Context) {

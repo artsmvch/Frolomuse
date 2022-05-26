@@ -1,8 +1,10 @@
 package com.frolo.muse.engine
 
 import com.frolo.player.Player
+import io.reactivex.Observable
 
 
 interface PlayerHolder {
-    val player: Player
+    fun peekPlayer(): Player?
+    fun getPlayerAsync(): Observable<Player>
 }

@@ -25,7 +25,14 @@ import com.frolo.muse.sleeptimer.PlayerSleepTimer
 import com.frolo.muse.ui.main.MainActivity
 import com.frolo.music.model.Song
 import com.frolo.player.Player
+import io.reactivex.Maybe
+import io.reactivex.Observable
+import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.BehaviorSubject
 
 
 internal class PlayerServiceDelegate(
@@ -46,18 +53,20 @@ internal class PlayerServiceDelegate(
     private lateinit var changeSongFavStatusUseCase: ChangeSongFavStatusUseCase
     private lateinit var playerStateRestorer: PlayerStateRestorer
 
-    private lateinit var player: Player
+    private val playerSubject: BehaviorSubject<Player> = BehaviorSubject.create()
+    private var playerBuilderDisposable: Disposable? = null
+    private val playerInstance: Player? get() = playerSubject.value
 
     // HeadsetHandler is used to handle the status of the headset (connected, disconnected, etc.)
     private val headsetHandler = createHeadsetHandler(
         onConnected = {
             if (preferences.shouldResumeOnPluggedIn()) {
-                player.start()
+                playerInstance?.start()
             }
         },
         onDisconnected = {
             if (preferences.shouldPauseOnUnplugged()) {
-                player.pause()
+                playerInstance?.pause()
             }
         },
         onBecomeWeird = {
@@ -68,13 +77,13 @@ internal class PlayerServiceDelegate(
     // Handler for Sleep Timer
     private val sleepTimerHandler = PlayerSleepTimer.createBroadcastReceiver {
         Logger.d(TAG, "Sleep Timer triggered: pausing the playback")
-        player.pause()
+        playerInstance?.pause()
     }
 
     fun onBind(intent: Intent?): IBinder {
         isBound = true
         Logger.d(TAG, "Service gets bound")
-        return PlayerBinderImpl(player)
+        return PlayerBinderImpl(playerSubject)
     }
 
     fun onRebind(intent: Intent?) {
@@ -100,7 +109,6 @@ internal class PlayerServiceDelegate(
     }
 
     fun onCreate() {
-        mediaSession = buildMediaSession()
         serviceComponent = buildServiceComponent()
         injectDependencies()
         // Android 8.1 requirements
@@ -108,26 +116,15 @@ internal class PlayerServiceDelegate(
             createPlaybackNotificationChannel()
             sendPrimaryNotification()
         }
-        player = serviceComponent.providePlayerBuilder().build()
-        mediaSession.setCallback(MediaSessionCallbackImpl(player))
+        buildPlayerInstanceAsync()
         headsetHandler.subscribe(service)
         service.registerReceiver(sleepTimerHandler, PlayerSleepTimer.createIntentFilter())
         Logger.d(TAG, "Service created")
     }
 
-    private fun buildMediaSession(): MediaSessionCompat {
-        val tag: String = "frolomuse:player_service"
-        return MediaSessionCompat(service, tag).apply {
-            setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS)
-            isActive = true
-            setEmptyMetadata()
-        }
-    }
-
     private fun buildServiceComponent(): ServiceComponent {
         val serviceModule = ServiceModule(
             service = service,
-            mediaSession = mediaSession,
             notificationSender = this
         )
         val applicationComponent = service.applicationComponent
@@ -135,6 +132,7 @@ internal class PlayerServiceDelegate(
     }
 
     private fun injectDependencies() {
+        mediaSession = serviceComponent.provideMediaSession()
         playerBuilder = serviceComponent.providePlayerBuilder()
         preferences = serviceComponent.providePreferences()
         changeSongFavStatusUseCase = serviceComponent.provideChangeSongFavStatusUseCase()
@@ -146,33 +144,25 @@ internal class PlayerServiceDelegate(
         val isWidgetCall = intent.getBooleanExtra(EXTRA_IS_WIDGET_CALL, false)
         when (intent.getIntExtra(EXTRA_CMD, PlayerServiceCmd.CMD_NO_OP)) {
             PlayerServiceCmd.CMD_SKIP_TO_PREVIOUS -> {
-                player.performIntentAction(isWidgetCall) { skipToPrevious() }
+                runOnPlayer(isWidgetCall) { skipToPrevious() }
             }
-
             PlayerServiceCmd.CMD_SKIP_TO_NEXT -> {
-                player.performIntentAction(isWidgetCall) { skipToNext() }
+                runOnPlayer(isWidgetCall) { skipToNext() }
             }
-
             PlayerServiceCmd.CMD_TOGGLE -> {
-                player.performIntentAction(isWidgetCall) { toggle() }
+                runOnPlayer(isWidgetCall) { toggle() }
             }
-
             PlayerServiceCmd.CMD_CHANGE_REPEAT_MODE -> {
-                player.performIntentAction(isWidgetCall) { switchToNextRepeatMode() }
+                runOnPlayer(isWidgetCall) { switchToNextRepeatMode() }
             }
-
             PlayerServiceCmd.CMD_CHANGE_SHUFFLE_MODE -> {
-                player.performIntentAction(isWidgetCall) { switchToNextShuffleMode() }
+                runOnPlayer(isWidgetCall) { switchToNextShuffleMode() }
             }
-
-            PlayerServiceCmd.CMD_CANCEL_NOTIFICATION -> cancelNotification()
-
+            PlayerServiceCmd.CMD_CANCEL_NOTIFICATION -> {
+                cancelNotification()
+            }
             PlayerServiceCmd.CMD_CHANGE_FAV_STATUS -> {
-                (intent.getSerializableExtra(EXTRA_SONG) as? Song)?.also { safeSong ->
-                    changeSongFavStatusUseCase.changeSongFavStatus(safeSong)
-                        .subscribe()
-                        .let(internalDisposables::add)
-                }
+                (intent.getSerializableExtra(EXTRA_SONG) as? Song)?.also(::changeSongFavStatus)
             }
         }
 
@@ -186,27 +176,56 @@ internal class PlayerServiceDelegate(
     fun onDestroy() {
         Logger.d(TAG, "Service died. Cleaning callbacks")
         // The player shutdown call should clear its observers by itself.
-        player.shutdown()
+        playerSubject.onComplete()
+        disposePlayerBuilder()
+        playerInstance?.shutdown()
         mediaSession.release()
         headsetHandler.dispose()
         service.unregisterReceiver(sleepTimerHandler)
         internalDisposables.dispose()
     }
 
-    private inline fun Player.performIntentAction(
-        requireNonEmptyQueue: Boolean,
+    private fun buildPlayerInstanceAsync() {
+        Single.fromCallable { playerBuilder.build() }
+            .subscribeOn(Schedulers.computation())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { playerInstance ->
+                playerSubject.onNext(playerInstance)
+            }
+            .also { disposable ->
+                disposePlayerBuilder()
+                playerBuilderDisposable = disposable
+            }
+    }
+
+    private fun disposePlayerBuilder() {
+        playerBuilderDisposable?.dispose()
+        playerBuilderDisposable = null
+    }
+
+    private inline fun runOnPlayer(
+        ensureNonEmptyQueue: Boolean,
         crossinline action: Player.() -> Unit
     ) {
-        val queue = getCurrentQueue()
-        if (requireNonEmptyQueue && queue.isNullOrEmpty()) {
-            playerStateRestorer
-                .restorePlayerStateIfNeeded(this)
-                .doOnComplete { this.action() }
-                .subscribe()
-                .let(internalDisposables::add)
-        } else {
-            this.action()
-        }
+        playerSubject.firstElement()
+            .flatMap { playerInstance ->
+                val queue = playerInstance.getCurrentQueue()
+                if (ensureNonEmptyQueue && queue.isNullOrEmpty()) {
+                    playerStateRestorer.restorePlayerStateIfNeeded(playerInstance)
+                        .andThen(Maybe.just(playerInstance))
+                } else {
+                    Maybe.just(playerInstance)
+                }
+            }
+            .doOnSuccess { playerInstance -> playerInstance.action() }
+            .subscribe()
+            .also(internalDisposables::add)
+    }
+
+    private fun changeSongFavStatus(song: Song) {
+        changeSongFavStatusUseCase.changeSongFavStatus(song)
+            .subscribe()
+            .let(internalDisposables::add)
     }
 
     /********************************
@@ -243,7 +262,7 @@ internal class PlayerServiceDelegate(
 
     private fun cancelNotification() {
         isNotificationCancelled = true
-        player.pause()
+        playerInstance?.pause()
         Logger.d(TAG, "Notification cancelled. Stopping foreground")
         service.stopForeground(true)
         if (isBound.not()) {
@@ -342,7 +361,17 @@ internal class PlayerServiceDelegate(
         isNotificationCancelled = false
     }
 
-    private class PlayerBinderImpl(override val player: Player): Binder(), PlayerHolder
+    private class PlayerBinderImpl(
+        private val playerSubject: BehaviorSubject<Player>
+    ): Binder(), PlayerHolder {
+        override fun peekPlayer(): Player? {
+            return playerSubject.value
+        }
+
+        override fun getPlayerAsync(): Observable<Player> {
+            return playerSubject
+        }
+    }
 
     companion object {
         private const val TAG = "PlayerService"

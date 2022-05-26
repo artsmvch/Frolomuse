@@ -80,11 +80,10 @@ class MainViewModel @Inject constructor(
     }
 
     private fun tryRestorePlayerStateIfNeeded() {
-        val player: Player = this.player ?: return
-
+        val safePlayer: Player = this.player ?: return
         if (permissionChecker.isQueryMediaContentPermissionGranted) {
             playerStateRestorer
-                .restorePlayerStateIfNeeded(player)
+                .restorePlayerStateIfNeeded(safePlayer)
                 .observeOn(schedulerProvider.main())
                 .subscribe(
                     { /* stub */ },

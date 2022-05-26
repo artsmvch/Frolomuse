@@ -1,7 +1,9 @@
 package com.frolo.muse.engine.service
 
 import android.app.Service
+import android.os.Handler
 import android.support.v4.media.session.MediaSessionCompat
+import androidx.annotation.WorkerThread
 import com.frolo.audiofx.AudioFxImpl
 import com.frolo.audiofx.applicable.AudioFxApplicable
 import com.frolo.debug.DebugUtils
@@ -18,6 +20,7 @@ import com.frolo.player.PlaybackFadingStrategy
 import com.frolo.player.Player
 import com.frolo.player.PlayerImpl
 import com.frolo.player.PlayerJournal
+import com.frolo.threads.ThreadStrictMode
 import io.reactivex.disposables.CompositeDisposable
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
@@ -37,7 +40,9 @@ class PlayerBuilder @Inject constructor(
     private val songRepository: SongRepository
 ) {
 
+    @WorkerThread
     fun build(): Player {
+        ThreadStrictMode.assertBackground()
         val startTime = System.currentTimeMillis()
         val instance = buildImpl()
         val elapsedTime = System.currentTimeMillis() - startTime
@@ -66,6 +71,7 @@ class PlayerBuilder @Inject constructor(
             .build()
 
         MediaSessionObserver.attach(service, mediaSession, player)
+        mediaSession.setCallback(MediaSessionCallbackImpl(player), Handler(service.mainLooper))
 
         return player
     }
