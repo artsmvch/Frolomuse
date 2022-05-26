@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.frolo.audiofx.*
 import com.frolo.muse.arch.*
-import com.frolo.muse.engine.*
+import com.frolo.muse.player.*
 import com.frolo.muse.interactor.billing.PremiumManager
 import com.frolo.muse.router.AppRouter
 import com.frolo.muse.logger.EventLogger

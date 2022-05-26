@@ -1,4 +1,4 @@
-package com.frolo.muse.engine.service
+package com.frolo.muse.player.service
 
 interface PlayerNotificationSender {
     fun sendPlayerNotification(params: PlayerNotificationParams, forced: Boolean)

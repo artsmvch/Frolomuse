@@ -12,9 +12,9 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.frolo.muse.engine.PlayerHolder;
-import com.frolo.muse.engine.PlayerWrapper;
-import com.frolo.muse.engine.service.PlayerService;
+import com.frolo.muse.player.PlayerHolder;
+import com.frolo.muse.player.PlayerWrapper;
+import com.frolo.muse.player.service.PlayerService;
 import com.frolo.muse.logger.EventLogger;
 import com.frolo.muse.ui.base.BaseAndroidViewModel;
 import com.frolo.player.Player;

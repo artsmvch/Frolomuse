@@ -1,4 +1,4 @@
-package com.frolo.muse.engine.journals
+package com.frolo.muse.player.journals
 
 import android.util.Log
 import com.frolo.player.PlayerJournal

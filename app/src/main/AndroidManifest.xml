@@ -28,7 +28,7 @@
         <!--SERVICES-->
         <service
             android:stopWithTask="false"
-            android:name="com.frolo.muse.engine.service.PlayerService"
+            android:name="com.frolo.muse.player.service.PlayerService"
             android:foregroundServiceType="mediaPlayback"
             android:exported="false" />
 

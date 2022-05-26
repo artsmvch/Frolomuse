@@ -13,8 +13,8 @@ import com.frolo.muse.android.startActivitySafely
 import com.frolo.muse.arch.SingleLiveEvent
 import com.frolo.muse.arch.call
 import com.frolo.player.PlayerJournal
-import com.frolo.muse.engine.journals.CompositePlayerJournal
-import com.frolo.muse.engine.journals.StoredInMemoryPlayerJournal
+import com.frolo.muse.player.journals.CompositePlayerJournal
+import com.frolo.muse.player.journals.StoredInMemoryPlayerJournal
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.rx.flowable.doOnNextIndexed

@@ -1,4 +1,4 @@
-package com.frolo.muse.engine.service.observers
+package com.frolo.muse.player.service.observers
 
 import android.content.Context
 import android.util.Log

@@ -1,4 +1,4 @@
-package com.frolo.muse.engine.service
+package com.frolo.muse.player.service
 
 import android.app.Service
 import android.os.Handler
@@ -9,8 +9,8 @@ import com.frolo.audiofx.applicable.AudioFxApplicable
 import com.frolo.debug.DebugUtils
 import com.frolo.muse.BuildInfo
 import com.frolo.muse.Logger
-import com.frolo.muse.engine.service.audiofx.DefaultAudioFxErrorHandler
-import com.frolo.muse.engine.service.observers.*
+import com.frolo.muse.player.service.audiofx.DefaultAudioFxErrorHandler
+import com.frolo.muse.player.service.observers.*
 import com.frolo.muse.model.playback.PlaybackFadingParams
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.repository.RemoteConfigRepository

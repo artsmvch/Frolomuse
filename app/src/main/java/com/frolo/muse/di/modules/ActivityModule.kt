@@ -1,7 +1,7 @@
 package com.frolo.muse.di.modules
 
 import com.frolo.audiofx.AudioFx
-import com.frolo.muse.engine.PlayerWrapper
+import com.frolo.muse.player.PlayerWrapper
 import com.frolo.player.Player
 import dagger.Module
 import dagger.Provides

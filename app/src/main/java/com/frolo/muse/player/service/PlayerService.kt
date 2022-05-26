@@ -1,11 +1,11 @@
-package com.frolo.muse.engine.service
+package com.frolo.muse.player.service
 
 import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.os.*
 import androidx.core.content.ContextCompat
-import com.frolo.muse.engine.service.PlayerService.Companion.newIntent
+import com.frolo.muse.player.service.PlayerService.Companion.newIntent
 
 
 /**

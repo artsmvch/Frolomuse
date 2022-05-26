@@ -1,4 +1,4 @@
-package com.frolo.muse.engine
+package com.frolo.muse.player
 
 import android.os.Build
 import androidx.annotation.RequiresApi

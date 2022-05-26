@@ -1,4 +1,4 @@
-package com.frolo.muse.engine.service
+package com.frolo.muse.player.service
 
 import android.content.Intent
 import android.support.v4.media.session.MediaSessionCompat

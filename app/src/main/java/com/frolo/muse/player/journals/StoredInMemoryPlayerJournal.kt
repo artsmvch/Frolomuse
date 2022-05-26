@@ -1,4 +1,4 @@
-package com.frolo.muse.engine.journals
+package com.frolo.muse.player.journals
 
 import androidx.annotation.WorkerThread
 import com.frolo.player.PlayerJournal

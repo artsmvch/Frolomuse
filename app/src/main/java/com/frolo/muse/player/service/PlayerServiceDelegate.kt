@@ -1,4 +1,4 @@
-package com.frolo.muse.engine.service
+package com.frolo.muse.player.service
 
 import android.app.*
 import android.content.Context
@@ -17,8 +17,8 @@ import com.frolo.muse.common.*
 import com.frolo.muse.di.ServiceComponent
 import com.frolo.muse.di.applicationComponent
 import com.frolo.muse.di.modules.ServiceModule
-import com.frolo.muse.engine.PlayerHolder
-import com.frolo.muse.engine.PlayerStateRestorer
+import com.frolo.muse.player.PlayerHolder
+import com.frolo.muse.player.PlayerStateRestorer
 import com.frolo.muse.interactor.media.favourite.ChangeSongFavStatusUseCase
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.sleeptimer.PlayerSleepTimer

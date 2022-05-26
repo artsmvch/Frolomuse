@@ -6,7 +6,7 @@ import com.frolo.muse.ActivityWatcher
 import com.frolo.muse.BuildInfo
 import com.frolo.muse.FrolomuseApp
 import com.frolo.muse.di.ApplicationScope
-import com.frolo.muse.engine.PlayerWrapper
+import com.frolo.muse.player.PlayerWrapper
 import com.frolo.muse.memory.MemoryWatcherRegistry
 import com.frolo.muse.memory.MemoryWatcherRegistryStub
 import com.frolo.muse.router.AppRouter

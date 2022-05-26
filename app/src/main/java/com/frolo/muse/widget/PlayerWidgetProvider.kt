@@ -7,9 +7,9 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import com.frolo.muse.di.applicationComponent
-import com.frolo.muse.engine.PlayerHolder
+import com.frolo.muse.player.PlayerHolder
 import com.frolo.player.Player
-import com.frolo.muse.engine.service.PlayerService
+import com.frolo.muse.player.service.PlayerService
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.logPlayerWidgetDeleted
 import com.frolo.muse.logger.logPlayerWidgetDisabled

@@ -1,4 +1,4 @@
-package com.frolo.muse.engine
+package com.frolo.muse.player
 
 import com.frolo.player.Player
 import io.reactivex.Observable

@@ -1,4 +1,4 @@
-package com.frolo.muse.engine.service.observers
+package com.frolo.muse.player.service.observers
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -6,8 +6,8 @@ import com.frolo.muse.common.toSong
 import com.frolo.player.AudioSource
 import com.frolo.player.Player
 import com.frolo.player.SimplePlayerObserver
-import com.frolo.muse.engine.service.PlayerNotificationParams
-import com.frolo.muse.engine.service.PlayerNotificationSender
+import com.frolo.muse.player.service.PlayerNotificationParams
+import com.frolo.muse.player.service.PlayerNotificationSender
 import com.frolo.music.model.Song
 import com.frolo.music.repository.SongRepository
 import com.frolo.rx.flowable.doOnNextIndexed

@@ -1,4 +1,4 @@
-package com.frolo.muse.engine.service.observers
+package com.frolo.muse.player.service.observers
 
 import android.content.Context
 import android.support.v4.media.session.MediaSessionCompat
@@ -8,7 +8,7 @@ import com.frolo.muse.common.toSong
 import com.frolo.player.AudioSource
 import com.frolo.player.Player
 import com.frolo.player.SimplePlayerObserver
-import com.frolo.muse.engine.service.setMetadata
+import com.frolo.muse.player.service.setMetadata
 import com.frolo.music.model.Song
 import com.frolo.muse.rx.subscribeSafely
 import io.reactivex.Flowable

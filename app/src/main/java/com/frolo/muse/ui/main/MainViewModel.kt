@@ -5,8 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.frolo.muse.arch.EventLiveData
 import com.frolo.muse.arch.call
-import com.frolo.muse.engine.PlayerStateRestorer
-import com.frolo.muse.engine.PlayerWrapper
+import com.frolo.muse.player.PlayerStateRestorer
+import com.frolo.muse.player.PlayerWrapper
 import com.frolo.muse.interactor.billing.PremiumManager
 import com.frolo.muse.interactor.feature.FeaturesUseCase
 import com.frolo.muse.interactor.firebase.SyncFirebaseMessagingTokenUseCase

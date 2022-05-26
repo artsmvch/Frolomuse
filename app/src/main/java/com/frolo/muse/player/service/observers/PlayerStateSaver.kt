@@ -1,4 +1,4 @@
-package com.frolo.muse.engine.service.observers
+package com.frolo.muse.player.service.observers
 
 import com.frolo.muse.common.map
 import com.frolo.player.AudioSource

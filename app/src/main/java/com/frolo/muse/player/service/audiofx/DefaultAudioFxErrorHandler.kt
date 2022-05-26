@@ -1,4 +1,4 @@
-package com.frolo.muse.engine.service.audiofx
+package com.frolo.muse.player.service.audiofx
 
 import com.frolo.audiofx.AudioFxImpl
 import com.frolo.muse.rx.newSingleThreadScheduler

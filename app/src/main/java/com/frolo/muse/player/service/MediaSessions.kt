@@ -1,4 +1,4 @@
-package com.frolo.muse.engine.service
+package com.frolo.muse.player.service
 
 import android.graphics.Bitmap
 import android.media.MediaMetadata
