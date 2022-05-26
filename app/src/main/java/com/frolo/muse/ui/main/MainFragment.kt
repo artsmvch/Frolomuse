@@ -345,10 +345,10 @@ class MainFragment :
             return true
         }
 
-        if (controller.isRootFragment || !controller.popFragment()) {
-            onFinishCallback?.finish()
+        if (!controller.isRootFragment && controller.popFragment()) {
             return true
         }
+        //onFinishCallback?.finish()
         return false
     }
 

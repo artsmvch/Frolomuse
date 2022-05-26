@@ -130,6 +130,13 @@ class MainActivity : BaseActivity(),
         handleIntentImpl(intent)
     }
 
+    override fun onBackPressed() {
+        val result = mainFragment?.handleOnBackPressed() ?: false
+        if (!result) {
+            super.onBackPressed()
+        }
+    }
+
     override fun pushFragment(newFragment: Fragment) {
         mainFragment?.pushFragment(newFragment)
     }
