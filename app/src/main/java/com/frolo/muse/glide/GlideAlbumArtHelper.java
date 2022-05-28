@@ -22,6 +22,8 @@ import com.bumptech.glide.signature.ObjectKey;
 import com.frolo.threads.ThreadStrictMode;
 import com.frolo.muse.arch.SingleLiveEvent;
 
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This is a helper class for proper loading album arts through the Glide library.
@@ -85,7 +87,7 @@ public final class GlideAlbumArtHelper {
     //endregion
 
     // This is the signature keys, used by Glide to distinguish between requests to the same source.
-    private final LongSparseArray<ObjectKey> mKeys = new LongSparseArray<>();
+    private final Map<Long, ObjectKey> mKeys = new HashMap<>();
 
     // Shared live data that notifies observers about album art changes.
     private final SingleLiveEvent<Long> mAlbumArtChangedEvent = new SingleLiveEvent<>();
