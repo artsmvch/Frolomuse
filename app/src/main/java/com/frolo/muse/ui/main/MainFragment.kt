@@ -484,10 +484,12 @@ class MainFragment :
         }
     }
 
-    private fun switchToTab(index: Int) {
+    private fun switchToRoot(index: Int) {
         view ?: return
-        bottom_navigation_view.selectedItemId = getBottomMenuItemId(index)
-        performNavActon { clearStack() }
+        performNavActon {
+            bottom_navigation_view.selectedItemId = getBottomMenuItemId(index)
+            clearStack()
+        }
     }
 
     /**
@@ -553,19 +555,19 @@ class MainFragment :
                 return true
             }
             "library" -> {
-                switchToTab(INDEX_LIBRARY)
+                switchToRoot(INDEX_LIBRARY)
                 return true
             }
             "equalizer" -> {
-                switchToTab(INDEX_EQUALIZER)
+                switchToRoot(INDEX_EQUALIZER)
                 return true
             }
             "search" -> {
-                switchToTab(INDEX_SEARCH)
+                switchToRoot(INDEX_SEARCH)
                 return true
             }
             "settings" -> {
-                switchToTab(INDEX_SETTINGS)
+                switchToRoot(INDEX_SETTINGS)
                 return true
             }
             else -> return false
