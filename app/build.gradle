@@ -172,7 +172,8 @@ dependencies {
     playStoreImplementation project(path: ':billings:play-store-billing-impl')
     appGalleryImplementation project(path: ':billings:app-gallery-billing-impl')
 
-    // Material design support
+    // Design
+    implementation project(path: ':core-ui')
     implementation project(path: ':material-support')
 
     // Custom views

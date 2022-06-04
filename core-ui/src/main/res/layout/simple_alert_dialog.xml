@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:paddingLeft="32dp"
+    android:paddingTop="32dp"
+    android:paddingRight="32dp"
+    android:paddingBottom="16dp"
+    android:background="@drawable/simple_alert_dialog">
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+        android:textStyle="bold"
+        tools:text="Title"/>
+
+    <TextView
+        android:id="@+id/message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textAppearance="@style/MaterialAlertDialog.Material3.Body.Text"
+        android:textSize="15sp"
+        tools:text="Message"/>
+
+    <com.google.android.flexbox.FlexboxLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        app:flexDirection="row_reverse"
+        app:flexWrap="wrap"
+        android:gravity="right">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_positive"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:padding="12dp"
+            android:textAllCaps="true"
+            style="@style/Widget.Material3.Button.UnelevatedButton"
+            tools:text="Positive"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_negative"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:layout_marginLeft="12dp"
+            android:textAllCaps="true"
+            style="@style/Widget.Material3.Button.UnelevatedButton"
+            tools:text="Negative"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button_neutral"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:layout_marginLeft="12dp"
+            android:textAllCaps="true"
+            style="@style/Widget.Material3.Button.UnelevatedButton"
+            tools:text="Neutral"/>
+    </com.google.android.flexbox.FlexboxLayout>
+
+</LinearLayout>
