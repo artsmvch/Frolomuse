@@ -60,18 +60,18 @@ public final class Snapshots {
      */
     @Nullable
     public static Bitmap make(@NonNull final View view, @ColorInt int backgroundColor) {
-
-        // First checking the drawing cache
+        // Check the drawing cache first
+        boolean wasDrawingCacheEnabled = view.isDrawingCacheEnabled();
         view.setDrawingCacheEnabled(true);
         final Bitmap drawingCache = view.getDrawingCache();
-        view.setDrawingCacheEnabled(false);
+        view.setDrawingCacheEnabled(wasDrawingCacheEnabled);
 
         if (drawingCache != null && !drawingCache.isRecycled()) {
             // OK, we can use the drawing cache
             return Bitmap.createBitmap(drawingCache);
         }
 
-        // The drawing cache is invalid, creating a snapshot on my own
+        // The drawing cache is invalid, create a snapshot
         final int width = view.getMeasuredWidth();
         final int height = view.getMeasuredHeight();
         final Bitmap bmp = Bitmap.createBitmap(width , height, Bitmap.Config.ARGB_8888);
