@@ -18,7 +18,7 @@ class FrolomuseApp : MultiDexApplication(),
     override fun onCreate() {
         super.onCreate()
         registerActivityLifecycleCallbacks(activityWatcher)
-        applicationComponent.provideColdStartInitializer().init()
+        applicationComponent.provideApplicationStartUp().init()
     }
 
     private fun buildApplicationComponent(): ApplicationComponent {

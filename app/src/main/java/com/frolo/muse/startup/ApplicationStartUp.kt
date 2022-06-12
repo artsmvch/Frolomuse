@@ -1,4 +1,4 @@
-package com.frolo.muse.setup
+package com.frolo.muse.startup
 
 import android.app.Activity
 import android.content.*
@@ -33,7 +33,7 @@ import javax.inject.Inject
 
 
 @ApplicationScope
-class ColdStartInitializer @Inject constructor(
+class ApplicationStartUp @Inject constructor(
     private val application: FrolomuseApp,
     private val preferences: Preferences,
     private val eventLogger: EventLogger
@@ -68,7 +68,7 @@ class ColdStartInitializer @Inject constructor(
     fun init() {
         ThreadStrictMode.assertMain()
         if (isInitialized) {
-            val error = IllegalStateException("Cold start already initialized")
+            val error = IllegalStateException("Start Up already initialized")
             DebugUtils.dumpOnMainThread(error)
             return
         }
@@ -76,7 +76,7 @@ class ColdStartInitializer @Inject constructor(
         initImpl()
         isInitialized = true
         val elapsedTimeMillis = System.currentTimeMillis() - startTimeMillis
-        Logger.d(LOG_TAG, "Cold start initialized in $elapsedTimeMillis millis")
+        Logger.d(LOG_TAG, "Start Up initialized in $elapsedTimeMillis millis")
     }
 
     private fun initImpl() {
@@ -121,7 +121,7 @@ class ColdStartInitializer @Inject constructor(
                 .detectLeakedSqlLiteObjects()
                 .detectLeakedClosableObjects()
                 .detectLeakedRegistrationObjects()
-                .setClassInstanceLimit(ColdStartInitializer::class.java, 1)
+                .setClassInstanceLimit(ApplicationStartUp::class.java, 1)
                 .setClassInstanceLimit(PlayerImpl::class.java, 1)
                 .setClassInstanceLimit(AudioFxImpl::class.java, 1)
                 .setClassInstanceLimit(PlayerWrapper::class.java, 1)
@@ -208,6 +208,6 @@ class ColdStartInitializer @Inject constructor(
     }
 
     companion object {
-        private const val LOG_TAG = "ColdStartInitializer"
+        private const val LOG_TAG = "ApplicationStartUp"
     }
 }

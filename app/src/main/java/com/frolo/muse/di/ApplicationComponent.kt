@@ -7,7 +7,7 @@ import com.frolo.muse.di.modules.*
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.repository.FirebasePreferences
 import com.frolo.muse.repository.Preferences
-import com.frolo.muse.setup.ColdStartInitializer
+import com.frolo.muse.startup.ApplicationStartUp
 import com.frolo.muse.ui.base.BaseActivity
 import com.frolo.music.repository.SongRepository
 import dagger.Component
@@ -35,7 +35,7 @@ interface ApplicationComponent {
 
     fun inject(activity: BaseActivity)
 
-    fun provideColdStartInitializer(): ColdStartInitializer
+    fun provideApplicationStartUp(): ApplicationStartUp
     fun provideSongRepository(): SongRepository
     fun providePreferences(): Preferences
     fun provideEventLogger(): EventLogger
