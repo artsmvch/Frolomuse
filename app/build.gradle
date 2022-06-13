@@ -173,6 +173,9 @@ dependencies {
     playStoreImplementation project(path: ':billings:play-store-billing-impl')
     appGalleryImplementation project(path: ':billings:app-gallery-billing-impl')
 
+    // Performance
+    implementation project(path: ':performance:coldstart')
+
     // Material design support
     implementation project(path: ':material-support')
 

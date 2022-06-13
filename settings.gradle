@@ -22,6 +22,9 @@ include ':billings:billing-api'
 include ':billings:play-store-billing-impl'
 include ':billings:app-gallery-billing-impl'
 
+// Performance
+include ':performance:coldstart'
+
 // Utils
 include ':utils:debug-common'
 include ':utils:threads-common'

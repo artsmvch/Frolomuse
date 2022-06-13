@@ -1,0 +1,11 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.frolo.performance.coldstart">
+    <application>
+        <provider
+            android:authorities="com.frolo.performance.coldstart"
+            android:name="com.frolo.performance.coldstart.ColdStartMeasurerImpl"
+            android:enabled="true"
+            android:exported="false"
+            android:initOrder="0"/>
+    </application>
+</manifest>

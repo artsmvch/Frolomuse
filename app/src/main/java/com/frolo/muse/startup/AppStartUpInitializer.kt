@@ -21,6 +21,7 @@ import com.frolo.muse.engine.PlayerWrapper
 import com.frolo.muse.memory.MemoryWatcherRegistryImpl
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.ui.base.BaseActivity
+import com.frolo.performance.coldstart.ColdStartMeasurer
 import com.frolo.player.PlayerImpl
 import com.frolo.threads.HandlerExecutor
 import com.frolo.threads.ThreadStrictMode
@@ -33,7 +34,7 @@ import javax.inject.Inject
 
 
 @ApplicationScope
-class ApplicationStartUp @Inject constructor(
+class AppStartUpInitializer @Inject constructor(
     private val application: FrolomuseApp,
     private val preferences: Preferences,
     private val eventLogger: EventLogger
@@ -85,6 +86,7 @@ class ApplicationStartUp @Inject constructor(
         application.registerActivityLifecycleCallbacks(activityLifecycleCallbacks)
         setupDebugMode()
         setupStrictMode()
+        setupPerformanceMetrics()
         setupRxPlugins()
         setupFirebase()
         setupShortcutsListener()
@@ -121,7 +123,7 @@ class ApplicationStartUp @Inject constructor(
                 .detectLeakedSqlLiteObjects()
                 .detectLeakedClosableObjects()
                 .detectLeakedRegistrationObjects()
-                .setClassInstanceLimit(ApplicationStartUp::class.java, 1)
+                .setClassInstanceLimit(AppStartUpInitializer::class.java, 1)
                 .setClassInstanceLimit(PlayerImpl::class.java, 1)
                 .setClassInstanceLimit(AudioFxImpl::class.java, 1)
                 .setClassInstanceLimit(PlayerWrapper::class.java, 1)
@@ -144,6 +146,12 @@ class ApplicationStartUp @Inject constructor(
     }
 
     private fun showViolation(violation: Violation?) {
+    }
+
+    private fun setupPerformanceMetrics() {
+        ColdStartMeasurer.addListener { coldStartInfo ->
+            Logger.d(LOG_TAG, "Cold start reported: $coldStartInfo")
+        }
     }
 
     private fun setupRxPlugins() {
@@ -208,6 +216,6 @@ class ApplicationStartUp @Inject constructor(
     }
 
     companion object {
-        private const val LOG_TAG = "ApplicationStartUp"
+        private const val LOG_TAG = "AppStartUpInitializer"
     }
 }
