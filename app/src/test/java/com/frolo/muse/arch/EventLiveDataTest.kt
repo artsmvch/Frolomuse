@@ -3,6 +3,7 @@ package com.frolo.muse.arch
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
+import com.frolo.arch.support.EventLiveData
 import com.frolo.muse.thenDoNothing
 import com.nhaarman.mockitokotlin2.*
 import org.junit.Rule

@@ -4,8 +4,8 @@ import android.app.Dialog
 import android.os.Bundle
 import androidx.lifecycle.LifecycleOwner
 import com.frolo.muse.R
-import com.frolo.muse.arch.observe
-import com.frolo.muse.arch.observeNonNull
+import com.frolo.arch.support.observe
+import com.frolo.arch.support.observeNonNull
 import com.frolo.muse.ui.base.BaseDialogFragment
 import com.frolo.muse.ui.main.settings.limitNumberInput
 import com.frolo.muse.ui.main.settings.updateText

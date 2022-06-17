@@ -9,7 +9,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProviders
 import com.frolo.muse.R
 import com.frolo.ui.StyleUtils
-import com.frolo.muse.arch.observeNonNull
+import com.frolo.arch.support.observeNonNull
 import com.frolo.muse.di.activityComponent
 import com.frolo.music.model.Artist
 import com.frolo.muse.ui.base.BaseFragment

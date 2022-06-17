@@ -41,9 +41,7 @@ fun <T> createLiveData(
                         // observed, so we post the value to the main thread.
                         postValue(value)
                     },
-                    { error ->
-                        onError.invoke(error)
-                    },
+                    onError,
                     {
                         completed = true
                         disposable = null

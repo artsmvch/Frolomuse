@@ -6,7 +6,7 @@ import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.RequestManager
 import com.frolo.muse.R
-import com.frolo.muse.glide.makeAlbumArtRequest
+import com.frolo.core.ui.glide.makeAlbumArtRequest
 import com.frolo.muse.inflateChild
 import com.frolo.music.model.Album
 import com.frolo.muse.screenWidth

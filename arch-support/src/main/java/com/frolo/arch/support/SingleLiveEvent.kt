@@ -1,4 +1,4 @@
-package com.frolo.muse.arch
+package com.frolo.arch.support
 
 import androidx.annotation.MainThread
 import androidx.lifecycle.LifecycleOwner

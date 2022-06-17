@@ -14,8 +14,8 @@ import androidx.transition.Fade
 import androidx.transition.TransitionManager
 import com.frolo.muse.BuildConfig
 import com.frolo.muse.R
-import com.frolo.muse.arch.observe
-import com.frolo.muse.arch.observeNonNull
+import com.frolo.arch.support.observe
+import com.frolo.arch.support.observeNonNull
 import com.frolo.muse.billing.TrialStatus
 import com.frolo.muse.di.activityComponent
 import com.frolo.muse.ui.base.BaseDialogFragment

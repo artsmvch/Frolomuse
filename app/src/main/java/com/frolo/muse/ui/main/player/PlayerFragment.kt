@@ -16,76 +16,40 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
-import androidx.transition.Fade
-import androidx.transition.TransitionManager
-import androidx.viewpager2.widget.ViewPager2
-import com.bumptech.glide.Glide
 import com.frolo.mediabutton.PlayButton
-import com.frolo.muse.BuildConfig
 import com.frolo.muse.R
-import com.frolo.ui.StyleUtils
-import com.frolo.muse.arch.observe
-import com.frolo.muse.arch.observeNonNull
-import com.frolo.player.AudioSource
-import com.frolo.player.Player
-import com.frolo.muse.glide.GlideAlbumArtHelper
-import com.frolo.muse.glide.observe
-import com.frolo.music.model.Song
+import com.frolo.arch.support.observe
+import com.frolo.arch.support.observeNonNull
+import com.frolo.core.ui.glide.GlideAlbumArtHelper
+import com.frolo.core.ui.glide.observe
 import com.frolo.muse.ui.asDurationInMs
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.getAlbumEditorOptionText
 import com.frolo.muse.ui.getArtistString
 import com.frolo.muse.ui.getNameString
 import com.frolo.muse.ui.main.confirmDeletion
-import com.frolo.muse.ui.main.player.carousel.AlbumCardCarouselHelper
-import com.frolo.muse.ui.main.player.carousel.AlbumCardAdapter
+import com.frolo.core.ui.carousel.ICarouselView
 import com.frolo.muse.ui.main.player.waveform.SoundWaveform
 import com.frolo.muse.ui.main.player.waveform.StaticWaveform
 import com.frolo.muse.ui.main.showVolumeControl
 import com.frolo.muse.views.Anim
+import com.frolo.music.model.Song
+import com.frolo.player.Player
+import com.frolo.ui.StyleUtils
 import com.frolo.waveformseekbar.WaveformSeekBar
-import kotlinx.android.synthetic.main.include_playback_progress.*
 import kotlinx.android.synthetic.main.fragment_player.*
-import kotlinx.android.synthetic.main.include_player_album_art_carousel.*
-import kotlinx.android.synthetic.main.include_player_controller_full.*
+import kotlinx.android.synthetic.main.include_playback_progress.*
 import kotlinx.android.synthetic.main.include_player_controller.*
-import kotlinx.android.synthetic.main.include_player_tool_panel.*
+import kotlinx.android.synthetic.main.include_player_controller_full.*
 
 
 class PlayerFragment: BaseFragment() {
 
     private val viewModel: PlayerViewModel by viewModel()
 
-    // The state of album view pager
-    private var albumViewPagerState = ViewPager2.SCROLL_STATE_IDLE
-    // This flag indicates whether the user is scrolling the album view pager
-    private var userScrolledAlbumViewPager = false
-
-    /**
-     * AlbumArt pager state and callbacks.
-     */
-
-    // Indicates whether a list is being submitted to the adapter at the moment
-    private var isSubmittingList: Boolean = false
-    // Indicates the pending position, to which the pager should scroll when a list is submitted
-    private var pendingPosition: Int? = null
-
-    private val onPageChangeCallback = object : ViewPager2.OnPageChangeCallback() {
-        override fun onPageSelected(position: Int) {
-            if (userScrolledAlbumViewPager) {
-                viewModel.onSwipedToPosition(position)
-            }
-        }
-
-        override fun onPageScrollStateChanged(state: Int) {
-            if (albumViewPagerState == ViewPager2.SCROLL_STATE_DRAGGING
-                    && state == ViewPager2.SCROLL_STATE_SETTLING) {
-                userScrolledAlbumViewPager = true
-            } else if (albumViewPagerState == ViewPager2.SCROLL_STATE_SETTLING
-                    && state == ViewPager2.SCROLL_STATE_IDLE) {
-                userScrolledAlbumViewPager = false
-            }
-            albumViewPagerState = state
+    private val carouselCallback = object : ICarouselView.CarouselCallback {
+        override fun onPositionSelected(position: Int) {
+            viewModel.onSwipedToPosition(position)
         }
     }
 
@@ -108,7 +72,6 @@ class PlayerFragment: BaseFragment() {
                 viewModel.onProgressSoughtToPercent(seekBar.progressPercent)
             }
         }
-
     }
 
     @get:ColorInt
@@ -124,8 +87,7 @@ class PlayerFragment: BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         GlideAlbumArtHelper.get().observe(this) {
-            (vp_album_art.adapter as? AlbumCardAdapter)?.notifyDataSetChanged()
-            postRequestPageTransform()
+            carousel.invalidateData()
         }
     }
 
@@ -136,27 +98,19 @@ class PlayerFragment: BaseFragment() {
     ): View = inflater.inflate(R.layout.fragment_player, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        // NOTE: Need to set default values to the following variables every time fragment view created.
-        albumViewPagerState = ViewPager2.SCROLL_STATE_IDLE
-        userScrolledAlbumViewPager = false
         isTrackingProgress = false
-        isSubmittingList = false
-        pendingPosition = null
 
         // Intercepting all touches to prevent their processing in the lower view layers
         view.setOnTouchListener { _, _ -> true }
 
-        btn_options_menu.setOnClickListener {
-            viewModel.onOptionsMenuClicked()
-        }
+        carousel.setPlaceholderText(R.string.no_songs_in_queue)
 
-        vp_album_art.apply {
-            AlbumCardCarouselHelper.setup(this)
-            adapter = AlbumCardAdapter(requestManager = Glide.with(this@PlayerFragment))
-        }
+//        btn_options_menu.setOnClickListener {
+//            viewModel.onOptionsMenuClicked()
+//        }
 
-        initTextSwitcher(tsw_song_name, 20f, Typeface.BOLD)
-        initTextSwitcher(tsw_artist_name, 13f)
+        initTextSwitcher(tsw_song_name, textSizeInSp = 26f, Typeface.BOLD)
+        initTextSwitcher(tsw_artist_name, textSizeInSp = 13f, Typeface.NORMAL)
 
         btn_play.setOnClickListener {
             viewModel.onPlayButtonClicked()
@@ -193,10 +147,6 @@ class PlayerFragment: BaseFragment() {
         btn_like.setOnClickListener {
             viewModel.onLikeClicked()
         }
-
-        btn_volume.setOnClickListener {
-            viewModel.onVolumeControlClicked()
-        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -207,13 +157,13 @@ class PlayerFragment: BaseFragment() {
 
     override fun onStart() {
         super.onStart()
-        vp_album_art.registerOnPageChangeCallback(onPageChangeCallback)
+        carousel.registerCallback(carouselCallback)
         waveform_seek_bar.setCallback(waveformCallback)
     }
 
     override fun onStop() {
         super.onStop()
-        vp_album_art.unregisterOnPageChangeCallback(onPageChangeCallback)
+        carousel.unregisterCallback(carouselCallback)
         waveform_seek_bar.setCallback(null)
     }
 
@@ -238,7 +188,7 @@ class PlayerFragment: BaseFragment() {
                 ).apply {
                     gravity = Gravity.CENTER
                 }
-
+                includeFontPadding = false
                 maxLines = 1
                 ellipsize = TextUtils.TruncateAt.END
                 setTypeface(typeface, typefaceStyle)
@@ -307,7 +257,8 @@ class PlayerFragment: BaseFragment() {
     }
 
     private fun showOptionsMenu(optionsMenu: PlayerOptionsMenu) {
-        val anchorView: View = btn_options_menu
+        // TODO: options menu?
+        val anchorView: View = requireView()// btn_options_menu
         val context = anchorView.context
         val popup = PopupMenu(context, anchorView)
 
@@ -336,70 +287,6 @@ class PlayerFragment: BaseFragment() {
         popup.show()
     }
 
-    /**
-     * Submits the given [list] to the adapter of the AlbumArt pager.
-     * When the submitting is complete, two callbacks are posted:
-     * a callback that is responsible for requesting page transform
-     * and a callback that is responsible for scrolling the pager to the pending position.
-     * Before submitting, if the pending position is null, it is assigned the current pager position.
-     * This is to prevent the pager from scrolling automatically when the adapter notifies about changes.
-     */
-    private fun submitList(list: List<AudioSource>?) {
-        val adapter = vp_album_art.adapter as AlbumCardAdapter
-
-        if (pendingPosition == null) {
-            pendingPosition = vp_album_art.currentItem
-        }
-
-        isSubmittingList = true
-        adapter.submitList(list) {
-            isSubmittingList = false
-            if (view != null) {
-                // We do this only if the fragment has a UI
-                postRequestPageTransform()
-                postScrollToPendingPosition()
-            }
-        }
-    }
-
-    /**
-     * Scrolls the AlbumArt pager to the given [position]. The scrolling is async in the sense
-     * that [position] is stored as pending scrolling in the near future.
-     */
-    private fun scrollToPosition(position: Int) {
-        pendingPosition = position
-        postScrollToPendingPosition()
-    }
-
-    /**
-     * Posts a callback to scroll to the pending position, if any.
-     * The old callback is removed from the AlbumArt pager.
-     */
-    private fun postScrollToPendingPosition() {
-        val callback = Runnable {
-            if (!isSubmittingList) {
-                pendingPosition?.also { safePosition ->
-                    vp_album_art.setCurrentItem(safePosition, true)
-                }
-                pendingPosition = null
-            }
-        }
-
-        postOnUi("scroll_to_pending_position", callback)
-    }
-
-    /**
-     * Posts a callback to request page transform.
-     * The old callback is removed from the AlbumArt pager.
-     */
-    private fun postRequestPageTransform() {
-        val callback = Runnable {
-            vp_album_art.requestTransform()
-        }
-
-        postOnUi("request_page_transform", callback)
-    }
-
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
         songDeletedEvent.observeNonNull(owner) {
             toastShortMessage(R.string.deleted)
@@ -414,15 +301,15 @@ class PlayerFragment: BaseFragment() {
         }
 
         audioSourceList.observe(owner) { list ->
-            submitList(list)
+            carousel.submitList(list)
         }
 
         invalidateAudioSourceListEvent.observeNonNull(owner) { list ->
-            submitList(list)
+            carousel.submitList(list)
         }
 
         currPosition.observeNonNull(owner) { position ->
-            scrollToPosition(position)
+            carousel.setCurrentPosition(position)
         }
 
         song.observe(owner) { song: Song? ->
@@ -435,23 +322,12 @@ class PlayerFragment: BaseFragment() {
             }
         }
 
-        albumArtCarouselVisible.observeNonNull(owner) { visible ->
-            val transition = Fade().apply {
-                addTarget(vp_album_art)
-                addTarget(tv_no_songs_in_queue)
-                duration = 200L
-            }
-            TransitionManager.beginDelayedTransition(fl_album_art_carousel_container, transition)
-            vp_album_art.visibility = if (visible) View.VISIBLE else View.INVISIBLE
-            tv_no_songs_in_queue.visibility = if (visible) View.INVISIBLE else View.VISIBLE
-        }
-
         playerControllersEnabled.observeNonNull(owner) { enabled ->
 
             // Controllers in the top panel
-            btn_options_menu.markControllerEnabled(enabled)
+//            btn_options_menu.markControllerEnabled(enabled)
             btn_like.markControllerEnabled(enabled)
-            btn_volume.markControllerEnabled(enabled)
+//            btn_volume.markControllerEnabled(enabled)
 
             // Waveform progress bar
             waveform_seek_bar.markControllerEnabled(enabled)

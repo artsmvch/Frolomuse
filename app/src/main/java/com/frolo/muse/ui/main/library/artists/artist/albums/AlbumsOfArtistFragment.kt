@@ -16,8 +16,8 @@ import com.frolo.muse.ui.base.withArg
 import com.frolo.muse.ui.main.library.base.AbsMediaCollectionFragment
 import com.frolo.muse.ui.main.library.base.BaseAdapter
 import com.frolo.muse.dp2px
-import com.frolo.muse.glide.GlideAlbumArtHelper
-import com.frolo.muse.glide.observe
+import com.frolo.core.ui.glide.GlideAlbumArtHelper
+import com.frolo.core.ui.glide.observe
 import com.frolo.muse.ui.smoothScrollToTop
 import kotlinx.android.synthetic.main.fragment_albums_of_artist.*
 

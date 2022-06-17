@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.frolo.muse.R
 import com.frolo.ui.Screen
-import com.frolo.muse.glide.GlideAlbumArtHelper
-import com.frolo.muse.glide.observe
+import com.frolo.core.ui.glide.GlideAlbumArtHelper
+import com.frolo.core.ui.glide.observe
 import com.frolo.music.model.Album
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.thumbnails.provideThumbnailLoader

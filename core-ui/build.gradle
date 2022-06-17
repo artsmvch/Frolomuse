@@ -1,6 +1,7 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
 }
 
 android {
@@ -37,4 +38,16 @@ dependencies {
     implementation deps.support.appCompat
     implementation deps.design.material
     implementation deps.design.flexbox
+
+    // Glide
+    implementation deps.glide.glide
+    kapt deps.glide.compiler
+
+    implementation project(path: ':audio:player:api')
+    implementation project(path: ':material-support')
+    implementation project(path: ':custom-drawable:squircle')
+    implementation project(path: ':utils:ui')
+    implementation project(path: ':utils:debug-common')
+    implementation project(path: ':utils:threads-common')
+    implementation project(path: ':arch-support')
 }

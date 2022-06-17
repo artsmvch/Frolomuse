@@ -12,8 +12,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.frolo.muse.R;
 import com.frolo.threads.ThreadStrictMode;
-import com.frolo.muse.glide.GlideAlbumArtHelper;
-import com.frolo.muse.glide.SimpleRequestListener;
+import com.frolo.core.ui.glide.GlideAlbumArtHelper;
+import com.frolo.core.ui.glide.SimpleRequestListener;
 import com.frolo.music.model.Song;
 
 import java.util.concurrent.Future;

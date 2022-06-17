@@ -3,8 +3,8 @@ package com.frolo.muse.ui.main
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.frolo.muse.arch.EventLiveData
-import com.frolo.muse.arch.call
+import com.frolo.arch.support.EventLiveData
+import com.frolo.arch.support.call
 import com.frolo.muse.player.PlayerStateRestorer
 import com.frolo.muse.player.PlayerWrapper
 import com.frolo.muse.interactor.billing.PremiumManager

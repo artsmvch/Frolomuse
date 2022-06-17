@@ -1,7 +1,7 @@
 package com.frolo.muse.ui.base
 
 import androidx.lifecycle.LiveData
-import com.frolo.muse.arch.SingleLiveEvent
+import com.frolo.arch.support.SingleLiveEvent
 
 
 object RESPermissionBus {

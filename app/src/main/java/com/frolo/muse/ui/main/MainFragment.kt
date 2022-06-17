@@ -2,17 +2,14 @@ package com.frolo.muse.ui.main
 
 import android.Manifest
 import android.app.Dialog
-import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
+import android.graphics.Outline
 import android.net.Uri
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.view.animation.DecelerateInterpolator
 import androidx.annotation.IdRes
 import androidx.core.app.ActivityCompat
@@ -32,7 +29,7 @@ import com.frolo.muse.android.ViewAppSettingsIntent
 import com.frolo.muse.android.getIntExtraOrNull
 import com.frolo.muse.android.getIntOrNull
 import com.frolo.muse.android.startActivitySafely
-import com.frolo.muse.arch.observe
+import com.frolo.arch.support.observe
 import com.frolo.muse.di.activityComponent
 import com.frolo.muse.di.impl.navigator.AppRouterImpl
 import com.frolo.muse.rating.RatingFragment
@@ -706,18 +703,26 @@ class MainFragment :
         mini_player_container.alpha = max(0f, 1f - slideOffset * 4)
         mini_player_container.touchesDisabled = slideOffset > 0.4
 
+        val cornerRadius = properties.playerSheetCornerRadius * (1 - slideOffset)
         (sliding_player_layout.background as? MaterialShapeDrawable)?.apply {
             val blendRatio = max(0f, 1f - slideOffset * 2)
             val blendedColor = ColorUtils.blendARGB(properties.colorSurface,
                 properties.colorPrimarySurface, blendRatio)
             fillColor = ColorStateList.valueOf(blendedColor)
-
-            val factoredCornerRadius = properties.playerSheetCornerRadius * (1 - slideOffset)
             this.shapeAppearanceModel = ShapeAppearanceModel.builder()
-                .setTopLeftCorner(CornerFamily.ROUNDED, factoredCornerRadius)
-                .setTopRightCorner(CornerFamily.ROUNDED, factoredCornerRadius)
+                .setTopLeftCorner(CornerFamily.ROUNDED, cornerRadius)
+                .setTopRightCorner(CornerFamily.ROUNDED, cornerRadius)
                 .build()
         }
+        // TODO: optimize?
+        sliding_player_layout.outlineProvider = object : ViewOutlineProvider() {
+            override fun getOutline(view: View, outline: Outline) {
+                outline.setRoundRect(0, 0, view.width,
+                    view.measuredHeight + cornerRadius.toInt(), cornerRadius)
+            }
+        }
+        sliding_player_layout.clipToOutline = true
+        container_player.alpha = slideOffset
 
         if (slideOffset > 0.6) {
             onDimmedCallback?.onDimmed()

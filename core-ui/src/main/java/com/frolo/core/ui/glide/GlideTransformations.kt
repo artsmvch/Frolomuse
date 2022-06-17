@@ -1,4 +1,4 @@
-package com.frolo.muse.glide
+package com.frolo.core.ui.glide
 
 import android.graphics.drawable.Drawable
 import com.bumptech.glide.RequestBuilder

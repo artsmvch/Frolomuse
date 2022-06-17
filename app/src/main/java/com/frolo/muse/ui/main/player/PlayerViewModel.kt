@@ -3,10 +3,10 @@ package com.frolo.muse.ui.main.player
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import com.frolo.muse.arch.SingleLiveEvent
-import com.frolo.muse.arch.combine
-import com.frolo.muse.arch.liveDataOf
-import com.frolo.muse.arch.map
+import com.frolo.arch.support.SingleLiveEvent
+import com.frolo.arch.support.combine
+import com.frolo.arch.support.liveDataOf
+import com.frolo.arch.support.map
 import com.frolo.muse.common.*
 import com.frolo.muse.di.ExecutorQualifier
 import com.frolo.muse.interactor.feature.FeaturesUseCase
@@ -119,9 +119,6 @@ class PlayerViewModel @Inject constructor(
 
     private val _song = MutableLiveData<Song>(null)
     val song: LiveData<Song> get() = _song
-
-    val albumArtCarouselVisible: LiveData<Boolean> =
-        song.map(false) { song: Song? -> song != null }
 
     val playerControllersEnabled: LiveData<Boolean> =
         song.map(false) { song: Song? -> song != null }

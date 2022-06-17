@@ -2,7 +2,7 @@ package com.frolo.muse.ui.base
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.frolo.muse.arch.SingleLiveEvent
+import com.frolo.arch.support.SingleLiveEvent
 import com.frolo.muse.logger.EventLogger
 import io.reactivex.Completable
 import io.reactivex.Flowable

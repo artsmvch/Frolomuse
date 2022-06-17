@@ -1,20 +1,20 @@
-package com.frolo.muse.ui.main.player.carousel;
+package com.frolo.core.ui.carousel;
 
 import android.content.Context;
 
 import androidx.annotation.NonNull;
 
-import com.frolo.muse.R;
+import com.frolo.core.ui.R;
 
 
-final class AlbumCardProperties {
+final class CardProperties {
 
     static float getBaseCardElevation(@NonNull Context context) {
-        return context.getResources().getDimension(R.dimen.album_carousel_base_card_elevation);
+        return context.getResources().getDimension(R.dimen.carousel_base_card_elevation);
     }
 
     static float getMaxCardElevation(@NonNull Context context) {
-        return context.getResources().getDimension(R.dimen.album_carousel_max_card_elevation);
+        return context.getResources().getDimension(R.dimen.carousel_max_card_elevation);
     }
 
     static float getRaisingCardElevation(@NonNull Context context) {
@@ -22,9 +22,9 @@ final class AlbumCardProperties {
     }
 
     static float getCardCornerRadius(@NonNull Context context) {
-        return context.getResources().getDimension(R.dimen.album_carousel_card_corner_radius);
+        return context.getResources().getDimension(R.dimen.carousel_card_corner_radius);
     }
 
-    private AlbumCardProperties() {
+    private CardProperties() {
     }
 }

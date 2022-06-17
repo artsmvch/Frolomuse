@@ -32,7 +32,7 @@ import com.frolo.mediabutton.PlayButton;
 import com.frolo.muse.BuildConfig;
 import com.frolo.muse.R;
 import com.frolo.muse.Logger;
-import com.frolo.muse.glide.SquircleTransformation;
+import com.frolo.core.ui.glide.SquircleTransformation;
 import com.frolo.muse.sounder.Sounder;
 
 import org.jetbrains.annotations.NotNull;

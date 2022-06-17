@@ -65,9 +65,9 @@ class PlayerSheetFragment : BaseFragment(),
             bottomSheetCallback.onSlide(bottom_sheet_current_song_queue, 0.0f)
         }
 
+        val peekHeight = StyleUtils.resolveDimen(view.context, R.attr.actionBarSize).toInt()
         view.doOnLayout {
-            behavior.peekHeight =
-                StyleUtils.resolveDimen(view.context, R.attr.actionBarSize).toInt()
+            behavior.peekHeight = peekHeight
         }
 
         bottom_sheet_current_song_queue.touchCallback =
@@ -90,12 +90,12 @@ class PlayerSheetFragment : BaseFragment(),
             behavior.state = BottomSheetBehavior.STATE_EXPANDED
         }
 
-        imv_close.setOnClickListener {
-            // First of all, we need to collapse the inner bottom sheet to avoid the case
-            // when the player sheet is collapsed itself, but the inner bottom sheet is not.
-            behavior.state = BottomSheetBehavior.STATE_COLLAPSED
-            playerSheetCallback?.requestCollapse()
-        }
+//        imv_close.setOnClickListener {
+//            // First of all, we need to collapse the inner bottom sheet to avoid the case
+//            // when the player sheet is collapsed itself, but the inner bottom sheet is not.
+//            behavior.state = BottomSheetBehavior.STATE_COLLAPSED
+//            playerSheetCallback?.requestCollapse()
+//        }
 
         currSheetSlideOffset?.also { safeSlideOffset ->
             onSlideOffset(safeSlideOffset)
@@ -127,7 +127,7 @@ class PlayerSheetFragment : BaseFragment(),
     fun onSlideOffset(offset: Float) {
         currSheetSlideOffset = offset
         view?.also {
-            imv_close?.alpha = (offset * 4 - 3).coerceIn(0f, 1f)
+            //imv_close?.alpha = (offset * 4 - 3).coerceIn(0f, 1f)
         }
     }
 

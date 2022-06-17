@@ -5,32 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <FrameLayout
+        android:id="@+id/container_player"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="?actionBarSize">
-
-            <ImageView
-                android:id="@+id/imv_close"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginStart="16dp"
-                android:layout_gravity="start|center_vertical"
-                android:padding="8dp"
-                android:src="@drawable/ic_cross_48dp"
-                android:tint="?iconImageTint"/>
-        </FrameLayout>
-
-        <FrameLayout
-            android:id="@+id/container_player"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="?actionBarSize"/>
-    </LinearLayout>
+        android:layout_marginBottom="?actionBarSize"/>
 
     <View
         android:id="@+id/view_dim_overlay"
@@ -66,7 +45,7 @@
                 android:layout_width="12dp"
                 android:layout_height="12dp"
                 android:src="@drawable/ic_arrow_up_72dp"
-                android:tint="?iconImageTint"/>
+                app:tint="?iconImageTint" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"

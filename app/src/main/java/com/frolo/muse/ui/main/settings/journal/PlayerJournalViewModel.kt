@@ -10,8 +10,8 @@ import com.frolo.muse.ThrowableUtils
 import com.frolo.muse.android.SendTextFileIntent
 import com.frolo.muse.android.clipboardManager
 import com.frolo.muse.android.startActivitySafely
-import com.frolo.muse.arch.SingleLiveEvent
-import com.frolo.muse.arch.call
+import com.frolo.arch.support.SingleLiveEvent
+import com.frolo.arch.support.call
 import com.frolo.player.PlayerJournal
 import com.frolo.muse.player.journals.CompositePlayerJournal
 import com.frolo.muse.player.journals.StoredInMemoryPlayerJournal

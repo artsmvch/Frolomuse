@@ -17,8 +17,8 @@ import androidx.preference.PreferenceFragmentCompat
 import com.frolo.muse.BuildConfig
 import com.frolo.muse.Features
 import com.frolo.muse.R
-import com.frolo.muse.arch.observe
-import com.frolo.muse.arch.observeNonNull
+import com.frolo.arch.support.observe
+import com.frolo.arch.support.observeNonNull
 import com.frolo.muse.di.activityComponent
 import com.frolo.muse.logger.*
 import com.frolo.mediascan.MediaScanService

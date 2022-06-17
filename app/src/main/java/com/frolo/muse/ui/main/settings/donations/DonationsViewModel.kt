@@ -6,8 +6,8 @@ import com.frolo.billing.BillingFlowSuccess
 import com.frolo.billing.BillingManager
 import com.frolo.billing.ProductDetails
 import com.frolo.muse.BuildInfo
-import com.frolo.muse.arch.EventLiveData
-import com.frolo.muse.arch.call
+import com.frolo.arch.support.EventLiveData
+import com.frolo.arch.support.call
 import com.frolo.muse.billing.Products
 import com.frolo.muse.logger.*
 import com.frolo.muse.router.AppRouter

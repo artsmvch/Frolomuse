@@ -49,6 +49,7 @@ include ':custom-drawable:squircle'
 include ':vendor'
 include ':ads'
 include ':material-support'
+include ':arch-support'
 
 // Test tools
 include ':test-tools'

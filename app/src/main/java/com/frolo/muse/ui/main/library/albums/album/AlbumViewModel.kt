@@ -2,7 +2,9 @@ package com.frolo.muse.ui.main.library.albums.album
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.frolo.muse.arch.*
+import com.frolo.arch.support.SingleLiveEvent
+import com.frolo.arch.support.combine
+import com.frolo.arch.support.liveDataOf
 import com.frolo.player.Player
 import com.frolo.muse.router.AppRouter
 import com.frolo.muse.interactor.media.*

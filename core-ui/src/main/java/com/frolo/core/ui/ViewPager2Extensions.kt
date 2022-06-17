@@ -1,4 +1,4 @@
-package com.frolo.muse.views.viewpager
+package com.frolo.core.ui
 
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2

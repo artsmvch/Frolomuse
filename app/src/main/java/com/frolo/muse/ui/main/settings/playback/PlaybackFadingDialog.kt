@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.core.math.MathUtils
 import androidx.lifecycle.LifecycleOwner
 import com.frolo.muse.R
-import com.frolo.muse.arch.observeNonNull
+import com.frolo.arch.support.observeNonNull
 import com.frolo.muse.ui.base.BaseDialogFragment
 import com.google.android.material.slider.Slider
 import kotlinx.android.synthetic.main.dialog_playback_fading.*

@@ -1,17 +1,18 @@
-package com.frolo.muse.ui.main.player.carousel
+package com.frolo.core.ui.carousel
 
 import android.view.View
 import android.view.ViewTreeObserver
 import androidx.viewpager2.widget.ViewPager2
+import com.frolo.core.ui.R
+import com.frolo.core.ui.setOverScrollModeCompat
 import com.frolo.ui.Screen
-import com.frolo.muse.views.viewpager.setOverScrollModeCompat
-import kotlinx.android.synthetic.main.include_square_album_art.view.*
+import com.google.android.material.card.MaterialCardView
 import kotlin.math.abs
 import kotlin.math.min
 import kotlin.math.pow
 
 
-class AlbumCardCarouselHelper private constructor(
+internal class CardCarouselHelper private constructor(
     private val viewPager: ViewPager2
 ) : ViewTreeObserver.OnGlobalLayoutListener {
 
@@ -24,17 +25,17 @@ class AlbumCardCarouselHelper private constructor(
     }
 
     /**
-     * Minimal card elevation that all items must have on their album cards.
+     * Minimal card elevation that all items must have on their cards.
      */
     private val baseCardElevation: Float by lazy {
-        AlbumCardProperties.getBaseCardElevation(viewPager.context)
+        CardProperties.getBaseCardElevation(viewPager.context)
     }
 
     /**
      * Additional card elevation for the currently selected item.
      */
     private val raisingCardElevation: Float by lazy {
-        AlbumCardProperties.getRaisingCardElevation(viewPager.context)
+        CardProperties.getRaisingCardElevation(viewPager.context)
     }
 
     /**
@@ -73,7 +74,7 @@ class AlbumCardCarouselHelper private constructor(
 
         viewPager.setPadding(hp, vp, hp, vp)
 
-        val transformer = AlbumCardTransformer(
+        val transformer = CardTransformer(
             minScale = minPageScale,
             maxScale = maxPageScale,
             baseCardElevation = baseCardElevation,
@@ -92,7 +93,7 @@ class AlbumCardCarouselHelper private constructor(
                 setOverScrollModeCompat(ViewPager2.OVER_SCROLL_NEVER)
             }
 
-            val layoutListener = AlbumCardCarouselHelper(target)
+            val layoutListener = CardCarouselHelper(target)
 
             target.addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
                 override fun onViewAttachedToWindow(view: View) {
@@ -114,7 +115,7 @@ class AlbumCardCarouselHelper private constructor(
 
 }
 
-private class AlbumCardTransformer constructor(
+private class CardTransformer constructor(
     private val minScale: Float,
     private val maxScale: Float,
     private val baseCardElevation: Float,
@@ -142,7 +143,8 @@ private class AlbumCardTransformer constructor(
         page.scaleX = scaleValue
         page.scaleY = scaleValue
 
-        page.cv_album_art.cardElevation = calculateCardElevation(position)
+        page.findViewById<MaterialCardView>(R.id.cv_art_container).cardElevation =
+            calculateCardElevation(position)
     }
 
     private fun calculateCardElevation(position: Float): Float {

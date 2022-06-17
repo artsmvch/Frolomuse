@@ -39,14 +39,6 @@
         <attr name="state_item_playing" format="boolean" />
     </declare-styleable>
 
-    <!--IBar-->
-    <attr format="reference" name="iBarStyle"/>
-
-    <declare-styleable name="IBar">
-        <attr name="activeColor" format="color"/>
-        <attr name="inactiveColor" format="color"/>
-    </declare-styleable>
-
     <!--WaveformSeekBar-->
     <declare-styleable name="WaveformSeekBar">
         <attr name="waveBackgroundColor" format="color"/>

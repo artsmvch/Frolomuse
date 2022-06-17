@@ -1,8 +1,8 @@
 package com.frolo.muse.rating
 
 import androidx.lifecycle.LiveData
-import com.frolo.muse.arch.SingleLiveEvent
-import com.frolo.muse.arch.call
+import com.frolo.arch.support.SingleLiveEvent
+import com.frolo.arch.support.call
 import com.frolo.muse.interactor.rate.RatingUseCase
 import com.frolo.muse.logger.*
 import com.frolo.muse.rx.SchedulerProvider

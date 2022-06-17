@@ -3,6 +3,7 @@ package com.frolo.muse.arch
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.frolo.arch.support.combineMultiple
 import com.frolo.muse.observeForever
 import junit.framework.Assert.assertEquals
 import org.junit.Rule

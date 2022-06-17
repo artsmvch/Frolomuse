@@ -6,8 +6,8 @@ import androidx.core.view.updatePadding
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
+import com.frolo.core.ui.setOverScrollModeCompat
 import com.frolo.muse.android.activityManager
-import com.frolo.muse.views.viewpager.setOverScrollModeCompat
 import kotlin.math.abs
 import kotlin.math.min
 

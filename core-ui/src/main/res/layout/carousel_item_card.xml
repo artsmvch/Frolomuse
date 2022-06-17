@@ -6,10 +6,10 @@
     android:layout_height="match_parent">
 
     <com.google.android.material.card.MaterialCardView
-        android:id="@+id/cv_album_art"
-        app:cardElevation="@dimen/album_carousel_base_card_elevation"
-        app:cardMaxElevation="@dimen/album_carousel_max_card_elevation"
-        app:cardCornerRadius="@dimen/album_carousel_card_corner_radius"
+        android:id="@+id/cv_art_container"
+        app:cardElevation="@dimen/carousel_base_card_elevation"
+        app:cardMaxElevation="@dimen/carousel_max_card_elevation"
+        app:cardCornerRadius="@dimen/carousel_card_corner_radius"
         app:cardPreventCornerOverlap="true"
         app:cardUseCompatPadding="false"
         app:cardBackgroundColor="?colorSurface"
@@ -23,13 +23,14 @@
         app:layout_constraintDimensionRatio="1">
 
         <ImageView
-            android:id="@+id/imv_album_art"
+            android:id="@+id/imv_art"
             android:scaleType="centerCrop"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:importantForAccessibility="no"/>
     </com.google.android.material.card.MaterialCardView>
 
-    <com.frolo.muse.views.progress.IBar
+    <com.frolo.core.ui.progress.IBar
         android:id="@+id/pb_loading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

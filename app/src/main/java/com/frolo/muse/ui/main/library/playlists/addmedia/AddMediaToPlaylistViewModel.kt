@@ -2,7 +2,7 @@ package com.frolo.muse.ui.main.library.playlists.addmedia
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.frolo.muse.arch.combine
+import com.frolo.arch.support.combine
 import com.frolo.muse.router.AppRouter
 import com.frolo.muse.interactor.media.AddMediaToPlaylistUseCase
 import com.frolo.muse.logger.EventLogger

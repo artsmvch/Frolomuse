@@ -10,8 +10,8 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.frolo.ui.FragmentUtils
 import com.frolo.muse.R
-import com.frolo.muse.arch.observe
-import com.frolo.muse.arch.observeNonNull
+import com.frolo.arch.support.observe
+import com.frolo.arch.support.observeNonNull
 import com.frolo.music.model.MediaBucket
 import com.frolo.muse.ui.ScrolledToTop
 import com.frolo.muse.ui.ShotLayoutAnimationController

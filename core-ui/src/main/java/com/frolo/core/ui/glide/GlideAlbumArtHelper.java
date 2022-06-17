@@ -1,5 +1,4 @@
-package com.frolo.muse.glide;
-
+package com.frolo.core.ui.glide;
 
 import android.content.ContentUris;
 import android.graphics.Bitmap;
@@ -9,7 +8,6 @@ import android.net.Uri;
 import androidx.annotation.AnyThread;
 import androidx.annotation.NonNull;
 import androidx.annotation.UiThread;
-import androidx.collection.LongSparseArray;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 
@@ -19,8 +17,8 @@ import com.bumptech.glide.load.Key;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.signature.ObjectKey;
+import com.frolo.arch.support.SingleLiveEvent;
 import com.frolo.threads.ThreadStrictMode;
-import com.frolo.muse.arch.SingleLiveEvent;
 
 import java.util.HashMap;
 import java.util.Map;

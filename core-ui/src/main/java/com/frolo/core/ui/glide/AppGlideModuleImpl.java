@@ -1,8 +1,9 @@
-package com.frolo.muse.glide;
+package com.frolo.core.ui.glide;
 
 import android.app.ActivityManager;
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -23,6 +24,7 @@ import java.io.InputStream;
 
 @GlideModule
 public final class AppGlideModuleImpl extends AppGlideModule {
+    private final static String LOG_TAG = "AppGlideModuleImpl";
 
     /**
      * Having a lot of OOM errors, gotta blame Glide for this.
@@ -69,6 +71,7 @@ public final class AppGlideModuleImpl extends AppGlideModule {
 
     @Override
     public void registerComponents(@NonNull Context context, @NonNull Glide glide, @NonNull Registry registry) {
+        Log.d(LOG_TAG, "Register components...");
         // It is important to replace the default ModelLoaderFactory for Uri models.
         // By default, Glide loads thumbnails instead of original arts for Uris if the requested size is small.
         // The thumbnails differ from the original images and this may confuse users.
@@ -79,6 +82,7 @@ public final class AppGlideModuleImpl extends AppGlideModule {
 
     @Override
     public void applyOptions(@NonNull Context context, @NonNull GlideBuilder builder) {
+        Log.d(LOG_TAG, "Apply options...");
         // Default options
         builder.setDefaultRequestOptions(defaultRequestOptions);
 

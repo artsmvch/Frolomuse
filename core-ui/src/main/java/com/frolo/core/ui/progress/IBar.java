@@ -1,5 +1,4 @@
-package com.frolo.muse.views.progress;
-
+package com.frolo.core.ui.progress;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -19,14 +18,14 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.graphics.ColorUtils;
 
-import com.frolo.muse.R;
+import com.frolo.core.ui.R;
 
 /**
- * Progress Bar designed like Ios Progress Bar;
- * Usually it has 20 bars;
+ * Progress Bar designed like iOS Progress Bar. Usually it has 20 bars:
  * the first 5 are active so we interpolate colors for these bars only;
  */
-public class IBar extends View {
+@Deprecated
+public final class IBar extends View {
     private static final float DEFAULT_SIZE_IN_DP = 24f;
 
     private static final int DEFAULT_ACTIVE_COLOR =

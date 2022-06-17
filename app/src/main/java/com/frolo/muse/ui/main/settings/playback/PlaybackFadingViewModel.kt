@@ -2,7 +2,7 @@ package com.frolo.muse.ui.main.settings.playback
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.frolo.muse.arch.combine
+import com.frolo.arch.support.combine
 import com.frolo.muse.interactor.player.PlaybackFadingUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.logPlaybackFadingConfigured

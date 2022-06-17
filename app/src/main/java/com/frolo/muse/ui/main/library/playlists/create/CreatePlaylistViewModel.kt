@@ -2,7 +2,7 @@ package com.frolo.muse.ui.main.library.playlists.create
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.frolo.muse.arch.SingleLiveEvent
+import com.frolo.arch.support.SingleLiveEvent
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.logPlaylistCreated
 import com.frolo.music.model.Playlist

@@ -15,7 +15,7 @@
         android:layout_height="0dp"
         android:layout_marginStart="24dp" />
 
-    <com.frolo.muse.views.progress.IBar
+    <com.frolo.core.ui.progress.IBar
         app:layout_constraintStart_toStartOf="@id/imv_poster"
         app:layout_constraintTop_toTopOf="@id/imv_poster"
         app:layout_constraintEnd_toEndOf="@id/imv_poster"

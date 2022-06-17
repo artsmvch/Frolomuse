@@ -287,12 +287,16 @@ internal class PlayerServiceDelegate(
             .build()
     }
 
-    private fun newPendingIntent(requestCode: Int, intent: Intent): PendingIntent? {
-        val flags: Int = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+    private fun getPendingIntentFlags(): Int {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         } else {
             PendingIntent.FLAG_UPDATE_CURRENT
         }
+    }
+
+    private fun newServicePendingIntent(requestCode: Int, intent: Intent): PendingIntent? {
+        val flags: Int = getPendingIntentFlags()
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             PendingIntent.getForegroundService(service, requestCode, intent, flags)
         } else {
@@ -308,25 +312,25 @@ internal class PlayerServiceDelegate(
         val isFav = params.isFavourite
 
         // Cancel notification
-        val cancelPendingIntent = newPendingIntent(RC_CANCEL_NOTIFICATION,
+        val cancelPendingIntent = newServicePendingIntent(RC_CANCEL_NOTIFICATION,
             newIntent(context, PlayerServiceCmd.CMD_CANCEL_NOTIFICATION))
         // Change fav status
         val changeFavPendingIntent = newIntent(context, PlayerServiceCmd.CMD_CHANGE_FAV_STATUS).let { intent ->
             intent.putExtra(EXTRA_SONG, item?.toSong())
-            newPendingIntent(RC_CHANGE_FAV_STATUS, intent)
+            newServicePendingIntent(RC_CHANGE_FAV_STATUS, intent)
         }
         // Skip to previous
-        val prevPendingIntent = newPendingIntent(RC_SKIP_TO_PREVIOUS,
+        val prevPendingIntent = newServicePendingIntent(RC_SKIP_TO_PREVIOUS,
             newIntent(context, PlayerServiceCmd.CMD_SKIP_TO_PREVIOUS))
         // Toggle
-        val togglePendingIntent = newPendingIntent(RC_TOGGLE,
+        val togglePendingIntent = newServicePendingIntent(RC_TOGGLE,
             newIntent(context, PlayerServiceCmd.CMD_TOGGLE))
         // Skip to next
-        val nextPendingIntent = newPendingIntent(RC_SKIP_TO_NEXT,
+        val nextPendingIntent = newServicePendingIntent(RC_SKIP_TO_NEXT,
             newIntent(context, PlayerServiceCmd.CMD_SKIP_TO_NEXT))
         // Open player
-        val openPendingIntent = newPendingIntent(RC_OPEN_PLAYER,
-            MainActivity.newIntent(context, openPlayer = true))
+        val openPendingIntent = PendingIntent.getActivity(service, RC_OPEN_PLAYER,
+            MainActivity.newIntent(context, openPlayer = true), getPendingIntentFlags())
 
         val notificationBuilder = NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID).apply {
             setSmallIcon(R.drawable.ic_player_notification_small)

@@ -1,4 +1,4 @@
-package com.frolo.muse.glide
+package com.frolo.core.ui.glide
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer

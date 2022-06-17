@@ -1,4 +1,4 @@
-package com.frolo.muse.glide
+package com.frolo.core.ui.glide
 
 import android.graphics.*
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool
@@ -65,7 +65,7 @@ class SquircleTransformation(
     }
 
     companion object {
-        private const val ID = "com.frolo.muse.glide.SquircleTransformation"
+        private const val ID = "com.frolo.core.ui.glide.SquircleTransformation"
         private val ID_BYTES = ID.toByteArray(CHARSET)
     }
 
