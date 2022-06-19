@@ -14,7 +14,7 @@ import com.frolo.muse.repository.OnboardingPreferences
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.router.AppRouter
 import com.frolo.muse.rx.SchedulerProvider
-import com.frolo.muse.setup.AppDebugController
+import com.frolo.muse.startup.AppDebugController
 import com.frolo.muse.ui.main.audiofx.preset.SavePresetVMFactory
 import com.frolo.muse.ui.main.editor.album.AlbumEditorVMFactory
 import com.frolo.muse.ui.main.editor.playlist.PlaylistEditorVMFactory

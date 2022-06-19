@@ -27,8 +27,8 @@ import com.frolo.muse.repository.AppearancePreferences
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.rx.disposeOnDestroyOf
-import com.frolo.muse.setup.AppDebugController
 import com.frolo.muse.sleeptimer.PlayerSleepTimer
+import com.frolo.muse.startup.AppDebugController
 import com.frolo.muse.ui.*
 import com.frolo.muse.ui.base.FragmentContentInsetsListener
 import com.frolo.muse.ui.main.settings.journal.PlayerJournalDialog
