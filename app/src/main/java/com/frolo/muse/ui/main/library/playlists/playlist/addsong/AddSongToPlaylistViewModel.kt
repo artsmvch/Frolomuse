@@ -3,7 +3,7 @@ package com.frolo.muse.ui.main.library.playlists.playlist.addsong
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import com.frolo.muse.arch.combine
+import com.frolo.arch.support.combine
 import com.frolo.muse.interactor.media.AddSongToPlaylistUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.logSongsAddedToPlaylist

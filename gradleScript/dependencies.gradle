@@ -24,6 +24,7 @@ ext {
         ],
 
         lifecycle : [
+            livedata:               "androidx.lifecycle:lifecycle-livedata-ktx:2.4.1",
             extensions:             "androidx.lifecycle:lifecycle-extensions:2.1.0",
             viewmodel:              "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1",
             compiler:               "android.arch.lifecycle:compiler:1.1.1"
@@ -63,6 +64,12 @@ ext {
 
         work: [
             runtime:            "androidx.work:work-runtime-ktx:2.7.1"
+        ],
+
+        glide: [
+            glide:                  "com.github.bumptech.glide:glide:4.11.0",
+            compiler:               "com.github.bumptech.glide:compiler:4.11.0",
+            transformations:        "jp.wasabeef:glide-transformations:4.0.0"
         ]
     ]
 }

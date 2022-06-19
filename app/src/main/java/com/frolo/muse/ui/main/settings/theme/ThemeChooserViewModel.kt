@@ -2,7 +2,7 @@ package com.frolo.muse.ui.main.settings.theme
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.frolo.muse.arch.SingleLiveEvent
+import com.frolo.arch.support.SingleLiveEvent
 import com.frolo.muse.billing.Products
 import com.frolo.muse.common.albumId
 import com.frolo.player.Player

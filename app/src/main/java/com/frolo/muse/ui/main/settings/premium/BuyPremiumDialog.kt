@@ -14,12 +14,12 @@ import androidx.transition.Fade
 import androidx.transition.TransitionManager
 import com.frolo.muse.BuildConfig
 import com.frolo.muse.R
-import com.frolo.muse.arch.observe
-import com.frolo.muse.arch.observeNonNull
+import com.frolo.arch.support.observe
+import com.frolo.arch.support.observeNonNull
 import com.frolo.muse.billing.TrialStatus
 import com.frolo.muse.di.activityComponent
 import com.frolo.muse.ui.base.BaseDialogFragment
-import com.frolo.muse.ui.base.castHost
+import com.frolo.muse.ui.base.tryHostAs
 import com.frolo.muse.views.RecyclerViewDividers
 import kotlinx.android.synthetic.main.dialog_buy_premium.*
 import java.util.concurrent.TimeUnit
@@ -34,7 +34,7 @@ class BuyPremiumDialog : BaseDialogFragment() {
         ViewModelProviders.of(this, vmFactory)[BuyPremiumViewModel::class.java]
     }
 
-    private val listener: OnBuyPremiumClickListener? get() = castHost()
+    private val listener: OnBuyPremiumClickListener? get() = tryHostAs()
 
     private fun getBenefits(): List<Benefit> {
         val context: Context = requireContext()

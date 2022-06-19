@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--IBar-->
+    <attr format="reference" name="iBarStyle"/>
+
+    <declare-styleable name="IBar">
+        <attr name="activeColor" format="color"/>
+        <attr name="inactiveColor" format="color"/>
+    </declare-styleable>
+
+    <style name="Base.IBar" parent="">
+        <item name="activeColor">#9C9C9C</item>
+        <item name="inactiveColor">#C3FFFFFF</item>
+    </style>
+</resources>

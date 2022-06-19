@@ -9,7 +9,7 @@
         android:background="?colorSurface"
         android:alpha="0.8"/>
 
-    <com.frolo.muse.views.progress.IBar
+    <com.frolo.core.ui.progress.IBar
         android:id="@+id/pb_progress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -41,7 +41,7 @@
             app:image="@drawable/ic_hidden_80dp"
             app:message="@string/hidden_files_placeholder_message"/>
 
-        <com.frolo.muse.views.progress.IBar
+        <com.frolo.core.ui.progress.IBar
             android:id="@+id/pb_loading"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -6,7 +6,7 @@ import androidx.arch.core.executor.ArchTaskExecutor
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.frolo.muse.arch.SingleLiveEvent
+import com.frolo.arch.support.SingleLiveEvent
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.rx.SchedulerProvider
 import io.reactivex.Completable

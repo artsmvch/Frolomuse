@@ -2,8 +2,8 @@ package com.frolo.muse.ui.main.player.current
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.frolo.muse.arch.SingleLiveEvent
-import com.frolo.muse.arch.map
+import com.frolo.arch.support.SingleLiveEvent
+import com.frolo.arch.support.map
 import com.frolo.muse.common.toSongs
 import com.frolo.muse.di.ExecutorQualifier
 import com.frolo.player.AudioSource

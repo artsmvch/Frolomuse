@@ -2,12 +2,12 @@ package com.frolo.muse.ui.main.audiofx.params
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.frolo.muse.arch.liveDataOf
-import com.frolo.muse.arch.map
+import com.frolo.arch.support.liveDataOf
+import com.frolo.arch.support.map
 import com.frolo.muse.billing.TrialStatus
 import com.frolo.player.AdvancedPlaybackParams
 import com.frolo.player.Player
-import com.frolo.muse.engine.PlayerWrapper
+import com.frolo.muse.player.PlayerWrapper
 import com.frolo.player.SimplePlayerObserver
 import com.frolo.muse.interactor.billing.PremiumManager
 import com.frolo.muse.logger.EventLogger

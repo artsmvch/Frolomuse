@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
-import com.frolo.muse.arch.liveDataOf
+import com.frolo.arch.support.liveDataOf
 import com.frolo.player.AudioSource
 import com.frolo.player.Player
 import com.frolo.player.SimplePlayerObserver

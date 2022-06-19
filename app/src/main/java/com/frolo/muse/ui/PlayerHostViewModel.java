@@ -12,13 +12,16 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.frolo.muse.engine.PlayerHolder;
-import com.frolo.muse.engine.PlayerWrapper;
-import com.frolo.muse.engine.service.PlayerService;
+import com.frolo.muse.player.PlayerHolder;
+import com.frolo.muse.player.PlayerWrapper;
+import com.frolo.muse.player.service.PlayerService;
 import com.frolo.muse.logger.EventLogger;
 import com.frolo.muse.ui.base.BaseAndroidViewModel;
 import com.frolo.player.Player;
 import com.frolo.threads.ThreadUtils;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 
 
 public class PlayerHostViewModel extends BaseAndroidViewModel {
@@ -34,6 +37,8 @@ public class PlayerHostViewModel extends BaseAndroidViewModel {
             noteServiceDisconnected();
         }
     };
+    @Nullable
+    private Disposable mPlayerObserver = null;
 
     private final MutableLiveData<Player> mPlayerLiveData = new MutableLiveData<>();
     private final PlayerWrapper mPlayerWrapper;
@@ -88,10 +93,21 @@ public class PlayerHostViewModel extends BaseAndroidViewModel {
 
     private void noteServiceConnected(IBinder service) {
         if (service instanceof PlayerHolder) {
-            Player playerInstance = ((PlayerHolder) service).getPlayer();
-            mPlayerLiveData.setValue(playerInstance);
-            mPlayerWrapper.attachBase(playerInstance);
-            onPlayerConnected(playerInstance);
+            disposePlayerObserver();
+            mPlayerObserver = ((PlayerHolder) service).getPlayerAsync()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(playerInstance -> {
+                    mPlayerLiveData.setValue(playerInstance);
+                    mPlayerWrapper.attachBase(playerInstance);
+                    onPlayerConnected(playerInstance);
+                });
+        }
+    }
+
+    private void disposePlayerObserver() {
+        if (mPlayerObserver != null) {
+            mPlayerObserver.dispose();
+            mPlayerObserver = null;
         }
     }
 
@@ -99,6 +115,7 @@ public class PlayerHostViewModel extends BaseAndroidViewModel {
     }
 
     private void noteServiceDisconnected() {
+        disposePlayerObserver();
         Player player = mPlayerLiveData.getValue();
         if (player != null) {
             mPlayerLiveData.setValue(null);
@@ -114,6 +131,7 @@ public class PlayerHostViewModel extends BaseAndroidViewModel {
     @Override
     protected void onCleared() {
         unbindFromPlayerService();
+        disposePlayerObserver();
         // We delay detaching the player from the wrapper because all child
         // component view models (like fragments) are cleared after this one
         // and they may still need to use the player.

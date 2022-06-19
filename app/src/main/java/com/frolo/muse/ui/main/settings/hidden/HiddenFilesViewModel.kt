@@ -2,7 +2,7 @@ package com.frolo.muse.ui.main.settings.hidden
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.frolo.muse.arch.combine
+import com.frolo.arch.support.combine
 import com.frolo.muse.interactor.media.hidden.GetHiddenFilesUseCase
 import com.frolo.muse.interactor.media.hidden.RemoveFromHiddenUseCase
 import com.frolo.muse.logger.EventLogger

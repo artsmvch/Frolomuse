@@ -7,11 +7,11 @@ import androidx.lifecycle.MutableLiveData
 import com.bumptech.glide.Glide
 import com.frolo.muse.FrolomuseApp
 import com.frolo.muse.Features
-import com.frolo.muse.arch.SingleLiveEvent
-import com.frolo.muse.arch.call
-import com.frolo.muse.arch.map
-import com.frolo.muse.glide.GlideAlbumArtHelper
-import com.frolo.muse.glide.makeAlbumArtRequestAsBitmap
+import com.frolo.arch.support.SingleLiveEvent
+import com.frolo.arch.support.call
+import com.frolo.arch.support.map
+import com.frolo.core.ui.glide.GlideAlbumArtHelper
+import com.frolo.core.ui.glide.makeAlbumArtRequestAsBitmap
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.logAlbumUpdated
 import com.frolo.music.model.Album

@@ -10,15 +10,15 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.frolo.muse.R
-import com.frolo.muse.arch.observe
-import com.frolo.muse.arch.observeNonNull
+import com.frolo.arch.support.observe
+import com.frolo.arch.support.observeNonNull
 import com.frolo.muse.di.activityComponent
 import com.frolo.music.model.MediaBucket
 import com.frolo.music.model.MediaFile
 import com.frolo.muse.thumbnails.provideThumbnailLoader
 import com.frolo.muse.ui.ShotLayoutAnimationController
 import com.frolo.muse.ui.base.FragmentContentInsetsListener
-import com.frolo.muse.ui.base.castHost
+import com.frolo.muse.ui.base.tryHostAs
 import com.frolo.muse.ui.base.serializableArg
 import com.frolo.muse.ui.base.withArg
 import com.frolo.muse.ui.main.addLinearItemMargins
@@ -57,7 +57,7 @@ class AudioBucketFragment : AbsMediaCollectionFragment<MediaFile>(), FragmentCon
         }
     }
 
-    private val bucketCallback: BucketCallback? get() = castHost<BucketCallback>()
+    private val bucketCallback: BucketCallback? get() = tryHostAs<BucketCallback>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

@@ -18,8 +18,7 @@ class TouchFrameLayout @JvmOverloads constructor(
 
     interface TouchCallback {
         fun onTouchDown()
-
-        fun onTouchRelease()
+        fun onTouchUp()
     }
 
     var touchCallback: TouchCallback? = null
@@ -28,11 +27,9 @@ class TouchFrameLayout @JvmOverloads constructor(
         if (ev.action == MotionEvent.ACTION_DOWN) {
             touchCallback?.onTouchDown()
         }
-
         if (ev.action == MotionEvent.ACTION_UP && ev.action == MotionEvent.ACTION_CANCEL) {
-            touchCallback?.onTouchRelease()
+            touchCallback?.onTouchUp()
         }
-
         return super.onInterceptTouchEvent(ev)
     }
 

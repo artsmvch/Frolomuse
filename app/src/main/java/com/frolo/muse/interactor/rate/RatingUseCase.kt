@@ -1,8 +1,8 @@
 package com.frolo.muse.interactor.rate
 
-import com.frolo.muse.repository.Preferences
-import com.frolo.muse.router.AppRouter
+import com.frolo.muse.repository.AppLaunchInfoProvider
 import com.frolo.muse.repository.RatingPreferences
+import com.frolo.muse.router.AppRouter
 import com.frolo.muse.rx.SchedulerProvider
 import io.reactivex.Completable
 import io.reactivex.Single
@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 class RatingUseCase @Inject constructor(
     private val schedulerProvider: SchedulerProvider,
-    private val preferences: Preferences,
+    private val launchInfoProvider: AppLaunchInfoProvider,
     private val ratingPreferences: RatingPreferences,
     private val appRouter: AppRouter
 ) {
@@ -27,7 +27,7 @@ class RatingUseCase @Inject constructor(
                     ratingPreferences.getMinLaunchCountForRatingRequest()
                         .firstOrError()
                         .map { count ->
-                            preferences.launchCount >= count
+                            launchInfoProvider.launchCount >= count
                         }
                         .delay(1, TimeUnit.MINUTES)
                 }
@@ -43,19 +43,19 @@ class RatingUseCase @Inject constructor(
 
     fun negativeAnswer(): Completable {
         // Ask again after 3x launches
-        val newCount = preferences.launchCount * 3
+        val newCount = launchInfoProvider.launchCount * 3
         return ratingPreferences.setMinLaunchCountForRatingRequest(newCount)
     }
 
     fun neutralAnswer(): Completable {
         // Ask again after 5 additional launches
-        val newCount = preferences.launchCount + 5
+        val newCount = launchInfoProvider.launchCount + 5
         return ratingPreferences.setMinLaunchCountForRatingRequest(newCount)
     }
 
     fun cancel(): Completable {
         // Ask again after 3 additional launches
-        val newCount = preferences.launchCount + 3
+        val newCount = launchInfoProvider.launchCount + 3
         return ratingPreferences.setMinLaunchCountForRatingRequest(newCount)
     }
 

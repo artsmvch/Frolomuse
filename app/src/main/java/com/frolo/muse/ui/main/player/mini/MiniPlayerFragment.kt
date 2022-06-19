@@ -12,8 +12,8 @@ import com.frolo.mediabutton.PlayButton
 import com.frolo.muse.R
 import com.frolo.ui.Screen
 import com.frolo.ui.StyleUtils
-import com.frolo.muse.arch.observe
-import com.frolo.muse.arch.observeNonNull
+import com.frolo.arch.support.observe
+import com.frolo.arch.support.observeNonNull
 import com.frolo.music.model.Song
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.getNameString

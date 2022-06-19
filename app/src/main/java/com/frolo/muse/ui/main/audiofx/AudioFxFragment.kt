@@ -15,11 +15,11 @@ import androidx.transition.TransitionManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.frolo.muse.*
-import com.frolo.muse.arch.observe
-import com.frolo.muse.arch.observeNonNull
-import com.frolo.muse.glide.GlideOptions.bitmapTransform
+import com.frolo.arch.support.observe
+import com.frolo.arch.support.observeNonNull
 import com.frolo.audiofx.Preset
 import com.frolo.audiofx.Reverb
+import com.frolo.core.ui.glide.GlideOptions
 import com.frolo.muse.ui.Snapshots
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.base.FragmentContentInsetsListener
@@ -332,7 +332,7 @@ class AudioFxFragment: BaseFragment(), FragmentContentInsetsListener {
                             { result ->
                                 Glide.with(this@AudioFxFragment)
                                     .load(result)
-                                    .apply(bitmapTransform(BlurTransformation(10)))
+                                    .apply(GlideOptions.bitmapTransform(BlurTransformation(10)))
                                     .transition(DrawableTransitionOptions.withCrossFade(200))
                                     .into(imv_blurred_snapshot)
                             },

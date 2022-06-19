@@ -10,9 +10,11 @@ import com.frolo.muse.interactor.media.get.*
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.repository.AppearancePreferences
 import com.frolo.muse.repository.LibraryPreferences
+import com.frolo.muse.repository.OnboardingPreferences
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.router.AppRouter
 import com.frolo.muse.rx.SchedulerProvider
+import com.frolo.muse.setup.AppDebugController
 import com.frolo.muse.ui.main.audiofx.preset.SavePresetVMFactory
 import com.frolo.muse.ui.main.editor.album.AlbumEditorVMFactory
 import com.frolo.muse.ui.main.editor.playlist.PlaylistEditorVMFactory
@@ -70,6 +72,7 @@ interface ActivityComponentProvider {
     fun providePreferences(): Preferences
     fun provideLibraryPreferences(): LibraryPreferences
     fun provideAppearancePreferences(): AppearancePreferences
+    fun provideOnboardingPreferences(): OnboardingPreferences
     fun provideViewModelFactory(): ViewModelProvider.Factory
     fun provideEventLogger(): EventLogger
     fun providePlayerJournal(): PlayerJournal
@@ -90,6 +93,9 @@ interface ActivityComponentProvider {
 
     // Billing
     fun provideBillingManager(): BillingManager
+
+    // Debug
+    fun provideAppDebugController(): AppDebugController
 }
 
 @ActivityScope

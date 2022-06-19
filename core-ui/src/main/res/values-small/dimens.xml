@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Carousel-->
+    <dimen name="carousel_base_card_elevation">2dp</dimen>
+    <dimen name="carousel_max_card_elevation">4dp</dimen>
+    <dimen name="carousel_card_corner_radius">12dp</dimen>
+</resources>

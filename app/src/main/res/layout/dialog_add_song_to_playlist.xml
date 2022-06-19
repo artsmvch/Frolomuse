@@ -74,7 +74,7 @@
                 android:layout_gravity="center"
                 android:visibility="invisible" />
 
-            <com.frolo.muse.views.progress.IBar
+            <com.frolo.core.ui.progress.IBar
                 android:id="@+id/pb_loading"
                 android:visibility="invisible"
                 android:layout_gravity="center"

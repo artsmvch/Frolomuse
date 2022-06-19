@@ -2,12 +2,13 @@ package com.frolo.muse.android
 
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 
 
 fun PackageManager.canStartActivity(intent: Intent): Boolean {
-    val activityInfo = intent.resolveActivityInfo(this, intent.flags)
-    //return intent.resolveActivity(this) != null
+    val activityInfo: ActivityInfo? =
+        intent.resolveActivityInfo(this, 0)
     return activityInfo != null && activityInfo.exported
 }
 

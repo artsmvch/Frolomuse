@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.DialogInterface
 import android.os.Build
 import android.text.Html
+import com.frolo.core.ui.dialog.AlertDialogBuilders
 import com.frolo.muse.R
 import com.frolo.muse.model.event.DeletionConfirmation
 import com.frolo.muse.model.event.DeletionType
@@ -96,9 +97,6 @@ fun <E: Media> Context.confirmDeletion(
 }
 
 fun Context.confirmShortcutCreation(media: Media, whenConfirmed: () -> Unit): Dialog {
-    val listener = DialogInterface.OnClickListener { _, i ->
-        if (i == DialogInterface.BUTTON_POSITIVE) whenConfirmed.invoke()
-    }
 
     // Here we try to apply a bold span to a parameterized string from res
     val message = try {
@@ -127,11 +125,11 @@ fun Context.confirmShortcutCreation(media: Media, whenConfirmed: () -> Unit): Di
         getString(R.string.do_you_want_to_create_shortcut_for_s, media.getName())
     }
 
-    return MaterialAlertDialogBuilder(this)
+    return AlertDialogBuilders.newBuilder(this)
+        .setIcon(R.drawable.ic_shortcut_18dp)
         .setMessage(message)
         .setTitle(R.string.create_shortcut)
-        .setIcon(R.drawable.ic_shortcut_18dp)
-        .setPositiveButton(R.string.create, listener)
-        .setNegativeButton(R.string.cancel, listener)
+        .setPositiveButton(R.string.create, whenConfirmed)
+        .setNegativeButton(R.string.cancel)
         .show()
 }

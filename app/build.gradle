@@ -62,7 +62,6 @@ android {
         buildConfigField "Boolean", "GOOGLE_SERVICES_ENABLED", "$google_services_enabled"
         buildConfigField "String", "BUILD_SCRIPT_TIME", "\"${script_time}\""
         buildConfigField "String", "DEVELOPER_EMAIL", "\"alexei.artsimovich@gmail.com\""
-        buildConfigField ('int', "SOUND_FRAME_GAIN_COUNT", "100")
 
         vectorDrawables.useSupportLibrary = true
 
@@ -177,7 +176,8 @@ dependencies {
     implementation project(path: ':performance:coldstart')
     implementation project(path: ':performance:anr')
 
-    // Material design support
+    // Design
+    implementation project(path: ':core-ui')
     implementation project(path: ':material-support')
 
     // Custom views
@@ -224,6 +224,7 @@ dependencies {
     implementation deps.lifecycle.extensions
     implementation deps.lifecycle.viewmodel
     kapt deps.lifecycle.compiler
+    implementation project(path: ':arch-support')
 
     // Support
     implementation deps.support.multidex
@@ -263,13 +264,13 @@ dependencies {
     implementation deps.firebase.config
     implementation deps.firebase.messaging
 
+    // Glide
+    implementation deps.glide.glide
+    implementation deps.glide.transformations
+    kapt deps.glide.compiler
+
     // Fragment navigation
     implementation 'com.ncapdevi:frag-nav:3.2.0'
-    // Glide
-    implementation 'com.github.bumptech.glide:glide:4.11.0'
-    kapt 'com.github.bumptech.glide:compiler:4.11.0'
-    // Glide transformations
-    implementation 'jp.wasabeef:glide-transformations:4.0.0'
     // Sticky headers recycler view
     implementation 'com.timehop.stickyheadersrecyclerview:library:0.4.3@aar'
     // Alphabet index fast scroller

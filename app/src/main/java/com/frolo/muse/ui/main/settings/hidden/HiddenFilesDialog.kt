@@ -8,7 +8,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.frolo.muse.R
-import com.frolo.muse.arch.observeNonNull
+import com.frolo.arch.support.observeNonNull
 import com.frolo.muse.ui.base.BaseDialogFragment
 import kotlinx.android.synthetic.main.dialog_hidden_files.*
 

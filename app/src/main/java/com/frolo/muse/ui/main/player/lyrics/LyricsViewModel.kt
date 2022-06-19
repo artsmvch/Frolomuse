@@ -3,9 +3,9 @@ package com.frolo.muse.ui.main.player.lyrics
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import com.frolo.muse.arch.SingleLiveEvent
-import com.frolo.muse.arch.liveDataOf
-import com.frolo.muse.arch.map
+import com.frolo.arch.support.SingleLiveEvent
+import com.frolo.arch.support.liveDataOf
+import com.frolo.arch.support.map
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.logFailedToGetLyrics
 import com.frolo.muse.logger.logLyricsSaved

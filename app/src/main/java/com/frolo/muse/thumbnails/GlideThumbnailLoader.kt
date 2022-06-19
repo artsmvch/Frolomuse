@@ -15,8 +15,8 @@ import com.frolo.customdrawable.squircle.SquircleColorDrawable
 import com.frolo.muse.R
 import com.frolo.ui.Screen
 import com.frolo.ui.StyleUtils
-import com.frolo.muse.glide.makeAlbumArtRequest
-import com.frolo.muse.glide.squircleCrop
+import com.frolo.core.ui.glide.makeAlbumArtRequest
+import com.frolo.core.ui.glide.squircleCrop
 import com.frolo.music.model.*
 
 

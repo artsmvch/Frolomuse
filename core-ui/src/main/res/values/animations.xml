@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AlertDialog.Simple" parent="">
+        <item name="android:windowEnterAnimation">@anim/alert_dialog_enter_animation</item>
+        <item name="android:windowExitAnimation">@anim/alert_dialog_exit_animation</item>
+    </style>
+</resources>

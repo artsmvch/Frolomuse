@@ -17,8 +17,8 @@ import androidx.preference.PreferenceFragmentCompat
 import com.frolo.muse.BuildConfig
 import com.frolo.muse.Features
 import com.frolo.muse.R
-import com.frolo.muse.arch.observe
-import com.frolo.muse.arch.observeNonNull
+import com.frolo.arch.support.observe
+import com.frolo.arch.support.observeNonNull
 import com.frolo.muse.di.activityComponent
 import com.frolo.muse.logger.*
 import com.frolo.mediascan.MediaScanService
@@ -27,6 +27,7 @@ import com.frolo.muse.repository.AppearancePreferences
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.rx.disposeOnDestroyOf
+import com.frolo.muse.setup.AppDebugController
 import com.frolo.muse.sleeptimer.PlayerSleepTimer
 import com.frolo.muse.ui.*
 import com.frolo.muse.ui.base.FragmentContentInsetsListener
@@ -49,21 +50,20 @@ class SettingsFragment : PreferenceFragmentCompat(),
     private val schedulerProvider: SchedulerProvider by lazy {
         activityComponent.provideSchedulerProvider()
     }
-
     private val preferences: Preferences by lazy {
         activityComponent.providePreferences()
     }
-
     private val appearancePreferences: AppearancePreferences by lazy {
         activityComponent.provideAppearancePreferences()
     }
-
     private val appRouter: AppRouter by lazy {
         activityComponent.provideAppRouter()
     }
-
     private val eventLogger: EventLogger by lazy {
         activityComponent.provideEventLogger()
+    }
+    private val appDebugController: AppDebugController by lazy {
+        activityComponent.provideAppDebugController()
     }
 
     private val buyPremiumPreference: Preference? get() = findPreference("buy_premium")
@@ -283,6 +283,21 @@ class SettingsFragment : PreferenceFragmentCompat(),
         findPreference("reset_premium_trial").apply {
             setOnPreferenceClickListener {
                 settingsViewModel.onResetPremiumTrialClicked()
+                true
+            }
+        }
+
+        findPreference("clear_user_data").apply {
+            setOnPreferenceClickListener {
+                appDebugController.clearUserData()
+                Toast.makeText(requireContext(), "Cleared", Toast.LENGTH_SHORT).show()
+                true
+            }
+        }
+
+        findPreference("kill_process").apply {
+            setOnPreferenceClickListener {
+                appDebugController.killCompletely()
                 true
             }
         }

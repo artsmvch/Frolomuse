@@ -8,9 +8,9 @@ import android.view.View
 import androidx.lifecycle.LifecycleOwner
 import com.frolo.muse.R
 import com.frolo.ui.StyleUtils
-import com.frolo.muse.arch.observeNonNull
-import com.frolo.muse.glide.GlideAlbumArtHelper
-import com.frolo.muse.glide.observe
+import com.frolo.arch.support.observeNonNull
+import com.frolo.core.ui.glide.GlideAlbumArtHelper
+import com.frolo.core.ui.glide.observe
 import com.frolo.music.model.Song
 import com.frolo.muse.model.menu.RecentPeriodMenu
 import com.frolo.muse.setIconTint

@@ -14,7 +14,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.frolo.muse.R
-import com.frolo.muse.arch.observeNonNull
+import com.frolo.arch.support.observeNonNull
 import com.frolo.muse.di.activityComponent
 import com.frolo.music.model.Song
 import com.frolo.muse.ui.base.BaseDialogFragment

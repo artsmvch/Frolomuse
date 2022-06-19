@@ -61,10 +61,9 @@ fun <T: Serializable> BaseDialogFragment.serializableNullableArg(key: String): L
 }
 //</editor-fold>
 
-inline fun <reified T> BaseFragment.castHost(): T? {
-    return (parentFragment as? T) ?: (context as? T) ?: (host as? T)
-}
-
-inline fun <reified T> BaseDialogFragment.castHost(): T? {
-    return (parentFragment as? T) ?: (context as? T) ?: (host as? T)
+inline fun <reified T> Fragment.tryHostAs(): T? {
+    return (parentFragment as? T)
+        ?: (activity as? T)
+        ?: (context as? T)
+        ?: (host as? T)
 }

@@ -3,37 +3,36 @@ package com.frolo.muse.ui.main
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.frolo.muse.arch.EventLiveData
-import com.frolo.muse.arch.call
-import com.frolo.muse.engine.PlayerStateRestorer
-import com.frolo.muse.engine.PlayerWrapper
-import com.frolo.player.Player
+import com.frolo.arch.support.EventLiveData
+import com.frolo.arch.support.call
+import com.frolo.muse.player.PlayerStateRestorer
+import com.frolo.muse.player.PlayerWrapper
 import com.frolo.muse.interactor.billing.PremiumManager
 import com.frolo.muse.interactor.feature.FeaturesUseCase
 import com.frolo.muse.interactor.firebase.SyncFirebaseMessagingTokenUseCase
 import com.frolo.muse.interactor.media.TransferPlaylistsUseCase
 import com.frolo.muse.interactor.media.shortcut.NavigateToMediaUseCase
 import com.frolo.muse.interactor.player.OpenAudioSourceUseCase
-import com.frolo.muse.logger.*
-import com.frolo.music.model.Media
+import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.permission.PermissionChecker
 import com.frolo.muse.repository.AppearancePreferences
 import com.frolo.muse.repository.RemoteConfigRepository
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.PlayerHostViewModel
+import com.frolo.music.model.Media
+import com.frolo.player.Player
 import io.reactivex.Flowable
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 
 /**
- * The main view model associated to all screens in the app.
+ * The main view model associated with the root screen of the app.
  *
  * The main purpose of this view model is:
- * 1) aks to rate the app;
- * 2) check the RES permission;
- * 3) handle the player connections.
- *
- * P.S. RES stands for Read-External-Storage.
+ * 1) check the RES permission (Read External Storage);
+ * 2) handle connection to the player;
+ * 3) handle intents;
  */
 class MainViewModel @Inject constructor(
     application: Application,
@@ -52,13 +51,13 @@ class MainViewModel @Inject constructor(
     private val eventLogger: EventLogger
 ): PlayerHostViewModel(application, playerWrapper, eventLogger) {
 
-    @Volatile
-    private var _pendingReadStoragePermissionResult: Boolean = false
+    private var awaitingRESPermissionResult: Boolean = false
+    private var lastRESPermissionDenialTime: Long = 0
 
-    private var _pendingAudioSourceIntent: String? = null
+    private var pendingAudioSourceIntent: String? = null
 
-    private val _askRESPermissionsEvent = EventLiveData<Unit>()
-    val askRESPermissionsEvent: LiveData<Unit> get() = _askRESPermissionsEvent
+    private val _requestRESPermissionsEvent = EventLiveData<Unit>()
+    val requestRESPermissionsEvent: LiveData<Unit> get() = _requestRESPermissionsEvent
 
     private val _explainNeedForRESPermissionEvent = EventLiveData<Unit>()
     val explainNeedForRESPermissionEvent: LiveData<Unit> get() = _explainNeedForRESPermissionEvent
@@ -82,37 +81,35 @@ class MainViewModel @Inject constructor(
     }
 
     private fun tryRestorePlayerStateIfNeeded() {
-        val player: Player = this.player ?: return
-
-        if (permissionChecker.isQueryMediaContentPermissionGranted) {
-            playerStateRestorer
-                .restorePlayerStateIfNeeded(player)
-                .observeOn(schedulerProvider.main())
-                .subscribe(
-                    { /* stub */ },
-                    { err ->
-                        if (err is SecurityException) {
-                            tryAskRESPermission()
-                        }
-                    }
-                )
-                .save()
-        } else {
-            tryAskRESPermission()
+        val safePlayer: Player = this.player ?: return
+        if (!permissionChecker.isQueryMediaContentPermissionGranted) {
+            tryRequestRESPermission()
+            return
         }
+        playerStateRestorer
+            .restorePlayerStateIfNeeded(safePlayer)
+            .observeOn(schedulerProvider.main())
+            .subscribe(
+                { /* stub */ },
+                { err ->
+                    if (err is SecurityException) {
+                        tryRequestRESPermission()
+                    }
+                }
+            )
+            .save()
     }
 
     private fun tryHandlePendingAudioSourceIntentIfNeeded() {
-        val source: String = _pendingAudioSourceIntent ?: return
-        val player: Player = this.player ?: return
-
-        if (permissionChecker.isQueryMediaContentPermissionGranted) {
-            openAudioSourceUseCase.openAudioSource(player, source)
-                .observeOn(schedulerProvider.main())
-                .subscribeFor { _pendingAudioSourceIntent = null }
-        } else {
-            tryAskRESPermission()
+        val safeSource: String = pendingAudioSourceIntent ?: return
+        val safePlayer: Player = this.player ?: return
+        if (!permissionChecker.isQueryMediaContentPermissionGranted) {
+            tryRequestRESPermission()
+            return
         }
+        openAudioSourceUseCase.openAudioSource(safePlayer, safeSource)
+            .observeOn(schedulerProvider.main())
+            .subscribeFor { pendingAudioSourceIntent = null }
     }
 
     private fun tryTransferPlaylistsIfNecessary() {
@@ -122,14 +119,20 @@ class MainViewModel @Inject constructor(
     }
 
     /**
-     * The view model must call this method to ask the RES permission.
-     * It also checks if it's still pending for the result of RES permission asked earlier.
+     * The view model must call this method to request the RES permission.
+     * It also checks if the view model is still pending for the result
+     * of the RES permission requested earlier.
      */
-    private fun tryAskRESPermission() {
-        if (!_pendingReadStoragePermissionResult) {
-            _askRESPermissionsEvent.call()
-            _pendingReadStoragePermissionResult = true
+    private fun tryRequestRESPermission() {
+        if (awaitingRESPermissionResult) {
+            return
         }
+        if (currentTimeMillis() - lastRESPermissionDenialTime < RES_PERMISSION_REQUEST_THROTTLING_MILLIS) {
+            // We don't want to spam these requests
+            return
+        }
+        _requestRESPermissionsEvent.call()
+        awaitingRESPermissionResult = true
     }
 
     fun onFirstCreate() {
@@ -152,10 +155,8 @@ class MainViewModel @Inject constructor(
     }
 
     fun onStart() {
-        if (permissionChecker.isQueryMediaContentPermissionGranted) {
-            // TODO: restore the player state, if needed
-        } else {
-            tryAskRESPermission()
+        if (!permissionChecker.isQueryMediaContentPermissionGranted) {
+            tryRequestRESPermission()
         }
     }
 
@@ -170,14 +171,14 @@ class MainViewModel @Inject constructor(
     //region Read Storage Permission
 
     fun onRESPermissionGranted() {
-        _pendingReadStoragePermissionResult = false
+        awaitingRESPermissionResult = false
         tryRestorePlayerStateIfNeeded()
         tryHandlePendingAudioSourceIntentIfNeeded()
         tryTransferPlaylistsIfNecessary()
     }
 
     fun onRESPermissionDenied() {
-        _pendingReadStoragePermissionResult = false
+        awaitingRESPermissionResult = false
         _explainNeedForRESPermissionEvent.call()
     }
 
@@ -185,12 +186,12 @@ class MainViewModel @Inject constructor(
         if (permissionChecker.shouldRequestMediaPermissionInSettings()) {
             _openPermissionSettingsEvent.call()
         } else {
-            tryAskRESPermission()
+            tryRequestRESPermission()
         }
     }
 
     fun onDeniedRESPermissionExplanation() {
-        // TODO: do we need to respect this choice and don't ask the RES permission while this view model is alive?
+        lastRESPermissionDenialTime = currentTimeMillis()
     }
 
     //endregion
@@ -202,7 +203,13 @@ class MainViewModel @Inject constructor(
     }
 
     fun onOpenAudioSourceIntent(source: String) {
-        _pendingAudioSourceIntent = source
+        pendingAudioSourceIntent = source
         tryHandlePendingAudioSourceIntentIfNeeded()
+    }
+
+    companion object {
+        private val RES_PERMISSION_REQUEST_THROTTLING_MILLIS = TimeUnit.MINUTES.toMillis(1)
+
+        private fun currentTimeMillis(): Long = System.currentTimeMillis()
     }
 }

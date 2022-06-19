@@ -313,6 +313,11 @@ public class PreferencesImpl implements Preferences {
         return preferences.getInt(KEY_TOTAL_LAUNCH_COUNT, 0);
     }
 
+    @Override
+    public boolean isFirstLaunch() {
+        return getLaunchCount() <= 1;
+    }
+
     public void setLaunchCount(int count) {
         preferences.edit().putInt(KEY_TOTAL_LAUNCH_COUNT, count).apply();
     }

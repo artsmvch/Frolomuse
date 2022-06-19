@@ -70,7 +70,7 @@
                 android:hint="@string/lyrics_not_tap_to_write"/>
         </androidx.core.widget.NestedScrollView>
 
-        <com.frolo.muse.views.progress.IBar
+        <com.frolo.core.ui.progress.IBar
             android:layout_gravity="center"
             android:id="@+id/pb_loading"
             android:layout_width="wrap_content"

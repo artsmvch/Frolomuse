@@ -5,10 +5,10 @@ import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.logFailedToTransferPlaylists
 import com.frolo.muse.logger.logPlaylistsTransferred
 import com.frolo.muse.permission.PermissionChecker
-import com.frolo.music.repository.PlaylistRepository
+import com.frolo.muse.repository.AppLaunchInfoProvider
 import com.frolo.muse.repository.PlaylistTransferPreferences
-import com.frolo.muse.repository.Preferences
 import com.frolo.muse.rx.SchedulerProvider
+import com.frolo.music.repository.PlaylistRepository
 import io.reactivex.Completable
 import java.util.concurrent.atomic.AtomicLong
 import javax.inject.Inject
@@ -21,7 +21,7 @@ import javax.inject.Inject
  */
 class TransferPlaylistsUseCase @Inject constructor(
     private val permissionChecker: PermissionChecker,
-    private val appPreferences: Preferences,
+    private val launchInfoProvider: AppLaunchInfoProvider,
     private val playlistTransferPreferences: PlaylistTransferPreferences,
     private val playlistRepository: PlaylistRepository,
     private val schedulerProvider: SchedulerProvider,
@@ -35,7 +35,7 @@ class TransferPlaylistsUseCase @Inject constructor(
             return Completable.complete()
         }
 
-        if (appPreferences.launchCount <= 1) {
+        if (launchInfoProvider.isFirstLaunch) {
             // This is the first launch of the app. We don't want to transfer shared playlists.
             return playlistTransferPreferences.completeTransfer()
         }

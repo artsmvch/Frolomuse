@@ -9,12 +9,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.lifecycle.LifecycleOwner
 import com.frolo.muse.R
-import com.frolo.muse.arch.observeNonNull
+import com.frolo.arch.support.observeNonNull
 import com.frolo.muse.model.menu.ContextualMenu
 import com.frolo.muse.model.menu.OptionsMenu
 import com.frolo.muse.model.menu.SortOrderMenu
 import com.frolo.muse.ui.ScrolledToTop
-import com.frolo.muse.ui.base.BackPressHandler
+import com.frolo.muse.ui.base.OnBackPressedHandler
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.base.RESPermissionBus
 import com.frolo.muse.ui.main.confirmDeletion
@@ -24,7 +24,7 @@ import com.frolo.ui.FragmentUtils
 
 
 abstract class AbsMediaCollectionFragment <E: Media>: BaseFragment(),
-        BackPressHandler,
+        OnBackPressedHandler,
         ScrolledToTop {
 
     // Options menu
@@ -74,7 +74,7 @@ abstract class AbsMediaCollectionFragment <E: Media>: BaseFragment(),
         super.onStop()
     }
 
-    override fun onBackPress(): Boolean {
+    override fun handleOnBackPressed(): Boolean {
         viewModel.onBackPressed()
         return true
     }

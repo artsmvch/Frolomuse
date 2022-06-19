@@ -3,8 +3,8 @@ package com.frolo.muse.ui.main.library.myfiles
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import com.frolo.muse.arch.SingleLiveEvent
-import com.frolo.muse.arch.call
+import com.frolo.arch.support.SingleLiveEvent
+import com.frolo.arch.support.call
 import com.frolo.player.AudioSource
 import com.frolo.player.Player
 import com.frolo.player.SimplePlayerObserver

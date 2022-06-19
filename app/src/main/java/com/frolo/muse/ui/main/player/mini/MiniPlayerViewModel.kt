@@ -2,8 +2,8 @@ package com.frolo.muse.ui.main.player.mini
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.frolo.muse.arch.distinctUntilChanged
-import com.frolo.muse.arch.map
+import com.frolo.arch.support.distinctUntilChanged
+import com.frolo.arch.support.map
 import com.frolo.muse.common.toSong
 import com.frolo.player.AudioSource
 import com.frolo.player.Player

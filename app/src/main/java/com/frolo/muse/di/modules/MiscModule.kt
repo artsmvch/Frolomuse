@@ -10,9 +10,9 @@ import com.frolo.muse.di.impl.misc.MainExecutor
 import com.frolo.muse.di.impl.network.NetworkHelperImpl
 import com.frolo.muse.di.impl.permission.PermissionCheckerImpl
 import com.frolo.muse.di.impl.rx.SchedulerProviderImpl
-import com.frolo.muse.engine.journals.AndroidLogPlayerJournal
-import com.frolo.muse.engine.journals.CompositePlayerJournal
-import com.frolo.muse.engine.journals.StoredInMemoryPlayerJournal
+import com.frolo.muse.player.journals.AndroidLogPlayerJournal
+import com.frolo.muse.player.journals.CompositePlayerJournal
+import com.frolo.muse.player.journals.StoredInMemoryPlayerJournal
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.EventLoggerFactory
 import com.frolo.muse.network.NetworkHelper

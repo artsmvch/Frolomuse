@@ -16,8 +16,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.frolo.muse.R
 import com.frolo.muse.UriPathDetector
-import com.frolo.muse.arch.observe
-import com.frolo.muse.arch.observeNonNull
+import com.frolo.arch.support.observe
+import com.frolo.arch.support.observeNonNull
 import com.frolo.muse.di.activityComponent
 import com.frolo.music.model.Album
 import com.frolo.muse.ui.base.BaseDialogFragment

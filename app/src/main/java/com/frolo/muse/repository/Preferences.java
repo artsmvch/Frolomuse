@@ -17,7 +17,7 @@ import io.reactivex.Completable;
 import io.reactivex.Flowable;
 
 
-public interface Preferences {
+public interface Preferences extends AppLaunchInfoProvider {
 
     void dump(PrintWriter pw);
 

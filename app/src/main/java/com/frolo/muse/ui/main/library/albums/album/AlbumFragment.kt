@@ -9,12 +9,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions
 import com.bumptech.glide.request.RequestOptions
+import com.frolo.core.ui.glide.GlideAlbumArtHelper
+import com.frolo.core.ui.glide.makeAlbumArtRequestAsBitmap
+import com.frolo.core.ui.glide.observe
 import com.frolo.muse.R
 import com.frolo.ui.StyleUtils
-import com.frolo.muse.arch.observe
-import com.frolo.muse.arch.observeNonNull
+import com.frolo.arch.support.observe
+import com.frolo.arch.support.observeNonNull
 import com.frolo.muse.di.activityComponent
-import com.frolo.muse.glide.*
 import com.frolo.music.model.Album
 import com.frolo.music.model.Song
 import com.frolo.muse.thumbnails.provideThumbnailLoader

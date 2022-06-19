@@ -22,9 +22,9 @@ import com.frolo.muse.di.ApplicationComponent
 import com.frolo.muse.di.applicationComponent
 import com.frolo.player.AudioSource
 import com.frolo.player.Player
-import com.frolo.muse.engine.service.PlayerService.Companion.newIntentFromWidget
-import com.frolo.muse.engine.service.PlayerServiceCmd
-import com.frolo.muse.glide.GlideAlbumArtHelper
+import com.frolo.muse.player.service.PlayerService.Companion.newIntentFromWidget
+import com.frolo.muse.player.service.PlayerServiceCmd
+import com.frolo.core.ui.glide.GlideAlbumArtHelper
 import com.frolo.muse.ui.main.MainActivity.Companion.newIntent
 import java.util.concurrent.TimeUnit
 

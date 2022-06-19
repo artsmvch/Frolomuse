@@ -2,7 +2,7 @@ package com.frolo.muse.ui.base
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.frolo.muse.arch.combine
+import com.frolo.arch.support.combine
 import com.frolo.muse.billing.Products
 import com.frolo.muse.billing.TrialStatus
 import com.frolo.muse.interactor.billing.PremiumManager

@@ -2,9 +2,9 @@ package com.frolo.muse.ui.main.settings.premium
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.frolo.muse.arch.EventLiveData
-import com.frolo.muse.arch.call
-import com.frolo.muse.arch.combine
+import com.frolo.arch.support.EventLiveData
+import com.frolo.arch.support.call
+import com.frolo.arch.support.combine
 import com.frolo.billing.ProductDetails
 import com.frolo.muse.billing.Products
 import com.frolo.muse.billing.TrialStatus

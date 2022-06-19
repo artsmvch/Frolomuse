@@ -1,0 +1,53 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+}
+
+android {
+    compileSdk 31
+
+    defaultConfig {
+        minSdk 23
+        targetSdk 31
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        debug {
+            debuggable true
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+dependencies {
+    implementation deps.support.core
+    implementation deps.support.appCompat
+    implementation deps.design.material
+    implementation deps.design.flexbox
+
+    // Glide
+    implementation deps.glide.glide
+    kapt deps.glide.compiler
+
+    implementation project(path: ':audio:player:api')
+    implementation project(path: ':material-support')
+    implementation project(path: ':custom-drawable:squircle')
+    implementation project(path: ':utils:ui')
+    implementation project(path: ':utils:debug-common')
+    implementation project(path: ':utils:threads-common')
+    implementation project(path: ':arch-support')
+}

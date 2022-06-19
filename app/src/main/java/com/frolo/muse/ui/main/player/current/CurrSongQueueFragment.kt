@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.frolo.muse.R
-import com.frolo.muse.arch.observeNonNull
+import com.frolo.arch.support.observeNonNull
 import com.frolo.music.model.Song
 import com.frolo.muse.thumbnails.provideThumbnailLoader
 import com.frolo.muse.ui.base.adapter.SimpleItemTouchHelperCallback

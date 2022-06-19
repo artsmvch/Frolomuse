@@ -28,7 +28,7 @@
         <!--SERVICES-->
         <service
             android:stopWithTask="false"
-            android:name="com.frolo.muse.engine.service.PlayerService"
+            android:name="com.frolo.muse.player.service.PlayerService"
             android:foregroundServiceType="mediaPlayback"
             android:exported="false" />
 
@@ -87,11 +87,37 @@
                 <data android:scheme="file" />
                 <data android:mimeType="audio/*" />
             </intent-filter>
+
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <action android:name="android.intent.action.VIEW" />
+                <data android:scheme="https" />
+                <data android:scheme="http" />
+                <data android:host="frolomuse" />
+                <data android:path="/play"/>
+                <data android:path="/player"/>
+                <data android:path="/library" />
+                <data android:path="/equalizer"/>
+                <data android:path="/search"/>
+                <data android:path="/settings"/>
+            </intent-filter>
         </activity>
 
         <activity
-            android:name=".ui.main.greeting.GreetingsActivity"
-            android:launchMode="singleTask"/>
+            android:name=".ui.main.onboarding.OnboardingActivity"
+            android:launchMode="singleTask"
+            android:exported="true">
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <action android:name="android.intent.action.VIEW" />
+                <data android:scheme="https" />
+                <data android:scheme="http" />
+                <data android:host="frolomuse" />
+                <data android:path="/onboarding" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".ui.deprecated.player.StandalonePlayerActivity"

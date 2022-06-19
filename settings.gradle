@@ -1,6 +1,9 @@
 // Main app
 include ':app'
 
+// Core
+include ':core-ui'
+
 // Music data
 include ':music-data:model'
 include ':music-data:repository:api'
@@ -50,6 +53,7 @@ include ':custom-drawable:squircle'
 include ':vendor'
 include ':ads'
 include ':material-support'
+include ':arch-support'
 
 // Test tools
 include ':test-tools'

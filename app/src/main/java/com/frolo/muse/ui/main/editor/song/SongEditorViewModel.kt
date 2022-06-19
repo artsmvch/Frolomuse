@@ -11,7 +11,7 @@ import androidx.annotation.RequiresApi
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.frolo.muse.arch.SingleLiveEvent
+import com.frolo.arch.support.SingleLiveEvent
 import com.frolo.muse.common.toAudioSource
 import com.frolo.player.Player
 import com.frolo.muse.logger.EventLogger

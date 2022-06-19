@@ -2,7 +2,7 @@ package com.frolo.muse.rating
 
 import android.app.Dialog
 import android.os.Bundle
-import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
 import com.frolo.muse.ui.base.BaseFragment
 
@@ -58,8 +58,7 @@ internal class RatingFragment : BaseFragment() {
     companion object {
         private const val FRAGMENT_TAG = "com.frolo.muse.rating:RATING"
 
-        fun install(activity: FragmentActivity) {
-            val fragmentManager = activity.supportFragmentManager
+        fun install(fragmentManager: FragmentManager) {
             if (!fragmentManager.isStateSaved) {
                 val currFragment = fragmentManager.findFragmentByTag(FRAGMENT_TAG)
                 if (currFragment == null) {
@@ -70,8 +69,7 @@ internal class RatingFragment : BaseFragment() {
             }
         }
 
-        fun uninstall(activity: FragmentActivity) {
-            val fragmentManager = activity.supportFragmentManager
+        fun uninstall(fragmentManager: FragmentManager) {
             if (!fragmentManager.isStateSaved) {
                 val currFragment = fragmentManager.findFragmentByTag(FRAGMENT_TAG)
                 if (currFragment != null) {

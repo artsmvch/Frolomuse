@@ -119,12 +119,6 @@
         <item name="circleColor">#FFFFFF</item>
     </style>
 
-    <!--IBar-->
-    <style name="Base.IBar" parent="">
-        <item name="activeColor">#9C9C9C</item>
-        <item name="inactiveColor">#C3FFFFFF</item>
-    </style>
-
     <!--BottomNavigationView-->
     <style name="Base.AppTheme.BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView">
         <item name="itemIconSize">18dp</item>

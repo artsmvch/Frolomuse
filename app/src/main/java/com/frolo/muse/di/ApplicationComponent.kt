@@ -6,6 +6,7 @@ import android.content.Context
 import com.frolo.muse.di.modules.*
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.repository.FirebasePreferences
+import com.frolo.muse.repository.OnboardingPreferences
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.startup.AppStartUpInitializer
 import com.frolo.muse.ui.base.BaseActivity
@@ -40,6 +41,7 @@ interface ApplicationComponent {
     fun providePreferences(): Preferences
     fun provideEventLogger(): EventLogger
     fun provideFirebasePreferences(): FirebasePreferences
+    fun provideOnboardingPreferences(): OnboardingPreferences
 }
 
 interface ApplicationComponentHolder {
