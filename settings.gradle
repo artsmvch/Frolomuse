@@ -24,6 +24,7 @@ include ':billings:app-gallery-billing-impl'
 
 // Performance
 include ':performance:coldstart'
+include ':performance:anr'
 
 // Utils
 include ':utils:debug-common'

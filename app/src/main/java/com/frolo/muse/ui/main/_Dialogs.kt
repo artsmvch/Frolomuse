@@ -135,11 +135,3 @@ fun Context.confirmShortcutCreation(media: Media, whenConfirmed: () -> Unit): Di
         .setNegativeButton(R.string.cancel, listener)
         .show()
 }
-
-fun Context.informAboutAnr(responseTime: Long): Dialog {
-    return MaterialAlertDialogBuilder(this)
-        .setMessage("ANR detected: response time is $responseTime millis")
-        .setTitle("ANR detected")
-        .setPositiveButton(R.string.ok, null)
-        .show()
-}

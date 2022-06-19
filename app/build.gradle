@@ -175,6 +175,7 @@ dependencies {
 
     // Performance
     implementation project(path: ':performance:coldstart')
+    implementation project(path: ':performance:anr')
 
     // Material design support
     implementation project(path: ':material-support')

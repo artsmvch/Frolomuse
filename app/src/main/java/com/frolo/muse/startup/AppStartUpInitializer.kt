@@ -21,6 +21,8 @@ import com.frolo.muse.engine.PlayerWrapper
 import com.frolo.muse.memory.MemoryWatcherRegistryImpl
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.ui.base.BaseActivity
+import com.frolo.performance.anr.AnrDetectors
+import com.frolo.performance.anr.OnAnrDetectedListener
 import com.frolo.performance.coldstart.ColdStartMeasurer
 import com.frolo.player.PlayerImpl
 import com.frolo.threads.HandlerExecutor
@@ -151,6 +153,19 @@ class AppStartUpInitializer @Inject constructor(
     private fun setupPerformanceMetrics() {
         ColdStartMeasurer.addListener { coldStartInfo ->
             Logger.d(LOG_TAG, "Cold start reported: $coldStartInfo")
+        }
+//        AnrDetectors.create(
+//            looper = application.mainLooper,
+//            listener = OnAnrDetectedListener { looper, anrInfo ->
+//                Logger.d(LOG_TAG, "Anr detected: info=${anrInfo.toStringDetailed()}")
+//            }
+//        ).start()
+
+        if (BuildConfig.DEBUG) {
+            AnrDetectors.create(
+                looper = application.mainLooper,
+                uiContextProvider = { application.foregroundActivity }
+            ).start()
         }
     }
 
