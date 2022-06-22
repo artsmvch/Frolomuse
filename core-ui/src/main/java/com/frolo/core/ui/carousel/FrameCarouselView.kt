@@ -34,28 +34,26 @@ internal class FrameCarouselView @JvmOverloads constructor(
         ) = Unit
 
         override fun onPageSelected(position: Int) {
-            if (isUserScrollingPager) {
-                carouselCallbacks.forEach { callback ->
-                    callback.onPositionSelected(position)
-                }
+            if (isScrolling) {
+                dispatchPageSelected(position)
             }
         }
 
         override fun onPageScrollStateChanged(state: Int) {
             if (pagerState == ViewPager.SCROLL_STATE_DRAGGING
                 && state == ViewPager.SCROLL_STATE_SETTLING) {
-                isUserScrollingPager = true
+                isScrolling = true
             } else if (pagerState == ViewPager.SCROLL_STATE_SETTLING
                 && state == ViewPager.SCROLL_STATE_IDLE) {
-                isUserScrollingPager = false
+                isScrolling = false
             }
             pagerState = state
         }
     }
 
     // State of the pager
-    private var pagerState = ViewPager.SCROLL_STATE_IDLE
-    private var isUserScrollingPager = false
+    private var pagerState: Int = ViewPager.SCROLL_STATE_IDLE
+    private var isScrolling: Boolean = false
 
     private val carouselCallbacks = HashSet<ICarouselView.CarouselCallback>(2)
 
@@ -87,13 +85,23 @@ internal class FrameCarouselView @JvmOverloads constructor(
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        pagerState = ViewPager.SCROLL_STATE_IDLE
-        isUserScrollingPager = false
+        resetPagerState()
         viewPager.addOnPageChangeListener(pagerCallback)
     }
 
     override fun onDetachedFromWindow() {
         super.onDetachedFromWindow()
         viewPager.removeOnPageChangeListener(pagerCallback)
+    }
+
+    private fun resetPagerState() {
+        pagerState = ViewPager.SCROLL_STATE_IDLE
+        isScrolling = false
+    }
+
+    private fun dispatchPageSelected(position: Int) {
+        carouselCallbacks.forEach { callback ->
+            callback.onPositionSelected(position)
+        }
     }
 }
