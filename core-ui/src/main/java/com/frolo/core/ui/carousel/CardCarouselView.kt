@@ -34,11 +34,7 @@ internal class CardCarouselView @JvmOverloads constructor(
 
     private val pageCallback = object : ViewPager2.OnPageChangeCallback() {
         override fun onPageSelected(position: Int) {
-            if (isUserScrollingPager) {
-                carouselCallbacks.forEach { callback ->
-                    callback.onPositionSelected(position)
-                }
-            }
+            dispatchPageSelected(position, isUserScrollingPager)
         }
 
         override fun onPageScrollStateChanged(state: Int) {
@@ -185,6 +181,12 @@ internal class CardCarouselView @JvmOverloads constructor(
             }
         }
         postOnUi(key = "scroll_to_pending_position", callback)
+    }
+
+    private fun dispatchPageSelected(position: Int, byUser: Boolean) {
+        carouselCallbacks.forEach { callback ->
+            callback.onPositionSelected(position, byUser)
+        }
     }
 
 }

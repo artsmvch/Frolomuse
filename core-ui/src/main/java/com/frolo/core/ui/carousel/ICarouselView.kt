@@ -26,6 +26,6 @@ interface ICarouselView {
     fun setCurrentPosition(position: Int)
 
     interface CarouselCallback {
-        fun onPositionSelected(position: Int)
+        fun onPositionSelected(position: Int, byUser: Boolean)
     }
 }

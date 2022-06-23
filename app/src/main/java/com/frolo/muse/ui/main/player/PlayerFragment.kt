@@ -48,8 +48,10 @@ class PlayerFragment: BaseFragment() {
     private val viewModel: PlayerViewModel by viewModel()
 
     private val carouselCallback = object : ICarouselView.CarouselCallback {
-        override fun onPositionSelected(position: Int) {
-            viewModel.onSwipedToPosition(position)
+        override fun onPositionSelected(position: Int, byUser: Boolean) {
+            if (byUser) {
+                viewModel.onSwipedToPosition(position)
+            }
         }
     }
 

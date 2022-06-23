@@ -34,9 +34,7 @@ internal class FrameCarouselView @JvmOverloads constructor(
         ) = Unit
 
         override fun onPageSelected(position: Int) {
-            if (isScrolling) {
-                dispatchPageSelected(position)
-            }
+            dispatchPageSelected(position, isScrolling)
         }
 
         override fun onPageScrollStateChanged(state: Int) {
@@ -99,9 +97,9 @@ internal class FrameCarouselView @JvmOverloads constructor(
         isScrolling = false
     }
 
-    private fun dispatchPageSelected(position: Int) {
+    private fun dispatchPageSelected(position: Int, byUser: Boolean) {
         carouselCallbacks.forEach { callback ->
-            callback.onPositionSelected(position)
+            callback.onPositionSelected(position, byUser)
         }
     }
 }
