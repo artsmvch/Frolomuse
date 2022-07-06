@@ -65,11 +65,9 @@ class PlayerSheetFragment :
                 }
 
                 override fun onTouchEnded() {
-                    bottom_sheet_current_song_queue
-                        ?.let { BottomSheetBehavior.from(it) }
-                        ?.also { behavior ->
-                            handleInnerBottomSheetState(behavior.state)
-                        }
+                    BottomSheetBehavior.from(bottom_sheet_current_song_queue).also { behavior ->
+                        handleInnerBottomSheetState(behavior.state)
+                    }
                 }
             }
         ViewCompat.setOnApplyWindowInsetsListener(bottom_sheet_current_song_queue) { bottomSheet, insets ->
@@ -85,13 +83,6 @@ class PlayerSheetFragment :
         layout_hook.setOnClickListener {
             behavior.state = BottomSheetBehavior.STATE_EXPANDED
         }
-
-//        imv_close.setOnClickListener {
-//            // First of all, we need to collapse the inner bottom sheet to avoid the case
-//            // when the player sheet is collapsed itself, but the inner bottom sheet is not.
-//            behavior.state = BottomSheetBehavior.STATE_COLLAPSED
-//            playerSheetCallback?.requestCollapse()
-//        }
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -122,8 +113,9 @@ class PlayerSheetFragment :
     }
 
     private fun observeMainSheetsState(owner: LifecycleOwner) = with(mainSheetsStateViewModel) {
-        slideState.observeNonNull(owner) { slideState ->
-            // actuallyApplySlideOffset(slideState.playerSheetSlideOffset)
+        collapsePlayerSheetEvent.observeNonNull(owner) {
+            BottomSheetBehavior.from(bottom_sheet_current_song_queue).state =
+                BottomSheetBehavior.STATE_COLLAPSED
         }
     }
 
@@ -149,7 +141,7 @@ class PlayerSheetFragment :
             BottomSheetBehavior.STATE_HIDDEN -> {
                 mainSheetsStateViewModel.setPlayerSheetDraggable(true)
             }
-            else -> Unit
+            else -> mainSheetsStateViewModel.setPlayerSheetDraggable(true)
         }
     }
 
