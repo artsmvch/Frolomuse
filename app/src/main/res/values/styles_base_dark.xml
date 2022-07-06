@@ -10,7 +10,7 @@
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>
         <item name="actionBarSize">@dimen/default_bar_size</item>
         <item name="android:actionBarSize">@dimen/default_bar_size</item>
-        <item name="actionModeCloseDrawable">@drawable/ic_action_close</item>
+        <item name="actionModeCloseDrawable">@drawable/ic_action_close_outline_24</item>
         <item name="actionOverflowButtonStyle">@style/Base.AppTheme.ActionButton.Overflow.Dark</item>
 
         <!--Material colors-->

@@ -53,7 +53,7 @@
                 android:layout_width="36dp"
                 android:layout_height="36dp"
                 android:padding="6dp"
-                android:src="@drawable/ic_action_close"
+                android:src="@drawable/ic_action_close_outline_24"
                 app:tint="@color/md_grey_500"/>
 
             <ImageView

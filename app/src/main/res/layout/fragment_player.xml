@@ -16,6 +16,14 @@
         android:layout_height="0dp"
         android:layout_marginBottom="24dp"/>
 
+    <include layout="@layout/include_player_toolbar"
+        app:layout_constraintStart_toStartOf="@id/carousel"
+        app:layout_constraintTop_toTopOf="@id/carousel"
+        app:layout_constraintEnd_toEndOf="@id/carousel"
+        android:id="@+id/player_toolbar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"/>
+
     <androidx.appcompat.widget.AppCompatImageView
         app:layout_constraintEnd_toEndOf="@id/carousel"
         app:layout_constraintBottom_toBottomOf="@id/carousel"

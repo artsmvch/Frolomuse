@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.frolo.arch.support.EventLiveData
 import com.frolo.arch.support.call
 import com.frolo.arch.support.distinctUntilChanged
+import com.frolo.arch.support.map
 
 
 internal interface SlideState {
@@ -20,6 +21,7 @@ internal interface MainSheetsStateViewModel {
     val isDimmed: LiveData<Boolean>
     val slideState: LiveData<SlideState>
 
+    val isPlayerSheetVisible: LiveData<Boolean>
     val isPlayerSheetDraggable: LiveData<Boolean>
     val collapsePlayerSheetEvent: LiveData<Unit>
 
@@ -55,6 +57,12 @@ internal class MainSheetsStateViewModelImpl: ViewModel(), MainSheetsStateViewMod
 
     private val _slideState = MutableLiveData<SlideState>(slideStateImpl)
     override val slideState: LiveData<SlideState> get() = _slideState
+
+    override val isPlayerSheetVisible: LiveData<Boolean> =
+        slideState.map(initialValue = false) { slideState ->
+            slideState != null && slideState.playerSheetSlideOffset > 0.95f
+        }
+        .distinctUntilChanged()
 
     private val _isPlayerSheetDraggable = MutableLiveData<Boolean>(true)
     override val isPlayerSheetDraggable: LiveData<Boolean> = _isPlayerSheetDraggable

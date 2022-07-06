@@ -9,12 +9,16 @@ import android.text.TextUtils
 import android.text.style.ForegroundColorSpan
 import android.util.TypedValue
 import android.view.*
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.FrameLayout
 import android.widget.TextSwitcher
 import androidx.annotation.ColorInt
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.isVisible
+import androidx.core.view.updatePadding
 import androidx.lifecycle.LifecycleOwner
 import com.frolo.mediabutton.PlayButton
 import com.frolo.muse.R
@@ -31,6 +35,7 @@ import com.frolo.muse.ui.main.confirmDeletion
 import com.frolo.core.ui.carousel.ICarouselView
 import com.frolo.muse.ui.main.player.waveform.SoundWaveform
 import com.frolo.muse.ui.main.player.waveform.StaticWaveform
+import com.frolo.muse.ui.main.provideMainSheetStateViewModel
 import com.frolo.muse.ui.main.showVolumeControl
 import com.frolo.muse.views.Anim
 import com.frolo.music.model.Song
@@ -41,11 +46,13 @@ import kotlinx.android.synthetic.main.fragment_player.*
 import kotlinx.android.synthetic.main.include_playback_progress.*
 import kotlinx.android.synthetic.main.include_player_controller.*
 import kotlinx.android.synthetic.main.include_player_controller_full.*
+import kotlinx.android.synthetic.main.include_player_toolbar.*
 
 
 class PlayerFragment: BaseFragment() {
 
     private val viewModel: PlayerViewModel by viewModel()
+    private val mainSheetsStateViewModel by lazy { provideMainSheetStateViewModel() }
 
     private val carouselCallback = object : ICarouselView.CarouselCallback {
         override fun onPositionSelected(position: Int, byUser: Boolean) {
@@ -107,9 +114,19 @@ class PlayerFragment: BaseFragment() {
 
         carousel.setPlaceholderText(R.string.no_songs_in_queue)
 
-//        btn_options_menu.setOnClickListener {
-//            viewModel.onOptionsMenuClicked()
-//        }
+        view.fitsSystemWindows = true
+        ViewCompat.setOnApplyWindowInsetsListener(view) { v, insets ->
+            player_toolbar.updatePadding(top = insets.systemWindowInsetTop)
+            insets
+        }
+
+        btn_close.setOnClickListener {
+            mainSheetsStateViewModel.collapsePlayerSheet()
+        }
+
+        btn_options_menu.setOnClickListener {
+            viewModel.onOptionsMenuClicked()
+        }
 
         initTextSwitcher(tsw_song_name, textSizeInSp = 26f, Typeface.BOLD)
         initTextSwitcher(tsw_artist_name, textSizeInSp = 13f, Typeface.NORMAL)
@@ -154,6 +171,7 @@ class PlayerFragment: BaseFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         observeViewModel(viewLifecycleOwner)
+        observeMainSheetsState(viewLifecycleOwner)
         viewModel.onUiCreated()
     }
 
@@ -259,8 +277,7 @@ class PlayerFragment: BaseFragment() {
     }
 
     private fun showOptionsMenu(optionsMenu: PlayerOptionsMenu) {
-        // TODO: options menu?
-        val anchorView: View = requireView()// btn_options_menu
+        val anchorView: View = btn_options_menu
         val context = anchorView.context
         val popup = PopupMenu(context, anchorView)
 
@@ -402,6 +419,44 @@ class PlayerFragment: BaseFragment() {
         showOptionsMenuEvent.observeNonNull(owner) { optionsMenu ->
             showOptionsMenu(optionsMenu)
         }
+    }
+
+    private fun observeMainSheetsState(owner: LifecycleOwner) = with(mainSheetsStateViewModel) {
+        isPlayerSheetVisible.observeNonNull(owner) { isVisible ->
+            animateViewToVisibility(btn_close, isVisible)
+            animateViewToVisibility(btn_options_menu, isVisible)
+        }
+    }
+
+    private fun animateViewToVisibility(view: View, isVisible: Boolean) {
+        view.visibility = View.VISIBLE
+        val initialScale: Float
+        val initialAlpha: Float
+        val targetScale: Float
+        val targetAlpha: Float
+        if (isVisible) {
+            initialScale = 0.4f
+            initialAlpha = 0.0f
+            targetScale = 1f
+            targetAlpha = 1f
+        } else {
+            initialScale = 1f
+            initialAlpha = 1f
+            targetScale = 0.4f
+            targetAlpha = 0.0f
+        }
+        view.isVisible = true
+        view.scaleX = initialScale
+        view.scaleY = initialScale
+        view.alpha = initialAlpha
+        view.animate()
+            .scaleX(targetScale)
+            .scaleY(targetScale)
+            .alpha(targetAlpha)
+            .setDuration(200L)
+            .setInterpolator(AccelerateDecelerateInterpolator())
+            .withEndAction { view.isVisible = isVisible }
+            .start()
     }
 
     companion object {
