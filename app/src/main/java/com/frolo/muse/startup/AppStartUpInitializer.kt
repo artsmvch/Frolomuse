@@ -165,7 +165,7 @@ class AppStartUpInitializer @Inject constructor(
             AnrDetectors.create(
                 looper = application.mainLooper,
                 uiContextProvider = { application.foregroundActivity }
-            ).start()
+            )// .start()
         }
     }
 
