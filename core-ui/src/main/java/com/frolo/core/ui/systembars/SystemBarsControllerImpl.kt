@@ -6,13 +6,13 @@ import com.frolo.ui.SystemBarUtils
 
 
 internal class SystemBarsControllerImpl(
-    private val windowLambda: () -> Window?
+    private val getWindowLambda: () -> Window?
 ): SystemBarsController {
 
-    private val window: Window? get() = windowLambda.invoke()
-
     private inline fun applyToWindow(block: Window.() -> Unit) {
-        window?.block()
+        val safeWindow = getWindowLambda.invoke()
+            ?: return
+        safeWindow.block()
     }
 
     override fun setStatusBarVisible(isVisible: Boolean) {

@@ -8,11 +8,11 @@ import java.util.*
 
 
 internal class SystemBarsHostImpl(
-    windowLambda: () -> Window
+    getWindowLambda: () -> Window
 ): SystemBarsHost {
 
     private val chain = LinkedList<ChainNode>()
-    private val controller = SystemBarsControllerImpl(windowLambda)
+    private val controller = SystemBarsControllerImpl(getWindowLambda)
 
     private val handler: Handler by lazy { Handler(Looper.getMainLooper()) }
 
