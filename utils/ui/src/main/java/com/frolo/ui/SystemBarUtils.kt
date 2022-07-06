@@ -7,6 +7,9 @@ import android.view.WindowManager
 import androidx.annotation.ColorInt
 import androidx.annotation.RequiresApi
 import androidx.core.graphics.ColorUtils
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 
 
 object SystemBarUtils {
@@ -32,6 +35,11 @@ object SystemBarUtils {
         }
     }
 
+    private fun Window.obtainInsetsControllerCompat(): WindowInsetsControllerCompat? {
+        val decorView = this.peekDecorView() ?: return null
+        return WindowCompat.getInsetsController(this, decorView)
+    }
+
     /**
      * Returns true if the [color] is light.
      */
@@ -45,6 +53,25 @@ object SystemBarUtils {
      */
     fun isDark(@ColorInt color: Int): Boolean {
         return !isLight(color)
+    }
+
+    fun setStatusBarVisible(window: Window, isVisible: Boolean) {
+        val controller = window.obtainInsetsControllerCompat() ?: return
+        if (isVisible) {
+            controller.show(WindowInsetsCompat.Type.statusBars())
+        } else {
+            controller.hide(WindowInsetsCompat.Type.statusBars())
+        }
+    }
+
+    fun setStatusBarColor(window: Window, @ColorInt color: Int) {
+        window.statusBarColor = color
+    }
+
+    fun setStatusBarAppearanceLight(window: Window, isLight: Boolean) {
+        window.obtainInsetsControllerCompat()?.also { controller ->
+            controller.isAppearanceLightStatusBars = isLight
+        }
     }
 
     fun setNavigationBarColor(window: Window, @ColorInt color: Int) {

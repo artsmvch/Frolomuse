@@ -17,7 +17,8 @@
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/tb_actions"
             android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
+            android:layout_height="wrap_content"
+            android:minHeight="40dp"
             android:background="?colorSurface"
             android:elevation="0dp"
             app:titleTextAppearance="@style/Base.AppTheme.TextAppearance.Toolbar.Title.Library"

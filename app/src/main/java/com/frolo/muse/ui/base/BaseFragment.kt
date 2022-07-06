@@ -4,15 +4,23 @@ import android.Manifest
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
+import android.graphics.Color
 import android.os.AsyncTask
+import android.view.WindowInsets
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.ColorInt
 import androidx.annotation.StringRes
 import androidx.annotation.UiThread
+import androidx.core.graphics.ColorUtils
+import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
+import com.frolo.core.ui.fragment.WithCustomStatusBar
+import com.frolo.core.ui.fragment.WithCustomWindowInsets
+import com.frolo.debug.DebugUtils
 import com.frolo.muse.FrolomuseApp
 import com.frolo.muse.R
 import com.frolo.muse.Logger
@@ -21,11 +29,16 @@ import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.toast.DefaultToastManager
 import com.frolo.muse.toast.ToastManager
+import com.frolo.ui.StyleUtils
+import com.frolo.ui.SystemBarUtils
 import com.tbruyelle.rxpermissions2.RxPermissions
 import io.reactivex.disposables.Disposable
 
 
-abstract class BaseFragment: Fragment() {
+abstract class BaseFragment:
+    Fragment(),
+    WithCustomWindowInsets,
+    WithCustomStatusBar {
 
     // Rx permissions
     private var rxPermissions: RxPermissions? = null
@@ -50,6 +63,24 @@ abstract class BaseFragment: Fragment() {
 
     protected var toastManager: ToastManager? = null
         private set
+
+    // Custom status bar
+    override val isStatusBarVisible: Boolean get() = SystemBarUtils.isLight(statusBarColor)
+    @get:ColorInt
+    override val statusBarColor: Int get() {
+        return statusBarColorRaw //ColorUtils.setAlphaComponent(statusBarColorRaw, 192)
+    }
+    override val isStatusBarAppearanceLight: Boolean get() {
+        return SystemBarUtils.isLight(statusBarColor)
+    }
+    @get:ColorInt
+    protected open val statusBarColorRaw: Int get() {
+        val uiContext = view?.context ?: kotlin.run {
+            DebugUtils.dumpOnMainThread(IllegalStateException("Fragment not attached"))
+            return Color.TRANSPARENT
+        }
+        return StyleUtils.resolveColor(uiContext, R.attr.colorPrimary)
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -276,6 +307,13 @@ abstract class BaseFragment: Fragment() {
         } else {
             uiAsyncTasks.add(task)
         }
+    }
+
+    override fun onApplyWindowInsets(insets: WindowInsets): WindowInsets {
+        val safeView = this.view ?: return insets
+        //return safeView.dispatchApplyWindowInsets(insets)
+        safeView.updatePadding(top = insets.systemWindowInsetTop)
+        return insets.consumeSystemWindowInsets()
     }
 
 }

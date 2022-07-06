@@ -6,7 +6,9 @@ import android.graphics.drawable.Drawable
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import com.frolo.core.ui.R
 
@@ -15,6 +17,7 @@ internal class AlertDialogBuilderImpl(
     private var context: Context
 ) : AlertDialogBuilder {
 
+    private var icon: Drawable? = null
     private var title: CharSequence? = null
     private var message: CharSequence? = null
     private var positiveButton: ButtonInfo? = null
@@ -61,11 +64,13 @@ internal class AlertDialogBuilderImpl(
     }
 
     override fun setIcon(drawable: Drawable?): AlertDialogBuilder {
-        TODO("Not yet implemented")
+        this.icon = drawable
+        return this
     }
 
-    override fun setIcon(drawableId: Int): AlertDialogBuilder {
-        TODO("Not yet implemented")
+    override fun setIcon(@DrawableRes drawableId: Int): AlertDialogBuilder {
+        icon = AppCompatResources.getDrawable(context, drawableId)
+        return this
     }
 
     override fun setTitle(@StringRes resId: Int): AlertDialogBuilder {

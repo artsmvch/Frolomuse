@@ -58,7 +58,7 @@ abstract class AbsMediaCollectionFragment <E: Media>: BaseFragment(),
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if(item.itemId == android.R.id.home) {
+        if (item.itemId == android.R.id.home) {
             viewModel.onBackArrowClicked()
             return true
         }
@@ -154,7 +154,10 @@ abstract class AbsMediaCollectionFragment <E: Media>: BaseFragment(),
         // Contextual menu
         openContextualMenuEvent.observeNonNull(owner) { contextualMenu ->
             actionMode?.finish()
-            actionMode = onShowContextualMenu(contextualMenu)
+            actionMode = onShowContextualMenu(contextualMenu)?.also { newActionMode ->
+                // Initial count of items selected
+                newActionMode.title = (selectedItemsCount.value ?: 0).toString()
+            }
         }
 
         selectedItems.observeNonNull(owner) { selectedItems ->

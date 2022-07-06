@@ -1,6 +1,7 @@
 package com.frolo.core.ui.carousel
 
 import android.content.Context
+import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.View
@@ -8,10 +9,12 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.core.view.isVisible
+import androidx.core.view.setMargins
 import androidx.transition.Fade
 import androidx.transition.TransitionManager
 import com.frolo.core.ui.R
 import com.frolo.player.AudioSource
+import com.frolo.ui.Screen
 import com.frolo.ui.StyleUtils
 
 
@@ -25,6 +28,7 @@ class CarouselView @JvmOverloads constructor(
     private val placeholderView: TextView by lazy {
         TextView(context, attrs, defStyleAttr).apply {
             setTextAppearance(StyleUtils.resolveStyleRes(context, R.attr.textAppearanceBody2))
+            ellipsize = TextUtils.TruncateAt.END
         }
     }
 
@@ -35,6 +39,7 @@ class CarouselView @JvmOverloads constructor(
         addView(placeholderView,
             LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).apply {
                 gravity = Gravity.CENTER
+                setMargins(Screen.dp(context, 24))
             }
         )
         updateViewsVisibilities(0)

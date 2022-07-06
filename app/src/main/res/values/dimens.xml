@@ -6,9 +6,12 @@
 
     <!--Default dimension for bar widgets such as Toolbar, BottomNavigationView, TabLayout etc.-->
     <dimen name="default_bar_size">52dp</dimen>
-    <dimen name="player_sheet_peek_height">96dp</dimen>
-    <dimen name="player_sheet_corner_radius">48dp</dimen>
-    <dimen name="bottom_navigation_bar_corner_radius">48dp</dimen>
+    <!--Peek height = bottom bar height + tongue offset-->
+    <dimen name="player_sheet_peek_height">116dp</dimen>
+    <dimen name="player_sheet_tongue_offset">56dp</dimen>
+    <dimen name="player_sheet_corner_radius">52dp</dimen>
+    <dimen name="bottom_navigation_bar_height">60dp</dimen>
+    <dimen name="bottom_navigation_bar_corner_radius">32dp</dimen>
 
     <!--Fragment content insets-->
     <dimen name="fragment_content_left_inset">0dp</dimen>

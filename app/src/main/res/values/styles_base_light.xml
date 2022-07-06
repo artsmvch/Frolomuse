@@ -37,6 +37,8 @@
         <item name="preferenceTheme">@style/PreferenceThemeOverlay.Tinted</item>
         <item name="actionOverflowMenuStyle">@style/Base.AppTheme.PopupMenu.Overflow</item>
         <item name="popupMenuStyle">@style/Base.AppTheme.PopupMenu</item>
+        <item name="actionBarStyle">@style/Widget.Material3.Light.ActionBar.Solid</item>
+        <item name="actionModeStyle">@style/Base.AppTheme.Light.ActionMode</item>
 
         <item name="equalizerViewStyle">@style/Base.AppTheme.EqualizerView.Light</item>
 
@@ -87,6 +89,18 @@
         <item name="errorTextColor">@color/error</item>
 
         <item name="colorPremiumProductAccent">?colorAccent</item>
+    </style>
+
+    <style name="Base.AppTheme.Light.ActionBar" parent="Widget.MaterialComponents.Light.ActionBar.Solid">
+    </style>
+
+    <style name="Base.AppTheme.Light.ActionMode" parent="Widget.Material3.ActionMode">
+        <item name="actionModeBackground">?colorPrimaryVariant</item>
+        <item name="titleTextStyle">@style/Base.AppTheme.TextAppearance.ActionMode.Title</item>
+    </style>
+
+    <style name="Base.AppTheme.TextAppearance.ActionMode.Title" parent="TextAppearance.Material3.ActionBar.Title">
+        <item name="android:textColor">?colorOnPrimary</item>
     </style>
 
     <style name="Base.AppTheme.ActionButton.Overflow.Light" parent="RtlUnderlay.Widget.AppCompat.ActionButton.Overflow">

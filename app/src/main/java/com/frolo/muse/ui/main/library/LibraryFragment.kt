@@ -1,31 +1,39 @@
 package com.frolo.muse.ui.main.library
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowInsets
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.updateLayoutParams
+import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.viewpager.widget.ViewPager
-import com.frolo.ui.FragmentUtils
+import com.frolo.core.ui.fragment.WithCustomStatusBar
+import com.frolo.debug.DebugUtils
 import com.frolo.muse.R
 import com.frolo.muse.model.Library
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.ui.ScrolledToTop
-import com.frolo.muse.ui.base.OnBackPressedHandler
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.base.FragmentContentInsetsListener
+import com.frolo.muse.ui.base.OnBackPressedHandler
 import com.frolo.muse.util.CollectionUtil
+import com.frolo.ui.ColorUtils2
+import com.frolo.ui.FragmentUtils
+import com.frolo.ui.StyleUtils
 import kotlinx.android.synthetic.main.fragment_library.*
 
 
 class LibraryFragment: BaseFragment(),
         OnBackPressedHandler,
         FragmentContentInsetsListener,
-        ScrolledToTop {
+        ScrolledToTop,
+        WithCustomStatusBar {
 
     private val preferences: Preferences by prefs()
 
@@ -56,6 +64,17 @@ class LibraryFragment: BaseFragment(),
         override fun onPageSelected(position: Int) {
             invalidateFab()
         }
+    }
+
+    override val statusBarColor: Int get() {
+        return ColorUtils2.setAlphaComponentFloat(statusBarColorRaw, alphaF = 0.75f)
+    }
+    override val statusBarColorRaw: Int get() {
+        val uiContext = view?.context ?: kotlin.run {
+            DebugUtils.dumpOnMainThread(IllegalStateException("Fragment not attached"))
+            return Color.TRANSPARENT
+        }
+        return StyleUtils.resolveColor(uiContext, R.attr.colorSurface)
     }
 
     override fun onCreateView(
@@ -89,6 +108,12 @@ class LibraryFragment: BaseFragment(),
             // of the previous fragments that are not at the current position
             FragmentUtils.removeAllFragmentsNow(childFragmentManager)
         }
+
+//        view.fitsSystemWindows = true
+//        ViewCompat.setOnApplyWindowInsetsListener(view) { _, insets ->
+//            tb_actions.updatePadding(top = insets.systemWindowInsetTop)
+//            WindowInsetsCompat.CONSUMED
+//        }
 
         vp_sections.apply {
             adapter = LibraryPageAdapter(context, childFragmentManager, actualSections)
@@ -184,6 +209,12 @@ class LibraryFragment: BaseFragment(),
                 page.scrollToTop()
             }
         }
+    }
+
+    override fun onApplyWindowInsets(insets: WindowInsets): WindowInsets {
+        val safeView = this.view ?: return insets
+        tb_actions.updatePadding(top = insets.systemWindowInsetTop)
+        return insets.consumeSystemWindowInsets()
     }
 
     companion object {

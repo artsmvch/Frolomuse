@@ -4,14 +4,17 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import android.widget.FrameLayout
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.appcompat.view.ActionMode
 import androidx.core.app.ActivityOptionsCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LifecycleOwner
+import com.frolo.arch.support.observeNonNull
+import com.frolo.core.ui.systembars.defaultSystemBarsHost
 import com.frolo.muse.Logger
 import com.frolo.muse.R
 import com.frolo.muse.di.ActivityComponent
@@ -27,22 +30,26 @@ import com.frolo.muse.ui.base.SimpleFragmentNavigator
 import com.frolo.muse.ui.main.onboarding.OnboardingActivity
 import com.frolo.music.model.*
 import com.frolo.ui.ActivityUtils
+import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 import java.util.concurrent.TimeUnit
 
 
-class MainActivity : BaseActivity(),
+class MainActivity :
+    BaseActivity(),
     SimpleFragmentNavigator,
     ThemeHandler,
     ActivityComponentHolder,
     AppRouter.Provider,
-    MainFragment.OnFinishCallback,
-    MainFragment.OnDimmedCallback {
+    MainFragment.OnFinishCallback {
 
     override val activityComponent: ActivityComponent by lazy { buildActivityComponent() }
 
-    private val activeActionModes = LinkedList<ActionMode>()
     private val properties by lazy { MainScreenProperties(this) }
+
+    private val activeActionModes = LinkedList<ActionMode>()
+
+    private val mainSheetsStateViewModel by lazy { provideMainSheetStateViewModel() }
 
     private var mainFragment: MainFragment? = null
 
@@ -50,9 +57,15 @@ class MainActivity : BaseActivity(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        FrameLayout(this).also { layout ->
-            layout.id = FRAGMENT_CONTAINER_ID
-            setContentView(layout)
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        setContentView(R.layout.activity_main)
+        container.also { layout ->
+            layout.fitsSystemWindows = true
+            ViewCompat.setOnApplyWindowInsetsListener(layout) { view, insets ->
+                // Let the main fragment handle insets
+                // WindowInsetsCompat.CONSUMED
+                insets
+            }
         }
         if (shouldShowOnboarding()) {
             showOnboarding()
@@ -60,6 +73,7 @@ class MainActivity : BaseActivity(),
             ensureMainFragment()
             handleIntentImpl(intent)
         }
+        observeMainSheetsState(this)
     }
 
     private fun shouldShowOnboarding(): Boolean {
@@ -103,7 +117,7 @@ class MainActivity : BaseActivity(),
         } else {
             val newFragment = MainFragment.newInstance()
             supportFragmentManager.beginTransaction()
-                .replace(FRAGMENT_CONTAINER_ID, newFragment, FRAG_TAG_MAIN)
+                .replace(container.id, newFragment, FRAG_TAG_MAIN)
                 .commitNow()
             newFragment
         }
@@ -149,9 +163,13 @@ class MainActivity : BaseActivity(),
         mainFragment?.pushFragment(newDialog)
     }
 
-    override fun onDimmed() {
-        activeActionModes.forEach { it.finish() }
-        activeActionModes.clear()
+    private fun observeMainSheetsState(owner: LifecycleOwner) = with(mainSheetsStateViewModel) {
+        isDimmed.observeNonNull(owner) { isDimmed ->
+            if (isDimmed) {
+                activeActionModes.forEach(ActionMode::finish)
+                activeActionModes.clear()
+            }
+        }
     }
 
     private fun handleIntentImpl(intent: Intent) {
@@ -166,15 +184,16 @@ class MainActivity : BaseActivity(),
     override fun onSupportActionModeStarted(mode: ActionMode) {
         super.onSupportActionModeStarted(mode)
         activeActionModes.add(mode)
-        window?.statusBarColor = properties.actionModeBackgroundColor
     }
 
     override fun onSupportActionModeFinished(mode: ActionMode) {
         super.onSupportActionModeFinished(mode)
         activeActionModes.remove(mode)
-        if (activeActionModes.isEmpty()) {
-            window?.statusBarColor = properties.colorPrimaryDark
-        }
+    }
+
+    override fun onWindowStartingSupportActionMode(callback: ActionMode.Callback): ActionMode {
+        return MainActionMode(delegate, action_mode, defaultSystemBarsHost,
+            callback).apply { createAndShow() }
     }
 
     override fun handleThemeChange() {
@@ -192,8 +211,6 @@ class MainActivity : BaseActivity(),
         private const val KEY_SHOW_ONBOARDING = "com.frolo.muse.ui.main:show_onboarding"
 
         private const val FRAG_TAG_MAIN = "com.frolo.muse.ui.main:MAIN_FRAGMENT"
-
-        private val FRAGMENT_CONTAINER_ID by lazy { View.generateViewId() }
 
         @JvmStatic
         fun newIntent(context: Context, openPlayer: Boolean): Intent =

@@ -6,14 +6,18 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
+import android.graphics.Color
 import android.graphics.Outline
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import android.view.animation.DecelerateInterpolator
+import androidx.annotation.ColorInt
 import androidx.annotation.IdRes
 import androidx.core.app.ActivityCompat
 import androidx.core.graphics.ColorUtils
+import androidx.core.view.ViewCompat
 import androidx.core.view.doOnLayout
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
@@ -22,6 +26,14 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProviders
 import androidx.transition.Fade
 import androidx.transition.TransitionManager
+import com.frolo.arch.support.observe
+import com.frolo.arch.support.observeNonNull
+import com.frolo.core.ui.fragment.WithCustomStatusBar
+import com.frolo.core.ui.fragment.WithCustomWindowInsets
+import com.frolo.core.ui.fragment.doOnResume
+import com.frolo.core.ui.systembars.SystemBarsControlOwner
+import com.frolo.core.ui.systembars.SystemBarsController
+import com.frolo.core.ui.systembars.defaultSystemBarsHost
 import com.frolo.debug.DebugUtils
 import com.frolo.muse.Logger
 import com.frolo.muse.R
@@ -29,7 +41,6 @@ import com.frolo.muse.android.ViewAppSettingsIntent
 import com.frolo.muse.android.getIntExtraOrNull
 import com.frolo.muse.android.getIntOrNull
 import com.frolo.muse.android.startActivitySafely
-import com.frolo.arch.support.observe
 import com.frolo.muse.di.activityComponent
 import com.frolo.muse.di.impl.navigator.AppRouterImpl
 import com.frolo.muse.rating.RatingFragment
@@ -48,6 +59,8 @@ import com.frolo.muse.util.LinkUtils
 import com.frolo.music.model.Media
 import com.frolo.player.Player
 import com.frolo.ui.FragmentUtils
+import com.frolo.ui.StyleUtils
+import com.frolo.ui.SystemBarUtils
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehaviorSupport
@@ -63,8 +76,9 @@ import kotlin.math.max
 import kotlin.math.pow
 
 
-class MainFragment :
+internal class MainFragment :
     BaseFragment(),
+    SystemBarsControlOwner,
     SimpleFragmentNavigator,
     AppRouter.Provider,
     PlayerSheetCallback,
@@ -105,7 +119,7 @@ class MainFragment :
             override fun onStateChanged(bottomSheet: View, newState: Int) = Unit
         }
 
-    private val fragmentLifecycleCallbacks: FragmentManager.FragmentLifecycleCallbacks =
+    private val recursiveFragmentLifecycleCallbacks: FragmentManager.FragmentLifecycleCallbacks =
         object : FragmentManager.FragmentLifecycleCallbacks() {
             override fun onFragmentViewCreated(
                 fm: FragmentManager, f: Fragment, v: View, savedInstanceState: Bundle?) {
@@ -170,8 +184,8 @@ class MainFragment :
 
     private val onFinishCallback: OnFinishCallback?
         get() = activity as? OnFinishCallback
-    private val onDimmedCallback: OnDimmedCallback?
-        get() = activity as? OnDimmedCallback
+
+    private val mainSheetsStateViewModel by lazy { provideMainSheetStateViewModel() }
 
     override fun getRouter(): AppRouter {
         if (context == null || childFragmentManager.isStateSaved) {
@@ -184,7 +198,7 @@ class MainFragment :
         lastSavedInstanceState = savedInstanceState
         super.onCreate(savedInstanceState)
         childFragmentManager.registerFragmentLifecycleCallbacks(
-            fragmentLifecycleCallbacks, true)
+            recursiveFragmentLifecycleCallbacks, true)
         if (savedInstanceState == null) {
             viewModel.onFirstCreate()
         }
@@ -201,29 +215,40 @@ class MainFragment :
         loadUi()
         observePlayerState(viewLifecycleOwner)
         observeViewModel(viewLifecycleOwner)
+        observeMainSheetsState(viewLifecycleOwner)
         observeScanStatus(view.context, viewLifecycleOwner)
     }
 
     private fun loadUi() {
-        bottom_navigation_view.background = MaterialShapeDrawable().apply {
-            fillColor = ColorStateList.valueOf(properties.colorSurface)
-            shapeAppearanceModel = ShapeAppearanceModel.builder()
-                .setTopLeftCorner(CornerFamily.ROUNDED, properties.bottomNavigationCornerRadius)
-                .setTopRightCorner(CornerFamily.ROUNDED, properties.bottomNavigationCornerRadius)
-                .build()
+        val activity = requireActivity()
+        val statusBarColor = StyleUtils.resolveColor(activity, R.attr.colorPrimary).let { color ->
+            ColorUtils.setAlphaComponent(color, 64)
+        }
+        requireActivity().window?.also { window ->
+            SystemBarUtils.setStatusBarColor(window, statusBarColor)
         }
 
-        sliding_player_layout.background = MaterialShapeDrawable().apply {
-            fillColor = ColorStateList.valueOf(properties.colorPrimarySurface)
-            shapeAppearanceModel = ShapeAppearanceModel.builder()
-                .setTopLeftCorner(CornerFamily.ROUNDED, properties.bottomNavigationCornerRadius)
-                .setTopRightCorner(CornerFamily.ROUNDED, properties.bottomNavigationCornerRadius)
-                .build()
-        }
+        bottom_navigation_view.background = createBottomTongue(
+            properties.colorSurface, properties.bottomNavigationCornerRadius)
+
+        sliding_player_layout.background = createBottomTongue(
+            properties.colorPrimarySurface, properties.bottomNavigationCornerRadius)
         with(BottomSheetBehavior.from(sliding_player_layout)) {
             addBottomSheetCallback(bottomSheetCallback)
         }
+        ViewCompat.setOnApplyWindowInsetsListener(sliding_player_layout) { _, insets ->
+            insets
+        }
         BottomSheetBehaviorSupport.dispatchOnSlide(sliding_player_layout)
+
+        container.setOnApplyWindowInsetsListener { _, insets ->
+            val currFragment = pickCurrentFragment()
+            if (currFragment is WithCustomWindowInsets) {
+                currFragment.onApplyWindowInsets(insets)
+            } else {
+                insets
+            }
+        }
 
         mini_player_container.setOnClickListener {
             expandSlidingPlayer()
@@ -232,6 +257,18 @@ class MainFragment :
         // Hide the content layout until fragments are initialized
         content_layout.visibility = View.INVISIBLE
         progress.show()
+
+        defaultSystemBarsHost?.obtainSystemBarsControl(this)
+    }
+
+    private fun createBottomTongue(@ColorInt color: Int, cornerRadius: Float): Drawable {
+        return MaterialShapeDrawable().apply {
+            fillColor = ColorStateList.valueOf(color)
+            shapeAppearanceModel = ShapeAppearanceModel.builder()
+                .setTopLeftCorner(CornerFamily.ROUNDED, cornerRadius)
+                .setTopRightCorner(CornerFamily.ROUNDED, cornerRadius)
+                .build()
+        }
     }
 
     private fun observeScanStatus(context: Context, owner: LifecycleOwner) {
@@ -263,11 +300,13 @@ class MainFragment :
             removeBottomSheetCallback(bottomSheetCallback)
         }
         resPermissionExplanationDialog?.cancel()
+        defaultSystemBarsHost?.abandonSystemBarsControl(this)
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        childFragmentManager.unregisterFragmentLifecycleCallbacks(fragmentLifecycleCallbacks)
+        childFragmentManager.unregisterFragmentLifecycleCallbacks(
+            recursiveFragmentLifecycleCallbacks)
         lastSavedInstanceState = null
     }
 
@@ -415,6 +454,20 @@ class MainFragment :
             rootFragmentListener = object : FragNavController.RootFragmentListener {
                 override val numberOfRootFragments: Int = getRootFragmentCount()
                 override fun getRootFragment(index: Int): Fragment = getRootFragmentAt(index)
+            }
+            transactionListener = object : FragNavController.TransactionListener {
+                override fun onFragmentTransaction(
+                    fragment: Fragment?,
+                    transactionType: FragNavController.TransactionType
+                ) {
+                    setupWindowInsets(fragment)
+                    setupSystemBars(fragment)
+                }
+
+                override fun onTabTransaction(fragment: Fragment?, index: Int) {
+                    setupWindowInsets(fragment)
+                    setupSystemBars(fragment)
+                }
             }
             initialize(tabIndex, savedInstanceState)
         }
@@ -670,6 +723,35 @@ class MainFragment :
         }
     }
 
+    private fun observeMainSheetsState(owner: LifecycleOwner) = with(mainSheetsStateViewModel) {
+        slideState.observeNonNull(owner) { slideState ->
+            @ColorInt
+            val defStatusBarColor: Int = ColorUtils.setAlphaComponent(Color.WHITE, ((255 * 0.65f).toInt()))
+            @ColorInt
+            val statusBarColor: Int = if (slideState.queueSheetSlideOffset > 0f) {
+                val factor = slideState.queueSheetSlideOffset
+                ColorUtils.blendARGB(defStatusBarColor, Color.TRANSPARENT, factor)
+                //ColorUtils.setAlphaComponent(Color.WHITE, ((255 * alpha).toInt()))
+            } else {
+                val factor = slideState.playerSheetSlideOffset
+                @ColorInt
+                val fragStatusBarColor: Int = pickCurrentFragment().let { fragment ->
+                    if (fragment is WithCustomStatusBar && FragmentUtils.isInForeground(fragment)) {
+                        fragment.statusBarColor
+                    } else {
+                        StyleUtils.resolveColor(requireContext(), R.attr.colorPrimaryDark)
+                    }
+                }
+                ColorUtils.blendARGB(fragStatusBarColor, defStatusBarColor, factor)
+            }
+            root_layout.statusBarColor = statusBarColor
+            defaultSystemBarsHost?.getSystemBarsController(this@MainFragment)?.also { controller ->
+                controller.setStatusBarColor(Color.TRANSPARENT)
+                controller.setStatusBarAppearanceLight(SystemBarUtils.isLight(statusBarColor))
+            }
+        }
+    }
+
     private fun clearAllFragmentsAndState() {
         FragmentUtils.popAllBackStackEntriesImmediate(childFragmentManager)
         FragmentUtils.removeAllFragmentsNow(childFragmentManager)
@@ -724,11 +806,22 @@ class MainFragment :
         sliding_player_layout.clipToOutline = true
         container_player.alpha = slideOffset
 
-        if (slideOffset > 0.6) {
-            onDimmedCallback?.onDimmed()
-        }
+        mainSheetsStateViewModel.dispatchPlayerSheetSlideOffset(slideOffset)
+    }
 
-        playerSheetFragment?.onSlideOffset(slideOffset)
+    private fun setupWindowInsets(fragment: Fragment?) {
+    }
+
+    private fun setupSystemBars(fragment: Fragment?) {
+        if (fragment != null) {
+            fragment.doOnResume { mainSheetsStateViewModel.dispatchScreenChanged() }
+        } else {
+            mainSheetsStateViewModel.dispatchScreenChanged()
+        }
+    }
+
+    private fun pickCurrentFragment(): Fragment? {
+        return fragNavController?.currentFrag
     }
 
     override fun setPlayerSheetDraggable(draggable: Boolean) {
@@ -741,12 +834,13 @@ class MainFragment :
         collapseSlidingPlayer()
     }
 
-    fun interface OnFinishCallback {
-        fun finish()
+    // System bars
+    override fun onSystemBarsControlObtained(controller: SystemBarsController) {
+        setupSystemBars(pickCurrentFragment())
     }
 
-    fun interface OnDimmedCallback {
-        fun onDimmed()
+    fun interface OnFinishCallback {
+        fun finish()
     }
 
     companion object {

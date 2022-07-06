@@ -32,11 +32,8 @@ class MiniPlayerFragment : BaseFragment() {
     ): View = inflater.inflate(R.layout.fragment_mini_player, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
         with(tsw_song_name) {
-
-            val maxTextSizeInPx = Screen.sp(context, 15f)
-
+            val maxTextSizeInPx = Screen.sp(context, 16.5f)
             setFactory {
                 FitSingleLineTextView(context).apply {
                     gravity = Gravity.START or Gravity.TOP
@@ -46,9 +43,7 @@ class MiniPlayerFragment : BaseFragment() {
                     ).apply {
                         gravity = Gravity.START or Gravity.TOP
                     }
-
                     includeFontPadding = false
-
                     setMaxTextSize(maxTextSizeInPx)
                 }
             }

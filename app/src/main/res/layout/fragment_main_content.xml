@@ -29,17 +29,21 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/coordinator"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@null">
+        android:background="@null"
+        android:fitsSystemWindows="true">
 
         <FrameLayout
             android:id="@+id/sliding_player_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@null"
+            android:fitsSystemWindows="true"
             app:behavior_hideable="false"
             app:behavior_peekHeight="@dimen/player_sheet_peek_height"
+            app:paddingBottomSystemWindowInsets="true"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
             <FrameLayout
@@ -51,9 +55,8 @@
             <com.frolo.muse.ui.main.player.mini.MiniPlayerContainer
                 android:id="@+id/mini_player_container"
                 android:layout_width="match_parent"
-                android:layout_height="96dp"
+                android:layout_height="@dimen/player_sheet_tongue_offset"
                 android:paddingStart="32dp"
-                android:paddingBottom="48dp"
                 android:paddingEnd="32dp"
                 android:layout_gravity="top"/>
         </FrameLayout>
@@ -66,7 +69,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:id="@+id/bottom_navigation_view"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/bottom_navigation_bar_height"
         app:menu="@menu/activity_main"/>
 
     <FrameLayout

@@ -4,53 +4,45 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.ViewCompat
 import androidx.core.view.doOnLayout
+import androidx.core.view.updatePadding
+import androidx.lifecycle.LifecycleOwner
+import com.frolo.arch.support.observeNonNull
 import com.frolo.muse.R
 import com.frolo.ui.StyleUtils
 import com.frolo.muse.ui.base.OnBackPressedHandler
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.base.tryHostAs
 import com.frolo.muse.ui.main.player.PlayerFragment
-import com.frolo.muse.ui.main.player.TouchFrameLayout
+import com.frolo.muse.ui.main.player.TouchAwareFrameLayout
 import com.frolo.muse.ui.main.player.current.CurrSongQueueFragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetBehaviorSupport
 import kotlinx.android.synthetic.main.fragment_player_sheet.*
 import kotlin.math.pow
 
 
-class PlayerSheetFragment : BaseFragment(),
-        OnBackPressedHandler,
-        CurrSongQueueFragment.OnCloseIconClickListener {
+class PlayerSheetFragment :
+    BaseFragment(),
+    OnBackPressedHandler,
+    CurrSongQueueFragment.OnCloseIconClickListener {
+
+    private val mainSheetsStateViewModel by lazy { provideMainSheetStateViewModel() }
 
     private val playerSheetCallback: PlayerSheetCallback?
         get() = tryHostAs<PlayerSheetCallback>()
 
-    // BottomSheet: CurrentSongQueue
-    private val bottomSheetCallback =
+    private val innerBottomSheetCallback =
         object : BottomSheetBehavior.BottomSheetCallback() {
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
-                // For Goodness sake make sure the view is created
-                view ?: return
-
-                layout_hook.alpha = (1 - slideOffset * 2).coerceIn(0f, 1f)
-                layout_hook.isClickable = slideOffset < 0.3
-
-                container_current_song_queue.alpha = slideOffset
-                view_dim_overlay.alpha = 1 - (1 - slideOffset).pow(2)
+                handleInnerBottomSheetSlideOffset(slideOffset)
             }
 
             override fun onStateChanged(bottomSheet: View, newState: Int) {
-                if (newState == BottomSheetBehavior.STATE_EXPANDED) {
-                    playerSheetCallback?.setPlayerSheetDraggable(false)
-                } else if (newState == BottomSheetBehavior.STATE_COLLAPSED) {
-                    playerSheetCallback?.setPlayerSheetDraggable(true)
-                }
+                handleInnerBottomSheetState(newState)
             }
         }
-
-    // This is used to remember the slide offset of this sheet
-    // so we can properly configure widgets when onViewCreated is called.
-    private var currSheetSlideOffset: Float? = 0f
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -60,9 +52,9 @@ class PlayerSheetFragment : BaseFragment(),
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val behavior = BottomSheetBehavior.from(bottom_sheet_current_song_queue).apply {
-            addBottomSheetCallback(bottomSheetCallback)
+            addBottomSheetCallback(innerBottomSheetCallback)
             state = BottomSheetBehavior.STATE_COLLAPSED
-            bottomSheetCallback.onSlide(bottom_sheet_current_song_queue, 0.0f)
+            BottomSheetBehaviorSupport.dispatchOnSlide(bottom_sheet_current_song_queue)
         }
 
         val peekHeight = StyleUtils.resolveDimen(view.context, R.attr.actionBarSize).toInt()
@@ -71,15 +63,23 @@ class PlayerSheetFragment : BaseFragment(),
         }
 
         bottom_sheet_current_song_queue.touchCallback =
-            object : TouchFrameLayout.TouchCallback {
-                override fun onTouchDown() {
+            object : TouchAwareFrameLayout.TouchCallback {
+                override fun onTouchStarted() {
                     playerSheetCallback?.setPlayerSheetDraggable(false)
                 }
 
-                override fun onTouchUp() {
-                    playerSheetCallback?.setPlayerSheetDraggable(false)
+                override fun onTouchEnded() {
+                    bottom_sheet_current_song_queue
+                        ?.let { BottomSheetBehavior.from(it) }
+                        ?.also { behavior ->
+                            handleInnerBottomSheetState(behavior.state)
+                        }
                 }
             }
+        ViewCompat.setOnApplyWindowInsetsListener(bottom_sheet_current_song_queue) { bottomSheet, insets ->
+            bottomSheet.updatePadding(top = insets.systemWindowInsetTop)
+            insets
+        }
 
         childFragmentManager.beginTransaction()
             .replace(R.id.container_player, PlayerFragment.newInstance())
@@ -96,15 +96,16 @@ class PlayerSheetFragment : BaseFragment(),
 //            behavior.state = BottomSheetBehavior.STATE_COLLAPSED
 //            playerSheetCallback?.requestCollapse()
 //        }
+    }
 
-        currSheetSlideOffset?.also { safeSlideOffset ->
-            onSlideOffset(safeSlideOffset)
-        }
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        observeMainSheetsState(viewLifecycleOwner)
     }
 
     override fun onDestroyView() {
         BottomSheetBehavior.from(bottom_sheet_current_song_queue).apply {
-            removeBottomSheetCallback(bottomSheetCallback)
+            removeBottomSheetCallback(innerBottomSheetCallback)
         }
         super.onDestroyView()
     }
@@ -124,10 +125,35 @@ class PlayerSheetFragment : BaseFragment(),
         }
     }
 
-    fun onSlideOffset(offset: Float) {
-        currSheetSlideOffset = offset
-        view?.also {
-            //imv_close?.alpha = (offset * 4 - 3).coerceIn(0f, 1f)
+    private fun observeMainSheetsState(owner: LifecycleOwner) = with(mainSheetsStateViewModel) {
+        slideState.observeNonNull(owner) { slideState ->
+            // actuallyApplySlideOffset(slideState.playerSheetSlideOffset)
+        }
+    }
+
+    private fun handleInnerBottomSheetSlideOffset(slideOffset: Float) {
+        mainSheetsStateViewModel.dispatchQueueSheetSlideOffset(slideOffset)
+        // For Goodness sake make sure the view is created
+        if (view != null) {
+            layout_hook.alpha = (1 - slideOffset * 2).coerceIn(0f, 1f)
+            layout_hook.isClickable = slideOffset < 0.3
+            container_current_song_queue.alpha = slideOffset
+            view_dim_overlay.alpha = 1 - (1 - slideOffset).pow(2)
+        }
+    }
+
+    private fun handleInnerBottomSheetState(@BottomSheetBehavior.State newState: Int) {
+        when (newState) {
+            BottomSheetBehavior.STATE_EXPANDED,
+            BottomSheetBehavior.STATE_SETTLING,
+            BottomSheetBehavior.STATE_DRAGGING -> {
+                playerSheetCallback?.setPlayerSheetDraggable(false)
+            }
+            BottomSheetBehavior.STATE_COLLAPSED,
+            BottomSheetBehavior.STATE_HIDDEN -> {
+                playerSheetCallback?.setPlayerSheetDraggable(true)
+            }
+            else -> Unit
         }
     }
 

@@ -18,14 +18,23 @@
         android:background="#99000000"
         android:alpha="0.0"/>
 
-    <com.frolo.muse.ui.main.player.TouchFrameLayout
+    <com.frolo.muse.ui.main.player.TouchAwareFrameLayout
         android:id="@+id/bottom_sheet_current_song_queue"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/bg_bottom_sheet"
+        android:fitsSystemWindows="true"
         app:behavior_hideable="false"
         app:behavior_peekHeight="?actionBarSize"
+        app:paddingTopSystemWindowInsets="true"
+        app:paddingBottomSystemWindowInsets="false"
+        android:paddingTop="0dp"
+        android:paddingBottom="0dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_bottom_sheet"/>
 
         <FrameLayout
             android:id="@+id/container_current_song_queue"
@@ -58,6 +67,6 @@
                 app:autoSizeMinTextSize="10sp"
                 app:autoSizeMaxTextSize="14sp"/>
         </LinearLayout>
-    </com.frolo.muse.ui.main.player.TouchFrameLayout>
+    </com.frolo.muse.ui.main.player.TouchAwareFrameLayout>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

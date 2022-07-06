@@ -36,6 +36,7 @@ android {
 dependencies {
     implementation deps.support.core
     implementation deps.support.appCompat
+    implementation deps.support.fragment
     implementation deps.design.material
     implementation deps.design.flexbox
 
