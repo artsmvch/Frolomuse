@@ -10,6 +10,9 @@
 
     <color name="error">@color/md_red_A200</color>
 
+    <!--Main screen-->
+    <color name="player_toolbar_element_background">#5C000000</color>
+
     <!--transparent-->
     <color name="transparent">@android:color/transparent</color>
     <color name="transparent_black">#91000000</color>

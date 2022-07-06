@@ -39,7 +39,7 @@ class RootLayout @JvmOverloads constructor(
 
     override fun dispatchApplyWindowInsets(insets: WindowInsets): WindowInsets {
         statusBarRect.set(insets.systemWindowInsetLeft, 0,
-            measuredWidth + insets.systemWindowInsetRight, insets.systemWindowInsetTop)
+            measuredWidth - insets.systemWindowInsetRight, insets.systemWindowInsetTop)
         return super.dispatchApplyWindowInsets(insets)
     }
 

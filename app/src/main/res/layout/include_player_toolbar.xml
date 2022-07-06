@@ -7,11 +7,12 @@
 
     <ImageView
         android:id="@+id/btn_close"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_margin="4dp"
-        android:padding="8dp"
-        android:src="@drawable/ic_action_close_outline_24"/>
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_margin="8dp"
+        android:padding="6dp"
+        android:src="@drawable/ic_action_close_outline_24"
+        android:background="@drawable/bg_player_toolbar_element"/>
 
     <Space
         android:layout_width="0dp"
@@ -20,9 +21,10 @@
 
     <ImageView
         android:id="@+id/btn_options_menu"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_margin="4dp"
-        android:padding="8dp"
-        android:src="@drawable/ic_overflow_menu_outline_24"/>
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_margin="8dp"
+        android:padding="6dp"
+        android:src="@drawable/ic_overflow_menu_outline_24"
+        android:background="@drawable/bg_player_toolbar_element"/>
 </LinearLayout>

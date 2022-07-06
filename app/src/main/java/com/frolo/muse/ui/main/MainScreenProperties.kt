@@ -7,6 +7,7 @@ import android.graphics.Rect
 import androidx.annotation.ColorInt
 import androidx.annotation.Dimension
 import androidx.annotation.Px
+import androidx.core.content.ContextCompat
 import com.frolo.debug.DebugUtils
 import com.frolo.muse.R
 import com.frolo.ui.StyleUtils
@@ -48,6 +49,11 @@ internal class MainScreenProperties(
             DebugUtils.dumpOnMainThread(error)
             StyleUtils.resolveColor(context, android.R.attr.navigationBarColor)
         }
+    }
+
+    @get:ColorInt
+    val playerToolbarElement: Int by lazy {
+        ContextCompat.getColor(context, R.color.player_toolbar_element_background)
     }
 
     @get:Px

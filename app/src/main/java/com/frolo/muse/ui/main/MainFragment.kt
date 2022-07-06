@@ -722,7 +722,7 @@ internal class MainFragment :
     private fun observeMainSheetsState(owner: LifecycleOwner) = with(mainSheetsStateViewModel) {
         slideState.observeNonNull(owner) { slideState ->
             @ColorInt
-            val defStatusBarColor: Int = ColorUtils.setAlphaComponent(Color.WHITE, ((255 * 0.65f).toInt()))
+            val defStatusBarColor: Int = properties.playerToolbarElement
             @ColorInt
             val statusBarColor: Int = if (slideState.queueSheetSlideOffset > 0f) {
                 val factor = slideState.queueSheetSlideOffset
