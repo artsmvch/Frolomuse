@@ -10,13 +10,12 @@ import androidx.core.view.updatePadding
 import androidx.lifecycle.LifecycleOwner
 import com.frolo.arch.support.observeNonNull
 import com.frolo.muse.R
-import com.frolo.ui.StyleUtils
-import com.frolo.muse.ui.base.OnBackPressedHandler
 import com.frolo.muse.ui.base.BaseFragment
-import com.frolo.muse.ui.base.tryHostAs
+import com.frolo.muse.ui.base.OnBackPressedHandler
 import com.frolo.muse.ui.main.player.PlayerFragment
 import com.frolo.muse.ui.main.player.TouchAwareFrameLayout
 import com.frolo.muse.ui.main.player.current.CurrSongQueueFragment
+import com.frolo.ui.StyleUtils
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehaviorSupport
 import kotlinx.android.synthetic.main.fragment_player_sheet.*
@@ -29,9 +28,6 @@ class PlayerSheetFragment :
     CurrSongQueueFragment.OnCloseIconClickListener {
 
     private val mainSheetsStateViewModel by lazy { provideMainSheetStateViewModel() }
-
-    private val playerSheetCallback: PlayerSheetCallback?
-        get() = tryHostAs<PlayerSheetCallback>()
 
     private val innerBottomSheetCallback =
         object : BottomSheetBehavior.BottomSheetCallback() {
@@ -65,7 +61,7 @@ class PlayerSheetFragment :
         bottom_sheet_current_song_queue.touchCallback =
             object : TouchAwareFrameLayout.TouchCallback {
                 override fun onTouchStarted() {
-                    playerSheetCallback?.setPlayerSheetDraggable(false)
+                    mainSheetsStateViewModel.setPlayerSheetDraggable(false)
                 }
 
                 override fun onTouchEnded() {
@@ -147,11 +143,11 @@ class PlayerSheetFragment :
             BottomSheetBehavior.STATE_EXPANDED,
             BottomSheetBehavior.STATE_SETTLING,
             BottomSheetBehavior.STATE_DRAGGING -> {
-                playerSheetCallback?.setPlayerSheetDraggable(false)
+                mainSheetsStateViewModel.setPlayerSheetDraggable(false)
             }
             BottomSheetBehavior.STATE_COLLAPSED,
             BottomSheetBehavior.STATE_HIDDEN -> {
-                playerSheetCallback?.setPlayerSheetDraggable(true)
+                mainSheetsStateViewModel.setPlayerSheetDraggable(true)
             }
             else -> Unit
         }

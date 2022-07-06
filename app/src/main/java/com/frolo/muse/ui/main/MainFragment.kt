@@ -81,7 +81,6 @@ internal class MainFragment :
     SystemBarsControlOwner,
     SimpleFragmentNavigator,
     AppRouter.Provider,
-    PlayerSheetCallback,
     IntentHandler,
     OnBackPressedHandler {
 
@@ -106,7 +105,6 @@ internal class MainFragment :
     private var pendingIntent: Intent? = null
 
     private var fragNavController: FragNavController? = null
-    private var playerSheetFragment: PlayerSheetFragment? = null
 
     private var resPermissionExplanationDialog: Dialog? = null
 
@@ -480,10 +478,8 @@ internal class MainFragment :
             bottom_navigation_view.selectedItemId = targetMenuId
         }
 
-        val newPlayerSheetFragment = PlayerSheetFragment()
-        playerSheetFragment = newPlayerSheetFragment
         fragmentManager.beginTransaction()
-            .replace(R.id.container_player, newPlayerSheetFragment, FRAG_TAG_PLAYER_SHEET)
+            .replace(R.id.container_player, PlayerSheetFragment(), FRAG_TAG_PLAYER_SHEET)
             .replace(R.id.mini_player_container, MiniPlayerFragment(), FRAG_TAG_MIN_PLAYER)
             .commit()
 
@@ -750,6 +746,16 @@ internal class MainFragment :
                 controller.setStatusBarAppearanceLight(SystemBarUtils.isLight(statusBarColor))
             }
         }
+
+        isPlayerSheetDraggable.observeNonNull(owner) { draggable ->
+            BottomSheetBehavior.from(sliding_player_layout).apply {
+                isDraggable = draggable
+            }
+        }
+
+        collapsePlayerSheetEvent.observeNonNull(owner) {
+            collapseSlidingPlayer()
+        }
     }
 
     private fun clearAllFragmentsAndState() {
@@ -822,16 +828,6 @@ internal class MainFragment :
 
     private fun pickCurrentFragment(): Fragment? {
         return fragNavController?.currentFrag
-    }
-
-    override fun setPlayerSheetDraggable(draggable: Boolean) {
-        BottomSheetBehavior.from(sliding_player_layout).apply {
-            isDraggable = draggable
-        }
-    }
-
-    override fun requestCollapse() {
-        collapseSlidingPlayer()
     }
 
     // System bars

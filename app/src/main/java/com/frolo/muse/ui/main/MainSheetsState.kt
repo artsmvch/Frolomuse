@@ -6,6 +6,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
+import com.frolo.arch.support.EventLiveData
+import com.frolo.arch.support.call
 import com.frolo.arch.support.distinctUntilChanged
 
 
@@ -18,9 +20,15 @@ internal interface MainSheetsStateViewModel {
     val isDimmed: LiveData<Boolean>
     val slideState: LiveData<SlideState>
 
+    val isPlayerSheetDraggable: LiveData<Boolean>
+    val collapsePlayerSheetEvent: LiveData<Unit>
+
     fun dispatchScreenChanged()
     fun dispatchPlayerSheetSlideOffset(slideOffset: Float)
     fun dispatchQueueSheetSlideOffset(slideOffset: Float)
+
+    fun setPlayerSheetDraggable(draggable: Boolean)
+    fun collapsePlayerSheet()
 }
 
 internal fun Fragment.provideMainSheetStateViewModel(): MainSheetsStateViewModel {
@@ -48,6 +56,12 @@ internal class MainSheetsStateViewModelImpl: ViewModel(), MainSheetsStateViewMod
     private val _slideState = MutableLiveData<SlideState>(slideStateImpl)
     override val slideState: LiveData<SlideState> get() = _slideState
 
+    private val _isPlayerSheetDraggable = MutableLiveData<Boolean>(true)
+    override val isPlayerSheetDraggable: LiveData<Boolean> = _isPlayerSheetDraggable
+
+    private val _collapsePlayerSheetEvent = EventLiveData<Unit>()
+    override val collapsePlayerSheetEvent: LiveData<Unit> = _collapsePlayerSheetEvent
+
     override fun dispatchScreenChanged() {
         _slideState.value = slideStateImpl
     }
@@ -68,6 +82,14 @@ internal class MainSheetsStateViewModelImpl: ViewModel(), MainSheetsStateViewMod
     override fun dispatchQueueSheetSlideOffset(slideOffset: Float) {
         slideStateImpl.queueSheetSlideOffset = slideOffset
         _slideState.value = slideStateImpl
+    }
+
+    override fun setPlayerSheetDraggable(draggable: Boolean) {
+        _isPlayerSheetDraggable.value = draggable
+    }
+
+    override fun collapsePlayerSheet() {
+        _collapsePlayerSheetEvent.call()
     }
 
     private data class SlideStateImpl(
