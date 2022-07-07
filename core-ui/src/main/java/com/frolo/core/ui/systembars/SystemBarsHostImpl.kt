@@ -7,16 +7,14 @@ import androidx.annotation.ColorInt
 import java.util.*
 
 
-internal class SystemBarsHostImpl(
-    getWindowLambda: () -> Window
-): SystemBarsHost {
+internal class SystemBarsHostImpl(window: Window): SystemBarsHost {
 
     private val chain = LinkedList<ChainNode>()
-    private val controller = SystemBarsControllerImpl(getWindowLambda)
+    private val controller = SystemBarsControllerImpl(window)
+
+    val window: Window? get() = controller.window
 
     private val handler: Handler by lazy { Handler(Looper.getMainLooper()) }
-
-    constructor(window: Window): this({ window })
 
     override fun getSystemBarsController(owner: SystemBarsControlOwner): SystemBarsController? {
         val lastNode = chain.peek()

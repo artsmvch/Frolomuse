@@ -3,16 +3,15 @@ package com.frolo.core.ui.systembars
 import android.view.Window
 import androidx.annotation.ColorInt
 import com.frolo.ui.SystemBarUtils
+import java.lang.ref.WeakReference
 
 
-internal class SystemBarsControllerImpl(
-    private val getWindowLambda: () -> Window?
-): SystemBarsController {
+internal class SystemBarsControllerImpl(window: Window): SystemBarsController {
+    private val windowRef = WeakReference(window)
+    val window: Window? get() = windowRef.get()
 
     private inline fun applyToWindow(block: Window.() -> Unit) {
-        val safeWindow = getWindowLambda.invoke()
-            ?: return
-        safeWindow.block()
+        window?.block()
     }
 
     override fun setStatusBarVisible(isVisible: Boolean) {
