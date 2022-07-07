@@ -742,7 +742,7 @@ internal class MainFragment :
                 }
                 ColorUtils.blendARGB(screenStatusBarColor, playerStatusBarColor, factor)
             }
-            root_layout.statusBarColor = resultStatusBarColor
+            root_layout.setStatusBarColor(resultStatusBarColor)
             defaultSystemBarsHost?.getSystemBarsController(this@MainFragment)?.also { controller ->
                 controller.setStatusBarColor(Color.TRANSPARENT)
                 controller.setStatusBarAppearanceLight(SystemBarUtils.isLight(resultStatusBarColor))

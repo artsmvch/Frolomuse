@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.frolo.core.ui.layout.RootLayout
+<com.frolo.core.ui.layout.DrawingSystemBarsLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -24,4 +24,4 @@
         android:visibility="gone"
         style="@style/Widget.Material3.CircularProgressIndicator.Medium"
         tools:visibility="visible"/>
-</com.frolo.core.ui.layout.RootLayout>
+</com.frolo.core.ui.layout.DrawingSystemBarsLayout>
