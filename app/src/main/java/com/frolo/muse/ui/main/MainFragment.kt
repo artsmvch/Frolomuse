@@ -722,28 +722,30 @@ internal class MainFragment :
     private fun observeMainSheetsState(owner: LifecycleOwner) = with(mainSheetsStateViewModel) {
         slideState.observeNonNull(owner) { slideState ->
             @ColorInt
-            val defStatusBarColor: Int = properties.playerToolbarElement
+            val playerStatusBarColor: Int = properties.playerToolbarElement
             @ColorInt
-            val statusBarColor: Int = if (slideState.queueSheetSlideOffset > 0f) {
+            val resultStatusBarColor: Int = if (slideState.queueSheetSlideOffset > 0f) {
                 val factor = slideState.queueSheetSlideOffset
-                ColorUtils.blendARGB(defStatusBarColor, Color.TRANSPARENT, factor)
-                //ColorUtils.setAlphaComponent(Color.WHITE, ((255 * alpha).toInt()))
+                ColorUtils.blendARGB(playerStatusBarColor, Color.TRANSPARENT, factor)
             } else {
                 val factor = slideState.playerSheetSlideOffset
+                val fragment = pickCurrentFragment()
                 @ColorInt
-                val fragStatusBarColor: Int = pickCurrentFragment().let { fragment ->
-                    if (fragment is WithCustomStatusBar && FragmentUtils.isInForeground(fragment)) {
+                val screenStatusBarColor: Int = when {
+                    fragment is WithCustomStatusBar && FragmentUtils.isInForeground(fragment) -> {
                         fragment.statusBarColor
-                    } else {
+                    }
+                    fragment != null -> {
                         StyleUtils.resolveColor(requireContext(), R.attr.colorPrimaryDark)
                     }
+                    else -> Color.TRANSPARENT
                 }
-                ColorUtils.blendARGB(fragStatusBarColor, defStatusBarColor, factor)
+                ColorUtils.blendARGB(screenStatusBarColor, playerStatusBarColor, factor)
             }
-            root_layout.statusBarColor = statusBarColor
+            root_layout.statusBarColor = resultStatusBarColor
             defaultSystemBarsHost?.getSystemBarsController(this@MainFragment)?.also { controller ->
                 controller.setStatusBarColor(Color.TRANSPARENT)
-                controller.setStatusBarAppearanceLight(SystemBarUtils.isLight(statusBarColor))
+                controller.setStatusBarAppearanceLight(SystemBarUtils.isLight(resultStatusBarColor))
             }
         }
 
