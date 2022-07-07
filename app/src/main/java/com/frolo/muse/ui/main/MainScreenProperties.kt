@@ -3,6 +3,7 @@ package com.frolo.muse.ui.main
 import android.app.Activity
 import android.content.Context
 import android.content.res.Resources
+import android.graphics.Color
 import android.graphics.Rect
 import androidx.annotation.ColorInt
 import androidx.annotation.Dimension
@@ -19,6 +20,10 @@ internal class MainScreenProperties(
 
     private val context: Context get() = activity
     private val resources: Resources get() = context.resources
+
+    val isLightTheme: Boolean by lazy {
+        StyleUtils.resolveBool(context, R.attr.isLightTheme)
+    }
 
     @get:ColorInt
     val colorPrimary: Int by lazy {
@@ -70,6 +75,9 @@ internal class MainScreenProperties(
     val bottomNavigationCornerRadius: Float by lazy {
         resources.getDimension(R.dimen.bottom_navigation_bar_corner_radius)
     }
+
+    @get:ColorInt
+    val transparentStatusBarColor: Int = Color.TRANSPARENT
 
     val fragmentContentInsets: Rect by lazy {
         val left = resources.getDimension(R.dimen.fragment_content_left_inset).toInt()

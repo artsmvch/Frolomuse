@@ -58,6 +58,7 @@ import com.frolo.muse.ui.main.settings.AppBarSettingsFragment
 import com.frolo.muse.util.LinkUtils
 import com.frolo.music.model.Media
 import com.frolo.player.Player
+import com.frolo.ui.ColorUtils2
 import com.frolo.ui.FragmentUtils
 import com.frolo.ui.StyleUtils
 import com.frolo.ui.SystemBarUtils
@@ -721,32 +722,7 @@ internal class MainFragment :
 
     private fun observeMainSheetsState(owner: LifecycleOwner) = with(mainSheetsStateViewModel) {
         slideState.observeNonNull(owner) { slideState ->
-            @ColorInt
-            val playerStatusBarColor: Int = properties.playerToolbarElement
-            @ColorInt
-            val resultStatusBarColor: Int = if (slideState.queueSheetSlideOffset > 0f) {
-                val factor = slideState.queueSheetSlideOffset
-                ColorUtils.blendARGB(playerStatusBarColor, Color.TRANSPARENT, factor)
-            } else {
-                val factor = slideState.playerSheetSlideOffset
-                val fragment = pickCurrentFragment()
-                @ColorInt
-                val screenStatusBarColor: Int = when {
-                    fragment is WithCustomStatusBar && FragmentUtils.isInForeground(fragment) -> {
-                        fragment.statusBarColor
-                    }
-                    fragment != null -> {
-                        StyleUtils.resolveColor(requireContext(), R.attr.colorPrimaryDark)
-                    }
-                    else -> Color.TRANSPARENT
-                }
-                ColorUtils.blendARGB(screenStatusBarColor, playerStatusBarColor, factor)
-            }
-            root_layout.setStatusBarColor(resultStatusBarColor)
-            defaultSystemBarsHost?.getSystemBarsController(this@MainFragment)?.also { controller ->
-                controller.setStatusBarColor(Color.TRANSPARENT)
-                controller.setStatusBarAppearanceLight(SystemBarUtils.isLight(resultStatusBarColor))
-            }
+            updateSystemBars(slideState = slideState)
         }
 
         isPlayerSheetDraggable.observeNonNull(owner) { draggable ->
@@ -821,10 +797,62 @@ internal class MainFragment :
     }
 
     private fun setupSystemBars(fragment: Fragment?) {
-        if (fragment != null) {
-            fragment.doOnResume { mainSheetsStateViewModel.dispatchScreenChanged() }
-        } else {
+        val action = {
             mainSheetsStateViewModel.dispatchScreenChanged()
+            updateSystemBars(screen = fragment)
+        }
+        if (fragment != null) {
+            fragment.doOnResume(action)
+        } else {
+            action.invoke()
+        }
+    }
+
+    private fun updateSystemBars(
+        screen: Fragment? = pickCurrentFragment(),
+        slideState: SlideState? = mainSheetsStateViewModel.slideState.value,
+        systemBarsController: SystemBarsController? =
+            defaultSystemBarsHost?.getSystemBarsController(this)
+    ) {
+        @ColorInt
+        val screenStatusBarColor: Int = when {
+            screen is WithCustomStatusBar -> screen.statusBarColor
+            screen != null -> properties.colorPrimaryDark
+            else -> properties.transparentStatusBarColor
+        }
+        @ColorInt
+        val playerStatusBarColor: Int
+        val isStatusBarLight: Boolean
+        when {
+            slideState == null -> {
+                playerStatusBarColor = properties.transparentStatusBarColor
+                isStatusBarLight = properties.isLightTheme
+            }
+            slideState.queueSheetSlideOffset > 0.005f -> {
+                playerStatusBarColor = ColorUtils.blendARGB(
+                    properties.playerToolbarElement,
+                    properties.transparentStatusBarColor,
+                    slideState.queueSheetSlideOffset)
+                isStatusBarLight = false
+            }
+            else -> {
+                playerStatusBarColor = ColorUtils2.multiplyAlphaComponent(
+                    properties.playerToolbarElement,
+                    slideState.playerSheetSlideOffset)
+                @ColorInt
+                val composedColor = ColorUtils.compositeColors(
+                    playerStatusBarColor,
+                    ColorUtils2.makeOpaque(screenStatusBarColor))
+                isStatusBarLight = SystemBarUtils.isLight(composedColor)
+            }
+        }
+
+        container.setStatusBarColor(screenStatusBarColor)
+        main.setStatusBarColor(playerStatusBarColor)
+
+        systemBarsController?.apply {
+            setStatusBarColor(properties.transparentStatusBarColor)
+            setStatusBarAppearanceLight(isStatusBarLight)
         }
     }
 
@@ -834,7 +862,7 @@ internal class MainFragment :
 
     // System bars
     override fun onSystemBarsControlObtained(controller: SystemBarsController) {
-        setupSystemBars(pickCurrentFragment())
+        updateSystemBars(systemBarsController = controller)
     }
 
     fun interface OnFinishCallback {
