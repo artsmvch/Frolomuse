@@ -423,12 +423,12 @@ class PlayerFragment: BaseFragment() {
 
     private fun observeMainSheetsState(owner: LifecycleOwner) = with(mainSheetsStateViewModel) {
         isPlayerSheetVisible.observeNonNull(owner) { isVisible ->
-            animateViewToVisibility(btn_close, isVisible)
-            animateViewToVisibility(btn_options_menu, isVisible)
+            animateToolbarElementToVisibility(btn_close, isVisible)
+            animateToolbarElementToVisibility(btn_options_menu, isVisible)
         }
     }
 
-    private fun animateViewToVisibility(view: View, isVisible: Boolean) {
+    private fun animateToolbarElementToVisibility(view: View, isVisible: Boolean) {
         view.visibility = View.VISIBLE
         val initialScale: Float
         val initialAlpha: Float
