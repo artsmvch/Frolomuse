@@ -19,7 +19,9 @@ import com.frolo.muse.ui.main.library.base.BaseAdapter
 import com.frolo.muse.ui.main.library.base.DragSongAdapter
 import com.frolo.muse.ui.main.library.base.SongAdapter
 import com.frolo.muse.ui.main.library.playlists.create.PlaylistCreateEvent
+import com.frolo.muse.ui.main.provideMainSheetStateViewModel
 import com.frolo.muse.ui.smoothScrollToTop
+import com.frolo.ui.Screen
 import com.frolo.ui.ViewUtils
 import kotlinx.android.synthetic.main.fragment_base_list.*
 import kotlinx.android.synthetic.main.fragment_curr_song_queue.*
@@ -29,20 +31,6 @@ import kotlinx.android.synthetic.main.fragment_curr_song_queue.*
  * This fragment shows the queue of songs currently being played by the player.
  */
 class CurrSongQueueFragment: AbsMediaCollectionFragment<Song>() {
-
-    companion object {
-
-        private const val SCROLL_THRESHOLD_IN_INCH = 0.3f
-
-        private const val TIME_FOR_SCROLLING = 1000L // 1 second
-
-        // Factory
-        fun newInstance() = CurrSongQueueFragment()
-
-        private fun getScrollThresholdInPx(context: Context): Int {
-            return (SCROLL_THRESHOLD_IN_INCH * context.resources.displayMetrics.densityDpi).toInt()
-        }
-    }
 
     interface OnCloseIconClickListener {
         fun onCloseIconClick(fragment: CurrSongQueueFragment)
@@ -152,6 +140,7 @@ class CurrSongQueueFragment: AbsMediaCollectionFragment<Song>() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         observeViewModel(viewLifecycleOwner)
+        observeMainSheetsState(viewLifecycleOwner)
     }
 
     override fun onStart() {
@@ -212,6 +201,17 @@ class CurrSongQueueFragment: AbsMediaCollectionFragment<Song>() {
 
         scrollToPositionIfNotVisibleToUserEvent.observeNonNull(owner) { position ->
             postScrollToPositionIfNotVisibleToUser(position)
+        }
+    }
+
+    private fun observeMainSheetsState(owner: LifecycleOwner) = with(provideMainSheetStateViewModel()) {
+        slideState.observeNonNull(owner) { slideState ->
+            val factor = (slideState.queueSheetSlideOffset * 5 - 4f).coerceIn(0f, 1f)
+            tv_title.translationX = -Screen.dpFloat(36f) * (1f - factor)
+            imv_close.apply {
+                scaleX = factor
+                scaleY = factor
+            }
         }
     }
 
@@ -303,5 +303,19 @@ class CurrSongQueueFragment: AbsMediaCollectionFragment<Song>() {
                 distance = distanceToGo
             )
         )
+    }
+
+    companion object {
+
+        private const val SCROLL_THRESHOLD_IN_INCH = 0.3f
+
+        private const val TIME_FOR_SCROLLING = 1000L // 1 second
+
+        // Factory
+        fun newInstance() = CurrSongQueueFragment()
+
+        private fun getScrollThresholdInPx(context: Context): Int {
+            return (SCROLL_THRESHOLD_IN_INCH * context.resources.displayMetrics.densityDpi).toInt()
+        }
     }
 }
