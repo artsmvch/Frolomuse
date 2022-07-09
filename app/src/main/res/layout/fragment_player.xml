@@ -14,7 +14,25 @@
         android:id="@+id/carousel"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="24dp"/>
+        android:layout_marginBottom="16dp"/>
+
+    <View
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/carousel"
+        android:id="@+id/carousel_bottom_margin"
+        android:layout_width="0dp"
+        android:layout_height="16dp"/>
+
+    <View
+        android:id="@+id/player_surface"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/carousel_bottom_margin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/bg_player_surface"/>
 
     <include layout="@layout/include_player_toolbar"
         app:layout_constraintStart_toStartOf="@id/carousel"
@@ -25,15 +43,15 @@
         android:layout_height="wrap_content"/>
 
     <androidx.appcompat.widget.AppCompatImageView
-        app:layout_constraintEnd_toEndOf="@id/carousel"
-        app:layout_constraintBottom_toBottomOf="@id/carousel"
+        app:layout_constraintTop_toTopOf="@id/player_surface"
+        app:layout_constraintEnd_toEndOf="@id/player_surface"
+        app:layout_constraintBottom_toTopOf="@id/player_surface"
         android:id="@+id/btn_like"
         android:layout_width="32dp"
         android:layout_height="32dp"
-        android:layout_margin="8dp"
-        android:padding="6dp"
-        android:src="@drawable/ic_heart"
-        app:tint="?iconImageTint"/>
+        android:layout_marginEnd="12dp"
+        android:padding="4dp"
+        app:srcCompat="@drawable/ic_heart"/>
 
     <TextSwitcher
         app:layout_constraintStart_toStartOf="parent"

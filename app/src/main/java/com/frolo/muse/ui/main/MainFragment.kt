@@ -830,15 +830,18 @@ internal class MainFragment :
             }
             slideState.queueSheetSlideOffset > 0.005f -> {
                 playerStatusBarColor = ColorUtils.blendARGB(
-                    properties.playerToolbarElement,
+                    properties.playerStatusBarBackground,
                     properties.transparentStatusBarColor,
                     slideState.queueSheetSlideOffset)
                 isStatusBarLight = false
             }
             else -> {
+                val factor: Float = slideState.playerSheetSlideOffset.let { offset ->
+                    (offset * 4 - 3).coerceIn(0f, 1f)
+                }
                 playerStatusBarColor = ColorUtils2.multiplyAlphaComponent(
-                    properties.playerToolbarElement,
-                    slideState.playerSheetSlideOffset)
+                    properties.playerStatusBarBackground,
+                    factor)
                 @ColorInt
                 val composedColor = ColorUtils.compositeColors(
                     playerStatusBarColor,

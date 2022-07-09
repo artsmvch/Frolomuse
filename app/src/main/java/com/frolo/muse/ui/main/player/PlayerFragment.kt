@@ -428,8 +428,9 @@ class PlayerFragment: BaseFragment() {
         }
     }
 
+    // NOTE: do not animate to GONE visibility as this breaks sheet dragging
     private fun animateToolbarElementToVisibility(view: View, isVisible: Boolean) {
-        view.visibility = View.VISIBLE
+        val targetVisibility = if (isVisible) View.VISIBLE else View.INVISIBLE
         val initialScale: Float
         val initialAlpha: Float
         val targetScale: Float
@@ -445,7 +446,7 @@ class PlayerFragment: BaseFragment() {
             targetScale = 0.4f
             targetAlpha = 0.0f
         }
-        view.isVisible = true
+        view.visibility = View.VISIBLE
         view.scaleX = initialScale
         view.scaleY = initialScale
         view.alpha = initialAlpha
@@ -453,9 +454,9 @@ class PlayerFragment: BaseFragment() {
             .scaleX(targetScale)
             .scaleY(targetScale)
             .alpha(targetAlpha)
-            .setDuration(200L)
+            .setDuration(150L)
             .setInterpolator(AccelerateDecelerateInterpolator())
-            .withEndAction { view.isVisible = isVisible }
+            .withEndAction { view.visibility = targetVisibility }
             .start()
     }
 

@@ -12,10 +12,10 @@
 
     <include layout="@layout/include_player_controller"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginStart="32dp"
+        android:layout_height="68dp"
+        android:layout_marginStart="28dp"
         android:layout_marginTop="@dimen/player_element_vertical_gap"
-        android:layout_marginEnd="32dp"/>
+        android:layout_marginEnd="28dp"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/btn_ab"

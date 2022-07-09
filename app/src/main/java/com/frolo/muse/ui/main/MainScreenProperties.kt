@@ -57,7 +57,12 @@ internal class MainScreenProperties(
     }
 
     @get:ColorInt
-    val playerToolbarElement: Int by lazy {
+    val playerStatusBarBackground: Int by lazy {
+        ContextCompat.getColor(context, R.color.player_status_bar_background)
+    }
+
+    @get:ColorInt
+    val playerToolbarElementBackground: Int by lazy {
         ContextCompat.getColor(context, R.color.player_toolbar_element_background)
     }
 

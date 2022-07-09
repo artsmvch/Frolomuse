@@ -5,7 +5,12 @@
     android:height="18dp"
     android:viewportWidth="225"
     android:viewportHeight="225">
-    <group android:name="group">
+    <group
+        android:pivotX="112.5"
+        android:pivotY="112.5"
+        android:scaleX="0.78"
+        android:scaleY="0.78"
+        android:name="group">
         <path
             android:name="path"
             android:pathData="M 176 47.7 L 176 57.8 L 161.3 58.2 C 147.9 58.6 146 58.9 140.7 61.3 C 127.6 67.3 120.4 75.8 101 108.3 C 92.1 123.1 85.3 131.9 79.6 135.7 L 74.8 139 L 14 139 L 14 161 L 80.7 161 L 86.8 157.9 C 98.4 152.1 106.5 142.8 121.9 117.3 C 136.2 93.5 142.9 84.8 148.7 82.3 C 150.8 81.5 156.1 81 164 81 L 176 81 L 176 102.1 L 193.5 85.9 L 211.1 69.7 L 208.8 67.7 C 207.5 66.5 200.9 60.4 194 54.1 C 187.1 47.8 180.3 41.5 178.8 40.1 L 176 37.6 L 176 47.7 Z"
