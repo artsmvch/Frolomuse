@@ -10,7 +10,7 @@ import io.reactivex.Flowable;
  */
 public interface SoundWaveResolver {
 
-    int DEFAULT_LEVEL_COUNT = 100;
+    int DEFAULT_LEVEL_COUNT = 65;
 
     Flowable<SoundWave> resolveSoundWave(String filepath);
 

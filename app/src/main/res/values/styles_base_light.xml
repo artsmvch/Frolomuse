@@ -42,6 +42,7 @@
         <item name="actionModeStyle">@style/Base.AppTheme.Light.ActionMode</item>
 
         <item name="equalizerViewStyle">@style/Base.AppTheme.EqualizerView.Light</item>
+        <item name="waveformSeekBarStyle">@style/Base.AppTheme.WaveformSeekBar.Light</item>
 
         <item name="dialogCornerRadius">@dimen/dialog_corner_radius</item>
 
@@ -90,6 +91,10 @@
         <item name="errorTextColor">@color/error</item>
 
         <item name="colorPremiumProductAccent">?colorAccent</item>
+    </style>
+
+    <style name="Base.AppTheme.WaveformSeekBar.Light" parent="Base.AppTheme.WaveformSeekBar">
+        <item name="waveBackgroundColor">#66AAAAAA</item>
     </style>
 
     <style name="Base.AppTheme.Light.ActionBar" parent="Widget.MaterialComponents.Light.ActionBar.Solid">

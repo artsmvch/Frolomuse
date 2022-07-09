@@ -22,7 +22,7 @@
         app:layout_constraintBottom_toBottomOf="@id/carousel"
         android:id="@+id/carousel_bottom_margin"
         android:layout_width="0dp"
-        android:layout_height="16dp"/>
+        android:layout_height="24dp"/>
 
     <View
         android:id="@+id/player_surface"

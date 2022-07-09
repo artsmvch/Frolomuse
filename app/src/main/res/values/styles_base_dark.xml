@@ -33,6 +33,7 @@
         <item name="popupMenuStyle">@style/Base.AppTheme.PopupMenu</item>
 
         <item name="equalizerViewStyle">@style/Base.AppTheme.EqualizerView.Dark</item>
+        <item name="waveformSeekBarStyle">@style/Base.AppTheme.WaveformSeekBar.Dark</item>
 
         <item name="android:textColor">@color/md_white_1000</item>
         <item name="android:textColorPrimary">@color/md_white_1000</item>
@@ -75,6 +76,10 @@
         <item name="errorTextColor">@color/error</item>
 
         <item name="colorPremiumProductAccent">?colorAccent</item>
+    </style>
+
+    <style name="Base.AppTheme.WaveformSeekBar.Dark" parent="Base.AppTheme.WaveformSeekBar">
+        <item name="waveBackgroundColor">#3DC1C1C1</item>
     </style>
 
     <style name="Base.AppTheme.ActionButton.Overflow.Dark" parent="RtlUnderlay.Widget.AppCompat.ActionButton.Overflow">

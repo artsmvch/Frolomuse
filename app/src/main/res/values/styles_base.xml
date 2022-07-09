@@ -102,7 +102,7 @@
         <item name="waveMaxWidth">10dp</item>
         <item name="waveGap">1dp</item>
         <item name="waveCornerRadius">1dp</item>
-        <item name="waveBackgroundColor">#80808080</item>
+        <item name="waveBackgroundColor">#66C1C1C1</item>
         <item name="waveProgressColor">?colorAccent</item>
         <item name="waveAnimDuration">300</item>
     </style>

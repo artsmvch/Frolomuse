@@ -769,7 +769,8 @@ internal class MainFragment :
         mini_player_container.alpha = max(0f, 1f - slideOffset * 4)
         mini_player_container.touchesDisabled = slideOffset > 0.4
 
-        val cornerRadius = properties.playerSheetCornerRadius * (1 - slideOffset)
+        val cornerRadiusFactor: Float = (1f - slideOffset).pow(0.5f).coerceIn(0f, 1f)
+        val cornerRadius = properties.playerSheetCornerRadius * cornerRadiusFactor
         (sliding_player_layout.background as? MaterialShapeDrawable)?.apply {
             val blendRatio = max(0f, 1f - slideOffset * 2)
             val blendedColor = ColorUtils.blendARGB(properties.colorSurface,
@@ -816,7 +817,8 @@ internal class MainFragment :
     ) {
         @ColorInt
         val screenStatusBarColor: Int = when {
-            screen is WithCustomStatusBar -> screen.statusBarColor
+            screen is WithCustomStatusBar && FragmentUtils.isAttached(screen) ->
+                screen.statusBarColor
             screen != null -> properties.colorPrimaryDark
             else -> properties.transparentStatusBarColor
         }
