@@ -62,6 +62,7 @@ android {
         buildConfigField "Boolean", "GOOGLE_SERVICES_ENABLED", "$google_services_enabled"
         buildConfigField "String", "BUILD_SCRIPT_TIME", "\"${script_time}\""
         buildConfigField "String", "DEVELOPER_EMAIL", "\"alexei.artsimovich@gmail.com\""
+        buildConfigField "Integer", "SOUND_WAVEFORM_LENGTH", "65"
 
         vectorDrawables.useSupportLibrary = true
 

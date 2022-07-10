@@ -33,6 +33,7 @@ import com.frolo.muse.ui.getArtistString
 import com.frolo.muse.ui.getNameString
 import com.frolo.muse.ui.main.confirmDeletion
 import com.frolo.core.ui.carousel.ICarouselView
+import com.frolo.muse.BuildConfig
 import com.frolo.muse.ui.main.player.waveform.SoundWaveform
 import com.frolo.muse.ui.main.player.waveform.StaticWaveform
 import com.frolo.muse.ui.main.provideMainSheetStateViewModel
@@ -367,7 +368,7 @@ class PlayerFragment: BaseFragment() {
                 val waveform = SoundWaveform(soundWave)
                 waveform_seek_bar.setWaveform(waveform, true)
             } else {
-                val waveform = StaticWaveform(100, 1, 10)
+                val waveform = StaticWaveform(BuildConfig.SOUND_WAVEFORM_LENGTH, 1, 10)
                 waveform_seek_bar.setWaveform(waveform, true)
             }
         }

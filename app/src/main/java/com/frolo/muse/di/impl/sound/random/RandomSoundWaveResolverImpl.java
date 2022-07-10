@@ -42,7 +42,7 @@ public final class RandomSoundWaveResolverImpl implements SoundWaveResolver {
         return Flowable.fromCallable(() -> {
             ThreadStrictMode.assertBackground();
             final Random random = new Random(System.currentTimeMillis());
-            final int levelCount = SoundWaveResolver.DEFAULT_LEVEL_COUNT;
+            final int levelCount = BuildConfig.SOUND_WAVEFORM_LENGTH;
             final int[] levels = new int[levelCount];
             int maxLevel = Integer.MIN_VALUE;
             for (int i = 0; i < levelCount; i++) {
