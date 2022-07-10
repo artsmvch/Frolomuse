@@ -211,6 +211,7 @@ class CurrSongQueueFragment: AbsMediaCollectionFragment<Song>() {
             imv_close.apply {
                 scaleX = factor
                 scaleY = factor
+                imageAlpha = (factor * 255).toInt().coerceIn(0, 255)
             }
         }
     }

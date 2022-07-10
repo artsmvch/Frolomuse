@@ -9,11 +9,11 @@ import androidx.core.view.doOnLayout
 import androidx.core.view.updatePadding
 import androidx.lifecycle.LifecycleOwner
 import com.frolo.arch.support.observeNonNull
+import com.frolo.core.ui.touch.TouchFlowAware
 import com.frolo.muse.R
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.base.OnBackPressedHandler
 import com.frolo.muse.ui.main.player.PlayerFragment
-import com.frolo.muse.ui.main.player.TouchAwareFrameLayout
 import com.frolo.muse.ui.main.player.current.CurrSongQueueFragment
 import com.frolo.ui.StyleUtils
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -47,29 +47,25 @@ class PlayerSheetFragment :
     ): View = inflater.inflate(R.layout.fragment_player_sheet, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val behavior = BottomSheetBehavior.from(bottom_sheet_current_song_queue).apply {
+        val behavior = TouchFlowAwareBottomSheetBehavior.from<View>(bottom_sheet_current_song_queue).apply {
             addBottomSheetCallback(innerBottomSheetCallback)
             state = BottomSheetBehavior.STATE_COLLAPSED
             BottomSheetBehaviorSupport.dispatchOnSlide(bottom_sheet_current_song_queue)
-        }
-
-        val peekHeight = StyleUtils.resolveDimen(view.context, R.attr.actionBarSize).toInt()
-        view.doOnLayout {
-            behavior.peekHeight = peekHeight
-        }
-
-        bottom_sheet_current_song_queue.touchCallback =
-            object : TouchAwareFrameLayout.TouchCallback {
-                override fun onTouchStarted() {
+            touchFlowCallback = object : TouchFlowAware.TouchFlowCallback {
+                override fun onTouchFlowStarted() {
                     mainSheetsStateViewModel.setPlayerSheetDraggable(false)
                 }
-
-                override fun onTouchEnded() {
+                override fun onTouchFlowEnded() {
                     BottomSheetBehavior.from(bottom_sheet_current_song_queue).also { behavior ->
                         handleInnerBottomSheetState(behavior.state)
                     }
                 }
             }
+        }
+        val peekHeight = StyleUtils.resolveDimen(view.context, R.attr.actionBarSize).toInt()
+        view.doOnLayout {
+            behavior.peekHeight = peekHeight
+        }
         ViewCompat.setOnApplyWindowInsetsListener(bottom_sheet_current_song_queue) { bottomSheet, insets ->
             bottomSheet.updatePadding(top = insets.systemWindowInsetTop)
             insets
