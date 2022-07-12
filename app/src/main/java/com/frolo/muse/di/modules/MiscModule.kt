@@ -10,6 +10,8 @@ import com.frolo.muse.di.impl.misc.MainExecutor
 import com.frolo.muse.di.impl.network.NetworkHelperImpl
 import com.frolo.muse.di.impl.permission.PermissionCheckerImpl
 import com.frolo.muse.di.impl.rx.SchedulerProviderImpl
+import com.frolo.muse.links.AppLinksProcessor
+import com.frolo.muse.links.LinksProcessor
 import com.frolo.muse.player.journals.AndroidLogPlayerJournal
 import com.frolo.muse.player.journals.CompositePlayerJournal
 import com.frolo.muse.player.journals.StoredInMemoryPlayerJournal
@@ -17,6 +19,7 @@ import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.EventLoggerFactory
 import com.frolo.muse.network.NetworkHelper
 import com.frolo.muse.permission.PermissionChecker
+import com.frolo.muse.router.AppRouter
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.player.PlayerJournal
 import dagger.Module
@@ -91,6 +94,12 @@ class MiscModule constructor(private val isDebug: Boolean) {
     @Provides
     fun provideNetworkHelper(context: Context): NetworkHelper {
         return NetworkHelperImpl(context)
+    }
+
+    @ApplicationScope
+    @Provides
+    fun provideLinksProcessor(router: AppRouter): LinksProcessor {
+        return AppLinksProcessor(router)
     }
 
 }
