@@ -17,28 +17,27 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
-import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
 import androidx.lifecycle.LifecycleOwner
-import com.frolo.mediabutton.PlayButton
-import com.frolo.muse.R
 import com.frolo.arch.support.observe
 import com.frolo.arch.support.observeNonNull
+import com.frolo.core.ui.animations.AppAnimations
+import com.frolo.core.ui.carousel.ICarouselView
 import com.frolo.core.ui.glide.GlideAlbumArtHelper
 import com.frolo.core.ui.glide.observe
+import com.frolo.mediabutton.PlayButton
+import com.frolo.muse.BuildConfig
+import com.frolo.muse.R
 import com.frolo.muse.ui.asDurationInMs
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.getAlbumEditorOptionText
 import com.frolo.muse.ui.getArtistString
 import com.frolo.muse.ui.getNameString
 import com.frolo.muse.ui.main.confirmDeletion
-import com.frolo.core.ui.carousel.ICarouselView
-import com.frolo.muse.BuildConfig
 import com.frolo.muse.ui.main.player.waveform.SoundWaveform
 import com.frolo.muse.ui.main.player.waveform.StaticWaveform
 import com.frolo.muse.ui.main.provideMainSheetStateViewModel
 import com.frolo.muse.ui.main.showVolumeControl
-import com.frolo.muse.views.Anim
 import com.frolo.music.model.Song
 import com.frolo.player.Player
 import com.frolo.ui.StyleUtils
@@ -252,13 +251,15 @@ class PlayerFragment: BaseFragment() {
     private fun updateFavouriteIcon(favourite: Boolean) {
         if (favourite) {
             btn_like.setImageResource(R.drawable.ic_filled_heart)
+            btn_like.setBackgroundResource(R.drawable.bg_like_button_liked)
         } else {
             btn_like.setImageResource(R.drawable.ic_heart)
+            btn_like.setBackgroundResource(R.drawable.bg_like_button_default)
         }
     }
 
     private fun animateFavouriteIcon(favourite: Boolean) {
-        if (favourite) Anim.like(btn_like) else Anim.unlike(btn_like)
+        AppAnimations.animateLike(btn_like)
     }
 
     private fun updatePlayButton(isPlaying: Boolean) {
