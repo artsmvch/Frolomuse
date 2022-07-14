@@ -38,7 +38,9 @@ dependencies {
     implementation deps.support.appCompat
     implementation deps.support.fragment
     implementation deps.design.material
+    implementation deps.design.palette
     implementation deps.design.flexbox
+    implementation deps.rxJava2.rxAndroid
 
     // Glide
     implementation deps.glide.glide

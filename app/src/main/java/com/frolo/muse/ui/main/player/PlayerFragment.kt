@@ -278,6 +278,9 @@ class PlayerFragment: BaseFragment() {
         btn_ab.text = ss
     }
 
+    private fun updateArtBackground(song: Song?) {
+    }
+
     private fun showOptionsMenu(optionsMenu: PlayerOptionsMenu) {
         val anchorView: View = btn_options_menu
         val context = anchorView.context
@@ -341,6 +344,7 @@ class PlayerFragment: BaseFragment() {
                 tsw_song_name.setText("")
                 tsw_artist_name.setText("")
             }
+            updateArtBackground(song)
         }
 
         playerControllersEnabled.observeNonNull(owner) { enabled ->

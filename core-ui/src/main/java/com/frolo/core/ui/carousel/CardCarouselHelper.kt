@@ -8,6 +8,7 @@ import com.frolo.core.ui.setOverScrollModeCompat
 import com.frolo.ui.Screen
 import com.google.android.material.card.MaterialCardView
 import kotlin.math.abs
+import kotlin.math.absoluteValue
 import kotlin.math.min
 import kotlin.math.pow
 
@@ -123,6 +124,11 @@ private class CardTransformer constructor(
 ) : ViewPager2.PageTransformer {
 
     override fun transformPage(page: View, position: Float) {
+        //transform1(page, position)
+        transform2(page, position)
+    }
+
+    private fun transform1(page: View, position: Float) {
         val safePosition = when {
             position < -1f -> -1f
             position > 1f -> 1f
@@ -143,13 +149,37 @@ private class CardTransformer constructor(
         page.scaleX = scaleValue
         page.scaleY = scaleValue
 
-        page.findViewById<MaterialCardView>(R.id.cv_art_container).cardElevation =
-            calculateCardElevation(position)
-    }
-
-    private fun calculateCardElevation(position: Float): Float {
         val offsetCoefficient = 1f - min(1f, abs(position))
         val raisingElevationCoefficient = offsetCoefficient.pow(3)
+        page.findViewById<MaterialCardView>(R.id.cv_art_container).cardElevation =
+            calculateCardElevation(raisingElevationCoefficient)
+    }
+
+    private fun transform2(page: View, position: Float) {
+        val safePosition = when {
+            position < -1f -> -1f
+            position > 1f -> 1f
+            else -> position
+        }
+        val coefficient = (1 - safePosition.absoluteValue * 2).coerceIn(minScale, maxScale)
+
+        val slope = (maxScale - minScale) / 1
+        val scaleValue = minScale + coefficient * slope
+
+        val absOffset = (page.measuredWidth * (1 - scaleValue)) / 2
+        val offset = if (position < 0f) absOffset else -absOffset
+
+        // translation offset makes it closer to the currently selected page
+        page.translationX = offset
+
+        page.scaleX = scaleValue
+        page.scaleY = scaleValue
+
+        page.findViewById<MaterialCardView>(R.id.cv_art_container).cardElevation =
+            calculateCardElevation(coefficient)
+    }
+
+    private fun calculateCardElevation(raisingElevationCoefficient: Float): Float {
         return baseCardElevation + raisingCardElevation * raisingElevationCoefficient
     }
 

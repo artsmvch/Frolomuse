@@ -6,28 +6,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.frolo.core.ui.carousel.CarouselView
+    <View
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/tsw_song_name"
+        app:layout_constraintBottom_toBottomOf="@id/player_surface_top_margin"
+        android:id="@+id/carousel_background"
+        android:layout_width="0dp"
+        android:layout_height="0dp"/>
+
+    <com.frolo.core.ui.carousel.CarouselView
+        app:layout_constraintStart_toStartOf="@id/carousel_background"
+        app:layout_constraintTop_toTopOf="@id/carousel_background"
+        app:layout_constraintEnd_toEndOf="@id/carousel_background"
+        app:layout_constraintBottom_toBottomOf="@id/carousel_background"
         android:id="@+id/carousel"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="16dp"/>
-
-    <View
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/carousel"
-        android:id="@+id/carousel_bottom_margin"
-        android:layout_width="0dp"
-        android:layout_height="24dp"/>
+        android:layout_height="0dp"/>
 
     <View
         android:id="@+id/player_surface"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/carousel_bottom_margin"
+        app:layout_constraintTop_toTopOf="@id/player_surface_top_margin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_width="0dp"
@@ -43,15 +43,21 @@
         android:layout_height="wrap_content"/>
 
     <androidx.appcompat.widget.AppCompatImageView
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/player_surface"
         app:layout_constraintEnd_toEndOf="@id/player_surface"
         app:layout_constraintBottom_toTopOf="@id/player_surface"
         android:id="@+id/btn_like"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:layout_marginEnd="12dp"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
         android:padding="8dp"
         app:srcCompat="@drawable/ic_heart"/>
+
+    <View
+        app:layout_constraintBottom_toTopOf="@id/tsw_song_name"
+        android:id="@+id/player_surface_top_margin"
+        android:layout_width="match_parent"
+        android:layout_height="36dp"/>
 
     <TextSwitcher
         app:layout_constraintStart_toStartOf="parent"
