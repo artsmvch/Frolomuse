@@ -99,6 +99,7 @@
                 <data android:path="/player"/>
                 <data android:path="/library" />
                 <data android:path="/equalizer"/>
+                <data android:path="/audiofx"/>
                 <data android:path="/search"/>
                 <data android:path="/settings"/>
             </intent-filter>

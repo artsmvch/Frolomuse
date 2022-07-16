@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
-import android.graphics.Color
 import android.graphics.Outline
 import android.graphics.drawable.Drawable
 import android.net.Uri
@@ -91,12 +90,9 @@ internal class MainFragment :
     }
 
     private val appRouter by lazy {
-        AppRouterImpl(
+        MainAppRouterImpl(
             context = requireContext(),
-            navigator = this,
-            expandSlidingPlayer = {
-                expandSlidingPlayer()
-            }
+            host = this
         )
     }
 
@@ -531,7 +527,7 @@ internal class MainFragment :
         }
     }
 
-    private fun switchToRoot(index: Int) {
+    internal fun switchToRoot(index: Int) {
         view ?: return
         performNavActon {
             bottom_navigation_view.selectedItemId = getBottomMenuItemId(index)
@@ -594,31 +590,8 @@ internal class MainFragment :
             || intent.scheme?.let(LinkUtils::isHttpScheme) != true) {
             return false
         }
-        val uri: Uri = intent.data ?: return false
-        when (uri.pathSegments?.getOrNull(0)) {
-            "play",
-            "player" -> {
-                expandSlidingPlayer()
-                return true
-            }
-            "library" -> {
-                switchToRoot(INDEX_LIBRARY)
-                return true
-            }
-            "equalizer" -> {
-                switchToRoot(INDEX_EQUALIZER)
-                return true
-            }
-            "search" -> {
-                switchToRoot(INDEX_SEARCH)
-                return true
-            }
-            "settings" -> {
-                switchToRoot(INDEX_SETTINGS)
-                return true
-            }
-            else -> return false
-        }
+        // TODO: handle link intent via view model
+        return false
     }
 
     private fun handleActionViewContent(intent: Intent): Boolean {
@@ -742,7 +715,7 @@ internal class MainFragment :
         lastSavedInstanceState = null
     }
 
-    private fun expandSlidingPlayer() {
+    internal fun expandSlidingPlayer() {
         performNavActon {
             clearDialogFragment()
         }

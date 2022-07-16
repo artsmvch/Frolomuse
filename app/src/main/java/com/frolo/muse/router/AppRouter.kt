@@ -16,6 +16,10 @@ interface AppRouter {
 
     fun shareSongs(songs: List<Song>)
 
+    fun openLibrary()
+
+    fun openSearch()
+
     fun openSong(song: Song)
 
     fun openAlbum(album: Album)

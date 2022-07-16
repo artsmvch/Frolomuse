@@ -10,6 +10,8 @@ class TestAppRouter : AppRouter {
     override fun helpWithTranslations() = Unit
     override fun contactDeveloper() = Unit
     override fun shareSongs(songs: List<Song>) = Unit
+    override fun openLibrary() = Unit
+    override fun openSearch() = Unit
     override fun openSong(song: Song) = Unit
     override fun openAlbum(album: Album) = Unit
     override fun openArtist(artist: Artist) = Unit

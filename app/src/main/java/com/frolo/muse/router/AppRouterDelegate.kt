@@ -33,6 +33,14 @@ class AppRouterDelegate(
         delegate?.shareSongs(songs)
     }
 
+    override fun openLibrary() {
+        delegate?.openLibrary()
+    }
+
+    override fun openSearch() {
+        delegate?.openSearch()
+    }
+
     override fun openSong(song: Song) {
         delegate?.openSong(song)
     }

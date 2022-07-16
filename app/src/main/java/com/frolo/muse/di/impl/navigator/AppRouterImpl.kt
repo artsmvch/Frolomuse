@@ -4,11 +4,13 @@ import android.content.Context
 import com.frolo.muse.router.AppRouter
 import com.frolo.muse.ui.*
 import com.frolo.muse.ui.base.SimpleFragmentNavigator
+import com.frolo.muse.ui.main.audiofx.AudioFxFragment
 import com.frolo.muse.ui.main.audiofx.params.PlaybackParamsDialog
 import com.frolo.muse.ui.main.audiofx.preset.SavePresetDialog
 import com.frolo.muse.ui.main.editor.album.AlbumEditorDialog
 import com.frolo.muse.ui.main.editor.playlist.PlaylistEditorDialog
 import com.frolo.muse.ui.main.editor.song.SongEditorDialog
+import com.frolo.muse.ui.main.library.LibraryFragment
 import com.frolo.muse.ui.main.library.albums.album.AlbumFragment
 import com.frolo.muse.ui.main.library.artists.artist.ArtistFragment
 import com.frolo.muse.ui.main.library.genres.genre.GenreFragment
@@ -16,8 +18,12 @@ import com.frolo.muse.ui.main.library.playlists.addmedia.AddMediaToPlaylistDialo
 import com.frolo.muse.ui.main.library.playlists.create.SavePlaylistDialog
 import com.frolo.muse.ui.main.library.playlists.playlist.PlaylistFragment
 import com.frolo.muse.ui.main.library.playlists.playlist.addsong.AddSongToPlaylistDialog
+import com.frolo.muse.ui.main.library.search.SearchFragment
+import com.frolo.muse.ui.main.player.PlayerFragment
+import com.frolo.muse.ui.main.player.current.CurrSongQueueFragment
 import com.frolo.muse.ui.main.player.lyrics.LyricsDialogFragment
 import com.frolo.muse.ui.main.player.poster.PosterDialog
+import com.frolo.muse.ui.main.settings.SettingsFragment
 import com.frolo.muse.ui.main.settings.donations.DonationsFragment
 import com.frolo.muse.ui.main.settings.playback.PlaybackFadingDialog
 import com.frolo.muse.ui.main.settings.premium.BuyPremiumDialog
@@ -27,10 +33,9 @@ import com.frolo.threads.ThreadStrictMode
 import java.io.File
 
 
-class AppRouterImpl constructor(
+abstract class AppRouterImpl(
     private val context: Context,
-    private val navigator: SimpleFragmentNavigator,
-    private val expandSlidingPlayer: () -> Unit
+    private val navigator: SimpleFragmentNavigator
 ) : AppRouter {
 
     private fun checkThread() {
@@ -55,6 +60,18 @@ class AppRouterImpl constructor(
     override fun shareSongs(songs: List<Song>) {
         checkThread()
         context.share(songs)
+    }
+
+    override fun openLibrary() {
+        checkThread()
+        val fragment = LibraryFragment.newInstance()
+        navigator.pushFragment(fragment)
+    }
+
+    override fun openSearch() {
+        checkThread()
+        val fragment = SearchFragment.newInstance()
+        navigator.pushFragment(fragment)
     }
 
     override fun openSong(song: Song) {
@@ -161,17 +178,20 @@ class AppRouterImpl constructor(
 
     override fun openCurrentPlaying() {
         checkThread()
-//        val fragment = CurrentSongQueueFragment.newInstance()
-//        navigator.pushFragment(fragment)
+        val fragment = CurrSongQueueFragment.newInstance()
+        navigator.pushFragment(fragment)
     }
 
     override fun openPlayer() {
         checkThread()
-        expandSlidingPlayer.invoke()
+        val fragment = PlayerFragment.newInstance()
+        navigator.pushFragment(fragment)
     }
 
     override fun openAudioFx() {
         checkThread()
+        val fragment = AudioFxFragment.newInstance()
+        navigator.pushFragment(fragment)
     }
 
     override fun openPlaybackParams() {
@@ -188,6 +208,8 @@ class AppRouterImpl constructor(
 
     override fun openSettings() {
         checkThread()
+        val fragment = SettingsFragment.newInstance()
+        navigator.pushFragment(fragment)
     }
 
     override fun openPlaybackFadingParams() {
