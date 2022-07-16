@@ -52,6 +52,12 @@ class DrawingSystemBarsLayout @JvmOverloads constructor(
     }
 
     fun setStatusBarColor(@ColorInt color: Int) {
-        setStatusBarDrawable(ColorDrawable(color))
+        val currentDrawable = this.statusBarDrawable
+        if (currentDrawable != null && currentDrawable is ColorDrawable) {
+            currentDrawable.color = color
+            invalidate()
+        } else {
+            setStatusBarDrawable(ColorDrawable(color))
+        }
     }
 }
