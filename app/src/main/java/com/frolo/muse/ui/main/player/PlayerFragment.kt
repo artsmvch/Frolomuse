@@ -271,11 +271,11 @@ class PlayerFragment: BaseFragment() {
     }
 
     private fun updateABText(aPointed: Boolean, bPointed: Boolean, animate: Boolean) {
-        val ss = SpannableString("A-B")
+        val text = SpannableString("A-B")
         val flags = SpannableString.SPAN_INCLUSIVE_INCLUSIVE
-        ss.setSpan(ForegroundColorSpan(if (aPointed) colorModeOn else colorModeOff), 0, 1, flags)
-        ss.setSpan(ForegroundColorSpan(if (bPointed) colorModeOn else colorModeOff), 1, 3, flags)
-        btn_ab.text = ss
+        text.setSpan(ForegroundColorSpan(if (aPointed) colorModeOn else colorModeOff), 0, 1, flags)
+        text.setSpan(ForegroundColorSpan(if (bPointed) colorModeOn else colorModeOff), 1, 3, flags)
+        btn_ab.text = text
     }
 
     private fun updateArtBackground(song: Song?) {
