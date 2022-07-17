@@ -2,9 +2,15 @@ package com.frolo.core.ui.carousel.viewpagerimpl
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.Log
+import android.view.View
+import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.core.util.Pools
 import androidx.viewpager.widget.ViewPager
 import com.frolo.core.ui.carousel.ICarouselView
+import com.frolo.core.ui.carousel.ViewHolderImpl
+import com.frolo.debug.DebugUtils
 import com.frolo.player.AudioSource
 
 
@@ -105,6 +111,50 @@ internal abstract class ViewPagerLayout<P: ViewPagerLayout.Adapter> @JvmOverload
     }
 
     abstract class Adapter : androidx.viewpager.widget.PagerAdapter() {
-        abstract fun submitList(list: List<AudioSource>?, commitCallback: Runnable?)
+        private var list: List<AudioSource>? = null
+        private val viewHoldersPool = Pools.SimplePool<ViewHolderImpl>(4)
+
+        fun submitList(list: List<AudioSource>?, commitCallback: Runnable?) {
+            this.list = list
+            notifyDataSetChanged()
+            commitCallback?.run()
+        }
+
+        final override fun getCount(): Int = list?.count() ?: 0
+
+        final override fun isViewFromObject(view: View, obj: Any): Boolean {
+            return view == (obj as ViewHolderImpl).view
+        }
+
+        final override fun getItemPosition(obj: Any): Int {
+            return POSITION_NONE
+        }
+
+        final override fun instantiateItem(container: ViewGroup, position: Int): Any {
+            val item = list?.getOrNull(position)
+            if (item == null) {
+                DebugUtils.dump(IllegalArgumentException(
+                    "Item not found at position $position"))
+            }
+            val holderImpl = viewHoldersPool.acquire() ?: onCreateViewHolder(container)
+            container.addView(holderImpl.view)
+            holderImpl.bind(item)
+            return holderImpl
+        }
+
+        abstract fun onCreateViewHolder(container: ViewGroup): ViewHolderImpl
+
+        final override fun destroyItem(container: ViewGroup, position: Int, obj: Any) {
+            obj as ViewHolderImpl
+            obj.recycle()
+            container.removeView(obj.view)
+            if (!viewHoldersPool.release(obj)) {
+                Log.w(LOG_TAG, "ViewHolder pool is full")
+            }
+        }
+
+        companion object {
+            private const val LOG_TAG = "ViewPagerLayout"
+        }
     }
 }
