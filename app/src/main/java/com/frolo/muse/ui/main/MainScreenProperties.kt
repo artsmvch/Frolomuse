@@ -66,6 +66,16 @@ internal class MainScreenProperties(
         ContextCompat.getColor(context, R.color.player_toolbar_element_background)
     }
 
+    @get:ColorInt
+    val colorModeOff: Int by lazy {
+        StyleUtils.resolveColor(context, R.attr.iconImageTint)
+    }
+
+    @get:ColorInt
+    val colorModeOn: Int by lazy {
+        StyleUtils.resolveColor(context, R.attr.colorAccent)
+    }
+
     @get:Px
     val playerSheetPeekHeight: Int by lazy {
         resources.getDimension(R.dimen.player_sheet_peek_height).toInt()
@@ -90,5 +100,10 @@ internal class MainScreenProperties(
         val right = resources.getDimension(R.dimen.fragment_content_right_inset).toInt()
         val bottom = resources.getDimension(R.dimen.fragment_content_bottom_inset).toInt()
         Rect(left, top, right, bottom)
+    }
+
+    @ColorInt
+    fun getModeColor(on: Boolean): Int {
+        return if (on) colorModeOn else colorModeOff
     }
 }

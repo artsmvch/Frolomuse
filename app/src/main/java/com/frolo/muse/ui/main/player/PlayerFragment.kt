@@ -98,16 +98,6 @@ class PlayerFragment: BaseFragment() {
         }
     }
 
-    @get:ColorInt
-    private val colorModeOff: Int by lazy {
-        StyleUtils.resolveColor(requireContext(), R.attr.iconImageTint)
-    }
-
-    @get:ColorInt
-    private val colorModeOn: Int by lazy {
-        StyleUtils.resolveColor(requireContext(), R.attr.colorAccent)
-    }
-
     private val mainScreenProperties by lazy { MainScreenProperties(requireActivity()) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -245,7 +235,8 @@ class PlayerFragment: BaseFragment() {
             val drawable = ContextCompat
                     .getDrawable(context, R.drawable.ic_repeat_all_to_one) as AnimatedVectorDrawable
             btn_repeat_mode.setImageDrawable(drawable)
-            btn_repeat_mode.setColorFilter(colorModeOff, android.graphics.PorterDuff.Mode.SRC_IN)
+            btn_repeat_mode.setColorFilter(mainScreenProperties.colorModeOff,
+                android.graphics.PorterDuff.Mode.SRC_IN)
             drawable.start()
         } else {
             val repeatOneFlag = mode == Player.REPEAT_ONE
@@ -257,14 +248,15 @@ class PlayerFragment: BaseFragment() {
                     .getDrawable(context, drawableId) as AnimatedVectorDrawable
 
             btn_repeat_mode.setImageDrawable(drawable)
-            btn_repeat_mode.setColorFilter(colorModeOn, android.graphics.PorterDuff.Mode.SRC_IN)
+            btn_repeat_mode.setColorFilter(mainScreenProperties.colorModeOn,
+                android.graphics.PorterDuff.Mode.SRC_IN)
             if (repeatOneFlag) drawable.start()
         }
     }
 
     private fun updateShuffleIcon(@Player.ShuffleMode mode: Int, animate: Boolean) {
         val enable = mode == Player.SHUFFLE_ON
-        val colorFilter = if (enable) colorModeOn else colorModeOff
+        val colorFilter = mainScreenProperties.getModeColor(enable)
         btn_shuffle_mode.setImageResource(R.drawable.ic_shuffle)
         btn_shuffle_mode.setColorFilter(colorFilter, android.graphics.PorterDuff.Mode.SRC_IN)
     }
@@ -294,8 +286,8 @@ class PlayerFragment: BaseFragment() {
     private fun updateABText(aPointed: Boolean, bPointed: Boolean, animate: Boolean) {
         val text = SpannableString("A-B")
         val flags = SpannableString.SPAN_INCLUSIVE_INCLUSIVE
-        text.setSpan(ForegroundColorSpan(if (aPointed) colorModeOn else colorModeOff), 0, 1, flags)
-        text.setSpan(ForegroundColorSpan(if (bPointed) colorModeOn else colorModeOff), 1, 3, flags)
+        text.setSpan(ForegroundColorSpan(mainScreenProperties.getModeColor(aPointed)), 0, 1, flags)
+        text.setSpan(ForegroundColorSpan(mainScreenProperties.getModeColor(bPointed)), 1, 3, flags)
         btn_ab.text = text
     }
 
