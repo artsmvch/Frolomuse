@@ -299,7 +299,7 @@ class PlayerFragment: BaseFragment() {
             } else {
                 CarouselBackgroundView.Pipette.LIGHT_MUTED
             },
-            defColor = StyleUtils.resolveColor(requireContext(), R.attr.colorPrimary)
+            defColor = mainScreenProperties.defaultArtBackgroundColor
         )
     }
 
