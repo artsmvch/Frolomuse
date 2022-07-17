@@ -58,7 +58,7 @@ internal class MainScreenProperties(
 
     @get:ColorInt
     val playerStatusBarBackground: Int by lazy {
-        ContextCompat.getColor(context, R.color.player_status_bar_background)
+        Color.TRANSPARENT //ContextCompat.getColor(context, R.color.player_status_bar_background)
     }
 
     @get:ColorInt

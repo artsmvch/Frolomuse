@@ -25,4 +25,8 @@ object ColorUtils2 {
     fun makeOpaque(@ColorInt color: Int): Int {
         return ColorUtils.setAlphaComponent(color, 255)
     }
+
+    fun isLight(@ColorInt color: Int): Boolean {
+        return color != Color.TRANSPARENT && ColorUtils.calculateLuminance(color) > 0.5
+    }
 }

@@ -49,7 +49,7 @@ class CarouselView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet?= null,
         defStyleAttr: Int = 0
-    ) = FrameCarouselView(context, attrs, defStyleAttr)
+    ) = CardCarouselView(context, attrs, defStyleAttr)
 
     private fun updateViewsVisibilities(itemCount: Int) {
         val transition = Fade().apply {

@@ -78,10 +78,12 @@ internal class SystemBarsHostImpl(window: Window): SystemBarsHost {
 
     private fun abandonSystemBarsControlImpl(owner: SystemBarsControlOwner) {
         val lastNode = chain.peek()
-            ?: throw IllegalStateException("No owner controls the system bars")
+            ?: return
+            // ?: throw IllegalStateException("No owner controls the system bars")
 
         val targetNode: ChainNode = removeFromChain(owner)
-            ?: throw IllegalStateException("$owner did not gain control over the system bars earlier")
+            ?: return
+            // ?: throw IllegalStateException("$owner did not gain control over the system bars earlier")
         targetNode.disable()
 
         if (targetNode == lastNode) {

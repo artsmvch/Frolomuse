@@ -1,6 +1,8 @@
 package com.frolo.muse.ui.main.player
 
 import android.content.Context
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.AnimatedVectorDrawable
 import android.os.Bundle
@@ -22,17 +24,23 @@ import androidx.lifecycle.LifecycleOwner
 import com.frolo.arch.support.observe
 import com.frolo.arch.support.observeNonNull
 import com.frolo.core.ui.animations.AppAnimations
+import com.frolo.core.ui.carousel.CarouselBackgroundView
 import com.frolo.core.ui.carousel.ICarouselView
 import com.frolo.core.ui.glide.GlideAlbumArtHelper
 import com.frolo.core.ui.glide.observe
+import com.frolo.core.ui.systembars.SystemBarsControlOwner
+import com.frolo.core.ui.systembars.SystemBarsController
+import com.frolo.core.ui.systembars.defaultSystemBarsHost
 import com.frolo.mediabutton.PlayButton
 import com.frolo.muse.BuildConfig
 import com.frolo.muse.R
+import com.frolo.muse.common.toAudioSource
 import com.frolo.muse.ui.asDurationInMs
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.getAlbumEditorOptionText
 import com.frolo.muse.ui.getArtistString
 import com.frolo.muse.ui.getNameString
+import com.frolo.muse.ui.main.MainScreenProperties
 import com.frolo.muse.ui.main.confirmDeletion
 import com.frolo.muse.ui.main.player.waveform.SoundWaveform
 import com.frolo.muse.ui.main.player.waveform.StaticWaveform
@@ -40,6 +48,7 @@ import com.frolo.muse.ui.main.provideMainSheetStateViewModel
 import com.frolo.muse.ui.main.showVolumeControl
 import com.frolo.music.model.Song
 import com.frolo.player.Player
+import com.frolo.ui.ColorUtils2
 import com.frolo.ui.StyleUtils
 import com.frolo.waveformseekbar.WaveformSeekBar
 import kotlinx.android.synthetic.main.fragment_player.*
@@ -53,6 +62,12 @@ class PlayerFragment: BaseFragment() {
 
     private val viewModel: PlayerViewModel by viewModel()
     private val mainSheetsStateViewModel by lazy { provideMainSheetStateViewModel() }
+
+    private val systemBarsControlOwner = object : SystemBarsControlOwner {
+        override fun onSystemBarsControlObtained(controller: SystemBarsController) {
+            updateSystemBars(controller = controller)
+        }
+    }
 
     private val carouselCallback = object : ICarouselView.CarouselCallback {
         override fun onPositionSelected(position: Int, byUser: Boolean) {
@@ -93,6 +108,8 @@ class PlayerFragment: BaseFragment() {
         StyleUtils.resolveColor(requireContext(), R.attr.colorAccent)
     }
 
+    private val mainScreenProperties by lazy { MainScreenProperties(requireActivity()) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         GlideAlbumArtHelper.get().observe(this) {
@@ -112,6 +129,10 @@ class PlayerFragment: BaseFragment() {
         // Intercepting all touches to prevent their processing in the lower view layers
         view.setOnTouchListener { _, _ -> true }
 
+        carousel_background?.onColorChangeListener =
+            CarouselBackgroundView.OnColorChangeListener { color, isIntermediate ->
+                handleArtBackgroundColorChange(color)
+            }
         carousel.setPlaceholderText(R.string.no_songs_in_queue)
 
         view.fitsSystemWindows = true
@@ -279,6 +300,37 @@ class PlayerFragment: BaseFragment() {
     }
 
     private fun updateArtBackground(song: Song?) {
+        carousel_background?.loadColorAsync(
+            source = song?.toAudioSource(),
+            pipette = if (mainScreenProperties.isLightTheme) {
+                CarouselBackgroundView.Pipette.DARK_MUTED
+            } else {
+                CarouselBackgroundView.Pipette.LIGHT_MUTED
+            },
+            defColor = StyleUtils.resolveColor(requireContext(), R.attr.colorPrimary)
+        )
+    }
+
+    private fun handleArtBackgroundColorChange(@ColorInt color: Int) {
+        val isLight = ColorUtils2.isLight(color)
+        val tint: Int = if (isLight) {
+            Color.BLACK
+        } else {
+            Color.WHITE
+        }
+        val tintColorStateList = ColorStateList.valueOf(tint)
+        btn_close.imageTintList = tintColorStateList
+        btn_options_menu.imageTintList = tintColorStateList
+        updateSystemBars(artBackgroundColor = color)
+    }
+
+    private fun updateSystemBars(
+        @ColorInt artBackgroundColor: Int? = carousel_background?.color,
+        controller: SystemBarsController? =
+            defaultSystemBarsHost?.getSystemBarsController(systemBarsControlOwner)
+    ) {
+        val isStatusBarLight = ColorUtils2.isLight(color = artBackgroundColor ?: Color.TRANSPARENT)
+        controller?.setStatusBarAppearanceLight(isStatusBarLight)
     }
 
     private fun showOptionsMenu(optionsMenu: PlayerOptionsMenu) {
@@ -431,6 +483,15 @@ class PlayerFragment: BaseFragment() {
         isPlayerSheetVisible.observeNonNull(owner) { isVisible ->
             animateToolbarElementToVisibility(btn_close, isVisible)
             animateToolbarElementToVisibility(btn_options_menu, isVisible)
+        }
+
+        slideState.observeNonNull(owner) { slideState ->
+            // We want to control appearance of the status bar if the screen is under it
+            if (slideState.isPlayerSheetUnderStatusBar) {
+                defaultSystemBarsHost?.obtainSystemBarsControl(systemBarsControlOwner)
+            } else{
+                defaultSystemBarsHost?.abandonSystemBarsControl(systemBarsControlOwner)
+            }
         }
     }
 

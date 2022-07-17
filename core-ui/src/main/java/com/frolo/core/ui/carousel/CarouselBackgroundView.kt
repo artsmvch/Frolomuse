@@ -30,14 +30,17 @@ class CarouselBackgroundView @JvmOverloads constructor(
 ): View(context, attrs, defStyleAttr) {
 
     @ColorInt
-    private var color: Int? = null
+    var color: Int? = null
+        private set
 
     private var colorLoaderDisposable: Disposable? = null
     private var colorAnimator: Animator? = null
 
-    fun loadColorAsync(source: AudioSource?, @ColorInt defColor: Int) {
+    var onColorChangeListener: OnColorChangeListener? = null
+
+    fun loadColorAsync(source: AudioSource?, pipette: Pipette, @ColorInt defColor: Int) {
         colorLoaderDisposable?.dispose()
-        colorLoaderDisposable = createLoader(source, defColor).subscribe(
+        colorLoaderDisposable = createLoader(source, pipette, defColor).subscribe(
             { color ->
                 animateToColor(color)
             },
@@ -47,7 +50,7 @@ class CarouselBackgroundView @JvmOverloads constructor(
         )
     }
 
-    private fun createLoader(source: AudioSource?, @ColorInt defColor: Int): Single<Int> {
+    private fun createLoader(source: AudioSource?, pipette: Pipette, @ColorInt defColor: Int): Single<Int> {
         val uri: Uri? = if (source != null) {
             GlideAlbumArtHelper.getUri(source.metadata.albumId)
         } else {
@@ -64,7 +67,10 @@ class CarouselBackgroundView @JvmOverloads constructor(
             .map { bmp -> Palette.from(bmp) }
             .map { palette -> palette.generate() }
             .map { palette ->
-                palette.getDarkMutedColor(defColor)
+                when (pipette) {
+                    Pipette.DARK_MUTED -> palette.getDarkMutedColor(defColor)
+                    Pipette.LIGHT_MUTED -> palette.getLightMutedColor(defColor)
+                }
             }
             .onErrorReturnItem(defColor)
             .observeOn(AndroidSchedulers.mainThread())
@@ -86,13 +92,15 @@ class CarouselBackgroundView @JvmOverloads constructor(
             duration = 300L
             interpolator = AccelerateDecelerateInterpolator()
             addUpdateListener {
-                setColorInternal(it.animatedValue as Int)
+                val value = it.animatedValue as Int
+                setColorInternal(value, isIntermediate = value == toColor)
             }
         }
     }
 
-    private fun setColorInternal(@ColorInt color: Int) {
+    private fun setColorInternal(@ColorInt color: Int, isIntermediate: Boolean) {
         this.color = color
+        onColorChangeListener?.onColorChange(color, isIntermediate)
         invalidate()
     }
 
@@ -100,6 +108,14 @@ class CarouselBackgroundView @JvmOverloads constructor(
         color?.also { safeColor ->
             canvas.drawColor(safeColor)
         }
+    }
+
+    fun interface OnColorChangeListener {
+        fun onColorChange(@ColorInt color: Int, isIntermediate: Boolean)
+    }
+
+    enum class Pipette {
+        DARK_MUTED, LIGHT_MUTED
     }
 
     private companion object {
