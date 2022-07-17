@@ -5,20 +5,20 @@
 
     <color name="app_dark_blue_window_background">#0C131A</color>
     <color name="app_dark_blue_action_mode">#0C131A</color>
-    <color name="app_dark_blue_primary">#1A242E</color>
-    <color name="app_dark_blue_primary_dark">#1A242E</color>
+    <color name="app_dark_blue_primary">#22282E</color>
+    <color name="app_dark_blue_primary_dark">#22282E</color>
     <color name="app_dark_blue_primary_variant">#1A252E</color>
     <color name="app_dark_blue_primary_surface">#273C54</color>
     <color name="app_dark_blue_on_primary_surface">#FFFFFF</color>
     <color name="app_dark_blue_secondary">@color/app_dark_blue_accent_ultra</color>
     <color name="app_dark_blue_secondary_variant">@color/app_dark_blue_accent_ultra</color>
     <color name="app_dark_blue_accent">@color/app_dark_blue_accent_ultra</color>
-    <color name="app_dark_blue_surface">#1A242E</color>
+    <color name="app_dark_blue_surface">#22282E</color>
 
     <color name="app_dark_blue_accent_ultra">#64C0E5</color>
     <color name="app_dark_blue_fast_scroller">#306587</color>
 
-    <color name="app_dark_blue_divider_tint">#273441</color>
+    <color name="app_dark_blue_divider_tint">#2F3842</color>
     <color name="app_dark_blue_premium_product_accent">@color/app_dark_blue_accent</color>
 
     <style name="AppTheme.Dialog.Dark.Blue" parent="Base.AppTheme.Dark.Dialog">
