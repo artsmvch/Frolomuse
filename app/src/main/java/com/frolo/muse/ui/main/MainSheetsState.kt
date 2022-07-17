@@ -14,6 +14,7 @@ import com.frolo.arch.support.map
 
 internal interface SlideState {
     val playerSheetSlideOffset: Float
+    val isPlayerSheetUnderStatusBar: Boolean
     val queueSheetSlideOffset: Float
 }
 
@@ -26,7 +27,7 @@ internal interface MainSheetsStateViewModel {
     val collapsePlayerSheetEvent: LiveData<Unit>
 
     fun dispatchScreenChanged()
-    fun dispatchPlayerSheetSlideOffset(slideOffset: Float)
+    fun dispatchPlayerSheetSlideOffset(slideOffset: Float, isUnderStatusBar: Boolean)
     fun dispatchQueueSheetSlideOffset(slideOffset: Float)
 
     fun setPlayerSheetDraggable(draggable: Boolean)
@@ -49,7 +50,8 @@ internal class MainSheetsStateViewModelImpl: ViewModel(), MainSheetsStateViewMod
     // For re-use
     private val slideStateImpl = SlideStateImpl(
         playerSheetSlideOffset = 0f,
-        queueSheetSlideOffset = 0f
+        queueSheetSlideOffset = 0f,
+        isPlayerSheetUnderStatusBar = false
     )
 
     private val _isDimmed = MutableLiveData<Boolean>(false)
@@ -74,9 +76,10 @@ internal class MainSheetsStateViewModelImpl: ViewModel(), MainSheetsStateViewMod
         _slideState.value = slideStateImpl
     }
 
-    override fun dispatchPlayerSheetSlideOffset(slideOffset: Float) {
+    override fun dispatchPlayerSheetSlideOffset(slideOffset: Float, isUnderStatusBar: Boolean) {
         val oldValue = slideStateImpl.playerSheetSlideOffset
         slideStateImpl.playerSheetSlideOffset = slideOffset
+        slideStateImpl.isPlayerSheetUnderStatusBar = isUnderStatusBar
         _slideState.value = slideStateImpl
         if (slideOffset >= dimmingThreshold
             && (oldValue < dimmingThreshold)) {
@@ -102,6 +105,7 @@ internal class MainSheetsStateViewModelImpl: ViewModel(), MainSheetsStateViewMod
 
     private data class SlideStateImpl(
         override var playerSheetSlideOffset: Float,
+        override var isPlayerSheetUnderStatusBar: Boolean,
         override var queueSheetSlideOffset: Float
     ) : SlideState
 }

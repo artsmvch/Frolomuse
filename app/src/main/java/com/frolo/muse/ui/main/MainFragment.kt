@@ -764,7 +764,15 @@ internal class MainFragment :
         sliding_player_layout.clipToOutline = true
         container_player.alpha = slideOffset
 
-        mainSheetsStateViewModel.dispatchPlayerSheetSlideOffset(slideOffset)
+        val isUnderStatusBar = sliding_player_layout.rootWindowInsets.let { insets ->
+            if (insets == null) {
+                return@let false
+            }
+            // The sheet is considered to be under the status bar
+            // if at least half of the status bar overlaps the sheet layout.
+            sliding_player_layout.top < insets.systemWindowInsetTop / 2f
+        }
+        mainSheetsStateViewModel.dispatchPlayerSheetSlideOffset(slideOffset, isUnderStatusBar)
     }
 
     private fun setupWindowInsets(fragment: Fragment?) {
