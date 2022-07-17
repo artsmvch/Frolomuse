@@ -1,27 +1,26 @@
-package com.frolo.core.ui.carousel
+package com.frolo.core.ui.carousel.viewpagerimpl
 
 import android.content.Context
 import android.util.AttributeSet
 import android.widget.FrameLayout
 import androidx.viewpager.widget.ViewPager
-import com.bumptech.glide.Glide
+import com.frolo.core.ui.carousel.ICarouselView
 import com.frolo.player.AudioSource
 
 
-internal class FrameCarouselView @JvmOverloads constructor(
+internal abstract class ViewPagerLayout<P: ViewPagerLayout.Adapter> @JvmOverloads constructor(
     context: Context,
-    attrs: AttributeSet?= null,
+    attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ): FrameLayout(context, attrs, defStyleAttr), ICarouselView {
 
     private val viewPager: ViewPager = ViewPager(context, attrs)
-    private val pagerAdapter: FrameCarouselAdapter
-        get() {
-        val currAdapter = viewPager.adapter as? FrameCarouselAdapter
+    private val adapter: Adapter get() {
+        val currAdapter = viewPager.adapter as? Adapter
         if (currAdapter != null) {
             return currAdapter
         }
-        val newAdapter = FrameCarouselAdapter(Glide.with(this))
+        val newAdapter = onCreatePagerAdapter()
         viewPager.adapter = newAdapter
         return newAdapter
     }
@@ -59,7 +58,9 @@ internal class FrameCarouselView @JvmOverloads constructor(
         addView(viewPager)
     }
 
-    override val size: Int get() = pagerAdapter.count
+    protected abstract fun onCreatePagerAdapter(): P
+
+    override val size: Int get() = adapter.count
 
     override fun registerCallback(callback: ICarouselView.CarouselCallback) {
         carouselCallbacks.add(callback)
@@ -70,11 +71,11 @@ internal class FrameCarouselView @JvmOverloads constructor(
     }
 
     override fun invalidateData() {
-        pagerAdapter.notifyDataSetChanged()
+        adapter.notifyDataSetChanged()
     }
 
     override fun submitList(list: List<AudioSource>?, commitCallback: Runnable?) {
-        pagerAdapter.submitList(list, commitCallback)
+        adapter.submitList(list, commitCallback)
     }
 
     override fun setCurrentPosition(position: Int) {
@@ -101,5 +102,9 @@ internal class FrameCarouselView @JvmOverloads constructor(
         carouselCallbacks.forEach { callback ->
             callback.onPositionSelected(position, byUser)
         }
+    }
+
+    abstract class Adapter : androidx.viewpager.widget.PagerAdapter() {
+        abstract fun submitList(list: List<AudioSource>?, commitCallback: Runnable?)
     }
 }

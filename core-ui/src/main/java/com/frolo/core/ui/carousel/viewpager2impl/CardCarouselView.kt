@@ -1,4 +1,4 @@
-package com.frolo.core.ui.carousel
+package com.frolo.core.ui.carousel.viewpager2impl
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -7,6 +7,7 @@ import android.util.AttributeSet
 import android.widget.FrameLayout
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
+import com.frolo.core.ui.carousel.ICarouselView
 import com.frolo.debug.DebugUtils
 import com.frolo.player.AudioSource
 

@@ -1,4 +1,4 @@
-package com.frolo.core.ui.carousel
+package com.frolo.core.ui.carousel.viewpager2impl
 
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
 import com.frolo.core.ui.R
+import com.frolo.core.ui.carousel.ViewHolderImpl
 import com.frolo.player.AudioSource
 import com.google.android.material.card.CardViewSupport
 import kotlin.math.max

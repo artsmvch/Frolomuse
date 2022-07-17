@@ -1,4 +1,4 @@
-package com.frolo.core.ui.carousel;
+package com.frolo.core.ui.carousel.viewpager2impl;
 
 import android.content.Context;
 

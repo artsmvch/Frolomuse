@@ -4,7 +4,6 @@ import android.content.Context
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.Gravity
-import android.view.View
 import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.annotation.StringRes
@@ -13,6 +12,7 @@ import androidx.core.view.setMargins
 import androidx.transition.Fade
 import androidx.transition.TransitionManager
 import com.frolo.core.ui.R
+import com.frolo.core.ui.carousel.viewpagerimpl.CardCarousel2View
 import com.frolo.player.AudioSource
 import com.frolo.ui.Screen
 import com.frolo.ui.StyleUtils
@@ -49,7 +49,7 @@ class CarouselView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet?= null,
         defStyleAttr: Int = 0
-    ) = CardCarouselView(context, attrs, defStyleAttr)
+    ) = CardCarousel2View(context, attrs, defStyleAttr)
 
     private fun updateViewsVisibilities(itemCount: Int) {
         val transition = Fade().apply {
