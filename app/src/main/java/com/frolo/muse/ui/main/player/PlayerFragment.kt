@@ -264,7 +264,7 @@ class PlayerFragment: BaseFragment() {
     private fun updateFavouriteIcon(favourite: Boolean) {
         if (favourite) {
             btn_like.setImageResource(R.drawable.ic_filled_heart)
-            btn_like.setBackgroundResource(R.drawable.bg_like_button_liked)
+            btn_like.setBackgroundResource(R.drawable.bg_like_button_default)
         } else {
             btn_like.setImageResource(R.drawable.ic_heart)
             btn_like.setBackgroundResource(R.drawable.bg_like_button_default)
