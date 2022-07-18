@@ -5,18 +5,16 @@ import android.content.Context
 import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.Rect
-import android.os.Build
 import androidx.annotation.ColorInt
 import androidx.annotation.Dimension
 import androidx.annotation.Px
 import androidx.annotation.UiThread
 import androidx.core.content.ContextCompat
-import androidx.core.graphics.ColorUtils
 import com.frolo.core.graphics.Palette
 import com.frolo.debug.DebugUtils
 import com.frolo.muse.R
+import com.frolo.ui.ColorUtils2
 import com.frolo.ui.StyleUtils
-import kotlin.concurrent.getOrSet
 
 
 @UiThread
@@ -26,18 +24,6 @@ internal class MainScreenProperties(
 
     private val context: Context get() = activity
     private val resources: Resources get() = context.resources
-
-    private val hsl: ThreadLocal<FloatArray> by lazy {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            ThreadLocal.withInitial { FloatArray(3) }
-        } else {
-            ThreadLocal<FloatArray>()
-        }
-    }
-
-    private fun getHslTmp(): FloatArray {
-        return hsl.getOrSet { FloatArray(3) }
-    }
 
     val isLightTheme: Boolean by lazy {
         StyleUtils.resolveBool(context, R.attr.isLightTheme)
@@ -144,15 +130,12 @@ internal class MainScreenProperties(
 
     @ColorInt
     private fun validateArtBackgroundColorLightness(@ColorInt color: Int): Int {
-        val hsl = getHslTmp()
-        ColorUtils.colorToHSL(color, hsl)
-        val originalLightness = hsl[2]
-        val targetLightness = if(isLightTheme) {
+        val originalLightness = ColorUtils2.getLightness(color)
+        val targetLightness = if (isLightTheme) {
             originalLightness.coerceIn(0.05f, 0.6f)
         } else {
             originalLightness.coerceIn(0.4f, 0.85f)
         }
-        hsl[2] = targetLightness
-        return ColorUtils.HSLToColor(hsl)
+        return ColorUtils2.setLightness(color, targetLightness)
     }
 }
