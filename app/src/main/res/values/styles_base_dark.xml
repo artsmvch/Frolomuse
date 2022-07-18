@@ -57,6 +57,12 @@
         <item name="snowflakeTint">@color/white</item>
         <item name="iBarStyle">@style/Base.AppTheme.Dark.IBar</item>
         <item name="fastScrollerStyle">@style/Base.AppTheme.FastScroller</item>
+        <item name="colorPlayerSurface">?colorSurface</item>
+        <item name="colorOnPlayerSurface">?colorPlayerElement3</item>
+        <item name="colorPlayerText">#FDFDFD</item>
+        <item name="colorPlayerElement1">#FDFDFD</item>
+        <item name="colorPlayerElement2">#EDEDED</item>
+        <item name="colorPlayerElement3">#E8E8E8</item>
     </style>
 
     <style name="Base.AppTheme.Dark.Dialog" parent="Theme.MaterialComponents.Dialog">

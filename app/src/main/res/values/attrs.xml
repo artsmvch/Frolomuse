@@ -14,6 +14,13 @@
     <attr name="thumbnailBackgroundTint" format="color"/>
     <!--Snowfall-->
     <attr name="snowflakeTint" format="color"/>
+    <!--Player-->
+    <attr name="colorPlayerSurface" format="color"/>
+    <attr name="colorOnPlayerSurface" format="color"/>
+    <attr name="colorPlayerText" format="color"/>
+    <attr name="colorPlayerElement1" format="color"/>
+    <attr name="colorPlayerElement2" format="color"/>
+    <attr name="colorPlayerElement3" format="color"/>
     
     <declare-styleable name="CheckableImageView">
         <attr name="checkMarkShape" format="enum">

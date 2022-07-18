@@ -746,7 +746,7 @@ internal class MainFragment :
         val cornerRadius = properties.playerSheetCornerRadius * cornerRadiusFactor
         (sliding_player_layout.background as? MaterialShapeDrawable)?.apply {
             val blendRatio = max(0f, 1f - slideOffset * 2)
-            val blendedColor = ColorUtils.blendARGB(properties.colorSurface,
+            val blendedColor = ColorUtils.blendARGB(properties.colorPlayerSurface,
                 properties.colorPrimarySurface, blendRatio)
             fillColor = ColorStateList.valueOf(blendedColor)
             this.shapeAppearanceModel = ShapeAppearanceModel.builder()

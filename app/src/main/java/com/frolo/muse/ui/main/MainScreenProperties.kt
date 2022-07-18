@@ -71,6 +71,36 @@ internal class MainScreenProperties(
     }
 
     @get:ColorInt
+    val colorPlayerSurface: Int by lazy {
+        StyleUtils.resolveColor(context, R.attr.colorPlayerSurface)
+    }
+
+//    @get:ColorInt
+//    val colorOnPlayerSurface: Int by lazy {
+//        StyleUtils.resolveColor(context, R.attr.colorOnPlayerSurface)
+//    }
+
+    @get:ColorInt
+    val colorPlayerText: Int by lazy {
+        StyleUtils.resolveColor(context, R.attr.colorPlayerText)
+    }
+
+    @get:ColorInt
+    val colorPlayerElement1: Int by lazy {
+        StyleUtils.resolveColor(context, R.attr.colorPlayerElement1)
+    }
+
+    @get:ColorInt
+    val colorPlayerElement2: Int by lazy {
+        StyleUtils.resolveColor(context, R.attr.colorPlayerElement2)
+    }
+
+    @get:ColorInt
+    val colorPlayerElement3: Int by lazy {
+        StyleUtils.resolveColor(context, R.attr.colorPlayerElement3)
+    }
+
+    @get:ColorInt
     val playerStatusBarBackground: Int by lazy {
         Color.TRANSPARENT //ContextCompat.getColor(context, R.color.player_status_bar_background)
     }
@@ -82,7 +112,7 @@ internal class MainScreenProperties(
 
     @get:ColorInt
     val colorModeOff: Int by lazy {
-        StyleUtils.resolveColor(context, R.attr.iconImageTint)
+        colorPlayerElement1 //StyleUtils.resolveColor(context, R.attr.iconImageTint)
     }
 
     @get:ColorInt

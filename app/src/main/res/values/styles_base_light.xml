@@ -66,6 +66,12 @@
         <item name="thumbnailForegroundTint">@color/thumbnail_foreground_tint</item>
         <item name="thumbnailBackgroundTint">@color/thumbnail_background_tint</item>
         <item name="snowflakeTint">#ABDAE6</item>
+        <item name="colorPlayerSurface">?colorSurface</item>
+        <item name="colorOnPlayerSurface">?colorPlayerElement3</item>
+        <item name="colorPlayerText">#353535</item>
+        <item name="colorPlayerElement1">#A8A8A8</item>
+        <item name="colorPlayerElement2">#B5B5B5</item>
+        <item name="colorPlayerElement3">#B8B8B8</item>
     </style>
 
     <style name="Base.AppTheme.Dialog.Light" parent="Theme.MaterialComponents.Light.Dialog">

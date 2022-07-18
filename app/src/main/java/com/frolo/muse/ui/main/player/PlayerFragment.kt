@@ -49,6 +49,7 @@ import com.frolo.music.model.Song
 import com.frolo.player.Player
 import com.frolo.ui.ColorUtils2
 import com.frolo.ui.Screen
+import com.frolo.ui.StyleUtils
 import com.frolo.waveformseekbar.WaveformSeekBar
 import kotlinx.android.synthetic.main.fragment_player.*
 import kotlinx.android.synthetic.main.include_playback_progress.*
@@ -226,6 +227,7 @@ class PlayerFragment: BaseFragment() {
                 maxLines = 1
                 ellipsize = TextUtils.TruncateAt.END
                 setTypeface(typeface, typefaceStyle)
+                setTextColor(mainScreenProperties.colorPlayerText)
             }
         }
         view.setInAnimation(context, R.anim.fade_in)
@@ -313,9 +315,9 @@ class PlayerFragment: BaseFragment() {
     @ColorInt
     private fun retrieveArtBackgroundColor(): Int {
         return if (mainScreenProperties.isLandscape) {
-            mainScreenProperties.colorSurface
+            mainScreenProperties.colorPlayerSurface
         } else {
-            carousel_background?.surfaceColor ?: mainScreenProperties.colorSurface
+            carousel_background?.surfaceColor ?: mainScreenProperties.colorPlayerSurface
         }
     }
 
