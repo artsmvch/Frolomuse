@@ -2,6 +2,7 @@ package com.frolo.muse.ui.main
 
 import android.app.Activity
 import android.content.Context
+import android.content.res.ColorStateList
 import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.Rect
@@ -24,6 +25,9 @@ internal class MainScreenProperties(
 
     private val context: Context get() = activity
     private val resources: Resources get() = context.resources
+
+    private val whiteColorStateList = ColorStateList.valueOf(Color.WHITE)
+    private val blackColorStateList = ColorStateList.valueOf(Color.BLACK)
 
     val isLightTheme: Boolean by lazy {
         StyleUtils.resolveBool(context, R.attr.isLightTheme)
@@ -138,5 +142,14 @@ internal class MainScreenProperties(
             originalLightness.coerceIn(0.4f, 0.85f)
         }
         return ColorUtils2.setLightness(color, targetLightness)
+    }
+
+    fun getPlayerToolbarElementColor(@ColorInt color: Int): ColorStateList {
+        val isLight = ColorUtils2.isLight(color)
+        return if (isLight) {
+            blackColorStateList
+        } else {
+            whiteColorStateList
+        }
     }
 }

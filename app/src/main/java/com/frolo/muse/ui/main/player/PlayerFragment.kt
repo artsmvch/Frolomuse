@@ -1,7 +1,6 @@
 package com.frolo.muse.ui.main.player
 
 import android.content.Context
-import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.AnimatedVectorDrawable
@@ -291,15 +290,9 @@ class PlayerFragment: BaseFragment() {
     }
 
     private fun handleArtBackgroundColorChange(@ColorInt color: Int) {
-        val isLight = ColorUtils2.isLight(color)
-        val tint: Int = if (isLight) {
-            Color.BLACK
-        } else {
-            Color.WHITE
-        }
-        val tintColorStateList = ColorStateList.valueOf(tint)
-        btn_close.imageTintList = tintColorStateList
-        btn_options_menu.imageTintList = tintColorStateList
+        val tint = mainScreenProperties.getPlayerToolbarElementColor(color)
+        btn_close.imageTintList = tint
+        btn_options_menu.imageTintList = tint
         updateSystemBars(artBackgroundColor = color)
     }
 
