@@ -313,14 +313,7 @@ class PlayerFragment: BaseFragment() {
     }
 
     private fun animateArtBackgroundColor(palette: Palette?) {
-        @ColorInt
-        val colorFromPalette: Int? = when {
-            palette == null -> null
-            mainScreenProperties.isLightTheme -> palette.getSwatch(Palette.Target.DARK_MUTED)?.rgb
-            else -> palette.getSwatch(Palette.Target.LIGHT_MUTED)?.rgb
-        }
-        @ColorInt
-        val targetColor: Int = colorFromPalette ?: mainScreenProperties.defaultArtBackgroundColor
+        val targetColor = mainScreenProperties.extractArtBackgroundColor(palette)
         carousel_background?.setSurfaceColor(targetColor, animated = true)
     }
 

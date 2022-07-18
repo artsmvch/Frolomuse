@@ -12,6 +12,7 @@ import androidx.annotation.Px
 import androidx.annotation.UiThread
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.ColorUtils
+import com.frolo.core.graphics.Palette
 import com.frolo.debug.DebugUtils
 import com.frolo.muse.R
 import com.frolo.ui.StyleUtils
@@ -105,16 +106,7 @@ internal class MainScreenProperties(
 
     @get:ColorInt
     val defaultArtBackgroundColor: Int by lazy {
-        val hsl = getHslTmp()
-        ColorUtils.colorToHSL(colorPrimary, hsl)
-        val originalLightness = hsl[2]
-        val targetLightness = if(isLightTheme) {
-            originalLightness.coerceIn(0.05f, 0.6f)
-        } else {
-            originalLightness.coerceIn(0.4f, 0.85f)
-        }
-        hsl[2] = targetLightness
-        ColorUtils.HSLToColor(hsl)
+        validateArtBackgroundColorLightness(colorPrimary)
     }
 
     @get:Dimension
@@ -136,5 +128,31 @@ internal class MainScreenProperties(
     @ColorInt
     fun getModeColor(on: Boolean): Int {
         return if (on) colorModeOn else colorModeOff
+    }
+
+    @ColorInt
+    fun extractArtBackgroundColor(palette: Palette?): Int {
+        @ColorInt
+        val colorFromPalette: Int? = when {
+            palette == null -> null
+            isLightTheme -> palette.getSwatch(Palette.Target.DARK_MUTED)?.rgb
+            else -> palette.getSwatch(Palette.Target.LIGHT_MUTED)?.rgb
+        }
+        return colorFromPalette?.let(::validateArtBackgroundColorLightness)
+            ?: defaultArtBackgroundColor
+    }
+
+    @ColorInt
+    private fun validateArtBackgroundColorLightness(@ColorInt color: Int): Int {
+        val hsl = getHslTmp()
+        ColorUtils.colorToHSL(color, hsl)
+        val originalLightness = hsl[2]
+        val targetLightness = if(isLightTheme) {
+            originalLightness.coerceIn(0.05f, 0.6f)
+        } else {
+            originalLightness.coerceIn(0.4f, 0.85f)
+        }
+        hsl[2] = targetLightness
+        return ColorUtils.HSLToColor(hsl)
     }
 }
