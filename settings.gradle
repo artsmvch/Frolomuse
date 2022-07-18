@@ -2,6 +2,7 @@
 include ':app'
 
 // Core
+include ':core'
 include ':core-ui'
 
 // Music data

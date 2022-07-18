@@ -23,6 +23,7 @@ import androidx.core.view.updatePadding
 import androidx.lifecycle.LifecycleOwner
 import com.frolo.arch.support.observe
 import com.frolo.arch.support.observeNonNull
+import com.frolo.core.graphics.Palette
 import com.frolo.core.ui.animations.AppAnimations
 import com.frolo.core.ui.carousel.CarouselBackgroundView
 import com.frolo.core.ui.carousel.ICarouselView
@@ -34,7 +35,6 @@ import com.frolo.core.ui.systembars.defaultSystemBarsHost
 import com.frolo.mediabutton.PlayButton
 import com.frolo.muse.BuildConfig
 import com.frolo.muse.R
-import com.frolo.muse.common.toAudioSource
 import com.frolo.muse.ui.asDurationInMs
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.getAlbumEditorOptionText
@@ -49,7 +49,6 @@ import com.frolo.muse.ui.main.showVolumeControl
 import com.frolo.music.model.Song
 import com.frolo.player.Player
 import com.frolo.ui.ColorUtils2
-import com.frolo.ui.StyleUtils
 import com.frolo.waveformseekbar.WaveformSeekBar
 import kotlinx.android.synthetic.main.fragment_player.*
 import kotlinx.android.synthetic.main.include_playback_progress.*
@@ -119,8 +118,8 @@ class PlayerFragment: BaseFragment() {
         // Intercepting all touches to prevent their processing in the lower view layers
         view.setOnTouchListener { _, _ -> true }
 
-        carousel_background?.onColorChangeListener =
-            CarouselBackgroundView.OnColorChangeListener { color, isIntermediate ->
+        carousel_background?.onSurfaceColorChangeListener =
+            CarouselBackgroundView.OnSurfaceColorChangeListener { color, isIntermediate ->
                 handleArtBackgroundColorChange(color)
             }
         carousel.setPlaceholderText(R.string.no_songs_in_queue)
@@ -291,18 +290,6 @@ class PlayerFragment: BaseFragment() {
         btn_ab.text = text
     }
 
-    private fun updateArtBackground(song: Song?) {
-        carousel_background?.loadColorAsync(
-            source = song?.toAudioSource(),
-            pipette = if (mainScreenProperties.isLightTheme) {
-                CarouselBackgroundView.Pipette.DARK_MUTED
-            } else {
-                CarouselBackgroundView.Pipette.LIGHT_MUTED
-            },
-            defColor = mainScreenProperties.defaultArtBackgroundColor
-        )
-    }
-
     private fun handleArtBackgroundColorChange(@ColorInt color: Int) {
         val isLight = ColorUtils2.isLight(color)
         val tint: Int = if (isLight) {
@@ -317,12 +304,24 @@ class PlayerFragment: BaseFragment() {
     }
 
     private fun updateSystemBars(
-        @ColorInt artBackgroundColor: Int? = carousel_background?.color,
+        @ColorInt artBackgroundColor: Int? = carousel_background?.surfaceColor,
         controller: SystemBarsController? =
             defaultSystemBarsHost?.getSystemBarsController(systemBarsControlOwner)
     ) {
         val isStatusBarLight = ColorUtils2.isLight(color = artBackgroundColor ?: Color.TRANSPARENT)
         controller?.setStatusBarAppearanceLight(isStatusBarLight)
+    }
+
+    private fun animateArtBackgroundColor(palette: Palette?) {
+        @ColorInt
+        val colorFromPalette: Int? = when {
+            palette == null -> null
+            mainScreenProperties.isLightTheme -> palette.getSwatch(Palette.Target.DARK_MUTED)?.rgb
+            else -> palette.getSwatch(Palette.Target.LIGHT_MUTED)?.rgb
+        }
+        @ColorInt
+        val targetColor: Int = colorFromPalette ?: mainScreenProperties.defaultArtBackgroundColor
+        carousel_background?.setSurfaceColor(targetColor, animated = true)
     }
 
     private fun showOptionsMenu(optionsMenu: PlayerOptionsMenu) {
@@ -388,7 +387,6 @@ class PlayerFragment: BaseFragment() {
                 tsw_song_name.setText("")
                 tsw_artist_name.setText("")
             }
-            updateArtBackground(song)
         }
 
         playerControllersEnabled.observeNonNull(owner) { enabled ->
@@ -420,6 +418,10 @@ class PlayerFragment: BaseFragment() {
                 val waveform = StaticWaveform(BuildConfig.SOUND_WAVEFORM_LENGTH, 1, 10)
                 waveform_seek_bar.setWaveform(waveform, true)
             }
+        }
+
+        palette.observe(owner) { palette ->
+            animateArtBackgroundColor(palette)
         }
 
         showVolumeControlEvent.observe(owner) {

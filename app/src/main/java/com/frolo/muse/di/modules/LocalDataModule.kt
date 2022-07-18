@@ -8,6 +8,7 @@ import com.frolo.muse.di.ExecutorQualifier
 import com.frolo.muse.di.impl.local.*
 import com.frolo.muse.di.impl.sound.bass.BASSSoundWaveResolverImpl
 import com.frolo.muse.di.impl.stub.MediaFileRepositoryStub
+import com.frolo.muse.graphics.PaletteGenerator
 import com.frolo.muse.repository.*
 import com.frolo.music.model.*
 import com.frolo.music.repository.*
@@ -258,5 +259,11 @@ class LocalDataModule {
         launchInfoProvider: AppLaunchInfoProvider
     ): OnboardingPreferences {
         return OnboardingPreferencesImpl(context, launchInfoProvider)
+    }
+
+    @ApplicationScope
+    @Provides
+    fun providePaletteGenerator(context: Context): PaletteGenerator {
+        return PaletteGeneratorImpl(context)
     }
 }

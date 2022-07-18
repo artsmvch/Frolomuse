@@ -155,6 +155,9 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 
+    // Core
+    implementation project(path: ':core')
+
     // Music data
     implementation project(path: ':music-data:model')
     implementation project(path: ':music-data:repository:api')

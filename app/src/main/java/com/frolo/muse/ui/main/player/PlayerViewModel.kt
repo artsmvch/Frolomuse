@@ -7,8 +7,10 @@ import com.frolo.arch.support.SingleLiveEvent
 import com.frolo.arch.support.combine
 import com.frolo.arch.support.liveDataOf
 import com.frolo.arch.support.map
+import com.frolo.core.graphics.Palette
 import com.frolo.muse.common.*
 import com.frolo.muse.di.ExecutorQualifier
+import com.frolo.muse.graphics.PaletteGenerator
 import com.frolo.muse.interactor.feature.FeaturesUseCase
 import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
 import com.frolo.muse.interactor.media.DeleteMediaUseCase
@@ -45,6 +47,7 @@ class PlayerViewModel @Inject constructor(
     private val deleteMediaUseCase: DeleteMediaUseCase<Song>,
     private val controlPlayerUseCase: ControlPlayerUseCase,
     private val resolveSoundWaveUseCase: ResolveSoundWaveUseCase,
+    private val paletteGenerator: PaletteGenerator,
     private val featuresUseCase: FeaturesUseCase,
     private val appRouter: AppRouter,
     private val eventLogger: EventLogger
@@ -137,6 +140,20 @@ class PlayerViewModel @Inject constructor(
                     }
             }
         }
+
+    val palette: LiveData<Palette> by lazy {
+        Transformations.switchMap(song) { song ->
+            if (song == null) liveDataOf<Palette>(null)
+            else MutableLiveData<Palette>().apply {
+                paletteGenerator.generatePalette(song.toAudioSource())
+                    .observeOn(schedulerProvider.main())
+                    .doOnError { value = null }
+                    .subscribeFor(key = "generate_palette") { palette ->
+                        value = palette
+                    }
+            }
+        }
+    }
 
     private val _currPosition = MutableLiveData<Int>(player.getCurrentPositionInQueue())
     val currPosition: LiveData<Int> = Transformations.distinctUntilChanged(_currPosition)
