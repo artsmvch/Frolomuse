@@ -16,10 +16,10 @@
 
         <ImageView
             android:id="@+id/imv_close"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_marginStart="12dp"
-            android:padding="4dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="8dp"
+            android:padding="8dp"
             android:src="@drawable/ic_action_close_outline_24"
             app:tint="?iconImageTint" />
 
@@ -28,7 +28,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="4dp"
             android:layout_marginEnd="12dp"
             android:lines="1"
             android:gravity="start|center_vertical"
