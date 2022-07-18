@@ -63,6 +63,10 @@ class PaletteGeneratorImpl(
             }
             return delegate[delegateTarget]?.let(::SwatchImpl)
         }
+
+        override fun getDominantSwatch(): Swatch? {
+            return delegate.dominantSwatch?.let(::SwatchImpl)
+        }
     }
 
     private class SwatchImpl(
