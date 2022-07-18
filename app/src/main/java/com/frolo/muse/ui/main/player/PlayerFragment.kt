@@ -48,6 +48,7 @@ import com.frolo.muse.ui.main.showVolumeControl
 import com.frolo.music.model.Song
 import com.frolo.player.Player
 import com.frolo.ui.ColorUtils2
+import com.frolo.ui.Screen
 import com.frolo.waveformseekbar.WaveformSeekBar
 import kotlinx.android.synthetic.main.fragment_player.*
 import kotlinx.android.synthetic.main.include_playback_progress.*
@@ -117,7 +118,7 @@ class PlayerFragment: BaseFragment() {
         // Intercepting all touches to prevent their processing in the lower view layers
         view.setOnTouchListener { _, _ -> true }
 
-        carousel_background?.onSurfaceColorChangeListener =
+        carousel_background.onSurfaceColorChangeListener =
             CarouselBackgroundView.OnSurfaceColorChangeListener { color, isIntermediate ->
                 handleArtBackgroundColorChange(color)
             }
@@ -125,7 +126,11 @@ class PlayerFragment: BaseFragment() {
 
         view.fitsSystemWindows = true
         ViewCompat.setOnApplyWindowInsetsListener(view) { v, insets ->
-            player_toolbar.updatePadding(top = insets.systemWindowInsetTop)
+            if (mainScreenProperties.isLandscape) {
+                view.updatePadding(top = insets.systemWindowInsetTop)
+            } else {
+                player_toolbar.updatePadding(top = insets.systemWindowInsetTop)
+            }
             insets
         }
 
@@ -297,12 +302,21 @@ class PlayerFragment: BaseFragment() {
     }
 
     private fun updateSystemBars(
-        @ColorInt artBackgroundColor: Int? = carousel_background?.surfaceColor,
+        @ColorInt artBackgroundColor: Int = retrieveArtBackgroundColor(),
         controller: SystemBarsController? =
             defaultSystemBarsHost?.getSystemBarsController(systemBarsControlOwner)
     ) {
-        val isStatusBarLight = ColorUtils2.isLight(color = artBackgroundColor ?: Color.TRANSPARENT)
+        val isStatusBarLight = ColorUtils2.isLight(color = artBackgroundColor)
         controller?.setStatusBarAppearanceLight(isStatusBarLight)
+    }
+
+    @ColorInt
+    private fun retrieveArtBackgroundColor(): Int {
+        return if (Screen.isLandscape(requireContext())) {
+            mainScreenProperties.colorSurface
+        } else {
+            carousel_background?.surfaceColor ?: mainScreenProperties.colorSurface
+        }
     }
 
     private fun animateArtBackgroundColor(palette: Palette?) {

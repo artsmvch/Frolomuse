@@ -13,11 +13,20 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.5" />
 
-    <com.frolo.core.ui.carousel.CarouselView
+    <com.frolo.core.ui.carousel.CarouselBackgroundView
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toStartOf="@id/guideline"
         app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/carousel_background"
+        android:layout_width="0dp"
+        android:layout_height="0dp"/>
+
+    <com.frolo.core.ui.carousel.CarouselView
+        app:layout_constraintStart_toStartOf="@id/carousel_background"
+        app:layout_constraintTop_toTopOf="@id/carousel_background"
+        app:layout_constraintEnd_toEndOf="@id/carousel_background"
+        app:layout_constraintBottom_toBottomOf="@id/carousel_background"
         android:id="@+id/carousel"
         android:layout_width="0dp"
         android:layout_height="0dp"/>
@@ -31,6 +40,7 @@
         android:layout_height="wrap_content"/>
 
     <androidx.appcompat.widget.AppCompatImageView
+        app:layout_constraintStart_toStartOf="@id/carousel"
         app:layout_constraintEnd_toEndOf="@id/carousel"
         app:layout_constraintBottom_toBottomOf="@id/carousel"
         android:id="@+id/btn_like"
@@ -38,8 +48,7 @@
         android:layout_height="32dp"
         android:layout_margin="8dp"
         android:padding="6dp"
-        android:src="@drawable/ic_heart"
-        app:tint="?iconImageTint"/>
+        android:src="@drawable/ic_heart"/>
 
     <TextSwitcher
         app:layout_constraintStart_toStartOf="@id/guideline"

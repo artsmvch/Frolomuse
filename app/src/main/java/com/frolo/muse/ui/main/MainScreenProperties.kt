@@ -15,6 +15,7 @@ import com.frolo.core.graphics.Palette
 import com.frolo.debug.DebugUtils
 import com.frolo.muse.R
 import com.frolo.ui.ColorUtils2
+import com.frolo.ui.Screen
 import com.frolo.ui.StyleUtils
 
 
@@ -28,6 +29,11 @@ internal class MainScreenProperties(
 
     private val whiteColorStateList = ColorStateList.valueOf(Color.WHITE)
     private val blackColorStateList = ColorStateList.valueOf(Color.BLACK)
+    private val iconColorStateList =
+        StyleUtils.resolveColorStateList(context, R.attr.iconImageTint)
+            ?: ColorStateList.valueOf(Color.GRAY)
+
+    val isLandscape: Boolean get() = Screen.isLandscape(context)
 
     val isLightTheme: Boolean by lazy {
         StyleUtils.resolveBool(context, R.attr.isLightTheme)
@@ -122,6 +128,9 @@ internal class MainScreenProperties(
 
     @ColorInt
     fun extractArtBackgroundColor(palette: Palette?): Int {
+        if (isLandscape) {
+            return Color.TRANSPARENT
+        }
         @ColorInt
         val colorFromPalette: Int? = when {
             palette == null -> null
@@ -145,6 +154,9 @@ internal class MainScreenProperties(
     }
 
     fun getPlayerToolbarElementColor(@ColorInt color: Int): ColorStateList {
+        if (isLandscape) {
+            return iconColorStateList
+        }
         val isLight = ColorUtils2.isLight(color)
         return if (isLight) {
             blackColorStateList
