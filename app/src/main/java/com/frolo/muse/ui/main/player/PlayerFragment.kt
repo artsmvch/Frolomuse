@@ -312,7 +312,7 @@ class PlayerFragment: BaseFragment() {
 
     @ColorInt
     private fun retrieveArtBackgroundColor(): Int {
-        return if (Screen.isLandscape(requireContext())) {
+        return if (mainScreenProperties.isLandscape) {
             mainScreenProperties.colorSurface
         } else {
             carousel_background?.surfaceColor ?: mainScreenProperties.colorSurface
