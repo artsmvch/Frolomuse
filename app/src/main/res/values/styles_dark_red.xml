@@ -5,15 +5,15 @@
 
     <color name="app_dark_red_window_background">#1C0C0C</color>
     <color name="app_dark_red_action_mode">#431829</color>
-    <color name="app_dark_red_primary">#2C2024</color>
-    <color name="app_dark_red_primary_dark">#2C2022</color>
+    <color name="app_dark_red_primary">#2C2225</color>
+    <color name="app_dark_red_primary_dark">#2C2225</color>
     <color name="app_dark_red_primary_variant">#2C2020</color>
     <color name="app_dark_red_primary_surface">#B53F3F</color>
     <color name="app_dark_red_on_primary_surface">#FFFFFF</color>
     <color name="app_dark_red_secondary">@color/app_dark_red_accent_ultra</color>
     <color name="app_dark_red_secondary_variant">@color/app_dark_red_accent_ultra</color>
     <color name="app_dark_red_accent">@color/app_dark_red_accent_ultra</color>
-    <color name="app_dark_red_surface">#2C2024</color>
+    <color name="app_dark_red_surface">#2C2225</color>
 
     <color name="app_dark_red_accent_ultra">#F05E5E</color>
     <color name="app_dark_red_fast_scroller">#923939</color>
