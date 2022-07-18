@@ -26,7 +26,7 @@
         android:layout_width="@dimen/options_menu_width"
         android:layout_height="60dp"
         android:src="@drawable/ic_options_menu"
-        android:tint="?attr/iconImageTint"
+        android:tint="?attr/iconTintMuted"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"

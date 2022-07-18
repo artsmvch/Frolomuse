@@ -2,7 +2,7 @@
 <resources>
 
     <!--Tint for all action icons in the app-->
-    <attr name="iconImageTint" format="color"/>
+    <attr name="iconTintMuted" format="color"/>
     <!--Tint for placeholder images in the app-->
     <attr name="placeholderImageTint" format="color"/>
     <!--Tint for dividers (list item dividers etc.)-->

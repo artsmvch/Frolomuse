@@ -171,7 +171,7 @@
         <item name="android:navigationBarColor">@color/app_dark_purple_primary</item>
 
         <!--Custom attrs-->
-        <item name="iconImageTint">#EAEAEA</item>
+        <item name="iconTintMuted">#EAEAEA</item>
         <item name="dividerTint">@color/app_dark_purple_divider_tint</item>
         <item name="colorPremiumProductAccent">@color/app_dark_purple_premium_product_accent</item>
         <item name="iBarStyle">@style/Base.AppTheme.Dark.IBar</item>

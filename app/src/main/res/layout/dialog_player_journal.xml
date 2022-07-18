@@ -38,7 +38,7 @@
             android:layout_marginEnd="12dp"
             android:padding="8dp"
             app:srcCompat="@drawable/ic_cross_48dp"
-            app:tint="?iconImageTint" />
+            app:tint="?iconTintMuted" />
     </LinearLayout>
 
     <include layout="@layout/include_divider"

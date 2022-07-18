@@ -59,7 +59,7 @@
         <item name="textAppearanceListItemSecondary">@style/Base.AppTheme.TextAppearance.ListItemSecondary</item>
 
         <!--Custom attrs-->
-        <item name="iconImageTint">#ABABAB</item>
+        <item name="iconTintMuted">#ABABAB</item>
         <item name="placeholderImageTint">#C3C3C3</item>
         <item name="dividerTint">#E3E3E3</item>
         <item name="colorPremiumProductAccent">?colorAccent</item>

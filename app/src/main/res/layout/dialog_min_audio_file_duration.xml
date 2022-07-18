@@ -53,7 +53,7 @@
                 android:layout_height="8dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/ic_dot_divider"
-                app:tint="?iconImageTint" />
+                app:tint="?iconTintMuted" />
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:gravity="center"

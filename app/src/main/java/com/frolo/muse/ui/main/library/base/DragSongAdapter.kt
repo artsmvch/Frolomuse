@@ -136,7 +136,7 @@ open class DragSongAdapter constructor(
                 }
                 setImageResource(R.drawable.ic_drag_burger_outline_28)
                 imageTintList =
-                    ColorStateList.valueOf(StyleUtils.resolveColor(context, R.attr.iconImageTint))
+                    ColorStateList.valueOf(StyleUtils.resolveColor(context, R.attr.iconTintMuted))
             }
         }
 

@@ -9,7 +9,7 @@
         android:id="@+id/imv_icon"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        app:tint="?iconImageTint" />
+        app:tint="?iconTintMuted" />
 
     <TextView
         android:id="@+id/tv_title"

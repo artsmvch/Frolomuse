@@ -26,7 +26,7 @@
                 android:layout_height="?actionBarSize"
                 android:background="@color/transparent"
                 android:elevation="0dp"
-                app:navigationIconTint="?iconImageTint"
+                app:navigationIconTint="?iconTintMuted"
                 app:layout_scrollFlags="scroll|snap"
                 app:navigationIcon="@drawable/ic_navigation_up"/>
 

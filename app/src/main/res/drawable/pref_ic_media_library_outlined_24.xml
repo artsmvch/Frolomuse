@@ -6,9 +6,9 @@
     android:viewportHeight="24">
 
   <path
-      android:fillColor="?iconImageTint"
+      android:fillColor="?iconTintMuted"
       android:pathData="M19 2H6C4.794 2 3 2.799 3 5V19C3 21.201 4.794 22 6 22H21V20H6.012C5.55 19.988 5 19.806 5 19C5 18.194 5.55 18.012 6.012 18H21V4C21 2.897 20.103 2 19 2ZM19 16H5V5C5 4.194 5.55 4.012 6 4H19V16Z" />
   <path
-      android:fillColor="?iconImageTint"
+      android:fillColor="?iconTintMuted"
       android:pathData="M12 10.3V6H15V8H13V12C13 13.11 12.11 14 11 14C10.4696 14 9.96086 13.7893 9.58579 13.4142C9.21071 13.0391 9 12.5304 9 12C9 11.4696 9.21071 10.9609 9.58579 10.5858C9.96086 10.2107 10.4696 10 11 10C11.4 10 11.7 10.1 12 10.3Z" />
 </vector>

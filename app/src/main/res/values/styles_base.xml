@@ -24,7 +24,7 @@
 
     <!--Preferences-->
     <style name="PreferenceThemeOverlay.Tinted" parent="PreferenceThemeOverlay">
-<!--        <item name="android:tint">?iconImageTint</item>-->
+<!--        <item name="android:tint">?iconTintMuted</item>-->
         <item name="android:windowBackground">@color/transparent</item>
     </style>
 

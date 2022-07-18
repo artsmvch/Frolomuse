@@ -55,6 +55,6 @@
         android:layout_marginStart="16dp"
         android:padding="8dp"
         android:background="?selectableItemBackground"
-        android:tint="?iconImageTint"
+        android:tint="?iconTintMuted"
         android:src="@drawable/ic_save"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

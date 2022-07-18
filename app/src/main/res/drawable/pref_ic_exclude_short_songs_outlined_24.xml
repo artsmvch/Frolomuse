@@ -9,23 +9,23 @@
     <clip-path
         android:pathData="M 0 0 H 24 V 24 H 0 V 0 Z" />
     <path
-        android:fillColor="?iconImageTint"
+        android:fillColor="?iconTintMuted"
         android:pathData="M8.86106 6.61108C8.86106 6.0588 8.41334 5.61108 7.86106 5.61108C7.30877 5.61108 6.86106 6.0588 6.86106 6.61108H8.86106ZM7.86106 8.86108L8.25334 9.78092C8.6219 9.62374 8.86106 9.26175 8.86106 8.86108H7.86106ZM5.57988 8.74679C5.07187 8.96344 4.83567 9.5509 5.05232 10.0589C5.26898 10.5669 5.85644 10.8031 6.36445 10.5865L5.57988 8.74679ZM6.86106 6.61108V8.86108H8.86106V6.61108H6.86106ZM7.46877 7.94123L5.57988 8.74679L6.36445 10.5865L8.25334 9.78092L7.46877 7.94123Z" />
     <path
         android:fillColor="#00000000"
-        android:strokeColor="?iconImageTint"
+        android:strokeColor="?iconTintMuted"
         android:strokeWidth="2"
         android:pathData="M 7.5 3 C 10.5375661241 3 13 5.46243387593 13 8.5 C 13 11.5375661241 10.5375661241 14 7.5 14 C 4.46243387593 14 2 11.5375661241 2 8.5 C 2 5.46243387593 4.46243387593 3 7.5 3 Z" />
     <path
         android:fillColor="#00000000"
-        android:strokeColor="?iconImageTint"
+        android:strokeColor="?iconTintMuted"
         android:strokeWidth="2"
         android:pathData="M14 8L21.7942 21.5H6.20577L14 8Z" />
     <path
-        android:fillColor="?iconImageTint"
+        android:fillColor="?iconTintMuted"
         android:pathData="M13 19C13 18.4477 13.4477 18 14 18C14.5523 18 15 18.4477 15 19C15 19.5523 14.5523 20 14 20C13.4477 20 13 19.5523 13 19Z" />
     <path
-        android:fillColor="?iconImageTint"
+        android:fillColor="?iconTintMuted"
         android:pathData="M15 16C15 16.5523 14.5523 17 14 17C13.4477 17 13 16.5523 13 16L13 14C13 13.4477 13.4477 13 14 13C14.5523 13 15 13.4477 15 14L15 16Z" />
   </group>
 </vector>

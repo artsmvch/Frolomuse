@@ -21,7 +21,7 @@
             android:layout_marginStart="8dp"
             android:padding="8dp"
             android:src="@drawable/ic_action_close_outline_24"
-            app:tint="?iconImageTint" />
+            app:tint="?iconTintMuted" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv_title"

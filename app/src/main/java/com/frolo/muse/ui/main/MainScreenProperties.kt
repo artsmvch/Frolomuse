@@ -30,7 +30,7 @@ internal class MainScreenProperties(
     private val whiteColorStateList = ColorStateList.valueOf(Color.WHITE)
     private val blackColorStateList = ColorStateList.valueOf(Color.BLACK)
     private val iconColorStateList =
-        StyleUtils.resolveColorStateList(context, R.attr.iconImageTint)
+        StyleUtils.resolveColorStateList(context, R.attr.iconTintMuted)
             ?: ColorStateList.valueOf(Color.GRAY)
 
     val isLandscape: Boolean get() = Screen.isLandscape(context)
@@ -112,7 +112,7 @@ internal class MainScreenProperties(
 
     @get:ColorInt
     val colorModeOff: Int by lazy {
-        colorPlayerElement1 //StyleUtils.resolveColor(context, R.attr.iconImageTint)
+        colorPlayerElement1 //StyleUtils.resolveColor(context, R.attr.iconTintMuted)
     }
 
     @get:ColorInt

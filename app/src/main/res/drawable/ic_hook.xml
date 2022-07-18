@@ -6,5 +6,5 @@
 
     <corners android:radius="1dp"/>
 
-    <solid android:color="?iconImageTint"/>
+    <solid android:color="?iconTintMuted"/>
 </shape>

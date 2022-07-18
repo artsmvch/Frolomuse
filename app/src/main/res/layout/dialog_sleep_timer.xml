@@ -43,7 +43,7 @@
             android:layout_margin="4dp"
             android:scaleType="fitXY"
             android:src="@drawable/ic_dot_divider"
-            android:tint="?iconImageTint" />
+            android:tint="?iconTintMuted" />
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/edt_minutes"
@@ -63,7 +63,7 @@
             android:layout_margin="4dp"
             android:scaleType="fitXY"
             android:src="@drawable/ic_dot_divider"
-            android:tint="?iconImageTint" />
+            android:tint="?iconTintMuted" />
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/edt_seconds"

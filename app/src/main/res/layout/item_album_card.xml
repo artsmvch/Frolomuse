@@ -36,7 +36,7 @@
             android:layout_width="24dp"
             android:layout_height="40dp"
             android:src="@drawable/ic_options_menu"
-            android:tint="?attr/iconImageTint" />
+            android:tint="?attr/iconTintMuted" />
 
         <androidx.appcompat.widget.AppCompatTextView
             app:layout_constraintStart_toStartOf="parent"
