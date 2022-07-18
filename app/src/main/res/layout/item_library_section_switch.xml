@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -11,9 +12,9 @@
         android:id="@+id/view_drag_and_drop"
         android:layout_width="@dimen/list_item_img_art_size"
         android:layout_height="@dimen/list_item_img_art_size"
-        android:padding="18dp"
-        android:tint="?iconImageTint"
-        android:src="@drawable/ic_drag_burger" />
+        android:padding="14dp"
+        android:src="@drawable/ic_drag_burger_outline_28"
+        app:tint="?iconImageTint" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_section_name"
