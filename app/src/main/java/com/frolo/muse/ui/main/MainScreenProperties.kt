@@ -121,8 +121,9 @@ internal class MainScreenProperties(
         @ColorInt
         val colorFromPalette: Int? = when {
             palette == null -> null
-            isLightTheme -> palette.getSwatch(Palette.Target.DARK_MUTED)?.rgb
-            else -> palette.getSwatch(Palette.Target.LIGHT_MUTED)?.rgb
+//            isLightTheme -> palette.getSwatch(Palette.Target.DARK_MUTED)?.rgb
+//            else -> palette.getSwatch(Palette.Target.LIGHT_MUTED)?.rgb
+            else -> palette.getDominantSwatch()?.rgb
         }
         return colorFromPalette?.let(::validateArtBackgroundColorLightness)
             ?: defaultArtBackgroundColor
