@@ -179,6 +179,7 @@ dependencies {
     // Performance
     implementation project(path: ':performance:coldstart')
     implementation project(path: ':performance:anr')
+    implementation project(path: ':performance:scroll')
 
     // Design
     implementation project(path: ':core-ui')
