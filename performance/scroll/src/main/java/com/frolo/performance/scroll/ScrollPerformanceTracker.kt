@@ -64,7 +64,7 @@ class ScrollPerformanceTracker private constructor(
             val renderTimeNanos = frameTimeNanos - lastTimeNanos
             if (renderTimeNanos > NORMAL_RENDER_TIME_NANOS) {
                 state.renderTimeNanos = renderTimeNanos
-                callback.onScrollPerformance(state)
+                callback.onPoorScrollPerformance(listView, state)
             }
         }
         lastFrameTimeNanos = frameTimeNanos
