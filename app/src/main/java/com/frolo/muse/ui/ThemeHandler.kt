@@ -1,14 +1,11 @@
-package com.frolo.muse.ui;
-
+package com.frolo.muse.ui
 
 /**
  * UI components that implement this interface should be able to handle themes changes.
  */
-public interface ThemeHandler {
-
+fun interface ThemeHandler {
     /**
      * Called when the app's theme has been changed.
      */
-    void handleThemeChange();
-
+    fun handleThemeChange()
 }
