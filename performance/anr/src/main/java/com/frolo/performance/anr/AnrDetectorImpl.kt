@@ -57,8 +57,8 @@ internal class AnrDetectorImpl(
         val isOrWillBeRunning: Boolean get() = isOrWillBeRunningRef.get()
 
         override fun start() {
-            super.start()
             isOrWillBeRunningRef.set(true)
+            super.start()
         }
 
         fun stopImpl() {
