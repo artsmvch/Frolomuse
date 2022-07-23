@@ -15,7 +15,7 @@
         android:id="@+id/view_dim_overlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#99000000"
+        android:background="#CC000000"
         android:alpha="0.0"/>
 
     <FrameLayout
