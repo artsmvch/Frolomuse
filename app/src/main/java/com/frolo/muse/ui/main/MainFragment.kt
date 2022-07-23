@@ -496,6 +496,12 @@ internal class MainFragment :
         return true
     }
 
+    private fun destroyContent() {
+        fragNavController?.clearDialogFragment()
+        fragNavController = null
+        clearAllFragmentsAndState()
+    }
+
     @IdRes
     private fun getBottomMenuItemId(tabIndex: Int): Int {
         return when(tabIndex) {
@@ -683,7 +689,7 @@ internal class MainFragment :
                 initializeContent(lastSavedInstanceState)
             } else {
                 // The player is disconnected: no need to stay here anymore
-                clearAllFragmentsAndState()
+                destroyContent()
             }
         }
         viewModel.isDisconnectedLiveData.observe(owner) { isDisconnected: Boolean? ->
