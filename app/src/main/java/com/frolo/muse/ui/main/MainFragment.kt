@@ -736,6 +736,8 @@ internal class MainFragment :
     }
 
     private fun handleSlide(slideOffset: Float) {
+        val startTimeMillis = System.currentTimeMillis()
+
         bottom_navigation_view.also { child ->
             val overTranslation = 1.2f
             val heightToAnimate = slideOffset * child.height * overTranslation
@@ -771,6 +773,10 @@ internal class MainFragment :
             sliding_player_layout.top < insets.systemWindowInsetTop / 2f
         }
         mainSheetsStateViewModel.dispatchPlayerSheetSlideOffset(slideOffset, isUnderStatusBar)
+
+        (System.currentTimeMillis() - startTimeMillis).also { elapsedTime ->
+            Logger.d(LOG_TAG, "Handled slide offset in $elapsedTime millis")
+        }
     }
 
     private fun setupWindowInsets(fragment: Fragment?) {
@@ -854,6 +860,7 @@ internal class MainFragment :
     }
 
     companion object {
+        private const val LOG_TAG = "MainFragment"
 
         private const val RC_READ_STORAGE = 1043
 
