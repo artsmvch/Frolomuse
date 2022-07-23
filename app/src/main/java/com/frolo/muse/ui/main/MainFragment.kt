@@ -8,10 +8,7 @@ import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.view.animation.DecelerateInterpolator
 import androidx.annotation.ColorInt
 import androidx.annotation.IdRes
@@ -209,20 +206,26 @@ internal class MainFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        loadUi()
+        loadUi(view)
         observePlayerState(viewLifecycleOwner)
         observeViewModel(viewLifecycleOwner)
         observeMainSheetsState(viewLifecycleOwner)
         observeScanStatus(view.context, viewLifecycleOwner)
     }
 
-    private fun loadUi() {
-        val activity = requireActivity()
-        val statusBarColor = StyleUtils.resolveColor(activity, R.attr.colorPrimary).let { color ->
-            ColorUtils.setAlphaComponent(color, 64)
-        }
-        requireActivity().window?.also { window ->
-            SystemBarUtils.setStatusBarColor(window, statusBarColor)
+    private fun loadUi(view: View) {
+        skipWindowInsets(view)
+        skipWindowInsets(content_layout)
+        skipWindowInsets(coordinator)
+        skipWindowInsets(sliding_player_layout)
+        skipWindowInsets(container_player)
+        container.setOnApplyWindowInsetsListener { _, insets ->
+            val currFragment = pickCurrentFragment()
+            if (currFragment is WithCustomWindowInsets) {
+                // Don't let fragments change these insets, dispatch a copy
+                currFragment.onApplyWindowInsets(WindowInsets((insets)))
+            }
+            return@setOnApplyWindowInsetsListener insets
         }
 
         bottom_navigation_view.background = createBottomTongue(
@@ -234,19 +237,7 @@ internal class MainFragment :
         with(BottomSheetBehavior.from(sliding_player_layout)) {
             addBottomSheetCallback(bottomSheetCallback)
         }
-        ViewCompat.setOnApplyWindowInsetsListener(sliding_player_layout) { _, insets ->
-            insets
-        }
         BottomSheetBehaviorSupport.dispatchOnSlide(sliding_player_layout)
-
-        container.setOnApplyWindowInsetsListener { _, insets ->
-            val currFragment = pickCurrentFragment()
-            if (currFragment is WithCustomWindowInsets) {
-                currFragment.onApplyWindowInsets(insets)
-            } else {
-                insets
-            }
-        }
 
         mini_player_container.setOnClickListener {
             expandSlidingPlayer()
@@ -257,6 +248,15 @@ internal class MainFragment :
         progress.show()
 
         defaultSystemBarsHost?.obtainSystemBarsControl(this)
+    }
+
+    /**
+     * Causes [view] to skip processing and changing window insets.
+     * Window insets will just be dispatched down the hierarchy.
+     */
+    private fun skipWindowInsets(view: View) {
+        view.fitsSystemWindows = true
+        view.setOnApplyWindowInsetsListener { _, insets -> insets }
     }
 
     private fun createBottomTongue(@ColorInt color: Int, cornerRadius: Float): Drawable {
