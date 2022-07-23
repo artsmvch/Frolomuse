@@ -47,6 +47,13 @@ class PlayerSheetFragment :
     ): View = inflater.inflate(R.layout.fragment_player_sheet, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        WindowInsetsHelper.skipWindowInsets(view)
+        WindowInsetsHelper.skipWindowInsets(container_player)
+        WindowInsetsHelper.setupWindowInsets(bottom_sheet_current_song_queue) { bottomSheet, insets ->
+            bottomSheet.updatePadding(top = insets.systemWindowInsetTop)
+            insets
+        }
+
         val behavior = TouchFlowAwareBottomSheetBehavior.from<View>(bottom_sheet_current_song_queue).apply {
             addBottomSheetCallback(innerBottomSheetCallback)
             state = BottomSheetBehavior.STATE_COLLAPSED
@@ -65,10 +72,6 @@ class PlayerSheetFragment :
         val peekHeight = StyleUtils.resolveDimen(view.context, R.attr.actionBarSize).toInt()
         view.doOnLayout {
             behavior.peekHeight = peekHeight
-        }
-        ViewCompat.setOnApplyWindowInsetsListener(bottom_sheet_current_song_queue) { bottomSheet, insets ->
-            bottomSheet.updatePadding(top = insets.systemWindowInsetTop)
-            insets
         }
 
         childFragmentManager.beginTransaction()

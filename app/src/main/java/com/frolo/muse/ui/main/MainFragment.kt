@@ -214,18 +214,18 @@ internal class MainFragment :
     }
 
     private fun loadUi(view: View) {
-        skipWindowInsets(view)
-        skipWindowInsets(content_layout)
-        skipWindowInsets(coordinator)
-        skipWindowInsets(sliding_player_layout)
-        skipWindowInsets(container_player)
-        container.setOnApplyWindowInsetsListener { _, insets ->
+        WindowInsetsHelper.skipWindowInsets(view)
+        WindowInsetsHelper.skipWindowInsets(content_layout)
+        WindowInsetsHelper.skipWindowInsets(coordinator)
+        WindowInsetsHelper.skipWindowInsets(sliding_player_layout)
+        WindowInsetsHelper.skipWindowInsets(container_player)
+        WindowInsetsHelper.setupWindowInsets(container) { _, insets ->
             val currFragment = pickCurrentFragment()
             if (currFragment is WithCustomWindowInsets) {
                 // Don't let fragments change these insets, dispatch a copy
                 currFragment.onApplyWindowInsets(WindowInsets((insets)))
             }
-            return@setOnApplyWindowInsetsListener insets
+            return@setupWindowInsets insets
         }
 
         bottom_navigation_view.background = createBottomTongue(
@@ -248,15 +248,6 @@ internal class MainFragment :
         progress.show()
 
         defaultSystemBarsHost?.obtainSystemBarsControl(this)
-    }
-
-    /**
-     * Causes [view] to skip processing and changing window insets.
-     * Window insets will just be dispatched down the hierarchy.
-     */
-    private fun skipWindowInsets(view: View) {
-        view.fitsSystemWindows = true
-        view.setOnApplyWindowInsetsListener { _, insets -> insets }
     }
 
     private fun createBottomTongue(@ColorInt color: Int, cornerRadius: Float): Drawable {

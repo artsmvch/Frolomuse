@@ -39,12 +39,12 @@ import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.getAlbumEditorOptionText
 import com.frolo.muse.ui.getArtistString
 import com.frolo.muse.ui.getNameString
+import com.frolo.muse.ui.main.*
 import com.frolo.muse.ui.main.MainScreenProperties
-import com.frolo.muse.ui.main.confirmDeletion
+import com.frolo.muse.ui.main.WindowInsetsHelper
 import com.frolo.muse.ui.main.player.waveform.SoundWaveform
 import com.frolo.muse.ui.main.player.waveform.StaticWaveform
 import com.frolo.muse.ui.main.provideMainSheetStateViewModel
-import com.frolo.muse.ui.main.showVolumeControl
 import com.frolo.music.model.Song
 import com.frolo.player.Player
 import com.frolo.ui.ColorUtils2
@@ -129,14 +129,13 @@ class PlayerFragment: BaseFragment() {
         }
         carousel.setPlaceholderText(R.string.no_songs_in_queue)
 
-        view.fitsSystemWindows = true
-        ViewCompat.setOnApplyWindowInsetsListener(view) { v, insets ->
+        WindowInsetsHelper.setupWindowInsets(view) { _, insets ->
             if (mainScreenProperties.isLandscape) {
                 view.updatePadding(top = insets.systemWindowInsetTop)
             } else {
                 player_toolbar.updatePadding(top = insets.systemWindowInsetTop)
             }
-            insets
+            return@setupWindowInsets insets
         }
 
         btn_close.setOnClickListener {
