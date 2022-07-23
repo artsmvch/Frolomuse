@@ -185,15 +185,19 @@ internal class MainScreenProperties(
         return ColorUtils2.setLightness(color, targetLightness)
     }
 
-    fun getPlayerToolbarElementColor(@ColorInt color: Int): ColorStateList {
+    fun getPlayerToolbarElementColor(@ColorInt backgroundColor: Int): ColorStateList {
         if (isLandscape) {
             return iconColorStateList
         }
-        val isLight = ColorUtils2.isLight(color)
+        val isLight = ColorUtils2.isLight(backgroundColor)
         return if (isLight) {
             blackColorStateList
         } else {
             whiteColorStateList
         }
+    }
+
+    fun getPlaceholderTextColor(@ColorInt artBackgroundColor: Int): Int {
+        return getPlayerToolbarElementColor(artBackgroundColor).defaultColor
     }
 }

@@ -6,6 +6,7 @@ import android.util.AttributeSet
 import android.view.Gravity
 import android.widget.FrameLayout
 import android.widget.TextView
+import androidx.annotation.ColorInt
 import androidx.annotation.StringRes
 import androidx.core.view.isVisible
 import androidx.core.view.setMargins
@@ -65,6 +66,10 @@ class CarouselView @JvmOverloads constructor(
 
     fun setPlaceholderText(@StringRes stringId: Int) {
         placeholderView.setText(stringId)
+    }
+
+    fun setPlaceholderTextColor(@ColorInt color: Int) {
+        placeholderView.setTextColor(color)
     }
 
     override fun registerCallback(callback: ICarouselView.CarouselCallback) {

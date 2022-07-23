@@ -206,6 +206,11 @@ class PlayerFragment: BaseFragment() {
         waveform_seek_bar.setCallback(null)
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        carousel_background.onSurfaceColorChangeListener = null
+    }
+
     /********************************
      ********* UI UPDATES ***********
      *******************************/
@@ -325,9 +330,10 @@ class PlayerFragment: BaseFragment() {
         }
     }
 
-    private fun animateArtBackgroundColor(palette: Palette?) {
+    private fun updateArtBackground(palette: Palette?) {
         val targetColor = mainScreenProperties.extractArtBackgroundColor(palette)
         carousel_background?.setSurfaceColor(targetColor, animated = true)
+        carousel.setPlaceholderTextColor(mainScreenProperties.getPlaceholderTextColor(targetColor))
     }
 
     private fun showOptionsMenu(optionsMenu: PlayerOptionsMenu) {
@@ -427,7 +433,7 @@ class PlayerFragment: BaseFragment() {
         }
 
         palette.observe(owner) { palette ->
-            animateArtBackgroundColor(palette)
+            updateArtBackground(palette)
         }
 
         showVolumeControlEvent.observe(owner) {
