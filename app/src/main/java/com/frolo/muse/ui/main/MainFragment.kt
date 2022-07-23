@@ -493,6 +493,7 @@ internal class MainFragment :
     private fun destroyContent() {
         fragNavController?.clearDialogFragment()
         fragNavController = null
+        RatingFragment.uninstall(childFragmentManager)
         clearAllFragmentsAndState()
     }
 
