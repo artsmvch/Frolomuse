@@ -6,11 +6,12 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
-import android.graphics.Outline
 import android.graphics.drawable.Drawable
-import android.net.Uri
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
 import androidx.annotation.ColorInt
 import androidx.annotation.IdRes
@@ -41,7 +42,6 @@ import com.frolo.muse.android.getIntExtraOrNull
 import com.frolo.muse.android.getIntOrNull
 import com.frolo.muse.android.startActivitySafely
 import com.frolo.muse.di.activityComponent
-import com.frolo.muse.di.impl.navigator.AppRouterImpl
 import com.frolo.muse.rating.RatingFragment
 import com.frolo.muse.router.AppRouter
 import com.frolo.muse.router.AppRouterStub
@@ -182,6 +182,8 @@ internal class MainFragment :
 
     private val mainSheetsStateViewModel by lazy { provideMainSheetStateViewModel() }
 
+    private val playerSheetOutlineProvider = PlayerSheetOutlineProvider()
+
     override fun getRouter(): AppRouter {
         if (context == null || childFragmentManager.isStateSaved) {
             return AppRouterStub()
@@ -226,8 +228,9 @@ internal class MainFragment :
         bottom_navigation_view.background = createBottomTongue(
             properties.colorSurface, properties.bottomNavigationCornerRadius)
 
-        sliding_player_layout.background = createBottomTongue(
-            properties.colorPrimarySurface, properties.bottomNavigationCornerRadius)
+        sliding_player_layout.clipToOutline = true
+        sliding_player_layout.outlineProvider = playerSheetOutlineProvider
+        sliding_player_layout.setBackgroundColor(properties.colorPrimarySurface)
         with(BottomSheetBehavior.from(sliding_player_layout)) {
             addBottomSheetCallback(bottomSheetCallback)
         }
@@ -738,7 +741,7 @@ internal class MainFragment :
             val heightToAnimate = slideOffset * child.height * overTranslation
             child.animate()
                 .translationY(heightToAnimate)
-                .setInterpolator(DecelerateInterpolator())
+                .setInterpolator(bottomNavigationViewInterpolator)
                 .setDuration(0)
                 .start()
         }
@@ -750,24 +753,13 @@ internal class MainFragment :
 
         val cornerRadiusFactor: Float = (1f - slideOffset).pow(0.5f).coerceIn(0f, 1f)
         val cornerRadius = properties.playerSheetCornerRadius * cornerRadiusFactor
-        (sliding_player_layout.background as? MaterialShapeDrawable)?.apply {
-            val blendRatio = max(0f, 1f - slideOffset * 2)
-            val blendedColor = ColorUtils.blendARGB(properties.colorPlayerSurface,
-                properties.colorPrimarySurface, blendRatio)
-            fillColor = ColorStateList.valueOf(blendedColor)
-            this.shapeAppearanceModel = ShapeAppearanceModel.builder()
-                .setTopLeftCorner(CornerFamily.ROUNDED, cornerRadius)
-                .setTopRightCorner(CornerFamily.ROUNDED, cornerRadius)
-                .build()
-        }
-        // TODO: optimize?
-        sliding_player_layout.outlineProvider = object : ViewOutlineProvider() {
-            override fun getOutline(view: View, outline: Outline) {
-                outline.setRoundRect(0, 0, view.width,
-                    view.measuredHeight + cornerRadius.toInt(), cornerRadius)
-            }
-        }
-        sliding_player_layout.clipToOutline = true
+        val blendRatio = max(0f, 1f - slideOffset * 2)
+        val blendedColor = ColorUtils.blendARGB(properties.colorPlayerSurface,
+            properties.colorPrimarySurface, blendRatio)
+        sliding_player_layout.setBackgroundColor(blendedColor)
+        playerSheetOutlineProvider.cornerRadius = cornerRadius
+        sliding_player_layout.invalidateOutline()
+
         container_player.alpha = slideOffset
 
         val isUnderStatusBar = sliding_player_layout.rootWindowInsets.let { insets ->
@@ -881,6 +873,9 @@ internal class MainFragment :
         const val INDEX_SETTINGS = FragNavController.TAB4
 
         private const val TAB_INDEX_DEFAULT = 0
+
+        // Animations
+        private val bottomNavigationViewInterpolator = DecelerateInterpolator()
 
         fun newInstance(): MainFragment = MainFragment()
     }
