@@ -135,6 +135,8 @@ internal class MainScreenProperties(
         validateArtBackgroundColorLightness(colorPrimary)
     }
 
+    val ignoreArtBackgroundForStatusBar: Boolean get() = isLandscape
+
     @get:Dimension
     val bottomNavigationCornerRadius: Float by lazy {
         resources.getDimension(R.dimen.bottom_navigation_bar_corner_radius)

@@ -119,10 +119,14 @@ class PlayerFragment: BaseFragment() {
         // Intercepting all touches to prevent their processing in the lower view layers
         view.setOnTouchListener { _, _ -> true }
 
-        carousel_background.onSurfaceColorChangeListener =
-            CarouselBackgroundView.OnSurfaceColorChangeListener { color, isIntermediate ->
-                handleArtBackgroundColorChange(color)
-            }
+        if (mainScreenProperties.ignoreArtBackgroundForStatusBar) {
+            handleArtBackgroundColorChange(mainScreenProperties.colorPlayerSurface)
+        } else {
+            carousel_background.onSurfaceColorChangeListener =
+                CarouselBackgroundView.OnSurfaceColorChangeListener { color, isIntermediate ->
+                    handleArtBackgroundColorChange(color)
+                }
+        }
         carousel.setPlaceholderText(R.string.no_songs_in_queue)
 
         view.fitsSystemWindows = true
@@ -314,7 +318,7 @@ class PlayerFragment: BaseFragment() {
 
     @ColorInt
     private fun retrieveArtBackgroundColor(): Int {
-        return if (mainScreenProperties.isLandscape) {
+        return if (mainScreenProperties.ignoreArtBackgroundForStatusBar) {
             mainScreenProperties.colorPlayerSurface
         } else {
             carousel_background?.surfaceColor ?: mainScreenProperties.colorPlayerSurface
