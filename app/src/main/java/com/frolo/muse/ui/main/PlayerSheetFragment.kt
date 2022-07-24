@@ -4,9 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.ViewCompat
-import androidx.core.view.doOnLayout
-import androidx.core.view.updatePadding
 import androidx.lifecycle.LifecycleOwner
 import com.frolo.arch.support.observeNonNull
 import com.frolo.core.ui.touch.TouchFlowAware
@@ -15,7 +12,6 @@ import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.base.OnBackPressedHandler
 import com.frolo.muse.ui.main.player.PlayerFragment
 import com.frolo.muse.ui.main.player.current.CurrSongQueueFragment
-import com.frolo.ui.StyleUtils
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehaviorSupport
 import kotlinx.android.synthetic.main.fragment_player_sheet.*
@@ -47,12 +43,13 @@ class PlayerSheetFragment :
     ): View = inflater.inflate(R.layout.fragment_player_sheet, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        WindowInsetsHelper.skipWindowInsets(view)
-        WindowInsetsHelper.skipWindowInsets(container_player)
-        WindowInsetsHelper.setupWindowInsets(bottom_sheet_current_song_queue) { bottomSheet, insets ->
-            bottomSheet.updatePadding(top = insets.systemWindowInsetTop)
-            insets
+        coordinator.apply {
+            fitsSystemWindows = true
+            statusBarBackground = null
         }
+        WindowInsetsHelper.skipWindowInsets(container_player)
+        WindowInsetsHelper.skipWindowInsets(view_dim_overlay)
+        WindowInsetsHelper.skipWindowInsets(bottom_sheet_current_song_queue)
 
         val behavior = TouchFlowAwareBottomSheetBehavior.from<View>(bottom_sheet_current_song_queue).apply {
             addBottomSheetCallback(innerBottomSheetCallback)
@@ -68,10 +65,6 @@ class PlayerSheetFragment :
                     }
                 }
             }
-        }
-        val peekHeight = StyleUtils.resolveDimen(view.context, R.attr.actionBarSize).toInt()
-        view.doOnLayout {
-            behavior.peekHeight = peekHeight
         }
 
         childFragmentManager.beginTransaction()

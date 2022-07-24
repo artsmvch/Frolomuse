@@ -3,7 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:id="@+id/coordinator">
 
     <FrameLayout
         android:id="@+id/container_player"
@@ -25,8 +27,8 @@
         android:fitsSystemWindows="true"
         app:behavior_hideable="false"
         app:behavior_peekHeight="?actionBarSize"
-        app:paddingTopSystemWindowInsets="true"
-        app:paddingBottomSystemWindowInsets="false"
+        app:paddingTopSystemWindowInsets="false"
+        app:paddingBottomSystemWindowInsets="true"
         android:paddingTop="0dp"
         android:paddingBottom="0dp"
         app:layout_behavior="com.frolo.muse.ui.main.TouchFlowAwareBottomSheetBehavior">
