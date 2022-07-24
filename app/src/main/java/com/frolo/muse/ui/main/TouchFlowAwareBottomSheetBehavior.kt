@@ -47,7 +47,6 @@ internal class TouchFlowAwareBottomSheetBehavior<V: View>
     ): Boolean {
         return ev.action == MotionEvent.ACTION_UP
                 || ev.action == MotionEvent.ACTION_CANCEL
-                || ev.action == MotionEvent.ACTION_OUTSIDE
                 && parent.isPointInChildBounds(child, ev.x.toInt(), ev.y.toInt())
     }
 
