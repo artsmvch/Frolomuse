@@ -472,7 +472,7 @@ internal class MainFragment :
         fragmentManager.beginTransaction()
             .replace(R.id.container_player, PlayerSheetFragment(), FRAG_TAG_PLAYER_SHEET)
             .replace(R.id.mini_player_container, MiniPlayerFragment(), FRAG_TAG_MIN_PLAYER)
-            .commit()
+            .commitNow()
 
         RatingFragment.install(fragmentManager)
 
