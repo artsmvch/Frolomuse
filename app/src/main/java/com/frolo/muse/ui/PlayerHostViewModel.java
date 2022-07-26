@@ -97,8 +97,8 @@ public class PlayerHostViewModel extends BaseAndroidViewModel {
             mPlayerObserver = ((PlayerHolder) service).getPlayerAsync()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(playerInstance -> {
-                    mPlayerLiveData.setValue(playerInstance);
                     mPlayerWrapper.attachBase(playerInstance);
+                    mPlayerLiveData.setValue(playerInstance);
                     onPlayerConnected(playerInstance);
                 });
         }
