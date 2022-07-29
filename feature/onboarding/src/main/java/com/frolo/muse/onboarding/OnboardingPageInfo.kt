@@ -1,4 +1,4 @@
-package com.frolo.muse.ui.main.onboarding
+package com.frolo.muse.onboarding
 
 import android.os.Parcel
 import android.os.Parcelable
@@ -7,7 +7,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 
 
-data class OnboardingPageInfo(
+internal data class OnboardingPageInfo(
     @DrawableRes
     val imageId: Int,
     @StringRes
@@ -35,8 +35,10 @@ data class OnboardingPageInfo(
     override fun describeContents() = 0
 
     companion object CREATOR : Parcelable.Creator<OnboardingPageInfo> {
-        override fun createFromParcel(parcel: Parcel): OnboardingPageInfo = OnboardingPageInfo(parcel)
-        override fun newArray(size: Int): Array<OnboardingPageInfo?> = arrayOfNulls(size)
+        override fun createFromParcel(parcel: Parcel): OnboardingPageInfo =
+            OnboardingPageInfo(parcel)
+        override fun newArray(size: Int): Array<OnboardingPageInfo?> =
+            arrayOfNulls(size)
     }
 
 }

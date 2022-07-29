@@ -1,6 +1,9 @@
 // Main app
 include ':app'
 
+// Features
+include ':feature:onboarding'
+
 // Core
 include ':core'
 include ':core-ui'

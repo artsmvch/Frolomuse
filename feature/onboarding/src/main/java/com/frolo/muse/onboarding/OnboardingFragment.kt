@@ -1,4 +1,4 @@
-package com.frolo.muse.ui.main.onboarding
+package com.frolo.muse.onboarding
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -10,19 +10,18 @@ import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.ColorUtils
 import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.transition.Fade
 import androidx.transition.TransitionManager
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
-import com.frolo.muse.R
-import com.frolo.muse.dp2px
-import com.frolo.muse.ui.base.BaseFragment
+import com.frolo.ui.Screen
 import com.zhpan.indicator.enums.IndicatorSlideMode
 import com.zhpan.indicator.enums.IndicatorStyle
 import kotlinx.android.synthetic.main.fragment_onboarding.*
 
 
-class OnboardingFragment : BaseFragment() {
+internal class OnboardingFragment : Fragment() {
 
     private val onOnboardingFinishedListener: OnOnboardingFinishedListener?
         get() = activity as? OnOnboardingFinishedListener ?: parentFragment as? OnOnboardingFinishedListener
@@ -56,9 +55,12 @@ class OnboardingFragment : BaseFragment() {
         }
 
         indicator_view.apply {
-            setSliderColor(Color.parseColor("#55FFFFFF"), Color.parseColor("#FFFFFF"))
-            setSliderWidth(10f.dp2px(context))
-            setIndicatorGap(20f.dp2px(context))
+            setSliderColor(
+                ContextCompat.getColor(view.context, R.color.onboarding_indicator_color_normal),
+                ContextCompat.getColor(view.context, R.color.onboarding_indicator_color_selected)
+            )
+            setSliderWidth(Screen.dpFloat(context, 10f))
+            setIndicatorGap(Screen.dpFloat(context, 20f))
             setSlideMode(IndicatorSlideMode.WORM)
             setIndicatorStyle(IndicatorStyle.CIRCLE)
             setupWithViewPager(view_pager)
@@ -145,7 +147,7 @@ class OnboardingFragment : BaseFragment() {
         view_pager.unregisterOnPageChangeCallback(onPageChangeCallback)
     }
 
-    interface OnOnboardingFinishedListener {
+    fun interface OnOnboardingFinishedListener {
         fun onOnboardingFinished(result: OnboardingResult)
     }
 

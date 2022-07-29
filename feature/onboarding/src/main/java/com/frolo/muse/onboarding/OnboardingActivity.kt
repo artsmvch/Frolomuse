@@ -1,4 +1,4 @@
-package com.frolo.muse.ui.main.onboarding
+package com.frolo.muse.onboarding
 
 import android.app.ActivityOptions
 import android.content.Context
@@ -8,20 +8,10 @@ import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import android.widget.FrameLayout
-import com.frolo.muse.R
-import com.frolo.muse.di.applicationComponent
-import com.frolo.muse.repository.OnboardingPreferences
-import com.frolo.muse.rx.disposeOnPauseOf
-import com.frolo.muse.rx.subscribeSafely
-import com.frolo.muse.ui.base.BaseActivity
+import androidx.appcompat.app.AppCompatActivity
 
 
-class OnboardingActivity : BaseActivity(), OnboardingFragment.OnOnboardingFinishedListener {
-
-    private val onboardingPreferences: OnboardingPreferences by lazy {
-        applicationComponent.provideOnboardingPreferences()
-    }
-
+internal class OnboardingActivity : AppCompatActivity(), OnboardingFragment.OnOnboardingFinishedListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -31,7 +21,7 @@ class OnboardingActivity : BaseActivity(), OnboardingFragment.OnOnboardingFinish
             setContentView(layout)
         }
         ensureOnboardingFragment()
-        overridePendingTransition(R.anim.enter_activity, R.anim.exit_activity)
+        overridePendingTransition(R.anim.enter_onboarding_activity, R.anim.exit_onboarding_activity)
     }
 
     private fun makeFullscreen() {
@@ -52,9 +42,7 @@ class OnboardingActivity : BaseActivity(), OnboardingFragment.OnOnboardingFinish
 
     override fun onResume() {
         super.onResume()
-        onboardingPreferences.markOnboardingDone()
-            .subscribeSafely()
-            .disposeOnPauseOf(this)
+        dispatchedOnboardingPassed()
     }
 
     private fun ensureOnboardingFragment() {
@@ -92,6 +80,10 @@ class OnboardingActivity : BaseActivity(), OnboardingFragment.OnOnboardingFinish
         return OnboardingFragment.newInstance(items)
     }
 
+    private fun dispatchedOnboardingPassed() {
+        OnboardingPreferences.setOnboardingPassed(this)
+    }
+
     override fun onBackPressed() {
         finish()
     }
@@ -102,7 +94,7 @@ class OnboardingActivity : BaseActivity(), OnboardingFragment.OnOnboardingFinish
 
     override fun finish() {
         super.finish()
-        overridePendingTransition(R.anim.enter_activity, R.anim.exit_activity)
+        overridePendingTransition(R.anim.enter_onboarding_activity, R.anim.exit_onboarding_activity)
     }
 
     companion object {
@@ -116,7 +108,8 @@ class OnboardingActivity : BaseActivity(), OnboardingFragment.OnOnboardingFinish
 
         fun show(context: Context) {
             val intent = Intent(context, OnboardingActivity::class.java)
-            val options = ActivityOptions.makeCustomAnimation(context, R.anim.fade_in, R.anim.fade_out)
+            val options = ActivityOptions.makeCustomAnimation(
+                context, R.anim.enter_onboarding_activity, R.anim.exit_onboarding_activity)
             context.startActivity(intent, options.toBundle())
         }
     }

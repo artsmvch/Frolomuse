@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Onboarding-->
+    <string name="skip">Skip</string>
+    <string name="done">Done</string>
+    <string name="next">Next</string>
+    <string name="onboarding1_title">Top Music Player</string>
+    <string name="onboarding1_desc">
+        Simple and convenient design, as well as fast loading of songs from your device will bring you pleasure from listening to music.
+    </string>
+    <string name="onboarding2_title">Powerful Equalizer</string>
+    <string name="onboarding2_desc">
+        Customize your sound to your liking with 5-band EQ, reverb, bass and virtualization.
+    </string>
+    <string name="onboarding3_title">Absolutely free</string>
+    <string name="onboarding3_desc">
+        We want the application to develop and remain free, there are tiny ads in the application.
+    </string>
+</resources>

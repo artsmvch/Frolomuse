@@ -1,4 +1,4 @@
-package com.frolo.muse.ui.main.onboarding
+package com.frolo.muse.onboarding
 
 import android.content.Context
 import android.util.AttributeSet
@@ -9,7 +9,7 @@ import androidx.annotation.FloatRange
 import androidx.core.view.doOnLayout
 
 
-class ParallaxView @JvmOverloads constructor(
+internal class ParallaxView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null
 ): HorizontalScrollView(context, attrs) {

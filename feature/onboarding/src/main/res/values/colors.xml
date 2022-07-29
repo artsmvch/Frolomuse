@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Onboarding-->
+    <color name="onboarding_color1">#0C82DD</color>
+    <color name="onboarding_color2">#9510DC</color>
+    <color name="onboarding_color3">#CF0C61</color>
+    <color name="onboarding_indicator_color_normal">#55FFFFFF</color>
+    <color name="onboarding_indicator_color_selected">#FFFFFF</color>
+    <color name="onboarding_button_color">#FFFFFF</color>
+</resources>

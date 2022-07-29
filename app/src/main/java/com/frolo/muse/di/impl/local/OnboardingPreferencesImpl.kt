@@ -18,21 +18,21 @@ class OnboardingPreferencesImpl(
         context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
     }
 
-    override fun shouldShowOnboarding(): Flowable<Boolean> {
-        return RxPreference.ofBoolean(prefs, KEY_ONBOARDING_PASSED)
-            .get(false)
-            .map { passed ->
-                !passed && launchInfoProvider.isFirstLaunch
-            }
-    }
-
-    override fun markOnboardingDone(): Completable {
-        return RxPreference.ofBoolean(prefs, KEY_ONBOARDING_PASSED).set(true)
-    }
-
-    override fun markOnboardingSkipped(): Completable {
-        return RxPreference.ofBoolean(prefs, KEY_ONBOARDING_PASSED).set(true)
-    }
+//    override fun shouldShowOnboarding(): Flowable<Boolean> {
+//        return RxPreference.ofBoolean(prefs, KEY_ONBOARDING_PASSED)
+//            .get(false)
+//            .map { passed ->
+//                !passed && launchInfoProvider.isFirstLaunch
+//            }
+//    }
+//
+//    override fun markOnboardingDone(): Completable {
+//        return RxPreference.ofBoolean(prefs, KEY_ONBOARDING_PASSED).set(true)
+//    }
+//
+//    override fun markOnboardingSkipped(): Completable {
+//        return RxPreference.ofBoolean(prefs, KEY_ONBOARDING_PASSED).set(true)
+//    }
 
     private companion object {
         private const val PREFS_NAME = "com.frolo.muse.di.impl.local.ONBOARDING"

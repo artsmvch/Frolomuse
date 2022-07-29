@@ -43,24 +43,30 @@ class PlayerSheetFragment :
     ): View = inflater.inflate(R.layout.fragment_player_sheet, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        coordinator.apply {
-            fitsSystemWindows = true
-            statusBarBackground = null
+        WindowInsetsHelper.setupWindowInsets(view) { _, insets ->
+            // Applying insets to the queue layout via margins
+            val insetTop = insets.systemWindowInsetTop
+            val layoutParams = coordinator.layoutParams
+            if (layoutParams is ViewGroup.MarginLayoutParams
+                && layoutParams.topMargin != insetTop) {
+                layoutParams.topMargin = insetTop
+                coordinator.layoutParams = layoutParams
+            }
+            return@setupWindowInsets insets
         }
         WindowInsetsHelper.skipWindowInsets(container_player)
         WindowInsetsHelper.skipWindowInsets(view_dim_overlay)
-        WindowInsetsHelper.skipWindowInsets(bottom_sheet_current_song_queue)
 
-        val behavior = TouchFlowAwareBottomSheetBehavior.from<View>(bottom_sheet_current_song_queue).apply {
+        val behavior = TouchFlowAwareBottomSheetBehavior.from<View>(queue_sheet_layout).apply {
             addBottomSheetCallback(innerBottomSheetCallback)
             state = BottomSheetBehavior.STATE_COLLAPSED
-            BottomSheetBehaviorSupport.dispatchOnSlide(bottom_sheet_current_song_queue)
+            BottomSheetBehaviorSupport.dispatchOnSlide(queue_sheet_layout)
             touchFlowCallback = object : TouchFlowAware.TouchFlowCallback {
                 override fun onTouchFlowStarted() {
                     mainSheetsStateViewModel.setPlayerSheetDraggable(false)
                 }
                 override fun onTouchFlowEnded() {
-                    BottomSheetBehavior.from(bottom_sheet_current_song_queue).also { behavior ->
+                    BottomSheetBehavior.from(queue_sheet_layout).also { behavior ->
                         handleInnerBottomSheetState(behavior.state)
                     }
                 }
@@ -83,14 +89,14 @@ class PlayerSheetFragment :
     }
 
     override fun onDestroyView() {
-        BottomSheetBehavior.from(bottom_sheet_current_song_queue).apply {
+        BottomSheetBehavior.from(queue_sheet_layout).apply {
             removeBottomSheetCallback(innerBottomSheetCallback)
         }
         super.onDestroyView()
     }
 
     override fun handleOnBackPressed(): Boolean {
-        return BottomSheetBehavior.from(bottom_sheet_current_song_queue).run {
+        return BottomSheetBehavior.from(queue_sheet_layout).run {
             if (state != BottomSheetBehavior.STATE_COLLAPSED) {
                 state = BottomSheetBehavior.STATE_COLLAPSED
                 true
@@ -99,14 +105,14 @@ class PlayerSheetFragment :
     }
 
     override fun onCloseIconClick(fragment: CurrSongQueueFragment) {
-        BottomSheetBehavior.from(bottom_sheet_current_song_queue).apply {
+        BottomSheetBehavior.from(queue_sheet_layout).apply {
             state = BottomSheetBehavior.STATE_COLLAPSED
         }
     }
 
     private fun observeMainSheetsState(owner: LifecycleOwner) = with(mainSheetsStateViewModel) {
         collapsePlayerSheetEvent.observeNonNull(owner) {
-            BottomSheetBehavior.from(bottom_sheet_current_song_queue).state =
+            BottomSheetBehavior.from(queue_sheet_layout).state =
                 BottomSheetBehavior.STATE_COLLAPSED
         }
     }
