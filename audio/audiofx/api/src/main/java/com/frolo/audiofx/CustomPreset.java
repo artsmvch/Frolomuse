@@ -7,6 +7,12 @@ import java.util.Arrays;
 public final class CustomPreset implements Preset, Serializable {
     public final static long NO_ID = -1;
 
+    private static short[] copy(short[] src) {
+        short[] dest = new short[src.length];
+        System.arraycopy(src, 0, dest, 0, src.length);
+        return dest;
+    }
+
     private final long id;
     private final String name;
     private final short[] levels;
@@ -14,7 +20,7 @@ public final class CustomPreset implements Preset, Serializable {
     public CustomPreset(long id, String name, short[] levels) {
         this.id = id;
         this.name = name != null ? name : "";
-        this.levels = levels;
+        this.levels = copy(levels);
     }
 
     public long getId() {
@@ -26,15 +32,8 @@ public final class CustomPreset implements Preset, Serializable {
         return name;
     }
 
-    /**
-     * USE CAREFULLY: don't call this method too many times.
-     * It creates a copy of the levels array.
-     * @return copy of the levels array
-     */
     public short[] getLevels() {
-        short[] copy = new short[levels.length];
-        System.arraycopy(levels, 0, copy, 0, levels.length);
-        return copy;
+        return levels;
     }
 
     @Override
@@ -44,36 +43,37 @@ public final class CustomPreset implements Preset, Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null || !(obj instanceof CustomPreset)) {
+        if (obj instanceof CustomPreset) {
+            return equalsImpl(this, (CustomPreset) obj);
+        }
+        return false;
+    }
+
+    private boolean equalsImpl(CustomPreset preset1, CustomPreset preset2) {
+        if (!preset1.name.equalsIgnoreCase(preset2.name)) {
             return false;
         }
-
-        CustomPreset other = (CustomPreset) obj;
-
-        if (!name.equalsIgnoreCase(other.name)) {
+        if (preset1.levels.length != preset2.levels.length) {
             return false;
         }
-
-        if (levels.length != other.levels.length) {
-            return false;
-        }
-
-        for (int i = 0; i < levels.length; i++) {
-            if (levels[i] != other.levels[i]) {
+        for (int i = 0; i < preset1.levels.length; i++) {
+            if (preset1.levels[i] != preset2.levels[i]) {
                 return false;
             }
         }
-
         return true;
     }
 
     @Override
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append(name).append(":[");
+        final StringBuilder builder = new StringBuilder();
+        builder.append(name);
+        builder.append(":[");
         for (int i = 0; i < levels.length; i++) {
             builder.append(i).append("=").append(levels[i]);
-            if (i != levels.length - 1) builder.append(", ");
+            if (i != levels.length - 1) {
+                builder.append(", ");
+            }
         }
         builder.append("]");
         return builder.toString();
