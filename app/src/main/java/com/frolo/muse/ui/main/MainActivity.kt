@@ -76,8 +76,10 @@ class MainActivity :
     }
 
     private fun shouldShowOnboarding(): Boolean {
-        val isFirstLaunch = activityComponent.provideAppLaunchInfoProvider().isFirstLaunch
-        return isFirstLaunch && !Onboarding.isOnboardingPassed(this)
+        // TODO: enable onboarding
+        return false
+//        val isFirstLaunch = activityComponent.provideAppLaunchInfoProvider().isFirstLaunch
+//        return isFirstLaunch && !Onboarding.isOnboardingPassed(this)
     }
 
     private fun showOnboarding() {
