@@ -75,7 +75,7 @@ abstract class BaseFragment:
     }
     @get:ColorInt
     protected open val statusBarColorRaw: Int get() {
-        val uiContext = view?.context ?: kotlin.run {
+        val uiContext = this.context ?: kotlin.run {
             DebugUtils.dumpOnMainThread(IllegalStateException("Fragment not attached"))
             return Color.TRANSPARENT
         }
