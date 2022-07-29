@@ -62,6 +62,7 @@ class MainActivity :
             ViewCompat.setOnApplyWindowInsetsListener(layout) { view, insets ->
                 // Let the main fragment handle insets
                 // WindowInsetsCompat.CONSUMED
+                // TODO: handle other insets types (gesture, tappable etc.) as well
                 insets
             }
         }
