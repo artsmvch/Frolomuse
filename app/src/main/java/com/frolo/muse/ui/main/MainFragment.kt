@@ -216,7 +216,6 @@ internal class MainFragment :
     private fun loadUi(view: View) {
         WindowInsetsHelper.skipWindowInsets(view)
         WindowInsetsHelper.skipWindowInsets(content_layout)
-        WindowInsetsHelper.skipWindowInsets(coordinator)
         WindowInsetsHelper.skipWindowInsets(sliding_player_layout)
         WindowInsetsHelper.skipWindowInsets(container_player)
         WindowInsetsHelper.setupWindowInsets(container) { _, insets ->

@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    android:id="@+id/coordinator">
+    android:fitsSystemWindows="true">
 
     <FrameLayout
         android:id="@+id/container_player"
@@ -20,56 +19,60 @@
         android:background="#CC000000"
         android:alpha="0.0"/>
 
-    <FrameLayout
-        android:id="@+id/bottom_sheet_current_song_queue"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
-        app:behavior_hideable="false"
-        app:behavior_peekHeight="?actionBarSize"
-        app:paddingTopSystemWindowInsets="false"
-        app:paddingBottomSystemWindowInsets="true"
-        android:paddingTop="0dp"
-        android:paddingBottom="0dp"
-        app:layout_behavior="com.frolo.muse.ui.main.TouchFlowAwareBottomSheetBehavior">
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_bottom_sheet"/>
+        android:fitsSystemWindows="false"
+        android:id="@+id/coordinator">
 
         <FrameLayout
-            android:id="@+id/container_current_song_queue"
+            android:id="@+id/queue_sheet_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            app:behavior_hideable="false"
+            app:behavior_peekHeight="?actionBarSize"
+            app:paddingTopSystemWindowInsets="false"
+            app:paddingBottomSystemWindowInsets="false"
+            app:gestureInsetBottomIgnored="true"
+            app:layout_behavior="com.frolo.muse.ui.main.TouchFlowAwareBottomSheetBehavior">
 
-        <LinearLayout
-            android:id="@+id/layout_hook"
-            android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            android:layout_gravity="top|center_horizontal"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:background="?selectableItemBackground">
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_bottom_sheet"/>
 
-            <ImageView
-                android:layout_width="12dp"
-                android:layout_height="12dp"
-                android:src="@drawable/ic_arrow_up_72dp"
-                app:tint="?colorPlayerElement3" />
+            <FrameLayout
+                android:id="@+id/container_current_song_queue"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?textAppearanceCaption"
-                android:textColor="?colorPlayerElement3"
-                android:text="@string/current_song_queue"
-                android:lines="1"
-                android:ellipsize="end"
-                app:autoSizeTextType="uniform"
-                app:autoSizeMinTextSize="10sp"
-                app:autoSizeMaxTextSize="14sp"/>
-        </LinearLayout>
-    </FrameLayout>
+            <LinearLayout
+                android:id="@+id/layout_hook"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:layout_gravity="top|center_horizontal"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="?selectableItemBackground">
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+                <ImageView
+                    android:layout_width="12dp"
+                    android:layout_height="12dp"
+                    android:src="@drawable/ic_arrow_up_72dp"
+                    app:tint="?colorPlayerElement3" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?textAppearanceCaption"
+                    android:textColor="?colorPlayerElement3"
+                    android:text="@string/current_song_queue"
+                    android:lines="1"
+                    android:ellipsize="end"
+                    app:autoSizeTextType="uniform"
+                    app:autoSizeMinTextSize="10sp"
+                    app:autoSizeMaxTextSize="14sp"/>
+            </LinearLayout>
+        </FrameLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</FrameLayout>
