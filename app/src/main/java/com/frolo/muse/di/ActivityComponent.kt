@@ -8,10 +8,7 @@ import com.frolo.muse.interactor.media.AddMediaToPlaylistUseCase
 import com.frolo.muse.interactor.media.AddSongToPlaylistUseCase
 import com.frolo.muse.interactor.media.get.*
 import com.frolo.muse.logger.EventLogger
-import com.frolo.muse.repository.AppearancePreferences
-import com.frolo.muse.repository.LibraryPreferences
-import com.frolo.muse.repository.OnboardingPreferences
-import com.frolo.muse.repository.Preferences
+import com.frolo.muse.repository.*
 import com.frolo.muse.router.AppRouter
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.startup.AppDebugController
@@ -73,6 +70,7 @@ interface ActivityComponentProvider {
     fun provideLibraryPreferences(): LibraryPreferences
     fun provideAppearancePreferences(): AppearancePreferences
     fun provideOnboardingPreferences(): OnboardingPreferences
+    fun provideAppLaunchInfoProvider(): AppLaunchInfoProvider
     fun provideViewModelFactory(): ViewModelProvider.Factory
     fun provideEventLogger(): EventLogger
     fun providePlayerJournal(): PlayerJournal

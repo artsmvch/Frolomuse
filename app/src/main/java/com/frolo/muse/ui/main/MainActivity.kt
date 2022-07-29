@@ -15,24 +15,22 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import com.frolo.arch.support.observeNonNull
 import com.frolo.core.ui.systembars.defaultSystemBarsHost
-import com.frolo.muse.Logger
 import com.frolo.muse.R
 import com.frolo.muse.di.ActivityComponent
 import com.frolo.muse.di.ActivityComponentHolder
 import com.frolo.muse.di.applicationComponent
 import com.frolo.muse.di.modules.ActivityModule
+import com.frolo.muse.onboarding.Onboarding
 import com.frolo.muse.router.AppRouter
 import com.frolo.muse.router.AppRouterDelegate
 import com.frolo.muse.router.AppRouterStub
 import com.frolo.muse.ui.ThemeHandler
 import com.frolo.muse.ui.base.BaseActivity
 import com.frolo.muse.ui.base.SimpleFragmentNavigator
-import com.frolo.muse.ui.main.onboarding.OnboardingActivity
 import com.frolo.music.model.*
 import com.frolo.ui.ActivityUtils
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
-import java.util.concurrent.TimeUnit
 
 
 class MainActivity :
@@ -77,15 +75,8 @@ class MainActivity :
     }
 
     private fun shouldShowOnboarding(): Boolean {
-        return try {
-            activityComponent.provideOnboardingPreferences()
-                .shouldShowOnboarding()
-                .timeout(1, TimeUnit.SECONDS)
-                .blockingFirst()
-        } catch (e: Throwable) {
-            Logger.e(e)
-            false
-        }
+        val isFirstLaunch = activityComponent.provideAppLaunchInfoProvider().isFirstLaunch
+        return isFirstLaunch && !Onboarding.isOnboardingPassed(this)
     }
 
     private fun showOnboarding() {
@@ -93,7 +84,7 @@ class MainActivity :
             KEY_SHOW_ONBOARDING,
             object : ActivityResultContract<Any, Boolean>() {
                 override fun createIntent(context: Context, input: Any?): Intent {
-                    return OnboardingActivity.newIntent(context)
+                    return Onboarding.createOnboardingIntent(context)
                 }
 
                 override fun parseResult(resultCode: Int, intent: Intent?): Boolean {

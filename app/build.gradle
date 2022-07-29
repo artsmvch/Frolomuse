@@ -155,6 +155,9 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 
+    // Features
+    implementation project(path: ':feature:onboarding')
+
     // Core
     implementation project(path: ':core')
 
@@ -288,8 +291,6 @@ dependencies {
     implementation 'com.mikhaellopez:circularprogressbar:3.0.3'
     // Gesture Image View
     implementation 'com.alexvasilkov:gesture-views:2.6.0'
-    // ViewPager2 indicator
-    implementation 'com.github.zhpanvip:viewpagerindicator:1.0.7'
     // Jsoup (HTML parser)
     implementation 'org.jsoup:jsoup:1.13.1'
     // Tooltips

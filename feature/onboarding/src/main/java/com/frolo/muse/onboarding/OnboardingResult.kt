@@ -1,7 +1,7 @@
-package com.frolo.muse.ui.main.onboarding
+package com.frolo.muse.onboarding
 
 
-sealed class OnboardingResult {
+internal sealed class OnboardingResult {
     abstract val isSkipped: Boolean
 
     object Passed : OnboardingResult() {
