@@ -152,6 +152,12 @@
         <item name="trackColorActive">?colorSecondary</item>
         <item name="thumbColor">?colorSecondary</item>
         <item name="trackHeight">2dp</item>
+        <item name="labelStyle">@style/Base.AppTheme.Tooltip.Light</item>
+        <item name="labelBehavior">gone</item>
+    </style>
+
+    <style name="Base.AppTheme.Tooltip.Light" parent="Widget.MaterialComponents.Tooltip">
+        <item name="android:textColor">@color/white</item>
     </style>
 
     <style name="Base.AppTheme.EqualizerView.Light" parent="">

@@ -6,7 +6,7 @@
     android:fitsSystemWindows="true">
 
     <!--Fragment container?-->
-    <com.frolo.core.ui.layout.DrawingSystemBarsLayout
+    <com.frolo.core.ui.layout.FragmentContainer
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
