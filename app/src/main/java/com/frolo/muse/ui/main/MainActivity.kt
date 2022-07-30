@@ -8,13 +8,14 @@ import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.appcompat.view.ActionMode
 import androidx.core.app.ActivityOptionsCompat
-import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
+import androidx.core.view.updatePadding
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import com.frolo.arch.support.observeNonNull
 import com.frolo.core.ui.systembars.defaultSystemBarsHost
+import com.frolo.muse.Logger
 import com.frolo.muse.R
 import com.frolo.muse.di.ActivityComponent
 import com.frolo.muse.di.ActivityComponentHolder
@@ -57,14 +58,17 @@ class MainActivity :
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContentView(R.layout.activity_main)
-        container.also { layout ->
-            layout.fitsSystemWindows = true
-            ViewCompat.setOnApplyWindowInsetsListener(layout) { view, insets ->
-                // Let the main fragment handle insets
-                // WindowInsetsCompat.CONSUMED
-                // TODO: handle other insets types (gesture, tappable etc.) as well
-                insets
-            }
+        WindowInsetsHelper.setupWindowInsets(container) { view, insets ->
+            kotlin.runCatching {
+                val sideInsets = insets.mandatorySystemGestureInsets
+                val leftPadding = sideInsets.left
+                val rightPadding = sideInsets.right
+                view.updatePadding(
+                    left = leftPadding,
+                    right = rightPadding
+                )
+            }.onFailure { err -> Logger.e(err) }
+            insets
         }
         if (shouldShowOnboarding()) {
             showOnboarding()
