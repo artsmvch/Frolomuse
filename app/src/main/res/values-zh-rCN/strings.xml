@@ -421,22 +421,4 @@
     <string name="donate_movie_ticket">一张电影票</string>
     <string name="donate_meal">一份餐点</string>
     <string name="donate_gym">健身房会员</string>
-
-    <!--Onboarding-->
-    <string name="skip">跳过</string>
-    <string name="done">完成</string>
-    <string name="next">下一步</string>
-    <string name="greeting1_title">卓越的音乐播放器</string>
-    <string name="greeting1_desc">
-        简单实用的设计，以及从您的设备上极速加载歌曲，将为您带来聆听音乐的享受。
-    </string>
-    <string name="greeting2_title">强悍的均衡器</string>
-    <string name="greeting2_desc">
-		使用5频段均衡、混响、低音和虚拟化来定制你所钟爱的声音。
-
-    </string>
-    <string name="greeting3_title">完全免费</string>
-    <string name="greeting3_desc">
-		我们想要此应用程序继续开发并保持免费，此应用中含有少量的广告。
-    </string>
 </resources>
