@@ -119,6 +119,7 @@ android {
     lintOptions {
         checkReleaseBuilds true
         abortOnError true
+        lintConfig file("$projectDir/lint.xml")
     }
 
     sourceSets {
