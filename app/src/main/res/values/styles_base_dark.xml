@@ -115,6 +115,7 @@
         <item name="trackColorActive">?colorSecondary</item>
         <item name="thumbColor">?colorSecondary</item>
         <item name="trackHeight">2dp</item>
+        <item name="labelBehavior">gone</item>
     </style>
 
     <style name="Base.AppTheme.EqualizerView.Dark" parent="">
