@@ -12,7 +12,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
 
-class DrawingSystemBarsLayout @JvmOverloads constructor(
+open class DrawingSystemBarsLayout @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
@@ -32,8 +32,12 @@ class DrawingSystemBarsLayout @JvmOverloads constructor(
         }
     }
 
-    override fun dispatchApplyWindowInsets(insets: WindowInsets): WindowInsets {
+    final override fun dispatchApplyWindowInsets(insets: WindowInsets): WindowInsets {
         lastInsets = WindowInsetsCompat.toWindowInsetsCompat(insets, this)
+        return dispatchApplyWindowInsetsImpl(insets)
+    }
+
+    internal open fun dispatchApplyWindowInsetsImpl(insets: WindowInsets): WindowInsets {
         return super.dispatchApplyWindowInsets(insets)
     }
 
