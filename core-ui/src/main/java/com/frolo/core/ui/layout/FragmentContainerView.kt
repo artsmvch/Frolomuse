@@ -5,21 +5,20 @@ import android.util.AttributeSet
 import android.view.WindowInsets
 
 
-class FragmentContainer @JvmOverloads constructor(
+class FragmentContainerView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ): DrawingSystemBarsLayout(context, attrs, defStyleAttr) {
 
-    private var onApplyWindowInsetsListener: OnApplyWindowInsetsListener? = null
+    private var applyWindowInsetsListener: OnApplyWindowInsetsListener? = null
 
     override fun setOnApplyWindowInsetsListener(listener: OnApplyWindowInsetsListener?) {
-        super.setOnApplyWindowInsetsListener(listener)
-        onApplyWindowInsetsListener = listener
+        applyWindowInsetsListener = listener
     }
 
     override fun dispatchApplyWindowInsetsImpl(insets: WindowInsets): WindowInsets {
-        val listener = onApplyWindowInsetsListener
+        val listener = applyWindowInsetsListener
         if (listener != null) {
             return listener.onApplyWindowInsets(this, insets)
         }
