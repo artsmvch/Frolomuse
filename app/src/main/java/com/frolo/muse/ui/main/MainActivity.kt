@@ -8,7 +8,9 @@ import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.appcompat.view.ActionMode
 import androidx.core.app.ActivityOptionsCompat
+import androidx.core.graphics.Insets
 import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
@@ -56,20 +58,7 @@ class MainActivity :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        WindowCompat.setDecorFitsSystemWindows(window, false)
-        setContentView(R.layout.activity_main)
-        WindowInsetsHelper.setupWindowInsets(container) { view, insets ->
-            kotlin.runCatching {
-                val sideInsets = insets.mandatorySystemGestureInsets
-                val leftPadding = sideInsets.left
-                val rightPadding = sideInsets.right
-                view.updatePadding(
-                    left = leftPadding,
-                    right = rightPadding
-                )
-            }.onFailure { err -> Logger.e(err) }
-            insets
-        }
+        loadUi()
         if (shouldShowOnboarding()) {
             showOnboarding()
         } else {
@@ -77,6 +66,27 @@ class MainActivity :
             handleIntentImpl(intent)
         }
         observeMainSheetsState(this)
+    }
+
+    private fun loadUi() {
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        setContentView(R.layout.activity_main)
+        WindowInsetsHelper.setupWindowInsets(container) { view, windowInsets ->
+            val systemBarsInsets = windowInsets.systemWindowInsets
+            val insetLeft = systemBarsInsets.left
+            val insetRight = systemBarsInsets.right
+            // Apply and consume only side insets
+            val newSystemBarsInsets = Insets.of(0, systemBarsInsets.top,
+                0, systemBarsInsets.bottom)
+            val newWindowInsets = WindowInsetsCompat.Builder(windowInsets)
+                .setInsets(WindowInsetsCompat.Type.systemBars(), newSystemBarsInsets)
+                .build()
+            view.updatePadding(
+                left = insetLeft,
+                right = insetRight
+            )
+            return@setupWindowInsets newWindowInsets
+        }
     }
 
     private fun shouldShowOnboarding(): Boolean {
