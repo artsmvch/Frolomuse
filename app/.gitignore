@@ -1,6 +1,6 @@
 /build
 /schemas
-/signing/release
+/config/release
 signing.properties
 google-services.properties
 google-services.json
