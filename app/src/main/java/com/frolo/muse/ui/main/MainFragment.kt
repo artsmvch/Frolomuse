@@ -8,13 +8,16 @@ import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.view.*
+import android.view.LayoutInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
 import android.view.animation.DecelerateInterpolator
 import androidx.annotation.ColorInt
 import androidx.annotation.IdRes
 import androidx.core.app.ActivityCompat
 import androidx.core.graphics.ColorUtils
-import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.doOnLayout
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
@@ -56,7 +59,6 @@ import com.frolo.music.model.Media
 import com.frolo.player.Player
 import com.frolo.ui.ColorUtils2
 import com.frolo.ui.FragmentUtils
-import com.frolo.ui.StyleUtils
 import com.frolo.ui.SystemBarUtils
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -222,7 +224,7 @@ internal class MainFragment :
             val currFragment = pickCurrentFragment()
             if (currFragment is WithCustomWindowInsets) {
                 // Don't let fragments change these insets, dispatch a copy
-                currFragment.onApplyWindowInsets(WindowInsets((insets)))
+                currFragment.onApplyWindowInsets(WindowInsetsCompat(insets))
             }
             return@setupWindowInsets insets
         }

@@ -1,8 +1,8 @@
 package com.frolo.core.ui.fragment
 
-import android.view.WindowInsets
+import androidx.core.view.WindowInsetsCompat
 
 
 fun interface WithCustomWindowInsets {
-    fun onApplyWindowInsets(insets: WindowInsets): WindowInsets
+    fun onApplyWindowInsets(insets: WindowInsetsCompat): WindowInsetsCompat
 }

@@ -6,13 +6,12 @@ import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
 import android.os.AsyncTask
-import android.view.WindowInsets
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.ColorInt
 import androidx.annotation.StringRes
 import androidx.annotation.UiThread
-import androidx.core.graphics.ColorUtils
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
@@ -22,8 +21,8 @@ import com.frolo.core.ui.fragment.WithCustomStatusBar
 import com.frolo.core.ui.fragment.WithCustomWindowInsets
 import com.frolo.debug.DebugUtils
 import com.frolo.muse.FrolomuseApp
-import com.frolo.muse.R
 import com.frolo.muse.Logger
+import com.frolo.muse.R
 import com.frolo.muse.di.activityComponent
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.repository.Preferences
@@ -309,7 +308,7 @@ abstract class BaseFragment:
         }
     }
 
-    override fun onApplyWindowInsets(insets: WindowInsets): WindowInsets {
+    override fun onApplyWindowInsets(insets: WindowInsetsCompat): WindowInsetsCompat {
         val safeView = this.view ?: return insets
         //return safeView.dispatchApplyWindowInsets(insets)
         safeView.updatePadding(top = insets.systemWindowInsetTop)

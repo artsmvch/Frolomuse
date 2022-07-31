@@ -102,7 +102,7 @@ final class Serialization {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("id", preset.getId());
             jsonObject.put("name", preset.getName());
-            jsonObject.put("levels", toJSONArray(preset.getLevels()));
+            jsonObject.put("levels", toJSONArray(CustomPreset.getRawLevels(preset)));
             return jsonObject.toString();
         } catch (Throwable t) {
             return null;

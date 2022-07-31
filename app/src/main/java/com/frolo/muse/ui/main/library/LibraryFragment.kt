@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.view.WindowInsets
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updateLayoutParams
 import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
@@ -211,7 +212,7 @@ class LibraryFragment: BaseFragment(),
         }
     }
 
-    override fun onApplyWindowInsets(insets: WindowInsets): WindowInsets {
+    override fun onApplyWindowInsets(insets: WindowInsetsCompat): WindowInsetsCompat {
         val safeView = this.view ?: return insets
         tb_actions.updatePadding(top = insets.systemWindowInsetTop)
         return insets.consumeSystemWindowInsets()

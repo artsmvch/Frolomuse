@@ -7,6 +7,7 @@ import androidx.annotation.WorkerThread
 import com.frolo.audiofx.AudioFxImpl
 import com.frolo.audiofx.applicable.AudioFxApplicable
 import com.frolo.debug.DebugUtils
+import com.frolo.muse.ActivityWatcher
 import com.frolo.muse.BuildInfo
 import com.frolo.muse.Logger
 import com.frolo.muse.player.service.audiofx.DefaultAudioFxErrorHandler
@@ -37,7 +38,8 @@ class PlayerBuilder @Inject constructor(
     private val preferences: Preferences,
     private val remoteConfigRepository: RemoteConfigRepository,
     private val schedulerProvider: SchedulerProvider,
-    private val songRepository: SongRepository
+    private val songRepository: SongRepository,
+    private val activityWatcher: ActivityWatcher
 ) {
 
     @WorkerThread
@@ -52,7 +54,7 @@ class PlayerBuilder @Inject constructor(
 
     private fun buildImpl(): Player {
         val audioFx: AudioFxApplicable = AudioFxImpl.getInstance(
-            service, Const.AUDIO_FX_PREFERENCES, DefaultAudioFxErrorHandler())
+            service, Const.AUDIO_FX_PREFERENCES, DefaultAudioFxErrorHandler(activityWatcher))
 
         val preParams = loadPreParams(timeoutMillis = getTimeoutMillis())
 

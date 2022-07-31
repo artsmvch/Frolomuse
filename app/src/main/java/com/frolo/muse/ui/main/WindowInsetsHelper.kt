@@ -2,7 +2,9 @@ package com.frolo.muse.ui.main
 
 import android.util.Log
 import android.view.View
-import android.view.WindowInsets
+import androidx.core.view.OnApplyWindowInsetsListener
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import com.frolo.muse.BuildInfo
 
 
@@ -10,7 +12,7 @@ internal object WindowInsetsHelper {
     private const val LOG_TAG = "WindowInsetsHelper"
     private val isDebug: Boolean get() = BuildInfo.isDebug()
 
-    private val SKIPPED_WINDOW_INSETS_LISTENER = View.OnApplyWindowInsetsListener { view, insets ->
+    private val SKIPPED_WINDOW_INSETS_LISTENER = OnApplyWindowInsetsListener { view, insets ->
         if (isDebug) {
             Log.d(LOG_TAG, "Skip window insets for $view, " +
                     "insets=${toStringDetailed(insets)}")
@@ -18,7 +20,7 @@ internal object WindowInsetsHelper {
         insets
     }
 
-    private fun toStringDetailed(insets: WindowInsets): String {
+    private fun toStringDetailed(insets: WindowInsetsCompat): String {
         val systemInsets = insets.let {
             "Insets{" +
                     "left=" + it.systemWindowInsetLeft +
@@ -38,9 +40,9 @@ internal object WindowInsetsHelper {
         setupWindowInsets(view, SKIPPED_WINDOW_INSETS_LISTENER)
     }
 
-    fun setupWindowInsets(view: View, listener: View.OnApplyWindowInsetsListener) {
+    fun setupWindowInsets(view: View, listener: OnApplyWindowInsetsListener) {
         view.fitsSystemWindows = true
-        view.setOnApplyWindowInsetsListener(listener)
+        ViewCompat.setOnApplyWindowInsetsListener(view, listener)
         view.requestApplyInsets()
     }
 }
