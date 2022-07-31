@@ -2,7 +2,7 @@ package com.frolo.muse.di.modules
 
 import android.app.Application
 import android.content.Context
-import com.frolo.muse.ActivityWatcher
+import com.frolo.core.ui.ActivityWatcher
 import com.frolo.muse.BuildInfo
 import com.frolo.muse.FrolomuseApp
 import com.frolo.muse.di.ApplicationScope

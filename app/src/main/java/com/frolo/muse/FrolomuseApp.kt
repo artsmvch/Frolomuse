@@ -3,6 +3,8 @@ package com.frolo.muse
 import android.app.Activity
 import android.content.Context
 import androidx.multidex.MultiDexApplication
+import com.frolo.core.ui.ActivityWatcher
+import com.frolo.core.ui.ActivityWatcherImpl
 import com.frolo.muse.di.modules.*
 import com.frolo.muse.di.*
 

@@ -1,7 +1,7 @@
 package com.frolo.muse.di.modules
 
 import android.content.Context
-import com.frolo.muse.ActivityWatcher
+import com.frolo.core.ui.ActivityWatcher
 import com.frolo.muse.billing.TrialManager
 import com.frolo.muse.billing.TrialManagerImpl
 import com.frolo.muse.di.ApplicationScope
