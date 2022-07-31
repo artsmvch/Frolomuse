@@ -1,5 +1,8 @@
 package com.frolo.audiofx;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import java.io.Serializable;
 import java.util.Arrays;
 
@@ -11,6 +14,14 @@ public final class CustomPreset implements Preset, Serializable {
         short[] dest = new short[src.length];
         System.arraycopy(src, 0, dest, 0, src.length);
         return dest;
+    }
+
+    @Nullable
+    public static short[] getRawLevels(@NonNull CustomPreset preset) {
+        if (preset.levels == null) {
+            return null;
+        }
+        return copy(preset.levels);
     }
 
     private final long id;
@@ -32,8 +43,12 @@ public final class CustomPreset implements Preset, Serializable {
         return name;
     }
 
-    public short[] getLevels() {
-        return levels;
+    public int getLevelCount() {
+        return levels.length;
+    }
+
+    public short getLevelAt(int index) {
+        return levels[index];
     }
 
     @Override

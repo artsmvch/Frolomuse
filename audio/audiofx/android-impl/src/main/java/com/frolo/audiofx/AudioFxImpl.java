@@ -404,12 +404,10 @@ public final class AudioFxImpl implements AudioFxApplicable {
             try {
                 Equalizer equalizer = mEqualizer;
                 if (equalizer != null) {
-                    short[] levels = ((CustomPreset) preset).getLevels();
-
+                    CustomPreset customPreset = (CustomPreset) preset;
                     int numberOfBands = equalizer.getNumberOfBands();
-                    int levelCount = levels != null ? levels.length : 0;
-                    for (short band = 0; band < Math.min(numberOfBands, levelCount); band++) {
-                        final short level = levels[band];
+                    for (short band = 0; band < Math.min(numberOfBands, customPreset.getLevelCount()); band++) {
+                        short level = customPreset.getLevelAt(band);
                         equalizer.setBandLevel(band, level);
                         mPersistence.saveBandLevel(band, level);
                         mObserverRegistry.dispatchBandLevelChanged(band, level);
@@ -655,13 +653,14 @@ public final class AudioFxImpl implements AudioFxApplicable {
                     adjustBandLevels = preset == null;
                 } else if (eqUseFlag == AudioFxPersistence.FLAG_EQ_USE_CUSTOM_PRESET) {
                     CustomPreset preset = mPersistence.getLastCustomPreset();
-                    short[] bandLevels = preset != null ? preset.getLevels() : null;
-                    if (bandLevels != null) {
-                        for (int i = 0; i < bandLevels.length; i++) {
-                            newEqualizer.setBandLevel((short) i, bandLevels[i]);
+                    if (preset != null && preset.getLevelCount() > 0) {
+                        for (int i = 0; i < preset.getLevelCount(); i++) {
+                            newEqualizer.setBandLevel((short) i, preset.getLevelAt(i));
                         }
+                        adjustBandLevels = false;
+                    } else {
+                        adjustBandLevels = true;
                     }
-                    adjustBandLevels = bandLevels == null;
                 } else {
                     adjustBandLevels = true;
                 }
