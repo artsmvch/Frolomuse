@@ -127,13 +127,7 @@ public final class AudioFxImpl implements AudioFxApplicable {
         mErrorHandler = errorHandler;
 
         if (DEBUG) {
-            String msg = new StringBuilder("Initialized:\n")
-                .append("hasEqualizer=").append(mHasEqualizer).append("\n")
-                .append("hasBassBoost=").append(mHasBassBoost).append("\n")
-                .append("hasVirtualizer=").append(mHasVirtualizer).append("\n")
-                .append("hasPresetReverb=").append(mHasPresetReverb).append("\n")
-                .toString();
-            Log.d(LOG_TAG, msg);
+            Log.d(LOG_TAG, "Init: " + describeState());
         }
     }
 
@@ -143,6 +137,27 @@ public final class AudioFxImpl implements AudioFxApplicable {
         if (mErrorHandler != null) {
             mErrorHandler.onError(error);
         }
+    }
+
+    private synchronized String describeState() {
+        return '{' +
+                "equalizer=" + describeEffectState(mEqualizer) +
+                ", " +
+                "reverb=" + describeEffectState(mPresetReverb) +
+                ", " +
+                "bass=" + describeEffectState(mBassBoost) +
+                ", " +
+                "virtualizer=" + describeEffectState(mVirtualizer) +
+                "}";
+    }
+
+    private String describeEffectState(@Nullable AudioEffect effect) {
+        if (effect == null) {
+            return "null";
+        }
+        return "{id=" + effect.getId() + ", " +
+                "{name=" + effect.getDescriptor().name + ", " +
+                "enabled=" + effect.getEnabled() + '}';
     }
 
     @Override
@@ -615,13 +630,13 @@ public final class AudioFxImpl implements AudioFxApplicable {
         final boolean enabled = mPersistence.isEnabled();
 
         if (DEBUG) {
-            String msg = new StringBuilder("Apply: \n")
-                .append("audioSessionId=").append(audioSessionId).append("\n")
-                .append("sessionHasChanged=").append(sessionHasChanged).append("\n")
-                .append("canOmitInitialization=").append(canOmitInitialization).append("\n")
-                .append("priority=").append(priority).append("\n")
-                .append("enabled=").append(enabled).append("\n")
-                .toString();
+            String msg = "Pre-apply to MediaPlayer: " +
+                    "session_id=" + audioSessionId + ", " +
+                    "session_has_changed=" + sessionHasChanged + ", " +
+                    "can_omit_initialization=" + canOmitInitialization + ", " +
+                    "priority=" + priority + ", " +
+                    "enabled=" + enabled + ", " +
+                    "state=" + describeState();
             Log.d(LOG_TAG, msg);
         }
 
@@ -773,6 +788,12 @@ public final class AudioFxImpl implements AudioFxApplicable {
         }
 
         mLastSessionId = audioSessionId;
+
+        if (DEBUG) {
+            String msg = "Post-apply to MediaPlayer: " +
+                    "state=" + describeState();
+            Log.d(LOG_TAG, msg);
+        }
     }
 
     /**
@@ -789,7 +810,7 @@ public final class AudioFxImpl implements AudioFxApplicable {
     public synchronized void release() {
 
         if (DEBUG) {
-            Log.d(LOG_TAG, "Releasing");
+            Log.d(LOG_TAG, "Releasing: " + describeState());
         }
 
         try {
