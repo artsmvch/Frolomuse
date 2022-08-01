@@ -186,49 +186,28 @@ public final class AudioFxImpl implements AudioFxApplicable {
     }
 
     @Override
-    public void setEnabled(boolean enabled) {
+    public synchronized void setEnabled(boolean enabled) {
         mPersistence.saveEnabled(enabled);
 
-        try {
-            Equalizer equalizer = mEqualizer;
-            if (equalizer != null) {
-                equalizer.setEnabled(enabled);
-            }
-        } catch (Throwable t) {
-            report(t);
-        }
-
-        try {
-            BassBoost bassBoost = mBassBoost;
-            if (bassBoost != null) {
-                bassBoost.setEnabled(enabled);
-            }
-        } catch (Throwable t) {
-            report(t);
-        }
-
-        try {
-            Virtualizer virtualizer = mVirtualizer;
-            if (virtualizer != null) {
-                virtualizer.setEnabled(enabled);
-            }
-        } catch (Throwable t) {
-            report(t);
-        }
-
-        try {
-            PresetReverb presetReverb = mPresetReverb;
-            if (presetReverb != null) {
-                presetReverb.setEnabled(enabled);
-            }
-        } catch (Throwable t) {
-            report(t);
-        }
+        trySetEnabled(mEqualizer, enabled);
+        trySetEnabled(mBassBoost, enabled);
+        trySetEnabled(mVirtualizer, enabled);
+        trySetEnabled(mPresetReverb, enabled);
 
         if (enabled) {
             mObserverRegistry.dispatchEnabled();
         } else {
             mObserverRegistry.dispatchDisabled();
+        }
+    }
+
+    private void trySetEnabled(@Nullable AudioEffect effect, boolean enabled) {
+        try {
+            if (effect != null) {
+                effect.setEnabled(enabled);
+            }
+        } catch (Throwable t) {
+            report(t);
         }
     }
 
