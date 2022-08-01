@@ -2,7 +2,7 @@ package com.frolo.muse.player.service.audiofx
 
 import android.widget.Toast
 import com.frolo.audiofx.AudioFxImpl
-import com.frolo.muse.ActivityWatcher
+import com.frolo.core.ui.ActivityWatcher
 import com.frolo.muse.BuildInfo
 import com.frolo.muse.rx.newSingleThreadScheduler
 import com.frolo.muse.rx.subscribeSafely

@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
 import com.frolo.ui.ActivityUtils;
-import com.frolo.muse.ActivityWatcher;
+import com.frolo.core.ui.ActivityWatcher;
 import com.frolo.muse.permission.PermissionChecker;
 
 

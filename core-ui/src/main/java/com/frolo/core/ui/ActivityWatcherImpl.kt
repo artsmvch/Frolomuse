@@ -1,13 +1,15 @@
-package com.frolo.muse
+package com.frolo.core.ui
 
 import android.app.Activity
 import android.app.Application
 import android.os.Bundle
+import android.util.Log
 import androidx.annotation.AnyThread
 import java.util.*
 
 
-class ActivityWatcherImpl: Application.ActivityLifecycleCallbacks, ActivityWatcher {
+class ActivityWatcherImpl: Application.ActivityLifecycleCallbacks,
+    ActivityWatcher {
 
     private val _createdActivities = Collections.synchronizedList(ArrayList<Activity>())
     private val _startedActivities = Collections.synchronizedList(ArrayList<Activity>())
@@ -34,37 +36,43 @@ class ActivityWatcherImpl: Application.ActivityLifecycleCallbacks, ActivityWatch
     }
 
     override fun onActivityCreated(activity: Activity, bundle: Bundle?) {
-        Logger.d(LOG_TAG, "On activity created: $activity")
+        logMessage("On activity created: $activity")
         _createdActivities.add(activity)
     }
 
     override fun onActivityStarted(activity: Activity) {
-        Logger.d(LOG_TAG, "On activity started: $activity")
+        logMessage("On activity started: $activity")
         _startedActivities.add(activity)
     }
 
     override fun onActivityResumed(activity: Activity) {
-        Logger.d(LOG_TAG, "On activity resumed: $activity")
+        logMessage("On activity resumed: $activity")
         _resumedActivities.add(activity)
     }
 
     override fun onActivityPaused(activity: Activity) {
-        Logger.d(LOG_TAG, "On activity paused: $activity")
+        logMessage("On activity paused: $activity")
         _resumedActivities.remove(activity)
     }
 
     override fun onActivityStopped(activity: Activity) {
-        Logger.d(LOG_TAG, "On activity stopped: $activity")
+        logMessage("On activity stopped: $activity")
         _startedActivities.remove(activity)
     }
 
     override fun onActivitySaveInstanceState(activity: Activity, bundle: Bundle) {
-        Logger.d(LOG_TAG, "On activity save instance state: $activity")
+        logMessage("On activity save instance state: $activity")
     }
 
     override fun onActivityDestroyed(activity: Activity) {
-        Logger.d(LOG_TAG, "On activity destroyed: $activity")
+        logMessage("On activity destroyed: $activity")
         _createdActivities.remove(activity)
+    }
+    
+    private fun logMessage(msg: String) {
+        if (BuildConfig.DEBUG) {
+            Log.d(LOG_TAG, msg)
+        }
     }
 
     companion object {

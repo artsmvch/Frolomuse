@@ -2,7 +2,7 @@
 
 package com.frolo.muse.router
 
-import com.frolo.muse.ActivityWatcher
+import com.frolo.core.ui.ActivityWatcher
 
 
 fun AppRouter(activityWatcher: ActivityWatcher): AppRouter {
