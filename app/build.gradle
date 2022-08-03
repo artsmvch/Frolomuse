@@ -50,7 +50,7 @@ android {
     defaultConfig {
         applicationId "com.frolo.musp"
         minSdkVersion 23
-        targetSdkVersion 30
+        targetSdkVersion 31
         versionCode version_code
         versionName version_name
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
