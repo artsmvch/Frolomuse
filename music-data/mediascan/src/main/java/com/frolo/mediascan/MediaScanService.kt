@@ -261,7 +261,7 @@ class MediaScanService : Service() {
     private fun createPreparationNotification(): Notification {
         val remoteViews = RemoteViews(packageName, R.layout.notification_media_scan_preparing)
         val cancelPendingIntent = PendingIntent.getService(this, RC_CANCEL,
-            newCancelIntent(this), PendingIntent.FLAG_UPDATE_CURRENT)
+            newCancelIntent(this), PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
         remoteViews.setOnClickPendingIntent(R.id.btn_cancel, cancelPendingIntent)
         remoteViews.setProgressBar(R.id.pb_progress, 0, 0, true)
         return NotificationCompat.Builder(this, CHANNEL_ID_MEDIA_SCANNER)
@@ -278,7 +278,7 @@ class MediaScanService : Service() {
         remoteViews.setTextViewText(R.id.tv_message, getString(R.string.scanning_media_storage))
         remoteViews.setTextViewText(R.id.tv_progress, "$progress/$total")
         val cancelPendingIntent = PendingIntent.getService(this, RC_CANCEL,
-            newCancelIntent(this), PendingIntent.FLAG_UPDATE_CURRENT)
+            newCancelIntent(this), PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
         remoteViews.setOnClickPendingIntent(R.id.btn_cancel, cancelPendingIntent)
         remoteViews.setProgressBar(R.id.pb_progress, total, progress, false)
         return NotificationCompat.Builder(this, CHANNEL_ID_MEDIA_SCANNER)
