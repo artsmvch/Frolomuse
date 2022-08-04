@@ -2,7 +2,7 @@
     package="com.frolo.performance.coldstart">
     <application>
         <provider
-            android:authorities="com.frolo.performance.coldstart"
+            android:authorities="${applicationId}.performance.coldstart"
             android:name="com.frolo.performance.coldstart.ColdStartMeasurerImpl"
             android:enabled="true"
             android:exported="false"
