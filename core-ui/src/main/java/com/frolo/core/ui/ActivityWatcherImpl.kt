@@ -58,6 +58,10 @@ class ActivityWatcherImpl: Application.ActivityLifecycleCallbacks,
     override fun onActivityStopped(activity: Activity) {
         logMessage("On activity stopped: $activity")
         _startedActivities.remove(activity)
+        if (activity.isFinishing) {
+            // There is no guarantee that the onDestroy will be called
+            _createdActivities.remove(activity)
+        }
     }
 
     override fun onActivitySaveInstanceState(activity: Activity, bundle: Bundle) {
