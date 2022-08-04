@@ -188,7 +188,7 @@ final class Shortcuts {
         Intent callbackIntent = new Intent(Broadcasts.ACTION_SHORTCUT_PINNED);
         callbackIntent.setPackage(context.getPackageName());
         PendingIntent callback = PendingIntent.getBroadcast(
-                context, 0, callbackIntent, 0);
+                context, 0, callbackIntent, PendingIntent.FLAG_IMMUTABLE);
 
         ShortcutManagerCompat.requestPinShortcut(context, shortcutInfo, callback.getIntentSender());
     }

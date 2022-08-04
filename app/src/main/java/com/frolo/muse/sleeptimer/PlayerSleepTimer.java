@@ -33,7 +33,7 @@ public final class PlayerSleepTimer {
                 context,
                 RC_PAUSE_PLAYER,
                 intent,
-                PendingIntent.FLAG_NO_CREATE);
+                PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_NO_CREATE);
         return pi != null;
     }
 
@@ -49,7 +49,7 @@ public final class PlayerSleepTimer {
                 context,
                 RC_PAUSE_PLAYER,
                 intent,
-                PendingIntent.FLAG_NO_CREATE);
+                PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_NO_CREATE);
         if (pi != null) {
             AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
             if (manager != null) {
@@ -90,7 +90,7 @@ public final class PlayerSleepTimer {
                     context,
                     RC_PAUSE_PLAYER,
                     intent,
-                    PendingIntent.FLAG_UPDATE_CURRENT);
+                    PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
             manager.setExact(AlarmManager.RTC_WAKEUP, time, pi);
             return true;
         }

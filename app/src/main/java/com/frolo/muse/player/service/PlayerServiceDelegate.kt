@@ -288,11 +288,7 @@ internal class PlayerServiceDelegate(
     }
 
     private fun getPendingIntentFlags(): Int {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
-        } else {
-            PendingIntent.FLAG_UPDATE_CURRENT
-        }
+        return PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
     }
 
     private fun newServicePendingIntent(requestCode: Int, intent: Intent): PendingIntent? {

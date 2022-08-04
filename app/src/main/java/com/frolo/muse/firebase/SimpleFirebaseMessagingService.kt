@@ -156,7 +156,8 @@ class SimpleFirebaseMessagingService : FirebaseMessagingService() {
             ACTION_OPEN_APP -> {
                 val intent = MainActivity.newIntent(this, true)
                 val pendingIntent = PendingIntent.getActivity(
-                        this, RC_HANDLE_NOTIFICATION_ACTION, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+                        this, RC_HANDLE_NOTIFICATION_ACTION, intent,
+                    PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
                 builder.setContentIntent(pendingIntent)
             }
 
@@ -164,7 +165,8 @@ class SimpleFirebaseMessagingService : FirebaseMessagingService() {
                 val intent = ViewAppInStoreIntent(this)
                 if (this.canStartActivity(intent)) {
                     val pendingIntent = PendingIntent.getActivity(
-                            this, RC_HANDLE_NOTIFICATION_ACTION, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+                            this, RC_HANDLE_NOTIFICATION_ACTION, intent,
+                        PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
                     builder.setContentIntent(pendingIntent)
                 }
             }
