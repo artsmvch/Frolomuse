@@ -48,12 +48,27 @@ private const val RC_COMMAND_SWITCH_TO_NEXT_SHUFFLE_MODE = 127
 private const val RC_OPEN_PLAYER = 128
 
 @Suppress("FunctionName")
-private fun PendingIntent(context: Context, @RequestCode requestCode: Int, intent: Intent, flags: Int): PendingIntent {
+private fun ServicePendingIntent(
+    context: Context,
+    @RequestCode requestCode: Int,
+    intent: Intent
+): PendingIntent {
+    val flags = PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
         PendingIntent.getForegroundService(context, requestCode, intent, flags)
     } else {
         PendingIntent.getService(context, requestCode, intent, flags)
     }
+}
+
+@Suppress("FunctionName")
+private fun ActivityPendingIntent(
+    context: Context,
+    @RequestCode requestCode: Int,
+    intent: Intent
+): PendingIntent {
+    val flags = PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+    return PendingIntent.getActivity(context, requestCode, intent, flags)
 }
 
 private data class PlayerWidgetParams(
@@ -210,23 +225,23 @@ private fun PlayerRemoteViews(
 
     // the play button
     val toggleIntent = newIntentFromWidget(context, PlayerServiceCmd.CMD_TOGGLE)
-    val togglePi = PendingIntent(context, RC_COMMAND_TOGGLE, toggleIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+    val togglePi = ServicePendingIntent(context, RC_COMMAND_TOGGLE, toggleIntent)
     remoteViews.setOnClickPendingIntent(R.id.btn_play, togglePi)
 
     // the previous button
     val previousIntent = newIntentFromWidget(context, PlayerServiceCmd.CMD_SKIP_TO_PREVIOUS)
-    val previousPi = PendingIntent(context, RC_COMMAND_SKIP_TO_PREVIOUS, previousIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+    val previousPi = ServicePendingIntent(context, RC_COMMAND_SKIP_TO_PREVIOUS, previousIntent)
     remoteViews.setOnClickPendingIntent(R.id.btn_skip_to_previous, previousPi)
 
     // the next button
     val nextIntent = newIntentFromWidget(context, PlayerServiceCmd.CMD_SKIP_TO_NEXT)
-    val nextPi = PendingIntent(context, RC_COMMAND_SKIP_TO_NEXT, nextIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+    val nextPi = ServicePendingIntent(context, RC_COMMAND_SKIP_TO_NEXT, nextIntent)
     remoteViews.setOnClickPendingIntent(R.id.btn_skip_to_next, nextPi)
 
     if (hasRoomForRepeatAndShuffleModes) {
         // the repeat mode
         val repeatModeIntent = newIntentFromWidget(context, PlayerServiceCmd.CMD_CHANGE_REPEAT_MODE)
-        val repeatModePi = PendingIntent(context, RC_COMMAND_SWITCH_TO_NEXT_REPEAT_MODE, repeatModeIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val repeatModePi = ServicePendingIntent(context, RC_COMMAND_SWITCH_TO_NEXT_REPEAT_MODE, repeatModeIntent)
         remoteViews.setOnClickPendingIntent(R.id.btn_repeat_mode, repeatModePi)
         val repeatModeIconRes = when (params.repeatMode) {
             Player.REPEAT_OFF -> R.drawable.wgt_ic_repeat_disabled
@@ -239,7 +254,7 @@ private fun PlayerRemoteViews(
 
         // the shuffle mode
         val shuffleModeIntent = newIntentFromWidget(context, PlayerServiceCmd.CMD_CHANGE_SHUFFLE_MODE)
-        val shuffleModePi = PendingIntent(context, RC_COMMAND_SWITCH_TO_NEXT_SHUFFLE_MODE, shuffleModeIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val shuffleModePi = ServicePendingIntent(context, RC_COMMAND_SWITCH_TO_NEXT_SHUFFLE_MODE, shuffleModeIntent)
         remoteViews.setOnClickPendingIntent(R.id.btn_shuffle_mode, shuffleModePi)
         val shuffleModeIconRes = when (params.shuffleMode) {
             Player.SHUFFLE_OFF -> R.drawable.wgt_ic_shuffle_disabled
@@ -255,7 +270,7 @@ private fun PlayerRemoteViews(
 
     // the root layout
     val appIntent = newIntent(context, true)
-    val appPi = PendingIntent.getActivity(context, RC_OPEN_PLAYER, appIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+    val appPi = ActivityPendingIntent(context, RC_OPEN_PLAYER, appIntent)
     remoteViews.setOnClickPendingIntent(R.id.root_view, appPi)
 
     // the album art
