@@ -3,6 +3,7 @@ include ':app'
 
 // Features
 include ':feature:onboarding'
+include ':feature:remote-search'
 
 // Core
 include ':core'
