@@ -9,9 +9,9 @@ import android.os.Build;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
-import com.frolo.ui.ActivityUtils;
-import com.frolo.core.ui.ActivityWatcher;
+import com.frolo.core.ui.ApplicationWatcher;
 import com.frolo.muse.permission.PermissionChecker;
+import com.frolo.ui.ActivityUtils;
 
 
 public final class PermissionCheckerImpl implements PermissionChecker {
@@ -19,11 +19,9 @@ public final class PermissionCheckerImpl implements PermissionChecker {
     private static final String P_READ_EXTERNAL_STORAGE = Manifest.permission.READ_EXTERNAL_STORAGE;
 
     private final Context mContext;
-    private final ActivityWatcher mActivityWatcher;
 
-    public PermissionCheckerImpl(@NonNull Context context, @NonNull ActivityWatcher activityWatcher) {
+    public PermissionCheckerImpl(@NonNull Context context) {
         mContext = context;
-        mActivityWatcher = activityWatcher;
     }
 
     @Override
@@ -41,7 +39,7 @@ public final class PermissionCheckerImpl implements PermissionChecker {
 
     @Override
     public boolean shouldRequestMediaPermissionInSettings() {
-        Activity foreground = mActivityWatcher.getForegroundActivity();
+        Activity foreground = ApplicationWatcher.getForegroundActivity();
         if (foreground != null && !ActivityUtils.isFinishingOrDestroyed(foreground)) {
             // Not correct solution below?
             //return !foreground.shouldShowRequestPermissionRationale(P_READ_EXTERNAL_STORAGE);

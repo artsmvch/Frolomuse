@@ -9,6 +9,7 @@ import android.os.StrictMode
 import android.os.strictmode.Violation
 import androidx.annotation.UiThread
 import com.frolo.audiofx.AudioFxImpl
+import com.frolo.core.ui.ApplicationWatcher
 import com.frolo.debug.DebugUtils
 import com.frolo.muse.*
 import com.frolo.muse.broadcast.Broadcasts
@@ -164,7 +165,7 @@ class AppStartUpInitializer @Inject constructor(
         if (BuildConfig.DEBUG) {
             AnrDetectors.create(
                 looper = application.mainLooper,
-                uiContextProvider = { application.foregroundActivity }
+                uiContextProvider = { ApplicationWatcher.foregroundActivity }
             )// .start()
         }
     }
@@ -211,7 +212,7 @@ class AppStartUpInitializer @Inject constructor(
     private fun runOnForegroundActivity(action: BaseActivity.() -> Unit) {
         mainThreadHandler?.post {
             ThreadStrictMode.assertMain()
-            (application.foregroundActivity as? BaseActivity)?.action()
+            (ApplicationWatcher.foregroundActivity as? BaseActivity)?.action()
         }
     }
 

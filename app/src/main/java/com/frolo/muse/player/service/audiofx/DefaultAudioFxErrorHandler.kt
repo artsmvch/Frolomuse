@@ -2,7 +2,7 @@ package com.frolo.muse.player.service.audiofx
 
 import android.widget.Toast
 import com.frolo.audiofx.AudioFxImpl
-import com.frolo.core.ui.ActivityWatcher
+import com.frolo.core.ui.ApplicationWatcher
 import com.frolo.muse.BuildInfo
 import com.frolo.muse.rx.newSingleThreadScheduler
 import com.frolo.muse.rx.subscribeSafely
@@ -13,9 +13,7 @@ import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
 
 
-class DefaultAudioFxErrorHandler(
-    private val activityWatcher: ActivityWatcher
-) : AudioFxImpl.ErrorHandler {
+class DefaultAudioFxErrorHandler : AudioFxImpl.ErrorHandler {
 
     private val disposables = CompositeDisposable()
 
@@ -40,8 +38,8 @@ class DefaultAudioFxErrorHandler(
         if (!BuildInfo.isDebug()) {
             return
         }
-        activityWatcher.foregroundActivity?.runOnUiThread {
-            val activity = activityWatcher.foregroundActivity
+        ApplicationWatcher.foregroundActivity?.runOnUiThread {
+            val activity = ApplicationWatcher.foregroundActivity
             if (activity != null && !ActivityUtils.isFinishingOrDestroyed(activity)) {
                 Toast.makeText(activity, "AudioFx error: $error", Toast.LENGTH_LONG).show()
             }

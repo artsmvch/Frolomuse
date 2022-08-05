@@ -1,14 +1,15 @@
-package com.frolo.core.ui
+package com.frolo.core.ui.activity
 
 import android.app.Activity
 import android.app.Application
 import android.os.Bundle
 import android.util.Log
 import androidx.annotation.AnyThread
+import com.frolo.core.ui.BuildConfig
 import java.util.*
 
 
-class ActivityWatcherImpl: Application.ActivityLifecycleCallbacks,
+internal class ActivityWatcherImpl: Application.ActivityLifecycleCallbacks,
     ActivityWatcher {
 
     private val _createdActivities = Collections.synchronizedList(ArrayList<Activity>())

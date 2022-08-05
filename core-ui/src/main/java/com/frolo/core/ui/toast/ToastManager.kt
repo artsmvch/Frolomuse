@@ -1,4 +1,4 @@
-package com.frolo.muse.toast
+package com.frolo.core.ui.toast
 
 interface ToastManager {
     fun showToastMessage(message: CharSequence)
