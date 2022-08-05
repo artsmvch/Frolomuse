@@ -55,6 +55,7 @@ import com.frolo.muse.ui.main.library.search.SearchFragment
 import com.frolo.muse.ui.main.player.mini.MiniPlayerFragment
 import com.frolo.muse.ui.main.settings.AppBarSettingsFragment
 import com.frolo.muse.util.LinkUtils
+import com.frolo.muse.util.ifNaN
 import com.frolo.music.model.Media
 import com.frolo.player.Player
 import com.frolo.ui.ColorUtils2
@@ -812,12 +813,12 @@ internal class MainFragment :
                 playerStatusBarColor = ColorUtils.blendARGB(
                     properties.playerStatusBarBackground,
                     properties.transparentStatusBarColor,
-                    slideState.queueSheetSlideOffset)
+                    slideState.queueSheetSlideOffset.ifNaN(0.0f))
                 isStatusBarLight = false
             }
             else -> {
                 val factor: Float = slideState.playerSheetSlideOffset.let { offset ->
-                    (offset * 4 - 3).coerceIn(0f, 1f)
+                    (offset * 4 - 3).coerceIn(0f, 1f).ifNaN(0.0f)
                 }
                 playerStatusBarColor = ColorUtils2.multiplyAlphaComponent(
                     properties.playerStatusBarBackground,

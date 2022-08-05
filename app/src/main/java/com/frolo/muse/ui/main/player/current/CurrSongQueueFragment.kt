@@ -21,6 +21,7 @@ import com.frolo.muse.ui.main.library.base.SongAdapter
 import com.frolo.muse.ui.main.library.playlists.create.PlaylistCreateEvent
 import com.frolo.muse.ui.main.provideMainSheetStateViewModel
 import com.frolo.muse.ui.smoothScrollToTop
+import com.frolo.muse.util.ifNaN
 import com.frolo.ui.Screen
 import com.frolo.ui.ViewUtils
 import kotlinx.android.synthetic.main.fragment_base_list.*
@@ -206,7 +207,7 @@ class CurrSongQueueFragment: AbsMediaCollectionFragment<Song>() {
 
     private fun observeMainSheetsState(owner: LifecycleOwner) = with(provideMainSheetStateViewModel()) {
         slideState.observeNonNull(owner) { slideState ->
-            val factor = (slideState.queueSheetSlideOffset * 5 - 4f).coerceIn(0f, 1f)
+            val factor = (slideState.queueSheetSlideOffset * 5 - 4f).coerceIn(0f, 1f).ifNaN(0f)
             tv_title.translationX = -Screen.dpFloat(36f) * (1f - factor)
             imv_close.apply {
                 scaleX = factor
