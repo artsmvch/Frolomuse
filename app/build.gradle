@@ -23,10 +23,10 @@ ext.optionallyLoadProperties = { filepath ->
     }
 }
 
-def version_code = 136
+def version_code = 137
 def version_major = 7
 def version_minor = 0
-def version_patch = 2
+def version_patch = 3
 def version_name = "${version_major}.${version_minor}.${version_patch}"
 
 def script_time = new Date().format('MM.dd.yyyy:HH.mm.ss')
