@@ -11,7 +11,7 @@ import androidx.annotation.Px
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
 import com.frolo.muse.R
-import com.frolo.muse.dp2px
+import com.frolo.ui.Screen
 
 
 private const val LAYOUT_ANIMATION_DURATION_MEDIUM = 220L
@@ -42,8 +42,8 @@ fun ShotLayoutAnimationController(): LayoutAnimationController {
 fun ProBadgedDrawable(
     context: Context,
     drawable: Drawable,
-    @Px topMargin: Int = 2f.dp2px(context).toInt(),
-    @Px rightMargin: Int = 2f.dp2px(context).toInt()
+    @Px topMargin: Int = Screen.dp(context, 2f),
+    @Px rightMargin: Int = Screen.dp(context, 2f)
 ): Drawable {
     val badgeDrawable = AppCompatResources.getDrawable(context, R.drawable.ic_pro_badge_16)
     val layers = arrayOf(drawable, badgeDrawable)
