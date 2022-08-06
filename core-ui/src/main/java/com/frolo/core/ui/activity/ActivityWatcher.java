@@ -1,4 +1,4 @@
-package com.frolo.core.ui;
+package com.frolo.core.ui.activity;
 
 import android.app.Activity;
 

@@ -16,8 +16,8 @@ import android.provider.MediaStore;
 
 import androidx.annotation.RequiresApi;
 
+import com.frolo.core.ui.ApplicationWatcher;
 import com.frolo.muse.BuildConfig;
-import com.frolo.muse.FrolomuseApp;
 import com.frolo.music.model.Album;
 import com.frolo.music.model.Artist;
 import com.frolo.music.model.Genre;
@@ -192,8 +192,7 @@ final class Del {
     private static void deleteUris_API30(Context context, Collection<Uri> uris) throws Exception {
         PendingIntent pendingIntent =
                 MediaStore.createDeleteRequest(context.getContentResolver(), filterUrisForDeletion(context, uris));
-        FrolomuseApp frolomuseApp = (FrolomuseApp) context.getApplicationContext();
-        Activity activity = frolomuseApp.getForegroundActivity();
+        Activity activity = ApplicationWatcher.getForegroundActivity();
         if (activity != null) {
             activity.startIntentSenderForResult(pendingIntent.getIntentSender(),
                     RC_DELETE_MEDIA, null, 0, 0, 0);

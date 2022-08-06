@@ -34,6 +34,7 @@ import com.frolo.core.ui.fragment.doOnResume
 import com.frolo.core.ui.systembars.SystemBarsControlOwner
 import com.frolo.core.ui.systembars.SystemBarsController
 import com.frolo.core.ui.systembars.defaultSystemBarsHost
+import com.frolo.core.ui.toast.toastManager
 import com.frolo.debug.DebugUtils
 import com.frolo.muse.Logger
 import com.frolo.muse.R

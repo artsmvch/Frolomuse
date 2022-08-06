@@ -8,11 +8,11 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
-import com.frolo.muse.R
-import com.frolo.muse.dp2px
 import com.frolo.audiofx.CustomPreset
 import com.frolo.audiofx.NativePreset
 import com.frolo.audiofx.Preset
+import com.frolo.muse.R
+import com.frolo.ui.Screen
 import kotlinx.android.synthetic.main.item_preset_drop_down.view.*
 
 
@@ -74,8 +74,8 @@ class PresetAdapter constructor(
         }
         if (isDropDownItem) {
             val context = itemView.context
-            val paddingLeft = if (imv_preset_icon.isVisible) 0 else 8f.dp2px(context).toInt()
-            val paddingRight = if (btn_remove?.isVisible == true) 0 else 16f.dp2px(context).toInt()
+            val paddingLeft = if (imv_preset_icon.isVisible) 0 else Screen.dp(context, 8f)
+            val paddingRight = if (btn_remove?.isVisible == true) 0 else Screen.dp(context, 16f)
             tv_preset_name.updatePadding(
                 left = paddingLeft,
                 right = paddingRight

@@ -22,9 +22,11 @@ fun View.removeCallbacksSafely(action: Runnable?) {
     if (action != null) removeCallbacks(action)
 }
 
-inline fun View.doTraversal(action: (View) -> Unit) {
-    action(this)
+fun View.doTraversal(action: (View) -> Unit) {
+    action.invoke(this)
     if (this is ViewGroup) {
-        forEach(action)
+        this.forEach { child ->
+            child.doTraversal(action)
+        }
     }
 }

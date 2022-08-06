@@ -1,7 +1,6 @@
 package com.frolo.muse.di.modules
 
 import android.content.Context
-import com.frolo.core.ui.ActivityWatcher
 import com.frolo.muse.billing.TrialManager
 import com.frolo.muse.billing.TrialManagerImpl
 import com.frolo.muse.di.ApplicationScope
@@ -12,13 +11,13 @@ import com.frolo.muse.di.impl.permission.PermissionCheckerImpl
 import com.frolo.muse.di.impl.rx.SchedulerProviderImpl
 import com.frolo.muse.links.AppLinksProcessor
 import com.frolo.muse.links.LinksProcessor
-import com.frolo.muse.player.journals.AndroidLogPlayerJournal
-import com.frolo.muse.player.journals.CompositePlayerJournal
-import com.frolo.muse.player.journals.StoredInMemoryPlayerJournal
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.EventLoggerFactory
 import com.frolo.muse.network.NetworkHelper
 import com.frolo.muse.permission.PermissionChecker
+import com.frolo.muse.player.journals.AndroidLogPlayerJournal
+import com.frolo.muse.player.journals.CompositePlayerJournal
+import com.frolo.muse.player.journals.StoredInMemoryPlayerJournal
 import com.frolo.muse.router.AppRouter
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.player.PlayerJournal
@@ -66,8 +65,8 @@ class MiscModule constructor(private val isDebug: Boolean) {
 
     @ApplicationScope
     @Provides
-    fun providePermissionChecker(context: Context, activityWatcher: ActivityWatcher): PermissionChecker {
-        return PermissionCheckerImpl(context, activityWatcher)
+    fun providePermissionChecker(context: Context): PermissionChecker {
+        return PermissionCheckerImpl(context)
     }
 
     @Provides

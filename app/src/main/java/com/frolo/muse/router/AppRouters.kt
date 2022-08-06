@@ -2,12 +2,12 @@
 
 package com.frolo.muse.router
 
-import com.frolo.core.ui.ActivityWatcher
+import com.frolo.core.ui.ApplicationWatcher
 
 
-fun AppRouter(activityWatcher: ActivityWatcher): AppRouter {
+fun AppRouter(): AppRouter {
     return AppRouterDelegate {
-        when (val activity = activityWatcher.foregroundActivity) {
+        when (val activity = ApplicationWatcher.foregroundActivity) {
             is AppRouter -> activity
             is AppRouter.Provider -> activity.getRouter()
             else -> null

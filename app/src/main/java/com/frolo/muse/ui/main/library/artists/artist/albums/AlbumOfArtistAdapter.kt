@@ -5,13 +5,13 @@ import android.view.ViewGroup
 import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.RequestManager
-import com.frolo.muse.R
 import com.frolo.core.ui.glide.makeAlbumArtRequest
+import com.frolo.muse.R
 import com.frolo.muse.inflateChild
-import com.frolo.music.model.Album
-import com.frolo.muse.screenWidth
 import com.frolo.muse.ui.getNameString
 import com.frolo.muse.ui.main.library.base.BaseAdapter
+import com.frolo.music.model.Album
+import com.frolo.ui.Screen
 import kotlinx.android.synthetic.main.include_check.view.*
 import kotlinx.android.synthetic.main.item_album_of_artist.view.*
 
@@ -27,7 +27,7 @@ class AlbumOfArtistAdapter constructor(
         viewType: Int
     ): AlbumViewHolder {
         val itemView = parent.inflateChild(R.layout.item_album_of_artist)
-        parent.context.screenWidth.also { totalWidth ->
+        Screen.getScreenWidth(parent.context).also { totalWidth ->
             if (totalWidth > 0) {
                 itemView.updateLayoutParams {
                     width = (totalWidth / 3.5).toInt()

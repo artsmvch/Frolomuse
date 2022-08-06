@@ -1,7 +1,6 @@
 package com.frolo.muse.ui.base
 
 import android.Manifest
-import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
@@ -26,8 +25,6 @@ import com.frolo.muse.R
 import com.frolo.muse.di.activityComponent
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.repository.Preferences
-import com.frolo.muse.toast.DefaultToastManager
-import com.frolo.muse.toast.ToastManager
 import com.frolo.ui.StyleUtils
 import com.frolo.ui.SystemBarUtils
 import com.tbruyelle.rxpermissions2.RxPermissions
@@ -60,9 +57,6 @@ abstract class BaseFragment:
     private var vmFactory: ViewModelProvider.Factory? = null
     private var eventLogger: EventLogger? = null
 
-    protected var toastManager: ToastManager? = null
-        private set
-
     // Custom status bar
     override val isStatusBarVisible: Boolean get() = SystemBarUtils.isLight(statusBarColor)
     @get:ColorInt
@@ -84,7 +78,6 @@ abstract class BaseFragment:
     override fun onAttach(context: Context) {
         super.onAttach(context)
         rxPermissions = RxPermissions(this)
-        toastManager = (context as? Activity)?.let(::DefaultToastManager)
     }
 
     override fun onStop() {
@@ -109,7 +102,6 @@ abstract class BaseFragment:
     override fun onDetach() {
         super.onDetach()
         rxPermissions = null
-        toastManager = null
     }
 
     //<editor-fold desc="Injectors">

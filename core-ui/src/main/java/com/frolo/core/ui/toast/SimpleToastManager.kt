@@ -1,9 +1,9 @@
-package com.frolo.muse.toast
+package com.frolo.core.ui.toast
 
 import android.app.Activity
 import android.widget.Toast
 
-class DefaultToastManager(
+internal class SimpleToastManager(
     private val activity: Activity
 ) : ToastManager {
     override fun showToastMessage(message: CharSequence) {

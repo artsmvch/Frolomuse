@@ -8,17 +8,17 @@ import androidx.core.view.updatePadding
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.frolo.core.ui.glide.GlideAlbumArtHelper
+import com.frolo.core.ui.glide.observe
 import com.frolo.muse.R
 import com.frolo.muse.di.activityComponent
-import com.frolo.music.model.Album
-import com.frolo.music.model.Artist
 import com.frolo.muse.ui.base.withArg
 import com.frolo.muse.ui.main.library.base.AbsMediaCollectionFragment
 import com.frolo.muse.ui.main.library.base.BaseAdapter
-import com.frolo.muse.dp2px
-import com.frolo.core.ui.glide.GlideAlbumArtHelper
-import com.frolo.core.ui.glide.observe
 import com.frolo.muse.ui.smoothScrollToTop
+import com.frolo.music.model.Album
+import com.frolo.music.model.Artist
+import com.frolo.ui.Screen
 import kotlinx.android.synthetic.main.fragment_albums_of_artist.*
 
 
@@ -83,9 +83,11 @@ class AlbumsOfArtistFragment : AbsMediaCollectionFragment<Album>() {
     }
 
     override fun onSubmitList(list: List<Album>) {
-        val leftPadding: Int =
-            if (list.size <= 3) 40f.dp2px(rv_list.context).toInt()
-            else 8f.dp2px(rv_list.context).toInt()
+        val leftPadding: Int = if (list.size <= 3) {
+            Screen.dp(rv_list.context, 40f)
+        } else {
+            Screen.dp(rv_list.context, 8f)
+        }
         rv_list.updatePadding(left = leftPadding)
         adapter.submit(list)
     }
