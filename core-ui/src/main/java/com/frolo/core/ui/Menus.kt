@@ -1,23 +1,12 @@
 package com.frolo.muse
 
-
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter
-import android.os.Build
 import android.view.Menu
 import android.view.MenuItem
 import androidx.annotation.ColorInt
-import androidx.core.internal.view.SupportMenuItem
 import androidx.core.view.forEach
 
-
-fun MenuItem.disableIconTint() {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-        iconTintList = null
-    } else if (this is SupportMenuItem) {
-        this.iconTintList = null
-    }
-}
 
 fun MenuItem.setIconTint(@ColorInt color: Int) {
     icon?.also { safeIcon ->
@@ -28,11 +17,15 @@ fun MenuItem.setIconTint(@ColorInt color: Int) {
     }
 }
 
-fun Menu.setIconTint(@ColorInt color: Int) {
+fun Menu.doTraversal(action: (MenuItem) -> Unit) {
     forEach { menuItem ->
-        menuItem.setIconTint(color)
+        action.invoke(menuItem)
         if (menuItem.hasSubMenu()) {
-            menuItem.subMenu.setIconTint(color)
+            menuItem.subMenu?.doTraversal(action)
         }
     }
+}
+
+fun Menu.setIconTint(@ColorInt color: Int) {
+    doTraversal { menuItem -> menuItem.setIconTint(color) }
 }
