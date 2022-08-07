@@ -26,7 +26,7 @@
             app:layout_scrollFlags="scroll|enterAlways|snap"
             tools:title="Library"/>
 
-        <com.google.android.material.tabs.TabLayout
+        <com.frolo.core.ui.tabs.CustomTabLayout
             android:id="@+id/tl_sections"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
