@@ -1,4 +1,4 @@
-package com.frolo.muse;
+package com.frolo.core.ui.font;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -6,7 +6,7 @@ import android.graphics.Typeface;
 import java.lang.reflect.Field;
 
 
-public class FontHelper {
+public final class FontHelper {
 
     public static void overrideDefaultFont(
         Context context,
@@ -29,5 +29,9 @@ public class FontHelper {
             staticField.set(null, newTypeface);
         } catch (Throwable ignored) {
         }
+    }
+
+    private FontHelper() {
+        throw new AssertionError("No instances!");
     }
 }
