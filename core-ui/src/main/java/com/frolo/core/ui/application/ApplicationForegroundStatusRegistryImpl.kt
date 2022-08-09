@@ -13,13 +13,13 @@ internal class ApplicationForegroundStatusRegistryImpl:
     private val lock = Any()
 
     @GuardedBy("lock")
-    private var _startedActivityCounter = 0
+    private var startedActivityCounter = 0
     @GuardedBy("lock")
     private val observers = HashSet<ApplicationForegroundStatusRegistry.Observer>()
 
     override val isInForeground: Boolean get() {
         return synchronized(lock) {
-            _startedActivityCounter > 0
+            startedActivityCounter > 0
         }
     }
 
@@ -39,7 +39,7 @@ internal class ApplicationForegroundStatusRegistryImpl:
 
     override fun onActivityStarted(activity: Activity) {
         synchronized(lock) {
-            val newCount = _startedActivityCounter++
+            val newCount = ++startedActivityCounter
             if (newCount == 1) {
                 dispatchApplicationForegroundStatus(isInForeground = true)
             }
@@ -48,7 +48,7 @@ internal class ApplicationForegroundStatusRegistryImpl:
 
     override fun onActivityStopped(activity: Activity) {
         synchronized(lock) {
-            val newCount = _startedActivityCounter--
+            val newCount = --startedActivityCounter
             if (newCount == 0) {
                 dispatchApplicationForegroundStatus(isInForeground = false)
             }
