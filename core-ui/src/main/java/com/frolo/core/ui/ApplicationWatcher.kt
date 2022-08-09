@@ -23,4 +23,7 @@ object ApplicationWatcher {
         // The app is considered foreground if it has at least 1 activity started
         return activityWatcher.startedActivities.count() > 0
     }
+
+    @JvmStatic
+    val isInBackground: Boolean get() = !isInForeground
 }
