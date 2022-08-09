@@ -84,7 +84,7 @@ android {
             debuggable true
             shrinkResources false
             minifyEnabled false
-            resValue "string", "app_name", "Dbg Frolomuse"
+            resValue "string", "app_name", "Dev Frolomuse"
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             versionNameSuffix "-D"
         }
