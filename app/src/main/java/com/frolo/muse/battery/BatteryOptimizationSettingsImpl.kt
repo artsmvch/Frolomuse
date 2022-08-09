@@ -11,6 +11,7 @@ class BatteryOptimizationSettingsImpl @Inject constructor(
     private val application: Application
 ): BatteryOptimizationSettings {
     override fun isIgnoringBatteryOptimizations(): Boolean {
+        // Observe app foreground status
         val powerManager = application.getSystemService(Context.POWER_SERVICE)
             as? PowerManager
             ?: return true

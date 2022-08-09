@@ -8,16 +8,25 @@ import android.net.Uri
 import android.util.Log
 import com.frolo.core.ui.activity.ActivityWatcher
 import com.frolo.core.ui.activity.ActivityWatcherImpl
+import com.frolo.core.ui.application.ApplicationForegroundStatusRegistry
+import com.frolo.core.ui.application.ApplicationForegroundStatusRegistryImpl
 
 internal class ApplicationWatcherImpl: ContentProvider() {
     private lateinit var activityWatcherRef: ActivityWatcher
     val activityWatcher: ActivityWatcher get() = activityWatcherRef
+
+    private lateinit var applicationForegroundStatusRegistryRef: ApplicationForegroundStatusRegistry
+    val applicationForegroundStatusRegistry: ApplicationForegroundStatusRegistry
+        get() = applicationForegroundStatusRegistryRef
 
     override fun onCreate(): Boolean {
         Log.d(LOG_TAG, "Creating...")
         instanceRef = this
         activityWatcherRef = ActivityWatcherImpl().also { watcherImpl ->
             requireApplicationContext().registerActivityLifecycleCallbacks(watcherImpl)
+        }
+        applicationForegroundStatusRegistryRef = ApplicationForegroundStatusRegistryImpl().also { registryImpl ->
+            requireApplicationContext().registerActivityLifecycleCallbacks(registryImpl)
         }
         return true
     }
