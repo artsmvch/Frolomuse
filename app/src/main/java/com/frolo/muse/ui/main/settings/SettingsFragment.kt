@@ -74,6 +74,9 @@ class SettingsFragment : PreferenceFragmentCompat(),
 
     private val donatePreference: Preference? get() = findPreference("donate")
 
+    private val ignoreBatteryOptimizationSettings: Preference? get() =
+        findPreference("ignore_battery_optimization_settings")
+
     private val settingsViewModel: SettingsViewModel by lazy {
         val viewModelFactory = activityComponent.provideViewModelFactory()
         ViewModelProviders.of(this, viewModelFactory)[SettingsViewModel::class.java]
@@ -100,6 +103,13 @@ class SettingsFragment : PreferenceFragmentCompat(),
     }
 
     private fun setupPreferences() {
+
+        ignoreBatteryOptimizationSettings?.apply {
+            onPreferenceClickListener = Preference.OnPreferenceClickListener {
+                settingsViewModel.onIgnoreBatteryOptimizationSettingsClick()
+                true
+            }
+        }
 
         buyPremiumPreference?.apply {
             // By default, it's invisible

@@ -74,6 +74,8 @@ interface AppRouter {
 
     fun openDonations()
 
+    fun ignoreBatteryOptimizationSettings()
+
     fun goBack()
 
     fun interface Provider {

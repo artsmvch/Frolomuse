@@ -427,4 +427,9 @@
     <string name="donate_movie_ticket">A movie ticket</string>
     <string name="donate_meal">A meal</string>
     <string name="donate_gym">Gym membership</string>
+
+    <!--App restrictions and limitations-->
+    <string name="app_restrictions_and_limitations">App restrictions and limitations</string>
+    <string name="ignore_battery_optimization_settings">Ignore battery optimizations</string>
+    <string name="ignore_battery_optimization_settings_desc">Does music playback stop frequently? Or does the app crash on launch? Disable battery optimization</string>
 </resources>

@@ -39,5 +39,6 @@ class TestAppRouter : AppRouter {
     override fun openThemeChooser() = Unit
     override fun offerToBuyPremium(allowTrialActivation: Boolean) = Unit
     override fun openDonations() = Unit
+    override fun ignoreBatteryOptimizationSettings() = Unit
     override fun goBack() = Unit
 }

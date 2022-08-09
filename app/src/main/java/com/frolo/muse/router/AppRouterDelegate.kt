@@ -149,6 +149,10 @@ class AppRouterDelegate(
         delegate?.openDonations()
     }
 
+    override fun ignoreBatteryOptimizationSettings() {
+        delegate?.ignoreBatteryOptimizationSettings()
+    }
+
     override fun goBack() {
         delegate?.goBack()
     }

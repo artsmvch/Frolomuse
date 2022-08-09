@@ -73,6 +73,10 @@ class SettingsViewModel @Inject constructor(
         appRouter.openPlaybackFadingParams()
     }
 
+    fun onIgnoreBatteryOptimizationSettingsClick() {
+        TODO("To be implemented")
+    }
+
     /**
      * [!] For debugging only.
      */

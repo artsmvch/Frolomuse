@@ -1,6 +1,8 @@
 package com.frolo.muse.di.impl.navigator
 
 import android.content.Context
+import android.content.Intent
+import android.provider.Settings
 import com.frolo.muse.router.AppRouter
 import com.frolo.muse.ui.*
 import com.frolo.muse.ui.base.SimpleFragmentNavigator
@@ -234,6 +236,12 @@ abstract class AppRouterImpl(
         checkThread()
         val fragment = DonationsFragment.newInstance()
         navigator.pushFragment(fragment)
+    }
+
+    override fun ignoreBatteryOptimizationSettings() {
+        checkThread()
+        val intent = Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS)
+        context.startActivity(intent)
     }
 
     override fun goBack() {
