@@ -6,6 +6,7 @@ import com.frolo.arch.support.SingleLiveEvent
 import com.frolo.arch.support.call
 import com.frolo.arch.support.liveDataOf
 import com.frolo.muse.BuildConfig
+import com.frolo.muse.battery.BatteryOptimizationSettings
 import com.frolo.muse.billing.Products
 import com.frolo.player.Player
 import com.frolo.muse.interactor.billing.PremiumManager
@@ -30,6 +31,7 @@ class SettingsViewModel @Inject constructor(
     private val remoteConfigRepository: RemoteConfigRepository,
     private val preferences: Preferences,
     private val appearancePreferences: AppearancePreferences,
+    private val batteryOptimizationSettings: BatteryOptimizationSettings,
     private val eventLogger: EventLogger
 ): PremiumViewModel(schedulerProvider, appRouter, premiumManager, eventLogger) {
 
@@ -61,6 +63,16 @@ class SettingsViewModel @Inject constructor(
                 }
                 .observeOn(schedulerProvider.main())
                 .subscribeFor { value = it }
+        }
+    }
+
+    val canIgnoreBatteryOptimizationSettings: LiveData<Boolean> by lazy {
+        MutableLiveData<Boolean>(false).apply {
+            batteryOptimizationSettings.isIgnoringBatteryOptimizations()
+                .observeOn(schedulerProvider.main())
+                .subscribeFor(key = "is_ignoring_battery_optimization_settings") { isIgnoring ->
+                    value = !isIgnoring
+                }
         }
     }
 

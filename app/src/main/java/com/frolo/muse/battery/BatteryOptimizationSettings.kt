@@ -1,7 +1,10 @@
 package com.frolo.muse.battery
 
+import io.reactivex.Completable
+import io.reactivex.Flowable
+
 
 interface BatteryOptimizationSettings {
-    fun isIgnoringBatteryOptimizations(): Boolean
-    fun ignoringBatteryOptimizations(): Boolean
+    fun isIgnoringBatteryOptimizations(): Flowable<Boolean>
+    fun ignoringBatteryOptimizations(): Completable
 }

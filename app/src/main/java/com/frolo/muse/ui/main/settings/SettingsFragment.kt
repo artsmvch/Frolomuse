@@ -337,6 +337,10 @@ class SettingsFragment : PreferenceFragmentCompat(),
         notifyPremiumTrialResetEvent.observe(owner) {
             Toast.makeText(requireContext(), "Reset", Toast.LENGTH_SHORT).show()
         }
+
+        canIgnoreBatteryOptimizationSettings.observeNonNull(owner) { canIgnore ->
+            ignoreBatteryOptimizationSettings?.isVisible = canIgnore
+        }
     }
 
     override fun onTimeSelected(hours: Int, minutes: Int, seconds: Int) {
