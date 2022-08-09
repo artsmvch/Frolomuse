@@ -86,7 +86,9 @@ class SettingsViewModel @Inject constructor(
     }
 
     fun onIgnoreBatteryOptimizationSettingsClick() {
-        TODO("To be implemented")
+        batteryOptimizationSettings.ignoringBatteryOptimizations()
+            .observeOn(schedulerProvider.main())
+            .subscribeFor {  }
     }
 
     /**
