@@ -1,6 +1,9 @@
 package com.frolo.muse.di.modules
 
+import android.app.Application
 import android.content.Context
+import com.frolo.muse.battery.BatteryOptimizationSettings
+import com.frolo.muse.battery.BatteryOptimizationSettingsImpl
 import com.frolo.muse.billing.TrialManager
 import com.frolo.muse.billing.TrialManagerImpl
 import com.frolo.muse.di.ApplicationScope
@@ -99,6 +102,12 @@ class MiscModule constructor(private val isDebug: Boolean) {
     @Provides
     fun provideLinksProcessor(router: AppRouter): LinksProcessor {
         return AppLinksProcessor(router)
+    }
+
+    @ApplicationScope
+    @Provides
+    fun provideBatteryOptimizationSettings(application: Application): BatteryOptimizationSettings {
+        return BatteryOptimizationSettingsImpl(application)
     }
 
 }

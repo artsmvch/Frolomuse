@@ -5,26 +5,55 @@ import android.content.Context
 import android.content.Intent
 import android.os.PowerManager
 import android.provider.Settings
-import javax.inject.Inject
+import com.frolo.core.ui.ApplicationWatcher
+import com.frolo.core.ui.application.ApplicationForegroundStatusRegistry
+import io.reactivex.BackpressureStrategy
+import io.reactivex.Completable
+import io.reactivex.Flowable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposables
 
-class BatteryOptimizationSettingsImpl @Inject constructor(
+class BatteryOptimizationSettingsImpl(
     private val application: Application
 ): BatteryOptimizationSettings {
-    override fun isIgnoringBatteryOptimizations(): Boolean {
-        // Observe app foreground status
-        val powerManager = application.getSystemService(Context.POWER_SERVICE)
-            as? PowerManager
-            ?: return true
-        return powerManager.isIgnoringBatteryOptimizations(application.packageName)
+
+    private fun isAppInForeground(): Flowable<Boolean> {
+        return Flowable.create(
+            { emitter ->
+                val foregroundStatusObserver = ApplicationForegroundStatusRegistry.Observer { isInForeground ->
+                    emitter.onNext(isInForeground)
+                }
+                val foregroundStatusRegistry = ApplicationWatcher.applicationForegroundStatusRegistry
+                foregroundStatusRegistry.addObserver(foregroundStatusObserver)
+                emitter.setDisposable(
+                    Disposables.fromAction {
+                        foregroundStatusRegistry.removeObserver(foregroundStatusObserver)
+                    }
+                )
+                emitter.onNext(foregroundStatusRegistry.isInForeground)
+            },
+            BackpressureStrategy.LATEST
+        )
     }
 
-    override fun ignoringBatteryOptimizations(): Boolean {
-        val intent = Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS)
-        return try {
+    override fun isIgnoringBatteryOptimizations(): Flowable<Boolean> {
+        return isAppInForeground()
+            .observeOn(AndroidSchedulers.mainThread())
+            // We are only interested in the fact that the user returns to the application
+            .filter { isInForeground -> isInForeground }
+            .map {
+                val powerManager = application.getSystemService(Context.POWER_SERVICE)
+                    as? PowerManager
+                    ?: return@map true
+                return@map powerManager.isIgnoringBatteryOptimizations(application.packageName)
+            }
+    }
+
+    override fun ignoringBatteryOptimizations(): Completable {
+        val source = Completable.fromAction {
+            val intent = Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS)
             application.startActivity(intent)
-            true
-        } catch (ignored: Throwable) {
-            false
         }
+        return source.observeOn(AndroidSchedulers.mainThread())
     }
 }
