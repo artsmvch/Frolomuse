@@ -7,6 +7,7 @@ import android.os.PowerManager
 import android.provider.Settings
 import com.frolo.core.ui.ApplicationWatcher
 import com.frolo.core.ui.application.ApplicationForegroundStatusRegistry
+import com.frolo.ui.ActivityUtils
 import io.reactivex.BackpressureStrategy
 import io.reactivex.Completable
 import io.reactivex.Flowable
@@ -52,7 +53,13 @@ class BatteryOptimizationSettingsImpl(
     override fun ignoringBatteryOptimizations(): Completable {
         val source = Completable.fromAction {
             val intent = Intent(Settings.ACTION_IGNORE_BATTERY_OPTIMIZATION_SETTINGS)
-            application.startActivity(intent)
+            val activity = ApplicationWatcher.foregroundActivity
+            if (activity != null && !ActivityUtils.isFinishingOrDestroyed(activity)) {
+                activity.startActivity(intent)
+            } else {
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                application.startActivity(intent)
+            }
         }
         return source.observeOn(AndroidSchedulers.mainThread())
     }
