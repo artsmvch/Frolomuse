@@ -5,16 +5,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.frolo.arch.support.EventLiveData
 import com.frolo.arch.support.call
-import com.frolo.muse.player.PlayerStateRestorer
-import com.frolo.muse.player.PlayerWrapper
 import com.frolo.muse.interactor.billing.PremiumManager
-import com.frolo.muse.interactor.feature.FeaturesUseCase
 import com.frolo.muse.interactor.firebase.SyncFirebaseMessagingTokenUseCase
 import com.frolo.muse.interactor.media.TransferPlaylistsUseCase
 import com.frolo.muse.interactor.media.shortcut.NavigateToMediaUseCase
 import com.frolo.muse.interactor.player.OpenAudioSourceUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.permission.PermissionChecker
+import com.frolo.muse.player.PlayerStateRestorer
+import com.frolo.muse.player.PlayerWrapper
 import com.frolo.muse.repository.AppearancePreferences
 import com.frolo.muse.repository.RemoteConfigRepository
 import com.frolo.muse.rx.SchedulerProvider
@@ -42,7 +41,6 @@ class MainViewModel @Inject constructor(
     private val navigateToMediaUseCase: NavigateToMediaUseCase,
     private val syncFirebaseMessagingTokenUseCase: SyncFirebaseMessagingTokenUseCase,
     private val transferPlaylistsUseCase: TransferPlaylistsUseCase,
-    private val featuresUseCase: FeaturesUseCase,
     private val premiumManager: PremiumManager,
     private val schedulerProvider: SchedulerProvider,
     private val permissionChecker: PermissionChecker,
@@ -138,10 +136,6 @@ class MainViewModel @Inject constructor(
     fun onFirstCreate() {
         // Syncing Firebase CM
         syncFirebaseMessagingTokenUseCase.sync()
-            .observeOn(schedulerProvider.main())
-            .subscribeFor {  }
-        // Syncing features
-        featuresUseCase.sync()
             .observeOn(schedulerProvider.main())
             .subscribeFor {  }
         // Syncing premium state
