@@ -147,8 +147,8 @@ class PlayerViewModel @Inject constructor(
                 paletteGenerator.generatePalette(song.toAudioSource())
                     .observeOn(schedulerProvider.main())
                     .doOnError { value = null }
-                    .subscribeFor(key = "generate_palette") { palette ->
-                        value = palette
+                    .subscribeFor(key = "generate_palette") { paletteOptional ->
+                        value = paletteOptional.value
                     }
             }
         }

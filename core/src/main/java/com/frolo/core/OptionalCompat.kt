@@ -1,4 +1,4 @@
-package com.frolo.muse
+package com.frolo.core
 
 
 data class OptionalCompat<T>(val value: T?) {

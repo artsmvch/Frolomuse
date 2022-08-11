@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.annotation.WorkerThread
 import androidx.palette.graphics.get
+import com.frolo.core.OptionalCompat
 import com.frolo.core.graphics.Palette
 import com.frolo.core.graphics.Swatch
 import com.frolo.muse.common.albumId
@@ -20,13 +21,22 @@ class PaletteGeneratorImpl(
     private val context: Context
 ) : PaletteGenerator {
 
-    override fun generatePalette(audioSource: AudioSource): Single<Palette> {
-        return Single.fromCallable { retrieveBitmap(audioSource) }
+    override fun generatePalette(audioSource: AudioSource): Single<OptionalCompat<Palette>> {
+        val bitmapSource = Single.fromCallable {
+            val bitmap = retrieveBitmap(audioSource)
+            OptionalCompat.of(bitmap)
+        }
+        return bitmapSource
             .subscribeOn(Schedulers.io())
             .observeOn(Schedulers.computation())
-            .map { bmp -> androidx.palette.graphics.Palette.from(bmp) }
-            .map { palette -> palette.generate() }
-            .map { palette -> PaletteImpl(palette) }
+            .map { bitmapOptional ->
+                val paletteImpl = bitmapOptional.value?.let { bmp ->
+                    val builder = androidx.palette.graphics.Palette.from(bmp)
+                    val palette = builder.generate()
+                    PaletteImpl(palette)
+                }
+                OptionalCompat.of(paletteImpl)
+            }
     }
 
     private fun resolveArtUri(audioSource: AudioSource): Uri {
@@ -35,10 +45,11 @@ class PaletteGeneratorImpl(
 
     @Throws(Exception::class)
     @WorkerThread
-    private fun retrieveBitmap(audioSource: AudioSource): Bitmap {
+    private fun retrieveBitmap(audioSource: AudioSource): Bitmap? {
         val uri: Uri = resolveArtUri(audioSource)
         val inputStream = context.contentResolver.openInputStream(uri)
-            ?: throw NullPointerException("No input stream: uri=$uri")
+            //?: throw NullPointerException("No input stream: uri=$uri")
+            ?: return null
         val bitmap = inputStream.use { stream ->
             val options = BitmapFactory.Options().apply {
                 outWidth = RESOURCE_SIZE
