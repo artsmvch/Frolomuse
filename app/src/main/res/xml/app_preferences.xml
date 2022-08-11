@@ -3,14 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:key="@string/preference_screen">
 
-    <androidx.preference.PreferenceCategory
-        android:title="@string/app_restrictions_and_limitations">
+<!--    <androidx.preference.PreferenceCategory-->
+<!--        android:title="@string/app_restrictions_and_limitations">-->
 
-        <Preference
-            android:key="ignore_battery_optimization_settings"
-            android:title="@string/ignore_battery_optimization_settings"
-            android:summary="@string/ignore_battery_optimization_settings_desc"/>
-    </androidx.preference.PreferenceCategory>
+<!--        <Preference-->
+<!--            android:key="ignore_battery_optimization_settings"-->
+<!--            android:title="@string/ignore_battery_optimization_settings"-->
+<!--            android:summary="@string/ignore_battery_optimization_settings_desc"/>-->
+<!--    </androidx.preference.PreferenceCategory>-->
 
     <androidx.preference.PreferenceCategory
         android:title="@string/playback_settings">
