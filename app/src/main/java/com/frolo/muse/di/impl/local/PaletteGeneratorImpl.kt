@@ -47,9 +47,11 @@ class PaletteGeneratorImpl(
     @WorkerThread
     private fun retrieveBitmap(audioSource: AudioSource): Bitmap? {
         val uri: Uri = resolveArtUri(audioSource)
-        val inputStream = context.contentResolver.openInputStream(uri)
-            //?: throw NullPointerException("No input stream: uri=$uri")
-            ?: return null
+        val inputStream = try {
+            context.contentResolver.openInputStream(uri)
+        } catch (ignored: Throwable) {
+            return null
+        }
         val bitmap = inputStream.use { stream ->
             val options = BitmapFactory.Options().apply {
                 outWidth = RESOURCE_SIZE
