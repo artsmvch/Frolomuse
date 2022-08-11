@@ -2,17 +2,16 @@ package com.frolo.muse.interactor.media
 
 import com.frolo.muse.Features
 import com.frolo.muse.common.toAudioSource
-import com.frolo.player.Player
 import com.frolo.muse.model.menu.ContextualMenu
 import com.frolo.muse.model.menu.OptionsMenu
-import com.frolo.music.repository.MediaRepository
 import com.frolo.muse.repository.RemoteConfigRepository
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.music.model.*
+import com.frolo.music.repository.MediaRepository
+import com.frolo.player.Player
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.functions.Function
-import java.util.concurrent.TimeUnit
 
 
 class GetMediaMenuUseCase<E: Media> constructor(
@@ -34,23 +33,13 @@ class GetMediaMenuUseCase<E: Media> constructor(
             Single.just(false to false)
         }
 
-        val isLyricsSupportedSource = if (item is Song) {
-            remoteConfigRepository.isLyricsViewerEnabled()
-                .timeout(500L, TimeUnit.MILLISECONDS, Single.just(false))
-                .subscribeOn(schedulerProvider.worker())
-                .onErrorReturn { false }
-        } else {
-            Single.just(false)
-        }
-
         val isShortcutSupportedSource = mediaRepository.isShortcutSupported(item)
                 .onErrorReturn { false }
 
         val zipper: Function<Array<*>, OptionsMenu<E>> =
             Function { arr ->
                 val favouriteOption = arr[0] as Pair<Boolean, Boolean>
-                val isLyricsSupported = arr[1] as Boolean
-                val isShortcutSupported = arr[2] as Boolean
+                val isShortcutSupported = arr[1] as Boolean
 
                 val editOptionAvailable = item is Song || item is Playlist
                         || (item is Album && Features.isAlbumEditorFeatureAvailable())
@@ -67,7 +56,7 @@ class GetMediaMenuUseCase<E: Media> constructor(
                     addToPlaylistOptionAvailable = item !is Playlist, // you can add everything to the playlist except the playlists themselves
                     editOptionAvailable = editOptionAvailable,
                     addToQueueOptionAvailable = true,
-                    viewLyricsOptionAvailable = isLyricsSupported,
+                    viewLyricsOptionAvailable = item is Song,
                     viewAlbumOptionAvailable = false,//item is Song,
                     viewArtistOptionAvailable = false,//item is Song || item is Album
                     setAsDefaultOptionAvailable = item is MyFile && item.isDirectory,
@@ -78,7 +67,7 @@ class GetMediaMenuUseCase<E: Media> constructor(
                 )
             }
 
-        return Single.zip(listOf(favouriteOptionSource, isLyricsSupportedSource, isShortcutSupportedSource), zipper)
+        return Single.zip(listOf(favouriteOptionSource, isShortcutSupportedSource), zipper)
                 .observeOn(schedulerProvider.main())
     }
 

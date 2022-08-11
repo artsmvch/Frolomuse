@@ -11,29 +11,29 @@ import com.frolo.core.graphics.Palette
 import com.frolo.muse.common.*
 import com.frolo.muse.di.ExecutorQualifier
 import com.frolo.muse.graphics.PaletteGenerator
-import com.frolo.muse.interactor.feature.FeaturesUseCase
-import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
 import com.frolo.muse.interactor.media.DeleteMediaUseCase
+import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
 import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
 import com.frolo.muse.interactor.player.ControlPlayerUseCase
 import com.frolo.muse.interactor.player.ResolveSoundWaveUseCase
-import com.frolo.muse.router.AppRouter
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.logPlayerOptionsMenuShown
 import com.frolo.muse.model.ABState
 import com.frolo.muse.model.event.DeletionConfirmation
 import com.frolo.muse.model.event.DeletionType
+import com.frolo.muse.model.sound.SoundWave
+import com.frolo.muse.router.AppRouter
+import com.frolo.muse.rx.SchedulerProvider
+import com.frolo.muse.ui.base.BaseViewModel
 import com.frolo.music.model.Album
 import com.frolo.music.model.Media
 import com.frolo.music.model.Song
-import com.frolo.muse.model.sound.SoundWave
-import com.frolo.muse.rx.SchedulerProvider
-import com.frolo.rx.flowable.doOnNextIndexed
-import com.frolo.muse.ui.base.BaseViewModel
 import com.frolo.player.AudioSource
 import com.frolo.player.AudioSourceQueue
 import com.frolo.player.Player
 import com.frolo.player.SimplePlayerObserver
+import com.frolo.rx.flowable.doOnNextIndexed
+import io.reactivex.Single
 import java.util.concurrent.Executor
 import javax.inject.Inject
 
@@ -48,7 +48,6 @@ class PlayerViewModel @Inject constructor(
     private val controlPlayerUseCase: ControlPlayerUseCase,
     private val resolveSoundWaveUseCase: ResolveSoundWaveUseCase,
     private val paletteGenerator: PaletteGenerator,
-    private val featuresUseCase: FeaturesUseCase,
     private val appRouter: AppRouter,
     private val eventLogger: EventLogger
 ): BaseViewModel(eventLogger) {
@@ -403,16 +402,13 @@ class PlayerViewModel @Inject constructor(
     }
 
     fun onOptionsMenuClicked() {
-        featuresUseCase.isLyricsViewerEnabled()
-            .map { isEnabled ->
-                PlayerOptionsMenu(
-                    isLyricsViewerEnabled = isEnabled
-                )
-            }
-            .onErrorReturnItem(PlayerOptionsMenu())
+        val playerOptionMenu = PlayerOptionsMenu(
+            isLyricsViewerEnabled = true
+        )
+        Single.just(playerOptionMenu)
             .observeOn(schedulerProvider.main())
             .doOnSuccess { eventLogger.logPlayerOptionsMenuShown() }
-            .subscribeFor(key = "check_features_for_options_menu") { menuOptions ->
+            .subscribeFor(key = "show_menu_options") { menuOptions ->
                 _showMenuOptionsEvent.value = menuOptions
             }
     }

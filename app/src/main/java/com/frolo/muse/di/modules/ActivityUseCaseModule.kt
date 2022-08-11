@@ -1,18 +1,19 @@
 package com.frolo.muse.di.modules
 
 import com.frolo.muse.di.ActivityScope
-import com.frolo.player.Player
-import com.frolo.muse.interactor.feature.FeaturesUseCase
-import com.frolo.muse.router.AppRouter
 import com.frolo.muse.interactor.media.*
 import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
 import com.frolo.muse.interactor.media.get.*
 import com.frolo.muse.interactor.player.ControlPlayerUseCase
 import com.frolo.muse.interactor.rate.RatingUseCase
-import com.frolo.muse.repository.*
+import com.frolo.muse.repository.Preferences
+import com.frolo.muse.repository.RatingPreferences
+import com.frolo.muse.repository.RemoteConfigRepository
+import com.frolo.muse.router.AppRouter
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.music.model.*
 import com.frolo.music.repository.*
+import com.frolo.player.Player
 import dagger.Module
 import dagger.Provides
 
@@ -702,20 +703,6 @@ abstract class ActivityUseCaseModule {
             songRepository: SongRepository
         ): DispatchSongPlayedUseCase {
             return DispatchSongPlayedUseCase(schedulerProvider, songRepository)
-        }
-
-        /* **********************************
-        * ******** Features Use Case ********
-        * ******************************** */
-        @Provides
-        @ActivityScope
-        @JvmStatic
-        fun provideFeaturesUseCase(
-            remoteConfigRepository: RemoteConfigRepository,
-            lyricsRemoteRepository: LyricsRemoteRepository,
-            schedulerProvider: SchedulerProvider
-        ): FeaturesUseCase {
-            return FeaturesUseCase(remoteConfigRepository, lyricsRemoteRepository, schedulerProvider)
         }
     }
 
