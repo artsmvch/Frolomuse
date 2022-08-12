@@ -1,5 +1,6 @@
-// Main app
-include ':app'
+// Apps
+include ':apps:frolomuse'
+include ':apps:frolo-tts'
 
 // Features
 include ':feature:onboarding'
