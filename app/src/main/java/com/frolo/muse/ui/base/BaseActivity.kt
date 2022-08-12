@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.Window
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.frolo.logger.api.Logger
 import com.frolo.muse.*
 import com.frolo.muse.di.applicationComponent
 import com.frolo.muse.model.ThemeUtils

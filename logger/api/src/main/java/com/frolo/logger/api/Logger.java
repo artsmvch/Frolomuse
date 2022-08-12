@@ -1,8 +1,8 @@
-package com.frolo.muse;
+package com.frolo.logger.api;
 
-import android.util.Log;
+//import android.util.Log;
 
-import com.google.firebase.crashlytics.FirebaseCrashlytics;
+//import com.google.firebase.crashlytics.FirebaseCrashlytics;
 
 
 /**
@@ -13,7 +13,7 @@ import com.google.firebase.crashlytics.FirebaseCrashlytics;
  */
 public final class Logger {
     private static final String TAG_PREFIX = "Frolomuse_";
-    private static final boolean ENABLED = BuildConfig.DEBUG;
+    private static final boolean ENABLED = false; //BuildConfig.DEBUG;
 
     private Logger() {
         throw new AssertionError("No instances!");
@@ -34,54 +34,54 @@ public final class Logger {
      * @param t error
      */
     private static void report(Throwable t) {
-        if (BuildConfig.GOOGLE_SERVICES_ENABLED) {
-            FirebaseCrashlytics.getInstance().recordException(t);
-        }
+//        if (BuildConfig.GOOGLE_SERVICES_ENABLED) {
+//            FirebaseCrashlytics.getInstance().recordException(t);
+//        }
     }
 
     public static void e(Throwable throwable) {
         report(throwable);
-        if (ENABLED) {
-            Log.e(buildDefaultTag(), throwable.getMessage(), throwable);
-        }
+//        if (ENABLED) {
+//            Log.e(buildDefaultTag(), throwable.getMessage(), throwable);
+//        }
     }
 
     public static void e(String key, Throwable throwable) {
         report(throwable);
-        if (ENABLED) {
-            Log.e(buildTag(key), throwable.getMessage(), throwable);
-        }
+//        if (ENABLED) {
+//            Log.e(buildTag(key), throwable.getMessage(), throwable);
+//        }
     }
 
     public static void e(String key, String msg) {
-        if (ENABLED) {
-            Log.e(buildTag(key), msg);
-        }
+//        if (ENABLED) {
+//            Log.e(buildTag(key), msg);
+//        }
     }
 
     public static void e(String key, String msg, Throwable throwable) {
-        if (ENABLED) {
-            Log.e(buildTag(key), msg, throwable);
-            e(throwable);
-        }
+//        if (ENABLED) {
+//            Log.e(buildTag(key), msg, throwable);
+//            e(throwable);
+//        }
     }
 
     public static void d(String key, String message) {
-        if (ENABLED) {
-            Log.d(buildTag(key), message);
-        }
+//        if (ENABLED) {
+//            Log.d(buildTag(key), message);
+//        }
     }
 
     public static void i(String key, String message) {
-        if (ENABLED) {
-            Log.i(buildTag(key), message);
-        }
+//        if (ENABLED) {
+//            Log.i(buildTag(key), message);
+//        }
     }
 
     public static void w(String key, String message) {
-        if (ENABLED) {
-            Log.w(buildTag(key), message);
-        }
+//        if (ENABLED) {
+//            Log.w(buildTag(key), message);
+//        }
     }
 
 }

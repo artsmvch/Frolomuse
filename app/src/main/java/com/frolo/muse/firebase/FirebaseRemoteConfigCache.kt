@@ -3,7 +3,7 @@ package com.frolo.muse.firebase
 import android.annotation.SuppressLint
 import androidx.annotation.GuardedBy
 import com.frolo.muse.BuildConfig
-import com.frolo.muse.Logger
+import com.frolo.logger.api.Logger
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigValue
 import com.google.firebase.remoteconfig.ktx.get
 import io.reactivex.Single

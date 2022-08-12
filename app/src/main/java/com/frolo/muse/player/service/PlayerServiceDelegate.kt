@@ -11,7 +11,7 @@ import android.support.v4.media.session.MediaSessionCompat
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import com.frolo.headset.createHeadsetHandler
-import com.frolo.muse.Logger
+import com.frolo.logger.api.Logger
 import com.frolo.muse.R
 import com.frolo.muse.common.*
 import com.frolo.muse.di.ServiceComponent

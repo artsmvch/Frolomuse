@@ -7,7 +7,7 @@ import android.text.TextUtils;
 
 import androidx.core.content.ContextCompat;
 
-import com.frolo.muse.Logger;
+import com.frolo.logger.api.Logger;
 
 import java.io.BufferedReader;
 import java.io.File;

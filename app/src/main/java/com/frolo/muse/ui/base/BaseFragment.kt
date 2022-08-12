@@ -20,7 +20,7 @@ import com.frolo.core.ui.fragment.WithCustomStatusBar
 import com.frolo.core.ui.fragment.WithCustomWindowInsets
 import com.frolo.debug.DebugUtils
 import com.frolo.muse.FrolomuseApp
-import com.frolo.muse.Logger
+import com.frolo.logger.api.Logger
 import com.frolo.muse.R
 import com.frolo.muse.di.activityComponent
 import com.frolo.muse.logger.EventLogger

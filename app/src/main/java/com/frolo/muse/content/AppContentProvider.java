@@ -15,7 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.frolo.muse.BuildConfig;
-import com.frolo.muse.Logger;
+import com.frolo.logger.api.Logger;
 
 /**
  * Content Provider of this application

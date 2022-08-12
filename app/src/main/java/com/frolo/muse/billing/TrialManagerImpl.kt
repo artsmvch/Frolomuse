@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import com.frolo.muse.BuildConfig
-import com.frolo.muse.Logger
+import com.frolo.logger.api.Logger
 import com.frolo.muse.firebase.FirebaseRemoteConfigUtil
 import com.frolo.rxpreference.RxPreference
 import io.reactivex.Completable

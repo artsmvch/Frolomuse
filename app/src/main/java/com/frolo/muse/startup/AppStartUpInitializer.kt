@@ -11,6 +11,7 @@ import androidx.annotation.UiThread
 import com.frolo.audiofx.AudioFxImpl
 import com.frolo.core.ui.ApplicationWatcher
 import com.frolo.debug.DebugUtils
+import com.frolo.logger.api.Logger
 import com.frolo.muse.*
 import com.frolo.muse.broadcast.Broadcasts
 import com.frolo.muse.di.ApplicationScope
@@ -23,7 +24,6 @@ import com.frolo.muse.memory.MemoryWatcherRegistryImpl
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.ui.base.BaseActivity
 import com.frolo.performance.anr.AnrDetectors
-import com.frolo.performance.anr.OnAnrDetectedListener
 import com.frolo.performance.coldstart.ColdStartMeasurer
 import com.frolo.player.PlayerImpl
 import com.frolo.threads.HandlerExecutor

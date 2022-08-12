@@ -36,7 +36,7 @@ import com.frolo.core.ui.systembars.SystemBarsController
 import com.frolo.core.ui.systembars.defaultSystemBarsHost
 import com.frolo.core.ui.toast.toastManager
 import com.frolo.debug.DebugUtils
-import com.frolo.muse.Logger
+import com.frolo.logger.api.Logger
 import com.frolo.muse.R
 import com.frolo.muse.android.ViewAppSettingsIntent
 import com.frolo.muse.android.getIntExtraOrNull

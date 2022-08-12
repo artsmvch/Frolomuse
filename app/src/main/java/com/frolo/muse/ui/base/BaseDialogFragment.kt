@@ -15,7 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.frolo.muse.FrolomuseApp
 import com.frolo.muse.R
-import com.frolo.muse.Logger
+import com.frolo.logger.api.Logger
 import com.frolo.muse.di.activityComponent
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.repository.Preferences

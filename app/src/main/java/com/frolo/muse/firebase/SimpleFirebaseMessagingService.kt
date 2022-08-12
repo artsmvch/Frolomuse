@@ -12,7 +12,7 @@ import androidx.annotation.MainThread
 import androidx.annotation.RequiresApi
 import androidx.annotation.WorkerThread
 import androidx.core.app.NotificationCompat
-import com.frolo.muse.Logger
+import com.frolo.logger.api.Logger
 import com.frolo.muse.R
 import com.frolo.muse.android.ViewAppInStoreIntent
 import com.frolo.muse.android.canStartActivity

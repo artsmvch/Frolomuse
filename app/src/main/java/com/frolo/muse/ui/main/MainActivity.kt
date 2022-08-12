@@ -17,7 +17,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import com.frolo.arch.support.observeNonNull
 import com.frolo.core.ui.systembars.defaultSystemBarsHost
-import com.frolo.muse.Logger
 import com.frolo.muse.R
 import com.frolo.muse.di.ActivityComponent
 import com.frolo.muse.di.ActivityComponentHolder

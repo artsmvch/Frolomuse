@@ -8,7 +8,7 @@ import com.frolo.audiofx.AudioFxImpl
 import com.frolo.audiofx.applicable.AudioFxApplicable
 import com.frolo.debug.DebugUtils
 import com.frolo.muse.BuildInfo
-import com.frolo.muse.Logger
+import com.frolo.logger.api.Logger
 import com.frolo.muse.player.service.audiofx.DefaultAudioFxErrorHandler
 import com.frolo.muse.player.service.observers.*
 import com.frolo.muse.model.playback.PlaybackFadingParams

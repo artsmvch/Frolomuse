@@ -196,6 +196,10 @@ dependencies {
     // Custom drawables
     implementation project(path: ':custom-drawable:squircle')
 
+    // Logger
+    implementation project(path: ':logger:api')
+    implementation project(path: ':logger:impl')
+
     // Utils
     implementation project(path: ':utils:debug-common')
     implementation project(path: ':utils:threads-common')

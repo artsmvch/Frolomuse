@@ -35,6 +35,10 @@ include ':performance:coldstart'
 include ':performance:anr'
 include ':performance:scroll'
 
+// Loggers
+include ':logger:api'
+include ':logger:impl'
+
 // Utils
 include ':utils:debug-common'
 include ':utils:threads-common'

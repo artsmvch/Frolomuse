@@ -20,6 +20,7 @@ import com.frolo.arch.support.observeNonNull
 import com.frolo.audiofx.Preset
 import com.frolo.audiofx.Reverb
 import com.frolo.core.ui.glide.GlideOptions
+import com.frolo.logger.api.Logger
 import com.frolo.muse.ui.Snapshots
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.base.FragmentContentInsetsListener

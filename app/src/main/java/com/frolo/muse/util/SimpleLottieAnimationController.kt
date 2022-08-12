@@ -17,7 +17,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import com.airbnb.lottie.LottieAnimationView
-import com.frolo.muse.Logger
+import com.frolo.logger.api.Logger
 import java.lang.ref.WeakReference
 
 
