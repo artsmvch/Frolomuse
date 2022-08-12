@@ -31,4 +31,7 @@ android {
 
 dependencies {
     api project(path: ':logger:api')
+
+    implementation platform(deps.firebase.bom)
+    implementation deps.firebase.crashlytics
 }
