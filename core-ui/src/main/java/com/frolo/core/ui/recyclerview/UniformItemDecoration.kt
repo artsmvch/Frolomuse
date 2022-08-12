@@ -1,4 +1,4 @@
-package com.frolo.muse.views.decorations
+package com.frolo.core.ui.recyclerview
 
 import android.graphics.Rect
 import android.view.View
