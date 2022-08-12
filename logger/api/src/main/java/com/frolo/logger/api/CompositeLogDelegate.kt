@@ -1,6 +1,5 @@
 package com.frolo.logger.api
 
-
 class CompositeLogDelegate(
     private val delegates: Collection<LogDelegate>
 ): LogDelegate {

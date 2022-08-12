@@ -1,6 +1,9 @@
 package com.frolo.logger.api
 
-
+/**
+ * Logs messages and errors for all [LogLevel] levels. Logging is delegated to a [LogDelegate]
+ * defined in [Logger.params] so be sure to initialize the logger using the [Logger.init] method.
+ */
 object Logger {
     private const val DEFAULT_TAG = "<NULL>"
     @Volatile
