@@ -23,6 +23,7 @@
         android:theme="@style/Base.AppTheme.Launch"
         android:largeHeap="true"
         android:requestLegacyExternalStorage="true"
+        android:appCategory="audio"
         android:networkSecurityConfig="@xml/network_security_config"
         tools:replace="android:allowBackup">
 
