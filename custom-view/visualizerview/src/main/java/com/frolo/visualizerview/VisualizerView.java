@@ -1,4 +1,4 @@
-package com.frolo.muse.views.visualizer;
+package com.frolo.visualizerview;
 
 import android.annotation.TargetApi;
 import android.content.Context;

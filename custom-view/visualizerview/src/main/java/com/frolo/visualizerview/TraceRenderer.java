@@ -1,4 +1,4 @@
-package com.frolo.muse.views.visualizer;
+package com.frolo.visualizerview;
 
 import android.graphics.Canvas;
 import android.graphics.Color;

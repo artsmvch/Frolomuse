@@ -54,6 +54,7 @@ include ':audio-libs:ringdroid'
 
 // Custom views
 include ':custom-view:equalizerview'
+include ':custom-view:visualizerview'
 include ':custom-view:mediabutton'
 
 // Custom drawable
