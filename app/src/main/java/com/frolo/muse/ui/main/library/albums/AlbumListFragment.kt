@@ -18,7 +18,7 @@ import com.frolo.muse.ui.ShotLayoutAnimationController
 import com.frolo.muse.ui.main.addGridItemMargins
 import com.frolo.muse.ui.main.addLinearItemMargins
 import com.frolo.muse.ui.main.library.base.SimpleMediaCollectionFragment
-import com.frolo.muse.views.recyclerview.FlexibleGridLayoutManager
+import com.frolo.core.ui.recyclerview.FlexibleGridLayoutManager
 
 
 class AlbumListFragment: SimpleMediaCollectionFragment<Album>() {

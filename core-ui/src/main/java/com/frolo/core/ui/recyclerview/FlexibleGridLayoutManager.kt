@@ -1,4 +1,4 @@
-package com.frolo.muse.views.recyclerview
+package com.frolo.core.ui.recyclerview
 
 import android.content.Context
 import android.view.View
@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
 
-internal class FlexibleGridLayoutManager(
+class FlexibleGridLayoutManager(
     context: Context,
     orientation: Int,
     reverseLayout: Boolean,

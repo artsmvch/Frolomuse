@@ -1,4 +1,4 @@
-package com.frolo.muse.views.recyclerview
+package com.frolo.core.ui.recyclerview
 
 import android.view.View
 import androidx.annotation.Px
@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 
 
-internal class FlexibleStaggeredLayoutManager(
+class FlexibleStaggeredLayoutManager(
     orientation: Int,
     val minSpanCount: Int = SPAN_COUNT_NOT_SET,
     @Px val preferredItemSize: Int = ITEM_SIZE_NOT_SET

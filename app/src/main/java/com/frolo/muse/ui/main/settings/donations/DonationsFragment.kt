@@ -21,7 +21,7 @@ import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.base.FragmentContentInsetsListener
 import com.frolo.muse.ui.base.setupNavigation
 import com.frolo.muse.util.SimpleLottieAnimationController
-import com.frolo.muse.views.recyclerview.FlexibleStaggeredLayoutManager
+import com.frolo.core.ui.recyclerview.FlexibleStaggeredLayoutManager
 import com.google.android.material.appbar.AppBarLayout
 import kotlinx.android.synthetic.main.fragment_donations.*
 

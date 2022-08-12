@@ -1,4 +1,4 @@
-package com.frolo.muse.views.recyclerview
+package com.frolo.core.ui.recyclerview
 
 import androidx.annotation.Px
 import androidx.recyclerview.widget.GridLayoutManager
