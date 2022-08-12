@@ -13,7 +13,7 @@ import com.frolo.arch.support.observeNonNull
 import com.frolo.muse.model.menu.ContextualMenu
 import com.frolo.muse.model.menu.OptionsMenu
 import com.frolo.muse.model.menu.SortOrderMenu
-import com.frolo.muse.ui.ScrolledToTop
+import com.frolo.core.ui.marker.ScrolledToTop
 import com.frolo.muse.ui.base.OnBackPressedHandler
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.base.RESPermissionBus
@@ -24,8 +24,8 @@ import com.frolo.ui.FragmentUtils
 
 
 abstract class AbsMediaCollectionFragment <E: Media>: BaseFragment(),
-        OnBackPressedHandler,
-        ScrolledToTop {
+    OnBackPressedHandler,
+    ScrolledToTop {
 
     // Options menu
     private var mediaOptionsDialog: MediaOptionsDialog<E>? = null

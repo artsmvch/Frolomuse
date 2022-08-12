@@ -13,7 +13,7 @@ import com.frolo.muse.R
 import com.frolo.arch.support.observe
 import com.frolo.arch.support.observeNonNull
 import com.frolo.music.model.MediaBucket
-import com.frolo.muse.ui.ScrolledToTop
+import com.frolo.core.ui.marker.ScrolledToTop
 import com.frolo.muse.ui.ShotLayoutAnimationController
 import com.frolo.muse.ui.base.*
 import com.frolo.muse.ui.main.addLinearItemMargins
@@ -25,10 +25,10 @@ import kotlinx.android.synthetic.main.fragment_base_list.*
 
 
 class AudioBucketListFragment : BaseFragment(),
-        BucketCallback,
-        OnBackPressedHandler,
-        FragmentContentInsetsListener,
-        ScrolledToTop {
+    BucketCallback,
+    OnBackPressedHandler,
+    FragmentContentInsetsListener,
+    ScrolledToTop {
 
     private val viewModel: AudioBucketListViewModel by viewModel()
 

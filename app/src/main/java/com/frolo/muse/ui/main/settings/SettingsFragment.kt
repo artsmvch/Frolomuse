@@ -19,6 +19,7 @@ import com.frolo.muse.Features
 import com.frolo.muse.R
 import com.frolo.arch.support.observe
 import com.frolo.arch.support.observeNonNull
+import com.frolo.core.ui.marker.ScrolledToTop
 import com.frolo.muse.di.activityComponent
 import com.frolo.muse.logger.*
 import com.frolo.mediascan.MediaScanService
@@ -43,9 +44,9 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 
 class SettingsFragment : PreferenceFragmentCompat(),
-        SleepTimerDialog.OnTimeSelectedListener,
-        FragmentContentInsetsListener,
-        ScrolledToTop {
+    SleepTimerDialog.OnTimeSelectedListener,
+    FragmentContentInsetsListener,
+    ScrolledToTop {
 
     private val schedulerProvider: SchedulerProvider by lazy {
         activityComponent.provideSchedulerProvider()

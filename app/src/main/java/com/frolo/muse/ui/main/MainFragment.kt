@@ -46,9 +46,9 @@ import com.frolo.muse.di.activityComponent
 import com.frolo.muse.rating.RatingFragment
 import com.frolo.muse.router.AppRouter
 import com.frolo.muse.router.AppRouterStub
-import com.frolo.muse.ui.IntentHandler
+import com.frolo.core.ui.marker.IntentHandler
 import com.frolo.muse.ui.PlayerHostViewModel
-import com.frolo.muse.ui.ScrolledToTop
+import com.frolo.core.ui.marker.ScrolledToTop
 import com.frolo.muse.ui.base.*
 import com.frolo.muse.ui.main.audiofx.AudioFxFragment
 import com.frolo.muse.ui.main.library.LibraryFragment

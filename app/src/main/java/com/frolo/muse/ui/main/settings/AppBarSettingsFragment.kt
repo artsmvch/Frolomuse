@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.frolo.ui.FragmentUtils
 import com.frolo.muse.R
-import com.frolo.muse.ui.ScrolledToTop
+import com.frolo.core.ui.marker.ScrolledToTop
 import com.frolo.muse.ui.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_appbar_settings.*
 

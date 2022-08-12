@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowInsets
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.WindowInsetsCompat
@@ -19,7 +18,7 @@ import com.frolo.debug.DebugUtils
 import com.frolo.muse.R
 import com.frolo.muse.model.Library
 import com.frolo.muse.repository.Preferences
-import com.frolo.muse.ui.ScrolledToTop
+import com.frolo.core.ui.marker.ScrolledToTop
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.base.FragmentContentInsetsListener
 import com.frolo.muse.ui.base.OnBackPressedHandler
@@ -31,10 +30,10 @@ import kotlinx.android.synthetic.main.fragment_library.*
 
 
 class LibraryFragment: BaseFragment(),
-        OnBackPressedHandler,
-        FragmentContentInsetsListener,
-        ScrolledToTop,
-        WithCustomStatusBar {
+    OnBackPressedHandler,
+    FragmentContentInsetsListener,
+    ScrolledToTop,
+    WithCustomStatusBar {
 
     private val preferences: Preferences by prefs()
 

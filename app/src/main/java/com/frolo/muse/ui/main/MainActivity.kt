@@ -26,7 +26,7 @@ import com.frolo.muse.onboarding.Onboarding
 import com.frolo.muse.router.AppRouter
 import com.frolo.muse.router.AppRouterDelegate
 import com.frolo.muse.router.AppRouterStub
-import com.frolo.muse.ui.ThemeHandler
+import com.frolo.core.ui.marker.ThemeHandler
 import com.frolo.muse.ui.base.BaseActivity
 import com.frolo.muse.ui.base.SimpleFragmentNavigator
 import com.frolo.music.model.*

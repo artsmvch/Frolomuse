@@ -18,7 +18,7 @@ import com.frolo.arch.support.observe
 import com.frolo.arch.support.observeNonNull
 import com.frolo.muse.model.Theme
 import com.frolo.muse.repository.Preferences
-import com.frolo.muse.ui.ThemeHandler
+import com.frolo.core.ui.marker.ThemeHandler
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.base.FragmentContentInsetsListener
 import com.frolo.muse.ui.base.setupNavigation
@@ -27,7 +27,9 @@ import kotlinx.android.synthetic.main.include_theme_pager.*
 import kotlinx.android.synthetic.main.include_theme_pager.view.*
 
 
-class ThemeChooserFragment : BaseFragment(), FragmentContentInsetsListener, ThemePageCallback {
+class ThemeChooserFragment : BaseFragment(),
+    FragmentContentInsetsListener,
+    ThemePageCallback {
 
     private val preferences: Preferences by prefs()
 
