@@ -6,13 +6,13 @@ class CompositeLogDelegate(
 ): LogDelegate {
     constructor(vararg delegates: LogDelegate): this(delegates.toList())
 
-    override fun log(tag: String, level: LogLevel, msg: String, e: Throwable) {
+    override fun log(tag: String, level: LogLevel, msg: String?, e: Throwable?) {
         delegates.forEach { logDelegate ->
             logDelegate.log(tag, level, msg, e)
         }
     }
 
-    override fun log(tag: String, level: LogLevel, msg: String) {
+    override fun log(tag: String, level: LogLevel, msg: String?) {
         delegates.forEach { logDelegate ->
             logDelegate.log(tag, level, msg)
         }
