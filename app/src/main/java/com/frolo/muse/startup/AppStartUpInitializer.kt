@@ -11,7 +11,12 @@ import androidx.annotation.UiThread
 import com.frolo.audiofx.AudioFxImpl
 import com.frolo.core.ui.ApplicationWatcher
 import com.frolo.debug.DebugUtils
+import com.frolo.logger.api.CompositeLogDelegate
+import com.frolo.logger.api.LogDelegate
 import com.frolo.logger.api.Logger
+import com.frolo.logger.api.LoggerParams
+import com.frolo.logger.impl.ConsoleLogDelegate
+import com.frolo.logger.impl.FirebaseLogDelegate
 import com.frolo.muse.*
 import com.frolo.muse.broadcast.Broadcasts
 import com.frolo.muse.di.ApplicationScope
@@ -89,6 +94,7 @@ class AppStartUpInitializer @Inject constructor(
         application.registerActivityLifecycleCallbacks(activityLifecycleCallbacks)
         setupDebugMode()
         setupStrictMode()
+        setupLogger()
         setupPerformanceMetrics()
         setupRxPlugins()
         setupFirebase()
@@ -149,6 +155,20 @@ class AppStartUpInitializer @Inject constructor(
     }
 
     private fun showViolation(violation: Violation?) {
+    }
+
+    private fun setupLogger() {
+        val logDelegates = ArrayList<LogDelegate>(2)
+        logDelegates.add(FirebaseLogDelegate())
+        if (BuildInfo.isDebug()) {
+            logDelegates.add(ConsoleLogDelegate())
+        }
+        val loggerParams = LoggerParams(
+            logDelegate = CompositeLogDelegate(
+                delegates = logDelegates
+            )
+        )
+        Logger.init(loggerParams)
     }
 
     private fun setupPerformanceMetrics() {
