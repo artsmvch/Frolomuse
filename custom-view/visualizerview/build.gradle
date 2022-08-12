@@ -28,4 +28,6 @@ android {
 }
 
 dependencies {
+    implementation deps.support.annotation
+    implementation deps.support.core
 }
