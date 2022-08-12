@@ -14,14 +14,16 @@ import androidx.annotation.Nullable;
 
 
 /**
- * Visualizer View draws byte data that comes from an audio input;
- * The view delegates drawing to the {@link Renderer};
- * {@link Renderer} renders waveform or fft as well;
+ * VisualizerView draws sound wave data represented by an array of bytes.
+ * Usually works in conjunction with {@link android.media.audiofx.Visualizer}.
+ * The rendering method is determined by {@link Renderer}.
  */
 public class VisualizerView extends View {
     private static final String TAG = VisualizerView.class.getSimpleName();
 
-    private Rect mRect = new Rect();
+    private static final int DEFAULT_WIDTH = 200;
+    private static final int DEFAULT_HEIGHT = 120;
+
     private Renderer renderer;
     private byte[] data;
 
@@ -47,28 +49,34 @@ public class VisualizerView extends View {
         super(context, attrs, defStyleAttr, defStyleRes);
     }
 
+    private float convertDpToPixel(float dp){
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+        return dp * ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+    }
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        Context context = getContext();
-        final int defWidth = (int) convertDpToPixel(100);
-        final int defHeight = (int) convertDpToPixel(100);
-        final int measuredWidth = resolveSizeAndState(defWidth, widthMeasureSpec, 0);
-        final int measuredHeight = resolveSizeAndState(defHeight, heightMeasureSpec, 0);
+        final int defaultWidth = (int) convertDpToPixel(DEFAULT_WIDTH);
+        final int defaultHeight = (int) convertDpToPixel(DEFAULT_HEIGHT);
+        final int measuredWidth = resolveSizeAndState(defaultWidth, widthMeasureSpec, 0);
+        final int measuredHeight = resolveSizeAndState(defaultHeight, heightMeasureSpec, 0);
         setMeasuredDimension(measuredWidth, measuredHeight);
-
-        mRect.set(0, 0, getMeasuredWidth(), getMeasuredHeight());
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-        // if there is renderer and data to be rendered
-        if (renderer != null && data != null)
+        if (renderer != null && data != null) {
             renderer.render(canvas, data);
+        }
     }
 
     public void setData(byte[] data) {
-        this.data = new byte[data.length];
-        System.arraycopy(data, 0, this.data, 0, data.length);
+        if (data != null) {
+            this.data = new byte[data.length];
+            System.arraycopy(data, 0, this.data, 0, data.length);
+        } else {
+            this.data = null;
+        }
         invalidate();
     }
 
@@ -78,21 +86,16 @@ public class VisualizerView extends View {
 
     public void setRenderer(Renderer renderer) {
         this.renderer = renderer;
+        invalidate();
     }
 
-    // Delegate to render data (waveform or fft)
     public interface Renderer {
         /**
-         * Draws wave data on canvas;
-         * The data is passed from the buffer so the renderer can hold reference to the data;
-         * @param canvas where the drawing is happening;
-         * @param data data from the audio source;
+         * Draws sound wave data on a canvas. The data is passed from the buffer
+         * so the renderer can hold reference to it (?).
+         * @param canvas canvas
+         * @param data to draw
          */
         void render(@NonNull Canvas canvas, @NonNull byte[] data);
-    }
-
-    private float convertDpToPixel(float dp){
-        DisplayMetrics metrics = getResources().getDisplayMetrics();
-        return dp * ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
     }
 }
