@@ -17,11 +17,7 @@ object Logger {
 
     private fun buildTag(prefix: String?, tag: String?): String {
         val tag1 = prefix.orEmpty() + tag.orEmpty()
-        return if (tag1.isNotBlank()) {
-            tag1
-        } else {
-            DEFAULT_TAG
-        }
+        return tag1.ifBlank { DEFAULT_TAG }
     }
 
     private fun logImpl(tag: String?, level: LogLevel, msg: String?, e: Throwable?) {
