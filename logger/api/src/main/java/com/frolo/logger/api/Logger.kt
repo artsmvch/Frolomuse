@@ -11,10 +11,6 @@ object Logger {
         this.params = params
     }
 
-    private inline fun useParams(action: (LoggerParams) -> Unit) {
-        this.params?.also(action)
-    }
-
     private fun buildTag(prefix: String?, tag: String?): String {
         val tag1 = prefix.orEmpty() + tag.orEmpty()
         return tag1.ifBlank { DEFAULT_TAG }
