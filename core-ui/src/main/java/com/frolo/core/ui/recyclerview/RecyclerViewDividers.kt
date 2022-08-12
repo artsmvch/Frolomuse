@@ -1,4 +1,4 @@
-package com.frolo.muse.views
+package com.frolo.core.ui.recyclerview
 
 import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager

@@ -16,7 +16,7 @@ import com.frolo.muse.ui.main.library.base.AbsMediaCollectionFragment
 import com.frolo.muse.ui.main.library.base.BaseAdapter
 import com.frolo.muse.ui.main.library.search.adapter.MediaAdapter
 import com.frolo.muse.ui.smoothScrollToTop
-import com.frolo.muse.views.hideKeyboardOnScroll
+import com.frolo.core.ui.hideKeyboardOnScroll
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration
 import kotlinx.android.synthetic.main.fragment_base_list.*
 import kotlinx.android.synthetic.main.fragment_search.*

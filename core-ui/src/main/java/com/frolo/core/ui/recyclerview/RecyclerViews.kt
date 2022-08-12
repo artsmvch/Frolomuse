@@ -1,4 +1,4 @@
-package com.frolo.muse.views
+package com.frolo.core.ui
 
 import android.content.Context
 import androidx.annotation.Px
@@ -15,13 +15,13 @@ private fun getDefaultScrollThresholdToHideKeyboard(context: Context): Int {
 }
 
 fun RecyclerView.hideKeyboardOnScroll(
-        @Px threshold: Int = getDefaultScrollThresholdToHideKeyboard(context)) {
+    @Px threshold: Int = getDefaultScrollThresholdToHideKeyboard(context)
+) {
     this.hideKeyboardOnScroll(threshold, threshold)
 }
 
 fun RecyclerView.hideKeyboardOnScroll(@Px thresholdX: Int, @Px thresholdY: Int) {
     val listener = object : RecyclerView.OnScrollListener() {
-
         var totalDx: Int = 0
         var totalDy: Int = 0
 
@@ -39,8 +39,6 @@ fun RecyclerView.hideKeyboardOnScroll(@Px thresholdX: Int, @Px thresholdY: Int) 
                 KeyboardUtils.hideFrom(this@hideKeyboardOnScroll)
             }
         }
-
     }
-
     addOnScrollListener(listener)
 }

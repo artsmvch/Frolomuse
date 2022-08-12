@@ -20,7 +20,7 @@ import com.frolo.muse.billing.TrialStatus
 import com.frolo.muse.di.activityComponent
 import com.frolo.muse.ui.base.BaseDialogFragment
 import com.frolo.muse.ui.base.tryHostAs
-import com.frolo.muse.views.RecyclerViewDividers
+import com.frolo.core.ui.recyclerview.RecyclerViewDividers
 import kotlinx.android.synthetic.main.dialog_buy_premium.*
 import java.util.concurrent.TimeUnit
 
