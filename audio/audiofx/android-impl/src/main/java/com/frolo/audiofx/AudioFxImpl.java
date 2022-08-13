@@ -223,11 +223,10 @@ public final class AudioFxImpl implements AudioFxApplicable {
             if (equalizer != null) {
                 return equalizer.getBandLevelRange()[0];
             }
-            return 0;
         } catch (Throwable t) {
             report(t);
-            return 0;
         }
+        return Defaults.DEFAULT_MIN_BAND_LEVEL_RANGE;
     }
 
     @Override
@@ -237,11 +236,10 @@ public final class AudioFxImpl implements AudioFxApplicable {
             if (equalizer != null) {
                 return equalizer.getBandLevelRange()[1];
             }
-            return 0;
         } catch (Throwable t) {
             report(t);
-            return 0;
         }
+        return Defaults.DEFAULT_MAX_BAND_LEVEL_RANGE;
     }
 
     @Override
@@ -251,26 +249,10 @@ public final class AudioFxImpl implements AudioFxApplicable {
             if (equalizer != null) {
                 return equalizer.getBandFreqRange(band);
             }
-            return getDefaultBandFreqRange(band);
         } catch (Throwable t) {
             report(t);
-            return getDefaultBandFreqRange(band);
         }
-    }
-
-    private int[] getDefaultBandFreqRange(short band) {
-        switch (band) {
-            case 0:
-                return new int[]{30_000, 120_000};
-            case 1:
-                return new int[]{120_001, 460_000};
-            case 2:
-                return new int[]{460_001, 1_800_00};
-            case 3:
-                return new int[]{1_800_001, 7_000_000};
-            default:
-                return new int[]{7_000_000, 20_000_000};
-        }
+        return Defaults.getDefaultBandFreqRange(band);
     }
 
     @Override
@@ -280,11 +262,10 @@ public final class AudioFxImpl implements AudioFxApplicable {
             if (equalizer != null) {
                 return equalizer.getNumberOfBands();
             }
-            return 0;
         } catch (Throwable t) {
             report(t);
-            return 0;
         }
+        return Defaults.DEFAULT_NUMBER_OF_BANDS;
     }
 
     @Override
@@ -294,11 +275,14 @@ public final class AudioFxImpl implements AudioFxApplicable {
             if (equalizer != null) {
                 return equalizer.getBandLevel(band);
             }
-            return 0;
+            short[] levels = mPersistence.getLastBandLevels();
+            if (levels != null && band < levels.length) {
+                return levels[band];
+            }
         } catch (Throwable t) {
             report(t);
-            return 0;
         }
+        return Defaults.DEFAULT_BAND_LEVEL;
     }
 
     @Override
