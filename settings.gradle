@@ -71,3 +71,4 @@ include ':arch-support'
 
 // Test tools
 include ':test-tools'
+include ':audio:audiofx2:api'
