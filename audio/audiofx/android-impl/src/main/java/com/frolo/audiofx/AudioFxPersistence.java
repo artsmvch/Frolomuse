@@ -117,14 +117,18 @@ final class AudioFxPersistence {
 
     synchronized void saveBandLevel(short band, short level) {
         checkStateRestored();
-
-        if (mBandLevels == null) mBandLevels = new short[5];
-        // TODO: expand the array if needed
+        if (mBandLevels == null || mBandLevels.length <= band) {
+            int newLength = Math.max(band + 1, 5);
+            short[] newLevels = new short[newLength];
+            if (mBandLevels != null) {
+                System.arraycopy(mBandLevels,  0, newLevels, 0, newLength);
+            }
+            mBandLevels = newLevels;
+        }
         if (band >= 0 && band < mBandLevels.length) {
             mBandLevels[band] = level;
         }
-
-        // TODO: persist changes in the preferences
+        mPrefs.edit().putString(KEY_EQ_BAND_LEVELS, Serialization.trySerializeShorts(mBandLevels)).apply();
     }
 
     @Nullable
@@ -136,8 +140,7 @@ final class AudioFxPersistence {
     synchronized void saveLastNativePreset(NativePreset preset) {
         checkStateRestored();
         mLastNativePreset = preset;
-
-        // TODO: persist changes in the preferences
+        mPrefs.edit().putString(KEY_EQ_LAST_NATIVE_PRESET, Serialization.trySerializeNativePreset(mLastNativePreset)).apply();
     }
 
     @Nullable
@@ -149,8 +152,7 @@ final class AudioFxPersistence {
     synchronized void saveLastCustomPreset(CustomPreset preset) {
         checkStateRestored();
         mLastCustomPreset = preset;
-
-        // TODO: persist changes in the preferences
+        mPrefs.edit().putString(KEY_EQ_LAST_CUSTOM_PRESET, Serialization.trySerializeCustomPreset(mLastCustomPreset)).apply();
     }
 
     synchronized short getBassStrength() {

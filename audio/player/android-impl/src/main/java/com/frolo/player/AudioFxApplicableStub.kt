@@ -10,7 +10,8 @@ internal object AudioFxApplicableStub :
     AudioFx by AudioFxStub,
     AudioFxApplicable {
 
-    override fun apply(engine: MediaPlayer) = Unit
+    override fun applyTo(audioSessionId: Int) = Unit
+    override fun applyTo(engine: MediaPlayer) = Unit
     override fun release() = Unit
 
 }
