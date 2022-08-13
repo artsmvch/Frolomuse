@@ -1,6 +1,7 @@
-package com.frolo.audiofx
+package com.frolo.audiofx.controlpanel
 
 import androidx.lifecycle.ViewModel
+import com.frolo.audiofx.AudioFx
 
 
 class AudioFxControlPanelViewModel(
