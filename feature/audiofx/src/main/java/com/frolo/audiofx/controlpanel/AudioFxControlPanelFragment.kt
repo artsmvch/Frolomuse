@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProviders
-import com.frolo.audiofx.R
+import com.frolo.audiofx.ui.R
 
 class AudioFxControlPanelFragment : Fragment() {
 
