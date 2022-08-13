@@ -5,6 +5,7 @@ include ':apps:frolo-tts'
 
 // Features
 include ':feature:onboarding'
+include ':feature:audiofx'
 include ':feature:remote-search'
 
 // Core
