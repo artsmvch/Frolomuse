@@ -689,7 +689,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
                                 newEngine.prepare();
 
                                 mIsPreparedFlag = true;
-                                mAudioFx.apply(newEngine);
+                                mAudioFx.applyTo(newEngine);
                                 mObserverRegistry.dispatchPrepared(newEngine.getDuration(), 0);
                             } catch (Throwable error) {
                                 report(error);
@@ -892,7 +892,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
 
                         mIsPreparedFlag = true;
 
-                        mAudioFx.apply(engine);
+                        mAudioFx.applyTo(engine);
 
                         if (playbackPosition > 0) {
                             engine.seekTo(playbackPosition);

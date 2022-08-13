@@ -15,9 +15,14 @@ import com.frolo.audiofx.AudioFx;
 public interface AudioFxApplicable extends AudioFx {
 
     /**
+     * Applies all audio effects to the given audio session ID.
+     */
+    void applyTo(int audioSessionId);
+
+    /**
      * Applies all audio effects to the given MediaPlayer.
      */
-    void apply(@NonNull MediaPlayer engine);
+    void applyTo(@NonNull MediaPlayer engine);
 
     /**
      * Release all the applied audio effects.

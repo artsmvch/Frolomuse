@@ -28,16 +28,16 @@ import com.frolo.audiofx.android.BuildConfig;
  */
 public final class AudioFxImpl implements AudioFxApplicable {
 
-    private static final String LOG_TAG = "AudioFx_Impl";
+    private static final String LOG_TAG = "AudioFxImpl";
 
     private static final boolean DEBUG = BuildConfig.DEBUG;
 
     /**
-     * If this flag is set to true, then, when {@link AudioFxApplicable#apply(MediaPlayer)} is called,
+     * If this flag is set to true, then, when {@link AudioFxApplicable#applyTo} is called,
      * the AudioFx can omit the initialization of all audio effects if the audio session does NOT change.
      *
      * If this flag is set to false, then the AudioFx initialize all audio effects
-     * every time {@link AudioFxApplicable#apply(MediaPlayer)} is called.
+     * every time {@link AudioFxApplicable#applyTo} is called.
      *
      * Be careful by settings this to false, because it may be not an optimal solution.
      */
@@ -67,7 +67,7 @@ public final class AudioFxImpl implements AudioFxApplicable {
     private final Context mContext;
 
     /**
-     * Remember the last session ID so we can compare it later when {@link AudioFxApplicable#apply(MediaPlayer)} method gets called.
+     * Remember the last session ID so we can compare it later when {@link AudioFxApplicable#applyTo(MediaPlayer)} method gets called.
      * If the audio session ID doesn't change then we can omit AudioFx adjustment to that session ID.
      */
     private volatile Integer mLastSessionId = null;
@@ -594,9 +594,16 @@ public final class AudioFxImpl implements AudioFxApplicable {
     }
 
     @Override
-    public synchronized void apply(@NonNull MediaPlayer engine) {
-        final int audioSessionId = engine.getAudioSessionId();
+    public synchronized void applyTo(@NonNull MediaPlayer engine) {
+        applyToImpl(engine.getAudioSessionId(), engine);
+    }
 
+    @Override
+    public synchronized void applyTo(int audioSessionId) {
+        applyToImpl(audioSessionId, null);
+    }
+
+    private synchronized void applyToImpl(int audioSessionId, @Nullable MediaPlayer engine) {
         final Integer currSessionId = mLastSessionId;
 
         final boolean sessionHasChanged = currSessionId == null || currSessionId != audioSessionId;
@@ -733,32 +740,28 @@ public final class AudioFxImpl implements AudioFxApplicable {
             }
 
             try {
-
                 final PresetReverb newPresetReverb;
-
                 if (ManufacturerUtils.isXiaomiDevice()) {
-
                     // Only works for Xiaomi
                     newPresetReverb = new PresetReverb(priority, audioSessionId);
-
-                } else {
-
+                } else if (engine != null) {
                     // Since PresetReverb is an auxiliary effect,
                     // we need to apply it to audio session 0
                     // and attach to the given media player.
                     // Otherwise, the effect will not work for some devices.
                     // See https://stackoverflow.com/a/10412949/9437681
                     newPresetReverb = new PresetReverb(priority, 0);
-
                     engine.attachAuxEffect(newPresetReverb.getId());
                     engine.setAuxEffectSendLevel(1.0f);
-
+                } else {
+                    newPresetReverb = null;
                 }
 
-                final short presetReverbIndex = getPresetReverbIndex(mPersistence.getReverb());
-                newPresetReverb.setPreset(presetReverbIndex);
-
-                newPresetReverb.setEnabled(enabled);
+                if (newPresetReverb != null) {
+                    short presetReverbIndex = getPresetReverbIndex(mPersistence.getReverb());
+                    newPresetReverb.setPreset(presetReverbIndex);
+                    newPresetReverb.setEnabled(enabled);
+                }
 
                 mPresetReverb = newPresetReverb;
             } catch (Throwable t) {
@@ -777,7 +780,7 @@ public final class AudioFxImpl implements AudioFxApplicable {
 
     /**
      * This is a very important method that must be called when the player engine does not need the AudioFx anymore.
-     * If this is not called then it may fail applying audio effects in {@link AudioFxApplicable#apply(MediaPlayer)} method.
+     * Not calling this method may affect the application of sound effects later.
      * For example, here are the steps to reproduce such a bug case:
      * 1) open the app, play some songs and apply some audio fx settings => it works well.
      * 2) close the app by pressing system back button and close the playback notification (but do not remove the app from recent).
