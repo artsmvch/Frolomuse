@@ -1,0 +1,9 @@
+package com.frolo.audiofx2.impl
+
+import com.frolo.audiofx2.AudioEffectDescriptor
+
+internal data class SimpleAudioEffectDescriptor(
+    override val name: String,
+    override val description: String? = null,
+    override val warning: String? = null
+) : AudioEffectDescriptor
