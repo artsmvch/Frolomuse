@@ -6,12 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.ViewModelProviders
 import com.frolo.audiofx.R
 
 class AudioFxControlPanelFragment : Fragment() {
 
     private val viewModel: AudioFxControlPanelViewModel by lazy {
-        TODO("Not implemented")
+        ViewModelProviders.of(this).get(AudioFxControlPanelViewModel::class.java)
     }
 
     override fun onCreateView(
