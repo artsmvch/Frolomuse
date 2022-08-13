@@ -28,4 +28,12 @@ android {
 }
 
 dependencies {
+    implementation deps.support.fragment
+
+    implementation deps.lifecycle.viewmodel
+    implementation deps.lifecycle.livedata
+    implementation deps.lifecycle.extensions
+
+    implementation project(path: ':audio:audiofx:api')
+    implementation project(path: ':custom-view:equalizerview')
 }
