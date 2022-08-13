@@ -88,7 +88,10 @@ public final class AudioFxImpl implements AudioFxApplicable {
 
     private final ErrorHandler mErrorHandler;
 
+    private final Defaults mDefaults;
+
     AudioFxImpl(Context context, String prefsName, ErrorHandler errorHandler) {
+        mDefaults = new Defaults(context);
         mContext = context;
 
         // Checking what audio effects the device does have
@@ -226,7 +229,7 @@ public final class AudioFxImpl implements AudioFxApplicable {
         } catch (Throwable t) {
             report(t);
         }
-        return Defaults.DEFAULT_MIN_BAND_LEVEL_RANGE;
+        return mDefaults.minBandLevelRange;
     }
 
     @Override
@@ -239,7 +242,7 @@ public final class AudioFxImpl implements AudioFxApplicable {
         } catch (Throwable t) {
             report(t);
         }
-        return Defaults.DEFAULT_MAX_BAND_LEVEL_RANGE;
+        return mDefaults.maxBandLevelRange;
     }
 
     @Override
@@ -252,7 +255,7 @@ public final class AudioFxImpl implements AudioFxApplicable {
         } catch (Throwable t) {
             report(t);
         }
-        return Defaults.getDefaultBandFreqRange(band);
+        return mDefaults.getDefaultBandFreqRange(band);
     }
 
     @Override
@@ -265,7 +268,7 @@ public final class AudioFxImpl implements AudioFxApplicable {
         } catch (Throwable t) {
             report(t);
         }
-        return Defaults.DEFAULT_NUMBER_OF_BANDS;
+        return mDefaults.numberOfBands;
     }
 
     @Override
@@ -282,7 +285,7 @@ public final class AudioFxImpl implements AudioFxApplicable {
         } catch (Throwable t) {
             report(t);
         }
-        return Defaults.DEFAULT_BAND_LEVEL;
+        return mDefaults.zeroBandLevel;
     }
 
     @Override

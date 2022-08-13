@@ -1,31 +1,38 @@
 package com.frolo.audiofx;
 
+import android.content.Context;
+import android.media.AudioManager;
 import android.media.audiofx.Equalizer;
 
 final class Defaults {
-    static final short DEFAULT_NUMBER_OF_BANDS;
-    static final short DEFAULT_BAND_LEVEL;
-    static final short DEFAULT_MIN_BAND_LEVEL_RANGE;
-    static final short DEFAULT_MAX_BAND_LEVEL_RANGE;
+    final short numberOfBands;
+    final short zeroBandLevel;
+    final short minBandLevelRange;
+    final short maxBandLevelRange;
 
-    static {
+    Defaults(Context context) {
         short numberOfBands = 5;
-        short minBandLevelRange = -15000;
-        short maxBandLevelRange = +15000;
+        short minBandLevelRange = -1500;
+        short maxBandLevelRange = +1500;
         try {
-            Equalizer equalizer = new Equalizer(0, 0);
+            AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+            int audioSessionId = 0;
+            if (audioManager != null) {
+                audioSessionId = audioManager.generateAudioSessionId();
+            }
+            Equalizer equalizer = new Equalizer(0, audioSessionId);
             numberOfBands = equalizer.getNumberOfBands();
             minBandLevelRange = equalizer.getBandLevelRange()[0];
             maxBandLevelRange = equalizer.getBandLevelRange()[1];
         } catch (Throwable ignored) {
         }
-        DEFAULT_NUMBER_OF_BANDS = numberOfBands;
-        DEFAULT_BAND_LEVEL = 0;
-        DEFAULT_MIN_BAND_LEVEL_RANGE = minBandLevelRange;
-        DEFAULT_MAX_BAND_LEVEL_RANGE =  maxBandLevelRange;
+        this.numberOfBands = numberOfBands;
+        this.zeroBandLevel = 0;
+        this.minBandLevelRange = minBandLevelRange;
+        this.maxBandLevelRange = maxBandLevelRange;
     }
 
-    static int[] getDefaultBandFreqRange(short band) {
+    int[] getDefaultBandFreqRange(short band) {
         switch (band) {
             case 0:
                 return new int[] { 30_000, 120_000 };
