@@ -1,4 +1,4 @@
-package com.frolo.audiofx.ui.control
+package com.frolo.audiofx.controlpanel
 
 import com.frolo.audiofx.AudioFx
 import com.frolo.audiofx.SimpleAudioFxObserver

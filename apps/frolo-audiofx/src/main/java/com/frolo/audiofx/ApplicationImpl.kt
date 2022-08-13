@@ -2,6 +2,7 @@ package com.frolo.audiofx
 
 import android.app.Application
 import com.frolo.audiofx.di.AppComponentImpl
+import com.frolo.audiofx.di.appComponent
 import com.frolo.audiofx.di.initAppComponent
 import com.frolo.logger.api.Logger
 import com.frolo.logger.api.LoggerParams
@@ -15,6 +16,9 @@ class ApplicationImpl : Application() {
             LoggerParams(
                 logDelegate = ConsoleLogDelegate()
             )
+        )
+        AudioFxFeature.init(
+            audioFxProvider = { appComponent.audioFx }
         )
     }
 }

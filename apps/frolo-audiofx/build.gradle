@@ -47,6 +47,8 @@ dependencies {
     implementation project(path: ':audio:audiofx:android-impl')
     implementation project(path: ':custom-view:equalizerview')
 
+    implementation project(path: ':feature:audiofx')
+
     // Doubtfully
     implementation project(path: ':core-ui')
 }

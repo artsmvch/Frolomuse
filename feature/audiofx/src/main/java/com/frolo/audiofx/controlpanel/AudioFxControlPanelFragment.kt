@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProviders
 import com.frolo.audiofx.ui.R
+import kotlinx.android.synthetic.main.fragment_audiofx_control_panel.*
 
 class AudioFxControlPanelFragment : Fragment() {
 
@@ -30,5 +31,20 @@ class AudioFxControlPanelFragment : Fragment() {
     }
 
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
+        audioFx.observe(owner) { audioFx ->
+            if (audioFx != null) {
+                val shouldAnimate = equalizer_view.isLaidOut
+                equalizer_view.setup(
+                    equalizer = AudioFxToEqualizerAdapter(audioFx),
+                    animate = shouldAnimate
+                )
+            } else {
+                equalizer_view.setup(null)
+            }
+        }
+    }
+
+    companion object {
+        fun newInstance(): AudioFxControlPanelFragment = AudioFxControlPanelFragment()
     }
 }
