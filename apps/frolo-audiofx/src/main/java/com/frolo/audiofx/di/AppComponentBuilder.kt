@@ -14,6 +14,7 @@ internal class AppComponentImpl(
         }
         AudioFx2Impl.obtain(application, errorHandler).apply {
             equalizer?.isEnabled = true
+            bassBoost?.isEnabled = true
         }
     }
 }

@@ -4,9 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Application
 import androidx.lifecycle.*
 import com.frolo.audiofx.AudioFx2Feature
-import com.frolo.audiofx2.AudioFx2
-import com.frolo.audiofx2.Equalizer
-import com.frolo.audiofx2.EqualizerPreset
+import com.frolo.audiofx2.*
 import com.frolo.rx.KeyedDisposableContainer
 import io.reactivex.Completable
 import io.reactivex.Single
@@ -33,6 +31,13 @@ class AudioFxControlPanelViewModel(
         addSource(equalizer) { it?.also(::loadPresets) }
     }
     val equalizerPresets: LiveData<List<EqualizerPreset>> get() = _equalizerPresets
+
+    val bassBoost: LiveData<BassBoost> by lazy {
+        Transformations.map(audioFx2) { audioFx2 -> audioFx2?.bassBoost }
+    }
+    val virtualizer: LiveData<Virtualizer> by lazy {
+        Transformations.map(audioFx2) { audioFx2 -> audioFx2?.virtualizer }
+    }
 
     @SuppressLint("CheckResult")
     private fun loadPresets(equalizer: Equalizer) {
