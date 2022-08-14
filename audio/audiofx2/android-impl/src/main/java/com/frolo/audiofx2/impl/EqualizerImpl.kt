@@ -32,6 +32,7 @@ internal class EqualizerImpl(
             engine
                 ?.runCatching { this.enabled = value }
                 ?.onFailure { errorHandler.onAudioEffectError(this, it) }
+            enableStatusChangeListenerRegistry.dispatchEnableStatusChange(value)
         }
 
     private val enableStatusChangeListenerRegistry =
