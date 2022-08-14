@@ -10,7 +10,7 @@ class AudioFx2Impl private constructor(
     private val context: Context,
     private val storageKey: String,
     private val errorHandler: AudioEffect2ErrorHandler
-): AudioFx2 {
+): AudioFx2, AudioSessionApplier {
     private val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
     private val hasEqualizer: Boolean
     private val hasBassBoost: Boolean
@@ -70,7 +70,7 @@ class AudioFx2Impl private constructor(
     override val virtualizer: Virtualizer? = null
     override val reverb: Reverb? = null
 
-    fun applyToAudioSession(audioSessionId: Int) {
+    override fun applyToAudioSession(audioSessionId: Int) {
         equalizerImpl?.applyToAudioSession(audioSessionId)
     }
 
