@@ -87,6 +87,11 @@ class EffectBoosterView @JvmOverloads constructor(
         }
     }
 
+    override fun setEnabled(enabled: Boolean) {
+        super.setEnabled(enabled)
+        invalidate()
+    }
+
     override fun getSuggestedMinimumWidth(): Int {
         return Screen.dp(context, DEFAULT_WIDTH)
     }
@@ -114,7 +119,11 @@ class EffectBoosterView @JvmOverloads constructor(
         canvas.drawArc(arcRect, 180f, 180f, false, paint)
 
         // Drawing active stroke
-        paint.color = strokeActiveColor
+        paint.color = if (isEnabled) {
+            strokeActiveColor
+        } else {
+            strokeInactiveColor
+        }
         canvas.drawArc(arcRect, 180f, 180f * boostValue, false, paint)
 
         // Drawing pointer
@@ -126,6 +135,9 @@ class EffectBoosterView @JvmOverloads constructor(
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
+        if (!isEnabled) {
+            return false
+        }
         if (event.action == MotionEvent.ACTION_DOWN) {
             if (event.x < paddingLeft
                 || event.x > measuredWidth - paddingRight

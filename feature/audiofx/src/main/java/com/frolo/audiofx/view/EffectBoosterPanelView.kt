@@ -51,7 +51,8 @@ class EffectBoosterPanelView @JvmOverloads constructor(
     private var effect: SimpleAudioEffect2? = null
     private val onEnableStatusChangeListener =
         AudioEffect2.OnEnableStatusChangeListener { effect, enabled ->
-            setChecked(checked = effect.isEnabled)
+            effectBoosterView.isEnabled = enabled
+            setChecked(checked = enabled)
         }
     private val onEffectValueChangeListener =
         SimpleAudioEffect2.OnEffectValueChangeListener { effect, value ->
@@ -71,6 +72,7 @@ class EffectBoosterPanelView @JvmOverloads constructor(
         effectBoosterView.boostValue = effect?.let {
             convertEffectValueToBoostValue(it.value, it.valueRange)
         } ?: 0f
+        effectBoosterView.isEnabled = effect?.isEnabled == true
         captionTextView.text = effect?.descriptor?.name
         setChecked(checked = effect?.isEnabled == true)
     }
