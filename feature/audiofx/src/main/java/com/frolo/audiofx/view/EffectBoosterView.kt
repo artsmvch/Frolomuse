@@ -12,7 +12,10 @@ import androidx.annotation.ColorInt
 import androidx.annotation.FloatRange
 import com.frolo.audiofx.ui.R
 import com.frolo.ui.Screen
+import kotlin.math.cos
+import kotlin.math.max
 import kotlin.math.min
+import kotlin.math.sin
 
 
 class EffectBoosterView @JvmOverloads constructor(
@@ -57,8 +60,17 @@ class EffectBoosterView @JvmOverloads constructor(
 
     var onBoostValueChangeListener: OnBoostValueChangeListener? = null
 
+    // Measurable properties
+    private var arcCenterX: Float = 0f
+    private var arcCenterY: Float = 0f
+    private var arcRadius: Float = 0f
+    private val arcRect: RectF = RectF()
+//    private var pointerCenterX: Float = 0f
+//    private var pointerCenterY: Float = 0f
+    private val pointerRadius: Float = Screen.dpFloat(context, 8f)
+
+    // Drawing tools
     private val paint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
-    private val ovalRect: RectF = RectF()
 
     init {
         val a = context.theme.obtainStyledAttributes(attrs, R.styleable.EffectBoosterView,
@@ -75,20 +87,34 @@ class EffectBoosterView @JvmOverloads constructor(
         }
     }
 
-    override fun onDraw(canvas: Canvas) {
+    override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         val contentWidth = measuredWidth - paddingLeft - paddingRight
         val contentHeight = measuredHeight - paddingTop - paddingBottom
-        val radius = min(contentWidth, contentHeight) / 2f - strokeWidth / 2f
-        val centerX = paddingLeft + contentWidth / 2f
-        val centerY = measuredHeight - paddingBottom
-        ovalRect.set(centerX - radius, centerY - radius, centerX + radius,
-            centerY + radius)
+        val strokeOffset = max(strokeWidth / 2f, pointerRadius)
+        this.arcRadius = min(contentWidth, contentHeight) / 2f - strokeOffset
+        this.arcCenterX = paddingLeft + contentWidth / 2f
+        this.arcCenterY = measuredHeight - paddingBottom.toFloat()
+        arcRect.set(arcCenterX - arcRadius, arcCenterX - arcRadius,
+            arcCenterX + arcRadius, arcCenterX + arcRadius)
+    }
+
+    override fun onDraw(canvas: Canvas) {
+        // Drawing inactive stroke
         paint.style = Paint.Style.STROKE
         paint.strokeWidth = strokeWidth
         paint.color = strokeInactiveColor
-        canvas.drawArc(ovalRect, 180f, 180f, false, paint)
+        canvas.drawArc(arcRect, 180f, 180f, false, paint)
+
+        // Drawing active stroke
         paint.color = strokeActiveColor
-        canvas.drawArc(ovalRect, 180f, 180f * boostValue, false, paint)
+        canvas.drawArc(arcRect, 180f, 180f * boostValue, false, paint)
+
+        // Drawing pointer
+        val degrees: Float = 180f + 180f * boostValue
+        val pointerCenterX = arcCenterX + arcRadius * cos(degrees * Math.PI / 180).toFloat()
+        val pointerCenterY = arcCenterX + arcRadius * sin(degrees * Math.PI / 180).toFloat()
+        paint.style = Paint.Style.FILL
+        canvas.drawCircle(pointerCenterX, pointerCenterY, pointerRadius, paint)
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
@@ -99,12 +125,18 @@ class EffectBoosterView @JvmOverloads constructor(
                 || event.y > measuredHeight - paddingBottom) {
                 return false
             }
+            parent?.requestDisallowInterceptTouchEvent(true)
             return true
         }
         if (event.action == MotionEvent.ACTION_MOVE) {
             val contentWidth = measuredWidth - paddingLeft - paddingRight
             val newBoostValue = ((event.x - paddingLeft) / contentWidth.toFloat()).coerceIn(0f, 1f)
+            this.boostValue = newBoostValue
             onBoostValueChangeListener?.onBoostValueChange(this, newBoostValue)
+            return true
+        }
+        if (event.action == MotionEvent.ACTION_UP || event.action == MotionEvent.ACTION_CANCEL) {
+            parent?.requestDisallowInterceptTouchEvent(false)
         }
         return super.onTouchEvent(event)
     }
