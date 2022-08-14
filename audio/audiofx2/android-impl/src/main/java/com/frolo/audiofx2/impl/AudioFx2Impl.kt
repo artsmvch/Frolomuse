@@ -57,21 +57,30 @@ class AudioFx2Impl private constructor(
         )
     }
 
-    private val equalizerImpl: EqualizerImpl? = kotlin.run {
-        if (hasEqualizer) {
-            EqualizerImpl(context, storageKey, errorHandler, initialEffectParams)
-        } else {
-            null
-        }
+    private val equalizerImpl: EqualizerImpl? = createIf(hasEqualizer) {
+        EqualizerImpl(context, storageKey, errorHandler, initialEffectParams)
     }
     override val equalizer: Equalizer? = equalizerImpl
 
-    override val bassBoost: BassBoost? = null
-    override val virtualizer: Virtualizer? = null
+    private val bassBoostImpl: BassBoostImpl? = createIf(hasBassBoost) {
+        BassBoostImpl(context, storageKey, errorHandler)
+    }
+    override val bassBoost: BassBoost? = bassBoostImpl
+
+    private val virtualizerImpl: VirtualizerImpl? = createIf(hasVirtualizer) {
+        VirtualizerImpl(context, storageKey, errorHandler)
+    }
+    override val virtualizer: Virtualizer? = virtualizerImpl
     override val reverb: Reverb? = null
+
+    private inline fun <T> createIf(predicate: Boolean, creator: () -> T): T? {
+        return if (predicate) creator.invoke() else null
+    }
 
     override fun applyToAudioSession(audioSessionId: Int) {
         equalizerImpl?.applyToAudioSession(audioSessionId)
+        bassBoostImpl?.applyToAudioSession(audioSessionId)
+        virtualizerImpl?.applyToAudioSession(audioSessionId)
     }
 
     companion object {
