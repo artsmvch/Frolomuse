@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:parentTag="com.frolo.audiofx.view.EffectBoosterPanelView">
+    <com.frolo.audiofx.view.EffectBoosterView
+        android:id="@+id/effect_booster"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"/>
+
+    <TextView
+        android:id="@+id/caption"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:textAppearance="?textAppearanceCaption"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:textSize="16sp"
+        tools:text="Bass Boost"/>
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/enable_status_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+</merge>

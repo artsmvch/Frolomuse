@@ -87,6 +87,14 @@ class EffectBoosterView @JvmOverloads constructor(
         }
     }
 
+    override fun getSuggestedMinimumWidth(): Int {
+        return Screen.dp(context, DEFAULT_WIDTH)
+    }
+
+    override fun getSuggestedMinimumHeight(): Int {
+        return Screen.dp(context, DEFAULT_HEIGHT)
+    }
+
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         val contentWidth = measuredWidth - paddingLeft - paddingRight
         val contentHeight = measuredHeight - paddingTop - paddingBottom
@@ -126,9 +134,8 @@ class EffectBoosterView @JvmOverloads constructor(
                 return false
             }
             parent?.requestDisallowInterceptTouchEvent(true)
-            return true
         }
-        if (event.action == MotionEvent.ACTION_MOVE) {
+        if (event.action == MotionEvent.ACTION_DOWN || event.action == MotionEvent.ACTION_MOVE) {
             val contentWidth = measuredWidth - paddingLeft - paddingRight
             val newBoostValue = ((event.x - paddingLeft) / contentWidth.toFloat()).coerceIn(0f, 1f)
             this.boostValue = newBoostValue
@@ -146,5 +153,10 @@ class EffectBoosterView @JvmOverloads constructor(
             view: EffectBoosterView,
             @FloatRange(from = 0.0, to = 1.0) boostValue: Float
         )
+    }
+
+    companion object {
+        private const val DEFAULT_WIDTH = 180
+        private const val DEFAULT_HEIGHT = 90
     }
 }
