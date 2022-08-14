@@ -89,7 +89,9 @@ internal class EqualizerImpl(
     override fun setBandLevel(bandIndex: Int, level: Int) = synchronized(lock) {
         state.setBandLevel(bandIndex, level)
         equalizerPresetStorageImpl.unusePreset()
-        kotlin.runCatching { engine?.setBandLevel(bandIndex.toShort(), level.toShort()) }
+        engine
+            ?.runCatching { this.setBandLevel(bandIndex.toShort(), level.toShort()) }
+            ?.onFailure { errorHandler.onAudioEffectError(this, it) }
         bandLevelChangeListenerRegistry.dispatchBandLevelChange(bandIndex, level)
     }
 
@@ -161,8 +163,9 @@ internal class EqualizerImpl(
         equalizerPresetStorageImpl.usePreset(preset)
         when (preset) {
             is NativePresetImpl -> {
-                engine.runCatching { this?.usePreset(preset.index.toShort()) }
-                    .onFailure { errorHandler.onAudioEffectError(this, it) }
+                engine
+                    ?.runCatching { this.usePreset(preset.index.toShort()) }
+                    ?.onFailure { errorHandler.onAudioEffectError(this, it) }
                 // Check all bands after applying native preset
                 engine?.runCatching {
                     for (band in 0 until this.numberOfBands) {
@@ -174,11 +177,14 @@ internal class EqualizerImpl(
                 }
             }
             is CustomPresetImpl -> {
-                engine?.runCatching {
-                    for (band in 0 until preset.numberOfBands) {
-                        this.setBandLevel(band.toShort(), preset.getBandLevel(band).toShort())
+                engine
+                    ?.runCatching {
+                        for (band in 0 until preset.numberOfBands) {
+                            this.setBandLevel(band.toShort(), preset.getBandLevel(band).toShort())
+                        }
                     }
-                }?.onFailure { errorHandler.onAudioEffectError(this, it) }
+                    ?.onFailure { errorHandler.onAudioEffectError(this, it) }
+                // Dispatch the same levels
                 for (band in 0 until preset.numberOfBands) {
                     bandLevelChangeListenerRegistry.dispatchBandLevelChange(
                         band = band,
