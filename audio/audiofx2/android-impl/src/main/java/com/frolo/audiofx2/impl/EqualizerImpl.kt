@@ -2,15 +2,11 @@ package com.frolo.audiofx2.impl
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.os.Handler
 import androidx.annotation.GuardedBy
 import com.frolo.audiofx2.AudioEffect2
 import com.frolo.audiofx2.AudioEffectDescriptor
 import com.frolo.audiofx2.EffectValueRange
 import com.frolo.audiofx2.Equalizer
-import java.lang.NumberFormatException
-import java.util.*
-import kotlin.collections.HashMap
 
 internal class EqualizerImpl(
     private val context: Context,
@@ -41,10 +37,10 @@ internal class EqualizerImpl(
             )
         }
 
-    override var onEnableStatusChangeListener: AudioEffect2.OnEnableStatusChangeListener? = null
-    private val onBandLevelChangeListeners = Collections.synchronizedList(
-        ArrayList<Equalizer.OnBandLevelChangeListener>())
-    private val bandLevelListenerHandler = Handler(context.mainLooper)
+    private val enableStatusChangeListenerRegistry =
+        EnableStatusChangeListenerRegistry(context, this)
+    private val bandLevelChangeListenerRegistry =
+        BandLevelChangeListenerRegistry(context, this)
 
     override val numberOfBands: Int get() {
         return runOnEngine(
@@ -129,37 +125,32 @@ internal class EqualizerImpl(
                 newEngine.setBandLevel(iteration.toShort(), state.getBandLevel(iteration).toShort())
             }
             newEngine.setEnableStatusListener { _, enabled ->
-                this.onEnableStatusChangeListener?.onEnableStatusChange(this, enabled)
+                enableStatusChangeListenerRegistry.dispatchEnableStatusChange(enabled)
             }
             newEngine.setParameterListener { _, _, param1, param2, value ->
                 if (param1 == android.media.audiofx.Equalizer.PARAM_BAND_LEVEL) {
-                    dispatchBandLevelChange(band = param2, level = value)
+                    bandLevelChangeListenerRegistry.dispatchBandLevelChange(
+                        band = param2, level = value)
                 }
             }
             this.engine = newEngine
         }
     }
 
+    override fun addOnEnableStatusChangeListener(listener: AudioEffect2.OnEnableStatusChangeListener) {
+        enableStatusChangeListenerRegistry.addListener(listener)
+    }
+
+    override fun removeOnEnableStatusChangeListener(listener: AudioEffect2.OnEnableStatusChangeListener) {
+        enableStatusChangeListenerRegistry.removeListener(listener)
+    }
+
     override fun addOnBandLevelChangeListener(listener: Equalizer.OnBandLevelChangeListener) {
-        onBandLevelChangeListeners.add(listener)
+        bandLevelChangeListenerRegistry.addListener(listener)
     }
 
     override fun removeOnBandLevelChangeListener(listener: Equalizer.OnBandLevelChangeListener) {
-        onBandLevelChangeListeners.remove(listener)
-    }
-
-    private fun dispatchBandLevelChange(band: Int, level: Int) {
-        bandLevelListenerHandler.post {
-            synchronized(onBandLevelChangeListeners) {
-                onBandLevelChangeListeners.forEach { listener ->
-                    listener.onBandLevelChange(
-                        equalizer = this,
-                        band = band,
-                        level = level
-                    )
-                }
-            }
-        }
+        bandLevelChangeListenerRegistry.removeListener(listener)
     }
 }
 
@@ -231,5 +222,14 @@ private class EqualizerState(
     companion object {
         private const val KEY_ENABLED = "enabled"
         private const val KEY_BAND_LEVEL_PREFIX = "band_level_"
+    }
+}
+
+private class BandLevelChangeListenerRegistry(
+    context: Context,
+    private val effect: Equalizer
+): ListenerRegistry<Equalizer.OnBandLevelChangeListener>(context){
+    fun dispatchBandLevelChange(band: Int, level: Int) = doDispatch { listener ->
+        listener.onBandLevelChange(effect, band, level)
     }
 }
