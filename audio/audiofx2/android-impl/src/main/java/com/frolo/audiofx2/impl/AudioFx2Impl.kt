@@ -1,11 +1,13 @@
 package com.frolo.audiofx2.impl
 
+import android.app.Application
 import android.content.Context
 import android.media.audiofx.AudioEffect
 import com.frolo.audiofx2.*
 
-class AudioFx2Impl constructor(
+class AudioFx2Impl private constructor(
     private val context: Context,
+    private val storageKey: String,
     private val errorHandler: AudioEffect2ErrorHandler
 ): AudioFx2 {
     private val hasEqualizer: Boolean
@@ -46,14 +48,36 @@ class AudioFx2Impl constructor(
         this.hasReverb = hasReverb
     }
 
-    override val equalizer: Equalizer? = kotlin.run {
+    private val equalizerImpl: EqualizerImpl? = kotlin.run {
         if (hasEqualizer) {
-            EqualizerImpl(context, errorHandler)
+            EqualizerImpl(context, storageKey, errorHandler)
         } else {
             null
         }
     }
+    override val equalizer: Equalizer? = equalizerImpl
+
     override val bassBoost: BassBoost? = null
     override val virtualizer: Virtualizer? = null
     override val reverb: Reverb? = null
+
+    fun applyToAudioSession(audioSessionId: Int) {
+        equalizerImpl?.applyToAudioSession(audioSessionId)
+    }
+
+    companion object {
+        private const val DEFAULT_KEY = "application"
+        private val DEFAULT_ERROR_HANDLER = AudioEffect2ErrorHandler { _, _ ->  }
+
+        fun obtain(
+            application: Application,
+            errorHandler: AudioEffect2ErrorHandler = DEFAULT_ERROR_HANDLER
+        ): AudioFx2Impl {
+            return AudioFx2Impl(
+                context = application,
+                storageKey = DEFAULT_KEY,
+                errorHandler = errorHandler
+            )
+        }
+    }
 }

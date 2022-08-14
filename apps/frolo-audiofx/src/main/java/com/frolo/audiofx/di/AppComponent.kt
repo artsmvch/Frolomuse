@@ -1,7 +1,6 @@
 package com.frolo.audiofx.di
 
-import com.frolo.audiofx.AudioFx
-import com.frolo.audiofx.AudioFxImpl
+import com.frolo.audiofx2.impl.AudioFx2Impl
 
 
 lateinit var appComponent: AppComponent
@@ -12,5 +11,5 @@ fun initAppComponent(instance: AppComponent) {
 }
 
 interface AppComponent {
-    val audioFx: AudioFxImpl
+    val audioFx2: AudioFx2Impl
 }

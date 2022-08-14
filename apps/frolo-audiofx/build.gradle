@@ -43,8 +43,8 @@ dependencies {
 
     implementation project(path: ':logger:api')
     implementation project(path: ':logger:impl')
-    implementation project(path: ':audio:audiofx:api')
-    implementation project(path: ':audio:audiofx:android-impl')
+    implementation project(path: ':audio:audiofx2:api')
+    implementation project(path: ':audio:audiofx2:android-impl')
     implementation project(path: ':custom-view:equalizerview')
 
     implementation project(path: ':feature:audiofx')

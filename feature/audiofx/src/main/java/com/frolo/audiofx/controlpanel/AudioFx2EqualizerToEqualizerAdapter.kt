@@ -1,49 +1,49 @@
 package com.frolo.audiofx.controlpanel
 
-import com.frolo.audiofx.AudioFx
-import com.frolo.audiofx.SimpleAudioFxObserver
 import com.frolo.equalizerview.IEqualizer
 
 
-internal class AudioFxToEqualizerAdapter(
-    private val audioFx: AudioFx
+internal class AudioFx2EqualizerToEqualizerAdapter(
+    private val equalizer: com.frolo.audiofx2.Equalizer
 ): IEqualizer {
 
     override val numberOfBands: Int
-        get() = audioFx.numberOfBands.toInt()
+        get() = equalizer.numberOfBands
 
     override val minBandLevelRange: Int
-        get() = audioFx.minBandLevelRange.toInt()
+        get() = equalizer.bandLevelRange.minLevel
 
     override val maxBandLevelRange: Int
-        get() = audioFx.maxBandLevelRange.toInt()
+        get() = equalizer.bandLevelRange.maxLevel
 
     override fun getBandLevel(band: Short): Short {
-        return audioFx.getBandLevel(band)
+        return equalizer.getBandLevel(band.toInt()).toShort()
     }
 
     override fun setBandLevel(band: Short, level: Short) {
-        audioFx.setBandLevel(band, level)
+        equalizer.setBandLevel(band.toInt(), level.toInt())
     }
 
     override fun getBandFreqRange(band: Short): IntArray {
-        return audioFx.getBandFreqRange(band)
+        return equalizer.getFreqRange(band.toInt()).let {
+            intArrayOf(it.minLevel, it.maxLevel)
+        }
     }
 
     override fun registerObserver(observer: IEqualizer.Observer) {
-        audioFx.registerObserver(AudioFxObserverWrapper(observer))
+        equalizer.addOnBandLevelChangeListener(AudioFxObserverWrapper(observer))
     }
 
     override fun unregisterObserver(observer: IEqualizer.Observer) {
-        audioFx.unregisterObserver(AudioFxObserverWrapper(observer))
+        equalizer.removeOnBandLevelChangeListener(AudioFxObserverWrapper(observer))
     }
 
     private class AudioFxObserverWrapper(
         private val equalizerObserver: IEqualizer.Observer
-    ): SimpleAudioFxObserver() {
+    ): com.frolo.audiofx2.Equalizer.OnBandLevelChangeListener {
 
-        override fun onBandLevelChanged(audioFx: AudioFx?, band: Short, level: Short) {
-            equalizerObserver.onBandLevelChanged(band, level)
+        override fun onBandLevelChange(equalizer: com.frolo.audiofx2.Equalizer, band: Int, level: Int) {
+            equalizerObserver.onBandLevelChanged(band.toShort(), level.toShort())
         }
 
         override fun hashCode(): Int {

@@ -14,7 +14,7 @@ class AudioSessionReceiver : BroadcastReceiver() {
         val packageName = intent.getStringExtra(Equalizer.EXTRA_PACKAGE_NAME)
         Logger.d("AudioSessionReceiver", "audioSessionId=$audioSessionId")
         if (audioSessionId > 0) {
-            appComponent.audioFx.applyTo(audioSessionId)
+            appComponent.audioFx2.applyToAudioSession(audioSessionId)
             Toast.makeText(context, "Applied Audio effects!", Toast.LENGTH_LONG).show()
         }
     }

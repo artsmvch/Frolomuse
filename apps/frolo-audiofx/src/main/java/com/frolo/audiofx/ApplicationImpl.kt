@@ -17,8 +17,8 @@ class ApplicationImpl : Application() {
                 logDelegate = ConsoleLogDelegate()
             )
         )
-        AudioFxFeature.init(
-            audioFxProvider = { appComponent.audioFx }
+        AudioFx2Feature.init(
+            audioFx2Provider = { appComponent.audioFx2 }
         )
     }
 }

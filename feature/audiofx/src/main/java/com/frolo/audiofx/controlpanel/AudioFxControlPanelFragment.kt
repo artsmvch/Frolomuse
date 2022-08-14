@@ -31,11 +31,12 @@ class AudioFxControlPanelFragment : Fragment() {
     }
 
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
-        audioFx.observe(owner) { audioFx ->
-            if (audioFx != null) {
+        audioFx2.observe(owner) { audioFx2 ->
+            val equalizer = audioFx2.equalizer
+            if (equalizer != null) {
                 val shouldAnimate = equalizer_view.isLaidOut
                 equalizer_view.setup(
-                    equalizer = AudioFxToEqualizerAdapter(audioFx),
+                    equalizer = AudioFx2EqualizerToEqualizerAdapter(equalizer),
                     animate = shouldAnimate
                 )
             } else {
