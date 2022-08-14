@@ -3,16 +3,13 @@ package com.frolo.audiofx2.impl
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.annotation.GuardedBy
-import com.frolo.audiofx2.AudioEffect2
-import com.frolo.audiofx2.AudioEffectDescriptor
-import com.frolo.audiofx2.EffectValueRange
-import com.frolo.audiofx2.Equalizer
+import com.frolo.audiofx2.*
 
 internal class EqualizerImpl(
     private val context: Context,
     private val storageKey: String,
     private val errorHandler: AudioEffect2ErrorHandler
-): BaseAudioEffect2Impl<android.media.audiofx.Equalizer>(), Equalizer {
+): BaseAudioEffect2Impl<android.media.audiofx.Equalizer>(), Equalizer, EqualizerPresetStorage {
     private val defaults = Defaults(context)
     private val state = EqualizerState(context, storageKey, defaults)
     private val lock = Any()
@@ -67,6 +64,16 @@ internal class EqualizerImpl(
         )
     }
 
+    private val equalizerPresetStorageImpl = EqualizerPresetStorageImpl(
+        context = context,
+        databaseHelper = AudioEffect2DatabaseHelper(
+            context = context,
+            storageKey = storageKey
+        ),
+        storageKey = storageKey,
+        defaults = defaults
+    )
+
     override fun getBandLevel(bandIndex: Int): Int {
         return runOnEngine(
             action = { it.getBandLevel(bandIndex.toShort()).toInt() },
@@ -74,9 +81,10 @@ internal class EqualizerImpl(
         )
     }
 
-    override fun setBandLevel(bandIndex: Int, level: Int) {
+    override fun setBandLevel(bandIndex: Int, level: Int) = synchronized(lock) {
         state.setBandLevel(bandIndex, level)
-        return runOnEngine(
+        equalizerPresetStorageImpl.unusePreset()
+        return@synchronized runOnEngine(
             action = { it.setBandLevel(bandIndex.toShort(), level.toShort()) },
             fallback = { }
         )
@@ -111,30 +119,28 @@ internal class EqualizerImpl(
         }
     }
 
-    override fun onApplyToAudioSession(priority: Int, audioSessionId: Int) {
-        synchronized(lock) {
-            try {
-                engine?.release()
-                engine = null
-            } catch (e: Throwable) {
-                errorHandler.onAudioEffectError(this, e)
-            }
-            val newEngine = android.media.audiofx.Equalizer(priority, audioSessionId)
-            newEngine.enabled = isEnabled
-            repeat(state.getNumberOfBands()) { iteration ->
-                newEngine.setBandLevel(iteration.toShort(), state.getBandLevel(iteration).toShort())
-            }
-            newEngine.setEnableStatusListener { _, enabled ->
-                enableStatusChangeListenerRegistry.dispatchEnableStatusChange(enabled)
-            }
-            newEngine.setParameterListener { _, _, param1, param2, value ->
-                if (param1 == android.media.audiofx.Equalizer.PARAM_BAND_LEVEL) {
-                    bandLevelChangeListenerRegistry.dispatchBandLevelChange(
-                        band = param2, level = value)
-                }
-            }
-            this.engine = newEngine
+    override fun onApplyToAudioSession(priority: Int, audioSessionId: Int) = synchronized(lock) {
+        try {
+            engine?.release()
+            engine = null
+        } catch (e: Throwable) {
+            errorHandler.onAudioEffectError(this, e)
         }
+        val newEngine = android.media.audiofx.Equalizer(priority, audioSessionId)
+        newEngine.enabled = isEnabled
+        repeat(state.getNumberOfBands()) { iteration ->
+            newEngine.setBandLevel(iteration.toShort(), state.getBandLevel(iteration).toShort())
+        }
+        newEngine.setEnableStatusListener { _, enabled ->
+            enableStatusChangeListenerRegistry.dispatchEnableStatusChange(enabled)
+        }
+        newEngine.setParameterListener { _, _, param1, param2, value ->
+            if (param1 == android.media.audiofx.Equalizer.PARAM_BAND_LEVEL) {
+                bandLevelChangeListenerRegistry.dispatchBandLevelChange(
+                    band = param2, level = value)
+            }
+        }
+        this.engine = newEngine
     }
 
     override fun addOnEnableStatusChangeListener(listener: AudioEffect2.OnEnableStatusChangeListener) {
@@ -151,6 +157,48 @@ internal class EqualizerImpl(
 
     override fun removeOnBandLevelChangeListener(listener: Equalizer.OnBandLevelChangeListener) {
         bandLevelChangeListenerRegistry.removeListener(listener)
+    }
+
+    override fun getCurrentPreset(): EqualizerPreset? {
+        return equalizerPresetStorageImpl.getCurrentPreset()
+    }
+
+    override fun usePreset(preset: EqualizerPreset) = synchronized(lock) {
+        when (preset) {
+            is NativePresetImpl -> {
+                runOnEngine(
+                    action = {
+                        it.usePreset(preset.index.toShort())
+                    },
+                    fallback = { }
+                )
+            }
+            is CustomPresetImpl -> {
+                runOnEngine(
+                    action = {
+                        for (band in 0 until preset.numberOfBands) {
+                            it.setBandLevel(band.toShort(), preset.getBandLevel(band).toShort())
+                        }
+                    },
+                    fallback = { }
+                )
+            }
+            else -> {
+            }
+        }
+        equalizerPresetStorageImpl.usePreset(preset)
+    }
+
+    override fun getAllPresets(): List<EqualizerPreset> {
+        return equalizerPresetStorageImpl.getAllPresets()
+    }
+
+    override fun createPreset(name: String, bandLevels: Map<Int, Int>): EqualizerPreset {
+        return equalizerPresetStorageImpl.createPreset(name, bandLevels)
+    }
+
+    override fun deletePreset(preset: EqualizerPreset) {
+        equalizerPresetStorageImpl.deletePreset(preset)
     }
 }
 

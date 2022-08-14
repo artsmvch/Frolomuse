@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProviders
@@ -28,11 +29,26 @@ class AudioFxControlPanelFragment : Fragment() {
     }
 
     private fun loadUi() {
+        equalizer_preset_chooser.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                val adapter = parent?.adapter
+                if (adapter is EqualizerPresetAdapter) {
+                    val item = adapter.getItem(position)
+                    viewModel.onPresetClick(item)
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) = Unit
+        }
     }
 
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
-        audioFx2.observe(owner) { audioFx2 ->
-            val equalizer = audioFx2.equalizer
+        equalizer.observe(owner) { equalizer ->
             if (equalizer != null) {
                 val shouldAnimate = equalizer_view.isLaidOut
                 equalizer_view.setup(
@@ -42,6 +58,10 @@ class AudioFxControlPanelFragment : Fragment() {
             } else {
                 equalizer_view.setup(null)
             }
+        }
+
+        equalizerPresets.observe(owner) { presets ->
+            equalizer_preset_chooser.adapter = EqualizerPresetAdapter(presets.orEmpty())
         }
     }
 

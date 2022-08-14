@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minWidth="80dp"
+    android:minHeight="40dp"
+    android:gravity="start|center_vertical"
+    android:paddingStart="0dp"
+    android:paddingEnd="0dp"
+    style="?attr/spinnerDropDownItemStyle">
+
+    <TextView
+        android:id="@+id/preset_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginStart="4dp"
+        android:gravity="start|center_vertical"
+        android:textAppearance="?textAppearanceListItem"
+        android:textSize="16sp"
+        android:lines="1"
+        android:ellipsize="end"
+        tools:text="Unknown"/>
+
+    <ImageView
+        android:id="@+id/remove_icon"
+        android:padding="8dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="?selectableItemBackground"
+        android:src="@drawable/ic_remove_equalizer_preset_24"/>
+
+</LinearLayout>

@@ -1,6 +1,6 @@
 package com.frolo.audiofx2
 
-interface Equalizer: AudioEffect2 {
+interface Equalizer: AudioEffect2, EqualizerPresetStorage {
     val numberOfBands: Int
     val bandLevelRange: EffectValueRange
     fun getBandLevel(bandIndex: Int): Int
