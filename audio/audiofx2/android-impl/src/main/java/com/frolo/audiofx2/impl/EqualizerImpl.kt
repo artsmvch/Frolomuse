@@ -76,7 +76,7 @@ internal class EqualizerImpl(
     )
 
     init {
-        onApplyToAudioSession(initialEffectParams.priority, initialEffectParams.audioSessionId)
+        applyToAudioSession(initialEffectParams.audioSessionId)
     }
 
     override fun getBandLevel(bandIndex: Int): Int = synchronized(lock) {
