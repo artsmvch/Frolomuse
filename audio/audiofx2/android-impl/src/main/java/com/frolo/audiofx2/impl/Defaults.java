@@ -7,10 +7,9 @@ import android.media.audiofx.Equalizer;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.frolo.audiofx2.EffectValueRange;
+import com.frolo.audiofx2.ValueRange;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -51,18 +50,18 @@ final class Defaults {
         this.nativePresets = nativePresets;
     }
 
-    EffectValueRange getDefaultBandFreqRange(int band) {
+    ValueRange getDefaultBandFreqRange(int band) {
         switch (band) {
             case 0:
-                return new EffectValueRange(30_000, 120_000);
+                return new ValueRange(30_000, 120_000);
             case 1:
-                return new EffectValueRange(120_001, 460_000);
+                return new ValueRange(120_001, 460_000);
             case 2:
-                return new EffectValueRange(460_001, 1_800_00);
+                return new ValueRange(460_001, 1_800_00);
             case 3:
-                return new EffectValueRange(1_800_001, 7_000_000);
+                return new ValueRange(1_800_001, 7_000_000);
             default:
-                return new EffectValueRange(7_000_000, 20_000_000);
+                return new ValueRange(7_000_000, 20_000_000);
         }
     }
 

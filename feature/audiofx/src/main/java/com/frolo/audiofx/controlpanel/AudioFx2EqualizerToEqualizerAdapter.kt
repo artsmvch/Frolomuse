@@ -11,10 +11,10 @@ internal class AudioFx2EqualizerToEqualizerAdapter(
         get() = equalizer.numberOfBands
 
     override val minBandLevelRange: Int
-        get() = equalizer.bandLevelRange.minLevel
+        get() = equalizer.bandLevelRange.minValue
 
     override val maxBandLevelRange: Int
-        get() = equalizer.bandLevelRange.maxLevel
+        get() = equalizer.bandLevelRange.maxValue
 
     override fun getBandLevel(band: Short): Short {
         return equalizer.getBandLevel(band.toInt()).toShort()
@@ -26,7 +26,7 @@ internal class AudioFx2EqualizerToEqualizerAdapter(
 
     override fun getBandFreqRange(band: Short): IntArray {
         return equalizer.getFreqRange(band.toInt()).let {
-            intArrayOf(it.minLevel, it.maxLevel)
+            intArrayOf(it.minValue, it.maxValue)
         }
     }
 

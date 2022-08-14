@@ -2,6 +2,7 @@ package com.frolo.audiofx2.impl
 
 import android.app.Application
 import android.content.Context
+import android.media.AudioManager
 import android.media.audiofx.AudioEffect
 import com.frolo.audiofx2.*
 
@@ -10,6 +11,7 @@ class AudioFx2Impl private constructor(
     private val storageKey: String,
     private val errorHandler: AudioEffect2ErrorHandler
 ): AudioFx2 {
+    private val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
     private val hasEqualizer: Boolean
     private val hasBassBoost: Boolean
     private val hasVirtualizer: Boolean
@@ -48,9 +50,16 @@ class AudioFx2Impl private constructor(
         this.hasReverb = hasReverb
     }
 
+    private val initialEffectParams: EffectInitParams by lazy {
+        EffectInitParams(
+            priority = 0,
+            audioSessionId = audioManager.generateAudioSessionId()
+        )
+    }
+
     private val equalizerImpl: EqualizerImpl? = kotlin.run {
         if (hasEqualizer) {
-            EqualizerImpl(context, storageKey, errorHandler)
+            EqualizerImpl(context, storageKey, errorHandler, initialEffectParams)
         } else {
             null
         }
