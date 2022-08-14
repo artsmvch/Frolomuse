@@ -83,6 +83,12 @@ class AudioFx2Impl private constructor(
         virtualizerImpl?.applyToAudioSession(audioSessionId)
     }
 
+    override fun release() {
+        equalizerImpl?.release()
+        bassBoostImpl?.release()
+        virtualizerImpl?.release()
+    }
+
     companion object {
         private const val DEFAULT_KEY = "application"
         private val DEFAULT_ERROR_HANDLER = AudioEffect2ErrorHandler { _, _ ->  }

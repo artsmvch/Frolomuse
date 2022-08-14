@@ -1,5 +1,6 @@
 package com.frolo.audiofx2.impl
 
-fun interface AudioSessionApplier {
+interface AudioSessionApplier {
     fun applyToAudioSession(audioSessionId: Int)
+    fun release()
 }

@@ -143,6 +143,15 @@ internal abstract class SimpleAudioEffect2Impl<E: android.media.audiofx.AudioEff
         }
     }
 
+    final override fun onRelease() = synchronized(lock) {
+        try {
+            engine?.release()
+            engine = null
+        } catch (e: Throwable) {
+            errorHandler.onAudioEffectError(this, e)
+        }
+    }
+
     abstract fun getStrengthFrom(effect: E): Int
     abstract fun setStrengthTo(effect: E, value: Int)
     abstract fun instantiateEngine(priority: Int, audioSessionId: Int): E

@@ -128,6 +128,15 @@ internal class EqualizerImpl(
         }
     }
 
+    override fun onRelease() = synchronized(lock) {
+        try {
+            engine?.release()
+            engine = null
+        } catch (e: Throwable) {
+            errorHandler.onAudioEffectError(this, e)
+        }
+    }
+
     override fun addOnEnableStatusChangeListener(listener: AudioEffect2.OnEnableStatusChangeListener) {
         enableStatusChangeListenerRegistry.addListener(listener)
     }

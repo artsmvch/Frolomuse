@@ -14,4 +14,10 @@ internal abstract class BaseAudioEffect2Impl<E: android.media.audiofx.AudioEffec
     }
 
     protected abstract fun onApplyToAudioSession(priority: Int, audioSessionId: Int)
+
+    final override fun release() {
+        onRelease()
+    }
+
+    protected abstract fun onRelease()
 }
