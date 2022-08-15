@@ -467,7 +467,7 @@ abstract class BaseEqualizerView<V> @JvmOverloads constructor(
             val freq: Int = frequencyRange.getOrNull(0) ?: 0
             return when {
                 //freq > 1_000_000 -> (freq / 1_000_000).toString() + "\nkkHz"
-                else -> (freq / 1000).toString() + "\nKHz"
+                else -> (freq / 1000).toString() + "+"
             }
         }
 
