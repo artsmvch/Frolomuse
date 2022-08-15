@@ -165,7 +165,7 @@ class EffectBoosterView @JvmOverloads constructor(
         val contentWidth = measuredWidth - paddingLeft - paddingRight
         val contentHeight = measuredHeight - paddingTop - paddingBottom
         val offset = max(strokeWidth / 2f, pointerRadius)
-        this.arcRadius = min(contentWidth, contentHeight) / 2f - offset
+        this.arcRadius = min(contentWidth / 2, contentHeight).toFloat() - 2 * offset
         this.arcCenterX = paddingLeft + contentWidth / 2f
         this.arcCenterY = measuredHeight - paddingBottom.toFloat() - offset
         arcRect.set(arcCenterX - arcRadius, arcCenterY - arcRadius,
@@ -229,7 +229,7 @@ class EffectBoosterView @JvmOverloads constructor(
     }
 
     companion object {
-        private const val DEFAULT_WIDTH = 180
-        private const val DEFAULT_HEIGHT = 90
+        private const val DEFAULT_HEIGHT = 120
+        private const val DEFAULT_WIDTH = 2 * DEFAULT_HEIGHT
     }
 }

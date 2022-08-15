@@ -7,8 +7,8 @@
     tools:parentTag="com.frolo.audiofx.view.EffectBoosterPanelView">
     <com.frolo.audiofx.view.EffectBoosterView
         android:id="@+id/effect_booster"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"/>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
     <TextView
         android:id="@+id/caption"
