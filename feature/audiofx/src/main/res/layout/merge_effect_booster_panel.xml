@@ -8,7 +8,10 @@
     <com.frolo.audiofx.view.EffectBoosterView
         android:id="@+id/effect_booster"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="4dp"/>
 
     <TextView
         android:id="@+id/caption"
