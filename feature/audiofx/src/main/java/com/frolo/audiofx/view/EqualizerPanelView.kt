@@ -67,7 +67,7 @@ class EqualizerPanelView @JvmOverloads constructor(
     private var equalizer: Equalizer? = null
     private val onEnableStatusChangeListener =
         AudioEffect2.OnEnableStatusChangeListener { effect, enabled ->
-            equalizerView.isEnabled = enabled
+            equalizerView.isEqualizerUiEnabled = enabled
             setChecked(checked = enabled)
         }
 
@@ -87,7 +87,7 @@ class EqualizerPanelView @JvmOverloads constructor(
         equalizer?.apply {
             addOnEnableStatusChangeListener(onEnableStatusChangeListener)
         }
-        equalizerView.isEnabled = equalizer?.isEnabled == true
+        equalizerView.isEqualizerUiEnabled = equalizer?.isEnabled == true
         equalizerView.setup(
             equalizer = equalizer?.let(::AudioFx2EqualizerToEqualizerAdapter),
             animate = isLaidOut

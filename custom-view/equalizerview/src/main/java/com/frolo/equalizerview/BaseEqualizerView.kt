@@ -7,6 +7,7 @@ import android.graphics.Paint
 import android.graphics.Path
 import android.util.AttributeSet
 import android.util.DisplayMetrics
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -101,6 +102,8 @@ abstract class BaseEqualizerView<V> @JvmOverloads constructor(
             }
             return levels
         }
+
+    var isEqualizerUiEnabled: Boolean = true
 
     init {
         val styleId = attrs?.getAttributeIntValue(null, "style", DEFAULT_STYLE_RES_ID)
@@ -339,6 +342,20 @@ abstract class BaseEqualizerView<V> @JvmOverloads constructor(
             visualPaint.strokeWidth = visualPath.strokeWidth
             canvas.drawPath(visualPath.path, visualPaint)
         }
+    }
+
+    override fun onInterceptTouchEvent(ev: MotionEvent): Boolean {
+        if (!isEqualizerUiEnabled) {
+            return true
+        }
+        return super.onInterceptTouchEvent(ev)
+    }
+
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        if (!isEqualizerUiEnabled) {
+            return true
+        }
+        return super.onTouchEvent(event)
     }
 
     /**
