@@ -24,6 +24,7 @@ final class Defaults {
             numberOfBands = equalizer.getNumberOfBands();
             minBandLevelRange = equalizer.getBandLevelRange()[0];
             maxBandLevelRange = equalizer.getBandLevelRange()[1];
+            equalizer.release();
         } catch (Throwable ignored) {
         }
         this.numberOfBands = numberOfBands;
