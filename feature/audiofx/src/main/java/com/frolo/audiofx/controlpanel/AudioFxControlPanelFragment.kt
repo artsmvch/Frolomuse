@@ -75,6 +75,12 @@ class AudioFxControlPanelFragment : Fragment() {
                 virtualizer_panel.setup(bassBoost)
             }
         }
+
+        loudness.observe(owner) { loudness ->
+            if (loudness != null) {
+                loudness_panel.setup(loudness)
+            }
+        }
     }
 
     companion object {

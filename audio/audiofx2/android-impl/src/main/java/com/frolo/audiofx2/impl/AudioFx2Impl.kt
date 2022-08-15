@@ -15,12 +15,14 @@ class AudioFx2Impl private constructor(
     private val hasEqualizer: Boolean
     private val hasBassBoost: Boolean
     private val hasVirtualizer: Boolean
+    private val hasLoudnessEnhancer: Boolean
     private val hasReverb: Boolean
 
     init {
         var hasEqualizer = false
         var hasBassBoost = false
         var hasVirtualizer = false
+        var hasLoudnessEnhancer = false
         var hasReverb = false
         try {
             val descriptors = AudioEffect.queryEffects()
@@ -36,6 +38,9 @@ class AudioFx2Impl private constructor(
                         AudioEffect.EFFECT_TYPE_VIRTUALIZER == descriptor.type -> {
                             hasVirtualizer = true
                         }
+                        AudioEffect.EFFECT_TYPE_LOUDNESS_ENHANCER == descriptor.type -> {
+                            hasLoudnessEnhancer = true
+                        }
                         AudioEffect.EFFECT_TYPE_PRESET_REVERB == descriptor.type -> {
                             hasReverb = true
                         }
@@ -47,6 +52,7 @@ class AudioFx2Impl private constructor(
         this.hasEqualizer = hasEqualizer
         this.hasBassBoost = hasBassBoost
         this.hasVirtualizer = hasVirtualizer
+        this.hasLoudnessEnhancer = hasLoudnessEnhancer
         this.hasReverb = hasReverb
     }
 
@@ -71,6 +77,12 @@ class AudioFx2Impl private constructor(
         VirtualizerImpl(context, storageKey, errorHandler)
     }
     override val virtualizer: Virtualizer? = virtualizerImpl
+
+    private val loudnessImpl: LoudnessImpl? = createIf(hasLoudnessEnhancer) {
+        LoudnessImpl(context, storageKey, errorHandler)
+    }
+    override val loudness: Loudness? = loudnessImpl
+
     override val reverb: Reverb? = null
 
     private inline fun <T> createIf(predicate: Boolean, creator: () -> T): T? {
@@ -81,12 +93,14 @@ class AudioFx2Impl private constructor(
         equalizerImpl?.applyToAudioSession(audioSessionId)
         bassBoostImpl?.applyToAudioSession(audioSessionId)
         virtualizerImpl?.applyToAudioSession(audioSessionId)
+        loudnessImpl?.applyToAudioSession(audioSessionId)
     }
 
     override fun release() {
         equalizerImpl?.release()
         bassBoostImpl?.release()
         virtualizerImpl?.release()
+        loudnessImpl?.release()
     }
 
     companion object {

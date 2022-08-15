@@ -38,6 +38,9 @@ class AudioFxControlPanelViewModel(
     val virtualizer: LiveData<Virtualizer> by lazy {
         Transformations.map(audioFx2) { audioFx2 -> audioFx2?.virtualizer }
     }
+    val loudness: LiveData<Loudness> by lazy {
+        Transformations.map(audioFx2) { audioFx2 -> audioFx2?.loudness }
+    }
 
     @SuppressLint("CheckResult")
     private fun loadPresets(equalizer: Equalizer) {

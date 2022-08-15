@@ -60,13 +60,30 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
                 android:layout_marginBottom="8dp"
                 app:cardElevation="2dp"
                 app:cardMaxElevation="4dp"
                 app:cardCornerRadius="8dp">
                 <com.frolo.audiofx.view.EffectBoosterPanelView
                     android:id="@+id/virtualizer_panel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="12dp"/>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="8dp"
+                app:cardElevation="2dp"
+                app:cardMaxElevation="4dp"
+                app:cardCornerRadius="8dp">
+                <com.frolo.audiofx.view.EffectBoosterPanelView
+                    android:id="@+id/loudness_panel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="12dp"/>
