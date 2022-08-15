@@ -2,6 +2,8 @@ package com.frolo.audiofx.di
 
 import android.app.Application
 import android.widget.Toast
+import androidx.lifecycle.MutableLiveData
+import com.frolo.audiofx.AudioSessionDescription
 import com.frolo.audiofx2.impl.AudioEffect2ErrorHandler
 import com.frolo.audiofx2.impl.AudioFx2Impl
 
@@ -14,4 +16,7 @@ internal class AppComponentImpl(
         }
         AudioFx2Impl.obtain(application, errorHandler)
     }
+
+    override val audioSessionDescription: MutableLiveData<AudioSessionDescription> =
+        MutableLiveData<AudioSessionDescription>()
 }

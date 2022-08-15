@@ -18,7 +18,8 @@ class ApplicationImpl : Application() {
             )
         )
         AudioFx2Feature.init(
-            audioFx2Provider = { appComponent.audioFx2 }
+            audioFx2Provider = { appComponent.audioFx2 },
+            audioSessionDescription = appComponent.audioSessionDescription
         )
     }
 }
