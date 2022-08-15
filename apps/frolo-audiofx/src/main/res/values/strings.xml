@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Equalizer</string>
+
+    <string name="global_audio_session">Global audio mix</string>
+    <string name="global_audio_session_description">Global audio mix</string>
+    <string name="external_audio_session_description">Audio effects applied to %s</string>
 </resources>

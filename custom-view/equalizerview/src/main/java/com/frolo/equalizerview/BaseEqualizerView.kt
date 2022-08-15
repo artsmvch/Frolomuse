@@ -241,8 +241,8 @@ abstract class BaseEqualizerView<V> @JvmOverloads constructor(
             bandView.setLevelRange(minBandLevel, maxBandLevel)
             bandView.setLevel(currentLevel, animate)
             bandView.setLabel(getBandLabel(bandIndex, frequencyRange))
-            bandView.setTrackTint(gridColor)
-            bandView.setThumbTint(levelColor)
+            bandView.setTrackTint(if (isEqualizerUiEnabled) gridColor else disableColor)
+            bandView.setThumbTint(if (isEqualizerUiEnabled) levelColor else disableColor)
             bandView.setTag(R.id.tag_band_index, bandIndex)
         }
 

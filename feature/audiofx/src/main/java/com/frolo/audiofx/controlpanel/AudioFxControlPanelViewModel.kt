@@ -4,16 +4,13 @@ import android.annotation.SuppressLint
 import android.app.Application
 import androidx.lifecycle.*
 import com.frolo.audiofx.AudioFx2Feature
-import com.frolo.audiofx.AudioSessionDescription
+import com.frolo.audiofx.AudioSessionInfo
 import com.frolo.audiofx2.*
 import com.frolo.rx.KeyedDisposableContainer
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import java.util.concurrent.Executor
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
 
 
 class AudioFxControlPanelViewModel(
@@ -25,7 +22,7 @@ class AudioFxControlPanelViewModel(
         MutableLiveData(AudioFx2Feature.getAudioFx2())
     }
 
-    val audioSessionDescriptor: LiveData<AudioSessionDescription> get() =
+    val audioSessionDescriptor: LiveData<AudioSessionInfo> get() =
         AudioFx2Feature.getAudioSessionDescription()
 
     val equalizer: LiveData<Equalizer> =

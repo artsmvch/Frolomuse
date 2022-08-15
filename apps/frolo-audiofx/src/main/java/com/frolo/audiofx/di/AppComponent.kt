@@ -1,7 +1,7 @@
 package com.frolo.audiofx.di
 
 import androidx.lifecycle.MutableLiveData
-import com.frolo.audiofx.AudioSessionDescription
+import com.frolo.audiofx.AudioSessionInfo
 import com.frolo.audiofx2.impl.AudioFx2Impl
 
 
@@ -14,5 +14,5 @@ fun initAppComponent(instance: AppComponent) {
 
 interface AppComponent {
     val audioFx2: AudioFx2Impl
-    val audioSessionDescription: MutableLiveData<AudioSessionDescription>
+    val audioSessionInfo: MutableLiveData<AudioSessionInfo>
 }
