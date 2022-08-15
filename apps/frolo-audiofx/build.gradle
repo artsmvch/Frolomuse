@@ -49,6 +49,7 @@ dependencies {
 
     implementation project(path: ':feature:audiofx')
 
+    implementation project(path: ':material-support')
     // Doubtfully
     implementation project(path: ':core-ui')
 }

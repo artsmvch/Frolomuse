@@ -1,16 +1,59 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Theme.Frolomuse" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_700</item>
-        <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
+    <color name="accent_color">#D64768</color>
+    <color name="window_background_color">#EDEDED</color>
+
+    <style name="Theme.Frolo.AudioFx" parent="Theme.MaterialComponents">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="android:statusBarColor">@color/window_background_color</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>
+        <item name="android:navigationBarColor">@color/window_background_color</item>
+        <item name="android:windowBackground">@color/window_background_color</item>
+        <item name="actionBarSize">@dimen/default_bar_size</item>
+        <item name="android:actionBarSize">@dimen/default_bar_size</item>
+
+        <item name="android:textViewStyle">@style/Theme.Frolo.AudioFx.TextView</item>
+
+        <item name="equalizerViewStyle">@style/Theme.Frolo.AudioFx.EqualizerView</item>
+        <item name="effectBoosterViewStyle">@style/Theme.Frolo.AudioFx.EffectBoosterView</item>
+
+        <item name="android:textColor">@color/md_grey_800</item>
+        <item name="android:textColorPrimary">@color/md_grey_800</item>
+        <item name="android:textColorSecondary">@color/md_grey_600</item>
+        <item name="android:textColorHint">@color/md_grey_600</item>
+
+        <!--Material colors-->
+        <item name="colorPrimary">#366CBD</item>
+        <item name="colorOnPrimary">@color/md_white_1000</item>
+        <item name="colorSecondary">@color/accent_color</item>
+        <item name="colorOnSecondary">@color/md_white_1000</item>
+        <item name="colorSurface">@color/md_white_1000</item>
+        <item name="colorOnSurface">@color/md_grey_800</item>
+        <item name="errorTextColor">@color/md_red_500</item>
+    </style>
+
+    <style name="Theme.Frolomuse.AudioFx.MaterialCardView" parent="Widget.MaterialComponents.CardView">
+        <item name="cardBackgroundColor">@color/md_white_1000</item>
+    </style>
+
+    <!--TextView-->
+    <style name="Theme.Frolo.AudioFx.TextView" parent="Widget.MaterialComponents.TextView">
+        <item name="android:textColor">@null</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="Theme.Frolo.AudioFx.EqualizerView" parent="EqualizerView.Default">
+        <item name="drawVisuals">true</item>
+        <item name="gridColor">#E4E4E4</item>
+        <item name="gridLineThickness">2dp</item>
+        <item name="levelColor">?colorAccent</item>
+    </style>
+
+    <style name="Theme.Frolo.AudioFx.EffectBoosterView" parent="EffectBoosterView.Default">
+        <item name="strokeWidth">2dp</item>
+        <item name="strokeInactiveColor">#E4E4E4</item>
+        <item name="strokeActiveColor">@color/accent_color</item>
     </style>
 </resources>
