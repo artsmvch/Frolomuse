@@ -5,6 +5,7 @@
         <attr name="gridColor" format="color"/>
         <attr name="gridLineThickness" format="dimension"/>
         <attr name="levelColor" format="color"/>
+        <attr name="disableColor" format="color"/>
     </declare-styleable>
 
     <attr name="equalizerViewStyle" format="reference"/>

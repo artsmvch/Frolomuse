@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.annotation.ColorInt
+import androidx.annotation.IntRange
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.graphics.ColorUtils
 import androidx.core.view.forEach
@@ -63,8 +64,8 @@ abstract class BaseEqualizerView<V> @JvmOverloads constructor(
         set(value) {
             if (field != value) {
                 field = value
-                getBandViewContainer().forEach { child ->
-                    (child as BandView).setTrackTint(value)
+                if (isEqualizerUiEnabled) {
+                    setAllTracksTint(value)
                 }
                 invalidate()
             }
@@ -75,8 +76,21 @@ abstract class BaseEqualizerView<V> @JvmOverloads constructor(
         set(value) {
             if (field != value) {
                 field = value
-                getBandViewContainer().forEach { child ->
-                    (child as BandView).setThumbTint(value)
+                if (isEqualizerUiEnabled) {
+                    setAllThumbsTint(value)
+                }
+                invalidate()
+            }
+        }
+
+    @ColorInt
+    var disableColor: Int = DEFAULT_DISABLE_COLOR
+        set(value) {
+            if (field != value) {
+                field = value
+                if (!isEqualizerUiEnabled) {
+                    setAllTracksTint(value)
+                    setAllThumbsTint(value)
                 }
                 invalidate()
             }
@@ -104,6 +118,18 @@ abstract class BaseEqualizerView<V> @JvmOverloads constructor(
         }
 
     var isEqualizerUiEnabled: Boolean = true
+        set(value) {
+            if (field != value) {
+                field = value
+                setAllTracksTint(
+                    tint = if (value) gridColor else disableColor
+                )
+                setAllThumbsTint(
+                    tint = if (value) levelColor else disableColor
+                )
+                invalidate()
+            }
+        }
 
     init {
         val styleId = attrs?.getAttributeIntValue(null, "style", DEFAULT_STYLE_RES_ID)
@@ -117,6 +143,7 @@ abstract class BaseEqualizerView<V> @JvmOverloads constructor(
             gridLineThickness = a.getDimension(R.styleable.BaseEqualizerView_gridLineThickness, 0f)
             gridColor = a.getColor(R.styleable.BaseEqualizerView_gridColor, DEFAULT_GRID_COLOR)
             levelColor = a.getColor(R.styleable.BaseEqualizerView_levelColor, DEFAULT_LEVEL_COLOR)
+            disableColor = a.getColor(R.styleable.BaseEqualizerView_disableColor, DEFAULT_DISABLE_COLOR)
         } finally {
             a.recycle()
         }
@@ -126,9 +153,9 @@ abstract class BaseEqualizerView<V> @JvmOverloads constructor(
         visualNeutralPaint.strokeWidth = dpToPx(context, 1.6f)
 
         visualPaths = ArrayList(3)
-        visualPaths.add(VisualPath(ColorUtils.setAlphaComponent(levelColor, 102), dpToPx(context, 3f)))
-        visualPaths.add(VisualPath(ColorUtils.setAlphaComponent(levelColor, 78), dpToPx(context, 1.2f)))
-        visualPaths.add(VisualPath(ColorUtils.setAlphaComponent(levelColor, 48), dpToPx(context, 1f)))
+        visualPaths.add(VisualPath(alpha = 102, strokeWidth = dpToPx(context, 3f)))
+        visualPaths.add(VisualPath(alpha = 78, strokeWidth = dpToPx(context, 1.2f)))
+        visualPaths.add(VisualPath(alpha = 48, strokeWidth = dpToPx(context, 1f)))
 
         @Suppress("LeakingThis")
         setWillNotDraw(!drawVisuals)
@@ -136,6 +163,18 @@ abstract class BaseEqualizerView<V> @JvmOverloads constructor(
 
     private fun getBandViewContainer(): ViewGroup {
         return bandsContainer
+    }
+
+    private fun setAllTracksTint(@ColorInt tint: Int) {
+        getBandViewContainer().forEach { child ->
+            (child as BandView).setTrackTint(tint)
+        }
+    }
+
+    private fun setAllThumbsTint(@ColorInt tint: Int) {
+        getBandViewContainer().forEach { child ->
+            (child as BandView).setThumbTint(tint)
+        }
     }
 
     /**
@@ -279,7 +318,11 @@ abstract class BaseEqualizerView<V> @JvmOverloads constructor(
 
         // The centered horizontal line
         visualNeutralPaint.strokeWidth = gridLineThickness
-        visualNeutralPaint.color = gridColor
+        visualNeutralPaint.color = if (isEqualizerUiEnabled) {
+            gridColor
+        } else {
+            disableColor
+        }
         canvas.drawLine(paddingLeft.toFloat(), neutralY,
                 measuredWidth - paddingRight.toFloat(), neutralY, visualNeutralPaint)
     }
@@ -338,7 +381,12 @@ abstract class BaseEqualizerView<V> @JvmOverloads constructor(
         }
 
         for (visualPath in visualPaths) {
-            visualPaint.color = visualPath.color
+            val color = if (isEqualizerUiEnabled) {
+                levelColor
+            } else {
+                disableColor
+            }
+            visualPaint.color = ColorUtils.setAlphaComponent(color, visualPath.alpha)
             visualPaint.strokeWidth = visualPath.strokeWidth
             canvas.drawPath(visualPath.path, visualPaint)
         }
@@ -362,8 +410,9 @@ abstract class BaseEqualizerView<V> @JvmOverloads constructor(
      * Internal state of a visual path.
      */
     private class VisualPath constructor(
-        @ColorInt val color:
-        Int, val strokeWidth: Float
+        @IntRange(from = 0, to = 255)
+        val alpha: Int,
+        val strokeWidth: Float
     ) {
         val path: Path = Path()
 
@@ -412,6 +461,7 @@ abstract class BaseEqualizerView<V> @JvmOverloads constructor(
         private val DEFAULT_STYLE_RES_ID = R.style.EqualizerView_Default
         private const val DEFAULT_GRID_COLOR = Color.TRANSPARENT
         private const val DEFAULT_LEVEL_COLOR = Color.LTGRAY
+        private const val DEFAULT_DISABLE_COLOR = Color.LTGRAY
 
         private fun getBandLabel(bandIndex: Int, frequencyRange: IntArray): String {
             val freq: Int = frequencyRange.getOrNull(0) ?: 0
