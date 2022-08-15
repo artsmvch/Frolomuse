@@ -200,17 +200,16 @@ class EffectBoosterView @JvmOverloads constructor(
             return false
         }
         if (event.action == MotionEvent.ACTION_DOWN) {
-            if (event.x < paddingLeft
-                || event.x > measuredWidth - paddingRight
-                || event.y < paddingTop
-                || event.y > measuredHeight - paddingBottom) {
+            if (event.x < arcRect.left
+                || event.x > arcRect.right
+                || event.y < arcRect.top
+                || event.y > arcRect.bottom) {
                 return false
             }
             parent?.requestDisallowInterceptTouchEvent(true)
         }
         if (event.action == MotionEvent.ACTION_DOWN || event.action == MotionEvent.ACTION_MOVE) {
-            val contentWidth = measuredWidth - paddingLeft - paddingRight
-            val newBoostValue = ((event.x - paddingLeft) / contentWidth.toFloat()).coerceIn(0f, 1f)
+            val newBoostValue = ((event.x - arcRect.left) / arcRect.width()).coerceIn(0f, 1f)
             this.boostValue = newBoostValue
             onBoostValueChangeListener?.onBoostValueChange(this, newBoostValue)
             return true
