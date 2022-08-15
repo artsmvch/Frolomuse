@@ -12,9 +12,6 @@ internal class AppComponentImpl(
         val errorHandler = AudioEffect2ErrorHandler { _, err ->
             Toast.makeText(application, "Error: $err", Toast.LENGTH_LONG).show()
         }
-        AudioFx2Impl.obtain(application, errorHandler).apply {
-            equalizer?.isEnabled = true
-            bassBoost?.isEnabled = true
-        }
+        AudioFx2Impl.obtain(application, errorHandler)
     }
 }

@@ -104,7 +104,7 @@ class AudioFx2Impl private constructor(
     }
 
     companion object {
-        private const val DEFAULT_KEY = "application"
+        private const val DEFAULT_STORAGE_KEY = "application"
         private val DEFAULT_ERROR_HANDLER = AudioEffect2ErrorHandler { _, _ ->  }
 
         fun obtain(
@@ -113,7 +113,7 @@ class AudioFx2Impl private constructor(
         ): AudioFx2Impl {
             return AudioFx2Impl(
                 context = application,
-                storageKey = DEFAULT_KEY,
+                storageKey = DEFAULT_STORAGE_KEY,
                 errorHandler = errorHandler
             )
         }

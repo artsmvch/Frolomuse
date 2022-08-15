@@ -1,4 +1,4 @@
-package com.frolo.audiofx.controlpanel
+package com.frolo.audiofx.view
 
 import com.frolo.equalizerview.IEqualizer
 

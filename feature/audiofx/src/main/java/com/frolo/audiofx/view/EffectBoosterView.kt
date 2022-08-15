@@ -100,15 +100,76 @@ class EffectBoosterView @JvmOverloads constructor(
         return Screen.dp(context, DEFAULT_HEIGHT)
     }
 
+    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
+        val widthMode = MeasureSpec.getMode(widthMeasureSpec)
+        val heightMode = MeasureSpec.getMode(heightMeasureSpec)
+
+        val defaultWidth = Screen.dp(context, DEFAULT_WIDTH)
+        val defaultHeight = Screen.dp(context, DEFAULT_HEIGHT)
+
+        val width: Int
+        val height: Int
+        when (widthMode) {
+            MeasureSpec.UNSPECIFIED -> {
+                height = when (heightMode) {
+                    MeasureSpec.UNSPECIFIED -> defaultHeight
+                    MeasureSpec.EXACTLY -> MeasureSpec.getSize(heightMeasureSpec)
+                    MeasureSpec.AT_MOST -> {
+                        min(MeasureSpec.getSize(heightMeasureSpec), defaultHeight)
+                    }
+                    else -> defaultHeight
+                }
+                width = 2 * height
+            }
+            MeasureSpec.EXACTLY -> {
+                width = MeasureSpec.getSize(widthMeasureSpec)
+                height = when (heightMode) {
+                    MeasureSpec.UNSPECIFIED -> width / 2
+                    MeasureSpec.EXACTLY -> MeasureSpec.getSize(heightMeasureSpec)
+                    MeasureSpec.AT_MOST -> {
+                        min(MeasureSpec.getSize(heightMeasureSpec), width / 2)
+                    }
+                    else -> defaultHeight
+                }
+            }
+            MeasureSpec.AT_MOST -> {
+                when (heightMode) {
+                    MeasureSpec.UNSPECIFIED -> {
+                        width = min(MeasureSpec.getSize(widthMeasureSpec), defaultWidth)
+                        height = width / 2
+                    }
+                    MeasureSpec.EXACTLY -> {
+                        height = MeasureSpec.getSize(heightMeasureSpec)
+                        width = min(MeasureSpec.getSize(widthMeasureSpec), defaultWidth)
+                    }
+                    MeasureSpec.AT_MOST -> {
+                        width = min(MeasureSpec.getSize(widthMeasureSpec),
+                            2 * MeasureSpec.getSize(heightMeasureSpec))
+                        height = width / 2
+                    }
+                    else -> {
+                        width = defaultWidth
+                        height = defaultHeight
+                    }
+                }
+            }
+            else -> {
+                super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+                return
+            }
+        }
+        setMeasuredDimension(width, height)
+    }
+
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         val contentWidth = measuredWidth - paddingLeft - paddingRight
         val contentHeight = measuredHeight - paddingTop - paddingBottom
-        val strokeOffset = max(strokeWidth / 2f, pointerRadius)
-        this.arcRadius = min(contentWidth, contentHeight) / 2f - strokeOffset
+        val offset = max(strokeWidth / 2f, pointerRadius)
+        this.arcRadius = min(contentWidth, contentHeight) / 2f - offset
         this.arcCenterX = paddingLeft + contentWidth / 2f
-        this.arcCenterY = measuredHeight - paddingBottom.toFloat()
-        arcRect.set(arcCenterX - arcRadius, arcCenterX - arcRadius,
-            arcCenterX + arcRadius, arcCenterX + arcRadius)
+        this.arcCenterY = measuredHeight - paddingBottom.toFloat() - offset
+        arcRect.set(arcCenterX - arcRadius, arcCenterY - arcRadius,
+            arcCenterX + arcRadius, arcCenterY + arcRadius)
     }
 
     override fun onDraw(canvas: Canvas) {
@@ -129,7 +190,7 @@ class EffectBoosterView @JvmOverloads constructor(
         // Drawing pointer
         val degrees: Float = 180f + 180f * boostValue
         val pointerCenterX = arcCenterX + arcRadius * cos(degrees * Math.PI / 180).toFloat()
-        val pointerCenterY = arcCenterX + arcRadius * sin(degrees * Math.PI / 180).toFloat()
+        val pointerCenterY = arcCenterY + arcRadius * sin(degrees * Math.PI / 180).toFloat()
         paint.style = Paint.Style.FILL
         canvas.drawCircle(pointerCenterX, pointerCenterY, pointerRadius, paint)
     }

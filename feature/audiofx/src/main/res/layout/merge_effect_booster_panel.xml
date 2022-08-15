@@ -14,10 +14,11 @@
         android:id="@+id/caption"
         android:layout_width="match_parent"
         android:layout_height="20dp"
+        android:layout_marginTop="12dp"
         android:textAppearance="?textAppearanceCaption"
         android:gravity="center"
         android:includeFontPadding="false"
-        android:textSize="16sp"
+        android:textSize="14sp"
         tools:text="Bass Boost"/>
 
     <com.google.android.material.switchmaterial.SwitchMaterial

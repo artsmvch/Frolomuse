@@ -12,4 +12,11 @@
         <item name="strokeInactiveColor">#C3C3C3</item>
         <item name="strokeActiveColor">#EC4444</item>
     </style>
+
+    <!--View styles-->
+    <style name="App.MaterialCard.EffectPanel" parent="Widget.Material3.CardView.Elevated">
+        <item name="cardElevation">1dp</item>
+        <item name="cardMaxElevation">2dp</item>
+        <item name="cardCornerRadius">4dp</item>
+    </style>
 </resources>
