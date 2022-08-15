@@ -1,9 +1,11 @@
 package com.frolo.audiofx
 
 import android.app.Application
+import androidx.lifecycle.LiveData
 import com.frolo.audiofx.di.AppComponentImpl
 import com.frolo.audiofx.di.appComponent
 import com.frolo.audiofx.di.initAppComponent
+import com.frolo.audiofx2.AudioFx2
 import com.frolo.logger.api.Logger
 import com.frolo.logger.api.LoggerParams
 import com.frolo.logger.impl.ConsoleLogDelegate
@@ -18,8 +20,11 @@ class ApplicationImpl : Application() {
             )
         )
         AudioFx2Feature.init(
-            audioFx2Provider = { appComponent.audioFx2 },
-            audioSessionDescription = appComponent.audioSessionDescription
+            input = object : AudioFx2FeatureInput {
+                override val audioFx2: AudioFx2 get() = appComponent.audioFx2
+                override val audioSessionDescription: LiveData<AudioSessionDescription>
+                    get() = appComponent.audioSessionDescription
+            }
         )
     }
 }
