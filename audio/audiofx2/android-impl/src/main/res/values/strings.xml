@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="custom_preset">Custom</string>
+
+    <string name="reverb">Reverberation</string>
+    <string name="preset_reverb_none">Nothing</string>
+    <string name="preset_reverb_large_hall">Large hall</string>
+    <string name="preset_reverb_large_room">Large room</string>
+    <string name="preset_reverb_medium_hall">Medium hall</string>
+    <string name="preset_reverb_medium_room">Medium room</string>
+    <string name="preset_reverb_plate">Plate</string>
+    <string name="preset_reverb_small_rooom">Small room</string>
 </resources>
