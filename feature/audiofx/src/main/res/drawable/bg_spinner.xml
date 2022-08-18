@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <layer-list
+            android:paddingMode="stack"
+            android:paddingRight="24dp">
+
+            <item>
+                <selector>
+
+                    <item android:state_pressed="true">
+                        <shape android:shape="rectangle">
+
+                            <solid android:color="#34B9B9B9"/>
+
+                            <corners android:radius="8dp"/>
+
+                        </shape>
+                    </item>
+
+                </selector>
+            </item>
+
+            <item
+                android:right="12dp"
+                android:gravity="center_vertical|right"
+                android:drawable="@drawable/ic_arrow_drop_down_10">
+            </item>
+
+        </layer-list>
+    </item>
+</selector>
