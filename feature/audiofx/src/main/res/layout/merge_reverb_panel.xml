@@ -14,11 +14,12 @@
         android:id="@+id/caption"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="16dp"
         android:gravity="start|center_vertical"
         android:includeFontPadding="false"
         android:textAppearance="?textAppearanceCaption"
         android:textSize="14sp"
+        android:ellipsize="end"
         tools:text="Reverb"/>
 
     <com.google.android.material.switchmaterial.SwitchMaterial
@@ -44,5 +45,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:id="@+id/slider"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        style="@style/App.Slider.EffectPanel"/>
 </merge>

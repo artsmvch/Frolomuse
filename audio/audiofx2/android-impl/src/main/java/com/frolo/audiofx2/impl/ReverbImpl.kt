@@ -49,6 +49,7 @@ internal class ReverbImpl constructor(
             engine
                 ?.runCatching { this.enabled = value }
                 ?.onFailure { errorHandler.onAudioEffectError(this, it) }
+            enableStatusChangeListenerRegistry.dispatchEnableStatusChange(enabled = value)
         }
 
     private val availablePresetsImpl: List<ReverbPresetImpl> by lazy {

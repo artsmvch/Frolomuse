@@ -19,4 +19,27 @@
         <item name="cardMaxElevation">2.5dp</item>
         <item name="cardCornerRadius">8dp</item>
     </style>
+
+    <style name="App.Slider.EffectPanel" parent="Widget.Material3.Slider">
+        <item name="haloRadius">16dp</item>
+        <item name="haloColor">#339F9F9F</item>
+        <item name="thumbRadius">6dp</item>
+        <item name="thumbColor">?colorSecondary</item>
+        <item name="tickColorActive">?colorSecondary</item>
+        <item name="tickColorInactive">@color/disabled_controller</item>
+        <item name="trackColorActive">?colorSecondary</item>
+        <item name="trackColorInactive">@color/disabled_controller</item>
+        <item name="labelBehavior">floating</item>
+        <item name="labelStyle">@style/App.Slider.EffectPanel.Tooltip</item>
+    </style>
+    
+    <style name="App.Slider.EffectPanel.Tooltip" parent="Widget.MaterialComponents.Tooltip">
+        <item name="backgroundTint">#CC656565</item>
+        <item name="android:textColor">#FFFFFF</item>
+        <item name="android:textAppearance">@style/App.TextAppearance.EffectPanel.Tooltip</item>
+    </style>
+
+    <style name="App.TextAppearance.EffectPanel.Tooltip" parent="TextAppearance.MaterialComponents.Tooltip">
+        <item name="android:textSize">14sp</item>
+    </style>
 </resources>
