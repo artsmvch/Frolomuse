@@ -83,7 +83,7 @@ class ReverbPanelView @JvmOverloads constructor(
             slider.values = emptyList()
             return
         }
-        val currentPreset = effect.currentPreset
+        val currentPreset = effect.getCurrentPreset()
         slider.valueFrom = allPresets.first().level.toFloat()
         slider.valueTo = allPresets.last().level.toFloat()
         slider.stepSize = 1f
