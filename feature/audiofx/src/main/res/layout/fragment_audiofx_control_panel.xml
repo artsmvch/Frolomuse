@@ -105,5 +105,17 @@
                     android:layout_height="wrap_content"/>
             </com.google.android.material.card.MaterialCardView>
         </LinearLayout>
+
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            style="@style/App.MaterialCard.EffectPanel">
+
+            <com.frolo.audiofx.view.ReverbPanelView
+                android:id="@+id/reverb_panel_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

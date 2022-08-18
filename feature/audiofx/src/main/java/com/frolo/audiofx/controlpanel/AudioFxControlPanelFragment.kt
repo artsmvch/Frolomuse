@@ -71,6 +71,12 @@ class AudioFxControlPanelFragment : Fragment() {
                 loudness_panel.setup(loudness)
             }
         }
+
+        reverb.observe(owner) { reverb ->
+            if (reverb != null) {
+                reverb_panel_view.setup(reverb)
+            }
+        }
     }
 
     companion object {

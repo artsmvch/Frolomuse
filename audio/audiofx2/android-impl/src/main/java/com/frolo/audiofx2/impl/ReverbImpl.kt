@@ -23,7 +23,7 @@ internal class ReverbImpl constructor(
         ReverbState(
             context = context,
             storageKey = storageKey,
-            presetFactory = ::mapPresetFromIndex
+            presetFactory = ::mapPresetFromValue
         )
     }
 
@@ -52,7 +52,7 @@ internal class ReverbImpl constructor(
         }
 
     private val availablePresetsImpl: List<ReverbPresetImpl> by lazy {
-        val indexes = listOf(
+        val values = listOf(
             PresetReverb.PRESET_NONE,
             PresetReverb.PRESET_LARGEHALL,
             PresetReverb.PRESET_LARGEROOM,
@@ -61,8 +61,8 @@ internal class ReverbImpl constructor(
             PresetReverb.PRESET_PLATE,
             PresetReverb.PRESET_SMALLROOM
         )
-        return@lazy indexes
-            .map(::mapPresetFromIndex)
+        return@lazy values
+            .map(::mapPresetFromValue)
             .sortedBy { it.level }
     }
     override val availablePresets: List<Reverb.Preset> get() = availablePresetsImpl
@@ -70,14 +70,14 @@ internal class ReverbImpl constructor(
     override var preset: Reverb.Preset
         get() = synchronized(lock) {
             engine
-                ?.runCatching { this.preset.let(::mapPresetFromIndex) }
+                ?.runCatching { this.preset.let(::mapPresetFromValue) }
                 ?.onFailure { errorHandler.onAudioEffectError(this, it) }
                 ?.getOrNull() ?: state.getCurrentPreset()
         }
         set(value) = synchronized(lock) {
             state.setCurrentPreset(value)
             engine
-                ?.runCatching { engine?.preset = (value as ReverbPresetImpl).index }
+                ?.runCatching { engine?.preset = (value as ReverbPresetImpl).value }
                 ?.onFailure { errorHandler.onAudioEffectError(this, it) }
             presetUsedListenerRegistry.dispatchPresetUsed(value)
         }
@@ -86,11 +86,11 @@ internal class ReverbImpl constructor(
         applyToAudioSession(initialEffectParams.audioSessionId)
     }
 
-    private fun mapPresetFromIndex(index: Short): ReverbPresetImpl {
+    private fun mapPresetFromValue(value: Short): ReverbPresetImpl {
         val level: Int
         @StringRes
         val nameResId: Int;
-        when(index) {
+        when(value) {
             PresetReverb.PRESET_LARGEHALL -> {
                 level = 1
                 nameResId = R.string.preset_reverb_large_hall
@@ -121,7 +121,7 @@ internal class ReverbImpl constructor(
             }
         }
         return ReverbPresetImpl(
-            index = index,
+            value = value,
             level = level,
             name = context.getString(nameResId)
         )
@@ -137,7 +137,7 @@ internal class ReverbImpl constructor(
         try {
             val newEngine = PresetReverb(priority, audioSessionId)
             newEngine.enabled = state.isEnabled()
-            newEngine.preset = (state.getCurrentPreset() as? ReverbPresetImpl)?.index
+            newEngine.preset = (state.getCurrentPreset() as? ReverbPresetImpl)?.value
                 ?: PresetReverb.PRESET_NONE
             this.engine = newEngine
         } catch (e: Throwable) {
@@ -172,10 +172,14 @@ internal class ReverbImpl constructor(
 }
 
 private data class ReverbPresetImpl(
-    val index: Short,
+    val value: Short,
     override val level: Int,
     override val name: String
-) : Reverb.Preset
+) : Reverb.Preset {
+    override fun isTheSame(other: Reverb.Preset): Boolean {
+        return other is ReverbPresetImpl && this.value == other.value
+    }
+}
 
 private class ReverbPresetUsedListenerRegistry(
     context: Context,
@@ -206,19 +210,19 @@ private class ReverbState constructor(
     }
 
     fun getCurrentPreset(): Reverb.Preset = synchronized(lock) {
-        val index = prefs.getInt(KEY_PRESET_INDEX, PresetReverb.PRESET_NONE.toInt())
-        presetFactory.invoke(index.toShort())
+        val value = prefs.getInt(KEY_PRESET_VALUE, PresetReverb.PRESET_NONE.toInt())
+        presetFactory.invoke(value.toShort())
     }
 
     fun setCurrentPreset(preset: Reverb.Preset) = synchronized(lock) {
         if (preset is ReverbPresetImpl) {
-            prefs.edit().putInt(KEY_PRESET_INDEX, preset.index.toInt()).apply()
+            prefs.edit().putInt(KEY_PRESET_VALUE, preset.value.toInt()).apply()
         }
     }
 
     companion object {
         private const val KEY_ENABLED = "enabled"
-        private const val KEY_PRESET_INDEX = "preset_index"
+        private const val KEY_PRESET_VALUE = "preset_value"
 
         private fun getPrefsName(storageKey: String): String {
             return "$storageKey.audiofx2.reverb"

@@ -10,6 +10,8 @@ interface Reverb: AudioEffect2 {
     interface Preset {
         val level: Int
         val name: String
+
+        fun isTheSame(other: Preset): Boolean
     }
 
     fun interface OnPresetUsedListener {
