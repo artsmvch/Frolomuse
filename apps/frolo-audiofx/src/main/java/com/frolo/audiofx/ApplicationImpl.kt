@@ -13,6 +13,10 @@ import com.frolo.logger.impl.ConsoleLogDelegate
 class ApplicationImpl : Application() {
     override fun onCreate() {
         super.onCreate()
+        setup()
+    }
+
+    private fun setup() {
         initAppComponent(AppComponentImpl(this))
         Logger.init(
             LoggerParams(

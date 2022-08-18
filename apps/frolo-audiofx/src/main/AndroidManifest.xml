@@ -15,7 +15,7 @@
         android:theme="@style/Theme.Frolo.AudioFx">
 
         <receiver
-            android:name=".AudioSessionReceiver"
+            android:name=".engine.AudioFx2AttachEngineReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.media.action.OPEN_AUDIO_EFFECT_CONTROL_SESSION"/>

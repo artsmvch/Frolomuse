@@ -6,7 +6,6 @@ import android.media.session.MediaController
 import android.media.session.MediaSessionManager
 import androidx.core.content.getSystemService
 import androidx.lifecycle.LiveData
-import com.frolo.audiofx.NotificationListener
 
 
 class AudioSessionsLiveData constructor(
@@ -34,7 +33,7 @@ class AudioSessionsLiveData constructor(
 
     private fun startObservingAudioSessions() {
         val notificationListener: ComponentName? =
-            ComponentName(application, NotificationListener::class.java)
+            null //ComponentName(application, NotificationListener::class.java)
         mediaSessionManager?.addOnActiveSessionsChangedListener(
             audioSessionListener, notificationListener)
         mediaSessionManager?.getActiveSessions(notificationListener).also(::processAudioSessions)
