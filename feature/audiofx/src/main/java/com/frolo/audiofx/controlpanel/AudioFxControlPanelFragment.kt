@@ -33,12 +33,16 @@ class AudioFxControlPanelFragment : Fragment() {
     private fun loadUi() {
     }
 
+    private fun beginDelayedTransition() {
+        val transition = AutoTransition().apply {
+            duration = 200L
+        }
+        TransitionManager.beginDelayedTransition(requireView() as ViewGroup, transition)
+    }
+
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
         audioSessionDescriptor.observe(owner) { audioSessionDescription ->
-            val transition = AutoTransition().apply {
-                duration = 200L
-            }
-            TransitionManager.beginDelayedTransition(requireView() as ViewGroup, transition)
+            beginDelayedTransition()
             if (audioSessionDescription != null) {
                 audio_session_description.isVisible = true
                 val icon = audioSessionDescription.icon
@@ -51,31 +55,33 @@ class AudioFxControlPanelFragment : Fragment() {
         }
 
         equalizer.observe(owner) { equalizer ->
+            beginDelayedTransition()
             equalizer_panel_view.setup(equalizer)
+            equalizer_panel_view.isVisible = equalizer != null
         }
 
         bassBoost.observe(owner) { bassBoost ->
-            if (bassBoost != null) {
-                bass_booster_panel.setup(bassBoost)
-            }
+            beginDelayedTransition()
+            bass_booster_panel.setup(bassBoost)
+            bass_booster_panel.isVisible = bassBoost != null
         }
 
-        virtualizer.observe(owner) { bassBoost ->
-            if (bassBoost != null) {
-                virtualizer_panel.setup(bassBoost)
-            }
+        virtualizer.observe(owner) { virtualizer ->
+            beginDelayedTransition()
+            virtualizer_panel.setup(virtualizer)
+            virtualizer_panel.isVisible = virtualizer != null
         }
 
         loudness.observe(owner) { loudness ->
-            if (loudness != null) {
-                loudness_panel.setup(loudness)
-            }
+            beginDelayedTransition()
+            loudness_panel.setup(loudness)
+            loudness_panel.isVisible = loudness != null
         }
 
         reverb.observe(owner) { reverb ->
-            if (reverb != null) {
-                reverb_panel_view.setup(reverb)
-            }
+            beginDelayedTransition()
+            reverb_panel_view.setup(reverb)
+            reverb_panel_view.isVisible = reverb != null
         }
     }
 
