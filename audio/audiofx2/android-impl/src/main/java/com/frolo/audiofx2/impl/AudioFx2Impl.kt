@@ -63,6 +63,11 @@ class AudioFx2Impl private constructor(
         )
     }
 
+    private fun canUsePresetReverb(): Boolean {
+        // FIXME: there is a problem with PresetReverb on some devices
+        return true
+    }
+
     private val equalizerImpl: EqualizerImpl? = createIf(hasEqualizer) {
         EqualizerImpl(context, storageKey, errorHandler, initialEffectParams)
     }
@@ -83,7 +88,7 @@ class AudioFx2Impl private constructor(
     }
     override val loudness: Loudness? = loudnessImpl
 
-    private val reverbImpl: ReverbImpl? = createIf(hasReverb) {
+    private val reverbImpl: ReverbImpl? = createIf(hasReverb && canUsePresetReverb()) {
         ReverbImpl(context, storageKey, errorHandler, initialEffectParams)
     }
     override val reverb: Reverb? = reverbImpl
