@@ -18,7 +18,7 @@ class AudioSessionReceiver : BroadcastReceiver() {
             appComponent.audioFx2.applyToAudioSession(audioSessionId)
             Toast.makeText(context, "Applied Audio effects!", Toast.LENGTH_LONG).show()
         }
-        appComponent.audioSessionInfo.value =
+        appComponent.audioFx2AttachInfo.value =
             AudioSessionInfoHelper.external(context, packageName, audioSessionId)
     }
 }

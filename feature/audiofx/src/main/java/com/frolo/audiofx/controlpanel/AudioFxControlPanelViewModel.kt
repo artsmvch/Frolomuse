@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Application
 import androidx.lifecycle.*
 import com.frolo.audiofx.AudioFx2Feature
-import com.frolo.audiofx.AudioSessionInfo
+import com.frolo.audiofx.AudioFx2AttachInfo
 import com.frolo.audiofx2.*
 import com.frolo.rx.KeyedDisposableContainer
 import io.reactivex.Completable
@@ -22,7 +22,7 @@ class AudioFxControlPanelViewModel(
         MutableLiveData(AudioFx2Feature.getAudioFx2())
     }
 
-    val audioSessionDescriptor: LiveData<AudioSessionInfo> get() =
+    val audioSessionDescriptor: LiveData<AudioFx2AttachInfo> get() =
         AudioFx2Feature.getAudioSessionDescription()
 
     val equalizer: LiveData<Equalizer> =

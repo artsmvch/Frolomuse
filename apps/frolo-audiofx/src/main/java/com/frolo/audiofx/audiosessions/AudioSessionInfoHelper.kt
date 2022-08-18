@@ -4,29 +4,29 @@ import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.graphics.drawable.Drawable
 import androidx.appcompat.content.res.AppCompatResources
-import com.frolo.audiofx.AudioSessionInfo
+import com.frolo.audiofx.AudioFx2AttachInfo
 import com.frolo.audiofx.R
 
 
 internal object AudioSessionInfoHelper {
-    fun default(context: Context): AudioSessionInfo {
-        return GlobalAudioSessionInfoImpl(context)
+    fun default(context: Context): AudioFx2AttachInfo {
+        return GlobalAudioFx2AttachInfoImpl(context)
     }
 
-    fun external(context: Context, packageName: String?, audioSessionId: Int): AudioSessionInfo {
+    fun external(context: Context, packageName: String?, audioSessionId: Int): AudioFx2AttachInfo {
         val applicationInfo: ApplicationInfo? = try {
             context.packageManager.getApplicationInfo(packageName!!, 0)
         } catch (e: Throwable) {
             null
         }
         applicationInfo ?: return default(context)
-        return ExternalAudioSessionInfoImpl(context, applicationInfo, audioSessionId)
+        return ExternalAudioFx2AttachInfoImpl(context, applicationInfo, audioSessionId)
     }
 }
 
-private class GlobalAudioSessionInfoImpl(
+private class GlobalAudioFx2AttachInfoImpl(
     private val context: Context
-): AudioSessionInfo {
+): AudioFx2AttachInfo {
     override val name: CharSequence =
         context.getString(R.string.global_audio_session)
     override val description: CharSequence =
@@ -35,11 +35,11 @@ private class GlobalAudioSessionInfoImpl(
         AppCompatResources.getDrawable(context, R.drawable.ic_global_mix_info_48)
 }
 
-private class ExternalAudioSessionInfoImpl(
+private class ExternalAudioFx2AttachInfoImpl(
     private val context: Context,
     private val applicationInfo: ApplicationInfo,
     private val audioSessionId: Int
-): AudioSessionInfo {
+): AudioFx2AttachInfo {
     override val name: CharSequence by lazy {
         applicationInfo.runCatching { loadLabel(context.packageManager) }.getOrNull() ?: ""
     }

@@ -3,7 +3,7 @@ package com.frolo.audiofx.di
 import android.app.Application
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
-import com.frolo.audiofx.AudioSessionInfo
+import com.frolo.audiofx.AudioFx2AttachInfo
 import com.frolo.audiofx.audiosessions.AudioSessionInfoHelper
 import com.frolo.audiofx2.impl.AudioEffect2ErrorHandler
 import com.frolo.audiofx2.impl.AudioFx2Impl
@@ -18,7 +18,7 @@ internal class AppComponentImpl(
         AudioFx2Impl.obtain(application, errorHandler)
     }
 
-    override val audioSessionInfo: MutableLiveData<AudioSessionInfo> by lazy {
-        MutableLiveData<AudioSessionInfo>(AudioSessionInfoHelper.default(application))
+    override val audioFx2AttachInfo: MutableLiveData<AudioFx2AttachInfo> by lazy {
+        MutableLiveData<AudioFx2AttachInfo>(AudioSessionInfoHelper.default(application))
     }
 }

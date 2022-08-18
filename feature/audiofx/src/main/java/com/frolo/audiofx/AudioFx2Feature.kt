@@ -19,7 +19,7 @@ object AudioFx2Feature {
         return requireInput().audioFx2
     }
 
-    internal fun getAudioSessionDescription(): LiveData<AudioSessionInfo> {
-        return requireInput().audioSessionInfo
+    internal fun getAudioSessionDescription(): LiveData<AudioFx2AttachInfo> {
+        return requireInput().audioFx2AttachInfo
     }
 }
