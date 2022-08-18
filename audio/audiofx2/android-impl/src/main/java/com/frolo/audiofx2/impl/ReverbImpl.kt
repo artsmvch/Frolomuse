@@ -67,21 +67,6 @@ internal class ReverbImpl constructor(
     }
     override val availablePresets: List<Reverb.Preset> get() = availablePresetsImpl
 
-    override var preset: Reverb.Preset
-        get() = synchronized(lock) {
-            engine
-                ?.runCatching { this.preset.let(::mapPresetFromValue) }
-                ?.onFailure { errorHandler.onAudioEffectError(this, it) }
-                ?.getOrNull() ?: state.getCurrentPreset()
-        }
-        set(value) = synchronized(lock) {
-            state.setCurrentPreset(value)
-            engine
-                ?.runCatching { engine?.preset = (value as ReverbPresetImpl).value }
-                ?.onFailure { errorHandler.onAudioEffectError(this, it) }
-            presetUsedListenerRegistry.dispatchPresetUsed(value)
-        }
-
     init {
         applyToAudioSession(initialEffectParams.audioSessionId)
     }
@@ -135,7 +120,7 @@ internal class ReverbImpl constructor(
             errorHandler.onAudioEffectError(this, e)
         }
         try {
-            val newEngine = PresetReverb(priority, audioSessionId)
+            val newEngine = PresetReverb(priority, 0)
             newEngine.enabled = state.isEnabled()
             newEngine.preset = (state.getCurrentPreset() as? ReverbPresetImpl)?.value
                 ?: PresetReverb.PRESET_NONE
@@ -160,6 +145,21 @@ internal class ReverbImpl constructor(
 
     override fun removeOnEnableStatusChangeListener(listener: AudioEffect2.OnEnableStatusChangeListener) {
         enableStatusChangeListenerRegistry.removeListener(listener)
+    }
+
+    override fun getCurrentPreset(): Reverb.Preset = synchronized(lock) {
+        engine
+            ?.runCatching { this.preset.let(::mapPresetFromValue) }
+            ?.onFailure { errorHandler.onAudioEffectError(this, it) }
+            ?.getOrNull() ?: state.getCurrentPreset()
+    }
+
+    override fun usePreset(preset: Reverb.Preset) = synchronized(lock) {
+        state.setCurrentPreset(preset)
+        engine
+            ?.runCatching { engine?.preset = (preset as ReverbPresetImpl).value }
+            ?.onFailure { errorHandler.onAudioEffectError(this, it) }
+        presetUsedListenerRegistry.dispatchPresetUsed(preset)
     }
 
     override fun addOnPresetUsedListener(listener: Reverb.OnPresetUsedListener) {

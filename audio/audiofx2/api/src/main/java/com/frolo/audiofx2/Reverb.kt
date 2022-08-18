@@ -2,7 +2,9 @@ package com.frolo.audiofx2
 
 interface Reverb: AudioEffect2 {
     val availablePresets: List<Preset>
-    var preset: Preset
+
+    fun getCurrentPreset(): Preset
+    fun usePreset(preset: Preset)
 
     fun addOnPresetUsedListener(listener: OnPresetUsedListener)
     fun removeOnPresetUsedListener(listener: OnPresetUsedListener)
