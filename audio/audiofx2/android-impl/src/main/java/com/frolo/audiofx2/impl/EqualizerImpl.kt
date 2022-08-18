@@ -249,7 +249,7 @@ private class EqualizerState(
     private val lock = Any()
     @GuardedBy("lock")
     private val prefs: SharedPreferences =
-        context.getSharedPreferences("$storageKey:audiofx2:equalizer", Context.MODE_PRIVATE)
+        context.getSharedPreferences("$storageKey.audiofx2.equalizer", Context.MODE_PRIVATE)
     @GuardedBy("lock")
     private var isEnabled: Boolean = false
 

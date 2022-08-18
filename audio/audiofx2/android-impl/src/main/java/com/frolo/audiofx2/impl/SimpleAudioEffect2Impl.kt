@@ -165,7 +165,7 @@ private class SimpleAudioEffect2State(
     private val lock = Any()
     @get:GuardedBy("lock")
     private val prefs: SharedPreferences by lazy {
-        context.getSharedPreferences("$storageKey:audiofx2:$effectKey", Context.MODE_PRIVATE)
+        context.getSharedPreferences("$storageKey.audiofx2.$effectKey", Context.MODE_PRIVATE)
     }
 
     fun isEnabled(): Boolean = synchronized(lock) {

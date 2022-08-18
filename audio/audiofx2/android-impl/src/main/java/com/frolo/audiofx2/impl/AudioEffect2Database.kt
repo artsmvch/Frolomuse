@@ -14,7 +14,7 @@ private const val SQL_CREATE_PRESETS = ("create table " + DatabaseSchema.PRESETS
 
 private const val DATABASE_VERSION = 1
 private fun getDatabaseName(storageKey: String): String {
-    return "$storageKey:audiofx2.db"
+    return "$storageKey.audiofx2.db"
 }
 
 internal object DatabaseSchema {
