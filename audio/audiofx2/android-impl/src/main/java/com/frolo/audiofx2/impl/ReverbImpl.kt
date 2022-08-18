@@ -134,6 +134,15 @@ internal class ReverbImpl constructor(
         } catch (e: Throwable) {
             errorHandler.onAudioEffectError(this, e)
         }
+        try {
+            val newEngine = PresetReverb(priority, audioSessionId)
+            newEngine.enabled = state.isEnabled()
+            newEngine.preset = (state.getCurrentPreset() as? ReverbPresetImpl)?.index
+                ?: PresetReverb.PRESET_NONE
+            this.engine = newEngine
+        } catch (e: Throwable) {
+            errorHandler.onAudioEffectError(this, e)
+        }
     }
 
     override fun onRelease() = synchronized(lock) {
