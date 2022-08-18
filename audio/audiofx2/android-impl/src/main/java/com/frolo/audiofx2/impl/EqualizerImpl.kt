@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.annotation.GuardedBy
 import com.frolo.audiofx2.*
+import kotlin.math.max
 
 internal class EqualizerImpl(
     private val context: Context,
@@ -39,6 +40,8 @@ internal class EqualizerImpl(
         EnableStatusChangeListenerRegistry(context, this)
     private val bandLevelChangeListenerRegistry =
         BandLevelChangeListenerRegistry(context, this)
+    private val presetUsedListenerRegistry =
+        PresetUsedListenerRegistry(context, this)
 
     override val numberOfBands: Int get() = synchronized(lock) {
         engine
@@ -83,16 +86,16 @@ internal class EqualizerImpl(
         engine
             ?.runCatching { this.getBandLevel(bandIndex.toShort()) }
             ?.onFailure { errorHandler.onAudioEffectError(this, it) }
-            ?.getOrNull()?.toInt() ?: state.getBandLevel(bandIndex)
+            ?.getOrNull()?.toInt() ?: equalizerPresetStorageImpl.getBandLevel(bandIndex)
     }
 
     override fun setBandLevel(bandIndex: Int, level: Int) = synchronized(lock) {
-        state.setBandLevel(bandIndex, level)
-        equalizerPresetStorageImpl.unusePreset()
+        val usedPreset = equalizerPresetStorageImpl.setBandLevel(bandIndex, level)
         engine
             ?.runCatching { this.setBandLevel(bandIndex.toShort(), level.toShort()) }
             ?.onFailure { errorHandler.onAudioEffectError(this, it) }
         bandLevelChangeListenerRegistry.dispatchBandLevelChange(bandIndex, level)
+        presetUsedListenerRegistry.dispatchPresetUsed(usedPreset)
     }
 
     override fun getFreqRange(bandIndex: Int): ValueRange = synchronized(lock) {
@@ -120,8 +123,9 @@ internal class EqualizerImpl(
             if (preset != null) {
                 usePreset(preset)
             } else {
-                for (band in 0 until state.getNumberOfBands()) {
-                    newEngine.setBandLevel(band.toShort(), state.getBandLevel(band).toShort())
+                for (band in 0 until equalizerPresetStorageImpl.getNumberOfBands()) {
+                    newEngine.setBandLevel(band.toShort(),
+                        equalizerPresetStorageImpl.getBandLevel(band).toShort())
                 }
             }
             this.engine = newEngine
@@ -155,13 +159,40 @@ internal class EqualizerImpl(
         bandLevelChangeListenerRegistry.removeListener(listener)
     }
 
-    override fun getCurrentPreset(): EqualizerPreset? {
+    override fun addOnPresetUsedListener(listener: Equalizer.OnPresetUsedListener) {
+        presetUsedListenerRegistry.addListener(listener)
+    }
+
+    override fun removeOnPresetUsedListener(listener: Equalizer.OnPresetUsedListener) {
+        presetUsedListenerRegistry.removeListener(listener)
+    }
+
+    override fun getCurrentPreset(): EqualizerPreset {
         return equalizerPresetStorageImpl.getCurrentPreset()
     }
 
     override fun usePreset(preset: EqualizerPreset): Unit = synchronized(lock) {
         equalizerPresetStorageImpl.usePreset(preset)
         when (preset) {
+            is CustomPresetImpl -> {
+                val appliedBandLevels = HashMap<Int, Int>(5)
+                engine
+                    ?.runCatching {
+                        for (band in 0 until max(this.numberOfBands.toInt(),
+                            equalizerPresetStorageImpl.getNumberOfBands())) {
+                            val level = equalizerPresetStorageImpl.getBandLevel(band)
+                            this.setBandLevel(band.toShort(), level.toShort())
+                            appliedBandLevels[band] = level
+                        }
+                    }
+                    ?.onFailure { errorHandler.onAudioEffectError(this, it) }
+                appliedBandLevels.entries.forEach { entry ->
+                    bandLevelChangeListenerRegistry.dispatchBandLevelChange(
+                        band = entry.key,
+                        level = entry.value
+                    )
+                }
+            }
             is NativePresetImpl -> {
                 engine
                     ?.runCatching { this.usePreset(preset.index.toShort()) }
@@ -176,7 +207,7 @@ internal class EqualizerImpl(
                     }
                 }
             }
-            is CustomPresetImpl -> {
+            is SavedPresetImpl -> {
                 engine
                     ?.runCatching {
                         for (band in 0 until preset.numberOfBands) {
@@ -194,6 +225,7 @@ internal class EqualizerImpl(
             }
             else -> Unit
         }
+        presetUsedListenerRegistry.dispatchPresetUsed(preset)
     }
 
     override fun getAllPresets(): List<EqualizerPreset> {
@@ -220,63 +252,24 @@ private class EqualizerState(
         context.getSharedPreferences("$storageKey:audiofx2:equalizer", Context.MODE_PRIVATE)
     @GuardedBy("lock")
     private var isEnabled: Boolean = false
-    @GuardedBy("lock")
-    private val bandLevels = HashMap<Int, Int>()
 
     init {
-        synchronized(lock) {
-            isEnabled = prefs.getBoolean(KEY_ENABLED, false)
-            prefs.all?.entries?.forEach { entry ->
-                if (entry.key.startsWith(KEY_BAND_LEVEL_PREFIX)) {
-                    try {
-                        val bandIndex = entry.key.substring(KEY_BAND_LEVEL_PREFIX.length).toInt()
-                        val bandLevel = entry.value?.toString()!!.toInt()
-                        bandLevels[bandIndex] = bandLevel
-                    } catch (ignored: NumberFormatException) {
-                    }
-                }
-            }
-        }
+        restoreState()
     }
 
-    fun isEnabled(): Boolean {
-        return synchronized(lock) { isEnabled }
+    private fun restoreState() = synchronized(lock) {
+        isEnabled = prefs.getBoolean(KEY_ENABLED, false)
     }
 
-    fun setEnabled(enabled: Boolean) {
-        synchronized(lock) {
-            isEnabled = enabled
-            prefs.edit().putBoolean(KEY_ENABLED, enabled).apply()
-        }
-    }
+    fun isEnabled(): Boolean = synchronized(lock) { isEnabled }
 
-    fun getNumberOfBands(): Int {
-        return synchronized(lock) {
-            bandLevels.size
-        }
-    }
-
-    fun getBandLevel(bandIndex: Int): Int {
-        return synchronized(lock) {
-            bandLevels[bandIndex] ?: defaults.zeroBandLevel
-        }
-    }
-
-    fun setBandLevel(bandIndex: Int, bandLevel: Int) {
-        synchronized(lock) {
-            if (bandLevels.isEmpty()) {
-                repeat(defaults.numberOfBands) { iteration ->
-                    bandLevels[iteration] = defaults.zeroBandLevel
-                }
-            }
-            bandLevels[bandIndex] = bandLevel
-            prefs.edit().putInt(KEY_BAND_LEVEL_PREFIX + bandIndex, bandLevel).apply()
-        }
+    fun setEnabled(enabled: Boolean) = synchronized(lock) {
+        isEnabled = enabled
+        prefs.edit().putBoolean(KEY_ENABLED, enabled).apply()
     }
 
     companion object {
         private const val KEY_ENABLED = "enabled"
-        private const val KEY_BAND_LEVEL_PREFIX = "band_level_"
     }
 }
 
@@ -286,5 +279,14 @@ private class BandLevelChangeListenerRegistry(
 ): ListenerRegistry<Equalizer.OnBandLevelChangeListener>(context){
     fun dispatchBandLevelChange(band: Int, level: Int) = doDispatch { listener ->
         listener.onBandLevelChange(effect, band, level)
+    }
+}
+
+private class PresetUsedListenerRegistry(
+    context: Context,
+    private val effect: Equalizer
+): ListenerRegistry<Equalizer.OnPresetUsedListener>(context){
+    fun dispatchPresetUsed(preset: EqualizerPreset) = doDispatch { listener ->
+        listener.onPresetUsed(effect, preset)
     }
 }

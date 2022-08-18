@@ -1,7 +1,7 @@
 package com.frolo.audiofx2
 
 interface EqualizerPresetStorage {
-    fun getCurrentPreset(): EqualizerPreset?
+    fun getCurrentPreset(): EqualizerPreset
 
     fun usePreset(preset: EqualizerPreset)
 

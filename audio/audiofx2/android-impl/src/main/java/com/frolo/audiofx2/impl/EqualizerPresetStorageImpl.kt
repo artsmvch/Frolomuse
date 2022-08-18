@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.content.SharedPreferences
 import android.database.Cursor
+import androidx.annotation.GuardedBy
 import com.frolo.audiofx2.EqualizerPreset
 import com.frolo.audiofx2.EqualizerPresetStorage
 import org.json.JSONObject
@@ -41,68 +42,118 @@ internal class EqualizerPresetStorageImpl(
     private val storageKey: String,
     private val defaults: Defaults
 ): EqualizerPresetStorage {
+    private val lock = Any()
+    @get:GuardedBy("lock")
     private val prefs: SharedPreferences by lazy {
         context.getSharedPreferences(getPrefsName(storageKey), Context.MODE_PRIVATE)
     }
+    @GuardedBy("lock")
+    private val bandLevels = HashMap<Int, Int>()
 
-    override fun getCurrentPreset(): EqualizerPreset? {
-        return when(prefs.getInt(KEY_LAST_USED_PRESET_TYPE, PRESET_TYPE_NONE)) {
-            PRESET_TYPE_NATIVE -> {
-                val keyName = prefs.getString(KEY_LAST_USED_NATIVE_PRESET_KEY_NAME, null)
-                if (keyName.isNullOrBlank()) {
-                    null
-                } else {
-                    defaults.getNativePreset(keyName)
+    init {
+        // FIXME: make this call lazy
+        restoreState()
+    }
+
+    private fun restoreState() = synchronized(lock) {
+        prefs.all?.entries?.forEach { entry ->
+            if (entry.key.startsWith(KEY_CUSTOM_BAND_LEVEL_PREFIX)) {
+                try {
+                    val bandIndex = entry.key.substring(KEY_CUSTOM_BAND_LEVEL_PREFIX.length).toInt()
+                    val bandLevel = entry.value?.toString()!!.toInt()
+                    bandLevels[bandIndex] = bandLevel
+                } catch (ignored: NumberFormatException) {
                 }
             }
-            PRESET_TYPE_CUSTOM -> {
-                val id = prefs.getLong(KEY_LAST_USED_CUSTOM_PRESET_ID, -1)
-                if (id == -1L) {
-                    null
-                } else {
-                    val presets = queryPresets(
-                        selection = DatabaseSchema.Presets.ID + " = ?",
-                        selectionArgs = arrayOf<String>(id.toString())
-                    )
-                    presets.firstOrNull()
-                }
-            }
-            else -> null
         }
     }
 
-    override fun usePreset(preset: EqualizerPreset) {
+    internal fun getNumberOfBands(): Int = synchronized(lock) {
+        bandLevels.size
+    }
+
+    internal fun getBandLevel(bandIndex: Int): Int = synchronized(lock) {
+        bandLevels[bandIndex] ?: defaults.zeroBandLevel
+    }
+
+    internal fun setBandLevel(bandIndex: Int, bandLevel: Int): EqualizerPreset = synchronized(lock) {
+        if (bandLevels.isEmpty()) {
+            repeat(defaults.numberOfBands) { iteration ->
+                bandLevels[iteration] = defaults.zeroBandLevel
+            }
+        }
+        bandLevels[bandIndex] = bandLevel
+        prefs.edit().apply {
+            putInt(KEY_CUSTOM_BAND_LEVEL_PREFIX + bandIndex, bandLevel)
+            putInt(KEY_LAST_USED_PRESET_TYPE, PRESET_TYPE_CUSTOM)
+        }.apply()
+        return@synchronized getCustomPreset()
+    }
+
+    override fun getCurrentPreset(): EqualizerPreset = synchronized(lock) {
+        val presetType = prefs.getInt(KEY_LAST_USED_PRESET_TYPE, PRESET_TYPE_CUSTOM)
+        if (presetType == PRESET_TYPE_SAVED) {
+            val id = prefs.getLong(KEY_LAST_USED_SAVED_PRESET_ID, -1L)
+            if (id != -1L) {
+                val presets = queryPresets(
+                    selection = DatabaseSchema.Presets.ID + " = ?",
+                    selectionArgs = arrayOf<String>(id.toString())
+                )
+                val savedPreset = presets.firstOrNull()
+                if (savedPreset != null) {
+                    return@synchronized savedPreset
+                }
+            }
+        }
+        if (presetType == PRESET_TYPE_NATIVE) {
+            val keyName = prefs.getString(KEY_LAST_USED_NATIVE_PRESET_KEY_NAME, null)
+            val nativePreset = if (!keyName.isNullOrBlank()) {
+                defaults.getNativePreset(keyName)
+            } else {
+                null
+            }
+            if (nativePreset != null) {
+                return@synchronized nativePreset
+            }
+        }
+        return@synchronized getCustomPreset()
+    }
+
+    private fun getCustomPreset(): EqualizerPreset.Custom {
+        return CustomPresetImpl(name = context.getString(R.string.custom_preset))
+    }
+
+    override fun usePreset(preset: EqualizerPreset) = synchronized(lock) {
         when (preset) {
             is NativePresetImpl -> {
                 prefs.edit().apply {
                     putInt(KEY_LAST_USED_PRESET_TYPE, PRESET_TYPE_NATIVE)
                     putString(KEY_LAST_USED_NATIVE_PRESET_KEY_NAME, preset.keyName)
-                    remove(KEY_LAST_USED_CUSTOM_PRESET_ID)
+                    remove(KEY_LAST_USED_SAVED_PRESET_ID)
                 }.apply()
             }
-            is EqualizerPreset.Custom -> {
+            is SavedPresetImpl -> {
                 prefs.edit().apply {
-                    putInt(KEY_LAST_USED_PRESET_TYPE, PRESET_TYPE_CUSTOM)
-                    putLong(KEY_LAST_USED_CUSTOM_PRESET_ID, preset.id)
+                    putInt(KEY_LAST_USED_PRESET_TYPE, PRESET_TYPE_SAVED)
+                    putLong(KEY_LAST_USED_SAVED_PRESET_ID, preset.id)
                     remove(KEY_LAST_USED_NATIVE_PRESET_KEY_NAME)
                 }.apply()
             }
-            else -> {
-                unusePreset()
+            is CustomPresetImpl -> {
+                prefs.edit().apply {
+                    putInt(KEY_LAST_USED_PRESET_TYPE, PRESET_TYPE_CUSTOM)
+                    remove(KEY_LAST_USED_SAVED_PRESET_ID)
+                    remove(KEY_LAST_USED_NATIVE_PRESET_KEY_NAME)
+                }.apply()
             }
+            else -> Unit
         }
     }
 
-    internal fun unusePreset() {
-        prefs.edit().apply {
-            putInt(KEY_LAST_USED_PRESET_TYPE, PRESET_TYPE_NONE)
-            remove(KEY_LAST_USED_CUSTOM_PRESET_ID)
-            remove(KEY_LAST_USED_NATIVE_PRESET_KEY_NAME)
-        }.apply()
-    }
-
-    override fun getAllPresets(): List<EqualizerPreset> {
-        return defaults.getNativePresets() + queryPresets(null, null)
+    override fun getAllPresets(): List<EqualizerPreset> = synchronized(lock) {
+        return defaults.getNativePresets() +
+                queryPresets(null, null) +
+                getCustomPreset()
     }
 
     private fun queryPresets(selection: String?, selectionArgs: Array<String>?): List<EqualizerPreset> {
@@ -124,7 +175,7 @@ internal class EqualizerPresetStorageImpl(
                         val levelsJson = it.getString(cursor.getColumnIndexOrThrow(DatabaseSchema.Presets.LEVELS))
                         val levels = toMap(levelsJson)
                         if (levels != null && levels.isNotEmpty()) {
-                            val preset = CustomPresetImpl(
+                            val preset = SavedPresetImpl(
                                 id = it.getLong(cursor.getColumnIndexOrThrow(DatabaseSchema.Presets.ID)),
                                 name = it.getString(cursor.getColumnIndexOrThrow(DatabaseSchema.Presets.NAME)),
                                 bandLevels = levels,
@@ -153,7 +204,7 @@ internal class EqualizerPresetStorageImpl(
         if (id == -1L) {
             throw IllegalStateException("No row was created in the database")
         }
-        return CustomPresetImpl(
+        return SavedPresetImpl(
             id = id,
             name = name,
             bandLevels = bandLevels.toMap(),
@@ -162,7 +213,7 @@ internal class EqualizerPresetStorageImpl(
     }
 
     override fun deletePreset(preset: EqualizerPreset) {
-        if (preset is EqualizerPreset.Custom && preset.isDeletable) {
+        if (preset is EqualizerPreset.Saved && preset.isDeletable) {
             val deletedCount = databaseHelper.writableDatabase.use { database ->
                 val whereClause = DatabaseSchema.Presets.ID + " = ?"
                 val whereArgs = arrayOf<String>(preset.id.toString())
@@ -177,14 +228,15 @@ internal class EqualizerPresetStorageImpl(
     companion object {
         private const val KEY_LAST_USED_PRESET_TYPE = "last_used_preset_type"
         private const val KEY_LAST_USED_NATIVE_PRESET_KEY_NAME = "last_used_native_preset_key_name"
-        private const val KEY_LAST_USED_CUSTOM_PRESET_ID = "last_used_custom_preset_id"
+        private const val KEY_LAST_USED_SAVED_PRESET_ID = "last_used_saved_preset_id"
+        private const val KEY_CUSTOM_BAND_LEVEL_PREFIX = "custom_band_level_"
 
-        private const val PRESET_TYPE_NONE = -1
+        private const val PRESET_TYPE_CUSTOM = -1
         private const val PRESET_TYPE_NATIVE = 0
-        private const val PRESET_TYPE_CUSTOM = 1
+        private const val PRESET_TYPE_SAVED = 1
 
         private fun getPrefsName(storageKey: String): String {
-            return "$storageKey:audiofx2:presets"
+            return "$storageKey:audiofx2:equalizer_presets"
         }
     }
 }

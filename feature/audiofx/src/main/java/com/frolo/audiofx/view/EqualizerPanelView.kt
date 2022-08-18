@@ -36,16 +36,17 @@ class EqualizerPanelView @JvmOverloads constructor(
     private val switchListener = CompoundButton.OnCheckedChangeListener { _, isChecked ->
         this.equalizer?.isEnabled = isChecked
     }
-    private val presetSpinner: Spinner
-    private val spinnerListener = object : AdapterView.OnItemSelectedListener {
+    private val presetSpinner: SpinnerImpl
+    private val spinnerListener = object : SpinnerImpl.OnItemSelectedListener() {
         override fun onItemSelected(
             parent: AdapterView<*>?,
             view: View?,
             position: Int,
-            id: Long
+            id: Long,
+            byUser: Boolean
         ) {
             val adapter = parent?.adapter
-            if (adapter is PresetAdapter) {
+            if (adapter is PresetAdapter && byUser) {
                 val preset = adapter.getItem(position)
                 usePresetAsync(preset)
             }
@@ -70,6 +71,10 @@ class EqualizerPanelView @JvmOverloads constructor(
             equalizerView.isEqualizerUiEnabled = enabled
             setChecked(checked = enabled)
         }
+    private val onPresetUsedListener =
+        Equalizer.OnPresetUsedListener { equalizer, preset ->
+            setPresetSelection(preset)
+        }
 
     // Async operations
     private val keyedDisposableContainer = KeyedDisposableContainer<String>()
@@ -81,11 +86,13 @@ class EqualizerPanelView @JvmOverloads constructor(
         }
         this.equalizer?.apply {
             removeOnEnableStatusChangeListener(onEnableStatusChangeListener)
+            removeOnPresetUsedListener(onPresetUsedListener)
         }
         keyedDisposableContainer.clear()
         this.equalizer = equalizer
         equalizer?.apply {
             addOnEnableStatusChangeListener(onEnableStatusChangeListener)
+            addOnPresetUsedListener(onPresetUsedListener)
         }
         equalizerView.isEqualizerUiEnabled = equalizer?.isEnabled == true
         equalizerView.setup(
@@ -99,25 +106,45 @@ class EqualizerPanelView @JvmOverloads constructor(
 
     private fun loadPresetsAsync(equalizer: Equalizer?) {
         if (equalizer == null) {
-            setPresets(emptyList())
+            setPresets(emptyList(), -1)
             return
         }
-        Single.fromCallable { equalizer.getAllPresets() }
+        val source1 = Single.fromCallable { equalizer.getAllPresets() }
             .subscribeOn(Schedulers.io())
+        val source2 = Single.fromCallable { equalizer.getCurrentPreset() }
+            .subscribeOn(Schedulers.io())
+        Single.zip(source1, source2) { presets, selectedOne -> presets to selectedOne}
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(::setPresets)
+            .subscribe { pair ->
+                val selectionIndex = pair.first.indexOfFirst { preset ->
+                    preset.isTheSame(pair.second)
+                }
+                setPresets(pair.first, selectionIndex)
+            }
             .also { disposable ->
                 keyedDisposableContainer.add("load_presets_async", disposable)
             }
     }
 
-    private fun setPresets(presets: List<EqualizerPreset>) {
+    private fun setPresets(presets: List<EqualizerPreset>, selectionIndex: Int) {
         val listener = presetSpinner.onItemSelectedListener
         presetSpinner.onItemSelectedListener = null
         presetSpinner.adapter = PresetAdapter(
             presets = presets,
             onRemoveItem = ::removePresetAsync
         )
+        presetSpinner.setSelection(selectionIndex)
+        presetSpinner.onItemSelectedListener = listener
+    }
+
+    private fun setPresetSelection(selection: EqualizerPreset) {
+        val listener = presetSpinner.onItemSelectedListener
+        presetSpinner.onItemSelectedListener = null
+        val presets = (presetSpinner.adapter as? PresetAdapter)?.items.orEmpty()
+        val selectionIndex = presets.indexOfFirst { preset ->
+            preset.isTheSame(selection)
+        }
+        presetSpinner.setSelection(selectionIndex)
         presetSpinner.onItemSelectedListener = listener
     }
 
@@ -152,10 +179,12 @@ class EqualizerPanelView @JvmOverloads constructor(
     }
 }
 
-private class PresetAdapter constructor(
+private class PresetAdapter(
     private val presets: List<EqualizerPreset>,
     private val onRemoveItem: ((item: EqualizerPreset) -> Unit)? = null
 ) : BaseAdapter() {
+
+    val items: List<EqualizerPreset> get() = presets
 
     override fun getCount(): Int = presets.count()
 
