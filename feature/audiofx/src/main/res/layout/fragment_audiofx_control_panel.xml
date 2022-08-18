@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:overScrollMode="never"
     android:fillViewport="true">
 
     <LinearLayout
@@ -19,17 +20,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="12dp"
             android:orientation="horizontal"
             android:gravity="start|center_vertical"
             android:visibility="gone">
 
             <ImageView
                 android:id="@+id/audio_session_icon"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
                 android:layout_marginEnd="8dp"
                 android:visibility="gone"/>
 
@@ -37,7 +38,7 @@
                 android:id="@+id/audio_session_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?textAppearanceCaption"
+                android:textAppearance="?textAppearanceHeadlineSmall"
                 android:textSize="16sp"
                 tools:text="Audio Session"/>
         </LinearLayout>
