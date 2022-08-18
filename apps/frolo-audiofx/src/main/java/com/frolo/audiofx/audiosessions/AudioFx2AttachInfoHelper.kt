@@ -8,7 +8,7 @@ import com.frolo.audiofx.AudioFx2AttachInfo
 import com.frolo.audiofx.R
 
 
-internal object AudioSessionInfoHelper {
+internal object AudioFx2AttachInfoHelper {
     fun default(context: Context): AudioFx2AttachInfo {
         return GlobalAudioFx2AttachInfoImpl(context)
     }

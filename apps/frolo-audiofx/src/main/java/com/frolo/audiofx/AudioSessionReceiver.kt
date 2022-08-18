@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.media.audiofx.Equalizer
 import android.widget.Toast
-import com.frolo.audiofx.audiosessions.AudioSessionInfoHelper
+import com.frolo.audiofx.audiosessions.AudioFx2AttachInfoHelper
 import com.frolo.audiofx.di.appComponent
 import com.frolo.logger.api.Logger
 
@@ -19,6 +19,6 @@ class AudioSessionReceiver : BroadcastReceiver() {
             Toast.makeText(context, "Applied Audio effects!", Toast.LENGTH_LONG).show()
         }
         appComponent.audioFx2AttachInfo.value =
-            AudioSessionInfoHelper.external(context, packageName, audioSessionId)
+            AudioFx2AttachInfoHelper.external(context, packageName, audioSessionId)
     }
 }
