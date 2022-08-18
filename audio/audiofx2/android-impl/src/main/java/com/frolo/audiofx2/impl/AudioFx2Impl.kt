@@ -83,7 +83,10 @@ class AudioFx2Impl private constructor(
     }
     override val loudness: Loudness? = loudnessImpl
 
-    override val reverb: Reverb? = null
+    private val reverbImpl: ReverbImpl? = createIf(hasReverb) {
+        ReverbImpl(context, storageKey, errorHandler, initialEffectParams)
+    }
+    override val reverb: Reverb? = reverbImpl
 
     private inline fun <T> createIf(predicate: Boolean, creator: () -> T): T? {
         return if (predicate) creator.invoke() else null
@@ -94,6 +97,7 @@ class AudioFx2Impl private constructor(
         bassBoostImpl?.applyToAudioSession(audioSessionId)
         virtualizerImpl?.applyToAudioSession(audioSessionId)
         loudnessImpl?.applyToAudioSession(audioSessionId)
+        reverbImpl?.applyToAudioSession(audioSessionId)
     }
 
     override fun release() {
@@ -101,6 +105,7 @@ class AudioFx2Impl private constructor(
         bassBoostImpl?.release()
         virtualizerImpl?.release()
         loudnessImpl?.release()
+        reverbImpl?.release()
     }
 
     companion object {
