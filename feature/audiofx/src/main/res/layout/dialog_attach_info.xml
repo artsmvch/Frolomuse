@@ -11,15 +11,17 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/barrier1"
         android:id="@+id/icon"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:padding="12dp"/>
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:padding="8dp"/>
 
     <TextView
         app:layout_constraintStart_toEndOf="@id/icon"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@id/icon"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/barrier1"
+        app:layout_constraintBottom_toBottomOf="@id/icon"
         android:id="@+id/title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -29,6 +31,7 @@
         android:textAppearance="?textAppearanceTitleMedium"
         android:includeFontPadding="false"
         android:ellipsize="end"
+        android:lines="1"
         tools:text="Attach info"/>
 
     <androidx.constraintlayout.widget.Barrier
