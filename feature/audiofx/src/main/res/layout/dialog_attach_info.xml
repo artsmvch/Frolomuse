@@ -45,17 +45,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/barrier1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/close"
+        app:layout_constraintBottom_toTopOf="@id/divider1"
         android:id="@+id/description"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:padding="12dp"
+        android:layout_marginBottom="8dp"
         android:textAppearance="?textAppearanceBody2"
         android:includeFontPadding="false"
         tools:text="Attach info description"/>
 
     <View
         app:layout_constraintTop_toBottomOf="@id/description"
+        app:layout_constraintBottom_toTopOf="@id/close"
         android:id="@+id/divider1"
         android:layout_width="match_parent"
         android:layout_height="1dp"
