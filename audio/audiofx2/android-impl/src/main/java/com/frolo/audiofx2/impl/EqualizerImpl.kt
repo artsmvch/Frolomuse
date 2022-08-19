@@ -19,7 +19,7 @@ internal class EqualizerImpl(
     private var engine: android.media.audiofx.Equalizer? = null
 
     override val descriptor: AudioEffectDescriptor =
-        SimpleAudioEffectDescriptor(name = "Equalizer")
+        SimpleAudioEffectDescriptor(name = context.getString(R.string.equalizer))
 
     override var isEnabled: Boolean
         get() = synchronized(lock) {

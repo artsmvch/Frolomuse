@@ -18,8 +18,9 @@ internal class LoudnessImpl(
     override val effectKey: String = "loudness"
 
     override val valueRange: ValueRange = ValueRange(minValue = 0, maxValue = 1000)
-    override val descriptor: AudioEffectDescriptor
-        get() = SimpleAudioEffectDescriptor(name = "Loudness")
+    override val descriptor: AudioEffectDescriptor by lazy {
+        SimpleAudioEffectDescriptor(name = context.getString(R.string.loudness))
+    }
 
     override fun getStrengthFrom(effect: LoudnessEnhancer): Int {
         return effect.targetGain.toInt()

@@ -25,8 +25,9 @@ internal class BassBoostImpl(
         effect.setStrength(value.toShort())
     }
 
-    override val descriptor: AudioEffectDescriptor
-        get() = SimpleAudioEffectDescriptor(name = "BassBoost")
+    override val descriptor: AudioEffectDescriptor by lazy {
+        SimpleAudioEffectDescriptor(name = context.getString(R.string.bass_boost))
+    }
     override val valueRange: ValueRange = ValueRange(minValue = 0, maxValue = 1000)
 
     override fun instantiateEngine(priority: Int, audioSessionId: Int): android.media.audiofx.BassBoost {
@@ -53,8 +54,9 @@ internal class VirtualizerImpl(
         effect.setStrength(value.toShort())
     }
 
-    override val descriptor: AudioEffectDescriptor
-        get() = SimpleAudioEffectDescriptor(name = "Virtualizer")
+    override val descriptor: AudioEffectDescriptor by lazy {
+        SimpleAudioEffectDescriptor(name = context.getString(R.string.virtualizer))
+    }
     override val valueRange: ValueRange = ValueRange(minValue = 0, maxValue = 1000)
 
     override fun instantiateEngine(priority: Int, audioSessionId: Int): android.media.audiofx.Virtualizer {
