@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import com.frolo.core.ui.activity.ActivityWatcher
 import com.frolo.core.ui.application.ApplicationForegroundStatusRegistry
+import com.frolo.core.ui.startup.AppStartUpInfoProvider
 
 object ApplicationWatcher {
     @JvmStatic
@@ -31,4 +32,9 @@ object ApplicationWatcher {
 
     @JvmStatic
     val isInBackground: Boolean get() = !isInForeground
+
+    @JvmStatic
+    val appStartUpInfoProvider: AppStartUpInfoProvider get() {
+        return ApplicationWatcherImpl.instance.appStartUpInfoProvider
+    }
 }
