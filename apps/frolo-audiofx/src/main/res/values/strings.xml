@@ -4,4 +4,7 @@
     <string name="global_audio_session">Global audio mix</string>
     <string name="global_audio_session_description">Global audio mix</string>
     <string name="external_audio_session_description">Audio effects applied to %s</string>
+
+    <string name="unidentified_audio_session">Unidentified audio session</string>
+    <string name="unidentified_audio_session_description">The app cannot identify audio output</string>
 </resources>

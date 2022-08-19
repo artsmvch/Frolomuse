@@ -19,7 +19,7 @@ internal object AudioFx2AttachInfoHelper {
         } catch (e: Throwable) {
             null
         }
-        applicationInfo ?: return default(context)
+        applicationInfo ?: return UnidentifiedAudioFx2AttachInfoImpl(context)
         return ExternalAudioFx2AttachInfoImpl(context, applicationInfo, audioSessionId)
     }
 }
@@ -48,5 +48,19 @@ private class ExternalAudioFx2AttachInfoImpl(
     }
     override val icon: Drawable? by lazy {
         applicationInfo.runCatching { loadIcon(context.packageManager) }.getOrNull()
+    }
+}
+
+private class UnidentifiedAudioFx2AttachInfoImpl(
+    private val context: Context,
+): AudioFx2AttachInfo {
+    override val name: CharSequence by lazy {
+        context.getString(R.string.unidentified_audio_session)
+    }
+    override val description: CharSequence? by lazy {
+        context.getString(R.string.unidentified_audio_session_description)
+    }
+    override val icon: Drawable? by lazy {
+        AppCompatResources.getDrawable(context, R.drawable.ic_identified_audio_session_48)
     }
 }
