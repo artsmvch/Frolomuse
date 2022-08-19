@@ -4,6 +4,17 @@ plugins {
     id 'kotlin-android-extensions'
 }
 
+def version_code = 1
+def version_major = 1
+def version_minor = 0
+def version_patch = 0
+def version_name = "${version_major}.${version_minor}.${version_patch}"
+
+def google_services_properties =
+        optionallyLoadProperties("${project.projectDir}/google-services.properties")
+def google_services_enabled =
+        google_services_properties['com.frolo.muse.google_services_enabled'] == 'true'
+
 android {
     compileSdk 32
 
@@ -11,18 +22,52 @@ android {
         applicationId "com.frolo.equalizer"
         minSdk 23
         targetSdk 32
-        versionCode 1
-        versionName "1.0"
+        versionCode version_code
+        versionName version_name
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "Boolean", "GOOGLE_SERVICES_ENABLED", "$google_services_enabled"
+    }
+
+    signingConfigs {
+        release {
+            def configDir = "${project.rootDir}/tools/config/release"
+            def releaseConfigs = loadProperties("$configDir/signing.properties")
+            storeFile file("$configDir/${releaseConfigs['storeFile']}")
+            storePassword releaseConfigs['storePassword']
+            keyAlias releaseConfigs['keyAlias']
+            keyPassword releaseConfigs['keyPassword']
+        }
     }
 
     buildTypes {
-        release {
+        debug {
+            applicationIdSuffix ".dev"
+            debuggable true
+            shrinkResources false
             minifyEnabled false
+            versionNameSuffix "-D"
+        }
+
+        release {
+            debuggable false
+            shrinkResources true
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+            versionNameSuffix "-D"
         }
     }
+
+    flavorDimensions "default"
+    productFlavors {
+        playStore {
+        }
+        appGallery {
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -52,4 +97,8 @@ dependencies {
     implementation project(path: ':material-support')
     // Doubtfully
     implementation project(path: ':core-ui')
+}
+
+if (google_services_enabled) {
+    apply plugin: 'com.google.gms.google-services'
 }

@@ -11,3 +11,4 @@
 /captures
 .externalNativeBuild
 appkeystore.properties
+/tools/config/release

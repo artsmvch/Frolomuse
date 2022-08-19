@@ -38,4 +38,22 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
+// Loads properties from the giving filepath.
+ext.loadProperties = { filepath ->
+    def propertiesFile = new File(filepath)
+    def properties = new Properties()
+    properties.load(new FileInputStream(propertiesFile))
+    return properties
+}
+
+// Loads properties from the giving filepath, or simply
+// returns empty properties if the file does not exist.
+ext.optionallyLoadProperties = { filepath ->
+    try {
+        return loadProperties(filepath)
+    } catch (IOException ignored) {
+        return new Properties()
+    }
+}
+
 apply from: 'gradleScript/dependencies.gradle'

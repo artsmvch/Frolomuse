@@ -4,25 +4,6 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.google.firebase.crashlytics'
 
-
-// Loads properties from the giving filepath.
-ext.loadProperties = { filepath ->
-    def propertiesFile = new File(filepath)
-    def properties = new Properties()
-    properties.load(new FileInputStream(propertiesFile))
-    return properties
-}
-
-// Loads properties from the giving filepath, or simply
-// returns empty properties if the file does not exist.
-ext.optionallyLoadProperties = { filepath ->
-    try {
-        return loadProperties(filepath)
-    } catch (IOException ignored) {
-        return new Properties()
-    }
-}
-
 def version_code = 138
 def version_major = 7
 def version_minor = 0
@@ -38,8 +19,9 @@ def google_services_enabled =
 android {
     signingConfigs {
         release {
-            def releaseConfigs = loadProperties("${project.projectDir}/signing.properties")
-            storeFile file(releaseConfigs['storeFile'])
+            def configDir = "${project.rootDir}/tools/config/release"
+            def releaseConfigs = loadProperties("$configDir/signing.properties")
+            storeFile file("$configDir/${releaseConfigs['storeFile']}")
             storePassword releaseConfigs['storePassword']
             keyAlias releaseConfigs['keyAlias']
             keyPassword releaseConfigs['keyPassword']
@@ -80,7 +62,7 @@ android {
     }
     buildTypes {
         debug {
-            applicationIdSuffix ".dbg"
+            applicationIdSuffix ".dev"
             debuggable true
             shrinkResources false
             minifyEnabled false
