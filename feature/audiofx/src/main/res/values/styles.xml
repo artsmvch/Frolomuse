@@ -15,9 +15,9 @@
 
     <!--View styles-->
     <style name="App.MaterialCard.EffectPanel" parent="Widget.Material3.CardView.Elevated">
-        <item name="cardElevation">1.5dp</item>
-        <item name="cardMaxElevation">2.5dp</item>
-        <item name="cardCornerRadius">8dp</item>
+        <item name="cardElevation">1.8dp</item>
+        <item name="cardMaxElevation">2.8dp</item>
+        <item name="cardCornerRadius">12dp</item>
     </style>
 
     <style name="App.Slider.EffectPanel" parent="Widget.Material3.Slider">
