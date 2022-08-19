@@ -4,7 +4,6 @@ import com.frolo.audiofx2.AudioEffect2
 
 internal abstract class BaseAudioEffect2Impl<E: android.media.audiofx.AudioEffect>:
     AudioEffect2, AudioSessionApplier {
-    private val lock = Any()
     @Volatile
     private var lastAudioSessionId: Int? = null
 
