@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!--Misc-->
-    <color name="window_background_color">#EDEDED</color>
+    <color name="window_background_color">#EAEAEA</color>
     <color name="divider_color">#DDDDDD</color>
 
     <!--Material-->
