@@ -74,7 +74,7 @@ final class Defaults {
     NativePresetImpl getNativePreset(String keyName) {
         List<NativePresetImpl> presets = getNativePresets();
         for (NativePresetImpl preset : presets) {
-            if (Objects.equals(keyName, preset.getKeyName$android_impl_debug())) {
+            if (Objects.equals(keyName, preset.getKeyName())) {
                 return preset;
             }
         }

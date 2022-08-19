@@ -16,7 +16,7 @@ internal data class CustomPresetImpl(
 internal class NativePresetImpl(
     override val name: String,
     internal val index: Int,
-    internal val keyName: String
+    val keyName: String
 ) : EqualizerPreset.Native {
     override val isDeletable: Boolean = false
 
