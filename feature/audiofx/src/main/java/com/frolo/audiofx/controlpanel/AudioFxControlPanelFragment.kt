@@ -10,6 +10,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProviders
 import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
+import com.frolo.audiofx.AudioFx2AttachInfo
 import com.frolo.audiofx.ui.R
 import kotlinx.android.synthetic.main.fragment_audiofx_control_panel.*
 
@@ -31,6 +32,16 @@ class AudioFxControlPanelFragment : Fragment() {
     }
 
     private fun loadUi() {
+        audio_session_description.setOnClickListener {
+            viewModel.attachInfo.value?.also { attachInfo ->
+                showAttachInfoDialog(attachInfo)
+            }
+        }
+    }
+
+    private fun showAttachInfoDialog(attachInfo: AudioFx2AttachInfo) {
+        val dialog = AttachInfoDialog(requireContext(), attachInfo)
+        dialog.show()
     }
 
     private fun beginDelayedTransition() {
@@ -41,7 +52,7 @@ class AudioFxControlPanelFragment : Fragment() {
     }
 
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
-        audioSessionDescriptor.observe(owner) { audioSessionDescription ->
+        attachInfo.observe(owner) { audioSessionDescription ->
             beginDelayedTransition()
             if (audioSessionDescription != null) {
                 audio_session_description.isVisible = true

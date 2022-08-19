@@ -1,6 +1,20 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <color name="accent_color">#D64768</color>
+    <!--Misc-->
     <color name="window_background_color">#EDEDED</color>
+    <color name="divider_color">#DDDDDD</color>
+
+    <!--Material-->
+    <color name="color_primary">#364CBD</color>
+    <color name="color_on_primary">#FFFFFF</color>
+    <color name="color_secondary">#4780D6</color>
+    <color name="color_on_secondary">#FFFFFF</color>
+    <color name="color_surface">#FFFFFF</color>
+    <color name="color_on_surface">#686868</color>
+    <color name="error_text_color">@color/md_red_500</color>
+
+    <!--Text colors-->
+    <color name="text_color_primary">#3A3A3A</color>
+    <color name="text_color_secondary">#676767</color>
 
     <style name="Theme.Frolo.AudioFx" parent="Theme.MaterialComponents">
         <item name="windowActionBar">false</item>
@@ -14,24 +28,57 @@
         <item name="actionBarSize">@dimen/default_bar_size</item>
         <item name="android:actionBarSize">@dimen/default_bar_size</item>
 
+        <item name="dialogTheme">@style/Theme.Frolo.AudioFx.Dialog</item>
+        <item name="android:dialogTheme">@style/Theme.Frolo.AudioFx.Dialog</item>
+
         <item name="android:textViewStyle">@style/Theme.Frolo.AudioFx.TextView</item>
 
         <item name="equalizerViewStyle">@style/Theme.Frolo.AudioFx.EqualizerView</item>
         <item name="effectBoosterViewStyle">@style/Theme.Frolo.AudioFx.EffectBoosterView</item>
 
-        <item name="android:textColor">@color/md_grey_800</item>
-        <item name="android:textColorPrimary">@color/md_grey_800</item>
-        <item name="android:textColorSecondary">@color/md_grey_600</item>
-        <item name="android:textColorHint">@color/md_grey_600</item>
+        <item name="android:textColor">@color/text_color_primary</item>
+        <item name="android:textColorPrimary">@color/text_color_primary</item>
+        <item name="android:textColorSecondary">@color/text_color_secondary</item>
+        <item name="android:textColorHint">@color/text_color_secondary</item>
 
         <!--Material colors-->
-        <item name="colorPrimary">#366CBD</item>
-        <item name="colorOnPrimary">@color/md_white_1000</item>
-        <item name="colorSecondary">@color/accent_color</item>
-        <item name="colorOnSecondary">@color/md_white_1000</item>
-        <item name="colorSurface">@color/md_white_1000</item>
-        <item name="colorOnSurface">@color/md_grey_800</item>
-        <item name="errorTextColor">@color/md_red_500</item>
+        <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorOnPrimary">@color/color_on_primary</item>
+        <item name="colorSecondary">@color/color_secondary</item>
+        <item name="colorOnSecondary">@color/color_on_secondary</item>
+        <item name="colorSurface">@color/color_surface</item>
+        <item name="colorOnSurface">@color/color_on_surface</item>
+        <item name="errorTextColor">@color/error_text_color</item>
+
+        <item name="dividerColor">@color/divider_color</item>
+    </style>
+
+    <style name="Theme.Frolo.AudioFx.Dialog" parent="Theme.MaterialComponents.Light.Dialog">
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowTitleStyle">@null</item>
+        <item name="android:windowAnimationStyle">@style/Theme.Frolo.AudioFx.WindowAnimation.Dialog</item>
+        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+        <item name="android:windowBackground">@drawable/bg_dialog</item>
+
+        <item name="android:textColor">@color/text_color_primary</item>
+        <item name="android:textColorPrimary">@color/text_color_primary</item>
+        <item name="android:textColorSecondary">@color/text_color_secondary</item>
+        <item name="android:textColorHint">@color/text_color_secondary</item>
+
+        <!--Material colors-->
+        <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorOnPrimary">@color/color_on_primary</item>
+        <item name="colorSecondary">@color/color_secondary</item>
+        <item name="colorOnSecondary">@color/color_on_secondary</item>
+        <item name="colorSurface">@color/color_surface</item>
+        <item name="colorOnSurface">@color/color_on_surface</item>
+        <item name="errorTextColor">@color/error_text_color</item>
+
+        <item name="dividerColor">@color/divider_color</item>
+    </style>
+
+    <style name="Theme.Frolo.AudioFx.WindowAnimation.Dialog" parent="">
+        <item name="android:windowEnterAnimation">@anim/enter_bounce</item>
     </style>
 
     <style name="Theme.Frolomuse.AudioFx.MaterialCardView" parent="Widget.MaterialComponents.CardView">
@@ -48,12 +95,12 @@
         <item name="drawVisuals">true</item>
         <item name="gridColor">#E4E4E4</item>
         <item name="gridLineThickness">2dp</item>
-        <item name="levelColor">?colorAccent</item>
+        <item name="levelColor">?colorSecondary</item>
     </style>
 
     <style name="Theme.Frolo.AudioFx.EffectBoosterView" parent="EffectBoosterView.Default">
         <item name="strokeWidth">2dp</item>
         <item name="strokeInactiveColor">#E4E4E4</item>
-        <item name="strokeActiveColor">@color/accent_color</item>
+        <item name="strokeActiveColor">?colorSecondary</item>
     </style>
 </resources>

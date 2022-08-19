@@ -44,4 +44,5 @@ dependencies {
     implementation project(path: ':custom-view:equalizerview')
     implementation project(path: ':utils:ui')
     implementation project(path: ':utils:rx')
+    implementation project(path: ':arch-support')
 }
