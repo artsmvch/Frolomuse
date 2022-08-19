@@ -97,6 +97,11 @@ dependencies {
     implementation project(path: ':material-support')
     // Doubtfully
     implementation project(path: ':core-ui')
+
+    // Firebase
+    implementation platform(deps.firebase.bom)
+    implementation deps.firebase.core
+    implementation deps.firebase.crashlytics
 }
 
 if (google_services_enabled) {
