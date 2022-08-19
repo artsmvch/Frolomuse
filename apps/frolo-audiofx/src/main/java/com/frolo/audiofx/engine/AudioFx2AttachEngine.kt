@@ -51,6 +51,15 @@ class AudioFx2AttachEngine constructor(
             application, audioSessionInfo.packageName, audioSessionInfo.sessionId)
     }
 
+    @Synchronized
+    fun releaseAudioSession(audioSessionId: Int, packageName: String?) {
+        val lastAudioSessionInfo = lastAudioSessionInfoRef.get()
+        if (lastAudioSessionInfo.sessionId == audioSessionId) {
+            audioFx2.release()
+            lastAudioSessionInfoRef.set(null)
+        }
+    }
+
     private class AudioSessionInfo(
         val sessionId: Int,
         val packageName: String?
