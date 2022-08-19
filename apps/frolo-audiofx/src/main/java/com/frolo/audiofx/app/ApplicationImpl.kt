@@ -9,9 +9,11 @@ import com.frolo.audiofx.app.di.AppComponentImpl
 import com.frolo.audiofx.app.di.appComponent
 import com.frolo.audiofx.app.di.initAppComponent
 import com.frolo.audiofx2.AudioFx2
+import com.frolo.logger.api.CompositeLogDelegate
 import com.frolo.logger.api.Logger
 import com.frolo.logger.api.LoggerParams
 import com.frolo.logger.impl.ConsoleLogDelegate
+import com.frolo.logger.impl.FirebaseLogDelegate
 
 class ApplicationImpl : Application() {
     override fun onCreate() {
@@ -23,7 +25,12 @@ class ApplicationImpl : Application() {
         initAppComponent(AppComponentImpl(this))
         Logger.init(
             LoggerParams(
-                logDelegate = ConsoleLogDelegate()
+                logDelegate = CompositeLogDelegate(
+                    delegates = listOf(
+                        ConsoleLogDelegate(),
+                        FirebaseLogDelegate()
+                    )
+                )
             )
         )
         AudioFx2Feature.init(
