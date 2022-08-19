@@ -14,13 +14,10 @@ class AudioFx2AttachEngineReceiver : BroadcastReceiver() {
         val audioSessionId = intent.getIntExtra(Equalizer.EXTRA_AUDIO_SESSION, -1)
         val packageName = intent.getStringExtra(Equalizer.EXTRA_PACKAGE_NAME)
         Logger.d(LOG_TAG, "Audio session ID caught! ID=$audioSessionId")
-        if (audioSessionId > 0) {
-            appComponent.attachEngine.attachToAudioSessionId(
-                audioSessionId = audioSessionId,
-                packageName = packageName
-            )
-            Logger.d(LOG_TAG, "Attached audio effects to audio session ID: $audioSessionId")
-        }
+        appComponent.attachEngine.handleAudioSession(
+            audioSessionId = audioSessionId,
+            packageName = packageName
+        )
     }
 
     companion object {
