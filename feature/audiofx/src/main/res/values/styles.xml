@@ -23,10 +23,12 @@
     <style name="App.Slider.EffectPanel" parent="Widget.Material3.Slider">
         <item name="haloRadius">16dp</item>
         <item name="haloColor">#339F9F9F</item>
+        <item name="thumbElevation">1.2dp</item>
         <item name="thumbRadius">6dp</item>
         <item name="thumbColor">?colorSecondary</item>
         <item name="tickColorActive">?colorSecondary</item>
         <item name="tickColorInactive">@color/disabled_controller</item>
+        <item name="trackHeight">2dp</item>
         <item name="trackColorActive">?colorSecondary</item>
         <item name="trackColorInactive">@color/disabled_controller</item>
         <item name="labelBehavior">floating</item>
