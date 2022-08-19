@@ -1,11 +1,11 @@
-package com.frolo.audiofx.audiosessions
+package com.frolo.audiofx.app.attachinfo
 
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.graphics.drawable.Drawable
 import androidx.appcompat.content.res.AppCompatResources
 import com.frolo.audiofx.AudioFx2AttachInfo
-import com.frolo.audiofx.R
+import com.frolo.audiofx.app.R
 
 
 internal object AudioFx2AttachInfoHelper {

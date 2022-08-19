@@ -1,4 +1,4 @@
-package com.frolo.audiofx.engine
+package com.frolo.audiofx.app.engine
 
 import android.app.Service
 import android.content.Intent

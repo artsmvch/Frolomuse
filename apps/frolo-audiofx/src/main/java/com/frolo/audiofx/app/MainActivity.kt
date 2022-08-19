@@ -1,4 +1,4 @@
-package com.frolo.audiofx
+package com.frolo.audiofx.app
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

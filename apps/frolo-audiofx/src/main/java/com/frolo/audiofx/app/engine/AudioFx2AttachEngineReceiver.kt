@@ -1,4 +1,4 @@
-package com.frolo.audiofx.engine
+package com.frolo.audiofx.app.engine
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -6,7 +6,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.media.audiofx.AudioEffect
 import android.media.audiofx.Equalizer
-import com.frolo.audiofx.di.appComponent
+import com.frolo.audiofx.app.di.appComponent
 import com.frolo.logger.api.Logger
 
 class AudioFx2AttachEngineReceiver : BroadcastReceiver() {

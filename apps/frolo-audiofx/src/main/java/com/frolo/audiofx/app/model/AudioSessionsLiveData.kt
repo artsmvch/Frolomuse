@@ -1,4 +1,4 @@
-package com.frolo.audiofx.model
+package com.frolo.audiofx.app.model
 
 import android.app.Application
 import android.content.ComponentName

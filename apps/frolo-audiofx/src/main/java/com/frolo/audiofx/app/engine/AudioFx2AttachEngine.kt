@@ -1,4 +1,4 @@
-package com.frolo.audiofx.engine
+package com.frolo.audiofx.app.engine
 
 import android.app.Application
 import android.content.Context
@@ -6,7 +6,7 @@ import android.content.SharedPreferences
 import androidx.core.content.edit
 import androidx.lifecycle.MutableLiveData
 import com.frolo.audiofx.AudioFx2AttachInfo
-import com.frolo.audiofx.audiosessions.AudioFx2AttachInfoHelper
+import com.frolo.audiofx.app.attachinfo.AudioFx2AttachInfoHelper
 import com.frolo.audiofx2.impl.AudioFx2Impl
 import java.util.concurrent.atomic.AtomicReference
 

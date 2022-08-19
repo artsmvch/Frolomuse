@@ -1,8 +1,8 @@
-package com.frolo.audiofx.di
+package com.frolo.audiofx.app.di
 
 import androidx.lifecycle.MutableLiveData
 import com.frolo.audiofx.AudioFx2AttachInfo
-import com.frolo.audiofx.engine.AudioFx2AttachEngine
+import com.frolo.audiofx.app.engine.AudioFx2AttachEngine
 import com.frolo.audiofx2.impl.AudioFx2Impl
 
 

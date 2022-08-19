@@ -1,10 +1,13 @@
-package com.frolo.audiofx
+package com.frolo.audiofx.app
 
 import android.app.Application
 import androidx.lifecycle.LiveData
-import com.frolo.audiofx.di.AppComponentImpl
-import com.frolo.audiofx.di.appComponent
-import com.frolo.audiofx.di.initAppComponent
+import com.frolo.audiofx.AudioFx2AttachInfo
+import com.frolo.audiofx.AudioFx2Feature
+import com.frolo.audiofx.AudioFx2FeatureInput
+import com.frolo.audiofx.app.di.AppComponentImpl
+import com.frolo.audiofx.app.di.appComponent
+import com.frolo.audiofx.app.di.initAppComponent
 import com.frolo.audiofx2.AudioFx2
 import com.frolo.logger.api.Logger
 import com.frolo.logger.api.LoggerParams

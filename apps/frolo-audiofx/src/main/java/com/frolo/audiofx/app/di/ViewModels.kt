@@ -1,4 +1,4 @@
-package com.frolo.audiofx.di
+package com.frolo.audiofx.app.di
 
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
