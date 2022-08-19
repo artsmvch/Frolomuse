@@ -10,6 +10,8 @@ import com.frolo.core.ui.activity.ActivityWatcher
 import com.frolo.core.ui.activity.ActivityWatcherImpl
 import com.frolo.core.ui.application.ApplicationForegroundStatusRegistry
 import com.frolo.core.ui.application.ApplicationForegroundStatusRegistryImpl
+import com.frolo.core.ui.startup.AppStartUpInfoProvider
+import com.frolo.core.ui.startup.AppStartUpInfoProviderImpl
 
 internal class ApplicationWatcherImpl: ContentProvider() {
     private lateinit var activityWatcherRef: ActivityWatcher
@@ -19,6 +21,9 @@ internal class ApplicationWatcherImpl: ContentProvider() {
     val applicationForegroundStatusRegistry: ApplicationForegroundStatusRegistry
         get() = applicationForegroundStatusRegistryRef
 
+    private lateinit var appStartUpInfoProviderRef: AppStartUpInfoProvider
+    val appStartUpInfoProvider: AppStartUpInfoProvider get() = appStartUpInfoProviderRef
+
     override fun onCreate(): Boolean {
         Log.d(LOG_TAG, "Creating...")
         instanceRef = this
@@ -27,6 +32,9 @@ internal class ApplicationWatcherImpl: ContentProvider() {
         }
         applicationForegroundStatusRegistryRef = ApplicationForegroundStatusRegistryImpl().also { registryImpl ->
             requireApplicationContext().registerActivityLifecycleCallbacks(registryImpl)
+        }
+        appStartUpInfoProviderRef = AppStartUpInfoProviderImpl(requireApplicationContext()).also { provider ->
+            provider.start()
         }
         return true
     }
