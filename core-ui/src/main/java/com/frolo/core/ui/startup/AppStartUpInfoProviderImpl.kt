@@ -78,25 +78,28 @@ internal class AppStartUpInfoProviderImpl(
         application.registerActivityLifecycleCallbacks(activityLifecycleCallbacks)
     }
 
-    private fun incrementCounter(counterRef: AtomicLong, counterKey: String) {
-        counterRef.incrementAndGet()
-        val oldCount = prefs.getLong(counterKey, 0L)
-        prefs.edit { putLong(counterKey, oldCount + 1) }
+    private fun incrementCounter(counterRef: AtomicLong, counterKey: String): Long {
+        val newCount = counterRef.incrementAndGet()
+        prefs.edit { putLong(counterKey, newCount) }
+        return newCount
     }
 
     private fun dispatchColdStart() {
-        Log.d(LOG_TAG, "Cold start detected")
-        incrementCounter(coldStartCountRef, KEY_COLD_START_COUNT)
+        incrementCounter(coldStartCountRef, KEY_COLD_START_COUNT).also { newCount ->
+            Log.d(LOG_TAG, "Cold start detected: total=$newCount")
+        }
     }
 
     private fun dispatchWarmStart() {
-        Log.d(LOG_TAG, "Warm start detected")
-        incrementCounter(warmStartCountRef, KEY_WARM_START_COUNT)
+        incrementCounter(warmStartCountRef, KEY_WARM_START_COUNT).also { newCount ->
+            Log.d(LOG_TAG, "Warm start detected: total=$newCount")
+        }
     }
 
     private fun dispatchHotStart() {
-        Log.d(LOG_TAG, "Hot start detected")
-        incrementCounter(hotStartCountRef, KEY_HOT_START_COUNT)
+        incrementCounter(hotStartCountRef, KEY_HOT_START_COUNT).also { newCount ->
+            Log.d(LOG_TAG, "Hot start detected: total=$newCount")
+        }
     }
 
     companion object {
