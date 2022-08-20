@@ -55,12 +55,12 @@ internal class ReverbImpl constructor(
     private val availablePresetsImpl: List<ReverbPresetImpl> by lazy {
         val values = listOf(
             PresetReverb.PRESET_NONE,
-            PresetReverb.PRESET_LARGEHALL,
+            PresetReverb.PRESET_SMALLROOM,
+            PresetReverb.PRESET_MEDIUMROOM,
             PresetReverb.PRESET_LARGEROOM,
             PresetReverb.PRESET_MEDIUMHALL,
-            PresetReverb.PRESET_MEDIUMROOM,
-            PresetReverb.PRESET_PLATE,
-            PresetReverb.PRESET_SMALLROOM
+            PresetReverb.PRESET_LARGEHALL,
+            PresetReverb.PRESET_PLATE
         )
         return@lazy values
             .map(::mapPresetFromValue)
@@ -77,29 +77,29 @@ internal class ReverbImpl constructor(
         @StringRes
         val nameResId: Int;
         when(value) {
-            PresetReverb.PRESET_LARGEHALL -> {
+            PresetReverb.PRESET_SMALLROOM -> {
                 level = 1
-                nameResId = R.string.preset_reverb_large_hall
+                nameResId = R.string.preset_reverb_small_room
+            }
+            PresetReverb.PRESET_MEDIUMROOM -> {
+                level = 2
+                nameResId = R.string.preset_reverb_medium_room
             }
             PresetReverb.PRESET_LARGEROOM -> {
-                level = 2
+                level = 3
                 nameResId = R.string.preset_reverb_large_room
             }
             PresetReverb.PRESET_MEDIUMHALL -> {
-                level = 3
+                level = 4
                 nameResId = R.string.preset_reverb_medium_hall
             }
-            PresetReverb.PRESET_MEDIUMROOM -> {
-                level = 4
-                nameResId = R.string.preset_reverb_medium_room
+            PresetReverb.PRESET_LARGEHALL -> {
+                level = 5
+                nameResId = R.string.preset_reverb_large_hall
             }
             PresetReverb.PRESET_PLATE -> {
-                level = 5
-                nameResId = R.string.preset_reverb_plate
-            }
-            PresetReverb.PRESET_SMALLROOM -> {
                 level = 6
-                nameResId = R.string.preset_reverb_small_room
+                nameResId = R.string.preset_reverb_plate
             }
             else -> {
                 level = 0
