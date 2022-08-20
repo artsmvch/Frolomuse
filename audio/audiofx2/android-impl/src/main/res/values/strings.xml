@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="equalizer">Equalizer</string>
-    <string name="custom_preset">Custom</string>
+    <string name="preset">Preset</string>
+    <string name="preset_normal">Normal</string>
+    <string name="preset_rock">Rock</string>
+    <string name="preset_heavy_metal">Heavy Metal</string>
+    <string name="preset_classical">Classical</string>
+    <string name="preset_folk">Folk</string>
+    <string name="preset_flat">Flat</string>
+    <string name="preset_dance">Dance</string>
+    <string name="preset_hip_hop">Hip Hop</string>
+    <string name="preset_jazz">Jazz</string>
+    <string name="preset_pop">Pop</string>
+    <string name="preset_custom">Custom</string>
 
     <string name="bass_boost">Bass boost</string>
     <string name="virtualizer">Virtualizer</string>

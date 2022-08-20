@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="equalizer">Igualada</string>
-    <string name="custom_preset">Individual</string>
+    <string name="preset">Preestablecida</string>
+    <string name="preset_normal">Normal</string>
+    <string name="preset_rock">Rock</string>
+    <string name="preset_heavy_metal">Metal pesado</string>
+    <string name="preset_classical">Clásico</string>
+    <string name="preset_folk">Gente</string>
+    <string name="preset_flat">Plano</string>
+    <string name="preset_dance">Danza</string>
+    <string name="preset_hip_hop">Hip hop</string>
+    <string name="preset_jazz">Jazz</string>
+    <string name="preset_pop">Popular</string>
+    <string name="preset_custom">Individual</string>
 
     <string name="bass_boost">Bajo</string>
     <string name="virtualizer">Virtualizador</string>

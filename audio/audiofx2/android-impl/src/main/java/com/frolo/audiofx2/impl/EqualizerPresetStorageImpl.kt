@@ -120,7 +120,7 @@ internal class EqualizerPresetStorageImpl(
     }
 
     private fun getCustomPreset(): EqualizerPreset.Custom {
-        return CustomPresetImpl(name = context.getString(R.string.custom_preset))
+        return CustomPresetImpl(name = context.getString(R.string.preset_custom))
     }
 
     override fun usePreset(preset: EqualizerPreset) = synchronized(lock) {
