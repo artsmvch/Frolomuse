@@ -3,7 +3,7 @@
     <string name="equalizer">Igualada</string>
     <string name="custom_preset">Individual</string>
 
-    <string name="bass_boost">Refuerzo de graves</string>
+    <string name="bass_boost">Bajo</string>
     <string name="virtualizer">Virtualizador</string>
     <string name="loudness">Volumen</string>
 
