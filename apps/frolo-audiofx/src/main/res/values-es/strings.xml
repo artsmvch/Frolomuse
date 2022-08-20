@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Igualada</string>
+
+    <string name="global_audio_session">Mezcla de audio global</string>
+    <string name="global_audio_session_description">Los efectos de audio se aplicarán a la mezcla de audio global.
+        Asegúrese de abrir esta aplicación de ecualizador antes de comenzar a reproducir música en otra aplicación.</string>
+
+    <string name="external_audio_session_description">Efectos de audio aplicados a %s</string>
+
+    <string name="unidentified_audio_session">Sesión de audio no identificada</string>
+    <string name="unidentified_audio_session_description">Se aplicaron efectos de audio, pero la aplicación no pudo identificar la salida de audio.</string>
+</resources>
