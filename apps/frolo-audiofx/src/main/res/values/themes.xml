@@ -16,6 +16,14 @@
     <color name="text_color_primary">#3A3A3A</color>
     <color name="text_color_secondary">#676767</color>
 
+    <style name="Theme.Frolo.AudioFx.Splash" parent="Theme.Frolo.AudioFx">
+        <item name="android:statusBarColor">@color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>
+        <item name="android:navigationBarColor">@color/white</item>
+        <item name="android:windowBackground">@drawable/splash</item>
+    </style>
+
     <style name="Theme.Frolo.AudioFx" parent="Theme.MaterialComponents">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

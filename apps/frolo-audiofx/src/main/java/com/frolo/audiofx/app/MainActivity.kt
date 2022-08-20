@@ -6,6 +6,7 @@ import com.frolo.audiofx.controlpanel.AudioFxControlPanelFragment
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.Theme_Frolo_AudioFx)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         AudioFxControlPanelFragment.newInstance().also { fragment ->
