@@ -11,9 +11,14 @@ import androidx.core.content.ContextCompat
 import com.frolo.audiofx.ui.R
 import com.frolo.audiofx2.AudioEffect2
 import com.frolo.audiofx2.Reverb
+import com.frolo.rx.KeyedDisposableContainer
 import com.frolo.ui.StyleUtils
 import com.google.android.material.slider.RangeSlider
 import com.google.android.material.switchmaterial.SwitchMaterial
+import io.reactivex.Completable
+import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlin.math.roundToInt
 
 class ReverbPanelView @JvmOverloads constructor(
@@ -54,12 +59,15 @@ class ReverbPanelView @JvmOverloads constructor(
     private val onPresetUsedListener = Reverb.OnPresetUsedListener { _, preset ->
         slider.setValues(preset.level.toFloat())
     }
+    // Async work
+    private val keyedDisposableContainer = KeyedDisposableContainer<String>()
 
     fun setup(effect: Reverb?) {
         this.effect?.apply {
             removeOnEnableStatusChangeListener(onEnableStatusChangeListener)
             removeOnPresetUsedListener(onPresetUsedListener)
         }
+        keyedDisposableContainer.clear()
         this.effect = effect
         effect?.apply {
             addOnEnableStatusChangeListener(onEnableStatusChangeListener)
@@ -84,32 +92,51 @@ class ReverbPanelView @JvmOverloads constructor(
             slider.values = emptyList()
             return
         }
-        val allPresets = effect.availablePresets.sortedBy { it.level }
-        if (allPresets.size < 2) {
-            slider.values = emptyList()
-            return
+        val source = Single.fromCallable<List<Reverb.Preset>> {
+            effect.availablePresets.sortedBy { it.level }
         }
-        val levelToPresetMap = HashMap<Int, Reverb.Preset>().apply {
-            allPresets.forEach { preset ->
-                put(preset.level, preset)
+        source
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { allPresets ->
+                if (allPresets.size < 2) {
+                    slider.values = emptyList()
+                    return@subscribe
+                }
+                val levelToPresetMap = HashMap<Int, Reverb.Preset>().apply {
+                    allPresets.forEach { preset ->
+                        put(preset.level, preset)
+                    }
+                }
+                val currentPreset = effect.getCurrentPreset()
+                slider.valueFrom = allPresets.first().level.toFloat()
+                slider.valueTo = allPresets.last().level.toFloat()
+                slider.stepSize = 1f
+                slider.setValues(currentPreset.level.toFloat())
+                slider.setLabelFormatter { value ->
+                    val preset = levelToPresetMap[value.roundToInt()]
+                    preset?.name ?: "NULL"
+                }
             }
-        }
-        val currentPreset = effect.getCurrentPreset()
-        slider.valueFrom = allPresets.first().level.toFloat()
-        slider.valueTo = allPresets.last().level.toFloat()
-        slider.stepSize = 1f
-        slider.setValues(currentPreset.level.toFloat())
-        slider.setLabelFormatter { value ->
-            val preset = levelToPresetMap[value.roundToInt()]
-            preset?.name ?: "NULL"
-        }
+            .also { disposable ->
+                keyedDisposableContainer.add("load_presets_async", disposable)
+            }
     }
 
     private fun usePresetByIndexAsync(index: Int) {
         val effect = this.effect ?: return
-        val targetPreset = effect.availablePresets.find { it.level == index }
-            ?:return
-        effect.usePreset(targetPreset)
+        val source = Completable.fromAction {
+            val targetPreset = effect.availablePresets.find { it.level == index }
+                ?: return@fromAction
+            effect.usePreset(targetPreset)
+        }
+        source
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe()
+            .also { disposable ->
+                keyedDisposableContainer.add("use_preset_async", disposable)
+            }
     }
 
     private fun setSliderEnabled(isEnabled: Boolean) {
