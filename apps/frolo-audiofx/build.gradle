@@ -5,7 +5,7 @@ plugins {
     id 'com.google.firebase.crashlytics'
 }
 
-def version_code = 1
+def version_code = 2
 def version_major = 1
 def version_minor = 0
 def version_patch = 0
