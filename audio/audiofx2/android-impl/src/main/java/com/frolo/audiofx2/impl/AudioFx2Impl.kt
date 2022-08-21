@@ -9,7 +9,7 @@ import com.frolo.audiofx2.*
 class AudioFx2Impl private constructor(
     private val context: Context,
     private val storageKey: String,
-    private val errorHandler: AudioEffect2ErrorHandler
+    errorHandler: AudioEffect2ErrorHandler
 ): AudioFx2, AudioSessionApplier {
     private val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
     private val hasEqualizer: Boolean
@@ -17,6 +17,11 @@ class AudioFx2Impl private constructor(
     private val hasVirtualizer: Boolean
     private val hasLoudnessEnhancer: Boolean
     private val hasReverb: Boolean
+
+    private val proxyErrorHandler = AudioEffect2ErrorHandler { effect, error ->
+        val exception = AudioFx2ImplException(error)
+        errorHandler.onAudioEffectError(effect, exception)
+    }
 
     init {
         var hasEqualizer = false
@@ -69,27 +74,27 @@ class AudioFx2Impl private constructor(
     }
 
     private val equalizerImpl: EqualizerImpl? = createIf(hasEqualizer) {
-        EqualizerImpl(context, storageKey, errorHandler, initialEffectParams)
+        EqualizerImpl(context, storageKey, proxyErrorHandler, initialEffectParams)
     }
     override val equalizer: Equalizer? = equalizerImpl
 
     private val bassBoostImpl: BassBoostImpl? = createIf(hasBassBoost) {
-        BassBoostImpl(context, storageKey, errorHandler)
+        BassBoostImpl(context, storageKey, proxyErrorHandler)
     }
     override val bassBoost: BassBoost? = bassBoostImpl
 
     private val virtualizerImpl: VirtualizerImpl? = createIf(hasVirtualizer) {
-        VirtualizerImpl(context, storageKey, errorHandler)
+        VirtualizerImpl(context, storageKey, proxyErrorHandler)
     }
     override val virtualizer: Virtualizer? = virtualizerImpl
 
     private val loudnessImpl: LoudnessImpl? = createIf(hasLoudnessEnhancer) {
-        LoudnessImpl(context, storageKey, errorHandler)
+        LoudnessImpl(context, storageKey, proxyErrorHandler)
     }
     override val loudness: Loudness? = loudnessImpl
 
     private val reverbImpl: ReverbImpl? = createIf(hasReverb && canUsePresetReverb()) {
-        ReverbImpl(context, storageKey, errorHandler, initialEffectParams)
+        ReverbImpl(context, storageKey, proxyErrorHandler, initialEffectParams)
     }
     override val reverb: Reverb? = reverbImpl
 
