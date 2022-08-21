@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">तुल्यकारक</string>
+
+    <string name="global_audio_session">वैश्विक ऑडियो आउटपुट</string>
+    <string name="global_audio_session_description">ऑडियो प्रभाव वैश्विक ऑडियो आउटपुट पर लागू होंगे। कृपया सुनिश्चित करें कि आप किसी अन्य ऐप में संगीत बजाना शुरू करने से पहले इस तुल्यकारक ऐप को खोलें।</string>
+
+    <string name="external_audio_session_description">ऑडियो प्रभाव %s पर लागू किया गया</string>
+
+    <string name="unidentified_audio_session">अज्ञात ऑडियो सत्र</string>
+    <string name="unidentified_audio_session_description">ऑडियो प्रभाव लागू किए गए थे, लेकिन ऐप ऑडियो आउटपुट की पहचान करने में असमर्थ था।</string>
+</resources>
