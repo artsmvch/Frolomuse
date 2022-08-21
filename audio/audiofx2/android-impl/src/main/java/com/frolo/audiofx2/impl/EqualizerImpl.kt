@@ -141,6 +141,8 @@ internal class EqualizerImpl(
         } catch (e: Throwable) {
             errorHandler.onAudioEffectError(this, e)
         }
+        // FIXME: Apply to fake audio session. We still need an instance of the engine.
+        applyToAudioSession(initialEffectParams.audioSessionId)
     }
 
     override fun addOnEnableStatusChangeListener(listener: AudioEffect2.OnEnableStatusChangeListener) {

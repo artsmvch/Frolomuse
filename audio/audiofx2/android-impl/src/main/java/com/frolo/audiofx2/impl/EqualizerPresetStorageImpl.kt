@@ -87,6 +87,7 @@ internal class EqualizerPresetStorageImpl(
             putInt(KEY_CUSTOM_BAND_LEVEL_PREFIX + bandIndex, bandLevel)
             putInt(KEY_LAST_USED_PRESET_TYPE, PRESET_TYPE_CUSTOM)
         }.apply()
+        // FIXME: sync all levels with the current engine
         return@synchronized getCustomPreset()
     }
 
@@ -236,7 +237,7 @@ internal class EqualizerPresetStorageImpl(
         private const val PRESET_TYPE_SAVED = 1
 
         private fun getPrefsName(storageKey: String): String {
-            return "$storageKey:audiofx2:equalizer_presets"
+            return "$storageKey.audiofx2.equalizer_presets"
         }
     }
 }

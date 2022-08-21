@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="equalizer">तुल्यकारक</string>
+    <string name="preset">प्रीसेट</string>
+    <string name="preset_normal">साधारण</string>
+    <string name="preset_rock">चट्टान</string>
+    <string name="preset_heavy_metal">भारी धातु</string>
+    <string name="preset_classical">क्लासिक</string>
+    <string name="preset_folk">लोक</string>
+    <string name="preset_flat">समतल</string>
+    <string name="preset_dance">नृत्य</string>
+    <string name="preset_hip_hop">हिप हॉप</string>
+    <string name="preset_jazz">जाज</string>
+    <string name="preset_pop">लोकप्रिय</string>
+    <string name="preset_custom">रीति</string>
+
+    <string name="bass_boost">मंद्र को बढ़ाना</string>
+    <string name="virtualizer">वर्चुलाइजर</string>
+    <string name="loudness">प्रबलता</string>
+
+    <string name="reverb">प्रतिध्वनि</string>
+    <string name="preset_reverb_none">कोई भी नहीं</string>
+    <string name="preset_reverb_large_hall">बड़ा हॉल</string>
+    <string name="preset_reverb_large_room">बड़ा कमरा</string>
+    <string name="preset_reverb_medium_hall">मध्यम हॉल</string>
+    <string name="preset_reverb_medium_room">मध्यम कमरा</string>
+    <string name="preset_reverb_plate">पठार</string>
+    <string name="preset_reverb_small_room">छोटा सा कमरा</string>
+</resources>
