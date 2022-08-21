@@ -236,7 +236,7 @@ internal class EqualizerPresetStorageImpl(
         private const val PRESET_TYPE_SAVED = 1
 
         private fun getPrefsName(storageKey: String): String {
-            return "$storageKey:audiofx2:equalizer_presets"
+            return "$storageKey.audiofx2.equalizer_presets"
         }
     }
 }
