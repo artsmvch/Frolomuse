@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="equalizer">평형 장치</string>
+    <string name="preset">프리셋</string>
+    <string name="preset_normal">표준</string>
+    <string name="preset_rock">록 음악</string>
+    <string name="preset_heavy_metal">헤비메탈</string>
+    <string name="preset_classical">고전</string>
+    <string name="preset_folk">민속 음악</string>
+    <string name="preset_flat">플랫 음악</string>
+    <string name="preset_dance">댄스</string>
+    <string name="preset_hip_hop">힙합</string>
+    <string name="preset_jazz">재즈</string>
+    <string name="preset_pop">팝</string>
+    <string name="preset_custom">관습</string>
+
+    <string name="bass_boost">베이스 부스트</string>
+    <string name="virtualizer">가상화기</string>
+    <string name="loudness">음량</string>
+
+    <string name="reverb">반향</string>
+    <string name="preset_reverb_none">아니</string>
+    <string name="preset_reverb_large_hall">대형 홀</string>
+    <string name="preset_reverb_large_room">큰 방</string>
+    <string name="preset_reverb_medium_hall">미디엄 홀</string>
+    <string name="preset_reverb_medium_room">미디엄 룸</string>
+    <string name="preset_reverb_plate">고원</string>
+    <string name="preset_reverb_small_room">작은 방</string>
+</resources>
