@@ -47,8 +47,10 @@ class AudioFx2AttachEngine constructor(
     @Synchronized
     private fun attachImpl(audioSessionInfo: AudioSessionInfo) {
         audioFx2.applyToAudioSession(audioSessionInfo.sessionId)
-        attachInfoLiveData.value = AudioFx2AttachInfoHelper.external(
-            application, audioSessionInfo.packageName, audioSessionInfo.sessionId)
+        attachInfoLiveData.postValue(
+            AudioFx2AttachInfoHelper.external(application,
+                audioSessionInfo.packageName, audioSessionInfo.sessionId)
+        )
     }
 
     @Synchronized
@@ -57,6 +59,9 @@ class AudioFx2AttachEngine constructor(
         if (lastAudioSessionInfo.sessionId == audioSessionId) {
             audioFx2.release()
             lastAudioSessionInfoRef.set(null)
+            attachInfoLiveData.postValue(
+                AudioFx2AttachInfoHelper.default(application)
+            )
         }
     }
 
