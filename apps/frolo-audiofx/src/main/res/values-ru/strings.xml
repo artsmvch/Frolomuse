@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Эквалайзер</string>
+
+    <string name="global_audio_session">Глобальный аудио выход</string>
+    <string name="global_audio_session_description">Звуковые эффекты будут применены к глобальному аудио выходу.
+        Пожалуйста, убедитесь, что вы открыли это приложение эквалайзера, прежде чем начать воспроизводить музыку в другом приложении.</string>
+
+    <string name="external_audio_session_description">Звуковые эффекты применены к %s</string>
+
+    <string name="unidentified_audio_session">Неопознанный аудио сеанс</string>
+    <string name="unidentified_audio_session_description">Звуковые эффекты были применены, но приложению не удалось определить аудио выход.</string>
+</resources>

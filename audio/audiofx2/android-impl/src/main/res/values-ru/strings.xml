@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="equalizer">Эквалайзер</string>
+    <string name="preset">Пресет</string>
+    <string name="preset_normal">Нормальный</string>
+    <string name="preset_rock">Рок</string>
+    <string name="preset_heavy_metal">Тяжелый металл</string>
+    <string name="preset_classical">Классический</string>
+    <string name="preset_folk">Народный</string>
+    <string name="preset_flat">Плоский</string>
+    <string name="preset_dance">Танцевальный</string>
+    <string name="preset_hip_hop">Хип-хоп</string>
+    <string name="preset_jazz">Джаз</string>
+    <string name="preset_pop">Поп</string>
+    <string name="preset_custom">Кастомный</string>
+
+    <string name="bass_boost">Басс</string>
+    <string name="virtualizer">Виртуализатор</string>
+    <string name="loudness">Громкость</string>
+
+    <string name="reverb">Реверберация</string>
+    <string name="preset_reverb_none">Ничего</string>
+    <string name="preset_reverb_large_hall">Большой зал</string>
+    <string name="preset_reverb_large_room">Большая комната</string>
+    <string name="preset_reverb_medium_hall">Средний зал</string>
+    <string name="preset_reverb_medium_room">Средняя комната</string>
+    <string name="preset_reverb_plate">Плато</string>
+    <string name="preset_reverb_small_room">Маленькая комната</string>
+</resources>

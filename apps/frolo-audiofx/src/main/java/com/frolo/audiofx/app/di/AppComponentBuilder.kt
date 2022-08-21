@@ -8,13 +8,20 @@ import com.frolo.audiofx.app.attachinfo.AudioFx2AttachInfoHelper
 import com.frolo.audiofx.app.engine.AudioFx2AttachEngine
 import com.frolo.audiofx2.impl.AudioEffect2ErrorHandler
 import com.frolo.audiofx2.impl.AudioFx2Impl
+import com.frolo.audiofx2.impl.BuildConfig
+import com.frolo.logger.api.Logger
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 
 internal class AppComponentImpl(
     private val application: Application
 ) : AppComponent {
     override val audioFx2: AudioFx2Impl by lazy {
         val errorHandler = AudioEffect2ErrorHandler { _, err ->
-            Toast.makeText(application, "Error: $err", Toast.LENGTH_LONG).show()
+            FirebaseCrashlytics.getInstance().recordException(err)
+            Logger.e("AudioFx2ErrorHandler", err)
+            if (BuildConfig.DEBUG) {
+                Toast.makeText(application, "Error: $err", Toast.LENGTH_LONG).show()
+            }
         }
         AudioFx2Impl.obtain(application, errorHandler)
     }

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="equalizer">Igualada</string>
+    <string name="preset">Preestablecida</string>
+    <string name="preset_normal">Normal</string>
+    <string name="preset_rock">Rock</string>
+    <string name="preset_heavy_metal">Metal pesado</string>
+    <string name="preset_classical">Clásico</string>
+    <string name="preset_folk">Gente</string>
+    <string name="preset_flat">Plano</string>
+    <string name="preset_dance">Danza</string>
+    <string name="preset_hip_hop">Hip hop</string>
+    <string name="preset_jazz">Jazz</string>
+    <string name="preset_pop">Popular</string>
+    <string name="preset_custom">Individual</string>
+
+    <string name="bass_boost">Bajo</string>
+    <string name="virtualizer">Virtualizador</string>
+    <string name="loudness">Volumen</string>
+
+    <string name="reverb">Reverberación</string>
+    <string name="preset_reverb_none">Ninguno</string>
+    <string name="preset_reverb_large_hall">Sala grande</string>
+    <string name="preset_reverb_large_room">Habitación grande</string>
+    <string name="preset_reverb_medium_hall">Sala mediana</string>
+    <string name="preset_reverb_medium_room">Habitación mediana</string>
+    <string name="preset_reverb_plate">Meseta</string>
+    <string name="preset_reverb_small_room">Habitación pequeña</string>
+</resources>

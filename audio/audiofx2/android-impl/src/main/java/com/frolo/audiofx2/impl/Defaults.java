@@ -37,7 +37,7 @@ final class Defaults {
             maxBandLevelRange = equalizer.getBandLevelRange()[1];
             for (int i = 0; i < equalizer.getNumberOfPresets(); i++) {
                 String presetName = equalizer.getPresetName((short) i);
-                NativePresetImpl preset = new NativePresetImpl(presetName, i, presetName);
+                NativePresetImpl preset = new NativePresetImpl(context, i, presetName);
                 nativePresets.add(preset);
             }
             equalizer.release();
