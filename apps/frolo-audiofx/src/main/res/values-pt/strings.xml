@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Equalizador</string>
+
+    <string name="global_audio_session">Saída de áudio global</string>
+    <string name="global_audio_session_description">Os efeitos de áudio serão aplicados à saída de áudio global.
+        Certifique-se de abrir este aplicativo equalizador antes de começar a tocar música em outro aplicativo.</string>
+
+    <string name="external_audio_session_description">Efeitos de áudio aplicados a %s</string>
+
+    <string name="unidentified_audio_session">Sessão de áudio não identificada</string>
+    <string name="unidentified_audio_session_description">Efeitos de áudio foram aplicados, mas o aplicativo não conseguiu identificar a saída de áudio.</string>
+</resources>
