@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">イコライザ</string>
+
+    <string name="global_audio_session">グローバルオーディオ出力</string>
+    <string name="global_audio_session_description">オーディオ エフェクトは、グローバル オーディオ出力に適用されます。 別のアプリで音楽の再生を開始する前に、必ずこのイコライザー アプリを開いてください。.</string>
+
+    <string name="external_audio_session_description">%s に適用されたオーディオ エフェクト</string>
+
+    <string name="unidentified_audio_session">不明なオーディオ セッション</string>
+    <string name="unidentified_audio_session_description">すべてのオーディオ エフェクトが適用されましたが、アプリはオーディオ出力を識別できませんでした。</string>
+</resources>

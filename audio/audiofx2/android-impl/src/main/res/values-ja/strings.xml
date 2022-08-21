@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="equalizer">イコライザ</string>
+    <string name="preset">プリセット</string>
+    <string name="preset_normal">通常の音楽</string>
+    <string name="preset_rock">ロック, ロック音楽</string>
+    <string name="preset_heavy_metal">重金属</string>
+    <string name="preset_classical">クラッシック</string>
+    <string name="preset_folk">民族音楽</string>
+    <string name="preset_flat">フラットミュージック</string>
+    <string name="preset_dance">ダンス</string>
+    <string name="preset_hip_hop">ヒップホップ</string>
+    <string name="preset_jazz">ジャズ</string>
+    <string name="preset_pop">人気の音楽</string>
+    <string name="preset_custom">カスタム</string>
+
+    <string name="bass_boost">バスブースト</string>
+    <string name="virtualizer">バーチャライザー</string>
+    <string name="loudness">ラウドネス</string>
+
+    <string name="reverb">残響</string>
+    <string name="preset_reverb_none">なし</string>
+    <string name="preset_reverb_large_hall">大ホール</string>
+    <string name="preset_reverb_large_room">大部屋</string>
+    <string name="preset_reverb_medium_hall">中ホール</string>
+    <string name="preset_reverb_medium_room">ミディアムルーム</string>
+    <string name="preset_reverb_plate">高原</string>
+    <string name="preset_reverb_small_room">小さな部屋</string>
+</resources>
