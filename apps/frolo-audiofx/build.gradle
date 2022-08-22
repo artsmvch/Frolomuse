@@ -93,7 +93,7 @@ dependencies {
     implementation project(path: ':audio:audiofx2:android-impl')
     implementation project(path: ':custom-view:equalizerview')
 
-    implementation project(path: ':feature:audiofx')
+    implementation project(path: ':feature:audiofx2')
 
     implementation project(path: ':material-support')
     // Doubtfully
