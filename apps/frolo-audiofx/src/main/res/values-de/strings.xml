@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Equalizer</string>
+
+    <string name="global_audio_session">Globale Audioausgabe</string>
+    <string name="global_audio_session_description">Audioeffekte werden auf die globale Audioausgabe angewendet. Bitte stellen Sie sicher, dass Sie diese Equalizer-App öffnen, bevor Sie mit der Musikwiedergabe in einer anderen App beginnen.</string>
+
+    <string name="external_audio_session_description">Auf %s angewendete Audioeffekte</string>
+
+    <string name="unidentified_audio_session">Nicht identifizierte Audiositzung</string>
+    <string name="unidentified_audio_session_description">Audioeffekte wurden angewendet, aber die App konnte die Audioausgabe nicht identifizieren.</string>
+</resources>
