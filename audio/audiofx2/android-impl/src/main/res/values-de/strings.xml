@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="equalizer">Equalizer</string>
+    <string name="preset">Voreinstellung</string>
+    <string name="preset_normal">Normal</string>
+    <string name="preset_rock">Rock</string>
+    <string name="preset_heavy_metal">Heavy Metal</string>
+    <string name="preset_classical">Klassik</string>
+    <string name="preset_folk">Folk</string>
+    <string name="preset_flat">Neutral</string>
+    <string name="preset_dance">Tanzen</string>
+    <string name="preset_hip_hop">HipHop</string>
+    <string name="preset_jazz">Jazz</string>
+    <string name="preset_pop">Pop</string>
+    <string name="preset_custom">Brauch</string>
+
+    <string name="bass_boost">Bass-Boost</string>
+    <string name="virtualizer">Virtualisierer</string>
+    <string name="loudness">Lautstärke</string>
+
+    <string name="reverb">Nachhall</string>
+    <string name="preset_reverb_none">Keiner</string>
+    <string name="preset_reverb_large_hall">Große Halle</string>
+    <string name="preset_reverb_large_room">Großer Raum</string>
+    <string name="preset_reverb_medium_hall">Mittlere Halle</string>
+    <string name="preset_reverb_medium_room">Mittleres Raum</string>
+    <string name="preset_reverb_plate">Plateau</string>
+    <string name="preset_reverb_small_room">Kleiner Raum</string>
+</resources>
