@@ -140,6 +140,7 @@ dependencies {
 
     // Features
     implementation project(path: ':feature:onboarding')
+    implementation project(path: ':feature:audiofx2')
 
     // Core
     implementation project(path: ':core')
