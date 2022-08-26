@@ -95,6 +95,8 @@ dependencies {
 
     implementation project(path: ':feature:audiofx2')
 
+    implementation deps.support.preferences
+
     implementation project(path: ':material-support')
     // Doubtfully
     implementation project(path: ':core-ui')

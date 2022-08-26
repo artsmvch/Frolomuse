@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <androidx.preference.PreferenceCategory
+        android:title="@string/appearance_settings">
+        <Preference
+            android:icon="@drawable/ic_theme_outlined_24"
+            android:key="theme"
+            android:title="@string/app_theme"
+            android:summary="@string/app_theme_desc"
+            android:defaultValue="false"/>
+    </androidx.preference.PreferenceCategory>
+</PreferenceScreen>

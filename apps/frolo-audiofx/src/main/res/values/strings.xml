@@ -9,4 +9,9 @@
 
     <string name="unidentified_audio_session">Unidentified audio session</string>
     <string name="unidentified_audio_session_description">Audio effects were applied, but the app was unable to identify the audio output.</string>
+
+    <!--Settings-->
+    <string name="appearance_settings">Appearance</string>
+    <string name="app_theme">App Theme</string>
+    <string name="app_theme_desc">Change the theme of the application</string>
 </resources>
