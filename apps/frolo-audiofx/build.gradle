@@ -5,10 +5,10 @@ plugins {
     id 'com.google.firebase.crashlytics'
 }
 
-def version_code = 3
+def version_code = 4
 def version_major = 1
 def version_minor = 0
-def version_patch = 0
+def version_patch = 1
 def version_name = "${version_major}.${version_minor}.${version_patch}"
 
 def google_services_properties =
