@@ -24,7 +24,7 @@
         </receiver>
 
         <activity
-            android:name="com.frolo.audiofx2.app.MainActivity"
+            android:name="com.frolo.audiofx2.app.ui.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
