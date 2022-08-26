@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".app.MainActivity">
+    tools:context="com.frolo.audiofx2.app.ui.MainActivity">
 
     <FrameLayout
         android:id="@+id/container"
