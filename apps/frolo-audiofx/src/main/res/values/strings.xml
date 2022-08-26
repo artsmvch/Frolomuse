@@ -11,6 +11,7 @@
     <string name="unidentified_audio_session_description">Audio effects were applied, but the app was unable to identify the audio output.</string>
 
     <!--Settings-->
+    <string name="settings">Settings</string>
     <string name="appearance_settings">Appearance</string>
     <string name="app_theme">App Theme</string>
     <string name="app_theme_desc">Change the theme of the application</string>
