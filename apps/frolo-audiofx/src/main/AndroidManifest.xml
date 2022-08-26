@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
 
     <application
-        android:name="com.frolo.audiofx.app.ApplicationImpl"
+        android:name="com.frolo.audiofx2.app.ApplicationImpl"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -15,7 +15,7 @@
         android:theme="@style/Theme.Frolo.AudioFx.Splash">
 
         <receiver
-            android:name="com.frolo.audiofx.app.engine.AudioFx2AttachEngineReceiver"
+            android:name="com.frolo.audiofx2.app.engine.AudioFx2AttachEngineReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.media.action.OPEN_AUDIO_EFFECT_CONTROL_SESSION"/>
@@ -24,7 +24,7 @@
         </receiver>
 
         <activity
-            android:name="com.frolo.audiofx.app.MainActivity"
+            android:name="com.frolo.audiofx2.app.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -56,7 +56,7 @@
             android:layout_marginBottom="12dp"
             style="@style/App.MaterialCard.EffectPanel">
 
-            <com.frolo.audiofx.view.EqualizerPanelView
+            <com.frolo.audiofx2.ui.view.EqualizerPanelView
                 android:id="@+id/equalizer_panel_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
@@ -76,7 +76,7 @@
                 android:layout_marginBottom="8dp"
                 android:padding="8dp"
                 style="@style/App.MaterialCard.EffectPanel">
-                <com.frolo.audiofx.view.EffectBoosterPanelView
+                <com.frolo.audiofx2.ui.view.EffectBoosterPanelView
                     android:id="@+id/bass_booster_panel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
@@ -91,7 +91,7 @@
                 android:layout_marginBottom="8dp"
                 android:padding="8dp"
                 style="@style/App.MaterialCard.EffectPanel">
-                <com.frolo.audiofx.view.EffectBoosterPanelView
+                <com.frolo.audiofx2.ui.view.EffectBoosterPanelView
                     android:id="@+id/virtualizer_panel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
@@ -107,7 +107,7 @@
                 android:layout_marginBottom="8dp"
                 android:padding="8dp"
                 style="@style/App.MaterialCard.EffectPanel">
-                <com.frolo.audiofx.view.EffectBoosterPanelView
+                <com.frolo.audiofx2.ui.view.EffectBoosterPanelView
                     android:id="@+id/loudness_panel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
@@ -123,7 +123,7 @@
             android:layout_marginBottom="12dp"
             style="@style/App.MaterialCard.EffectPanel">
 
-            <com.frolo.audiofx.view.ReverbPanelView
+            <com.frolo.audiofx2.ui.view.ReverbPanelView
                 android:id="@+id/reverb_panel_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>

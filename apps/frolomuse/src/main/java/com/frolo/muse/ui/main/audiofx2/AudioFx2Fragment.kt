@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.core.view.updatePadding
-import com.frolo.audiofx.controlpanel.AudioFxControlPanelFragment
+import com.frolo.audiofx2.ui.controlpanel.AudioFxControlPanelFragment
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.base.FragmentContentInsetsListener
 
