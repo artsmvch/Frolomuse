@@ -18,7 +18,7 @@ class AudioFx2AttachEngine constructor(
     private val prefs: SharedPreferences by lazy {
         application.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
     }
-    private val lastAudioSessionInfoRef = AtomicReference<AudioSessionInfo>()
+    private val lastAudioSessionInfoRef = AtomicReference<AudioSessionInfo?>()
 
     @Synchronized
     fun isEnabled(): Boolean {
@@ -56,7 +56,7 @@ class AudioFx2AttachEngine constructor(
     @Synchronized
     fun releaseAudioSession(audioSessionId: Int, packageName: String?) {
         val lastAudioSessionInfo = lastAudioSessionInfoRef.get()
-        if (lastAudioSessionInfo.sessionId == audioSessionId) {
+        if (lastAudioSessionInfo != null && lastAudioSessionInfo.sessionId == audioSessionId) {
             audioFx2.release()
             lastAudioSessionInfoRef.set(null)
             attachInfoLiveData.postValue(
