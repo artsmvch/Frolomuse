@@ -128,7 +128,7 @@ internal abstract class SimpleAudioEffect2Impl<E: android.media.audiofx.AudioEff
         valueChangeListenerRegistry.removeListener(listener)
     }
 
-    final override fun onApplyToAudioSession(priority: Int, audioSessionId: Int) = synchronized(lock) {
+    final override fun onAttachTo(target: AudioFx2AttachTarget) = synchronized(lock) {
         try {
             engine?.release()
             engine = null
@@ -136,7 +136,7 @@ internal abstract class SimpleAudioEffect2Impl<E: android.media.audiofx.AudioEff
             errorHandler.onAudioEffectError(this, e)
         }
         try {
-            val newEngine = instantiateEngine(priority, audioSessionId)
+            val newEngine = instantiateEngine(target.priority, target.sessionId)
             newEngine.enabled = isEnabled
             setStrengthTo(newEngine, state.getValue())
             this.engine = newEngine

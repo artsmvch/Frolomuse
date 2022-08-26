@@ -10,7 +10,7 @@ class AudioFx2Impl private constructor(
     private val context: Context,
     private val storageKey: String,
     errorHandler: AudioEffect2ErrorHandler
-): AudioFx2, AudioSessionApplier {
+): AudioFx2, AudioFx2AttachProtocol {
     private val audioManager = context.getSystemService(Context.AUDIO_SERVICE) as AudioManager
     private val hasEqualizer: Boolean
     private val hasBassBoost: Boolean
@@ -61,10 +61,12 @@ class AudioFx2Impl private constructor(
         this.hasReverb = hasReverb
     }
 
-    private val initialEffectParams: EffectInitParams by lazy {
-        EffectInitParams(
+    private val initialAttachTarget: AudioFx2AttachTarget by lazy {
+        AudioFx2AttachTarget(
             priority = 0,
-            audioSessionId = audioManager.generateAudioSessionId()
+            sessionId = audioManager.generateAudioSessionId(),
+            // FIXME: use a fake media player?
+            mediaPlayer = null
         )
     }
 
@@ -74,7 +76,7 @@ class AudioFx2Impl private constructor(
     }
 
     private val equalizerImpl: EqualizerImpl? = createIf(hasEqualizer) {
-        EqualizerImpl(context, storageKey, proxyErrorHandler, initialEffectParams)
+        EqualizerImpl(context, storageKey, proxyErrorHandler, initialAttachTarget)
     }
     override val equalizer: Equalizer? = equalizerImpl
 
@@ -94,7 +96,7 @@ class AudioFx2Impl private constructor(
     override val loudness: Loudness? = loudnessImpl
 
     private val reverbImpl: ReverbImpl? = createIf(hasReverb && canUsePresetReverb()) {
-        ReverbImpl(context, storageKey, proxyErrorHandler, initialEffectParams)
+        ReverbImpl(context, storageKey, proxyErrorHandler, initialAttachTarget)
     }
     override val reverb: Reverb? = reverbImpl
 
@@ -102,12 +104,12 @@ class AudioFx2Impl private constructor(
         return if (predicate) creator.invoke() else null
     }
 
-    override fun applyToAudioSession(audioSessionId: Int) {
-        equalizerImpl?.applyToAudioSession(audioSessionId)
-        bassBoostImpl?.applyToAudioSession(audioSessionId)
-        virtualizerImpl?.applyToAudioSession(audioSessionId)
-        loudnessImpl?.applyToAudioSession(audioSessionId)
-        reverbImpl?.applyToAudioSession(audioSessionId)
+    override fun attachTo(target: AudioFx2AttachTarget) {
+        equalizerImpl?.attachTo(target)
+        bassBoostImpl?.attachTo(target)
+        virtualizerImpl?.attachTo(target)
+        loudnessImpl?.attachTo(target)
+        reverbImpl?.attachTo(target)
     }
 
     override fun release() {

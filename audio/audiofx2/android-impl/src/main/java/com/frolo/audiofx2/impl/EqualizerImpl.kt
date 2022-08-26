@@ -10,7 +10,7 @@ internal class EqualizerImpl(
     private val context: Context,
     private val storageKey: String,
     private val errorHandler: AudioEffect2ErrorHandler,
-    private val initialEffectParams: EffectInitParams
+    private val initialAttachTarget: AudioFx2AttachTarget
 ): BaseAudioEffect2Impl<android.media.audiofx.Equalizer>(), Equalizer, EqualizerPresetStorage {
     private val defaults = Defaults(context)
     private val state = EqualizerState(context, storageKey, defaults)
@@ -79,7 +79,7 @@ internal class EqualizerImpl(
     )
 
     init {
-        applyToAudioSession(initialEffectParams.audioSessionId)
+        attachTo(initialAttachTarget)
     }
 
     override fun getBandLevel(bandIndex: Int): Int = synchronized(lock) {
@@ -109,7 +109,7 @@ internal class EqualizerImpl(
             ?.getOrNull() ?: defaults.getDefaultBandFreqRange(bandIndex)
     }
 
-    override fun onApplyToAudioSession(priority: Int, audioSessionId: Int) = synchronized(lock) {
+    override fun onAttachTo(target: AudioFx2AttachTarget) = synchronized(lock) {
         try {
             engine?.release()
             engine = null
@@ -117,7 +117,7 @@ internal class EqualizerImpl(
             errorHandler.onAudioEffectError(this, e)
         }
         try {
-            val newEngine = android.media.audiofx.Equalizer(priority, audioSessionId)
+            val newEngine = android.media.audiofx.Equalizer(target.priority, target.sessionId)
             newEngine.enabled = isEnabled
             val preset = getCurrentPreset()
             if (preset != null) {
@@ -141,8 +141,8 @@ internal class EqualizerImpl(
         } catch (e: Throwable) {
             errorHandler.onAudioEffectError(this, e)
         }
-        // FIXME: Apply to fake audio session. We still need an instance of the engine.
-        applyToAudioSession(initialEffectParams.audioSessionId)
+        // FIXME: Attach to fake audio session. We still need an instance of the engine.
+        attachTo(initialAttachTarget)
     }
 
     override fun addOnEnableStatusChangeListener(listener: AudioEffect2.OnEnableStatusChangeListener) {

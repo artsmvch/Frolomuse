@@ -2,8 +2,8 @@ package com.frolo.audiofx2.impl
 
 import android.media.MediaPlayer
 
-internal data class EffectInitParams(
+class AudioFx2AttachTarget(
     val priority: Int,
-    val audioSessionId: Int,
+    val sessionId: Int,
     val mediaPlayer: MediaPlayer?
 )

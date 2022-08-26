@@ -7,6 +7,7 @@ import androidx.core.content.edit
 import androidx.lifecycle.MutableLiveData
 import com.frolo.audiofx2.ui.AudioFx2AttachInfo
 import com.frolo.audiofx2.app.attachinfo.AudioFx2AttachInfoHelper
+import com.frolo.audiofx2.impl.AudioFx2AttachTarget
 import com.frolo.audiofx2.impl.AudioFx2Impl
 import java.util.concurrent.atomic.AtomicReference
 
@@ -46,7 +47,12 @@ class AudioFx2AttachEngine constructor(
 
     @Synchronized
     private fun attachImpl(audioSessionInfo: AudioSessionInfo) {
-        audioFx2.applyToAudioSession(audioSessionInfo.sessionId)
+        val attachTarget = AudioFx2AttachTarget(
+            priority = 0,
+            sessionId = audioSessionInfo.sessionId,
+            mediaPlayer = null
+        )
+        audioFx2.attachTo(attachTarget)
         attachInfoLiveData.postValue(
             AudioFx2AttachInfoHelper.external(application,
                 audioSessionInfo.packageName, audioSessionInfo.sessionId)

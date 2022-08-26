@@ -14,7 +14,7 @@ internal class ReverbImpl constructor(
     private val context: Context,
     private val storageKey: String,
     private val errorHandler: AudioEffect2ErrorHandler,
-    private val initialEffectParams: EffectInitParams
+    private val initialAttachTarget: AudioFx2AttachTarget
 ): BaseAudioEffect2Impl<android.media.audiofx.PresetReverb>(), Reverb {
     private val lock = Any()
     @GuardedBy("lock")
@@ -69,7 +69,7 @@ internal class ReverbImpl constructor(
     override val availablePresets: List<Reverb.Preset> get() = availablePresetsImpl
 
     init {
-        applyToAudioSession(initialEffectParams.audioSessionId)
+        attachTo(initialAttachTarget)
     }
 
     private fun mapPresetFromValue(value: Short): ReverbPresetImpl {
@@ -113,7 +113,7 @@ internal class ReverbImpl constructor(
         )
     }
 
-    override fun onApplyToAudioSession(priority: Int, audioSessionId: Int) = synchronized(lock) {
+    override fun onAttachTo(target: AudioFx2AttachTarget) = synchronized(lock) {
         try {
             engine?.release()
             engine = null
@@ -121,10 +121,15 @@ internal class ReverbImpl constructor(
             errorHandler.onAudioEffectError(this, e)
         }
         try {
-            val newEngine = PresetReverb(priority, 0)
+            val newEngine = PresetReverb(target.priority, 0)
             newEngine.enabled = state.isEnabled()
             newEngine.preset = (state.getCurrentPreset() as? ReverbPresetImpl)?.value
                 ?: PresetReverb.PRESET_NONE
+            if (target.mediaPlayer != null) {
+                target.mediaPlayer.attachAuxEffect(newEngine.id)
+                // FIXME: control the level?
+                target.mediaPlayer.setAuxEffectSendLevel(1f)
+            }
             this.engine = newEngine
         } catch (e: Throwable) {
             errorHandler.onAudioEffectError(this, e)
