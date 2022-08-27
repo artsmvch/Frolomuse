@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
@@ -32,6 +33,13 @@ class AudioFxControlPanelFragment : Fragment() {
     }
 
     private fun loadUi() {
+        scroll_view.fitsSystemWindows = true
+        scroll_view.clipToPadding = false
+        ViewCompat.setOnApplyWindowInsetsListener(scroll_view) { view, insets ->
+            view.setPadding(insets.systemWindowInsetLeft, insets.systemWindowInsetTop,
+                insets.systemWindowInsetRight, insets.systemWindowInsetBottom)
+            insets.consumeSystemWindowInsets()
+        }
         audio_session_description.setOnClickListener {
             viewModel.attachInfo.value?.also { attachInfo ->
                 showAttachInfoDialog(attachInfo)

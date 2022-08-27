@@ -98,6 +98,7 @@ dependencies {
     implementation deps.support.preferences
 
     implementation project(path: ':material-support')
+    implementation project(path: ':utils:ui')
     // Doubtfully
     implementation project(path: ':core-ui')
 

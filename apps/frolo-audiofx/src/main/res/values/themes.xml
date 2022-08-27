@@ -1,6 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!--Misc-->
     <color name="window_background_color">#EAEAEA</color>
+    <color name="system_bar_color">#CCEAEAEA</color>
     <color name="divider_color">#DDDDDD</color>
 
     <!--Material-->
@@ -28,10 +29,10 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="windowActionModeOverlay">true</item>
-        <item name="android:statusBarColor">@color/window_background_color</item>
+        <item name="android:statusBarColor">@color/system_bar_color</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">false</item>
-        <item name="android:navigationBarColor">@color/window_background_color</item>
+        <item name="android:navigationBarColor">@color/system_bar_color</item>
         <item name="android:windowBackground">@color/window_background_color</item>
         <item name="actionBarSize">@dimen/default_bar_size</item>
         <item name="android:actionBarSize">@dimen/default_bar_size</item>
