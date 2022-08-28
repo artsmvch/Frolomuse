@@ -8,7 +8,7 @@ import androidx.appcompat.widget.AppCompatSpinner
 import androidx.appcompat.widget.ListPopupWindow
 
 
-class SpinnerImpl @JvmOverloads constructor(
+internal class SpinnerImpl @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = android.R.attr.spinnerStyle
@@ -52,7 +52,7 @@ class SpinnerImpl @JvmOverloads constructor(
             byUser: Boolean
         )
 
-        override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        final override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
             onItemSelected(
                 parent = parent,
                 view = view,
