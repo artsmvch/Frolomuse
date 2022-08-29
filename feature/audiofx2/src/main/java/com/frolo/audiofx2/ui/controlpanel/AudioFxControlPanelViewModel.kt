@@ -11,7 +11,7 @@ import com.frolo.audiofx2.*
 import com.frolo.rx.KeyedDisposableContainer
 
 
-class AudioFxControlPanelViewModel(
+internal class AudioFxControlPanelViewModel(
     application: Application
 ): AndroidViewModel(application) {
     private val keyedDisposables = KeyedDisposableContainer<String>()

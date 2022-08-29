@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.core.view.updatePadding
-import com.frolo.audiofx2.ui.controlpanel.AudioFxControlPanelFragment
+import com.frolo.audiofx2.ui.AudioFx2Feature
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.base.FragmentContentInsetsListener
 
@@ -20,10 +20,10 @@ class AudioFx2Fragment: BaseFragment(), FragmentContentInsetsListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val fragment = childFragmentManager.findFragmentById(containerId)
-        if (fragment != null && fragment is AudioFxControlPanelFragment) {
+        if (fragment != null) {
             return
         }
-        val newFragment = AudioFxControlPanelFragment.newInstance()
+        val newFragment = AudioFx2Feature.createControlPanelFragment()
         childFragmentManager.beginTransaction()
             .replace(containerId, newFragment)
             .commitNow()

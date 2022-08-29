@@ -15,7 +15,7 @@ import com.frolo.audiofx2.ui.AudioFx2AttachInfo
 import com.frolo.audiofx2.ui.R
 import kotlinx.android.synthetic.main.fragment_audiofx_control_panel.*
 
-class AudioFxControlPanelFragment : Fragment() {
+internal class AudioFxControlPanelFragment : Fragment() {
 
     private val viewModel: AudioFxControlPanelViewModel by lazy {
         ViewModelProviders.of(this).get(AudioFxControlPanelViewModel::class.java)

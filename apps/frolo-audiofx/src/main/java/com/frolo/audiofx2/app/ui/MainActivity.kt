@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import com.frolo.audiofx.app.R
-import com.frolo.audiofx2.ui.controlpanel.AudioFxControlPanelFragment
+import com.frolo.audiofx2.ui.AudioFx2Feature
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun addControlPanelScreen() {
-        AudioFxControlPanelFragment.newInstance().also { fragment ->
+        AudioFx2Feature.createControlPanelFragment().also { fragment ->
             supportFragmentManager.beginTransaction()
                 .replace(R.id.container, fragment)
                 .commitNow()
