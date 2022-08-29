@@ -39,6 +39,7 @@
 
         <item name="dialogTheme">@style/Theme.Frolo.AudioFx.Dialog</item>
         <item name="android:dialogTheme">@style/Theme.Frolo.AudioFx.Dialog</item>
+        <item name="bottomSheetDialogTheme">@style/Theme.Frolo.AudioFx.BottomSheetDialog</item>
 
         <item name="android:textViewStyle">@style/Theme.Frolo.AudioFx.TextView</item>
 
@@ -88,6 +89,26 @@
 
     <style name="Theme.Frolo.AudioFx.WindowAnimation.Dialog" parent="">
         <item name="android:windowEnterAnimation">@anim/enter_bounce</item>
+    </style>
+
+    <style name="Theme.Frolo.AudioFx.BottomSheetDialog" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/Theme.Frolo.AudioFx.BottomSheet</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="paddingBottomSystemWindowInsets">true</item>
+        <item name="paddingLeftSystemWindowInsets">true</item>
+        <item name="paddingRightSystemWindowInsets">true</item>
+        <item name="android:windowAnimationStyle">@style/Theme.Frolo.AudioFx.Animation.BottomSheetDialog</item>
+    </style>
+
+    <style name="Theme.Frolo.AudioFx.BottomSheet" parent="@style/Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/bg_bottom_sheet_dialog</item>
+    </style>
+
+    <style name="Theme.Frolo.AudioFx.Animation.BottomSheetDialog" parent="@style/Animation.MaterialComponents.BottomSheetDialog">
+        <item name="android:windowEnterAnimation">@anim/bottom_sheet_slide_in</item>
+        <item name="android:windowExitAnimation">@anim/bottom_sheet_slide_out</item>
     </style>
 
     <style name="Theme.Frolomuse.AudioFx.MaterialCardView" parent="Widget.MaterialComponents.CardView">

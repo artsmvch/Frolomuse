@@ -6,7 +6,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import com.frolo.audiofx.app.R
+import com.frolo.audiofx2.app.ui.instruction.InstructionDialog
 import com.frolo.audiofx2.ui.AudioFx2Feature
+import com.frolo.core.ui.ApplicationWatcher
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -17,6 +19,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setupWindowInsets()
         addControlPanelScreen()
+        maybeShowInstructions()
     }
 
     private fun addControlPanelScreen() {
@@ -36,5 +39,12 @@ class MainActivity : AppCompatActivity() {
         view.fitsSystemWindows = true
         ViewCompat.setOnApplyWindowInsetsListener(view) { _, insets -> insets }
         view.requestApplyInsets()
+    }
+
+    private fun maybeShowInstructions() {
+        if (ApplicationWatcher.appStartUpInfoProvider.hotStartCount < 2) {
+            val dialog = InstructionDialog(this)
+            dialog.show()
+        }
     }
 }
