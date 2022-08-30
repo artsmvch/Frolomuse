@@ -42,7 +42,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun maybeShowInstructions() {
-        if (ApplicationWatcher.appStartUpInfoProvider.hotStartCount < 2) {
+        val showInstructions: Boolean = ApplicationWatcher.appStartUpInfoProvider.let { provider ->
+            provider.coldStartCount + provider.hotStartCount <= 3
+        }
+        if (showInstructions) {
             val dialog = InstructionDialog(this)
             dialog.show()
         }
