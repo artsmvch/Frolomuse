@@ -10,20 +10,22 @@ import com.frolo.audiofx2.app.di.appComponent
 import com.frolo.logger.api.Logger
 
 class AudioFx2AttachEngineReceiver : BroadcastReceiver() {
+    private val attachEngine: AudioFx2AttachEngine get() = appComponent.attachEngine
+
     override fun onReceive(context: Context, intent: Intent) {
         val action = intent.action ?: return
         val audioSessionId = intent.getIntExtra(Equalizer.EXTRA_AUDIO_SESSION, -1)
-        val packageName = intent.getStringExtra(Equalizer.EXTRA_PACKAGE_NAME)
+        val packageName: String? = intent.getStringExtra(Equalizer.EXTRA_PACKAGE_NAME)
         Logger.d(LOG_TAG, "Audio session ID caught! ID=$audioSessionId")
         when (action) {
             AudioEffect.ACTION_OPEN_AUDIO_EFFECT_CONTROL_SESSION-> {
-                appComponent.attachEngine.handleAudioSession(
+                attachEngine.handleAudioSession(
                     audioSessionId = audioSessionId,
                     packageName = packageName
                 )
             }
             AudioEffect.ACTION_CLOSE_AUDIO_EFFECT_CONTROL_SESSION -> {
-                appComponent.attachEngine.releaseAudioSession(
+                attachEngine.releaseAudioSession(
                     audioSessionId = audioSessionId,
                     packageName = packageName
                 )
