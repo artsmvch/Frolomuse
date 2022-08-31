@@ -13,6 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:hardwareAccelerated="true"
+        android:appCategory="audio"
         android:theme="@style/Theme.Frolo.AudioFx.Splash">
 
         <receiver
