@@ -8,7 +8,12 @@ import android.os.Handler
 import android.os.StrictMode
 import android.os.strictmode.Violation
 import androidx.annotation.UiThread
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.frolo.audiofx.AudioFxImpl
+import com.frolo.audiofx2.ui.AudioFx2AttachInfo
+import com.frolo.audiofx2.ui.AudioFx2Feature
+import com.frolo.audiofx2.ui.AudioFx2FeatureInput
 import com.frolo.core.ui.ApplicationWatcher
 import com.frolo.debug.DebugUtils
 import com.frolo.logger.api.CompositeLogDelegate
@@ -100,6 +105,7 @@ class AppStartUpInitializer @Inject constructor(
         setupFirebase()
         setupShortcutsListener()
         //setupMediaScanWork()
+        //setupAudioFx2Feature()
     }
 
     private fun setupDebugMode() {
@@ -227,6 +233,17 @@ class AppStartUpInitializer @Inject constructor(
 
     private fun setupMediaScanWork() {
         scheduleMediaScanWork(application)
+    }
+
+    private fun setupAudioFx2Feature() {
+        AudioFx2Feature.init(
+            input = object : AudioFx2FeatureInput {
+                override val audioFx2AttachInfo: LiveData<AudioFx2AttachInfo> =
+                    MutableLiveData(null)
+                override val audioFx2: com.frolo.audiofx2.AudioFx2
+                    get() = application.applicationComponent.provideAudioFx2()
+            }
+        )
     }
 
     private fun runOnForegroundActivity(action: BaseActivity.() -> Unit) {

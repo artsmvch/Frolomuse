@@ -158,6 +158,8 @@ dependencies {
     implementation project(path: ':audio:player:api')
     implementation project(path: ':audio:player:android-impl')
     implementation project(path: ':audio:player:data')
+    implementation project(path: ':audio:audiofx2:api')
+    implementation project(path: ':audio:audiofx2:android-impl')
 
     // Billing
     implementation project(path: ':billings:billing-api')

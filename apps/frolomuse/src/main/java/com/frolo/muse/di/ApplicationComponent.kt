@@ -3,6 +3,7 @@ package com.frolo.muse.di
 import android.app.Activity
 import android.app.Service
 import android.content.Context
+import com.frolo.audiofx2.AudioFx2
 import com.frolo.muse.di.modules.*
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.repository.FirebasePreferences
@@ -42,6 +43,7 @@ interface ApplicationComponent {
     fun provideEventLogger(): EventLogger
     fun provideFirebasePreferences(): FirebasePreferences
     fun provideOnboardingPreferences(): OnboardingPreferences
+    fun provideAudioFx2(): AudioFx2
 }
 
 interface ApplicationComponentHolder {

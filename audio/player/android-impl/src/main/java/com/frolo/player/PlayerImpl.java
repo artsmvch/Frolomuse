@@ -16,8 +16,6 @@ import androidx.annotation.GuardedBy;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.frolo.audiofx.AudioFx;
-import com.frolo.audiofx.applicable.AudioFxApplicable;
 import com.frolo.player.data.AudioSources;
 import com.frolo.player.data.MediaStoreRow;
 
@@ -75,8 +73,8 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
      */
     public static final class Builder {
         private final Context mContext;
-        @NonNull
-        private AudioFxApplicable mAudioFx;
+        @Nullable
+        private MediaPlayerHook mMediaPlayerHook;
         private AudioFocusRequester.Factory mAudioFocusRequesterFactory;
         private boolean mDebug = false;
         private PlayerJournal mJournal;
@@ -88,13 +86,17 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
         private PlaybackFadingStrategy mPlaybackFadingStrategy;
         private final List<PlayerObserver> mObservers = new ArrayList<>();
 
-        private Builder(@NonNull Context context, @NonNull AudioFxApplicable audioFx) {
+        private Builder(@NonNull Context context) {
             mContext = context;
-            mAudioFx = audioFx;
         }
 
         private Builder self() {
             return this;
+        }
+
+        public Builder setMediaPlayerHook(@Nullable MediaPlayerHook hook) {
+            mMediaPlayerHook = hook;
+            return self();
         }
 
         public Builder setDebug(boolean debug) {
@@ -139,20 +141,13 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
 
         @NonNull
         public PlayerImpl build() {
-            if (mAudioFx == null) {
-                if (mDebug) {
-                    throw new IllegalArgumentException("AudioFx is not set in the builder");
-                }
-                // Fallback
-                mAudioFx = AudioFxApplicableStub.INSTANCE;
-            }
             return new PlayerImpl(this);
         }
     }
 
     @NonNull
-    public static Builder newBuilder(@NonNull Context context, @NonNull AudioFxApplicable audioFx) {
-        return new Builder(context, audioFx);
+    public static Builder newBuilder(@NonNull Context context) {
+        return new Builder(context);
     }
 
     /**
@@ -262,9 +257,9 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
     @GuardedBy("mAudioFocusRequesterFactory")
     private AudioFocusRequester mAudioFocusRequester = null;
 
-    // AudioFx
+    // Media player hook
     @NonNull
-    private final AudioFxApplicable mAudioFx;
+    private final MediaPlayerHook mMediaPlayerHook;
 
     // Observer Registry
     @NonNull
@@ -350,7 +345,9 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
                 ? builder.mAudioFocusRequesterFactory
                 : AudioFocusRequesterImpl.obtainFactory(builder.mContext);
 
-        mAudioFx = builder.mAudioFx;
+        mMediaPlayerHook = builder.mMediaPlayerHook != null
+            ? builder.mMediaPlayerHook
+            : new MediaPlayerHookStub();
 
         mObserverRegistry = PlayerObserverRegistry.create(builder.mContext, this, builder.mDebug);
         mObserverRegistry.registerAll(builder.mObservers);
@@ -689,7 +686,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
                                 newEngine.prepare();
 
                                 mIsPreparedFlag = true;
-                                mAudioFx.applyTo(newEngine);
+                                mMediaPlayerHook.attachAudioEffects(newEngine);
                                 mObserverRegistry.dispatchPrepared(newEngine.getDuration(), 0);
                             } catch (Throwable error) {
                                 report(error);
@@ -892,7 +889,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
 
                         mIsPreparedFlag = true;
 
-                        mAudioFx.applyTo(engine);
+                        mMediaPlayerHook.attachAudioEffects(engine);
 
                         if (playbackPosition > 0) {
                             engine.seekTo(playbackPosition);
@@ -1705,12 +1702,6 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
         processEngineTask(task);
     }
 
-    @NonNull
-    @Override
-    public final AudioFx getAudioFx() {
-        return mAudioFx;
-    }
-
     @Override
     public boolean isAPointed() {
         return mABEngine.isAPointed();
@@ -2067,8 +2058,8 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
         }
         mPlaybackFadingTimer = null;
 
-        // Releasing the audio fx
-        mAudioFx.release();
+        // Releasing the hook
+        mMediaPlayerHook.releaseAudioEffects();
 
         // Resetting the engine and internal flags
         synchronized (mEngineLock) {

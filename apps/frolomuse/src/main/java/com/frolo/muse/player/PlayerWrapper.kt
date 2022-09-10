@@ -2,13 +2,11 @@ package com.frolo.muse.player
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import com.frolo.player.*
 import com.frolo.player.Player.Companion.PITCH_NORMAL
 import com.frolo.player.Player.Companion.REPEAT_OFF
 import com.frolo.player.Player.Companion.SHUFFLE_OFF
 import com.frolo.player.Player.Companion.SPEED_NORMAL
-import com.frolo.player.*
-import com.frolo.audiofx.AudioFx
-import com.frolo.audiofx.AudioFxStub
 import java.util.concurrent.atomic.AtomicReference
 
 
@@ -157,10 +155,6 @@ class PlayerWrapper constructor(
 
     override fun moveItem(fromPosition: Int, toPosition: Int) {
         delegate?.moveItem(fromPosition, toPosition)
-    }
-
-    override fun getAudioFx(): AudioFx {
-        return delegate?.getAudioFx() ?: AudioFxStub
     }
 
     override fun isAPointed(): Boolean {

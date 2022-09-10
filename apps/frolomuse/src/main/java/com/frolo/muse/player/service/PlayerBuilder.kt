@@ -1,11 +1,15 @@
 package com.frolo.muse.player.service
 
 import android.app.Service
+import android.media.MediaPlayer
 import android.os.Handler
 import android.support.v4.media.session.MediaSessionCompat
 import androidx.annotation.WorkerThread
 import com.frolo.audiofx.AudioFxImpl
 import com.frolo.audiofx.applicable.AudioFxApplicable
+import com.frolo.audiofx2.AudioFx2
+import com.frolo.audiofx2.impl.AudioFx2AttachTarget
+import com.frolo.audiofx2.impl.AudioFx2Impl
 import com.frolo.debug.DebugUtils
 import com.frolo.muse.BuildInfo
 import com.frolo.logger.api.Logger
@@ -16,10 +20,7 @@ import com.frolo.muse.repository.Preferences
 import com.frolo.muse.repository.RemoteConfigRepository
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.music.repository.SongRepository
-import com.frolo.player.PlaybackFadingStrategy
-import com.frolo.player.Player
-import com.frolo.player.PlayerImpl
-import com.frolo.player.PlayerJournal
+import com.frolo.player.*
 import com.frolo.threads.ThreadStrictMode
 import io.reactivex.disposables.CompositeDisposable
 import java.util.concurrent.CountDownLatch
@@ -31,6 +32,7 @@ import javax.inject.Inject
 
 class PlayerBuilder @Inject constructor(
     private val service: Service,
+    private val audioFx2Impl: AudioFx2Impl,
     private val mediaSession: MediaSessionCompat,
     private val notificationSender: PlayerNotificationSender,
     private val playerJournal: PlayerJournal,
@@ -51,13 +53,25 @@ class PlayerBuilder @Inject constructor(
     }
 
     private fun buildImpl(): Player {
-        val audioFx: AudioFxApplicable = AudioFxImpl.getInstance(
-            service, Const.AUDIO_FX_PREFERENCES, DefaultAudioFxErrorHandler())
-
         val preParams = loadPreParams(timeoutMillis = getTimeoutMillis())
-
-        val player = PlayerImpl.newBuilder(service, audioFx)
+        val player = PlayerImpl.newBuilder(service)
             .setDebug(BuildInfo.isDebug())
+            .setMediaPlayerHook(
+                object : MediaPlayerHook {
+                    override fun attachAudioEffects(mediaPlayer: MediaPlayer) {
+                        val target = AudioFx2AttachTarget(
+                            priority = 0,
+                            sessionId = mediaPlayer.audioSessionId,
+                            mediaPlayer = mediaPlayer
+                        )
+                        audioFx2Impl.attachTo(target)
+                    }
+
+                    override fun releaseAudioEffects() {
+                        audioFx2Impl.release()
+                    }
+                }
+            )
             .setPlayerJournal(playerJournal)
             .setUseWakeLocks(preParams.wakeLockEnabled)
             .setRepeatMode(preParams.repeatMode)

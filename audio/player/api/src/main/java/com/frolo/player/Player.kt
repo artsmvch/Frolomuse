@@ -1,7 +1,6 @@
 package com.frolo.player
 
 import androidx.annotation.IntDef
-import com.frolo.audiofx.AudioFx
 
 
 interface Player {
@@ -45,7 +44,6 @@ interface Player {
     fun addNext(item: AudioSource)
     fun addAllNext(items: List<AudioSource>)
     fun moveItem(fromPosition: Int, toPosition: Int)
-    fun getAudioFx(): AudioFx
     // AB functionality
     fun isAPointed(): Boolean
     fun isBPointed(): Boolean

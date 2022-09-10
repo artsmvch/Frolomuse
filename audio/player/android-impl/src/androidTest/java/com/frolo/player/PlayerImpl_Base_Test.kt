@@ -25,7 +25,7 @@ abstract class PlayerImpl_Base_Test {
      */
     protected fun createPlayerImpl(): PlayerImpl {
         val context = InstrumentationRegistry.getTargetContext()
-        return PlayerImpl.newBuilder(context, AudioFxApplicableStub)
+        return PlayerImpl.newBuilder(context)
             .setUseWakeLocks(false)
             .build()
     }
