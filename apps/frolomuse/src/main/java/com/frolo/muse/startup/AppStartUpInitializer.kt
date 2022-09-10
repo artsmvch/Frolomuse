@@ -105,7 +105,7 @@ class AppStartUpInitializer @Inject constructor(
         setupFirebase()
         setupShortcutsListener()
         //setupMediaScanWork()
-        //setupAudioFx2Feature()
+        setupAudioFx2Feature()
     }
 
     private fun setupDebugMode() {
