@@ -22,7 +22,7 @@ class EffectBoosterView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = R.attr.effectBoosterViewStyle
-): View(context, attrs, defStyleAttr) {
+): View(context, attrs, defStyleAttr,  R.style.EffectBoosterView_Default) {
 
     @FloatRange(from = 0.0, to = 1.0)
     var boostValue: Float = 0f
