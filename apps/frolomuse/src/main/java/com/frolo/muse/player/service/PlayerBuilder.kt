@@ -56,22 +56,7 @@ class PlayerBuilder @Inject constructor(
         val preParams = loadPreParams(timeoutMillis = getTimeoutMillis())
         val player = PlayerImpl.newBuilder(service)
             .setDebug(BuildInfo.isDebug())
-            .setMediaPlayerHook(
-                object : MediaPlayerHook {
-                    override fun attachAudioEffects(mediaPlayer: MediaPlayer) {
-                        val target = AudioFx2AttachTarget(
-                            priority = 0,
-                            sessionId = mediaPlayer.audioSessionId,
-                            mediaPlayer = mediaPlayer
-                        )
-                        audioFx2Impl.attachTo(target)
-                    }
-
-                    override fun releaseAudioEffects() {
-                        audioFx2Impl.release()
-                    }
-                }
-            )
+            .setMediaPlayerHook(MediaPlayerHookImpl(audioFx2Impl))
             .setPlayerJournal(playerJournal)
             .setUseWakeLocks(preParams.wakeLockEnabled)
             .setRepeatMode(preParams.repeatMode)
@@ -153,6 +138,21 @@ class PlayerBuilder @Inject constructor(
         val repeatMode: Int,
         val shuffleMode: Int
     )
+
+    private class MediaPlayerHookImpl(val audioFx2Impl: AudioFx2Impl): MediaPlayerHook {
+        override fun attachAudioEffects(mediaPlayer: MediaPlayer) {
+            val target = AudioFx2AttachTarget(
+                priority = 0,
+                sessionId = mediaPlayer.audioSessionId,
+                mediaPlayer = mediaPlayer
+            )
+            audioFx2Impl.attachTo(target)
+        }
+
+        override fun releaseAudioEffects() {
+            audioFx2Impl.release()
+        }
+    }
 
     private companion object {
         private const val LOG_TAG = "PlayerBuilder"
