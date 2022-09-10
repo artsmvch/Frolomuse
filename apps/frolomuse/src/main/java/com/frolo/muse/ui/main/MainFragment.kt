@@ -50,11 +50,7 @@ import com.frolo.core.ui.marker.IntentHandler
 import com.frolo.muse.ui.PlayerHostViewModel
 import com.frolo.core.ui.marker.ScrolledToTop
 import com.frolo.muse.ui.base.*
-import com.frolo.muse.ui.main.audiofx.AudioFxFragment
-import com.frolo.muse.ui.main.library.LibraryFragment
-import com.frolo.muse.ui.main.library.search.SearchFragment
 import com.frolo.muse.ui.main.player.mini.MiniPlayerFragment
-import com.frolo.muse.ui.main.settings.AppBarSettingsFragment
 import com.frolo.muse.util.LinkUtils
 import com.frolo.muse.util.ifNaN
 import com.frolo.music.model.Media
@@ -184,6 +180,8 @@ internal class MainFragment :
     private val mainSheetsStateViewModel by lazy { provideMainSheetStateViewModel() }
 
     private val playerSheetOutlineProvider = PlayerSheetOutlineProvider()
+
+    private val rootFragmentsFactory by lazy { RootFragmentsFactory() }
 
     override fun getRouter(): AppRouter {
         if (context == null || childFragmentManager.isStateSaved) {
@@ -519,10 +517,10 @@ internal class MainFragment :
 
     private fun getRootFragmentAt(index: Int): Fragment {
         return when (index) {
-            INDEX_LIBRARY ->    LibraryFragment.newInstance()
-            INDEX_EQUALIZER ->  AudioFxFragment.newInstance()
-            INDEX_SEARCH ->     SearchFragment.newInstance()
-            INDEX_SETTINGS ->   AppBarSettingsFragment.newInstance()
+            INDEX_LIBRARY ->    rootFragmentsFactory.createLibraryFragment()
+            INDEX_EQUALIZER ->  rootFragmentsFactory.createAudioFxFragment()
+            INDEX_SEARCH ->     rootFragmentsFactory.createSearchFragment()
+            INDEX_SETTINGS ->   rootFragmentsFactory.createSettingsFragment()
             else -> {
                 DebugUtils.dumpOnMainThread(IllegalStateException(
                     "Unexpected root index: $index"))
