@@ -4,11 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
+import androidx.annotation.IdRes
 import androidx.core.view.updatePadding
 import com.frolo.audiofx2.ui.AudioFx2Feature
+import com.frolo.muse.R
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.base.FragmentContentInsetsListener
+import com.frolo.muse.ui.base.setupNavigation
+import kotlinx.android.synthetic.main.fragment_audio_fx_2.*
 
 class AudioFx2Fragment: BaseFragment(), FragmentContentInsetsListener {
 
@@ -16,13 +19,15 @@ class AudioFx2Fragment: BaseFragment(), FragmentContentInsetsListener {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = FrameLayout(inflater.context).apply { id = containerId }
+    ): View = inflater.inflate(R.layout.fragment_audio_fx_2, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        setupNavigation(toolbar)
         ensureControlPanelFragment()
     }
 
     private fun ensureControlPanelFragment() {
+        @IdRes val containerId = R.id.container
         val fragment = childFragmentManager.findFragmentById(containerId)
         if (fragment != null) {
             return
@@ -35,16 +40,20 @@ class AudioFx2Fragment: BaseFragment(), FragmentContentInsetsListener {
 
     override fun applyContentInsets(left: Int, top: Int, right: Int, bottom: Int) {
         val view = this.view ?: return
-        if (view is ViewGroup) {
-            view.clipToPadding = false
+        (view as? ViewGroup)?.apply {
+            clipToPadding = false
+            clipChildren = false
+            updatePadding(left = left, top = top, right = right)
         }
-        view.updatePadding(left, top, right, bottom)
+        container.apply {
+            clipToPadding = false
+            clipChildren = false
+            updatePadding(bottom = bottom)
+        }
     }
 
     companion object {
         private const val LOG_TAG = "AudioFx2Fragment"
-
-        private val containerId: Int = View.generateViewId()
 
         // Factory
         fun newInstance(): AudioFx2Fragment = AudioFx2Fragment()
