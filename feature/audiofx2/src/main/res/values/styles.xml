@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--EffectBoosterView-->
     <attr name="effectBoosterViewStyle" format="reference"/>
     <declare-styleable name="EffectBoosterView">
         <attr name="strokeWidth" format="dimension"/>
@@ -9,6 +10,20 @@
 
     <style name="EffectBoosterView.Default" parent="">
         <item name="strokeWidth">4dp</item>
+        <item name="strokeInactiveColor">#C3C3C3</item>
+        <item name="strokeActiveColor">#EC4444</item>
+    </style>
+
+    <!--ReverbPanelView-->
+    <attr name="reverbPanelViewStyle" format="reference"/>
+    <declare-styleable name="ReverbPanelView">
+        <attr name="strokeWidth" format="dimension"/>
+        <attr name="strokeInactiveColor" format="color"/>
+        <attr name="strokeActiveColor" format="color"/>
+    </declare-styleable>
+
+    <style name="ReverbPanelView.Default" parent="">
+        <item name="strokeWidth">2dp</item>
         <item name="strokeInactiveColor">#C3C3C3</item>
         <item name="strokeActiveColor">#EC4444</item>
     </style>

@@ -24,8 +24,8 @@ import kotlin.math.roundToInt
 class ReverbPanelView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
-): ConstraintLayout(context, attrs, defStyleAttr) {
+    defStyleAttr: Int = R.attr.reverbPanelViewStyle
+): ConstraintLayout(context, attrs, defStyleAttr, R.style.ReverbPanelView_Default) {
     // Views
     private val captionTextView: TextView
     private val enableStatusSwitch: SwitchMaterial
