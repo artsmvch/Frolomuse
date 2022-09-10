@@ -19,6 +19,10 @@ class AudioFx2Fragment: BaseFragment(), FragmentContentInsetsListener {
     ): View = FrameLayout(inflater.context).apply { id = containerId }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        ensureControlPanelFragment()
+    }
+
+    private fun ensureControlPanelFragment() {
         val fragment = childFragmentManager.findFragmentById(containerId)
         if (fragment != null) {
             return
