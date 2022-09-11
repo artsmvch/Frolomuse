@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="disabled_controller">#C3C3C3</color>
+    <color name="default_disabled_color">#5CAAAAAA</color>
+    <color name="default_inactive_color">@color/default_disabled_color</color>
+    <color name="default_thumb_disabled_color">#CACACA</color>
     <color name="transparent">#00FFFFFF</color>
 </resources>

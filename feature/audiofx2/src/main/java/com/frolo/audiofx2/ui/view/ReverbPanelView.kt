@@ -2,17 +2,18 @@ package com.frolo.audiofx2.ui.view
 
 import android.content.Context
 import android.content.res.ColorStateList
+import android.graphics.Color
 import android.util.AttributeSet
 import android.view.View
 import android.widget.CompoundButton
 import android.widget.TextView
+import androidx.annotation.Px
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
-import com.frolo.audiofx2.ui.R
 import com.frolo.audiofx2.AudioEffect2
 import com.frolo.audiofx2.Reverb
+import com.frolo.audiofx2.ui.R
 import com.frolo.rx.KeyedDisposableContainer
-import com.frolo.ui.StyleUtils
+import com.frolo.ui.Screen
 import com.google.android.material.slider.RangeSlider
 import com.google.android.material.switchmaterial.SwitchMaterial
 import io.reactivex.Completable
@@ -20,12 +21,15 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlin.math.roundToInt
+import kotlin.properties.Delegates
 
+@Suppress("MemberVisibilityCanBePrivate")
 class ReverbPanelView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyleAttr: Int = R.attr.reverbPanelViewStyle
-): ConstraintLayout(context, attrs, defStyleAttr, R.style.ReverbPanelView_Default) {
+    defStyleAttr: Int = R.attr.reverbPanelViewStyle,
+    defStyleRes: Int = R.style.ReverbPanelView_Default
+): ConstraintLayout(context, attrs, defStyleAttr, defStyleRes) {
     // Views
     private val captionTextView: TextView
     private val enableStatusSwitch: SwitchMaterial
@@ -47,6 +51,45 @@ class ReverbPanelView @JvmOverloads constructor(
         // Set up listeners
         enableStatusSwitch.setOnCheckedChangeListener(switchListener)
         slider.addOnChangeListener(changeListener)
+    }
+
+    //region UI properties
+    @get:Px
+    var trackHeight: Float by Delegates.observable(0f) { _, _, newValue ->
+        slider.trackHeight = newValue.roundToInt()
+    }
+    var trackActiveColor: ColorStateList by Delegates.observable(DEFAULT_COLOR_STATE_LIST) { _, _, newValue ->
+        slider.trackActiveTintList = newValue
+    }
+    var trackInactiveColor: ColorStateList by Delegates.observable(DEFAULT_COLOR_STATE_LIST) { _, _, newValue ->
+        slider.trackInactiveTintList = newValue
+    }
+    @get:Px
+    var thumbRadius: Float by Delegates.observable(0f) { _, _, newValue ->
+        slider.thumbRadius = newValue.roundToInt()
+    }
+    var thumbTint: ColorStateList by Delegates.observable(DEFAULT_COLOR_STATE_LIST) { _, _, newValue ->
+        slider.thumbTintList = newValue
+    }
+    //endregion
+
+    init {
+        val a = context.theme.obtainStyledAttributes(attrs, R.styleable.ReverbPanelView,
+            defStyleAttr, defStyleRes)
+        try {
+            trackHeight = a.getDimension(R.styleable.ReverbPanelView_trackHeight,
+                Screen.dpFloat(context, 2f))
+            trackActiveColor = a.getColorStateList(R.styleable.ReverbPanelView_trackActiveColor)
+                ?: DEFAULT_COLOR_STATE_LIST
+            trackInactiveColor = a.getColorStateList(R.styleable.ReverbPanelView_trackInactiveColor)
+                ?: DEFAULT_COLOR_STATE_LIST
+            thumbRadius = a.getDimension(R.styleable.ReverbPanelView_thumbRadius,
+                Screen.dpFloat(context, 8f))
+            thumbTint = a.getColorStateList(R.styleable.ReverbPanelView_thumbTint)
+                ?: DEFAULT_COLOR_STATE_LIST
+        } finally {
+            a.recycle()
+        }
     }
 
     // Effect
@@ -141,18 +184,9 @@ class ReverbPanelView @JvmOverloads constructor(
 
     private fun setSliderEnabled(isEnabled: Boolean) {
         slider.isEnabled = isEnabled
-        if (isEnabled) {
-            val activeColor = StyleUtils.resolveColor(context, R.attr.colorSecondary)
-                .let { ColorStateList.valueOf(it) }
-            slider.tickActiveTintList = activeColor
-            slider.trackActiveTintList = activeColor
-            slider.thumbTintList = activeColor
-        } else {
-            val disabledColor = ContextCompat.getColor(context, R.color.disabled_controller)
-                .let { ColorStateList.valueOf(it) }
-            slider.tickActiveTintList = disabledColor
-            slider.trackActiveTintList = disabledColor
-            slider.thumbTintList = disabledColor
-        }
+    }
+
+    companion object {
+        private val DEFAULT_COLOR_STATE_LIST = ColorStateList.valueOf(Color.TRANSPARENT)
     }
 }

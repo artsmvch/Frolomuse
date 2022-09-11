@@ -1,31 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <attr name="strokeWidth" format="dimension"/>
+    <attr name="strokeInactiveColor" format="color"/>
+    <attr name="strokeActiveColor" format="color"/>
+    <attr name="thumbRadius" format="dimension"/>
+    <attr name="trackHeight" format="dimension"/>
+    <attr name="trackInactiveColor" format="color"/>
+    <attr name="trackActiveColor" format="color"/>
+    <attr name="thumbTint" format="color"/>
+
     <!--EffectBoosterView-->
     <attr name="effectBoosterViewStyle" format="reference"/>
     <declare-styleable name="EffectBoosterView">
-        <attr name="strokeWidth" format="dimension"/>
-        <attr name="strokeInactiveColor" format="color"/>
-        <attr name="strokeActiveColor" format="color"/>
+        <attr name="strokeWidth"/>
+        <attr name="strokeInactiveColor"/>
+        <attr name="strokeActiveColor"/>
+        <attr name="thumbRadius"/>
+        <attr name="thumbTint"/>
     </declare-styleable>
 
     <style name="EffectBoosterView.Default" parent="">
-        <item name="strokeWidth">4dp</item>
-        <item name="strokeInactiveColor">#C3C3C3</item>
-        <item name="strokeActiveColor">#EC4444</item>
+        <item name="strokeWidth">2dp</item>
+        <item name="strokeInactiveColor">@color/simple_inactive_color</item>
+        <item name="strokeActiveColor">@color/simple_active_color</item>
+        <item name="thumbRadius">8dp</item>
+        <item name="thumbTint">@color/simple_thumb_tint</item>
     </style>
 
     <!--ReverbPanelView-->
     <attr name="reverbPanelViewStyle" format="reference"/>
     <declare-styleable name="ReverbPanelView">
-        <attr name="strokeWidth" format="dimension"/>
-        <attr name="strokeInactiveColor" format="color"/>
-        <attr name="strokeActiveColor" format="color"/>
+        <attr name="trackHeight"/>
+        <attr name="trackInactiveColor"/>
+        <attr name="trackActiveColor"/>
+        <attr name="thumbRadius"/>
+        <attr name="thumbTint"/>
     </declare-styleable>
 
     <style name="ReverbPanelView.Default" parent="">
-        <item name="strokeWidth">2dp</item>
-        <item name="strokeInactiveColor">#C3C3C3</item>
-        <item name="strokeActiveColor">#EC4444</item>
+        <item name="trackHeight">2dp</item>
+        <item name="trackInactiveColor">@color/simple_inactive_color</item>
+        <item name="trackActiveColor">@color/simple_active_color</item>
+        <item name="thumbRadius">8dp</item>
+        <item name="thumbTint">@color/simple_thumb_tint</item>
     </style>
 
     <!--View styles-->
@@ -41,11 +58,11 @@
         <item name="thumbElevation">1.2dp</item>
         <item name="thumbRadius">6dp</item>
         <item name="thumbColor">?colorSecondary</item>
-        <item name="tickColorActive">?colorSecondary</item>
-        <item name="tickColorInactive">@color/disabled_controller</item>
+        <item name="tickColorActive">@color/simple_active_color</item>
+        <item name="tickColorInactive">@color/simple_inactive_color</item>
         <item name="trackHeight">2dp</item>
-        <item name="trackColorActive">?colorSecondary</item>
-        <item name="trackColorInactive">@color/disabled_controller</item>
+        <item name="trackColorActive">@color/simple_active_color</item>
+        <item name="trackColorInactive">@color/simple_inactive_color</item>
         <item name="labelBehavior">floating</item>
         <item name="labelStyle">@style/App.Slider.EffectPanel.Tooltip</item>
     </style>

@@ -1,6 +1,7 @@
 package com.frolo.audiofx2.ui.view
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
@@ -10,53 +11,25 @@ import android.view.MotionEvent
 import android.view.View
 import androidx.annotation.ColorInt
 import androidx.annotation.FloatRange
+import androidx.annotation.Px
 import com.frolo.audiofx2.ui.R
 import com.frolo.ui.Screen
 import kotlin.math.cos
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.sin
+import kotlin.properties.Delegates
 
 
 class EffectBoosterView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyleAttr: Int = R.attr.effectBoosterViewStyle
-): View(context, attrs, defStyleAttr,  R.style.EffectBoosterView_Default) {
+    defStyleAttr: Int = R.attr.effectBoosterViewStyle,
+    defStyleRes: Int = R.style.EffectBoosterView_Default
+): View(context, attrs, defStyleAttr, defStyleRes) {
 
-    @FloatRange(from = 0.0, to = 1.0)
-    var boostValue: Float = 0f
-        set(value) {
-            if (field != value) {
-                field = value
-                invalidate()
-            }
-        }
-
-    var strokeWidth: Float = 0f
-        set(value) {
-            if (field != value) {
-                field = value
-                invalidate()
-            }
-        }
-
-    @ColorInt
-    var strokeActiveColor: Int = Color.TRANSPARENT
-        private set(value) {
-            if (field != value) {
-                field = value
-                invalidate()
-            }
-        }
-    @ColorInt
-    var strokeInactiveColor: Int = Color.TRANSPARENT
-        private set(value) {
-            if (field != value) {
-                field = value
-                invalidate()
-            }
-        }
+    @get:FloatRange(from = 0.0, to = 1.0)
+    var boostValue: Float by Delegates.observable(0f) { _, _, _ -> invalidate() }
 
     var onBoostValueChangeListener: OnBoostValueChangeListener? = null
 
@@ -65,23 +38,46 @@ class EffectBoosterView @JvmOverloads constructor(
     private var arcCenterY: Float = 0f
     private var arcRadius: Float = 0f
     private val arcRect: RectF = RectF()
-//    private var pointerCenterX: Float = 0f
-//    private var pointerCenterY: Float = 0f
-    private val pointerRadius: Float = Screen.dpFloat(context, 8f)
 
     // Drawing tools
     private val paint: Paint = Paint(Paint.ANTI_ALIAS_FLAG)
 
+    //region UI properties
+    @get:Px
+    var strokeWidth: Float by Delegates.observable(0f) { _, _, _ ->
+        requestLayout()
+        invalidate()
+    }
+    var strokeActiveColor: ColorStateList by Delegates.observable(DEFAULT_COLOR_STATE_LIST) { _, _, _ ->
+        invalidate()
+    }
+    var strokeInactiveColor: ColorStateList by Delegates.observable(DEFAULT_COLOR_STATE_LIST) { _, _, _ ->
+        invalidate()
+    }
+    @get:Px
+    var thumbRadius: Float by Delegates.observable(0f) { _, _, _ ->
+        requestLayout()
+        invalidate()
+    }
+    var thumbTint: ColorStateList by Delegates.observable(DEFAULT_COLOR_STATE_LIST) { _, _, _ ->
+        invalidate()
+    }
+    //endregion
+
     init {
         val a = context.theme.obtainStyledAttributes(attrs, R.styleable.EffectBoosterView,
-            defStyleAttr, R.style.EffectBoosterView_Default)
+            defStyleAttr, defStyleRes)
         try {
             strokeWidth = a.getDimension(R.styleable.EffectBoosterView_strokeWidth,
                 Screen.dpFloat(context, 4f))
-            strokeInactiveColor = a.getColor(R.styleable.EffectBoosterView_strokeInactiveColor,
-                Color.TRANSPARENT)
-            strokeActiveColor = a.getColor(R.styleable.EffectBoosterView_strokeActiveColor,
-                Color.TRANSPARENT)
+            strokeInactiveColor = a.getColorStateList(R.styleable.EffectBoosterView_strokeInactiveColor)
+                ?: DEFAULT_COLOR_STATE_LIST
+            strokeActiveColor = a.getColorStateList(R.styleable.EffectBoosterView_strokeActiveColor)
+                ?: DEFAULT_COLOR_STATE_LIST
+            thumbRadius = a.getDimension(R.styleable.EffectBoosterView_thumbRadius,
+                Screen.dpFloat(context, 8f))
+            thumbTint = a.getColorStateList(R.styleable.EffectBoosterView_thumbTint)
+                ?: DEFAULT_COLOR_STATE_LIST
         } finally {
             a.recycle()
         }
@@ -164,7 +160,7 @@ class EffectBoosterView @JvmOverloads constructor(
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
         val contentWidth = measuredWidth - paddingLeft - paddingRight
         val contentHeight = measuredHeight - paddingTop - paddingBottom
-        val offset = max(strokeWidth / 2f, pointerRadius)
+        val offset = max(strokeWidth / 2f, thumbRadius)
         this.arcRadius = min(contentWidth / 2, contentHeight).toFloat() - 2 * offset
         this.arcCenterX = paddingLeft + contentWidth / 2f
         this.arcCenterY = measuredHeight - paddingBottom.toFloat() - offset
@@ -176,15 +172,11 @@ class EffectBoosterView @JvmOverloads constructor(
         // Drawing inactive stroke
         paint.style = Paint.Style.STROKE
         paint.strokeWidth = strokeWidth
-        paint.color = strokeInactiveColor
+        paint.color = getColorForEnabledState(strokeInactiveColor, isEnabled)
         canvas.drawArc(arcRect, 180f, 180f, false, paint)
 
         // Drawing active stroke
-        paint.color = if (isEnabled) {
-            strokeActiveColor
-        } else {
-            strokeInactiveColor
-        }
+        paint.color = getColorForEnabledState(strokeActiveColor, isEnabled)
         canvas.drawArc(arcRect, 180f, 180f * boostValue, false, paint)
 
         // Drawing pointer
@@ -192,7 +184,8 @@ class EffectBoosterView @JvmOverloads constructor(
         val pointerCenterX = arcCenterX + arcRadius * cos(degrees * Math.PI / 180).toFloat()
         val pointerCenterY = arcCenterY + arcRadius * sin(degrees * Math.PI / 180).toFloat()
         paint.style = Paint.Style.FILL
-        canvas.drawCircle(pointerCenterX, pointerCenterY, pointerRadius, paint)
+        paint.color = getColorForEnabledState(thumbTint, isEnabled)
+        canvas.drawCircle(pointerCenterX, pointerCenterY, thumbRadius, paint)
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
@@ -220,6 +213,15 @@ class EffectBoosterView @JvmOverloads constructor(
         return super.onTouchEvent(event)
     }
 
+    @ColorInt
+    private fun getColorForEnabledState(list: ColorStateList, enabled: Boolean): Int {
+        return if (enabled) {
+            list.getColorForState(ENABLED_STATE_SET, Color.TRANSPARENT)
+        } else {
+            list.getColorForState(DISABLED_STATE_SET, Color.TRANSPARENT)
+        }
+    }
+
     fun interface OnBoostValueChangeListener {
         fun onBoostValueChange(
             view: EffectBoosterView,
@@ -230,5 +232,10 @@ class EffectBoosterView @JvmOverloads constructor(
     companion object {
         private const val DEFAULT_HEIGHT = 120
         private const val DEFAULT_WIDTH = 2 * DEFAULT_HEIGHT
+
+        private val ENABLED_STATE_SET = intArrayOf(android.R.attr.state_enabled)
+        private val DISABLED_STATE_SET = intArrayOf(-android.R.attr.state_enabled)
+
+        private val DEFAULT_COLOR_STATE_LIST = ColorStateList.valueOf(Color.TRANSPARENT)
     }
 }
