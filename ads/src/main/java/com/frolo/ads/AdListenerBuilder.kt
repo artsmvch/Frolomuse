@@ -40,7 +40,7 @@ class AdListenerBuilder {
 
     fun doWhenAdFailedToLoad(action: (LoadAdError?) -> Unit): AdListenerBuilder {
         val l = object : AdListener() {
-            override fun onAdFailedToLoad(err: LoadAdError?) {
+            override fun onAdFailedToLoad(err: LoadAdError) {
                 action.invoke(err)
             }
         }

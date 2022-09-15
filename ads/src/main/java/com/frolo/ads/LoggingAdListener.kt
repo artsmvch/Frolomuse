@@ -15,7 +15,7 @@ class LoggingAdListener constructor(
         log.invoke("Ad closed")
     }
 
-    override fun onAdFailedToLoad(err: LoadAdError?) {
+    override fun onAdFailedToLoad(err: LoadAdError) {
         log.invoke("Ad failed to load: $err")
     }
 

@@ -52,7 +52,7 @@ ext {
         ],
 
         gms : [
-            ads:                    "com.google.android.gms:play-services-ads:20.2.0"
+            ads:                    "com.google.android.gms:play-services-ads:21.2.0"
         ],
 
         playstore : [
