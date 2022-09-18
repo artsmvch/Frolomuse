@@ -133,7 +133,6 @@
     </style>
 
     <style name="Base.AppTheme.EqualizerView.Dark.Blue.Especial" parent="Base.AppTheme.EqualizerView.Dark">
-        <item name="gridColor">#9A656565</item>
     </style>
 
     <style name="Base.AppTheme.Dark.Blue" parent="Base.AppTheme.Dark">

@@ -118,11 +118,9 @@
         <item name="labelBehavior">gone</item>
     </style>
 
-    <style name="Base.AppTheme.EqualizerView.Dark" parent="">
+    <style name="Base.AppTheme.EqualizerView.Dark" parent="EqualizerView.Default">
         <item name="drawVisuals">true</item>
-        <item name="gridColor">#393939</item>
-        <item name="gridLineThickness">1dp</item>
-        <item name="levelColor">?colorAccent</item>
+        <item name="strokeWidth">1dp</item>
     </style>
 
 </resources>

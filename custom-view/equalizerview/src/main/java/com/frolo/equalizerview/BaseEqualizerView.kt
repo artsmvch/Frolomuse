@@ -1,6 +1,7 @@
 package com.frolo.equalizerview
 
 import android.content.Context
+import android.content.res.ColorStateList
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
@@ -13,11 +14,13 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.annotation.ColorInt
+import androidx.annotation.FloatRange
 import androidx.annotation.IntRange
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.graphics.ColorUtils
 import androidx.core.view.forEach
 import java.util.*
+import kotlin.properties.Delegates
 
 
 @Suppress("UNCHECKED_CAST")
@@ -51,50 +54,20 @@ abstract class BaseEqualizerView<V> @JvmOverloads constructor(
 
     private val drawVisuals: Boolean
 
-    var gridLineThickness = 0f
-        set(value) {
-            if (field != value) {
-                field = value
-                invalidate()
-            }
-        }
-
-    @ColorInt
-    var gridColor: Int = DEFAULT_GRID_COLOR
-        set(value) {
-            if (field != value) {
-                field = value
-                if (isEqualizerUiEnabled) {
-                    setAllTracksTint(value)
-                }
-                invalidate()
-            }
-        }
-
-    @ColorInt
-    var levelColor: Int = DEFAULT_LEVEL_COLOR
-        set(value) {
-            if (field != value) {
-                field = value
-                if (isEqualizerUiEnabled) {
-                    setAllThumbsTint(value)
-                }
-                invalidate()
-            }
-        }
-
-    @ColorInt
-    var disableColor: Int = DEFAULT_DISABLE_COLOR
-        set(value) {
-            if (field != value) {
-                field = value
-                if (!isEqualizerUiEnabled) {
-                    setAllTracksTint(value)
-                    setAllThumbsTint(value)
-                }
-                invalidate()
-            }
-        }
+    // UI properties
+    @get:FloatRange(from = 0.0)
+    var strokeWidth: Float by Delegates.observable(0f) { _, _, _ -> invalidate()}
+    var strokeInactiveColor: ColorStateList by Delegates.observable(DEFAULT_COLOR_STATE_LIST) { _, _, value ->
+        setAllTracksTint(tint = getColorForEnabledState(value, isEqualizerUiEnabled))
+        invalidate()
+    }
+    var strokeActiveColor: ColorStateList by Delegates.observable(DEFAULT_COLOR_STATE_LIST) { _, _, value ->
+        invalidate()
+    }
+    var thumbTint: ColorStateList by Delegates.observable(DEFAULT_COLOR_STATE_LIST) { _, _, value ->
+        setAllThumbsTint(tint = getColorForEnabledState(value, isEqualizerUiEnabled))
+        invalidate()
+    }
 
     // Background visual tools
     private val visualPaint = Paint(Paint.ANTI_ALIAS_FLAG)
@@ -117,19 +90,15 @@ abstract class BaseEqualizerView<V> @JvmOverloads constructor(
             return levels
         }
 
-    var isEqualizerUiEnabled: Boolean = true
-        set(value) {
-            if (field != value) {
-                field = value
-                setAllTracksTint(
-                    tint = if (value) gridColor else disableColor
-                )
-                setAllThumbsTint(
-                    tint = if (value) levelColor else disableColor
-                )
-                invalidate()
-            }
-        }
+    var isEqualizerUiEnabled: Boolean by Delegates.observable(true) { _, _, value ->
+        setAllTracksTint(
+            tint = getColorForEnabledState(strokeInactiveColor, value)
+        )
+        setAllThumbsTint(
+            tint = getColorForEnabledState(thumbTint, value)
+        )
+        invalidate()
+    }
 
     init {
         val styleId = attrs?.getAttributeIntValue(null, "style", DEFAULT_STYLE_RES_ID)
@@ -140,10 +109,13 @@ abstract class BaseEqualizerView<V> @JvmOverloads constructor(
                 .obtainStyledAttributes(attrs, R.styleable.BaseEqualizerView, defStyleAttr, defStyleRes)
         try {
             drawVisuals = a.getBoolean(R.styleable.BaseEqualizerView_drawVisuals, false)
-            gridLineThickness = a.getDimension(R.styleable.BaseEqualizerView_gridLineThickness, 0f)
-            gridColor = a.getColor(R.styleable.BaseEqualizerView_gridColor, DEFAULT_GRID_COLOR)
-            levelColor = a.getColor(R.styleable.BaseEqualizerView_levelColor, DEFAULT_LEVEL_COLOR)
-            disableColor = a.getColor(R.styleable.BaseEqualizerView_disableColor, DEFAULT_DISABLE_COLOR)
+            strokeWidth = a.getDimension(R.styleable.BaseEqualizerView_strokeWidth, 0f)
+            strokeInactiveColor = a.getColorStateList(R.styleable.BaseEqualizerView_strokeInactiveColor)
+                ?: DEFAULT_COLOR_STATE_LIST
+            strokeActiveColor = a.getColorStateList(R.styleable.BaseEqualizerView_strokeActiveColor)
+                ?: DEFAULT_COLOR_STATE_LIST
+            thumbTint = a.getColorStateList(R.styleable.BaseEqualizerView_thumbTint)
+                ?: DEFAULT_COLOR_STATE_LIST
         } finally {
             a.recycle()
         }
@@ -241,8 +213,8 @@ abstract class BaseEqualizerView<V> @JvmOverloads constructor(
             bandView.setLevelRange(minBandLevel, maxBandLevel)
             bandView.setLevel(currentLevel, animate)
             bandView.setLabel(getBandLabel(bandIndex, frequencyRange))
-            bandView.setTrackTint(if (isEqualizerUiEnabled) gridColor else disableColor)
-            bandView.setThumbTint(if (isEqualizerUiEnabled) levelColor else disableColor)
+            bandView.setTrackTint(getColorForEnabledState(strokeInactiveColor, isEqualizerUiEnabled))
+            bandView.setThumbTint(getColorForEnabledState(thumbTint, isEqualizerUiEnabled))
             bandView.setTag(R.id.tag_band_index, bandIndex)
         }
 
@@ -317,12 +289,8 @@ abstract class BaseEqualizerView<V> @JvmOverloads constructor(
         val neutralY = container.top + container.paddingTop + firstBandView.centerY
 
         // The centered horizontal line
-        visualNeutralPaint.strokeWidth = gridLineThickness
-        visualNeutralPaint.color = if (isEqualizerUiEnabled) {
-            gridColor
-        } else {
-            disableColor
-        }
+        visualNeutralPaint.strokeWidth = strokeWidth
+        visualNeutralPaint.color = getColorForEnabledState(strokeInactiveColor, isEqualizerUiEnabled)
         canvas.drawLine(paddingLeft.toFloat(), neutralY,
                 measuredWidth - paddingRight.toFloat(), neutralY, visualNeutralPaint)
     }
@@ -381,11 +349,7 @@ abstract class BaseEqualizerView<V> @JvmOverloads constructor(
         }
 
         for (visualPath in visualPaths) {
-            val color = if (isEqualizerUiEnabled) {
-                levelColor
-            } else {
-                disableColor
-            }
+            val color = getColorForEnabledState(strokeActiveColor, isEqualizerUiEnabled)
             visualPaint.color = ColorUtils.setAlphaComponent(color, visualPath.alpha)
             visualPaint.strokeWidth = visualPath.strokeWidth
             canvas.drawPath(visualPath.path, visualPaint)
@@ -404,6 +368,15 @@ abstract class BaseEqualizerView<V> @JvmOverloads constructor(
             return true
         }
         return super.onTouchEvent(event)
+    }
+
+    @ColorInt
+    private fun getColorForEnabledState(list: ColorStateList, enabled: Boolean): Int {
+        return if (enabled) {
+            list.getColorForState(ENABLED_STATE_SET, Color.TRANSPARENT)
+        } else {
+            list.getColorForState(DISABLED_STATE_SET, Color.TRANSPARENT)
+        }
     }
 
     /**
@@ -459,9 +432,12 @@ abstract class BaseEqualizerView<V> @JvmOverloads constructor(
 
     companion object {
         private val DEFAULT_STYLE_RES_ID = R.style.EqualizerView_Default
-        private const val DEFAULT_GRID_COLOR = Color.TRANSPARENT
-        private const val DEFAULT_LEVEL_COLOR = Color.LTGRAY
-        private const val DEFAULT_DISABLE_COLOR = Color.LTGRAY
+
+        private const val DEFAULT_COLOR = Color.TRANSPARENT
+        private val DEFAULT_COLOR_STATE_LIST = ColorStateList.valueOf(DEFAULT_COLOR)
+
+        private val ENABLED_STATE_SET = intArrayOf(android.R.attr.state_enabled)
+        private val DISABLED_STATE_SET = intArrayOf(-android.R.attr.state_enabled)
 
         private fun getBandLabel(bandIndex: Int, frequencyRange: IntArray): String {
             val freq: Int = frequencyRange.getOrNull(0) ?: 0

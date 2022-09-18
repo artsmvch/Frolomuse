@@ -160,11 +160,9 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
-    <style name="Base.AppTheme.EqualizerView.Light" parent="">
+    <style name="Base.AppTheme.EqualizerView.Light" parent="EqualizerView.Default">
         <item name="drawVisuals">true</item>
-        <item name="gridColor">#DFDFDF</item>
-        <item name="gridLineThickness">1dp</item>
-        <item name="levelColor">?colorAccent</item>
+        <item name="strokeWidth">1dp</item>
     </style>
 
 </resources>

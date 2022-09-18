@@ -2,9 +2,9 @@
 <resources>
     <style name="EqualizerView.Default" parent="">
         <item name="drawVisuals">true</item>
-        <item name="gridColor">#3EBDBDBD</item>
-        <item name="gridLineThickness">1dp</item>
-        <item name="levelColor">?colorAccent</item>
-        <item name="disableColor">#3EBDBDBD</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="strokeInactiveColor">@color/simple_inactive_color</item>
+        <item name="strokeActiveColor">@color/simple_active_color</item>
+        <item name="thumbTint">@color/simple_thumb_tint</item>
     </style>
 </resources>
