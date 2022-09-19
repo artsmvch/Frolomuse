@@ -26,5 +26,10 @@ gradlePlugin {
             id = "com.frolo.plugin.bundle_check"
             implementationClass = "com.frolo.plugin.BundleCheckPlugin"
         }
+
+        create("measureBuild") {
+            id = "com.frolo.plugin.measure_build"
+            implementationClass = "com.frolo.plugin.MeasureBuildPlugin"
+        }
     }
 }

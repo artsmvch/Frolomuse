@@ -53,3 +53,4 @@ ext.optionallyLoadProperties = { filepath ->
 }
 
 apply from: 'gradleScript/dependencies.gradle'
+apply plugin: 'com.frolo.plugin.measure_build'
