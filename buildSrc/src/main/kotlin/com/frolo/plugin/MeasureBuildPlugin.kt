@@ -2,9 +2,7 @@ package com.frolo.plugin
 
 import org.gradle.BuildListener
 import org.gradle.BuildResult
-import org.gradle.api.Plugin
-import org.gradle.api.Project
-import org.gradle.api.Task
+import org.gradle.api.*
 import org.gradle.api.execution.TaskActionListener
 import org.gradle.api.execution.TaskExecutionListener
 import org.gradle.api.initialization.Settings
@@ -33,6 +31,12 @@ class MeasureBuildPlugin : Plugin<Project> {
         println("=====<<<<< Start build report >>>>>=====")
 
         print("\n")
+        println("<< Projects >>")
+        info.projectEvaluationInfoMap.forEach { (projectName, projectEvaluationInfo) ->
+            println(projectName + ": " + projectEvaluationInfo.duration + " ms")
+        }
+
+        print("\n")
         println("<< Tasks >>")
         info.taskExecutionInfoMap.forEach { (taskName, taskExecutionInfo) ->
             println(taskName + ": " + taskExecutionInfo.duration + " ms")
@@ -47,7 +51,7 @@ class MeasureBuildPlugin : Plugin<Project> {
 
 private class ListenersImpl(
     private val onBuildFinished: (BuildExecutionInfo) -> Unit
-) : TaskExecutionListener, TaskActionListener, BuildListener {
+) : TaskExecutionListener, TaskActionListener, BuildListener, ProjectEvaluationListener {
 
     private val _settingsEvaluationInfo = ExecutionInfo(
         startTime = currentTimeMillis()
@@ -57,15 +61,15 @@ private class ListenersImpl(
     private val _projectEvaluationInfoMap = LinkedHashMap<String, ExecutionInfo>()
     val projectEvaluationInfoMap: Map<String, ExecutionInfo> get() = _projectEvaluationInfoMap
 
-    private val _taskExecutionInfoMap = LinkedHashMap<String, TaskExecutionInfo>()
-    val taskExecutionInfoMap: Map<String, TaskExecutionInfo> get() = _taskExecutionInfoMap
+    private val _taskExecutionInfoMap = LinkedHashMap<String, NamedExecutionInfo>()
+    val taskExecutionInfoMap: Map<String, NamedExecutionInfo> get() = _taskExecutionInfoMap
 
     private fun currentTimeMillis(): Long = System.currentTimeMillis()
 
     //region Tasks
     override fun beforeExecute(task: Task) {
-        _taskExecutionInfoMap[task.name] = TaskExecutionInfo(
-            taskName = task.name,
+        _taskExecutionInfoMap[task.name] = NamedExecutionInfo(
+            name = task.name,
             startTime = currentTimeMillis()
         )
     }
@@ -93,6 +97,7 @@ private class ListenersImpl(
     //region Build
     override fun settingsEvaluated(settings: Settings) {
         _settingsEvaluationInfo.endTime = currentTimeMillis()
+        settings.gradle.addProjectEvaluationListener(this)
     }
 
     override fun projectsLoaded(gradle: Gradle) {
@@ -108,11 +113,35 @@ private class ListenersImpl(
             BuildExecutionInfo(
                 result = result,
                 settingsEvaluationInfo = settingsEvaluationInfo,
+                projectEvaluationInfoMap = projectEvaluationInfoMap,
                 taskExecutionInfoMap = taskExecutionInfoMap
             )
         )
     }
     //endregion
+
+    //region Project evaluation
+    override fun beforeEvaluate(project: Project) {
+        onStartProjectEvaluation(project)
+    }
+
+    override fun afterEvaluate(project: Project, state: ProjectState) {
+        onFinishProjectEvaluation(project)
+    }
+    //endregion
+
+    private fun onStartProjectEvaluation(project: Project) {
+        _projectEvaluationInfoMap[project.name] = NamedExecutionInfo(
+            name = project.name,
+            startTime = currentTimeMillis()
+        )
+    }
+
+    private fun onFinishProjectEvaluation(project: Project) {
+        _projectEvaluationInfoMap[project.name]?.also { info ->
+            info.endTime = currentTimeMillis()
+        }
+    }
 }
 
 private open class ExecutionInfo(
@@ -126,8 +155,8 @@ private open class ExecutionInfo(
     }
 }
 
-private class TaskExecutionInfo(
-    val taskName: String,
+private class NamedExecutionInfo(
+    val name: String,
     startTime: Long? = null,
     endTime: Long? = null
 ): ExecutionInfo(startTime, endTime)
@@ -135,6 +164,7 @@ private class TaskExecutionInfo(
 private class BuildExecutionInfo(
     val result: BuildResult,
     val settingsEvaluationInfo: ExecutionInfo,
-    val taskExecutionInfoMap: Map<String, TaskExecutionInfo>
+    val projectEvaluationInfoMap: Map<String, ExecutionInfo>,
+    val taskExecutionInfoMap: Map<String, NamedExecutionInfo>
 )
 
