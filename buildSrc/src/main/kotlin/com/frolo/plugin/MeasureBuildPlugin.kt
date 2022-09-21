@@ -47,7 +47,8 @@ class MeasureBuildPlugin : Plugin<Project> {
         print("\n")
         println("<< Tasks >>")
         info.taskExecutionInfoMap.forEach { (taskName, taskExecutionInfo) ->
-            println(taskName + ": " + taskExecutionInfo.duration + " ms")
+            println(taskName + ": " + taskExecutionInfo.duration + " ms " +
+                    taskExecutionInfo.state?.taskExecutionOutcome)
         }
 
         print("\n")
@@ -189,6 +190,6 @@ private class BuildExecutionInfo(
     val result: BuildResult,
     val settingsEvaluationInfo: ExecutionInfo,
     val projectEvaluationInfoMap: Map<String, ProjectEvaluationInfo>,
-    val taskExecutionInfoMap: Map<String, NamedExecutionInfo>
+    val taskExecutionInfoMap: Map<String, TaskExecutionInfo>
 )
 
