@@ -4,6 +4,7 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'com.frolo.plugin.bundle_check'
+apply plugin: 'com.frolo.plugin.task_utils'
 
 def version_code = 139
 def version_major = 7

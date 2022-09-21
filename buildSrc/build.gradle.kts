@@ -31,5 +31,10 @@ gradlePlugin {
             id = "com.frolo.plugin.measure_build"
             implementationClass = "com.frolo.plugin.MeasureBuildPlugin"
         }
+
+        create("taskUtils") {
+            id = "com.frolo.plugin.task_utils"
+            implementationClass = "com.frolo.plugin.TaskUtilsPlugin"
+        }
     }
 }
