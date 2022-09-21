@@ -41,13 +41,13 @@ class MeasureBuildPlugin : Plugin<Project> {
         print("\n")
         println("<< Projects >>")
         info.projectEvaluationInfoMap.forEach { (projectName, projectEvaluationInfo) ->
-            println(projectName + ": " + projectEvaluationInfo.duration + " ms")
+            println(projectName + " " + projectEvaluationInfo.duration + " ms")
         }
 
         print("\n")
         println("<< Tasks >>")
         info.taskExecutionInfoMap.forEach { (taskName, taskExecutionInfo) ->
-            println(taskName + ": " + taskExecutionInfo.duration + " ms " +
+            println(taskName + " " + taskExecutionInfo.duration + " ms " +
                     taskExecutionInfo.state?.taskExecutionOutcome)
         }
 
@@ -73,23 +73,26 @@ private class ListenersImpl(
     private val _taskExecutionInfoMap = LinkedHashMap<String, TaskExecutionInfo>()
     val taskExecutionInfoMap: Map<String, TaskExecutionInfo> get() = _taskExecutionInfoMap
 
+    private val Task.identifier: String get() = this.path
+    private val Project.identifier: String get() = this.path
+
     private fun currentTimeMillis(): Long = System.currentTimeMillis()
 
     //region Tasks
     override fun beforeExecute(task: Task) {
-        _taskExecutionInfoMap[task.name] = TaskExecutionInfo(
-            name = task.name,
+        _taskExecutionInfoMap[task.identifier] = TaskExecutionInfo(
+            name = task.identifier,
             startTime = currentTimeMillis()
         )
     }
 
     override fun afterExecute(task: Task, state: TaskState) {
-        val info = _taskExecutionInfoMap[task.name]
+        val info = _taskExecutionInfoMap[task.identifier]
         if (info != null) {
             info.endTime = currentTimeMillis()
             info.state = state
         } else {
-            throw IllegalStateException("Task not found: ${task.name}")
+            throw IllegalStateException("Task not found: ${task.identifier}")
         }
     }
     //endregion
@@ -141,14 +144,14 @@ private class ListenersImpl(
     //endregion
 
     private fun onStartProjectEvaluation(project: Project) {
-        _projectEvaluationInfoMap[project.name] = ProjectEvaluationInfo(
-            name = project.name,
+        _projectEvaluationInfoMap[project.identifier] = ProjectEvaluationInfo(
+            name = project.identifier,
             startTime = currentTimeMillis()
         )
     }
 
     private fun onFinishProjectEvaluation(project: Project, state: ProjectState) {
-        _projectEvaluationInfoMap[project.name]?.also { info ->
+        _projectEvaluationInfoMap[project.identifier]?.also { info ->
             info.endTime = currentTimeMillis()
             info.state = state
         }
