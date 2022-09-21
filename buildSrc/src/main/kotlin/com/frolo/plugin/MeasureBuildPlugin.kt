@@ -9,11 +9,20 @@ import org.gradle.api.initialization.Settings
 import org.gradle.api.invocation.Gradle
 import org.gradle.api.tasks.TaskState
 
+const val PROPERTY_MEASURE_BUILD = "measure_build"
+
 class MeasureBuildPlugin : Plugin<Project> {
     private val listenerImpl = ListenersImpl(::reportBuild)
 
     override fun apply(target: Project) {
-        listenToBuild(target)
+        if (isMeasureBuildEnabled(target)) {
+            listenToBuild(target)
+        }
+    }
+
+    private fun isMeasureBuildEnabled(target: Project): Boolean {
+        val propertyValue = target.findProperty(PROPERTY_MEASURE_BUILD)
+        return propertyValue != null && propertyValue.toString() == "true"
     }
 
     private fun listenToBuild(target: Project) {
