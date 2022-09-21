@@ -66,8 +66,8 @@ private class ListenersImpl(
     )
     val settingsEvaluationInfo: ExecutionInfo get() = _settingsEvaluationInfo
 
-    private val _projectEvaluationInfoMap = LinkedHashMap<String, ExecutionInfo>()
-    val projectEvaluationInfoMap: Map<String, ExecutionInfo> get() = _projectEvaluationInfoMap
+    private val _projectEvaluationInfoMap = LinkedHashMap<String, ProjectExecutionInfo>()
+    val projectEvaluationInfoMap: Map<String, ProjectExecutionInfo> get() = _projectEvaluationInfoMap
 
     private val _taskExecutionInfoMap = LinkedHashMap<String, NamedExecutionInfo>()
     val taskExecutionInfoMap: Map<String, NamedExecutionInfo> get() = _taskExecutionInfoMap
@@ -134,20 +134,21 @@ private class ListenersImpl(
     }
 
     override fun afterEvaluate(project: Project, state: ProjectState) {
-        onFinishProjectEvaluation(project)
+        onFinishProjectEvaluation(project, state)
     }
     //endregion
 
     private fun onStartProjectEvaluation(project: Project) {
-        _projectEvaluationInfoMap[project.name] = NamedExecutionInfo(
+        _projectEvaluationInfoMap[project.name] = ProjectExecutionInfo(
             name = project.name,
             startTime = currentTimeMillis()
         )
     }
 
-    private fun onFinishProjectEvaluation(project: Project) {
+    private fun onFinishProjectEvaluation(project: Project, state: ProjectState) {
         _projectEvaluationInfoMap[project.name]?.also { info ->
             info.endTime = currentTimeMillis()
+            info.state = state
         }
     }
 }
@@ -163,16 +164,23 @@ private open class ExecutionInfo(
     }
 }
 
-private class NamedExecutionInfo(
+private open class NamedExecutionInfo(
     val name: String,
     startTime: Long? = null,
     endTime: Long? = null
 ): ExecutionInfo(startTime, endTime)
 
+private open class ProjectExecutionInfo(
+    name: String,
+    startTime: Long? = null,
+    endTime: Long? = null,
+    var state: ProjectState? = null
+): NamedExecutionInfo(name, startTime, endTime)
+
 private class BuildExecutionInfo(
     val result: BuildResult,
     val settingsEvaluationInfo: ExecutionInfo,
-    val projectEvaluationInfoMap: Map<String, ExecutionInfo>,
+    val projectEvaluationInfoMap: Map<String, ProjectExecutionInfo>,
     val taskExecutionInfoMap: Map<String, NamedExecutionInfo>
 )
 
