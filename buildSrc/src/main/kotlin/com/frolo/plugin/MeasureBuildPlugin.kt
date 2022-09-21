@@ -66,8 +66,8 @@ private class ListenersImpl(
     )
     val settingsEvaluationInfo: ExecutionInfo get() = _settingsEvaluationInfo
 
-    private val _projectEvaluationInfoMap = LinkedHashMap<String, ProjectExecutionInfo>()
-    val projectEvaluationInfoMap: Map<String, ProjectExecutionInfo> get() = _projectEvaluationInfoMap
+    private val _projectEvaluationInfoMap = LinkedHashMap<String, ProjectEvaluationInfo>()
+    val projectEvaluationInfoMap: Map<String, ProjectEvaluationInfo> get() = _projectEvaluationInfoMap
 
     private val _taskExecutionInfoMap = LinkedHashMap<String, NamedExecutionInfo>()
     val taskExecutionInfoMap: Map<String, NamedExecutionInfo> get() = _taskExecutionInfoMap
@@ -139,7 +139,7 @@ private class ListenersImpl(
     //endregion
 
     private fun onStartProjectEvaluation(project: Project) {
-        _projectEvaluationInfoMap[project.name] = ProjectExecutionInfo(
+        _projectEvaluationInfoMap[project.name] = ProjectEvaluationInfo(
             name = project.name,
             startTime = currentTimeMillis()
         )
@@ -170,7 +170,7 @@ private open class NamedExecutionInfo(
     endTime: Long? = null
 ): ExecutionInfo(startTime, endTime)
 
-private open class ProjectExecutionInfo(
+private open class ProjectEvaluationInfo(
     name: String,
     startTime: Long? = null,
     endTime: Long? = null,
@@ -180,7 +180,7 @@ private open class ProjectExecutionInfo(
 private class BuildExecutionInfo(
     val result: BuildResult,
     val settingsEvaluationInfo: ExecutionInfo,
-    val projectEvaluationInfoMap: Map<String, ProjectExecutionInfo>,
+    val projectEvaluationInfoMap: Map<String, ProjectEvaluationInfo>,
     val taskExecutionInfoMap: Map<String, NamedExecutionInfo>
 )
 
