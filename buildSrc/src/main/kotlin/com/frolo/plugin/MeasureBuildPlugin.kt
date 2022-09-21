@@ -69,14 +69,14 @@ private class ListenersImpl(
     private val _projectEvaluationInfoMap = LinkedHashMap<String, ProjectEvaluationInfo>()
     val projectEvaluationInfoMap: Map<String, ProjectEvaluationInfo> get() = _projectEvaluationInfoMap
 
-    private val _taskExecutionInfoMap = LinkedHashMap<String, NamedExecutionInfo>()
-    val taskExecutionInfoMap: Map<String, NamedExecutionInfo> get() = _taskExecutionInfoMap
+    private val _taskExecutionInfoMap = LinkedHashMap<String, TaskExecutionInfo>()
+    val taskExecutionInfoMap: Map<String, TaskExecutionInfo> get() = _taskExecutionInfoMap
 
     private fun currentTimeMillis(): Long = System.currentTimeMillis()
 
     //region Tasks
     override fun beforeExecute(task: Task) {
-        _taskExecutionInfoMap[task.name] = NamedExecutionInfo(
+        _taskExecutionInfoMap[task.name] = TaskExecutionInfo(
             name = task.name,
             startTime = currentTimeMillis()
         )
@@ -86,6 +86,7 @@ private class ListenersImpl(
         val info = _taskExecutionInfoMap[task.name]
         if (info != null) {
             info.endTime = currentTimeMillis()
+            info.state = state
         } else {
             throw IllegalStateException("Task not found: ${task.name}")
         }
@@ -169,6 +170,13 @@ private open class NamedExecutionInfo(
     startTime: Long? = null,
     endTime: Long? = null
 ): ExecutionInfo(startTime, endTime)
+
+private open class TaskExecutionInfo(
+    name: String,
+    startTime: Long? = null,
+    endTime: Long? = null,
+    var state: TaskState? = null
+): NamedExecutionInfo(name, startTime, endTime)
 
 private open class ProjectEvaluationInfo(
     name: String,
