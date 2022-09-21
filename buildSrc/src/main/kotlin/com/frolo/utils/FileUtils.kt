@@ -1,4 +1,4 @@
-package com.frolo.plugin
+package com.frolo.utils
 
 import org.gradle.api.Project
 import com.android.build.gradle.api.ApplicationVariant

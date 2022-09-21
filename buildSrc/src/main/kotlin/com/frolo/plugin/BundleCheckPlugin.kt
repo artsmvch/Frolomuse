@@ -1,6 +1,7 @@
 package com.frolo.plugin
 
 import com.android.build.gradle.api.ApplicationVariant
+import com.frolo.utils.FileUtils
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
