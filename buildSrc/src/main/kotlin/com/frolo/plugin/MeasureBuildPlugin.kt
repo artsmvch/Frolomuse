@@ -35,6 +35,10 @@ class MeasureBuildPlugin : Plugin<Project> {
         println("=====<<<<< Start build report >>>>>=====")
 
         print("\n")
+        println("<< Settings >>")
+        println("Evaluated in ${info.settingsEvaluationInfo.duration} ms")
+
+        print("\n")
         println("<< Projects >>")
         info.projectEvaluationInfoMap.forEach { (projectName, projectEvaluationInfo) ->
             println(projectName + ": " + projectEvaluationInfo.duration + " ms")
