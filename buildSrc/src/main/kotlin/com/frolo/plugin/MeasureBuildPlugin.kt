@@ -13,8 +13,12 @@ class MeasureBuildPlugin : Plugin<Project> {
     private val listenerImpl = ListenersImpl(::reportBuild)
 
     override fun apply(target: Project) {
+        listenToBuild(target)
+    }
+
+    private fun listenToBuild(target: Project) {
         val gradle = target.gradle
-        // gradle.addListener(listenerImpl)
+        gradle.addProjectEvaluationListener(listenerImpl)
         gradle.projectsEvaluated {
             this.allprojects {
                 gradle.addListener(listenerImpl)
