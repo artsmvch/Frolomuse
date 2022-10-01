@@ -10,10 +10,15 @@ import org.gradle.api.invocation.Gradle
 import org.gradle.api.tasks.TaskState
 import java.io.File
 import java.io.PrintStream
+import java.nio.file.Files
+import java.nio.file.attribute.BasicFileAttributes
+import java.time.Clock
+import java.util.concurrent.TimeUnit
 
 const val PROPERTY_MEASURE_BUILD = "measure_build"
 
 class MeasureBuildPlugin : Plugin<Project> {
+    private val clock = Clock.systemUTC()
 
     override fun apply(target: Project) {
         if (isMeasureBuildEnabled(target)) {
@@ -38,18 +43,33 @@ class MeasureBuildPlugin : Plugin<Project> {
     }
 
     private fun reportBuild(project: Project, info: BuildExecutionInfo) {
-        // Print to the default output stream
         printImpl(info, System.out)
-        // Print to a report file
-        project.buildDir.also { buildDir ->
-            val reportDir = File(buildDir, "report").apply {
-                mkdirs()
-            }
+        ensureReportsDir(project).also { reportDir ->
+            removeObsoleteReports(reportDir)
             val reportFile = File(reportDir, computeReportFilename()).apply {
                 createNewFile()
             }
             val printStream = PrintStream(reportFile)
             printImpl(info, printStream)
+        }
+    }
+
+    private fun ensureReportsDir(project: Project): File {
+        val dir = File(project.buildDir, "report")
+        dir.mkdirs()
+        return dir
+    }
+
+    private fun removeObsoleteReports(dir: File) {
+        dir.listFiles()?.forEach { file ->
+            if (file == null) {
+                return@forEach
+            }
+            val fileAttrs = Files.readAttributes(file.toPath(), BasicFileAttributes::class.java)
+            val timeElapsed = clock.millis() - fileAttrs.creationTime().toMillis()
+            if (TimeUnit.MILLISECONDS.toDays(timeElapsed) > 1) {
+                file.delete()
+            }
         }
     }
 
