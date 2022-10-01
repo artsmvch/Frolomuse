@@ -8,6 +8,7 @@ import org.gradle.api.execution.TaskExecutionListener
 import org.gradle.api.initialization.Settings
 import org.gradle.api.invocation.Gradle
 import org.gradle.api.tasks.TaskState
+import java.io.PrintStream
 
 const val PROPERTY_MEASURE_BUILD = "measure_build"
 
@@ -36,33 +37,33 @@ class MeasureBuildPlugin : Plugin<Project> {
     }
 
     private fun reportBuild(info: BuildExecutionInfo) {
-        print(info)
+        printImpl(info, System.out)
     }
 
-    private fun print(info: BuildExecutionInfo) {
-        print("\n\n\n")
-        println("=====<<<<< Start build report >>>>>=====")
+    private fun printImpl(info: BuildExecutionInfo, stream: PrintStream) {
+        stream.print("\n\n\n")
+        stream.println("=====<<<<< Start build report >>>>>=====")
 
-        print("\n")
-        println("<< Settings >>")
-        println("Evaluated in ${info.settingsEvaluationInfo.duration} ms")
+        stream.print("\n")
+        stream.println("<< Settings >>")
+        stream.println("Evaluated in ${info.settingsEvaluationInfo.duration} ms")
 
-        print("\n")
-        println("<< Projects >>")
+        stream.print("\n")
+        stream.println("<< Projects >>")
         info.projectEvaluationInfoMap.forEach { (projectName, projectEvaluationInfo) ->
             println(projectName + " " + projectEvaluationInfo.duration + " ms")
         }
 
-        print("\n")
-        println("<< Tasks >>")
+        stream.print("\n")
+        stream.println("<< Tasks >>")
         info.taskExecutionInfoMap.forEach { (taskName, taskExecutionInfo) ->
             println(taskName + " " + taskExecutionInfo.duration + " ms " +
                     taskExecutionInfo.state?.taskExecutionOutcome)
         }
 
-        print("\n")
-        println("=====<<<<<< End build report >>>>>>=====")
-        print("\n\n\n")
+        stream.print("\n")
+        stream.println("=====<<<<<< End build report >>>>>>=====")
+        stream.print("\n\n\n")
     }
 
 }
