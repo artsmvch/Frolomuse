@@ -8,12 +8,12 @@ import org.gradle.api.execution.TaskExecutionListener
 import org.gradle.api.initialization.Settings
 import org.gradle.api.invocation.Gradle
 import org.gradle.api.tasks.TaskState
+import java.io.File
 import java.io.PrintStream
 
 const val PROPERTY_MEASURE_BUILD = "measure_build"
 
 class MeasureBuildPlugin : Plugin<Project> {
-    private val listenerImpl = ListenersImpl(::reportBuild)
 
     override fun apply(target: Project) {
         if (isMeasureBuildEnabled(target)) {
@@ -27,43 +27,54 @@ class MeasureBuildPlugin : Plugin<Project> {
     }
 
     private fun listenToBuild(target: Project) {
+        val listenersImpl = ListenersImpl { reportBuild(target, it) }
         val gradle = target.gradle
-        gradle.addProjectEvaluationListener(listenerImpl)
+        gradle.addProjectEvaluationListener(listenersImpl)
         gradle.projectsEvaluated {
             this.allprojects {
-                gradle.addListener(listenerImpl)
+                gradle.addListener(listenersImpl)
             }
         }
     }
 
-    private fun reportBuild(info: BuildExecutionInfo) {
+    private fun reportBuild(project: Project, info: BuildExecutionInfo) {
+        // Print to the default output stream
         printImpl(info, System.out)
+        // Print to a report file
+        project.buildDir.also { buildDir ->
+            val reportDir = File(buildDir, "report").apply {
+                mkdirs()
+            }
+            val reportFile = File(reportDir, computeReportFilename()).apply {
+                createNewFile()
+            }
+            val printStream = PrintStream(reportFile)
+            printImpl(info, printStream)
+        }
+    }
+
+    private fun computeReportFilename(): String {
+        return "build_report_${System.currentTimeMillis()}.txt"
     }
 
     private fun printImpl(info: BuildExecutionInfo, stream: PrintStream) {
-        stream.print("\n\n\n")
         stream.println("=====<<<<< Start build report >>>>>=====")
 
-        stream.print("\n")
-        stream.println("<< Settings >>")
+        stream.println(">> Settings")
         stream.println("Evaluated in ${info.settingsEvaluationInfo.duration} ms")
 
-        stream.print("\n")
-        stream.println("<< Projects >>")
+        stream.println(">> Projects")
         info.projectEvaluationInfoMap.forEach { (projectName, projectEvaluationInfo) ->
             println(projectName + " " + projectEvaluationInfo.duration + " ms")
         }
 
-        stream.print("\n")
-        stream.println("<< Tasks >>")
+        stream.println(">> Tasks")
         info.taskExecutionInfoMap.forEach { (taskName, taskExecutionInfo) ->
             println(taskName + " " + taskExecutionInfo.duration + " ms " +
                     taskExecutionInfo.state?.taskExecutionOutcome)
         }
 
-        stream.print("\n")
         stream.println("=====<<<<<< End build report >>>>>>=====")
-        stream.print("\n\n\n")
     }
 
 }
