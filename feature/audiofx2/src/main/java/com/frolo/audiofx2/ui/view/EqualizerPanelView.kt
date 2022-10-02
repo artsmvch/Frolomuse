@@ -299,7 +299,15 @@ private class SavePresetDialog(
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.dialog_save_preset)
+        setUpWindow()
         loadUi()
+    }
+
+    private fun setUpWindow() {
+        val window = this.window ?: return
+        val dialogWidth: Int = (Screen.getScreenWidth(context) * 0.90).toInt()
+        val dialogHeight: Int = ViewGroup.LayoutParams.WRAP_CONTENT
+        window.setLayout(dialogWidth, dialogHeight)
     }
 
     private fun loadUi() {
