@@ -52,7 +52,7 @@
         android:id="@+id/save_preset_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@android:string/save"
+        android:text="@string/save"
         style="@style/Widget.Material3.Button.TextButton"/>
 
     <com.frolo.audiofx2.ui.view.SpinnerImpl
