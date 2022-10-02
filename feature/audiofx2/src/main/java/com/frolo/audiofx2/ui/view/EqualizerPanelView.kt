@@ -6,6 +6,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatDialog
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -319,6 +320,10 @@ private class SavePresetDialog(
     }
 
     private fun loadUi() {
+        window?.apply {
+            setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
+        }
+        findViewById<EditText>(R.id.name_edit_text)?.requestFocus()
         findViewById<View>(R.id.cancel_button)?.also { button ->
             button.setOnClickListener { dismiss() }
         }
