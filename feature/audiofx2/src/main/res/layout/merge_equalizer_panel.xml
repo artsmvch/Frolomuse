@@ -53,7 +53,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/save"
-        style="@style/Widget.Material3.Button.TextButton"/>
+        android:textSize="16sp"
+        android:textColor="?colorOnSurface"
+        style="@style/Widget.Material3.Button.ElevatedButton"/>
 
     <com.frolo.audiofx2.ui.view.SpinnerImpl
         app:layout_constraintStart_toStartOf="parent"
@@ -67,6 +69,5 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:layout_marginEnd="12dp"
-        android:layout_marginBottom="8dp"
         style="@style/App.Spinner.EffectPanel"/>
 </merge>
