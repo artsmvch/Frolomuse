@@ -152,9 +152,9 @@ internal class EqualizerPresetStorageImpl(
     }
 
     override fun getAllPresets(): List<EqualizerPreset> = synchronized(lock) {
-        return defaults.getNativePresets() +
-                queryPresets(null, null) +
-                getCustomPreset()
+        return listOf(getCustomPreset()) +
+                defaults.getNativePresets() +
+                queryPresets(null, null)
     }
 
     private fun queryPresets(selection: String?, selectionArgs: Array<String>?): List<EqualizerPreset> {
