@@ -274,7 +274,7 @@ dependencies {
     // Sticky headers recycler view
     implementation 'com.timehop.stickyheadersrecyclerview:library:0.4.3@aar'
     // Alphabet index fast scroller
-    implementation 'com.l4digital.fastscroll:fastscroll:2.1.0'
+    implementation 'com.l4digital.fastscroll:fastscroll:2.0.1'
     // Runtime permissions
     implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
     // RxAdapter for ContentResolver and SharedPreferences
