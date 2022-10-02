@@ -305,6 +305,13 @@ private class SavePresetDialog(
 ): AppCompatDialog(context) {
     private var savePresetDisposable: Disposable? = null
 
+    // Views
+    private var nameInputLayout: TextInputLayout? = null
+    private var nameEditText: EditText? = null
+    private var cancelButton: View? = null
+    private var saveButton: View? = null
+    private var progress: View? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.dialog_save_preset)
@@ -323,35 +330,35 @@ private class SavePresetDialog(
         window?.apply {
             setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
         }
-        findViewById<EditText>(R.id.name_edit_text)?.requestFocus()
-        findViewById<View>(R.id.cancel_button)?.also { button ->
+        nameInputLayout = findViewById<TextInputLayout>(R.id.name_input_layout)
+        nameEditText = findViewById<EditText>(R.id.name_edit_text)?.also { editText ->
+            editText.requestFocus()
+        }
+        cancelButton = findViewById<View>(R.id.cancel_button)?.also { button ->
             button.setOnClickListener { dismiss() }
         }
-        findViewById<View>(R.id.save_button)?.also { button ->
+        saveButton = findViewById<View>(R.id.save_button)?.also { button ->
             button.setOnClickListener {
                 savePresetAsync()
             }
         }
-        findViewById<View>(R.id.progress)?.also { progress ->
+        progress = findViewById<View>(R.id.progress)?.also { progress ->
             progress.setOnClickListener { /* stub */ }
         }
     }
 
     private fun showError(error: Throwable) {
-        val inputLayout = findViewById<TextInputLayout>(R.id.name_input_layout)!!
-        inputLayout.error = error.localizedMessage
+        nameInputLayout?.error = error.localizedMessage
     }
 
     private fun savePresetAsync() {
-        val editText = findViewById<EditText>(R.id.name_edit_text)!!
-        val progress = findViewById<View>(R.id.progress)!!
-        val name = editText.text?.toString().orEmpty()
+        val name = nameEditText?.text?.toString().orEmpty()
         Single.fromCallable { equalizer.createPreset(name, bandLevels) }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnError { err -> showError(err) }
-            .doOnSubscribe { progress.isVisible = true }
-            .doFinally { progress.isVisible = false }
+            .doOnSubscribe { progress?.isVisible = true }
+            .doFinally { progress?.isVisible = false }
             .subscribe { preset ->
                 onPresetSaved.invoke(preset)
                 dismiss()
