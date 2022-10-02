@@ -178,6 +178,7 @@ class EqualizerPanelView @JvmOverloads constructor(
         Completable.fromAction { equalizer.deletePreset(preset) }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .doOnComplete { loadPresetsAsync(equalizer) }
             .subscribe()
             .also { disposable ->
                 keyedDisposableContainer.add("remove_preset_async", disposable)
