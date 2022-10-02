@@ -82,6 +82,27 @@ internal class EqualizerImpl(
         attachTo(initialAttachTarget)
     }
 
+    override fun getBandLevelsSnapshot(): Map<Int, Int> = synchronized(lock) {
+        return@synchronized engine
+            ?.runCatching {
+                val numberOfBands = this.numberOfBands.toInt()
+                val levels = HashMap<Int, Int>(numberOfBands)
+                for (band in 0 until numberOfBands) {
+                    levels[band] = this.getBandLevel(band.toShort()).toInt()
+                }
+                return@runCatching levels
+            }?.getOrNull()
+            // If null or error, retrieve snapshot from the storage
+            ?: equalizerPresetStorageImpl.run {
+                val numberOfBands = this.getNumberOfBands()
+                val levels = HashMap<Int, Int>(numberOfBands)
+                for (band in 0 until numberOfBands) {
+                    levels[band] = this.getBandLevel(band)
+                }
+                return@run levels
+            }
+    }
+
     override fun getBandLevel(bandIndex: Int): Int = synchronized(lock) {
         engine
             ?.runCatching { this.getBandLevel(bandIndex.toShort()) }

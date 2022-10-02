@@ -3,6 +3,7 @@ package com.frolo.audiofx2
 interface Equalizer: AudioEffect2, EqualizerPresetStorage {
     val numberOfBands: Int
     val bandLevelRange: ValueRange
+    fun getBandLevelsSnapshot(): Map<Int, Int>
     fun getBandLevel(bandIndex: Int): Int
     fun setBandLevel(bandIndex: Int, level: Int)
     fun getFreqRange(bandIndex: Int): ValueRange

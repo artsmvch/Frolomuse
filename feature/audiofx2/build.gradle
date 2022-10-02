@@ -36,6 +36,7 @@ dependencies {
     implementation deps.lifecycle.extensions
 
     implementation deps.design.material
+    implementation deps.design.flexbox
 
     implementation deps.rxJava2.rxJava
     implementation deps.rxJava2.rxAndroid

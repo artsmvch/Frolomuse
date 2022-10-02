@@ -1,11 +1,13 @@
 package com.frolo.audiofx2.ui.view
 
 import android.content.Context
+import android.os.Bundle
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.appcompat.app.AppCompatDialog
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.core.view.updatePadding
@@ -17,9 +19,11 @@ import com.frolo.equalizerview.impl.SeekBarEqualizerView
 import com.frolo.rx.KeyedDisposableContainer
 import com.frolo.ui.Screen
 import com.google.android.material.switchmaterial.SwitchMaterial
+import com.google.android.material.textfield.TextInputLayout
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.item_equalizer_preset.view.preset_name
 import kotlinx.android.synthetic.main.item_equalizer_preset_drop_down.view.*
@@ -53,6 +57,10 @@ class EqualizerPanelView @JvmOverloads constructor(
         }
         override fun onNothingSelected(parent: AdapterView<*>?) = Unit
     }
+    private val savePresetButton: View
+    private val savePresetClickListener = View.OnClickListener {
+        showSavePresetDialog()
+    }
 
     init {
         View.inflate(context, R.layout.merge_equalizer_panel, this)
@@ -60,9 +68,11 @@ class EqualizerPanelView @JvmOverloads constructor(
         captionTextView = findViewById(R.id.caption)
         enableStatusSwatch = findViewById(R.id.enable_status_switch)
         presetSpinner = findViewById(R.id.preset_spinner)
+        savePresetButton = findViewById(R.id.save_preset_button)
         // Set up listeners
         enableStatusSwatch.setOnCheckedChangeListener(switchListener)
         presetSpinner.onItemSelectedListener = spinnerListener
+        savePresetButton.setOnClickListener(savePresetClickListener)
     }
 
     private var equalizer: Equalizer? = null
@@ -132,7 +142,7 @@ class EqualizerPanelView @JvmOverloads constructor(
         val listener = presetSpinner.onItemSelectedListener
         presetSpinner.onItemSelectedListener = null
         presetSpinner.adapter = PresetAdapter(
-            presets = presets,
+            initialItems = presets,
             onRemoveItem = ::removePresetAsync
         )
         presetSpinner.setSelection(selectionIndex)
@@ -172,6 +182,26 @@ class EqualizerPanelView @JvmOverloads constructor(
             }
     }
 
+    private fun showSavePresetDialog() {
+        val equalizer = this.equalizer ?: return
+        Single.fromCallable { equalizer.getBandLevelsSnapshot() }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { levels ->
+                SavePresetDialog(
+                    context = context,
+                    equalizer = equalizer,
+                    bandLevels = levels,
+                    onPresetSaved = { preset ->
+                        (presetSpinner.adapter as? PresetAdapter)?.addItem(preset)
+                    }
+                ).show()
+            }
+            .also { disposable ->
+                keyedDisposableContainer.add("show_save_preset_dialog", disposable)
+            }
+    }
+
     private fun setChecked(checked: Boolean) {
         enableStatusSwatch.apply {
             setOnCheckedChangeListener(null)
@@ -187,17 +217,28 @@ class EqualizerPanelView @JvmOverloads constructor(
 }
 
 private class PresetAdapter(
-    private val presets: List<EqualizerPreset>,
+    initialItems: List<EqualizerPreset>,
     private val onRemoveItem: ((item: EqualizerPreset) -> Unit)? = null
 ) : BaseAdapter() {
+    private val _items = ArrayList<EqualizerPreset>(initialItems)
+    val items: List<EqualizerPreset> get() = _items
 
-    val items: List<EqualizerPreset> get() = presets
+    fun addItem(preset: EqualizerPreset) {
+        _items.add(preset)
+        notifyDataSetChanged()
+    }
 
-    override fun getCount(): Int = presets.count()
+    fun removeItem(preset: EqualizerPreset) {
+        if (_items.remove(preset)) {
+            notifyDataSetChanged()
+        }
+    }
 
-    override fun getItem(position: Int): EqualizerPreset = presets[position]
+    override fun getCount(): Int = items.count()
 
-    override fun getItemId(position: Int): Long = presets[position].name.hashCode().toLong()
+    override fun getItem(position: Int): EqualizerPreset = items[position]
+
+    override fun getItemId(position: Int): Long = items[position].name.hashCode().toLong()
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val itemView: View = if (convertView == null) {
@@ -245,4 +286,59 @@ private class PresetAdapter(
             )
         }
     }
+}
+
+private class SavePresetDialog(
+    context: Context,
+    private val equalizer: Equalizer,
+    private val bandLevels: Map<Int, Int>,
+    private val onPresetSaved: (EqualizerPreset) -> Unit
+): AppCompatDialog(context) {
+    private var savePresetDisposable: Disposable? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.dialog_save_preset)
+        loadUi()
+    }
+
+    private fun loadUi() {
+        findViewById<View>(R.id.cancel_button)?.also { button ->
+            button.setOnClickListener { dismiss() }
+        }
+        findViewById<View>(R.id.save_button)?.also { button ->
+            button.setOnClickListener {
+                savePresetAsync()
+            }
+        }
+        findViewById<View>(R.id.progress)?.also { progress ->
+            progress.setOnClickListener { /* stub */ }
+        }
+    }
+
+    private fun showError(error: Throwable) {
+        val inputLayout = findViewById<TextInputLayout>(R.id.name_input_layout)!!
+        inputLayout.error = error.localizedMessage
+    }
+
+    private fun savePresetAsync() {
+        val editText = findViewById<EditText>(R.id.name_edit_text)!!
+        val progress = findViewById<View>(R.id.progress)!!
+        val name = editText.text?.toString().orEmpty()
+        Single.fromCallable { equalizer.createPreset(name, bandLevels) }
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnError { err -> showError(err) }
+            .doOnSubscribe { progress.isVisible = true }
+            .doFinally { progress.isVisible = false }
+            .subscribe { preset ->
+                onPresetSaved.invoke(preset)
+                dismiss()
+            }
+            .also { disposable ->
+                savePresetDisposable?.dispose()
+                savePresetDisposable = disposable
+            }
+    }
+
 }
