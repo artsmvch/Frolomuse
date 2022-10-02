@@ -55,7 +55,7 @@
         android:text="@string/save"
         android:textSize="16sp"
         android:textColor="?colorOnSurface"
-        style="@style/Widget.Material3.Button.ElevatedButton"/>
+        style="@style/Widget.Material3.Button.TextButton"/>
 
     <com.frolo.audiofx2.ui.view.SpinnerImpl
         app:layout_constraintStart_toStartOf="parent"

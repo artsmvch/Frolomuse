@@ -81,6 +81,7 @@ class EqualizerPanelView @JvmOverloads constructor(
             equalizerView.isEqualizerUiEnabled = enabled
             setChecked(checked = enabled)
             setPresetChooserEnabled(enabled = enabled)
+            setSavePresetButtonEnabled(enabled = enabled)
         }
     private val onPresetUsedListener =
         Equalizer.OnPresetUsedListener { equalizer, preset ->
@@ -113,6 +114,7 @@ class EqualizerPanelView @JvmOverloads constructor(
         captionTextView.text = equalizer?.descriptor?.name
         setChecked(checked = equalizer?.isEnabled == true)
         setPresetChooserEnabled(enabled = equalizer?.isEnabled == true)
+        setSavePresetButtonEnabled(enabled = equalizer?.isEnabled == true)
         loadPresetsAsync(equalizer)
     }
 
@@ -213,6 +215,11 @@ class EqualizerPanelView @JvmOverloads constructor(
     private fun setPresetChooserEnabled(enabled: Boolean) {
         presetSpinner.isEnabled = enabled
         presetSpinner.alpha = if (enabled) 1.0f else 0.6f
+    }
+
+    private fun setSavePresetButtonEnabled(enabled: Boolean) {
+        savePresetButton.isEnabled = enabled
+        savePresetButton.alpha = if (enabled) 1.0f else 0.6f
     }
 }
 
