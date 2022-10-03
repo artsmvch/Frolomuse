@@ -80,9 +80,7 @@ class EqualizerPanelView @JvmOverloads constructor(
     private val onEnableStatusChangeListener =
         AudioEffect2.OnEnableStatusChangeListener { effect, enabled ->
             equalizerView.isEqualizerUiEnabled = enabled
-            setChecked(checked = enabled)
-            setPresetChooserEnabled(enabled = enabled)
-            setSavePresetButtonEnabled(enabled = enabled)
+            setEnabledState(enabled = enabled)
         }
     private val onPresetUsedListener =
         Equalizer.OnPresetUsedListener { equalizer, preset ->
@@ -113,9 +111,7 @@ class EqualizerPanelView @JvmOverloads constructor(
             animate = isLaidOut
         )
         captionTextView.text = equalizer?.descriptor?.name
-        setChecked(checked = equalizer?.isEnabled == true)
-        setPresetChooserEnabled(enabled = equalizer?.isEnabled == true)
-        setSavePresetButtonEnabled(enabled = equalizer?.isEnabled == true)
+        setEnabledState(enabled = equalizer?.isEnabled == true)
         loadPresetsAsync(equalizer)
     }
 
@@ -204,6 +200,12 @@ class EqualizerPanelView @JvmOverloads constructor(
             .also { disposable ->
                 keyedDisposableContainer.add("show_save_preset_dialog", disposable)
             }
+    }
+
+    private fun setEnabledState(enabled: Boolean) {
+        setChecked(enabled)
+        setPresetChooserEnabled(enabled)
+        setSavePresetButtonEnabled(enabled)
     }
 
     private fun setChecked(checked: Boolean) {
