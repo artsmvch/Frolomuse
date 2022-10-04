@@ -26,4 +26,6 @@
     <string name="preset_reverb_medium_room">Medium room</string>
     <string name="preset_reverb_plate">Plate</string>
     <string name="preset_reverb_small_room">Small room</string>
+
+    <string name="create_preset_err_empty_name">Name cannot be empty</string>
 </resources>

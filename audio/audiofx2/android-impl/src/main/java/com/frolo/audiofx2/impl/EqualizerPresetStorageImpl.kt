@@ -194,6 +194,9 @@ internal class EqualizerPresetStorageImpl(
     }
 
     override fun createPreset(name: String, bandLevels: Map<Int, Int>): EqualizerPreset {
+        if (name.isBlank()) {
+            throw IllegalArgumentException(context.getString(R.string.create_preset_err_empty_name))
+        }
         val timedAdded = System.currentTimeMillis()
         val id = databaseHelper.writableDatabase.use { database ->
             val contentValues = ContentValues(3)
