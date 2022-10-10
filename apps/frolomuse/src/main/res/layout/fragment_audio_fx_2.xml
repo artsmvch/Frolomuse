@@ -16,6 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
             android:background="?colorPrimaryDark"
+            app:menu="@menu/fragment_audio_fx_2"
             app:title="@string/nav_equalizer"/>
     </com.google.android.material.appbar.AppBarLayout>
 

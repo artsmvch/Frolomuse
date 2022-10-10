@@ -8,12 +8,17 @@ import androidx.annotation.IdRes
 import androidx.core.view.updatePadding
 import com.frolo.audiofx2.ui.AudioFx2Feature
 import com.frolo.muse.R
+import com.frolo.muse.di.activityComponent
+import com.frolo.muse.router.AppRouter
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.base.FragmentContentInsetsListener
 import com.frolo.muse.ui.base.setupNavigation
 import kotlinx.android.synthetic.main.fragment_audio_fx_2.*
 
 class AudioFx2Fragment: BaseFragment(), FragmentContentInsetsListener {
+
+    // TODO: not respecting the MVVM architecture...
+    private val router: AppRouter get() = activityComponent.provideAppRouter()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -24,6 +29,12 @@ class AudioFx2Fragment: BaseFragment(), FragmentContentInsetsListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupNavigation(toolbar)
         ensureControlPanelFragment()
+        toolbar.menu.findItem(R.id.action_playback_params)?.also { safeMenuItem ->
+            safeMenuItem.setOnMenuItemClickListener {
+                router.openPlaybackParams()
+                true
+            }
+        }
     }
 
     private fun ensureControlPanelFragment() {
