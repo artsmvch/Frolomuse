@@ -194,6 +194,8 @@ class EqualizerPanelView @JvmOverloads constructor(
                     bandLevels = levels,
                     onPresetSaved = { preset ->
                         (presetSpinner.adapter as? PresetAdapter)?.addItem(preset)
+                        // TODO: move this logic to the equalizer implementation
+                        usePresetAsync(preset)
                     }
                 ).show()
             }
