@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <resources>
     <string name="ok">ठीक</string>
     <string name="create">सृजन करना</string>
@@ -24,16 +25,11 @@
     <string name="message_one_file_hidden">फाइल को छिपा दिया गया है। आप इसे सेटिंग्स में वापस कर सकते हैं</string>
     <string name="message_multiple_files_hidden">चयनित फ़ाइलों को छिपा दिया गया है। आप उन्हें सेटिंग्स में वापस कर सकते हैं</string>
     <string name="scan_files">फ़ाइलों को स्कैन करें</string>
-
     <!--Hidden files-->
     <string name="hidden_files">छिपी हुई फाइलें</string>
     <string name="hidden_files_desc">फ़ाइलें जो फ़ाइल ब्राउज़र में छिपी हुई हैं</string>
-    <string name="hidden_files_placeholder_message">
-        आपके पास अभी तक कोई छिपी हुई फ़ाइल नहीं है। किसी फ़ाइल को छिपाने के लिए, फ़ाइल ब्राउज़र में उपयुक्त विकल्प का चयन करें।
-    </string>
-
+    <string name="hidden_files_placeholder_message">आपके पास अभी तक कोई छिपी हुई फ़ाइल नहीं है। किसी फ़ाइल को छिपाने के लिए, फ़ाइल ब्राउज़र में उपयुक्त विकल्प का चयन करें।</string>
     <!--Errors-->
-
     <!--Sort orders-->
     <string name="sort">तरह</string>
     <string name="ascending">आरोही</string>
@@ -49,13 +45,11 @@
     <string name="sort_by_filename">फ़ाइल नाम से</string>
     <string name="sort_by_play_order">खेलने के आदेश से</string>
     <string name="sort_by_duration">अवधि के अनुसार</string>
-
     <!--Rating-->
     <string name="would_you_rate">क्या आप इस ऐप को 5 सितारों के लिए रेट करेंगे?</string>
     <string name="no">नहीं</string>
     <string name="remind_me_later">मुझसे बाद में पूछना</string>
     <string name="rate">हाँ मुझे यह पसंद है!</string>
-
     <string name="now_playing">अभी खेल रहे है</string>
     <string name="queue">कतार</string>
     <string name="current_song_queue">वर्तमान गीत कतार</string>
@@ -65,51 +59,37 @@
     <string name="album">एल्बम</string>
     <string name="artist">कलाकार</string>
     <string name="genre">शैली</string>
-
     <!--AddMediaToPlaylist-->
     <string name="select_playlist">प्लेलिस्ट का चयन करें</string>
-    <string name="select_playlist_to_which_you_want_to_add_music">
-        वह प्लेलिस्ट चुनें, जिसमें आप संगीत जोड़ना चाहते हैं
-    </string>
-
+    <string name="select_playlist_to_which_you_want_to_add_music">वह प्लेलिस्ट चुनें, जिसमें आप संगीत जोड़ना चाहते हैं</string>
     <!--AddSongToPlaylist-->
-    <string name="add_song_to_s_playlist_hint">
-        उन गीतों का चयन करें जिन्हें आप \"%s\" प्लेलिस्ट में जोड़ना चाहते हैं और फिर \'प्लेलिस्ट में जोड़ें\' बटन पर क्लिक करें
-    </string>
-
+    <string name="add_song_to_s_playlist_hint">उन गीतों का चयन करें जिन्हें आप \"%s\" प्लेलिस्ट में जोड़ना चाहते हैं और फिर \'प्लेलिस्ट में जोड़ें\' बटन पर क्लिक करें</string>
     <!--Plurals-->
     <plurals name="s_songs_selected">
         <item quantity="one">%d गीत चुना गया</item>
         <item quantity="other">%d गाने चुने गए</item>
     </plurals>
-
     <plurals name="s_songs">
         <item quantity="one">%d गीत</item>
         <item quantity="other">%d गाने</item>
     </plurals>
-
     <plurals name="s_hours">
         <item quantity="one">%d घंटा</item>
         <item quantity="other">%d घंटे</item>
     </plurals>
-
     <plurals name="s_minutes">
         <item quantity="one">%d मिनट</item>
         <item quantity="other">%d मिनट</item>
     </plurals>
-
     <plurals name="s_seconds">
         <item quantity="one">%d सेकेंड</item>
         <item quantity="other">%d सेकंड</item>
     </plurals>
-
     <string name="select_all">सभी का चयन करे</string>
-
     <!--placeholders-->
     <string name="placeholder_unknown">अनजान</string>
     <string name="placeholder_zero_duration">0:00</string>
     <string name="placeholder_freq_range">0.00 हर्ट्ज</string>
-
     <!--options menu-->
     <string name="play">प्ले</string>
     <string name="edit">संपादित करें</string>
@@ -130,18 +110,12 @@
     <string name="cut_ringtone">रिंगटोन को काटें</string>
     <string name="add_song">गीत जोड़ें</string>
     <string name="remove_from_queue">वर्तमान कतार से निकाले</string>
-
     <!--deletion confirmation-->
     <string name="confirmation">पुष्टीकरण</string>
     <string name="confirmation_delete_item">क्या आप सुनिश्चित रूप से इस आइटम को मिटाना चाहते हैं?</string>
     <string name="confirmation_delete_items">क्या आप वाकई इन वस्तुओं को हटाना चाहते हैं?</string>
-    <string name="confirmation_delete_item_and_related_song_files">
-        क्या आप सुनिश्चित रूप से इस आइटम को मिटाना चाहते हैं? उसमें मौजूद सभी संगीत फ़ाइलों को भी हटा दिया जाएगा।
-    </string>
-    <string name="confirmation_delete_items_and_related_song_files">
-        क्या आप वाकई इन वस्तुओं को हटाना चाहते हैं? उनमें मौजूद सभी संगीत फ़ाइलें भी हटा दी जाएंगी।
-    </string>
-
+    <string name="confirmation_delete_item_and_related_song_files">क्या आप सुनिश्चित रूप से इस आइटम को मिटाना चाहते हैं? उसमें मौजूद सभी संगीत फ़ाइलों को भी हटा दिया जाएगा।</string>
+    <string name="confirmation_delete_items_and_related_song_files">क्या आप वाकई इन वस्तुओं को हटाना चाहते हैं? उनमें मौजूद सभी संगीत फ़ाइलें भी हटा दी जाएंगी।</string>
     <!--titles for main view pager-->
     <string name="all_songs">पूरा संगीत</string>
     <string name="songs">गीत</string>
@@ -152,7 +126,6 @@
     <string name="folders">फ़ोल्डर</string>
     <string name="recently_added">हाल ही में जोड़ा</string>
     <string name="most_played">सबसे खेला</string>
-
     <!--counting tracks, albums, genres and etc.-->
     <string name="number_of_albums">%d डी एल्बम</string>
     <string name="one_album">1 एल्बम</string>
@@ -160,7 +133,6 @@
     <string name="no_tracks">कोई ट्रैक नहीं</string>
     <string name="one_track">1 ट्रैक</string>
     <string name="number_of_tracks">%d ट्रैक</string>
-
     <!--recently added-->
     <string name="added">जोड़ा गया</string>
     <string name="recent_period">हाल की अवधि</string>
@@ -169,7 +141,6 @@
     <string name="for_last_week">पिछले हफ्ते के लिए</string>
     <string name="for_last_month">पिछले महीने के लिए</string>
     <string name="for_last_year">पिछले साल के लिए</string>
-
     <!--play count-->
     <string name="not_played_yet">अभी तक नहीं खेला</string>
     <string name="last_time_s">पिछली बार: %s</string>
@@ -177,24 +148,20 @@
         <item quantity="one">%d बार खेला</item>
         <item quantity="other">%d बार खेला</item>
     </plurals>
-
     <!--navigation drawer menu-->
     <string name="nav_library">पुस्तकालय</string>
     <string name="nav_equalizer">तुल्यकारक</string>
     <string name="nav_settings">सेटिंग्स</string>
     <string name="nav_search">खोज</string>
     <string name="nav_favourite">पसंदीदा</string>
-
     <!--app preferences-->
     <string name="playback_settings">प्लेबैक</string>
     <string name="library_settings">पुस्तकालय</string>
     <string name="appearance_settings">दिखावट</string>
     <string name="about_app_settings">के बारे में</string>
-
     <!--app preferences-->
     <string name="version">एप्लिकेशन वर्जन</string>
     <string name="licenses">लाइसेंस</string>
-
     <string name="app_theme_desc">एप्लिकेशन के लिए एक विषय चुनें और लागू करें</string>
     <string name="page_s_of_s">%d का %d</string>
     <string name="apply_theme">विषय लागू करें</string>
@@ -207,17 +174,11 @@
     <string name="dark_purple_theme">डार्क पर्पल थीम</string>
     <string name="dark_orange_theme">डार्क ऑरेंज थीम</string>
     <string name="dark_green_theme">गहरे हरे रंग का विषय</string>
-
     <!--Headphones settings-->
     <string name="pause_playback">प्लेबैक रोकें</string>
     <string name="resume_playback">प्लेबैक वापस चालू करें</string>
-    <string name="pause_when_headphones_are_disconnected">
-        जब हेडफोन काट दिया जाता है तो प्लेबैक को रोकें
-    </string>
-    <string name="resume_when_headphones_are_connected">
-        हेडफोन कनेक्ट होने पर प्लेबैक फिर से शुरू करें
-    </string>
-
+    <string name="pause_when_headphones_are_disconnected">जब हेडफोन काट दिया जाता है तो प्लेबैक को रोकें</string>
+    <string name="resume_when_headphones_are_connected">हेडफोन कनेक्ट होने पर प्लेबैक फिर से शुरू करें</string>
     <string name="sleep_timer">सोने का टाइमर</string>
     <string name="sleep_time_description">प्लेबैक रोकने के लिए टाइमर सेट करें</string>
     <string name="you_have_already_set_up_sleep_timer">आप पहले से ही टाइमर सेट कर चुके हैं। क्या आप वर्तमान टाइमर को रीसेट करना चाहते हैं या एक नया सेट अप करना चाहते हैं?</string>
@@ -239,9 +200,7 @@
     <!--Playback fading-->
     <string name="playback_fading">संगीत प्लेबैक के फीका</string>
     <string name="playback_fading_desc">नियंत्रित करें कि प्लेबैक को कैसे और अंदर फीका होना चाहिए</string>
-    <string name="playback_fading_full_desc">
-        यहां आप यह नियंत्रित करते हैं कि प्लेबैक कैसे अंदर और बाहर फीका होना चाहिए। आप नीचे स्लाइडर का उपयोग करके एक उपयुक्त अवधि निर्धारित कर सकते हैं। अवधि "0" का मतलब है कि कोई लुप्त होती नहीं होगी।
-    </string>
+    <string name="playback_fading_full_desc">यहां आप यह नियंत्रित करते हैं कि प्लेबैक कैसे अंदर और बाहर फीका होना चाहिए। आप नीचे स्लाइडर का उपयोग करके एक उपयुक्त अवधि निर्धारित कर सकते हैं। अवधि "0" का मतलब है कि कोई लुप्त होती नहीं होगी।</string>
     <string name="playback_fading_duration">समयांतराल</string>
     <!--Library song filter-->
     <string name="library_song_filter_pref_title">गीत प्रकार फ़िल्टर</string>
@@ -253,29 +212,21 @@
     <string name="library_song_filter_type_alarm">अलार्म घड़ी</string>
     <string name="library_song_filter_type_notification">अधिसूचना</string>
     <string name="library_song_filter_type_audiobook">ऑडियोबुक</string>
-
     <!--create playlist-->
     <string name="save_playlist">प्लेलिस्ट सहेजें</string>
     <string name="edit_playlist">प्लेलिस्ट संपादित करें</string>
     <string name="playlist_name">प्लेलिस्ट का नाम</string>
     <string name="name_is_empty">नाम खाली नहीं होना चाहिए</string>
     <string name="such_name_already_exists">ऐसा नाम पहले से मौजूद है</string>
-
     <!--AudioFx-->
     <string name="audio_fx_switch_tooltip">ऑडियो प्रभाव सक्षम करने के लिए टॉगल करें</string>
     <string name="no_audio_effects_available">कोई ऑडियो प्रभाव नहीं</string>
-    <string name="no_audio_effects_available_desc">
-        हमें कोई ऑडियो प्रभाव उपलब्ध नहीं मिला। कृपया Android ऑपरेटिंग सिस्टम द्वारा प्रदान किए गए डिफ़ॉल्ट तुल्यकारक को सक्षम करें
-    </string>
+    <string name="no_audio_effects_available_desc">हमें कोई ऑडियो प्रभाव उपलब्ध नहीं मिला। कृपया Android ऑपरेटिंग सिस्टम द्वारा प्रदान किए गए डिफ़ॉल्ट तुल्यकारक को सक्षम करें</string>
     <string name="no_audio_is_playing_now">अब कोई ऑडियो नहीं चल रहा है</string>
-    <string name="no_audio_is_playing_now_desc">
-        ध्वनि को समायोजित करने में सक्षम होने के लिए आपको एक गाना बजाना शुरू करना होगा
-    </string>
-
+    <string name="no_audio_is_playing_now_desc">ध्वनि को समायोजित करने में सक्षम होने के लिए आपको एक गाना बजाना शुरू करना होगा</string>
     <!--create preset-->
     <string name="save_preset">प्रीसेट सेव करें</string>
     <string name="preset_name">प्रीसेट नाम</string>
-
     <!--equalizer-->
     <string name="freq_range">%s हर्ट्ज</string>
     <string name="nothing_to_show">दिखाने के लिए कुछ नहीं</string>
@@ -288,23 +239,18 @@
     <string name="pitch">पिच</string>
     <string name="reset_playback_params_when_switching_song">गाने स्विच करते समय सेटिंग्स रीसेट करें</string>
     <string name="normalize">सामान्य</string>
-
     <!--media file editor-->
     <string name="song_name_layout">नाम</string>
     <string name="album_name_layout">एल्बम</string>
     <string name="genre_name_layout">शैली</string>
     <string name="artist_name_layout">कलाकार</string>
-    <string name="delete_album_art_confirmation">
-        क्या आप इस एल्बम के कवर को हटाना चाहते हैं?
-    </string>
+    <string name="delete_album_art_confirmation">क्या आप इस एल्बम के कवर को हटाना चाहते हैं?</string>
     <string name="no_album_art">कोई एल्बम कवर नहीं</string>
     <string name="pick_new_album_art">एक नया चुनें</string>
-
     <string name="app_theme">ऐप थीम</string>
     <string name="third_part_libs">तीसरे पक्ष के पुस्तकालयों</string>
     <string name="album_grid">एल्बम ग्रिड</string>
     <string name="show_album_grid">एल्बम प्रदर्शित करने के लिए ग्रिड का प्रयोग करें</string>
-
     <!--Preset-->
     <string name="preset">प्रीसेट</string>
     <string name="preset_none">कुछ भी तो नहीं</string>
@@ -318,7 +264,6 @@
     <string name="preset_hip_hop">हिप हॉप</string>
     <string name="preset_jazz">जाज</string>
     <string name="preset_pop">लोकप्रिय</string>
-
     <!--Preset reverb-->
     <string name="preset_reverb">प्रतिध्वनि</string>
     <string name="preset_reverb_none">कुछ भी तो नहीं</string>
@@ -328,41 +273,32 @@
     <string name="preset_reverb_medium_room">मध्यम कमरा</string>
     <string name="preset_reverb_plate">प्लेट</string>
     <string name="preset_reverb_small_rooom">छोटा कमरा</string>
-
     <!--Playback notification-->
     <string name="playback_channel_name">प्लेबैक</string>
     <string name="playback_channel_desc">वर्तमान प्लेबैक स्थिति के बारे में सूचित करता है</string>
-
     <string name="scanning_started">स्कैनिंग शुरू हुई</string>
     <string name="scanning_completed">स्कैनिंग पूरी हुई</string>
     <string name="rescan_media_library">रेसकान मीडिया लाइब्रेरी</string>
     <string name="do_you_want_to_rescan_media_library">क्या आप अपनी मीडिया लाइब्रेरी को फिर से बनाना चाहते हैं?</string>
-
     <!--Shortcuts-->
     <string name="create_shortcut">शॉर्टकट बनाएं</string>
     <string name="create_shortcut_on_home_screen">होम स्क्रीन पर शॉर्टकट बनाएं</string>
     <string name="shortcut_created">शॉर्टकट बनाया</string>
-    <string name="do_you_want_to_create_shortcut_for_s">
-        क्या आप होम स्क्रीन पर %s के लिए शॉर्टकट बनाना चाहते हैं?
-    </string>
-
+    <string name="do_you_want_to_create_shortcut_for_s">क्या आप होम स्क्रीन पर %s के लिए शॉर्टकट बनाना चाहते हैं?</string>
     <!--MinAudioFileDuration-->
     <string name="exclude_short_songs">लघु गीतों को छोड़ दें</string>
     <string name="exclude_short_songs_desc">पुस्तकालय खोज से लघु गीतों को छोड़ दें</string>
     <string name="specify_min_audio_file_duration">
         न्यूनतम ऑडियो फ़ाइल अवधि निर्दिष्ट करें। निर्दिष्ट अवधि से कम अवधि वाली सभी ऑडियो फ़ाइलों को लाइब्रेरी खोज से बाहर रखा गया है।
         यदि ये मान रिक्त हैं या 0:0 से अधिक नहीं ऑडियो फ़ाइलों को बाहर रखा जाएगा।
-        \n\n<b>नोट: यदि आप इसे निर्दिष्ट करते हैं, तो पुस्तकालय थोड़ा धीमा काम करेगा (एल्बम, कलाकार, शैलियाँ धीमी लोड होंगी)।
+        \n\n
+        <b>नोट: यदि आप इसे निर्दिष्ट करते हैं, तो पुस्तकालय थोड़ा धीमा काम करेगा (एल्बम, कलाकार, शैलियाँ धीमी लोड होंगी)।
         सीमा हटाने के लिए, बस 0:0 दर्ज करें</b>
     </string>
-
     <!--RES permission-->
     <string name="permission_denied">अनुमति नहीं मिली</string>
     <string name="grant_res_permission">अनुदान अनुमति</string>
-    <string name="need_for_res_permission_explanation">
-        इस अनुमति के बिना, एप्लिकेशन आपके डिवाइस से संगीत को ब्राउज़ करने में सक्षम नहीं होगा। क्या आप अनुमति देना चाहते हैं?
-    </string>
-
+    <string name="need_for_res_permission_explanation">इस अनुमति के बिना, एप्लिकेशन आपके डिवाइस से संगीत को ब्राउज़ करने में सक्षम नहीं होगा। क्या आप अनुमति देना चाहते हैं?</string>
     <!--PlayerJournal-->
     <string name="player_journal">संगीत खिलाड़ी लॉग</string>
     <string name="player_journal_desc">संगीत प्लेयर लॉग से सभी संदेश प्रदर्शित करें</string>
@@ -370,22 +306,19 @@
     <string name="copy_player_logs_to_clipboard">प्रतिलिपि</string>
     <string name="player_logs">संगीत खिलाड़ी लॉग</string>
     <string name="copied">कॉपी किया गया</string>
-
     <!--Push notifications-->
     <string name="push_notifications_channel_name">पुश सूचनाएँ</string>
     <string name="push_notifications_channel_desc">समाचार और ऐप अपडेट के बारे में उपयोगी जानकारी रखता है</string>
-
     <!--Lyrics-->
     <string name="view_lyrics">देखें गाने के बोल</string>
     <string name="lyrics_not_tap_to_write">पाठ नहीं मिला, इसे स्वयं लिखने के लिए यहां क्लिक करें</string>
-
     <!--Premium-->
     <string name="buy_premium">प्रीमियम खरीदें</string>
     <string name="buy_premium_desc">विज्ञापन हटाएँ और प्रीमियम सुविधाओं को अनलॉक करें</string>
     <string name="premium_dialog_title">प्रीमियम</string>
     <string-array name="premium_benefits">
         <item>सभी विज्ञापन हटाए</item>
-<!--        <item>प्लेबैक फीका अनलॉक</item>-->
+        <!--        <item>प्लेबैक फीका अनलॉक</item>-->
         <item>प्लेबैक की गति और पिच को अनलॉक करें</item>
         <item>सभी ऐप थीम अनलॉक करें</item>
         <item>भविष्य के अपडेट में सभी नई सुविधाओं तक पूर्ण पहुंच</item>
@@ -401,11 +334,9 @@
     </plurals>
     <string name="activate_premium_trial">परीक्षण संस्करण सक्रिय करें</string>
     <string name="premium_trial_activated">प्रीमियम परीक्षण सक्रिय</string>
-
     <!--Snowfall-->
     <string name="snowfall">हिमपात</string>
     <string name="snowfall_desc">सर्द मिजाज के लिए शानदार बर्फबारी चालू करें</string>
-
     <!--Donations-->
     <string name="donations_title">दान करना</string>
     <string name="donations_subtitle">परियोजना के विकास के लिए छोटा दान</string>
@@ -419,3 +350,4 @@
     <string name="donate_meal">भोजन</string>
     <string name="donate_gym">जिम सदस्यता</string>
 </resources>
+

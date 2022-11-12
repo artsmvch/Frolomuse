@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <resources>
     <string name="ok">확인</string>
     <string name="create">창조하다</string>
@@ -23,16 +24,11 @@
     <string name="message_one_file_hidden">파일이 숨겨져 있습니다. 설정에서 다시 되돌릴 수 있습니다</string>
     <string name="message_multiple_files_hidden">선택한 파일이 숨겨졌습니다. 설정에서 다시 되돌릴 수 있습니다</string>
     <string name="scan_files">파일 스캔</string>
-
     <!--Hidden files-->
     <string name="hidden_files">숨겨진 파일</string>
     <string name="hidden_files_desc">파일 브라우저에 숨겨진 파일</string>
-    <string name="hidden_files_placeholder_message">
-        숨겨진 파일이 없습니다. 파일을 숨기려면 파일 브라우저에서 적절한 옵션을 선택하십시오.
-    </string>
-
+    <string name="hidden_files_placeholder_message">숨겨진 파일이 없습니다. 파일을 숨기려면 파일 브라우저에서 적절한 옵션을 선택하십시오.</string>
     <!--Errors-->
-
     <!--Sort orders-->
     <string name="sort">종류</string>
     <string name="ascending">오름차순</string>
@@ -48,13 +44,11 @@
     <string name="sort_by_filename">파일 이름으로 정렬</string>
     <string name="sort_by_play_order">플레이 순서로 정렬</string>
     <string name="sort_by_duration">노래 시간별로 정렬</string>
-
     <!--Rating-->
     <string name="would_you_rate">이 앱을 별 5 개로 평가 하시겠습니까?</string>
     <string name="no">아니</string>
     <string name="remind_me_later">나중에 다시 확인</string>
     <string name="rate">그래, 난 좋아!</string>
-
     <string name="now_playing">지금 재생 중</string>
     <string name="queue">대기열</string>
     <string name="current_song_queue">현재 노래 대기열</string>
@@ -64,46 +58,32 @@
     <string name="album">앨범</string>
     <string name="artist">예술가</string>
     <string name="genre">장르</string>
-
     <!--AddMediaToPlaylist-->
     <string name="select_playlist">재생 목록 선택</string>
-    <string name="select_playlist_to_which_you_want_to_add_music">
-        음악을 추가 할 재생 목록을 선택하십시오
-    </string>
-
+    <string name="select_playlist_to_which_you_want_to_add_music">음악을 추가 할 재생 목록을 선택하십시오</string>
     <!--AddSongToPlaylist-->
-    <string name="add_song_to_s_playlist_hint">
-        \"%s\"재생 목록에 추가 할 노래를 선택한 다음 \'재생 목록에 추가\'단추를 클릭하십시오.
-    </string>
-
+    <string name="add_song_to_s_playlist_hint">\"%s\"재생 목록에 추가 할 노래를 선택한 다음 \'재생 목록에 추가\'단추를 클릭하십시오.</string>
     <!--Plurals-->
     <plurals name="s_songs_selected">
         <item quantity="other">%d 곡 선택</item>
     </plurals>
-
     <plurals name="s_songs">
         <item quantity="other">노래 %d 곡</item>
     </plurals>
-
     <plurals name="s_hours">
         <item quantity="other">%d 시간</item>
     </plurals>
-
     <plurals name="s_minutes">
         <item quantity="other">%d 분</item>
     </plurals>
-
     <plurals name="s_seconds">
         <item quantity="other">%d 초</item>
     </plurals>
-
     <string name="select_all">모두 선택</string>
-
     <!--placeholders-->
     <string name="placeholder_unknown">알 수 없는</string>
     <string name="placeholder_zero_duration">0:00</string>
     <string name="placeholder_freq_range">0.00 hz</string>
-
     <!--options menu-->
     <string name="play">플레이</string>
     <string name="edit">편집하다</string>
@@ -124,18 +104,12 @@
     <string name="cut_ringtone">컷 벨소리</string>
     <string name="add_song">노래 추가</string>
     <string name="remove_from_queue">현재 대기열에서 제거</string>
-
     <!--deletion confirmation-->
     <string name="confirmation">확인</string>
     <string name="confirmation_delete_item">이 항목을 삭제 하시겠습니까?</string>
     <string name="confirmation_delete_items">이 항목을 삭제 하시겠습니까?</string>
-    <string name="confirmation_delete_item_and_related_song_files">
-        이 항목을 삭제 하시겠습니까? 그 안에 포함 된 모든 음악 파일도 삭제됩니다.
-    </string>
-    <string name="confirmation_delete_items_and_related_song_files">
-        이 항목을 삭제 하시겠습니까? 그 안에 포함 된 모든 음악 파일도 삭제됩니다.
-    </string>
-
+    <string name="confirmation_delete_item_and_related_song_files">이 항목을 삭제 하시겠습니까? 그 안에 포함 된 모든 음악 파일도 삭제됩니다.</string>
+    <string name="confirmation_delete_items_and_related_song_files">이 항목을 삭제 하시겠습니까? 그 안에 포함 된 모든 음악 파일도 삭제됩니다.</string>
     <!--titles for main view pager-->
     <string name="all_songs">모든 음악</string>
     <string name="songs">노래</string>
@@ -146,7 +120,6 @@
     <string name="folders">폴더</string>
     <string name="recently_added">최근에 추가</string>
     <string name="most_played">가장 많이 연주</string>
-
     <!--counting tracks, albums, genres and etc.-->
     <string name="number_of_albums">앨범 %d 개</string>
     <string name="one_album">앨범 1 개</string>
@@ -154,7 +127,6 @@
     <string name="no_tracks">트랙이 없습니다</string>
     <string name="one_track">1 트랙</string>
     <string name="number_of_tracks">%d 트랙</string>
-
     <!--recently added-->
     <string name="added">추가되었다</string>
     <string name="recent_period">최근 기간</string>
@@ -163,31 +135,26 @@
     <string name="for_last_week">지난주</string>
     <string name="for_last_month">지난 달</string>
     <string name="for_last_year">작년</string>
-
     <!--play count-->
     <string name="not_played_yet">아직 재생되지 않았습니다</string>
     <string name="last_time_s">마지막 시간 : %s</string>
     <plurals name="played_s_times">
         <item quantity="other">%d 번 플레이 함</item>
     </plurals>
-
     <!--navigation drawer menu-->
     <string name="nav_library">라이브러리</string>
     <string name="nav_equalizer">평형 장치</string>
     <string name="nav_settings">설정</string>
     <string name="nav_search">검색</string>
     <string name="nav_favourite">좋아하는 노래</string>
-
     <!--app preferences-->
     <string name="playback_settings">오디오 재생</string>
     <string name="library_settings">음악 라이브러리</string>
     <string name="appearance_settings">모습</string>
     <string name="about_app_settings">앱 정보</string>
-
     <!--app preferences-->
     <string name="version">응용 프로그램 버전</string>
     <string name="licenses">라이센스</string>
-
     <string name="app_theme_desc">앱 테마 선택 및 적용</string>
     <string name="page_s_of_s">%d / %d</string>
     <string name="apply_theme">테마 적용</string>
@@ -200,22 +167,14 @@
     <string name="dark_purple_theme">어두운 자주색 테마</string>
     <string name="dark_orange_theme">다크 오렌지 테마</string>
     <string name="dark_green_theme">진한 녹색 테마</string>
-
     <!--Headphones settings-->
     <string name="pause_playback">재생 일시 정지</string>
     <string name="resume_playback">재생 다시 시작</string>
-    <string name="pause_when_headphones_are_disconnected">
-        헤드폰이 분리되면 재생 일시 중지
-    </string>
-    <string name="resume_when_headphones_are_connected">
-        헤드폰이 연결되면 재생 다시 시작
-    </string>
-
+    <string name="pause_when_headphones_are_disconnected">헤드폰이 분리되면 재생 일시 중지</string>
+    <string name="resume_when_headphones_are_connected">헤드폰이 연결되면 재생 다시 시작</string>
     <string name="sleep_timer">수면 타이머</string>
     <string name="sleep_time_description">재생을 중지하도록 타이머 설정</string>
-    <string name="you_have_already_set_up_sleep_timer">
-        이미 타이머를 설정했습니다. 현재 타이머를 재설정하거나 새 타이머를 설정 하시겠습니까?
-    </string>
+    <string name="you_have_already_set_up_sleep_timer">이미 타이머를 설정했습니다. 현재 타이머를 재설정하거나 새 타이머를 설정 하시겠습니까?</string>
     <string name="reset_sleep_timer">초기화</string>
     <string name="new_sleep_timer">새 타이머 설정</string>
     <string name="rate_this_app">앱 평가</string>
@@ -234,9 +193,7 @@
     <!--Playback fading-->
     <string name="playback_fading">음악 재생 페이드</string>
     <string name="playback_fading_desc">재생 페이드 인 및 아웃 방법 제어</string>
-    <string name="playback_fading_full_desc">
-        여기에서 재생 페이드 인 및 페이드 아웃 방법을 제어합니다. 아래 슬라이더를 사용하여 적절한 기간을 설정할 수 있습니다. 기간 "0"은 페이딩이 없음을 의미합니다.
-    </string>
+    <string name="playback_fading_full_desc">여기에서 재생 페이드 인 및 페이드 아웃 방법을 제어합니다. 아래 슬라이더를 사용하여 적절한 기간을 설정할 수 있습니다. 기간 "0"은 페이딩이 없음을 의미합니다.</string>
     <string name="playback_fading_duration">지속</string>
     <!--Library song filter-->
     <string name="library_song_filter_pref_title">노래 유형 필터</string>
@@ -248,29 +205,21 @@
     <string name="library_song_filter_type_alarm">알람 시계</string>
     <string name="library_song_filter_type_notification">공고</string>
     <string name="library_song_filter_type_audiobook">오디오 북</string>
-
     <!--create and edit playlist-->
     <string name="save_playlist">재생 목록 저장</string>
     <string name="edit_playlist">재생 목록 수정</string>
     <string name="playlist_name">재생 목록 이름</string>
     <string name="name_is_empty">이름은 비어 있지 않아야합니다</string>
     <string name="such_name_already_exists">그런 이름은 이미 존재합니다</string>
-
     <!--AudioFx-->
     <string name="audio_fx_switch_tooltip">오디오 효과를 사용하려면 전환</string>
     <string name="no_audio_effects_available">오디오 효과 없음</string>
-    <string name="no_audio_effects_available_desc">
-        사용 가능한 오디오 효과를 찾을 수 없습니다. Android 운영 체제에서 제공하는 기본 이퀄라이저를 활성화하십시오
-    </string>
+    <string name="no_audio_effects_available_desc">사용 가능한 오디오 효과를 찾을 수 없습니다. Android 운영 체제에서 제공하는 기본 이퀄라이저를 활성화하십시오</string>
     <string name="no_audio_is_playing_now">지금 재생되는 오디오가 없습니다</string>
-    <string name="no_audio_is_playing_now_desc">
-        사운드를 조정하려면 노래 재생을 시작해야합니다
-    </string>
-
+    <string name="no_audio_is_playing_now_desc">사운드를 조정하려면 노래 재생을 시작해야합니다</string>
     <!--create preset-->
     <string name="save_preset">사전 설정 저장</string>
     <string name="preset_name">사전 설정 이름</string>
-
     <!--equalizer-->
     <string name="freq_range">%s hz</string>
     <string name="nothing_to_show">보여줄 것이 없다</string>
@@ -283,23 +232,18 @@
     <string name="pitch">피치</string>
     <string name="reset_playback_params_when_switching_song">노래 전환시 설정 재설정</string>
     <string name="normalize">정규화</string>
-
     <!--media file editor-->
     <string name="song_name_layout">이름</string>
     <string name="album_name_layout">앨범</string>
     <string name="genre_name_layout">장르</string>
     <string name="artist_name_layout">예술가</string>
-    <string name="delete_album_art_confirmation">
-        이 앨범의 표지를 삭제 하시겠습니까?
-    </string>
+    <string name="delete_album_art_confirmation">이 앨범의 표지를 삭제 하시겠습니까?</string>
     <string name="no_album_art">앨범 표지가 없습니다</string>
     <string name="pick_new_album_art">새로운 것을 고르세요</string>
-
     <string name="app_theme">앱 테마</string>
     <string name="third_part_libs">타사 라이브러리</string>
     <string name="album_grid">앨범 그리드</string>
     <string name="show_album_grid">격자를 사용하여 앨범 표시</string>
-
     <!--Preset-->
     <string name="preset">프리셋</string>
     <string name="preset_none">아무것도</string>
@@ -313,7 +257,6 @@
     <string name="preset_hip_hop">힙합</string>
     <string name="preset_jazz">재즈</string>
     <string name="preset_pop">팝</string>
-
     <!--Preset reverb-->
     <string name="preset_reverb">반향</string>
     <string name="preset_reverb_none">아무것도</string>
@@ -323,41 +266,32 @@
     <string name="preset_reverb_medium_room">중실</string>
     <string name="preset_reverb_plate">플레이트</string>
     <string name="preset_reverb_small_rooom">작은 방</string>
-
     <!--Playback notification-->
     <string name="playback_channel_name">재생</string>
     <string name="playback_channel_desc">현재 재생 상태를 알려줍니다</string>
-
     <string name="scanning_started">스캔 시작</string>
     <string name="scanning_completed">스캔 완료</string>
     <string name="rescan_media_library">미디어 라이브러리 재검색</string>
     <string name="do_you_want_to_rescan_media_library">미디어 라이브러리를 다시 스캔 하시겠습니까?</string>
-
     <!--Shortcuts-->
     <string name="create_shortcut">바로 가기 만들기</string>
     <string name="create_shortcut_on_home_screen">홈 화면에서 바로 가기 만들기</string>
     <string name="shortcut_created">바로 가기가 생성되었습니다</string>
-    <string name="do_you_want_to_create_shortcut_for_s">
-        홈 화면에서 %s 에 대한 바로 가기를 작성 하시겠습니까?
-    </string>
-
+    <string name="do_you_want_to_create_shortcut_for_s">홈 화면에서 %s 에 대한 바로 가기를 작성 하시겠습니까?</string>
     <!--MinAudioFileDuration-->
     <string name="exclude_short_songs">짧은 노래 제외</string>
     <string name="exclude_short_songs_desc">라이브러리 검색에서 짧은 노래 제외</string>
     <string name="specify_min_audio_file_duration">
         최소 오디오 파일 길이를 지정하십시오. 지속 시간이 지정된 모든 오디오 파일은 라이브러리 검색에서 제외됩니다.
         이 값이 비어 있거나 0:0 이면 오디오 파일이 제외되지 않습니다.
-        \n\n<b>참고 :이 값을 지정하면 라이브러리가 약간 느려집니다 (앨범, 아티스트, 장르가 느리게로드 됨).
+        \n\n
+        <b>참고 :이 값을 지정하면 라이브러리가 약간 느려집니다 (앨범, 아티스트, 장르가 느리게로드 됨).
         한도를 제거하려면 0:0 을 입력하십시오.</b>
     </string>
-
     <!--RES permission-->
     <string name="permission_denied">권한이 거부되었습니다</string>
     <string name="grant_res_permission">허락하다</string>
-    <string name="need_for_res_permission_explanation">
-        이 권한이 없으면 응용 프로그램이 장치에서 음악을 탐색 할 수 없습니다. 권한을 부여 하시겠습니까?
-    </string>
-
+    <string name="need_for_res_permission_explanation">이 권한이 없으면 응용 프로그램이 장치에서 음악을 탐색 할 수 없습니다. 권한을 부여 하시겠습니까?</string>
     <!--PlayerJournal-->
     <string name="player_journal">음악 플레이어 로그</string>
     <string name="player_journal_desc">음악 플레이어 로그의 모든 메시지 표시</string>
@@ -365,22 +299,19 @@
     <string name="copy_player_logs_to_clipboard">클립 보드에 복사</string>
     <string name="player_logs">음악 플레이어 로그</string>
     <string name="copied">복사 됨</string>
-
     <!--Push notifications-->
     <string name="push_notifications_channel_name">푸시 알림</string>
     <string name="push_notifications_channel_desc">뉴스 및 앱 업데이트에 대한 유용한 정보를 포함합니다</string>
-
     <!--Lyrics-->
     <string name="view_lyrics">가사보기</string>
     <string name="lyrics_not_tap_to_write">텍스트를 찾을 수 없습니다. 직접 작성하려면 여기를 클릭하세요</string>
-
     <!--Premium-->
     <string name="buy_premium">프리미엄 구매</string>
     <string name="buy_premium_desc">광고 제거 및 프리미엄 기능 잠금 해제</string>
     <string name="premium_dialog_title">프리미엄</string>
     <string-array name="premium_benefits">
         <item>모든 광고 제거</item>
-<!--        <item>재생 페이딩 잠금 해제</item>-->
+        <!--        <item>재생 페이딩 잠금 해제</item>-->
         <item>재생 속도 및 피치 잠금 해제</item>
         <item>모든 테마 잠금 해제</item>
         <item>향후 업데이트의 모든 새로운 기능에 대한 전체 액세스</item>
@@ -395,11 +326,9 @@
     </plurals>
     <string name="activate_premium_trial">프리미엄 평가판 활성화</string>
     <string name="premium_trial_activated">프리미엄 평가판이 활성화되었습니다</string>
-
     <!--Snowfall-->
     <string name="snowfall">강설량</string>
     <string name="snowfall_desc">겨울 분위기를 위해 아름다운 눈을 켜십시오</string>
-
     <!--Donations-->
     <string name="donations_title">기부</string>
     <string name="donations_subtitle">프로젝트 발전을 위한 소액 기부</string>
@@ -413,3 +342,4 @@
     <string name="donate_meal">식사</string>
     <string name="donate_gym">월간 헬스장 회원권</string>
 </resources>
+

@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <resources>
     <string name="ok">tamam</string>
     <string name="create">Oluştur</string>
@@ -23,16 +24,11 @@
     <string name="message_one_file_hidden">Dosya gizlendi. Ayarlarında geri dönebilirsiniz</string>
     <string name="message_multiple_files_hidden">Seçilen dosyalar gizlendi. Ayarlarda geri dönebilirsiniz</string>
     <string name="scan_files">Dosyaları tara</string>
-
     <!--Hidden files-->
     <string name="hidden_files">Gizlenmiş dosyalar</string>
     <string name="hidden_files_desc">Dosya tarayıcısında gizlenmiş dosyalar</string>
-    <string name="hidden_files_placeholder_message">
-        Henüz hiçbir gizli dosyanız yok. Bir dosyayı gizlemek için, dosya tarayıcısında uygun seçeneği seçin.
-    </string>
-
+    <string name="hidden_files_placeholder_message">Henüz hiçbir gizli dosyanız yok. Bir dosyayı gizlemek için, dosya tarayıcısında uygun seçeneği seçin.</string>
     <!--Errors-->
-
     <!--Sort orders-->
     <string name="sort">Çeşit</string>
     <string name="ascending">Yükselen</string>
@@ -48,13 +44,11 @@
     <string name="sort_by_filename">Dosya adına göre</string>
     <string name="sort_by_play_order">Oynatma sırasına göre</string>
     <string name="sort_by_duration">Süreye göre</string>
-
     <!--Rating-->
     <string name="would_you_rate">Bu uygulamayı 5 yıldız için değerlendirir misiniz?</string>
     <string name="no">Hayır</string>
     <string name="remind_me_later">Daha sonra sor</string>
     <string name="rate">Evet beğendim!</string>
-
     <string name="now_playing">Şimdi oynuyor</string>
     <string name="queue">Kuyruk</string>
     <string name="current_song_queue">Geçerli şarkı kuyruk</string>
@@ -64,51 +58,37 @@
     <string name="album">Albüm</string>
     <string name="artist">Sanatçı</string>
     <string name="genre">Tür</string>
-
     <!--AddMediaToPlaylist-->
     <string name="select_playlist">Çalma listesini seçin</string>
-    <string name="select_playlist_to_which_you_want_to_add_music">
-        Müzik eklemek istediğiniz çalma listesini seçin
-    </string>
-
+    <string name="select_playlist_to_which_you_want_to_add_music">Müzik eklemek istediğiniz çalma listesini seçin</string>
     <!--AddSongToPlaylist-->
-    <string name="add_song_to_s_playlist_hint">
-        \"%s\" çalma listesine eklemek istediğiniz şarkıları seçin ve \'Çalma listesine ekle\' düğmesini tıklayın
-    </string>
-
+    <string name="add_song_to_s_playlist_hint">\"%s\" çalma listesine eklemek istediğiniz şarkıları seçin ve \'Çalma listesine ekle\' düğmesini tıklayın</string>
     <!--Plurals-->
     <plurals name="s_songs_selected">
         <item quantity="one">%d şarkı seçildi</item>
         <item quantity="other">%d şarkı seçildi</item>
     </plurals>
-
     <plurals name="s_songs">
         <item quantity="one">%d şarkı</item>
         <item quantity="other">%d şarkı</item>
     </plurals>
-
     <plurals name="s_hours">
         <item quantity="one">%d saat</item>
         <item quantity="other">%d saat</item>
     </plurals>
-
     <plurals name="s_minutes">
         <item quantity="one">%d dakika</item>
         <item quantity="other">%d dakika</item>
     </plurals>
-
     <plurals name="s_seconds">
         <item quantity="one">%d saniye</item>
         <item quantity="other">%d saniye</item>
     </plurals>
-
     <string name="select_all">Hepsini seç</string>
-
     <!--placeholders-->
     <string name="placeholder_unknown">Bilinmeyen</string>
     <string name="placeholder_zero_duration">0:00</string>
     <string name="placeholder_freq_range">0.00 hz</string>
-
     <!--options menu-->
     <string name="play">Oyna</string>
     <string name="edit">Düzenle</string>
@@ -129,18 +109,12 @@
     <string name="cut_ringtone">Zil sesini kes</string>
     <string name="add_song">Şarkı ekle</string>
     <string name="remove_from_queue">Mevcut kuyruktan kaldır</string>
-
     <!--deletion confirmation-->
     <string name="confirmation">Onayla</string>
     <string name="confirmation_delete_item">Bu öğeyi silmek istediğinize emin misiniz?</string>
     <string name="confirmation_delete_items">Bu öğeleri silmek istediğinize emin misiniz?</string>
-    <string name="confirmation_delete_item_and_related_song_files">
-        Bu öğeyi silmek istediğinize emin misiniz? Burada bulunan tüm müzik dosyaları da silinecektir.
-    </string>
-    <string name="confirmation_delete_items_and_related_song_files">
-        Bu öğeleri silmek istediğinize emin misiniz? İçlerinde bulunan tüm müzik dosyaları da silinecektir.
-    </string>
-
+    <string name="confirmation_delete_item_and_related_song_files">Bu öğeyi silmek istediğinize emin misiniz? Burada bulunan tüm müzik dosyaları da silinecektir.</string>
+    <string name="confirmation_delete_items_and_related_song_files">Bu öğeleri silmek istediğinize emin misiniz? İçlerinde bulunan tüm müzik dosyaları da silinecektir.</string>
     <!--titles for main view pager-->
     <string name="all_songs">Bütün müzikler</string>
     <string name="songs">Şarkılar</string>
@@ -151,7 +125,6 @@
     <string name="folders">Klasörler</string>
     <string name="recently_added">Son eklenenler</string>
     <string name="most_played">En çok oynanan</string>
-
     <!--counting tracks, albums, genres and etc.-->
     <string name="number_of_albums">%d albüm</string>
     <string name="one_album">1 albüm</string>
@@ -159,7 +132,6 @@
     <string name="no_tracks">Şarkı yok</string>
     <string name="one_track">1 şarkı</string>
     <string name="number_of_tracks">%d şarkı</string>
-
     <!--recently added-->
     <string name="added">Eklendi</string>
     <string name="recent_period">Son dönem</string>
@@ -168,7 +140,6 @@
     <string name="for_last_week">Geçen hafta için</string>
     <string name="for_last_month">Geçen ay için</string>
     <string name="for_last_year">Geçen yıl için</string>
-
     <!--play count-->
     <string name="not_played_yet">Henüz oynanmadı</string>
     <string name="last_time_s">Son kez: %s</string>
@@ -176,24 +147,20 @@
         <item quantity="one">%d kez oynandı</item>
         <item quantity="other">%d defa oynandı</item>
     </plurals>
-
     <!--navigation drawer menu-->
     <string name="nav_library">Kütüphane</string>
     <string name="nav_equalizer">Ekolayzer</string>
     <string name="nav_settings">Ayarlar</string>
     <string name="nav_search">Ara</string>
     <string name="nav_favourite">Favori</string>
-
     <!--app preferences-->
     <string name="playback_settings">Geri çalma</string>
     <string name="library_settings">Kütüphane</string>
     <string name="appearance_settings">Dış görünüş</string>
     <string name="about_app_settings">Hakkında</string>
-
     <!--app preferences-->
     <string name="version">Uygulama sürümü</string>
     <string name="licenses">Lisanslar</string>
-
     <string name="app_theme_desc">Uygulama için bir tema seçin ve uygulayın</string>
     <string name="page_s_of_s">%d / %d</string>
     <string name="apply_theme">Temayı Uygula</string>
@@ -206,17 +173,11 @@
     <string name="dark_purple_theme">Koyu mor tema</string>
     <string name="dark_orange_theme">Koyu turuncu tema</string>
     <string name="dark_green_theme">Koyu yeşil tema</string>
-
     <!--Headphones settings-->
     <string name="pause_playback">Oynatmayı duraklat</string>
     <string name="resume_playback">Oynatmayı başlat</string>
-    <string name="pause_when_headphones_are_disconnected">
-        Kulaklık bağlantısı kesildiğinde çalmayı duraklatın
-    </string>
-    <string name="resume_when_headphones_are_connected">
-        Kulaklık bağlandığında çalmayı başlatın
-    </string>
-
+    <string name="pause_when_headphones_are_disconnected">Kulaklık bağlantısı kesildiğinde çalmayı duraklatın</string>
+    <string name="resume_when_headphones_are_connected">Kulaklık bağlandığında çalmayı başlatın</string>
     <string name="sleep_timer">Uyku zamanlayıcısı</string>
     <string name="sleep_time_description">Çalmayı durdurmak için bir zamanlayıcı ayarlayın</string>
     <string name="you_have_already_set_up_sleep_timer">Zaten bir zamanlayıcı ayarladınız.
@@ -239,9 +200,7 @@
     <!--Playback fading-->
     <string name="playback_fading">Müzik çalmanın solması</string>
     <string name="playback_fading_desc">Müzik çalmanın nasıl açılıp kapanacağını kontrol eder</string>
-    <string name="playback_fading_full_desc">
-        Burada oynatmanın nasıl açılıp kapanacağını kontrol edersiniz. Aşağıdaki kaydırıcıyı kullanarak uygun bir süre ayarlayabilirsiniz. Süre "0", solma olmayacağı anlamına gelir.
-    </string>
+    <string name="playback_fading_full_desc">Burada oynatmanın nasıl açılıp kapanacağını kontrol edersiniz. Aşağıdaki kaydırıcıyı kullanarak uygun bir süre ayarlayabilirsiniz. Süre "0", solma olmayacağı anlamına gelir.</string>
     <string name="playback_fading_duration">Süre</string>
     <!--Library song filter-->
     <string name="library_song_filter_pref_title">Şarkı türü filtresi</string>
@@ -253,29 +212,21 @@
     <string name="library_song_filter_type_alarm">Alarm saati</string>
     <string name="library_song_filter_type_notification">Bildirim</string>
     <string name="library_song_filter_type_audiobook">Sesli kitap</string>
-
     <!--create and edit playlist-->
     <string name="save_playlist">Oynatma listesini kaydet</string>
     <string name="edit_playlist">Çalma listesini düzenle</string>
     <string name="playlist_name">Oynatma listesi adı</string>
     <string name="name_is_empty">İsim boş olmamalıdır</string>
     <string name="such_name_already_exists">Böyle bir isim zaten var</string>
-
     <!--AudioFx-->
     <string name="audio_fx_switch_tooltip">Ses efektlerini etkinleştirmek için geçiş yapın</string>
     <string name="no_audio_effects_available">Ses efekti yok</string>
-    <string name="no_audio_effects_available_desc">
-        Kullanılabilir herhangi bir ses efekti bulamadık. Lütfen Android işletim sistemi tarafından sağlanan varsayılan ekolayzırı etkinleştirin
-    </string>
+    <string name="no_audio_effects_available_desc">Kullanılabilir herhangi bir ses efekti bulamadık. Lütfen Android işletim sistemi tarafından sağlanan varsayılan ekolayzırı etkinleştirin</string>
     <string name="no_audio_is_playing_now">Şu anda çalınan şarkı yok</string>
-    <string name="no_audio_is_playing_now_desc">
-        Sesi ayarlayabilmek için bir şarkı çalmaya başlamalısınız
-    </string>
-
+    <string name="no_audio_is_playing_now_desc">Sesi ayarlayabilmek için bir şarkı çalmaya başlamalısınız</string>
     <!--create preset-->
     <string name="save_preset">Hazır ayarı kaydet</string>
     <string name="preset_name">Ön ayar adı</string>
-
     <!--equalizer-->
     <string name="freq_range">%s hz</string>
     <string name="nothing_to_show">Gösterecek bir şey yok</string>
@@ -288,23 +239,18 @@
     <string name="pitch">Ton</string>
     <string name="reset_playback_params_when_switching_song">Şarkı değiştirirken ayarları sıfırla</string>
     <string name="normalize">Normalleştirmek</string>
-
     <!--media file editor-->
     <string name="song_name_layout">Isim</string>
     <string name="album_name_layout">Albüm</string>
     <string name="genre_name_layout">Tür</string>
     <string name="artist_name_layout">Sanatçı</string>
-    <string name="delete_album_art_confirmation">
-        Bu albümün kapağını silmek istiyor musunuz?
-    </string>
+    <string name="delete_album_art_confirmation">Bu albümün kapağını silmek istiyor musunuz?</string>
     <string name="no_album_art">Albüm kapağı yok</string>
     <string name="pick_new_album_art">Yeni bir tane seçin</string>
-
     <string name="app_theme">Uygulama Teması</string>
     <string name="third_part_libs">Üçüncü parti kütüphaneleri</string>
     <string name="album_grid">Albüm ızgarası</string>
     <string name="show_album_grid">Albümleri görüntülemek için ızgarayı kullanın</string>
-
     <!--Preset-->
     <string name="preset">Türler</string>
     <string name="preset_none">Hiçbir şey değil</string>
@@ -318,7 +264,6 @@
     <string name="preset_hip_hop">Hip Hop</string>
     <string name="preset_jazz">Caz</string>
     <string name="preset_pop">Pop</string>
-
     <!--Preset reverb-->
     <string name="preset_reverb">Eko Ayarları</string>
     <string name="preset_reverb_none">Hiçbir şey değil</string>
@@ -328,41 +273,32 @@
     <string name="preset_reverb_medium_room">Orta oda</string>
     <string name="preset_reverb_plate">Büyük alan</string>
     <string name="preset_reverb_small_rooom">Küçük oda</string>
-
     <!--Playback notification-->
     <string name="playback_channel_name">Geri çalma</string>
     <string name="playback_channel_desc">Geçerli oynatma durumu hakkında uyarır</string>
-
     <string name="scanning_started">Tarama başladı</string>
     <string name="scanning_completed">Tarama tamamlandı</string>
     <string name="rescan_media_library">Medya kitaplığını yeniden tara</string>
     <string name="do_you_want_to_rescan_media_library">Medya kitaplığınızı taramak ister misiniz?</string>
-
     <!--Shortcuts-->
     <string name="create_shortcut">Kısayol oluştur</string>
     <string name="create_shortcut_on_home_screen">Ana ekranda kısayol oluşturma</string>
     <string name="shortcut_created">Kısayol oluşturuldu</string>
-    <string name="do_you_want_to_create_shortcut_for_s">
-        Ana ekranda %s için bir kısayol oluşturmak istiyor musunuz?
-    </string>
-
+    <string name="do_you_want_to_create_shortcut_for_s">Ana ekranda %s için bir kısayol oluşturmak istiyor musunuz?</string>
     <!--MinAudioFileDuration-->
     <string name="exclude_short_songs">Kısa şarkıları hariç tut</string>
     <string name="exclude_short_songs_desc">Kısa şarkıları kütüphane aramasından hariç tutma</string>
     <string name="specify_min_audio_file_duration">
         Minimum ses dosyası süresini belirtin. Belirtilen süreden daha kısa süreye sahip tüm ses dosyaları kütüphane araması dışında bırakılır.
         Bu değerler boşsa veya 0:0\'dan daha fazla ses dosyası hariç tutulmayacaktır.
-        \n\n<b>NOT: bunu belirtirseniz, kitaplık biraz daha yavaş çalışır (albümler, sanatçılar, türler daha yavaş yüklenir).
+        \n\n
+        <b>NOT: bunu belirtirseniz, kitaplık biraz daha yavaş çalışır (albümler, sanatçılar, türler daha yavaş yüklenir).
         Sınırı kaldırmak için 0:0 girin</b>
     </string>
-
     <!--RES permission-->
     <string name="permission_denied">İzin reddedildi</string>
     <string name="grant_res_permission">İzin ver</string>
-    <string name="need_for_res_permission_explanation">
-        Bu izin olmadan, uygulama cihazınızdan müziğe göz atamaz. İzin vermek istiyor musunuz?
-    </string>
-
+    <string name="need_for_res_permission_explanation">Bu izin olmadan, uygulama cihazınızdan müziğe göz atamaz. İzin vermek istiyor musunuz?</string>
     <!--PlayerJournal-->
     <string name="player_journal">Müzik çalar günlükleri</string>
     <string name="player_journal_desc">Müzik çalar günlüğündeki tüm mesajları görüntüle</string>
@@ -370,22 +306,19 @@
     <string name="copy_player_logs_to_clipboard">Kopyala</string>
     <string name="player_logs">Müzik çalar günlükleri</string>
     <string name="copied">Kopyalandı</string>
-
     <!--Push notifications-->
     <string name="push_notifications_channel_name">Push bildirimleri</string>
     <string name="push_notifications_channel_desc">Haberler ve uygulama güncellemeleri hakkında faydalı bilgiler içerir</string>
-
     <!--Lyrics-->
     <string name="view_lyrics">Şarkı sözlerini görüntüle</string>
     <string name="lyrics_not_tap_to_write">Metin bulunamadı, kendiniz yazmak için burayı tıklayın</string>
-
     <!--Premium-->
     <string name="buy_premium">Premium satın al</string>
     <string name="buy_premium_desc">Reklamları kaldırın ve premium özelliklerin engelini kaldırın</string>
     <string name="premium_dialog_title">Premium</string>
     <string-array name="premium_benefits">
         <item>Tüm reklamları kaldırma</item>
-<!--        <item>Oynatmanın solmasının kilidini açın</item>-->
+        <!--        <item>Oynatmanın solmasının kilidini açın</item>-->
         <item>Oynatma hızının ve tonunun kilidini açın</item>
         <item>Tüm temaların kilidini açın</item>
         <item>Gelecekteki güncellemelerde tüm yeni özelliklere tam erişim</item>
@@ -401,11 +334,9 @@
     </plurals>
     <string name="activate_premium_trial">Deneme sürümünü etkinleştirin</string>
     <string name="premium_trial_activated">Premium deneme etkinleştirildi</string>
-
     <!--Snowfall-->
     <string name="snowfall">Kar yağışı</string>
     <string name="snowfall_desc">Bir kış havası için süslü kar yağışını açın</string>
-
     <!--Donations-->
     <string name="donations_title">Bağış yapmak</string>
     <string name="donations_subtitle">Projenin gelişimi için küçük bağış</string>
@@ -419,3 +350,4 @@
     <string name="donate_meal">Bir yemek</string>
     <string name="donate_gym">Spor salonu üyeliği</string>
 </resources>
+

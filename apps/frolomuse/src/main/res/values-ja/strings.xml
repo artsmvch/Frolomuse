@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <resources>
     <string name="ok">オーケー</string>
     <string name="create">作成する</string>
@@ -24,16 +25,11 @@
     <string name="message_one_file_hidden">ファイルは非表示になっています。 設定で戻すことができます</string>
     <string name="message_multiple_files_hidden">選択したファイルは非表示になっています。 設定に戻すことができます</string>
     <string name="scan_files">ファイルをスキャンする</string>
-
     <!--Hidden files-->
     <string name="hidden_files">隠しファイル</string>
     <string name="hidden_files_desc">ファイルブラウザで非表示になっているファイル</string>
-    <string name="hidden_files_placeholder_message">
-        隠しファイルはまだありません。 ファイルを非表示にするには、ファイルブラウザーで適切なオプションを選択します。
-    </string>
-
+    <string name="hidden_files_placeholder_message">隠しファイルはまだありません。 ファイルを非表示にするには、ファイルブラウザーで適切なオプションを選択します。</string>
     <!--Errors-->
-
     <!--Sort orders-->
     <string name="sort">ソート</string>
     <string name="ascending">上昇</string>
@@ -49,13 +45,11 @@
     <string name="sort_by_filename">ファイル名で</string>
     <string name="sort_by_play_order">プレイ順で</string>
     <string name="sort_by_duration">期間別</string>
-
     <!--Rating-->
     <string name="would_you_rate">このアプリを5つ星と評価しますか？</string>
     <string name="no">いいえ</string>
     <string name="remind_me_later">後ほど私に質問して</string>
     <string name="rate">はい私はそれが好き！</string>
-
     <string name="now_playing">現在演奏中</string>
     <string name="queue">キュー</string>
     <string name="current_song_queue">現在の曲のキュー</string>
@@ -65,46 +59,32 @@
     <string name="album">アルバム</string>
     <string name="artist">アーティスト</string>
     <string name="genre">ジャンル</string>
-
     <!--AddMediaToPlaylist-->
     <string name="select_playlist">プレイリストを選択</string>
-    <string name="select_playlist_to_which_you_want_to_add_music">
-        音楽を追加するプレイリストを選択します
-    </string>
-
+    <string name="select_playlist_to_which_you_want_to_add_music">音楽を追加するプレイリストを選択します</string>
     <!--AddSongToPlaylist-->
-    <string name="add_song_to_s_playlist_hint">
-        「%s」プレイリストに追加する曲を選択して、「プレイリストに追加」ボタンをクリックします
-    </string>
-
+    <string name="add_song_to_s_playlist_hint">「%s」プレイリストに追加する曲を選択して、「プレイリストに追加」ボタンをクリックします</string>
     <!--Plurals-->
     <plurals name="s_songs_selected">
         <item quantity="other">%d 曲を選択しました</item>
     </plurals>
-
     <plurals name="s_songs">
         <item quantity="other">%d 曲</item>
     </plurals>
-
     <plurals name="s_hours">
         <item quantity="other">%d 時間</item>
     </plurals>
-
     <plurals name="s_minutes">
         <item quantity="other">%d 分</item>
     </plurals>
-
     <plurals name="s_seconds">
         <item quantity="other">%d 秒</item>
     </plurals>
-
     <string name="select_all">すべて選択</string>
-
     <!--placeholders-->
     <string name="placeholder_unknown">道の</string>
     <string name="placeholder_zero_duration">0:00</string>
     <string name="placeholder_freq_range">0.00 ヘルツ</string>
-
     <!--options menu-->
     <string name="play">遊びます</string>
     <string name="edit">編集</string>
@@ -125,18 +105,12 @@
     <string name="cut_ringtone">着信音をカット</string>
     <string name="add_song">曲を追加</string>
     <string name="remove_from_queue">現在のキューから削除</string>
-
     <!--deletion confirmation-->
     <string name="confirmation">確認</string>
     <string name="confirmation_delete_item">このアイテムを削除してもよろしいですか？</string>
     <string name="confirmation_delete_items">これらのアイテムを削除してもよろしいですか？</string>
-    <string name="confirmation_delete_item_and_related_song_files">
-        このアイテムを削除してもよろしいですか？ その中に含まれるすべての音楽ファイルも削除されます。
-    </string>
-    <string name="confirmation_delete_items_and_related_song_files">
-        これらのアイテムを削除してもよろしいですか？ それらに含まれるすべての音楽ファイルも削除されます。
-    </string>
-
+    <string name="confirmation_delete_item_and_related_song_files">このアイテムを削除してもよろしいですか？ その中に含まれるすべての音楽ファイルも削除されます。</string>
+    <string name="confirmation_delete_items_and_related_song_files">これらのアイテムを削除してもよろしいですか？ それらに含まれるすべての音楽ファイルも削除されます。</string>
     <!--titles for main view pager-->
     <string name="all_songs">すべての音楽</string>
     <string name="songs">歌</string>
@@ -147,7 +121,6 @@
     <string name="folders">ディレクトリ</string>
     <string name="recently_added">最近追加された</string>
     <string name="most_played">最もプレイされた</string>
-
     <!--counting tracks, albums, genres and etc.-->
     <string name="number_of_albums">%d 枚のアルバム</string>
     <string name="one_album">1枚のアルバム</string>
@@ -155,7 +128,6 @@
     <string name="no_tracks">歌なし</string>
     <string name="one_track">1曲</string>
     <string name="number_of_tracks">%d 曲</string>
-
     <!--recently added-->
     <string name="added">追加しました</string>
     <string name="recent_period">最近の期間</string>
@@ -164,31 +136,26 @@
     <string name="for_last_week">先週</string>
     <string name="for_last_month">先月</string>
     <string name="for_last_year">昨年のために</string>
-
     <!--play count-->
     <string name="not_played_yet">まだプレイされていません</string>
     <string name="last_time_s">前回: %s</string>
     <plurals name="played_s_times">
         <item quantity="other">%d 回プレイした</item>
     </plurals>
-
     <!--navigation drawer menu-->
     <string name="nav_library">ライブラリ</string>
     <string name="nav_equalizer">イコライザ</string>
     <string name="nav_settings">設定</string>
     <string name="nav_search">サーチ</string>
     <string name="nav_favourite">お気に入り</string>
-
     <!--app preferences-->
     <string name="playback_settings">オーディオ再生</string>
     <string name="library_settings">ライブラリ</string>
     <string name="appearance_settings">外観</string>
     <string name="about_app_settings">アプリについて</string>
-
     <!--app preferences-->
     <string name="version">アプリケーションのバージョン</string>
     <string name="licenses">ライセンス</string>
-
     <string name="app_theme_desc">アプリのテーマを選択して適用します</string>
     <string name="page_s_of_s">%d / %d</string>
     <string name="apply_theme">テーマを適用する</string>
@@ -201,17 +168,11 @@
     <string name="dark_purple_theme">濃い紫色のテーマ</string>
     <string name="dark_orange_theme">濃いオレンジのテーマ</string>
     <string name="dark_green_theme">濃い緑のテーマ</string>
-
     <!--Headphones settings-->
     <string name="pause_playback">再生を一時停止する</string>
     <string name="resume_playback">再生を再開する</string>
-    <string name="pause_when_headphones_are_disconnected">
-        ヘッドフォンが接続されていないときに再生を一時停止します
-    </string>
-    <string name="resume_when_headphones_are_connected">
-        ヘッドフォンが接続されているときに再生を再開します
-    </string>
-
+    <string name="pause_when_headphones_are_disconnected">ヘッドフォンが接続されていないときに再生を一時停止します</string>
+    <string name="resume_when_headphones_are_connected">ヘッドフォンが接続されているときに再生を再開します</string>
     <string name="sleep_timer">目覚まし時計</string>
     <string name="sleep_time_description">再生を停止するタイマーを設定する</string>
     <string name="you_have_already_set_up_sleep_timer">既にタイマーを設定しています。 現在のタイマーをリセットするか、新しいタイマーを設定しますか？</string>
@@ -233,9 +194,7 @@
     <!--Playback fading-->
     <string name="playback_fading">音楽再生のフェード</string>
     <string name="playback_fading_desc">再生をフェードインおよびフェードアウトする方法を制御します</string>
-    <string name="playback_fading_full_desc">
-        ここでは、再生をフェードインおよびフェードアウトする方法を制御します。下のスライダーを使用して適切な期間を設定できます。継続時間「0」は、フェードがないことを意味します。
-    </string>
+    <string name="playback_fading_full_desc">ここでは、再生をフェードインおよびフェードアウトする方法を制御します。下のスライダーを使用して適切な期間を設定できます。継続時間「0」は、フェードがないことを意味します。</string>
     <string name="playback_fading_duration">期間</string>
     <!--Library song filter-->
     <string name="library_song_filter_pref_title">ソングタイプフィルター</string>
@@ -247,29 +206,21 @@
     <string name="library_song_filter_type_alarm">目覚まし時計</string>
     <string name="library_song_filter_type_notification">通知</string>
     <string name="library_song_filter_type_audiobook">オーディオブック</string>
-
     <!--create playlist-->
     <string name="save_playlist">プレイリストを保存</string>
     <string name="edit_playlist">プレイリストを編集</string>
     <string name="playlist_name">プレイリスト名</string>
     <string name="name_is_empty">名前は空でなければならない</string>
     <string name="such_name_already_exists">そのような名前は既に存在します</string>
-
     <!--AudioFx-->
     <string name="audio_fx_switch_tooltip">切り替えてオーディオエフェクトを有効にする</string>
     <string name="no_audio_effects_available">オーディオエフェクトなし</string>
-    <string name="no_audio_effects_available_desc">
-        利用可能なオーディオエフェクトが見つかりませんでした。 Androidオペレーティングシステムが提供するデフォルトのイコライザーを有効にしてください
-    </string>
+    <string name="no_audio_effects_available_desc">利用可能なオーディオエフェクトが見つかりませんでした。 Androidオペレーティングシステムが提供するデフォルトのイコライザーを有効にしてください</string>
     <string name="no_audio_is_playing_now">現在、音声は再生されていません</string>
-    <string name="no_audio_is_playing_now_desc">
-        サウンドを調整できるようにするには、曲の再生を開始する必要があります
-    </string>
-
+    <string name="no_audio_is_playing_now_desc">サウンドを調整できるようにするには、曲の再生を開始する必要があります</string>
     <!--create preset-->
     <string name="save_preset">プリセットを保存</string>
     <string name="preset_name">プリセット名</string>
-
     <!--equalizer-->
     <string name="freq_range">%s hz</string>
     <string name="nothing_to_show">表示するメディアはありません</string>
@@ -282,23 +233,18 @@
     <string name="pitch">ピッチ</string>
     <string name="reset_playback_params_when_switching_song">曲を切り替えるときに設定をリセットする</string>
     <string name="normalize">ノーマライズ</string>
-
     <!--media file editor-->
     <string name="song_name_layout">タイトル</string>
     <string name="album_name_layout">アルバム</string>
     <string name="genre_name_layout">ジャンル</string>
     <string name="artist_name_layout">アーティスト</string>
-    <string name="delete_album_art_confirmation">
-        このアルバムのカバーを削除しますか？
-    </string>
+    <string name="delete_album_art_confirmation">このアルバムのカバーを削除しますか？</string>
     <string name="no_album_art">アルバムカバーなし</string>
     <string name="pick_new_album_art">新しいものを選ぶ</string>
-
     <string name="app_theme">アプリのテーマ</string>
     <string name="third_part_libs">サードパーティのライブラリ</string>
     <string name="album_grid">アルバムグリッド</string>
     <string name="show_album_grid">グリッドを使用してアルバムを表示する</string>
-
     <!--Preset-->
     <string name="preset">プリセット</string>
     <string name="preset_none">何もない</string>
@@ -312,7 +258,6 @@
     <string name="preset_hip_hop">ヒップホップ</string>
     <string name="preset_jazz">ジャズ</string>
     <string name="preset_pop">人気の音楽</string>
-
     <!--Preset reverb-->
     <string name="preset_reverb">残響</string>
     <string name="preset_reverb_none">何もない</string>
@@ -322,41 +267,32 @@
     <string name="preset_reverb_medium_room">ミディアムルーム</string>
     <string name="preset_reverb_plate">プレート</string>
     <string name="preset_reverb_small_rooom">小さな部屋</string>
-
     <!--Playback notification-->
     <string name="playback_channel_name">再生</string>
     <string name="playback_channel_desc">現在の再生ステータスを通知します</string>
-
     <string name="scanning_started">スキャン開始</string>
     <string name="scanning_completed">スキャン完了</string>
     <string name="rescan_media_library">メディアライブラリの再スキャン</string>
     <string name="do_you_want_to_rescan_media_library">メディアライブラリを再スキャンしますか？</string>
-
     <!--Shortcuts-->
     <string name="create_shortcut">ショートカットを作成する</string>
     <string name="create_shortcut_on_home_screen">ホーム画面にショートカットを作成</string>
     <string name="shortcut_created">ショートカットが作成されました</string>
-    <string name="do_you_want_to_create_shortcut_for_s">
-        %s のショートカットをホーム画面に作成しますか？
-    </string>
-
+    <string name="do_you_want_to_create_shortcut_for_s">%s のショートカットをホーム画面に作成しますか？</string>
     <!--MinAudioFileDuration-->
     <string name="exclude_short_songs">短い曲を除外する</string>
     <string name="exclude_short_songs_desc">ライブラリ検索から短い曲を除外する</string>
     <string name="specify_min_audio_file_duration">
         オーディオファイルの最小継続時間を指定します。指定されたよりも短い継続時間を持つすべてのオーディオファイルは、ライブラリ検索から除外されます。
         これらの値が空または0：0の場合、オーディオファイルは除外されません。
-        \n\n<b>注：これを指定すると、ライブラリの動作が少し遅くなります（アルバム、アーティスト、ジャンルの読み込みが遅くなります）。
+        \n\n
+        <b>注：これを指定すると、ライブラリの動作が少し遅くなります（アルバム、アーティスト、ジャンルの読み込みが遅くなります）。
         制限を解除するには、0：0と入力してください</b>
     </string>
-
     <!--RES permission-->
     <string name="permission_denied">アクセス拒否</string>
     <string name="grant_res_permission">許可を与える</string>
-    <string name="need_for_res_permission_explanation">
-        この権限がないと、アプリケーションはデバイスから音楽を閲覧できません。許可を与えますか？
-    </string>
-
+    <string name="need_for_res_permission_explanation">この権限がないと、アプリケーションはデバイスから音楽を閲覧できません。許可を与えますか？</string>
     <!--PlayerJournal-->
     <string name="player_journal">音楽プレーヤーログ</string>
     <string name="player_journal_desc">音楽プレーヤーログからのすべてのメッセージを表示します</string>
@@ -364,22 +300,19 @@
     <string name="copy_player_logs_to_clipboard">コピー</string>
     <string name="player_logs">音楽プレーヤーログ</string>
     <string name="copied">クリップボードにコピー</string>
-
     <!--Push notifications-->
     <string name="push_notifications_channel_name">プッシュ通知</string>
     <string name="push_notifications_channel_desc">ニュースやアプリのアップデートに関する役立つ情報が含まれています</string>
-
     <!--Lyrics-->
     <string name="view_lyrics">歌詞を見る</string>
     <string name="lyrics_not_tap_to_write">テキストが見つかりません。ここをクリックして自分で書いてください</string>
-
     <!--Premium-->
     <string name="buy_premium">プレミアムを購入する</string>
     <string name="buy_premium_desc">広告を削除し、プレミアム機能のブロックを解除します</string>
     <string name="premium_dialog_title">プレミアム</string>
     <string-array name="premium_benefits">
         <item>すべての広告を削除する</item>
-<!--        <item>再生フェードのロックを解除する</item>-->
+        <!--        <item>再生フェードのロックを解除する</item>-->
         <item>再生速度とピッチのロックを解除する</item>
         <item>すべてのテーマのロックを解除します</item>
         <item>今後のアップデートでのすべての新機能へのフルアクセス</item>
@@ -394,11 +327,9 @@
     </plurals>
     <string name="activate_premium_trial">試用版を有効にする</string>
     <string name="premium_trial_activated">プレミアムトライアルが有効になりました</string>
-
     <!--Snowfall-->
     <string name="snowfall">降雪</string>
     <string name="snowfall_desc">冬の気分のために気まぐれな降雪をオンにします</string>
-
     <!--Donations-->
     <string name="donations_title">寄付</string>
     <string name="donations_subtitle">プロジェクトの開発のための少額の寄付</string>
@@ -412,3 +343,4 @@
     <string name="donate_meal">食事</string>
     <string name="donate_gym">ジムメンバーシップ</string>
 </resources>
+

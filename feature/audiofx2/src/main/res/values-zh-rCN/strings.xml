@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="save_preset">保存为预设</string>
+    <string name="preset_name">预设名称</string>
+    <string name="cancel">取消</string>
+    <string name="save">保存</string>
+</resources>
+

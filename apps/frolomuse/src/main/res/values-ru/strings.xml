@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <resources>
     <string name="ok">Хорошо</string>
     <string name="create">Создать</string>
@@ -24,16 +25,11 @@
     <string name="message_one_file_hidden">Файл был скрыт. Вы можете вернуть его обратно в настройках</string>
     <string name="message_multiple_files_hidden">Выбранные файлы были скрыты. Вы можете вернуть их обратно в настройках</string>
     <string name="scan_files">Просканировать файлы</string>
-
     <!--Hidden files-->
     <string name="hidden_files">Скрытые файлы</string>
     <string name="hidden_files_desc">Файлы, которые скрыты в браузере файлов</string>
-    <string name="hidden_files_placeholder_message">
-        У вас еще нет скрытых файлов. Чтобы скрыть файл, выберите соответствующий параметр в браузере файлов.
-    </string>
-
+    <string name="hidden_files_placeholder_message">У вас еще нет скрытых файлов. Чтобы скрыть файл, выберите соответствующий параметр в браузере файлов.</string>
     <!--Errors-->
-
     <!--Sort orders-->
     <string name="sort">Сортировать</string>
     <string name="ascending">По возрастанию</string>
@@ -49,13 +45,11 @@
     <string name="sort_by_filename">По названию</string>
     <string name="sort_by_play_order">По порядку игры</string>
     <string name="sort_by_duration">По продолжительности</string>
-
     <!--Rating-->
     <string name="would_you_rate">Оценили бы Вы приложение в 5 звёзд?</string>
     <string name="no">Нет</string>
     <string name="remind_me_later">Спросите меня позже</string>
     <string name="rate">Да, мне нравится!</string>
-
     <string name="now_playing">Сейчас играет</string>
     <string name="queue">Очередь</string>
     <string name="current_song_queue">Текущая очередь песен</string>
@@ -65,18 +59,11 @@
     <string name="album">Альбом</string>
     <string name="artist">Артист</string>
     <string name="genre">Жанр</string>
-
     <!--AddMediaToPlaylist-->
     <string name="select_playlist">Выберите плейлист</string>
-    <string name="select_playlist_to_which_you_want_to_add_music">
-        Выберите плейлист, в который вы хотите добавить музыку
-    </string>
-
+    <string name="select_playlist_to_which_you_want_to_add_music">Выберите плейлист, в который вы хотите добавить музыку</string>
     <!--AddSongToPlaylist-->
-    <string name="add_song_to_s_playlist_hint">
-        Выберите песни, которые вы хотите добавить в список воспроизведения \"%s\", а затем нажмите кнопку \"Добавить в плейлист\"
-    </string>
-
+    <string name="add_song_to_s_playlist_hint">Выберите песни, которые вы хотите добавить в список воспроизведения \"%s\", а затем нажмите кнопку \"Добавить в плейлист\"</string>
     <!--Plurals-->
     <plurals name="s_songs_selected">
         <item quantity="one">%d трек выбран</item>
@@ -84,42 +71,35 @@
         <item quantity="many">%d треков выбрано</item>
         <item quantity="other">%d треков выбрано</item>
     </plurals>
-
     <plurals name="s_songs">
         <item quantity="one">%d трек</item>
         <item quantity="few">%d трека</item>
         <item quantity="many">%d треков</item>
         <item quantity="other">%d треков</item>
     </plurals>
-
     <plurals name="s_hours">
         <item quantity="one">%d час</item>
         <item quantity="few">%d часа</item>
         <item quantity="many">%d часов</item>
         <item quantity="other">%d часов</item>
     </plurals>
-
     <plurals name="s_minutes">
         <item quantity="one">%d минута</item>
         <item quantity="few">%d минуты</item>
         <item quantity="many">%d минут</item>
         <item quantity="other">%d минут</item>
     </plurals>
-
     <plurals name="s_seconds">
         <item quantity="one">%d секунда</item>
         <item quantity="few">%d секунды</item>
         <item quantity="many">%d секунд</item>
         <item quantity="other">%d секунд</item>
     </plurals>
-
     <string name="select_all">Выбрать все</string>
-
     <!--placeholders-->
     <string name="placeholder_unknown">Неизвестно</string>
     <string name="placeholder_zero_duration">0:00</string>
     <string name="placeholder_freq_range">0.00 hz</string>
-
     <!--options menu-->
     <string name="play">Воспроизвести</string>
     <string name="edit">Редактировать</string>
@@ -140,18 +120,12 @@
     <string name="cut_ringtone">Вырезать рингтон</string>
     <string name="add_song">Добавить песню</string>
     <string name="remove_from_queue">Удалить из текущей очереди</string>
-
     <!--deletion confirmation-->
     <string name="confirmation">Подтверждение</string>
     <string name="confirmation_delete_item">Вы уверены, что хотите удалить этот элемент?</string>
     <string name="confirmation_delete_items">Вы уверены, что хотите удалить эти элементы?</string>
-    <string name="confirmation_delete_item_and_related_song_files">
-        Вы уверены, что хотите удалить этот элемент? Все содержащиеся в нем музыкальные файлы также будут удалены.
-    </string>
-    <string name="confirmation_delete_items_and_related_song_files">
-        Вы уверены, что хотите удалить эти элементы? Все содержащиеся в них музыкальные файлы также будут удалены.
-    </string>
-
+    <string name="confirmation_delete_item_and_related_song_files">Вы уверены, что хотите удалить этот элемент? Все содержащиеся в нем музыкальные файлы также будут удалены.</string>
+    <string name="confirmation_delete_items_and_related_song_files">Вы уверены, что хотите удалить эти элементы? Все содержащиеся в них музыкальные файлы также будут удалены.</string>
     <!--titles for main view pager-->
     <string name="all_songs">Все треки</string>
     <string name="songs">Треки</string>
@@ -162,7 +136,6 @@
     <string name="folders">Папки</string>
     <string name="recently_added">Недавно добавленное</string>
     <string name="most_played">Популярные</string>
-
     <!--counting tracks, albums, genres and etc.-->
     <string name="number_of_albums">%d альб.</string>
     <string name="one_album">1 альбом</string>
@@ -170,7 +143,6 @@
     <string name="no_tracks">Нет треков</string>
     <string name="one_track">1 трек</string>
     <string name="number_of_tracks">%d тр.</string>
-
     <!--recently added-->
     <string name="added">Добавлено</string>
     <string name="recent_period">Недавний период</string>
@@ -179,7 +151,6 @@
     <string name="for_last_week">За последнюю неделю</string>
     <string name="for_last_month">За последний месяц</string>
     <string name="for_last_year">За последний год</string>
-
     <!--play count-->
     <string name="not_played_yet">Еще не проигрывалось</string>
     <string name="last_time_s">Последний раз: %s</string>
@@ -189,24 +160,20 @@
         <item quantity="many">Проигрывалось %d раз</item>
         <item quantity="other">Проигрывалось %d раз</item>
     </plurals>
-
     <!--navigation drawer menu-->
     <string name="nav_library">Библиотека</string>
     <string name="nav_equalizer">Эквалайзер</string>
     <string name="nav_settings">Настройки</string>
     <string name="nav_search">Поиск</string>
     <string name="nav_favourite">Любимые</string>
-
     <!--app preferences-->
     <string name="playback_settings">Воспроизведение</string>
     <string name="library_settings">Библиотека</string>
     <string name="appearance_settings">Внешний вид</string>
     <string name="about_app_settings">Об этом приложении</string>
-
     <!--app preferences-->
     <string name="version">Версия приложения</string>
     <string name="licenses">Лицензии</string>
-
     <string name="app_theme_desc">Выбрать и применить тему для приложения</string>
     <string name="page_s_of_s">%d из %d</string>
     <string name="apply_theme">Применить тему</string>
@@ -219,17 +186,11 @@
     <string name="dark_purple_theme">Темно-фиолетовая тема</string>
     <string name="dark_orange_theme">Темно-оранжевая тема</string>
     <string name="dark_green_theme">Темно-зеленая тема</string>
-
     <!--Headphones settings-->
     <string name="pause_playback">Приостановить воспроизведение</string>
     <string name="resume_playback">Возобновить воспроизведение</string>
-    <string name="pause_when_headphones_are_disconnected">
-        Приостановить воспроизведение при отключении наушников
-    </string>
-    <string name="resume_when_headphones_are_connected">
-        Возобновить воспроизведения при подключении наушников
-    </string>
-
+    <string name="pause_when_headphones_are_disconnected">Приостановить воспроизведение при отключении наушников</string>
+    <string name="resume_when_headphones_are_connected">Возобновить воспроизведения при подключении наушников</string>
     <string name="sleep_timer">Таймер сна</string>
     <string name="sleep_time_description">Установить таймер, чтобы остановить воспроизведение</string>
     <string name="you_have_already_set_up_sleep_timer">Вы уже настроили таймер.
@@ -252,9 +213,7 @@
     <!--Playback fading-->
     <string name="playback_fading">Затухание воспроизведения</string>
     <string name="playback_fading_desc">Управляйте тем, как воспроизведение должно появляться и исчезать</string>
-    <string name="playback_fading_full_desc">
-        Здесь вы управляете тем, как воспроизведение должно появляться и исчезать. Вы можете установить подходящую продолжительность с помощью ползунка ниже. Длительность «0» означает, что затухания не будет.
-    </string>
+    <string name="playback_fading_full_desc">Здесь вы управляете тем, как воспроизведение должно появляться и исчезать. Вы можете установить подходящую продолжительность с помощью ползунка ниже. Длительность «0» означает, что затухания не будет.</string>
     <string name="playback_fading_duration">Продолжительность</string>
     <!--Library song filter-->
     <string name="library_song_filter_pref_title">Фильтр по типу песни</string>
@@ -266,29 +225,21 @@
     <string name="library_song_filter_type_alarm">Будильник</string>
     <string name="library_song_filter_type_notification">Уведомление</string>
     <string name="library_song_filter_type_audiobook">Аудиокнига</string>
-
     <!-- create playlist-->
     <string name="save_playlist">Сохранить плейлист</string>
     <string name="edit_playlist">Редактировать плейлист</string>
     <string name="playlist_name">Название плейлиста</string>
     <string name="name_is_empty">Имя не  может быть пустым</string>
     <string name="such_name_already_exists">Такое имя уже существует</string>
-
     <!--AudioFx-->
     <string name="audio_fx_switch_tooltip">Переключите, чтобы включить звуковые эффекты</string>
     <string name="no_audio_effects_available">Звуковые эффекты не найдены</string>
-    <string name="no_audio_effects_available_desc">
-        Мы не смогли найти ни одного доступного звукового эффекта. Пожалуйста, включите эквалайзер по умолчанию, предоставляемый ОС Android
-    </string>
+    <string name="no_audio_effects_available_desc">Мы не смогли найти ни одного доступного звукового эффекта. Пожалуйста, включите эквалайзер по умолчанию, предоставляемый ОС Android</string>
     <string name="no_audio_is_playing_now">Звук сейчас не воспроизводится</string>
-    <string name="no_audio_is_playing_now_desc">
-        Вам нужно начать воспроизведение какой-либо песни, чтобы иметь возможность регулировать звук
-    </string>
-
+    <string name="no_audio_is_playing_now_desc">Вам нужно начать воспроизведение какой-либо песни, чтобы иметь возможность регулировать звук</string>
     <!--create preset-->
     <string name="save_preset">Сохранить пресет</string>
     <string name="preset_name">Название пресета</string>
-
     <!--equalizer-->
     <string name="freq_range">%s hz</string>
     <string name="nothing_to_show">Ничего не найдено</string>
@@ -301,23 +252,18 @@
     <string name="pitch">Подача</string>
     <string name="reset_playback_params_when_switching_song">Сброс настроек при переключении песен</string>
     <string name="normalize">Нормализовать</string>
-
     <!--media file editor-->
     <string name="song_name_layout">Название</string>
     <string name="album_name_layout">Альбом</string>
     <string name="genre_name_layout">Жанр</string>
     <string name="artist_name_layout">Артист</string>
-    <string name="delete_album_art_confirmation">
-        Вы хотите удалить обложку этого альбома?
-    </string>
+    <string name="delete_album_art_confirmation">Вы хотите удалить обложку этого альбома?</string>
     <string name="no_album_art">Нет обложки альбома</string>
     <string name="pick_new_album_art">Выбрать новую</string>
-
     <string name="app_theme">Тема приложения</string>
     <string name="third_part_libs">Сторонние библиотеки</string>
     <string name="album_grid">Альбомная сетка</string>
     <string name="show_album_grid">Использовать сетку для отображения альбомов</string>
-
     <!--Preset-->
     <string name="preset">Пресет</string>
     <string name="preset_none">Ничего</string>
@@ -331,7 +277,6 @@
     <string name="preset_hip_hop">Хип-хоп</string>
     <string name="preset_jazz">Джаз</string>
     <string name="preset_pop">Поп</string>
-
     <!--Preset reverb-->
     <string name="preset_reverb">Реверберация</string>
     <string name="preset_reverb_none">Ничего</string>
@@ -341,41 +286,32 @@
     <string name="preset_reverb_medium_room">Средняя комната</string>
     <string name="preset_reverb_plate">Плато</string>
     <string name="preset_reverb_small_rooom">Маленькая комната</string>
-
     <!--Playback notification-->
     <string name="playback_channel_name">Воспроизведение</string>
     <string name="playback_channel_desc">Уведомляет о текущем статусе воспроизведения</string>
-
     <string name="scanning_started">Сканирование началось</string>
     <string name="scanning_completed">Сканирование завершено</string>
     <string name="rescan_media_library">Просканировать медиатеку</string>
     <string name="do_you_want_to_rescan_media_library">Вы хотите просканировать свою медиатеку?</string>
-
     <!--Shortcuts-->
     <string name="create_shortcut">Создать ярлык</string>
     <string name="create_shortcut_on_home_screen">Создать ярлык на главном экране</string>
     <string name="shortcut_created">Ярлык создан</string>
-    <string name="do_you_want_to_create_shortcut_for_s">
-        Хотите создать ярлык для %s на главном экране?
-    </string>
-
+    <string name="do_you_want_to_create_shortcut_for_s">Хотите создать ярлык для %s на главном экране?</string>
     <!--MinAudioFileDuration-->
     <string name="exclude_short_songs">Исключить короткие песни</string>
     <string name="exclude_short_songs_desc">Исключить короткие песни из поиска библиотеки</string>
     <string name="specify_min_audio_file_duration">
         Укажите минимальную продолжительность аудиофайла. Все аудиофайлы с длительностью меньше указанной исключаются из поиска в библиотеке.
         Если эти значения пусты или 0:0, то никакие аудиофайлы не будут исключены.
-        \n\n<b>ПРИМЕЧАНИЕ: если вы укажете это, библиотека будет работать немного медленнее (альбомы, исполнители, жанры будут загружаться медленнее).
+        \n\n
+        <b>ПРИМЕЧАНИЕ: если вы укажете это, библиотека будет работать немного медленнее (альбомы, исполнители, жанры будут загружаться медленнее).
         Чтобы снять ограничение, просто введите 0:0</b>
     </string>
-
     <!--RES permission-->
     <string name="permission_denied">Доступ запрещён</string>
     <string name="grant_res_permission">Предоставить разрешение</string>
-    <string name="need_for_res_permission_explanation">
-        Без этого разрешения приложение не сможет просматривать музыку с вашего устройства. Вы хотите дать разрешение?
-    </string>
-
+    <string name="need_for_res_permission_explanation">Без этого разрешения приложение не сможет просматривать музыку с вашего устройства. Вы хотите дать разрешение?</string>
     <!--PlayerJournal-->
     <string name="player_journal">Журнал плеера</string>
     <string name="player_journal_desc">Показать все сообщения из журнала плеера</string>
@@ -383,22 +319,19 @@
     <string name="copy_player_logs_to_clipboard">Скопировать</string>
     <string name="player_logs">Журнал плеера</string>
     <string name="copied">Скопировано</string>
-
     <!--Push notifications-->
     <string name="push_notifications_channel_name">Push-уведомления</string>
     <string name="push_notifications_channel_desc">Содержит полезную информацию о новостях и обновлениях приложения</string>
-
     <!--Lyrics-->
     <string name="view_lyrics">Просмотреть текст песни</string>
     <string name="lyrics_not_tap_to_write">Текст не найден, нажмите здесь, чтобы написать его самостоятельно</string>
-
     <!--Premium-->
     <string name="buy_premium">Купить премиум</string>
     <string name="buy_premium_desc">Удалить рекламу и разблокировать премиум-функции</string>
     <string name="premium_dialog_title">Премиум</string>
     <string-array name="premium_benefits">
         <item>Удалить всю рекламу</item>
-<!--        <item>Разблокировать затухание воспроизведения</item>-->
+        <!--        <item>Разблокировать затухание воспроизведения</item>-->
         <item>Разблокировать скорость и тон воспроизведения</item>
         <item>Разблокировать все темы</item>
         <item>Полный доступ ко всем новым функциям в будущих обновлениях</item>
@@ -416,11 +349,9 @@
     </plurals>
     <string name="activate_premium_trial">Активировать</string>
     <string name="premium_trial_activated">Премиум-пробная версия активирована</string>
-
     <!--Snowfall-->
     <string name="snowfall">Снегопад</string>
     <string name="snowfall_desc">Включите причудливый снегопад для зимнего настроения</string>
-
     <!--Donations-->
     <string name="donations_title">Пожертвовать</string>
     <string name="donations_subtitle">Небольшое пожертвование на развитие проекта</string>
@@ -434,3 +365,4 @@
     <string name="donate_meal">Еда</string>
     <string name="donate_gym">Абонемент в спортзал</string>
 </resources>
+

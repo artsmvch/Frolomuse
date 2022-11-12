@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <resources>
     <string name="ok">OK</string>
     <string name="create">Erstellen</string>
@@ -24,16 +25,11 @@
     <string name="message_one_file_hidden">Die Datei wurde ausgeblendet. Sie können es in den Einstellungen zurückgeben</string>
     <string name="message_multiple_files_hidden">Die ausgewählten Dateien wurden ausgeblendet. Sie können sie in den Einstellungen zurückgeben</string>
     <string name="scan_files">Dateien scannen</string>
-
     <!--Hidden files-->
     <string name="hidden_files">Versteckte Dateien</string>
     <string name="hidden_files_desc">Dateien, die im Dateibrowser versteckt sind</string>
-    <string name="hidden_files_placeholder_message">
-        Sie haben noch keine versteckten Dateien. Um eine Datei ausblenden, wählen Sie die entsprechende Option im Dateibrowser.
-    </string>
-
+    <string name="hidden_files_placeholder_message">Sie haben noch keine versteckten Dateien. Um eine Datei ausblenden, wählen Sie die entsprechende Option im Dateibrowser.</string>
     <!--Errors-->
-
     <!--Sort orders-->
     <string name="sort">Sortieren</string>
     <string name="ascending">Aufsteigend</string>
@@ -49,13 +45,11 @@
     <string name="sort_by_filename">Nach Dateiname</string>
     <string name="sort_by_play_order">Nach Spielreihenfolge</string>
     <string name="sort_by_duration">Nach Dauer</string>
-
     <!--Rating-->
     <string name="would_you_rate">Würden Sie diese App für 5 Sterne bewerten?</string>
     <string name="no">Nein</string>
     <string name="remind_me_later">Frag mich später</string>
     <string name="rate">Ja ich mag es!</string>
-
     <string name="now_playing">Spielt gerade</string>
     <string name="queue">Warteschlange</string>
     <string name="current_song_queue">Aktuelle Song-Warteschlange</string>
@@ -65,51 +59,37 @@
     <string name="album">Album</string>
     <string name="artist">Künstler</string>
     <string name="genre">Genre</string>
-
     <!--AddMediaToPlaylist-->
     <string name="select_playlist">Wiedergabeliste auswählen</string>
-    <string name="select_playlist_to_which_you_want_to_add_music">
-        Wählen Sie die Wiedergabeliste aus, zu der Sie Musik hinzufügen möchten
-    </string>
-
+    <string name="select_playlist_to_which_you_want_to_add_music">Wählen Sie die Wiedergabeliste aus, zu der Sie Musik hinzufügen möchten</string>
     <!--AddSongToPlaylist-->
-    <string name="add_song_to_s_playlist_hint">
-        Wählen Sie die Lieder aus, die Sie zur Wiedergabeliste \"%s\" hinzufügen möchten, und klicken Sie dann auf die Schaltfläche \'Zur Wiedergabeliste hinzufügen\'
-    </string>
-
+    <string name="add_song_to_s_playlist_hint">Wählen Sie die Lieder aus, die Sie zur Wiedergabeliste \"%s\" hinzufügen möchten, und klicken Sie dann auf die Schaltfläche \'Zur Wiedergabeliste hinzufügen\'</string>
     <!--Plurals-->
     <plurals name="s_songs_selected">
         <item quantity="one">%d Lied ausgewählt</item>
         <item quantity="other">%d Lieder ausgewählt</item>
     </plurals>
-
     <plurals name="s_songs">
         <item quantity="one">%d Lied</item>
         <item quantity="other">%d Lieder</item>
     </plurals>
-
     <plurals name="s_hours">
         <item quantity="one">%d Stunde</item>
         <item quantity="other">%d Stunded</item>
     </plurals>
-
     <plurals name="s_minutes">
         <item quantity="one">%d Minute</item>
         <item quantity="other">%d Minuten</item>
     </plurals>
-
     <plurals name="s_seconds">
         <item quantity="one">%d Sekunde</item>
         <item quantity="other">%d Sekunden</item>
     </plurals>
-
     <string name="select_all">Wählen Sie Alle</string>
-
     <!--placeholders-->
     <string name="placeholder_unknown">Unbekannte</string>
     <string name="placeholder_zero_duration">0:00</string>
     <string name="placeholder_freq_range">0.00 hz</string>
-
     <!--options menu-->
     <string name="play">Abspielen</string>
     <string name="edit">Bearbeiten</string>
@@ -130,18 +110,12 @@
     <string name="cut_ringtone">Klingelton ausschneiden</string>
     <string name="add_song">Lied hinzufügen</string>
     <string name="remove_from_queue">Aus der aktuellen Warteschlange entfernen</string>
-
     <!--deletion confirmation-->
     <string name="confirmation">Bestätigung</string>
     <string name="confirmation_delete_item">Möchten Sie dieses Element wirklich löschen?</string>
     <string name="confirmation_delete_items">Möchten Sie diese Elemente wirklich löschen?</string>
-    <string name="confirmation_delete_item_and_related_song_files">
-        Möchtest du diesen Gegenstand wirklich löschen? Alle darin enthaltenen Musikdateien werden ebenfalls gelöscht.
-    </string>
-    <string name="confirmation_delete_items_and_related_song_files">
-        Möchten Sie diese Elemente wirklich löschen? Alle darin enthaltenen Musikdateien werden ebenfalls gelöscht.
-    </string>
-
+    <string name="confirmation_delete_item_and_related_song_files">Möchtest du diesen Gegenstand wirklich löschen? Alle darin enthaltenen Musikdateien werden ebenfalls gelöscht.</string>
+    <string name="confirmation_delete_items_and_related_song_files">Möchten Sie diese Elemente wirklich löschen? Alle darin enthaltenen Musikdateien werden ebenfalls gelöscht.</string>
     <!--titles for main view pager-->
     <string name="all_songs">Alle Musik</string>
     <string name="songs">Lieder</string>
@@ -152,7 +126,6 @@
     <string name="folders">Ordner</string>
     <string name="recently_added">Kürzlich hinzugefügt</string>
     <string name="most_played">Meist gespielt</string>
-
     <!--counting tracks, albums, genres and etc.-->
     <string name="number_of_albums">%d Alben</string>
     <string name="one_album">1 album</string>
@@ -160,7 +133,6 @@
     <string name="no_tracks">Keine Stücke</string>
     <string name="one_track">1 Stück</string>
     <string name="number_of_tracks">%d Stücke</string>
-
     <!--recently added-->
     <string name="added">Hinzugefügt</string>
     <string name="recent_period">Letzte Periode</string>
@@ -169,7 +141,6 @@
     <string name="for_last_week">Für letzte Woche</string>
     <string name="for_last_month">Für den letzten Monat</string>
     <string name="for_last_year">Für letztes Jahr</string>
-
     <!--play count-->
     <string name="not_played_yet">Noch nicht gespielt</string>
     <string name="last_time_s">Letztes Mal: %s</string>
@@ -177,24 +148,20 @@
         <item quantity="one">%d Mal gespielt</item>
         <item quantity="other">%d Mal gespielt</item>
     </plurals>
-
     <!--navigation drawer menu-->
     <string name="nav_library">Bibliothek</string>
     <string name="nav_equalizer">Equalizer</string>
     <string name="nav_settings">Einstellungen</string>
     <string name="nav_search">Suche</string>
     <string name="nav_favourite">Favorit</string>
-
     <!--app preferences-->
     <string name="playback_settings">Wiedergabe</string>
     <string name="library_settings">Bibliothek</string>
     <string name="appearance_settings">Aussehen</string>
     <string name="about_app_settings">Über</string>
-
     <!--app preferences-->
     <string name="version">Anwendungsversion</string>
     <string name="licenses">Lizenzen</string>
-
     <string name="app_theme_desc">Wählen Sie ein Thema für die App aus und wenden Sie es an</string>
     <string name="page_s_of_s">%d von %d</string>
     <string name="apply_theme">Thema anwenden</string>
@@ -207,17 +174,11 @@
     <string name="dark_purple_theme">Dunkellila Thema</string>
     <string name="dark_orange_theme">Dunkeloranges Thema</string>
     <string name="dark_green_theme">Dunkelgrünes Thema</string>
-
     <!--Headphones setting-->
     <string name="pause_playback">Wiedergabe anhalten</string>
     <string name="resume_playback">Wiedergabe fortsetzen</string>
-    <string name="pause_when_headphones_are_disconnected">
-        Wiedergabe anhalten, wenn Kopfhörer nicht angeschlossen sind
-    </string>
-    <string name="resume_when_headphones_are_connected">
-        Wiedergabe fortsetzen, wenn Kopfhörer angeschlossen sind
-    </string>
-
+    <string name="pause_when_headphones_are_disconnected">Wiedergabe anhalten, wenn Kopfhörer nicht angeschlossen sind</string>
+    <string name="resume_when_headphones_are_connected">Wiedergabe fortsetzen, wenn Kopfhörer angeschlossen sind</string>
     <string name="sleep_timer">Schlaf-Timer</string>
     <string name="sleep_time_description">Stellen Sie einen Timer ein, um die Wiedergabe zu stoppen</string>
     <string name="you_have_already_set_up_sleep_timer">Sie haben bereits einen Timer eingerichtet.
@@ -240,9 +201,7 @@
     <!--Playback fading-->
     <string name="playback_fading">Verblassen der Musikwiedergabe</string>
     <string name="playback_fading_desc">Steuern Sie, wie die Wiedergabe ein- und ausgeblendet werden soll</string>
-    <string name="playback_fading_full_desc">
-        Hier steuern Sie, wie die Wiedergabe ein- und ausgeblendet werden soll. Sie können eine geeignete Dauer mit dem Schieberegler unten einstellen. Dauer "0" bedeutet, dass es kein Ausbleichen gibt.
-    </string>
+    <string name="playback_fading_full_desc">Hier steuern Sie, wie die Wiedergabe ein- und ausgeblendet werden soll. Sie können eine geeignete Dauer mit dem Schieberegler unten einstellen. Dauer "0" bedeutet, dass es kein Ausbleichen gibt.</string>
     <string name="playback_fading_duration">Dauer</string>
     <!--Library song filter-->
     <string name="library_song_filter_pref_title">Songtyp-Filter</string>
@@ -254,29 +213,21 @@
     <string name="library_song_filter_type_alarm">Wecker</string>
     <string name="library_song_filter_type_notification">Benachrichtigung</string>
     <string name="library_song_filter_type_audiobook">Hörbuch</string>
-
     <!--create playlist-->
     <string name="save_playlist">Wiedergabeliste speichern</string>
     <string name="edit_playlist">Wiedergabeliste bearbeiten</string>
     <string name="playlist_name">Name der Wiedergabeliste</string>
     <string name="name_is_empty">Der Name darf nicht leer sein</string>
     <string name="such_name_already_exists">Ein solcher Name existiert bereits</string>
-
     <!--AudioFx-->
     <string name="audio_fx_switch_tooltip">Aktivieren Sie diese Option, um Audioeffekte zu aktivieren</string>
     <string name="no_audio_effects_available">Keine Audioeffekte</string>
-    <string name="no_audio_effects_available_desc">
-        Wir konnten keinen Audioeffekt finden. Bitte aktivieren Sie den vom Android-Betriebssystem bereitgestellten Standard-Equalizer
-    </string>
+    <string name="no_audio_effects_available_desc">Wir konnten keinen Audioeffekt finden. Bitte aktivieren Sie den vom Android-Betriebssystem bereitgestellten Standard-Equalizer</string>
     <string name="no_audio_is_playing_now">Derzeit wird kein Audio abgespielt</string>
-    <string name="no_audio_is_playing_now_desc">
-        Sie müssen mit der Wiedergabe eines Songs beginnen, um den Sound anpassen zu können
-    </string>
-
+    <string name="no_audio_is_playing_now_desc">Sie müssen mit der Wiedergabe eines Songs beginnen, um den Sound anpassen zu können</string>
     <!--create preset-->
     <string name="save_preset">Preset speichern</string>
     <string name="preset_name">Name des Presets</string>
-
     <!--equalizer-->
     <string name="freq_range">%s hz</string>
     <string name="nothing_to_show">Nichts zu zeigen</string>
@@ -289,23 +240,18 @@
     <string name="pitch">Tonhöhe</string>
     <string name="reset_playback_params_when_switching_song">Beim Umschalten zwischen den Songs auf die normalen Einstellungen zurücksetzen</string>
     <string name="normalize">Normalisieren</string>
-
     <!--media file editor-->
     <string name="song_name_layout">Name</string>
     <string name="album_name_layout">Album</string>
     <string name="genre_name_layout">Genre</string>
     <string name="artist_name_layout">Künstler</string>
-    <string name="delete_album_art_confirmation">
-        Möchten Sie das Cover dieses Albums löschen?
-    </string>
+    <string name="delete_album_art_confirmation">Möchten Sie das Cover dieses Albums löschen?</string>
     <string name="no_album_art">Kein Albumcover</string>
     <string name="pick_new_album_art">Wähle einen neuen aus</string>
-
     <string name="app_theme">Thema der Anwendung</string>
     <string name="third_part_libs">Bibliotheken von Drittanbietern</string>
     <string name="album_grid">Album-Raster</string>
     <string name="show_album_grid">Raster verwenden um Alben anzuzeigen</string>
-
     <!--Preset-->
     <string name="preset">Voreinstellung</string>
     <string name="preset_none">Nichts</string>
@@ -319,7 +265,6 @@
     <string name="preset_hip_hop">HipHop</string>
     <string name="preset_jazz">Jazz</string>
     <string name="preset_pop">Pop</string>
-
     <!--Preset reverb-->
     <string name="preset_reverb">Nachhall</string>
     <string name="preset_reverb_none">Nichts</string>
@@ -329,41 +274,32 @@
     <string name="preset_reverb_medium_room">Mittleres Zimmer</string>
     <string name="preset_reverb_plate">Offener Platz</string>
     <string name="preset_reverb_small_rooom">Kleiner Raum</string>
-
     <!--Playback notification-->
     <string name="playback_channel_name">Wiedergabe</string>
     <string name="playback_channel_desc">Benachrichtigt über den aktuellen Wiedergabestatus</string>
-
     <string name="scanning_started">Scanvorgang wurde gestartet</string>
     <string name="scanning_completed">Scanvorgang abgeschlossen</string>
     <string name="rescan_media_library">Medienbibliothek erneut scannen</string>
     <string name="do_you_want_to_rescan_media_library">Möchten Sie Ihre Medienbibliothek erneut scannen?</string>
-
     <!--Shortcuts-->
     <string name="create_shortcut">Verknüpfung erstellen</string>
     <string name="create_shortcut_on_home_screen">Verknüpfung auf dem Startbildschirm erstellen</string>
     <string name="shortcut_created">Verknüpfung wurde erstellt</string>
-    <string name="do_you_want_to_create_shortcut_for_s">
-        Möchten Sie eine Verknüpfung für %s auf dem Startbildschirm erstellen?
-    </string>
-
+    <string name="do_you_want_to_create_shortcut_for_s">Möchten Sie eine Verknüpfung für %s auf dem Startbildschirm erstellen?</string>
     <!--MinAudioFileDuration-->
     <string name="exclude_short_songs">Kurze Songs ausschließen</string>
     <string name="exclude_short_songs_desc">Kurze Songs von der Bibliothek Suche ausschließen</string>
     <string name="specify_min_audio_file_duration">
         Geben Sie die Mindestdauer für Audiodateien an. Alle Audiodateien mit einer kürzeren Dauer als angegeben werden von der Bibliothekssuche ausgeschlossen.
         Wenn diese Werte leer oder 0:0 sind, werden keine Audiodateien ausgeschlossen.
-        \n\n<b>HINWEIS: Wenn Sie dies angeben, arbeitet die Bibliothek etwas langsamer (Alben, Künstler und Genres werden langsamer geladen).
+        \n\n
+        <b>HINWEIS: Wenn Sie dies angeben, arbeitet die Bibliothek etwas langsamer (Alben, Künstler und Genres werden langsamer geladen).
         Um das Limit zu entfernen, geben Sie einfach 0:0 ein</b>
     </string>
-
     <!--RES permission-->
     <string name="permission_denied">Zugang verweigert</string>
     <string name="grant_res_permission">Erlaubnis erteilen</string>
-    <string name="need_for_res_permission_explanation">
-        Ohne diese Berechtigung kann die Anwendung die Musik von Ihrem Gerät nicht durchsuchen. Möchten Sie die Erlaubnis erteilen?
-    </string>
-
+    <string name="need_for_res_permission_explanation">Ohne diese Berechtigung kann die Anwendung die Musik von Ihrem Gerät nicht durchsuchen. Möchten Sie die Erlaubnis erteilen?</string>
     <!--PlayerJournal-->
     <string name="player_journal">Musik Player Protokolle</string>
     <string name="player_journal_desc">Alle Nachrichten aus dem Player-Journal anzeigen</string>
@@ -371,22 +307,19 @@
     <string name="copy_player_logs_to_clipboard">Kopieren</string>
     <string name="player_logs">Musik Player Protokolle</string>
     <string name="copied">Kopiert</string>
-
     <!--Push notifications-->
     <string name="push_notifications_channel_name">Mitteilungen</string>
     <string name="push_notifications_channel_desc">Enthält nützliche Informationen zu Neuigkeiten und App-Updates</string>
-
     <!--Lyrics-->
     <string name="view_lyrics">Texte anzeigen</string>
     <string name="lyrics_not_tap_to_write">Text nicht gefunden, klicken Sie hier, um ihn selbst zu schreiben</string>
-
     <!--Premium-->
     <string name="buy_premium">Premium kaufen</string>
     <string name="buy_premium_desc">Werbung entfernen und Premium-Funktionen freischalten</string>
     <string name="premium_dialog_title">Premium</string>
     <string-array name="premium_benefits">
         <item>Alle Werbung entfernen</item>
-<!--        <item>Das Fading der Wiedergabe entsperren</item>-->
+        <!--        <item>Das Fading der Wiedergabe entsperren</item>-->
         <item>Wiedergabegeschwindigkeit und Tonhöhe entsperren</item>
         <item>Alle Themen entsperren</item>
         <item>Vollzugriff auf alle neuen Funktionen in zukünftigen Updates</item>
@@ -402,11 +335,9 @@
     </plurals>
     <string name="activate_premium_trial">Testversion aktivieren</string>
     <string name="premium_trial_activated">Premium-Testversion aktiviert</string>
-
     <!--Snowfall-->
     <string name="snowfall">Schneefall</string>
     <string name="snowfall_desc">Schalten Sie skurrilen Schneefall für eine winterliche Stimmung ein</string>
-
     <!--Donations-->
     <string name="donations_title">Spenden</string>
     <string name="donations_subtitle">Kleine Spende für die Entwicklung des Projekts</string>
@@ -420,3 +351,4 @@
     <string name="donate_meal">Eine Mahlzeit</string>
     <string name="donate_gym">Fitnessstudio Mitgliedschaft</string>
 </resources>
+

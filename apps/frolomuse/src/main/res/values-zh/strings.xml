@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <resources>
     <string name="ok">好</string>
     <string name="create">創建</string>
@@ -24,16 +25,11 @@
     <string name="message_one_file_hidden">該文件已被隱藏。 您可以在設置中將其返回</string>
     <string name="message_multiple_files_hidden">所選文件已隱藏。 您可以在設置中返回它們</string>
     <string name="scan_files">掃描文件</string>
-
     <!--Hidden files-->
     <string name="hidden_files">隐藏文件</string>
     <string name="hidden_files_desc">隐藏在文件浏览器中的文件</string>
-    <string name="hidden_files_placeholder_message">
-        您还没有隐藏文件。 要隐藏文件，请在文件浏览器中选择适当的选项。
-    </string>
-
+    <string name="hidden_files_placeholder_message">您还没有隐藏文件。 要隐藏文件，请在文件浏览器中选择适当的选项。</string>
     <!--Errors-->
-
     <!--Sort orders-->
     <string name="sort">分類</string>
     <string name="ascending">上升</string>
@@ -49,13 +45,11 @@
     <string name="sort_by_filename">按文件名</string>
     <string name="sort_by_play_order">按播放順序</string>
     <string name="sort_by_duration">按時長</string>
-
     <!--Rating-->
     <string name="would_you_rate">你會為5星評價這款應用嗎？</string>
     <string name="no">沒有</string>
     <string name="remind_me_later">等會再問我</string>
     <string name="rate">是的，我喜歡它！</string>
-
     <string name="now_playing">正在播放</string>
     <string name="queue">隊列</string>
     <string name="current_song_queue">當前歌曲隊列</string>
@@ -65,46 +59,32 @@
     <string name="album">專輯</string>
     <string name="artist">藝術家</string>
     <string name="genre">類型</string>
-
     <!--AddMediaToPlaylist-->
     <string name="select_playlist">選擇播放列表</string>
-    <string name="select_playlist_to_which_you_want_to_add_music">
-        選擇要添加音樂的播放列表
-    </string>
-
+    <string name="select_playlist_to_which_you_want_to_add_music">選擇要添加音樂的播放列表</string>
     <!--AddSongToPlaylist-->
-    <string name="add_song_to_s_playlist_hint">
-        選擇要添加到\“%s\”播放列表中的歌曲，然後單擊\'添加到播放列表\'按鈕
-    </string>
-
+    <string name="add_song_to_s_playlist_hint">選擇要添加到\“%s\”播放列表中的歌曲，然後單擊\'添加到播放列表\'按鈕</string>
     <!--Plurals-->
     <plurals name="s_songs_selected">
         <item quantity="other">選擇了%d首歌曲</item>
     </plurals>
-
     <plurals name="s_songs">
         <item quantity="other">%d 首歌</item>
     </plurals>
-
     <plurals name="s_hours">
         <item quantity="other">%d 小時</item>
     </plurals>
-
     <plurals name="s_minutes">
         <item quantity="other">%d 分鐘</item>
     </plurals>
-
     <plurals name="s_seconds">
         <item quantity="other">%d 秒</item>
     </plurals>
-
     <string name="select_all">全選</string>
-
     <!--placeholders-->
     <string name="placeholder_unknown">未知</string>
     <string name="placeholder_zero_duration">0:00</string>
     <string name="placeholder_freq_range">0.00 赫茲</string>
-
     <!--options menu-->
     <string name="play">玩</string>
     <string name="edit">編輯</string>
@@ -125,18 +105,12 @@
     <string name="cut_ringtone">切鈴聲</string>
     <string name="add_song">添加歌曲</string>
     <string name="remove_from_queue">從當前隊列中刪除</string>
-
     <!--deletion confirmation-->
     <string name="confirmation">確認</string>
     <string name="confirmation_delete_item">你確定要刪除這個項目嗎？</string>
     <string name="confirmation_delete_items">您確定要刪除這些項嗎？</string>
-    <string name="confirmation_delete_item_and_related_song_files">
-        你確定要刪除這個項目嗎？ 其中包含的所有音樂文件也將被刪除。
-    </string>
-    <string name="confirmation_delete_items_and_related_song_files">
-        您確定要刪除這些項目嗎？ 其中包含的所有音樂文件也將被刪除。
-    </string>
-
+    <string name="confirmation_delete_item_and_related_song_files">你確定要刪除這個項目嗎？ 其中包含的所有音樂文件也將被刪除。</string>
+    <string name="confirmation_delete_items_and_related_song_files">您確定要刪除這些項目嗎？ 其中包含的所有音樂文件也將被刪除。</string>
     <!--titles for main view pager-->
     <string name="all_songs">所有的音樂</string>
     <string name="songs">關於我們</string>
@@ -147,7 +121,6 @@
     <string name="folders">文件夾</string>
     <string name="recently_added">最近添加的</string>
     <string name="most_played">最多玩</string>
-
     <!--counting tracks, albums, genres and etc.-->
     <string name="number_of_albums">%d 張專輯</string>
     <string name="one_album">1張專輯</string>
@@ -155,7 +128,6 @@
     <string name="no_tracks">沒有曲目</string>
     <string name="one_track">1軌</string>
     <string name="number_of_tracks">%d 曲目</string>
-
     <!--recently added-->
     <string name="added">添加</string>
     <string name="recent_period">最近時期</string>
@@ -164,31 +136,26 @@
     <string name="for_last_week">上週</string>
     <string name="for_last_month">上個月</string>
     <string name="for_last_year">去年</string>
-
     <!--play count-->
     <string name="not_played_yet">還沒玩過</string>
     <string name="last_time_s">上次: %s</string>
     <plurals name="played_s_times">
         <item quantity="other">玩了 %d 次</item>
     </plurals>
-
     <!--navigation drawer menu-->
     <string name="nav_library">圖書館</string>
     <string name="nav_equalizer">均衡器</string>
     <string name="nav_settings">設置</string>
     <string name="nav_search">搜索</string>
     <string name="nav_favourite">喜愛</string>
-
     <!--app preferences-->
     <string name="playback_settings">音樂的播放</string>
     <string name="library_settings">圖書館</string>
     <string name="appearance_settings">外貌</string>
     <string name="about_app_settings">關於</string>
-
     <!--app preferences-->
     <string name="version">應用版本</string>
     <string name="licenses">許可證</string>
-
     <string name="app_theme_desc">選擇並應用主題</string>
     <string name="page_s_of_s">%d 之 %d</string>
     <string name="apply_theme">套用主題</string>
@@ -201,17 +168,11 @@
     <string name="dark_purple_theme">深紫色主題</string>
     <string name="dark_orange_theme">深橙色主題</string>
     <string name="dark_green_theme">深綠色主題</string>
-
     <!--Headphones settings-->
     <string name="pause_playback">暫停播放</string>
     <string name="resume_playback">開始玩</string>
-    <string name="pause_when_headphones_are_disconnected">
-        斷開耳機連接時暫停播放
-    </string>
-    <string name="resume_when_headphones_are_connected">
-        連接耳機後開始播放
-    </string>
-
+    <string name="pause_when_headphones_are_disconnected">斷開耳機連接時暫停播放</string>
+    <string name="resume_when_headphones_are_connected">連接耳機後開始播放</string>
     <string name="sleep_timer">睡眠定時器</string>
     <string name="sleep_time_description">設置計時器以停止播放</string>
     <string name="you_have_already_set_up_sleep_timer">您已經設置了計時器。 您想重置當前計時器還是設置新計時器？</string>
@@ -233,9 +194,7 @@
     <!--Playback fading-->
     <string name="playback_fading">音樂播放淡出</string>
     <string name="playback_fading_desc">控製播放應如何淡入和淡出</string>
-    <string name="playback_fading_full_desc">
-        在這裡，您可以控製播放的淡入和淡出方式。您可以使用下面的滑塊設置合適的持續時間。持續時間“ 0”表示不會衰減。
-    </string>
+    <string name="playback_fading_full_desc">在這裡，您可以控製播放的淡入和淡出方式。您可以使用下面的滑塊設置合適的持續時間。持續時間“ 0”表示不會衰減。</string>
     <string name="playback_fading_duration">持續時間</string>
     <!--Library song filter-->
     <string name="library_song_filter_pref_title">歌曲類型過濾器</string>
@@ -247,29 +206,21 @@
     <string name="library_song_filter_type_alarm">鬧鐘</string>
     <string name="library_song_filter_type_notification">通知</string>
     <string name="library_song_filter_type_audiobook">有声读物</string>
-
     <!--create playlist-->
     <string name="save_playlist">保存播放列表</string>
     <string name="edit_playlist">修改播放列表</string>
     <string name="playlist_name">播放清單名稱</string>
     <string name="name_is_empty">名稱必須為非空</string>
     <string name="such_name_already_exists">這樣的名字已經存在</string>
-
     <!--AudioFx-->
     <string name="audio_fx_switch_tooltip">切換以啟用音頻效果</string>
     <string name="no_audio_effects_available">沒有音效</string>
-    <string name="no_audio_effects_available_desc">
-        我們找不到任何可用的音頻效果。 請啟用Android操作系統提供的默認均衡器
-    </string>
+    <string name="no_audio_effects_available_desc">我們找不到任何可用的音頻效果。 請啟用Android操作系統提供的默認均衡器</string>
     <string name="no_audio_is_playing_now">現在沒有聲音在播放</string>
-    <string name="no_audio_is_playing_now_desc">
-        您需要開始播放歌曲才能調整聲音
-    </string>
-
+    <string name="no_audio_is_playing_now_desc">您需要開始播放歌曲才能調整聲音</string>
     <!--create preset-->
     <string name="save_preset">保存預設</string>
     <string name="preset_name">預設名稱</string>
-
     <!--equalizer-->
     <string name="freq_range">%s 赫茲</string>
     <string name="nothing_to_show">什麼都沒有顯示</string>
@@ -282,23 +233,18 @@
     <string name="pitch">瀝青</string>
     <string name="reset_playback_params_when_switching_song">切換歌曲時重置設置</string>
     <string name="normalize">規範化</string>
-
     <!--media file editor-->
     <string name="song_name_layout">名稱</string>
     <string name="album_name_layout">專輯</string>
     <string name="genre_name_layout">類型</string>
     <string name="artist_name_layout">藝術家</string>
-    <string name="delete_album_art_confirmation">
-        您要刪除此專輯的封面嗎？
-    </string>
+    <string name="delete_album_art_confirmation">您要刪除此專輯的封面嗎？</string>
     <string name="no_album_art">無專輯封面</string>
     <string name="pick_new_album_art">選擇一個新的</string>
-
     <string name="app_theme">應用主題</string>
     <string name="third_part_libs">第三方圖書館</string>
     <string name="album_grid">專輯網格</string>
     <string name="show_album_grid">使用網格顯示相冊</string>
-
     <!--Preset-->
     <string name="preset">預置</string>
     <string name="preset_none">沒有</string>
@@ -312,7 +258,6 @@
     <string name="preset_hip_hop">嘻哈</string>
     <string name="preset_jazz">爵士樂</string>
     <string name="preset_pop">流行音樂</string>
-
     <!--Preset reverb-->
     <string name="preset_reverb">混響</string>
     <string name="preset_reverb_none">沒有</string>
@@ -322,41 +267,32 @@
     <string name="preset_reverb_medium_room">中等房間</string>
     <string name="preset_reverb_plate">盤子</string>
     <string name="preset_reverb_small_rooom">小房間</string>
-
     <!--Playback notification-->
     <string name="playback_channel_name">回放</string>
     <string name="playback_channel_desc">通知當前播放狀態</string>
-
     <string name="scanning_started">掃描開始了</string>
     <string name="scanning_completed">掃描完成</string>
     <string name="rescan_media_library">重新掃描媒體庫</string>
     <string name="do_you_want_to_rescan_media_library">要重新掃描媒體庫嗎？</string>
-
     <!--Shortcuts-->
     <string name="create_shortcut">建立捷徑</string>
     <string name="create_shortcut_on_home_screen">在主屏幕上創建快捷方式</string>
     <string name="shortcut_created">捷徑已建立</string>
-    <string name="do_you_want_to_create_shortcut_for_s">
-        您是否要在主屏幕上為 %s 創建快捷方式？
-    </string>
-
+    <string name="do_you_want_to_create_shortcut_for_s">您是否要在主屏幕上為 %s 創建快捷方式？</string>
     <!--MinAudioFileDuration-->
     <string name="exclude_short_songs">排除短歌</string>
     <string name="exclude_short_songs_desc">從庫搜索中排除短歌</string>
     <string name="specify_min_audio_file_duration">
         指定最小音頻文件持續時間。所有持續時間短於指定時間的音頻文件都將從庫搜索中排除。
         如果這些值為空或0：0，則不會排除任何音頻文件。
-        \n\n<b>注意：如果您指定此選項，則該庫的運行速度會稍慢（專輯，藝術家，流派的加載速度會變慢）。
+        \n\n
+        <b>注意：如果您指定此選項，則該庫的運行速度會稍慢（專輯，藝術家，流派的加載速度會變慢）。
         要刪除限制，只需輸入0：0</b>
     </string>
-
     <!--RES permission-->
     <string name="permission_denied">没有权限</string>
     <string name="grant_res_permission">给予许可</string>
-    <string name="need_for_res_permission_explanation">
-        没有此许可，该应用程序将无法从您的设备浏览音乐。您要授予权限吗？
-    </string>
-
+    <string name="need_for_res_permission_explanation">没有此许可，该应用程序将无法从您的设备浏览音乐。您要授予权限吗？</string>
     <!--PlayerJournal-->
     <string name="player_journal">音樂播放器日誌</string>
     <string name="player_journal_desc">顯示音樂播放器日誌中的所有消息</string>
@@ -364,22 +300,19 @@
     <string name="copy_player_logs_to_clipboard">複製</string>
     <string name="player_logs">音樂播放器日誌</string>
     <string name="copied">複製的</string>
-
     <!--Push notifications-->
     <string name="push_notifications_channel_name">推送通知</string>
     <string name="push_notifications_channel_desc">包含有關新聞和應用程序更新的有用信息</string>
-
     <!--Lyrics-->
     <string name="view_lyrics">查看歌詞</string>
     <string name="lyrics_not_tap_to_write">找不到文字，請點擊此處自行撰寫</string>
-
     <!--Premium-->
     <string name="buy_premium">購買溢價</string>
     <string name="buy_premium_desc">刪除廣告並解鎖高級功能</string>
     <string name="premium_dialog_title">高級功能</string>
     <string-array name="premium_benefits">
         <item>刪除所有廣告</item>
-<!--        <item>解鎖播放褪色</item>-->
+        <!--        <item>解鎖播放褪色</item>-->
         <item>解鎖播放速度和音高</item>
         <item>解鎖所有主題</item>
         <item>在將來的更新中完全訪問所有新功能</item>
@@ -394,11 +327,9 @@
     </plurals>
     <string name="activate_premium_trial">激活試用版</string>
     <string name="premium_trial_activated">高級試用版已激活</string>
-
     <!--Snowfall-->
     <string name="snowfall">降雪</string>
     <string name="snowfall_desc">打開異想天開的降雪以獲得寒冷的心情</string>
-
     <!--Donations-->
     <string name="donations_title">捐</string>
     <string name="donations_subtitle">小額捐款用於項目開發</string>
@@ -412,3 +343,4 @@
     <string name="donate_meal">一頓飯</string>
     <string name="donate_gym">健身房會員</string>
 </resources>
+

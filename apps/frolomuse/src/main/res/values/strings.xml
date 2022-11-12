@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <resources>
     <string name="preference_screen" translatable="false">preference_screen</string>
     <string name="ab" translatable="false">A-B</string>
@@ -26,16 +27,11 @@
     <string name="message_one_file_hidden">The file has been hidden. You can return it back in the settings</string>
     <string name="message_multiple_files_hidden">The selected files have been hidden. You can return them back in the settings</string>
     <string name="scan_files">Scan files</string>
-
     <!--Hidden files-->
     <string name="hidden_files">Hidden files</string>
     <string name="hidden_files_desc">Files that are hidden in the file browser</string>
-    <string name="hidden_files_placeholder_message">
-        You have no hidden files yet. To hide a file, select the appropriate option in the file browser.
-    </string>
-
+    <string name="hidden_files_placeholder_message">You have no hidden files yet. To hide a file, select the appropriate option in the file browser.</string>
     <!--Errors-->
-
     <!--Sort orders-->
     <string name="sort">Sort</string>
     <string name="ascending">Ascending</string>
@@ -51,13 +47,11 @@
     <string name="sort_by_filename">By filename</string>
     <string name="sort_by_play_order">By play order</string>
     <string name="sort_by_duration">By duration</string>
-
     <!--Rating-->
     <string name="would_you_rate">Would you rate this app for 5 stars?</string>
     <string name="no">No</string>
     <string name="remind_me_later">Ask me later</string>
     <string name="rate">Yes, I like it!</string>
-
     <string name="now_playing">Now playing</string>
     <string name="queue">Queue</string>
     <string name="current_song_queue">Current song queue</string>
@@ -67,51 +61,37 @@
     <string name="album">Album</string>
     <string name="artist">Artist</string>
     <string name="genre">Genre</string>
-
     <!--AddMediaToPlaylist-->
     <string name="select_playlist">Select playlist</string>
-    <string name="select_playlist_to_which_you_want_to_add_music">
-        Select playlist to which you want to add music
-    </string>
-
+    <string name="select_playlist_to_which_you_want_to_add_music">Select playlist to which you want to add music</string>
     <!--AddSongToPlaylist-->
-    <string name="add_song_to_s_playlist_hint">
-        Select songs you want to add to the \"%s\" playlist and then click the \'Add to playlist\' button
-    </string>
-
+    <string name="add_song_to_s_playlist_hint">Select songs you want to add to the \"%s\" playlist and then click the \'Add to playlist\' button</string>
     <!--Plurals-->
     <plurals name="s_songs_selected">
         <item quantity="one">%d song selected</item>
         <item quantity="other">%d songs selected</item>
     </plurals>
-
     <plurals name="s_songs">
         <item quantity="one">%d song</item>
         <item quantity="other">%d songs</item>
     </plurals>
-
     <plurals name="s_hours">
         <item quantity="one">%d hour</item>
         <item quantity="other">%d hours</item>
     </plurals>
-
     <plurals name="s_minutes">
         <item quantity="one">%d min</item>
         <item quantity="other">%d mins</item>
     </plurals>
-
     <plurals name="s_seconds">
         <item quantity="one">%d second</item>
         <item quantity="other">%d seconds</item>
     </plurals>
-
     <string name="select_all">Select all</string>
-
     <!--placeholders-->
     <string name="placeholder_unknown">Unknown</string>
     <string name="placeholder_zero_duration">0:00</string>
     <string name="placeholder_freq_range">0.00 hz</string>
-
     <!--options menu-->
     <string name="play">Play</string>
     <string name="edit">Edit</string>
@@ -132,18 +112,12 @@
     <string name="cut_ringtone">Cut ringtone</string>
     <string name="add_song">Add song</string>
     <string name="remove_from_queue">Remove from current queue</string>
-
     <!--deletion confirmation-->
     <string name="confirmation">Confirmation</string>
     <string name="confirmation_delete_item">Are you sure you want to delete this item?</string>
     <string name="confirmation_delete_items">Are you sure you want to delete these items?</string>
-    <string name="confirmation_delete_item_and_related_song_files">
-        Are you sure you want to delete this item? All music files contained therein will also be deleted.
-    </string>
-    <string name="confirmation_delete_items_and_related_song_files">
-        Are you sure you want to delete these items? All music files contained in them will also be deleted.
-    </string>
-
+    <string name="confirmation_delete_item_and_related_song_files">Are you sure you want to delete this item? All music files contained therein will also be deleted.</string>
+    <string name="confirmation_delete_items_and_related_song_files">Are you sure you want to delete these items? All music files contained in them will also be deleted.</string>
     <!--titles for main view pager-->
     <string name="all_songs">All music</string>
     <string name="songs">Songs</string>
@@ -154,7 +128,6 @@
     <string name="folders">Folders</string>
     <string name="recently_added">Recently added</string>
     <string name="most_played">Most played</string>
-
     <!--counting tracks, albums, genres and etc.-->
     <string name="number_of_albums">%d albums</string>
     <string name="one_album">1 album</string>
@@ -162,7 +135,6 @@
     <string name="no_tracks">No tracks</string>
     <string name="one_track">1 track</string>
     <string name="number_of_tracks">%d tracks</string>
-
     <!--recently added-->
     <string name="added">Added</string>
     <string name="recent_period">Recent period</string>
@@ -171,7 +143,6 @@
     <string name="for_last_week">For last week</string>
     <string name="for_last_month">For last month</string>
     <string name="for_last_year">For last year</string>
-
     <!--play count-->
     <string name="not_played_yet">Not played yet</string>
     <string name="last_time_s">Last time: %s</string>
@@ -179,23 +150,19 @@
         <item quantity="one">Played %d time</item>
         <item quantity="other">Played %d times</item>
     </plurals>
-
     <!--navigation drawer menu-->
     <string name="nav_library">Library</string>
     <string name="nav_equalizer">Equalizer</string>
     <string name="nav_settings">Settings</string>
     <string name="nav_search">Search</string>
     <string name="nav_favourite">Favourite</string>
-
     <!--app preferences-->
     <string name="playback_settings">Playback</string>
     <string name="library_settings">Library</string>
     <string name="appearance_settings">Appearance</string>
     <string name="about_app_settings">About</string>
-
     <string name="version">Application version</string>
     <string name="licenses">Licenses</string>
-
     <string name="app_theme_desc">Select and apply a theme for the app</string>
     <string name="page_s_of_s">%d of %d</string>
     <string name="apply_theme">Apply Theme</string>
@@ -208,17 +175,11 @@
     <string name="dark_purple_theme">Dark purple theme</string>
     <string name="dark_orange_theme">Dark orange theme</string>
     <string name="dark_green_theme">Dark green theme</string>
-
     <!--Headphones settings-->
     <string name="pause_playback">Pause playback</string>
     <string name="resume_playback">Resume playback</string>
-    <string name="pause_when_headphones_are_disconnected">
-        Pause playback when headphones are disconnected
-    </string>
-    <string name="resume_when_headphones_are_connected">
-        Resume playback when headphones are connected
-    </string>
-
+    <string name="pause_when_headphones_are_disconnected">Pause playback when headphones are disconnected</string>
+    <string name="resume_when_headphones_are_connected">Resume playback when headphones are connected</string>
     <string name="sleep_timer">Sleep timer</string>
     <string name="sleep_time_description">Set a timer to stop playing</string>
     <string name="you_have_already_set_up_sleep_timer">You have already set up a timer.
@@ -242,9 +203,7 @@
     <!--Playback fading-->
     <string name="playback_fading">Playback fading</string>
     <string name="playback_fading_desc">Control how the playback should fade in and out</string>
-    <string name="playback_fading_full_desc">
-        Here you control how the playback should fade in and out. You can set a suitable duration using the slider below. Duration "0" means that there will be no fading.
-    </string>
+    <string name="playback_fading_full_desc">Here you control how the playback should fade in and out. You can set a suitable duration using the slider below. Duration "0" means that there will be no fading.</string>
     <string name="playback_fading_duration">Duration</string>
     <!--Library song filter-->
     <string name="library_song_filter_pref_title">Song type filter</string>
@@ -256,29 +215,21 @@
     <string name="library_song_filter_type_alarm">Alarm</string>
     <string name="library_song_filter_type_notification">Notification</string>
     <string name="library_song_filter_type_audiobook">Audiobook</string>
-
     <!--create and edit playlist-->
     <string name="save_playlist">Save playlist</string>
     <string name="edit_playlist">Edit playlist</string>
     <string name="playlist_name">Playlist name</string>
     <string name="name_is_empty">The name must be non-empty</string>
     <string name="such_name_already_exists">Such name already exists</string>
-
     <!--AudioFx-->
     <string name="audio_fx_switch_tooltip">Toggle to enable audio effects</string>
     <string name="no_audio_effects_available">No audio effects</string>
-    <string name="no_audio_effects_available_desc">
-        We could not find any audio effect available. Please enable the default equalizer provided by Android OS
-    </string>
+    <string name="no_audio_effects_available_desc">We could not find any audio effect available. Please enable the default equalizer provided by Android OS</string>
     <string name="no_audio_is_playing_now">No audio is playing now</string>
-    <string name="no_audio_is_playing_now_desc">
-        You need to start playing a song to be able to adjust the sound
-    </string>
-
+    <string name="no_audio_is_playing_now_desc">You need to start playing a song to be able to adjust the sound</string>
     <!--create preset-->
     <string name="save_preset">Save preset</string>
     <string name="preset_name">Preset name</string>
-
     <!--equalizer-->
     <string name="freq_range">%s hz</string>
     <string name="nothing_to_show">Nothing to show</string>
@@ -291,23 +242,18 @@
     <string name="pitch">Pitch</string>
     <string name="reset_playback_params_when_switching_song">Reset settings when switching songs</string>
     <string name="normalize">Normalize</string>
-
     <!--media file editor-->
     <string name="song_name_layout">Name</string>
     <string name="album_name_layout">Album</string>
     <string name="genre_name_layout">Genre</string>
     <string name="artist_name_layout">Artist</string>
-    <string name="delete_album_art_confirmation">
-        Do you want to delete the cover of this album?
-    </string>
+    <string name="delete_album_art_confirmation">Do you want to delete the cover of this album?</string>
     <string name="no_album_art">No album cover</string>
     <string name="pick_new_album_art">Pick a new one</string>
-
     <string name="app_theme">App Theme</string>
     <string name="third_part_libs">Third-party libs</string>
     <string name="album_grid">Album grid</string>
     <string name="show_album_grid">Use the grid to display albums</string>
-
     <!--Preset-->
     <string name="preset">Preset</string>
     <string name="preset_none">Nothing</string>
@@ -321,7 +267,6 @@
     <string name="preset_hip_hop">Hip Hop</string>
     <string name="preset_jazz">Jazz</string>
     <string name="preset_pop">Pop</string>
-
     <!--Preset reverb-->
     <string name="preset_reverb">Reverberation</string>
     <string name="preset_reverb_none">Nothing</string>
@@ -331,11 +276,9 @@
     <string name="preset_reverb_medium_room">Medium room</string>
     <string name="preset_reverb_plate">Plate</string>
     <string name="preset_reverb_small_rooom">Small room</string>
-
     <!--Playback notification-->
     <string name="playback_channel_name">Playback</string>
     <string name="playback_channel_desc">Notifies about current playback status</string>
-
     <!--Media scanner notification-->
     <string name="media_scanner_channel_name">Media scanner</string>
     <string name="media_scanner_channel_desc">Notifies about scanning media library on the device</string>
@@ -346,32 +289,25 @@
     <string name="scanning_completed">Scanning completed</string>
     <string name="rescan_media_library">Rescan media library</string>
     <string name="do_you_want_to_rescan_media_library">Do you want to rescan your media library?</string>
-
     <!--Shortcuts-->
     <string name="create_shortcut">Create shortcut</string>
     <string name="create_shortcut_on_home_screen">Create shortcut on home screen</string>
     <string name="shortcut_created">Shortcut created</string>
-    <string name="do_you_want_to_create_shortcut_for_s">
-        Do you want to create a shortcut for %s on the home screen?
-    </string>
-
+    <string name="do_you_want_to_create_shortcut_for_s">Do you want to create a shortcut for %s on the home screen?</string>
     <!--MinAudioFileDuration-->
     <string name="exclude_short_songs">Exclude short songs</string>
     <string name="exclude_short_songs_desc">Exclude short songs from the library search</string>
     <string name="specify_min_audio_file_duration">
         Specify minimum audio file duration. All audio files with a duration shorter than specified are excluded from the library search.
         If these values are empty or 0:0 than no audio files will be excluded.
-        \n\n<b>NOTE: if you specify this, then the library will work a little slower (albums, artists, genres will load slower).
+        \n\n
+        <b>NOTE: if you specify this, then the library will work a little slower (albums, artists, genres will load slower).
         To remove the limit, just enter 0:0</b>
     </string>
-
     <!--RES permission-->
     <string name="permission_denied">Permission denied</string>
     <string name="grant_res_permission">Grant permission</string>
-    <string name="need_for_res_permission_explanation">
-        Without this permission, the application will not be able to browse the music from your device. Do you want to grant the permission?
-    </string>
-
+    <string name="need_for_res_permission_explanation">Without this permission, the application will not be able to browse the music from your device. Do you want to grant the permission?</string>
     <!--PlayerJournal-->
     <string name="player_journal">Player log</string>
     <string name="player_journal_desc">Display all messages from the player log</string>
@@ -379,22 +315,19 @@
     <string name="copy_player_logs_to_clipboard">Copy</string>
     <string name="player_logs">Player log</string>
     <string name="copied">Copied</string>
-
     <!--Push notifications-->
     <string name="push_notifications_channel_name">Push notifications</string>
     <string name="push_notifications_channel_desc">Contains useful information about news and app updates</string>
-
     <!--Lyrics-->
     <string name="view_lyrics">View lyrics</string>
     <string name="lyrics_not_tap_to_write">Text not found, click here to write it yourself</string>
-
     <!--Premium-->
     <string name="buy_premium">Buy premium</string>
     <string name="buy_premium_desc">Remove ads and unlock premium features</string>
     <string name="premium_dialog_title">Premium</string>
     <string-array name="premium_benefits">
         <item>Remove all ads</item>
-<!--        <item>Unlock playback fading</item>-->
+        <!--        <item>Unlock playback fading</item>-->
         <item>Unlock playback speed and pitch</item>
         <item>Unlock all themes</item>
         <item>Full access to all new features in future updates</item>
@@ -410,11 +343,9 @@
     </plurals>
     <string name="activate_premium_trial">Activate trial</string>
     <string name="premium_trial_activated">Premium trial activated</string>
-
     <!--Snowfall-->
     <string name="snowfall">Snowfall</string>
     <string name="snowfall_desc">Turn on whimsical snowfall for a wintry mood</string>
-
     <!--Donations-->
     <string name="donations_title">Donate</string>
     <string name="donations_subtitle">Small donation for the development of the project</string>
@@ -427,9 +358,9 @@
     <string name="donate_movie_ticket">A movie ticket</string>
     <string name="donate_meal">A meal</string>
     <string name="donate_gym">Gym membership</string>
-
     <!--App restrictions and limitations-->
     <string name="app_restrictions_and_limitations">App restrictions and limitations</string>
     <string name="ignore_battery_optimization_settings">Ignore battery optimizations</string>
     <string name="ignore_battery_optimization_settings_desc">Does music playback stop frequently? Or does the app crash on launch? Disable battery optimization</string>
 </resources>
+
