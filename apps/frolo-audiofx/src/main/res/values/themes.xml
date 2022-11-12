@@ -122,10 +122,7 @@
     </style>
 
     <style name="Theme.Frolo.AudioFx.EqualizerView" parent="EqualizerView.Default">
-        <item name="drawVisuals">true</item>
-        <item name="gridColor">#E4E4E4</item>
-        <item name="gridLineThickness">2dp</item>
-        <item name="levelColor">?colorSecondary</item>
+        <item name="strokeWidth">1dp</item>
     </style>
 
     <style name="Theme.Frolo.AudioFx.EffectBoosterView" parent="EffectBoosterView.Default">
