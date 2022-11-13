@@ -7,6 +7,8 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposables
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 
 private fun getMainThreadScheduler(): Scheduler {
@@ -94,8 +96,19 @@ fun BillingClient.querySkuDetailsSingle(skuList: List<String>, @BillingClient.Sk
         .observeOn(scheduler)
 }
 
-fun BillingClient.queryPurchasesSingle(@BillingClient.SkuType type: String): Single<Purchase.PurchasesResult> {
-    return Single.fromCallable { queryPurchases(type) }
+fun BillingClient.queryPurchasesSingle(@BillingClient.SkuType type: String): Single<PurchasesResult> {
+    val source = Single.create<PurchasesResult> { emitter ->
+        GlobalScope.launch {
+            kotlin.runCatching {
+                queryPurchasesAsync(type)
+            }.onSuccess {
+                emitter.onSuccess(it)
+            }.onFailure {
+                emitter.onError(it)
+            }
+        }
+    }
+    return source
         .subscribeOn(getQueryScheduler())
         .unsubscribeOn(getMainThreadScheduler())
         .observeOn(getMainThreadScheduler())

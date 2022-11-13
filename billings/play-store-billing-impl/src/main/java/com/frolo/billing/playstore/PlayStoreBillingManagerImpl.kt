@@ -152,7 +152,7 @@ class PlayStoreBillingManagerImpl(
         val editor: SharedPreferences.Editor = purchasesPreferences.edit()
         editor.clear()
         purchases.forEach { purchase ->
-            val key = getPurchaseDetailsKey(purchase.sku)
+            val key = getPurchaseDetailsKey(purchase.skus)
             val details = PurchaseDetails.from(purchase)
             val value = PurchaseDetails.serializeToJson(details)
             editor.putString(key, value)
@@ -162,7 +162,7 @@ class PlayStoreBillingManagerImpl(
         // Acknowledge each purchase, if needed
         val ackSources = purchases.mapNotNull { purchase ->
             if (purchase.isAcknowledged) {
-                logger.d("Purchase is already acknowledged: sku=${purchase.sku}")
+                logger.d("Purchase is already acknowledged: skus=${purchase.skus}")
                 return@mapNotNull null
             }
 
@@ -172,10 +172,10 @@ class PlayStoreBillingManagerImpl(
                     .build()
                 val listener = AcknowledgePurchaseResponseListener { result ->
                     if (result.responseCode == BillingClient.BillingResponseCode.OK) {
-                        logger.d("Purchase has been acknowledged: sku=${purchase.sku}")
+                        logger.d("Purchase has been acknowledged: skus=${purchase.skus}")
                         emitter.onComplete()
                     } else {
-                        logger.d("Failed to acknowledge purchase: sku=${purchase.sku}")
+                        logger.d("Failed to acknowledge purchase: skus=${purchase.skus}")
                         emitter.onError(BillingClientException(result))
                     }
                 }
@@ -225,7 +225,7 @@ class PlayStoreBillingManagerImpl(
     }
 
     override fun isProductPurchased(productId: ProductId, forceCheckFromApi: Boolean): Flowable<Boolean> {
-        val key = getPurchaseDetailsKey(productId.sku)
+        val key = getPurchaseDetailsKey(productId.skus)
         val localPurchaseDetails = RxPreference.ofString(purchasesPreferences, key).get()
         val checkedFromApiRef = AtomicBoolean(false)
         return localPurchaseDetails.observeOn(mainThreadScheduler).switchMapSingle { optionalDetailsJson ->
@@ -248,10 +248,10 @@ class PlayStoreBillingManagerImpl(
                 billingClient.queryPurchasesSingle(productId.billingSkyType)
                     .doOnSuccess { result ->
                         checkedFromApiRef.set(true)
-                        result.purchasesList?.also(::handlePurchases)
+                        result.purchasesList.also(::handlePurchases)
                     }
                     .map { result ->
-                        val desiredPurchase = result.purchasesList?.find { it.sku == productId.sku }
+                        val desiredPurchase = result.purchasesList.find { productId.hasTheSameSkus(it.skus) }
                         desiredPurchase != null && (desiredPurchase.purchaseState == Purchase.PurchaseState.PURCHASED)
                     }
                     .doOnSuccess { isPurchased ->
@@ -304,11 +304,11 @@ class PlayStoreBillingManagerImpl(
             billingClient.queryPurchasesSingle(productId.billingSkyType)
                 .observeOn(computationScheduler)
                 .map { purchasesResult ->
-                    if (purchasesResult.responseCode == BillingClient.BillingResponseCode.OK) {
-                        val purchase = purchasesResult.purchasesList?.find { it.sku == productId.sku }
+                    if (purchasesResult.billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
+                        val purchase = purchasesResult.purchasesList.find { productId.hasTheSameSkus(it.skus) }
                         Optional.of(purchase)
                     } else {
-                        val msg = "Failed to query purchases: responseCode=${purchasesResult.responseCode}"
+                        val msg = "Failed to query purchases: responseCode=${purchasesResult.billingResult.responseCode}"
                         throw IllegalStateException(msg)
                     }
                 }
@@ -347,8 +347,10 @@ class PlayStoreBillingManagerImpl(
 
         private const val KEY_PURCHASE_DETAILS = "purchase_details"
 
-        private fun getPurchaseDetailsKey(sku: String): String {
-            return KEY_PURCHASE_DETAILS + "_" + sku
+        private fun getPurchaseDetailsKey(skus: List<String>): String {
+            val sortedSkus = skus.sorted()
+            val skusToken = sortedSkus.joinToString(separator = "_")
+            return KEY_PURCHASE_DETAILS + "_" + skusToken
         }
     }
 }
