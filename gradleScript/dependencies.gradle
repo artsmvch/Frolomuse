@@ -60,7 +60,7 @@ ext {
         ],
 
         playstore : [
-            billing:                "com.android.billingclient:billing-ktx:3.0.3"
+            billing:                "com.android.billingclient:billing-ktx:5.1.0"
         ],
 
         di: [
