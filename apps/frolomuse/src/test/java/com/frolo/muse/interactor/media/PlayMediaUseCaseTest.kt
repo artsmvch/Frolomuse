@@ -20,12 +20,16 @@ import org.junit.runners.JUnit4
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import com.frolo.test.mockList
+import org.junit.Rule
 
 
 @RunWith(JUnit4::class)
 class PlayMediaUseCaseTest {
 
     private val schedulerProvider = TestSchedulerProvider.SHARED
+
+    @get:Rule
+    val immediateSchedulerRule = ImmediateSchedulerRule()
 
     @Mock
     private lateinit var repository: MediaRepository<Media>

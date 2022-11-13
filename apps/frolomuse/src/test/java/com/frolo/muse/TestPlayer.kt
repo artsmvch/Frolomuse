@@ -35,7 +35,6 @@ class TestPlayer: Player {
     override fun addNext(item: AudioSource) = Unit
     override fun addAllNext(items: List<AudioSource>) = Unit
     override fun moveItem(fromPosition: Int, toPosition: Int) = Unit
-    override fun getAudioFx(): AudioFx = TestAudioFx()
     override fun isAPointed(): Boolean = false
     override fun isBPointed(): Boolean = false
     override fun pointA(position: Int) = Unit

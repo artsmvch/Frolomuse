@@ -87,6 +87,7 @@ class GetAlbumSongsUseCaseTest {
             getAlbumSongsUseCase.getMediaList()
                     .subscribe(subscriber)
 
+            subscriber.await()
             subscriber.assertResult(result1)
         }
 
@@ -103,6 +104,7 @@ class GetAlbumSongsUseCaseTest {
             getAlbumSongsUseCase.getMediaList()
                     .subscribe(subscriber)
 
+            subscriber.await()
             subscriber.assertResult(result1.reversed())
         }
 
@@ -119,6 +121,7 @@ class GetAlbumSongsUseCaseTest {
             getAlbumSongsUseCase.getMediaList()
                     .subscribe(subscriber)
 
+            subscriber.await()
             subscriber.assertResult(result2)
         }
 
@@ -135,6 +138,7 @@ class GetAlbumSongsUseCaseTest {
             getAlbumSongsUseCase.getMediaList()
                     .subscribe(subscriber)
 
+            subscriber.await()
             subscriber.assertResult(result2.reversed())
         }
     }
@@ -155,6 +159,7 @@ class GetAlbumSongsUseCaseTest {
         getAlbumSongsUseCase.getMediaList()
                 .subscribe(subscriber)
 
+        subscriber.await()
         subscriber.assertError(UnsupportedOperationException::class.java)
     }
 
@@ -168,6 +173,7 @@ class GetAlbumSongsUseCaseTest {
         getAlbumSongsUseCase.applySortOrder(sortOrder1)
                 .subscribe(observer)
 
+        observer.await()
         observer.assertComplete()
     }
 
@@ -181,6 +187,7 @@ class GetAlbumSongsUseCaseTest {
         getAlbumSongsUseCase.applySortOrder(sortOrder1)
                 .subscribe(observer)
 
+        observer.await()
         observer.assertError(UnsupportedOperationException::class.java)
     }
 
@@ -198,6 +205,7 @@ class GetAlbumSongsUseCaseTest {
             getAlbumSongsUseCase.getSortOrderMenu()
                     .subscribe(observer)
 
+            observer.await()
             observer.assertResult(
                     SortOrderMenu(
                             sortOrders,
@@ -225,6 +233,7 @@ class GetAlbumSongsUseCaseTest {
             getAlbumSongsUseCase.getSortOrderMenu()
                     .subscribe(observer)
 
+            observer.await()
             observer.assertFailure(UnsupportedOperationException::class.java)
         }
     }

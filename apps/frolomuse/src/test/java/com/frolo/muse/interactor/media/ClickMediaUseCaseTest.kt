@@ -65,6 +65,7 @@ class ClickMediaUseCaseTest {
         clickMediaUseCase.click(song, songs)
                 .subscribe(testObserver)
 
+        testObserver.await()
         testObserver.assertComplete()
 
         verify(player, times(1))
@@ -87,6 +88,7 @@ class ClickMediaUseCaseTest {
         clickMediaUseCase.click(song, collection)
                 .subscribe(testObserver)
 
+        testObserver.await()
         testObserver.assertComplete()
 
         verify(player, times(1))
@@ -106,6 +108,7 @@ class ClickMediaUseCaseTest {
         clickMediaUseCase.click(album, collection)
                 .subscribe(testObserver)
 
+        testObserver.await()
         testObserver.assertComplete()
 
         verify(appRouter, times(1))
@@ -125,6 +128,7 @@ class ClickMediaUseCaseTest {
         clickMediaUseCase.click(artist, collection)
                 .subscribe(testObserver)
 
+        testObserver.await()
         testObserver.assertComplete()
 
         verify(appRouter, times(1))
@@ -144,6 +148,7 @@ class ClickMediaUseCaseTest {
         clickMediaUseCase.click(genre, collection)
                 .subscribe(testObserver)
 
+        testObserver.await()
         testObserver.assertComplete()
 
         verify(appRouter, times(1))
@@ -163,6 +168,7 @@ class ClickMediaUseCaseTest {
         clickMediaUseCase.click(playlist, collection)
                 .subscribe(testObserver)
 
+        testObserver.await()
         testObserver.assertComplete()
 
         verify(appRouter, times(1))
@@ -191,6 +197,7 @@ class ClickMediaUseCaseTest {
         clickMediaUseCase.click(myFile, collection)
                 .subscribe(testObserver)
 
+        testObserver.await()
         testObserver.assertComplete()
 
         verify(appRouter, times(1))
@@ -255,6 +262,7 @@ class ClickMediaUseCaseTest {
         clickMediaUseCase.click(myFile, collection)
                 .subscribe(testObserver)
 
+        testObserver.await()
         testObserver.assertComplete()
 
         verify(player, times(1))
@@ -277,6 +285,7 @@ class ClickMediaUseCaseTest {
         clickMediaUseCase.click(myFile, collection)
                 .subscribe(testObserver)
 
+        testObserver.await()
         testObserver.assertComplete()
     }
 
@@ -293,6 +302,7 @@ class ClickMediaUseCaseTest {
         clickMediaUseCase.click(media, collection)
                 .subscribe(testObserver)
 
+        testObserver.await()
         testObserver.assertError(UnknownMediaException::class.java)
     }
 

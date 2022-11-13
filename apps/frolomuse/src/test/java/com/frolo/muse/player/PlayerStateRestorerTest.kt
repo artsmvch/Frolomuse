@@ -108,6 +108,7 @@ class PlayerStateRestorerTest {
         playerStateRestorer.restorePlayerStateIfNeeded(player)
             .subscribe(observer)
 
+        observer.await()
         observer.assertComplete()
 
         verify(player, times(1)).prepareByTarget(
@@ -161,6 +162,7 @@ class PlayerStateRestorerTest {
         playerStateRestorer.restorePlayerStateIfNeeded(player)
             .subscribe(observer)
 
+        observer.await()
         observer.assertComplete()
 
         verify(player, times(1)).prepareByTarget(
@@ -209,6 +211,7 @@ class PlayerStateRestorerTest {
         playerStateRestorer.restorePlayerStateIfNeeded(player)
             .subscribe(observer)
 
+        observer.await()
         observer.assertError(IndexOutOfBoundsException::class.java)
 
         verify(player, never())

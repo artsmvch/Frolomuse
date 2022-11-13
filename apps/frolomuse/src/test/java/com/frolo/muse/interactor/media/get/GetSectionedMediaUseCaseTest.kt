@@ -73,7 +73,7 @@ class GetSectionedMediaUseCaseTest {
             getSectionedMediaUseCase.getMediaList()
                     .subscribe(subscriber)
 
-            /*testing*/
+            subscriber.await()
             subscriber.assertResult(result.reversed())
         }
 
@@ -97,7 +97,7 @@ class GetSectionedMediaUseCaseTest {
             getSectionedMediaUseCase.getMediaList()
                     .subscribe(subscriber)
 
-            /*testing*/
+            subscriber.await()
             subscriber.assertResult(result)
         }
     }
