@@ -6,6 +6,7 @@ import androidx.annotation.GuardedBy
 import androidx.annotation.UiThread
 import com.android.billingclient.api.*
 import com.frolo.billing.*
+import com.frolo.billing.ProductDetails
 import com.frolo.rxpreference.RxPreference
 import io.reactivex.Completable
 import io.reactivex.Flowable
