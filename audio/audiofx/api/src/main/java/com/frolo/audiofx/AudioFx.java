@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import java.util.List;
 
 
+@Deprecated
 public interface AudioFx {
     /**
      * Save the current state of audio fx in own storage.

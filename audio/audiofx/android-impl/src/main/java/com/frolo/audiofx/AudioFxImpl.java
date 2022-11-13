@@ -26,6 +26,7 @@ import com.frolo.audiofx.android.BuildConfig;
 /**
  * Implementation of {@link AudioFxApplicable} based on the AudioFx effects from the Android SDK.
  */
+@Deprecated
 public final class AudioFxImpl implements AudioFxApplicable {
 
     private static final String LOG_TAG = "AudioFxImpl";

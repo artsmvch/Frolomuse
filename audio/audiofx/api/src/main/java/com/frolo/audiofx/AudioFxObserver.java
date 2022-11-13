@@ -1,6 +1,7 @@
 package com.frolo.audiofx;
 
 
+@Deprecated
 public interface AudioFxObserver {
 
     void onEnabled(AudioFx audioFx);

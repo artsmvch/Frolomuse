@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.Arrays;
 
 
+@Deprecated
 public final class CustomPreset implements Preset, Serializable {
     public final static long NO_ID = -1;
 

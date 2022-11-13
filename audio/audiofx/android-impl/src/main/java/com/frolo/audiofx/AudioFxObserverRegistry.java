@@ -15,6 +15,7 @@ import java.util.concurrent.CopyOnWriteArraySet;
  * The thread-safe registry for observers of type {@link AudioFxObserver}.
  * NOTE: All observer methods are called on the main thread.
  */
+@Deprecated
 final class AudioFxObserverRegistry {
 
     static AudioFxObserverRegistry create(@NonNull Context context, @NonNull AudioFx audioFx) {

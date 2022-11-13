@@ -6,6 +6,7 @@ import java.util.Objects;
 /**
  * Preset that does nothing: it doesn't apply any settings to audio fx.
  */
+@Deprecated
 public final class VoidPreset implements Preset {
     private final String name;
 

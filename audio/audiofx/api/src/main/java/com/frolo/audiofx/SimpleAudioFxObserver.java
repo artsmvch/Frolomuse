@@ -4,6 +4,7 @@ package com.frolo.audiofx;
 /**
  * Simple implementation of {@link AudioFxObserver} that does nothing in callback methods.
  */
+@Deprecated
 public abstract class SimpleAudioFxObserver implements AudioFxObserver {
     @Override
     public void onEnabled(AudioFx audioFx) {

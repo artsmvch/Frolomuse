@@ -23,6 +23,7 @@ import io.reactivex.Flowable;
 import io.reactivex.Single;
 
 
+@Deprecated
 public final class PresetRepositoryImpl implements PresetRepository {
 
     private final static Uri URI = AppMediaStore.Presets.getContentUri();

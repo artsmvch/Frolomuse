@@ -4,6 +4,7 @@ import android.content.Context;
 import android.media.AudioManager;
 import android.media.audiofx.Equalizer;
 
+@Deprecated
 final class Defaults {
     final short numberOfBands;
     final short zeroBandLevel;

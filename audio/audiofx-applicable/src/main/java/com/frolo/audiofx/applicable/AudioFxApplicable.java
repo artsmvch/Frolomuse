@@ -12,6 +12,7 @@ import com.frolo.audiofx.AudioFx;
  * {@link AudioFxApplicable#release()} should be called at the end of work with an instance of AudioFx.
  * NOTE: Android specific.
  */
+@Deprecated
 public interface AudioFxApplicable extends AudioFx {
 
     /**

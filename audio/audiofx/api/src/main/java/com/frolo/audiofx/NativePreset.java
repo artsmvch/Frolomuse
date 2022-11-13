@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 
+@Deprecated
 public final class NativePreset implements Preset, Serializable {
     public static final short NO_INDEX = -1;
 

@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
  * The state is stored in a SharedPreferences whose name is specified by the client.
  * To create an instance, call {@link AudioFxPersistence#create(Context, String)} method.
  */
+@Deprecated
 public final class AudioFxPersistence {
 
     static final int FLAG_EQ_USE_NO_PRESET = 0;

@@ -10,6 +10,7 @@ import io.reactivex.Flowable;
 import io.reactivex.Single;
 
 
+@Deprecated
 public interface PresetRepository {
     Flowable<List<CustomPreset>> getPresets();
 

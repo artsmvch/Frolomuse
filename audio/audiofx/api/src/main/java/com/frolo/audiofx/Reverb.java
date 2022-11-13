@@ -1,6 +1,7 @@
 package com.frolo.audiofx;
 
 
+@Deprecated
 public enum Reverb {
     NONE,
     LARGE_HALL,
