@@ -3,16 +3,15 @@ package com.frolo.muse.di.modules
 import android.app.Application
 import android.content.Context
 import com.frolo.audiofx.AudioFx
-import com.frolo.audiofx.AudioFxImpl
 import com.frolo.audiofx2.AudioFx2
 import com.frolo.audiofx2.impl.AudioFx2Impl
 import com.frolo.muse.BuildInfo
 import com.frolo.muse.FrolomuseApp
+import com.frolo.muse.audiofx2.AudioFx2Migrator
 import com.frolo.muse.di.ApplicationScope
 import com.frolo.muse.memory.MemoryWatcherRegistry
 import com.frolo.muse.memory.MemoryWatcherRegistryStub
 import com.frolo.muse.player.PlayerWrapper
-import com.frolo.muse.player.service.audiofx.DefaultAudioFxErrorHandler
 import com.frolo.muse.router.AppRouter
 import dagger.Module
 import dagger.Provides
@@ -49,8 +48,10 @@ class ApplicationModule(private val frolomuseApp: FrolomuseApp) {
 
     @ApplicationScope
     @Provides
-    fun provideAudioFx2Impl(): AudioFx2Impl {
-        return AudioFx2Impl.obtain(frolomuseApp)
+    fun provideAudioFx2Impl(context: Context): AudioFx2Impl {
+        val audioFx2 = AudioFx2Impl.obtain(frolomuseApp)
+        AudioFx2Migrator(context, audioFx2).migrate()
+        return audioFx2
     }
 
     @Provides
