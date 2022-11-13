@@ -177,7 +177,7 @@ internal class ReverbImpl constructor(
 
     companion object {
         // FIXME: control the level?
-        private const val DEFAULT_AUX_EFFECT_SEND_LEVEL = 1f
+        private const val DEFAULT_AUX_EFFECT_SEND_LEVEL = 1.0f
     }
 }
 
