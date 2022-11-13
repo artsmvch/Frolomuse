@@ -1,16 +1,20 @@
 package com.frolo.audiofx2.impl
 
 import com.frolo.audiofx2.AudioEffect2
+import java.util.concurrent.atomic.AtomicReference
 
 internal abstract class BaseAudioEffect2Impl<E: android.media.audiofx.AudioEffect>:
     AudioEffect2, AudioFx2AttachProtocol {
-    @Volatile
-    private var lastAudioSessionId: Int? = null
+    private val lastAttachTargetRef = AtomicReference<AudioFx2AttachTarget>(null)
 
     final override fun attachTo(target: AudioFx2AttachTarget) {
-        if (lastAudioSessionId != target.sessionId) {
+        val lastTarget = lastAttachTargetRef.get()
+        // Check if the target has been actually changed
+        if (lastTarget == null ||
+            lastTarget.sessionId != target.sessionId ||
+            lastTarget.mediaPlayer != target.mediaPlayer) {
             onAttachTo(target)
-            lastAudioSessionId = target.sessionId
+            lastAttachTargetRef.set(target)
         }
     }
 
@@ -18,7 +22,7 @@ internal abstract class BaseAudioEffect2Impl<E: android.media.audiofx.AudioEffec
 
     final override fun release() {
         onRelease()
-        lastAudioSessionId = null
+        lastAttachTargetRef.set(null)
     }
 
     protected abstract fun onRelease()

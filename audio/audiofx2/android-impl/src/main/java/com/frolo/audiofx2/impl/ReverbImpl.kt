@@ -127,8 +127,7 @@ internal class ReverbImpl constructor(
                 ?: PresetReverb.PRESET_NONE
             if (target.mediaPlayer != null) {
                 target.mediaPlayer.attachAuxEffect(newEngine.id)
-                // FIXME: control the level?
-                target.mediaPlayer.setAuxEffectSendLevel(1f)
+                target.mediaPlayer.setAuxEffectSendLevel(DEFAULT_AUX_EFFECT_SEND_LEVEL)
             }
             this.engine = newEngine
         } catch (e: Throwable) {
@@ -174,6 +173,11 @@ internal class ReverbImpl constructor(
 
     override fun removeOnPresetUsedListener(listener: Reverb.OnPresetUsedListener) {
         presetUsedListenerRegistry.removeListener(listener)
+    }
+
+    companion object {
+        // FIXME: control the level?
+        private const val DEFAULT_AUX_EFFECT_SEND_LEVEL = 1f
     }
 }
 
