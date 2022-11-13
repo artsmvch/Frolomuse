@@ -2,7 +2,7 @@ package com.frolo.muse.audiofx2
 
 import android.content.Context
 import androidx.core.content.edit
-import com.frolo.audiofx.AudioFxImpl
+import com.frolo.audiofx.AudioFxPersistence
 import com.frolo.audiofx2.AudioFx2
 import com.frolo.muse.di.impl.local.PresetRepositoryImpl
 import io.reactivex.Completable
@@ -31,18 +31,17 @@ internal class AudioFx2Migrator(
     private fun migrateCommon() {
         Completable.fromAction {
             val prefsName = "com.frolo.muse.audiofx.persistence"
-            val audioFx = AudioFxImpl.getInstance(context, prefsName)
-            if (audioFx.isEnabled) {
-                // Copy the enabled status
-                audioFx2.equalizer?.isEnabled = true
-                audioFx2.bassBoost?.isEnabled = true
-                audioFx2.virtualizer?.isEnabled = true
-                audioFx2.reverb?.isEnabled = true
-            }
+            val persistence = AudioFxPersistence.create(context, prefsName)
+            val isEnabled = persistence.isEnabled
+            // Copy the enabled status
+            audioFx2.equalizer?.isEnabled = isEnabled
+            audioFx2.bassBoost?.isEnabled = isEnabled
+            audioFx2.virtualizer?.isEnabled = isEnabled
+            audioFx2.reverb?.isEnabled = isEnabled
             // Copy the bass strength
-            audioFx2.bassBoost?.value = audioFx.bassStrength.toInt()
+            audioFx2.bassBoost?.value = persistence.bassStrength.toInt()
             // Copy the virtualizer strength
-            audioFx2.virtualizer?.value = audioFx.virtualizerStrength.toInt()
+            audioFx2.virtualizer?.value = persistence.virtualizerStrength.toInt()
         }.subscribeOn(Schedulers.io()).subscribe()
     }
 
@@ -60,7 +59,7 @@ internal class AudioFx2Migrator(
                         // Copy the preset to the new AudioFx2
                         val levels = HashMap<Int, Int>(preset.levelCount)
                         for (band in 0 until preset.levelCount) {
-                            levels[band] = levels[band]!!
+                            levels[band] = preset.getLevelAt(band).toInt()
                         }
                         equalizer.createPreset(preset.name, levels)
                     }
@@ -69,7 +68,7 @@ internal class AudioFx2Migrator(
                          // Delete the preset from the old repo
                         .andThen(presetRepository.delete(preset))
                 }
-                Completable.merge(sources)
+                Completable.mergeDelayError(sources)
             }
             .subscribe()
     }

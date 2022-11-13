@@ -12,13 +12,13 @@ import androidx.annotation.Nullable;
  * The state is stored in a SharedPreferences whose name is specified by the client.
  * To create an instance, call {@link AudioFxPersistence#create(Context, String)} method.
  */
-final class AudioFxPersistence {
+public final class AudioFxPersistence {
 
     static final int FLAG_EQ_USE_NO_PRESET = 0;
     static final int FLAG_EQ_USE_NATIVE_PRESET = 1;
     static final int FLAG_EQ_USE_CUSTOM_PRESET = 2;
 
-    static AudioFxPersistence create(@NonNull Context context, @NonNull String prefsName) {
+    public static AudioFxPersistence create(@NonNull Context context, @NonNull String prefsName) {
         return new AudioFxPersistence(context, prefsName);
     }
 
@@ -87,7 +87,7 @@ final class AudioFxPersistence {
         }
     }
 
-    synchronized boolean isEnabled() {
+    public synchronized boolean isEnabled() {
         checkStateRestored();
         return mEnabled;
     }
@@ -155,7 +155,7 @@ final class AudioFxPersistence {
         mPrefs.edit().putString(KEY_EQ_LAST_CUSTOM_PRESET, Serialization.trySerializeCustomPreset(mLastCustomPreset)).apply();
     }
 
-    synchronized short getBassStrength() {
+    public synchronized short getBassStrength() {
         checkStateRestored();
         return mBassStrength;
     }
@@ -166,7 +166,7 @@ final class AudioFxPersistence {
         mPrefs.edit().putInt(KEY_BASS_STRENGTH, strength).apply();
     }
 
-    synchronized short getVirtualizerStrength() {
+    public synchronized short getVirtualizerStrength() {
         checkStateRestored();
         return mVirtualizerStrength;
     }
