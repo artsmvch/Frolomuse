@@ -5,16 +5,17 @@ import org.json.JSONObject
 
 
 internal data class PurchaseDetails(
-    val sku: String,
+    val skus: List<String>,
     @Purchase.PurchaseState val state: Int,
     val isAcknowledged: Boolean
 ) {
 
     companion object {
+        private const val SKU_SEPARATOR = ","
 
         fun from(purchase: Purchase): PurchaseDetails {
             return PurchaseDetails(
-                sku = purchase.sku,
+                skus = purchase.skus,
                 state = purchase.purchaseState,
                 isAcknowledged = purchase.isAcknowledged
             )
@@ -22,7 +23,7 @@ internal data class PurchaseDetails(
 
         fun serializeToJson(details: PurchaseDetails): String {
             val json = JSONObject()
-            json.put("sku", details.sku)
+            json.put("skus", serializeSkuList(details.skus))
             json.put("state", details.state)
             json.put("is_acknowledged", details.isAcknowledged)
             return json.toString()
@@ -30,11 +31,28 @@ internal data class PurchaseDetails(
 
         fun deserializeFromJson(jsonString: String): PurchaseDetails {
             val json = JSONObject(jsonString)
+            val skus = when {
+                json.has("skus") -> {
+                    deserializeSkuList(json.optString("skus"))
+                }
+                json.has("sku") -> {
+                    listOf(json.optString("sku"))
+                }
+                else -> emptyList<String>()
+            }
             return PurchaseDetails(
-                sku = json.getString("sku"),
+                skus = skus,
                 state = json.getInt("state"),
                 isAcknowledged = json.getBoolean("is_acknowledged")
             )
+        }
+
+        private fun serializeSkuList(skus: List<String>): String {
+            return skus.joinToString(separator = SKU_SEPARATOR)
+        }
+
+        private fun deserializeSkuList(skusString: String): List<String> {
+            return skusString.split(SKU_SEPARATOR)
         }
     }
 
