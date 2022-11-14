@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
-apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'com.frolo.plugin.bundle_check'
 apply plugin: 'com.frolo.plugin.task_utils'
 
@@ -296,6 +295,7 @@ dependencies {
 }
 
 if (google_services_enabled) {
+    apply plugin: 'com.google.firebase.crashlytics'
     apply plugin: 'com.google.gms.google-services'
 }
 

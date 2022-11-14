@@ -2,7 +2,6 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-android-extensions'
-    id 'com.google.firebase.crashlytics'
 }
 
 def version_code = 4
@@ -115,5 +114,6 @@ dependencies {
 }
 
 if (google_services_enabled) {
+    apply plugin: 'com.google.firebase.crashlytics'
     apply plugin: 'com.google.gms.google-services'
 }
