@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="white">#FFFFFF</color>
     <!--Onboarding-->
     <color name="onboarding_color1">#0C82DD</color>
     <color name="onboarding_color2">#9510DC</color>

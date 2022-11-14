@@ -26,7 +26,7 @@
         app:layout_constraintTop_toTopOf="@id/guideline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="@id/guideline"
-        tools:src="@mipmap/ic_launcher_round"/>
+        tools:src="@drawable/ic_onboarding1"/>
 
     <TextView
         android:id="@+id/tv_title"
