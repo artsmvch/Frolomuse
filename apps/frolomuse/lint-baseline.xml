@@ -1,0 +1,3491 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="6" by="lint 7.1.3" type="baseline" client="gradle" dependencies="false" name="AGP (7.1.3)" variant="all" version="7.1.3">
+
+    <issue
+        id="ScopedStorage"
+        message="WRITE_EXTERNAL_STORAGE no longer provides write access when targeting Android 11+, even when using `requestLegacyExternalStorage`"
+        errorLine1="    &lt;uses-permission android:name=&quot;android.permission.WRITE_EXTERNAL_STORAGE&quot; />"
+        errorLine2="                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="8"
+            column="36"/>
+    </issue>
+
+    <issue
+        id="DefaultLocale"
+        message="Implicitly using the default locale is a common source of bugs: Use `toLowerCase(Locale)` instead. For strings meant to be internal use `Locale.ROOT`, otherwise `Locale.getDefault()`."
+        errorLine1="        return when (presetName.toLowerCase()) {"
+        errorLine2="                                ~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/ui/main/audiofx/adapter/PresetAdapter.kt"
+            line="88"
+            column="33"/>
+    </issue>
+
+    <issue
+        id="DefaultLocale"
+        message="Implicitly using the default locale is a common source of bugs: Use `toLowerCase(Locale)` instead. For strings meant to be internal use `Locale.ROOT`, otherwise `Locale.getDefault()`."
+        errorLine1="        return when (presetName.toLowerCase()) {"
+        errorLine2="                                ~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/ui/main/audiofx/adapter/PresetAdapter.kt"
+            line="105"
+            column="33"/>
+    </issue>
+
+    <issue
+        id="DefaultLocale"
+        message="Implicitly using the default locale is a common source of bugs: Use `toUpperCase(Locale)` instead. For strings meant to be internal use `Locale.ROOT`, otherwise `Locale.getDefault()`."
+        errorLine1="        textView.text = getItem(position).name.toUpperCase()"
+        errorLine2="                                               ~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/ui/main/audiofx/vrt/VisualizerRendererTypeAdapter.kt"
+            line="26"
+            column="48"/>
+    </issue>
+
+    <issue
+        id="DefaultLocale"
+        message="Implicitly using the default locale is a common source of bugs: Use `toUpperCase(Locale)` instead. For strings meant to be internal use `Locale.ROOT`, otherwise `Locale.getDefault()`."
+        errorLine1="        textView.text = getItem(position).name.toUpperCase()"
+        errorLine2="                                               ~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/ui/main/audiofx/vrt/VisualizerRendererTypeAdapter.kt"
+            line="26"
+            column="48"/>
+    </issue>
+
+    <issue
+        id="DuplicateIncludedIds"
+        message="Duplicate id @+id/fl_buttons, defined or included multiple times in layout/dialog_album_editor.xml: [layout/dialog_album_editor.xml defines @+id/fl_buttons, layout/dialog_album_editor.xml => layout/include_album_art_deletion_confirmation.xml defines @+id/fl_buttons]"
+        errorLine1="    &lt;include layout=&quot;@layout/include_album_art_deletion_confirmation&quot;"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/layout/dialog_album_editor.xml"
+            line="117"
+            column="5"
+            message="Duplicate id @+id/fl_buttons, defined or included multiple times in layout/dialog_album_editor.xml: [layout/dialog_album_editor.xml defines @+id/fl_buttons, layout/dialog_album_editor.xml => layout/include_album_art_deletion_confirmation.xml defines @+id/fl_buttons]"/>
+        <location
+            file="src/main/res/layout/dialog_album_editor.xml"
+            line="90"
+            column="9"
+            message="Defined here"/>
+        <location
+            file="src/main/res/layout/include_album_art_deletion_confirmation.xml"
+            line="28"
+            column="9"
+            message="Defined here, included via layout/dialog_album_editor.xml => layout/include_album_art_deletion_confirmation.xml defines @+id/fl_buttons"/>
+    </issue>
+
+    <issue
+        id="InconsistentLayout"
+        message="The id &quot;rv_themes&quot; in layout &quot;include_theme_pager&quot; is missing from the following layout configurations: layout (present in layout-land)"
+        errorLine1="    android:id=&quot;@+id/rv_themes&quot;"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout-land/include_theme_pager.xml"
+            line="4"
+            column="5"
+            message="Occurrence in layout-land"/>
+    </issue>
+
+    <issue
+        id="InconsistentLayout"
+        message="The id &quot;group_theme_pager&quot; in layout &quot;include_theme_pager&quot; is missing from the following layout configurations: layout-land (present in layout)"
+        errorLine1="    android:id=&quot;@+id/group_theme_pager&quot;>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/include_theme_pager.xml"
+            line="9"
+            column="5"
+            message="Occurrence in layout"/>
+    </issue>
+
+    <issue
+        id="InlinedApi"
+        message="Field requires API level 30 (current min is 23): `android.provider.MediaStore.Audio.AudioColumns#GENRE_ID`"
+        errorLine1="                selectionBuilder.append(MediaStore.Audio.Media.GENRE_ID).append(&quot; = ?&quot;);"
+        errorLine2="                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/SongQueryHelper.java"
+            line="396"
+            column="41"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                    cursor.getLong(cursor.getColumnIndex(PROJECTION[0])),"
+        errorLine2="                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/AlbumQuery.java"
+            line="42"
+            column="36"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                    cursor.getString(cursor.getColumnIndex(PROJECTION[1])),"
+        errorLine2="                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/AlbumQuery.java"
+            line="43"
+            column="38"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                    cursor.getString(cursor.getColumnIndex(PROJECTION[2])),"
+        errorLine2="                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/AlbumQuery.java"
+            line="44"
+            column="38"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                    cursor.getInt(cursor.getColumnIndex(PROJECTION[3]))"
+        errorLine2="                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/AlbumQuery.java"
+            line="45"
+            column="35"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                    cursor.getLong(cursor.getColumnIndex(PROJECTION_ARTIST_MEMBER[0])),"
+        errorLine2="                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/AlbumQuery.java"
+            line="55"
+            column="36"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                    cursor.getString(cursor.getColumnIndex(PROJECTION_ARTIST_MEMBER[1])),"
+        errorLine2="                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/AlbumQuery.java"
+            line="56"
+            column="38"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                    cursor.getString(cursor.getColumnIndex(PROJECTION_ARTIST_MEMBER[2])),"
+        errorLine2="                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/AlbumQuery.java"
+            line="57"
+            column="38"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                    cursor.getInt(cursor.getColumnIndex(PROJECTION_ARTIST_MEMBER[3]))"
+        errorLine2="                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/AlbumQuery.java"
+            line="58"
+            column="35"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                cursor.getLong(cursor.getColumnIndex(PROJECTION[0])),"
+        errorLine2="                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/ArtistQuery.java"
+            line="44"
+            column="32"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                cursor.getString(cursor.getColumnIndex(PROJECTION[1])),"
+        errorLine2="                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/ArtistQuery.java"
+            line="45"
+            column="34"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                cursor.getInt(cursor.getColumnIndex(PROJECTION[2])),"
+        errorLine2="                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/ArtistQuery.java"
+            line="46"
+            column="31"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                cursor.getInt(cursor.getColumnIndex(PROJECTION[3]))"
+        errorLine2="                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/ArtistQuery.java"
+            line="47"
+            column="31"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                String tableName = dbQuery.getString(dbQuery.getColumnIndex(&quot;name&quot;));"
+        errorLine2="                                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/content/DBInfoViewer.java"
+            line="18"
+            column="54"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                            cursor.getColumnIndex(PROJECTION_SONG[0]));"
+        errorLine2="                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/Del.java"
+            line="141"
+            column="29"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                            cursor.getColumnIndex(PROJECTION_SONG[1]));"
+        errorLine2="                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/Del.java"
+            line="143"
+            column="29"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                cursor.getLong(cursor.getColumnIndex(PROJECTION[0])),"
+        errorLine2="                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/GenreQuery.java"
+            line="35"
+            column="32"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                cursor.getString(cursor.getColumnIndex(PROJECTION[1]))"
+        errorLine2="                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/GenreQuery.java"
+            line="36"
+            column="34"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                            String text = query.getString(query.getColumnIndex(PROJECTION[0]));"
+        errorLine2="                                                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/LyricsLocalRepositoryImpl.java"
+            line="44"
+            column="59"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                id = cursor.getLong(cursor.getColumnIndex(PROJECTION[0])),"
+        errorLine2="                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/MediaFileRepositoryImpl.kt"
+            line="157"
+            column="37"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                name = cursor.getString(cursor.getColumnIndex(PROJECTION[1])),"
+        errorLine2="                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/MediaFileRepositoryImpl.kt"
+            line="158"
+            column="41"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                bucketId = cursor.getLong(cursor.getColumnIndex(PROJECTION[2])),"
+        errorLine2="                                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/MediaFileRepositoryImpl.kt"
+            line="159"
+            column="43"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                bucketName = cursor.getString(cursor.getColumnIndex(PROJECTION[3])),"
+        errorLine2="                                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/MediaFileRepositoryImpl.kt"
+            line="160"
+            column="47"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                relativePath = cursor.getString(cursor.getColumnIndex(PROJECTION[4])),"
+        errorLine2="                                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/MediaFileRepositoryImpl.kt"
+            line="161"
+            column="49"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                mimeType = cursor.getString(cursor.getColumnIndex(PROJECTION[5]))"
+        errorLine2="                                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/MediaFileRepositoryImpl.kt"
+            line="162"
+            column="45"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                    cursor.getColumnIndex(PROJECTION_HIDDEN_FILES[0]));"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/MyFileQuery.java"
+            line="120"
+            column="21"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                            audioCursor.getColumnIndex(audioProjection[0]));"
+        errorLine2="                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/PlaylistHelper.java"
+            line="239"
+            column="29"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                            genreCursor.getColumnIndex(genreProjection[0]));"
+        errorLine2="                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/PlaylistHelper.java"
+            line="314"
+            column="29"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                cursor.getLong(cursor.getColumnIndex(PROJECTION[0])),"
+        errorLine2="                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/PlaylistQuery.java"
+            line="55"
+            column="32"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                cursor.getString(cursor.getColumnIndex(PROJECTION[1])),"
+        errorLine2="                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/PlaylistQuery.java"
+            line="57"
+            column="34"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                cursor.getString(cursor.getColumnIndex(PROJECTION[2])),"
+        errorLine2="                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/PlaylistQuery.java"
+            line="58"
+            column="34"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                cursor.getLong(cursor.getColumnIndex(PROJECTION[3])),"
+        errorLine2="                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/PlaylistQuery.java"
+            line="59"
+            column="32"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                cursor.getLong(cursor.getColumnIndex(PROJECTION[4]))"
+        errorLine2="                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/PlaylistQuery.java"
+            line="60"
+            column="32"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="            byte[] byteLevels = cursor.getBlob(cursor.getColumnIndex(PROJECTION[2]));"
+        errorLine2="                                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/PresetRepositoryImpl.java"
+            line="42"
+            column="48"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                cursor.getLong(cursor.getColumnIndex(PROJECTION[0])),"
+        errorLine2="                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/PresetRepositoryImpl.java"
+            line="44"
+            column="32"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                cursor.getString(cursor.getColumnIndex(PROJECTION[1])),"
+        errorLine2="                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/PresetRepositoryImpl.java"
+            line="45"
+            column="34"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                    cursor.getColumnIndex(PROJECTION_SONG_PLAY_COUNT[0]));"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/SongQuery.java"
+            line="101"
+            column="21"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                    cursor.getColumnIndex(PROJECTION_SONG_PLAY_COUNT[1]));"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/SongQuery.java"
+            line="103"
+            column="21"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                    cursor.getColumnIndex(PROJECTION_SONG_PLAY_COUNT[2]));"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/SongQuery.java"
+            line="105"
+            column="21"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                            String path = cursor.getString(cursor.getColumnIndex(projection[0]));"
+        errorLine2="                                                           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/SongQuery.java"
+            line="221"
+            column="60"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                        playCount = cursor.getInt(cursor.getColumnIndex(projection[0]));"
+        errorLine2="                                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/SongQuery.java"
+            line="467"
+            column="51"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                        lastPlayTime = cursor.getLong(cursor.getColumnIndex(projection[1]));"
+        errorLine2="                                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/SongQuery.java"
+            line="468"
+            column="55"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                    currentPlayCount = cursor.getInt(cursor.getColumnIndex(projection[0]));"
+        errorLine2="                                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/SongQuery.java"
+            line="555"
+            column="54"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                cursor.getLong(cursor.getColumnIndex(projection[0])),"
+        errorLine2="                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/SongQueryHelper.java"
+            line="164"
+            column="32"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                cursor.getString(cursor.getColumnIndex(projection[1])),"
+        errorLine2="                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/SongQueryHelper.java"
+            line="166"
+            column="34"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                cursor.getString(cursor.getColumnIndex(projection[2])),"
+        errorLine2="                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/SongQueryHelper.java"
+            line="167"
+            column="34"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                cursor.getLong(cursor.getColumnIndex(projection[3])),"
+        errorLine2="                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/SongQueryHelper.java"
+            line="168"
+            column="32"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                cursor.getString(cursor.getColumnIndex(projection[4])),"
+        errorLine2="                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/SongQueryHelper.java"
+            line="169"
+            column="34"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                cursor.getLong(cursor.getColumnIndex(projection[5])),"
+        errorLine2="                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/SongQueryHelper.java"
+            line="170"
+            column="32"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                cursor.getString(cursor.getColumnIndex(projection[6])),"
+        errorLine2="                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/SongQueryHelper.java"
+            line="171"
+            column="34"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                cursor.getInt(cursor.getColumnIndex(projection[7])),"
+        errorLine2="                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/SongQueryHelper.java"
+            line="173"
+            column="31"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                cursor.getInt(cursor.getColumnIndex(projection[8])),"
+        errorLine2="                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/SongQueryHelper.java"
+            line="174"
+            column="31"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                cursor.getInt(cursor.getColumnIndex(projection[9]))"
+        errorLine2="                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/SongQueryHelper.java"
+            line="175"
+            column="31"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                cursor.getLong(cursor.getColumnIndex(projection[0])),"
+        errorLine2="                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/SongQueryHelper.java"
+            line="189"
+            column="32"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                cursor.getString(cursor.getColumnIndex(projection[1])),"
+        errorLine2="                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/SongQueryHelper.java"
+            line="191"
+            column="34"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                cursor.getString(cursor.getColumnIndex(projection[2])),"
+        errorLine2="                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/SongQueryHelper.java"
+            line="192"
+            column="34"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                cursor.getLong(cursor.getColumnIndex(projection[3])),"
+        errorLine2="                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/SongQueryHelper.java"
+            line="193"
+            column="32"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                cursor.getString(cursor.getColumnIndex(projection[4])),"
+        errorLine2="                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/SongQueryHelper.java"
+            line="194"
+            column="34"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                cursor.getLong(cursor.getColumnIndex(projection[5])),"
+        errorLine2="                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/SongQueryHelper.java"
+            line="195"
+            column="32"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                cursor.getString(cursor.getColumnIndex(projection[6])),"
+        errorLine2="                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/SongQueryHelper.java"
+            line="196"
+            column="34"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                cursor.getInt(cursor.getColumnIndex(projection[7])),"
+        errorLine2="                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/SongQueryHelper.java"
+            line="198"
+            column="31"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                cursor.getInt(cursor.getColumnIndex(projection[8])),"
+        errorLine2="                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/SongQueryHelper.java"
+            line="199"
+            column="31"/>
+    </issue>
+
+    <issue
+        id="Range"
+        message="Value must be ≥ 0"
+        errorLine1="                cursor.getInt(cursor.getColumnIndex(projection[9]))"
+        errorLine2="                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/SongQueryHelper.java"
+            line="200"
+            column="31"/>
+    </issue>
+
+    <issue
+        id="SdCardPath"
+        message="Do not hardcode &quot;/sdcard/&quot;; use `Environment.getExternalStorageDirectory().getPath()` instead"
+        errorLine1="            &quot;/mnt/sdcard/external_sd&quot;,"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/SDCard.java"
+            line="50"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="SdCardPath"
+        message="Do not hardcode &quot;/sdcard/&quot;; use `Environment.getExternalStorageDirectory().getPath()` instead"
+        errorLine1="            &quot;/mnt/sdcard/_ExternalSD&quot;,"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/SDCard.java"
+            line="54"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="SdCardPath"
+        message="Do not hardcode &quot;/sdcard/&quot;; use `Environment.getExternalStorageDirectory().getPath()` instead"
+        errorLine1="            &quot;/sdcard2&quot;, // HTC One M8s"
+        errorLine2="            ~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/SDCard.java"
+            line="57"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="SdCardPath"
+        message="Do not hardcode &quot;/sdcard/&quot;; use `Environment.getExternalStorageDirectory().getPath()` instead"
+        errorLine1="            &quot;/sdcard1&quot;, // Sony Xperia Z"
+        errorLine2="            ~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/SDCard.java"
+            line="58"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="SdCardPath"
+        message="Do not hardcode &quot;/sdcard/&quot;; use `Environment.getExternalStorageDirectory().getPath()` instead"
+        errorLine1="            &quot;/sdcard&quot;,"
+        errorLine2="            ~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/SDCard.java"
+            line="61"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="SdCardPath"
+        message="Do not hardcode &quot;/sdcard/&quot;; use `Environment.getExternalStorageDirectory().getPath()` instead"
+        errorLine1="            &quot;/sdcard/sd&quot;,"
+        errorLine2="            ~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/SDCard.java"
+            line="65"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="SdCardPath"
+        message="Do not hardcode &quot;/sdcard/&quot;; use `Environment.getExternalStorageDirectory().getPath()` instead"
+        errorLine1="            &quot;/mnt/sdcard/bpemmctest&quot;,"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/SDCard.java"
+            line="66"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedAttribute"
+        message="Attribute `appCategory` is only used in API level 26 and higher (current min is 23)"
+        errorLine1="        android:appCategory=&quot;audio&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="26"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="UnusedAttribute"
+        message="Attribute `networkSecurityConfig` is only used in API level 24 and higher (current min is 23)"
+        errorLine1="        android:networkSecurityConfig=&quot;@xml/network_security_config&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="27"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="WrongConstant"
+        message="Must be one of: EventsKt.RATE_DIALOG_ANSWER_YES, EventsKt.RATE_DIALOG_ANSWER_NO, EventsKt.RATE_DIALOG_ANSWER_REMIND_LATER, EventsKt.RATE_DIALOG_ANSWER_NULL"
+        errorLine1="@RateDialogAnswer const val RATE_DIALOG_ANSWER_YES = &quot;yes&quot;"
+        errorLine2="                                                      ~~~">
+        <location
+            file="src/main/java/com/frolo/muse/logger/Events.kt"
+            line="68"
+            column="55"/>
+    </issue>
+
+    <issue
+        id="WrongConstant"
+        message="Must be one of: EventsKt.RATE_DIALOG_ANSWER_YES, EventsKt.RATE_DIALOG_ANSWER_NO, EventsKt.RATE_DIALOG_ANSWER_REMIND_LATER, EventsKt.RATE_DIALOG_ANSWER_NULL"
+        errorLine1="@RateDialogAnswer const val RATE_DIALOG_ANSWER_NO = &quot;no&quot;"
+        errorLine2="                                                     ~~">
+        <location
+            file="src/main/java/com/frolo/muse/logger/Events.kt"
+            line="69"
+            column="54"/>
+    </issue>
+
+    <issue
+        id="WrongConstant"
+        message="Must be one of: EventsKt.RATE_DIALOG_ANSWER_YES, EventsKt.RATE_DIALOG_ANSWER_NO, EventsKt.RATE_DIALOG_ANSWER_REMIND_LATER, EventsKt.RATE_DIALOG_ANSWER_NULL"
+        errorLine1="@RateDialogAnswer const val RATE_DIALOG_ANSWER_REMIND_LATER = &quot;remind_later&quot;"
+        errorLine2="                                                               ~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/logger/Events.kt"
+            line="70"
+            column="64"/>
+    </issue>
+
+    <issue
+        id="WrongConstant"
+        message="Must be one of: EventsKt.RATE_DIALOG_ANSWER_YES, EventsKt.RATE_DIALOG_ANSWER_NO, EventsKt.RATE_DIALOG_ANSWER_REMIND_LATER, EventsKt.RATE_DIALOG_ANSWER_NULL"
+        errorLine1="@RateDialogAnswer const val RATE_DIALOG_ANSWER_NULL = &quot;NULL&quot;"
+        errorLine2="                                                       ~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/logger/Events.kt"
+            line="71"
+            column="56"/>
+    </issue>
+
+    <issue
+        id="AppBundleLocaleChanges"
+        message="Found dynamic locale changes, but did not find corresponding Play Core library calls for downloading languages and splitting by language is not disabled in the `bundle` configuration"
+        errorLine1="        configuration.setLocale(locale);"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/LocaleHelper.java"
+            line="60"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="FragmentTagUsage"
+        message="Replace the &lt;fragment> tag with FragmentContainerView."
+        errorLine1="    &lt;fragment"
+        errorLine2="     ~~~~~~~~">
+        <location
+            file="src/main/res/layout/fragment_appbar_settings.xml"
+            line="25"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="QueryPermissionsNeeded"
+        message="Consider adding a `&lt;queries>` declaration to your manifest when calling this \&#xA;method; see https://g.co/dev/packagevisibility for details"
+        errorLine1="        intent.resolveActivityInfo(this, 0)"
+        errorLine2="               ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/android/Activities.kt"
+            line="11"
+            column="16"/>
+    </issue>
+
+    <issue
+        id="QueryPermissionsNeeded"
+        message="Consider adding a `&lt;queries>` declaration to your manifest when calling this \&#xA;method; see https://g.co/dev/packagevisibility for details"
+        errorLine1="        if (intent.resolveActivity(context.packageManager) != null) {"
+        errorLine2="                   ~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/ui/main/editor/album/AlbumEditorDialog.kt"
+            line="204"
+            column="20"/>
+    </issue>
+
+    <issue
+        id="QueryPermissionsNeeded"
+        message="Consider adding a `&lt;queries>` declaration to your manifest when calling this \&#xA;method; see https://g.co/dev/packagevisibility for details"
+        errorLine1="    if (intent.resolveActivity(packageManager) != null) {"
+        errorLine2="               ~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/ui/AppIntents.kt"
+            line="21"
+            column="16"/>
+    </issue>
+
+    <issue
+        id="RestrictedApi"
+        message="ArchTaskExecutor.getInstance can only be called from within the same library group prefix (referenced groupId=`androidx.arch.core` with prefix androidx.arch from groupId=`Frolomuse.apps`)"
+        errorLine1="        if (ArchTaskExecutor.getInstance().isMainThread) {"
+        errorLine2="                             ~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/ui/base/BaseAndroidViewModel.kt"
+            line="35"
+            column="30"/>
+    </issue>
+
+    <issue
+        id="RestrictedApi"
+        message="ArchTaskExecutor.isMainThread can only be called from within the same library group prefix (referenced groupId=`androidx.arch.core` with prefix androidx.arch from groupId=`Frolomuse.apps`)"
+        errorLine1="        if (ArchTaskExecutor.getInstance().isMainThread) {"
+        errorLine2="                                           ~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/ui/base/BaseAndroidViewModel.kt"
+            line="35"
+            column="44"/>
+    </issue>
+
+    <issue
+        id="RestrictedApi"
+        message="ArchTaskExecutor.isMainThread can only be called from within the same library group prefix (referenced groupId=`androidx.arch.core` with prefix androidx.arch from groupId=`Frolomuse.apps`)"
+        errorLine1="        if (ArchTaskExecutor.getInstance().isMainThread) {"
+        errorLine2="                                           ~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/ui/base/BaseAndroidViewModel.kt"
+            line="35"
+            column="44"/>
+    </issue>
+
+    <issue
+        id="SwitchIntDef"
+        message="Switch statement on an `int` with known associated constant missing case `Media.NONE`"
+        errorLine1="        switch (item.getKind()) {"
+        errorLine2="        ~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/GenericMediaRepositoryImpl.java"
+            line="140"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="SwitchIntDef"
+        message="Switch statement on an `int` with known associated constant missing case `Media.NONE`"
+        errorLine1="                switch (item.getKind()) {"
+        errorLine2="                ~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/GenericMediaRepositoryImpl.java"
+            line="335"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="SwitchIntDef"
+        message="Switch statement on an `int` with known associated constant missing case `Media.NONE`"
+        errorLine1="                switch (item.getKind()) {"
+        errorLine2="                ~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/GenericMediaRepositoryImpl.java"
+            line="377"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="SwitchIntDef"
+        message="Switch statement on an `int` with known associated constant missing case `Media.NONE`"
+        errorLine1="                switch (item.getKind()) {"
+        errorLine2="                ~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/PlaylistHelper.java"
+            line="400"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="SwitchIntDef"
+        message="Switch statement on an `int` with known associated constant missing case `Media.MEDIA_FILE`, `Media.NONE`"
+        errorLine1="        switch (kind) {"
+        errorLine2="        ~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/PreferencesImpl.java"
+            line="349"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="SwitchIntDef"
+        message="Switch statement on an `int` with known associated constant missing case `Media.NONE`"
+        errorLine1="        switch (media.getKind()) {"
+        errorLine2="        ~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/Shortcuts.java"
+            line="85"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="SwitchIntDef"
+        message="Switch statement on an `int` with known associated constant missing case `Media.NONE`"
+        errorLine1="        switch (media.getKind()) {"
+        errorLine2="        ~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/Shortcuts.java"
+            line="124"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="UseAppTint"
+        message="Must use `app:tint` instead of `android:tint`"
+        errorLine1="        android:tint=&quot;@color/md_white_1000&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout-land/dialog_album_editor.xml"
+            line="27"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="UseAppTint"
+        message="Must use `app:tint` instead of `android:tint`"
+        errorLine1="        android:tint=&quot;@color/md_white_1000&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/dialog_album_editor.xml"
+            line="28"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="UseAppTint"
+        message="Must use `app:tint` instead of `android:tint`"
+        errorLine1="        android:tint=&quot;@color/md_white_1000&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout-land/dialog_album_editor.xml"
+            line="39"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="UseAppTint"
+        message="Must use `app:tint` instead of `android:tint`"
+        errorLine1="        android:tint=&quot;@color/md_white_1000&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/dialog_album_editor.xml"
+            line="40"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="UseAppTint"
+        message="Must use `app:tint` instead of `android:tint`"
+        errorLine1="            android:tint=&quot;?iconTintMuted&quot; />"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/dialog_sleep_timer.xml"
+            line="46"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UseAppTint"
+        message="Must use `app:tint` instead of `android:tint`"
+        errorLine1="            android:tint=&quot;?iconTintMuted&quot; />"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/dialog_sleep_timer.xml"
+            line="66"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UseAppTint"
+        message="Must use `app:tint` instead of `android:tint`"
+        errorLine1="        android:tint=&quot;?colorOnPrimarySurface&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/fragment_mini_player.xml"
+            line="25"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="UseAppTint"
+        message="Must use `app:tint` instead of `android:tint`"
+        errorLine1="    android:tint=&quot;?attr/iconTintMuted&quot;"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/include_options_menu.xml"
+            line="11"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="UseAppTint"
+        message="Must use `app:tint` instead of `android:tint`"
+        errorLine1="            android:tint=&quot;?attr/iconTintMuted&quot; />"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/item_album_card.xml"
+            line="39"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UseAppTint"
+        message="Must use `app:tint` instead of `android:tint`"
+        errorLine1="        android:tint=&quot;?colorOnPrimary&quot; />"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/item_album_of_artist.xml"
+            line="75"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="UseAppTint"
+        message="Must use `app:tint` instead of `android:tint`"
+        errorLine1="        android:tint=&quot;?iconTintMuted&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/item_hidden_file.xml"
+            line="32"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="UseAppTint"
+        message="Must use `app:tint` instead of `android:tint`"
+        errorLine1="                android:tint=&quot;@color/light_gray&quot;"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/notification_playback.xml"
+            line="95"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="UseAppTint"
+        message="Must use `app:tint` instead of `android:tint`"
+        errorLine1="                android:tint=&quot;@color/light_gray&quot;"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/notification_playback.xml"
+            line="108"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="UseAppTint"
+        message="Must use `app:tint` instead of `android:tint`"
+        errorLine1="                android:tint=&quot;@color/light_gray&quot;"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/notification_playback.xml"
+            line="121"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="UseAppTint"
+        message="Must use `app:tint` instead of `android:tint`"
+        errorLine1="                android:tint=&quot;@color/light_gray&quot;"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/notification_playback.xml"
+            line="134"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="MissingQuantity"
+        message="For locale &quot;fr&quot; (French) the following quantities should also be defined: `many`"
+        errorLine1="    &lt;plurals name=&quot;s_songs_selected&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-fr/strings.xml"
+            line="68"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="MissingQuantity"
+        message="For locale &quot;fr&quot; (French) the following quantities should also be defined: `many`"
+        errorLine1="    &lt;plurals name=&quot;s_songs&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-fr/strings.xml"
+            line="72"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="MissingQuantity"
+        message="For locale &quot;fr&quot; (French) the following quantities should also be defined: `many`"
+        errorLine1="    &lt;plurals name=&quot;s_hours&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-fr/strings.xml"
+            line="76"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="MissingQuantity"
+        message="For locale &quot;fr&quot; (French) the following quantities should also be defined: `many`"
+        errorLine1="    &lt;plurals name=&quot;s_minutes&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-fr/strings.xml"
+            line="80"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="MissingQuantity"
+        message="For locale &quot;fr&quot; (French) the following quantities should also be defined: `many`"
+        errorLine1="    &lt;plurals name=&quot;s_seconds&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-fr/strings.xml"
+            line="84"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="MissingQuantity"
+        message="For locale &quot;fr&quot; (French) the following quantities should also be defined: `many`"
+        errorLine1="    &lt;plurals name=&quot;played_s_times&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-fr/strings.xml"
+            line="147"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="MissingQuantity"
+        message="For locale &quot;fr&quot; (French) the following quantities should also be defined: `many`"
+        errorLine1="    &lt;plurals name=&quot;days&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-fr/strings.xml"
+            line="332"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;media_scanner_channel_name&quot; is not translated in &quot;de&quot; (German), &quot;hi&quot; (Hindi), &quot;ru&quot; (Russian), &quot;ko&quot; (Korean), &quot;pt&quot; (Portuguese), &quot;in&quot; (Indonesian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;uk&quot; (Ukrainian), &quot;ja&quot; (Japanese), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;media_scanner_channel_name&quot;>Media scanner&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="283"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;media_scanner_channel_desc&quot; is not translated in &quot;de&quot; (German), &quot;hi&quot; (Hindi), &quot;ru&quot; (Russian), &quot;ko&quot; (Korean), &quot;pt&quot; (Portuguese), &quot;in&quot; (Indonesian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;uk&quot; (Ukrainian), &quot;ja&quot; (Japanese), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;media_scanner_channel_desc&quot;>Notifies about scanning media library on the device&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="284"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;scanning_media_storage&quot; is not translated in &quot;de&quot; (German), &quot;hi&quot; (Hindi), &quot;ru&quot; (Russian), &quot;ko&quot; (Korean), &quot;pt&quot; (Portuguese), &quot;in&quot; (Indonesian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;uk&quot; (Ukrainian), &quot;ja&quot; (Japanese), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;scanning_media_storage&quot;>Media library is being scanned. Please wait…&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="286"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;preparing_files_to_scan&quot; is not translated in &quot;de&quot; (German), &quot;hi&quot; (Hindi), &quot;ru&quot; (Russian), &quot;ko&quot; (Korean), &quot;pt&quot; (Portuguese), &quot;in&quot; (Indonesian), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;uk&quot; (Ukrainian), &quot;ja&quot; (Japanese), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;preparing_files_to_scan&quot;>Preparing files for scanning. Please wait…&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="287"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;app_restrictions_and_limitations&quot; is not translated in &quot;de&quot; (German), &quot;hi&quot; (Hindi), &quot;ru&quot; (Russian), &quot;ko&quot; (Korean), &quot;pt&quot; (Portuguese), &quot;in&quot; (Indonesian), &quot;en&quot; (English), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;uk&quot; (Ukrainian), &quot;ja&quot; (Japanese), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;app_restrictions_and_limitations&quot;>App restrictions and limitations&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="362"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;ignore_battery_optimization_settings&quot; is not translated in &quot;de&quot; (German), &quot;hi&quot; (Hindi), &quot;ru&quot; (Russian), &quot;ko&quot; (Korean), &quot;pt&quot; (Portuguese), &quot;in&quot; (Indonesian), &quot;en&quot; (English), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;uk&quot; (Ukrainian), &quot;ja&quot; (Japanese), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;ignore_battery_optimization_settings&quot;>Ignore battery optimizations&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="363"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;ignore_battery_optimization_settings_desc&quot; is not translated in &quot;de&quot; (German), &quot;hi&quot; (Hindi), &quot;ru&quot; (Russian), &quot;ko&quot; (Korean), &quot;pt&quot; (Portuguese), &quot;in&quot; (Indonesian), &quot;en&quot; (English), &quot;fr&quot; (French), &quot;es&quot; (Spanish), &quot;zh&quot; (Chinese), &quot;uk&quot; (Ukrainian), &quot;ja&quot; (Japanese), &quot;tr&quot; (Turkish)"
+        errorLine1="    &lt;string name=&quot;ignore_battery_optimization_settings_desc&quot;>Does music playback stop frequently? Or does the app crash on launch? Disable battery optimization&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="364"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="Untranslatable"
+        message="The resource string &quot;preference_screen&quot; is marked as translatable=&quot;false&quot;, but is translated to &quot;zh&quot; (Chinese) here"
+        errorLine1="    &lt;string name=&quot;preference_screen&quot; translatable=&quot;false&quot;>首选屏幕&lt;/string>"
+        errorLine2="                                     ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-zh-rCN/strings.xml"
+            line="3"
+            column="38"/>
+    </issue>
+
+    <issue
+        id="Untranslatable"
+        message="The resource string &quot;ab&quot; is marked as translatable=&quot;false&quot;, but is translated to &quot;zh&quot; (Chinese) here"
+        errorLine1="    &lt;string name=&quot;ab&quot; translatable=&quot;false&quot;>A-B&lt;/string>"
+        errorLine2="                      ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-zh-rCN/strings.xml"
+            line="4"
+            column="23"/>
+    </issue>
+
+    <issue
+        id="Untranslatable"
+        message="The resource string &quot;hint_zero_time&quot; is marked as translatable=&quot;false&quot;, but is translated to &quot;zh&quot; (Chinese) here"
+        errorLine1="    &lt;string name=&quot;hint_zero_time&quot; translatable=&quot;false&quot;>0&lt;/string>"
+        errorLine2="                                  ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-zh-rCN/strings.xml"
+            line="194"
+            column="35"/>
+    </issue>
+
+    <issue
+        id="PluralsCandidate"
+        message="Formatting %d followed by words (&quot;albums&quot;): This should probably be a plural rather than a string"
+        errorLine1="    &lt;string name=&quot;number_of_albums&quot;>%d albums&lt;/string>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-en/strings.xml"
+            line="130"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="PluralsCandidate"
+        message="Formatting %d followed by words (&quot;albums&quot;): This should probably be a plural rather than a string"
+        errorLine1="    &lt;string name=&quot;number_of_albums&quot;>%d albums&lt;/string>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="132"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="PluralsCandidate"
+        message="Formatting %d followed by words (&quot;tracks&quot;): This should probably be a plural rather than a string"
+        errorLine1="    &lt;string name=&quot;number_of_tracks&quot;>%d tracks&lt;/string>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-en/strings.xml"
+            line="135"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="PluralsCandidate"
+        message="Formatting %d followed by words (&quot;tracks&quot;): This should probably be a plural rather than a string"
+        errorLine1="    &lt;string name=&quot;number_of_tracks&quot;>%d tracks&lt;/string>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="137"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;zh&quot; (Chinese) the following quantities are not relevant: `one`"
+        errorLine1="    &lt;plurals name=&quot;s_songs_selected&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-zh-rCN/strings.xml"
+            line="70"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;zh&quot; (Chinese) the following quantities are not relevant: `one`"
+        errorLine1="    &lt;plurals name=&quot;s_songs&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-zh-rCN/strings.xml"
+            line="74"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;zh&quot; (Chinese) the following quantities are not relevant: `one`"
+        errorLine1="    &lt;plurals name=&quot;s_hours&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-zh-rCN/strings.xml"
+            line="78"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;zh&quot; (Chinese) the following quantities are not relevant: `one`"
+        errorLine1="    &lt;plurals name=&quot;s_minutes&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-zh-rCN/strings.xml"
+            line="82"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;zh&quot; (Chinese) the following quantities are not relevant: `one`"
+        errorLine1="    &lt;plurals name=&quot;s_seconds&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-zh-rCN/strings.xml"
+            line="86"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;zh&quot; (Chinese) the following quantities are not relevant: `one`"
+        errorLine1="    &lt;plurals name=&quot;played_s_times&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-zh-rCN/strings.xml"
+            line="149"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="UnusedQuantity"
+        message="For language &quot;zh&quot; (Chinese) the following quantities are not relevant: `one`"
+        errorLine1="    &lt;plurals name=&quot;days&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-zh-rCN/strings.xml"
+            line="334"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="DataExtractionRules"
+        message="The attribute `android:allowBackup` is deprecated from Android 12 and higher and may be removed in future versions. Consider adding the attribute `android:dataExtractionRules` specifying an `@xml` resource which configures cloud backups and device transfers on Android 12 and higher."
+        errorLine1="        android:allowBackup=&quot;false&quot;"
+        errorLine2="                             ~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="22"
+            column="30"/>
+    </issue>
+
+    <issue
+        id="NotifyDataSetChanged"
+        message="It will always be more efficient to use more specific change events if you can. Rely on `notifyDataSetChanged` as a last resort."
+        errorLine1="            notifyDataSetChanged()"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/ui/main/library/albums/AlbumAdapter.kt"
+            line="35"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="NotifyDataSetChanged"
+        message="It will always be more efficient to use more specific change events if you can. Rely on `notifyDataSetChanged` as a last resort."
+        errorLine1="        notifyDataSetChanged()"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/ui/main/library/base/BaseAdapter.kt"
+            line="62"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="NotifyDataSetChanged"
+        message="It will always be more efficient to use more specific change events if you can. Rely on `notifyDataSetChanged` as a last resort."
+        errorLine1="            notifyDataSetChanged()"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/ui/main/library/base/BaseAdapter.kt"
+            line="97"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="NotifyDataSetChanged"
+        message="It will always be more efficient to use more specific change events if you can. Rely on `notifyDataSetChanged` as a last resort."
+        errorLine1="                notifyDataSetChanged()"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/ui/main/library/base/DragSongAdapter.kt"
+            line="45"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="NotifyDataSetChanged"
+        message="It will always be more efficient to use more specific change events if you can. Rely on `notifyDataSetChanged` as a last resort."
+        errorLine1="        notifyDataSetChanged()"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/ui/main/settings/journal/LogDataItemAdapter.kt"
+            line="16"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="NotifyDataSetChanged"
+        message="It will always be more efficient to use more specific change events if you can. Rely on `notifyDataSetChanged` as a last resort."
+        errorLine1="    var query by Delegates.observable(&quot;&quot;) { _, _, _ -> notifyDataSetChanged() }"
+        errorLine2="                                                       ~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/ui/main/library/search/adapter/MediaAdapter.kt"
+            line="31"
+            column="56"/>
+    </issue>
+
+    <issue
+        id="Recycle"
+        message="This animation should be started with `#start()`"
+        errorLine1="        return RxPreference.ofInt(preferences, KEY_VISUALIZER_RENDERER_TYPE)"
+        errorLine2="                            ~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/PreferencesImpl.java"
+            line="578"
+            column="29"/>
+    </issue>
+
+    <issue
+        id="Recycle"
+        message="This animation should be started with `#start()`"
+        errorLine1="        return RxPreference.ofInt(prefs, KEY_MIN_LAUNCH_COUNT_FOR_RATING_REQUEST)"
+        errorLine2="                            ~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/RatingPreferencesImpl.kt"
+            line="42"
+            column="29"/>
+    </issue>
+
+    <issue
+        id="Recycle"
+        message="This animation should be started with `#start()`"
+        errorLine1="        return RxPreference.ofInt(prefs, KEY_MIN_LAUNCH_COUNT_FOR_RATING_REQUEST)"
+        errorLine2="                            ~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/RatingPreferencesImpl.kt"
+            line="50"
+            column="29"/>
+    </issue>
+
+    <issue
+        id="ObsoleteSdkInt"
+        message="Unnecessary; SDK_INT is always >= 23"
+        errorLine1="            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {"
+        errorLine2="                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/views/text/AppTextSwitcher.kt"
+            line="92"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="ObsoleteSdkInt"
+        message="Unnecessary; SDK_INT is always >= 23"
+        errorLine1="        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/views/checkable/CheckView.kt"
+            line="33"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="ObsoleteSdkInt"
+        message="Unnecessary; SDK_INT is always >= 23"
+        errorLine1="        if (Build.VERSION.SDK_INT >= 21) {"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/SDCard.java"
+            line="223"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="ObsoleteSdkInt"
+        message="Unnecessary; SDK_INT is always >= 23"
+        errorLine1="        if (Build.VERSION.SDK_INT >= 9) {"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/SDCard.java"
+            line="246"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="ObsoleteSdkInt"
+        message="Unnecessary; SDK_INT is always >= 23"
+        errorLine1="            } else if (Build.VERSION.SDK_INT >= 11 &amp;&amp; Environment.isExternalStorageEmulated()) {"
+        errorLine2="                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/di/impl/local/SDCard.java"
+            line="258"
+            column="24"/>
+    </issue>
+
+    <issue
+        id="ObsoleteSdkInt"
+        message="Unnecessary; SDK_INT is always >= 23"
+        errorLine1="                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {"
+        errorLine2="                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/ui/deprecated/player/StandalonePlayerActivity.java"
+            line="248"
+            column="21"/>
+    </issue>
+
+    <issue
+        id="ObsoleteSdkInt"
+        message="Unnecessary; SDK_INT is always >= 23"
+        errorLine1="        final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;"
+        errorLine2="                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/UriPathDetector.java"
+            line="28"
+            column="34"/>
+    </issue>
+
+    <issue
+        id="ObsoleteSdkInt"
+        message="This folder configuration (`v22`) is unnecessary; `minSdkVersion` is 23. Merge all the resources in this folder into `values`.">
+        <location
+            file="src/main/res/values-v22"/>
+    </issue>
+
+    <issue
+        id="UseCompoundDrawables"
+        message="This tag and its children can be replaced by one `&lt;TextView/>` and a compound drawable"
+        errorLine1="&lt;LinearLayout"
+        errorLine2=" ~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/item_hidden_file.xml"
+            line="2"
+            column="2"/>
+    </issue>
+
+    <issue
+        id="UseCompoundDrawables"
+        message="This tag and its children can be replaced by one `&lt;TextView/>` and a compound drawable"
+        errorLine1="&lt;LinearLayout"
+        errorLine2=" ~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/item_premium_benefit.xml"
+            line="2"
+            column="2"/>
+    </issue>
+
+    <issue
+        id="MergeRootFrame"
+        message="This `&lt;FrameLayout>` can be replaced with a `&lt;merge>` tag"
+        errorLine1="&lt;FrameLayout"
+        errorLine2="^">
+        <location
+            file="src/main/res/layout/activity_main.xml"
+            line="2"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="MergeRootFrame"
+        message="This `&lt;FrameLayout>` can be replaced with a `&lt;merge>` tag"
+        errorLine1="&lt;FrameLayout"
+        errorLine2="^">
+        <location
+            file="src/main/res/layout/dialog_rate.xml"
+            line="2"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="MergeRootFrame"
+        message="This `&lt;FrameLayout>` can be replaced with a `&lt;merge>` tag"
+        errorLine1="&lt;FrameLayout"
+        errorLine2="^">
+        <location
+            file="src/main/res/layout/fragment_base_list.xml"
+            line="2"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="MergeRootFrame"
+        message="This `&lt;FrameLayout>` can be replaced with a `&lt;merge>` tag"
+        errorLine1="&lt;FrameLayout"
+        errorLine2="^">
+        <location
+            file="src/main/res/layout/include_audio_fx_content_lock.xml"
+            line="2"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="MergeRootFrame"
+        message="This `&lt;FrameLayout>` can be replaced with a `&lt;merge>` tag"
+        errorLine1="&lt;FrameLayout"
+        errorLine2="^">
+        <location
+            file="src/main/res/layout/include_placeholder.xml"
+            line="2"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="MergeRootFrame"
+        message="This `&lt;FrameLayout>` can be replaced with a `&lt;merge>` tag"
+        errorLine1="&lt;FrameLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
+        errorLine2="^">
+        <location
+            file="src/main/res/layout/include_progress_overlay.xml"
+            line="2"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="MergeRootFrame"
+        message="This `&lt;FrameLayout>` can be replaced with a `&lt;merge>` tag"
+        errorLine1="&lt;FrameLayout"
+        errorLine2="^">
+        <location
+            file="src/main/res/layout/include_song_art_container.xml"
+            line="2"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="DisableBaselineAlignment"
+        message="Set `android:baselineAligned=&quot;false&quot;` on this element for better performance"
+        errorLine1="        &lt;LinearLayout"
+        errorLine2="         ~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout-land/include_audio_fx_content.xml"
+            line="42"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `?colorSurface` with a theme that also paints a background (inferred theme is `@style/Base.AppTheme.Launch`)"
+        errorLine1="    android:background=&quot;?colorSurface&quot;>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/include_album_art_deletion_confirmation.xml"
+            line="8"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `?dividerTint` with a theme that also paints a background (inferred theme is `@style/Base.AppTheme.Launch`)"
+        errorLine1="    android:background=&quot;?dividerTint&quot;"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/include_divider.xml"
+            line="4"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `?selectableItemBackground` with a theme that also paints a background (inferred theme is `@style/Base.AppTheme.Launch`)"
+        errorLine1="    android:background=&quot;?selectableItemBackground&quot;>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/item_audio_bucket.xml"
+            line="12"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `?colorPrimarySurface` with a theme that also paints a background (inferred theme is `@style/Base.AppTheme.Launch`)"
+        errorLine1="    android:background=&quot;?colorPrimarySurface&quot;"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/item_header.xml"
+            line="15"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `?selectableItemBackground` with a theme that also paints a background (inferred theme is `@style/Base.AppTheme.Launch`)"
+        errorLine1="    android:background=&quot;?selectableItemBackground&quot;>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/item_library_song_filter_checkbox.xml"
+            line="9"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `?attr/selectableItemBackground` with a theme that also paints a background (inferred theme is `@style/Base.AppTheme.Launch`)"
+        errorLine1="    android:background=&quot;?attr/selectableItemBackground&quot;"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/item_simple_playlist.xml"
+            line="13"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `@color/notification_bg_black` with a theme that also paints a background (inferred theme is `@style/Base.AppTheme.Launch`)"
+        errorLine1="    android:background=&quot;@color/notification_bg_black&quot;>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/notification_playback.xml"
+            line="8"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.animator.appbar_elevation` appears to be unused"
+        errorLine1="&lt;selector xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;>"
+        errorLine2="^">
+        <location
+            file="src/main/res/animator/appbar_elevation.xml"
+            line="2"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.bg_like_button_liked` appears to be unused"
+        errorLine1="&lt;selector xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;>"
+        errorLine2="^">
+        <location
+            file="src/main/res/drawable/bg_like_button_liked.xml"
+            line="2"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.bg_player_tool_panel` appears to be unused"
+        errorLine1="&lt;shape xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
+        errorLine2="^">
+        <location
+            file="src/main/res/drawable/bg_player_tool_panel.xml"
+            line="2"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.bg_player_toolbar_element` appears to be unused"
+        errorLine1="&lt;selector xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;>"
+        errorLine2="^">
+        <location
+            file="src/main/res/drawable/bg_player_toolbar_element.xml"
+            line="2"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.color_secondary_variant_alpha08` appears to be unused"
+        errorLine1="&lt;selector xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;>"
+        errorLine2="^">
+        <location
+            file="src/main/res/color/color_secondary_variant_alpha08.xml"
+            line="2"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.white_smoke` appears to be unused"
+        errorLine1="    &lt;color name=&apos;white_smoke&apos;>#F5F5F5&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="8"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.player_status_bar_background` appears to be unused"
+        errorLine1="    &lt;color name=&quot;player_status_bar_background&quot;>#66000000&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="14"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.notification_bg_black` appears to be unused"
+        errorLine1="    &lt;color name=&quot;notification_bg_black&quot;>#333333&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="22"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.notification_grad_overlay_1` appears to be unused"
+        errorLine1="    &lt;color name=&quot;notification_grad_overlay_1&quot;>#333333&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="23"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.notification_grad_overlay_2` appears to be unused"
+        errorLine1="    &lt;color name=&quot;notification_grad_overlay_2&quot;>#99333333&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="24"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.notification_grad_overlay_3` appears to be unused"
+        errorLine1="    &lt;color name=&quot;notification_grad_overlay_3&quot;>#1E333333&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="25"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.notification_accent` appears to be unused"
+        errorLine1="    &lt;color name=&quot;notification_accent&quot;>@color/md_light_blue_600&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="26"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.ntf_playback_button_size` appears to be unused"
+        errorLine1="    &lt;dimen name=&quot;ntf_playback_button_size&quot;>40dp&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="43"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.ntf_playback_button_padding` appears to be unused"
+        errorLine1="    &lt;dimen name=&quot;ntf_playback_button_padding&quot;>13dp&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="44"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.toolbar_item_icon_size` appears to be unused"
+        errorLine1="    &lt;dimen name=&quot;toolbar_item_icon_size&quot;>24dp&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="50"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.min_visualizer_width` appears to be unused"
+        errorLine1="    &lt;dimen name=&quot;min_visualizer_width&quot;>24dp&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="63"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.min_visualizer_height` appears to be unused"
+        errorLine1="    &lt;dimen name=&quot;min_visualizer_height&quot;>16dp&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="64"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.fastscroll_scrollbar_padding_end` appears to be unused"
+        errorLine1="    &lt;dimen name=&quot;fastscroll_scrollbar_padding_end&quot;>0dp&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="67"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.ntf_small_icon_size` appears to be unused"
+        errorLine1="    &lt;dimen name=&quot;ntf_small_icon_size&quot;>24dp&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="73"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.integer.layout_anim_duration` appears to be unused"
+        errorLine1="    &lt;integer name=&quot;layout_anim_duration&quot;>220&lt;/integer>"
+        errorLine2="             ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/durations.xml"
+            line="8"
+            column="14"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.anim.enter_activity` appears to be unused"
+        errorLine1="&lt;set android:shareInterpolator=&quot;false&quot;"
+        errorLine2="^">
+        <location
+            file="src/main/res/anim/enter_activity.xml"
+            line="1"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.anim.exit_activity` appears to be unused"
+        errorLine1="&lt;set android:shareInterpolator=&quot;false&quot;"
+        errorLine2="^">
+        <location
+            file="src/main/res/anim/exit_activity.xml"
+            line="1"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.grad_notification_overlay` appears to be unused"
+        errorLine1="&lt;shape xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;>"
+        errorLine2="^">
+        <location
+            file="src/main/res/drawable/grad_notification_overlay.xml"
+            line="2"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.ic_app` appears to be unused"
+        errorLine1="&lt;vector xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
+        errorLine2="^">
+        <location
+            file="src/main/res/drawable/ic_app.xml"
+            line="2"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.ic_notes` appears to be unused"
+        errorLine1="&lt;vector xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
+        errorLine2="^">
+        <location
+            file="src/main/res/drawable/ic_notes.xml"
+            line="2"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.ic_pause_18dp` appears to be unused"
+        errorLine1="&lt;vector xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
+        errorLine2="^">
+        <location
+            file="src/main/res/drawable/ic_pause_18dp.xml"
+            line="2"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.ic_sad_smile` appears to be unused"
+        errorLine1="&lt;vector xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
+        errorLine2="^">
+        <location
+            file="src/main/res/drawable/ic_sad_smile.xml"
+            line="2"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.ic_volume` appears to be unused"
+        errorLine1="&lt;vector xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
+        errorLine2="^">
+        <location
+            file="src/main/res/drawable/ic_volume.xml"
+            line="1"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.layout.include_player_album_art_carousel` appears to be unused"
+        errorLine1="&lt;FrameLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
+        errorLine2="^">
+        <location
+            file="src/main/res/layout/include_player_album_art_carousel.xml"
+            line="2"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.layout.include_player_tool_panel` appears to be unused"
+        errorLine1="&lt;LinearLayout"
+        errorLine2="^">
+        <location
+            file="src/main/res/layout/include_player_tool_panel.xml"
+            line="2"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.layout.item_album_art` appears to be unused"
+        errorLine1="&lt;androidx.constraintlayout.widget.ConstraintLayout"
+        errorLine2="^">
+        <location
+            file="src/main/res/layout/item_album_art.xml"
+            line="2"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.anim.item_animation_fall_down` appears to be unused"
+        errorLine1="&lt;set"
+        errorLine2="^">
+        <location
+            file="src/main/res/anim/item_animation_fall_down.xml"
+            line="1"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.anim.list_layout_animation` appears to be unused"
+        errorLine1="&lt;layoutAnimation"
+        errorLine2="^">
+        <location
+            file="src/main/res/anim/list_layout_animation.xml"
+            line="2"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.layout.notification_playback` appears to be unused"
+        errorLine1="&lt;FrameLayout"
+        errorLine2="^">
+        <location
+            file="src/main/res/layout/notification_playback.xml"
+            line="2"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.mtrl_slider_widget_height` appears to be unused"
+        errorLine1="    &lt;dimen name=&quot;mtrl_slider_widget_height&quot; tools:override=&quot;true&quot;>28dp&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/overridden.xml"
+            line="4"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.mtrl_slider_track_top` appears to be unused"
+        errorLine1="    &lt;dimen name=&quot;mtrl_slider_track_top&quot; tools:override=&quot;true&quot;>14dp&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/overridden.xml"
+            line="5"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.mtrl_slider_track_side_padding` appears to be unused"
+        errorLine1="    &lt;dimen name=&quot;mtrl_slider_track_side_padding&quot; tools:override=&quot;true&quot;>12dp&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/overridden.xml"
+            line="6"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.anim.popup_enter` appears to be unused"
+        errorLine1="&lt;set xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;>"
+        errorLine2="^">
+        <location
+            file="src/main/res/anim/popup_enter.xml"
+            line="2"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.anim.popup_exit` appears to be unused"
+        errorLine1="&lt;set xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;>"
+        errorLine2="^">
+        <location
+            file="src/main/res/anim/popup_exit.xml"
+            line="2"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.app_prefs` appears to be unused"
+        errorLine1="    &lt;string name=&quot;app_prefs&quot;>App preferences&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="15"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.about` appears to be unused"
+        errorLine1="    &lt;string name=&quot;about&quot;>About&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="16"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.current_playlist_is_empty` appears to be unused"
+        errorLine1="    &lt;string name=&quot;current_playlist_is_empty&quot;>There are no songs in the current playlist.\n"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="17"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.placeholder_freq_range` appears to be unused"
+        errorLine1="    &lt;string name=&quot;placeholder_freq_range&quot;>0.00 hz&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="94"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.freq_range` appears to be unused"
+        errorLine1="    &lt;string name=&quot;freq_range&quot;>%s hz&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="234"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.show_visualizer` appears to be unused"
+        errorLine1="    &lt;string name=&quot;show_visualizer&quot;>Show visualizer&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="238"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.media_scanner_channel_name` appears to be unused"
+        errorLine1="    &lt;string name=&quot;media_scanner_channel_name&quot;>Media scanner&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="283"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.media_scanner_channel_desc` appears to be unused"
+        errorLine1="    &lt;string name=&quot;media_scanner_channel_desc&quot;>Notifies about scanning media library on the device&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="284"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.scanning_media_storage` appears to be unused"
+        errorLine1="    &lt;string name=&quot;scanning_media_storage&quot;>Media library is being scanned. Please wait…&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="286"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.preparing_files_to_scan` appears to be unused"
+        errorLine1="    &lt;string name=&quot;preparing_files_to_scan&quot;>Preparing files for scanning. Please wait…&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="287"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.app_restrictions_and_limitations` appears to be unused"
+        errorLine1="    &lt;string name=&quot;app_restrictions_and_limitations&quot;>App restrictions and limitations&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="362"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.ignore_battery_optimization_settings` appears to be unused"
+        errorLine1="    &lt;string name=&quot;ignore_battery_optimization_settings&quot;>Ignore battery optimizations&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="363"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.ignore_battery_optimization_settings_desc` appears to be unused"
+        errorLine1="    &lt;string name=&quot;ignore_battery_optimization_settings_desc&quot;>Does music playback stop frequently? Or does the app crash on launch? Disable battery optimization&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="364"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.style.Base_AppTheme_Animation_Activity` appears to be unused"
+        errorLine1="    &lt;style name=&quot;Base.AppTheme.Animation.Activity&quot; parent=&quot;android:style/Animation.Activity&quot;>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/styles_base.xml"
+            line="18"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.style.Base_AppTheme_EditText` appears to be unused"
+        errorLine1="    &lt;style name=&quot;Base.AppTheme.EditText&quot; parent=&quot;Widget.AppCompat.EditText&quot;>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/styles_base.xml"
+            line="148"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.style.Base_AppTheme_AppBarLayout` appears to be unused"
+        errorLine1="    &lt;style name=&quot;Base.AppTheme.AppBarLayout&quot; parent=&quot;Widget.Design.AppBarLayout&quot;>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/styles_base.xml"
+            line="196"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.style.Base_AppTheme_AppBarLayout_Lifted` appears to be unused"
+        errorLine1="    &lt;style name=&quot;Base.AppTheme.AppBarLayout.Lifted&quot; parent=&quot;Base.AppTheme.AppBarLayout&quot;>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/styles_base.xml"
+            line="199"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.style.Base_AppTheme_ShapeableImageView_ThemeArt` appears to be unused"
+        errorLine1="    &lt;style name=&quot;Base.AppTheme.ShapeableImageView.ThemeArt&quot; parent=&quot;&quot;>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/styles_base.xml"
+            line="265"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.style.Base_AppTheme_ShapeAppearance_ThemeArt` appears to be unused"
+        errorLine1="    &lt;style name=&quot;Base.AppTheme.ShapeAppearance.ThemeArt&quot; parent=&quot;ShapeAppearance.MaterialComponents.MediumComponent&quot;>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/styles_base.xml"
+            line="269"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.style.Base_AppTheme_Light_ActionBar` appears to be unused"
+        errorLine1="    &lt;style name=&quot;Base.AppTheme.Light.ActionBar&quot; parent=&quot;Widget.MaterialComponents.Light.ActionBar.Solid&quot;>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/styles_base_light.xml"
+            line="106"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.style.TextAppearance_Lyrics_TextLine` appears to be unused"
+        errorLine1="    &lt;style name=&quot;TextAppearance.Lyrics.TextLine&quot; parent=&quot;TextAppearance.AppCompat.Body1&quot;>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/styles_misc.xml"
+            line="32"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/art_playback_notification.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/art_playback_notification.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/png_classical.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/png_classical.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/png_dance.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/png_dance.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/png_dark_red_background.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/png_dark_red_background.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/png_flat.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/png_flat.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/png_folk.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/png_folk.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/png_heavy_metal.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/png_heavy_metal.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/png_hip_hop.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/png_hip_hop.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/png_jazz.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/png_jazz.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/png_normal.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/png_normal.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/png_pop.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/png_pop.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/png_premium_background.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/png_premium_background.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/png_rock.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/png_rock.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/png_universe.jpg` in densityless folder">
+        <location
+            file="src/main/res/drawable/png_universe.jpg"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/png_widget_player_preview.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/png_widget_player_preview.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/poster.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/poster.png"/>
+    </issue>
+
+    <issue
+        id="ClickableViewAccessibility"
+        message="`onTouch` lambda should call `View#performClick` when a click is detected"
+        errorLine1="        view.setOnTouchListener { _, _ -> true }"
+        errorLine2="                                ~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/ui/main/player/current/CurrSongQueueFragment.kt"
+            line="100"
+            column="33"/>
+    </issue>
+
+    <issue
+        id="ClickableViewAccessibility"
+        message="`onTouch` lambda should call `View#performClick` when a click is detected"
+        errorLine1="                    viewToDrag.setOnTouchListener { _, event ->"
+        errorLine2="                                                  ^">
+        <location
+            file="src/main/java/com/frolo/muse/ui/main/library/base/DragSongAdapter.kt"
+            line="79"
+            column="51"/>
+    </issue>
+
+    <issue
+        id="ClickableViewAccessibility"
+        message="`onTouch` lambda should call `View#performClick` when a click is detected"
+        errorLine1="            dragView.setOnTouchListener { _, event ->"
+        errorLine2="                                        ^">
+        <location
+            file="src/main/java/com/frolo/muse/ui/main/settings/library/sections/LibrarySectionAdapter.kt"
+            line="45"
+            column="41"/>
+    </issue>
+
+    <issue
+        id="ClickableViewAccessibility"
+        message="`onTouch` lambda should call `View#performClick` when a click is detected"
+        errorLine1="        view.setOnTouchListener { _, _ -> true }"
+        errorLine2="                                ~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/ui/main/player/PlayerFragment.kt"
+            line="120"
+            column="33"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="            &lt;ImageView"
+        errorLine2="             ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_player.xml"
+            line="49"
+            column="14"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="            &lt;ImageView"
+        errorLine2="             ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_player.xml"
+            line="59"
+            column="14"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="    &lt;ImageView"
+        errorLine2="     ~~~~~~~~~">
+        <location
+            file="src/main/res/layout-land/dialog_album_editor.xml"
+            line="8"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="    &lt;ImageView"
+        errorLine2="     ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/dialog_album_editor.xml"
+            line="8"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="    &lt;ImageView"
+        errorLine2="     ~~~~~~~~~">
+        <location
+            file="src/main/res/layout-land/dialog_album_editor.xml"
+            line="19"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="    &lt;ImageView"
+        errorLine2="     ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/dialog_album_editor.xml"
+            line="20"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="    &lt;ImageView"
+        errorLine2="     ~~~~~~~~~">
+        <location
+            file="src/main/res/layout-land/dialog_album_editor.xml"
+            line="31"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="    &lt;ImageView"
+        errorLine2="     ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/dialog_album_editor.xml"
+            line="32"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="    &lt;ImageView"
+        errorLine2="     ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/dialog_app_info.xml"
+            line="12"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="    &lt;ImageView"
+        errorLine2="     ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/dialog_app_info.xml"
+            line="34"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="        &lt;ImageView"
+        errorLine2="         ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/dialog_lyrics.xml"
+            line="31"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="    &lt;ImageView"
+        errorLine2="     ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/dialog_media_options.xml"
+            line="11"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="        &lt;ImageView"
+        errorLine2="         ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/dialog_media_options.xml"
+            line="50"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="        &lt;ImageView"
+        errorLine2="         ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/dialog_media_options.xml"
+            line="64"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="        &lt;ImageView"
+        errorLine2="         ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/dialog_media_options.xml"
+            line="77"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="    &lt;ImageView"
+        errorLine2="     ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/dialog_rate.xml"
+            line="71"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="        &lt;ImageView"
+        errorLine2="         ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/dialog_sleep_timer.xml"
+            line="40"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="        &lt;ImageView"
+        errorLine2="         ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/dialog_sleep_timer.xml"
+            line="60"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="            &lt;ImageView"
+        errorLine2="             ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/dialog_song_editor.xml"
+            line="26"
+            column="14"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="                    &lt;ImageView"
+        errorLine2="                     ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/fragment_album.xml"
+            line="94"
+            column="22"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="                &lt;com.google.android.material.floatingactionbutton.FloatingActionButton"
+        errorLine2="                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/fragment_album.xml"
+            line="101"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="        &lt;ImageView"
+        errorLine2="         ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/fragment_curr_song_queue.xml"
+            line="17"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="    &lt;com.google.android.material.floatingactionbutton.FloatingActionButton"
+        errorLine2="     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/fragment_library.xml"
+            line="58"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="        &lt;ImageView"
+        errorLine2="         ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/fragment_media_file_list.xml"
+            line="19"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="    &lt;ImageView"
+        errorLine2="     ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/fragment_mini_player.xml"
+            line="14"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="        &lt;ImageView"
+        errorLine2="         ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/fragment_my_file_list.xml"
+            line="18"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="                &lt;ImageView"
+        errorLine2="                 ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/fragment_player_sheet.xml"
+            line="58"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="    &lt;ImageView"
+        errorLine2="     ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/include_audio_fx_content_lock.xml"
+            line="8"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="&lt;ImageView xmlns:tools=&quot;http://schemas.android.com/tools&quot;"
+        errorLine2=" ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/include_options_menu.xml"
+            line="2"
+            column="2"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="    &lt;ImageView"
+        errorLine2="     ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/include_player_controller.xml"
+            line="8"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="    &lt;ImageView"
+        errorLine2="     ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/include_player_controller.xml"
+            line="24"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="    &lt;ImageView"
+        errorLine2="     ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/include_player_controller.xml"
+            line="51"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="    &lt;ImageView"
+        errorLine2="     ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/include_player_controller.xml"
+            line="66"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="    &lt;ImageView"
+        errorLine2="     ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/include_player_toolbar.xml"
+            line="8"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="    &lt;ImageView"
+        errorLine2="     ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/include_player_toolbar.xml"
+            line="21"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="        &lt;ImageView"
+        errorLine2="         ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/item_album_card.xml"
+            line="13"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="        &lt;ImageView"
+        errorLine2="         ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/item_album_card.xml"
+            line="29"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="            &lt;ImageView"
+        errorLine2="             ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/item_album_of_artist.xml"
+            line="26"
+            column="14"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="    &lt;ImageView"
+        errorLine2="     ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/item_album_of_artist.xml"
+            line="64"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="    &lt;ImageView"
+        errorLine2="     ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/item_donation.xml"
+            line="22"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="    &lt;ImageView"
+        errorLine2="     ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/item_donation.xml"
+            line="34"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="    &lt;ImageView"
+        errorLine2="     ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/item_hidden_file.xml"
+            line="27"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="    &lt;ImageView"
+        errorLine2="     ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/item_library_section_switch.xml"
+            line="11"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="    &lt;ImageView"
+        errorLine2="     ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/item_premium_benefit.xml"
+            line="11"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="    &lt;ImageView"
+        errorLine2="     ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/item_preset.xml"
+            line="15"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="    &lt;ImageView"
+        errorLine2="     ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/item_preset_drop_down.xml"
+            line="15"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="            &lt;com.google.android.material.floatingactionbutton.FloatingActionButton"
+        errorLine2="             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/item_simple_theme_page.xml"
+            line="63"
+            column="14"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="    &lt;ImageView"
+        errorLine2="     ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/merge_option_text_view.xml"
+            line="8"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="    &lt;ImageView"
+        errorLine2="     ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/merge_placeholder.xml"
+            line="9"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="    &lt;ImageView"
+        errorLine2="     ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/notification_playback.xml"
+            line="10"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="        &lt;ImageView"
+        errorLine2="         ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/notification_playback.xml"
+            line="21"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="        &lt;ImageView"
+        errorLine2="         ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/notification_playback.xml"
+            line="28"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="        &lt;ImageView"
+        errorLine2="         ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/notification_playback.xml"
+            line="35"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="            &lt;ImageView"
+        errorLine2="             ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/notification_playback.xml"
+            line="90"
+            column="14"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="            &lt;ImageView"
+        errorLine2="             ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/notification_playback.xml"
+            line="103"
+            column="14"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="            &lt;ImageView"
+        errorLine2="             ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/notification_playback.xml"
+            line="116"
+            column="14"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="            &lt;ImageView"
+        errorLine2="             ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/notification_playback.xml"
+            line="129"
+            column="14"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="    &lt;ImageView"
+        errorLine2="     ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/widget_player.xml"
+            line="9"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="        &lt;ImageView"
+        errorLine2="         ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/widget_player.xml"
+            line="21"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="                &lt;ImageView"
+        errorLine2="                 ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/widget_player.xml"
+            line="57"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="                &lt;ImageView"
+        errorLine2="                 ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/widget_player.xml"
+            line="65"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="                &lt;ImageView"
+        errorLine2="                 ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/widget_player.xml"
+            line="73"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="                &lt;ImageView"
+        errorLine2="                 ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/widget_player.xml"
+            line="81"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="                &lt;ImageView"
+        errorLine2="                 ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/widget_player.xml"
+            line="89"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="NullSafeMutableLiveData"
+        message="Cannot set non-nullable LiveData value to `null`"
+        errorLine1="            _mediaList.value = null"
+        errorLine2="                               ~~~~">
+        <location
+            file="src/main/java/com/frolo/muse/ui/main/library/base/AbsMediaCollectionViewModel.kt"
+            line="729"
+            column="32"/>
+    </issue>
+
+</issues>

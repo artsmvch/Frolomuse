@@ -103,6 +103,7 @@ android {
         checkReleaseBuilds true
         abortOnError true
         lintConfig file("$projectDir/lint.xml")
+        baseline file("lint-baseline.xml")
     }
 
     sourceSets {

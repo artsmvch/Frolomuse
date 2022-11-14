@@ -16,6 +16,10 @@ android {
         release {
         }
     }
+
+    lintOptions {
+        baseline file("lint-baseline.xml")
+    }
 }
 
 dependencies {
