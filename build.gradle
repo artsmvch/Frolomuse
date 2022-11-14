@@ -44,5 +44,17 @@ ext.optionallyLoadProperties = { filepath ->
     }
 }
 
+ext.isCI = {
+    return System.getenv("GITHUB_ACTIONS") == "true"
+}
+
+ext.getReleaseConfigDir = {
+    if (isCI()) {
+        return "${project.rootDir}/tools/config/debug"
+    } else {
+        return "${project.rootDir}/tools/config/release"
+    }
+}
+
 apply from: 'gradleScript/dependencies.gradle'
 apply plugin: 'com.frolo.plugin.measure_build'

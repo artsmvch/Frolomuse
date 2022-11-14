@@ -20,7 +20,7 @@ def google_services_enabled =
 android {
     signingConfigs {
         release {
-            def configDir = "${project.rootDir}/tools/config/release"
+            def configDir = getReleaseConfigDir()
             def releaseConfigs = loadProperties("$configDir/signing.properties")
             storeFile file("$configDir/${releaseConfigs['storeFile']}")
             storePassword releaseConfigs['storePassword']
