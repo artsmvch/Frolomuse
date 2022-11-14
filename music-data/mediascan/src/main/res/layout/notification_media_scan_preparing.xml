@@ -26,5 +26,5 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end"
         android:textAppearance="@style/TextAppearance.MediaScan.Button"
-        android:text="@string/cancel"/>
+        android:text="@android:string/cancel"/>
 </LinearLayout>
