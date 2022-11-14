@@ -253,6 +253,7 @@ dependencies {
     implementation deps.rxJava2.rxAndroid
 
     // DI
+    compileOnly deps.javax.annotationApi
     implementation deps.di.dagger
     kapt deps.di.daggerCompiler
 
@@ -304,8 +305,8 @@ if (project.hasProperty('kapt')) {
     kapt {
         // we expect this closure to run over a org.jetbrains.kotlin.gradle.plugin.KaptExtension
         javacOptions {
-            option("-source", "8")
-            option("-target", "8")
+            option("--source", "8")
+            option("--target", "8")
         }
     }
 }
