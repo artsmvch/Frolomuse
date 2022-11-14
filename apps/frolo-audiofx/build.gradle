@@ -73,6 +73,7 @@ android {
         checkReleaseBuilds true
         abortOnError true
         lintConfig file("$projectDir/lint.xml")
+        baseline file("lint-baseline.xml")
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
