@@ -157,7 +157,7 @@ internal class EqualizerPresetStorageImpl(
                 queryPresets(null, null)
     }
 
-    private fun queryPresets(selection: String?, selectionArgs: Array<String>?): List<EqualizerPreset> {
+    private fun queryPresets(selection: String?, selectionArgs: Array<String>?): List<EqualizerPreset> = synchronized(lock) {
         return databaseHelper.readableDatabase.use { database ->
             val columns = arrayOf<String>(
                 DatabaseSchema.Presets.ID,
@@ -193,7 +193,7 @@ internal class EqualizerPresetStorageImpl(
         }
     }
 
-    override fun createPreset(name: String, bandLevels: Map<Int, Int>): EqualizerPreset {
+    override fun createPreset(name: String, bandLevels: Map<Int, Int>): EqualizerPreset = synchronized(lock) {
         if (name.isBlank()) {
             throw IllegalArgumentException(context.getString(R.string.create_preset_err_empty_name))
         }
@@ -216,7 +216,7 @@ internal class EqualizerPresetStorageImpl(
         )
     }
 
-    override fun deletePreset(preset: EqualizerPreset) {
+    override fun deletePreset(preset: EqualizerPreset) = synchronized(lock) {
         if (preset is EqualizerPreset.Saved && preset.isDeletable) {
             val deletedCount = databaseHelper.writableDatabase.use { database ->
                 val whereClause = DatabaseSchema.Presets.ID + " = ?"
