@@ -142,7 +142,7 @@ internal class EqualizerImpl(
             newEngine.enabled = isEnabled
             val preset = getCurrentPreset()
             if (preset != null) {
-                usePreset(preset)
+                usePresetActual(newEngine, preset)
             } else {
                 for (band in 0 until equalizerPresetStorageImpl.getNumberOfBands()) {
                     newEngine.setBandLevel(band.toShort(),
@@ -195,6 +195,10 @@ internal class EqualizerImpl(
     }
 
     override fun usePreset(preset: EqualizerPreset): Unit = synchronized(lock) {
+        usePresetActual(engine, preset)
+    }
+
+    private fun usePresetActual(engine: android.media.audiofx.Equalizer?, preset: EqualizerPreset): Unit = synchronized(lock) {
         equalizerPresetStorageImpl.usePreset(preset)
         when (preset) {
             is CustomPresetImpl -> {
