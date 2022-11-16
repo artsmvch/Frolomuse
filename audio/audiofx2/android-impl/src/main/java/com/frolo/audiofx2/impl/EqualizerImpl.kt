@@ -199,38 +199,28 @@ internal class EqualizerImpl(
     }
 
     private fun usePresetActual(engine: android.media.audiofx.Equalizer?, preset: EqualizerPreset): Unit = synchronized(lock) {
-        equalizerPresetStorageImpl.usePreset(preset)
+        val syncBandLevels = HashMap<Int, Int>(5, 1f)
         when (preset) {
             is CustomPresetImpl -> {
-                val appliedBandLevels = HashMap<Int, Int>(5)
                 engine
                     ?.runCatching {
                         for (band in 0 until max(this.numberOfBands.toInt(),
                             equalizerPresetStorageImpl.getNumberOfBands())) {
                             val level = equalizerPresetStorageImpl.getBandLevel(band)
                             this.setBandLevel(band.toShort(), level.toShort())
-                            appliedBandLevels[band] = level
+                            syncBandLevels[band] = level
                         }
                     }
                     ?.onFailure { errorHandler.onAudioEffectError(this, it) }
-                appliedBandLevels.entries.forEach { entry ->
-                    bandLevelChangeListenerRegistry.dispatchBandLevelChange(
-                        band = entry.key,
-                        level = entry.value
-                    )
-                }
             }
             is NativePresetImpl -> {
                 engine
                     ?.runCatching { this.usePreset(preset.index.toShort()) }
                     ?.onFailure { errorHandler.onAudioEffectError(this, it) }
-                // Check all bands after applying native preset
+                // Sync all band levels after applying a native preset
                 engine?.runCatching {
                     for (band in 0 until this.numberOfBands) {
-                        bandLevelChangeListenerRegistry.dispatchBandLevelChange(
-                            band = band,
-                            level = this.getBandLevel(band.toShort()).toInt()
-                        )
+                        syncBandLevels[band] = this.getBandLevel(band.toShort()).toInt()
                     }
                 }
             }
@@ -242,17 +232,21 @@ internal class EqualizerImpl(
                         }
                     }
                     ?.onFailure { errorHandler.onAudioEffectError(this, it) }
-                // Dispatch the same levels
+                // Sync all band levels after applying a saved preset
                 for (band in 0 until preset.numberOfBands) {
-                    bandLevelChangeListenerRegistry.dispatchBandLevelChange(
-                        band = band,
-                        level = preset.getBandLevel(band)
-                    )
+                    syncBandLevels[band] = preset.getBandLevel(band)
                 }
             }
             else -> Unit
         }
+        equalizerPresetStorageImpl.setPreset(preset, syncBandLevels)
         presetUsedListenerRegistry.dispatchPresetUsed(preset)
+        syncBandLevels.entries.forEach { entry ->
+            bandLevelChangeListenerRegistry.dispatchBandLevelChange(
+                band = entry.key,
+                level = entry.value
+            )
+        }
     }
 
     override fun getAllPresets(): List<EqualizerPreset> {

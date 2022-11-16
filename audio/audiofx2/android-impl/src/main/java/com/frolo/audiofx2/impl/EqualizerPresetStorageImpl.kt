@@ -124,7 +124,11 @@ internal class EqualizerPresetStorageImpl(
         return CustomPresetImpl(name = context.getString(R.string.preset_custom))
     }
 
-    override fun usePreset(preset: EqualizerPreset) = synchronized(lock) {
+    /**
+     * Saves [preset] as the current one. [syncBandLevels] are actual band levels of [preset]
+     * and used to save in the storage.
+     */
+    internal fun setPreset(preset: EqualizerPreset, syncBandLevels: Map<Int, Int>) = synchronized(lock) {
         when (preset) {
             is NativePresetImpl -> {
                 prefs.edit().apply {
@@ -149,6 +153,14 @@ internal class EqualizerPresetStorageImpl(
             }
             else -> Unit
         }
+        // Sync band levels
+        prefs.edit().apply {
+            syncBandLevels.forEach { entry ->
+                putInt(KEY_CUSTOM_BAND_LEVEL_PREFIX + entry.key, entry.value)
+            }
+        }.apply()
+        this.bandLevels.clear()
+        this.bandLevels.putAll(syncBandLevels)
     }
 
     override fun getAllPresets(): List<EqualizerPreset> = synchronized(lock) {

@@ -9,6 +9,7 @@ interface Equalizer: AudioEffect2, EqualizerPresetStorage {
     fun getFreqRange(bandIndex: Int): ValueRange
     fun addOnBandLevelChangeListener(listener: OnBandLevelChangeListener)
     fun removeOnBandLevelChangeListener(listener: OnBandLevelChangeListener)
+    fun usePreset(preset: EqualizerPreset)
     fun addOnPresetUsedListener(listener: OnPresetUsedListener)
     fun removeOnPresetUsedListener(listener: OnPresetUsedListener)
 
