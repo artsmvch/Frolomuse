@@ -4,6 +4,8 @@ import android.app.Application
 import android.content.Context
 import android.media.AudioManager
 import android.media.audiofx.AudioEffect
+import android.media.audiofx.HapticGenerator as AndroidHapticGenerator
+import android.os.Build
 import com.frolo.audiofx2.*
 
 class AudioFx2Impl private constructor(
@@ -104,12 +106,22 @@ class AudioFx2Impl private constructor(
         return if (predicate) creator.invoke() else null
     }
 
+    private val hapticGeneratorImpl: HapticGeneratorApi31Impl? by lazy {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
+            && AndroidHapticGenerator.isAvailable()) {
+            //HapticGeneratorApi31Impl(context, errorHandler)
+            null
+        } else null
+    }
+    override val hapticGenerator: HapticGenerator? get() = hapticGeneratorImpl
+
     override fun attachTo(target: AudioFx2AttachTarget) {
         equalizerImpl?.attachTo(target)
         bassBoostImpl?.attachTo(target)
         virtualizerImpl?.attachTo(target)
         loudnessImpl?.attachTo(target)
         reverbImpl?.attachTo(target)
+        hapticGeneratorImpl?.attachTo(target)
     }
 
     override fun release() {
@@ -118,6 +130,7 @@ class AudioFx2Impl private constructor(
         virtualizerImpl?.release()
         loudnessImpl?.release()
         reverbImpl?.release()
+        hapticGeneratorImpl?.release()
     }
 
     companion object {

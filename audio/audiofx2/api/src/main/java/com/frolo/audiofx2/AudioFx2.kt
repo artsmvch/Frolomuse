@@ -6,4 +6,5 @@ interface AudioFx2 {
     val virtualizer: Virtualizer?
     val loudness: Loudness?
     val reverb: Reverb?
+    val hapticGenerator: HapticGenerator?
 }
