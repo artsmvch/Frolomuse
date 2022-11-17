@@ -260,6 +260,14 @@ internal class EqualizerImpl(
     override fun deletePreset(preset: EqualizerPreset) {
         equalizerPresetStorageImpl.deletePreset(preset)
     }
+
+    override fun addOnStorageUpdateListener(listener: EqualizerPresetStorage.OnStorageUpdateListener) {
+        equalizerPresetStorageImpl.addOnStorageUpdateListener(listener)
+    }
+
+    override fun removeOnStorageUpdateListener(listener: EqualizerPresetStorage.OnStorageUpdateListener) {
+        equalizerPresetStorageImpl.removeOnStorageUpdateListener(listener)
+    }
 }
 
 private class EqualizerState(
