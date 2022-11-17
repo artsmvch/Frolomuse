@@ -50,6 +50,9 @@ internal class EqualizerPresetStorageImpl(
     @GuardedBy("lock")
     private val bandLevels = HashMap<Int, Int>()
 
+    private val storageUpdateListenerRegistry =
+        StorageUpdateListenerRegistry(context, this)
+
     init {
         // FIXME: make this call lazy
         restoreState()
@@ -220,12 +223,14 @@ internal class EqualizerPresetStorageImpl(
         if (id == -1L) {
             throw IllegalStateException("No row was created in the database")
         }
-        return SavedPresetImpl(
+        val preset = SavedPresetImpl(
             id = id,
             name = name,
             bandLevels = bandLevels.toMap(),
             timedAdded = timedAdded
         )
+        storageUpdateListenerRegistry.dispatchPresetCreated(preset)
+        return preset
     }
 
     override fun deletePreset(preset: EqualizerPreset) = synchronized(lock) {
@@ -236,9 +241,18 @@ internal class EqualizerPresetStorageImpl(
                 database.delete(
                     DatabaseSchema.PRESETS_TABLE_NAME, whereClause, whereArgs)
             }
+            storageUpdateListenerRegistry.dispatchPresetDeleted(preset)
         } else {
             throw IllegalArgumentException("$preset is not deletable")
         }
+    }
+
+    override fun addOnStorageUpdateListener(listener: EqualizerPresetStorage.OnStorageUpdateListener) {
+        storageUpdateListenerRegistry.addListener(listener)
+    }
+
+    override fun removeOnStorageUpdateListener(listener: EqualizerPresetStorage.OnStorageUpdateListener) {
+        storageUpdateListenerRegistry.removeListener(listener)
     }
 
     companion object {
@@ -255,4 +269,15 @@ internal class EqualizerPresetStorageImpl(
             return "$storageKey.audiofx2.equalizer_presets"
         }
     }
+}
+
+private class StorageUpdateListenerRegistry(
+    context: Context,
+    private val storage: EqualizerPresetStorage
+) : ListenerRegistry<EqualizerPresetStorage.OnStorageUpdateListener>(context) {
+    fun dispatchPresetCreated(preset: EqualizerPreset) =
+        doDispatch { it.onPresetCreated(storage, preset) }
+
+    fun dispatchPresetDeleted(preset: EqualizerPreset) =
+        doDispatch { it.onPresetDeleted(storage, preset) }
 }

@@ -8,4 +8,12 @@ interface EqualizerPresetStorage {
     fun createPreset(name: String, bandLevels: Map<Int, Int>): EqualizerPreset
 
     fun deletePreset(preset: EqualizerPreset)
+
+    fun addOnStorageUpdateListener(listener: OnStorageUpdateListener)
+    fun removeOnStorageUpdateListener(listener: OnStorageUpdateListener)
+
+    interface OnStorageUpdateListener{
+        fun onPresetCreated(storage: EqualizerPresetStorage, preset: EqualizerPreset)
+        fun onPresetDeleted(storage: EqualizerPresetStorage, preset: EqualizerPreset)
+    }
 }
