@@ -11,14 +11,23 @@ internal class AudioSourceFactory(
 ) {
 
     fun getList(preferredSize: Int?): List<AudioSource> {
+        val list = getAllAudioSources()
+        return if (preferredSize != null) {
+            list.take(preferredSize)
+        } else {
+            list
+        }
+    }
+
+    private fun getAllAudioSources(): List<AudioSource> {
+        val dstList = ArrayList<AudioSource>()
+        var index: Int = 0
+
+        // Searching external storage for music files
         val resolver = context.contentResolver
         val audioCursor = resolver.query(URI, PROJECT, null, null, null)
             ?: throw NullPointerException("Query returned null cursor: uri=$URI")
-
-        val dstList = ArrayList<AudioSource>(preferredSize ?: 10)
-
         audioCursor.use { cursor ->
-            var index: Int = 0
             if (cursor.moveToFirst()) {
                 do {
                     val id: Long = index++.toLong()
@@ -28,12 +37,16 @@ internal class AudioSourceFactory(
                     }
                     val audioSource = mockAudioSource(id, path)
                     dstList.add(audioSource)
-                    if (preferredSize != null && dstList.size >= preferredSize) {
-                        break
-                    }
                 } while (cursor.moveToNext())
             }
         }
+
+        // Searching assets for music files
+        val assets = context.assets
+        val assetAudioSources = assets.list("mp3")
+            .orEmpty()
+            .map { path -> mockAudioSource(index++.toLong(), path) }
+        dstList.addAll(assetAudioSources)
 
         return dstList
     }
