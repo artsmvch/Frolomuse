@@ -74,7 +74,7 @@ class LibraryFragment: BaseFragment(),
             DebugUtils.dumpOnMainThread(IllegalStateException("Fragment not attached"))
             return Color.TRANSPARENT
         }
-        return StyleUtils.resolveColor(uiContext, R.attr.colorSurface)
+        return StyleUtils.resolveColor(uiContext, com.google.android.material.R.attr.colorSurface)
     }
 
     override fun onCreateView(

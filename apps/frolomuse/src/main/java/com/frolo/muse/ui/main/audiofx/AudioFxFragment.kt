@@ -316,7 +316,7 @@ class AudioFxFragment: BaseFragment(), FragmentContentInsetsListener {
                     }
 
                     val backgroundColor: Int =
-                            StyleUtils.resolveColor(view.context, R.attr.colorSurface)
+                            StyleUtils.resolveColor(view.context, com.google.android.material.R.attr.colorSurface)
 
                     val windowBackground: Drawable? =
                             StyleUtils.resolveDrawable(view.context, android.R.attr.windowBackground)

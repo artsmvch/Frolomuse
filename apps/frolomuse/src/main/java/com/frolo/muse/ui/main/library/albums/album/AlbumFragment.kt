@@ -119,7 +119,8 @@ open class AlbumFragment: AbsSongCollectionFragment<Song>(), FragmentContentInse
         app_bar_layout.addOnOffsetChangedListener(onOffsetChangedListener)
 
         view_backdrop.background = MaterialShapeDrawable().apply {
-            fillColor = ColorStateList.valueOf(StyleUtils.resolveColor(view.context, R.attr.colorPrimary))
+            fillColor = ColorStateList.valueOf(StyleUtils.resolveColor(view.context,
+                com.google.android.material.R.attr.colorPrimary))
             shapeAppearanceModel = ShapeAppearanceModel.builder()
                 .setBottomRightCorner(CornerFamily.ROUNDED, backdropCornerRadius)
                 .build()

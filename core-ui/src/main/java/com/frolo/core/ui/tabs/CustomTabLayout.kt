@@ -16,7 +16,7 @@ import com.google.android.material.tabs.TabLayout
 class CustomTabLayout @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyleAttr: Int = R.attr.tabStyle
+    defStyleAttr: Int = com.google.android.material.R.attr.tabStyle
 ): TabLayout(context, attrs, defStyleAttr) {
 
     override fun newTab(): Tab {
@@ -34,7 +34,7 @@ class CustomTabLayout @JvmOverloads constructor(
         private var titleView: TextView? = null
         private val selectedAlpha: Float = 1f
         private val unselectedAlpha: Float =
-            if (StyleUtils.resolveBool(context, R.attr.isLightTheme)) 0.68f else 0.4f
+            if (StyleUtils.resolveBool(context, com.google.android.material.R.attr.isLightTheme)) 0.68f else 0.4f
 
         init {
             val viewContext = this.context
@@ -47,10 +47,10 @@ class CustomTabLayout @JvmOverloads constructor(
                 view.alpha = getTargetAlphaForSelection(isSelected)
             }
             kotlin.runCatching {
-                val tabStyleId = StyleUtils.resolveStyleRes(context, R.attr.tabStyle)
+                val tabStyleId = StyleUtils.resolveStyleRes(context, com.google.android.material.R.attr.tabStyle)
                 val tabStyleContext = ContextThemeWrapper(context, tabStyleId)
                 val textAppearanceId = StyleUtils.resolveStyleRes(
-                    tabStyleContext, R.attr.tabTextAppearance)
+                    tabStyleContext, com.google.android.material.R.attr.tabTextAppearance)
                 titleView?.setTextAppearance(textAppearanceId)
             }.onFailure { err ->
                 DebugUtils.dump(err)

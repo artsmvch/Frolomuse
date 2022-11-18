@@ -36,33 +36,33 @@ internal class MainScreenProperties(
     val isLandscape: Boolean get() = Screen.isLandscape(context)
 
     val isLightTheme: Boolean by lazy {
-        StyleUtils.resolveBool(context, R.attr.isLightTheme)
+        StyleUtils.resolveBool(context, com.google.android.material.R.attr.isLightTheme)
     }
 
     @get:ColorInt
     val colorPrimary: Int by lazy {
-        StyleUtils.resolveColor(context, R.attr.colorPrimary)
+        StyleUtils.resolveColor(context, com.google.android.material.R.attr.colorPrimary)
     }
 
     @get:ColorInt
     val colorPrimaryDark: Int by lazy {
-        StyleUtils.resolveColor(context, R.attr.colorPrimaryDark)
+        StyleUtils.resolveColor(context, com.google.android.material.R.attr.colorPrimaryDark)
     }
 
     @get:ColorInt
     val colorPrimarySurface: Int by lazy {
-        StyleUtils.resolveColor(context, R.attr.colorPrimarySurface)
+        StyleUtils.resolveColor(context, com.google.android.material.R.attr.colorPrimarySurface)
     }
 
     @get:ColorInt
     val colorSurface: Int by lazy {
-        StyleUtils.resolveColor(context, R.attr.colorSurface)
+        StyleUtils.resolveColor(context, com.google.android.material.R.attr.colorSurface)
     }
 
     @get:ColorInt
     val actionModeBackgroundColor: Int by lazy {
         try {
-            StyleUtils.resolveColor(context, R.attr.actionModeBackground)
+            StyleUtils.resolveColor(context, com.google.android.material.R.attr.actionModeBackground)
         } catch (error: Throwable) {
             // This is probably a drawable
             DebugUtils.dumpOnMainThread(error)
@@ -117,7 +117,7 @@ internal class MainScreenProperties(
 
     @get:ColorInt
     val colorModeOn: Int by lazy {
-        StyleUtils.resolveColor(context, R.attr.colorAccent)
+        StyleUtils.resolveColor(context, com.google.android.material.R.attr.colorAccent)
     }
 
     @get:Px

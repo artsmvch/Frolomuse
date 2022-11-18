@@ -51,8 +51,10 @@ fun EditText.limitNumberInput(maxValue: Int) {
                 }
 
         init {
-            @ColorInt val red = StyleUtils.resolveColor(editText.context, R.attr.errorTextColor)
-            @ColorInt val textColor = StyleUtils.resolveColor(editText.context, R.attr.colorOnSurface)
+            @ColorInt val red = StyleUtils.resolveColor(editText.context,
+                com.google.android.material.R.attr.errorTextColor)
+            @ColorInt val textColor = StyleUtils.resolveColor(editText.context,
+                com.google.android.material.R.attr.colorOnSurface)
             animator = ValueAnimator.ofInt(red, textColor).apply {
                 setEvaluator(ArgbEvaluator())
                 duration = 300

@@ -74,7 +74,7 @@ class AppInfoDialog : BaseDialogFragment() {
             ts_version.setText(fullBuildVersion)
 
             val isLightTheme = try {
-                StyleUtils.resolveBool(this.context, R.attr.isLightTheme)
+                StyleUtils.resolveBool(this.context, com.google.android.material.R.attr.isLightTheme)
             } catch (e: Throwable) {
                 DebugUtils.dumpOnMainThread(e)
                 false

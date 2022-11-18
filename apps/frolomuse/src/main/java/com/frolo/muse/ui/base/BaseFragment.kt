@@ -72,7 +72,7 @@ abstract class BaseFragment:
             DebugUtils.dumpOnMainThread(IllegalStateException("Fragment not attached"))
             return Color.TRANSPARENT
         }
-        return StyleUtils.resolveColor(uiContext, R.attr.colorPrimary)
+        return StyleUtils.resolveColor(uiContext, com.google.android.material.R.attr.colorPrimary)
     }
 
     override fun onAttach(context: Context) {

@@ -98,7 +98,8 @@ class MediaAdapter constructor(
         @get:ColorInt
         private val highlightColor: Int by lazy {
             val textColor = StyleUtils.resolveColor(itemView.context, android.R.attr.textColorPrimary)
-            val accentColor = StyleUtils.resolveColor(itemView.context, R.attr.colorAccent)
+            val accentColor = StyleUtils.resolveColor(itemView.context,
+                com.google.android.material.R.attr.colorAccent)
             ColorUtils.compositeColors(accentColor, textColor)
         }
 

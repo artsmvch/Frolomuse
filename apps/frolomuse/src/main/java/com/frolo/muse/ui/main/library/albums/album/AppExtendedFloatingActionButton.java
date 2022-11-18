@@ -23,7 +23,7 @@ public class AppExtendedFloatingActionButton extends ExtendedFloatingActionButto
     }
 
     public AppExtendedFloatingActionButton(@NonNull Context context, @Nullable AttributeSet attrs) {
-        this(context, attrs, R.attr.extendedFloatingActionButtonStyle);
+        this(context, attrs, com.google.android.material.R.attr.extendedFloatingActionButtonStyle);
     }
 
     public AppExtendedFloatingActionButton(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {

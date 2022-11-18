@@ -28,7 +28,7 @@ class CarouselView @JvmOverloads constructor(
     private val implView by lazy { createCarousel(context, attrs, defStyleAttr) }
     private val placeholderView: TextView by lazy {
         TextView(context, attrs, defStyleAttr).apply {
-            setTextAppearance(StyleUtils.resolveStyleRes(context, R.attr.textAppearanceBody2))
+            setTextAppearance(StyleUtils.resolveStyleRes(context, com.google.android.material.R.attr.textAppearanceBody2))
             ellipsize = TextUtils.TruncateAt.END
         }
     }

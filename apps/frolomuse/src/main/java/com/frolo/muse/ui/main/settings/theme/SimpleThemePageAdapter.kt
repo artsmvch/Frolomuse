@@ -68,8 +68,8 @@ class SimpleThemePageAdapter(
         fun bind(page: ThemePage) {
             val themedContext = ThemeUtils.createThemedContext(itemView.context, page.theme)
             val windowBackground = StyleUtils.resolveDrawable(themedContext, android.R.attr.windowBackground)
-            val primaryColor = StyleUtils.resolveColor(themedContext, R.attr.colorPrimary)
-            val secondaryColor = StyleUtils.resolveColor(themedContext, R.attr.colorSecondary)
+            val primaryColor = StyleUtils.resolveColor(themedContext, com.google.android.material.R.attr.colorPrimary)
+            val secondaryColor = StyleUtils.resolveColor(themedContext, com.google.android.material.R.attr.colorSecondary)
             val textColor = StyleUtils.resolveColorStateList(themedContext, android.R.attr.textColorPrimary)
             val themeName = ThemeUtils.getNameResourceId(page.theme)?.let { themedContext.getString(it) } ?: ""
             val isCurrentThemeDark = currentTheme.isDark
@@ -88,9 +88,9 @@ class SimpleThemePageAdapter(
                 if (isCurrentThemeDark) {
                     card_view.strokeWidth = Screen.dp(context, 1f).coerceAtLeast(1)
                     card_view.strokeColor = if (page.theme.isDark) {
-                        context.getColor(R.color.md_grey_500)
+                        context.getColor(com.google.android.material.support.R.color.md_grey_500)
                     } else {
-                        context.getColor(R.color.md_grey_50)
+                        context.getColor(com.google.android.material.support.R.color.md_grey_50)
                     }
                     card_view.cardElevation = 0f
                     card_view.maxCardElevation = 0f

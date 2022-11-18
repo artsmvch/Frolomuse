@@ -33,8 +33,10 @@ class CheckableImageView @JvmOverloads constructor(
             } else 0
             arr.recycle()
 
-            @ColorInt val colorSecondary = StyleUtils.resolveColor(context, R.attr.colorSecondary)
-            @ColorInt val colorOnSecondary = StyleUtils.resolveColor(context, R.attr.colorOnSecondary)
+            @ColorInt val colorSecondary = StyleUtils.resolveColor(context,
+                com.google.android.material.R.attr.colorSecondary)
+            @ColorInt val colorOnSecondary = StyleUtils.resolveColor(context,
+                com.google.android.material.R.attr.colorOnSecondary)
             if (value == 0) {
                 CheckMarkDrawable(colorSecondary, colorOnSecondary)
             } else {

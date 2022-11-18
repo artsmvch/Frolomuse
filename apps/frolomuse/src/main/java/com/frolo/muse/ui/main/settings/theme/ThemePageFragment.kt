@@ -77,9 +77,9 @@ class ThemePageFragment : BaseFragment() {
         if (isCurrentThemeDark) {
             fragment_container_card.strokeWidth = Screen.dp(context, 1f).coerceAtLeast(1)
             fragment_container_card.strokeColor = if (themePage.theme.isDark) {
-                context.getColor(R.color.md_grey_500)
+                context.getColor(com.google.android.material.support.R.color.md_grey_500)
             } else {
-                context.getColor(R.color.md_grey_50)
+                context.getColor(com.google.android.material.support.R.color.md_grey_50)
             }
             fragment_container_card.cardElevation = 0f
             fragment_container_card.maxCardElevation = 0f
