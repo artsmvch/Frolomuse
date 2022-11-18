@@ -29,9 +29,6 @@ android {
 }
 
 dependencies {
-    api project(path: ':audio:audiofx:api')
-
     implementation deps.support.annotation
-
     testImplementation 'junit:junit:4.12'
 }
