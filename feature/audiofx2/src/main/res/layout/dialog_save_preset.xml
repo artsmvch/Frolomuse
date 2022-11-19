@@ -62,13 +62,17 @@
             android:id="@+id/cancel_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/cancel"/>
+            android:text="@string/cancel"
+            app:strokeColor="?colorPrimary"
+            style="@style/Widget.Material3.Button.OutlinedButton"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/save_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/save"/>
+            android:text="@string/save"
+            app:backgroundTint="?colorPrimary"
+            style="@style/Widget.Material3.Button.UnelevatedButton"/>
     </com.google.android.flexbox.FlexboxLayout>
 
     <FrameLayout
