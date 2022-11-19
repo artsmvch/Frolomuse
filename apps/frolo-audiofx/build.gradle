@@ -4,10 +4,10 @@ plugins {
     id 'kotlin-android-extensions'
 }
 
-def version_code = 4
+def version_code = 5
 def version_major = 1
-def version_minor = 0
-def version_patch = 1
+def version_minor = 1
+def version_patch = 0
 def version_name = "${version_major}.${version_minor}.${version_patch}"
 
 def google_services_properties =
