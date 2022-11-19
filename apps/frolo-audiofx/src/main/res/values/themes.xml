@@ -85,6 +85,23 @@
         <item name="errorTextColor">@color/error_text_color</item>
 
         <item name="dividerColor">@color/divider_color</item>
+
+        <item name="textInputStyle">@style/Theme.Frolo.AudioFx.TextInputLayout</item>
+        <item name="materialButtonStyle">@style/Theme.Frolo.AudioFx.MaterialButton</item>
+    </style>
+
+    <style name="Theme.Frolo.AudioFx.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeWidth">1.2dp</item>
+        <item name="boxStrokeWidthFocused">1.6dp</item>
+        <item name="materialThemeOverlay">@style/Theme.Frolo.AudioFx.TextInputEditText</item>
+    </style>
+
+    <style name="Theme.Frolo.AudioFx.MaterialButton" parent="Widget.Material3.Button.UnelevatedButton">
+        <item name="android:textSize">17sp</item>
+    </style>
+
+    <style name="Theme.Frolo.AudioFx.TextInputEditText" parent="ThemeOverlay.MaterialComponents.TextInputEditText.OutlinedBox">
+        <item name="colorControlActivated">@color/color_primary</item>
     </style>
 
     <style name="Theme.Frolo.AudioFx.WindowAnimation.Dialog" parent="">
