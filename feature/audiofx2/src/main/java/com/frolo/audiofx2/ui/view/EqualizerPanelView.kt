@@ -360,13 +360,15 @@ private class SavePresetDialog(
         Single.fromCallable { equalizer.createPreset(name, bandLevels) }
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnError { err -> showError(err) }
             .doOnSubscribe { progress?.isVisible = true }
             .doFinally { progress?.isVisible = false }
-            .subscribe { preset ->
-                onPresetSaved.invoke(preset)
-                dismiss()
-            }
+            .subscribe(
+                { preset ->
+                    onPresetSaved.invoke(preset)
+                    dismiss()
+                },
+                { err -> showError(err) }
+            )
             .also { disposable ->
                 savePresetDisposable?.dispose()
                 savePresetDisposable = disposable
