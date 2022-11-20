@@ -96,7 +96,7 @@
                 <action android:name="android.intent.action.VIEW" />
                 <data android:scheme="https" />
                 <data android:scheme="http" />
-                <data android:host="frolomuse" />
+                <data android:host="frolomuse.com" />
                 <data android:path="/play"/>
                 <data android:path="/player"/>
                 <data android:path="/library" />
