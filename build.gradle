@@ -25,10 +25,10 @@ allprojects {
         maven { url "https://jitpack.io" }
     }
     // Nebula
-    apply plugin :"nebula.lint"
-    gradleLint {
-        rules=['unused-dependency']
-    }
+//    apply plugin :"nebula.lint"
+//    gradleLint {
+//        rules=['unused-dependency']
+//    }
 }
 
 task clean(type: Delete) {
