@@ -16,6 +16,7 @@ import androidx.appcompat.view.ContextThemeWrapper
 import androidx.appcompat.widget.ActionMenuView
 import androidx.appcompat.widget.AppCompatTextView
 import com.frolo.core.ui.R
+import com.google.android.material.R as MaterialR
 import com.frolo.ui.StyleUtils
 
 
@@ -34,7 +35,7 @@ class ActionModeView @JvmOverloads constructor(
         closeButton = findViewById(R.id.close)
         titleSwitcher = findViewById<TextSwitcher>(R.id.title_switcher).also(::setupTitleSwitcher)
         actionMenuView = findViewById(R.id.action_menu)
-        background = StyleUtils.resolveDrawable(super.getContext(), android.R.attr.actionModeBackground)
+        background = StyleUtils.resolveDrawable(super.getContext(), MaterialR.attr.actionModeBackground)
     }
 
     var title: CharSequence? = null
@@ -52,7 +53,7 @@ class ActionModeView @JvmOverloads constructor(
 
     private fun setupTitleSwitcher(switcher: TextSwitcher) {
         switcher.setFactory {
-            val styleId = StyleUtils.resolveStyleRes(context, android.R.attr.titleTextStyle)
+            val styleId = StyleUtils.resolveStyleRes(context, MaterialR.attr.titleTextStyle)
             AppCompatTextView(context).apply {
                 setTextAppearance(styleId)
                 gravity = Gravity.CENTER
@@ -97,7 +98,7 @@ class ActionModeView @JvmOverloads constructor(
 
         @UiContext
         private fun wrapContext(context: Context): Context {
-            val actionModeStyle = StyleUtils.resolveStyleRes(context, android.R.attr.actionModeStyle)
+            val actionModeStyle = StyleUtils.resolveStyleRes(context, MaterialR.attr.actionModeStyle)
             return ContextThemeWrapper(context, actionModeStyle)
         }
     }
