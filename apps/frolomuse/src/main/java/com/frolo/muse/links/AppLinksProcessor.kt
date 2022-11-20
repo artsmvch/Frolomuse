@@ -40,7 +40,7 @@ internal class AppLinksProcessor(
                 callback.onSuccess()
             }
             "search" -> {
-                router.openAudioFx()
+                router.openSearch()
                 callback.onSuccess()
             }
             "settings" -> {
