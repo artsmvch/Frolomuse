@@ -113,6 +113,14 @@ internal class ReverbImpl constructor(
         )
     }
 
+    /**
+     * Always re-create the reverb engine or it just won't work when audio source is changed.
+     */
+    override fun shouldReAttach(
+        newTarget: AudioFx2AttachTarget,
+        oldTarget: AudioFx2AttachTarget
+    ): Boolean = true
+
     override fun onAttachTo(target: AudioFx2AttachTarget) = synchronized(lock) {
         try {
             engine?.release()

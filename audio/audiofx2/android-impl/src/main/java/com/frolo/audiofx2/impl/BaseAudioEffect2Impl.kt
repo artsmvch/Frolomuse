@@ -7,12 +7,19 @@ internal abstract class BaseAudioEffect2Impl<E: android.media.audiofx.AudioEffec
     AudioEffect2, AudioFx2AttachProtocol {
     private val lastAttachTargetRef = AtomicReference<AudioFx2AttachTarget>(null)
 
+    protected open fun shouldReAttach(
+        newTarget: AudioFx2AttachTarget,
+        oldTarget: AudioFx2AttachTarget
+    ): Boolean{
+        return oldTarget.priority != newTarget.priority ||
+                oldTarget.sessionId != newTarget.sessionId ||
+                oldTarget.mediaPlayer != newTarget.mediaPlayer
+    }
+
     final override fun attachTo(target: AudioFx2AttachTarget) {
         val lastTarget = lastAttachTargetRef.get()
         // Check if the target has been actually changed
-        if (lastTarget == null ||
-            lastTarget.sessionId != target.sessionId ||
-            lastTarget.mediaPlayer != target.mediaPlayer) {
+        if (lastTarget == null || shouldReAttach(lastTarget, target)) {
             onAttachTo(target)
             lastAttachTargetRef.set(target)
         }
