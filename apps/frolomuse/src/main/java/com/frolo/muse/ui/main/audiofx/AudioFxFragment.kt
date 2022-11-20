@@ -43,6 +43,7 @@ import kotlinx.android.synthetic.main.include_seekbar_bass_boost.*
 import kotlinx.android.synthetic.main.include_seekbar_visualizer.*
 
 
+@Deprecated("AudioFx is deprecated. Use AudioFx2 instead")
 class AudioFxFragment: BaseFragment(), FragmentContentInsetsListener {
 
     private val viewModel: AudioFxViewModel by viewModel()

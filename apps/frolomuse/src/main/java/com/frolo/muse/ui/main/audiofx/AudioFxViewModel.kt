@@ -24,6 +24,7 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 
+@Deprecated("AudioFx is deprecated. Use AudioFx2 instead")
 class AudioFxViewModel @Inject constructor(
     private val player: Player,
     private val audioFx: AudioFx,
