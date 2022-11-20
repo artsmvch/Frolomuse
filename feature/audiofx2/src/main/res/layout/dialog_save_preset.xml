@@ -64,8 +64,9 @@
             android:layout_height="wrap_content"
             android:text="@string/cancel"
             android:textSize="16sp"
-            app:strokeColor="?colorPrimary"
-            style="@style/Widget.Material3.Button.OutlinedButton"/>
+            android:textColor="?colorOnBackground"
+            app:rippleColor="?colorSecondary"
+            style="@style/Widget.Material3.Button.TextButton"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/save_button"
@@ -73,7 +74,8 @@
             android:layout_height="wrap_content"
             android:text="@string/save"
             android:textSize="16sp"
-            app:backgroundTint="?colorPrimary"
+            android:textColor="?colorOnSecondary"
+            app:backgroundTint="?colorSecondary"
             style="@style/Widget.Material3.Button.UnelevatedButton"/>
     </com.google.android.flexbox.FlexboxLayout>
 
