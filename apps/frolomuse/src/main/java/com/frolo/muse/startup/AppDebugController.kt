@@ -43,7 +43,7 @@ class AppDebugController @Inject constructor(
             .filter { task ->
                 val baseIntent = task.taskInfo.baseIntent
                 baseIntent.component?.packageName == context.packageName
-                        && baseIntent.categories.contains(Intent.CATEGORY_LAUNCHER)
+                        && baseIntent.categories?.contains(Intent.CATEGORY_LAUNCHER) == true
                         && baseIntent.action?.contains(Intent.ACTION_MAIN) == true
             }
             .forEach { task ->
