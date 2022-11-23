@@ -83,6 +83,13 @@ class AddMediaToPlaylistDialog : BaseDialogFragment() {
             onSetPlaceholderVisible(visible)
         }
 
+        isAddButtonEnabled.observeNonNull(owner) { isEnabled ->
+            dialog?.apply {
+                btn_add_to_playlist.isEnabled = isEnabled
+                btn_add_to_playlist.alpha = if (isEnabled) 1f else 0.3f
+            }
+        }
+
         playlists.observeNonNull(owner) { list ->
             onSubmitList(list)
         }
