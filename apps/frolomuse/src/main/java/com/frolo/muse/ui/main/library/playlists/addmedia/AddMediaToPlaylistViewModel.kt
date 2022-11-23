@@ -10,6 +10,8 @@ import com.frolo.muse.logger.logMediaAddedToPlaylist
 import com.frolo.music.model.Playlist
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.base.BaseViewModel
+import io.reactivex.Single
+import io.reactivex.schedulers.Schedulers
 
 
 class AddMediaToPlaylistViewModel constructor(
@@ -43,12 +45,21 @@ class AddMediaToPlaylistViewModel constructor(
     private val _itemsAddedToPlaylistEvent: MutableLiveData<Unit> = MutableLiveData()
     val itemsAddedToPlaylistEvent: LiveData<Unit> = _itemsAddedToPlaylistEvent
 
-    fun onPlaylistSelected(playlist: Playlist) {
-        addMediaToPlaylistUseCase.addMediaToPlaylist(playlist)
-                .observeOn(schedulerProvider.main())
-                .doOnSubscribe { _isAddingItemsToPlaylist.value = true }
-                .doFinally { _isAddingItemsToPlaylist.value = false }
-                .doOnSuccess { eventLogger.logMediaAddedToPlaylist(mediaCount = it) }
-                .subscribeFor { _itemsAddedToPlaylistEvent.value = Unit }
+    private var checkedPlaylists: Map<Playlist.Identifier, Playlist> = emptyMap()
+
+    fun onCheckedPlaylistsChanged(checkedPlaylists: Map<Playlist.Identifier, Playlist>) {
+        this.checkedPlaylists = checkedPlaylists
+    }
+
+    fun onAddButtonClicked() {
+        val checkedPlaylists = HashMap(this.checkedPlaylists)
+        Single.fromCallable { checkedPlaylists.values }
+            .subscribeOn(Schedulers.computation())
+            .flatMapCompletable { addMediaToPlaylistUseCase.addMediaToPlaylists(it) }
+            .observeOn(schedulerProvider.main())
+            .doOnSubscribe { _isAddingItemsToPlaylist.value = true }
+            .doFinally { _isAddingItemsToPlaylist.value = false }
+            .doOnComplete { eventLogger.logMediaAddedToPlaylist() }
+            .subscribeFor { _itemsAddedToPlaylistEvent.value = Unit }
     }
 }
