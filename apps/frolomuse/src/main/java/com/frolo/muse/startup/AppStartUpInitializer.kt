@@ -10,7 +10,7 @@ import android.os.strictmode.Violation
 import androidx.annotation.UiThread
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.frolo.audiofx.AudioFxImpl
+import com.frolo.audiofx2.impl.AudioFx2Impl
 import com.frolo.audiofx2.ui.AudioFx2AttachInfo
 import com.frolo.audiofx2.ui.AudioFx2Feature
 import com.frolo.audiofx2.ui.AudioFx2FeatureInput
@@ -140,7 +140,7 @@ class AppStartUpInitializer @Inject constructor(
                 .detectLeakedRegistrationObjects()
                 .setClassInstanceLimit(AppStartUpInitializer::class.java, 1)
                 .setClassInstanceLimit(PlayerImpl::class.java, 1)
-                .setClassInstanceLimit(AudioFxImpl::class.java, 1)
+                .setClassInstanceLimit(AudioFx2Impl::class.java, 1)
                 .setClassInstanceLimit(PlayerWrapper::class.java, 1)
                 .setClassInstanceLimit(MemoryWatcherRegistryImpl::class.java, 1)
                 .penaltyLog()

@@ -15,8 +15,7 @@ import com.frolo.music.model.Media
 import com.frolo.music.model.Playlist
 import com.frolo.muse.ui.base.BaseDialogFragment
 import com.frolo.muse.ui.base.withArg
-import com.frolo.muse.ui.main.library.base.BaseAdapter
-import com.frolo.muse.ui.main.library.playlists.addmedia.adapter.SimplePlaylistAdapter
+import com.frolo.muse.ui.main.library.playlists.addmedia.adapter.PlaylistSelectorAdapter
 import com.frolo.muse.views.Anim
 import kotlinx.android.synthetic.main.dialog_add_media_to_playlist.*
 
@@ -33,18 +32,11 @@ class AddMediaToPlaylistDialog : BaseDialogFragment() {
     }
 
     private val adapter by lazy {
-        SimplePlaylistAdapter().apply {
-            listener = object : BaseAdapter.Listener<Playlist> {
-                override fun onItemClick(item: Playlist, position: Int) {
-                    checkReadWritePermissionsFor {
-                        viewModel.onPlaylistSelected(item)
-                    }
+        PlaylistSelectorAdapter().apply {
+            onCheckedPlaylistsChangeListener =
+                PlaylistSelectorAdapter.OnCheckedPlaylistsChangeListener { checkedPlaylists ->
+                    viewModel.onCheckedPlaylistsChanged(checkedPlaylists)
                 }
-
-                override fun onItemLongClick(item: Playlist, position: Int) = Unit
-
-                override fun onOptionsMenuClick(item: Playlist, position: Int) = Unit
-            }
         }
     }
 
@@ -62,12 +54,7 @@ class AddMediaToPlaylistDialog : BaseDialogFragment() {
         return super.onCreateDialog(savedInstanceState).apply {
             requestWindowFeature(Window.FEATURE_NO_TITLE)
             setContentView(R.layout.dialog_add_media_to_playlist)
-
-            val metrics = resources.displayMetrics
-            val width = metrics.widthPixels
-            val height = metrics.heightPixels
-            setupDialogSize(this, 11 * width / 12, ViewGroup.LayoutParams.WRAP_CONTENT)
-
+            setupDialogSizeRelativelyToScreen(dialog = this, widthPercent = 19f / 20f)
             loadUI(this)
         }
     }
@@ -76,7 +63,11 @@ class AddMediaToPlaylistDialog : BaseDialogFragment() {
         rv_list.layoutManager = LinearLayoutManager(context)
         rv_list.adapter = adapter
 
-        inc_progress_overlay.setOnTouchListener { _, _ -> true }
+        include_progress_overlay.setOnTouchListener { _, _ -> true }
+
+        btn_add_to_playlist.setOnClickListener {
+            viewModel.onAddButtonClicked()
+        }
 
         btn_cancel.setOnClickListener {
             cancel()
@@ -90,6 +81,13 @@ class AddMediaToPlaylistDialog : BaseDialogFragment() {
 
         placeholderVisible.observeNonNull(owner) { visible ->
             onSetPlaceholderVisible(visible)
+        }
+
+        isAddButtonEnabled.observeNonNull(owner) { isEnabled ->
+            dialog?.apply {
+                btn_add_to_playlist.isEnabled = isEnabled
+                btn_add_to_playlist.alpha = if (isEnabled) 1f else 0.3f
+            }
         }
 
         playlists.observeNonNull(owner) { list ->
@@ -124,9 +122,9 @@ class AddMediaToPlaylistDialog : BaseDialogFragment() {
     private fun onSetAddingItemsToPlaylist(isAdding: Boolean) {
         dialog?.apply {
             if (isAdding) {
-                Anim.fadeIn(inc_progress_overlay)
+                Anim.fadeIn(include_progress_overlay)
             } else {
-                Anim.fadeOut(inc_progress_overlay)
+                Anim.fadeOut(include_progress_overlay)
             }
         }
     }

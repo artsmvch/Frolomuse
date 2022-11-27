@@ -12,7 +12,6 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.frolo.audiofx.applicable.AudioFxApplicable;
 import com.frolo.vendor.ManufacturerUtils;
 
 import java.util.ArrayList;

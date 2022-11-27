@@ -1,78 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:textAppearance="?textAppearanceHeadline6"
-        android:gravity="center"
-        android:text="@string/select_playlist"/>
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/divider1"
+        android:id="@+id/content"
+        android:layout_width="0dp"
+        android:layout_height="0dp">
 
-    <androidx.appcompat.widget.AppCompatTextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:textAppearance="?textAppearanceBody2"
-        android:gravity="center"
-        android:text="@string/select_playlist_to_which_you_want_to_add_music"/>
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    <include layout="@layout/include_divider"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/select_playlist"
+                android:textAppearance="?textAppearanceHeadline6"
+                android:textColor="?colorOnPrimary"
+                android:gravity="center"
+                android:ellipsize="end"
+                app:layout_scrollFlags="noScroll" />
+        </com.google.android.material.appbar.AppBarLayout>
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:minHeight="320dp">
-
-        <com.frolo.muse.views.spring.AppRecyclerView
-            android:id="@+id/rv_list"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:listitem="@layout/item_simple_playlist"
-            tools:itemCount="5"/>
+            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
 
-        <include layout="@layout/include_placeholder"
-            android:id="@+id/layout_list_placeholder"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="invisible" />
+            <com.frolo.muse.views.spring.AppRecyclerView
+                android:id="@+id/rv_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
-        <com.frolo.core.ui.progress.IBar
-            android:id="@+id/pb_loading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="invisible" />
+            <include layout="@layout/include_placeholder"
+                android:id="@+id/layout_list_placeholder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="invisible" />
 
-        <include layout="@layout/include_progress_overlay"
-            android:id="@+id/inc_progress_overlay"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:visibility="invisible"/>
-    </FrameLayout>
+            <com.frolo.core.ui.progress.IBar
+                android:id="@+id/pb_loading"
+                android:visibility="invisible"
+                android:layout_gravity="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
-    <include layout="@layout/include_divider"/>
+            <include layout="@layout/include_progress_overlay"
+                android:id="@+id/include_progress_overlay"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="invisible" />
+        </FrameLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <View
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/barrier1"
+        android:id="@+id/divider1"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/app_divider_size"
+        android:background="?dividerTint"/>
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/barrier1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="btn_cancel,btn_add_to_playlist"
+        app:barrierDirection="top"/>
 
     <TextView
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/divider1"
+        app:layout_constraintEnd_toStartOf="@id/divider2"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:id="@+id/btn_cancel"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:minHeight="@dimen/dialog_footer_min_height"
+        android:gravity="center"
         android:textAppearance="?textAppearanceButton"
         android:background="?selectableItemBackground"
-        android:gravity="center"
         android:text="@string/cancel"/>
-</LinearLayout>
+
+    <View
+        app:layout_constraintStart_toEndOf="@id/btn_cancel"
+        app:layout_constraintTop_toBottomOf="@id/divider1"
+        app:layout_constraintEnd_toStartOf="@id/btn_add_to_playlist"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/divider2"
+        android:layout_width="@dimen/app_divider_size"
+        android:layout_height="0dp"
+        android:background="?dividerTint"/>
+
+    <TextView
+        app:layout_constraintStart_toEndOf="@id/divider2"
+        app:layout_constraintTop_toBottomOf="@id/divider1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/btn_add_to_playlist"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:minHeight="@dimen/dialog_footer_min_height"
+        android:gravity="center"
+        android:textAppearance="?textAppearanceButton"
+        android:background="?selectableItemBackground"
+        android:text="@string/add_to_playlist"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
