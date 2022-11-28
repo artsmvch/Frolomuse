@@ -25,6 +25,8 @@ android {
         versionCode version_code
         versionName version_name
 
+        vectorDrawables.useSupportLibrary = true
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField "Boolean", "GOOGLE_SERVICES_ENABLED", "$google_services_enabled"
