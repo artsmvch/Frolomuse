@@ -21,6 +21,7 @@ include ':music-data:mediascan'
 // AudioFx
 include ':audio:audiofx:api'
 include ':audio:audiofx:android-impl'
+include ':audio:audiofx-applicable'
 include ':audio:audiofx2:api'
 include ':audio:audiofx2:android-impl'
 

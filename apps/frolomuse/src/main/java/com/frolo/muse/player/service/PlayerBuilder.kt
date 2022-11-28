@@ -5,11 +5,15 @@ import android.media.MediaPlayer
 import android.os.Handler
 import android.support.v4.media.session.MediaSessionCompat
 import androidx.annotation.WorkerThread
+import com.frolo.audiofx.AudioFxImpl
+import com.frolo.audiofx.applicable.AudioFxApplicable
+import com.frolo.audiofx2.AudioFx2
 import com.frolo.audiofx2.impl.AudioFx2AttachTarget
 import com.frolo.audiofx2.impl.AudioFx2Impl
 import com.frolo.debug.DebugUtils
 import com.frolo.muse.BuildInfo
 import com.frolo.logger.api.Logger
+import com.frolo.muse.player.service.audiofx.DefaultAudioFxErrorHandler
 import com.frolo.muse.player.service.observers.*
 import com.frolo.muse.model.playback.PlaybackFadingParams
 import com.frolo.muse.repository.Preferences

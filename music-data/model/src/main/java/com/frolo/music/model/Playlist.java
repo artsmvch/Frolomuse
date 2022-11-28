@@ -5,30 +5,9 @@ import java.util.Objects;
 
 
 public final class Playlist implements Media, Serializable {
-    public static class Identifier {
-        private final long id;
-        private final boolean isFromSharedStorage;
 
-        Identifier(long id, boolean isFromSharedStorage) {
-            this.id = id;
-            this.isFromSharedStorage = isFromSharedStorage;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            Identifier identifier = (Identifier) o;
-            return id == identifier.id && isFromSharedStorage == identifier.isFromSharedStorage;
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(id, isFromSharedStorage);
-        }
-    }
-
-    private final Identifier identifier;
+    private final long id;
+    private final boolean isFromSharedStorage;
     private final String source;
     private final String name;
     private final long dateAdded;
@@ -36,7 +15,8 @@ public final class Playlist implements Media, Serializable {
 
     public Playlist(long id, boolean isFromSharedStorage, String source, String name,
                     /* in seconds */ long dateAdded, /* in seconds */ long dateModified) {
-        this.identifier = new Identifier(id, isFromSharedStorage);
+        this.id = id;
+        this.isFromSharedStorage = isFromSharedStorage;
         this.source = name != null ? source : "";
         this.name = name != null ? name : "";
         this.dateAdded = dateAdded;
@@ -44,15 +24,12 @@ public final class Playlist implements Media, Serializable {
     }
 
     public Playlist(Playlist toCopy) {
-        this.identifier = toCopy.identifier;
+        this.id = toCopy.id;
+        this.isFromSharedStorage = toCopy.isFromSharedStorage;
         this.source = toCopy.source;
         this.name = toCopy.name;
         this.dateAdded = toCopy.dateAdded;
         this.dateModified = toCopy.dateModified;
-    }
-
-    public Identifier getIdentifier() {
-        return identifier;
     }
 
     /**
@@ -62,7 +39,7 @@ public final class Playlist implements Media, Serializable {
      * @return true if this playlist is from the shared playlist storage
      */
     public boolean isFromSharedStorage() {
-        return identifier.isFromSharedStorage;
+        return isFromSharedStorage;
     }
 
     /**
@@ -79,7 +56,7 @@ public final class Playlist implements Media, Serializable {
 
     @Override
     public long getId() {
-        return identifier.id;
+        return id;
     }
 
     @Override
@@ -92,8 +69,9 @@ public final class Playlist implements Media, Serializable {
         if (this == obj) return true;
         if (obj == null || !(obj instanceof Playlist)) return false;
         Playlist another = (Playlist) obj;
-        return Objects.equals(identifier, another.identifier)
+        return id == another.id
                 && Objects.equals(name, another.name)
+                && isFromSharedStorage == another.isFromSharedStorage
                 && Objects.equals(source, another.source)
                 && dateAdded == another.dateAdded
                 && dateModified == another.dateModified;

@@ -136,8 +136,9 @@ fun EventLogger.logSongsAddedToPlaylist(songCount: Int) {
     log("songs_added_to_playlist", params)
 }
 
-fun EventLogger.logMediaAddedToPlaylist() {
-    log("media_added_to_playlist")
+fun EventLogger.logMediaAddedToPlaylist(mediaCount: Int) {
+    val params = mapOf("media_count" to mediaCount.toString())
+    log("media_added_to_playlist", params)
 }
 
 fun EventLogger.logPlaylistsTransferred(timeMillis: Long) {

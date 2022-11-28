@@ -24,8 +24,6 @@ android {
 
 dependencies {
     api project(path: ':audio:audiofx:api')
-    api project(path: ':audio:audiofx-applicable')
-    implementation project(path: ':vendor')
 
     implementation deps.support.annotation
 }
