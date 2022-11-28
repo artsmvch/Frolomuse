@@ -1,8 +1,10 @@
-package com.frolo.audiofx;
+package com.frolo.audiofx.applicable;
 
 import android.media.MediaPlayer;
 
 import androidx.annotation.NonNull;
+
+import com.frolo.audiofx.AudioFx;
 
 /**
  * An extension for {@link AudioFx} that is able to apply its audio effects to a particular instance of {@link MediaPlayer},
