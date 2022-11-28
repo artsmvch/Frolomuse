@@ -95,7 +95,7 @@ android {
 
     applicationVariants.all { variant ->
         variant.outputs.all {
-            outputFileName = "Frolomuse-${variant.name}-${version_name}-${script_time}.apk"
+            outputFileName = "Frolomuse-${variant.name}-${version_name}.apk"
         }
     }
 
