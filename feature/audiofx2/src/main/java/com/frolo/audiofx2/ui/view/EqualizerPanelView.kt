@@ -18,7 +18,9 @@ import com.frolo.audiofx2.Equalizer
 import com.frolo.audiofx2.EqualizerPreset
 import com.frolo.equalizerview.impl.SeekBarEqualizerView
 import com.frolo.rx.KeyedDisposableContainer
+import com.frolo.ui.ColorUtils2
 import com.frolo.ui.Screen
+import com.frolo.ui.StyleUtils
 import com.google.android.material.switchmaterial.SwitchMaterial
 import com.google.android.material.textfield.TextInputLayout
 import io.reactivex.Completable
@@ -347,6 +349,12 @@ private class SavePresetDialog(
             }
         }
         progress = findViewById<View>(R.id.progress)?.also { progress ->
+            progress.setBackgroundColor(
+                // Do not try do it using resources, it does not work properly on API 23
+                StyleUtils.resolveColor(context, com.google.android.material.R.attr.colorSurface).also {
+                    ColorUtils2.setAlphaComponentFloat(it, 0.8f)
+                }
+            )
             progress.setOnClickListener { /* stub */ }
         }
     }
