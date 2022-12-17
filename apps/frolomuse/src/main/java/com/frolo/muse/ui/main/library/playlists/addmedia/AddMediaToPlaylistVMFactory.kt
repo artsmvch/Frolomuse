@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.frolo.muse.di.ActivityComponentInjector
 import com.frolo.muse.di.ActivityComponentProvider
-import com.frolo.muse.router.AppRouter
 import com.frolo.muse.interactor.media.AddMediaToPlaylistUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.music.model.Media
@@ -23,8 +22,6 @@ class AddMediaToPlaylistVMFactory constructor(
     @Inject
     internal lateinit var schedulerProvider: SchedulerProvider
     @Inject
-    internal lateinit var appRouter: AppRouter
-    @Inject
     internal lateinit var eventLogger: EventLogger
 
     init {
@@ -39,7 +36,6 @@ class AddMediaToPlaylistVMFactory constructor(
         return AddMediaToPlaylistViewModel(
             addMediaToPlaylistUseCase,
             schedulerProvider,
-            appRouter,
             eventLogger
         ) as T
     }

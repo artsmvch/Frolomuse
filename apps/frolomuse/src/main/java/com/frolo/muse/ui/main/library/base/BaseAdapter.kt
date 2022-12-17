@@ -18,21 +18,24 @@ abstract class BaseAdapter<E, VH> constructor(
         /**
          * Called when the [item] at [position] is clicked.
          */
-        fun onItemClick(item: E, position: Int)
+        fun onItemClick(item: E, position: Int) = Unit
 
         /**
          * Called when the [item] at [position] is long clicked.
          */
-        fun onItemLongClick(item: E, position: Int)
+        fun onItemLongClick(item: E, position: Int) = Unit
 
         /**
          * Called when the options menu for the [item] at [position] is clicked.
          */
-        fun onOptionsMenuClick(item: E, position: Int)
+        fun onOptionsMenuClick(item: E, position: Int) = Unit
     }
 
     var listener: Listener<E>? = null
     private var nodes = ArrayList<Node<E>>()
+
+    protected var recyclerView: RecyclerView? = null
+        private set
 
     // Async list differ
     private val asyncListDiffer: AsyncListDiffer<Node<E>>? by lazy {
@@ -48,6 +51,19 @@ abstract class BaseAdapter<E, VH> constructor(
         val config = AsyncDifferConfig.Builder(NodeItemCallback(itemCallback))
             .build()
         return AsyncListDiffer(callback, config)
+    }
+
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        this.recyclerView = recyclerView
+    }
+
+    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
+        this.recyclerView = null
+    }
+
+    protected fun findViewByPosition(position: Int): View? {
+        val recyclerView = this.recyclerView ?: return null
+        return recyclerView.layoutManager?.findViewByPosition(position)
     }
 
     fun getSnapshot(): List<E> = nodes.map { node -> node.item }
