@@ -165,9 +165,11 @@ class AppStartUpInitializer @Inject constructor(
 
     private fun setupLogger() {
         val logDelegates = ArrayList<LogDelegate>(2)
-        logDelegates.add(FirebaseLogDelegate())
         if (BuildInfo.isDebug()) {
             logDelegates.add(ConsoleLogDelegate())
+        }
+        if (BuildInfo.isFirebaseEnabled()) {
+            logDelegates.add(FirebaseLogDelegate())
         }
         val loggerParams = LoggerParams(
             logDelegate = CompositeLogDelegate(

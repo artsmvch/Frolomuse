@@ -28,10 +28,11 @@ import dagger.Module
 import dagger.Provides
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
+import com.frolo.muse.BuildInfo
 
 
 @Module
-class MiscModule constructor(private val isDebug: Boolean) {
+class MiscModule {
 
     @ApplicationScope
     @Provides
@@ -42,14 +43,17 @@ class MiscModule constructor(private val isDebug: Boolean) {
     @Provides
     @ApplicationScope
     fun provideEventLogger(context: Context): EventLogger {
-        if (isDebug) {
+        val eventLoggers = ArrayList<EventLogger>(2)
+        if (BuildInfo.isDebug()) {
             // We do not want to send any analytics for debug builds.
             // Debug builds are for developer, so Console logger is on.
-            return EventLoggerFactory.createConsole()
+            eventLoggers.add(EventLoggerFactory.createConsole())
         }
-
-        // Analytics is tracked using Firebase (release builds only)
-        return EventLoggerFactory.createFirebase(context)
+        if (BuildInfo.isFirebaseEnabled()) {
+            // Analytics is tracked using Firebase (production builds only)
+            eventLoggers.add(EventLoggerFactory.createFirebase(context))
+        }
+        return EventLoggerFactory.compose(eventLoggers)
     }
 
     @ApplicationScope
@@ -81,7 +85,7 @@ class MiscModule constructor(private val isDebug: Boolean) {
     @ApplicationScope
     @Provides
     fun providePlayerJournal(): PlayerJournal {
-        if (isDebug) {
+        if (BuildInfo.isDebug()) {
             val journals = listOf(
                 AndroidLogPlayerJournal("FrolomusePlayerJournal"),
                 StoredInMemoryPlayerJournal()

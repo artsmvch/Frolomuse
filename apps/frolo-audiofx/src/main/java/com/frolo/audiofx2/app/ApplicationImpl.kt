@@ -2,6 +2,7 @@ package com.frolo.audiofx2.app
 
 import android.app.Application
 import androidx.lifecycle.LiveData
+import com.frolo.audiofx.app.BuildConfig
 import com.frolo.audiofx2.ui.AudioFx2AttachInfo
 import com.frolo.audiofx2.ui.AudioFx2Feature
 import com.frolo.audiofx2.ui.AudioFx2FeatureInput
@@ -10,6 +11,7 @@ import com.frolo.audiofx2.app.di.appComponent
 import com.frolo.audiofx2.app.di.initAppComponent
 import com.frolo.audiofx2.AudioFx2
 import com.frolo.logger.api.CompositeLogDelegate
+import com.frolo.logger.api.LogDelegate
 import com.frolo.logger.api.Logger
 import com.frolo.logger.api.LoggerParams
 import com.frolo.logger.impl.ConsoleLogDelegate
@@ -23,13 +25,18 @@ class ApplicationImpl : Application() {
 
     private fun setup() {
         initAppComponent(AppComponentImpl(this))
+        val logDelegates = ArrayList<LogDelegate>(2).apply {
+            if (BuildConfig.GOOGLE_SERVICES_ENABLED) {
+                FirebaseLogDelegate()
+            }
+            if (BuildConfig.DEBUG) {
+                ConsoleLogDelegate()
+            }
+        }
         Logger.init(
             LoggerParams(
                 logDelegate = CompositeLogDelegate(
-                    delegates = listOf(
-                        ConsoleLogDelegate(),
-                        FirebaseLogDelegate()
-                    )
+                    delegates = logDelegates
                 )
             )
         )

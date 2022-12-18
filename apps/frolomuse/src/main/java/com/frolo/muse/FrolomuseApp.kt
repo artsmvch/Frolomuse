@@ -23,7 +23,7 @@ class FrolomuseApp : MultiDexApplication(),
             .applicationModule(ApplicationModule(this))
             .localDataModule(LocalDataModule())
             .remoteDataModule(RemoteDataModule())
-            .miscModule(MiscModule(BuildInfo.isDebug()))
+            .miscModule(MiscModule())
             .billingModule(BillingModule(BuildInfo.isDebug()))
             .build()
     }

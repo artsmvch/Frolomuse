@@ -10,7 +10,7 @@ public interface EventLogger {
 
     void log(Throwable err);
 
-    final class NONE implements EventLogger {
+    EventLogger NONE = new EventLogger() {
         @Override
         public void log(String event) {
         }
@@ -22,5 +22,5 @@ public interface EventLogger {
         @Override
         public void log(Throwable err) {
         }
-    }
+    };
 }

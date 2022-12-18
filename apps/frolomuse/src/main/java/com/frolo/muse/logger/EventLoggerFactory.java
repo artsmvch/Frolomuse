@@ -3,6 +3,8 @@ package com.frolo.muse.logger;
 import android.content.Context;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 
 // Factories
@@ -17,7 +19,11 @@ public final class EventLoggerFactory {
         return new ConsoleEventLogger();
     }
 
+    public static EventLogger compose(List<EventLogger> loggers) {
+        return new CompositeEventLogger(Collections.unmodifiableList(loggers));
+    }
+
     public static EventLogger compose(EventLogger... loggers) {
-        return new CompositeEventLogger(Arrays.asList(loggers));
+        return compose(Arrays.asList(loggers));
     }
 }
