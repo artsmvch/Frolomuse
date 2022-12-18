@@ -49,6 +49,7 @@ ext.optionallyLoadProperties = { filepath ->
     try {
         return loadProperties(filepath)
     } catch (IOException ignored) {
+        project.logger.error("Properties file not found: " + filepath)
         return new Properties()
     }
 }

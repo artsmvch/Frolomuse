@@ -10,8 +10,9 @@ def version_minor = 1
 def version_patch = 3
 def version_name = "${version_major}.${version_minor}.${version_patch}"
 
+def google_services_properties_file = new File(project.projectDir, "google-services.properties")
 def google_services_properties =
-        optionallyLoadProperties("${project.projectDir}/google-services.properties")
+        optionallyLoadProperties(google_services_properties_file.absolutePath)
 def google_services_enabled =
         google_services_properties['com.frolo.equalizer.google_services_enabled'] == 'true'
 
