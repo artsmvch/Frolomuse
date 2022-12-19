@@ -5,7 +5,7 @@ import java.util.Objects;
 
 
 public final class Playlist implements Media, Serializable {
-    public static class Identifier {
+    public static class Identifier implements Serializable {
         private final long id;
         private final boolean isFromSharedStorage;
 
