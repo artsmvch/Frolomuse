@@ -5,6 +5,7 @@ import android.content.Context
 import android.net.Uri
 import android.provider.MediaStore
 import androidx.annotation.AnyThread
+import androidx.annotation.VisibleForTesting
 import androidx.annotation.WorkerThread
 import androidx.room.Room
 import com.frolo.muse.BuildConfig
@@ -34,6 +35,7 @@ import java.util.concurrent.Executors
  * Playlist database wrapper that manages local storage for playlists.
  * The queried playlist models from this manager have [Playlist.isFromSharedStorage] set to false.
  */
+@VisibleForTesting
 internal class PlaylistDatabaseManager private constructor(private val context: Context) {
 
     // Executors and schedulers
@@ -495,7 +497,8 @@ internal class PlaylistDatabaseManager private constructor(private val context: 
         return Completable.concat(listOf(playlistMemberEntityDao.nuke(), playlistEntityDao.nuke()))
     }
 
-    private data class PlaylistMemberSong(
+    @VisibleForTesting
+    internal data class PlaylistMemberSong(
         val song: Song,
         val playlistId: Long,
         val entity: PlaylistMemberEntity
