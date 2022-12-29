@@ -343,6 +343,8 @@ internal class PlayerServiceDelegate(
             setContentIntent(openPendingIntent)
             setPriority(NotificationCompat.PRIORITY_LOW)
             setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            // https://stackoverflow.com/a/73909180/9437681
+            foregroundServiceBehavior = NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE
 
             addAction(if (isFav) R.drawable.ntf_ic_liked else R.drawable.ntf_ic_not_liked,
                 "Change_Fav", changeFavPendingIntent)
