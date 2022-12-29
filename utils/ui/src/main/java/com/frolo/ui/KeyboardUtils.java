@@ -52,7 +52,8 @@ public final class KeyboardUtils {
     private static void showOnceImpl(@NonNull View view) {
         InputMethodManager imm = (InputMethodManager) view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         if (imm != null) {
-            boolean result = imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
+            View focused = view.findFocus();
+            boolean result = imm.showSoftInput(focused != null ? focused : view, 0);
             if (!result) {
                 Log.d(LOG_TAG, "Failed to show Input method");
             }
@@ -73,8 +74,8 @@ public final class KeyboardUtils {
             }
         };
         view.setOnQueryTextFocusChangeListener(focusListener);
-        view.setOnFocusChangeListener(focusListener);
-        view.requestFocus();
+        if (view.requestFocus()) {
+        }
     }
 
 }

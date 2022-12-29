@@ -63,10 +63,6 @@ class SearchFragment: AbsMediaCollectionFragment<Media>(), FragmentContentInsets
         }
 
         sv_query.apply {
-            queryHint = getString(R.string.nav_search)
-            // Think twice before setting 'iconified' to false, it may break the keyboard
-            setIconifiedByDefault(true)
-            isIconified = true
             setOnCloseListener { true } // do NOT allow to close
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?) = false

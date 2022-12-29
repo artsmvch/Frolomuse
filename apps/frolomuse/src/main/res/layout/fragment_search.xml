@@ -25,7 +25,11 @@
                 android:layout_marginBottom="8dp"
                 android:layout_gravity="center"
                 android:focusable="true"
-                android:focusableInTouchMode="true"/>
+                android:focusableInTouchMode="true"
+                android:inputType="text|textNoSuggestions"
+                android:imeOptions="actionSearch"
+                app:queryHint="@string/nav_search"
+                app:iconifiedByDefault="false"/>
         </FrameLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
