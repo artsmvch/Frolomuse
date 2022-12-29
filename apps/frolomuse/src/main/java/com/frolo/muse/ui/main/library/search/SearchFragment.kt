@@ -17,9 +17,13 @@ import com.frolo.muse.ui.main.library.base.BaseAdapter
 import com.frolo.muse.ui.main.library.search.adapter.MediaAdapter
 import com.frolo.muse.ui.smoothScrollToTop
 import com.frolo.core.ui.hideKeyboardOnScroll
+import com.frolo.muse.rx.disposeOnPauseOf
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration
+import io.reactivex.Completable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_base_list.*
 import kotlinx.android.synthetic.main.fragment_search.*
+import java.util.concurrent.TimeUnit
 
 
 class SearchFragment: AbsMediaCollectionFragment<Media>(), FragmentContentInsetsListener {
@@ -60,8 +64,9 @@ class SearchFragment: AbsMediaCollectionFragment<Media>(), FragmentContentInsets
 
         sv_query.apply {
             queryHint = getString(R.string.nav_search)
-            setIconifiedByDefault(false)
-            isIconified = false
+            // Think twice before setting 'iconified' to false, it may break the keyboard
+            setIconifiedByDefault(true)
+            isIconified = true
             setOnCloseListener { true } // do NOT allow to close
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?) = false
@@ -73,7 +78,6 @@ class SearchFragment: AbsMediaCollectionFragment<Media>(), FragmentContentInsets
             })
             val savedQuery = savedInstanceState?.getString(EXTRA_QUERY)
             setQuery(savedQuery, true)
-            clearFocus()
         }
     }
 
@@ -85,6 +89,19 @@ class SearchFragment: AbsMediaCollectionFragment<Media>(), FragmentContentInsets
     override fun onStart() {
         super.onStart()
         adapter.listener = adapterListener
+    }
+
+    override fun onResume() {
+        super.onResume()
+        showKeyboardWithDelay()
+    }
+
+    private fun showKeyboardWithDelay() {
+        Completable.timer(800, TimeUnit.MILLISECONDS)
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnComplete { KeyboardUtils.show(sv_query) }
+            .subscribe()
+            .disposeOnPauseOf(this)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

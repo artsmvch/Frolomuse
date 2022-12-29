@@ -32,7 +32,7 @@ public final class ThreadUtils {
         MainThreadHolder.HANDLER.post(action);
     }
 
-    public static void postOnMainThread(@NonNull Runnable action, long delayMillis) {
+    public static void postOnMainThread(long delayMillis, @NonNull Runnable action) {
         MainThreadHolder.HANDLER.postDelayed(action, delayMillis);
     }
 
