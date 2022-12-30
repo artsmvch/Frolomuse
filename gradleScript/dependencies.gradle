@@ -1,4 +1,10 @@
 ext {
+    versions = [
+        minSdk:                     23,
+        compileSdk:                 32,
+        targetSdk:                  31
+    ]
+
     deps = [
         javax : [
             annotationApi:          "javax.annotation:javax.annotation-api:1.3.2"

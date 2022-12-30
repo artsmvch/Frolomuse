@@ -17,12 +17,12 @@ def google_services_enabled =
         google_services_properties['com.frolo.equalizer.google_services_enabled'] == 'true'
 
 android {
-    compileSdk 32
+    compileSdk versions.compileSdk
 
     defaultConfig {
         applicationId "com.frolo.equalizer"
-        minSdk 23
-        targetSdk 32
+        minSdk versions.minSdk
+        targetSdk versions.targetSdk
         versionCode version_code
         versionName version_name
 

@@ -48,7 +48,8 @@
         <activity android:name="com.alexfrolov.ringdroid.RingdroidEditActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:windowSoftInputMode="adjustResize"
-            android:hardwareAccelerated="true">
+            android:hardwareAccelerated="true"
+            android:exported="true">
             <intent-filter android:label="@string/edit_intent">
                 <action android:name="android.intent.action.EDIT" />
                 <data android:mimeType="audio/*" />

@@ -29,12 +29,12 @@ android {
             keyPassword releaseConfigs['keyPassword']
         }
     }
-    compileSdkVersion 32
+    compileSdkVersion versions.compileSdk
     buildToolsVersion "30.0.3"
     defaultConfig {
         applicationId "com.frolo.musp"
-        minSdkVersion 23
-        targetSdkVersion 31
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.targetSdk
         versionCode version_code
         versionName version_name
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

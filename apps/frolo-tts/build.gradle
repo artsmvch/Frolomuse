@@ -4,12 +4,12 @@ plugins {
 }
 
 android {
-    compileSdk 32
+    compileSdk versions.compileSdk
 
     defaultConfig {
         applicationId "com.frolo.tts"
-        minSdk 23
-        targetSdk 32
+        minSdk versions.minSdk
+        targetSdk versions.targetSdk
         versionCode 1
         versionName "1.0"
 
