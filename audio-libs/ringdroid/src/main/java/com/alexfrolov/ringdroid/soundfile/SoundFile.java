@@ -28,6 +28,7 @@ import java.nio.ByteOrder;
 import java.nio.ShortBuffer;
 import java.util.Arrays;
 
+import android.Manifest;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaCodec;
@@ -37,6 +38,8 @@ import android.media.MediaRecorder;
 import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
+
+import androidx.annotation.RequiresPermission;
 
 public class SoundFile {
     private ProgressListener mProgressListener = null;
@@ -121,6 +124,7 @@ public class SoundFile {
     }
 
     // Create and return a SoundFile object by recording a mono audio stream.
+    @RequiresPermission(Manifest.permission.RECORD_AUDIO)
     public static SoundFile record(ProgressListener progressListener) {
         if (progressListener ==  null) {
             // must have a progessListener to stop the recording.
@@ -398,6 +402,7 @@ public class SoundFile {
         // DumpSamples();  // Uncomment this line to dump the samples in a TSV file.
     }
 
+    @RequiresPermission(Manifest.permission.RECORD_AUDIO)
     private void RecordAudio() {
         if (mProgressListener ==  null) {
             // A progress listener is mandatory here, as it will let us know when to stop recording.

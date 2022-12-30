@@ -16,6 +16,7 @@
 
 package com.alexfrolov.ringdroid;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -31,8 +32,12 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
@@ -56,6 +61,7 @@ import java.io.File;
 import java.io.StringWriter;
 import java.io.PrintWriter;
 import java.io.RandomAccessFile;
+import java.util.Objects;
 
 /**
  * The activity for the Ringdroid main editor window.  Keeps track of
@@ -128,6 +134,7 @@ public class RingdroidEditActivity extends AppCompatActivity
 
     // Result codes
     private static final int REQUEST_CODE_CHOOSE_CONTACT = 1;
+    private static final int REQUEST_CODE_REQUEST_RECORD_PERMISSION = 2;
 
     /**
      * This is a special intent action that means "edit a sound file".
@@ -246,6 +253,23 @@ public class RingdroidEditActivity extends AppCompatActivity
             // they're done.
             finish();
             return;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_CODE_REQUEST_RECORD_PERMISSION) {
+            for (int i = 0; i < permissions.length; i++) {
+                if (Objects.equals(permissions[i], Manifest.permission.RECORD_AUDIO)) {
+                    if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                        recordAudio();
+                    } else {
+                        finish();
+                        return;
+                    }
+                }
+            }
         }
     }
 
@@ -719,6 +743,11 @@ public class RingdroidEditActivity extends AppCompatActivity
     }
 
     private void recordAudio() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[] { Manifest.permission.RECORD_AUDIO }, REQUEST_CODE_REQUEST_RECORD_PERMISSION);
+            return;
+        }
+
         mFile = null;
         mTitle = null;
         mArtist = null;
@@ -775,6 +804,10 @@ public class RingdroidEditActivity extends AppCompatActivity
         mRecordAudioThread = new Thread() {
             public void run() {
                 try {
+                    if (ActivityCompat.checkSelfPermission(RingdroidEditActivity.this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+                        // Should never happen actually, cause we request the permission just before this thread starts
+                        return;
+                    }
                     mSoundFile = SoundFile.record(listener);
                     if (mSoundFile == null) {
                         mAlertDialog.dismiss();
