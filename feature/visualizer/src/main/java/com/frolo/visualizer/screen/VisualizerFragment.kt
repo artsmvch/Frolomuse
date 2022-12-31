@@ -44,10 +44,8 @@ internal class VisualizerFragment : Fragment() {
     private var visualizer: Visualizer? = null
 
     private val audioSessionIdObserver = Observer<Int> { sessionId ->
-        val isPermissionGranted = ActivityCompat.checkSelfPermission(
-            requireContext(), RECORD_AUDIO_PERMISSION) == PackageManager.PERMISSION_GRANTED
-        if (isPermissionGranted) {
-            initVisualizer(sessionId)
+        if (isPermissionGranted()) {
+            updateVisualizer(sessionId)
         }
     }
 
@@ -74,21 +72,24 @@ internal class VisualizerFragment : Fragment() {
         }
         setVisualizerRendererType(VisualizerFeature.getDefaultRendererType())
         request_permission_button.setOnClickListener { requestPermission() }
-        checkPermission()
+
+        // Observe session ID
+        VisualizerFeature.getAudioSessionId()
+            .distinctUntilChanged()
+            .observe(viewLifecycleOwner, audioSessionIdObserver)
     }
 
     override fun onStart() {
         super.onStart()
-        checkPermission()
+        updateLayout(isPermissionGranted = isPermissionGranted())
     }
 
-    private fun checkPermission() {
-        val isPermissionGranted = ActivityCompat.checkSelfPermission(
+    private fun isPermissionGranted(): Boolean {
+        return ActivityCompat.checkSelfPermission(
             requireContext(), RECORD_AUDIO_PERMISSION) == PackageManager.PERMISSION_GRANTED
-        initLayout(isPermissionGranted)
     }
 
-    private fun initLayout(isPermissionGranted: Boolean) {
+    private fun updateLayout(isPermissionGranted: Boolean) {
         val transition = Fade().apply {
             duration = 200L
         }
@@ -97,12 +98,6 @@ internal class VisualizerFragment : Fragment() {
         }
         request_permission_layout.isVisible = !isPermissionGranted
         visualizer_layout.isVisible = isPermissionGranted
-        val audioSessionId = VisualizerFeature.getAudioSessionId().distinctUntilChanged()
-        if (isPermissionGranted) {
-            audioSessionId.observe(viewLifecycleOwner, audioSessionIdObserver)
-        } else {
-            audioSessionId.removeObserver(audioSessionIdObserver)
-        }
     }
 
     private fun requestPermission() {
@@ -115,7 +110,7 @@ internal class VisualizerFragment : Fragment() {
     }
 
     @RequiresPermission(RECORD_AUDIO_PERMISSION)
-    private fun initVisualizer(sessionId: Int) {
+    private fun updateVisualizer(sessionId: Int) {
         if (this.visualizer != null) {
             this.visualizer?.release()
             this.visualizer = null
@@ -164,7 +159,14 @@ internal class VisualizerFragment : Fragment() {
         if (requestCode == RC_REQUEST_RECORD_AUDIO_PERMISSION) {
             for (i in permissions.indices) {
                 if (permissions[i] == RECORD_AUDIO_PERMISSION) {
-                    initLayout(grantResults[i] == PackageManager.PERMISSION_GRANTED)
+                    updateLayout(
+                        isPermissionGranted = grantResults[i] == PackageManager.PERMISSION_GRANTED
+                    )
+                    VisualizerFeature.getAudioSessionId().value?.also { sessionId ->
+                        updateVisualizer(
+                            sessionId = sessionId
+                        )
+                    }
                 }
             }
         }
