@@ -37,11 +37,9 @@ public final class CircleSpectrumRenderer extends TraceRenderer implements Visua
         if (points == null || points.length < data.length * 4) {
             points = new float[data.length * 4];
         }
-
-        double angleCake = 360d / (data.length - 1);
-
+        double angleStep = 360d / (data.length - 1);
         for (int i = 0; i < data.length - 1; i++) {
-            double angle = angleCake * i;
+            double angle = angleStep * i;
             float coefficient = (-Math.abs(data[i]) + 128) / 128f;
             float delta = (radius - innerRadius) * coefficient;
 

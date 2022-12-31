@@ -65,10 +65,12 @@ public abstract class TraceRenderer implements VisualizerView.Renderer {
     @Override
     public final void render(@NonNull Canvas canvas, @NonNull byte[] data) {
         next(data);
-        int traceIndex = 0;
-        for (byte[] trace : traces) {
-            renderParams.paint.setAlpha(255 / (traceIndex + 1));
-            renderTrace(canvas, trace, traceIndex++, renderParams);
+        if (data.length >= 2) {
+            int traceIndex = 0;
+            for (byte[] trace : traces) {
+                renderParams.paint.setAlpha(255 / (traceIndex + 1));
+                renderTrace(canvas, trace, traceIndex++, renderParams);
+            }
         }
     }
 
