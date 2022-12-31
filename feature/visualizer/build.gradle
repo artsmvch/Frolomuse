@@ -27,10 +27,15 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+    lintOptions {
+        baseline file("lint-baseline.xml")
+    }
 }
 
 dependencies {
     implementation deps.support.core
+    implementation deps.lifecycle.livedata
     implementation deps.design.material
     api deps.support.fragment
 

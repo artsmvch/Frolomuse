@@ -14,6 +14,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.distinctUntilChanged
 import androidx.transition.Fade
 import androidx.transition.TransitionManager
 import com.frolo.logger.api.Logger
@@ -43,7 +44,11 @@ internal class VisualizerFragment : Fragment() {
     private var visualizer: Visualizer? = null
 
     private val audioSessionIdObserver = Observer<Int> { sessionId ->
-        initVisualizer(sessionId)
+        val isPermissionGranted = ActivityCompat.checkSelfPermission(
+            requireContext(), RECORD_AUDIO_PERMISSION) == PackageManager.PERMISSION_GRANTED
+        if (isPermissionGranted) {
+            initVisualizer(sessionId)
+        }
     }
 
     override fun onCreateView(
@@ -92,7 +97,7 @@ internal class VisualizerFragment : Fragment() {
         }
         request_permission_layout.isVisible = !isPermissionGranted
         visualizer_layout.isVisible = isPermissionGranted
-        val audioSessionId = VisualizerFeature.getAudioSessionId()
+        val audioSessionId = VisualizerFeature.getAudioSessionId().distinctUntilChanged()
         if (isPermissionGranted) {
             audioSessionId.observe(viewLifecycleOwner, audioSessionIdObserver)
         } else {
