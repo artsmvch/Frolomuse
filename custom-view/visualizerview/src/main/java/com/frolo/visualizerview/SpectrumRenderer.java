@@ -12,7 +12,7 @@ public final class SpectrumRenderer extends TraceRenderer implements VisualizerV
     }
 
     @Override
-    protected void renderSpectrum(@NonNull Canvas canvas, byte[] data, int spectrumIndex, @NonNull RenderParams params) {
+    protected void renderTrace(@NonNull Canvas canvas, byte[] data, int traceIndex, @NonNull RenderParams params) {
         float barWidth = ((float) canvas.getWidth()) / params.count;
         float div = ((float) data.length) / params.count;
         params.paint.setStrokeWidth(barWidth - params.gap);

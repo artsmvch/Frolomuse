@@ -20,7 +20,7 @@ public final class LineRenderer extends TraceRenderer implements VisualizerView.
     }
 
     @Override
-    protected void renderSpectrum(@NonNull Canvas canvas, byte[] data, int spectrumIndex, @NonNull RenderParams params) {
+    protected void renderTrace(@NonNull Canvas canvas, byte[] data, int traceIndex, @NonNull RenderParams params) {
         params.paint.setStrokeWidth(lineWidth);
         if (points == null || points.length < data.length * 4) {
             points = new float[data.length * 4];

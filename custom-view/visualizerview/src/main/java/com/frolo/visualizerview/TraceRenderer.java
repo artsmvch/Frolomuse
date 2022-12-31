@@ -15,42 +15,42 @@ import java.util.LinkedList;
 
 
 public abstract class TraceRenderer implements VisualizerView.Renderer {
-    private static final int DEFAULT_SPECTRUM_COUNT = 8;
+    private static final int DEFAULT_TRACE_COUNT = 8;
 
     @NonNull
     private final Context context;
-    private final int spectrumCount;
+    private final int traceCount;
     @NonNull
-    private final LinkedList<byte[]> spectres = new LinkedList<>();
+    private final LinkedList<byte[]> traces = new LinkedList<>();
     @NonNull
     private final RenderParams renderParams;
 
     public TraceRenderer(@NonNull Context context) {
-        this(context, DEFAULT_SPECTRUM_COUNT);
+        this(context, DEFAULT_TRACE_COUNT);
     }
 
-    public TraceRenderer(@NonNull Context context, int spectrumCount) {
+    public TraceRenderer(@NonNull Context context, int traceCount) {
         this.context = context;
-        this.spectrumCount = spectrumCount;
+        this.traceCount = traceCount;
         this.renderParams = new RenderParams(context);
     }
 
     private void next(byte[] data) {
-        if (spectrumCount == 0) {
+        if (traceCount == 0) {
             return;
         }
-        byte[] spectrum = null;
-        if (spectres.size() == spectrumCount) {
+        byte[] trace = null;
+        if (traces.size() == traceCount) {
             // Re-using the last one
-            spectrum = spectres.removeLast();
-            if (spectrum.length != data.length) {
-                spectrum = new byte[data.length];
+            trace = traces.removeLast();
+            if (trace.length != data.length) {
+                trace = new byte[data.length];
             }
-            System.arraycopy(data, 0, spectrum, 0, data.length);
+            System.arraycopy(data, 0, trace, 0, data.length);
         } else {
-            spectrum = data;
+            trace = data;
         }
-        spectres.addFirst(spectrum);
+        traces.addFirst(trace);
     }
 
     @NonNull
@@ -65,21 +65,21 @@ public abstract class TraceRenderer implements VisualizerView.Renderer {
     @Override
     public final void render(@NonNull Canvas canvas, @NonNull byte[] data) {
         next(data);
-        int spectrumIndex = 0;
-        for (byte[] spectrum : spectres) {
-            renderParams.paint.setAlpha(255 / (spectrumIndex + 1));
-            renderSpectrum(canvas, spectrum, spectrumIndex++, renderParams);
+        int traceIndex = 0;
+        for (byte[] trace : traces) {
+            renderParams.paint.setAlpha(255 / (traceIndex + 1));
+            renderTrace(canvas, trace, traceIndex++, renderParams);
         }
     }
 
     /**
-     * Renders just one spectrum for the given params.
+     * Renders just one trace for the given trace index.
      * @param canvas to draw
      * @param data visualizer data
-     * @param spectrumIndex index of the spectrum in the queue
+     * @param traceIndex index of the trace
      * @param params renderer params
      */
-    protected void renderSpectrum(@NonNull Canvas canvas, byte[] data, int spectrumIndex, @NonNull RenderParams params) {
+    protected void renderTrace(@NonNull Canvas canvas, byte[] data, int traceIndex, @NonNull RenderParams params) {
     }
 
     protected static class RenderParams {

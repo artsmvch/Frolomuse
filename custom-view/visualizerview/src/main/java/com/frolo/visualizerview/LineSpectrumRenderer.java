@@ -12,7 +12,7 @@ public final class LineSpectrumRenderer extends TraceRenderer implements Visuali
     }
 
     @Override
-    protected void renderSpectrum(@NonNull Canvas canvas, byte[] data, int spectrumIndex, @NonNull RenderParams params) {
+    protected void renderTrace(@NonNull Canvas canvas, byte[] data, int traceIndex, @NonNull RenderParams params) {
         float barWidth = ((float) canvas.getWidth()) / params.count;
         float div = ((float) data.length) / params.count;
         canvas.drawLine(0, canvas.getHeight() / 2f, canvas.getWidth(), canvas.getHeight() / 2f, params.paint);
