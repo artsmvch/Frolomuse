@@ -1,7 +1,6 @@
-package com.frolo.muse.model;
+package com.frolo.visualizer.screen
 
-
-public enum VisualizerRendererType {
+enum class VisualizerRendererType {
     CIRCLE,
     CIRCLE_SPECTRUM,
     LINE,

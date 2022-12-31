@@ -10,7 +10,6 @@ import com.frolo.player.Player;
 import com.frolo.muse.model.Library;
 import com.frolo.muse.model.Recently;
 import com.frolo.muse.model.Theme;
-import com.frolo.muse.model.VisualizerRendererType;
 import com.frolo.muse.model.playback.PlaybackFadingParams;
 import com.frolo.music.model.Media;
 import com.frolo.muse.repository.Preferences;
@@ -571,60 +570,6 @@ public class PreferencesImpl implements Preferences {
     @Override
     public void setRecentlyAddedPeriod(@Recently.Period int period) {
         preferences.edit().putInt(KEY_RECENTLY_ADDED_PERIOD, period).apply();
-    }
-
-    @Override
-    public Flowable<VisualizerRendererType> getVisualizerRendererType() {
-        return RxPreference.ofInt(preferences, KEY_VISUALIZER_RENDERER_TYPE)
-            .get()
-            .map(new Function<RxOptional<Integer>, VisualizerRendererType>() {
-                @Override
-                public VisualizerRendererType apply(RxOptional<Integer> optional) {
-                    VisualizerRendererType mapped = null;
-                    if (optional.isPresent()) {
-                        mapped = mapIntToVisualizerRendererType(optional.get());
-                    }
-                    return mapped != null ? mapped : VisualizerRendererType.LINE_SPECTRUM;
-                }
-            });
-    }
-
-    @Override
-    public Completable setVisualizerRendererType(final VisualizerRendererType type) {
-        return Completable.fromAction(new Action() {
-            @Override
-            public void run() {
-                final int intValue = mapVisualizerRendererTypeToInt(type);
-                preferences.edit().putInt(KEY_VISUALIZER_RENDERER_TYPE, intValue).apply();
-            }
-        });
-    }
-
-    private static int mapVisualizerRendererTypeToInt(VisualizerRendererType type) {
-        if (type == null) return -1;
-
-        switch (type) {
-            case CIRCLE:            return 0;
-            case CIRCLE_SPECTRUM:   return 1;
-            case LINE:              return 2;
-            case LINE_SPECTRUM:     return 3;
-            case SPECTRUM:          return 4;
-            default:                return 3;
-        }
-    }
-
-    @Nullable
-    private static VisualizerRendererType mapIntToVisualizerRendererType(Integer value) {
-        if (value == null) return null;
-
-        switch (value) {
-            case 0:     return VisualizerRendererType.CIRCLE;
-            case 1:     return VisualizerRendererType.CIRCLE_SPECTRUM;
-            case 2:     return VisualizerRendererType.LINE;
-            case 3:     return VisualizerRendererType.LINE_SPECTRUM;
-            case 4:     return VisualizerRendererType.SPECTRUM;
-            default:    return null;
-        }
     }
 
     @Override

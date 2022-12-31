@@ -4,7 +4,6 @@ import com.frolo.player.Player;
 import com.frolo.muse.model.Library;
 import com.frolo.muse.model.Recently;
 import com.frolo.muse.model.Theme;
-import com.frolo.muse.model.VisualizerRendererType;
 import com.frolo.muse.model.playback.PlaybackFadingParams;
 import com.frolo.music.model.Media;
 
@@ -98,9 +97,6 @@ public interface Preferences extends AppLaunchInfoProvider {
 
     @Recently.Period int getRecentlyAddedPeriod();
     void setRecentlyAddedPeriod(@Recently.Period int period);
-
-    Flowable<VisualizerRendererType> getVisualizerRendererType();
-    Completable setVisualizerRendererType(VisualizerRendererType type);
 
     Flowable<PlaybackFadingParams> getPlaybackFadingParams();
     Completable setPlaybackFadingParams(PlaybackFadingParams params);

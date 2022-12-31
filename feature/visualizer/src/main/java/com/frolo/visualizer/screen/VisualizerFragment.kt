@@ -7,6 +7,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.AdapterView.OnItemSelectedListener
 import androidx.annotation.RequiresPermission
 import androidx.core.app.ActivityCompat
 import androidx.core.view.isVisible
@@ -15,12 +17,16 @@ import androidx.lifecycle.Observer
 import androidx.transition.Fade
 import androidx.transition.TransitionManager
 import com.frolo.logger.api.Logger
+import com.frolo.visualizerview.CircleRenderer
 import com.frolo.visualizerview.CircleSpectrumRenderer
+import com.frolo.visualizerview.LineRenderer
+import com.frolo.visualizerview.LineSpectrumRenderer
+import com.frolo.visualizerview.SpectrumRenderer
 import kotlinx.android.synthetic.main.fragment_visualizer.*
 import kotlinx.android.synthetic.main.include_request_record_permission.*
 
 
-class VisualizerFragment : Fragment() {
+internal class VisualizerFragment : Fragment() {
 
     private val onDataCaptureListener = object : Visualizer.OnDataCaptureListener {
         override fun onWaveFormDataCapture(
@@ -47,7 +53,21 @@ class VisualizerFragment : Fragment() {
     ): View? = inflater.inflate(R.layout.fragment_visualizer, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        visualizer_view.renderer = CircleSpectrumRenderer()
+        val renderTypesAdapter = VisualizerRendererTypeAdapter(VisualizerRendererType.values())
+        renderer_type_spinner.adapter = renderTypesAdapter
+        renderer_type_spinner.onItemSelectedListener = object : OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                renderTypesAdapter.getItemAt(position).also(::setVisualizerRendererType)
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>?) = Unit
+        }
+        setVisualizerRendererType(VisualizerRendererType.LINE)
         request_permission_button.setOnClickListener { requestPermission() }
         checkPermission()
     }
@@ -116,6 +136,17 @@ class VisualizerFragment : Fragment() {
         }
         visualizer.enabled = true
         this.visualizer = visualizer
+    }
+
+    private fun setVisualizerRendererType(type: VisualizerRendererType) {
+        val renderer = when (type) {
+            VisualizerRendererType.CIRCLE -> CircleRenderer()
+            VisualizerRendererType.CIRCLE_SPECTRUM -> CircleSpectrumRenderer()
+            VisualizerRendererType.LINE -> LineRenderer()
+            VisualizerRendererType.LINE_SPECTRUM -> LineSpectrumRenderer()
+            VisualizerRendererType.SPECTRUM -> SpectrumRenderer()
+        }
+        visualizer_view?.renderer = renderer
     }
 
     override fun onRequestPermissionsResult(

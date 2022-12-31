@@ -1,19 +1,17 @@
-package com.frolo.muse.ui.main.audiofx.vrt
+package com.frolo.visualizer.screen
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
-import com.frolo.muse.R
-import com.frolo.muse.model.VisualizerRendererType
 
 
-class VisualizerRendererTypeAdapter constructor(
-    private val types: Array<VisualizerRendererType>
+internal class VisualizerRendererTypeAdapter constructor(
+    private val items: Array<VisualizerRendererType>
 ): BaseAdapter() {
 
-    fun indexOf(item: VisualizerRendererType) = types.indexOf(item)
+    fun getItemAt(index: Int): VisualizerRendererType = items[index]
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val textView = if (convertView != null) convertView as TextView
@@ -28,10 +26,9 @@ class VisualizerRendererTypeAdapter constructor(
         return textView
     }
 
-    override fun getItem(position: Int): VisualizerRendererType = types[position]
+    override fun getItem(position: Int): VisualizerRendererType = items[position]
 
     override fun getItemId(position: Int): Long = getItem(position).ordinal.toLong()
 
-    override fun getCount(): Int = types.count()
-
+    override fun getCount(): Int = items.count()
 }

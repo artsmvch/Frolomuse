@@ -10,7 +10,6 @@ import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.logCustomPresetDeleted
 import com.frolo.muse.model.ShortRange
 import com.frolo.muse.model.TooltipId
-import com.frolo.muse.model.VisualizerRendererType
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.repository.PresetRepository
 import com.frolo.muse.repository.TooltipManager
@@ -170,18 +169,6 @@ class AudioFxViewModel @Inject constructor(
     private val _selectedReverb = MutableLiveData<Reverb>()
     val selectedReverb: LiveData<Reverb> get() = _selectedReverb
 
-    val visualizerRendererType by lazy {
-        MutableLiveData<VisualizerRendererType>().apply {
-            preferences.visualizerRendererType
-                .observeOn(schedulerProvider.main())
-                .subscribeFor { type -> value = type }
-        }
-    }
-
-    private val _selectVisualizerRendererTypeEvent = SingleLiveEvent<VisualizerRendererType>()
-    val selectVisualizerRendererTypeEvent: LiveData<VisualizerRendererType>
-        get() = _selectVisualizerRendererTypeEvent
-
     private val _showTooltipEvent by lazy {
         EventLiveData<Unit>().apply {
             // We only need to show the switch tooltip if the audio fx is not enabled
@@ -306,19 +293,6 @@ class AudioFxViewModel @Inject constructor(
 
     fun onSavePresetButtonClicked(currentBandLevels: ShortArray) {
         appRouter.savePreset(currentBandLevels)
-    }
-
-    fun onVisualizerRendererTypeOptionClicked() {
-        val currType = visualizerRendererType.value ?: return
-        _selectVisualizerRendererTypeEvent.value = currType
-    }
-
-    fun onVisualizerRendererTypeSelected(type: VisualizerRendererType) {
-        preferences.setVisualizerRendererType(type)
-            .subscribeOn(schedulerProvider.worker())
-            .observeOn(schedulerProvider.main())
-            .subscribeFor {
-            }
     }
 
     override fun onCleared() {

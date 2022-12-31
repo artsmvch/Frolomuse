@@ -429,9 +429,6 @@ class AudioFxFragment: BaseFragment(), FragmentContentInsetsListener {
             }
             sp_reverbs.setTag(R.id.tag_spinner_selected_item, reverb)
         }
-
-        selectVisualizerRendererTypeEvent.observeNonNull(owner) { currSelectedType ->
-        }
     }
 
     override fun applyContentInsets(left: Int, top: Int, right: Int, bottom: Int) {

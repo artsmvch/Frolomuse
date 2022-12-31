@@ -1,5 +1,6 @@
 package com.frolo.visualizer.screen
 
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import java.util.concurrent.atomic.AtomicReference
@@ -9,6 +10,10 @@ object VisualizerFeature {
 
     fun init(input: VisualizerFeatureInput) {
         inputRef.set(input)
+    }
+
+    fun createVisualizerFragment(): Fragment {
+        return VisualizerFragment.newInstance()
     }
 
     internal fun getAudioSessionId(): LiveData<Int> {
