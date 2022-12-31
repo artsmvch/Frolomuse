@@ -8,7 +8,7 @@ import android.widget.TextView
 
 
 internal class VisualizerRendererTypeAdapter constructor(
-    private val items: Array<VisualizerRendererType>
+    private val items: List<VisualizerRendererType>
 ): BaseAdapter() {
 
     fun getItemAt(index: Int): VisualizerRendererType = items[index]

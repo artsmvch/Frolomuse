@@ -53,7 +53,7 @@ internal class VisualizerFragment : Fragment() {
     ): View? = inflater.inflate(R.layout.fragment_visualizer, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val renderTypesAdapter = VisualizerRendererTypeAdapter(VisualizerRendererType.values())
+        val renderTypesAdapter = VisualizerRendererTypeAdapter(VisualizerFeature.getRendererTypes())
         renderer_type_spinner.adapter = renderTypesAdapter
         renderer_type_spinner.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(
@@ -67,7 +67,7 @@ internal class VisualizerFragment : Fragment() {
 
             override fun onNothingSelected(parent: AdapterView<*>?) = Unit
         }
-        setVisualizerRendererType(VisualizerRendererType.LINE)
+        setVisualizerRendererType(VisualizerFeature.getDefaultRendererType())
         request_permission_button.setOnClickListener { requestPermission() }
         checkPermission()
     }

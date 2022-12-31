@@ -19,4 +19,12 @@ object VisualizerFeature {
     internal fun getAudioSessionId(): LiveData<Int> {
         return inputRef.get()?.audioSessionId ?: MutableLiveData<Int>(0)
     }
+
+    internal fun getRendererTypes(): List<VisualizerRendererType> {
+        return inputRef.get()?.rendererTypes ?: VisualizerRendererType.values().toList()
+    }
+
+    internal fun getDefaultRendererType(): VisualizerRendererType {
+        return inputRef.get()?.defaultRendererType ?: VisualizerRendererType.LINE_SPECTRUM
+    }
 }
