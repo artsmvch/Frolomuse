@@ -39,6 +39,9 @@ import com.frolo.player.PlayerImpl
 import com.frolo.threads.HandlerExecutor
 import com.frolo.threads.ThreadStrictMode
 import com.frolo.ui.SimpleActivityLifecycleCallbacks
+import com.frolo.visualizer.screen.VisualizerFeature
+import com.frolo.visualizer.screen.VisualizerFeatureInput
+import com.frolo.visualizer.screen.VisualizerRendererType
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import io.reactivex.plugins.RxJavaPlugins
@@ -106,6 +109,7 @@ class AppStartUpInitializer @Inject constructor(
         setupShortcutsListener()
         //setupMediaScanWork()
         setupAudioFx2Feature()
+        setupVisualizer()
     }
 
     private fun setupDebugMode() {
@@ -244,6 +248,27 @@ class AppStartUpInitializer @Inject constructor(
                     MutableLiveData(null)
                 override val audioFx2: com.frolo.audiofx2.AudioFx2
                     get() = application.applicationComponent.provideAudioFx2()
+            }
+        )
+    }
+
+    private fun setupVisualizer() {
+        VisualizerFeature.init(
+            input = object : VisualizerFeatureInput {
+                override val audioSessionId: LiveData<Int> by lazy {
+                    MutableLiveData<Int>(0)
+                }
+
+                override val rendererTypes: List<VisualizerRendererType> by lazy {
+                    listOf(
+                        VisualizerRendererType.CIRCLE,
+                        VisualizerRendererType.CIRCLE_SPECTRUM,
+                        VisualizerRendererType.LINE_SPECTRUM,
+                        VisualizerRendererType.LINE
+                    )
+                }
+                override val defaultRendererType: VisualizerRendererType
+                    get() = VisualizerRendererType.CIRCLE
             }
         )
     }
