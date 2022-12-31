@@ -2,6 +2,7 @@ package com.frolo.visualizerview;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Px;
@@ -16,7 +17,7 @@ public final class LineRenderer extends TraceRenderer implements VisualizerView.
 
     public LineRenderer(@NonNull Context context) {
         super(context);
-        lineWidth = Screen.dp(context, 2);
+        lineWidth = Screen.dp(context, 4);
     }
 
     @Override

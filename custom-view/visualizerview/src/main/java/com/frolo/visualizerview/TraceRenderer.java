@@ -31,6 +31,9 @@ public abstract class TraceRenderer implements VisualizerView.Renderer {
 
     public TraceRenderer(@NonNull Context context, int traceCount) {
         this.context = context;
+        if (traceCount < 1) {
+            throw new IllegalArgumentException("Trace count cannot be less than 1: " + traceCount);
+        }
         this.traceCount = traceCount;
         this.renderParams = new RenderParams(context);
     }
@@ -51,6 +54,10 @@ public abstract class TraceRenderer implements VisualizerView.Renderer {
             trace = data;
         }
         traces.addFirst(trace);
+    }
+
+    protected final int getTraceCount() {
+        return traceCount;
     }
 
     @NonNull
