@@ -144,6 +144,7 @@ dependencies {
     // Features
     implementation project(path: ':feature:onboarding')
     implementation project(path: ':feature:audiofx2')
+    implementation project(path: ':feature:visualizer')
 
     // Core
     implementation project(path: ':core')

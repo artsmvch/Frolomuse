@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="request_audio_record_permission_desc">Please grant Audio Record permission to allow visualizer capture audio data</string>
+    <string name="request_audio_record_permission">Request permission</string>
+</resources>
