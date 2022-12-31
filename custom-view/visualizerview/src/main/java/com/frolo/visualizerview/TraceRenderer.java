@@ -1,121 +1,102 @@
 package com.frolo.visualizerview;
 
+import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
+import androidx.annotation.Px;
+
+import com.frolo.ui.Screen;
+import com.frolo.ui.StyleUtils;
 
 import java.util.LinkedList;
 
 
-/**
- * Base renderer to be inherited;
- * Represents several fading spectres;
- * Each spectrum should be drawn in {@link #render(Canvas, byte[], int, float, int, Paint)} method;
- */
-public class TraceRenderer implements VisualizerView.Renderer {
-    private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+public abstract class TraceRenderer implements VisualizerView.Renderer {
+    private static final int DEFAULT_SPECTRUM_COUNT = 8;
 
-    private float density = 43; // def 50 ?
-    private int gap = 5;
-    private int color;
-
-    // saving last 10 spectres
-    private final int maxSpectrumCount = 7;
+    @NonNull
+    private final Context context;
+    private final int spectrumCount;
+    @NonNull
     private final LinkedList<byte[]> spectres = new LinkedList<>();
+    @NonNull
+    private final RenderParams renderParams;
 
-    public TraceRenderer() {
-        color = Color.parseColor("#1686B6");
-        paint.setColor(color);
-        paint.setStyle(Paint.Style.FILL);
+    public TraceRenderer(@NonNull Context context) {
+        this(context, DEFAULT_SPECTRUM_COUNT);
     }
 
-    /**
-     * New data is coming, we need to setPlayingPositionAndState the queue of spectres;
-     * @param data new given data
-     */
-    private void updateInternal(byte[] data) {
-        byte[] spectrum = null;
-        // checking if we the queue is full and we can reuse the last spectrum
-        if (spectres.size() == maxSpectrumCount) {
-            spectrum = spectres.removeLast(); // reuse the last one
+    public TraceRenderer(@NonNull Context context, int spectrumCount) {
+        this.context = context;
+        this.spectrumCount = spectrumCount;
+        this.renderParams = new RenderParams(context);
+    }
 
-            // checking if the lengths are equal
+    private void next(byte[] data) {
+        if (spectrumCount == 0) {
+            return;
+        }
+        byte[] spectrum = null;
+        if (spectres.size() == spectrumCount) {
+            // Re-using the last one
+            spectrum = spectres.removeLast();
             if (spectrum.length != data.length) {
-                // recreating if the length of the old spectrum doesn't equal the new one
                 spectrum = new byte[data.length];
             }
-
-            // copying src from the buffer
             System.arraycopy(data, 0, spectrum, 0, data.length);
         } else {
             spectrum = data;
         }
-
         spectres.addFirst(spectrum);
+    }
+
+    @NonNull
+    protected final Context getContext() {
+        return context;
+    }
+
+    @Override
+    public void measure(int width, int height) {
     }
 
     @Override
     public final void render(@NonNull Canvas canvas, @NonNull byte[] data) {
-        // updating the queue
-        updateInternal(data);
-
-        int i = 0;
-        // rendering each spectrum if the queue
+        next(data);
+        int spectrumIndex = 0;
         for (byte[] spectrum : spectres) {
-            render(canvas, spectrum, i++, density, gap, paint);
+            renderParams.paint.setAlpha(255 / (spectrumIndex + 1));
+            renderSpectrum(canvas, spectrum, spectrumIndex++, renderParams);
         }
     }
 
     /**
-     * renders just one spectrum by given params;
-     * it's ALLOWED AND NECESSARY for inheritors to implement rendering of each spectrum;
-     * @param canvas on which the drawing is happening
-     * @param data that comes from source output
-     * @param spectrum number of spectrum in the queue
-     * @param density of spectres
-     * @param gap between spectres
-     * @param paint to use while drawing
+     * Renders just one spectrum for the given params.
+     * @param canvas to draw
+     * @param data visualizer data
+     * @param spectrumIndex index of the spectrum in the queue
+     * @param params renderer params
      */
-    protected void render(Canvas canvas, byte[] data, int spectrum, float density, int gap, Paint paint) {
+    protected void renderSpectrum(@NonNull Canvas canvas, byte[] data, int spectrumIndex, @NonNull RenderParams params) {
     }
 
-    public void setColor(@ColorInt int color) {
-        this.color = color;
-        paint.setColor(color);
-    }
+    protected static class RenderParams {
+        @ColorInt
+        final int color;
+        @Px
+        final int gap;
+        final int count;
+        @NonNull
+        final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
-    public void setDensity(int density) {
-        assertValidDensity(density);
-        this.density = density;
-    }
-
-    public void setGap(int gap) {
-        assertValidGap(gap);
-        this.gap = gap;
-    }
-
-    public @ColorInt int getColor() {
-        return color;
-    }
-
-    public float getDensity() {
-        return density;
-    }
-
-    public int getGap() {
-        return gap;
-    }
-
-    private void assertValidDensity(float density) {
-        if (density < 10f || density > 255f)
-            throw new IllegalArgumentException("Wrong density: " + density + ". Allowed to use values [10..255]");
-    }
-
-    private void assertValidGap(int gap) {
-        if (gap < 0 || gap > 50)
-            throw new IllegalArgumentException("Wrong gap: " + gap + ". Allowed to use values [0..50]");
+        RenderParams(@NonNull Context context) {
+            color = StyleUtils.resolveColor(context, android.R.attr.colorAccent);
+            paint.setColor(color);
+            paint.setStyle(Paint.Style.FILL);
+            gap = Screen.dp(context, 2);
+            count = 48;
+        }
     }
 }

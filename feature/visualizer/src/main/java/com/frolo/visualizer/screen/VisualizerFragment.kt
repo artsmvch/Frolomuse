@@ -141,11 +141,11 @@ internal class VisualizerFragment : Fragment() {
     private fun setVisualizerRendererType(type: VisualizerRendererType) {
         val context = this.context ?: return
         val renderer = when (type) {
-            VisualizerRendererType.CIRCLE -> CircleRenderer()
-            VisualizerRendererType.CIRCLE_SPECTRUM -> CircleSpectrumRenderer()
-            VisualizerRendererType.LINE -> LineRenderer(context)
-            VisualizerRendererType.LINE_SPECTRUM -> LineSpectrumRenderer()
-            VisualizerRendererType.SPECTRUM -> SpectrumRenderer()
+            VisualizerRendererType.CIRCLE ->            CircleRenderer(context)
+            VisualizerRendererType.CIRCLE_SPECTRUM ->   CircleSpectrumRenderer(context)
+            VisualizerRendererType.LINE ->              LineRenderer(context)
+            VisualizerRendererType.LINE_SPECTRUM ->     LineSpectrumRenderer(context)
+            VisualizerRendererType.SPECTRUM ->          SpectrumRenderer(context)
         }
         visualizer_view?.renderer = renderer
     }

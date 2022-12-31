@@ -2,7 +2,6 @@ package com.frolo.visualizerview;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Px;
@@ -10,18 +9,19 @@ import androidx.annotation.Px;
 import com.frolo.ui.Screen;
 
 
-public class LineRenderer extends TraceRenderer implements VisualizerView.Renderer {
+public final class LineRenderer extends TraceRenderer implements VisualizerView.Renderer {
     private float[] points;
-    private int lineWidth;
+    @Px
+    private final int lineWidth;
 
     public LineRenderer(@NonNull Context context) {
+        super(context);
         lineWidth = Screen.dp(context, 2);
     }
 
     @Override
-    protected void render(Canvas canvas, byte[] data, int spectrum, float density, int gap, Paint paint) {
-        paint.setStrokeWidth(lineWidth);
-        paint.setAlpha(255 / (spectrum + 1));
+    protected void renderSpectrum(@NonNull Canvas canvas, byte[] data, int spectrumIndex, @NonNull RenderParams params) {
+        params.paint.setStrokeWidth(lineWidth);
         if (points == null || points.length < data.length * 4) {
             points = new float[data.length * 4];
         }
@@ -34,14 +34,6 @@ public class LineRenderer extends TraceRenderer implements VisualizerView.Render
                     + ((byte) (data[i + 1] + 128)) * (canvas.getHeight() / 2f)
                     / 128;
         }
-        canvas.drawLines(points, paint);
-    }
-
-    public int getLineWidth() {
-        return lineWidth;
-    }
-
-    public void setLineWidth(@Px int lineWidth) {
-        this.lineWidth = lineWidth;
+        canvas.drawLines(points, params.paint);
     }
 }

@@ -1,25 +1,34 @@
 package com.frolo.visualizerview;
 
+import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Paint;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Px;
+
+import com.frolo.ui.Screen;
 
 
-public class CircleRenderer extends TraceRenderer implements VisualizerView.Renderer {
+public final class CircleRenderer extends TraceRenderer implements VisualizerView.Renderer {
     private float[] points;
-    private float radiusMultiplier = 0.5f;
-    private int lineWidth = 5;
+    private final float radiusMultiplier = 0.5f;
+    @Px
+    private final int lineWidth;
+
+    public CircleRenderer(@NonNull Context context) {
+        super(context, 1);
+        lineWidth = Screen.dp(context, 3);
+    }
 
     @Override
-    protected void render(Canvas canvas, byte[] data, int spectrum, float density, int gap, Paint paint) {
-        paint.setStrokeWidth(lineWidth);
-        paint.setAlpha(255 / (spectrum + 1));
+    protected void renderSpectrum(@NonNull Canvas canvas, byte[] data, int spectrumIndex, @NonNull RenderParams params) {
+        params.paint.setStrokeWidth(lineWidth);
         if (points == null || points.length < data.length * 4) {
             points = new float[data.length * 4];
         }
-        double angleCake = 360d / (data.length - 1);
-
+        double angleStep = 360d / (data.length - 1);
         for (int i = 0; i < data.length - 1; i++) {
-            double angle = angleCake * i;
+            double angle = angleStep * i;
             points[i * 4] = (float) (canvas.getWidth() / 2
                     + Math.abs(data[i])
                     * radiusMultiplier
@@ -39,22 +48,6 @@ public class CircleRenderer extends TraceRenderer implements VisualizerView.Rend
                     * radiusMultiplier
                     * Math.sin(Math.toRadians(angle + 1)));
         }
-        canvas.drawLines(points, paint);
-    }
-
-    public int getLineWidth() {
-        return lineWidth;
-    }
-
-    public void setLineWidth(int lineWidth) {
-        this.lineWidth = lineWidth;
-    }
-
-    public float getRadiusMultiplier() {
-        return radiusMultiplier;
-    }
-
-    public void setRadiusMultiplier(float radiusMultiplier) {
-        this.radiusMultiplier = radiusMultiplier;
+        canvas.drawLines(points, params.paint);
     }
 }

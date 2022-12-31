@@ -3,7 +3,6 @@ package com.frolo.visualizerview;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Rect;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -64,6 +63,14 @@ public class VisualizerView extends View {
     }
 
     @Override
+    public void layout(int l, int t, int r, int b) {
+        super.layout(l, t, r, b);
+        if (renderer != null) {
+            renderer.measure(r - l, b - t);
+        }
+    }
+
+    @Override
     protected void onDraw(Canvas canvas) {
         if (renderer != null && data != null) {
             renderer.render(canvas, data);
@@ -80,22 +87,19 @@ public class VisualizerView extends View {
         invalidate();
     }
 
+    @Nullable
     public Renderer getRenderer() {
         return renderer;
     }
 
-    public void setRenderer(Renderer renderer) {
+    public void setRenderer(@Nullable Renderer renderer) {
         this.renderer = renderer;
+        requestLayout();
         invalidate();
     }
 
     public interface Renderer {
-        /**
-         * Draws sound wave data on a canvas. The data is passed from the buffer
-         * so the renderer can hold reference to it (?).
-         * @param canvas canvas
-         * @param data to draw
-         */
+        void measure(int width, int height);
         void render(@NonNull Canvas canvas, @NonNull byte[] data);
     }
 }

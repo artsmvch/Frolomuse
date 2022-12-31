@@ -1,18 +1,39 @@
 package com.frolo.visualizerview;
 
+import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Paint;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Px;
+
+import com.frolo.ui.Screen;
 
 
-public class CircleSpectrumRenderer extends TraceRenderer implements VisualizerView.Renderer {
+public final class CircleSpectrumRenderer extends TraceRenderer implements VisualizerView.Renderer {
     private float[] points;
-    private float radius = 50;
-    private int lineWidth = 5;
+    @Px
+    private final int lineWidth;
+    @Px
+    private float radius;
+    @Px
+    private float innerRadius;
+
+    public CircleSpectrumRenderer(@NonNull Context context) {
+        super(context);
+        lineWidth = Screen.dp(context, 3);
+        radius = Screen.dp(context, 24);
+        innerRadius = radius / 3f;
+    }
 
     @Override
-    protected void render(Canvas canvas, byte[] data, int spectrum, float density, int gap, Paint paint) {
-        paint.setStrokeWidth(lineWidth);
-        paint.setAlpha(255 / (spectrum + 1));
+    public void measure(int width, int height) {
+        radius = Math.min(width, height) / 2f;
+        innerRadius = radius / 3f;
+    }
+
+    @Override
+    protected void renderSpectrum(@NonNull Canvas canvas, byte[] data, int spectrumIndex, @NonNull RenderParams params) {
+        params.paint.setStrokeWidth(lineWidth);
         if (points == null || points.length < data.length * 4) {
             points = new float[data.length * 4];
         }
@@ -21,40 +42,25 @@ public class CircleSpectrumRenderer extends TraceRenderer implements VisualizerV
 
         for (int i = 0; i < data.length - 1; i++) {
             double angle = angleCake * i;
-            int t = ((byte) (-Math.abs(data[i]) + 128)) * (canvas.getHeight() / 4) / 128;
+            float coefficient = (-Math.abs(data[i]) + 128) / 128f;
+            float delta = (radius - innerRadius) * coefficient;
 
             points[i * 4] = (float) (canvas.getWidth() / 2
-                    + radius
+                    + innerRadius
                     * Math.cos(Math.toRadians(angle)));
 
             points[i * 4 + 1] = (float) (canvas.getHeight() / 2
-                    + radius
+                    + innerRadius
                     * Math.sin(Math.toRadians(angle)));
 
             points[i * 4 + 2] = (float) (canvas.getWidth() / 2
-                    + (radius + t)
+                    + (innerRadius + delta)
                     * Math.cos(Math.toRadians(angle)));
 
             points[i * 4 + 3] = (float) (canvas.getHeight() / 2
-                    + (radius + t)
+                    + (innerRadius + delta)
                     * Math.sin(Math.toRadians(angle)));
         }
-        canvas.drawLines(points, paint);
-    }
-
-    public int getLineWidth() {
-        return lineWidth;
-    }
-
-    public void setLineWidth(int lineWidth) {
-        this.lineWidth = lineWidth;
-    }
-
-    public float getRadius() {
-        return radius;
-    }
-
-    public void setRadius(float radius) {
-        this.radius = radius;
+        canvas.drawLines(points, params.paint);
     }
 }

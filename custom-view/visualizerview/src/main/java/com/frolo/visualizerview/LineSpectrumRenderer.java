@@ -1,19 +1,24 @@
 package com.frolo.visualizerview;
 
+import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Paint;
+
+import androidx.annotation.NonNull;
 
 
-public class LineSpectrumRenderer extends TraceRenderer implements VisualizerView.Renderer {
+public final class LineSpectrumRenderer extends TraceRenderer implements VisualizerView.Renderer {
+    public LineSpectrumRenderer(@NonNull Context context) {
+        super(context);
+    }
+
     @Override
-    protected void render(Canvas canvas, byte[] data, int spectrum, float density, int gap, Paint paint) {
-        paint.setAlpha(255 / (spectrum + 1));
-        float barWidth = canvas.getWidth() / density;
-        float div = data.length / density;
-        canvas.drawLine(0, canvas.getHeight() / 2, canvas.getWidth(), canvas.getHeight() / 2, paint);
-        paint.setStrokeWidth(barWidth - gap);
+    protected void renderSpectrum(@NonNull Canvas canvas, byte[] data, int spectrumIndex, @NonNull RenderParams params) {
+        float barWidth = ((float) canvas.getWidth()) / params.count;
+        float div = ((float) data.length) / params.count;
+        canvas.drawLine(0, canvas.getHeight() / 2f, canvas.getWidth(), canvas.getHeight() / 2f, params.paint);
+        params.paint.setStrokeWidth(barWidth - params.gap);
 
-        for (int i = 0; i < density; i++) {
+        for (int i = 0; i < params.count; i++) {
             int bytePosition = (int) Math.ceil(i * div);
             int top = canvas.getHeight() / 2
                     + (128 - Math.abs(data[bytePosition]))
@@ -24,8 +29,8 @@ public class LineSpectrumRenderer extends TraceRenderer implements VisualizerVie
                     * (canvas.getHeight() / 2) / 128;
 
             float barX = (i * barWidth) + (barWidth / 2);
-            canvas.drawLine(barX, bottom, barX, canvas.getHeight() / 2, paint);
-            canvas.drawLine(barX, top, barX, canvas.getHeight() / 2, paint);
+            canvas.drawLine(barX, bottom, barX, canvas.getHeight() / 2f, params.paint);
+            canvas.drawLine(barX, top, barX, canvas.getHeight() / 2f, params.paint);
         }
     }
 }
