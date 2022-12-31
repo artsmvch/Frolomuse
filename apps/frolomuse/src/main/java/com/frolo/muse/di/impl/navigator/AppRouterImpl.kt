@@ -9,6 +9,7 @@ import com.frolo.muse.ui.base.SimpleFragmentNavigator
 import com.frolo.muse.ui.main.audiofx.params.PlaybackParamsDialog
 import com.frolo.muse.ui.main.audiofx.preset.SavePresetDialog
 import com.frolo.muse.ui.main.audiofx2.AudioFx2Fragment
+import com.frolo.muse.ui.main.audiofx2.VisualizerHostFragment
 import com.frolo.muse.ui.main.editor.album.AlbumEditorDialog
 import com.frolo.muse.ui.main.editor.playlist.PlaylistEditorDialog
 import com.frolo.muse.ui.main.editor.song.SongEditorDialog
@@ -193,6 +194,12 @@ abstract class AppRouterImpl(
     override fun openAudioFx() {
         checkThread()
         val fragment = AudioFx2Fragment.newInstance()
+        navigator.pushFragment(fragment)
+    }
+
+    override fun openVisualizer() {
+        checkThread()
+        val fragment = VisualizerHostFragment.newInstance()
         navigator.pushFragment(fragment)
     }
 

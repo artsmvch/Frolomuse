@@ -31,6 +31,7 @@ class TestAppRouter : AppRouter {
     override fun createPlaylist(songs: ArrayList<Song>) = Unit
     override fun openCurrentPlaying() = Unit
     override fun openPlayer() = Unit
+    override fun openVisualizer() = Unit
     override fun openAudioFx() = Unit
     override fun openPlaybackParams() = Unit
     override fun savePreset(bandLevels: ShortArray) = Unit

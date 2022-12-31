@@ -6,4 +6,9 @@
         android:title="@string/playback_params"
         android:icon="@drawable/ic_playback_params"
         app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/action_visualizer"
+        android:title="@string/show_visualizer"
+        app:showAsAction="ifRoom"/>
 </menu>

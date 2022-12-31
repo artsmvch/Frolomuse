@@ -6,50 +6,34 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.IdRes
 import androidx.core.view.updatePadding
-import com.frolo.audiofx2.ui.AudioFx2Feature
 import com.frolo.muse.R
-import com.frolo.muse.di.activityComponent
-import com.frolo.muse.router.AppRouter
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.base.FragmentContentInsetsListener
 import com.frolo.muse.ui.base.setupNavigation
-import kotlinx.android.synthetic.main.fragment_audio_fx_2.*
+import com.frolo.visualizer.screen.VisualizerFeature
+import kotlinx.android.synthetic.main.fragment_visualizer_host.container
+import kotlinx.android.synthetic.main.fragment_visualizer_host.toolbar
 
-class AudioFx2Fragment: BaseFragment(), FragmentContentInsetsListener {
 
-    // TODO: not respecting the MVVM architecture...
-    private val router: AppRouter get() = activityComponent.provideAppRouter()
-
+class VisualizerHostFragment : BaseFragment(), FragmentContentInsetsListener {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = inflater.inflate(R.layout.fragment_audio_fx_2, container, false)
+    ): View? = inflater.inflate(R.layout.fragment_visualizer_host, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupNavigation(toolbar)
-        ensureControlPanelFragment()
-        toolbar.menu.findItem(R.id.action_playback_params)?.also { safeMenuItem ->
-            safeMenuItem.setOnMenuItemClickListener {
-                router.openPlaybackParams()
-                true
-            }
-        }
-        toolbar.menu.findItem(R.id.action_visualizer)?.also { safeMenuItem ->
-            safeMenuItem.setOnMenuItemClickListener {
-                router.openVisualizer()
-                true
-            }
-        }
+        ensureVisualizerFragment()
     }
 
-    private fun ensureControlPanelFragment() {
+    private fun ensureVisualizerFragment() {
         @IdRes val containerId = R.id.container
         val fragment = childFragmentManager.findFragmentById(containerId)
         if (fragment != null) {
             return
         }
-        val newFragment = AudioFx2Feature.createControlPanelFragment()
+        val newFragment = VisualizerFeature.createVisualizerFragment()
         childFragmentManager.beginTransaction()
             .replace(containerId, newFragment)
             .commitNow()
@@ -70,10 +54,7 @@ class AudioFx2Fragment: BaseFragment(), FragmentContentInsetsListener {
     }
 
     companion object {
-        private const val LOG_TAG = "AudioFx2Fragment"
-
         // Factory
-        fun newInstance(): AudioFx2Fragment = AudioFx2Fragment()
+        fun newInstance(): VisualizerHostFragment = VisualizerHostFragment()
     }
-
 }

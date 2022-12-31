@@ -121,6 +121,10 @@ class AppRouterDelegate(
         delegate?.openAudioFx()
     }
 
+    override fun openVisualizer() {
+        delegate?.openVisualizer()
+    }
+
     override fun openPlaybackParams() {
         delegate?.openPlaybackParams()
     }

@@ -60,6 +60,8 @@ interface AppRouter {
 
     fun openAudioFx()
 
+    fun openVisualizer()
+
     fun openPlaybackParams()
 
     fun savePreset(bandLevels: ShortArray)
