@@ -124,15 +124,15 @@ internal class VisualizerFragment : Fragment() {
         val result = visualizer.setDataCaptureListener(onDataCaptureListener, rate, true, false)
         if (result != Visualizer.SUCCESS) {
             val msg = when (result) {
-                Visualizer.ERROR_NO_INIT -> "ERROR_NO_INIT"
-                Visualizer.ERROR_BAD_VALUE -> "ERROR_BAD_VALUE"
-                Visualizer.ERROR_INVALID_OPERATION -> "ERROR_INVALID_OPERATION"
-                Visualizer.ERROR_NO_MEMORY -> "ERROR_NO_MEMORY"
-                Visualizer.ERROR_DEAD_OBJECT -> "ERROR_DEAD_OBJECT"
-                // Visualizer.ERROR,
-                else -> "ERROR"
+                Visualizer.ERROR_NO_INIT ->             "ERROR_NO_INIT"
+                Visualizer.ERROR_BAD_VALUE ->           "ERROR_BAD_VALUE"
+                Visualizer.ERROR_INVALID_OPERATION ->   "ERROR_INVALID_OPERATION"
+                Visualizer.ERROR_NO_MEMORY ->           "ERROR_NO_MEMORY"
+                Visualizer.ERROR_DEAD_OBJECT ->         "ERROR_DEAD_OBJECT"
+                else ->                                 "ERROR"
             }
-            Logger.e(LOG_TAG, "Failed to set DataCaptureListener: $msg")
+            val err = IllegalStateException(msg)
+            Logger.e(LOG_TAG, "Failed to set DataCaptureListener: $msg", err)
         }
         visualizer.enabled = true
         this.visualizer = visualizer
