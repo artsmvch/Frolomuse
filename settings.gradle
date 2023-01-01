@@ -1,6 +1,7 @@
 // Apps
 include ':apps:frolomuse'
 include ':apps:frolo-audiofx'
+include ':apps:frolo-visualizer'
 include ':apps:frolo-tts'
 
 // Features
