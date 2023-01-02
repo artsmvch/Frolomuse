@@ -83,8 +83,8 @@ ext {
         ],
 
         di: [
-            dagger:                 "com.google.dagger:dagger:2.40.5",
-            daggerCompiler:         "com.google.dagger:dagger-compiler:2.40.5"
+            dagger:                 "com.google.dagger:dagger:2.44.2",
+            daggerCompiler:         "com.google.dagger:dagger-compiler:2.44.2"
         ],
 
         work: [
