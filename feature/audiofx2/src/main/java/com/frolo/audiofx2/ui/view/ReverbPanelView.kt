@@ -132,7 +132,7 @@ class ReverbPanelView @JvmOverloads constructor(
 
     private fun loadPresetsAsync(effect: Reverb?) {
         if (effect == null) {
-            slider.values = emptyList()
+            slider.clearValues()
             return
         }
         val source = Single.fromCallable<List<Reverb.Preset>> {
@@ -142,8 +142,8 @@ class ReverbPanelView @JvmOverloads constructor(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { allPresets ->
-                if (allPresets.size < 2) {
-                    slider.values = emptyList()
+                if (allPresets.isEmpty()) {
+                    slider.clearValues()
                     return@subscribe
                 }
                 val levelToPresetMap = HashMap<Int, Reverb.Preset>().apply {
@@ -164,6 +164,10 @@ class ReverbPanelView @JvmOverloads constructor(
             .also { disposable ->
                 keyedDisposableContainer.add("load_presets_async", disposable)
             }
+    }
+
+    private fun RangeSlider.clearValues() {
+        this.values = listOf(0f)
     }
 
     private fun usePresetByIndexAsync(index: Int) {
