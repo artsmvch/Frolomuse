@@ -2,7 +2,6 @@ package com.frolo.visualizerview;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Px;
@@ -26,7 +25,11 @@ public final class LineRenderer extends TraceRenderer implements VisualizerView.
         if (points == null || points.length < data.length * 4) {
             points = new float[data.length * 4];
         }
+        boolean shouldDraw = false;
         for (int i = 0; i < data.length - 1; i++) {
+            if (data[i] > -128) {
+                shouldDraw = true;
+            }
             points[i * 4] = canvas.getWidth() * i / (data.length - 1f);
             points[i * 4 + 1] = canvas.getHeight() / 2f
                     + ((byte) (data[i] + 128)) * (canvas.getHeight() / 2f) / 128;
@@ -35,6 +38,8 @@ public final class LineRenderer extends TraceRenderer implements VisualizerView.
                     + ((byte) (data[i + 1] + 128)) * (canvas.getHeight() / 2f)
                     / 128;
         }
-        canvas.drawLines(points, params.paint);
+        if (shouldDraw) {
+            canvas.drawLines(points, params.paint);
+        }
     }
 }
