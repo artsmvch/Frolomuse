@@ -45,6 +45,7 @@ internal class VisualizerFragment : Fragment() {
 
     private val audioSessionIdObserver = Observer<Int> { sessionId ->
         if (isPermissionGranted()) {
+            //noinspection MissingPermission
             updateVisualizer(sessionId)
         }
     }
@@ -159,13 +160,15 @@ internal class VisualizerFragment : Fragment() {
         if (requestCode == RC_REQUEST_RECORD_AUDIO_PERMISSION) {
             for (i in permissions.indices) {
                 if (permissions[i] == RECORD_AUDIO_PERMISSION) {
-                    updateLayout(
-                        isPermissionGranted = grantResults[i] == PackageManager.PERMISSION_GRANTED
-                    )
-                    VisualizerFeature.getAudioSessionId().value?.also { sessionId ->
-                        updateVisualizer(
-                            sessionId = sessionId
-                        )
+                    val isGranted = grantResults[i] == PackageManager.PERMISSION_GRANTED
+                    updateLayout(isPermissionGranted = isGranted)
+                    if (isGranted) {
+                        VisualizerFeature.getAudioSessionId().value?.also { sessionId ->
+                            //noinspection MissingPermission
+                            updateVisualizer(
+                                sessionId = sessionId
+                            )
+                        }
                     }
                 }
             }
