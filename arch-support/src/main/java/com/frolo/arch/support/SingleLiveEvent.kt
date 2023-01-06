@@ -32,7 +32,9 @@ class SingleLiveEvent<T> : MutableLiveData<T>() {
 
     @MainThread
     override fun setValue(t: T?) {
-        observers.forEach { it.onSetValue() }
+        for (observer in observers) {
+            observer.onSetValue()
+        }
         super.setValue(t)
     }
 
