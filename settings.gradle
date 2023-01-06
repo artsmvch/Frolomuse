@@ -10,6 +10,9 @@ include ':feature:audiofx2'
 include ':feature:remote-search'
 include ':feature:visualizer'
 
+// Advertising
+include ':ads:admob'
+
 // Core
 include ':core'
 include ':core-ui'
@@ -69,7 +72,6 @@ include ':custom-drawable:squircle'
 
 // Misc stuff
 include ':vendor'
-include ':ads'
 include ':material-support'
 include ':arch-support'
 
