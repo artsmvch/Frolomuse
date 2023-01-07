@@ -93,7 +93,7 @@ class SearchFragment: AbsMediaCollectionFragment<Media>(), FragmentContentInsets
     }
 
     private fun showKeyboardWithDelay() {
-        Completable.timer(400, TimeUnit.MILLISECONDS)
+        Completable.timer(300, TimeUnit.MILLISECONDS)
             .observeOn(AndroidSchedulers.mainThread())
             .doOnComplete { KeyboardUtils.show(sv_query) }
             .subscribe()
