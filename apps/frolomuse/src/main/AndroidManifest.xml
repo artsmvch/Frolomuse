@@ -27,6 +27,10 @@
         android:networkSecurityConfig="@xml/network_security_config"
         tools:replace="android:allowBackup">
 
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="@string/admob_app_id"/>
+
         <!--SERVICES-->
         <service
             android:stopWithTask="false"

@@ -24,7 +24,5 @@ android {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
-    // AdMob
-    implementation deps.gms.ads
-
+    api deps.gms.ads
 }

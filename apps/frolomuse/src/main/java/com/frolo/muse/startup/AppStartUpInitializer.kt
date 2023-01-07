@@ -42,6 +42,7 @@ import com.frolo.ui.SimpleActivityLifecycleCallbacks
 import com.frolo.visualizer.screen.VisualizerFeature
 import com.frolo.visualizer.screen.VisualizerFeatureInput
 import com.frolo.visualizer.screen.VisualizerRendererType
+import com.google.android.gms.ads.MobileAds
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 import io.reactivex.plugins.RxJavaPlugins
@@ -110,6 +111,7 @@ class AppStartUpInitializer @Inject constructor(
         //setupMediaScanWork()
         setupAudioFx2Feature()
         setupVisualizer()
+        setupAds()
     }
 
     private fun setupDebugMode() {
@@ -271,6 +273,12 @@ class AppStartUpInitializer @Inject constructor(
                     get() = VisualizerRendererType.CIRCLE
             }
         )
+    }
+
+    private fun setupAds() {
+        MobileAds.initialize(application) { status ->
+            Logger.d(LOG_TAG, "AdMob initialized with the following status: $status")
+        }
     }
 
     private fun runOnForegroundActivity(action: BaseActivity.() -> Unit) {

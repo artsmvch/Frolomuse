@@ -67,7 +67,7 @@ ext {
         ],
 
         firebase : [
-            bom:                    "com.google.firebase:firebase-bom:26.8.0",
+            bom:                    "com.google.firebase:firebase-bom:30.1.0",
             core:                   "com.google.firebase:firebase-core",
             crashlytics:            "com.google.firebase:firebase-crashlytics",
             config:                 "com.google.firebase:firebase-config-ktx",
@@ -75,7 +75,7 @@ ext {
         ],
 
         gms : [
-            ads:                    "com.google.android.gms:play-services-ads:21.2.0"
+            ads:                    "com.google.android.gms:play-services-ads:21.4.0"
         ],
 
         playstore : [

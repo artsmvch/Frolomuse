@@ -141,6 +141,9 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 
+    // Ads
+    implementation project(path: ':ads:admob')
+
     // Features
     implementation project(path: ':feature:onboarding')
     implementation project(path: ':feature:audiofx2')
