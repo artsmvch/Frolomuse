@@ -65,9 +65,7 @@ class LibraryFragment: BaseFragment(),
         }
     }
 
-    override val statusBarColor: Int get() {
-        return ColorUtils2.setAlphaComponentFloat(statusBarColorRaw, alphaF = 0.75f)
-    }
+    override val statusBarColor: Int get() = statusBarColorRaw
     override val statusBarColorRaw: Int get() {
         val uiContext = view?.context ?: kotlin.run {
             DebugUtils.dumpOnMainThread(IllegalStateException("Fragment not attached"))
