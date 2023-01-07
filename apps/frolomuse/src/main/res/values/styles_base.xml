@@ -181,10 +181,12 @@
     </style>
 
     <style name="Base.AppTheme.TextAppearance.Toolbar.Title" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:includeFontPadding">false</item>
         <item name="android:textSize">20sp</item>
     </style>
 
     <style name="Base.AppTheme.TextAppearance.Toolbar.Title.Library" parent="@style/TextAppearance.Widget.AppCompat.Toolbar.Title">
+        <item name="android:includeFontPadding">false</item>
         <item name="android:textSize">23sp</item>
     </style>
 
