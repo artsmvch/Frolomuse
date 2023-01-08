@@ -1,12 +1,18 @@
 package com.frolo.muse.di.impl.remote
 
+import android.content.Context
+import com.frolo.muse.R
 import com.frolo.muse.firebase.FirebaseRemoteConfigCache
 import com.frolo.muse.firebase.FirebaseRemoteConfigUtil
+import com.frolo.muse.model.ads.AdMobBannerConfig
 import com.frolo.muse.repository.RemoteConfigRepository
 import io.reactivex.Single
+import org.json.JSONObject
 
 
-class FirebaseRemoteConfigRepositoryImpl : RemoteConfigRepository {
+class FirebaseRemoteConfigRepositoryImpl(
+    private val context: Context
+) : RemoteConfigRepository {
 
     override fun isLyricsViewerEnabled(): Single<Boolean> {
         return FirebaseRemoteConfigCache
@@ -30,6 +36,27 @@ class FirebaseRemoteConfigRepositoryImpl : RemoteConfigRepository {
         return FirebaseRemoteConfigCache
             .getBool(FirebaseRemoteConfigUtil.DONATION_FEATURE_ENABLED)
             .onErrorReturnItem(false)
+    }
+
+    override fun getMainAdMobBannerConfig(): Single<AdMobBannerConfig> {
+        val defaultConfig = AdMobBannerConfig(
+            isEnabled = true,
+            unitId = context.getString(R.string.admob_ad_unit_id_main_screen),
+            minFirstInstallTime = 1673348400, // January 10, 2023 11:00:00 AM
+            minLaunchCount = 10
+        )
+        return FirebaseRemoteConfigCache
+            .getString(FirebaseRemoteConfigUtil.MAIN_ADMOB_BANNER_CONFIG)
+            .map { rawConfig ->
+                val configJson = JSONObject(rawConfig)
+                AdMobBannerConfig(
+                    isEnabled = configJson.optBoolean("is_enabled", defaultConfig.isEnabled),
+                    unitId = configJson.optString("unit_id", defaultConfig.unitId),
+                    minFirstInstallTime = configJson.optLong("min_first_install_time", defaultConfig.minFirstInstallTime),
+                    minLaunchCount = configJson.optInt("min_launch_count", defaultConfig.minLaunchCount)
+                )
+            }
+            .onErrorReturnItem(defaultConfig)
     }
 
 }

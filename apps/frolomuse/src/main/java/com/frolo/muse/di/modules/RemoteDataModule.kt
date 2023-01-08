@@ -1,5 +1,6 @@
 package com.frolo.muse.di.modules
 
+import android.content.Context
 import com.frolo.muse.di.ApplicationScope
 import com.frolo.muse.di.impl.remote.FirebaseRemoteConfigRepositoryImpl
 import com.frolo.muse.di.impl.remote.FirebaseRemoteRepositoryImpl
@@ -21,8 +22,8 @@ class RemoteDataModule {
 
     @ApplicationScope
     @Provides
-    fun provideFirebaseRemoteConfigRepository(): RemoteConfigRepository {
-        return FirebaseRemoteConfigRepositoryImpl()
+    fun provideFirebaseRemoteConfigRepository(context: Context): RemoteConfigRepository {
+        return FirebaseRemoteConfigRepositoryImpl(context)
     }
 
     @ApplicationScope

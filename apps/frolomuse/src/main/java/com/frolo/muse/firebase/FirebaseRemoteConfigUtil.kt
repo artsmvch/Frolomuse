@@ -17,6 +17,7 @@ object FirebaseRemoteConfigUtil {
     const val PLAYER_WAKE_LOCK_FEATURE_ENABLED = "player_wake_lock_feature_enabled"
     const val SNOWFALL_FEATURE_ENABLED = "snowfall_feature_enabled"
     const val DONATION_FEATURE_ENABLED = "donation_feature_enabled"
+    const val MAIN_ADMOB_BANNER_CONFIG = "main_admob_banner_config"
 
     private val executor = Executors.newFixedThreadPool(2)
 

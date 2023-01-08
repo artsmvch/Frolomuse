@@ -5,7 +5,9 @@ import android.util.DisplayMetrics
 import android.view.WindowManager
 import com.google.android.gms.ads.AdSize
 
-object AdSizeCompat {
+object AdMobUtils {
+    const val TEST_BANNER_ID = "ca-app-pub-3940256099942544/6300978111"
+
     fun calculateSmartBannerAdSize(context: Context): AdSize {
         val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as? WindowManager
             ?: return AdSize.SMART_BANNER
