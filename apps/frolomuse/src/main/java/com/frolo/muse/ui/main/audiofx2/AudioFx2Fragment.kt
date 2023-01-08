@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.annotation.IdRes
 import androidx.core.view.updatePadding
 import com.frolo.audiofx2.ui.AudioFx2Feature
+import com.frolo.muse.BuildInfo
 import com.frolo.muse.R
 import com.frolo.muse.di.activityComponent
 import com.frolo.muse.router.AppRouter
@@ -36,6 +37,7 @@ class AudioFx2Fragment: BaseFragment(), FragmentContentInsetsListener {
             }
         }
         toolbar.menu.findItem(R.id.action_visualizer)?.also { safeMenuItem ->
+            safeMenuItem.isVisible = BuildInfo.isDebug()
             safeMenuItem.setOnMenuItemClickListener {
                 router.openVisualizer()
                 true
