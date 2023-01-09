@@ -267,13 +267,7 @@ dependencies {
     implementation platform(deps.firebase.bom)
     implementation deps.firebase.core
     implementation deps.firebase.crashlytics
-    implementation(deps.firebase.config) {
-        version {
-            // TODO: there is a bug in the Firebase config lib https://github.com/firebase/firebase-android-sdk/issues/3757
-            // Remove this enforcement when the bug is fixed.
-            strictly("21.0.2")
-        }
-    }
+    implementation deps.firebase.config
     implementation deps.firebase.messaging
 
     // Glide

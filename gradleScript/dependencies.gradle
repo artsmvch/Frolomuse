@@ -67,7 +67,7 @@ ext {
         ],
 
         firebase : [
-            bom:                    "com.google.firebase:firebase-bom:30.1.0",
+            bom:                    "com.google.firebase:firebase-bom:30.3.0",
             core:                   "com.google.firebase:firebase-core",
             crashlytics:            "com.google.firebase:firebase-crashlytics",
             config:                 "com.google.firebase:firebase-config-ktx",
