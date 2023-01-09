@@ -5,10 +5,10 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'com.frolo.plugin.bundle_check'
 apply plugin: 'com.frolo.plugin.task_utils'
 
-def version_code = 152
+def version_code = 153
 def version_major = 7
 def version_minor = 2
-def version_patch = 2
+def version_patch = 3
 def version_name = "${version_major}.${version_minor}.${version_patch}"
 
 def script_time = new Date().format('MM.dd.yyyy:HH.mm.ss')
