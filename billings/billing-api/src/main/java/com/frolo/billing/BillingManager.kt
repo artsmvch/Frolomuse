@@ -46,4 +46,9 @@ interface BillingManager {
      * Consumes all purchased products with the given [productId].
      */
     fun consumeProduct(productId: ProductId): Completable
+
+    /**
+     * Returns the purchase history for the given [skuType].
+     */
+    fun getPurchaseHistory(skuType: SkuType): Single<List<PurchaseHistoryRecord>>
 }
