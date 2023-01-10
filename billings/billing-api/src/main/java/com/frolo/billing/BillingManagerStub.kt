@@ -36,4 +36,8 @@ internal class BillingManagerStub : BillingManager {
     override fun consumeProduct(productId: ProductId): Completable {
         return Completable.error(notImplementedError())
     }
+
+    override fun getPurchaseHistory(skuType: SkuType): Single<List<PurchaseHistoryRecord>> {
+        return Single.error(notImplementedError())
+    }
 }

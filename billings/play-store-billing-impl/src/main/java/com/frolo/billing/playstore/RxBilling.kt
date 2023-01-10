@@ -11,6 +11,8 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 
+// TODO: refactor methods imn this file (DRY, visibility)
+
 private fun getMainThreadScheduler(): Scheduler {
     return AndroidSchedulers.mainThread()
 }
@@ -101,6 +103,27 @@ fun BillingClient.queryPurchasesSingle(@BillingClient.SkuType type: String): Sin
         GlobalScope.launch {
             kotlin.runCatching {
                 queryPurchasesAsync(type)
+            }.onSuccess {
+                emitter.onSuccess(it)
+            }.onFailure {
+                emitter.onError(it)
+            }
+        }
+    }
+    return source
+        .subscribeOn(getQueryScheduler())
+        .unsubscribeOn(getMainThreadScheduler())
+        .observeOn(getMainThreadScheduler())
+}
+
+internal fun BillingClient.queryPurchaseHistorySingle(@BillingClient.SkuType type: String): Single<PurchaseHistoryResult> {
+    val source = Single.create<PurchaseHistoryResult> { emitter ->
+        GlobalScope.launch {
+            kotlin.runCatching {
+                val params = QueryPurchaseHistoryParams.newBuilder()
+                    .setProductType(type)
+                    .build()
+                queryPurchaseHistory(params)
             }.onSuccess {
                 emitter.onSuccess(it)
             }.onFailure {

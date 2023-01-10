@@ -7,6 +7,7 @@ import androidx.annotation.UiThread
 import com.android.billingclient.api.*
 import com.frolo.billing.*
 import com.frolo.billing.ProductDetails
+import com.frolo.billing.PurchaseHistoryRecord
 import com.frolo.rxpreference.RxPreference
 import io.reactivex.Completable
 import io.reactivex.Flowable
@@ -333,6 +334,25 @@ class PlayStoreBillingManagerImpl(
                         billingClient.consumeAsync(consumeParams, listener)
                     }
                 }
+        }
+    }
+
+    override fun getPurchaseHistory(skuType: SkuType): Single<List<PurchaseHistoryRecord>> {
+        return requirePreparedClient().observeOn(mainThreadScheduler).flatMap { billingClient ->
+            billingClient.queryPurchaseHistorySingle(skuType.billingSkyType)
+                .observeOn(computationScheduler)
+                .map { result ->
+                    result.purchaseHistoryRecordList.orEmpty().map { record ->
+                        PurchaseHistoryRecord(
+                            skus = record.skus.toList(),
+                            purchaseTime = record.purchaseTime,
+                            purchaseToken = record.purchaseToken,
+                            signature = record.signature,
+                            quantity = record.quantity
+                        )
+                    }
+                }
+                .observeOn(mainThreadScheduler)
         }
     }
 
