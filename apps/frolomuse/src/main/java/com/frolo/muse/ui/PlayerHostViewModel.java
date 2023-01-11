@@ -20,6 +20,8 @@ import com.frolo.muse.ui.base.BaseAndroidViewModel;
 import com.frolo.player.Player;
 import com.frolo.threads.ThreadUtils;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 
@@ -40,10 +42,22 @@ public class PlayerHostViewModel extends BaseAndroidViewModel {
     @Nullable
     private Disposable mPlayerObserver = null;
 
-    private final MutableLiveData<Player> mPlayerLiveData = new MutableLiveData<>();
+    private final MutableLiveData<Player> mPlayerLiveData = new MutableLiveData<Player>() {
+        @Override
+        protected void onActive() {
+            // Why are we doing this here? Well, as of Android 12, there are restrictions regarding on
+            // foreground services (more info here https://stackoverflow.com/a/70666991/9437681) causing
+            // runtime exceptions when starting the PlayerService while the app is not in the foreground.
+            // The idea is to start the PlayerService when this LiveData becomes active, because one
+            // of its observers has transitioned to the started state.
+            callPlayerServiceIfNeeded();
+        }
+    };
     private final PlayerWrapper mPlayerWrapper;
     private final MutableLiveData<Boolean> mDisconnectedLiveData =
             new MutableLiveData<Boolean>(false);
+
+    private final AtomicBoolean mPlayerServiceCalled = new AtomicBoolean(false);
 
     public PlayerHostViewModel(
             Application application,
@@ -52,8 +66,14 @@ public class PlayerHostViewModel extends BaseAndroidViewModel {
         super(application, eventLogger);
         mPlayerWrapper = playerWrapper;
         mPlayerLiveData.setValue(playerWrapper.getWrapped());
-        startPlayerService(application);
-        bindToPlayerService(application);
+    }
+
+    private void callPlayerServiceIfNeeded() {
+        if (mPlayerServiceCalled.getAndSet(true)) {
+            return;
+        }
+        startPlayerService(getApplication());
+        bindToPlayerService(getApplication());
     }
 
     private void startPlayerService(Application application) {
@@ -74,11 +94,6 @@ public class PlayerHostViewModel extends BaseAndroidViewModel {
     @Nullable
     public final Player getPlayer() {
         return getPlayerLiveData().getValue();
-    }
-
-    @NonNull
-    public final Player getPlayerWrapper() {
-        return mPlayerWrapper;
     }
 
     @NonNull
