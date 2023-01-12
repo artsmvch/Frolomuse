@@ -8,7 +8,7 @@ import com.frolo.muse.model.menu.SortOrderMenu
 import com.frolo.music.repository.MediaRepository
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.rx.SchedulerProvider
-import com.frolo.music.model.test.mockMediaList
+import com.frolo.music.model.test.stubMediaList
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.whenever
@@ -58,7 +58,7 @@ class GetSectionedMediaUseCaseTest {
 
             /*mocking*/
             val sortOrder = "sort_order"
-            val result = mockMediaList(size = 10)
+            val result = stubMediaList(size = 10)
 
             whenever(getSectionedMediaUseCase.getSortedCollection(eq(sortOrder)))
                     .thenReturn(Flowable.just(result))
@@ -82,7 +82,7 @@ class GetSectionedMediaUseCaseTest {
 
             /*mocking*/
             val sortOrder = "sort_order"
-            val result = mockMediaList(size = 1)
+            val result = stubMediaList(size = 1)
 
             whenever(getSectionedMediaUseCase.getSortedCollection(eq(sortOrder)))
                     .thenReturn(Flowable.just(result))
@@ -110,10 +110,10 @@ class GetSectionedMediaUseCaseTest {
 
             /*mocking*/
             val sortOrder1 = "sort_order_1"
-            val result1 = mockMediaList(size = 10)
+            val result1 = stubMediaList(size = 10)
 
             val sortOrder2 = "sort_order_2"
-            val result2 = mockMediaList(size = 5)
+            val result2 = stubMediaList(size = 5)
 
             whenever(getSectionedMediaUseCase.getSortedCollection(eq(sortOrder1)))
                     .thenReturn(Flowable.just(result1))
@@ -190,7 +190,7 @@ class GetSectionedMediaUseCaseTest {
 
             /*mocking*/
             val sortOrder1 = "sort_order_1"
-            val result1 = mockMediaList(size = 10)
+            val result1 = stubMediaList(size = 10)
 
             whenever(getSectionedMediaUseCase.getSortedCollection(eq(sortOrder1)))
                     .thenReturn(Flowable.just(result1))

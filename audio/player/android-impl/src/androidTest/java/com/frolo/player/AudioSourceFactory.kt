@@ -3,7 +3,7 @@ package com.frolo.player
 import android.content.Context
 import android.provider.MediaStore
 import com.frolo.player.data.AudioSources
-import com.frolo.test.mockKT
+import com.frolo.test.stubKT
 
 
 internal class AudioSourceFactory(
@@ -52,7 +52,7 @@ internal class AudioSourceFactory(
     }
 
     private fun mockAudioSource(id: Long, path: String): AudioSource {
-        val metadata = mockKT<AudioMetadata>()
+        val metadata = stubKT<AudioMetadata>()
         return AudioSources.createAudioSource(id, path, metadata)
     }
 

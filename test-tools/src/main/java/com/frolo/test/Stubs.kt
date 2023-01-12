@@ -8,29 +8,29 @@ import kotlin.reflect.full.isSubclassOf
 import kotlin.reflect.jvm.isAccessible
 
 
-// Mocks a list of specified type with the given size
-fun <T: Any> mockListOf(clazz: KClass<T>, size: Int = 1): List<T> {
+// Creates a list of stubs of the given type with the given size
+fun <T: Any> stubListOf(clazz: KClass<T>, size: Int = 1): List<T> {
     return ArrayList<T>().apply {
         repeat(size) {
-            val item: T = mockKT(clazz)
+            val item: T = stubKT(clazz)
             add(item)
         }
     }
 }
 
-// Mocks a list of specified type with the given size
-inline fun <reified T: Any> mockList(size: Int = 1): List<T> = mockListOf(T::class, size)
+// Creates a list of stubs of the given type with the given size
+inline fun <reified T: Any> stubList(size: Int = 1): List<T> = stubListOf(T::class, size)
 
-fun <T: Any> mockKT(clazz: KClass<T>): T {
+fun <T: Any> stubKT(clazz: KClass<T>): T {
     // Primitives
-    val primitive = tryMockPrimitiveOrNull(clazz)
+    val primitive = tryStubPrimitiveOrNull(clazz)
     if (primitive != null) {
         @Suppress("UNCHECKED_CAST")
         return primitive as T
     }
 
     // Strings
-    val string = tryMockStringOrNull(clazz)
+    val string = tryStubStringOrNull(clazz)
     if (string != null) {
         @Suppress("UNCHECKED_CAST")
         return string as T
@@ -54,7 +54,7 @@ fun <T: Any> mockKT(clazz: KClass<T>): T {
 
     // Abstracts
     if (clazz.isAbstract) {
-        return mockAbstract(clazz)
+        return stubAbstract(clazz)
     }
 
     // Well, we're still here. We are now trying to create
@@ -76,7 +76,7 @@ fun <T: Any> mockKT(clazz: KClass<T>): T {
 
             val arguments = constructor.parameters
                 .map { it.type.classifier as KClass<*> }
-                .map { mockKT(it) }
+                .map { stubKT(it) }
                 .toTypedArray()
 
             constructor.isAccessible = true
@@ -89,9 +89,9 @@ fun <T: Any> mockKT(clazz: KClass<T>): T {
     throw IllegalStateException("Failed to instantiate ${clazz.simpleName} class")
 }
 
-inline fun <reified T: Any> mockKT(): T = mockKT(T::class)
+inline fun <reified T: Any> stubKT(): T = stubKT(T::class)
 
-private fun tryMockPrimitiveOrNull(clazz: KClass<*>): Any? = when(clazz) {
+private fun tryStubPrimitiveOrNull(clazz: KClass<*>): Any? = when(clazz) {
     Int::class ->       randomInt()
     Long::class ->      randomLong()
     Double::class ->    randomDouble()
@@ -101,7 +101,7 @@ private fun tryMockPrimitiveOrNull(clazz: KClass<*>): Any? = when(clazz) {
     else -> null
 }
 
-private fun tryMockStringOrNull(clazz: KClass<*>): Any? {
+private fun tryStubStringOrNull(clazz: KClass<*>): Any? {
     if (clazz == String::class) {
         return randomString()
     }
@@ -109,7 +109,7 @@ private fun tryMockStringOrNull(clazz: KClass<*>): Any? {
     return null
 }
 
-private fun <T: Any> mockAbstract(clazz: KClass<T>): T {
+private fun <T: Any> stubAbstract(clazz: KClass<T>): T {
     val javaClazz = clazz.java
     val proxy = Proxy.newProxyInstance(
         javaClazz.classLoader,
@@ -117,7 +117,7 @@ private fun <T: Any> mockAbstract(clazz: KClass<T>): T {
         object : InvocationHandler {
             override fun invoke(proxy: Any, method: Method, args: Array<out Any>?): Any {
                 val kotlinClass: KClass<*> = method.returnType.kotlin
-                return mockKT(kotlinClass)
+                return stubKT(kotlinClass)
             }
         })
 

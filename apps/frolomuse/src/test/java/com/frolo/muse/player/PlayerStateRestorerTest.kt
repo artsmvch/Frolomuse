@@ -9,11 +9,11 @@ import com.frolo.muse.common.toAudioSources
 import com.frolo.music.model.Album
 import com.frolo.music.model.Song
 import com.frolo.muse.repository.*
-import com.frolo.music.model.test.mockSong
-import com.frolo.music.model.test.mockSongList
+import com.frolo.music.model.test.stubSong
+import com.frolo.music.model.test.stubSongList
 import com.frolo.music.repository.*
-import com.frolo.test.mockKT
-import com.frolo.test.mockList
+import com.frolo.test.stubKT
+import com.frolo.test.stubList
 import com.frolo.test.randomLong
 import com.nhaarman.mockitokotlin2.*
 import io.reactivex.Flowable
@@ -68,7 +68,7 @@ class PlayerStateRestorerTest {
     fun test_restoreState_Success() {
         val id = 1L
         val album = Album(id, "album", "artist", 10)
-        val songs = mockSongList(size = 10)
+        val songs = stubSongList(size = 10)
         val targetSong = songs.first()
         val songQueue = blockingCreateAudioSourceQueue(songs, null)
         val playbackPosition = 1337
@@ -95,7 +95,7 @@ class PlayerStateRestorerTest {
             .thenReturn(playbackPosition)
 
         whenever(songRepository.allItems)
-            .thenReturn(Flowable.just(mockList(size = 100)))
+            .thenReturn(Flowable.just(stubList(size = 100)))
 
         whenever(songRepository.getSongsOptionally(eq(songs.map { song -> song.id })))
             .thenReturn(Flowable.just(songs))
@@ -123,10 +123,10 @@ class PlayerStateRestorerTest {
     fun test_restoreState_SuccessDefault() {
         val albumId = randomLong()
         val album = Album(albumId, "album", "artist", 0)
-        val albumSongs = mockSongList(size = 0)
-        val lastPlayedSong = mockSong(albumId = albumId)
+        val albumSongs = stubSongList(size = 0)
+        val lastPlayedSong = stubSong(albumId = albumId)
         val playbackPosition = 1337
-        val allSongs = mockSongList(size = 100)
+        val allSongs = stubSongList(size = 100)
         val expectedSong = allSongs.first()
         val expectedQueue = AudioSourceQueue.create(allSongs.toAudioSources())
 
@@ -174,10 +174,10 @@ class PlayerStateRestorerTest {
     fun test_restoreState_Failure() {
         val id = 1L
         val album = Album(id, "album", "artist", 10)
-        val songs = mockSongList(size = 0)
-        val targetSong = mockKT<Song>()
+        val songs = stubSongList(size = 0)
+        val targetSong = stubKT<Song>()
         val playbackPosition = 1337
-        val allSongs = mockSongList(size = 0)
+        val allSongs = stubSongList(size = 0)
 
         whenever(preferences.lastMediaCollectionType)
             .thenReturn(-1)

@@ -9,8 +9,8 @@ import com.frolo.music.model.Media
 import com.frolo.music.model.Song
 import com.frolo.music.repository.MediaRepository
 import com.frolo.muse.repository.Preferences
-import com.frolo.music.model.test.mockMedia
-import com.frolo.music.model.test.mockMediaList
+import com.frolo.music.model.test.stubMedia
+import com.frolo.music.model.test.stubMediaList
 import com.nhaarman.mockitokotlin2.*
 import io.reactivex.Single
 import org.junit.Before
@@ -19,7 +19,7 @@ import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
-import com.frolo.test.mockList
+import com.frolo.test.stubList
 import org.junit.Rule
 
 
@@ -53,9 +53,9 @@ class PlayMediaUseCaseTest {
 
     @Test
     fun test_PlayMultiple() {
-        val items = mockMediaList(size = 10)
+        val items = stubMediaList(size = 10)
 
-        val songs = mockList<Song>(size = 100)
+        val songs = stubList<Song>(size = 100)
 
         val targetSong = songs.first()
 
@@ -85,9 +85,9 @@ class PlayMediaUseCaseTest {
 
     @Test
     fun test_PlaySingle() {
-        val item = mockMedia()
+        val item = stubMedia()
 
-        val songs = mockList<Song>(size = 100)
+        val songs = stubList<Song>(size = 100)
 
         val targetSong = songs.first()
 
@@ -120,9 +120,9 @@ class PlayMediaUseCaseTest {
 
     @Test
     fun test_PlayNextMultiple() {
-        val items = mockMediaList(size = 10)
+        val items = stubMediaList(size = 10)
 
-        val songs = mockList<Song>(size = 100)
+        val songs = stubList<Song>(size = 100)
 
         whenever(repository.collectSongs(eq(items)))
                 .thenReturn(Single.just(songs))
@@ -139,9 +139,9 @@ class PlayMediaUseCaseTest {
 
     @Test
     fun test_PlayNextSingle() {
-        val item = mockMedia()
+        val item = stubMedia()
 
-        val songs = mockList<Song>(size = 100)
+        val songs = stubList<Song>(size = 100)
 
         whenever(repository.collectSongs(eq(listOf(item))))
                 .thenReturn(Single.just(songs))
@@ -158,9 +158,9 @@ class PlayMediaUseCaseTest {
 
     @Test
     fun test_AddToQueueMultiple() {
-        val items = mockMediaList(size = 10)
+        val items = stubMediaList(size = 10)
 
-        val songs = mockList<Song>(size = 100)
+        val songs = stubList<Song>(size = 100)
 
         whenever(repository.collectSongs(eq(items)))
                 .thenReturn(Single.just(songs))
@@ -177,9 +177,9 @@ class PlayMediaUseCaseTest {
 
     @Test
     fun test_AddToQueueSingle() {
-        val item = mockMedia()
+        val item = stubMedia()
 
-        val songs = mockList<Song>(size = 100)
+        val songs = stubList<Song>(size = 100)
 
         whenever(repository.collectSongs(eq(listOf(item))))
                 .thenReturn(Single.just(songs))

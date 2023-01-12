@@ -15,9 +15,9 @@ private class TestMedia constructor(private val _id: Long): Media {
     override fun getKind(): Int = Media.NONE
 }
 
-fun mockMedia(): Media = TestMedia(sharedRandom.nextLong())
+fun stubMedia(): Media = TestMedia(sharedRandom.nextLong())
 
-fun mockSong(
+fun stubSong(
     id: Long = randomLong(),
     songType: SongType = randomEnumValue<SongType>()!!,
     source: String = randomString(),
@@ -32,11 +32,11 @@ fun mockSong(
     trackNumber: Int = randomInt()
 ): Song = Songs.create(id, songType, source, title, albumId, album, artistId, artist, genre, duration, year, trackNumber)
 
-fun mockMediaList(size: Int): List<Media> {
+fun stubMediaList(size: Int): List<Media> {
     return List(size) { index -> TestMedia(index.toLong()) }
 }
 
-fun mockSongList(size: Int): List<Song> {
-    return List(size) { index -> mockSong(id = index.toLong()) }
+fun stubSongList(size: Int): List<Song> {
+    return List(size) { index -> stubSong(id = index.toLong()) }
 }
 

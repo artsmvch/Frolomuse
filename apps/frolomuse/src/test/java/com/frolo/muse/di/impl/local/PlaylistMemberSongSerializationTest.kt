@@ -1,7 +1,7 @@
 package com.frolo.muse.di.impl.local
 
-import com.frolo.music.model.test.mockSong
-import com.frolo.test.mockKT
+import com.frolo.music.model.test.stubSong
+import com.frolo.test.stubKT
 import junit.framework.Assert
 import org.junit.Rule
 import org.junit.Test
@@ -36,9 +36,9 @@ class PlaylistMemberSongSerializationTest {
     @Test
     fun test_PlaylistMemberSongSerialization() {
         val model = PlaylistDatabaseManager.PlaylistMemberSong(
-            song = mockSong(),
-            playlistId = mockKT(),
-            entity = mockKT()
+            song = stubSong(),
+            playlistId = stubKT(),
+            entity = stubKT()
         )
         testSerialization<PlaylistDatabaseManager.PlaylistMemberSong>(model)
     }

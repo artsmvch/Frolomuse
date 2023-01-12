@@ -8,7 +8,7 @@ import com.frolo.muse.model.menu.SortOrderMenu
 import com.frolo.music.model.SortOrder
 import com.frolo.music.repository.AlbumChunkRepository
 import com.frolo.muse.repository.Preferences
-import com.frolo.music.model.test.mockSong
+import com.frolo.music.model.test.stubSong
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.whenever
@@ -23,7 +23,7 @@ import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
-import com.frolo.test.mockKT
+import com.frolo.test.stubKT
 
 
 @RunWith(JUnit4::class)
@@ -42,12 +42,12 @@ class GetAlbumSongsUseCaseTest {
 
     private val sortOrder1 = TestSortOrder("Sort Order 1","sort_order_1")
     private val result1: List<Song> = List(size = 5) { index ->
-        mockSong(duration = (5 + 10 * index) * 1_000)
+        stubSong(duration = (5 + 10 * index) * 1_000)
     }
 
     private val sortOrder2 = TestSortOrder("Sort Order 2","sort_order_2")
     private val result2: List<Song> = List(size = 10) { index ->
-        mockSong(duration = (5 + 10 * index) * 1_000)
+        stubSong(duration = (5 + 10 * index) * 1_000)
     }
 
     private val sortOrders: MutableList<SortOrder> = arrayListOf(sortOrder1, sortOrder2)
@@ -55,7 +55,7 @@ class GetAlbumSongsUseCaseTest {
     @Before
     fun setup() {
         MockitoAnnotations.initMocks(this)
-        album = mockKT()
+        album = stubKT()
         getAlbumSongsUseCase = GetAlbumSongsUseCase(
                 schedulerProvider,
                 repository,

@@ -1,7 +1,7 @@
 package com.frolo.music.model
 
-import com.frolo.music.model.test.mockSong
-import com.frolo.test.mockKT
+import com.frolo.music.model.test.stubSong
+import com.frolo.test.stubKT
 import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertTrue
 import org.junit.Rule
@@ -37,36 +37,36 @@ class ModelSerializationTest {
 
     @Test
     fun test_songSerialization() {
-        testSerialization(mockSong())
+        testSerialization(stubSong())
     }
 
     @Test
     fun test_albumSerialization() {
-        testSerialization(mockKT<Album>())
+        testSerialization(stubKT<Album>())
     }
 
     @Test
     fun test_artistSerialization() {
-        testSerialization(mockKT<Artist>())
+        testSerialization(stubKT<Artist>())
     }
 
     @Test
     fun test_playlistSerialization() {
-        testSerialization(mockKT<Playlist>())
+        testSerialization(stubKT<Playlist>())
     }
 
     @Test
     fun test_genreSerialization() {
-        testSerialization(mockKT<Genre>())
+        testSerialization(stubKT<Genre>())
     }
 
     @Test
     fun test_myFileSerialization() {
-        testSerialization(mockKT<MyFile>())
+        testSerialization(stubKT<MyFile>())
     }
 
     @Test
     fun test_mediaBucketSerialization() {
-        testSerialization(mockKT<MediaBucket>())
+        testSerialization(stubKT<MediaBucket>())
     }
 }

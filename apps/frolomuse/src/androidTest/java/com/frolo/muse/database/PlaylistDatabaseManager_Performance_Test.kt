@@ -6,7 +6,7 @@ import androidx.test.InstrumentationRegistry
 import androidx.test.runner.AndroidJUnit4
 import com.frolo.muse.di.impl.local.PlaylistDatabaseManager
 import com.frolo.music.model.Song
-import com.frolo.music.model.test.mockSongList
+import com.frolo.music.model.test.stubSongList
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -32,7 +32,7 @@ class PlaylistDatabaseManager_Performance_Test {
 
     private fun test_Performance_addPlaylistMembers(count: Int, criticalTime: Long) {
         val manager = obtainClearedPlaylistDatabaseManager()
-        val songs: List<Song> = mockSongList(size = count)
+        val songs: List<Song> = stubSongList(size = count)
         val playlist = manager.createPlaylist("TestPlaylist").blockingGet()
         val completable = manager.addPlaylistMembers(playlist.id, songs)
         val startTime = currentTimestamp()

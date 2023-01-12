@@ -7,8 +7,8 @@ import com.frolo.music.model.Artist
 import com.frolo.music.model.Media
 import com.frolo.muse.model.menu.SortOrderMenu
 import com.frolo.music.repository.AlbumRepository
-import com.frolo.test.mockKT
-import com.frolo.test.mockList
+import com.frolo.test.stubKT
+import com.frolo.test.stubList
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.whenever
 import io.reactivex.Flowable
@@ -37,7 +37,7 @@ class GetAlbumsOfArtistUseCaseTest {
     @Before
     fun setup() {
         MockitoAnnotations.initMocks(this)
-        artist = mockKT()
+        artist = stubKT()
         getAlbumsOfArtistUseCase = GetAlbumsOfArtistUseCase(
                 repository,
                 schedulerProvider,
@@ -89,7 +89,7 @@ class GetAlbumsOfArtistUseCaseTest {
     fun test_getMediaList_Success() {
         val subscriber = TestSubscriber.create<List<Media>>()
 
-        val testList: List<Album> = mockList(size = 10)
+        val testList: List<Album> = stubList(size = 10)
 
         whenever(repository.getAlbumsOfArtist(any()))
                 .thenReturn(Flowable.just(testList))

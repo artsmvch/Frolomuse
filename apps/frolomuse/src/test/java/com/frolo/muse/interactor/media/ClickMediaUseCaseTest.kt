@@ -8,10 +8,10 @@ import com.frolo.muse.common.toAudioSources
 import com.frolo.muse.router.AppRouter
 import com.frolo.music.repository.GenericMediaRepository
 import com.frolo.music.model.*
-import com.frolo.music.model.test.mockSong
-import com.frolo.music.model.test.mockSongList
-import com.frolo.test.mockKT
-import com.frolo.test.mockList
+import com.frolo.music.model.test.stubSong
+import com.frolo.music.model.test.stubSongList
+import com.frolo.test.stubKT
+import com.frolo.test.stubList
 import com.nhaarman.mockitokotlin2.*
 import io.reactivex.Single
 import io.reactivex.observers.TestObserver
@@ -49,8 +49,8 @@ class ClickMediaUseCaseTest {
 
     @Test
     fun test_clickOnSong_Play() {
-        val songs = mockSongList(size = 10)
-        val song = mockSong()
+        val songs = stubSongList(size = 10)
+        val song = stubSong()
 
         val songQueue = AudioSourceQueue.create(songs.toAudioSources())
 
@@ -74,8 +74,8 @@ class ClickMediaUseCaseTest {
 
     @Test
     fun test_clickOnSong_Toggle() {
-        val collection = mockSongList(size = 10)
-        val song = mockSong()
+        val collection = stubSongList(size = 10)
+        val song = stubSong()
 
         val testObserver = TestObserver.create<Unit>()
 
@@ -97,8 +97,8 @@ class ClickMediaUseCaseTest {
 
     @Test
     fun test_clickOnAlbum_OpenAlbum() {
-        val collection = mockList<Album>(size = 10)
-        val album = mockKT<Album>()
+        val collection = stubList<Album>(size = 10)
+        val album = stubKT<Album>()
 
         val testObserver = TestObserver.create<Unit>()
 
@@ -117,8 +117,8 @@ class ClickMediaUseCaseTest {
 
     @Test
     fun test_clickOnArtist_OpenArtist() {
-        val collection = mockList<Artist>(size = 10)
-        val artist = mockKT<Artist>()
+        val collection = stubList<Artist>(size = 10)
+        val artist = stubKT<Artist>()
 
         val testObserver = TestObserver.create<Unit>()
 
@@ -137,8 +137,8 @@ class ClickMediaUseCaseTest {
 
     @Test
     fun test_clickOnGenre_OpenGenre() {
-        val collection = mockList<Genre>(size = 10)
-        val genre = mockKT<Genre>()
+        val collection = stubList<Genre>(size = 10)
+        val genre = stubKT<Genre>()
 
         val testObserver = TestObserver.create<Unit>()
 
@@ -157,8 +157,8 @@ class ClickMediaUseCaseTest {
 
     @Test
     fun test_clickOnPlaylist_OpenPlaylist() {
-        val collection = mockList<Playlist>(size = 10)
-        val playlist = mockKT<Playlist>()
+        val collection = stubList<Playlist>(size = 10)
+        val playlist = stubKT<Playlist>()
 
         val testObserver = TestObserver.create<Unit>()
 
@@ -240,7 +240,7 @@ class ClickMediaUseCaseTest {
 
         val testObserver = TestObserver.create<Unit>()
 
-        val song = mockKT<Song>()
+        val song = stubKT<Song>()
         val songsFromMyFile = listOf(song)
         val allSongs = songsFromMyFile + songsFromMyFile
         val songQueue = AudioSourceQueue.create(allSongs.toAudioSources())

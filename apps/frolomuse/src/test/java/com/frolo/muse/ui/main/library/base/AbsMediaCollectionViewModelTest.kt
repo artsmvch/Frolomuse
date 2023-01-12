@@ -24,7 +24,7 @@ import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
-import com.frolo.music.model.test.mockMediaList
+import com.frolo.music.model.test.stubMediaList
 
 
 @RunWith(JUnit4::class)
@@ -92,7 +92,7 @@ class AbsMediaCollectionViewModelTest {
                 .doReturn(true)
 
         whenever(getMediaUseCase.getMediaList())
-                .doReturn(Flowable.just(mockMediaList(size = 10)))
+                .doReturn(Flowable.just(stubMediaList(size = 10)))
 
         viewModel.onActive()
 
@@ -191,7 +191,7 @@ class AbsMediaCollectionViewModelTest {
                 .doReturn(true)
 
         whenever(getMediaUseCase.getMediaList())
-                .doReturn(Flowable.just(mockMediaList(size = 10)))
+                .doReturn(Flowable.just(stubMediaList(size = 10)))
 
         // Assuming the user granted the permission
         viewModel.onReadPermissionGranted()
@@ -254,7 +254,7 @@ class AbsMediaCollectionViewModelTest {
 
         // After that
         whenever(getMediaUseCase.getMediaList())
-                .doReturn(Flowable.just(mockMediaList(size = 10)))
+                .doReturn(Flowable.just(stubMediaList(size = 10)))
 
         // Assuming the user granted the permission
         viewModel.onReadPermissionGranted()
@@ -286,7 +286,7 @@ class AbsMediaCollectionViewModelTest {
                 .doReturn(true)
 
         whenever(getMediaUseCase.getMediaList())
-                .doReturn(Flowable.just(mockMediaList(size = 0)))
+                .doReturn(Flowable.just(stubMediaList(size = 0)))
 
         viewModel.onActive()
 
@@ -314,7 +314,7 @@ class AbsMediaCollectionViewModelTest {
 
     @Test
     fun test_contextualMenu() {
-        val mockList = mockMediaList(size = 10)
+        val mockList = stubMediaList(size = 10)
         val mockMenu = ContextualMenu(
                 mockList[0],
                 true,

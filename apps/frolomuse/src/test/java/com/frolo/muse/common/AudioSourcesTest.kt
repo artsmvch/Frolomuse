@@ -6,7 +6,7 @@ import com.frolo.player.data.AudioSources
 import com.frolo.player.AudioType
 import com.frolo.muse.mockAudioSource
 import com.frolo.music.model.Song
-import com.frolo.music.model.test.mockSong
+import com.frolo.music.model.test.stubSong
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -117,7 +117,7 @@ class AudioSourcesTest {
     fun test_metadataExtensions2() {
 
         val songs = List(random.nextInt(10, 20)) { i ->
-            mockSong(id = i.toLong())
+            stubSong(id = i.toLong())
         }
 
         val audioSources = songs.toAudioSources()
