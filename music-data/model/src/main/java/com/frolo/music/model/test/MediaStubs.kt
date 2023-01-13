@@ -5,17 +5,13 @@ import com.frolo.music.model.Song
 import com.frolo.music.model.SongType
 import com.frolo.music.model.Songs
 import com.frolo.test.*
-import kotlin.random.Random
-
-
-private val sharedRandom: Random by lazy { Random(System.currentTimeMillis()) }
 
 private class TestMedia constructor(private val _id: Long): Media {
     override fun getId(): Long = _id
     override fun getKind(): Int = Media.NONE
 }
 
-fun stubMedia(): Media = TestMedia(sharedRandom.nextLong())
+fun stubMedia(): Media = TestMedia(randomLong())
 
 fun stubSong(
     id: Long = randomLong(),
