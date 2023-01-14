@@ -212,7 +212,7 @@ dependencies {
     def mockito_version = "3.10.0" // 2.23.0
     def mockito_kotlin_version = "2.1.0"
     // Instrumentation tests
-    androidTestImplementation "com.android.support.test:runner:1.0.2"
+    androidTestImplementation deps.test.runner
     androidTestImplementation "org.mockito:mockito-core:$mockito_version"
     androidTestImplementation "org.mockito:mockito-android:$mockito_version"
     androidTestImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockito_kotlin_version"

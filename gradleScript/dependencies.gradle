@@ -24,6 +24,11 @@ ext {
             splashScreen:           "androidx.core:core-splashscreen:1.0.0"
         ],
 
+        test : [
+            runner:                 "androidx.test:runner:1.5.2",
+            rules:                  "androidx.test:rules:1.5.2"
+        ],
+
         design : [
             material:               "com.google.android.material:material:1.6.0",
             recyclerView:           "androidx.recyclerview:recyclerview:1.2.1",
@@ -52,7 +57,7 @@ ext {
             livedata:               "androidx.lifecycle:lifecycle-livedata-ktx:2.4.1",
             extensions:             "androidx.lifecycle:lifecycle-extensions:2.1.0",
             viewmodel:              "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.1",
-            compiler:               "android.arch.lifecycle:compiler:1.1.1"
+            compiler:               "androidx.lifecycle:lifecycle-compiler:2.4.1"
         ],
 
         room : [

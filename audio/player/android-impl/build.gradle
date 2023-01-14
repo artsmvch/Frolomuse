@@ -40,10 +40,10 @@ dependencies {
     implementation deps.support.annotation
 
     // Instrumentation tests
-    androidTestImplementation "com.android.support.test:runner:1.0.2"
+    androidTestImplementation deps.test.runner
+    androidTestImplementation deps.test.rules
     androidTestImplementation 'org.mockito:mockito-core:2.23.0'
     androidTestImplementation 'org.mockito:mockito-android:2.23.0'
     androidTestImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.1.0"
-    androidTestImplementation 'com.android.support.test:rules:1.0.2'
     androidTestImplementation project(path: ':test-tools')
 }
