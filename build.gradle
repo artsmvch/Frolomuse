@@ -59,7 +59,7 @@ ext.loadLocalProperties = { project ->
         def localPropertiesFile = project.file("local.properties")
         return loadProperties(localPropertiesFile.absolutePath)
     } catch (IOException ignored) {
-        project.logger.error("local.properties file not found: " + filepath)
+        project.logger.error("local.properties file not found")
         return new Properties()
     }
 }
