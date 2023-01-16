@@ -17,6 +17,7 @@ def google_services_properties =
         optionallyLoadProperties(google_services_properties_file.absolutePath)
 def google_services_enabled =
         google_services_properties['com.frolo.muse.google_services_enabled'] == 'true'
+def local_properties = loadLocalProperties(project)
 
 android {
     signingConfigs {
@@ -47,6 +48,8 @@ android {
         buildConfigField "String", "BUILD_SCRIPT_TIME", "\"${script_time}\""
         buildConfigField "String", "DEVELOPER_EMAIL", "\"alexei.artsimovich@gmail.com\""
         buildConfigField "Integer", "SOUND_WAVEFORM_LENGTH", "65"
+
+        resValue "string", "admob_ad_unit_id_main_screen", local_properties["admob_ad_unit_id_main_screen"]
 
         vectorDrawables.useSupportLibrary = true
 

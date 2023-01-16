@@ -2,5 +2,4 @@
 <resources>
     <string translatable="false" name="admob_app_id">ca-app-pub-7541261863478589~5949831686</string>
     <string translatable="false" name="admob_ad_unit_id_test">ca-app-pub-3940256099942544/6300978111</string>
-    <string translatable="false" name="admob_ad_unit_id_main_screen">ca-app-pub-7541261863478589/7203203601</string>
 </resources>
