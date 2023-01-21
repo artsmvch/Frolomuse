@@ -54,6 +54,16 @@ ext.optionallyLoadProperties = { filepath ->
     }
 }
 
+ext.loadLocalProperties = { project ->
+    try {
+        def localPropertiesFile = project.file("local.properties")
+        return loadProperties(localPropertiesFile.absolutePath)
+    } catch (IOException ignored) {
+        project.logger.error("local.properties file not found")
+        return new Properties()
+    }
+}
+
 ext.isCI = {
     return System.getenv("GITHUB_ACTIONS") == "true"
 }
