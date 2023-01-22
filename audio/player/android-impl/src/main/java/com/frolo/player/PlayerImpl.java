@@ -2084,8 +2084,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
         mCurrentPositionInQueue = NO_POSITION_IN_QUEUE;
 
         // Finally, notifying about the shutdown and unregistering all observers
-        mObserverRegistry.dispatchShutdown();
-        mObserverRegistry.unregisterAll();
+        mObserverRegistry.dispatchShutdown(true);
     }
 
     /**
