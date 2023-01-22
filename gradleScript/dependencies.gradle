@@ -10,6 +10,10 @@ ext {
             annotationApi:          "javax.annotation:javax.annotation-api:1.3.2"
         ],
 
+        jetbrains: [
+            kotlinxMetadataJvm:       "org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.5.0"
+        ],
+
         support : [
             multidex:               "androidx.multidex:multidex:2.0.1",
             appCompat:              "androidx.appcompat:appcompat:1.2.0",
