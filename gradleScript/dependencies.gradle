@@ -1,7 +1,7 @@
 ext {
     versions = [
         minSdk:                     23,
-        compileSdk:                 32,
+        compileSdk:                 33,
         targetSdk:                  31
     ]
 
@@ -29,6 +29,7 @@ ext {
         ],
 
         test : [
+            monitor:                "androidx.test:monitor:1.6.1",
             runner:                 "androidx.test:runner:1.5.2",
             rules:                  "androidx.test:rules:1.5.0"
         ],

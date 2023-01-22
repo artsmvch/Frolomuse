@@ -9,13 +9,19 @@ import com.frolo.muse.di.impl.local.PlaylistDatabaseManager
 import com.frolo.muse.di.impl.local.SongRepositoryImpl
 import com.frolo.muse.kotlin.moveItem
 import com.frolo.music.model.Song
+import com.frolo.teststools.assets.TestAssetsRule
 import junit.framework.Assert.assertTrue
+import org.junit.Rule
 import org.junit.Test
+import org.junit.rules.TestRule
 import org.junit.runner.RunWith
 
 
 @RunWith(AndroidJUnit4::class)
 class PlaylistDatabaseManager_Test {
+
+    @get:Rule
+    val testAssetsRule: TestRule = TestAssetsRule.create()
 
     private fun obtainNukedPlaylistDatabaseManager(): PlaylistDatabaseManager {
         val context = InstrumentationRegistry.getTargetContext()

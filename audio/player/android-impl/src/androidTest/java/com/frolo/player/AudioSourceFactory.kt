@@ -22,7 +22,6 @@ internal class AudioSourceFactory(
     private fun getAllAudioSources(): List<AudioSource> {
         val dstList = ArrayList<AudioSource>()
         var index: Int = 0
-
         // Searching external storage for music files
         val resolver = context.contentResolver
         val audioCursor = resolver.query(URI, PROJECT, null, null, null)
@@ -40,14 +39,6 @@ internal class AudioSourceFactory(
                 } while (cursor.moveToNext())
             }
         }
-
-        // Searching assets for music files
-        val assets = context.assets
-        val assetAudioSources = assets.list("mp3")
-            .orEmpty()
-            .map { path -> mockAudioSource(index++.toLong(), path) }
-        dstList.addAll(assetAudioSources)
-
         return dstList
     }
 

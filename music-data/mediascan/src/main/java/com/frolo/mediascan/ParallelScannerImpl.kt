@@ -13,7 +13,6 @@ import java.util.concurrent.atomic.AtomicInteger
 internal class ParallelScannerImpl(
     private val context: Context,
     private val files: List<String>,
-    private val timeoutMillis: Long,
     private val callback: Scanner.Callback
 ): Scanner {
     

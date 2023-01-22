@@ -9,16 +9,21 @@ import com.nhaarman.mockitokotlin2.verify
 import junit.framework.TestCase.assertFalse
 import junit.framework.TestCase.assertTrue
 import androidx.test.rule.GrantPermissionRule
+import com.frolo.teststools.assets.TestAssetsRule
 
 import org.junit.Rule
+import org.junit.rules.TestRule
 
 
 @Suppress("ClassName")
 abstract class PlayerImpl_Base_Test {
 
     @get:Rule
-    val runtimePermissionRule: GrantPermissionRule =
+    val runtimePermissionRule: TestRule =
         GrantPermissionRule.grant(Manifest.permission.READ_EXTERNAL_STORAGE)
+
+    @get:Rule
+    val testAssetsRule: TestRule = TestAssetsRule.create()
 
     /**
      * Creates [PlayerImpl] instance for testing.

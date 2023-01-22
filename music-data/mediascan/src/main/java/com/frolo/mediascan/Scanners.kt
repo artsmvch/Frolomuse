@@ -22,9 +22,8 @@ object Scanners {
     fun createParallelScanner(
         context: Context,
         files: List<String>,
-        timeoutMillis: Long,
         callback: Scanner.Callback
     ): Scanner {
-        return ParallelScannerImpl(context, files, timeoutMillis, callback)
+        return ParallelScannerImpl(context, files, callback)
     }
 }

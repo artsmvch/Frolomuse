@@ -29,7 +29,7 @@ android {
 }
 
 dependencies {
-    implementation project(path: ':test-tools')
+    implementation project(path: ':test-tools:stubs')
 
     implementation deps.support.annotation
 
