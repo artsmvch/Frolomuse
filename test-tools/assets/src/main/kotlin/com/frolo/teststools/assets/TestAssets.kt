@@ -73,7 +73,7 @@ internal object TestAssets {
                 scanCountDownLatch.count
             }
         }
-        Scanners.createParallelScanner(context, filePaths, scanCallback)
+        Scanners.createParallelScanner(context, filePaths, scanCallback).start()
         scanCountDownLatch.await(10, TimeUnit.SECONDS)
     }
 }
