@@ -70,7 +70,7 @@ internal object TestAssets {
                 scanCountDownLatch.countDown()
             }
             override fun onScanCancelled() {
-                scanCountDownLatch.count
+                scanCountDownLatch.countDown()
             }
         }
         Scanners.createParallelScanner(context, filePaths, scanCallback).start()
