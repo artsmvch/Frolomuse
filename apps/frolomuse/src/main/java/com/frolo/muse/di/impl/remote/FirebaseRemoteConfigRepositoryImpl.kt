@@ -42,7 +42,7 @@ class FirebaseRemoteConfigRepositoryImpl(
         val defaultConfig = AdMobBannerConfig(
             isEnabled = true,
             unitId = context.getString(R.string.admob_ad_unit_id_main_screen),
-            minFirstInstallTime = 1673348400, // January 10, 2023 11:00:00 AM
+            minFirstInstallTime = 1672873200, // January 5, 2023 11:00:00 AM
             minLaunchCount = 10
         )
         return FirebaseRemoteConfigCache
