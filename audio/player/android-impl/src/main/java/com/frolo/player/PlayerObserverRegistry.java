@@ -49,12 +49,12 @@ final class PlayerObserverRegistry {
         static final int MSG_CURRENT_POSITION_CHANGED = 6;
         static final int MSG_SHUFFLE_MODE_CHANGED = 7;
         static final int MSG_REPEAT_MODE_CHANGED = 8;
-        static final int MSG_SHUTDOWN = 9;
-        static final int MSG_AB_CHANGED = 10;
-        static final int MSG_SPEED_CHANGED = 11;
-        static final int MSG_PITCH_CHANGED = 12;
-        static final int MSG_INTERNAL_ERROR_OCCURRED = 13;
-        static final int MSG_CURRENT_ITEM_UPDATED = 14;
+        static final int MSG_AB_CHANGED = 9;
+        static final int MSG_SPEED_CHANGED = 10;
+        static final int MSG_PITCH_CHANGED = 11;
+        static final int MSG_INTERNAL_ERROR_OCCURRED = 12;
+        static final int MSG_CURRENT_ITEM_UPDATED = 13;
+        static final int MSG_SHUTDOWN = 14;
 
         DispatcherHandler(Looper looper) {
             super(looper);
@@ -139,6 +139,9 @@ final class PlayerObserverRegistry {
                 case MSG_SHUTDOWN: {
                     for (PlayerObserver observer : mObservers) {
                         observer.onShutdown(getPlayer());
+                    }
+                    if (msg.obj instanceof Boolean && (boolean) msg.obj) {
+                        mObservers.clear();
                     }
                     break;
                 }
@@ -346,20 +349,11 @@ final class PlayerObserverRegistry {
         dispatch(message);
     }
 
-    synchronized void dispatchShutdown() {
-        mHandler.removeMessages(DispatcherHandler.MSG_PREPARED);
-        mHandler.removeMessages(DispatcherHandler.MSG_PLAYBACK_STARTED);
-        mHandler.removeMessages(DispatcherHandler.MSG_PLAYBACK_PAUSED);
-        mHandler.removeMessages(DispatcherHandler.MSG_SOUGHT_TO);
-        mHandler.removeMessages(DispatcherHandler.MSG_QUEUE_CHANGED);
-        mHandler.removeMessages(DispatcherHandler.MSG_CURRENT_ITEM_CHANGED);
-        mHandler.removeMessages(DispatcherHandler.MSG_SHUFFLE_MODE_CHANGED);
-        mHandler.removeMessages(DispatcherHandler.MSG_REPEAT_MODE_CHANGED);
-        mHandler.removeMessages(DispatcherHandler.MSG_SHUTDOWN);
-        mHandler.removeMessages(DispatcherHandler.MSG_AB_CHANGED);
-
+    synchronized void dispatchShutdown(boolean cleanUp) {
+        mHandler.removeCallbacksAndMessages(null);
         final Message message =
                 mHandler.obtainMessage(DispatcherHandler.MSG_SHUTDOWN);
+        message.obj = cleanUp;
         dispatch(message);
     }
 

@@ -5,10 +5,10 @@ apply plugin: 'kotlin-kapt'
 apply plugin: 'com.frolo.plugin.bundle_check'
 apply plugin: 'com.frolo.plugin.task_utils'
 
-def version_code = 156
+def version_code = 157
 def version_major = 7
 def version_minor = 2
-def version_patch = 6
+def version_patch = 7
 def version_name = "${version_major}.${version_minor}.${version_patch}"
 
 def script_time = new Date().format('MM.dd.yyyy:HH.mm.ss')
@@ -143,6 +143,8 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    // https://stackoverflow.com/questions/74180208/kotlin-1-7-10-with-dagger-a-failure-occurred-while-executing-org-jetbrains-kotl
+    kapt deps.jetbrains.kotlinxMetadataJvm
 
     // Ads
     implementation project(path: ':ads:admob')
@@ -219,14 +221,15 @@ dependencies {
     androidTestImplementation "org.mockito:mockito-core:$mockito_version"
     androidTestImplementation "org.mockito:mockito-android:$mockito_version"
     androidTestImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockito_kotlin_version"
-    androidTestImplementation project(path: ':test-tools')
+    androidTestImplementation project(path: ':test-tools:stubs')
+    androidTestImplementation project(path: ':test-tools:assets')
 
     // Unit tests
     testImplementation 'junit:junit:4.13.2'
     testImplementation "org.mockito:mockito-core:$mockito_version"
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockito_kotlin_version"
     testImplementation "androidx.arch.core:core-testing:2.1.0"
-    testImplementation project(path: ':test-tools')
+    testImplementation project(path: ':test-tools:stubs')
 
     // Arch
     implementation deps.lifecycle.extensions

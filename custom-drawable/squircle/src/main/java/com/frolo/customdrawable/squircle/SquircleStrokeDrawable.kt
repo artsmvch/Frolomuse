@@ -45,7 +45,7 @@ class SquircleStrokeDrawable(
         buildPath(bounds, strokeWidth)
     }
 
-    override fun onBoundsChange(bounds: Rect?) {
+    override fun onBoundsChange(bounds: Rect) {
         buildPath(bounds, strokeWidth)
     }
 

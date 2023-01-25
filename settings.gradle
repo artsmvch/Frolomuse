@@ -76,4 +76,5 @@ include ':material-support'
 include ':arch-support'
 
 // Test tools
-include ':test-tools'
+include ':test-tools:stubs'
+include ':test-tools:assets'

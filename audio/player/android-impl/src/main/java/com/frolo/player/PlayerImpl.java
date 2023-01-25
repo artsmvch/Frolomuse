@@ -36,7 +36,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * {@link PlayerImpl#processEngineTask(Runnable, Object, boolean)} or {@link PlayerImpl#processEngineTask(Runnable)} methods.
  * All public methods are non-blocking and can be called from any thread.
  * Events are dispatched on the main thread using {@link PlayerObserverRegistry}.
- * The implementation uses {@link MediaPlayer} as the engine and uses {@link AudioFxApplicable} as the AudioFx.
+ * The implementation uses {@link MediaPlayer} under the hood.
  */
 public final class PlayerImpl implements Player, AdvancedPlaybackParams {
 
@@ -2084,8 +2084,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
         mCurrentPositionInQueue = NO_POSITION_IN_QUEUE;
 
         // Finally, notifying about the shutdown and unregistering all observers
-        mObserverRegistry.dispatchShutdown();
-        mObserverRegistry.unregisterAll();
+        mObserverRegistry.dispatchShutdown(true);
     }
 
     /**
