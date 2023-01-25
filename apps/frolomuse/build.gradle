@@ -234,6 +234,9 @@ dependencies {
     kapt deps.lifecycle.compiler
     implementation project(path: ':arch-support')
 
+    // https://stackoverflow.com/questions/74180208/kotlin-1-7-10-with-dagger-a-failure-occurred-while-executing-org-jetbrains-kotl
+    kapt "org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.4.2"
+
     // Support
     implementation deps.support.multidex
     implementation deps.support.appCompat
