@@ -1,4 +1,4 @@
-package com.frolo.muse.ui.main.audiofx.params
+package com.frolo.muse.ui.main.audiofx2.params
 
 import android.app.Dialog
 import android.os.Bundle

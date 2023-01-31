@@ -8,8 +8,7 @@ import com.frolo.muse.memory.MemoryWatcher
 import com.frolo.muse.memory.MemoryWatcherRegistry
 import com.frolo.muse.rating.RatingViewModel
 import com.frolo.muse.ui.main.MainViewModel
-import com.frolo.muse.ui.main.audiofx.AudioFxViewModel
-import com.frolo.muse.ui.main.audiofx.params.PlaybackParamsViewModel
+import com.frolo.muse.ui.main.audiofx2.params.PlaybackParamsViewModel
 import com.frolo.muse.ui.main.library.LibraryViewModel
 import com.frolo.muse.ui.main.library.albums.AlbumListViewModel
 import com.frolo.muse.ui.main.library.artists.ArtistListViewModel
@@ -153,11 +152,6 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(SearchViewModel::class)
     abstract fun bindSearchViewModel(viewModel: SearchViewModel): ViewModel
-
-    @Binds
-    @IntoMap
-    @ViewModelKey(AudioFxViewModel::class)
-    abstract fun bindAudioFxViewModel(viewModel: AudioFxViewModel): ViewModel
 
     @Binds
     @IntoMap

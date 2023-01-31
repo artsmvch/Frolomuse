@@ -34,7 +34,6 @@ class TestAppRouter : AppRouter {
     override fun openVisualizer() = Unit
     override fun openAudioFx() = Unit
     override fun openPlaybackParams() = Unit
-    override fun savePreset(bandLevels: ShortArray) = Unit
     override fun openSettings() = Unit
     override fun openPlaybackFadingParams() = Unit
     override fun openThemeChooser() = Unit

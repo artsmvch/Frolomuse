@@ -12,7 +12,6 @@ import com.frolo.muse.repository.*
 import com.frolo.muse.router.AppRouter
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.startup.AppDebugController
-import com.frolo.muse.ui.main.audiofx.preset.SavePresetVMFactory
 import com.frolo.muse.ui.main.editor.album.AlbumEditorVMFactory
 import com.frolo.muse.ui.main.editor.playlist.PlaylistEditorVMFactory
 import com.frolo.muse.ui.main.editor.song.SongEditorVMFactory
@@ -52,7 +51,6 @@ interface ActivityComponentInjector {
     fun inject(vmf: PosterVMFactory)
     fun inject(vmf: AddMediaToPlaylistVMFactory)
     fun inject(vmf: AddSongToPlaylistVMFactory)
-    fun inject(vmf: SavePresetVMFactory)
     fun inject(vmf: LyricsVMFactory)
     fun inject(vmf: CreatePlaylistVMFactory)
     fun inject(vmf: AudioBucketVMFactory)

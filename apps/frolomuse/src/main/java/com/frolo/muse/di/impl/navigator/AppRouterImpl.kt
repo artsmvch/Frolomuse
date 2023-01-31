@@ -6,8 +6,7 @@ import android.provider.Settings
 import com.frolo.muse.router.AppRouter
 import com.frolo.muse.ui.*
 import com.frolo.muse.ui.base.SimpleFragmentNavigator
-import com.frolo.muse.ui.main.audiofx.params.PlaybackParamsDialog
-import com.frolo.muse.ui.main.audiofx.preset.SavePresetDialog
+import com.frolo.muse.ui.main.audiofx2.params.PlaybackParamsDialog
 import com.frolo.muse.ui.main.audiofx2.AudioFx2Fragment
 import com.frolo.muse.ui.main.audiofx2.VisualizerHostFragment
 import com.frolo.muse.ui.main.editor.album.AlbumEditorDialog
@@ -206,12 +205,6 @@ abstract class AppRouterImpl(
     override fun openPlaybackParams() {
         checkThread()
         val fragment = PlaybackParamsDialog.newInstance()
-        navigator.pushDialog(fragment)
-    }
-
-    override fun savePreset(bandLevels: ShortArray) {
-        checkThread()
-        val fragment = SavePresetDialog.newInstance(bandLevels)
         navigator.pushDialog(fragment)
     }
 

@@ -129,10 +129,6 @@ class AppRouterDelegate(
         delegate?.openPlaybackParams()
     }
 
-    override fun savePreset(bandLevels: ShortArray) {
-        delegate?.savePreset(bandLevels)
-    }
-
     override fun openSettings() {
         delegate?.openSettings()
     }

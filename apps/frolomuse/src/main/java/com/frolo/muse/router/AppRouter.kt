@@ -64,8 +64,6 @@ interface AppRouter {
 
     fun openPlaybackParams()
 
-    fun savePreset(bandLevels: ShortArray)
-
     fun openSettings()
 
     fun openPlaybackFadingParams()

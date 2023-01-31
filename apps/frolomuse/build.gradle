@@ -164,6 +164,7 @@ dependencies {
     implementation project(path: ':music-data:mediascan')
 
     // Player
+    // TODO: remove once all users have migrated to AudioFx2
     implementation project(path: ':audio:audiofx:api')
     implementation project(path: ':audio:audiofx:android-impl')
     implementation project(path: ':audio:player:api')
