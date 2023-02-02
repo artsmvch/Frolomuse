@@ -15,13 +15,6 @@
         <item name="android:windowExitAnimation">@anim/exit_activated_premium_trial</item>
     </style>
 
-    <style name="Base.AppTheme.Animation.Activity" parent="android:style/Animation.Activity">
-        <item name="android:activityOpenEnterAnimation">@anim/enter_activity</item>
-        <item name="android:activityOpenExitAnimation">@anim/exit_activity</item>
-        <item name="android:activityCloseEnterAnimation">@anim/enter_activity</item>
-        <item name="android:activityCloseExitAnimation">@anim/exit_activity</item>
-    </style>
-
     <!--Preferences-->
     <style name="PreferenceThemeOverlay.Tinted" parent="PreferenceThemeOverlay">
 <!--        <item name="android:tint">?iconTintMuted</item>-->
@@ -196,10 +189,6 @@
 
     <!--AppBarLayout-->
     <style name="Base.AppTheme.AppBarLayout" parent="Widget.Design.AppBarLayout">
-    </style>
-
-    <style name="Base.AppTheme.AppBarLayout.Lifted" parent="Base.AppTheme.AppBarLayout">
-        <item name="android:stateListAnimator">@animator/appbar_elevation</item>
     </style>
 
     <!--RecyclerView-->
