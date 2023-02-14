@@ -1,4 +1,4 @@
-package com.frolo.muse
+package com.frolo.core.ui
 
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffColorFilter

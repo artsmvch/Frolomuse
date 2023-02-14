@@ -1,4 +1,4 @@
-package com.frolo.muse
+package com.frolo.core.ui
 
 import android.view.LayoutInflater
 import android.view.View
