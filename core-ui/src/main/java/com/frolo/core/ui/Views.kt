@@ -11,8 +11,8 @@ import androidx.core.view.forEach
  * Inflates a view for the given [layoutId] applying default layout params of [this] view group.
  * NOTE: this does not attach the inflated child to [this] view group.
  */
-fun ViewGroup.inflateChild(@LayoutRes layoutId: Int): View {
-    return LayoutInflater.from(context).inflate(layoutId, this, false)
+fun ViewGroup.inflateChild(@LayoutRes layoutId: Int, attachToRoot: Boolean = false): View {
+    return LayoutInflater.from(context).inflate(layoutId, this, attachToRoot)
 }
 
 /**
