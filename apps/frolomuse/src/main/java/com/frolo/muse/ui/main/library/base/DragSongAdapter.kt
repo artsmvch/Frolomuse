@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.RecyclerView
+import com.frolo.core.ui.inflateChild
 import com.frolo.muse.R
-import com.frolo.muse.inflateChild
 import com.frolo.muse.thumbnails.ThumbnailLoader
 import com.frolo.muse.ui.base.adapter.ItemTouchHelperAdapter
 import com.frolo.muse.ui.getArtistString

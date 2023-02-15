@@ -3,9 +3,9 @@ package com.frolo.muse.ui.main.settings.libs
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.frolo.core.ui.inflateChild
 
 import com.frolo.muse.R
-import com.frolo.muse.inflateChild
 import com.frolo.muse.model.lib.Lib
 
 import kotlinx.android.synthetic.main.item_lib.view.*

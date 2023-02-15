@@ -3,8 +3,8 @@ package com.frolo.muse.ui.main.settings.premium
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.frolo.core.ui.inflateChild
 import com.frolo.muse.R
-import com.frolo.muse.inflateChild
 import kotlinx.android.synthetic.main.item_premium_benefit.view.*
 
 

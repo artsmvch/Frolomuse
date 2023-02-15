@@ -5,9 +5,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
+import com.frolo.core.ui.inflateChild
 import com.frolo.debug.DebugUtils
 import com.frolo.muse.R
-import com.frolo.muse.inflateChild
 import com.frolo.music.model.Album
 import com.frolo.muse.thumbnails.ThumbnailLoader
 import com.frolo.muse.ui.getNumberOfTracksString

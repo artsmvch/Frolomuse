@@ -2,8 +2,8 @@ package com.frolo.muse.ui.main.library.buckets
 
 import android.view.View
 import android.view.ViewGroup
+import com.frolo.core.ui.inflateChild
 import com.frolo.muse.R
-import com.frolo.muse.inflateChild
 import com.frolo.music.model.MediaBucket
 import com.frolo.muse.ui.main.library.base.BaseAdapter
 import com.frolo.muse.ui.main.library.base.sectionIndexAt

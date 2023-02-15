@@ -3,8 +3,8 @@ package com.frolo.muse.ui.main.library.playlists
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
+import com.frolo.core.ui.inflateChild
 import com.frolo.muse.R
-import com.frolo.muse.inflateChild
 import com.frolo.music.model.Playlist
 import com.frolo.muse.thumbnails.ThumbnailLoader
 import com.frolo.muse.ui.getDateAddedString

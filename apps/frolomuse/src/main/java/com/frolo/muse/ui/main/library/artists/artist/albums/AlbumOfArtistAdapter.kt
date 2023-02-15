@@ -6,8 +6,8 @@ import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.RequestManager
 import com.frolo.core.ui.glide.makeAlbumArtRequest
+import com.frolo.core.ui.inflateChild
 import com.frolo.muse.R
-import com.frolo.muse.inflateChild
 import com.frolo.muse.ui.getNameString
 import com.frolo.muse.ui.main.library.base.BaseAdapter
 import com.frolo.music.model.Album

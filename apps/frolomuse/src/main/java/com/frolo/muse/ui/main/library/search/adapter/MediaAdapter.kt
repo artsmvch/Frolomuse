@@ -11,6 +11,7 @@ import androidx.annotation.ColorInt
 import androidx.core.graphics.ColorUtils
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.frolo.core.ui.inflateChild
 import com.frolo.muse.*
 import com.frolo.muse.R
 import com.frolo.muse.thumbnails.ThumbnailLoader

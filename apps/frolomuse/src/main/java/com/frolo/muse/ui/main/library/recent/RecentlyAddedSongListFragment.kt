@@ -11,9 +11,9 @@ import com.frolo.ui.StyleUtils
 import com.frolo.arch.support.observeNonNull
 import com.frolo.core.ui.glide.GlideAlbumArtHelper
 import com.frolo.core.ui.glide.observe
+import com.frolo.core.ui.setIconTint
 import com.frolo.music.model.Song
 import com.frolo.muse.model.menu.RecentPeriodMenu
-import com.frolo.muse.setIconTint
 import com.frolo.muse.thumbnails.provideThumbnailLoader
 import com.frolo.muse.ui.main.library.base.SimpleMediaCollectionFragment
 import com.frolo.muse.ui.main.library.base.SongAdapter

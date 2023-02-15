@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.frolo.muse.*
 import com.frolo.arch.support.observe
 import com.frolo.arch.support.observeNonNull
+import com.frolo.core.ui.removeCallbacksSafely
 import com.frolo.muse.di.activityComponent
 import com.frolo.music.model.Playlist
 import com.frolo.music.model.Song
