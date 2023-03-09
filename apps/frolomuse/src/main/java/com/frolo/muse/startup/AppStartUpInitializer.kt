@@ -197,10 +197,10 @@ class AppStartUpInitializer @Inject constructor(
 //        ).start()
 
         if (BuildConfig.DEBUG) {
-            AnrDetectors.create(
-                looper = application.mainLooper,
-                uiContextProvider = { ApplicationWatcher.foregroundActivity }
-            ).start()
+//            AnrDetectors.create(
+//                looper = application.mainLooper,
+//                uiContextProvider = { ApplicationWatcher.foregroundActivity }
+//            ).start()
         }
     }
 

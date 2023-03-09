@@ -25,11 +25,11 @@ class LibraryViewModel @Inject constructor(
 ): BaseAndroidViewModel(application, eventLogger) {
 
     private val _adView by lazy {
-        MutableLiveData<AdView>(null).apply { loadAdConfigAsync() }
+        MutableLiveData<AdView>(null).apply { loadAdAsync() }
     }
-    val adView: LiveData<AdView> get() = _adView.distinctUntilChanged()
+    val adView: LiveData<AdView> by lazy { _adView.distinctUntilChanged() }
 
-    private fun loadAdConfigAsync() {
+    private fun loadAdAsync() {
         val startTime = System.currentTimeMillis()
         adMobBannerUseCase.getAdMobBannerConfig()
             .observeOn(schedulerProvider.main())

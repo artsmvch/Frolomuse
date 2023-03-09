@@ -30,3 +30,8 @@ fun View.doTraversal(action: (View) -> Unit) {
         }
     }
 }
+
+fun View.removeFromParent() {
+    val parent = this.parent as? ViewGroup ?: return
+    parent.removeView(this)
+}
