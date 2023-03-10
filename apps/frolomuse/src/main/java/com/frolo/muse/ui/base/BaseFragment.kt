@@ -80,9 +80,18 @@ abstract class BaseFragment:
         rxPermissions = RxPermissions(this)
     }
 
+    override fun onStart() {
+        super.onStart()
+        onVisibilityChanged(isVisibleToUser = true)
+    }
+
     override fun onStop() {
         super.onStop()
+        onVisibilityChanged(isVisibleToUser = false)
         rxPermissionDisposable?.dispose()
+    }
+
+    protected open fun onVisibilityChanged(isVisibleToUser: Boolean) {
     }
 
     override fun onDestroyView() {

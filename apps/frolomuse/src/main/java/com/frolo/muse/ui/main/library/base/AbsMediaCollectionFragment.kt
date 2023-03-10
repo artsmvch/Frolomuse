@@ -67,11 +67,16 @@ abstract class AbsMediaCollectionFragment <E: Media>: BaseFragment(),
 
     override fun onStop() {
         viewModel.onStop()
-        // Not sure if we should finish it here,
-        // But we need finish the action mode, if the fragment is not visible.
-        actionMode?.finish()
-        actionMode = null
         super.onStop()
+    }
+
+    override fun onVisibilityChanged(isVisibleToUser: Boolean) {
+        if (!isVisibleToUser) {
+            // Not sure if we should finish it here,
+            // But we need finish the action mode, if the fragment is not visible.
+            actionMode?.finish()
+            actionMode = null
+        }
     }
 
     override fun handleOnBackPressed(): Boolean {
