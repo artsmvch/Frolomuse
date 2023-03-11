@@ -44,7 +44,7 @@ android {
 
         resValue "string", "app_name", "Frolomuse"
 
-        resValue "string", "admob_app_id", local_properties["com.admob.app_id"]
+        resValue "string", "admob_app_id", local_properties["com.admob.app_id"] ?: ""
         resValue "string", "admob_unit_id_library_screen", local_properties["com.admob.unit_id.library_banner"] ?: ""
 
         buildConfigField "Boolean", "GOOGLE_SERVICES_ENABLED", "$google_services_enabled"
