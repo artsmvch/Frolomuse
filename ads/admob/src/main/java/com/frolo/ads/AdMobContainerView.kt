@@ -51,7 +51,11 @@ class AdMobContainerView @JvmOverloads constructor(
                     .setDuration(ANIMATION_APPEARANCE_DURATION)
                     .start()
             }
-            .doLogging { msg -> Log.d(LOG_TAG, msg.orEmpty()) }
+            .doLogging { msg ->
+                if (BuildConfig.DEBUG) {
+                    Log.d(LOG_TAG, msg.orEmpty())
+                }
+            }
             .build()
         val adRequest = AdRequest.Builder()
             .build()
