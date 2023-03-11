@@ -41,7 +41,7 @@ class FirebaseRemoteConfigRepositoryImpl(
     override fun getMainAdMobBannerConfig(): Single<AdMobBannerConfig> {
         val defaultConfig = AdMobBannerConfig(
             isEnabled = true,
-            unitId = context.getString(R.string.admob_ad_unit_id_main_screen),
+            unitId = context.getString(R.string.admob_unit_id_library_screen),
             minFirstInstallTime = 1672873200, // January 5, 2023 11:00:00 AM
             minLaunchCount = 10
         )
