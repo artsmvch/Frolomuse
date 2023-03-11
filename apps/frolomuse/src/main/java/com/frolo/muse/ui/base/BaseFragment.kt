@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.os.AsyncTask
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.CallSuper
 import androidx.annotation.ColorInt
 import androidx.annotation.StringRes
 import androidx.annotation.UiThread
@@ -80,15 +81,15 @@ abstract class BaseFragment:
         rxPermissions = RxPermissions(this)
     }
 
-    override fun onStart() {
-        super.onStart()
-        onVisibilityChanged(isVisibleToUser = true)
-    }
-
     override fun onStop() {
         super.onStop()
-        onVisibilityChanged(isVisibleToUser = false)
         rxPermissionDisposable?.dispose()
+    }
+
+    @CallSuper
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        onVisibilityChanged(isVisibleToUser = !hidden)
     }
 
     protected open fun onVisibilityChanged(isVisibleToUser: Boolean) {

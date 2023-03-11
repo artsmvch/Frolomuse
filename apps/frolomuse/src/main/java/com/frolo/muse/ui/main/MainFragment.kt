@@ -434,6 +434,7 @@ internal class MainFragment :
             TAB_INDEX_DEFAULT
 
         fragNavController = FragNavController(fragmentManager, R.id.container).apply {
+            fragmentHideStrategy = FragNavController.HIDE
             defaultTransactionOptions = FragNavTransactionOptions
                 .newBuilder()
                 .customAnimations(
