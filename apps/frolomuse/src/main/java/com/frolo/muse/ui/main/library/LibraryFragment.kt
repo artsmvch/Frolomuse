@@ -154,7 +154,7 @@ class LibraryFragment: BaseFragment(),
 
     override fun onDestroyView() {
         vp_sections.removeOnPageChangeListener(onPageChangeCallback)
-        viewModel.adView.value?.removeFromParent()
+        ad_mob_container.clearBanner()
         super.onDestroyView()
     }
 
@@ -201,16 +201,12 @@ class LibraryFragment: BaseFragment(),
     }
 
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
-        adView.observe(owner, ::setAdView)
-    }
-
-    private fun setAdView(adView: AdView?) {
-        ad_container.isVisible = adView != null
-        if (adView != null && !ad_container.contains(adView)) {
-            (adView.parent as? ViewGroup)?.removeAllViews()
-            ad_container.addView(adView)
-        } else if (adView == null) {
-            ad_container.removeAllViews()
+        bannerConfig.observe(owner) { config ->
+            if (config != null) {
+                ad_mob_container.loadBanner(config.unitId)
+            } else {
+                ad_mob_container.clearBanner()
+            }
         }
     }
 

@@ -7,12 +7,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <FrameLayout
-        android:id="@+id/ad_container"
+    <com.frolo.ads.AdMobContainerView
+        android:id="@+id/ad_mob_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_scrollFlags="noScroll"
-        android:visibility="gone"/>
+        app:layout_scrollFlags="noScroll"/>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
