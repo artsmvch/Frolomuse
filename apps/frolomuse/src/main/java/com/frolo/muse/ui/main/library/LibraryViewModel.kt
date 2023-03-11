@@ -26,7 +26,7 @@ class LibraryViewModel @Inject constructor(
 
     private fun loadAdConfigAsync(liveData: MutableLiveData<BannerConfig>) {
         val startTime = System.currentTimeMillis()
-        adMobBannerUseCase.getAdMobBannerConfig()
+        adMobBannerUseCase.getLibraryAdMobBannerConfig()
             .observeOn(schedulerProvider.main())
             .subscribeFor { bannerState ->
                 val elapsedTime = System.currentTimeMillis() - startTime

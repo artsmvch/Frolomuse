@@ -9,5 +9,5 @@ interface RemoteConfigRepository {
     fun isPlayerWakeLockEnabled(): Single<Boolean>
     fun isSnowfallFeatureEnabled(): Single<Boolean>
     fun isDonationFeatureEnabled(): Single<Boolean>
-    fun getMainAdMobBannerConfig(): Single<AdMobBannerConfig>
+    fun getLibraryAdMobBannerConfig(): Single<AdMobBannerConfig>
 }

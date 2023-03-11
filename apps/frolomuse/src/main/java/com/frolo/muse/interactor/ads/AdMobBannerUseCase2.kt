@@ -6,6 +6,7 @@ import com.frolo.billing.BillingManager
 import com.frolo.billing.PurchaseHistoryRecord
 import com.frolo.billing.SkuType
 import com.frolo.logger.api.Logger
+import com.frolo.muse.BuildConfig
 import com.frolo.muse.BuildInfo
 import com.frolo.muse.android.firstPackageInstallTime
 import com.frolo.muse.model.ads.AdMobBannerConfig
@@ -21,9 +22,9 @@ class AdMobBannerUseCase2 @Inject constructor(
     private val remoteConfigRepository: RemoteConfigRepository,
     private val appLaunchInfoProvider: AppLaunchInfoProvider,
 ) {
-    fun getAdMobBannerConfig(): Single<BannerState> {
+    fun getLibraryAdMobBannerConfig(): Single<BannerState> {
         return Single
-            .zip(hasNonEmptyPurchaseHistory(), remoteConfigRepository.getMainAdMobBannerConfig()) { hasNonEmptyPurchaseHistory, config ->
+            .zip(hasNonEmptyPurchaseHistory(), remoteConfigRepository.getLibraryAdMobBannerConfig()) { hasNonEmptyPurchaseHistory, config ->
                 when {
                     BuildInfo.isDebug() -> {
                         BannerState.Enabled(AdMobUtils.TEST_BANNER_ID)
@@ -61,6 +62,7 @@ class AdMobBannerUseCase2 @Inject constructor(
 
     private fun shouldCreateAdMobBanner(config: AdMobBannerConfig): Boolean {
         return config.isEnabled &&
+                config.minAppVersionCode <= BuildConfig.VERSION_CODE &&
                 config.minLaunchCount <= appLaunchInfoProvider.launchCount &&
                 config.minFirstInstallTime <= context.firstPackageInstallTime
     }

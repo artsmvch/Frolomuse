@@ -38,20 +38,22 @@ class FirebaseRemoteConfigRepositoryImpl(
             .onErrorReturnItem(false)
     }
 
-    override fun getMainAdMobBannerConfig(): Single<AdMobBannerConfig> {
+    override fun getLibraryAdMobBannerConfig(): Single<AdMobBannerConfig> {
         val defaultConfig = AdMobBannerConfig(
             isEnabled = true,
             unitId = context.getString(R.string.admob_unit_id_library_screen),
-            minFirstInstallTime = 1672873200, // January 5, 2023 11:00:00 AM
+            minAppVersionCode = 158,
+            minFirstInstallTime = 1678554000, // Sat Mar 11 2023 17:00:00 GMT+0000
             minLaunchCount = 10
         )
         return FirebaseRemoteConfigCache
-            .getString(FirebaseRemoteConfigUtil.MAIN_ADMOB_BANNER_CONFIG)
+            .getString(FirebaseRemoteConfigUtil.LIBRARY_ADMOB_BANNER_CONFIG)
             .map { rawConfig ->
                 val configJson = JSONObject(rawConfig)
                 AdMobBannerConfig(
                     isEnabled = configJson.optBoolean("is_enabled", defaultConfig.isEnabled),
                     unitId = configJson.optString("unit_id", defaultConfig.unitId),
+                    minAppVersionCode = configJson.optLong("min_app_version_code", defaultConfig.minAppVersionCode),
                     minFirstInstallTime = configJson.optLong("min_first_install_time", defaultConfig.minFirstInstallTime),
                     minLaunchCount = configJson.optInt("min_launch_count", defaultConfig.minLaunchCount)
                 )
