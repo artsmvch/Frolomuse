@@ -116,7 +116,10 @@ class MediaScanService : Service() {
      */
     private fun cancelAllScanners() {
         synchronized(scanners) {
-            scanners.forEach { _, info -> info.scanner.cancel() }
+            // Need to operate on a copy because the scanners collection is modified in the loop
+            CollectionUtils.copy(scanners).forEach { _, info ->
+                info.scanner.cancel()
+            }
             scanners.clear()
         }
     }
