@@ -27,10 +27,10 @@ class ApplicationImpl : Application() {
         initAppComponent(AppComponentImpl(this))
         val logDelegates = ArrayList<LogDelegate>(2).apply {
             if (BuildConfig.GOOGLE_SERVICES_ENABLED) {
-                FirebaseLogDelegate()
+                add(FirebaseLogDelegate())
             }
             if (BuildConfig.DEBUG) {
-                ConsoleLogDelegate()
+                add(ConsoleLogDelegate())
             }
         }
         Logger.init(
