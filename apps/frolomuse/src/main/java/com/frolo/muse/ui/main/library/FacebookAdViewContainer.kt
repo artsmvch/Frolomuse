@@ -4,8 +4,10 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.widget.FrameLayout
+import android.widget.Toast
 import com.facebook.ads.*
 import com.frolo.logger.api.Logger
+import com.frolo.muse.BuildConfig
 
 class FacebookAdViewContainer @JvmOverloads constructor(
     context: Context,
@@ -42,7 +44,12 @@ class FacebookAdViewContainer @JvmOverloads constructor(
 
         val adListener = object : AdListener {
             override fun onError(ad: Ad?, err: AdError?) {
-                Logger.e(LOG_TAG, "onError:$err")
+                val errorDescription = err?.let { it.errorCode.toString() + " " + it.errorMessage }
+                Logger.e(LOG_TAG, "onError:$errorDescription")
+                if (BuildConfig.DEBUG) {
+                    Toast.makeText(context, "Failed to load ad: $errorDescription",
+                        Toast.LENGTH_SHORT).show()
+                }
             }
             override fun onAdLoaded(ad: Ad?) {
                 Logger.e(LOG_TAG, "adLoaded")
