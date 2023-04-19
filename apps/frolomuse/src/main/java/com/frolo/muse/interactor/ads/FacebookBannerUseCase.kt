@@ -1,7 +1,6 @@
 package com.frolo.muse.interactor.ads
 
 import android.content.Context
-import com.frolo.ads.AdMobUtils
 import com.frolo.billing.BillingManager
 import com.frolo.billing.PurchaseHistoryRecord
 import com.frolo.billing.SkuType
@@ -9,32 +8,33 @@ import com.frolo.logger.api.Logger
 import com.frolo.muse.BuildConfig
 import com.frolo.muse.BuildInfo
 import com.frolo.muse.android.firstPackageInstallTime
-import com.frolo.muse.model.ads.AdMobBannerConfig
+import com.frolo.muse.model.ads.FacebookBannerConfig
 import com.frolo.muse.repository.AppLaunchInfoProvider
 import com.frolo.muse.repository.RemoteConfigRepository
 import io.reactivex.Single
 import javax.inject.Inject
 
 
-class AdMobBannerUseCase2 @Inject constructor(
+class FacebookBannerUseCase @Inject constructor(
     private val context: Context,
     private val billingManager: BillingManager,
     private val remoteConfigRepository: RemoteConfigRepository,
     private val appLaunchInfoProvider: AppLaunchInfoProvider,
 ) {
-    fun getLibraryAdMobBannerConfig(): Single<BannerState> {
+    fun getFacebookBannerState(): Single<BannerState> {
         return Single
-            .zip(hasNonEmptyPurchaseHistory(), remoteConfigRepository.getLibraryAdMobBannerConfig()) { hasNonEmptyPurchaseHistory, config ->
+            .zip(hasNonEmptyPurchaseHistory(), remoteConfigRepository.getFirebaseBannerConfig()) { hasNonEmptyPurchaseHistory, config ->
                 when {
                     BuildInfo.isDebug() -> {
-                        BannerState.Enabled(AdMobUtils.TEST_BANNER_ID)
+                        val testPlacementId = "IMG_16_9_APP_INSTALL#${config.placementId}"
+                        BannerState.Enabled(testPlacementId)
                     }
                     hasNonEmptyPurchaseHistory -> {
                         // Something has been purchased before, don't bother customers with ads
                         BannerState.Disabled
                     }
                     shouldCreateAdMobBanner(config) -> {
-                        BannerState.Enabled(config.unitId)
+                        BannerState.Enabled(config.placementId)
                     }
                     else -> BannerState.Disabled
                 }
@@ -60,7 +60,7 @@ class AdMobBannerUseCase2 @Inject constructor(
             .onErrorReturnItem(false)
     }
 
-    private fun shouldCreateAdMobBanner(config: AdMobBannerConfig): Boolean {
+    private fun shouldCreateAdMobBanner(config: FacebookBannerConfig): Boolean {
         return config.isEnabled &&
                 config.minAppVersionCode <= BuildConfig.VERSION_CODE &&
                 config.minLaunchCount <= appLaunchInfoProvider.launchCount &&
@@ -69,7 +69,7 @@ class AdMobBannerUseCase2 @Inject constructor(
 
     sealed class BannerState {
         data class Enabled(
-            val unitId: String
+            val placementId: String
         ): BannerState()
 
         object Disabled: BannerState()

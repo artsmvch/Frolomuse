@@ -7,15 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.view.contains
-import androidx.core.view.isVisible
 import androidx.core.view.updateLayoutParams
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.viewpager.widget.ViewPager
 import com.frolo.core.ui.fragment.WithCustomStatusBar
 import com.frolo.core.ui.marker.ScrolledToTop
-import com.frolo.core.ui.removeFromParent
 import com.frolo.debug.DebugUtils
 import com.frolo.muse.R
 import com.frolo.muse.model.Library
@@ -24,10 +21,8 @@ import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.base.FragmentContentInsetsListener
 import com.frolo.muse.ui.base.OnBackPressedHandler
 import com.frolo.muse.util.CollectionUtil
-import com.frolo.ui.ColorUtils2
 import com.frolo.ui.FragmentUtils
 import com.frolo.ui.StyleUtils
-import com.google.android.gms.ads.AdView
 import kotlinx.android.synthetic.main.fragment_library.*
 
 
@@ -154,7 +149,7 @@ class LibraryFragment: BaseFragment(),
 
     override fun onDestroyView() {
         vp_sections.removeOnPageChangeListener(onPageChangeCallback)
-        ad_mob_container.clearBanner()
+        ad_view_container.clearBanner()
         super.onDestroyView()
     }
 
@@ -203,9 +198,9 @@ class LibraryFragment: BaseFragment(),
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
         bannerConfig.observe(owner) { config ->
             if (config != null) {
-                ad_mob_container.loadBanner(config.unitId)
+                ad_view_container.loadBanner(config.placementId)
             } else {
-                ad_mob_container.clearBanner()
+                ad_view_container.clearBanner()
             }
         }
     }

@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.frolo.arch.support.distinctUntilChanged
 import com.frolo.logger.api.Logger
-import com.frolo.muse.interactor.ads.AdMobBannerUseCase2
+import com.frolo.muse.interactor.ads.FacebookBannerUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.base.BaseAndroidViewModel
@@ -15,7 +15,7 @@ import javax.inject.Inject
 class LibraryViewModel @Inject constructor(
     application: Application,
     eventLogger: EventLogger,
-    private val adMobBannerUseCase: AdMobBannerUseCase2,
+    private val facebookBannerUseCase: FacebookBannerUseCase,
     private val schedulerProvider: SchedulerProvider
 ): BaseAndroidViewModel(application, eventLogger) {
 
@@ -26,21 +26,21 @@ class LibraryViewModel @Inject constructor(
 
     private fun loadAdConfigAsync(liveData: MutableLiveData<BannerConfig>) {
         val startTime = System.currentTimeMillis()
-        adMobBannerUseCase.getLibraryAdMobBannerConfig()
+        facebookBannerUseCase.getFacebookBannerState()
             .observeOn(schedulerProvider.main())
             .subscribeFor { bannerState ->
                 val elapsedTime = System.currentTimeMillis() - startTime
                 Logger.d(LOG_TAG, "Loaded Ad config in $elapsedTime millis")
                 liveData.value = when (bannerState) {
-                    is AdMobBannerUseCase2.BannerState.Enabled ->
-                        BannerConfig(unitId = bannerState.unitId)
-                    AdMobBannerUseCase2.BannerState.Disabled -> null
+                    is FacebookBannerUseCase.BannerState.Enabled ->
+                        BannerConfig(placementId = bannerState.placementId)
+                    FacebookBannerUseCase.BannerState.Disabled -> null
                 }
             }
     }
 
     data class BannerConfig(
-        val unitId: String
+        val placementId: String
     )
 
     companion object {

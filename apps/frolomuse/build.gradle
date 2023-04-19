@@ -44,8 +44,11 @@ android {
 
         resValue "string", "app_name", "Frolomuse"
 
-        resValue "string", "admob_app_id", local_properties["com.admob.app_id"] ?: ""
-        resValue "string", "admob_unit_id_library_screen", local_properties["com.admob.unit_id.library_banner"] ?: ""
+//        resValue "string", "admob_app_id", local_properties["com.admob.app_id"] ?: ""
+//        resValue "string", "admob_unit_id_library_screen", local_properties["com.admob.unit_id.library_banner"] ?: ""
+
+        resValue "string", "facebook_ads_app_id", local_properties["com.facebook.ads.app_id"] ?: ""
+        resValue "string", "facebook_ads_placement_id", local_properties["com.facebook.ads.placement_id"] ?: ""
 
         buildConfigField "Boolean", "GOOGLE_SERVICES_ENABLED", "$google_services_enabled"
         buildConfigField "String", "BUILD_SCRIPT_TIME", "\"${script_time}\""
@@ -148,7 +151,8 @@ dependencies {
     kapt deps.jetbrains.kotlinxMetadataJvm
 
     // Ads
-    implementation project(path: ':ads:admob')
+//    implementation project(path: ':ads:admob')
+    implementation 'com.facebook.android:audience-network-sdk:6.13.7'
 
     // Features
     implementation project(path: ':feature:onboarding')
