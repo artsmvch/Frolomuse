@@ -40,7 +40,7 @@ class FirebaseRemoteConfigRepositoryImpl(
     override fun getFirebaseBannerConfig(): Single<FacebookBannerConfig> {
         val defaultConfig = FacebookBannerConfig(
             isEnabled = true,
-            placementId = context.getString(R.string.facebook_ads_placement_id),
+            placementId = "", //context.getString(R.string.facebook_ads_placement_id),
             minAppVersionCode = 158,
             minFirstInstallTime = 1678554000, // Sat Mar 11 2023 17:00:00 GMT+0000
             minLaunchCount = 10

@@ -149,7 +149,6 @@ class LibraryFragment: BaseFragment(),
 
     override fun onDestroyView() {
         vp_sections.removeOnPageChangeListener(onPageChangeCallback)
-        ad_view_container.clearBanner()
         super.onDestroyView()
     }
 
@@ -196,13 +195,13 @@ class LibraryFragment: BaseFragment(),
     }
 
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
-        bannerConfig.observe(owner) { config ->
-            if (config != null) {
-                ad_view_container.loadBanner(config.placementId)
-            } else {
-                ad_view_container.clearBanner()
-            }
-        }
+//        bannerConfig.observe(owner) { config ->
+//            if (config != null) {
+//                ad_view_container.loadBanner(config.placementId)
+//            } else {
+//                ad_view_container.clearBanner()
+//            }
+//        }
     }
 
     override fun scrollToTop() {
