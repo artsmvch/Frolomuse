@@ -1,0 +1,1 @@
+call gradlew bundlePlayStore --no-build-cache --rerun-tasks --profile
