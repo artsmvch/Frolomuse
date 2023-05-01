@@ -144,7 +144,5 @@
 
     <style name="Theme.Frolo.AudioFx.EffectBoosterView" parent="EffectBoosterView.Default">
         <item name="strokeWidth">2dp</item>
-        <item name="strokeInactiveColor">#E4E4E4</item>
-        <item name="strokeActiveColor">?colorSecondary</item>
     </style>
 </resources>
