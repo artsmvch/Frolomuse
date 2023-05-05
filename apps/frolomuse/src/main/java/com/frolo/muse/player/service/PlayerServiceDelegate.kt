@@ -267,8 +267,8 @@ internal class PlayerServiceDelegate(
             } else {
                 service.startForeground(NOTIFICATION_ID, notification)
             }
-        } catch (e: ForegroundServiceStartNotAllowedException) {
-            Logger.e(TAG, "Failed to start foreground service")
+        } catch (e: Throwable) {
+            Logger.e(TAG, "Failed to start foreground service", e)
             // TODO: fix foreground service limits
             // https://console.firebase.google.com/u/0/project/frolomuse/crashlytics/app/android:com.frolo.musp/issues/e723687c458aff1faae16651e007fa70?hl=ru&time=last-seven-days&versions=7.0.3-R%20(137)&types=crash&sessionEventKey=62F54C0400600001311DF27CB34CFE51_1709134770282028870
             service.stopSelf()
