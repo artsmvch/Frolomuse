@@ -3,6 +3,7 @@ package com.frolo.muse.player.service.observers
 import android.content.Context
 import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
+import androidx.annotation.AnyThread
 import androidx.annotation.MainThread
 import com.frolo.muse.common.toSong
 import com.frolo.player.AudioSource
@@ -11,9 +12,12 @@ import com.frolo.player.SimplePlayerObserver
 import com.frolo.muse.player.service.setMetadata
 import com.frolo.music.model.Song
 import com.frolo.muse.rx.subscribeSafely
+import com.frolo.threads.ThreadStrictMode
 import io.reactivex.Flowable
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 
 
@@ -31,8 +35,12 @@ class MediaSessionObserver private constructor(
             PlaybackStateCompat.ACTION_SKIP_TO_NEXT or
             PlaybackStateCompat.ACTION_SKIP_TO_PREVIOUS
 
+    @Volatile
     private var songDisposable: Disposable? = null
+    @Volatile
     private var progressDisposable: Disposable? = null
+    @Volatile
+    private var stateDisposable: Disposable? = null
 
     /**
      * Syncs the media session with the current playback state of [player].
@@ -41,11 +49,7 @@ class MediaSessionObserver private constructor(
      * before any observer callback gets called.
      */
     private fun syncPlaybackState(player: Player) {
-        setPlaybackState(
-            isPlaying = player.isPlaying(),
-            progress = player.getProgress().toLong(),
-            speed = player.getSpeed()
-        )
+        setPlaybackStateAsync(player = player)
     }
 
     override fun onAudioSourceChanged(player: Player, item: AudioSource?, positionInQueue: Int) {
@@ -68,22 +72,21 @@ class MediaSessionObserver private constructor(
     }
 
     override fun onPrepared(player: Player, duration: Int, progress: Int) {
-        setPlaybackState(
-            isPlaying = false,
+        setPlaybackStateAsync(
+            player = player,
             progress = progress.toLong(),
-            speed = player.getSpeed()
+            isPlaying = false
         )
     }
 
     override fun onPlaybackStarted(player: Player) {
+        progressDisposable?.dispose()
         progressDisposable = Flowable.interval(0L, PROGRESS_UPDATER_INTERVAL_IN_MS, TimeUnit.MILLISECONDS)
             .onBackpressureLatest()
-            .observeOn(AndroidSchedulers.mainThread())
             .doOnNext {
-                setPlaybackState(
-                    isPlaying = true,
-                    progress = player.getProgress().toLong(),
-                    speed = player.getSpeed()
+                setPlaybackStateAsync(
+                    player = player,
+                    isPlaying = true
                 )
             }
             .subscribeSafely()
@@ -91,25 +94,22 @@ class MediaSessionObserver private constructor(
 
     override fun onPlaybackPaused(player: Player) {
         progressDisposable?.dispose()
-        setPlaybackState(
-            isPlaying = false,
-            progress = player.getProgress().toLong(),
-            speed = player.getSpeed()
+        setPlaybackStateAsync(
+            player = player,
+            isPlaying = false
         )
     }
 
     override fun onSoughtTo(player: Player, position: Int) {
-        setPlaybackState(
-            isPlaying = player.isPlaying(),
-            progress = position.toLong(),
-            speed = player.getSpeed()
+        setPlaybackStateAsync(
+            player = player,
+            progress = position.toLong()
         )
     }
 
     override fun onPlaybackSpeedChanged(player: Player, speed: Float) {
-        setPlaybackState(
-            isPlaying = player.isPlaying(),
-            progress = player.getProgress().toLong(),
+        setPlaybackStateAsync(
+            player = player,
             speed = speed
         )
     }
@@ -131,27 +131,46 @@ class MediaSessionObserver private constructor(
         mediaSession.setPlaybackState(playbackState)
     }
 
-    @MainThread
-    private fun setPlaybackState(isPlaying: Boolean, progress: Long, speed: Float) {
-        val state: Int
-        val actualSpeed: Float
-        if (isPlaying) {
-            state = PlaybackStateCompat.STATE_PLAYING
-            actualSpeed = speed
-        } else {
-            state = PlaybackStateCompat.STATE_PAUSED
-            actualSpeed = 0f
+    @AnyThread
+    @Synchronized
+    private fun setPlaybackStateAsync(
+        player: Player,
+        isPlaying: Boolean? = null,
+        progress: Long? = null,
+        speed: Float? = null
+    ) {
+        val source = Single.fromCallable {
+            ThreadStrictMode.assertBackground()
+            val state: Int
+            val actualSpeed: Float
+            val actualIsPlaying = isPlaying ?: player.isPlaying()
+            val actualProgress = progress ?: player.getProgress().toLong()
+            if (actualIsPlaying) {
+                state = PlaybackStateCompat.STATE_PLAYING
+                actualSpeed = speed ?: player.getSpeed()
+            } else {
+                state = PlaybackStateCompat.STATE_PAUSED
+                actualSpeed = 0f
+            }
+            PlaybackStateCompat.Builder()
+                .setActions(supportedActions)
+                .setState(state, actualProgress, actualSpeed)
+                .build()
         }
-        val playbackState = PlaybackStateCompat.Builder()
-            .setActions(supportedActions)
-            .setState(state, progress, actualSpeed)
-            .build()
-        mediaSession.setPlaybackState(playbackState)
+        stateDisposable?.dispose()
+        stateDisposable = source
+            .subscribeOn(Schedulers.computation())
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnSuccess { playbackState ->
+                mediaSession.setPlaybackState(playbackState)
+            }
+            .subscribe()
     }
 
     override fun onShutdown(player: Player) {
         songDisposable?.dispose()
         progressDisposable?.dispose()
+        stateDisposable?.dispose()
     }
 
     companion object {
