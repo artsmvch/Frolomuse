@@ -164,7 +164,7 @@ class MediaSessionObserver private constructor(
             .doOnSuccess { playbackState ->
                 mediaSession.setPlaybackState(playbackState)
             }
-            .subscribe()
+            .subscribeSafely()
     }
 
     override fun onShutdown(player: Player) {
