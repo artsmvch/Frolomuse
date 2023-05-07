@@ -344,6 +344,10 @@ internal class PlayerServiceDelegate(
             MainActivity.newIntent(context, openPlayer = true), getPendingIntentFlags())
 
         val notificationBuilder = NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID).apply {
+            // TODO: got a lot of BadNotificationException.
+            // Must be related to app updates, when the new build has different drawable ID value in R class.
+            // This could be resolved by a constant ID defined in public.xml file. But AAPT does not seem to
+            // support public.xml anymore. See discussion at https://issuetracker.google.com/issues/37055773
             setSmallIcon(R.drawable.ic_player_notification_small)
             setContentTitle(item?.title.orEmpty())
             setContentText(item?.artist.orEmpty())
