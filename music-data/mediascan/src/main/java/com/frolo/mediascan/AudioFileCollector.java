@@ -30,10 +30,6 @@ final class AudioFileCollector {
         return value == null || value.isEmpty();
     }
 
-    private static boolean isNotEmpty(@Nullable String value) {
-        return !isEmpty(value);
-    }
-
     static AudioFileCollector get(@NonNull Context context) {
         return new AudioFileCollector(context);
     }
@@ -158,7 +154,7 @@ final class AudioFileCollector {
                             if (audioFiles.contains(string)) {
                                 // this files is identified by MediaStore already, no need to scan it again. Remove it from the collection!
                                 audioFiles.remove(string);
-                            } else if (!isNotEmpty(string)) {
+                            } else if (!isEmpty(string)) {
                                 // this files is not in the collection, it may be deleted already, so need to scan it. Add it to the collection!
                                 audioFiles.add(string);
                             }
