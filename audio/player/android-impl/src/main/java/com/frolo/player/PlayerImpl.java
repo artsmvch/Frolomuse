@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 // TODO: fix locks: Engine must be guarded everywhere
@@ -315,9 +316,9 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
     @ShuffleMode
     private volatile int mShuffleMode = Player.SHUFFLE_OFF;
 
-    // AB Engine
+    // AB Controller
     @NonNull
-    private final ABEngine mABEngine = new ABEngine();
+    private final ABControllerImpl mABControllerImpl = new ABControllerImpl();
 
     // Playback Fading
     @Nullable
@@ -570,7 +571,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
             mOriginQueue = AudioSourceQueue.empty();
             mCurrentQueue = AudioSourceQueue.empty();
 
-            mABEngine.reset();
+            mABControllerImpl.resetInternal(true);
 
             mIsPlayingFlag = false;
             mIsPreparedFlag = false;
@@ -714,7 +715,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
 
                 // We reset everything here
 
-                mABEngine.reset();
+                mABControllerImpl.resetInternal(true);
 
                 synchronized (mEngineLock) {
 
@@ -805,7 +806,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
                 mPlayerJournal.logMessage("Handle source: " + info(item) + ", seek_pos=" + playbackPosition + ", play=" + startPlaying);
 
                 // The current audio source is changed => gotta reset A-B
-                mABEngine.reset();
+                mABControllerImpl.resetInternal(true);
 
                 // Reset the speed if it should not be persisted
                 if (!mIsPlaybackSpeedPersisted) {
@@ -1702,29 +1703,10 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
         processEngineTask(task);
     }
 
+    @NonNull
     @Override
-    public boolean isAPointed() {
-        return mABEngine.isAPointed();
-    }
-
-    @Override
-    public boolean isBPointed() {
-        return mABEngine.isBPointed();
-    }
-
-    @Override
-    public void pointA(int position) {
-        mABEngine.pointA(position);
-    }
-
-    @Override
-    public void pointB(int position) {
-        mABEngine.pointB(position);
-    }
-
-    @Override
-    public void resetAB() {
-        mABEngine.reset();
+    public ABController getABController() {
+        return mABControllerImpl;
     }
 
     private void tryRewind(int intervalValue) {
@@ -2047,8 +2029,8 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
         // Cancelling pending engine tasks
         cancelAllEngineTasks();
 
-        // Resetting the A-B engine
-        mABEngine.reset();
+        // Resetting the A-B controller
+        mABControllerImpl.resetInternal(false);
 
         // Resetting the playback fading timer
         final Timer oldTimer = mPlaybackFadingTimer;
@@ -2088,30 +2070,34 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
     }
 
     /**
-     * Thread-safe implementation of A-B engine.
-     * The player can simply delegate its AB-related methods to this engine.
+     * Thread-safe implementation of A-B controller.
      */
-    private final class ABEngine {
-
+    private final class ABControllerImpl implements ABController {
         private final static int MIN_AB_INTERVAL = 250;
 
-        @Nullable
-        volatile Integer mAPoint;
-        @Nullable
-        volatile Integer mBPoint;
+        final AtomicReference<Integer> mPointARef = new AtomicReference<>();
+        final AtomicReference<Integer> mPointBRef = new AtomicReference<>();
 
-        @Nullable
-        volatile Timer mCurrentTimer;
+        final AtomicReference<Timer> mCurrentTimerRef = new AtomicReference<>();
 
-        synchronized boolean isAPointed() {
-            return mAPoint != null;
+        @Override
+        public boolean isPointASet() {
+            return mPointARef.get() != null;
         }
 
-        synchronized boolean isBPointed() {
-            return mBPoint != null;
+        @Override
+        public boolean isPointBSet() {
+            return mPointBRef.get() != null;
         }
 
-        synchronized void pointA(int position) {
+        @Override
+        public void setPointA() {
+            processEngineTask(this::setPointAInternal);
+        }
+
+        private synchronized void setPointAInternal() {
+            assertEngineThread();
+            final int position = getProgress();
             mPlayerJournal.logMessage("Point A: pos=" + position);
 
             final int duration = getDuration();
@@ -2121,7 +2107,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
                 validAPoint = duration - MIN_AB_INTERVAL;
             }
 
-            final Integer bPoint = mBPoint;
+            @Nullable final Integer bPoint = mPointBRef.get();
             if (bPoint != null && position > bPoint - MIN_AB_INTERVAL) {
                 validAPoint = bPoint - MIN_AB_INTERVAL;
             }
@@ -2130,12 +2116,19 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
                 validAPoint = 0;
             }
 
-            this.mAPoint = validAPoint;
-            _start();
+            mPointARef.set(validAPoint);
+            startTimerInternal();
             mObserverRegistry.dispatchABChanged(true, bPoint != null);
         }
 
-        synchronized void pointB(int position) {
+        @Override
+        public void setPointB() {
+            processEngineTask(this::setPointBInternal);
+        }
+
+        private synchronized void setPointBInternal() {
+            assertEngineThread();
+            final int position = getProgress();
             mPlayerJournal.logMessage("Point B: pos=" + position);
 
             int validBPoint = position;
@@ -2143,7 +2136,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
                 validBPoint = 0;
             }
 
-            final Integer aPoint = mAPoint;
+            @Nullable final Integer aPoint = mPointARef.get();
             if (aPoint != null && position < aPoint + MIN_AB_INTERVAL) {
                 validBPoint = aPoint + MIN_AB_INTERVAL;
             }
@@ -2153,83 +2146,71 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
                 validBPoint = duration;
             }
 
-            this.mBPoint = validBPoint;
-            _start();
+            mPointBRef.set(validBPoint);
+            startTimerInternal();
             mObserverRegistry.dispatchABChanged(aPoint != null, true);
         }
 
-        synchronized void reset() {
+        @Override
+        public void reset() {
+            processEngineTask(() -> resetInternal(true));
+        }
+
+        private synchronized void resetInternal(boolean assertEngineThread) {
+            if (assertEngineThread) {
+                assertEngineThread();
+            }
             mPlayerJournal.logMessage("Reset A-B");
 
-            mAPoint = null;
-            mBPoint = null;
+            mPointARef.set(null);
+            mPointBRef.set(null);
 
-            final Timer old = mCurrentTimer;
-            if (old != null) {
-                old.purge();
-                old.cancel();
+            final Timer oldTimer = mCurrentTimerRef.getAndSet(null);
+            if (oldTimer != null) {
+                oldTimer.purge();
+                oldTimer.cancel();
             }
-            mCurrentTimer = null;
-
             mObserverRegistry.dispatchABChanged(false, false);
         }
 
-        private synchronized void _start() {
-
-            // TODO: make sure only one timer is running
-
-            // Canceling the previous timer, if any.
-            // Cause we don't want two timers doing the A-B job.
-            final Timer old = mCurrentTimer;
-            if (old != null) {
-                old.purge();
-                old.cancel();
-            }
-
-            final TimerTask task = new TimerTask() {
+        // TODO: make sure only one timer is running
+        private synchronized void startTimerInternal() {
+            assertEngineThread();
+            final TimerTask newTask = new TimerTask() {
                 @Override
                 public void run() {
-
                     Integer a;
                     Integer b;
-
-                    synchronized (ABEngine.this) {
-                        a = mAPoint;
-                        b = mBPoint;
+                    synchronized (ABControllerImpl.this) {
+                        a = mPointARef.get();
+                        b = mPointBRef.get();
                     }
-
                     // We're going to do this while the A-B is enabled.
                     // The A-B is considered enabled if and only if both A and B points are not null.
                     while (a != null && b != null) {
                         try {
-
                             final int pos = getProgress();
                             if (pos < a - 100) {
                                 // Changing the progress
                                 seekTo(a);
                                 continue;
                             }
-
                             final int sleep = b - pos;
                             if (sleep > 0) {
                                 // Sleeping to wait for the point B to be reached
                                 Thread.sleep(sleep);
                             }
-
-                            synchronized (ABEngine.this) {
-                                a = mAPoint;
-                                b = mBPoint;
+                            synchronized (ABControllerImpl.this) {
+                                a = mPointARef.get();
+                                b = mPointBRef.get();
                             }
-
                             // Additional check just before seeking the position.
                             // Just to make sure the A-B has not changed after sleeping the thread.
                             if (a == null || b == null) {
                                 break;
                             }
-
                             // Seeking the position to the point A
                             seekTo(a);
-
                         } catch (InterruptedException error) {
                             break;
                         } catch (Throwable error) {
@@ -2239,13 +2220,15 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
                     }
                 }
             };
-
             final Timer newTimer = new Timer();
+            newTimer.schedule(newTask, 0);
 
-            newTimer.schedule(task, 0);
-
-            // Saving the timer
-            mCurrentTimer = newTimer;
+            // Canceling the old timer if any, cause we don't want two timers doing the A-B job
+            final Timer oldTimer = mCurrentTimerRef.getAndSet(newTimer);
+            if (oldTimer != null) {
+                oldTimer.purge();
+                oldTimer.cancel();
+            }
         }
     }
 

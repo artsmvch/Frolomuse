@@ -27,11 +27,11 @@ fun Player.switchToNextShuffleMode() {
 }
 
 fun Player.pointNextABPoint() {
-    val position = getProgress()
+    val abController = this.getABController() ?: return
     when {
-        isAPointed().not() -> pointA(position)
-        isBPointed().not() -> pointB(position)
-        else -> resetAB()
+        !abController.isPointASet -> abController.setPointA()
+        !abController.isPointBSet -> abController.setPointB()
+        else -> abController.reset()
     }
 }
 

@@ -1,8 +1,6 @@
 package com.frolo.muse
 
 import com.frolo.player.*
-import com.frolo.audiofx.AudioFx
-
 
 class TestPlayer: Player {
     override fun registerObserver(observer: PlayerObserver) = Unit
@@ -35,11 +33,7 @@ class TestPlayer: Player {
     override fun addNext(item: AudioSource) = Unit
     override fun addAllNext(items: List<AudioSource>) = Unit
     override fun moveItem(fromPosition: Int, toPosition: Int) = Unit
-    override fun isAPointed(): Boolean = false
-    override fun isBPointed(): Boolean = false
-    override fun pointA(position: Int) = Unit
-    override fun pointB(position: Int) = Unit
-    override fun resetAB() = Unit
+    override fun getABController(): Player.ABController? = null
     override fun rewindForward(interval: Int) = Unit
     override fun rewindBackward(interval: Int) = Unit
     override fun getPlaybackFadingStrategy(): PlaybackFadingStrategy? = null

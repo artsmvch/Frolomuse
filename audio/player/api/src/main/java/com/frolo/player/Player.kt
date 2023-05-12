@@ -44,12 +44,8 @@ interface Player {
     fun addNext(item: AudioSource)
     fun addAllNext(items: List<AudioSource>)
     fun moveItem(fromPosition: Int, toPosition: Int)
-    // AB functionality
-    fun isAPointed(): Boolean
-    fun isBPointed(): Boolean
-    fun pointA(position: Int)
-    fun pointB(position: Int)
-    fun resetAB()
+    // AB Controller
+    fun getABController(): ABController?
     // Rewind
     fun rewindForward(interval: Int)
     fun rewindBackward(interval: Int)
@@ -88,6 +84,14 @@ interface Player {
         AnnotationTarget.LOCAL_VARIABLE
     )
     annotation class RepeatMode
+
+    interface ABController {
+        val isPointASet: Boolean
+        val isPointBSet: Boolean
+        fun setPointA()
+        fun setPointB()
+        fun reset()
+    }
 
     companion object {
         const val REPEAT_OFF = 0

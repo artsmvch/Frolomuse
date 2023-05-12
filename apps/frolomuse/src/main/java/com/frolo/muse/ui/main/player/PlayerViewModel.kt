@@ -252,7 +252,10 @@ class PlayerViewModel @Inject constructor(
         _playbackDuration.value = player.getDuration()
         _playbackProgress.value = player.getProgress()
         _isPlaying.value = player.isPlaying()
-        _abState.value = ABState(player.isAPointed(), player.isBPointed())
+        _abState.value = player.getABController().let { controller ->
+            ABState(controller?.isPointASet ?: false,
+                controller?.isPointBSet ?: false)
+        }
         _shuffleMode.value = player.getShuffleMode()
         _repeatMode.value = player.getRepeatMode()
         startObservingPlaybackProgress(currentAudioSource)

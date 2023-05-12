@@ -157,24 +157,8 @@ class PlayerWrapper constructor(
         delegate?.moveItem(fromPosition, toPosition)
     }
 
-    override fun isAPointed(): Boolean {
-        return delegate?.isAPointed() ?: false
-    }
-
-    override fun isBPointed(): Boolean {
-        return delegate?.isBPointed() ?: false
-    }
-
-    override fun pointA(position: Int) {
-        delegate?.pointA(position)
-    }
-
-    override fun pointB(position: Int) {
-        delegate?.pointB(position)
-    }
-
-    override fun resetAB() {
-        delegate?.resetAB()
+    override fun getABController(): Player.ABController? {
+        return delegate?.getABController()
     }
 
     override fun rewindForward(interval: Int) {
