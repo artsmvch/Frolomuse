@@ -1218,6 +1218,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
         return mCurrentQueue;
     }
 
+    // TODO: make non-blocking
     @Override
     public int getProgress() {
         synchronized (mEngineLock) {

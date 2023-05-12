@@ -13,6 +13,7 @@ import com.frolo.music.model.Song
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.base.BaseViewModel
 import com.frolo.muse.ui.main.player.PlayerProgressObserver
+import io.reactivex.Single
 import javax.inject.Inject
 
 
@@ -72,8 +73,18 @@ class MiniPlayerViewModel @Inject constructor(
         _currentSong.value = player.getCurrent()?.toSong()
         _isPlaying.value = player.isPlaying()
         _maxProgress.value = player.getDuration()
-        _progress.value = player.getProgress()
+        syncProgress()
         startObservingPlaybackProgress(player.getCurrent())
+    }
+
+    // TODO: delete after the getProgress becomes non-blocking
+    private fun syncProgress() {
+        Single.fromCallable { player.getProgress() }
+            .subscribeOn(schedulerProvider.computation())
+            .observeOn(schedulerProvider.main())
+            .subscribeFor { progress ->
+                _progress.value = progress
+            }
     }
 
     private fun startObservingPlaybackProgress(audioSource: AudioSource?) {

@@ -241,6 +241,16 @@ class PlayerViewModel @Inject constructor(
             }
     }
 
+    // TODO: delete after the getProgress becomes non-blocking
+    private fun syncProgress() {
+        Single.fromCallable { player.getProgress() }
+            .subscribeOn(schedulerProvider.computation())
+            .observeOn(schedulerProvider.main())
+            .subscribeFor { progress ->
+                _playbackProgress.value = progress
+            }
+    }
+
     /**
      * Should be called when the user interface has been created and the view model has been observed.
      * From this point, the state of the view model is synced with the state of the player and its queue.
@@ -250,7 +260,7 @@ class PlayerViewModel @Inject constructor(
         val currentAudioSource: AudioSource? = player.getCurrent()
         _song.value = currentAudioSource?.toSong()
         _playbackDuration.value = player.getDuration()
-        _playbackProgress.value = player.getProgress()
+        syncProgress()
         _isPlaying.value = player.isPlaying()
         _abState.value = player.getABController().let { controller ->
             ABState(controller?.isPointASet ?: false,
@@ -300,7 +310,7 @@ class PlayerViewModel @Inject constructor(
 
     fun onSkipToNextButtonLongClicked() {
         player.rewindForward()
-        _playbackProgress.value = player.getProgress()
+        syncProgress()
     }
 
     fun onSkipToPreviousButtonClicked() {
@@ -309,7 +319,7 @@ class PlayerViewModel @Inject constructor(
 
     fun onSkipToPreviousButtonLongClicked() {
         player.rewindBackward()
-        _playbackProgress.value = player.getProgress()
+        syncProgress()
     }
 
     fun onShuffleModeButtonClicked() {
