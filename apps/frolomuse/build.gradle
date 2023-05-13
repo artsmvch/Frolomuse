@@ -1,3 +1,7 @@
+import com.android.build.gradle.internal.res.LinkApplicationAndroidResourcesTask
+import java.nio.file.Files
+import java.nio.file.StandardCopyOption
+
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
@@ -328,6 +332,37 @@ if (project.hasProperty('kapt')) {
             option("--target", "8")
             option("-source", "8")
             option("-target", "8")
+        }
+    }
+}
+
+afterEvaluate {
+    // https://developer.android.com/tools/aapt2
+    tasks.withType(LinkApplicationAndroidResourcesTask).configureEach {
+        // stableIdsOutputFileProperty.orNull?.asFile
+        def variantName = it.variantName
+
+        def stableIdsFileDir = new File(buildDir, "intermediates/stable_resource_ids_file/$variantName")
+        stableIdsFileDir.mkdirs()
+        def stableIdsFile = new File(stableIdsFileDir, "stableIds.txt")
+
+        def persistentStableIdsFileDir = new File(projectDir, "stable_resource_ids_file/$variantName")
+        persistentStableIdsFileDir.mkdirs()
+        def persistentStableIdsFile = new File(persistentStableIdsFileDir, "stableIds.txt")
+
+        if (!stableIdsFile.exists() && persistentStableIdsFile.exists()) {
+            Files.copy(
+                    persistentStableIdsFile.toPath(),
+                    stableIdsFile.toPath(),
+                    StandardCopyOption.REPLACE_EXISTING)
+        }
+        doLast {
+            if (stableIdsFile.exists()) {
+                Files.copy(
+                        stableIdsFile.toPath(),
+                        persistentStableIdsFile.toPath(),
+                        StandardCopyOption.REPLACE_EXISTING)
+            }
         }
     }
 }
