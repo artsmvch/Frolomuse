@@ -8,9 +8,10 @@ import org.junit.runners.JUnit4
 class CheckPlayStoreReleaseResIdsTest {
     @Test
     fun checkResIds() {
-        // TODO: update the expected value
         checkResId(
-            "R.drawable.ic_player_notification_small", Integer.toHexString(R.drawable.ic_player_notification_small), "0x7f0800f1"
+            resName = "R.drawable.ic_player_notification_small",
+            actualHexValue = hex(R.drawable.ic_player_notification_small),
+            expectedHexValue = "0x7f0800f1"
         )
     }
 
@@ -19,5 +20,9 @@ class CheckPlayStoreReleaseResIdsTest {
             throw IllegalStateException("Generated value for $resName resource has changed since the last build: " +
                     "the actual value $actualHexValue and but expected $expectedHexValue")
         }
+    }
+
+    private fun hex(intValue: Int): String {
+        return "0x" + Integer.toHexString(intValue)
     }
 }
