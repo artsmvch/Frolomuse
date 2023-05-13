@@ -366,3 +366,14 @@ afterEvaluate {
         }
     }
 }
+
+afterEvaluate {
+    tasks.findByName("bundlePlayStoreRelease").configure {
+        def testTask = tasks.findByName("testPlayStoreReleaseUnitTest")
+        testTask.configure {
+            // Check that the res ids has not changed
+            it.filter.includeTest("com.frolo.muse.CheckPlayStoreReleaseResIdsTest", "checkResIds")
+        }
+        it.finalizedBy(testTask)
+    }
+}
