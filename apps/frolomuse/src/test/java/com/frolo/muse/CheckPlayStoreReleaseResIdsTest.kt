@@ -10,14 +10,14 @@ class CheckPlayStoreReleaseResIdsTest {
     fun checkResIds() {
         // TODO: update the expected value
         checkResId(
-            "R.drawable.ic_player_notification_small", R.drawable.ic_player_notification_small, 0
+            "R.drawable.ic_player_notification_small", Integer.toHexString(R.drawable.ic_player_notification_small), "0x7f0800f1"
         )
     }
 
-    private fun checkResId(resName: String, actualValue: Int, expectedValue: Int) {
-        if (actualValue != expectedValue) {
+    private fun checkResId(resName: String, actualHexValue: String, expectedHexValue: String) {
+        if (actualHexValue != expectedHexValue) {
             throw IllegalStateException("Generated value for $resName resource has changed since the last build: " +
-                    "the actual value ${Integer.toHexString(actualValue)} and but expected ${Integer.toHexString(expectedValue)}")
+                    "the actual value $actualHexValue and but expected $expectedHexValue")
         }
     }
 }
