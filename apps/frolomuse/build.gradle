@@ -349,12 +349,14 @@ afterEvaluate {
         def persistentStableIdsFile = new File(persistentStableIdsFileDir, "stableIds.txt")
 
         if (!stableIdsFile.exists() && persistentStableIdsFile.exists()) {
+            stableIdsFileDir.mkdirs()
             Files.copy(
                     persistentStableIdsFile.toPath(),
                     stableIdsFile.toPath(),
                     StandardCopyOption.REPLACE_EXISTING)
         }
         doLast {
+            persistentStableIdsFileDir.mkdirs()
             if (stableIdsFile.exists()) {
                 Files.copy(
                         stableIdsFile.toPath(),
