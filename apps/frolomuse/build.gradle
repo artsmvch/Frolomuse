@@ -343,11 +343,9 @@ afterEvaluate {
         def variantName = it.variantName
 
         def stableIdsFileDir = new File(buildDir, "intermediates/stable_resource_ids_file/$variantName")
-        stableIdsFileDir.mkdirs()
         def stableIdsFile = new File(stableIdsFileDir, "stableIds.txt")
 
         def persistentStableIdsFileDir = new File(projectDir, "stable_resource_ids_file/$variantName")
-        persistentStableIdsFileDir.mkdirs()
         def persistentStableIdsFile = new File(persistentStableIdsFileDir, "stableIds.txt")
 
         if (!stableIdsFile.exists() && persistentStableIdsFile.exists()) {
