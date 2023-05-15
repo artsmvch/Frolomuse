@@ -1778,9 +1778,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
             @Override
             public void run() {
                 while (!isShutdown()) {
-
                     maybeAdjustVolume();
-
                     try {
                         // Sleeping until the next volume adjustment
                         Thread.sleep(VOLUME_ADJUSTMENT_INTERVAL);
@@ -1790,11 +1788,8 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
                 }
             }
         };
-
-        final Timer newTimer = new Timer("PlaybackFadingTimer");
-
+        final Timer newTimer = new Timer("Timer-PlaybackFading");
         newTimer.schedule(task, 0);
-
         mPlaybackFadingTimer = newTimer;
     }
 
@@ -2221,7 +2216,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
                     }
                 }
             };
-            final Timer newTimer = new Timer();
+            final Timer newTimer = new Timer("Timer-ABController");
             newTimer.schedule(newTask, 0);
 
             // Canceling the old timer if any, cause we don't want two timers doing the A-B job
