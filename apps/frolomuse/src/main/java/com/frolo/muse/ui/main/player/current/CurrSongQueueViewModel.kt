@@ -2,7 +2,7 @@ package com.frolo.muse.ui.main.player.current
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.frolo.arch.support.SingleLiveEvent
+import com.frolo.arch.support.EventLiveData
 import com.frolo.arch.support.map
 import com.frolo.muse.common.toSongs
 import com.frolo.muse.di.ExecutorQualifier
@@ -69,18 +69,18 @@ class CurrSongQueueViewModel @Inject constructor(
         handleQueue(queue)
         val positionInQueue = player.getCurrentPositionInQueue()
         _playingPosition.value = positionInQueue
-        _scrollToPositionIfNotVisibleToUserEvent.value = getPositionToScroll(positionInQueue)
+        _scrollToPositionIfNotVisibleToUserEvent.setValue(getPositionToScroll(positionInQueue))
     }
 
     private val playerObserver = object : SimplePlayerObserver() {
         override fun onAudioSourceChanged(player: Player, item: AudioSource?, positionInQueue: Int) {
             _playingPosition.value = positionInQueue
-            _scrollToPositionIfNotVisibleToUserEvent.value = getPositionToScroll(positionInQueue)
+            _scrollToPositionIfNotVisibleToUserEvent.setValue(getPositionToScroll(positionInQueue))
         }
 
         override fun onPositionInQueueChanged(player: Player, positionInQueue: Int) {
             _playingPosition.value = positionInQueue
-            _scrollToPositionIfNotVisibleToUserEvent.value = getPositionToScroll(positionInQueue)
+            _scrollToPositionIfNotVisibleToUserEvent.setValue(getPositionToScroll(positionInQueue))
         }
 
         override fun onQueueChanged(player: Player, queue: AudioSourceQueue) {
@@ -113,12 +113,8 @@ class CurrSongQueueViewModel @Inject constructor(
     private var scrollToPositionPromptShown: Boolean = false
 
     private val _scrollToPositionButtonVisible = MutableLiveData<Boolean>(false)
-    val scrollToPositionButtonVisible: LiveData<Boolean> get() = _scrollToPositionButtonVisible
 
-    private val _scrollToPositionEvent = SingleLiveEvent<Int>()
-    val scrollToPositionEvent: LiveData<Int> get() = _scrollToPositionEvent
-
-    private val _scrollToPositionIfNotVisibleToUserEvent = SingleLiveEvent<Int>()
+    private val _scrollToPositionIfNotVisibleToUserEvent = EventLiveData<Int>()
     val scrollToPositionIfNotVisibleToUserEvent: LiveData<Int>
         get() = _scrollToPositionIfNotVisibleToUserEvent
 
@@ -130,13 +126,13 @@ class CurrSongQueueViewModel @Inject constructor(
         player.registerObserver(playerObserver)
     }
 
+    // TODO: this method should not be here, the view model only should use GetCurrentSongQueueUseCase as data source
     private fun handleQueue(queue: AudioSourceQueue?) {
         if (currQueue !== queue) {
             currQueue?.unregisterCallback(queueCallback)
             currQueue = queue
             queue?.registerCallback(queueCallback, mainThreadExecutor)
         }
-
         Single.fromCallable { queue?.snapshot?.toSongs().orEmpty() }
             .subscribeOn(schedulerProvider.computation())
             .observeOn(schedulerProvider.main())
@@ -144,7 +140,12 @@ class CurrSongQueueViewModel @Inject constructor(
                 mapQueueDisposable?.dispose()
                 mapQueueDisposable = it
             }
-            .subscribeFor { list -> submitMediaList(list) }
+            .subscribeFor { list ->
+                submitMediaList(list)
+                _scrollToPositionIfNotVisibleToUserEvent.setValue(
+                    getPositionToScroll(player.getCurrentPositionInQueue())
+                )
+            }
     }
 
     override fun onStart() {
@@ -189,15 +190,6 @@ class CurrSongQueueViewModel @Inject constructor(
         hideScrollToPositionButtonDisposable?.dispose()
         hideScrollToPositionButtonDisposable = null
         _scrollToPositionButtonVisible.value = false
-    }
-
-    fun onScrollToPositionClicked() {
-        hideScrollToPositionButtonDisposable?.dispose()
-        hideScrollToPositionButtonDisposable = null
-        _scrollToPositionButtonVisible.value = false
-
-        val targetPosition = playingPosition.value ?: return
-        _scrollToPositionEvent.value = targetPosition
     }
 
     fun onItemPositionClicked(item: Song, position: Int) {

@@ -196,10 +196,6 @@ class CurrSongQueueFragment: AbsMediaCollectionFragment<Song>() {
             }
         }
 
-        scrollToPositionEvent.observeNonNull(owner) { position ->
-            postScrollToPosition(position)
-        }
-
         scrollToPositionIfNotVisibleToUserEvent.observeNonNull(owner) { position ->
             postScrollToPositionIfNotVisibleToUser(position)
         }
