@@ -5,6 +5,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Handler;
 import android.os.IBinder;
 
 import androidx.annotation.NonNull;
@@ -50,7 +51,12 @@ public class PlayerHostViewModel extends BaseAndroidViewModel {
             // runtime exceptions when starting the PlayerService while the app is not in the foreground.
             // The idea is to start the PlayerService when this LiveData becomes active, because one
             // of its observers has transitioned to the started state.
-            callPlayerServiceIfNeeded();
+            mMainHandler.post(mCallPlayerServiceCallback);
+        }
+
+        @Override
+        protected void onInactive() {
+            mMainHandler.removeCallbacks(mCallPlayerServiceCallback);
         }
     };
     private final PlayerWrapper mPlayerWrapper;
@@ -59,6 +65,9 @@ public class PlayerHostViewModel extends BaseAndroidViewModel {
 
     private final AtomicBoolean mPlayerServiceCalled = new AtomicBoolean(false);
 
+    private final Handler mMainHandler;
+    private final Runnable mCallPlayerServiceCallback = this::callPlayerServiceIfNeeded;
+
     public PlayerHostViewModel(
             Application application,
             PlayerWrapper playerWrapper,
@@ -66,6 +75,7 @@ public class PlayerHostViewModel extends BaseAndroidViewModel {
         super(application, eventLogger);
         mPlayerWrapper = playerWrapper;
         mPlayerLiveData.setValue(playerWrapper.getWrapped());
+        mMainHandler = new Handler(application.getMainLooper());
     }
 
     private void callPlayerServiceIfNeeded() {
@@ -147,6 +157,7 @@ public class PlayerHostViewModel extends BaseAndroidViewModel {
     protected void onCleared() {
         unbindFromPlayerService();
         disposePlayerObserver();
+        mMainHandler.removeCallbacksAndMessages(null);
         // We delay detaching the player from the wrapper because all child
         // component view models (like fragments) are cleared after this one
         // and they may still need to use the player.
