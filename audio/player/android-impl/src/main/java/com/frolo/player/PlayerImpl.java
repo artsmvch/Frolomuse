@@ -344,7 +344,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
 
         mAudioFocusRequesterFactory = builder.mAudioFocusRequesterFactory != null
                 ? builder.mAudioFocusRequesterFactory
-                : AudioFocusRequesterImpl.obtainFactory(builder.mContext);
+                : AudioFocusRequesterImpl.getFactory(builder.mContext);
 
         mMediaPlayerHook = builder.mMediaPlayerHook != null
             ? builder.mMediaPlayerHook
@@ -394,6 +394,19 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
                 mAudioFocusRequester = requester;
             }
             return requester;
+        }
+    }
+
+    private void disposeAudioFocusRequester() {
+        synchronized (mAudioFocusRequesterFactory) {
+            AudioFocusRequester requester = mAudioFocusRequester;
+            if (requester instanceof AutoCloseable) {
+                try {
+                    ((AutoCloseable) requester).close();
+                } catch (Exception ignored) {
+                }
+            }
+            mAudioFocusRequester = null;
         }
     }
 
@@ -2027,6 +2040,9 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
 
         // Resetting the A-B controller
         mABControllerImpl.resetInternal(false);
+
+        // Disposing the audio focus requester
+        disposeAudioFocusRequester();
 
         // Resetting the playback fading timer
         final Timer oldTimer = mPlaybackFadingTimer;

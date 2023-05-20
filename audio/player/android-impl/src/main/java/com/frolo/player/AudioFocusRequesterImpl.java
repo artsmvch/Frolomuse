@@ -13,16 +13,15 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 
-final class AudioFocusRequesterImpl
-        implements AudioFocusRequester, AudioManager.OnAudioFocusChangeListener {
+final class AudioFocusRequesterImpl implements
+        AudioFocusRequester,
+        AudioManager.OnAudioFocusChangeListener,
+        AutoCloseable {
 
-    public static AudioFocusRequester.Factory obtainFactory(@NonNull Context context) {
-        return player -> create(context, player);
-    }
-
-    public static AudioFocusRequester create(@NonNull Context context, @NonNull Player player) {
-        final AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-        return new AudioFocusRequesterImpl(audioManager, player);
+    @NonNull
+    public static AudioFocusRequester.Factory getFactory(@NonNull Context context) {
+        AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+        return player -> new AudioFocusRequesterImpl(audioManager, player);
     }
 
     @NonNull
@@ -35,8 +34,7 @@ final class AudioFocusRequesterImpl
     // And then resume the playback again if needed.
     private final AtomicBoolean mWasPlaying = new AtomicBoolean(false);
 
-    private final AtomicReference<AudioFocusRequest> mAudioFocusRequest =
-            new AtomicReference<AudioFocusRequest>();
+    private final AtomicReference<AudioFocusRequest> mAudioFocusRequest = new AtomicReference<>();
 
     private AudioFocusRequesterImpl(@Nullable AudioManager audioManager, @NonNull Player player) {
         mAudioManager = audioManager;
@@ -50,22 +48,18 @@ final class AudioFocusRequesterImpl
             // Audio manager is null, we can't request audio focus, it's supposed to be granted
             return true;
         }
-
         final int result;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             final AudioAttributes attrs = new AudioAttributes.Builder()
                 .setUsage(AudioAttributes.USAGE_MEDIA)
                 .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
                 .build();
-
             final AudioFocusRequest request = new AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
                 .setAudioAttributes(attrs)
                 .setAcceptsDelayedFocusGain(true)
                 .setOnAudioFocusChangeListener(this)
                 .build();
-
             mAudioFocusRequest.set(request);
-
             result = manager.requestAudioFocus(request);
         } else {
             result = manager.requestAudioFocus(this, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
@@ -74,10 +68,8 @@ final class AudioFocusRequesterImpl
         switch (result) {
             case AudioManager.AUDIOFOCUS_REQUEST_FAILED:
                 return false;
-
             case AudioManager.AUDIOFOCUS_REQUEST_GRANTED:
                 return true;
-
             default: return true;
         }
     }
@@ -89,7 +81,6 @@ final class AudioFocusRequesterImpl
                 // Pause playback because your Audio Focus was
                 // temporarily stolen, but will be back soon.
                 // i.e. for a phone cal
-
                 mWasPlaying.set(mPlayer.isPlaying());
                 mPlayer.pause();
                 break;
@@ -101,23 +92,8 @@ final class AudioFocusRequesterImpl
                 // Remember to unregister your controls/buttons here.
                 // And release the kra — Audio Focus!
                 // You’re done.
-
                 mWasPlaying.set(mPlayer.isPlaying());
-
-                final AudioManager manager = mAudioManager;
-
-                if (manager != null) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-
-                        final AudioFocusRequest request = mAudioFocusRequest.get();
-                        if (request != null) {
-                            manager.abandonAudioFocusRequest(request);
-                        }
-                    } else {
-                        manager.abandonAudioFocus(this);
-                    }
-                }
-
+                abandonAudioFocus();
                 mPlayer.pause();
                 break;
             }
@@ -128,8 +104,8 @@ final class AudioFocusRequesterImpl
                 // i.e. for notifications or navigation directions
                 // Depending on your audio playback, you may prefer to
                 // pause playback here instead. You do you.
-
                 mWasPlaying.set(mPlayer.isPlaying());
+                break;
             }
 
             case AudioManager.AUDIOFOCUS_GAIN: {
@@ -139,14 +115,32 @@ final class AudioFocusRequesterImpl
                 // are finished
                 // If you implement ducking and lower the volume, be
                 // sure to return it to normal here, as well.
-
                 if (mWasPlaying.get()) { // ok, the player was playing, we're good to resume playback
                     mPlayer.start();
                 }
+                break;
             }
 
             default: break;
         }
     }
 
+    private void abandonAudioFocus() {
+        final AudioManager manager = mAudioManager;
+        if (manager != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                final AudioFocusRequest request = mAudioFocusRequest.get();
+                if (request != null) {
+                    manager.abandonAudioFocusRequest(request);
+                }
+            } else {
+                manager.abandonAudioFocus(this);
+            }
+        }
+    }
+
+    @Override
+    public void close() {
+        abandonAudioFocus();
+    }
 }
