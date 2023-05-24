@@ -25,6 +25,7 @@ import com.frolo.muse.sleeptimer.PlayerSleepTimer
 import com.frolo.muse.ui.main.MainActivity
 import com.frolo.music.model.Song
 import com.frolo.player.Player
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -119,6 +120,10 @@ internal class PlayerServiceDelegate(
         buildPlayerInstanceAsync()
         headsetHandler.subscribe(service)
         service.registerReceiver(sleepTimerHandler, PlayerSleepTimer.createIntentFilter())
+        withCrashlytics {
+            setCustomKey(CRASHLYTICS_KEY_SERVICE_CREATED_ONCE, true)
+            setCustomKey(CRASHLYTICS_KEY_SERVICE_CREATED, true)
+        }
         Logger.d(TAG, "Service created")
     }
 
@@ -137,6 +142,10 @@ internal class PlayerServiceDelegate(
         preferences = serviceComponent.providePreferences()
         changeSongFavStatusUseCase = serviceComponent.provideChangeSongFavStatusUseCase()
         playerStateRestorer = serviceComponent.providePlayerStateRestorer()
+    }
+
+    private fun withCrashlytics(lambda: FirebaseCrashlytics.() -> Unit) {
+        kotlin.runCatching { FirebaseCrashlytics.getInstance().lambda() }
     }
 
     fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -183,6 +192,9 @@ internal class PlayerServiceDelegate(
         headsetHandler.dispose()
         service.unregisterReceiver(sleepTimerHandler)
         internalDisposables.dispose()
+        withCrashlytics {
+            setCustomKey(CRASHLYTICS_KEY_SERVICE_CREATED, false)
+        }
     }
 
     private fun buildPlayerInstanceAsync() {
@@ -343,6 +355,9 @@ internal class PlayerServiceDelegate(
         val openPendingIntent = PendingIntent.getActivity(service, RC_OPEN_PLAYER,
             MainActivity.newIntent(context, openPlayer = true), getPendingIntentFlags())
 
+        // Getting a lot of android.app.RemoteServiceException$ForegroundServiceDidNotStartInTimeException
+        // https://issuetracker.google.com/issues/76112072
+        // https://issuetracker.google.com/issues/229000935
         val notificationBuilder = NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID).apply {
             // TODO: got a lot of BadNotificationException.
             // Must be related to app updates, when the new build has different drawable ID value in R class.
@@ -425,6 +440,9 @@ internal class PlayerServiceDelegate(
 
         private const val NOTIFICATION_CHANNEL_ID = "playback"
         private const val NOTIFICATION_ID = 1337
+
+        private const val CRASHLYTICS_KEY_SERVICE_CREATED_ONCE = "player_service_created_once"
+        private const val CRASHLYTICS_KEY_SERVICE_CREATED = "player_service_created"
 
         @JvmStatic
         fun newIntent(context: Context): Intent = Intent(context, PlayerService::class.java)
