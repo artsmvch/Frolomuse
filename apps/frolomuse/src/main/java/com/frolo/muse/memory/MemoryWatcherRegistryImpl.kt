@@ -3,7 +3,9 @@ package com.frolo.muse.memory
 import android.app.Application
 import android.content.ComponentCallbacks2
 import android.content.res.Configuration
+import androidx.annotation.GuardedBy
 import java.util.*
+import java.util.concurrent.atomic.AtomicBoolean
 
 
 class MemoryWatcherRegistryImpl(
@@ -15,8 +17,10 @@ class MemoryWatcherRegistryImpl(
         }
 
         override fun onLowMemory() {
-            weakWatchers.forEach { observer ->
-                observer.noteLowMemory()
+            synchronized(weakWatchers) {
+                weakWatchers.forEach { observer ->
+                    observer.noteLowMemory()
+                }
             }
         }
 
@@ -25,21 +29,34 @@ class MemoryWatcherRegistryImpl(
 
     }
 
-    private val weakWatchers = Collections.newSetFromMap(WeakHashMap<MemoryWatcher, Boolean>())
+    private val isActivated = AtomicBoolean(false)
+    @get:GuardedBy("weakWatchers")
+    private val weakWatchers by lazy {
+        // Lazily activate when the watchers are touched
+        Collections.newSetFromMap(WeakHashMap<MemoryWatcher, Boolean>()).apply { activate() }
+    }
 
     fun activate() {
-        application.registerComponentCallbacks(componentCallbacks)
+        if (!isActivated.getAndSet(true)) {
+            application.registerComponentCallbacks(componentCallbacks)
+        }
     }
 
     fun deactivate() {
-        application.unregisterComponentCallbacks(componentCallbacks)
+        if (isActivated.getAndSet(false)) {
+            application.unregisterComponentCallbacks(componentCallbacks)
+        }
     }
 
     override fun addWeakWatcher(watcher: MemoryWatcher) {
-        weakWatchers.add(watcher)
+        synchronized(weakWatchers) {
+            weakWatchers.add(watcher)
+        }
     }
 
     override fun removeWeakWatcher(watcher: MemoryWatcher) {
-        weakWatchers.remove(watcher)
+        synchronized(weakWatchers) {
+            weakWatchers.remove(watcher)
+        }
     }
 }
