@@ -8,7 +8,7 @@ import com.frolo.muse.billing.TrialManager
 import com.frolo.muse.billing.TrialManagerImpl
 import com.frolo.muse.di.ApplicationScope
 import com.frolo.muse.di.ExecutorQualifier
-import com.frolo.muse.di.impl.misc.MainExecutor
+import com.frolo.muse.di.impl.misc.MainThreadExecutor
 import com.frolo.muse.di.impl.network.NetworkHelperImpl
 import com.frolo.muse.di.impl.permission.PermissionCheckerImpl
 import com.frolo.muse.di.impl.rx.SchedulerProviderImpl
@@ -58,15 +58,15 @@ class MiscModule {
 
     @ApplicationScope
     @Provides
-    @ExecutorQualifier(ExecutorQualifier.Type.MAIN)
-    fun provideMainExecutor(): Executor {
-        return MainExecutor()
+    @ExecutorQualifier(ExecutorQualifier.ThreadType.MAIN)
+    fun provideMainThreadExecutor(): Executor {
+        return MainThreadExecutor()
     }
 
     @ApplicationScope
     @Provides
-    @ExecutorQualifier(ExecutorQualifier.Type.QUERY)
-    fun provideQueryExecutor(): Executor {
+    @ExecutorQualifier(ExecutorQualifier.ThreadType.BACKGROUND)
+    fun provideBackgroundThreadExecutor(): Executor {
         return Executors.newCachedThreadPool()
     }
 

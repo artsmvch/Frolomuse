@@ -40,7 +40,7 @@ import javax.inject.Inject
 
 class PlayerViewModel @Inject constructor(
     private val player: Player,
-    @ExecutorQualifier(ExecutorQualifier.Type.MAIN) private val mainThreadExecutor: Executor,
+    @ExecutorQualifier(ExecutorQualifier.ThreadType.MAIN) private val mainThreadExecutor: Executor,
     private val schedulerProvider: SchedulerProvider,
     private val getIsFavouriteUseCase: GetIsFavouriteUseCase<Song>,
     private val changeFavouriteUseCase: ChangeFavouriteUseCase<Song>,

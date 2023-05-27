@@ -31,7 +31,7 @@ import kotlin.math.max
 
 
 class CurrSongQueueViewModel @Inject constructor(
-    @ExecutorQualifier(ExecutorQualifier.Type.MAIN)
+    @ExecutorQualifier(ExecutorQualifier.ThreadType.MAIN)
     private val mainThreadExecutor: Executor,
     private val player: Player,
     permissionChecker: PermissionChecker,

@@ -94,7 +94,7 @@ class LocalDataModule {
     fun provideLibraryConfiguration(
         context: Context,
         songFilterProvider: SongFilterProvider,
-        @ExecutorQualifier(ExecutorQualifier.Type.QUERY) executor: Executor,
+        @ExecutorQualifier(ExecutorQualifier.ThreadType.BACKGROUND) executor: Executor,
     ): LibraryConfiguration {
         return LibraryConfiguration(context, songFilterProvider, executor)
     }

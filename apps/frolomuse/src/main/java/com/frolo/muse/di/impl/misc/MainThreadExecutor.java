@@ -7,7 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.Executor;
 
-public class MainExecutor implements Executor {
+public class MainThreadExecutor implements Executor {
 
     private final Handler handler = new Handler(Looper.getMainLooper());
 

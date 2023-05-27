@@ -3,10 +3,10 @@ package com.frolo.muse.di
 import javax.inject.Qualifier
 
 @Qualifier
-@kotlin.annotation.Retention(AnnotationRetention.RUNTIME)
-annotation class ExecutorQualifier(val value: Type) {
-    enum class Type {
+@Retention(AnnotationRetention.RUNTIME)
+annotation class ExecutorQualifier(val value: ThreadType) {
+    enum class ThreadType {
         MAIN,
-        QUERY
+        BACKGROUND
     }
 }
