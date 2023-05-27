@@ -155,9 +155,11 @@ public class PlayerHostViewModel extends BaseAndroidViewModel {
 
     @Override
     protected void onCleared() {
-        unbindFromPlayerService();
-        disposePlayerObserver();
         mMainHandler.removeCallbacksAndMessages(null);
+        if (mPlayerServiceCalled.get()) {
+            unbindFromPlayerService();
+        }
+        disposePlayerObserver();
         // We delay detaching the player from the wrapper because all child
         // component view models (like fragments) are cleared after this one
         // and they may still need to use the player.
