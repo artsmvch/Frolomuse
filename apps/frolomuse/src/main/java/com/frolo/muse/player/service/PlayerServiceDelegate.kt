@@ -17,6 +17,7 @@ import com.frolo.muse.common.*
 import com.frolo.muse.di.ServiceComponent
 import com.frolo.muse.di.applicationComponent
 import com.frolo.muse.di.modules.ServiceModule
+import com.frolo.muse.firebase.withCrashlytics
 import com.frolo.muse.player.PlayerHolder
 import com.frolo.muse.player.PlayerStateRestorer
 import com.frolo.muse.interactor.media.favourite.ChangeSongFavStatusUseCase
@@ -84,17 +85,20 @@ internal class PlayerServiceDelegate(
     fun onBind(intent: Intent?): IBinder {
         isBound = true
         Logger.d(TAG, "Service gets bound")
+        withCrashlytics { setCustomKey(CRASHLYTICS_KEY_SERVICE_BOUNDED, true) }
         return PlayerBinderImpl(playerSubject)
     }
 
     fun onRebind(intent: Intent?) {
         isBound = true
         Logger.d(TAG, "Service gets rebound")
+        withCrashlytics { setCustomKey(CRASHLYTICS_KEY_SERVICE_BOUNDED, true) }
     }
 
     fun onUnbind(intent: Intent?): Boolean {
         isBound = false
         Logger.d(TAG, "Service gets unbound")
+        withCrashlytics { setCustomKey(CRASHLYTICS_KEY_SERVICE_BOUNDED, false) }
         if (isNotificationCancelled) {
             // Service is unbound and not in foreground. We don't know why it got unbound.
             // The user may have closed the app or the system killed activities due to
@@ -142,10 +146,6 @@ internal class PlayerServiceDelegate(
         preferences = serviceComponent.providePreferences()
         changeSongFavStatusUseCase = serviceComponent.provideChangeSongFavStatusUseCase()
         playerStateRestorer = serviceComponent.providePlayerStateRestorer()
-    }
-
-    private fun withCrashlytics(lambda: FirebaseCrashlytics.() -> Unit) {
-        kotlin.runCatching { FirebaseCrashlytics.getInstance().lambda() }
     }
 
     fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -443,6 +443,7 @@ internal class PlayerServiceDelegate(
 
         private const val CRASHLYTICS_KEY_SERVICE_CREATED_ONCE = "player_service_created_once"
         private const val CRASHLYTICS_KEY_SERVICE_CREATED = "player_service_created"
+        private const val CRASHLYTICS_KEY_SERVICE_BOUNDED = "player_service_bounded"
 
         @JvmStatic
         fun newIntent(context: Context): Intent = Intent(context, PlayerService::class.java)
