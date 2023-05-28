@@ -309,6 +309,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
     private volatile int mCurrentPositionInQueue = NO_POSITION_IN_QUEUE;
 
     private volatile boolean mIsPreparedFlag = false;
+    private volatile int mDuration = 0;
     private volatile boolean mIsPlayingFlag = false;
 
     @RepeatMode
@@ -586,8 +587,9 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
 
             mABControllerImpl.resetInternal(true);
 
-            mIsPlayingFlag = false;
             mIsPreparedFlag = false;
+            mDuration = 0;
+            mIsPlayingFlag = false;
 
             notifyPlaybackCompleted();
         }
@@ -652,7 +654,8 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
 
                         // Resetting internal flags
                         mIsPreparedFlag = false;
-                        mIsPreparedFlag = false;
+                        mDuration = 0;
+                        mIsPlayingFlag = false;
 
                         try {
                             // Trying to release the instance
@@ -699,9 +702,11 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
 
                                 newEngine.prepare();
 
+                                int duration = newEngine.getDuration();
                                 mIsPreparedFlag = true;
+                                mDuration = duration;
                                 mMediaPlayerHook.attachAudioEffects(newEngine);
-                                mObserverRegistry.dispatchPrepared(newEngine.getDuration(), 0);
+                                mObserverRegistry.dispatchPrepared(duration, 0);
                             } catch (Throwable error) {
                                 report(error);
                                 mPlayerJournal.logMessage("Failed to set up the new engine");
@@ -733,6 +738,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
                 synchronized (mEngineLock) {
 
                     mIsPreparedFlag = false;
+                    mDuration = 0;
                     mIsPlayingFlag = false;
 
                     final MediaPlayer engine = mEngine;
@@ -839,6 +845,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
                     synchronized (mEngineLock) {
 
                         mIsPreparedFlag = false;
+                        mDuration = 0;
                         mIsPlayingFlag = false;
 
                         final MediaPlayer engine = mEngine;
@@ -861,6 +868,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
                 synchronized (mEngineLock) {
 
                     mIsPreparedFlag = false;
+                    mDuration = 0;
                     mIsPlayingFlag = startPlaying;
 
                     MediaPlayer engine = mEngine;
@@ -901,7 +909,9 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
 
                         engine.prepare();
 
+                        int duration = engine.getDuration();
                         mIsPreparedFlag = true;
+                        mDuration = duration;
 
                         mMediaPlayerHook.attachAudioEffects(engine);
 
@@ -910,7 +920,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
                         }
 
                         // Dispatch that it's prepared after the audio fx is applied and the progress is sought
-                        mObserverRegistry.dispatchPrepared(engine.getDuration(), engine.getCurrentPosition());
+                        mObserverRegistry.dispatchPrepared(duration, engine.getCurrentPosition());
 
                         if (startPlaying && tryRequestAudioFocus()) {
                             mIsPlayingFlag = true;
@@ -1284,21 +1294,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
 
     @Override
     public int getDuration() {
-        synchronized (mEngineLock) {
-
-            if (!mIsPreparedFlag) return 0;
-
-            final MediaPlayer engine = mEngine;
-            if (engine == null) return 0;
-
-            try {
-                return engine.getDuration();
-            } catch (Throwable error) {
-                report(error);
-                mPlayerJournal.logError("Failed to get duration", error);
-                return 0;
-            }
-        }
+        return mDuration;
     }
 
     @NonNull
@@ -2059,6 +2055,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
         synchronized (mEngineLock) {
 
             mIsPreparedFlag = false;
+            mDuration = 0;
             mIsPlayingFlag = false;
 
             final MediaPlayer engine = mEngine;
