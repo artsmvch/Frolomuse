@@ -5,11 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.IBinder
 import androidx.core.content.ContextCompat
-import com.frolo.muse.firebase.withCrashlytics
 import com.frolo.muse.player.service.PlayerService.Companion.newIntent
-import io.reactivex.Observable
-import io.reactivex.schedulers.Schedulers
-import java.util.concurrent.TimeUnit
 
 
 /**
@@ -70,25 +66,13 @@ class PlayerService: Service() {
     }
 
     companion object {
-        private const val CRASHLYTICS_KEY_FOREGROUND_START_TIME_ELAPSED = "foreground_start_time_elapsed"
 
         /**
          * Starts the PlayerService in foreground.
          */
         @JvmStatic
         fun start(context: Context) {
-            val startTimeMillis = System.currentTimeMillis()
             ContextCompat.startForegroundService(context, newIntent(context))
-            Observable.interval(100L, TimeUnit.MILLISECONDS)
-                .take(100) // we're interested in the first 10 seconds
-                .observeOn(Schedulers.computation())
-                .doOnNext {
-                    val elapsedMillis = System.currentTimeMillis() - startTimeMillis
-                    withCrashlytics {
-                        setCustomKey(CRASHLYTICS_KEY_FOREGROUND_START_TIME_ELAPSED, elapsedMillis)
-                    }
-                }
-                .subscribe()
         }
 
         @JvmStatic
