@@ -19,6 +19,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.graphics.ColorUtils
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.doOnLayout
+import androidx.core.view.doOnPreDraw
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -486,6 +487,10 @@ internal class MainFragment :
             with(BottomSheetBehavior.from(v)) {
                 peekHeight = properties.playerSheetPeekHeight
             }
+        }
+        sliding_player_layout.doOnPreDraw {
+            Logger.d(LOG_TAG, "Report fully drawn")
+            activity?.reportFullyDrawn()
         }
 
         pendingIntent?.also(::handleIntent)
