@@ -15,6 +15,7 @@ import android.os.SystemClock;
 import androidx.annotation.GuardedBy;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.WorkerThread;
 
 import com.frolo.player.data.AudioSources;
 import com.frolo.player.data.MediaStoreRow;
@@ -1242,6 +1243,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
     }
 
     // TODO: make non-blocking
+    @WorkerThread
     @Override
     public int getProgress() {
         synchronized (mEngineLock) {
