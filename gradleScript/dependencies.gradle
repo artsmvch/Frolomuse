@@ -21,6 +21,7 @@ ext {
             media:                  "androidx.media:media:1.4.3",
             media2:                 "androidx.media2:media2-session:1.2.1",
             core:                   "androidx.core:core-ktx:1.8.0",
+            coreTesting:            "androidx.arch.core:core-testing:2.2.0",
             // Do not use v1.1.1 for preferences: it messes with image tinting
             preferences:            "androidx.preference:preference-ktx:1.0.0",
             localBroadcastManager:  "androidx.localbroadcastmanager:localbroadcastmanager:1.0.0",

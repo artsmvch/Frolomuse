@@ -239,7 +239,7 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     testImplementation "org.mockito:mockito-core:$mockito_version"
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockito_kotlin_version"
-    testImplementation "androidx.arch.core:core-testing:2.1.0"
+    testImplementation deps.support.coreTesting
     testImplementation project(path: ':test-tools:stubs')
 
     // Arch
