@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import com.frolo.logger.api.Logger;
 import com.frolo.muse.player.PlayerHolder;
 import com.frolo.muse.player.PlayerWrapper;
 import com.frolo.muse.player.service.PlayerService;
@@ -28,6 +29,7 @@ import io.reactivex.disposables.Disposable;
 
 
 public class PlayerHostViewModel extends BaseAndroidViewModel {
+    private static final String LOG_TAG = "PlayerHostViewModel";
 
     private final ServiceConnection mConnection = new ServiceConnection() {
         @Override
@@ -82,8 +84,15 @@ public class PlayerHostViewModel extends BaseAndroidViewModel {
         if (mPlayerServiceCalled.getAndSet(true)) {
             return;
         }
-        startPlayerService(getApplication());
-        bindToPlayerService(getApplication());
+        try {
+            startPlayerService(getApplication());
+            bindToPlayerService(getApplication());
+        } catch (Throwable e) {
+            // An attempt to fix this annoying crash
+            // https://console.firebase.google.com/u/0/project/frolomuse/crashlytics/app/android:com.frolo.musp/issues/d55dbe8082c78becf73bcff49f0b1822
+            Logger.e(LOG_TAG, e);
+            mPlayerServiceCalled.set(false);
+        }
     }
 
     private void startPlayerService(Application application) {
