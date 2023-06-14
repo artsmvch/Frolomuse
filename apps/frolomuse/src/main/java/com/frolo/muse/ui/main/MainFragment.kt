@@ -489,12 +489,21 @@ internal class MainFragment :
             }
         }
         sliding_player_layout.doOnPreDraw {
-            Logger.d(LOG_TAG, "Report fully drawn")
-            activity?.reportFullyDrawn()
+            reportFullyDrawn()
         }
 
         pendingIntent?.also(::handleIntent)
         return true
+    }
+
+    private fun reportFullyDrawn() {
+        Logger.d(LOG_TAG, "Report fully drawn")
+        try {
+            activity?.reportFullyDrawn()
+        } catch (e: Throwable) {
+            // See https://console.firebase.google.com/u/0/project/frolomuse/crashlytics/app/android:com.frolo.musp/issues/157c76ceb0f8cda71faf667b253e5556
+            Logger.e(LOG_TAG, e)
+        }
     }
 
     private fun destroyContent() {
