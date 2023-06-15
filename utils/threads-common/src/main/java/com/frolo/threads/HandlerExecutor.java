@@ -10,6 +10,11 @@ import java.util.concurrent.Executor;
 
 public class HandlerExecutor implements Executor {
     @NonNull
+    public static HandlerExecutor main() {
+        return new HandlerExecutor(Looper.getMainLooper());
+    }
+
+    @NonNull
     private final Handler mHandler;
 
     public HandlerExecutor(@NonNull Handler handler) {
