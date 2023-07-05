@@ -15,7 +15,7 @@ import com.frolo.logger.api.LogDelegate
 import com.frolo.logger.api.Logger
 import com.frolo.logger.api.LoggerParams
 import com.frolo.logger.impl.ConsoleLogDelegate
-import com.frolo.logger.impl.FirebaseLogDelegate
+import com.frolo.logger.impl.FirebaseErrorLogDelegate
 
 class ApplicationImpl : Application() {
     override fun onCreate() {
@@ -27,7 +27,7 @@ class ApplicationImpl : Application() {
         initAppComponent(AppComponentImpl(this))
         val logDelegates = ArrayList<LogDelegate>(2).apply {
             if (BuildConfig.GOOGLE_SERVICES_ENABLED) {
-                add(FirebaseLogDelegate())
+                add(FirebaseErrorLogDelegate())
             }
             if (BuildConfig.DEBUG) {
                 add(ConsoleLogDelegate())

@@ -21,7 +21,7 @@ import com.frolo.logger.api.LogDelegate
 import com.frolo.logger.api.Logger
 import com.frolo.logger.api.LoggerParams
 import com.frolo.logger.impl.ConsoleLogDelegate
-import com.frolo.logger.impl.FirebaseLogDelegate
+import com.frolo.logger.impl.FirebaseErrorLogDelegate
 import com.frolo.muse.*
 import com.frolo.muse.broadcast.Broadcasts
 import com.frolo.muse.di.ApplicationScope
@@ -33,7 +33,6 @@ import com.frolo.muse.player.PlayerWrapper
 import com.frolo.muse.memory.MemoryWatcherRegistryImpl
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.ui.base.BaseActivity
-import com.frolo.performance.anr.AnrDetectors
 import com.frolo.performance.coldstart.ColdStartMeasurer
 import com.frolo.player.PlayerImpl
 import com.frolo.threads.HandlerExecutor
@@ -174,7 +173,7 @@ class AppStartUpInitializer @Inject constructor(
             logDelegates.add(ConsoleLogDelegate())
         }
         if (BuildInfo.isFirebaseEnabled()) {
-            logDelegates.add(FirebaseLogDelegate())
+            logDelegates.add(FirebaseErrorLogDelegate())
         }
         val loggerParams = LoggerParams(
             logDelegate = CompositeLogDelegate(
