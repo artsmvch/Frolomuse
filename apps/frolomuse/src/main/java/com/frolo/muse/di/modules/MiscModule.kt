@@ -8,7 +8,6 @@ import com.frolo.muse.billing.TrialManager
 import com.frolo.muse.billing.TrialManagerImpl
 import com.frolo.muse.di.ApplicationScope
 import com.frolo.muse.di.ExecutorQualifier
-import com.frolo.muse.di.impl.misc.MainThreadExecutor
 import com.frolo.muse.di.impl.network.NetworkHelperImpl
 import com.frolo.muse.di.impl.permission.PermissionCheckerImpl
 import com.frolo.muse.di.impl.rx.SchedulerProviderImpl
@@ -29,6 +28,7 @@ import dagger.Provides
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 import com.frolo.muse.BuildInfo
+import com.frolo.threads.HandlerExecutor
 
 
 @Module
@@ -60,7 +60,7 @@ class MiscModule {
     @Provides
     @ExecutorQualifier(ExecutorQualifier.ThreadType.MAIN)
     fun provideMainThreadExecutor(): Executor {
-        return MainThreadExecutor()
+        return HandlerExecutor.main()
     }
 
     @ApplicationScope
