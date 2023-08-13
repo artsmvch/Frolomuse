@@ -84,15 +84,8 @@ public class PlayerHostViewModel extends BaseAndroidViewModel {
         if (mPlayerServiceCalled.getAndSet(true)) {
             return;
         }
-        try {
-            startPlayerService(getApplication());
-            bindToPlayerService(getApplication());
-        } catch (Throwable e) {
-            // An attempt to fix this annoying crash
-            // https://console.firebase.google.com/u/0/project/frolomuse/crashlytics/app/android:com.frolo.musp/issues/d55dbe8082c78becf73bcff49f0b1822
-            Logger.e(LOG_TAG, e);
-            mPlayerServiceCalled.set(false);
-        }
+        startPlayerService(getApplication());
+        bindToPlayerService(getApplication());
     }
 
     private void startPlayerService(Application application) {
