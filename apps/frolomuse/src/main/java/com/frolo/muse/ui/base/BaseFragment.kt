@@ -1,6 +1,5 @@
 package com.frolo.muse.ui.base
 
-import android.Manifest
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
@@ -20,10 +19,11 @@ import androidx.lifecycle.ViewModelProviders
 import com.frolo.core.ui.fragment.WithCustomStatusBar
 import com.frolo.core.ui.fragment.WithCustomWindowInsets
 import com.frolo.debug.DebugUtils
-import com.frolo.muse.FrolomuseApp
 import com.frolo.logger.api.Logger
+import com.frolo.muse.FrolomuseApp
 import com.frolo.muse.R
 import com.frolo.muse.di.activityComponent
+import com.frolo.muse.di.impl.permission.PermissionCheckerImpl
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.repository.Preferences
 import com.frolo.ui.StyleUtils
@@ -169,15 +169,15 @@ abstract class BaseFragment:
             })
     }
 
-    // Checks READ_EXTERNAL_STORAGE permission.
+    // Checks the read audio permission.
     // If it is granted, then the [action] callback will be called immediately.
     // Otherwise, the user will be prompt to grant permission for the action.
     inline fun checkReadPermissionFor(crossinline action: () -> Unit) {
-        val permission = Manifest.permission.READ_EXTERNAL_STORAGE
+        val permission = PermissionCheckerImpl.READ_AUDIO_PERMISSION
         if (isPermissionGranted(permission)) {
             action.invoke()
         } else {
-            requestRxPermissions(Manifest.permission.READ_EXTERNAL_STORAGE) { granted ->
+            requestRxPermissions(permission) { granted ->
                 if (granted) {
                     action.invoke()
                     RESPermissionBus.dispatch()
@@ -186,27 +186,27 @@ abstract class BaseFragment:
         }
     }
 
-    // Checks WRITE_EXTERNAL_STORAGE permission.
+    // Checks the write audio permission.
     // If it is granted, then the [action] callback will be called immediately.
     // Otherwise, the user will be prompt to grant permission for the action.
     inline fun checkWritePermissionFor(crossinline action: () -> Unit) {
-        val permission = Manifest.permission.WRITE_EXTERNAL_STORAGE
+        val permission = PermissionCheckerImpl.WRITE_AUDIO_PERMISSION
         if (isPermissionGranted(permission)) {
             action.invoke()
         } else {
-            requestRxPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE) { granted ->
+            requestRxPermissions(permission) { granted ->
                 if (granted) action.invoke()
             }
         }
     }
 
-    // Checks both READ_EXTERNAL_STORAGE and WRITE_EXTERNAL_STORAGE permissions.
+    // Checks the read and write audio permissions.
     // If they are granted, then the [action] callback will be called immediately.
     // Otherwise, the user will be prompt to grant permissions for the action.
     fun checkReadWritePermissionsFor(action: () -> Unit) {
         val permissions = arrayOf(
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
+            PermissionCheckerImpl.READ_AUDIO_PERMISSION,
+            PermissionCheckerImpl.WRITE_AUDIO_PERMISSION
         )
         requestRxPermissions(*permissions) { granted ->
             if (granted) {

@@ -1,6 +1,5 @@
 package com.frolo.muse.ui.main.settings
 
-import android.Manifest
 import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -23,6 +22,7 @@ import com.frolo.core.ui.marker.ScrolledToTop
 import com.frolo.muse.di.activityComponent
 import com.frolo.muse.logger.*
 import com.frolo.mediascan.MediaScanService
+import com.frolo.muse.di.impl.permission.PermissionCheckerImpl
 import com.frolo.muse.router.AppRouter
 import com.frolo.muse.repository.AppearancePreferences
 import com.frolo.muse.repository.Preferences
@@ -395,7 +395,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
             when (which) {
                 DialogInterface.BUTTON_POSITIVE -> {
                     val context = context ?: return@OnClickListener
-                    val permission = Manifest.permission.READ_EXTERNAL_STORAGE
+                    val permission = PermissionCheckerImpl.READ_AUDIO_PERMISSION
                     if (ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED) {
                         // Permission already granted
                         startScanningMedia()
@@ -424,7 +424,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == RC_SCAN_MEDIA) {
             for (i in permissions.indices) {
-                if (permissions[i] == Manifest.permission.READ_EXTERNAL_STORAGE) {
+                if (permissions[i] == PermissionCheckerImpl.READ_AUDIO_PERMISSION) {
                     if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
                         // Permission granted
                         startScanningMedia()

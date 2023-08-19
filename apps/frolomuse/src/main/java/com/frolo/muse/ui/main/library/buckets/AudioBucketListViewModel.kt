@@ -45,7 +45,8 @@ class AudioBucketListViewModel @Inject constructor(
     val openBucketEvent: LiveData<MediaBucket> get() = _openBucketEvent
 
     private fun doFetch() {
-        if (!permissionChecker.isQueryMediaContentPermissionGranted) {
+        // TODO: need to check the read files permission
+        if (!permissionChecker.isReadAudioPermissionGranted) {
             _requestRESPermissionEvent.call()
             return
         }

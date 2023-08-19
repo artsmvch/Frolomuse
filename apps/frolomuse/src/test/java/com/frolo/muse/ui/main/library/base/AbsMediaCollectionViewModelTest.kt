@@ -88,7 +88,7 @@ class AbsMediaCollectionViewModelTest {
 
     @Test
     fun test_fetchMediaList_Success() {
-        whenever(permissionChecker.isQueryMediaContentPermissionGranted)
+        whenever(permissionChecker.isReadAudioPermissionGranted)
                 .doReturn(true)
 
         whenever(getMediaUseCase.getMediaList())
@@ -120,7 +120,7 @@ class AbsMediaCollectionViewModelTest {
 
     @Test
     fun test_fetchMediaItems_Failure() {
-        whenever(permissionChecker.isQueryMediaContentPermissionGranted)
+        whenever(permissionChecker.isReadAudioPermissionGranted)
                 .doReturn(true)
 
         whenever(getMediaUseCase.getMediaList())
@@ -153,7 +153,7 @@ class AbsMediaCollectionViewModelTest {
     @Test
     fun test_fetchMediaList_PermissionNotGranted1() {
         // The first time it returns false, the second time it returns true
-        whenever(permissionChecker.isQueryMediaContentPermissionGranted)
+        whenever(permissionChecker.isReadAudioPermissionGranted)
                 .doReturn(false)
 
         whenever(getMediaUseCase.getMediaList())
@@ -187,7 +187,7 @@ class AbsMediaCollectionViewModelTest {
 //        }
 
         // After that
-        whenever(permissionChecker.isQueryMediaContentPermissionGranted)
+        whenever(permissionChecker.isReadAudioPermissionGranted)
                 .doReturn(true)
 
         whenever(getMediaUseCase.getMediaList())
@@ -219,7 +219,7 @@ class AbsMediaCollectionViewModelTest {
 
     @Test
     fun test_fetchMediaList_PermissionNotGranted2() {
-        whenever(permissionChecker.isQueryMediaContentPermissionGranted)
+        whenever(permissionChecker.isReadAudioPermissionGranted)
                 .doReturn(true)
 
         whenever(getMediaUseCase.getMediaList())
@@ -282,7 +282,7 @@ class AbsMediaCollectionViewModelTest {
 
     @Test
     fun test_fetchMediaItems_Empty() {
-        whenever(permissionChecker.isQueryMediaContentPermissionGranted)
+        whenever(permissionChecker.isReadAudioPermissionGranted)
                 .doReturn(true)
 
         whenever(getMediaUseCase.getMediaList())
@@ -328,7 +328,7 @@ class AbsMediaCollectionViewModelTest {
                 true
                 )
 
-        whenever(permissionChecker.isQueryMediaContentPermissionGranted)
+        whenever(permissionChecker.isReadAudioPermissionGranted)
                 .doReturn(true)
 
         whenever(getMediaUseCase.getMediaList())

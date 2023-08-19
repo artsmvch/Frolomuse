@@ -15,8 +15,15 @@ import com.frolo.ui.ActivityUtils;
 
 
 public final class PermissionCheckerImpl implements PermissionChecker {
-
-    private static final String P_READ_EXTERNAL_STORAGE = Manifest.permission.READ_EXTERNAL_STORAGE;
+    public static final String READ_AUDIO_PERMISSION;
+    static {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            READ_AUDIO_PERMISSION = Manifest.permission.READ_MEDIA_AUDIO;
+        } else {
+            READ_AUDIO_PERMISSION = Manifest.permission.READ_EXTERNAL_STORAGE;
+        }
+    }
+    public static final String WRITE_AUDIO_PERMISSION = Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
     private final Context mContext;
 
@@ -25,20 +32,13 @@ public final class PermissionCheckerImpl implements PermissionChecker {
     }
 
     @Override
-    public boolean isQueryMediaContentPermissionGranted() {
-        final int result = ContextCompat.checkSelfPermission(mContext, P_READ_EXTERNAL_STORAGE);
+    public boolean isReadAudioPermissionGranted() {
+        final int result = ContextCompat.checkSelfPermission(mContext, READ_AUDIO_PERMISSION);
         return result == PackageManager.PERMISSION_GRANTED;
     }
 
     @Override
-    public void requireQueryMediaContentPermission() throws SecurityException {
-        if (!isQueryMediaContentPermissionGranted()) {
-            throw new SecurityException();
-        }
-    }
-
-    @Override
-    public boolean shouldRequestMediaPermissionInSettings() {
+    public boolean shouldRequestReadAudioPermissionInSettings() {
         Activity foreground = ApplicationWatcher.getForegroundActivity();
         if (foreground != null && !ActivityUtils.isFinishingOrDestroyed(foreground)) {
             // Not correct solution below?

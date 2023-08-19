@@ -52,7 +52,7 @@ class TransferPlaylistsUseCase @Inject constructor(
     }
 
     private fun actualTransferPlaylists(): Completable {
-        if (!permissionChecker.isQueryMediaContentPermissionGranted) {
+        if (!permissionChecker.isReadAudioPermissionGranted) {
             // Maybe next time
             return Completable.error(SecurityException(
                     "Permission required to query playlists from the shared storage"))

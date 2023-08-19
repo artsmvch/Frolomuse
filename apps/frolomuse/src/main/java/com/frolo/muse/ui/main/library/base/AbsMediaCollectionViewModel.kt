@@ -234,7 +234,7 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
      * This properly dispatches subscription's events to other live data members.
      */
     private fun doFetch() {
-        if (!permissionChecker.isQueryMediaContentPermissionGranted) {
+        if (!permissionChecker.isReadAudioPermissionGranted) {
             askReadPermission()
             return
         }

@@ -1,6 +1,5 @@
 package com.frolo.muse.ui.deprecated.player;
 
-import android.Manifest;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -28,11 +27,12 @@ import androidx.core.app.ActivityCompat;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.frolo.core.ui.glide.SquircleTransformation;
+import com.frolo.logger.api.Logger;
 import com.frolo.mediabutton.PlayButton;
 import com.frolo.muse.BuildConfig;
 import com.frolo.muse.R;
-import com.frolo.logger.api.Logger;
-import com.frolo.core.ui.glide.SquircleTransformation;
+import com.frolo.muse.di.impl.permission.PermissionCheckerImpl;
 import com.frolo.muse.sounder.Sounder;
 
 import org.jetbrains.annotations.NotNull;
@@ -177,7 +177,7 @@ public class StandalonePlayerActivity extends AppCompatActivity {
         final Uri uri = intent.getData();
         String action = intent.getAction();
         if (action != null && intent.getAction().equals(Intent.ACTION_VIEW) && uri != null) {
-            final String permission = Manifest.permission.READ_EXTERNAL_STORAGE;
+            final String permission = PermissionCheckerImpl.READ_AUDIO_PERMISSION;
             if (ActivityCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED) {
                 // handle audio intent
                 ContentResolver resolver = this.getContentResolver();
@@ -256,7 +256,7 @@ public class StandalonePlayerActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == READ_INTENT_URI) {
-            final String permission = Manifest.permission.READ_EXTERNAL_STORAGE;
+            final String permission = PermissionCheckerImpl.READ_AUDIO_PERMISSION;
             for (int i = 0; i < permissions.length; i++) {
                 String p = permissions[i];
                 if (p.equals(permission)) {

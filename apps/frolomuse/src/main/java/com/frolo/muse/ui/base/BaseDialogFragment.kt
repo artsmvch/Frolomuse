@@ -1,6 +1,5 @@
 package com.frolo.muse.ui.base
 
-import android.Manifest
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
@@ -17,6 +16,7 @@ import com.frolo.muse.FrolomuseApp
 import com.frolo.muse.R
 import com.frolo.logger.api.Logger
 import com.frolo.muse.di.activityComponent
+import com.frolo.muse.di.impl.permission.PermissionCheckerImpl
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.repository.Preferences
 import com.tbruyelle.rxpermissions2.RxPermissions
@@ -134,18 +134,14 @@ abstract class BaseDialogFragment : AppCompatDialogFragment() {
     }
 
     fun checkReadPermissionFor(action: () -> Unit) {
-        val permissions = arrayOf(
-                Manifest.permission.READ_EXTERNAL_STORAGE
-        )
+        val permissions = arrayOf(PermissionCheckerImpl.READ_AUDIO_PERMISSION)
         requestRxPermissions(*permissions) { granted ->
             if (granted) action()
         }
     }
 
     fun checkWritePermissionFor(action: () -> Unit) {
-        val permissions = arrayOf(
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-        )
+        val permissions = arrayOf(PermissionCheckerImpl.WRITE_AUDIO_PERMISSION)
         requestRxPermissions(*permissions) { granted ->
             if (granted) action()
         }
@@ -153,8 +149,8 @@ abstract class BaseDialogFragment : AppCompatDialogFragment() {
 
     fun checkReadWritePermissionsFor(action: () -> Unit) {
         val permissions = arrayOf(
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            PermissionCheckerImpl.READ_AUDIO_PERMISSION,
+            PermissionCheckerImpl.WRITE_AUDIO_PERMISSION
         )
         requestRxPermissions(*permissions) { granted ->
             if (granted) action()

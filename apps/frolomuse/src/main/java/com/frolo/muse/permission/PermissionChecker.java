@@ -7,23 +7,14 @@ package com.frolo.muse.permission;
 public interface PermissionChecker {
 
     /**
-     * Checks if the app is permitted to query media content.
-     * @return true if the app has permission to query media content, false - otherwise
+     * Checks if the app is permitted to read audio.
+     * @return true if the app has permission to read audio, false - otherwise
      */
-    boolean isQueryMediaContentPermissionGranted();
+    boolean isReadAudioPermissionGranted();
 
     /**
-     * Checks if the app is permitted to query media content.
-     * The implementation may try to get this permission, if not already.
-     * Finally, if the app does not have this permission and cannot get it then a {@link SecurityException} is thrown.
-     * @throws SecurityException if the app does not have permission to query media content and failed to acquire it
+     * This method should only be called after the read audio permission request has been processed.
+     * @return true if the read audio permission should be requested in the settings.
      */
-    void requireQueryMediaContentPermission() throws SecurityException;
-
-    /**
-     * This method should only be called after a media permission request has been processed.
-     * @return true if the media permission should be requested in the settings.
-     */
-    boolean shouldRequestMediaPermissionInSettings();
-
+    boolean shouldRequestReadAudioPermissionInSettings();
 }

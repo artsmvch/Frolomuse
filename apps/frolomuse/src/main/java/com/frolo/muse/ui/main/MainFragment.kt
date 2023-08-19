@@ -1,6 +1,5 @@
 package com.frolo.muse.ui.main
 
-import android.Manifest
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
@@ -32,6 +31,8 @@ import com.frolo.arch.support.observeNonNull
 import com.frolo.core.ui.fragment.WithCustomStatusBar
 import com.frolo.core.ui.fragment.WithCustomWindowInsets
 import com.frolo.core.ui.fragment.doOnResume
+import com.frolo.core.ui.marker.IntentHandler
+import com.frolo.core.ui.marker.ScrolledToTop
 import com.frolo.core.ui.systembars.SystemBarsControlOwner
 import com.frolo.core.ui.systembars.SystemBarsController
 import com.frolo.core.ui.systembars.defaultSystemBarsHost
@@ -44,13 +45,17 @@ import com.frolo.muse.android.getIntExtraOrNull
 import com.frolo.muse.android.getIntOrNull
 import com.frolo.muse.android.startActivitySafely
 import com.frolo.muse.di.activityComponent
+import com.frolo.muse.di.impl.permission.PermissionCheckerImpl
 import com.frolo.muse.rating.RatingFragment
 import com.frolo.muse.router.AppRouter
 import com.frolo.muse.router.AppRouterStub
-import com.frolo.core.ui.marker.IntentHandler
 import com.frolo.muse.ui.PlayerHostViewModel
-import com.frolo.core.ui.marker.ScrolledToTop
-import com.frolo.muse.ui.base.*
+import com.frolo.muse.ui.base.BaseFragment
+import com.frolo.muse.ui.base.FragmentContentInsetsListener
+import com.frolo.muse.ui.base.OnBackPressedHandler
+import com.frolo.muse.ui.base.RESPermissionBus
+import com.frolo.muse.ui.base.ScanStatusObserver
+import com.frolo.muse.ui.base.SimpleFragmentNavigator
 import com.frolo.muse.ui.main.player.mini.MiniPlayerFragment
 import com.frolo.muse.util.LinkUtils
 import com.frolo.muse.util.ifNaN
@@ -68,8 +73,16 @@ import com.google.android.material.shape.MaterialShapeDrawable
 import com.google.android.material.shape.ShapeAppearanceModel
 import com.ncapdevi.fragnav.FragNavController
 import com.ncapdevi.fragnav.FragNavTransactionOptions
-import kotlinx.android.synthetic.main.fragment_main.*
-import kotlinx.android.synthetic.main.fragment_main_content.*
+import kotlinx.android.synthetic.main.fragment_main.content_layout
+import kotlinx.android.synthetic.main.fragment_main.main
+import kotlinx.android.synthetic.main.fragment_main.progress
+import kotlinx.android.synthetic.main.fragment_main_content.bottom_navigation_view
+import kotlinx.android.synthetic.main.fragment_main_content.container
+import kotlinx.android.synthetic.main.fragment_main_content.container_player
+import kotlinx.android.synthetic.main.fragment_main_content.mini_player_container
+import kotlinx.android.synthetic.main.fragment_main_content.sliding_player_layout
+import kotlinx.android.synthetic.main.fragment_main_content.snowfall_view
+import kotlinx.android.synthetic.main.fragment_main_content.view_dim_overlay
 import kotlin.math.max
 import kotlin.math.pow
 
@@ -319,7 +332,7 @@ internal class MainFragment :
         grantResults: IntArray
     ) {
         if (requestCode == RC_READ_STORAGE) {
-            val index = permissions.indexOf(Manifest.permission.READ_EXTERNAL_STORAGE)
+            val index = permissions.indexOf(PermissionCheckerImpl.READ_AUDIO_PERMISSION)
             if (index >= 0) {
                 if (grantResults[index] == PackageManager.PERMISSION_GRANTED) {
                     viewModel.onRESPermissionGranted()
@@ -633,7 +646,7 @@ internal class MainFragment :
 
     private fun requestRESPermission() {
         val context = this.context ?: return
-        val permission = Manifest.permission.READ_EXTERNAL_STORAGE
+        val permission = PermissionCheckerImpl.READ_AUDIO_PERMISSION;
         if (ActivityCompat.checkSelfPermission(context, permission) ==
             PackageManager.PERMISSION_GRANTED) {
             viewModel.onRESPermissionGranted()

@@ -80,7 +80,7 @@ class MainViewModel @Inject constructor(
 
     private fun tryRestorePlayerStateIfNeeded() {
         val safePlayer: Player = this.player ?: return
-        if (!permissionChecker.isQueryMediaContentPermissionGranted) {
+        if (!permissionChecker.isReadAudioPermissionGranted) {
             tryRequestRESPermission()
             return
         }
@@ -101,7 +101,7 @@ class MainViewModel @Inject constructor(
     private fun tryHandlePendingAudioSourceIntentIfNeeded() {
         val safeSource: String = pendingAudioSourceIntent ?: return
         val safePlayer: Player = this.player ?: return
-        if (!permissionChecker.isQueryMediaContentPermissionGranted) {
+        if (!permissionChecker.isReadAudioPermissionGranted) {
             tryRequestRESPermission()
             return
         }
@@ -143,13 +143,13 @@ class MainViewModel @Inject constructor(
             .observeOn(schedulerProvider.main())
             .subscribeFor {  }
         // Transfer playlists if necessary
-        if (permissionChecker.isQueryMediaContentPermissionGranted) {
+        if (permissionChecker.isReadAudioPermissionGranted) {
             tryTransferPlaylistsIfNecessary()
         }
     }
 
     fun onStart() {
-        if (!permissionChecker.isQueryMediaContentPermissionGranted) {
+        if (!permissionChecker.isReadAudioPermissionGranted) {
             tryRequestRESPermission()
         }
     }
@@ -177,7 +177,7 @@ class MainViewModel @Inject constructor(
     }
 
     fun onAgreedWithRESPermissionExplanation() {
-        if (permissionChecker.shouldRequestMediaPermissionInSettings()) {
+        if (permissionChecker.shouldRequestReadAudioPermissionInSettings()) {
             _openPermissionSettingsEvent.call()
         } else {
             tryRequestRESPermission()
