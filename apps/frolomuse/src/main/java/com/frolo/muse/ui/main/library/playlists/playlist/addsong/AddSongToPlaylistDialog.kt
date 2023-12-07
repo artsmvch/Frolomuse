@@ -67,9 +67,7 @@ class AddSongToPlaylistDialog: BaseDialogFragment() {
         }
 
         btn_add_to_playlist.setOnClickListener {
-            checkWritePermissionFor {
-                viewModel.onAddButtonClicked()
-            }
+            viewModel.onAddButtonClicked()
         }
 
         sv_query.apply {

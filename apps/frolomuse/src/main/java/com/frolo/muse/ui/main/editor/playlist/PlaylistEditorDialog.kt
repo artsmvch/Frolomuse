@@ -52,9 +52,7 @@ class PlaylistEditorDialog : AbsInputNameDialog() {
     override fun onGetInitialText() = playlist.name
 
     override fun onSaveButtonClick(name: String) {
-        checkWritePermissionFor {
-            viewModel.onSaveClicked(name)
-        }
+        viewModel.onSaveClicked(name)
     }
 
     private fun onPlaylistUpdated(newPlaylist: Playlist) {
