@@ -1,5 +1,6 @@
 package com.frolo.core.ui.glide;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.bumptech.glide.load.DataSource;
@@ -12,14 +13,14 @@ public abstract class SimpleRequestListener <R> implements RequestListener<R> {
 
     @Override
     public final boolean onLoadFailed(
-            @Nullable GlideException e, Object model, Target<R> target, boolean isFirstResource) {
+            @Nullable GlideException e, Object model, @NonNull Target<R> target, boolean isFirstResource) {
         doWhenFailed(e);
         return false;
     }
 
     @Override
     public final boolean onResourceReady(
-            R resource, Object model, Target<R> target, DataSource dataSource, boolean isFirstResource) {
+            @NonNull R resource, @NonNull Object model, Target<R> target, @NonNull DataSource dataSource, boolean isFirstResource) {
         doWhenReady(resource);
         return false;
     }
