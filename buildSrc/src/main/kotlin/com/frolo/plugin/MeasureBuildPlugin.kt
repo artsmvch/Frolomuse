@@ -21,12 +21,12 @@ class MeasureBuildPlugin : Plugin<Project> {
     private val clock = Clock.systemUTC()
 
     override fun apply(target: Project) {
-        if (isMeasureBuildEnabled(target)) {
+        if (shouldMeasureBuild(target)) {
             listenToBuild(target)
         }
     }
 
-    private fun isMeasureBuildEnabled(target: Project): Boolean {
+    private fun shouldMeasureBuild(target: Project): Boolean {
         val propertyValue = target.findProperty(PROPERTY_MEASURE_BUILD)
         return propertyValue != null && propertyValue.toString() == "true"
     }
