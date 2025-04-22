@@ -2,7 +2,6 @@ buildscript {
     ext.kotlin_version = '1.6.10'
     repositories {
         google()
-        jcenter()
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:7.3.1'
@@ -14,21 +13,6 @@ buildscript {
 
 plugins {
     id "nebula.lint" version "16.9.0"
-}
-
-allprojects {
-    repositories {
-        jcenter()
-        mavenCentral()
-        maven { url 'https://maven.google.com' }
-        //maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-        maven { url "https://jitpack.io" }
-    }
-    // Nebula
-//    apply plugin :"nebula.lint"
-//    gradleLint {
-//        rules=['unused-dependency']
-//    }
 }
 
 tasks.register('clean', Delete) {

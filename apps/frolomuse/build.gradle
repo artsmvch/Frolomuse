@@ -293,17 +293,17 @@ dependencies {
     kapt deps.glide.compiler
 
     // Fragment navigation
-    implementation 'com.ncapdevi:frag-nav:3.2.0'
+    implementation 'com.github.ncapdevi:fragnav:3.3.0'
     // Sticky headers recycler view
     implementation 'com.timehop.stickyheadersrecyclerview:library:0.4.3@aar'
     // Alphabet index fast scroller
-    implementation 'com.l4digital.fastscroll:fastscroll:2.0.1'
+    implementation 'io.github.l4digital:fastscroll:2.1.0'
     // Runtime permissions
     implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
     // RxAdapter for ContentResolver and SharedPreferences
     implementation 'com.github.alexei-frolo:RxContent:1.0.3'
     // Circular Progress Bar
-    implementation 'com.mikhaellopez:circularprogressbar:3.0.3'
+    implementation 'com.mikhaellopez:circularprogressbar:3.1.0'
     // Gesture Image View
     implementation 'com.alexvasilkov:gesture-views:2.6.0'
     // Jsoup (HTML parser)
