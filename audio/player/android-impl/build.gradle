@@ -4,6 +4,7 @@ plugins {
 }
 
 android {
+    namespace = 'com.frolo.player.android'
     compileSdkVersion versions.compileSdk
 
     defaultConfig {

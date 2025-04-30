@@ -4,6 +4,7 @@ plugins {
 }
 
 android {
+    namespace = 'com.frolo.performance.scroll'
     compileSdkVersion versions.compileSdk
 
     defaultConfig {

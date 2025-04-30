@@ -3,6 +3,7 @@ plugins {
 }
 
 android {
+    namespace = 'com.frolo.vendor'
     compileSdkVersion versions.compileSdk
 
     defaultConfig {

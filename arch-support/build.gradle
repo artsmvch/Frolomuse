@@ -4,6 +4,7 @@ plugins {
 }
 
 android {
+    namespace = 'com.frolo.arch.support'
     compileSdkVersion versions.compileSdk
 
     defaultConfig {

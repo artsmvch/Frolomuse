@@ -3,6 +3,7 @@ plugins {
 }
 
 android {
+    namespace = 'com.frolo.utils.debug.common'
     compileSdkVersion versions.compileSdk
 
     defaultConfig {

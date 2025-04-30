@@ -4,6 +4,7 @@ plugins {
 }
 
 android {
+    namespace = 'com.frolo.muse.remotesearch'
     compileSdkVersion versions.compileSdk
 
     defaultConfig {

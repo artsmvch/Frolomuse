@@ -4,6 +4,7 @@ plugins {
 }
 
 android {
+    namespace = 'com.frolo.utils.headset'
     compileSdkVersion versions.compileSdk
 
     defaultConfig {

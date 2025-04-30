@@ -4,6 +4,7 @@ plugins {
 }
 
 android {
+    namespace = 'com.frolo.music.repository'
     compileSdkVersion versions.compileSdk
 
     defaultConfig {

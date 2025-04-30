@@ -4,6 +4,7 @@ plugins {
 }
 
 android {
+    namespace = 'com.frolo.equalizerview'
     compileSdkVersion versions.compileSdk
 
     defaultConfig {

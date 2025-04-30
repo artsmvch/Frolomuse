@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 
 android {
+    namespace = 'com.un4seen.bass'
     compileSdkVersion versions.compileSdk
 
     defaultConfig {

@@ -5,6 +5,7 @@ plugins {
 }
 
 android {
+    namespace = 'com.frolo.muse.onboarding'
     compileSdkVersion versions.compileSdk
 
     defaultConfig {

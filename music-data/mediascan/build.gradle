@@ -4,6 +4,7 @@ plugins {
 }
 
 android {
+    namespace = 'com.frolo.mediascan'
     compileSdkVersion versions.compileSdk
 
     defaultConfig {

@@ -4,6 +4,7 @@ plugins {
 }
 
 android {
+    namespace = 'com.frolo.utils.ui'
     compileSdkVersion versions.compileSdk
 
     defaultConfig {

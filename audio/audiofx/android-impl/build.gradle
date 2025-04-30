@@ -3,6 +3,7 @@ plugins {
 }
 
 android {
+    namespace = 'com.frolo.audiofx.android'
     compileSdkVersion versions.compileSdk
 
     defaultConfig {

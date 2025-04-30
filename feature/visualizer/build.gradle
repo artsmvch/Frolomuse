@@ -5,6 +5,7 @@ plugins {
 }
 
 android {
+    namespace = 'com.frolo.visualizer.screen'
     compileSdkVersion versions.compileSdk
 
     defaultConfig {

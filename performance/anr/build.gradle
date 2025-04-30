@@ -4,6 +4,7 @@ plugins {
 }
 
 android {
+    namespace = 'com.frolo.performance.anr'
     compileSdkVersion versions.compileSdk
 
     defaultConfig {

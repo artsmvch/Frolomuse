@@ -4,6 +4,7 @@ plugins {
 }
 
 android {
+    namespace = 'com.frolo.testtools.stubs'
     compileSdkVersion versions.compileSdk
 
     defaultConfig {

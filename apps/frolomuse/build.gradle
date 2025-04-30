@@ -24,6 +24,7 @@ def google_services_enabled =
 def local_properties = loadLocalProperties(project)
 
 android {
+    namespace = 'com.frolo.muse'
     signingConfigs {
         release {
             def configDir = getReleaseConfigDir()

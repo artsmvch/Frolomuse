@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.frolo.performance.coldstart">
+    >
     <application>
         <provider
             android:authorities="${applicationId}.performance.coldstart"

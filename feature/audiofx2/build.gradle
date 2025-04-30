@@ -5,6 +5,7 @@ plugins {
 }
 
 android {
+    namespace = 'com.frolo.audiofx2.ui'
     compileSdkVersion versions.compileSdk
 
     defaultConfig {
