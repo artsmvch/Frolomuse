@@ -1,0 +1,53 @@
+#!/bin/bash
+
+# This script migrates Android modules from using the package attribute in AndroidManifest.xml
+# to using the namespace property in build.gradle.
+# It works fully on macOS and Linux.
+
+find . -path "*/src/main/AndroidManifest.xml" | while read -r manifest; do
+  # Extract package name
+  package_name=$(sed -n 's/.*package="\([^"]*\)".*/\1/p' "$manifest")
+
+  if [[ -n "$package_name" ]]; then
+    echo "Processing $manifest with package: $package_name"
+
+    # Remove package attribute from AndroidManifest.xml
+    sed -i '' 's/\s*package="[^"]*"//' "$manifest"
+
+    module_dir=$(dirname "$(dirname "$(dirname "$manifest")")")
+    gradle_file="$module_dir/build.gradle"
+
+    if [[ -f "$gradle_file" ]]; then
+      if grep -q "namespace" "$gradle_file"; then
+        echo "Namespace already exists in $gradle_file"
+        continue
+      fi
+
+      # Insert namespace after android { using awk
+      awk -v ns="$package_name" '
+        BEGIN { in_android=0; inserted=0 }
+        {
+          print $0
+          if ($0 ~ /^[[:space:]]*android[[:space:]]*{[[:space:]]*$/ && inserted == 0) {
+            print "    namespace = \x27" ns "\x27"
+            inserted=1
+          }
+        }
+        END {
+          if (inserted == 0) {
+            print ""
+            print "android {"
+            print "    namespace = \x27" ns "\x27"
+            print "}"
+          }
+        }
+      ' "$gradle_file" > "$gradle_file.tmp" && mv "$gradle_file.tmp" "$gradle_file"
+
+      echo "Inserted namespace into $gradle_file"
+    else
+      echo "No build.gradle found for module at $module_dir"
+    fi
+  else
+    echo "No package found in $manifest"
+  fi
+done
