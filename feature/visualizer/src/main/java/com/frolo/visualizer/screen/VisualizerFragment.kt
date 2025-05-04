@@ -18,16 +18,17 @@ import androidx.lifecycle.distinctUntilChanged
 import androidx.transition.Fade
 import androidx.transition.TransitionManager
 import com.frolo.logger.api.Logger
+import com.frolo.visualizer.screen.databinding.FragmentVisualizerBinding
 import com.frolo.visualizerview.CircleRenderer
 import com.frolo.visualizerview.CircleSpectrumRenderer
 import com.frolo.visualizerview.LineRenderer
 import com.frolo.visualizerview.LineSpectrumRenderer
 import com.frolo.visualizerview.SpectrumRenderer
-import kotlinx.android.synthetic.main.fragment_visualizer.*
-import kotlinx.android.synthetic.main.include_request_record_permission.*
 
 
 internal class VisualizerFragment : Fragment() {
+
+    private lateinit var binding: FragmentVisualizerBinding
 
     private val onDataCaptureListener = object : Visualizer.OnDataCaptureListener {
         override fun onWaveFormDataCapture(
@@ -35,7 +36,7 @@ internal class VisualizerFragment : Fragment() {
             waveform: ByteArray?,
             samplingRate: Int
         ) {
-            visualizer_view?.setData(waveform)
+            binding.visualizerView.setData(waveform)
         }
 
         override fun onFftDataCapture(visualizer: Visualizer?, fft: ByteArray?, samplingRate: Int) {
@@ -54,12 +55,15 @@ internal class VisualizerFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.fragment_visualizer, container, false)
+    ): View {
+        binding = FragmentVisualizerBinding.inflate(inflater)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val renderTypesAdapter = VisualizerRendererTypeAdapter(VisualizerFeature.getRendererTypes())
-        renderer_type_spinner.adapter = renderTypesAdapter
-        renderer_type_spinner.onItemSelectedListener = object : OnItemSelectedListener {
+        binding.rendererTypeSpinner.adapter = renderTypesAdapter
+        binding.rendererTypeSpinner.onItemSelectedListener = object : OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
                 view: View?,
@@ -72,7 +76,7 @@ internal class VisualizerFragment : Fragment() {
             override fun onNothingSelected(parent: AdapterView<*>?) = Unit
         }
         setVisualizerRendererType(VisualizerFeature.getDefaultRendererType())
-        request_permission_button.setOnClickListener { requestPermission() }
+        binding.requestPermissionLayout.requestPermissionButton.setOnClickListener { requestPermission() }
 
         // Observe session ID
         VisualizerFeature.getAudioSessionId()
@@ -97,8 +101,8 @@ internal class VisualizerFragment : Fragment() {
         (view as? ViewGroup)?.also { scene ->
             TransitionManager.beginDelayedTransition(scene, transition)
         }
-        request_permission_layout.isVisible = !isPermissionGranted
-        visualizer_layout.isVisible = isPermissionGranted
+        binding.requestPermissionLayout.root.isVisible = !isPermissionGranted
+        binding.visualizerLayout.isVisible = isPermissionGranted
     }
 
     private fun requestPermission() {
@@ -148,7 +152,7 @@ internal class VisualizerFragment : Fragment() {
             VisualizerRendererType.LINE_SPECTRUM ->     LineSpectrumRenderer(context)
             VisualizerRendererType.SPECTRUM ->          SpectrumRenderer(context)
         }
-        visualizer_view?.renderer = renderer
+        binding.visualizerView.renderer = renderer
     }
 
     override fun onRequestPermissionsResult(
