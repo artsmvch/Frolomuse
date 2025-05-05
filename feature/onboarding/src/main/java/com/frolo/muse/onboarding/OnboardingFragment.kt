@@ -1,6 +1,5 @@
 package com.frolo.muse.onboarding
 
-import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,13 +14,15 @@ import androidx.transition.Fade
 import androidx.transition.TransitionManager
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
+import com.frolo.muse.onboarding.databinding.FragmentOnboardingBinding
 import com.frolo.ui.Screen
 import com.zhpan.indicator.enums.IndicatorSlideMode
 import com.zhpan.indicator.enums.IndicatorStyle
-import kotlinx.android.synthetic.main.fragment_onboarding.*
 
 
 internal class OnboardingFragment : Fragment() {
+
+    private lateinit var binding: FragmentOnboardingBinding
 
     private val onOnboardingFinishedListener: OnOnboardingFinishedListener?
         get() = activity as? OnOnboardingFinishedListener ?: parentFragment as? OnOnboardingFinishedListener
@@ -44,17 +45,20 @@ internal class OnboardingFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.fragment_onboarding, container, false)
+    ): View? {
+        binding = FragmentOnboardingBinding.inflate(inflater)
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        view_pager.apply {
+        binding.viewPager.apply {
             adapter = OnboardingPageAdapter(pageInfoItems.orEmpty())
             registerOnPageChangeCallback(onPageChangeCallback)
             // workaround for the ViewPager2
             getChildAt(0)?.overScrollMode = View.OVER_SCROLL_NEVER
         }
 
-        indicator_view.apply {
+        binding.indicatorView.apply {
             setSliderColor(
                 ContextCompat.getColor(view.context, R.color.onboarding_indicator_color_normal),
                 ContextCompat.getColor(view.context, R.color.onboarding_indicator_color_selected)
@@ -63,22 +67,22 @@ internal class OnboardingFragment : Fragment() {
             setIndicatorGap(Screen.dpFloat(context, 20f))
             setSlideMode(IndicatorSlideMode.WORM)
             setIndicatorStyle(IndicatorStyle.CIRCLE)
-            setupWithViewPager(view_pager)
+            setupWithViewPager(binding.viewPager)
         }
 
-        btn_skip.setOnClickListener {
+        binding.btnSkip.setOnClickListener {
             onOnboardingFinishedListener?.onOnboardingFinished(OnboardingResult.Skipped)
         }
 
-        btn_done.setOnClickListener {
+        binding.btnDone.setOnClickListener {
             onOnboardingFinishedListener?.onOnboardingFinished(OnboardingResult.Passed)
         }
 
-        btn_next.setOnClickListener {
-            val currentPosition = view_pager.currentItem
-            val itemCount = view_pager.adapter?.itemCount ?: 0
+        binding.btnNext.setOnClickListener {
+            val currentPosition = binding.viewPager.currentItem
+            val itemCount = binding.viewPager.adapter?.itemCount ?: 0
             if (currentPosition < itemCount - 1) {
-                view_pager.currentItem = currentPosition + 1
+                binding.viewPager.currentItem = currentPosition + 1
             }
         }
 
@@ -90,7 +94,7 @@ internal class OnboardingFragment : Fragment() {
             v.scaleType = ImageView.ScaleType.CENTER_CROP
         }
 
-        parallax.apply {
+        binding.parallax.apply {
             addView(backgroundArtView)
             setParallaxWidth(1.5f)
         }
@@ -111,15 +115,15 @@ internal class OnboardingFragment : Fragment() {
         } else {
             ColorDrawable(color1)
         }
-        imv_background_overlay.setImageDrawable(background)
+        binding.imvBackgroundOverlay.setImageDrawable(background)
 
-        view_pager.adapter?.also { safeAdapter ->
+        binding.viewPager.adapter?.also { safeAdapter ->
             val itemCount = safeAdapter.itemCount
             if (itemCount > 1) {
                 val absPosition = (position + positionOffset) / (itemCount - 1)
-                parallax.setScrollOffset(absPosition)
+                binding.parallax.setScrollOffset(absPosition)
             } else {
-                parallax.setScrollOffset(0.5f)
+                binding.parallax.setScrollOffset(0.5f)
             }
         }
     }
@@ -128,23 +132,23 @@ internal class OnboardingFragment : Fragment() {
         val transition = Fade().apply {
             duration = 150
         }
-        TransitionManager.beginDelayedTransition(fl_buttons, transition)
-        val itemCount = view_pager.adapter?.itemCount ?: 0
+        TransitionManager.beginDelayedTransition(binding.flButtons, transition)
+        val itemCount = binding.viewPager.adapter?.itemCount ?: 0
         val isLastPage = selectedPosition >= itemCount - 1
         if (isLastPage) {
-            btn_skip.visibility = View.INVISIBLE
-            btn_done.visibility = View.VISIBLE
-            btn_next.visibility = View.INVISIBLE
+            binding.btnSkip.visibility = View.INVISIBLE
+            binding.btnDone.visibility = View.VISIBLE
+            binding.btnNext.visibility = View.INVISIBLE
         } else {
-            btn_skip.visibility = View.VISIBLE
-            btn_done.visibility = View.INVISIBLE
-            btn_next.visibility = View.VISIBLE
+            binding.btnSkip.visibility = View.VISIBLE
+            binding.btnDone.visibility = View.INVISIBLE
+            binding.btnNext.visibility = View.VISIBLE
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        view_pager.unregisterOnPageChangeCallback(onPageChangeCallback)
+        binding.viewPager.unregisterOnPageChangeCallback(onPageChangeCallback)
     }
 
     fun interface OnOnboardingFinishedListener {

@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.item_onboarding_page.view.*
+import com.frolo.muse.onboarding.databinding.ItemOnboardingPageBinding
 
 
 internal class OnboardingPageAdapter(
@@ -24,10 +24,12 @@ internal class OnboardingPageAdapter(
     }
 
     class Holder(itemView: View): RecyclerView.ViewHolder(itemView) {
+        private val binding = ItemOnboardingPageBinding.bind(itemView)
+
         fun bind(item: OnboardingPageInfo) = with(itemView) {
-            imv_image.setImageResource(item.imageId)
-            tv_title.setText(item.titleId)
-            tv_description.setText(item.descriptionId)
+            binding.imvImage.setImageResource(item.imageId)
+            binding.tvTitle.setText(item.titleId)
+            binding.tvDescription.setText(item.descriptionId)
         }
     }
 }
