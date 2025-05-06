@@ -138,6 +138,7 @@
     <include layout="@layout/fragment_base_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:id="@+id/include_base_list"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

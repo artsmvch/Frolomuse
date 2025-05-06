@@ -19,17 +19,18 @@ import com.frolo.arch.support.observeNonNull
 import com.frolo.muse.model.Theme
 import com.frolo.muse.repository.Preferences
 import com.frolo.core.ui.marker.ThemeHandler
+import com.frolo.muse.databinding.FragmentThemeChooserBinding
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.base.FragmentContentInsetsListener
 import com.frolo.muse.ui.base.setupNavigation
-import kotlinx.android.synthetic.main.fragment_theme_chooser.*
-import kotlinx.android.synthetic.main.include_theme_pager.*
-import kotlinx.android.synthetic.main.include_theme_pager.view.*
 
 
 class ThemeChooserFragment : BaseFragment(),
     FragmentContentInsetsListener,
     ThemePageCallback {
+
+    private var _binding: FragmentThemeChooserBinding? = null
+    private val binding: FragmentThemeChooserBinding get() = _binding!!
 
     private val preferences: Preferences by prefs()
 
@@ -39,9 +40,10 @@ class ThemeChooserFragment : BaseFragment(),
 
     private val themePageCallback = object : ViewPager2.OnPageChangeCallback() {
         override fun onPageSelected(position: Int) {
+            view ?: return
             val pageCount: Int = absThemePageAdapter?.pageCount ?: 0
             val text: String = getString(R.string.page_s_of_s, (position + 1), pageCount)
-            view?.tv_theme_page?.text = text
+            binding.themePager.tvThemePage?.text = text
         }
     }
 
@@ -54,7 +56,7 @@ class ThemeChooserFragment : BaseFragment(),
     private val themeViewPager: ViewPager2?
         get() {
             view ?: return null
-            return view?.vp_themes as? ViewPager2
+            return binding.themePager.vpThemes
         }
 
     /**
@@ -64,17 +66,20 @@ class ThemeChooserFragment : BaseFragment(),
     private val themeRecyclerView: RecyclerView?
         get() {
             view ?: return null
-            return view?.rv_themes as? RecyclerView
+            return binding.themePager.rvThemes
         }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.fragment_theme_chooser, container, false)
+    ): View? {
+        _binding = FragmentThemeChooserBinding.inflate(inflater)
+        return _binding?.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        setupNavigation(tb_actions)
+        setupNavigation(binding.tbActions)
 
         val hostFragment: Fragment = this
         val callback: ThemePageCallback = this
@@ -136,6 +141,7 @@ class ThemeChooserFragment : BaseFragment(),
             unregisterOnPageChangeCallback(themePageCallback)
         }
         super.onDestroyView()
+        _binding = null
     }
 
     override fun applyContentInsets(left: Int, top: Int, right: Int, bottom: Int) {
@@ -162,13 +168,11 @@ class ThemeChooserFragment : BaseFragment(),
 
         isLoading.observe(owner) { isLoading ->
             if (isLoading == true) {
-                group_theme_pager?.visibility = View.INVISIBLE
-                rv_themes?.visibility = View.INVISIBLE
-                progress_bar.visibility = View.VISIBLE
+                binding.themePager.root.visibility = View.INVISIBLE
+                binding.progressBar.visibility = View.VISIBLE
             } else {
-                group_theme_pager?.visibility = View.VISIBLE
-                rv_themes?.visibility = View.VISIBLE
-                progress_bar.visibility = View.GONE
+                binding.themePager.root.visibility = View.VISIBLE
+                binding.progressBar.visibility = View.GONE
             }
         }
 

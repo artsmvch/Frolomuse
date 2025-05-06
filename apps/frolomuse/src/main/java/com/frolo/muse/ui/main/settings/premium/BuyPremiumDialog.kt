@@ -21,11 +21,14 @@ import com.frolo.muse.di.activityComponent
 import com.frolo.muse.ui.base.BaseDialogFragment
 import com.frolo.muse.ui.base.tryHostAs
 import com.frolo.core.ui.recyclerview.RecyclerViewDividers
-import kotlinx.android.synthetic.main.dialog_buy_premium.*
+import com.frolo.muse.databinding.DialogBuyPremiumBinding
 import java.util.concurrent.TimeUnit
 
 
 class BuyPremiumDialog : BaseDialogFragment() {
+
+    private var _binding: DialogBuyPremiumBinding? = null
+    private val binding: DialogBuyPremiumBinding get() = _binding!!
 
     private val viewModel: BuyPremiumViewModel by lazy {
         val args = requireArguments()
@@ -52,7 +55,8 @@ class BuyPremiumDialog : BaseDialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return super.onCreateDialog(savedInstanceState).apply {
-            setContentView(R.layout.dialog_buy_premium)
+            _binding = DialogBuyPremiumBinding.inflate(layoutInflater)
+            setContentView(binding.root)
 
             val width = resources.displayMetrics.widthPixels
             setupDialogSize(this, (width * 11) / 12, ViewGroup.LayoutParams.WRAP_CONTENT)
@@ -61,37 +65,42 @@ class BuyPremiumDialog : BaseDialogFragment() {
         }
     }
 
-    private fun loadUi(dialog: Dialog) = with(dialog) {
-        list_benefits.apply {
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun loadUi(dialog: Dialog) = with(binding) {
+        listBenefits.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = BenefitAdapter(getBenefits())
         }
 
-        btn_premium_button.setOnClickListener {
+        btnPremiumButton.setOnClickListener {
             viewModel.onButtonClicked()
         }
 
         RecyclerViewDividers.attach(
-            listView = list_benefits,
-            topDivider = view_top_divider,
-            bottomDivider = view_bottom_divider
+            listView = binding.listBenefits,
+            topDivider = binding.viewTopDivider.root,
+            bottomDivider = binding.viewBottomDivider.root
         )
     }
 
-    private fun animateTrialActivation(dialog: Dialog) = with(dialog) {
-        ll_content_container.isVisible = false
-        fl_trial_activation_container.setOnTouchListener { _, _ -> true }
-        fl_trial_activation_container.isVisible = true
-        fl_trial_activation_container.alpha = 0f
-        fl_trial_activation_container.animate()
+    private fun animateTrialActivation(dialog: Dialog) = with(binding) {
+        llContentContainer.isVisible = false
+        flTrialActivationContainer.setOnTouchListener { _, _ -> true }
+        flTrialActivationContainer.isVisible = true
+        flTrialActivationContainer.alpha = 0f
+        flTrialActivationContainer.animate()
             .alpha(1f)
             .setDuration(200L)
             .start()
 
-        cv_trial_activation.setChecked(checked = true, animate = true)
+        cvTrialActivation.setChecked(checked = true, animate = true)
 
         // Special exit animation for activated premium trial
-        window?.setWindowAnimations(R.style.Base_AppTheme_WindowAnimation_Dialog_ActivatedPremiumTrial)
+        dialog.window?.setWindowAnimations(R.style.Base_AppTheme_WindowAnimation_Dialog_ActivatedPremiumTrial)
 
         dismissDelayed(1000L)
     }
@@ -114,8 +123,8 @@ class BuyPremiumDialog : BaseDialogFragment() {
                 val transition = Fade().apply {
                     duration = 200L
                 }
-                TransitionManager.beginDelayedTransition(layout_root, transition)
-                inc_progress_overlay.isVisible = isLoading
+                TransitionManager.beginDelayedTransition(binding.layoutRoot, transition)
+                binding.incProgressOverlay.root.isVisible = isLoading
             }
         }
 
@@ -134,23 +143,23 @@ class BuyPremiumDialog : BaseDialogFragment() {
                                 .toInt()
                             val durationText = this.context.resources.getQuantityString(R.plurals.days, days, days)
                             val captionText = getString(R.string.premium_trial_desc_s, durationText)
-                            tv_premium_caption.text = captionText
-                            tv_premium_caption.isVisible = true
+                            binding.tvPremiumCaption.text = captionText
+                            binding.tvPremiumCaption.isVisible = true
                         } else {
-                            tv_premium_caption.text = null
-                            tv_premium_caption.isVisible = false
+                            binding.tvPremiumCaption.text = null
+                            binding.tvPremiumCaption.isVisible = false
                         }
-                        btn_premium_button.setText(R.string.activate_premium_trial)
+                        binding.btnPremiumButton.setText(R.string.activate_premium_trial)
                     }
 
                     productDetails != null -> {
-                        tv_premium_caption.setText(R.string.one_time_purchase)
-                        btn_premium_button.text = getString(R.string.buy_premium_for_s, productDetails.price)
+                        binding.tvPremiumCaption.setText(R.string.one_time_purchase)
+                        binding.btnPremiumButton.text = getString(R.string.buy_premium_for_s, productDetails.price)
                     }
 
                     else -> {
-                        tv_premium_caption.setText(R.string.one_time_purchase)
-                        btn_premium_button.setText(R.string.buy)
+                        binding.tvPremiumCaption.setText(R.string.one_time_purchase)
+                        binding.btnPremiumButton.setText(R.string.buy)
                     }
                 }
             }
@@ -158,7 +167,7 @@ class BuyPremiumDialog : BaseDialogFragment() {
 
         isButtonEnabled.observeNonNull(owner) { isEnabled ->
             dialog?.apply {
-                btn_premium_button.isEnabled = isEnabled
+                binding.btnPremiumButton.isEnabled = isEnabled
             }
         }
     }

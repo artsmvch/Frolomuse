@@ -7,24 +7,34 @@ import android.view.ViewGroup
 import androidx.annotation.IdRes
 import androidx.core.view.updatePadding
 import com.frolo.muse.R
+import com.frolo.muse.databinding.FragmentVisualizerHostBinding
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.base.FragmentContentInsetsListener
 import com.frolo.muse.ui.base.setupNavigation
 import com.frolo.visualizer.screen.VisualizerFeature
-import kotlinx.android.synthetic.main.fragment_visualizer_host.container
-import kotlinx.android.synthetic.main.fragment_visualizer_host.toolbar
 
 
 class VisualizerHostFragment : BaseFragment(), FragmentContentInsetsListener {
+    private var _binding: FragmentVisualizerHostBinding? = null
+    private val binding: FragmentVisualizerHostBinding get() = _binding!!
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.fragment_visualizer_host, container, false)
+    ): View? {
+        _binding = FragmentVisualizerHostBinding.inflate(inflater)
+        return _binding?.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        setupNavigation(toolbar)
+        setupNavigation(binding.toolbar)
         ensureVisualizerFragment()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun ensureVisualizerFragment() {
@@ -46,7 +56,7 @@ class VisualizerHostFragment : BaseFragment(), FragmentContentInsetsListener {
             clipChildren = false
             updatePadding(left = left, top = top, right = right)
         }
-        container.apply {
+        binding.container.apply {
             clipToPadding = false
             clipChildren = false
             updatePadding(bottom = bottom)

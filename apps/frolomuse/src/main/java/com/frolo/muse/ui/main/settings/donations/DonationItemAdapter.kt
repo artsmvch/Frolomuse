@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewOutlineProvider
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
@@ -22,7 +23,6 @@ import com.frolo.billing.ProductDetails
 import com.frolo.core.ui.inflateChild
 import com.frolo.muse.R
 import com.frolo.ui.Screen
-import kotlinx.android.synthetic.main.item_donation.view.*
 import kotlin.properties.Delegates
 
 
@@ -51,9 +51,15 @@ internal class DonationItemAdapter constructor(
 
         private val cornerRadius = Screen.dpFloat(itemView.context, 8f)
 
+        private val imvButtonLeftDonationIcon: ImageView = itemView.findViewById(R.id.imv_bottom_left_donation_icon)
+        private val imvTopRightDonationIcon: ImageView = itemView.findViewById(R.id.imv_top_right_donation_icon)
+        private val tvDonationName: TextView = itemView.findViewById(R.id.tv_donation_name)
+        private val tvDonationPrice: TextView = itemView.findViewById(R.id.tv_donation_price)
+        private val frame: View = itemView.findViewById(R.id.frame)
+
         init {
-            setIconOutlineProvider(itemView.imv_bottom_left_donation_icon)
-            setIconOutlineProvider(itemView.imv_top_right_donation_icon)
+            setIconOutlineProvider(imvButtonLeftDonationIcon)
+            setIconOutlineProvider(imvTopRightDonationIcon)
             itemView.setOnClickListener {
                 dispatchClick()
             }
@@ -98,18 +104,18 @@ internal class DonationItemAdapter constructor(
 
             val iconView: ImageView? = when (item.iconSide) {
                 DonationItem.IconSide.BOTTOM_LEFT -> {
-                    imv_top_right_donation_icon.isVisible = false
-                    imv_bottom_left_donation_icon.isVisible = true
-                    imv_bottom_left_donation_icon
+                    imvTopRightDonationIcon.isVisible = false
+                    imvButtonLeftDonationIcon.isVisible = true
+                    imvButtonLeftDonationIcon
                 }
                 DonationItem.IconSide.BOTTOM_RIGHT -> {
-                    imv_top_right_donation_icon.isVisible = true
-                    imv_bottom_left_donation_icon.isVisible = false
-                    imv_top_right_donation_icon
+                    imvTopRightDonationIcon.isVisible = true
+                    imvButtonLeftDonationIcon.isVisible = false
+                    imvTopRightDonationIcon
                 }
                 else -> {
-                    imv_top_right_donation_icon.isVisible = false
-                    imv_bottom_left_donation_icon.isVisible = false
+                    imvTopRightDonationIcon.isVisible = false
+                    imvButtonLeftDonationIcon.isVisible = false
                     null
                 }
             }
@@ -119,14 +125,14 @@ internal class DonationItemAdapter constructor(
                 imageTintList = ColorStateList.valueOf(iconTint)
             }
 
-            tv_donation_name.text = getTitle(item)
+            tvDonationName.text = getTitle(item)
 
             if (item is DonationItem.Purchase) {
-                tv_donation_price.isVisible = true
-                tv_donation_price.text = getPriceText(item.productDetails)
+                tvDonationPrice.isVisible = true
+                tvDonationPrice.text = getPriceText(item.productDetails)
             } else {
-                tv_donation_price.isVisible = false
-                tv_donation_price.text = null
+                tvDonationPrice.isVisible = false
+                tvDonationPrice.text = null
             }
 
             background = getBackground(tint)

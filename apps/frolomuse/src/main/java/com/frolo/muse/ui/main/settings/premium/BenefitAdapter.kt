@@ -2,10 +2,11 @@ package com.frolo.muse.ui.main.settings.premium
 
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.frolo.core.ui.inflateChild
 import com.frolo.muse.R
-import kotlinx.android.synthetic.main.item_premium_benefit.view.*
 
 
 class BenefitAdapter(private val benefits: List<Benefit>) : RecyclerView.Adapter<BenefitAdapter.ViewHolder>() {
@@ -22,10 +23,12 @@ class BenefitAdapter(private val benefits: List<Benefit>) : RecyclerView.Adapter
     }
 
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+        private val imvBenefitIcon = itemView.findViewById<ImageView>(R.id.imv_benefit_icon)
+        private val tvBenefitText = itemView.findViewById<TextView>(R.id.tv_benefit_text)
 
-        fun bind(benefit: Benefit) = with(itemView) {
-            imv_benefit_icon.setImageResource(benefit.iconId)
-            tv_benefit_text.text = benefit.text
+        fun bind(benefit: Benefit) {
+            imvBenefitIcon.setImageResource(benefit.iconId)
+            tvBenefitText.text = benefit.text
         }
 
     }

@@ -8,14 +8,17 @@
     android:minHeight="@dimen/preferred_item_height"
     android:background="@drawable/bg_item_media">
 
-    <include layout="@layout/include_song_art_container"
-        android:id="@+id/include_song_art_container"
-        android:layout_width="@dimen/media_item_art_size"
-        android:layout_height="@dimen/media_item_art_size"
-        android:layout_margin="@dimen/media_item_art_margin"
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_margin="6dp"
+        android:padding="8dp"
+        android:src="@drawable/ic_drag_burger_outline_28"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:tint="?attr/iconTintMuted" />
 
     <include layout="@layout/include_options_menu"
         android:id="@+id/view_options_menu"
@@ -38,7 +41,7 @@
         tools:text="1:45"/>
 
     <androidx.appcompat.widget.AppCompatTextView
-        app:layout_constraintStart_toEndOf="@id/include_song_art_container"
+        app:layout_constraintStart_toEndOf="@id/icon"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toStartOf="@id/tv_duration"
         app:layout_constraintBottom_toTopOf="@id/tv_artist_name"
@@ -64,8 +67,8 @@
         tools:text="Artist name" />
 
     <include layout="@layout/include_check"
-        app:layout_constraintEnd_toEndOf="@id/include_song_art_container"
-        app:layout_constraintBottom_toBottomOf="@id/include_song_art_container"
+        app:layout_constraintEnd_toEndOf="@id/icon"
+        app:layout_constraintBottom_toBottomOf="@id/icon"
         android:layout_width="@dimen/list_item_check_size"
         android:layout_height="@dimen/list_item_check_size" />
 </com.frolo.muse.views.media.MediaConstraintLayout>

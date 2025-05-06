@@ -16,6 +16,7 @@ import com.frolo.muse.R
 import com.frolo.ui.StyleUtils
 import com.frolo.arch.support.observe
 import com.frolo.arch.support.observeNonNull
+import com.frolo.muse.databinding.FragmentAlbumBinding
 import com.frolo.muse.di.activityComponent
 import com.frolo.music.model.Album
 import com.frolo.music.model.Song
@@ -31,21 +32,21 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.shape.CornerFamily
 import com.google.android.material.shape.MaterialShapeDrawable
 import com.google.android.material.shape.ShapeAppearanceModel
-import kotlinx.android.synthetic.main.fragment_album.*
-import kotlinx.android.synthetic.main.fragment_base_list.*
 import kotlin.math.abs
 import kotlin.math.pow
 
 
 open class AlbumFragment: AbsSongCollectionFragment<Song>(), FragmentContentInsetsListener {
+    private var _binding: FragmentAlbumBinding? = null
+    private val binding: FragmentAlbumBinding get() = _binding!!
 
     private val onOffsetChangedListener: AppBarLayout.OnOffsetChangedListener =
         AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
-            val scrollFactor: Float = abs(verticalOffset.toFloat() / (view_backdrop.measuredHeight))
+            val scrollFactor: Float = abs(verticalOffset.toFloat() / (binding.viewBackdrop.measuredHeight))
 
             viewModel.onHeaderScrolled(scrollFactor)
 
-            (view_backdrop.background as? MaterialShapeDrawable)?.apply {
+            (binding.viewBackdrop.background as? MaterialShapeDrawable)?.apply {
                 val poweredScrollFactor = scrollFactor.pow(2)
                 val cornerRadius = backdropCornerRadius * (1 - poweredScrollFactor)
                 this.shapeAppearanceModel = ShapeAppearanceModel.builder()
@@ -77,18 +78,21 @@ open class AlbumFragment: AbsSongCollectionFragment<Song>(), FragmentContentInse
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = inflater.inflate(R.layout.fragment_album, container, false)
+    ): View? {
+        _binding = FragmentAlbumBinding.inflate(inflater)
+        return _binding?.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        setupNavigation(tb_actions)
+        setupNavigation(binding.tbActions)
 
-        rv_list.apply {
+        binding.includeBaseList.rvList.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = this@AlbumFragment.adapter
             addLinearItemMargins()
         }
 
-        tb_actions.apply {
+        binding.tbActions.apply {
             inflateMenu(R.menu.fragment_album)
             setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
@@ -108,17 +112,17 @@ open class AlbumFragment: AbsSongCollectionFragment<Song>(), FragmentContentInse
             }
         }
 
-        cv_album_art.setOnClickListener {
+        binding.cvAlbumArt.setOnClickListener {
             viewModel.onAlbumArtClicked()
         }
 
-        fab_play.setOnClickListener {
+        binding.fabPlay.setOnClickListener {
             viewModel.onPlayButtonClicked()
         }
 
-        app_bar_layout.addOnOffsetChangedListener(onOffsetChangedListener)
+        binding.appBarLayout.addOnOffsetChangedListener(onOffsetChangedListener)
 
-        view_backdrop.background = MaterialShapeDrawable().apply {
+        binding.viewBackdrop.background = MaterialShapeDrawable().apply {
             fillColor = ColorStateList.valueOf(StyleUtils.resolveColor(view.context,
                 com.google.android.material.R.attr.colorPrimary))
             shapeAppearanceModel = ShapeAppearanceModel.builder()
@@ -139,17 +143,18 @@ open class AlbumFragment: AbsSongCollectionFragment<Song>(), FragmentContentInse
     }
 
     override fun onDestroyView() {
-        app_bar_layout.removeOnOffsetChangedListener(onOffsetChangedListener)
+        binding.appBarLayout.removeOnOffsetChangedListener(onOffsetChangedListener)
         super.onDestroyView()
+        _binding = null
     }
 
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
         albumName.observe(owner) { albumName ->
-            tv_album_name.text = albumName
+            binding.tvAlbumName.text = albumName
         }
 
         artistName.observe(owner) { artistName ->
-            tv_artist_name.text = artistName
+            binding.tvArtistName.text = artistName
         }
 
         albumId.observeNonNull(owner) { albumId ->
@@ -158,9 +163,9 @@ open class AlbumFragment: AbsSongCollectionFragment<Song>(), FragmentContentInse
 
         playButtonVisible.observeNonNull(owner) { isVisible ->
             if (isPlayButtonAlwaysVisible || isVisible) {
-                if (!fab_play.isOrWillBeShown) fab_play.show()
+                if (!binding.fabPlay.isOrWillBeShown) binding.fabPlay.show()
             } else {
-                if (!fab_play.isOrWillBeHidden) fab_play.hide()
+                if (!binding.fabPlay.isOrWillBeHidden) binding.fabPlay.hide()
             }
         }
 
@@ -172,11 +177,13 @@ open class AlbumFragment: AbsSongCollectionFragment<Song>(), FragmentContentInse
     }
 
     override fun onSetLoading(loading: Boolean) {
-        pb_loading.visibility = if (loading) View.VISIBLE else View.GONE
+        binding.includeBaseList.pbLoading.root.visibility =
+            if (loading) View.VISIBLE else View.GONE
     }
 
     override fun onSetPlaceholderVisible(visible: Boolean) {
-        layout_list_placeholder.visibility = if (visible) View.VISIBLE else View.GONE
+        binding.includeBaseList.layoutListPlaceholder.root.visibility =
+            if (visible) View.VISIBLE else View.GONE
     }
 
     override fun onDisplayError(err: Throwable) {
@@ -195,21 +202,21 @@ open class AlbumFragment: AbsSongCollectionFragment<Song>(), FragmentContentInse
             .error(R.drawable.ic_album_200dp)
             .apply(requestOptions)
             .transition(BitmapTransitionOptions.withCrossFade())
-            .into(imv_album_art)
+            .into(binding.imvAlbumArt)
     }
 
     override fun applyContentInsets(left: Int, top: Int, right: Int, bottom: Int) {
         view?.also { safeView ->
             if (safeView is ViewGroup) {
-                rv_list.setPadding(left, top, right, bottom)
-                rv_list.clipToPadding = false
+                binding.includeBaseList.rvList.setPadding(left, top, right, bottom)
+                binding.includeBaseList.rvList.clipToPadding = false
                 safeView.clipToPadding = false
             }
         }
     }
 
     override fun scrollToTop() {
-        rv_list?.smoothScrollToTop()
+        binding.includeBaseList.rvList.smoothScrollToTop()
     }
 
     companion object {

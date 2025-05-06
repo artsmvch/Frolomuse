@@ -5,9 +5,8 @@ import android.os.Bundle
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDialog
 import com.frolo.audiofx2.ui.AudioFx2AttachInfo
-import com.frolo.audiofx2.ui.R
+import com.frolo.audiofx2.ui.databinding.DialogAttachInfoBinding
 import com.frolo.ui.Screen
-import kotlinx.android.synthetic.main.dialog_attach_info.*
 
 internal class AttachInfoDialog(
     context: Context,
@@ -15,9 +14,15 @@ internal class AttachInfoDialog(
 ): AppCompatDialog(context) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.dialog_attach_info)
+        val binding = DialogAttachInfoBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         setUpWindow()
-        loadUi()
+        binding.apply {
+            icon.setImageDrawable(attachInfo.icon)
+            title.text = attachInfo.name
+            description.text = attachInfo.description
+            close.setOnClickListener { dismiss() }
+        }
     }
 
     private fun setUpWindow() {
@@ -25,12 +30,5 @@ internal class AttachInfoDialog(
         val dialogWidth: Int = (Screen.getScreenWidth(context) * 0.95).toInt()
         val dialogHeight: Int = ViewGroup.LayoutParams.WRAP_CONTENT
         window.setLayout(dialogWidth, dialogHeight)
-    }
-
-    private fun loadUi() = with(this) {
-        icon.setImageDrawable(attachInfo.icon)
-        title.text = attachInfo.name
-        description.text = attachInfo.description
-        close.setOnClickListener { dismiss() }
     }
 }

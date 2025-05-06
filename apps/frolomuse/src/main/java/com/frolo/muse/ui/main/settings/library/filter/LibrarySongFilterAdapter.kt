@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.frolo.core.ui.inflateChild
 import com.frolo.muse.R
 import com.frolo.music.model.SongType
-import kotlinx.android.synthetic.main.item_library_song_filter_checkbox.view.*
 import kotlin.properties.Delegates
 
 
@@ -37,8 +36,8 @@ class LibrarySongFilterAdapter(
 
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView), CompoundButton.OnCheckedChangeListener {
 
-        private val textView: TextView get() = itemView.tv_title
-        private val checkBoxView: CheckBox get() = itemView.chb_checkbox
+        private val textView: TextView get() = itemView.findViewById(R.id.tv_title)
+        private val checkBoxView: CheckBox get() = itemView.findViewById(R.id.chb_checkbox)
 
         init {
             itemView.setOnClickListener {

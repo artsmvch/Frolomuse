@@ -2,16 +2,17 @@ package com.frolo.muse.ui.main.settings.journal
 
 import android.app.Dialog
 import android.os.Bundle
+import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.Toast
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.frolo.muse.R
 import com.frolo.arch.support.observe
 import com.frolo.arch.support.observeNonNull
 import com.frolo.muse.ui.base.BaseDialogFragment
-import kotlinx.android.synthetic.main.dialog_player_journal.*
 
 
 class PlayerJournalDialog: BaseDialogFragment() {
@@ -37,18 +38,20 @@ class PlayerJournalDialog: BaseDialogFragment() {
     }
 
     private fun loadUI(dialog: Dialog) = with(dialog) {
-        rv_logs.layoutManager = LinearLayoutManager(context)
-        rv_logs.adapter = LogDataItemAdapter()
+        findViewById<RecyclerView>(R.id.rv_logs).apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = LogDataItemAdapter()
+        }
 
-        btn_copy.setOnClickListener {
+        findViewById<View>(R.id.btn_copy).setOnClickListener {
             viewModel.onCopyLogsToClipboard()
         }
 
-        btn_send.setOnClickListener {
+        findViewById<View>(R.id.btn_send).setOnClickListener {
             viewModel.onSendLogsClicked()
         }
 
-        btn_close.setOnClickListener {
+        findViewById<View>(R.id.btn_close).setOnClickListener {
             dismiss()
         }
     }
@@ -56,13 +59,13 @@ class PlayerJournalDialog: BaseDialogFragment() {
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
         logDataItems.observe(owner) { items ->
             dialog?.apply {
-                (rv_logs?.adapter as? LogDataItemAdapter)?.items = items.orEmpty()
+                (findViewById<RecyclerView>(R.id.rv_logs)?.adapter as? LogDataItemAdapter)?.items = items.orEmpty()
             }
         }
 
         scrollToPosition.observeNonNull(owner) { position ->
             dialog?.apply {
-                rv_logs?.scrollToPosition(position)
+                findViewById<RecyclerView>(R.id.rv_logs)?.scrollToPosition(position)
             }
         }
 

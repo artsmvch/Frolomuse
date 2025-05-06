@@ -1,12 +1,14 @@
 package com.frolo.muse.ui.main.library.search.adapter
 
 import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
+import com.frolo.muse.R
 import com.frolo.music.model.Playlist
 import com.frolo.muse.thumbnails.ThumbnailLoader
 import com.frolo.muse.ui.getDateAddedString
 import com.frolo.muse.ui.getNameString
-import kotlinx.android.synthetic.main.include_check.view.*
-import kotlinx.android.synthetic.main.item_playlist.view.*
+import com.frolo.muse.views.checkable.CheckView
 
 
 class PlaylistViewHolder(
@@ -14,7 +16,13 @@ class PlaylistViewHolder(
     private val thumbnailLoader: ThumbnailLoader
 ): MediaAdapter.MediaViewHolder(itemView) {
 
-    override val viewOptionsMenu: View? = itemView.view_options_menu
+    override val viewOptionsMenu: View? = itemView.findViewById(R.id.view_options_menu)
+
+    private val tvPlaylistName: TextView = itemView.findViewById(R.id.tv_playlist_name)
+    private val tvPlaylistDateModified: TextView =
+        itemView.findViewById(R.id.tv_playlist_date_modified)
+    private val imvPlaylistArt: ImageView = itemView.findViewById(R.id.imv_playlist_art)
+    private val imvCheck: CheckView = itemView.findViewById(R.id.imv_check)
 
     fun bind(
             item: Playlist,
@@ -26,12 +34,12 @@ class PlaylistViewHolder(
         with(itemView) {
             val res = resources
 
-            tv_playlist_name.text = highlight(text = item.getNameString(resources), part = query)
-            tv_playlist_date_modified.text = item.getDateAddedString(res)
+            tvPlaylistName.text = highlight(text = item.getNameString(resources), part = query)
+            tvPlaylistDateModified.text = item.getDateAddedString(res)
 
-            thumbnailLoader.loadPlaylistThumbnail(item, imv_playlist_art)
+            thumbnailLoader.loadPlaylistThumbnail(item, imvPlaylistArt)
 
-            imv_check.setChecked(selected, selectionChanged)
+            imvCheck.setChecked(selected, selectionChanged)
 
             isSelected = selected
         }

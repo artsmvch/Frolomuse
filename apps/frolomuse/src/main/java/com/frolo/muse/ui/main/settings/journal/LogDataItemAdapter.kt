@@ -3,10 +3,10 @@ package com.frolo.muse.ui.main.settings.journal
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.frolo.muse.R
-import kotlinx.android.synthetic.main.item_player_journal_log_data.view.*
 import kotlin.properties.Delegates
 
 
@@ -29,14 +29,15 @@ class LogDataItemAdapter: RecyclerView.Adapter<LogDataItemAdapter.LogDataItemVie
     }
 
     class LogDataItemViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+        private val tvTime = itemView.findViewById<TextView>(R.id.tv_time)
+        private val tvMessage = itemView.findViewById<TextView>(R.id.tv_message)
+        private val tvErrorStackTrace = itemView.findViewById<TextView>(R.id.tv_error_stack_trace)
 
         fun bind(item: LogDataItem) {
-            with(itemView) {
-                tv_time.text = item.time
-                tv_message.text = item.message
-                tv_error_stack_trace.text = item.errorStackTrace
-                tv_error_stack_trace.isVisible = !item.errorStackTrace.isNullOrBlank()
-            }
+            tvTime.text = item.time
+            tvMessage.text = item.message
+            tvErrorStackTrace.text = item.errorStackTrace
+            tvErrorStackTrace.isVisible = !item.errorStackTrace.isNullOrBlank()
         }
 
     }

@@ -1,11 +1,13 @@
 package com.frolo.muse.ui.main.library.search.adapter
 
 import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
+import com.frolo.muse.R
 import com.frolo.music.model.Genre
 import com.frolo.muse.thumbnails.ThumbnailLoader
 import com.frolo.muse.ui.getNameString
-import kotlinx.android.synthetic.main.include_check.view.*
-import kotlinx.android.synthetic.main.item_genre.view.*
+import com.frolo.muse.views.checkable.CheckView
 
 
 class GenreViewHolder(
@@ -13,7 +15,12 @@ class GenreViewHolder(
     private val thumbnailLoader: ThumbnailLoader
 ): MediaAdapter.MediaViewHolder(itemView) {
 
-    override val viewOptionsMenu: View? = itemView.view_options_menu
+    override val viewOptionsMenu: View? = itemView.findViewById(R.id.view_options_menu)
+
+    private val tvGenreName: TextView = itemView.findViewById(R.id.tv_genre_name)
+    private val imvGenreArt: ImageView = itemView.findViewById(R.id.imv_genre_art)
+    private val imvCheck: CheckView = itemView.findViewById(R.id.imv_check)
+
 
     fun bind(
         item: Genre,
@@ -23,11 +30,11 @@ class GenreViewHolder(
     ) {
 
         with(itemView) {
-            tv_genre_name.text = highlight(text = item.getNameString(resources), part = query)
+            tvGenreName.text = highlight(text = item.getNameString(resources), part = query)
 
-            thumbnailLoader.loadGenreThumbnail(item, imv_genre_art)
+            thumbnailLoader.loadGenreThumbnail(item, imvGenreArt)
 
-            imv_check.setChecked(selected, selectionChanged)
+            imvCheck.setChecked(selected, selectionChanged)
 
             isSelected = selected
         }

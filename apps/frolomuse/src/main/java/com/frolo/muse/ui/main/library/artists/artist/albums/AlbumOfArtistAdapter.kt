@@ -2,6 +2,8 @@ package com.frolo.muse.ui.main.library.artists.artist.albums
 
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.DiffUtil
 import com.bumptech.glide.RequestManager
@@ -10,10 +12,9 @@ import com.frolo.core.ui.inflateChild
 import com.frolo.muse.R
 import com.frolo.muse.ui.getNameString
 import com.frolo.muse.ui.main.library.base.BaseAdapter
+import com.frolo.muse.views.checkable.CheckView
 import com.frolo.music.model.Album
 import com.frolo.ui.Screen
-import kotlinx.android.synthetic.main.include_check.view.*
-import kotlinx.android.synthetic.main.item_album_of_artist.view.*
 
 
 class AlbumOfArtistAdapter constructor(
@@ -43,19 +44,20 @@ class AlbumOfArtistAdapter constructor(
         item: Album,
         selected: Boolean,
         selectionChanged: Boolean
-    ) = with(holder.itemView) {
-        tv_album_name.text = item.getNameString(resources)
-
+    ) = with(holder) {
+        tvAlbumName.text = item.getNameString(itemView.resources)
         requestManager.makeAlbumArtRequest(item.id)
             .placeholder(R.drawable.ic_framed_album)
             .error(R.drawable.ic_framed_album)
-            .into(imv_album_art)
-
-        imv_check.setChecked(selected, selectionChanged)
+            .into(imvAlbumArt)
+        imvCheck.setChecked(selected, selectionChanged)
     }
 
     class AlbumViewHolder(itemView: View): BaseAdapter.BaseViewHolder(itemView) {
         override val viewOptionsMenu: View? = itemView.findViewById<View>(R.id.view_options_menu)
+        val tvAlbumName: TextView = itemView.findViewById(R.id.tv_album_name)
+        val imvAlbumArt: ImageView = itemView.findViewById(R.id.imv_album_art)
+        val imvCheck: CheckView = itemView.findViewById(R.id.imv_check)
     }
 
     object AlbumOfArtistItemCallback: DiffUtil.ItemCallback<Album>() {

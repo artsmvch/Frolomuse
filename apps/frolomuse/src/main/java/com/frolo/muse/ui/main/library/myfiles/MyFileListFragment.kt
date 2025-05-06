@@ -8,6 +8,7 @@ import com.frolo.muse.R
 import com.frolo.arch.support.observe
 import com.frolo.arch.support.observeNonNull
 import com.frolo.mediascan.MediaScanService
+import com.frolo.muse.databinding.FragmentMyFileListBinding
 import com.frolo.music.model.MyFile
 import com.frolo.muse.thumbnails.provideThumbnailLoader
 import com.frolo.muse.ui.ShotLayoutAnimationController
@@ -19,8 +20,6 @@ import com.frolo.muse.ui.main.library.base.AbsMediaCollectionFragment
 import com.frolo.muse.ui.main.library.base.BaseAdapter
 import com.frolo.muse.ui.smoothScrollToTop
 import com.frolo.muse.views.Anim
-import kotlinx.android.synthetic.main.fragment_base_list.*
-import kotlinx.android.synthetic.main.fragment_my_file_list.*
 
 
 @Deprecated(
@@ -30,6 +29,9 @@ import kotlinx.android.synthetic.main.fragment_my_file_list.*
 class MyFileListFragment: AbsMediaCollectionFragment<MyFile>(),
         OnBackPressedHandler,
         FragmentContentInsetsListener {
+
+    private var _binding: FragmentMyFileListBinding? = null
+    private val binding: FragmentMyFileListBinding get() = _binding!!
 
     override val viewModel: MyFileListViewModel by viewModel()
 
@@ -60,19 +62,27 @@ class MyFileListFragment: AbsMediaCollectionFragment<MyFile>(),
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = inflater.inflate(R.layout.fragment_my_file_list, container, false)
+    ): View? {
+        _binding = FragmentMyFileListBinding.inflate(inflater)
+        return _binding?.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        rv_list.apply {
+        binding.includeBaseList.rvList.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = this@MyFileListFragment.adapter
             addLinearItemMargins()
             layoutAnimation = ShotLayoutAnimationController()
         }
 
-        cl_parent_file.setOnClickListener {
+        binding.clParentFile.setOnClickListener {
             viewModel.onRootClicked()
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -93,9 +103,9 @@ class MyFileListFragment: AbsMediaCollectionFragment<MyFile>(),
 
     override fun onSetLoading(loading: Boolean) {
         if (loading) {
-            Anim.fadeIn(pb_loading)
+            Anim.fadeIn(binding.includeBaseList.pbLoading.root)
         } else {
-            Anim.fadeOut(pb_loading)
+            Anim.fadeOut(binding.includeBaseList.pbLoading.root)
         }
     }
 
@@ -108,7 +118,8 @@ class MyFileListFragment: AbsMediaCollectionFragment<MyFile>(),
     }
 
     override fun onSetPlaceholderVisible(visible: Boolean) {
-        layout_list_placeholder.visibility = if (visible) View.VISIBLE else View.GONE
+        binding.includeBaseList.layoutListPlaceholder.root.visibility =
+            if (visible) View.VISIBLE else View.GONE
     }
 
     override fun onDisplayError(err: Throwable) {
@@ -159,21 +170,21 @@ class MyFileListFragment: AbsMediaCollectionFragment<MyFile>(),
     }
 
     private fun onDisplayRoot(root: MyFile) {
-        tv_parent_file_name.text = root.getNameAsRootString()
+        binding.tvParentFileName.text = root.getNameAsRootString()
     }
 
     override fun applyContentInsets(left: Int, top: Int, right: Int, bottom: Int) {
         view?.also { safeView ->
             if (safeView is ViewGroup) {
-                rv_list.setPadding(left, top, right, bottom)
-                rv_list.clipToPadding = false
+                binding.includeBaseList.rvList.setPadding(left, top, right, bottom)
+                binding.includeBaseList.rvList.clipToPadding = false
                 safeView.clipToPadding = false
             }
         }
     }
 
     override fun scrollToTop() {
-        rv_list?.smoothScrollToTop()
+        binding.includeBaseList.rvList.smoothScrollToTop()
     }
 
     companion object {

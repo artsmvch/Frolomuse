@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.LifecycleOwner
 import com.frolo.ui.KeyboardUtils
-import com.frolo.muse.R
 import com.frolo.arch.support.observe
 import com.frolo.music.model.Media
 import com.frolo.muse.thumbnails.provideThumbnailLoader
@@ -17,16 +16,18 @@ import com.frolo.muse.ui.main.library.base.BaseAdapter
 import com.frolo.muse.ui.main.library.search.adapter.MediaAdapter
 import com.frolo.muse.ui.smoothScrollToTop
 import com.frolo.core.ui.hideKeyboardOnScroll
+import com.frolo.muse.databinding.FragmentSearchBinding
 import com.frolo.muse.rx.disposeOnPauseOf
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersDecoration
 import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
-import kotlinx.android.synthetic.main.fragment_base_list.*
-import kotlinx.android.synthetic.main.fragment_search.*
 import java.util.concurrent.TimeUnit
 
 
 class SearchFragment: AbsMediaCollectionFragment<Media>(), FragmentContentInsetsListener {
+    
+    private var _binding: FragmentSearchBinding? = null
+    private val binding: FragmentSearchBinding get() = _binding!!
 
     override val viewModel: SearchViewModel by viewModel()
 
@@ -51,18 +52,21 @@ class SearchFragment: AbsMediaCollectionFragment<Media>(), FragmentContentInsets
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = inflater.inflate(R.layout.fragment_search, container, false)
+    ): View? {
+        _binding = FragmentSearchBinding.inflate(inflater)
+        return _binding?.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        rv_list.apply {
+        binding.includeBaseList.rvList.apply {
             adapter = this@SearchFragment.adapter
-            layoutManager = androidx.recyclerview.widget.LinearLayoutManager(rv_list.context)
+            layoutManager = androidx.recyclerview.widget.LinearLayoutManager(binding.includeBaseList.rvList.context)
             hideKeyboardOnScroll()
             addItemDecoration(StickyRecyclerHeadersDecoration(this@SearchFragment.adapter))
             // Do not apply margin decoration as it breaks header decoration
         }
 
-        sv_query.apply {
+        binding.svQuery.apply {
             setOnCloseListener { true } // do NOT allow to close
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(query: String?) = false
@@ -95,14 +99,14 @@ class SearchFragment: AbsMediaCollectionFragment<Media>(), FragmentContentInsets
     private fun showKeyboardWithDelay() {
         Completable.timer(300, TimeUnit.MILLISECONDS)
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnComplete { KeyboardUtils.show(sv_query) }
+            .doOnComplete { KeyboardUtils.show(binding.svQuery) }
             .subscribe()
             .disposeOnPauseOf(this)
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString(EXTRA_QUERY, sv_query?.query.toString())
+        outState.putString(EXTRA_QUERY, binding.svQuery?.query.toString())
     }
 
     override fun onStop() {
@@ -113,10 +117,12 @@ class SearchFragment: AbsMediaCollectionFragment<Media>(), FragmentContentInsets
     override fun onDestroyView() {
         KeyboardUtils.hideFrom(this)
         super.onDestroyView()
+        _binding = null
     }
 
     override fun onSetLoading(loading: Boolean) {
-        pb_loading.visibility = if (loading) View.VISIBLE else View.GONE
+        binding.includeBaseList.pbLoading.root.visibility =
+            if (loading) View.VISIBLE else View.GONE
     }
 
     override fun onSubmitList(list: List<Media>) {
@@ -124,7 +130,8 @@ class SearchFragment: AbsMediaCollectionFragment<Media>(), FragmentContentInsets
     }
 
     override fun onSetPlaceholderVisible(visible: Boolean) {
-        layout_list_placeholder.visibility = if (visible) View.VISIBLE else View.GONE
+        binding.includeBaseList.layoutListPlaceholder.root.visibility =
+            if (visible) View.VISIBLE else View.GONE
     }
 
     override fun onSubmitSelectedItems(selectedItems: Set<Media>) {
@@ -144,15 +151,15 @@ class SearchFragment: AbsMediaCollectionFragment<Media>(), FragmentContentInsets
     override fun applyContentInsets(left: Int, top: Int, right: Int, bottom: Int) {
         view?.also { safeView ->
             if (safeView is ViewGroup) {
-                rv_list.setPadding(left, top, right, bottom)
-                rv_list.clipToPadding = false
+                binding.includeBaseList.rvList.setPadding(left, top, right, bottom)
+                binding.includeBaseList.rvList.clipToPadding = false
                 safeView.clipToPadding = false
             }
         }
     }
 
     override fun scrollToTop() {
-        rv_list?.smoothScrollToTop()
+        binding.includeBaseList.rvList?.smoothScrollToTop()
     }
 
     companion object {

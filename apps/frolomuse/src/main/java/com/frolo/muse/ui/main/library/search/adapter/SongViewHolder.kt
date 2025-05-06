@@ -1,14 +1,16 @@
 package com.frolo.muse.ui.main.library.search.adapter
 
 import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
+import com.frolo.muse.R
 import com.frolo.music.model.Song
 import com.frolo.muse.thumbnails.ThumbnailLoader
 import com.frolo.muse.ui.getAlbumString
 import com.frolo.muse.ui.getDurationString
 import com.frolo.muse.ui.getNameString
-import kotlinx.android.synthetic.main.include_check.view.*
-import kotlinx.android.synthetic.main.include_song_art_container.view.*
-import kotlinx.android.synthetic.main.item_song.view.*
+import com.frolo.muse.views.MiniVisualizer
+import com.frolo.muse.views.checkable.CheckView
 
 
 class SongViewHolder constructor(
@@ -16,10 +18,17 @@ class SongViewHolder constructor(
     private val thumbnailLoader: ThumbnailLoader
 ): MediaAdapter.MediaViewHolder(itemView) {
 
-    override val viewOptionsMenu: View? = itemView.view_options_menu
+    override val viewOptionsMenu: View? = itemView.findViewById(R.id.view_options_menu)
+
+    private val tvSongName: TextView = itemView.findViewById(R.id.tv_song_name)
+    private val tvArtistName: TextView = itemView.findViewById(R.id.tv_artist_name)
+    private val tvDuration: TextView = itemView.findViewById(R.id.tv_duration)
+    private val imvSongThumbnail: ImageView = itemView.findViewById(R.id.imv_song_thumbnail)
+    private val imvCheck: CheckView = itemView.findViewById(R.id.imv_check)
+    private val miniVisualizer: MiniVisualizer = itemView.findViewById(R.id.mini_visualizer)
 
     init {
-        itemView.mini_visualizer.visibility = View.GONE
+        miniVisualizer.visibility = View.GONE
     }
 
     fun bind(
@@ -31,13 +40,13 @@ class SongViewHolder constructor(
 
         with(itemView) {
             val res = resources
-            tv_song_name.text = highlight(text = item.getNameString(resources), part = query)
-            tv_artist_name.text = item.getAlbumString(res)
-            tv_duration.text = item.getDurationString()
+            tvSongName.text = highlight(text = item.getNameString(resources), part = query)
+            tvArtistName.text = item.getAlbumString(res)
+            tvDuration.text = item.getDurationString()
 
-            thumbnailLoader.loadSongThumbnail(item, imv_song_thumbnail)
+            thumbnailLoader.loadSongThumbnail(item, imvSongThumbnail)
 
-            imv_check.setChecked(selected, selectionChanged)
+            imvCheck.setChecked(selected, selectionChanged)
 
             isSelected = selected
         }

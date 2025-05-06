@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.frolo.muse.R
 import com.frolo.arch.support.observeNonNull
+import com.frolo.muse.databinding.FragmentCurrSongQueueBinding
 import com.frolo.music.model.Song
 import com.frolo.muse.thumbnails.provideThumbnailLoader
 import com.frolo.muse.ui.base.adapter.SimpleItemTouchHelperCallback
@@ -24,14 +25,14 @@ import com.frolo.muse.ui.smoothScrollToTop
 import com.frolo.muse.util.ifNaN
 import com.frolo.ui.Screen
 import com.frolo.ui.ViewUtils
-import kotlinx.android.synthetic.main.fragment_base_list.*
-import kotlinx.android.synthetic.main.fragment_curr_song_queue.*
 
 
 /**
  * This fragment shows the queue of songs currently being played by the player.
  */
 class CurrSongQueueFragment: AbsMediaCollectionFragment<Song>() {
+    private var _binding: FragmentCurrSongQueueBinding? = null
+    private val binding: FragmentCurrSongQueueBinding get() = _binding!!
 
     interface OnCloseIconClickListener {
         fun onCloseIconClick(fragment: CurrSongQueueFragment)
@@ -93,21 +94,24 @@ class CurrSongQueueFragment: AbsMediaCollectionFragment<Song>() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = inflater.inflate(R.layout.fragment_curr_song_queue, container, false)
+    ): View? {
+        _binding = FragmentCurrSongQueueBinding.inflate(inflater)
+        return _binding?.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         // Intercepting all touches to prevent their processing in the lower view layers
         view.setOnTouchListener { _, _ -> true }
 
-        imv_close.setOnClickListener {
+        binding.imvClose.setOnClickListener {
             onCloseIconClickListener?.onCloseIconClick(this)
         }
 
-        btn_save_as_playlist.setOnClickListener {
+        binding.btnSaveAsPlaylist.setOnClickListener {
             viewModel.onSaveAsPlaylistOptionSelected()
         }
 
-        rv_list.apply {
+        binding.includeBaseList.rvList.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = this@CurrSongQueueFragment.adapter
             addLinearItemMargins()
@@ -117,25 +121,30 @@ class CurrSongQueueFragment: AbsMediaCollectionFragment<Song>() {
             adapter as DragSongAdapter
         ).let { callback ->
             ItemTouchHelper(callback).apply {
-                attachToRecyclerView(rv_list)
+                attachToRecyclerView(binding.includeBaseList.rvList)
             }
         }
 
-        rv_list.doOnLayout {
+        binding.includeBaseList.rvList.doOnLayout {
             checkListChunkShown()
         }
 
-        rv_list.doOnVerticalScroll(threshold = getScrollThresholdInPx(requireContext())) {
+        binding.includeBaseList.rvList.doOnVerticalScroll(threshold = getScrollThresholdInPx(requireContext())) {
             viewModel.onScrolled()
         }
 
-        ll_header.doOnLayout {
+        binding.llHeader.doOnLayout {
             val width = it.measuredWidth
             // Just to make sure that the button does not occupy all the space in the header layout
             if (width > 0) {
-                btn_save_as_playlist.maxWidth = (width / 2.4f).toInt()
+                binding.btnSaveAsPlaylist.maxWidth = (width / 2.4f).toInt()
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -168,11 +177,13 @@ class CurrSongQueueFragment: AbsMediaCollectionFragment<Song>() {
     }
 
     override fun onSetLoading(loading: Boolean) {
-        layout_list_placeholder.visibility = if (loading) View.VISIBLE else View.GONE
+        binding.includeBaseList.layoutListPlaceholder.root.visibility = 
+            if (loading) View.VISIBLE else View.GONE
     }
 
     override fun onSetPlaceholderVisible(visible: Boolean) {
-        layout_list_placeholder.visibility = if (visible) View.VISIBLE else View.GONE
+        binding.includeBaseList.layoutListPlaceholder.root.visibility = 
+            if (visible) View.VISIBLE else View.GONE
     }
 
     override fun onDisplayError(err: Throwable) {
@@ -190,7 +201,7 @@ class CurrSongQueueFragment: AbsMediaCollectionFragment<Song>() {
         }
 
         saveAsPlaylistOptionEnabled.observeNonNull(owner) { enabled ->
-            btn_save_as_playlist.apply {
+            binding.btnSaveAsPlaylist.apply {
                 isEnabled = enabled
                 alpha = if (enabled) 1f else 0.5f
             }
@@ -204,8 +215,8 @@ class CurrSongQueueFragment: AbsMediaCollectionFragment<Song>() {
     private fun observeMainSheetsState(owner: LifecycleOwner) = with(provideMainSheetStateViewModel()) {
         slideState.observeNonNull(owner) { slideState ->
             val factor = (slideState.queueSheetSlideOffset * 5 - 4f).coerceIn(0f, 1f).ifNaN(0f)
-            tv_title.translationX = -Screen.dpFloat(36f) * (1f - factor)
-            imv_close.apply {
+            binding.tvTitle.translationX = -Screen.dpFloat(36f) * (1f - factor)
+            binding.imvClose.apply {
                 scaleX = factor
                 scaleY = factor
                 imageAlpha = (factor * 255).toInt().coerceIn(0, 255)
@@ -214,7 +225,7 @@ class CurrSongQueueFragment: AbsMediaCollectionFragment<Song>() {
     }
 
     override fun scrollToTop() {
-        rv_list?.smoothScrollToTop()
+        binding.includeBaseList.rvList.smoothScrollToTop()
     }
 
     /**
@@ -225,7 +236,7 @@ class CurrSongQueueFragment: AbsMediaCollectionFragment<Song>() {
      * NOTE: this method should be called only once when the list is laid out.
      */
     private fun checkListChunkShown() {
-        val lm = rv_list.layoutManager as? LinearLayoutManager ?: return
+        val lm = binding.includeBaseList.rvList.layoutManager as? LinearLayoutManager ?: return
         val firstPosition = lm.findFirstVisibleItemPosition()
         val lastPosition = lm.findLastVisibleItemPosition()
         if (firstPosition != RecyclerView.NO_POSITION && lastPosition != RecyclerView.NO_POSITION) {
@@ -241,7 +252,7 @@ class CurrSongQueueFragment: AbsMediaCollectionFragment<Song>() {
     }
 
     private fun postScrollToPositionIfNotVisibleToUser(position: Int) {
-        val percentOfAreaVisibleToUser = ViewUtils.getPercentOfAreaVisibleToUser(rv_list)
+        val percentOfAreaVisibleToUser = ViewUtils.getPercentOfAreaVisibleToUser(binding.includeBaseList.rvList)
         if (percentOfAreaVisibleToUser < 0.05) { // the view must be visible to the user by a maximum of 5%
             val callback = Runnable {
                 scrollToPosition(position)
@@ -254,7 +265,7 @@ class CurrSongQueueFragment: AbsMediaCollectionFragment<Song>() {
      * Immediately scrolls the list to [position].
      */
     private fun scrollToPosition(position: Int) {
-        (rv_list.layoutManager as? LinearLayoutManager)?.also { lm ->
+        (binding.includeBaseList.rvList.layoutManager as? LinearLayoutManager)?.also { lm ->
             lm.scrollToPositionWithOffset(position, 0)
         }
     }
@@ -263,7 +274,7 @@ class CurrSongQueueFragment: AbsMediaCollectionFragment<Song>() {
      * Smoothly scrolls the list to [position].
      */
     private fun smoothlyScrollToPosition(position: Int) {
-        val lm = rv_list.layoutManager as? LinearLayoutManager ?: return
+        val lm = binding.includeBaseList.rvList.layoutManager as? LinearLayoutManager ?: return
 
         val anyChild = (if (lm.childCount > 0) lm.getChildAt(0) else null)
                 ?: // no children in layout manager

@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.frolo.muse.R
 import com.frolo.ui.StyleUtils
 import com.frolo.arch.support.observeNonNull
+import com.frolo.muse.databinding.FragmentArtistBinding
 import com.frolo.muse.di.activityComponent
 import com.frolo.music.model.Artist
 import com.frolo.muse.ui.base.BaseFragment
@@ -23,20 +24,21 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.shape.CornerFamily
 import com.google.android.material.shape.MaterialShapeDrawable
 import com.google.android.material.shape.ShapeAppearanceModel
-import kotlinx.android.synthetic.main.fragment_artist.*
 import kotlin.math.abs
 import kotlin.math.pow
 
 
 class ArtistFragment: BaseFragment() {
+    private var _binding: FragmentArtistBinding?  = null
+    private val binding: FragmentArtistBinding get() = _binding!!
 
     private val artist: Artist by serializableArg(ARG_ARTIST)
 
     private val onOffsetChangedListener: AppBarLayout.OnOffsetChangedListener =
         AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
-            val scrollFactor: Float = abs(verticalOffset.toFloat() / (view_backdrop.measuredHeight))
+            val scrollFactor: Float = abs(verticalOffset.toFloat() / (binding.viewBackdrop.measuredHeight))
 
-            (view_backdrop.background as? MaterialShapeDrawable)?.apply {
+            (binding.viewBackdrop.background as? MaterialShapeDrawable)?.apply {
                 val poweredScrollFactor = scrollFactor.pow(2)
                 val cornerRadius = backdropCornerRadius * (1 - poweredScrollFactor)
                 this.shapeAppearanceModel = ShapeAppearanceModel.builder()
@@ -60,12 +62,15 @@ class ArtistFragment: BaseFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = inflater.inflate(R.layout.fragment_artist, container, false)
+    ): View? {
+        _binding = FragmentArtistBinding.inflate(inflater)
+        return _binding?.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        setupNavigation(tb_actions)
+        setupNavigation(binding.tbActions)
 
-        tb_actions.apply {
+        binding.tbActions.apply {
             inflateMenu(R.menu.fragment_artist)
             setOnMenuItemClickListener { menuItem ->
                 if (menuItem.itemId == R.id.action_create_shortcut) {
@@ -98,7 +103,7 @@ class ArtistFragment: BaseFragment() {
 
         transaction.commit()
 
-        view_backdrop.background = MaterialShapeDrawable().apply {
+        binding.viewBackdrop.background = MaterialShapeDrawable().apply {
             fillColor = ColorStateList.valueOf(StyleUtils.resolveColor(view.context,
                 com.google.android.material.R.attr.colorPrimary))
             shapeAppearanceModel = ShapeAppearanceModel.builder()
@@ -106,9 +111,9 @@ class ArtistFragment: BaseFragment() {
                 .build()
         }
 
-        app_bar_layout.addOnOffsetChangedListener(onOffsetChangedListener)
+        binding.appBarLayout.addOnOffsetChangedListener(onOffsetChangedListener)
 
-        tv_artist_name.text = artist.name
+        binding.tvArtistName.text = artist.name
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -117,8 +122,9 @@ class ArtistFragment: BaseFragment() {
     }
 
     override fun onDestroyView() {
-        app_bar_layout.removeOnOffsetChangedListener(onOffsetChangedListener)
+        binding.appBarLayout.removeOnOffsetChangedListener(onOffsetChangedListener)
         super.onDestroyView()
+        _binding = null
     }
 
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {

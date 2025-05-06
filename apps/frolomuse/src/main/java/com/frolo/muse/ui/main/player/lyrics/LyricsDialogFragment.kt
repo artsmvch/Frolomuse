@@ -11,15 +11,14 @@ import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProviders
 import com.frolo.muse.BuildConfig
-import com.frolo.muse.R
 import com.frolo.arch.support.observe
 import com.frolo.arch.support.observeNonNull
+import com.frolo.muse.databinding.DialogLyricsBinding
 import com.frolo.muse.di.activityComponent
 import com.frolo.music.model.Song
 import com.frolo.muse.ui.base.BaseDialogFragment
 import com.frolo.muse.ui.base.withArg
 import com.frolo.muse.ui.main.settings.updateText
-import kotlinx.android.synthetic.main.dialog_lyrics.*
 
 
 class LyricsDialogFragment: BaseDialogFragment() {
@@ -30,6 +29,9 @@ class LyricsDialogFragment: BaseDialogFragment() {
         // Factory
         fun newInstance(song: Song) = LyricsDialogFragment().withArg(ARG_SONG, song)
     }
+
+    private var _binding: DialogLyricsBinding? = null
+    private val binding: DialogLyricsBinding get() = _binding!!
 
     private val viewModel: LyricsViewModel by lazy {
         val song = requireArguments().getSerializable(ARG_SONG) as Song
@@ -49,23 +51,29 @@ class LyricsDialogFragment: BaseDialogFragment() {
             window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE
                     or WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
 
-            setContentView(R.layout.dialog_lyrics)
+            _binding = DialogLyricsBinding.inflate(layoutInflater)
+            setContentView(binding.root)
 
             setupDialogSizeRelativelyToScreen(this, widthPercent = 19f / 20f)
 
-            imv_close.setOnClickListener {
+            binding.imvClose.setOnClickListener {
                 dismiss()
             }
 
-            edt_lyrics.doOnTextChanged { text, _, _, _ ->
+            binding.edtLyrics.doOnTextChanged { text, _, _, _ ->
                 viewModel.onLyricsEdited(text?.toString())
             }
-            edt_lyrics.clearFocus()
+            binding.edtLyrics.clearFocus()
 
-            btn_save.setOnClickListener {
+            binding.btnSave.setOnClickListener {
                 viewModel.onSaveButtonClicked()
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
@@ -110,31 +118,31 @@ class LyricsDialogFragment: BaseDialogFragment() {
 
     private fun onSetEditable(isEditable: Boolean) {
         dialog?.apply {
-            edt_lyrics.isEnabled = isEditable
+            binding.edtLyrics.isEnabled = isEditable
             if (isEditable) {
-                edt_lyrics.inputType =
+                binding.edtLyrics.inputType =
                         InputType.TYPE_CLASS_TEXT or
                                 InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS or
                                 InputType.TYPE_TEXT_FLAG_IME_MULTI_LINE
 
-                edt_lyrics.isSingleLine = false
-                edt_lyrics.imeOptions = EditorInfo.IME_FLAG_NO_ENTER_ACTION
+                binding.edtLyrics.isSingleLine = false
+                binding.edtLyrics.imeOptions = EditorInfo.IME_FLAG_NO_ENTER_ACTION
             } else {
-                edt_lyrics.inputType = InputType.TYPE_NULL
+                binding.edtLyrics.inputType = InputType.TYPE_NULL
             }
         }
     }
 
     private fun onSetLoadingLyrics(isLoading: Boolean) {
         dialog?.apply {
-            pb_loading.visibility = if (isLoading) View.VISIBLE else View.GONE
+            binding.pbLoading.visibility = if (isLoading) View.VISIBLE else View.GONE
         }
     }
 
     private fun onSetLyricsVisibility(isVisible: Boolean) {
         dialog?.apply {
-            edt_lyrics.visibility = if (isVisible) View.VISIBLE else View.INVISIBLE
-            edt_lyrics.clearFocus()
+            binding.edtLyrics.visibility = if (isVisible) View.VISIBLE else View.INVISIBLE
+            binding.edtLyrics.clearFocus()
         }
     }
 
@@ -145,13 +153,13 @@ class LyricsDialogFragment: BaseDialogFragment() {
 
     private fun onDisplayLyricsText(lyricsText: String) {
         dialog?.apply {
-            edt_lyrics.updateText(lyricsText)
+            binding.edtLyrics.updateText(lyricsText)
         }
     }
 
     private fun onDisplaySongName(songName: String) {
         dialog?.apply {
-            tv_song_name.text = songName
+            binding.tvSongName.text = songName
         }
     }
 

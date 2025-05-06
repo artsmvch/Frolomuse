@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.frolo.core.ui.glide.GlideAlbumArtHelper
 import com.frolo.core.ui.glide.observe
-import com.frolo.muse.R
+import com.frolo.muse.databinding.FragmentAlbumsOfArtistBinding
 import com.frolo.muse.di.activityComponent
 import com.frolo.muse.ui.base.withArg
 import com.frolo.muse.ui.main.library.base.AbsMediaCollectionFragment
@@ -19,10 +19,11 @@ import com.frolo.muse.ui.smoothScrollToTop
 import com.frolo.music.model.Album
 import com.frolo.music.model.Artist
 import com.frolo.ui.Screen
-import kotlinx.android.synthetic.main.fragment_albums_of_artist.*
 
 
 class AlbumsOfArtistFragment : AbsMediaCollectionFragment<Album>() {
+    private var _binding: FragmentAlbumsOfArtistBinding? = null
+    private val binding: FragmentAlbumsOfArtistBinding get() = _binding!!
 
     override val viewModel: AlbumsOfArtistViewModel by lazy {
         val artist = requireArguments().getSerializable(ARG_ARTIST) as Artist
@@ -58,11 +59,18 @@ class AlbumsOfArtistFragment : AbsMediaCollectionFragment<Album>() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = inflater.inflate(R.layout.fragment_albums_of_artist, container, false)
+    ): View? {
+        _binding = FragmentAlbumsOfArtistBinding.inflate(inflater)
+        return _binding?.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
-        rv_list.apply {
+        binding.rvList.apply {
             adapter = this@AlbumsOfArtistFragment.adapter
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         }
@@ -79,16 +87,16 @@ class AlbumsOfArtistFragment : AbsMediaCollectionFragment<Album>() {
     }
 
     override fun onSetLoading(loading: Boolean) {
-        pb_loading.visibility = if (loading) View.VISIBLE else View.GONE
+        binding.pbLoading.root.visibility = if (loading) View.VISIBLE else View.GONE
     }
 
     override fun onSubmitList(list: List<Album>) {
         val leftPadding: Int = if (list.size <= 3) {
-            Screen.dp(rv_list.context, 40f)
+            Screen.dp(binding.rvList.context, 40f)
         } else {
-            Screen.dp(rv_list.context, 8f)
+            Screen.dp(binding.rvList.context, 8f)
         }
-        rv_list.updatePadding(left = leftPadding)
+        binding.rvList.updatePadding(left = leftPadding)
         adapter.submit(list)
     }
 
@@ -105,7 +113,7 @@ class AlbumsOfArtistFragment : AbsMediaCollectionFragment<Album>() {
     }
 
     override fun scrollToTop() {
-        rv_list?.smoothScrollToTop()
+        binding.rvList.smoothScrollToTop()
     }
 
     companion object {

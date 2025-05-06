@@ -2,13 +2,13 @@ package com.frolo.muse.ui.main.settings.hidden
 
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.frolo.core.ui.inflateChild
 import com.frolo.muse.R
 import com.frolo.music.model.MyFile
-import kotlinx.android.synthetic.main.item_hidden_file.view.*
 
 
 class HiddenFileAdapter constructor(
@@ -30,12 +30,15 @@ class HiddenFileAdapter constructor(
             RecyclerView.ViewHolder(itemView),
             View.OnClickListener {
 
+        private val btnRemove: View = itemView.findViewById(R.id.btn_remove)
+        private val tvFilename: TextView = itemView.findViewById(R.id.tv_filename)
+
         init {
-            itemView.btn_remove.setOnClickListener(this)
+            btnRemove.setOnClickListener(this)
         }
 
         fun bind(item: MyFile) = with(itemView) {
-            tv_filename.text = item.javaFile.absolutePath
+            tvFilename.text = item.javaFile.absolutePath
         }
 
         override fun onClick(v: View?) {

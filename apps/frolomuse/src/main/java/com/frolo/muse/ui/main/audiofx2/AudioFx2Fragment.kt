@@ -9,14 +9,16 @@ import androidx.core.view.updatePadding
 import com.frolo.audiofx2.ui.AudioFx2Feature
 import com.frolo.muse.BuildInfo
 import com.frolo.muse.R
+import com.frolo.muse.databinding.FragmentAudioFx2Binding
 import com.frolo.muse.di.activityComponent
 import com.frolo.muse.router.AppRouter
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.base.FragmentContentInsetsListener
 import com.frolo.muse.ui.base.setupNavigation
-import kotlinx.android.synthetic.main.fragment_audio_fx_2.*
 
 class AudioFx2Fragment: BaseFragment(), FragmentContentInsetsListener {
+    private var _binding: FragmentAudioFx2Binding? = null
+    private val binding get() = _binding!!
 
     // TODO: not respecting the MVVM architecture...
     private val router: AppRouter get() = activityComponent.provideAppRouter()
@@ -25,24 +27,32 @@ class AudioFx2Fragment: BaseFragment(), FragmentContentInsetsListener {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = inflater.inflate(R.layout.fragment_audio_fx_2, container, false)
+    ): View? {
+        _binding = FragmentAudioFx2Binding.inflate(inflater)
+        return _binding?.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        setupNavigation(toolbar)
+        setupNavigation(binding.toolbar)
         ensureControlPanelFragment()
-        toolbar.menu.findItem(R.id.action_playback_params)?.also { safeMenuItem ->
+        binding.toolbar.menu.findItem(R.id.action_playback_params)?.also { safeMenuItem ->
             safeMenuItem.setOnMenuItemClickListener {
                 router.openPlaybackParams()
                 true
             }
         }
-        toolbar.menu.findItem(R.id.action_visualizer)?.also { safeMenuItem ->
+        binding.toolbar.menu.findItem(R.id.action_visualizer)?.also { safeMenuItem ->
             safeMenuItem.isVisible = BuildInfo.isDebug()
             safeMenuItem.setOnMenuItemClickListener {
                 router.openVisualizer()
                 true
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun ensureControlPanelFragment() {
@@ -64,7 +74,7 @@ class AudioFx2Fragment: BaseFragment(), FragmentContentInsetsListener {
             clipChildren = false
             updatePadding(left = left, top = top, right = right)
         }
-        container.apply {
+        binding.container.apply {
             clipToPadding = false
             clipChildren = false
             updatePadding(bottom = bottom)

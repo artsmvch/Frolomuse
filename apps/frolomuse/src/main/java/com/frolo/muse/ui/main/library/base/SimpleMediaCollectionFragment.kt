@@ -6,18 +6,20 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.frolo.muse.R
+import com.frolo.muse.databinding.FragmentBaseListBinding
 import com.frolo.music.model.Media
 import com.frolo.muse.ui.ShotLayoutAnimationController
 import com.frolo.muse.ui.base.FragmentContentInsetsListener
 import com.frolo.muse.ui.main.addLinearItemMargins
 import com.frolo.muse.ui.smoothScrollToTop
-import kotlinx.android.synthetic.main.fragment_base_list.*
 
 
 abstract class SimpleMediaCollectionFragment <E: Media>:
         AbsMediaCollectionFragment<E>(),
         FragmentContentInsetsListener {
+
+    private var _binding: FragmentBaseListBinding? = null
+    private val binding: FragmentBaseListBinding get() = _binding!!
 
     abstract val adapter: BaseAdapter<E, *>
 
@@ -40,18 +42,26 @@ abstract class SimpleMediaCollectionFragment <E: Media>:
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = inflater.inflate(R.layout.fragment_base_list, container, false)
+    ): View? {
+        _binding = FragmentBaseListBinding.inflate(inflater)
+        return _binding?.root
+    }
 
     final override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         // Setting up the list view
-        onDecorateListView(rv_list)
+        onDecorateListView(binding.rvList)
         // Setting up the placeholder view
-        onDecoratePlaceholderView(layout_list_placeholder)
+        onDecoratePlaceholderView(binding.layoutListPlaceholder.root)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     protected fun requireListView(): RecyclerView {
-        return requireNotNull(rv_list)
+        return requireNotNull(binding.rvList)
     }
 
     protected open fun onDecorateListView(listView: RecyclerView) {
@@ -75,7 +85,7 @@ abstract class SimpleMediaCollectionFragment <E: Media>:
     }
 
     final override fun onSetLoading(loading: Boolean) {
-        pb_loading.visibility = if (loading) View.VISIBLE else View.GONE
+        binding.pbLoading.root.visibility = if (loading) View.VISIBLE else View.GONE
     }
 
     final override fun onSubmitList(list: List<E>) {
@@ -87,7 +97,7 @@ abstract class SimpleMediaCollectionFragment <E: Media>:
     }
 
     final override fun onSetPlaceholderVisible(visible: Boolean) {
-        layout_list_placeholder.visibility = if (visible) View.VISIBLE else View.GONE
+        binding.layoutListPlaceholder.root.visibility = if (visible) View.VISIBLE else View.GONE
     }
 
     final override fun onDisplayError(err: Throwable) {
@@ -97,14 +107,14 @@ abstract class SimpleMediaCollectionFragment <E: Media>:
     override fun applyContentInsets(left: Int, top: Int, right: Int, bottom: Int) {
         view?.also { safeView ->
             if (safeView is ViewGroup) {
-                rv_list.setPadding(left, top, right, bottom)
-                rv_list.clipToPadding = false
+                binding.rvList.setPadding(left, top, right, bottom)
+                binding.rvList.clipToPadding = false
                 safeView.clipToPadding = false
             }
         }
     }
 
     override fun scrollToTop() {
-        rv_list?.smoothScrollToTop()
+        binding.rvList.smoothScrollToTop()
     }
 }

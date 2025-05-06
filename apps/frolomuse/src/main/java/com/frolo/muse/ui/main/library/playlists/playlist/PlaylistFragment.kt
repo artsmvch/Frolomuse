@@ -12,6 +12,7 @@ import com.frolo.muse.*
 import com.frolo.arch.support.observe
 import com.frolo.arch.support.observeNonNull
 import com.frolo.core.ui.removeCallbacksSafely
+import com.frolo.muse.databinding.FragmentPlaylistBinding
 import com.frolo.muse.di.activityComponent
 import com.frolo.music.model.Playlist
 import com.frolo.music.model.Song
@@ -32,13 +33,13 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.shape.CornerFamily
 import com.google.android.material.shape.MaterialShapeDrawable
 import com.google.android.material.shape.ShapeAppearanceModel
-import kotlinx.android.synthetic.main.fragment_playlist.*
-import kotlinx.android.synthetic.main.fragment_base_list.*
 import kotlin.math.abs
 import kotlin.math.pow
 
 
 class PlaylistFragment: AbsSongCollectionFragment<Song>(), FragmentContentInsetsListener {
+    private var _binding: FragmentPlaylistBinding? = null
+    private val binding: FragmentPlaylistBinding get() = _binding!!
 
     override val viewModel: PlaylistViewModel by lazy {
         val playlist = requireArguments().getSerializable(ARG_PLAYLIST) as Playlist
@@ -76,9 +77,9 @@ class PlaylistFragment: AbsSongCollectionFragment<Song>(), FragmentContentInsets
 
     private val onOffsetChangedListener: AppBarLayout.OnOffsetChangedListener =
         AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
-            val scrollFactor: Float = abs(verticalOffset.toFloat() / (view_backdrop.measuredHeight))
+            val scrollFactor: Float = abs(verticalOffset.toFloat() / (binding.viewBackdrop.measuredHeight))
 
-            (view_backdrop.background as? MaterialShapeDrawable)?.apply {
+            (binding.viewBackdrop.background as? MaterialShapeDrawable)?.apply {
                 val poweredScrollFactor = scrollFactor.pow(2)
                 val cornerRadius = backdropCornerRadius * (1 - poweredScrollFactor)
                 this.shapeAppearanceModel = ShapeAppearanceModel.builder()
@@ -95,17 +96,20 @@ class PlaylistFragment: AbsSongCollectionFragment<Song>(), FragmentContentInsets
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = inflater.inflate(R.layout.fragment_playlist, container, false)
+    ): View? {
+        _binding = FragmentPlaylistBinding.inflate(inflater)
+        return _binding?.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        setupNavigation(tb_actions)
+        setupNavigation(binding.tbActions)
 
         val callback = SimpleItemTouchHelperCallback(adapter as DragSongAdapter)
         val touchHelper = ItemTouchHelper(callback)
-        touchHelper.attachToRecyclerView(rv_list)
+        touchHelper.attachToRecyclerView(binding.includeBaseList.rvList)
         itemTouchHelper = touchHelper
 
-        rv_list.apply {
+        binding.includeBaseList.rvList.apply {
             layoutManager = LinearLayoutManager(context)
 
             adapter = this@PlaylistFragment.adapter
@@ -113,7 +117,7 @@ class PlaylistFragment: AbsSongCollectionFragment<Song>(), FragmentContentInsets
             addLinearItemMargins()
         }
 
-        tb_actions.apply {
+        binding.tbActions.apply {
             inflateMenu(R.menu.fragment_playlist)
             setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
@@ -130,9 +134,9 @@ class PlaylistFragment: AbsSongCollectionFragment<Song>(), FragmentContentInsets
             }
         }
 
-        app_bar_layout.addOnOffsetChangedListener(onOffsetChangedListener)
+        binding.appBarLayout.addOnOffsetChangedListener(onOffsetChangedListener)
 
-        view_backdrop.background = MaterialShapeDrawable().apply {
+        binding.viewBackdrop.background = MaterialShapeDrawable().apply {
             fillColor = ColorStateList.valueOf(StyleUtils.resolveColor(view.context,
                 com.google.android.material.R.attr.colorPrimary))
             shapeAppearanceModel = ShapeAppearanceModel.builder()
@@ -140,11 +144,11 @@ class PlaylistFragment: AbsSongCollectionFragment<Song>(), FragmentContentInsets
                 .build()
         }
 
-        btn_play.setOnClickListener {
+        binding.btnPlay.setOnClickListener {
             viewModel.onPlayButtonClicked()
         }
 
-        btn_add_song.setOnClickListener {
+        binding.btnAddSong.setOnClickListener {
             viewModel.onAddSongButtonClicked()
         }
     }
@@ -158,9 +162,10 @@ class PlaylistFragment: AbsSongCollectionFragment<Song>(), FragmentContentInsets
         view?.removeCallbacks(onDragEndedCallback)
         onDragEndedCallback = null
 
-        app_bar_layout.removeOnOffsetChangedListener(onOffsetChangedListener)
+        binding.appBarLayout.removeOnOffsetChangedListener(onOffsetChangedListener)
 
         super.onDestroyView()
+        _binding = null
     }
 
     private fun dispatchItemRemoved(item: Song) {
@@ -193,11 +198,13 @@ class PlaylistFragment: AbsSongCollectionFragment<Song>(), FragmentContentInsets
     }
 
     override fun onSetLoading(loading: Boolean) {
-        pb_loading.visibility = if (loading) View.VISIBLE else View.GONE
+        binding.includeBaseList.pbLoading.root.visibility =
+            if (loading) View.VISIBLE else View.GONE
     }
 
     override fun onSetPlaceholderVisible(visible: Boolean) {
-        layout_list_placeholder.visibility = if (visible) View.VISIBLE else View.GONE
+        binding.includeBaseList.layoutListPlaceholder.root.visibility =
+            if (visible) View.VISIBLE else View.GONE
     }
 
     override fun onDisplayError(err: Throwable) {
@@ -206,15 +213,15 @@ class PlaylistFragment: AbsSongCollectionFragment<Song>(), FragmentContentInsets
 
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
         playlist.observe(owner) { item ->
-            tv_playlist_name.text = item?.name
+            binding.tvPlaylistName.text = item?.name
         }
 
         songCountWithTotalDuration.observe(owner) { songCountWithTotalDuration ->
-            tv_playlist_info.text = songCountWithTotalDuration?.toString(resources)
+            binding.tvPlaylistInfo.text = songCountWithTotalDuration?.toString(resources)
         }
 
         isSwappingEnabled.observeNonNull(owner) { isSwappingEnabled ->
-            (rv_list.adapter as DragSongAdapter).also { adapter ->
+            (binding.includeBaseList.rvList.adapter as DragSongAdapter).also { adapter ->
                 adapter.itemViewType = if (isSwappingEnabled) {
                     DragSongAdapter.VIEW_TYPE_SWAPPABLE
                 } else {
@@ -233,15 +240,15 @@ class PlaylistFragment: AbsSongCollectionFragment<Song>(), FragmentContentInsets
     override fun applyContentInsets(left: Int, top: Int, right: Int, bottom: Int) {
         view?.also { safeView ->
             if (safeView is ViewGroup) {
-                rv_list.setPadding(left, top, right, bottom)
-                rv_list.clipToPadding = false
+                binding.includeBaseList.rvList.setPadding(left, top, right, bottom)
+                binding.includeBaseList.rvList.clipToPadding = false
                 safeView.clipToPadding = false
             }
         }
     }
 
     override fun scrollToTop() {
-        rv_list?.smoothScrollToTop()
+        binding.includeBaseList.rvList?.smoothScrollToTop()
     }
 
     companion object {

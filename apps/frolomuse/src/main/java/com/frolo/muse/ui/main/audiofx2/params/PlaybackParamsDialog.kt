@@ -7,14 +7,15 @@ import android.view.Window
 import android.widget.CompoundButton
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
-import com.frolo.muse.R
 import com.frolo.arch.support.observeNonNull
+import com.frolo.muse.databinding.DialogPlaybackParamsBinding
 import com.frolo.muse.ui.base.BaseDialogFragment
 import com.frolo.muse.views.doOnProgressChanged
-import kotlinx.android.synthetic.main.dialog_playback_params.*
 
 
 class PlaybackParamsDialog : BaseDialogFragment() {
+    private var _binding: DialogPlaybackParamsBinding? = null
+    private val binding: DialogPlaybackParamsBinding get() = _binding!!
 
     private val viewModel: PlaybackParamsViewModel by viewModel()
 
@@ -29,8 +30,10 @@ class PlaybackParamsDialog : BaseDialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return super.onCreateDialog(savedInstanceState).apply {
+            _binding = DialogPlaybackParamsBinding.inflate(layoutInflater)
+
             requestWindowFeature(Window.FEATURE_NO_TITLE)
-            setContentView(R.layout.dialog_playback_params)
+            setContentView(binding.root)
 
             val width = resources.displayMetrics.widthPixels
             setupDialogSize(this, (width * 19) / 20, ViewGroup.LayoutParams.WRAP_CONTENT)
@@ -39,8 +42,13 @@ class PlaybackParamsDialog : BaseDialogFragment() {
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     private fun loadUi(dialog: Dialog) = with(dialog) {
-        sb_speed.apply {
+        binding.sbSpeed.apply {
             // speed range 0..2, controller range 0...200
             max = 200
             doOnProgressChanged { _, progress, _ ->
@@ -49,7 +57,7 @@ class PlaybackParamsDialog : BaseDialogFragment() {
             }
         }
 
-        sb_pitch.apply {
+        binding.sbPitch.apply {
             // pitch range 0..2, controller range 0..200
             max = 200
             doOnProgressChanged { _, progress, _ ->
@@ -58,13 +66,13 @@ class PlaybackParamsDialog : BaseDialogFragment() {
             }
         }
 
-        chb_do_not_persist.setOnCheckedChangeListener(doNotPersistCheckedChangeListener)
+        binding.chbDoNotPersist.setOnCheckedChangeListener(doNotPersistCheckedChangeListener)
 
-        btn_cancel.setOnClickListener {
+        binding.btnCancel.setOnClickListener {
             dismiss()
         }
 
-        btn_normalize.setOnClickListener {
+        binding.btnNormalize.setOnClickListener {
             viewModel.onNormalizeButtonClicked()
         }
     }
@@ -76,27 +84,27 @@ class PlaybackParamsDialog : BaseDialogFragment() {
 
         isPersistenceAvailable.observeNonNull(owner) { isAvailable ->
             dialog?.apply {
-                chb_do_not_persist.isVisible = isAvailable
+                binding.chbDoNotPersist.isVisible = isAvailable
             }
         }
 
         doNotPersistPlaybackParams.observeNonNull(owner) { doNotPersist ->
-            dialog?.apply {
-                chb_do_not_persist.setOnCheckedChangeListener(null)
-                chb_do_not_persist.isChecked = doNotPersist
-                chb_do_not_persist.setOnCheckedChangeListener(doNotPersistCheckedChangeListener)
-            }
+            dialog?.apply { binding.apply {
+                chbDoNotPersist.setOnCheckedChangeListener(null)
+                chbDoNotPersist.isChecked = doNotPersist
+                chbDoNotPersist.setOnCheckedChangeListener(doNotPersistCheckedChangeListener)
+            } }
         }
 
         speed.observeNonNull(owner) { speed ->
             dialog?.apply {
-                sb_speed.progress = (speed * 100).toInt()
+                binding.sbSpeed.progress = (speed * 100).toInt()
             }
         }
 
         pitch.observeNonNull(owner) { pitch ->
             dialog?.apply {
-                sb_pitch.progress = (pitch * 100).toInt()
+                binding.sbPitch.progress = (pitch * 100).toInt()
             }
         }
     }

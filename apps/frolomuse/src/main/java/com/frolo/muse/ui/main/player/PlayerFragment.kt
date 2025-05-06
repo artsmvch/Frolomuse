@@ -1,7 +1,6 @@
 package com.frolo.muse.ui.main.player
 
 import android.content.Context
-import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.AnimatedVectorDrawable
 import android.os.Bundle
@@ -17,7 +16,6 @@ import androidx.annotation.ColorInt
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
 import androidx.core.view.updatePadding
 import androidx.lifecycle.LifecycleOwner
 import com.frolo.arch.support.observe
@@ -34,31 +32,25 @@ import com.frolo.core.ui.systembars.defaultSystemBarsHost
 import com.frolo.mediabutton.PlayButton
 import com.frolo.muse.BuildConfig
 import com.frolo.muse.R
+import com.frolo.muse.databinding.FragmentPlayerBinding
 import com.frolo.muse.ui.asDurationInMs
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.getAlbumEditorOptionText
 import com.frolo.muse.ui.getArtistString
 import com.frolo.muse.ui.getNameString
 import com.frolo.muse.ui.main.*
-import com.frolo.muse.ui.main.MainScreenProperties
-import com.frolo.muse.ui.main.WindowInsetsHelper
 import com.frolo.muse.ui.main.player.waveform.SoundWaveform
 import com.frolo.muse.ui.main.player.waveform.StaticWaveform
-import com.frolo.muse.ui.main.provideMainSheetStateViewModel
 import com.frolo.music.model.Song
 import com.frolo.player.Player
 import com.frolo.ui.ColorUtils2
-import com.frolo.ui.Screen
-import com.frolo.ui.StyleUtils
 import com.frolo.waveformseekbar.WaveformSeekBar
-import kotlinx.android.synthetic.main.fragment_player.*
-import kotlinx.android.synthetic.main.include_playback_progress.*
-import kotlinx.android.synthetic.main.include_player_controller.*
-import kotlinx.android.synthetic.main.include_player_controller_full.*
-import kotlinx.android.synthetic.main.include_player_toolbar.*
 
 
 class PlayerFragment: BaseFragment() {
+    
+    private var _binding: FragmentPlayerBinding? = null
+    private val binding: FragmentPlayerBinding get() = _binding!!
 
     private val viewModel: PlayerViewModel by viewModel()
     private val mainSheetsStateViewModel by lazy { provideMainSheetStateViewModel() }
@@ -103,7 +95,7 @@ class PlayerFragment: BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         GlideAlbumArtHelper.get().observe(this) {
-            carousel.invalidateData()
+            binding.carousel.invalidateData()
         }
     }
 
@@ -111,7 +103,10 @@ class PlayerFragment: BaseFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = inflater.inflate(R.layout.fragment_player, container, false)
+    ): View? {
+        _binding = FragmentPlayerBinding.inflate(inflater)
+        return _binding?.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         isTrackingProgress = false
@@ -122,66 +117,66 @@ class PlayerFragment: BaseFragment() {
         if (mainScreenProperties.ignoreArtBackgroundForStatusBar) {
             handleArtBackgroundColorChange(mainScreenProperties.colorPlayerSurface)
         } else {
-            carousel_background.onSurfaceColorChangeListener =
+            binding.carouselBackground.onSurfaceColorChangeListener =
                 CarouselBackgroundView.OnSurfaceColorChangeListener { color, isIntermediate ->
                     handleArtBackgroundColorChange(color)
                 }
         }
-        carousel.setPlaceholderText(R.string.no_songs_in_queue)
+        binding.carousel.setPlaceholderText(R.string.no_songs_in_queue)
 
         WindowInsetsHelper.setupWindowInsets(view) { _, insets ->
             if (mainScreenProperties.isLandscape) {
                 view.updatePadding(top = insets.systemWindowInsetTop)
             } else {
-                player_toolbar.updatePadding(top = insets.systemWindowInsetTop)
+                binding.playerToolbar.root.updatePadding(top = insets.systemWindowInsetTop)
             }
             return@setupWindowInsets insets
         }
 
-        btn_close.setOnClickListener {
+        binding.playerToolbar.btnClose.setOnClickListener {
             mainSheetsStateViewModel.collapsePlayerSheet()
         }
 
-        btn_options_menu.setOnClickListener {
+        binding.playerToolbar.btnOptionsMenu.setOnClickListener {
             viewModel.onOptionsMenuClicked()
         }
 
-        initTextSwitcher(tsw_song_name, textSizeInSp = 26f, Typeface.BOLD)
-        initTextSwitcher(tsw_artist_name, textSizeInSp = 13f, Typeface.NORMAL)
+        initTextSwitcher(binding.tswSongName, textSizeInSp = 26f, Typeface.BOLD)
+        initTextSwitcher(binding.tswArtistName, textSizeInSp = 13f, Typeface.NORMAL)
 
-        btn_play.setOnClickListener {
+        binding.includePlayerControllerFull.buttons.btnPlay.setOnClickListener {
             viewModel.onPlayButtonClicked()
         }
 
-        btn_skip_to_previous.setOnClickListener {
+        binding.includePlayerControllerFull.buttons.btnSkipToPrevious.setOnClickListener {
             viewModel.onSkipToPreviousButtonClicked()
         }
 
-        btn_skip_to_previous.doOnPulseTouchDown {
+        binding.includePlayerControllerFull.buttons.btnSkipToPrevious.doOnPulseTouchDown {
             viewModel.onSkipToPreviousButtonLongClicked()
         }
 
-        btn_skip_to_next.setOnClickListener {
+        binding.includePlayerControllerFull.buttons.btnSkipToNext.setOnClickListener {
             viewModel.onSkipToNextButtonClicked()
         }
 
-        btn_skip_to_next.doOnPulseTouchDown {
+        binding.includePlayerControllerFull.buttons.btnSkipToNext.doOnPulseTouchDown {
             viewModel.onSkipToNextButtonLongClicked()
         }
 
-        btn_repeat_mode.setOnClickListener {
+        binding.includePlayerControllerFull.buttons.btnRepeatMode.setOnClickListener {
             viewModel.onRepeatModeButtonClicked()
         }
 
-        btn_shuffle_mode.setOnClickListener {
+        binding.includePlayerControllerFull.buttons.btnShuffleMode.setOnClickListener {
             viewModel.onShuffleModeButtonClicked()
         }
 
-        btn_ab.setOnClickListener {
+        binding.includePlayerControllerFull.btnAb.setOnClickListener {
             viewModel.onABButtonClicked()
         }
 
-        btn_like.setOnClickListener {
+        binding.btnLike.setOnClickListener {
             viewModel.onLikeClicked()
         }
     }
@@ -195,19 +190,20 @@ class PlayerFragment: BaseFragment() {
 
     override fun onStart() {
         super.onStart()
-        carousel.registerCallback(carouselCallback)
-        waveform_seek_bar.setCallback(waveformCallback)
+        binding.carousel.registerCallback(carouselCallback)
+        binding.includePlayerControllerFull.progress.waveformSeekBar.setCallback(waveformCallback)
     }
 
     override fun onStop() {
         super.onStop()
-        carousel.unregisterCallback(carouselCallback)
-        waveform_seek_bar.setCallback(null)
+        binding.carousel.unregisterCallback(carouselCallback)
+        binding.includePlayerControllerFull.progress.waveformSeekBar.setCallback(null)
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        carousel_background.onSurfaceColorChangeListener = null
+        binding.carouselBackground.onSurfaceColorChangeListener = null
+        _binding = null
     }
 
     /********************************
@@ -247,8 +243,8 @@ class PlayerFragment: BaseFragment() {
         if (mode == Player.REPEAT_OFF) {
             val drawable = ContextCompat
                     .getDrawable(context, R.drawable.ic_repeat_all_to_one) as AnimatedVectorDrawable
-            btn_repeat_mode.setImageDrawable(drawable)
-            btn_repeat_mode.setColorFilter(mainScreenProperties.colorModeOff,
+            binding.includePlayerControllerFull.buttons.btnRepeatMode.setImageDrawable(drawable)
+            binding.includePlayerControllerFull.buttons.btnRepeatMode.setColorFilter(mainScreenProperties.colorModeOff,
                 android.graphics.PorterDuff.Mode.SRC_IN)
             drawable.start()
         } else {
@@ -260,8 +256,8 @@ class PlayerFragment: BaseFragment() {
             val drawable = ContextCompat
                     .getDrawable(context, drawableId) as AnimatedVectorDrawable
 
-            btn_repeat_mode.setImageDrawable(drawable)
-            btn_repeat_mode.setColorFilter(mainScreenProperties.colorModeOn,
+            binding.includePlayerControllerFull.buttons.btnRepeatMode.setImageDrawable(drawable)
+            binding.includePlayerControllerFull.buttons.btnRepeatMode.setColorFilter(mainScreenProperties.colorModeOn,
                 android.graphics.PorterDuff.Mode.SRC_IN)
             if (repeatOneFlag) drawable.start()
         }
@@ -270,29 +266,29 @@ class PlayerFragment: BaseFragment() {
     private fun updateShuffleIcon(@Player.ShuffleMode mode: Int, animate: Boolean) {
         val enable = mode == Player.SHUFFLE_ON
         val colorFilter = mainScreenProperties.getModeColor(enable)
-        btn_shuffle_mode.setImageResource(R.drawable.ic_shuffle)
-        btn_shuffle_mode.setColorFilter(colorFilter, android.graphics.PorterDuff.Mode.SRC_IN)
+        binding.includePlayerControllerFull.buttons.btnShuffleMode.setImageResource(R.drawable.ic_shuffle)
+        binding.includePlayerControllerFull.buttons.btnShuffleMode.setColorFilter(colorFilter, android.graphics.PorterDuff.Mode.SRC_IN)
     }
 
     private fun updateFavouriteIcon(favourite: Boolean) {
         if (favourite) {
-            btn_like.setImageResource(R.drawable.ic_filled_heart)
-            btn_like.setBackgroundResource(R.drawable.bg_like_button_default)
+            binding.btnLike.setImageResource(R.drawable.ic_filled_heart)
+            binding.btnLike.setBackgroundResource(R.drawable.bg_like_button_default)
         } else {
-            btn_like.setImageResource(R.drawable.ic_heart)
-            btn_like.setBackgroundResource(R.drawable.bg_like_button_default)
+            binding.btnLike.setImageResource(R.drawable.ic_heart)
+            binding.btnLike.setBackgroundResource(R.drawable.bg_like_button_default)
         }
     }
 
     private fun animateFavouriteIcon(favourite: Boolean) {
-        AppAnimations.animateLike(btn_like)
+        AppAnimations.animateLike(binding.btnLike)
     }
 
     private fun updatePlayButton(isPlaying: Boolean) {
         if (isPlaying) {
-            btn_play.setState(PlayButton.State.PAUSE, true)
+            binding.includePlayerControllerFull.buttons.btnPlay.setState(PlayButton.State.PAUSE, true)
         } else {
-            btn_play.setState(PlayButton.State.RESUME, true)
+            binding.includePlayerControllerFull.buttons.btnPlay.setState(PlayButton.State.RESUME, true)
         }
     }
 
@@ -301,13 +297,13 @@ class PlayerFragment: BaseFragment() {
         val flags = SpannableString.SPAN_INCLUSIVE_INCLUSIVE
         text.setSpan(ForegroundColorSpan(mainScreenProperties.getModeColor(aPointed)), 0, 1, flags)
         text.setSpan(ForegroundColorSpan(mainScreenProperties.getModeColor(bPointed)), 1, 3, flags)
-        btn_ab.text = text
+        binding.includePlayerControllerFull.btnAb.text = text
     }
 
     private fun handleArtBackgroundColorChange(@ColorInt color: Int) {
         val tint = mainScreenProperties.getPlayerToolbarElementColor(color)
-        btn_close.imageTintList = tint
-        btn_options_menu.imageTintList = tint
+        binding.playerToolbar.btnClose.imageTintList = tint
+        binding.playerToolbar.btnOptionsMenu.imageTintList = tint
         updateSystemBars(artBackgroundColor = color)
     }
 
@@ -325,18 +321,18 @@ class PlayerFragment: BaseFragment() {
         return if (mainScreenProperties.ignoreArtBackgroundForStatusBar) {
             mainScreenProperties.colorPlayerSurface
         } else {
-            carousel_background?.surfaceColor ?: mainScreenProperties.colorPlayerSurface
+            binding.carouselBackground.surfaceColor ?: mainScreenProperties.colorPlayerSurface
         }
     }
 
     private fun updateArtBackground(palette: Palette?) {
         val targetColor = mainScreenProperties.extractArtBackgroundColor(palette)
-        carousel_background?.setSurfaceColor(targetColor, animated = true)
-        carousel.setPlaceholderTextColor(mainScreenProperties.getPlaceholderTextColor(targetColor))
+        binding.carouselBackground.setSurfaceColor(targetColor, animated = true)
+        binding.carousel.setPlaceholderTextColor(mainScreenProperties.getPlaceholderTextColor(targetColor))
     }
 
     private fun showOptionsMenu(optionsMenu: PlayerOptionsMenu) {
-        val anchorView: View = btn_options_menu
+        val anchorView: View = binding.playerToolbar.btnOptionsMenu
         val context = anchorView.context
         val popup = PopupMenu(context, anchorView)
 
@@ -379,55 +375,55 @@ class PlayerFragment: BaseFragment() {
         }
 
         audioSourceList.observe(owner) { list ->
-            carousel.submitList(list)
+            binding.carousel.submitList(list)
         }
 
         invalidateAudioSourceListEvent.observeNonNull(owner) { list ->
-            carousel.submitList(list)
+            binding.carousel.submitList(list)
         }
 
         currPosition.observeNonNull(owner) { position ->
-            carousel.setCurrentPosition(position)
+            binding.carousel.setCurrentPosition(position)
         }
 
         song.observe(owner) { song: Song? ->
             if (song != null) {
-                tsw_song_name.setText(song.getNameString(resources))
-                tsw_artist_name.setText(song.getArtistString(resources))
+                binding.tswSongName.setText(song.getNameString(resources))
+                binding.tswArtistName.setText(song.getArtistString(resources))
             } else {
-                tsw_song_name.setText("")
-                tsw_artist_name.setText("")
+                binding.tswSongName.setText("")
+                binding.tswArtistName.setText("")
             }
         }
 
         playerControllersEnabled.observeNonNull(owner) { enabled ->
 
             // Controllers in the top panel
-//            btn_options_menu.markControllerEnabled(enabled)
-            btn_like.markControllerEnabled(enabled)
+//            binding.playerToolbar.btnOptionsMenu.markControllerEnabled(enabled)
+            binding.btnLike.markControllerEnabled(enabled)
 //            btn_volume.markControllerEnabled(enabled)
 
             // Waveform progress bar
-            waveform_seek_bar.markControllerEnabled(enabled)
+            binding.includePlayerControllerFull.progress.waveformSeekBar.markControllerEnabled(enabled)
 
             // Main player controllers
-            btn_repeat_mode.markControllerEnabled(enabled)
-            btn_skip_to_previous.markControllerEnabled(enabled)
-            btn_play.markControllerEnabled(enabled)
-            btn_shuffle_mode.markControllerEnabled(enabled)
-            btn_skip_to_next.markControllerEnabled(enabled)
+            binding.includePlayerControllerFull.buttons.btnRepeatMode.markControllerEnabled(enabled)
+            binding.includePlayerControllerFull.buttons.btnSkipToPrevious.markControllerEnabled(enabled)
+            binding.includePlayerControllerFull.buttons.btnPlay.markControllerEnabled(enabled)
+            binding.includePlayerControllerFull.buttons.btnShuffleMode.markControllerEnabled(enabled)
+            binding.includePlayerControllerFull.buttons.btnSkipToNext.markControllerEnabled(enabled)
 
             // Other controllers
-            btn_ab.markControllerEnabled(enabled)
+            binding.includePlayerControllerFull.btnAb.markControllerEnabled(enabled)
         }
 
         soundWave.observe(owner) { soundWave ->
             if (soundWave != null) {
                 val waveform = SoundWaveform(soundWave)
-                waveform_seek_bar.setWaveform(waveform, true)
+                binding.includePlayerControllerFull.progress.waveformSeekBar.setWaveform(waveform, true)
             } else {
                 val waveform = StaticWaveform(BuildConfig.SOUND_WAVEFORM_LENGTH, 1, 10)
-                waveform_seek_bar.setWaveform(waveform, true)
+                binding.includePlayerControllerFull.progress.waveformSeekBar.setWaveform(waveform, true)
             }
         }
 
@@ -440,16 +436,16 @@ class PlayerFragment: BaseFragment() {
         }
 
         playbackDuration.observeNonNull(owner) { duration ->
-            tv_duration.text = duration.asDurationInMs()
+            binding.includePlayerControllerFull.progress.tvDuration.text = duration.asDurationInMs()
         }
 
         playbackProgress.observeNonNull(owner) { progress ->
-            tv_position.text = progress.asDurationInMs()
+            binding.includePlayerControllerFull.progress.tvPosition.text = progress.asDurationInMs()
         }
 
         progressPercent.observeNonNull(owner) { percent ->
             if (!isTrackingProgress) {
-                waveform_seek_bar.setProgressInPercentage(percent)
+                binding.includePlayerControllerFull.progress.waveformSeekBar.setProgressInPercentage(percent)
             }
         }
 
@@ -486,8 +482,8 @@ class PlayerFragment: BaseFragment() {
 
     private fun observeMainSheetsState(owner: LifecycleOwner) = with(mainSheetsStateViewModel) {
         isPlayerSheetVisible.observeNonNull(owner) { isVisible ->
-            animateToolbarElementToVisibility(btn_close, isVisible)
-            animateToolbarElementToVisibility(btn_options_menu, isVisible)
+            animateToolbarElementToVisibility(binding.playerToolbar.btnClose, isVisible)
+            animateToolbarElementToVisibility(binding.playerToolbar.btnOptionsMenu, isVisible)
         }
 
         slideState.observeNonNull(owner) { slideState ->

@@ -7,12 +7,12 @@ import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.core.graphics.ColorUtils
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.frolo.core.ui.inflateChild
-import com.frolo.muse.*
 import com.frolo.muse.R
 import com.frolo.muse.thumbnails.ThumbnailLoader
 import com.frolo.muse.ui.main.library.base.BaseAdapter
@@ -20,7 +20,6 @@ import com.frolo.music.model.*
 import com.frolo.ui.Screen
 import com.frolo.ui.StyleUtils
 import com.timehop.stickyheadersrecyclerview.StickyRecyclerHeadersAdapter
-import kotlinx.android.synthetic.main.item_header.view.*
 import kotlin.properties.Delegates
 
 
@@ -81,7 +80,8 @@ class MediaAdapter constructor(
             HeaderViewHolder(parent.inflateChild(R.layout.item_header))
 
     override fun onBindHeaderViewHolder(holder: HeaderViewHolder, position: Int) {
-        with(holder.itemView) {
+        with(holder) {
+            val context = holder.itemView.context
             val title = when (getItemViewType(position)) {
                 Media.SONG -> context.getString(R.string.songs)
                 Media.ALBUM -> context.getString(R.string.albums)
@@ -90,7 +90,7 @@ class MediaAdapter constructor(
                 Media.PLAYLIST -> context.getString(R.string.playlists)
                 else -> ""
             }
-            tv_header.text = title
+            tvHeader.text = title
         }
     }
 
@@ -131,7 +131,9 @@ class MediaAdapter constructor(
         }
     }
 
-    class HeaderViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
+    class HeaderViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+        val tvHeader: TextView = itemView.findViewById(R.id.tv_header)
+    }
 
     object MediaItemCallback: DiffUtil.ItemCallback<Media>() {
         override fun areItemsTheSame(oldItem: Media, newItem: Media): Boolean {

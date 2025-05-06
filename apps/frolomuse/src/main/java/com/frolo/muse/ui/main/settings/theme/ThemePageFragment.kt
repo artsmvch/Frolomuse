@@ -11,22 +11,23 @@ import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import com.frolo.muse.BuildConfig
 import com.frolo.muse.R
-import com.frolo.ui.Screen
+import com.frolo.muse.databinding.FragmentThemePageBinding
 import com.frolo.muse.model.ThemeUtils
 import com.frolo.muse.rx.disposeOnStopOf
 import com.frolo.muse.rx.subscribeSafely
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.base.tryHostAs
+import com.frolo.ui.Screen
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
-import kotlinx.android.synthetic.main.fragment_theme_page.*
-import java.lang.IllegalStateException
 import java.util.concurrent.TimeUnit
 import kotlin.math.exp
 import kotlin.math.sin
 
 
 class ThemePageFragment : BaseFragment() {
+    private var _binding: FragmentThemePageBinding? = null
+    private val binding: FragmentThemePageBinding get() = _binding!!
 
     private val preferences by prefs()
 
@@ -54,7 +55,10 @@ class ThemePageFragment : BaseFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.fragment_theme_page, container, false)
+    ): View? {
+        _binding = FragmentThemePageBinding.inflate(inflater)
+        return _binding?.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val themePage = getThemePage()
@@ -75,30 +79,39 @@ class ThemePageFragment : BaseFragment() {
 
         val isCurrentThemeDark = preferences.theme.isDark
         if (isCurrentThemeDark) {
-            fragment_container_card.strokeWidth = Screen.dp(context, 1f).coerceAtLeast(1)
-            fragment_container_card.strokeColor = if (themePage.theme.isDark) {
-                context.getColor(com.google.android.material.support.R.color.md_grey_500)
-            } else {
-                context.getColor(com.google.android.material.support.R.color.md_grey_50)
+            binding.fragmentContainerCard.apply {
+                strokeWidth = Screen.dp(context, 1f).coerceAtLeast(1)
+                strokeColor = if (themePage.theme.isDark) {
+                    context.getColor(com.google.android.material.support.R.color.md_grey_500)
+                } else {
+                    context.getColor(com.google.android.material.support.R.color.md_grey_50)
+                }
+                cardElevation = 0f
+                maxCardElevation = 0f
             }
-            fragment_container_card.cardElevation = 0f
-            fragment_container_card.maxCardElevation = 0f
         } else {
-            fragment_container_card.strokeWidth = 0
-            fragment_container_card.strokeColor = Color.TRANSPARENT
-            fragment_container_card.cardElevation = Screen.dpFloat(1.2f)
-            fragment_container_card.maxCardElevation = Screen.dpFloat(2f)
+            binding.fragmentContainerCard.apply {
+                strokeWidth = 0
+                strokeColor = Color.TRANSPARENT
+                cardElevation = Screen.dpFloat(1.2f)
+                maxCardElevation = Screen.dpFloat(2f)
+            }
         }
 
-        imv_preview_pro_badge.setOnClickListener {
+        binding.imvPreviewProBadge.setOnClickListener {
             callback?.onProBadgeClick(getThemePage())
         }
 
-        btn_apply_theme.setOnClickListener {
+        binding.btnApplyTheme.setOnClickListener {
             callback?.onApplyThemeClick(getThemePage())
         }
 
         setupButtons(themePage)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onStart() {
@@ -122,14 +135,14 @@ class ThemePageFragment : BaseFragment() {
     }
 
     private fun setupButtons(page: ThemePage) {
-        imv_preview_pro_badge.isVisible = page.hasProBadge
+        binding.imvPreviewProBadge.isVisible = page.hasProBadge
 
         if (page.isApplied) {
-            btn_apply_theme.setText(R.string.applied)
-            btn_apply_theme.isEnabled = false
+            binding.btnApplyTheme.setText(R.string.applied)
+            binding.btnApplyTheme.isEnabled = false
         } else {
-            btn_apply_theme.setText(R.string.apply_theme)
-            btn_apply_theme.isEnabled = true
+            binding.btnApplyTheme.setText(R.string.apply_theme)
+            binding.btnApplyTheme.isEnabled = true
         }
     }
 
@@ -151,7 +164,7 @@ class ThemePageFragment : BaseFragment() {
     private fun startProBadgeAnimation() {
         view ?: return
 
-        val badgeView = imv_preview_pro_badge
+        val badgeView = binding.imvPreviewProBadge
 
         val frequency = 3f
         val decay = 2f

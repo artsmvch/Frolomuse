@@ -2,21 +2,21 @@ package com.frolo.muse.ui.main.library.buckets.files
 
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import com.frolo.core.ui.inflateChild
 import com.frolo.muse.R
-import com.frolo.music.model.MediaFile
 import com.frolo.muse.thumbnails.ThumbnailLoader
 import com.frolo.muse.ui.base.PlayStateAwareAdapter
 import com.frolo.muse.ui.getNameString
 import com.frolo.muse.ui.main.library.base.sectionIndexAt
+import com.frolo.muse.views.MiniVisualizer
+import com.frolo.muse.views.SongThumbnailView
+import com.frolo.muse.views.checkable.CheckView
 import com.frolo.muse.views.media.MediaConstraintLayout
+import com.frolo.music.model.MediaFile
 import com.l4digital.fastscroll.FastScroller
-import kotlinx.android.synthetic.main.include_check.view.*
-import kotlinx.android.synthetic.main.include_song_art_container.view.*
-import kotlinx.android.synthetic.main.item_media_file.view.*
-import kotlinx.android.synthetic.main.item_media_file.view.view_options_menu
 
 
 class AudioFileAdapter constructor(
@@ -31,34 +31,38 @@ class AudioFileAdapter constructor(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int, item: MediaFile, selected: Boolean, selectionChanged: Boolean) {
-        with(holder.itemView as MediaConstraintLayout) {
-            tv_name.text = item.getNameString()
+        with(holder) {
+            tvName.text = item.getNameString()
 
-            thumbnailLoader.loadMediaFileThumbnail(item, imv_song_thumbnail)
+            thumbnailLoader.loadMediaFileThumbnail(item, imvSongThumbnail)
 
             val isPlayPosition = position == playPosition
 
             if (isPlayPosition) {
-                imv_song_thumbnail.isDimmed = true
-                mini_visualizer.isVisible = true
-                mini_visualizer.setAnimate(isPlaying)
+                imvSongThumbnail.isDimmed = true
+                miniVisualizer.isVisible = true
+                miniVisualizer.setAnimate(isPlaying)
             } else {
-                imv_song_thumbnail.isDimmed = false
-                mini_visualizer.isVisible = false
-                mini_visualizer.setAnimate(false)
+                imvSongThumbnail.isDimmed = false
+                miniVisualizer.isVisible = false
+                miniVisualizer.setAnimate(false)
             }
 
-            imv_check.setChecked(selected, selectionChanged)
+            imvCheck.setChecked(selected, selectionChanged)
 
-            setChecked(selected)
-            setPlaying(isPlayPosition)
+            (itemView as MediaConstraintLayout).apply {
+                setChecked(selected)
+                setPlaying(isPlayPosition)
+            }
         }
     }
 
     class ViewHolder(itemView: View): BaseViewHolder(itemView) {
-
-        override val viewOptionsMenu: View? = itemView.view_options_menu
-
+        override val viewOptionsMenu: View? = itemView.findViewById(R.id.view_options_menu)
+        val tvName: TextView = itemView.findViewById(R.id.tv_name)
+        val imvSongThumbnail: SongThumbnailView = itemView.findViewById(R.id.imv_song_thumbnail)
+        val miniVisualizer: MiniVisualizer = itemView.findViewById(R.id.mini_visualizer)
+        val imvCheck: CheckView = itemView.findViewById(R.id.imv_check)
     }
 
     class ItemDiffCallback : DiffUtil.ItemCallback<MediaFile>() {

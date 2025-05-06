@@ -14,21 +14,23 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
-import com.frolo.muse.R
 import com.frolo.arch.support.observe
 import com.frolo.arch.support.observeNonNull
-import com.frolo.muse.di.activityComponent
 import com.frolo.core.ui.glide.makeAlbumArtRequest
-import com.frolo.music.model.Song
+import com.frolo.muse.R
+import com.frolo.muse.databinding.DialogSongEditorBinding
+import com.frolo.muse.di.activityComponent
 import com.frolo.muse.ui.base.BaseDialogFragment
 import com.frolo.muse.ui.base.serializableArg
 import com.frolo.muse.ui.base.withArg
 import com.frolo.muse.ui.main.settings.updateText
 import com.frolo.muse.views.Anim
-import kotlinx.android.synthetic.main.dialog_song_editor.*
+import com.frolo.music.model.Song
 
 
 class SongEditorDialog: BaseDialogFragment() {
+    private var _binding: DialogSongEditorBinding? = null
+    private val binding: DialogSongEditorBinding get() = _binding!!
 
     private val viewModel: SongEditorViewModel by lazy {
         val vmFactory = SongEditorVMFactory(activityComponent, song)
@@ -46,7 +48,9 @@ class SongEditorDialog: BaseDialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return super.onCreateDialog(savedInstanceState).apply {
             requestWindowFeature(Window.FEATURE_NO_TITLE)
-            setContentView(R.layout.dialog_song_editor)
+
+            _binding = DialogSongEditorBinding.inflate(layoutInflater)
+            setContentView(binding.root)
             loadUI(this)
 
             // set custom dialog size
@@ -56,63 +60,68 @@ class SongEditorDialog: BaseDialogFragment() {
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     private fun loadUI(dialog: Dialog) = with(dialog) {
-        btn_cancel.setOnClickListener {
+        binding.btnCancel.setOnClickListener {
             dismiss()
         }
 
-        btn_save.setOnClickListener {
+        binding.btnSave.setOnClickListener {
             viewModel.onSaveClicked()
         }
 
-        edt_song_name.doAfterTextChanged {
+        binding.edtSongName.doAfterTextChanged {
             viewModel.onTitleChanged(it?.toString())
         }
 
-        edt_album_name.doAfterTextChanged {
+        binding.edtAlbumName.doAfterTextChanged {
             viewModel.onAlbumChanged(it?.toString())
         }
 
-        edt_artist_name.doAfterTextChanged {
+        binding.edtArtistName.doAfterTextChanged {
             viewModel.onArtistChanged(it?.toString())
         }
 
-        edt_genre_name.doAfterTextChanged {
+        binding.edtGenreName.doAfterTextChanged {
             viewModel.onGenreChanged(it?.toString())
         }
 
-        tv_filepath.text = song.source
+        binding.tvFilepath.text = song.source
 
         Glide.with(this@SongEditorDialog)
             .makeAlbumArtRequest(song.albumId)
             .circleCrop()
             .placeholder(R.drawable.ic_framed_music_note)
             .error(R.drawable.ic_framed_music_note)
-            .into(imv_album_art)
+            .into(binding.imvAlbumArt)
     }
 
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
         title.observe(owner) { text ->
             dialog?.apply {
-                edt_song_name.updateText(text)
+                binding.edtSongName.updateText(text)
             }
         }
 
         album.observe(owner) { text ->
             dialog?.apply {
-                edt_album_name.updateText(text)
+                binding.edtAlbumName.updateText(text)
             }
         }
 
         artist.observe(owner) { text ->
             dialog?.apply {
-                edt_artist_name.updateText(text)
+                binding.edtArtistName.updateText(text)
             }
         }
 
         genre.observe(owner) { text ->
             dialog?.apply {
-                edt_genre_name.updateText(text)
+                binding.edtGenreName.updateText(text)
             }
         }
 
@@ -146,9 +155,9 @@ class SongEditorDialog: BaseDialogFragment() {
     private fun onSetLoading(isLoading: Boolean) {
         dialog?.apply {
             if (isLoading) {
-                Anim.fadeIn(inc_progress_overlay)
+                Anim.fadeIn(binding.incProgressOverlay.root)
             } else {
-                Anim.fadeOut(inc_progress_overlay)
+                Anim.fadeOut(binding.incProgressOverlay.root)
             }
         }
     }

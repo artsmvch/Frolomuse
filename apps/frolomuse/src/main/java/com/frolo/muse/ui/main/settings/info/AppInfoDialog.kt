@@ -7,17 +7,19 @@ import android.view.Window
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.view.animation.OvershootInterpolator
+import android.widget.ImageView
+import android.widget.TextSwitcher
 import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.core.view.isVisible
 import com.frolo.debug.DebugUtils
 import com.frolo.muse.BuildConfig
 import com.frolo.muse.R
+import com.frolo.muse.databinding.DialogAppInfoBinding
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.logEasterEggFound
 import com.frolo.muse.ui.base.BaseDialogFragment
 import com.frolo.ui.StyleUtils
-import kotlinx.android.synthetic.main.dialog_app_info.*
 
 
 class AppInfoDialog : BaseDialogFragment() {
@@ -43,7 +45,6 @@ class AppInfoDialog : BaseDialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return super.onCreateDialog(savedInstanceState).apply {
             requestWindowFeature(Window.FEATURE_NO_TITLE)
-            setContentView(R.layout.dialog_app_info)
             loadUi(this)
         }
     }
@@ -54,24 +55,30 @@ class AppInfoDialog : BaseDialogFragment() {
     }
 
     private fun loadUi(dialog: Dialog) = with(dialog) {
-        ts_version.apply {
-            ts_version.setFactory { TextView(context) }
+        val binding = DialogAppInfoBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        binding.tsVersion.apply {
+            setFactory { TextView(context) }
             setInAnimation(context, R.anim.fade_in)
             setOutAnimation(context, R.anim.fade_out)
-            ts_version.setText(BuildConfig.VERSION_NAME)
+            setText(BuildConfig.VERSION_NAME)
         }
 
-        imv_app_icon.setOnClickListener { view ->
+        binding.imvAppIcon.setOnClickListener { view ->
             appIconClickCount++
             view.startAnimation(anim)
-            maybeShowFullBuildVersion()
+            maybeShowFullBuildVersion(binding.tsVersion, binding.imvFirebaseLogo)
         }
     }
 
-    private fun maybeShowFullBuildVersion() = dialog?.apply {
+    private fun maybeShowFullBuildVersion(
+        tsVersion: TextSwitcher,
+        fbLogo: ImageView
+    ) = dialog?.apply {
         if (appIconClickCount >= 15 && !fullVersionShown) {
             val fullBuildVersion = "${BuildConfig.VERSION_NAME}(${BuildConfig.BUILD_SCRIPT_TIME})"
-            ts_version.setText(fullBuildVersion)
+            tsVersion.setText(fullBuildVersion)
 
             val isLightTheme = try {
                 StyleUtils.resolveBool(this.context, com.google.android.material.R.attr.isLightTheme)
@@ -82,8 +89,8 @@ class AppInfoDialog : BaseDialogFragment() {
             @DrawableRes val logoResId: Int =
                 if (isLightTheme) R.drawable.ic_firebase_logo_light
                 else R.drawable.ic_firebase_logo_dark
-            imv_firebase_logo.setImageResource(logoResId)
-            imv_firebase_logo.isVisible = BuildConfig.GOOGLE_SERVICES_ENABLED
+            fbLogo.setImageResource(logoResId)
+            fbLogo.isVisible = BuildConfig.GOOGLE_SERVICES_ENABLED
 
             fullVersionShown = true
         }

@@ -34,5 +34,6 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <include layout="@layout/fragment_base_list"/>
+    <include layout="@layout/fragment_base_list"
+        android:id="@+id/include_base_list"/>
 </LinearLayout>

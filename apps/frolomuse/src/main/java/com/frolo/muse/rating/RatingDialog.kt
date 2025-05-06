@@ -3,10 +3,10 @@ package com.frolo.muse.rating
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
+import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import com.frolo.muse.R
-import kotlinx.android.synthetic.main.dialog_rate.*
 
 
 internal class RatingDialog constructor(
@@ -24,7 +24,6 @@ internal class RatingDialog constructor(
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         setContentView(R.layout.dialog_rate)
         setupDialogSize()
-        setupDialogBackground()
         loadUi(this)
     }
 
@@ -38,23 +37,21 @@ internal class RatingDialog constructor(
         }
     }
 
-    private fun setupDialogBackground() {
+    private fun loadUi(dialog: Dialog) = with(dialog) {
         window?.let { window ->
-            ll_content.background = window.decorView.background
+            findViewById<View>(R.id.ll_content).background = window.decorView.background
             window.setBackgroundDrawableResource(android.R.color.transparent)
         }
-    }
 
-    private fun loadUi(dialog: Dialog) = with(dialog) {
-        btn_positive.setOnClickListener {
+        findViewById<View>(R.id.btn_positive).setOnClickListener {
             dispatchButtonPressed(Button.POSITIVE)
         }
 
-        btn_negative.setOnClickListener {
+        findViewById<View>(R.id.btn_negative).setOnClickListener {
             dispatchButtonPressed(Button.NEGATIVE)
         }
 
-        btn_neutral.setOnClickListener {
+        findViewById<View>(R.id.btn_neutral).setOnClickListener {
             dispatchButtonPressed(Button.NEUTRAL)
         }
     }

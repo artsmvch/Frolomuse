@@ -10,6 +10,7 @@ import com.frolo.muse.R
 import com.frolo.ui.StyleUtils
 import com.frolo.arch.support.observe
 import com.frolo.arch.support.observeNonNull
+import com.frolo.muse.databinding.FragmentGenreBinding
 import com.frolo.muse.di.activityComponent
 import com.frolo.music.model.Genre
 import com.frolo.music.model.Song
@@ -27,13 +28,14 @@ import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.shape.CornerFamily
 import com.google.android.material.shape.MaterialShapeDrawable
 import com.google.android.material.shape.ShapeAppearanceModel
-import kotlinx.android.synthetic.main.fragment_base_list.*
-import kotlinx.android.synthetic.main.fragment_genre.*
 import kotlin.math.abs
 import kotlin.math.pow
 
 
 class GenreFragment: AbsSongCollectionFragment<Song>(), FragmentContentInsetsListener {
+    
+    private var _binding: FragmentGenreBinding? = null
+    private val binding: FragmentGenreBinding get() = _binding!!
 
     override val viewModel: GenreViewModel by lazy {
         val genre = requireArguments().getSerializable(ARG_GENRE) as Genre
@@ -49,9 +51,9 @@ class GenreFragment: AbsSongCollectionFragment<Song>(), FragmentContentInsetsLis
 
     private val onOffsetChangedListener: AppBarLayout.OnOffsetChangedListener =
         AppBarLayout.OnOffsetChangedListener { _, verticalOffset ->
-            val scrollFactor: Float = abs(verticalOffset.toFloat() / (view_backdrop.measuredHeight))
+            val scrollFactor: Float = abs(verticalOffset.toFloat() / (binding.viewBackdrop.measuredHeight))
 
-            (view_backdrop.background as? MaterialShapeDrawable)?.apply {
+            (binding.viewBackdrop.background as? MaterialShapeDrawable)?.apply {
                 val poweredScrollFactor = scrollFactor.pow(2)
                 val cornerRadius = backdropCornerRadius * (1 - poweredScrollFactor)
                 this.shapeAppearanceModel = ShapeAppearanceModel.builder()
@@ -64,12 +66,15 @@ class GenreFragment: AbsSongCollectionFragment<Song>(), FragmentContentInsetsLis
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = inflater.inflate(R.layout.fragment_genre, container, false)
+    ): View? {
+        _binding = FragmentGenreBinding.inflate(inflater)
+        return _binding?.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        setupNavigation(tb_actions)
+        setupNavigation(binding.tbActions)
 
-        tb_actions.apply {
+        binding.tbActions.apply {
             inflateMenu(R.menu.fragment_genre)
             setOnMenuItemClickListener { menuItem ->
                 if (menuItem.itemId == R.id.action_create_shortcut) {
@@ -84,19 +89,19 @@ class GenreFragment: AbsSongCollectionFragment<Song>(), FragmentContentInsetsLis
             }
         }
 
-        rv_list.apply {
+        binding.includeBaseList.rvList.apply {
             layoutManager = LinearLayoutManager(context)
             this.adapter = this@GenreFragment.adapter
             addLinearItemMargins()
         }
 
-        btn_play.setOnClickListener {
+        binding.btnPlay.setOnClickListener {
             viewModel.onPlayButtonClicked()
         }
 
-        app_bar_layout.addOnOffsetChangedListener(onOffsetChangedListener)
+        binding.appBarLayout.addOnOffsetChangedListener(onOffsetChangedListener)
 
-        view_backdrop.background = MaterialShapeDrawable().apply {
+        binding.viewBackdrop.background = MaterialShapeDrawable().apply {
             fillColor = ColorStateList.valueOf(StyleUtils.resolveColor(view.context,
                 com.google.android.material.R.attr.colorPrimary))
             shapeAppearanceModel = ShapeAppearanceModel.builder()
@@ -111,16 +116,19 @@ class GenreFragment: AbsSongCollectionFragment<Song>(), FragmentContentInsetsLis
     }
 
     override fun onDestroyView() {
-        app_bar_layout.removeOnOffsetChangedListener(onOffsetChangedListener)
+        binding.appBarLayout.removeOnOffsetChangedListener(onOffsetChangedListener)
         super.onDestroyView()
+        _binding = null
     }
 
     override fun onSetLoading(loading: Boolean) {
-        pb_loading.visibility = if (loading) View.VISIBLE else View.GONE
+        binding.includeBaseList.pbLoading.root.visibility = 
+            if (loading) View.VISIBLE else View.GONE
     }
 
     override fun onSetPlaceholderVisible(visible: Boolean) {
-        layout_list_placeholder.visibility = if (visible) View.VISIBLE else View.GONE
+        binding.includeBaseList.layoutListPlaceholder.root.visibility = 
+            if (visible) View.VISIBLE else View.GONE
     }
 
     override fun onDisplayError(err: Throwable) {
@@ -129,11 +137,11 @@ class GenreFragment: AbsSongCollectionFragment<Song>(), FragmentContentInsetsLis
 
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
         songCountWithTotalDuration.observe(owner) { songCountWithTotalDuration ->
-            tv_genre_info.text = songCountWithTotalDuration?.toString(resources)
+            binding.tvGenreInfo.text = songCountWithTotalDuration?.toString(resources)
         }
 
         title.observe(owner) { title ->
-            tv_genre_name.text = title
+            binding.tvGenreName.text = title
         }
 
         confirmGenreShortcutCreationEvent.observeNonNull(owner) { genre ->
@@ -146,15 +154,15 @@ class GenreFragment: AbsSongCollectionFragment<Song>(), FragmentContentInsetsLis
     override fun applyContentInsets(left: Int, top: Int, right: Int, bottom: Int) {
         view?.also { safeView ->
             if (safeView is ViewGroup) {
-                rv_list.setPadding(left, top, right, bottom)
-                rv_list.clipToPadding = false
+                binding.includeBaseList.rvList.setPadding(left, top, right, bottom)
+                binding.includeBaseList.rvList.clipToPadding = false
                 safeView.clipToPadding = false
             }
         }
     }
 
     override fun scrollToTop() {
-        rv_list?.smoothScrollToTop()
+        binding.includeBaseList.rvList?.smoothScrollToTop()
     }
 
     companion object {

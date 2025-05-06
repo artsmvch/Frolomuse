@@ -14,14 +14,17 @@ import com.frolo.ui.Screen
 import com.frolo.ui.StyleUtils
 import com.frolo.arch.support.observe
 import com.frolo.arch.support.observeNonNull
+import com.frolo.muse.databinding.FragmentMiniPlayerBinding
 import com.frolo.music.model.Song
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.getNameString
 import com.frolo.muse.views.text.FitSingleLineTextView
-import kotlinx.android.synthetic.main.fragment_mini_player.*
 
 
 class MiniPlayerFragment : BaseFragment() {
+    
+    private var _binding: FragmentMiniPlayerBinding? = null
+    private val binding: FragmentMiniPlayerBinding get() = _binding!!
 
     private val viewModel: MiniPlayerViewModel by viewModel()
 
@@ -29,10 +32,13 @@ class MiniPlayerFragment : BaseFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = inflater.inflate(R.layout.fragment_mini_player, container, false)
+    ): View? {
+        _binding = FragmentMiniPlayerBinding.inflate(inflater)
+        return _binding?.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        with(tsw_song_name) {
+        with(binding.tswSongName) {
             val maxTextSizeInPx = Screen.sp(context, 16.5f)
             setFactory {
                 FitSingleLineTextView(context).apply {
@@ -51,11 +57,11 @@ class MiniPlayerFragment : BaseFragment() {
             setOutAnimation(context, R.anim.fade_out)
         }
 
-        btn_play.setOnClickListener {
+        binding.btnPlay.setOnClickListener {
             viewModel.onPlayButtonClicked()
         }
 
-        pb_progress.apply {
+        binding.pbProgress.apply {
             val colorOnPrimarySurface = StyleUtils.resolveColor(context,
                 com.google.android.material.R.attr.colorOnPrimarySurface)
             backgroundProgressBarColor = ColorUtils.setAlphaComponent(colorOnPrimarySurface, (0.2f * 255).toInt())
@@ -69,17 +75,22 @@ class MiniPlayerFragment : BaseFragment() {
         viewModel.onUiCreated()
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
         currentSong.observe(owner) { song: Song? ->
             if (song != null) {
-                tsw_song_name.setText(song.getNameString(resources))
+                binding.tswSongName.setText(song.getNameString(resources))
             } else {
-                tsw_song_name.setText("")
+                binding.tswSongName.setText("")
             }
         }
 
         playerControllersEnabled.observeNonNull(owner) { enabled ->
-            btn_play.apply {
+            binding.btnPlay.apply {
                 isEnabled = enabled
                 alpha = if (enabled) 1.0f else 0.35f
             }
@@ -90,15 +101,15 @@ class MiniPlayerFragment : BaseFragment() {
                 if (isPlaying) PlayButton.State.PAUSE
                 else PlayButton.State.RESUME
 
-            btn_play.setState(state, true)
+            binding.btnPlay.setState(state, true)
         }
 
         maxProgress.observeNonNull(owner) { max ->
-            pb_progress.progressMax = max.toFloat()
+            binding.pbProgress.progressMax = max.toFloat()
         }
 
         progress.observeNonNull(owner) { progress ->
-            pb_progress.progress = progress.toFloat()
+            binding.pbProgress.progress = progress.toFloat()
         }
     }
 

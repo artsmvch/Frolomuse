@@ -22,7 +22,8 @@ import com.zhpan.indicator.enums.IndicatorStyle
 
 internal class OnboardingFragment : Fragment() {
 
-    private lateinit var binding: FragmentOnboardingBinding
+    private var _binding: FragmentOnboardingBinding? = null
+    private val binding: FragmentOnboardingBinding get() = _binding!!
 
     private val onOnboardingFinishedListener: OnOnboardingFinishedListener?
         get() = activity as? OnOnboardingFinishedListener ?: parentFragment as? OnOnboardingFinishedListener
@@ -46,8 +47,8 @@ internal class OnboardingFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentOnboardingBinding.inflate(inflater)
-        return binding.root
+        _binding = FragmentOnboardingBinding.inflate(inflater)
+        return _binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -149,6 +150,7 @@ internal class OnboardingFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         binding.viewPager.unregisterOnPageChangeCallback(onPageChangeCallback)
+        _binding = null
     }
 
     fun interface OnOnboardingFinishedListener {

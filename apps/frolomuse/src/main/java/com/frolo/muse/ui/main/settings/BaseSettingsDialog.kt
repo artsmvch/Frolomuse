@@ -7,7 +7,6 @@ import android.view.Window
 import android.widget.TextView
 import com.frolo.muse.R
 import com.frolo.muse.ui.base.BaseDialogFragment
-import kotlinx.android.synthetic.main.dialog_base_settings.*
 
 
 abstract class BaseSettingsDialog : BaseDialogFragment() {
@@ -20,9 +19,9 @@ abstract class BaseSettingsDialog : BaseDialogFragment() {
 
             setupDialogSizeByDefault(this)
 
-            onSetupTitle(tv_title)
-            onSetupContentView(fl_content)
-            onSetupAction(btn_action)
+            onSetupTitle(findViewById(R.id.tv_title))
+            onSetupContentView(findViewById(R.id.fl_content))
+            onSetupAction(findViewById(R.id.btn_action))
         }
     }
 
