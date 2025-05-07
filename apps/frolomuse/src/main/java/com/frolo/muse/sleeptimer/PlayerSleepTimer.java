@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 
 import androidx.annotation.NonNull;
 
@@ -98,29 +99,37 @@ public final class PlayerSleepTimer {
     }
 
     @NonNull
-    public static BroadcastReceiver createBroadcastReceiver(@NonNull final Runnable onAlarmTriggered) {
-        return new BroadcastReceiver() {
+    public static BroadcastReceiver registerHandler(@NonNull Context context, Runnable action) {
+        BroadcastReceiver receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 if (intent == null) {
                     return;
                 }
 
-                final String action = intent.getAction();
-                if (action != null && action.equals(PlayerSleepTimer.ACTION_ALARM_TRIGGERED)) {
+                final String intentAction = intent.getAction();
+                if (intentAction != null && intentAction.equals(PlayerSleepTimer.ACTION_ALARM_TRIGGERED)) {
                     // Need to reset the current sleep timer because its pending intent is still retained,
                     // therefore the app settings may think that an alarm is still set.
                     PlayerSleepTimer.resetCurrentSleepTimer(context);
                     // Running the callback
-                    onAlarmTriggered.run();
+                    action.run();
                 }
             }
         };
+        IntentFilter intentFilter = new IntentFilter(PlayerSleepTimer.ACTION_ALARM_TRIGGERED);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            context.registerReceiver(receiver, intentFilter, Context.RECEIVER_EXPORTED);
+        } else {
+            context.registerReceiver(receiver, intentFilter);
+        }
+
+        return receiver;
     }
 
-    @NonNull
-    public static IntentFilter createIntentFilter() {
-        return new IntentFilter(PlayerSleepTimer.ACTION_ALARM_TRIGGERED);
+    public static void unregisterHandler(@NonNull Context context, BroadcastReceiver handler) {
+        context.unregisterReceiver(handler);
     }
 
 }

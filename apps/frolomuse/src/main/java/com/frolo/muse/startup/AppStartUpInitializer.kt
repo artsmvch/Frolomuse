@@ -234,7 +234,11 @@ class AppStartUpInitializer @Inject constructor(
             }
         }
         val intentFilter = IntentFilter(targetAction)
-        application.registerReceiver(receiver, intentFilter)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            application.registerReceiver(receiver, intentFilter, Context.RECEIVER_EXPORTED)
+        } else {
+            application.registerReceiver(receiver, intentFilter)
+        }
     }
 
     private fun setupMediaScanWork() {

@@ -5,11 +5,11 @@ plugins {
 
 android {
     namespace = "com.frolo.teststools.music"
-    compileSdk = 32
+    compileSdk = 35
 
     defaultConfig {
         minSdk = 23
-        targetSdk = 32
+        targetSdk = 35
     }
 
     buildTypes {

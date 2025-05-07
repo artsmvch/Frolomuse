@@ -1,8 +1,8 @@
 ext {
     versions = [
         minSdk:                     23,
-        compileSdk:                 33,
-        targetSdk:                  33
+        compileSdk:                 35,
+        targetSdk:                  35
     ]
 
     deps = [

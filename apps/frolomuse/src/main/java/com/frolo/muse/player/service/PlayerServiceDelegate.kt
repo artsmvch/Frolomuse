@@ -1,6 +1,11 @@
 package com.frolo.muse.player.service
 
-import android.app.*
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.app.Service
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ServiceInfo
@@ -26,7 +31,6 @@ import com.frolo.muse.sleeptimer.PlayerSleepTimer
 import com.frolo.muse.ui.main.MainActivity
 import com.frolo.music.model.Song
 import com.frolo.player.Player
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import io.reactivex.Maybe
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -76,11 +80,7 @@ internal class PlayerServiceDelegate(
         }
     )
 
-    // Handler for Sleep Timer
-    private val sleepTimerHandler = PlayerSleepTimer.createBroadcastReceiver {
-        Logger.d(TAG, "Sleep Timer triggered: pausing the playback")
-        playerInstance?.pause()
-    }
+    private var sleepTimerHandler: BroadcastReceiver? = null
 
     fun onBind(intent: Intent?): IBinder {
         isBound = true
@@ -123,7 +123,10 @@ internal class PlayerServiceDelegate(
         }
         buildPlayerInstanceAsync()
         headsetHandler.subscribe(service)
-        service.registerReceiver(sleepTimerHandler, PlayerSleepTimer.createIntentFilter())
+        sleepTimerHandler = PlayerSleepTimer.registerHandler(service) {
+            Logger.d(TAG, "Sleep Timer triggered: pausing the playback")
+            playerInstance?.pause()
+        }
         withCrashlytics {
             setCustomKey(CRASHLYTICS_KEY_SERVICE_CREATED_ONCE, true)
             setCustomKey(CRASHLYTICS_KEY_SERVICE_CREATED, true)
@@ -190,7 +193,7 @@ internal class PlayerServiceDelegate(
         playerInstance?.shutdown()
         mediaSession.release()
         headsetHandler.dispose()
-        service.unregisterReceiver(sleepTimerHandler)
+        sleepTimerHandler?.also { PlayerSleepTimer.unregisterHandler(service, it) }
         internalDisposables.dispose()
         withCrashlytics {
             setCustomKey(CRASHLYTICS_KEY_SERVICE_CREATED, false)

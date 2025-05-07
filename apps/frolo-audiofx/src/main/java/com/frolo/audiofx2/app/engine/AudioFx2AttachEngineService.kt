@@ -1,7 +1,9 @@
 package com.frolo.audiofx2.app.engine
 
 import android.app.Service
+import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.IBinder
 
 class AudioFx2AttachEngineService : Service() {
@@ -9,7 +11,12 @@ class AudioFx2AttachEngineService : Service() {
 
     override fun onCreate() {
         super.onCreate()
-        registerReceiver(engineReceiver, AudioFx2AttachEngineReceiver.makeIntentFilter())
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            registerReceiver(engineReceiver, AudioFx2AttachEngineReceiver.makeIntentFilter(),
+                Context.RECEIVER_EXPORTED)
+        } else {
+            registerReceiver(engineReceiver, AudioFx2AttachEngineReceiver.makeIntentFilter())
+        }
     }
 
     override fun onBind(intent: Intent?): IBinder? = null
