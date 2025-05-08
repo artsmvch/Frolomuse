@@ -85,9 +85,37 @@ class LibraryFragment: BaseFragment(),
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        binding.tbActions.setTitle(R.string.nav_library)
-        (activity as? AppCompatActivity)?.setSupportActionBar(binding.tbActions)
+        with(binding) {
+            tbActions.setTitle(R.string.nav_library)
+            (activity as? AppCompatActivity)?.setSupportActionBar(tbActions)
 
+            vpSections.apply {
+                adapter = LibraryPageAdapter(context, childFragmentManager)
+                // Registering OnPageChangeListener should go after the adapter is set up
+                addOnPageChangeListener(onPageChangeCallback)
+            }
+
+            tlSections.setupWithViewPager(vpSections)
+
+            fabAction.setOnClickListener {
+                dispatchClickOnFab()
+            }
+        }
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        refreshSections(savedInstanceState)
+    }
+
+    override fun onVisibilityChanged(isVisibleToUser: Boolean) {
+        super.onVisibilityChanged(isVisibleToUser)
+        if (isVisibleToUser) {
+            refreshSections()
+        }
+    }
+
+    private fun refreshSections(savedInstanceState: Bundle? = null) {
         if (savedInstanceState != null && savedInstanceState.containsKey(STATE_KEY_SECTIONS)) {
             // Restoring the sections
             currentSections = savedInstanceState.getIntegerArrayList(STATE_KEY_SECTIONS)
@@ -105,23 +133,7 @@ class LibraryFragment: BaseFragment(),
             FragmentUtils.removeAllFragmentsNow(childFragmentManager)
         }
 
-//        view.fitsSystemWindows = true
-//        ViewCompat.setOnApplyWindowInsetsListener(view) { _, insets ->
-//            binding.tbActions.updatePadding(top = insets.systemWindowInsetTop)
-//            WindowInsetsCompat.CONSUMED
-//        }
-
-        binding.vpSections.apply {
-            adapter = LibraryPageAdapter(context, childFragmentManager, actualSections)
-            // Registering OnPageChangeListener should go after the adapter is set up
-            addOnPageChangeListener(onPageChangeCallback)
-        }
-
-        binding.tlSections.setupWithViewPager(binding.vpSections)
-
-        binding.fabAction.setOnClickListener {
-            dispatchClickOnFab()
-        }
+        (binding.vpSections.adapter as LibraryPageAdapter).sections = actualSections
 
         invalidateFab()
     }
