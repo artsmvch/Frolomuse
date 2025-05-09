@@ -14,14 +14,13 @@ import com.frolo.arch.support.observe
 import com.frolo.arch.support.observeNonNull
 import com.frolo.music.model.MediaBucket
 import com.frolo.core.ui.marker.ScrolledToTop
+import com.frolo.muse.databinding.FragmentAudioBucketListBinding
 import com.frolo.muse.ui.ShotLayoutAnimationController
 import com.frolo.muse.ui.base.*
 import com.frolo.muse.ui.main.addLinearItemMargins
 import com.frolo.muse.ui.main.library.base.BaseAdapter
 import com.frolo.muse.ui.main.library.buckets.files.AudioBucketFragment
 import com.frolo.muse.ui.smoothScrollToTop
-import kotlinx.android.synthetic.main.fragment_audio_bucket_list.*
-import kotlinx.android.synthetic.main.fragment_base_list.*
 
 
 class AudioBucketListFragment : BaseFragment(),
@@ -29,6 +28,9 @@ class AudioBucketListFragment : BaseFragment(),
     OnBackPressedHandler,
     FragmentContentInsetsListener,
     ScrolledToTop {
+
+    private var _binding: FragmentAudioBucketListBinding? = null
+    private val binding: FragmentAudioBucketListBinding get() = _binding!!
 
     private val viewModel: AudioBucketListViewModel by viewModel()
 
@@ -61,17 +63,25 @@ class AudioBucketListFragment : BaseFragment(),
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.fragment_audio_bucket_list, container, false)
+    ): View? {
+        _binding = FragmentAudioBucketListBinding.inflate(inflater)
+        return _binding?.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        rv_list.apply {
+        binding.layoutList.rvList.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = this@AudioBucketListFragment.adapter
             addLinearItemMargins()
             layoutAnimation = ShotLayoutAnimationController()
         }
 
-        layout_list.isVisible = true
+        binding.layoutList.root.isVisible = true
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -105,7 +115,7 @@ class AudioBucketListFragment : BaseFragment(),
             childFragmentManager.beginTransaction()
                 .remove(bucketFragment)
                 .commitNow()
-            layout_list.isVisible = true
+            binding.layoutList.root.isVisible = true
             true
         } else {
             false
@@ -122,12 +132,12 @@ class AudioBucketListFragment : BaseFragment(),
             .replace(R.id.fragment_container, fragment, FRAGMENT_TAG_BUCKET)
             .commit()
 
-        layout_list.isVisible = false
+        binding.layoutList.root.isVisible = false
     }
 
     private fun checkBucketListVisibility() {
         val hasBucketFragment = childFragmentManager.findFragmentByTag(FRAGMENT_TAG_BUCKET) != null
-        layout_list.isVisible = !hasBucketFragment
+        binding.layoutList.root.isVisible = !hasBucketFragment
     }
 
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
@@ -136,7 +146,7 @@ class AudioBucketListFragment : BaseFragment(),
         }
 
         isLoading.observeNonNull(owner) { isLoading ->
-            pb_loading.isVisible = isLoading
+            binding.layoutList.pbLoading.root.isVisible = isLoading
         }
 
         buckets.observe(owner) { buckets ->
@@ -144,7 +154,7 @@ class AudioBucketListFragment : BaseFragment(),
         }
 
         placeholderVisible.observeNonNull(owner) { isVisible ->
-            layout_list_placeholder.isVisible = isVisible
+            binding.layoutList.layoutListPlaceholder.root.isVisible = isVisible
         }
 
         openBucketEvent.observeNonNull(owner) { bucket ->
@@ -161,8 +171,8 @@ class AudioBucketListFragment : BaseFragment(),
     override fun applyContentInsets(left: Int, top: Int, right: Int, bottom: Int) {
         view?.also { safeView ->
             if (safeView is ViewGroup) {
-                rv_list.setPadding(left, top, right, bottom)
-                rv_list.clipToPadding = false
+                binding.layoutList.rvList.setPadding(left, top, right, bottom)
+                binding.layoutList.rvList.clipToPadding = false
                 safeView.clipToPadding = false
             }
         }
@@ -175,7 +185,7 @@ class AudioBucketListFragment : BaseFragment(),
                 bucketFragment.scrollToTop()
             }
         } else {
-            rv_list.smoothScrollToTop()
+            binding.layoutList.rvList.smoothScrollToTop()
         }
     }
 

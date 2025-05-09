@@ -13,18 +13,20 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
-import com.frolo.muse.R
 import com.frolo.arch.support.observeNonNull
+import com.frolo.muse.databinding.DialogPosterBinding
 import com.frolo.muse.di.activityComponent
 import com.frolo.music.model.Song
 import com.frolo.muse.ui.base.BaseDialogFragment
 import com.frolo.muse.ui.base.withArg
 import com.frolo.muse.views.Anim
-import kotlinx.android.synthetic.main.dialog_poster.*
 import kotlin.math.min
 
 
 class PosterDialog: BaseDialogFragment() {
+
+    private var _binding: DialogPosterBinding? = null
+    private val binding: DialogPosterBinding get() = _binding!!
 
     private val viewModel: PosterViewModel by lazy {
         val song = requireArguments().getSerializable(ARG_SONG) as Song
@@ -44,7 +46,9 @@ class PosterDialog: BaseDialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return super.onCreateDialog(savedInstanceState).apply {
             requestWindowFeature(Window.FEATURE_NO_TITLE)
-            setContentView(R.layout.dialog_poster)
+
+            _binding = DialogPosterBinding.inflate(layoutInflater)
+            setContentView(binding.root)
 
             val metrics = resources.displayMetrics
             val height = metrics.heightPixels
@@ -56,16 +60,21 @@ class PosterDialog: BaseDialogFragment() {
                 setupDialogSize(this, min, ViewGroup.LayoutParams.WRAP_CONTENT)
             }
 
-            loadUI(this)
+            loadUi()
         }
     }
 
-    private fun loadUI(dialog: Dialog) = with(dialog) {
-        btn_cancel.setOnClickListener {
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun loadUi() = with(binding) {
+        binding.btnCancel.setOnClickListener {
             viewModel.onCancelClicked()
         }
 
-        btn_share.setOnClickListener {
+        binding.btnShare.setOnClickListener {
             viewModel.onShareClicked()
         }
     }
@@ -78,9 +87,9 @@ class PosterDialog: BaseDialogFragment() {
         isCreatingPoster.observeNonNull(owner) { isCreating ->
             dialog?.apply {
                 if (isCreating) {
-                    Anim.fadeIn(pb_loading)
+                    Anim.fadeIn(binding.pbLoading)
                 } else {
-                    Anim.fadeOut(pb_loading)
+                    Anim.fadeOut(binding.pbLoading)
                 }
             }
         }
@@ -97,7 +106,7 @@ class PosterDialog: BaseDialogFragment() {
                     .into(
                         object : CustomTarget<Drawable>() {
                             override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
-                                imv_poster.setImageDrawable(resource)
+                                binding.imvPoster.setImageDrawable(resource)
                             }
 
                             override fun onLoadCleared(placeholder: Drawable?) = Unit

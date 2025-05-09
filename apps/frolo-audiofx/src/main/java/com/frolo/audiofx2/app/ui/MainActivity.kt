@@ -9,7 +9,6 @@ import com.frolo.audiofx.app.R
 import com.frolo.audiofx2.app.ui.instruction.InstructionDialog
 import com.frolo.audiofx2.ui.AudioFx2Feature
 import com.frolo.core.ui.ApplicationWatcher
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,8 +30,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupWindowInsets() {
-        skipWindowInsets(root)
-        skipWindowInsets(container)
+        skipWindowInsets(findViewById(R.id.root))
+        skipWindowInsets(findViewById(R.id.container))
     }
 
     private fun skipWindowInsets(view: View) {

@@ -2,12 +2,13 @@ package com.frolo.muse.ui.main.settings.libs
 
 import android.app.Dialog
 import android.os.Bundle
+import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import androidx.recyclerview.widget.RecyclerView
 import com.frolo.muse.R
 import com.frolo.muse.model.lib.Lib
 import com.frolo.muse.ui.base.BaseDialogFragment
-import kotlinx.android.synthetic.main.dialog_licenses.*
 import java.util.*
 
 
@@ -23,17 +24,17 @@ class LicensesDialog : BaseDialogFragment() {
             val height = metrics.heightPixels
             setupDialogSize(this, 6 * width / 7, ViewGroup.LayoutParams.WRAP_CONTENT)
 
-            loadUI(this)
+            loadUi(this)
         }
     }
 
-    private fun loadUI(dialog: Dialog) = with(dialog) {
-        rv_libs.apply {
+    private fun loadUi(dialog: Dialog) = with(dialog) {
+        findViewById<RecyclerView>(R.id.rv_libs).apply {
             adapter = LibAdapter(getLibs())
             layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
         }
 
-        btn_ok.setOnClickListener {
+        findViewById<View>(R.id.btn_ok).setOnClickListener {
             dismiss()
         }
     }

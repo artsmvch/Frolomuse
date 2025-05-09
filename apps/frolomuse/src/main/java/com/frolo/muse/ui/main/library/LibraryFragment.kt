@@ -15,6 +15,7 @@ import com.frolo.core.ui.fragment.WithCustomStatusBar
 import com.frolo.core.ui.marker.ScrolledToTop
 import com.frolo.debug.DebugUtils
 import com.frolo.muse.R
+import com.frolo.muse.databinding.FragmentLibraryBinding
 import com.frolo.muse.model.Library
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.ui.base.BaseFragment
@@ -23,7 +24,6 @@ import com.frolo.muse.ui.base.OnBackPressedHandler
 import com.frolo.muse.util.CollectionUtil
 import com.frolo.ui.FragmentUtils
 import com.frolo.ui.StyleUtils
-import kotlinx.android.synthetic.main.fragment_library.*
 
 
 class LibraryFragment: BaseFragment(),
@@ -31,6 +31,9 @@ class LibraryFragment: BaseFragment(),
     FragmentContentInsetsListener,
     ScrolledToTop,
     WithCustomStatusBar {
+        
+    private var _binding: FragmentLibraryBinding? = null
+    private val binding: FragmentLibraryBinding get() = _binding!!
 
     private val preferences: Preferences by prefs()
 
@@ -76,16 +79,14 @@ class LibraryFragment: BaseFragment(),
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = inflater.inflate(R.layout.fragment_library, container, false)
+    ): View? {
+        _binding = FragmentLibraryBinding.inflate(inflater)
+        return _binding?.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val toolbar: Toolbar = this.tb_actions
-
-        toolbar.setTitle(R.string.nav_library)
-        (activity as? AppCompatActivity)?.apply {
-            // Required for options menu
-            setSupportActionBar(toolbar)
-        }
+        binding.tbActions.setTitle(R.string.nav_library)
+        (activity as? AppCompatActivity)?.setSupportActionBar(binding.tbActions)
 
         if (savedInstanceState != null && savedInstanceState.containsKey(STATE_KEY_SECTIONS)) {
             // Restoring the sections
@@ -106,19 +107,19 @@ class LibraryFragment: BaseFragment(),
 
 //        view.fitsSystemWindows = true
 //        ViewCompat.setOnApplyWindowInsetsListener(view) { _, insets ->
-//            tb_actions.updatePadding(top = insets.systemWindowInsetTop)
+//            binding.tbActions.updatePadding(top = insets.systemWindowInsetTop)
 //            WindowInsetsCompat.CONSUMED
 //        }
 
-        vp_sections.apply {
+        binding.vpSections.apply {
             adapter = LibraryPageAdapter(context, childFragmentManager, actualSections)
             // Registering OnPageChangeListener should go after the adapter is set up
             addOnPageChangeListener(onPageChangeCallback)
         }
 
-        tl_sections.setupWithViewPager(vp_sections)
+        binding.tlSections.setupWithViewPager(binding.vpSections)
 
-        fab_action.setOnClickListener {
+        binding.fabAction.setOnClickListener {
             dispatchClickOnFab()
         }
 
@@ -148,13 +149,14 @@ class LibraryFragment: BaseFragment(),
     }
 
     override fun onDestroyView() {
-        vp_sections.removeOnPageChangeListener(onPageChangeCallback)
+        binding.vpSections.removeOnPageChangeListener(onPageChangeCallback)
         super.onDestroyView()
+        _binding = null
     }
 
     override fun handleOnBackPressed(): Boolean {
-        val position = vp_sections.currentItem
-        val adapter = vp_sections.adapter as? LibraryPageAdapter ?: return false
+        val position = binding.vpSections.currentItem
+        val adapter = binding.vpSections.adapter as? LibraryPageAdapter ?: return false
         val page = adapter.getPageAt(position)
         if (page is OnBackPressedHandler && FragmentUtils.isInForeground(page)) {
             return page.handleOnBackPressed()
@@ -164,17 +166,17 @@ class LibraryFragment: BaseFragment(),
 
     private fun peekCurrentPage(): Fragment? {
         view ?: return null
-        val adapter = vp_sections.adapter as? LibraryPageAdapter
-        return adapter?.getPageAt(vp_sections.currentItem)
+        val adapter = binding.vpSections.adapter as? LibraryPageAdapter
+        return adapter?.getPageAt(binding.vpSections.currentItem)
     }
 
     private fun invalidateFab() {
         val currFragment = peekCurrentPage()
         if (currFragment is ActionButtonCallback && currFragment.requiresActionButton()) {
-            currFragment.onDecorateActionButton(fab_action)
-            fab_action.show()
+            currFragment.onDecorateActionButton(binding.fabAction)
+            binding.fabAction.show()
         } else {
-            fab_action.hide()
+            binding.fabAction.hide()
         }
     }
 
@@ -186,7 +188,7 @@ class LibraryFragment: BaseFragment(),
     }
 
     override fun applyContentInsets(left: Int, top: Int, right: Int, bottom: Int) {
-        fab_action.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+        binding.fabAction.updateLayoutParams<ViewGroup.MarginLayoutParams> {
             leftMargin += left
             topMargin += top
             rightMargin += right
@@ -205,7 +207,7 @@ class LibraryFragment: BaseFragment(),
     }
 
     override fun scrollToTop() {
-        app_bar_layout?.setExpanded(true, true)
+        binding.appBarLayout.setExpanded(true, true)
         peekCurrentPage()?.also { page ->
             if (page is ScrolledToTop && FragmentUtils.isInForeground(page)) {
                 page.scrollToTop()

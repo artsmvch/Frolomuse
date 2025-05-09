@@ -31,7 +31,6 @@ import com.frolo.muse.ui.base.BaseActivity
 import com.frolo.muse.ui.base.SimpleFragmentNavigator
 import com.frolo.music.model.*
 import com.frolo.ui.ActivityUtils
-import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
 
@@ -70,7 +69,7 @@ class MainActivity :
     private fun loadUi() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContentView(R.layout.activity_main)
-        WindowInsetsHelper.setupWindowInsets(container) { view, windowInsets ->
+        WindowInsetsHelper.setupWindowInsets(findViewById(R.id.container)) { view, windowInsets ->
             val systemBarsInsets = windowInsets.systemWindowInsets
             val insetLeft = systemBarsInsets.left
             val insetRight = systemBarsInsets.right
@@ -124,7 +123,7 @@ class MainActivity :
         } else {
             val newFragment = MainFragment.newInstance()
             supportFragmentManager.beginTransaction()
-                .replace(container.id, newFragment, FRAG_TAG_MAIN)
+                .replace(R.id.container, newFragment, FRAG_TAG_MAIN)
                 .commitNow()
             newFragment
         }
@@ -199,7 +198,7 @@ class MainActivity :
     }
 
     override fun onWindowStartingSupportActionMode(callback: ActionMode.Callback): ActionMode {
-        return MainActionMode(delegate, action_mode, defaultSystemBarsHost,
+        return MainActionMode(delegate, findViewById(R.id.action_mode), defaultSystemBarsHost,
             callback).apply { createAndShow() }
     }
 

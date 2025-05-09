@@ -28,7 +28,8 @@ import com.frolo.visualizerview.SpectrumRenderer
 
 internal class VisualizerFragment : Fragment() {
 
-    private lateinit var binding: FragmentVisualizerBinding
+    private var _binding: FragmentVisualizerBinding? = null
+    private val binding: FragmentVisualizerBinding get() = _binding!!
 
     private val onDataCaptureListener = object : Visualizer.OnDataCaptureListener {
         override fun onWaveFormDataCapture(
@@ -55,9 +56,9 @@ internal class VisualizerFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentVisualizerBinding.inflate(inflater)
-        return binding.root
+    ): View? {
+        _binding = FragmentVisualizerBinding.inflate(inflater)
+        return _binding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -182,6 +183,7 @@ internal class VisualizerFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         releaseVisualizer()
+        _binding = null
     }
 
     companion object {

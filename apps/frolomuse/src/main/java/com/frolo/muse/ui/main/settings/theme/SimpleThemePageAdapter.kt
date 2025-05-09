@@ -5,6 +5,8 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -17,7 +19,8 @@ import com.frolo.muse.model.Theme
 import com.frolo.muse.model.ThemeUtils
 import com.frolo.ui.Screen
 import com.frolo.ui.StyleUtils
-import kotlinx.android.synthetic.main.item_simple_theme_page.view.*
+import com.google.android.material.card.MaterialCardView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlin.properties.Delegates
 
 
@@ -46,6 +49,13 @@ class SimpleThemePageAdapter(
     }
 
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+        private val cardView = itemView.findViewById<MaterialCardView>(R.id.card_view)
+        private val fabButton = itemView.findViewById<FloatingActionButton>(R.id.fab_button)
+        private val imvPrimaryColor = itemView.findViewById<ImageView>(R.id.imv_primary_color)
+        private val imvPreviewProBadge = itemView.findViewById<ImageView>(R.id.imv_preview_pro_badge)
+        private val imvWindowBackground = itemView.findViewById<ImageView>(R.id.imv_window_background)
+        private val tvThemeName = itemView.findViewById<TextView>(R.id.tv_theme_name)
+
         init {
             val onApplyThemeClickListener = View.OnClickListener {
                 pages.getOrNull(bindingAdapterPosition)?.also { page ->
@@ -53,8 +63,8 @@ class SimpleThemePageAdapter(
                 }
             }
             itemView.setOnClickListener(onApplyThemeClickListener)
-            itemView.fab_button.setOnClickListener(onApplyThemeClickListener)
-            itemView.imv_preview_pro_badge.setOnClickListener {
+            fabButton.setOnClickListener(onApplyThemeClickListener)
+            imvPreviewProBadge.setOnClickListener {
                 pages.getOrNull(bindingAdapterPosition)?.also { page ->
                     callback.onProBadgeClick(page)
                 }
@@ -78,29 +88,29 @@ class SimpleThemePageAdapter(
             with(itemView) {
                 requestManager.load(windowBackground)
                     .transition(DrawableTransitionOptions.withCrossFade())
-                    .into(imv_window_background)
-                imv_primary_color.setImageDrawable(ColorDrawable(primaryColor))
-                fab_button.supportBackgroundTintList = ColorStateList.valueOf(secondaryColor)
-                tv_theme_name.setTextColor(textColor)
-                tv_theme_name.text = themeName
+                    .into(imvWindowBackground)
+                imvPrimaryColor.setImageDrawable(ColorDrawable(primaryColor))
+                fabButton.supportBackgroundTintList = ColorStateList.valueOf(secondaryColor)
+                tvThemeName.setTextColor(textColor)
+                tvThemeName.text = themeName
 
-                imv_preview_pro_badge.isVisible = page.hasProBadge
+                imvPreviewProBadge.isVisible = page.hasProBadge
 
                 // Card view
                 if (isCurrentThemeDark) {
-                    card_view.strokeWidth = Screen.dp(context, 1f).coerceAtLeast(1)
-                    card_view.strokeColor = if (page.theme.isDark) {
+                    cardView.strokeWidth = Screen.dp(context, 1f).coerceAtLeast(1)
+                    cardView.strokeColor = if (page.theme.isDark) {
                         context.getColor(com.google.android.material.support.R.color.md_grey_500)
                     } else {
                         context.getColor(com.google.android.material.support.R.color.md_grey_50)
                     }
-                    card_view.cardElevation = 0f
-                    card_view.maxCardElevation = 0f
+                    cardView.cardElevation = 0f
+                    cardView.maxCardElevation = 0f
                 } else {
-                    card_view.strokeWidth = 0
-                    card_view.strokeColor = Color.TRANSPARENT
-                    card_view.cardElevation = Screen.dpFloat(3f)
-                    card_view.maxCardElevation = Screen.dpFloat(4f)
+                    cardView.strokeWidth = 0
+                    cardView.strokeColor = Color.TRANSPARENT
+                    cardView.cardElevation = Screen.dpFloat(3f)
+                    cardView.maxCardElevation = Screen.dpFloat(4f)
                 }
 
                 this.isClickable = !page.isApplied

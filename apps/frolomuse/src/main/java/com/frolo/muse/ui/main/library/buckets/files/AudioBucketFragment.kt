@@ -9,9 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.frolo.muse.R
 import com.frolo.arch.support.observe
 import com.frolo.arch.support.observeNonNull
+import com.frolo.muse.databinding.FragmentMediaFileListBinding
 import com.frolo.muse.di.activityComponent
 import com.frolo.music.model.MediaBucket
 import com.frolo.music.model.MediaFile
@@ -26,11 +26,11 @@ import com.frolo.muse.ui.main.library.base.AbsMediaCollectionFragment
 import com.frolo.muse.ui.main.library.base.BaseAdapter
 import com.frolo.muse.ui.main.library.buckets.BucketCallback
 import com.frolo.muse.ui.smoothScrollToTop
-import kotlinx.android.synthetic.main.fragment_base_list.*
-import kotlinx.android.synthetic.main.fragment_media_file_list.*
 
 
 class AudioBucketFragment : AbsMediaCollectionFragment<MediaFile>(), FragmentContentInsetsListener {
+    private var _binding: FragmentMediaFileListBinding? = null
+    private val binding: FragmentMediaFileListBinding get() = _binding!!
 
     private val bucketArg by serializableArg<MediaBucket>(ARG_BUCKET)
 
@@ -68,19 +68,27 @@ class AudioBucketFragment : AbsMediaCollectionFragment<MediaFile>(), FragmentCon
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.fragment_media_file_list, container, false)
+    ): View? {
+        _binding = FragmentMediaFileListBinding.inflate(inflater)
+        return _binding?.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        layout_current_bucket.setOnClickListener {
+        binding.layoutCurrentBucket.setOnClickListener {
             bucketCallback?.onLeaveBucket()
         }
 
-        rv_list.apply {
+        binding.includeBaseList.rvList.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = this@AudioBucketFragment.adapter
             addLinearItemMargins()
             layoutAnimation = ShotLayoutAnimationController()
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -89,7 +97,7 @@ class AudioBucketFragment : AbsMediaCollectionFragment<MediaFile>(), FragmentCon
     }
 
     override fun onSetLoading(loading: Boolean) {
-        pb_loading.isVisible = loading
+        binding.includeBaseList.pbLoading.root.isVisible = loading
     }
 
     override fun onSubmitList(list: List<MediaFile>) {
@@ -101,7 +109,7 @@ class AudioBucketFragment : AbsMediaCollectionFragment<MediaFile>(), FragmentCon
     }
 
     override fun onSetPlaceholderVisible(visible: Boolean) {
-        layout_list_placeholder.isVisible = visible
+        binding.includeBaseList.layoutListPlaceholder.root.isVisible = visible
     }
 
     override fun onDisplayError(err: Throwable) {
@@ -111,15 +119,15 @@ class AudioBucketFragment : AbsMediaCollectionFragment<MediaFile>(), FragmentCon
     override fun applyContentInsets(left: Int, top: Int, right: Int, bottom: Int) {
         view?.also { safeView ->
             if (safeView is ViewGroup) {
-                rv_list.setPadding(left, top, right, bottom)
-                rv_list.clipToPadding = false
+                binding.includeBaseList.rvList.setPadding(left, top, right, bottom)
+                binding.includeBaseList.rvList.clipToPadding = false
                 safeView.clipToPadding = false
             }
         }
     }
 
     override fun scrollToTop() {
-        rv_list?.smoothScrollToTop()
+        binding.includeBaseList.rvList.smoothScrollToTop()
     }
 
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
@@ -133,7 +141,7 @@ class AudioBucketFragment : AbsMediaCollectionFragment<MediaFile>(), FragmentCon
         }
 
         bucket.observe(owner) { currentBucket ->
-            tv_current_bucket_name.text = currentBucket?.displayName
+            binding.tvCurrentBucketName.text = currentBucket?.displayName
         }
     }
 

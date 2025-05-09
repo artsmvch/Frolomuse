@@ -8,13 +8,13 @@ import androidx.lifecycle.LifecycleOwner
 import com.frolo.arch.support.observeNonNull
 import com.frolo.core.ui.touch.TouchFlowAware
 import com.frolo.muse.R
+import com.frolo.muse.databinding.FragmentPlayerSheetBinding
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.base.OnBackPressedHandler
 import com.frolo.muse.ui.main.player.PlayerFragment
 import com.frolo.muse.ui.main.player.current.CurrSongQueueFragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehaviorSupport
-import kotlinx.android.synthetic.main.fragment_player_sheet.*
 import kotlin.math.pow
 
 
@@ -22,6 +22,9 @@ class PlayerSheetFragment :
     BaseFragment(),
     OnBackPressedHandler,
     CurrSongQueueFragment.OnCloseIconClickListener {
+
+    private var _binding: FragmentPlayerSheetBinding? = null
+    private val binding: FragmentPlayerSheetBinding get() = _binding!!
 
     private val mainSheetsStateViewModel by lazy { provideMainSheetStateViewModel() }
 
@@ -40,33 +43,36 @@ class PlayerSheetFragment :
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = inflater.inflate(R.layout.fragment_player_sheet, container, false)
+    ): View? {
+        _binding = FragmentPlayerSheetBinding.inflate(inflater)
+        return _binding?.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         WindowInsetsHelper.setupWindowInsets(view) { _, insets ->
             // Applying insets to the queue layout via margins
             val insetTop = insets.systemWindowInsetTop
-            val layoutParams = coordinator.layoutParams
+            val layoutParams = binding.coordinator.layoutParams
             if (layoutParams is ViewGroup.MarginLayoutParams
                 && layoutParams.topMargin != insetTop) {
                 layoutParams.topMargin = insetTop
-                coordinator.layoutParams = layoutParams
+                binding.coordinator.layoutParams = layoutParams
             }
             return@setupWindowInsets insets
         }
-        WindowInsetsHelper.skipWindowInsets(container_player)
-        WindowInsetsHelper.skipWindowInsets(view_dim_overlay)
+        WindowInsetsHelper.skipWindowInsets(binding.containerPlayer)
+        WindowInsetsHelper.skipWindowInsets(binding.viewDimOverlay)
 
-        val behavior = TouchFlowAwareBottomSheetBehavior.from<View>(queue_sheet_layout).apply {
+        val behavior = TouchFlowAwareBottomSheetBehavior.from<View>(binding.queueSheetLayout).apply {
             addBottomSheetCallback(innerBottomSheetCallback)
             state = BottomSheetBehavior.STATE_COLLAPSED
-            BottomSheetBehaviorSupport.dispatchOnSlide(queue_sheet_layout)
+            BottomSheetBehaviorSupport.dispatchOnSlide(binding.queueSheetLayout)
             touchFlowCallback = object : TouchFlowAware.TouchFlowCallback {
                 override fun onTouchFlowStarted() {
                     mainSheetsStateViewModel.setPlayerSheetDraggable(false)
                 }
                 override fun onTouchFlowEnded() {
-                    BottomSheetBehavior.from(queue_sheet_layout).also { behavior ->
+                    BottomSheetBehavior.from(binding.queueSheetLayout).also { behavior ->
                         handleInnerBottomSheetState(behavior.state)
                     }
                 }
@@ -78,7 +84,7 @@ class PlayerSheetFragment :
             .replace(R.id.container_current_song_queue, CurrSongQueueFragment.newInstance())
             .commitNow()
 
-        layout_hook.setOnClickListener {
+        binding.layoutHook.setOnClickListener {
             behavior.state = BottomSheetBehavior.STATE_EXPANDED
         }
     }
@@ -89,14 +95,15 @@ class PlayerSheetFragment :
     }
 
     override fun onDestroyView() {
-        BottomSheetBehavior.from(queue_sheet_layout).apply {
+        BottomSheetBehavior.from(binding.queueSheetLayout).apply {
             removeBottomSheetCallback(innerBottomSheetCallback)
         }
         super.onDestroyView()
+        _binding = null
     }
 
     override fun handleOnBackPressed(): Boolean {
-        return BottomSheetBehavior.from(queue_sheet_layout).run {
+        return BottomSheetBehavior.from(binding.queueSheetLayout).run {
             if (state != BottomSheetBehavior.STATE_COLLAPSED) {
                 state = BottomSheetBehavior.STATE_COLLAPSED
                 true
@@ -105,14 +112,14 @@ class PlayerSheetFragment :
     }
 
     override fun onCloseIconClick(fragment: CurrSongQueueFragment) {
-        BottomSheetBehavior.from(queue_sheet_layout).apply {
+        BottomSheetBehavior.from(binding.queueSheetLayout).apply {
             state = BottomSheetBehavior.STATE_COLLAPSED
         }
     }
 
     private fun observeMainSheetsState(owner: LifecycleOwner) = with(mainSheetsStateViewModel) {
         collapsePlayerSheetEvent.observeNonNull(owner) {
-            BottomSheetBehavior.from(queue_sheet_layout).state =
+            BottomSheetBehavior.from(binding.queueSheetLayout).state =
                 BottomSheetBehavior.STATE_COLLAPSED
         }
     }
@@ -121,10 +128,10 @@ class PlayerSheetFragment :
         mainSheetsStateViewModel.dispatchQueueSheetSlideOffset(slideOffset)
         // For Goodness sake make sure the view is created
         if (view != null) {
-            layout_hook.alpha = (1 - slideOffset * 2).coerceIn(0f, 1f)
-            layout_hook.isClickable = slideOffset < 0.3
-            container_current_song_queue.alpha = slideOffset
-            view_dim_overlay.alpha = 1 - (1 - slideOffset).pow(2)
+            binding.layoutHook.alpha = (1 - slideOffset * 2).coerceIn(0f, 1f)
+            binding.layoutHook.isClickable = slideOffset < 0.3
+            binding.containerCurrentSongQueue.alpha = slideOffset
+            binding.viewDimOverlay.alpha = 1 - (1 - slideOffset).pow(2)
         }
     }
 

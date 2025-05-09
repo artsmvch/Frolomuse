@@ -1,25 +1,15 @@
 package com.frolo.muse.ui.main.library.base
 
-import android.content.res.ColorStateList
+import android.annotation.SuppressLint
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.updateLayoutParams
 import androidx.recyclerview.widget.RecyclerView
 import com.frolo.core.ui.inflateChild
 import com.frolo.muse.R
 import com.frolo.muse.thumbnails.ThumbnailLoader
 import com.frolo.muse.ui.base.adapter.ItemTouchHelperAdapter
-import com.frolo.muse.ui.getArtistString
-import com.frolo.muse.ui.getDurationString
-import com.frolo.muse.ui.getNameString
-import com.frolo.muse.views.media.MediaConstraintLayout
 import com.frolo.music.model.Song
-import com.frolo.ui.Screen
-import com.frolo.ui.StyleUtils
-import kotlinx.android.synthetic.main.include_check.view.*
-import kotlinx.android.synthetic.main.include_song_art_container.view.*
-import kotlinx.android.synthetic.main.item_drag_song.view.*
 
 
 open class DragSongAdapter constructor(
@@ -65,6 +55,7 @@ open class DragSongAdapter constructor(
         return itemViewType
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreateBaseViewHolder(parent: ViewGroup, viewType: Int): SongViewHolder {
         return when (viewType) {
             VIEW_TYPE_NORMAL -> {
@@ -73,9 +64,8 @@ open class DragSongAdapter constructor(
 
             VIEW_TYPE_SWAPPABLE -> {
                 val view = parent.inflateChild(R.layout.item_drag_song)
-
-                DragSongViewHolder(view).apply {
-                    val viewToDrag = itemView.findViewById<View>(R.id.include_song_art_container)
+                SongViewHolder(view).apply {
+                    val viewToDrag = itemView.findViewById<View>(R.id.icon)
                     viewToDrag.setOnTouchListener { _, event ->
                         when (event.action) {
                             MotionEvent.ACTION_DOWN -> {
@@ -90,56 +80,6 @@ open class DragSongAdapter constructor(
             }
             else -> throw IllegalArgumentException("Unexpected view type: $viewType")
         }
-    }
-
-    override fun onBindViewHolder(
-        holder: SongViewHolder,
-        position: Int,
-        item: Song,
-        selected: Boolean,
-        selectionChanged: Boolean
-    ) {
-
-        if (holder is DragSongViewHolder) {
-            val isPlayPosition = position == playPosition
-
-            with(holder.itemView as MediaConstraintLayout) {
-                val res = resources
-                tv_song_name.text = item.getNameString(res)
-                tv_artist_name.text = item.getArtistString(res)
-                tv_duration.text = item.getDurationString()
-
-                imv_check.setChecked(selected, selectionChanged)
-
-                setChecked(selected)
-                setPlaying(isPlayPosition)
-            }
-
-            holder.resolvePlayingPosition(
-                isPlayPosition = isPlayPosition,
-                isPlaying = isPlaying
-            )
-        } else {
-            super.onBindViewHolder(holder, position, item, selected, selectionChanged)
-        }
-    }
-
-    class DragSongViewHolder(itemView: View): SongViewHolder(itemView) {
-
-        private val dragIconSize: Int = Screen.dp(itemView.context, 24)
-
-        init {
-            itemView.imv_song_thumbnail.apply {
-                updateLayoutParams {
-                    width = dragIconSize
-                    height = dragIconSize
-                }
-                setImageResource(R.drawable.ic_drag_burger_outline_28)
-                imageTintList =
-                    ColorStateList.valueOf(StyleUtils.resolveColor(context, R.attr.iconTintMuted))
-            }
-        }
-
     }
 
 }

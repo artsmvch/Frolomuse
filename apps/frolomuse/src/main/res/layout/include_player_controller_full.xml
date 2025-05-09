@@ -8,14 +8,16 @@
 
     <include layout="@layout/include_playback_progress"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent"/>
+        android:layout_width="match_parent"
+        android:id="@+id/progress"/>
 
     <include layout="@layout/include_player_controller"
         android:layout_width="match_parent"
         android:layout_height="68dp"
         android:layout_marginStart="28dp"
         android:layout_marginTop="@dimen/player_element_vertical_gap"
-        android:layout_marginEnd="28dp"/>
+        android:layout_marginEnd="28dp"
+        android:id="@+id/buttons"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/btn_ab"

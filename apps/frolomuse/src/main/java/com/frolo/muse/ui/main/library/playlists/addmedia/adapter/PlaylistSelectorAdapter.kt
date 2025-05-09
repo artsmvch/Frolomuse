@@ -3,12 +3,13 @@ package com.frolo.muse.ui.main.library.playlists.addmedia.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import android.widget.CompoundButton
+import android.widget.TextView
 import com.frolo.muse.R
 import com.frolo.muse.ui.getNameString
 import com.frolo.muse.ui.main.library.base.BaseAdapter
 import com.frolo.music.model.Playlist
-import kotlinx.android.synthetic.main.item_playlist_selector.view.*
 
 
 class PlaylistSelectorAdapter:
@@ -33,8 +34,10 @@ class PlaylistSelectorAdapter:
     init {
         listener = object : BaseAdapter.Listener<Playlist> {
             override fun onItemClick(item: Playlist, position: Int) {
-                findViewByPosition(position)?.checkbox?.also { checkbox ->
-                    checkbox.toggle()
+                findViewByPosition(position)?.also { childView ->
+                    recyclerView?.getChildViewHolder(childView)?.also { holder ->
+                        (holder as? SimplePlaylistViewHolder)?.checkbox?.toggle()
+                    }
                 }
             }
         }
@@ -52,12 +55,12 @@ class PlaylistSelectorAdapter:
         item: Playlist,
         selected: Boolean,
         selectionChanged: Boolean
-    ) = with(holder.itemView) {
+    ) = with(holder) {
         checkbox.tag = item
         checkbox.setOnCheckedChangeListener(null)
         checkbox.isChecked = _checkedPlaylists.contains(item.identifier)
         checkbox.setOnCheckedChangeListener(onCheckedChangeListener)
-        title.text = item.getNameString(resources)
+        title.text = item.getNameString(itemView.resources)
     }
 
     fun interface OnCheckedPlaylistsChangeListener {
@@ -66,5 +69,7 @@ class PlaylistSelectorAdapter:
 
     class SimplePlaylistViewHolder(itemView: View): BaseAdapter.BaseViewHolder(itemView) {
         override val viewOptionsMenu: View? = null
+        val checkbox: CheckBox get() = itemView.findViewById(R.id.checkbox)
+        val title: TextView get() = itemView.findViewById(R.id.title)
     }
 }

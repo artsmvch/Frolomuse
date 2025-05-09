@@ -69,6 +69,7 @@
 
     <include layout="@layout/fragment_base_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:id="@+id/include_base_list"/>
 
 </LinearLayout>

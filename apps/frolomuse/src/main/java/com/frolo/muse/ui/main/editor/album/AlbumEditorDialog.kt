@@ -18,18 +18,18 @@ import com.frolo.muse.R
 import com.frolo.muse.UriPathDetector
 import com.frolo.arch.support.observe
 import com.frolo.arch.support.observeNonNull
+import com.frolo.muse.databinding.DialogAlbumEditorBinding
 import com.frolo.muse.di.activityComponent
 import com.frolo.music.model.Album
 import com.frolo.muse.ui.base.BaseDialogFragment
 import com.frolo.muse.ui.base.withArg
 import com.frolo.muse.views.Anim
-import kotlinx.android.synthetic.main.dialog_album_editor.*
-import kotlinx.android.synthetic.main.dialog_album_editor.btn_cancel
-import kotlinx.android.synthetic.main.include_album_art_deletion_confirmation.*
 import kotlin.math.min
 
 
 class AlbumEditorDialog : BaseDialogFragment() {
+    private var _binding: DialogAlbumEditorBinding? = null
+    private val binding: DialogAlbumEditorBinding get() = _binding!!
 
     private val viewModel: AlbumEditorViewModel by lazy {
         val album = requireArguments().getSerializable(ARG_ALBUM) as Album
@@ -45,8 +45,9 @@ class AlbumEditorDialog : BaseDialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return super.onCreateDialog(savedInstanceState).apply {
+            _binding = DialogAlbumEditorBinding.inflate(layoutInflater)
             requestWindowFeature(Window.FEATURE_NO_TITLE)
-            setContentView(R.layout.dialog_album_editor)
+            setContentView(binding.root)
 
             val metrics = resources.displayMetrics
             val height = metrics.heightPixels
@@ -62,44 +63,49 @@ class AlbumEditorDialog : BaseDialogFragment() {
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     private fun loadUI(dialog: Dialog) = with(dialog) {
-        include_album_art_deletion_confirmation.setOnTouchListener { _, _ -> true }
+        binding.includeAlbumArtDeletionConfirmation.root.setOnTouchListener { _, _ -> true }
 
-        include_progress_overlay.setOnTouchListener { _, _ -> true }
+        binding.includeProgressOverlay.root.setOnTouchListener { _, _ -> true }
 
-        btn_cancel.setOnClickListener {
+        binding.btnCancel.setOnClickListener {
             dismiss()
         }
 
-        btn_save.setOnClickListener {
+        binding.btnSave.setOnClickListener {
             checkWritePermissionFor {
                 viewModel.onSaveClicked()
             }
         }
 
-        btn_placeholder_pick_image.setOnClickListener {
+        binding.btnPlaceholderPickImage.setOnClickListener {
             viewModel.onPickArtOptionClicked()
         }
 
-        imv_album_art.setOnClickListener {
+        binding.imvAlbumArt.setOnClickListener {
             viewModel.onPickArtOptionClicked()
         }
 
-        btn_pick_art.setOnClickListener {
+        binding.btnPickArt.setOnClickListener {
             viewModel.onPickArtOptionClicked()
         }
 
-        btn_delete_art.setOnClickListener {
+        binding.btnDeleteArt.setOnClickListener {
             viewModel.onDeleteArtClicked()
         }
 
-        btn_confirm_art_deletion.setOnClickListener {
+        binding.includeAlbumArtDeletionConfirmation.btnConfirmArtDeletion.setOnClickListener {
             checkWritePermissionFor {
                 viewModel.onArtDeletionConfirmed()
             }
         }
 
-        btn_cancel_art_deletion.setOnClickListener {
+        binding.includeAlbumArtDeletionConfirmation.btnCancelArtDeletion.setOnClickListener {
             viewModel.onArtDeletionCanceled()
         }
     }
@@ -126,46 +132,46 @@ class AlbumEditorDialog : BaseDialogFragment() {
 
         artVisible.observeNonNull(owner) { isVisible ->
             dialog?.apply {
-                imv_album_art.visibility = if (isVisible) View.VISIBLE else View.INVISIBLE
+                binding.imvAlbumArt.visibility = if (isVisible) View.VISIBLE else View.INVISIBLE
             }
         }
 
         placeholderVisible.observeNonNull(owner) { isVisible ->
             dialog?.apply {
-                group_placeholder.isVisible = isVisible
+                binding.groupPlaceholder.isVisible = isVisible
             }
         }
 
         placeholderPickArtOptionVisible.observeNonNull(owner) { isVisible ->
             dialog?.apply {
-                btn_placeholder_pick_image.isVisible = isVisible
+                binding.btnPlaceholderPickImage.isVisible = isVisible
             }
         }
 
         saveArtOptionVisible.observeNonNull(owner) { isVisible ->
             dialog?.apply {
-                btn_save.isVisible = isVisible
+                binding.btnSave.isVisible = isVisible
             }
         }
 
         pickArtOptionVisible.observeNonNull(owner) { isVisible ->
             dialog?.apply {
-                btn_pick_art.isVisible = isVisible
+                binding.btnPickArt.isVisible = isVisible
             }
         }
 
         deleteArtOptionVisible.observeNonNull(owner) { isVisible ->
             dialog?.apply {
-                btn_delete_art.isVisible = isVisible
+                binding.btnDeleteArt.isVisible = isVisible
             }
         }
 
         artDeletionConfirmationVisible.observeNonNull(owner) { isVisible ->
             dialog?.apply {
                 if (isVisible) {
-                    Anim.fadeIn(include_album_art_deletion_confirmation)
+                    Anim.fadeIn(binding.includeAlbumArtDeletionConfirmation.root)
                 } else {
-                    Anim.fadeOut(include_album_art_deletion_confirmation)
+                    Anim.fadeOut(binding.includeAlbumArtDeletionConfirmation.root)
                 }
             }
         }
@@ -173,9 +179,9 @@ class AlbumEditorDialog : BaseDialogFragment() {
         isSavingChanges.observeNonNull(owner) { isSaving ->
             dialog?.apply {
                 if (isSaving) {
-                    Anim.fadeIn(include_progress_overlay)
+                    Anim.fadeIn(binding.includeProgressOverlay.root)
                 } else {
-                    Anim.fadeOut(include_progress_overlay)
+                    Anim.fadeOut(binding.includeProgressOverlay.root)
                 }
             }
         }
@@ -190,7 +196,7 @@ class AlbumEditorDialog : BaseDialogFragment() {
                         .load(bitmap)
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .transition(DrawableTransitionOptions.withCrossFade())
-                        .into(imv_album_art)
+                        .into(binding.imvAlbumArt)
             }
         }
     }

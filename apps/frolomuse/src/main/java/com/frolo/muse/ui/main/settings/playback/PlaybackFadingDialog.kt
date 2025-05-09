@@ -4,14 +4,15 @@ import android.app.Dialog
 import android.os.Bundle
 import androidx.core.math.MathUtils
 import androidx.lifecycle.LifecycleOwner
-import com.frolo.muse.R
 import com.frolo.arch.support.observeNonNull
+import com.frolo.muse.databinding.DialogPlaybackFadingBinding
 import com.frolo.muse.ui.base.BaseDialogFragment
 import com.google.android.material.slider.Slider
-import kotlinx.android.synthetic.main.dialog_playback_fading.*
 
 
 class PlaybackFadingDialog : BaseDialogFragment() {
+    private var _binding: DialogPlaybackFadingBinding? = null
+    private val binding: DialogPlaybackFadingBinding get() = _binding!!
 
     private val viewModel: PlaybackFadingViewModel by viewModel()
 
@@ -22,21 +23,26 @@ class PlaybackFadingDialog : BaseDialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return super.onCreateDialog(savedInstanceState).apply {
-            setContentView(R.layout.dialog_playback_fading)
+            _binding = DialogPlaybackFadingBinding.inflate(layoutInflater)
+            setContentView(binding.root)
             setupDialogSizeByDefault(this)
-            loadUI(this)
+            loadUi(this)
         }
     }
 
-    private fun loadUI(dialog: Dialog) = with(dialog) {
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 
-        slider_playback_fading_duration.addOnChangeListener { _, value, fromUser ->
+    private fun loadUi(dialog: Dialog) = with(binding) {
+        sliderPlaybackFadingDuration.addOnChangeListener { _, value, fromUser ->
             if (fromUser) {
                 viewModel.onChangedPlaybackFadingDuration(value.toInt())
             }
         }
 
-        slider_playback_fading_duration.addOnSliderTouchListener(
+        sliderPlaybackFadingDuration.addOnSliderTouchListener(
             object : Slider.OnSliderTouchListener {
                 override fun onStartTrackingTouch(slider: Slider) = Unit
 
@@ -46,26 +52,27 @@ class PlaybackFadingDialog : BaseDialogFragment() {
             }
         )
 
-        btn_save.setOnClickListener {
+        btnSave.setOnClickListener {
             dismiss()
         }
-
     }
 
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
 
         playbackFadingDurationRange.observeNonNull(owner) { range ->
             dialog?.apply {
-                slider_playback_fading_duration.valueFrom = range.min
-                slider_playback_fading_duration.valueTo = range.max
+                binding.sliderPlaybackFadingDuration.apply {
+                    valueFrom = range.min
+                    valueTo = range.max
+                }
             }
         }
 
         playbackFadingDuration.observeNonNull(owner) { value ->
             dialog?.apply {
-                val min = slider_playback_fading_duration.valueFrom
-                val max = slider_playback_fading_duration.valueTo
-                slider_playback_fading_duration.value = MathUtils.clamp(value, min, max)
+                binding.sliderPlaybackFadingDuration.apply {
+                    this.value = MathUtils.clamp(value, valueFrom, valueTo)
+                }
             }
         }
 

@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.frolo.muse.R
 import com.frolo.arch.support.observe
 import com.frolo.arch.support.observeNonNull
+import com.frolo.muse.databinding.DialogAddSongToPlaylistBinding
 import com.frolo.muse.di.activityComponent
 import com.frolo.music.model.Playlist
 import com.frolo.music.model.Song
@@ -18,10 +19,11 @@ import com.frolo.muse.ui.base.withArg
 import com.frolo.muse.ui.main.addLinearItemMargins
 import com.frolo.muse.ui.main.library.base.BaseAdapter
 import com.frolo.muse.views.Anim
-import kotlinx.android.synthetic.main.dialog_add_song_to_playlist.*
 
 
 class AddSongToPlaylistDialog: BaseDialogFragment() {
+    private var _binding: DialogAddSongToPlaylistBinding? = null
+    private val binding: DialogAddSongToPlaylistBinding get() = _binding!!
 
     private val viewModel: AddSongToPlaylistViewModel by lazy {
         val playlist = requireArguments().getSerializable(ARG_PLAYLIST) as Playlist
@@ -53,24 +55,30 @@ class AddSongToPlaylistDialog: BaseDialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return super.onCreateDialog(savedInstanceState).apply {
-            setContentView(R.layout.dialog_add_song_to_playlist)
+            _binding = DialogAddSongToPlaylistBinding.inflate(layoutInflater)
+            setContentView(binding.root)
             setupDialogSizeRelativelyToScreen(dialog = this, widthPercent = 19f / 20f)
             loadUI(this)
         }
     }
 
-    private fun loadUI(dialog: Dialog) = with(dialog) {
-        rv_list.apply {
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun loadUI(dialog: Dialog) = with(binding) {
+        rvList.apply {
             adapter = this@AddSongToPlaylistDialog.adapter
             layoutManager = androidx.recyclerview.widget.LinearLayoutManager(context)
             addLinearItemMargins()
         }
 
-        btn_add_to_playlist.setOnClickListener {
+        btnAddToPlaylist.setOnClickListener {
             viewModel.onAddButtonClicked()
         }
 
-        sv_query.apply {
+        svQuery.apply {
             setIconifiedByDefault(false)
             isIconified = false
             setOnQueryTextListener(object : SearchView.OnQueryTextListener {
@@ -97,11 +105,11 @@ class AddSongToPlaylistDialog: BaseDialogFragment() {
             clearFocus()
         }
 
-        btn_cancel.setOnClickListener {
-            cancel()
+        btnCancel.setOnClickListener {
+            dialog.cancel()
         }
 
-        include_progress_overlay.setOnTouchListener { _, _ -> true }
+        includeProgressOverlay.root.setOnTouchListener { _, _ -> true }
     }
 
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
@@ -111,7 +119,7 @@ class AddSongToPlaylistDialog: BaseDialogFragment() {
 
         targetPlaylist.observe(owner) { playlist ->
             dialog?.apply {
-                tv_hint.text = getString(R.string.add_song_to_s_playlist_hint, playlist?.name.orEmpty())
+                binding.tvHint.text = getString(R.string.add_song_to_s_playlist_hint, playlist?.name.orEmpty())
             }
         }
 
@@ -122,21 +130,22 @@ class AddSongToPlaylistDialog: BaseDialogFragment() {
         selectedItems.observeNonNull(owner) { selectedItems ->
             adapter.submitSelection(selectedItems)
             dialog?.apply {
-                tv_selection_info.text =
+                binding.tvSelectionInfo.text =
                         resources.getQuantityString(R.plurals.s_songs_selected, selectedItems.count(), selectedItems.count())
             }
         }
 
         placeholderVisible.observeNonNull(owner) { isVisible ->
             dialog?.apply {
-                layout_list_placeholder.visibility = if (isVisible) View.VISIBLE else View.GONE
+                binding.layoutListPlaceholder.root.visibility =
+                    if (isVisible) View.VISIBLE else View.GONE
             }
         }
 
         addToPlaylistButtonEnabled.observeNonNull(owner) { enabled ->
             dialog?.apply {
-                btn_add_to_playlist.isEnabled = enabled
-                btn_add_to_playlist.alpha = if (enabled) 1f else 0.3f
+                binding.btnAddToPlaylist.isEnabled = enabled
+                binding.btnAddToPlaylist.alpha = if (enabled) 1f else 0.3f
             }
         }
 
@@ -146,9 +155,9 @@ class AddSongToPlaylistDialog: BaseDialogFragment() {
         isAddingSongsToPlaylist.observeNonNull(owner) { isAdding ->
             dialog?.apply {
                 if (isAdding) {
-                    Anim.fadeIn(include_progress_overlay)
+                    Anim.fadeIn(binding.includeProgressOverlay.root)
                 } else {
-                    Anim.fadeOut(include_progress_overlay)
+                    Anim.fadeOut(binding.includeProgressOverlay.root)
                 }
             }
         }

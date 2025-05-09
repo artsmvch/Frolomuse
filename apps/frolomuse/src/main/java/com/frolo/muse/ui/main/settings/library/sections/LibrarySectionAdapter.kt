@@ -4,13 +4,14 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.frolo.muse.R
 import com.frolo.muse.model.Library
 import com.frolo.muse.ui.base.adapter.ItemTouchHelperAdapter
 import com.frolo.muse.ui.getSectionName
 import com.frolo.muse.ui.main.library.base.BaseAdapter
-import kotlinx.android.synthetic.main.item_library_section_switch.view.*
+import com.google.android.material.switchmaterial.SwitchMaterial
 import java.lang.ref.WeakReference
 
 
@@ -58,13 +59,13 @@ class LibrarySectionAdapter constructor(
         item: Int,
         selected: Boolean,
         selectionChanged: Boolean
-    ) = with(holder.itemView) {
+    ) = with(holder) {
         val section = getItemAt(position)
-        tv_section_name.text = getSectionName(resources, section)
-        sw_section_enabled.setOnCheckedChangeListener { _, isChecked ->
+        tvSectionName.text = getSectionName(itemView.resources, section)
+        swSectionEnabled.setOnCheckedChangeListener { _, isChecked ->
             enabledStatus[section] = isChecked
         }
-        sw_section_enabled.isChecked = enabledStatus[section] ?: false
+        swSectionEnabled.isChecked = enabledStatus[section] ?: false
     }
 
     override fun onItemMove(fromPosition: Int, toPosition: Int) {
@@ -83,5 +84,7 @@ class LibrarySectionAdapter constructor(
 
     class LibrarySectionViewHolder(itemView: View): BaseViewHolder(itemView) {
         override val viewOptionsMenu: View? = null
+        val tvSectionName: TextView = itemView.findViewById(R.id.tv_section_name)
+        val swSectionEnabled: SwitchMaterial = itemView.findViewById(R.id.sw_section_enabled)
     }
 }

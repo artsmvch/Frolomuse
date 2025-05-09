@@ -6,18 +6,20 @@ import android.view.Window
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.frolo.muse.R
+import com.frolo.muse.databinding.DialogLibrarySectionsBinding
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.logLibrarySectionsSaved
 import com.frolo.muse.model.Library
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.ui.base.BaseDialogFragment
 import com.frolo.muse.ui.base.adapter.SimpleItemTouchHelperCallback
-import kotlinx.android.synthetic.main.dialog_library_sections.*
 
 
 class LibrarySectionsDialog : BaseDialogFragment(),
     LibrarySectionAdapter.OnDragListener {
+
+    private var _binding: DialogLibrarySectionsBinding? = null
+    private val binding: DialogLibrarySectionsBinding get() = _binding!!
 
     private val preferences: Preferences by prefs()
 
@@ -44,10 +46,16 @@ class LibrarySectionsDialog : BaseDialogFragment(),
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return super.onCreateDialog(savedInstanceState).apply {
             requestWindowFeature(Window.FEATURE_NO_TITLE)
-            setContentView(R.layout.dialog_library_sections)
+            _binding = DialogLibrarySectionsBinding.inflate(layoutInflater)
+            setContentView(binding.root)
             setupDialogSizeByDefault(this)
-            loadUI(this)
+            loadUi(this)
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onTouchDragView(holder: RecyclerView.ViewHolder) {
@@ -58,22 +66,21 @@ class LibrarySectionsDialog : BaseDialogFragment(),
         saveChanges()
     }
 
-    private fun loadUI(dialog: Dialog) = with(dialog) {
-
+    private fun loadUi(dialog: Dialog) = with(binding) {
         val adapter = LibrarySectionAdapter(
             onDragListener = this@LibrarySectionsDialog,
             sections = originalSections,
             enabledStatus = originalEnabledStatus
         )
 
-        rv_sections.layoutManager = LinearLayoutManager(context)
-        rv_sections.adapter = adapter
+        rvSections.layoutManager = LinearLayoutManager(context)
+        rvSections.adapter = adapter
         val callback = SimpleItemTouchHelperCallback(adapter = adapter, itemViewSwipeEnabled = false)
         val touchHelper = ItemTouchHelper(callback)
-        touchHelper.attachToRecyclerView(rv_sections)
+        touchHelper.attachToRecyclerView(rvSections)
         itemTouchHelper = touchHelper
 
-        btn_save.setOnClickListener {
+        btnSave.setOnClickListener {
             dismiss()
         }
     }
@@ -85,7 +92,8 @@ class LibrarySectionsDialog : BaseDialogFragment(),
     }
 
     private fun saveChanges() {
-        val adapter = dialog?.rv_sections?.adapter as? LibrarySectionAdapter
+        dialog ?: return
+        val adapter = binding.rvSections.adapter as? LibrarySectionAdapter
         if (adapter != null) {
 
             val newSections = adapter.getSnapshot()

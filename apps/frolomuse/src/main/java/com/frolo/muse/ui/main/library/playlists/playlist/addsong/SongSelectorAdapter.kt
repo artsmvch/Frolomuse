@@ -6,13 +6,10 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import com.frolo.core.ui.inflateChild
 import com.frolo.muse.R
-import com.frolo.music.model.Song
 import com.frolo.muse.thumbnails.ThumbnailLoader
-import com.frolo.muse.ui.getArtistString
-import com.frolo.muse.ui.getDurationString
-import com.frolo.muse.ui.getNameString
 import com.frolo.muse.ui.main.library.base.SongAdapter
-import kotlinx.android.synthetic.main.item_select_song.view.*
+import com.frolo.muse.views.checkable.CheckableImageView
+import com.frolo.music.model.Song
 
 
 class SongSelectorAdapter(thumbnailLoader: ThumbnailLoader):
@@ -27,26 +24,20 @@ class SongSelectorAdapter(thumbnailLoader: ThumbnailLoader):
         item: Song,
         selected: Boolean, selectionChanged: Boolean
     ) {
-        val selectorViewHolder = holder as SongSelectorViewHolder
-        with(selectorViewHolder.itemView) {
-            val res = resources
-            tv_song_name.text = item.getNameString(res)
-            tv_artist_name.text = item.getArtistString(res)
-            tv_duration.text = item.getDurationString()
-
-            chb_select_song.setChecked(checked = selected, animate = selectionChanged)
-
-            isSelected = selected
-        }
+        super.onBindViewHolder(holder, position, item, selected, selectionChanged)
+        holder as SongSelectorViewHolder
+        holder.chbSelectSong.setChecked(checked = selected, animate = selectionChanged)
     }
 
     class SongSelectorViewHolder(itemView: View): SongViewHolder(itemView) {
         override val viewOptionsMenu: View? = null
 
+        val chbSelectSong: CheckableImageView = itemView.findViewById(R.id.chb_select_song)
+
         init {
-            val drawable =
-                    ContextCompat.getDrawable(itemView.context, R.drawable.ic_framed_music_note)
-            itemView.chb_select_song.setImageDrawable(drawable)
+            chbSelectSong.setImageDrawable(
+                ContextCompat.getDrawable(itemView.context, R.drawable.ic_framed_music_note)
+            )
         }
     }
 

@@ -15,18 +15,19 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.Fade
 import androidx.transition.TransitionManager
 import com.frolo.muse.BuildInfo
-import com.frolo.muse.R
 import com.frolo.ui.Screen
 import com.frolo.muse.ui.base.BaseFragment
 import com.frolo.muse.ui.base.FragmentContentInsetsListener
 import com.frolo.muse.ui.base.setupNavigation
 import com.frolo.muse.util.SimpleLottieAnimationController
 import com.frolo.core.ui.recyclerview.FlexibleStaggeredLayoutManager
+import com.frolo.muse.databinding.FragmentDonationsBinding
 import com.google.android.material.appbar.AppBarLayout
-import kotlinx.android.synthetic.main.fragment_donations.*
 
 
 class DonationsFragment : BaseFragment(), FragmentContentInsetsListener {
+    private var _binding: FragmentDonationsBinding? = null
+    private val binding: FragmentDonationsBinding get() = _binding!!
 
     private val viewModel: DonationsViewModel by viewModel()
 
@@ -51,14 +52,17 @@ class DonationsFragment : BaseFragment(), FragmentContentInsetsListener {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.fragment_donations, container, false)
+    ): View? {
+        _binding = FragmentDonationsBinding.inflate(inflater)
+        return _binding?.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        setupNavigation(tb_actions)
+        setupNavigation(binding.tbActions)
 
         setupDragCallback()
 
-        rv_list.apply {
+        binding.rvList.apply {
             layoutManager = getLayoutManager(context)
             adapter = donationItemAdapter
             updatePadding(
@@ -68,9 +72,14 @@ class DonationsFragment : BaseFragment(), FragmentContentInsetsListener {
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     private fun setupDragCallback() {
-        app_bar_layout.doOnLayout {
-            val behavior = (app_bar_layout.layoutParams as CoordinatorLayout.LayoutParams).behavior
+        binding.appBarLayout.doOnLayout {
+            val behavior = (binding.appBarLayout.layoutParams as CoordinatorLayout.LayoutParams).behavior
             if (behavior is AppBarLayout.Behavior) {
                 behavior.setDragCallback(
                     object : AppBarLayout.Behavior.DragCallback () {
@@ -113,13 +122,13 @@ class DonationsFragment : BaseFragment(), FragmentContentInsetsListener {
                 TransitionManager.beginDelayedTransition(rootView, transition)
             }
             val safeIsLoading = isLoading == true
-            tv_headline.isVisible = !safeIsLoading
-            tv_info_text.isVisible = !safeIsLoading
-            rv_list.isInvisible = safeIsLoading
-            pb_loading.isVisible = safeIsLoading
+            binding.tvHeadline.isVisible = !safeIsLoading
+            binding.tvInfoText.isVisible = !safeIsLoading
+            binding.rvList.isInvisible = safeIsLoading
+            binding.pbLoading.isVisible = safeIsLoading
             canDragAppBarLayout = !safeIsLoading
             if (safeIsLoading) {
-                app_bar_layout.setExpanded(true, false)
+                binding.appBarLayout.setExpanded(true, false)
             }
         }
 
@@ -137,7 +146,7 @@ class DonationsFragment : BaseFragment(), FragmentContentInsetsListener {
     }
 
     override fun applyContentInsets(left: Int, top: Int, right: Int, bottom: Int) {
-        rv_list?.apply {
+        binding.rvList.apply {
             clipToPadding = false
             updatePadding(bottom = bottom)
         }

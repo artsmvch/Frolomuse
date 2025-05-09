@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.frolo.muse.R
 import com.frolo.arch.support.observeNonNull
+import com.frolo.muse.databinding.DialogAddMediaToPlaylistBinding
 import com.frolo.muse.di.activityComponent
 import com.frolo.music.model.Media
 import com.frolo.music.model.Playlist
@@ -16,10 +17,11 @@ import com.frolo.muse.ui.base.BaseDialogFragment
 import com.frolo.muse.ui.base.withArg
 import com.frolo.muse.ui.main.library.playlists.addmedia.adapter.PlaylistSelectorAdapter
 import com.frolo.muse.views.Anim
-import kotlinx.android.synthetic.main.dialog_add_media_to_playlist.*
 
 
 class AddMediaToPlaylistDialog : BaseDialogFragment() {
+    private var _binding: DialogAddMediaToPlaylistBinding? = null
+    private val binding: DialogAddMediaToPlaylistBinding get() = _binding!!
 
     private val viewModel: AddMediaToPlaylistViewModel by lazy {
         @Suppress("UNCHECKED_CAST")
@@ -52,24 +54,31 @@ class AddMediaToPlaylistDialog : BaseDialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return super.onCreateDialog(savedInstanceState).apply {
             requestWindowFeature(Window.FEATURE_NO_TITLE)
-            setContentView(R.layout.dialog_add_media_to_playlist)
+
+            _binding = DialogAddMediaToPlaylistBinding.inflate(layoutInflater)
+            setContentView(binding.root)
             setupDialogSizeRelativelyToScreen(dialog = this, widthPercent = 19f / 20f)
             loadUi(this)
         }
     }
 
-    private fun loadUi(dialog: Dialog) = with(dialog) {
-        rv_list.layoutManager = LinearLayoutManager(context)
-        rv_list.adapter = adapter
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 
-        include_progress_overlay.setOnTouchListener { _, _ -> true }
+    private fun loadUi(dialog: Dialog) = with(binding) {
+        rvList.layoutManager = LinearLayoutManager(context)
+        rvList.adapter = adapter
 
-        btn_add_to_playlist.setOnClickListener {
+        includeProgressOverlay.root.setOnTouchListener { _, _ -> true }
+
+        btnAddToPlaylist.setOnClickListener {
             viewModel.onAddButtonClicked()
         }
 
-        btn_cancel.setOnClickListener {
-            cancel()
+        btnCancel.setOnClickListener {
+            dialog.cancel()
         }
     }
 
@@ -84,8 +93,8 @@ class AddMediaToPlaylistDialog : BaseDialogFragment() {
 
         isAddButtonEnabled.observeNonNull(owner) { isEnabled ->
             dialog?.apply {
-                btn_add_to_playlist.isEnabled = isEnabled
-                btn_add_to_playlist.alpha = if (isEnabled) 1f else 0.3f
+                binding.btnAddToPlaylist.isEnabled = isEnabled
+                binding.btnAddToPlaylist.alpha = if (isEnabled) 1f else 0.3f
             }
         }
 
@@ -108,22 +117,23 @@ class AddMediaToPlaylistDialog : BaseDialogFragment() {
 
     private fun onSetLoading(isLoading: Boolean) {
         dialog?.apply {
-            pb_loading.visibility = if (isLoading) View.VISIBLE else View.GONE
+            binding.pbLoading.visibility = if (isLoading) View.VISIBLE else View.GONE
         }
     }
 
     private fun onSetPlaceholderVisible(visible: Boolean) {
         dialog?.apply {
-            layout_list_placeholder.visibility = if (visible) View.VISIBLE else View.GONE
+            binding.layoutListPlaceholder.root.visibility =
+                if (visible) View.VISIBLE else View.GONE
         }
     }
 
     private fun onSetAddingItemsToPlaylist(isAdding: Boolean) {
         dialog?.apply {
             if (isAdding) {
-                Anim.fadeIn(include_progress_overlay)
+                Anim.fadeIn(binding.includeProgressOverlay.root)
             } else {
-                Anim.fadeOut(include_progress_overlay)
+                Anim.fadeOut(binding.includeProgressOverlay.root)
             }
         }
     }

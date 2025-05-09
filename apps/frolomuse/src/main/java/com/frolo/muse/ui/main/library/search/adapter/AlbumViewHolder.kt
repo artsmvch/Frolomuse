@@ -1,14 +1,15 @@
 package com.frolo.muse.ui.main.library.search.adapter
 
 import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
 import com.frolo.muse.R
 import com.frolo.music.model.Album
 import com.frolo.muse.thumbnails.ThumbnailLoader
 import com.frolo.muse.ui.getArtistString
 import com.frolo.muse.ui.getNameString
 import com.frolo.muse.ui.getNumberOfTracksString
-import kotlinx.android.synthetic.main.include_check.view.*
-import kotlinx.android.synthetic.main.item_album.view.*
+import com.frolo.muse.views.checkable.CheckView
 
 
 class AlbumViewHolder(
@@ -18,6 +19,13 @@ class AlbumViewHolder(
 
     override val viewOptionsMenu: View? = itemView.findViewById(R.id.view_options_menu)
 
+    private val tvAlbumName: TextView = itemView.findViewById(R.id.tv_album_name)
+    private val tvArtistName: TextView = itemView.findViewById(R.id.tv_artist_name)
+    private val tvNumberOfTracks: TextView = itemView.findViewById(R.id.tv_number_of_tracks)
+    private val imvAlbumArt: ImageView = itemView.findViewById(R.id.imv_album_art)
+    private val imvCheck: CheckView = itemView.findViewById(R.id.imv_check)
+
+
     fun bind(
         item: Album,
         selected: Boolean,
@@ -26,13 +34,13 @@ class AlbumViewHolder(
     ) {
 
         with(itemView) {
-            tv_album_name.text = highlight(text = item.getNameString(resources), part = query)
-            tv_artist_name.text = item.getArtistString(resources)
-            tv_number_of_tracks.text = item.getNumberOfTracksString(resources)
+            tvAlbumName.text = highlight(text = item.getNameString(resources), part = query)
+            tvArtistName.text = item.getArtistString(resources)
+            tvNumberOfTracks.text = item.getNumberOfTracksString(resources)
 
-            thumbnailLoader.loadAlbumThumbnail(item, imv_album_art)
+            thumbnailLoader.loadAlbumThumbnail(item, imvAlbumArt)
 
-            imv_check.setChecked(selected, selectionChanged)
+            imvCheck.setChecked(selected, selectionChanged)
 
             isSelected = selected
         }

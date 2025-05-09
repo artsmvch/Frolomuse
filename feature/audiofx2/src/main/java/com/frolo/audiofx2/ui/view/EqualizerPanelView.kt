@@ -28,8 +28,6 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.item_equalizer_preset.view.preset_name
-import kotlinx.android.synthetic.main.item_equalizer_preset_drop_down.view.*
 
 
 class EqualizerPanelView @JvmOverloads constructor(
@@ -284,16 +282,20 @@ private class PresetAdapter(
         preset: EqualizerPreset,
         isDropDownItem: Boolean
     ) = itemView.apply {
-        preset_name.text = preset.name
-        remove_icon?.apply {
+        // TODO: optimize with a ViewHolder
+        val presetName = itemView.findViewById<TextView>(R.id.preset_name)
+        val removeIcon = itemView.findViewById<ImageView>(R.id.remove_icon)
+
+        presetName.text = preset.name
+        removeIcon?.apply {
             isVisible = preset.isDeletable
             setOnClickListener { onRemoveItem?.invoke(preset) }
         }
         if (isDropDownItem) {
             val context = itemView.context
-            preset_name.updatePadding(
+            presetName.updatePadding(
                 left = Screen.dp(context, 8f),
-                right = if (remove_icon?.isVisible == true) {
+                right = if (removeIcon?.isVisible == true) {
                     0
                 } else {
                     Screen.dp(context, 16f)

@@ -44,6 +44,7 @@ import com.frolo.muse.android.ViewAppSettingsIntent
 import com.frolo.muse.android.getIntExtraOrNull
 import com.frolo.muse.android.getIntOrNull
 import com.frolo.muse.android.startActivitySafely
+import com.frolo.muse.databinding.FragmentMainBinding
 import com.frolo.muse.di.activityComponent
 import com.frolo.muse.di.impl.permission.PermissionCheckerImpl
 import com.frolo.muse.rating.RatingFragment
@@ -73,16 +74,6 @@ import com.google.android.material.shape.MaterialShapeDrawable
 import com.google.android.material.shape.ShapeAppearanceModel
 import com.ncapdevi.fragnav.FragNavController
 import com.ncapdevi.fragnav.FragNavTransactionOptions
-import kotlinx.android.synthetic.main.fragment_main.content_layout
-import kotlinx.android.synthetic.main.fragment_main.main
-import kotlinx.android.synthetic.main.fragment_main.progress
-import kotlinx.android.synthetic.main.fragment_main_content.bottom_navigation_view
-import kotlinx.android.synthetic.main.fragment_main_content.container
-import kotlinx.android.synthetic.main.fragment_main_content.container_player
-import kotlinx.android.synthetic.main.fragment_main_content.mini_player_container
-import kotlinx.android.synthetic.main.fragment_main_content.sliding_player_layout
-import kotlinx.android.synthetic.main.fragment_main_content.snowfall_view
-import kotlinx.android.synthetic.main.fragment_main_content.view_dim_overlay
 import kotlin.math.max
 import kotlin.math.pow
 
@@ -94,6 +85,9 @@ internal class MainFragment :
     AppRouter.Provider,
     IntentHandler,
     OnBackPressedHandler {
+        
+    private var _binding: FragmentMainBinding? = null
+    private val binding: FragmentMainBinding get() = _binding!!
 
     private val viewModel: MainViewModel by lazy {
         val vmFactory = activityComponent.provideViewModelFactory()
@@ -218,7 +212,10 @@ internal class MainFragment :
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = inflater.inflate(R.layout.fragment_main, container, false)
+    ): View? {
+        _binding = FragmentMainBinding.inflate(inflater)
+        return _binding?.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -229,12 +226,12 @@ internal class MainFragment :
         observeScanStatus(view.context, viewLifecycleOwner)
     }
 
-    private fun loadUi(view: View) {
+    private fun loadUi(view: View) = with(binding) {
         WindowInsetsHelper.skipWindowInsets(view)
-        WindowInsetsHelper.skipWindowInsets(content_layout)
-        WindowInsetsHelper.skipWindowInsets(sliding_player_layout)
-        WindowInsetsHelper.skipWindowInsets(container_player)
-        WindowInsetsHelper.setupWindowInsets(container) { _, insets ->
+        WindowInsetsHelper.skipWindowInsets(contentLayout.root)
+        WindowInsetsHelper.skipWindowInsets(contentLayout.slidingPlayerLayout)
+        WindowInsetsHelper.skipWindowInsets(contentLayout.containerPlayer)
+        WindowInsetsHelper.setupWindowInsets(contentLayout.container) { _, insets ->
             val currFragment = pickCurrentFragment()
             if (currFragment is WithCustomWindowInsets) {
                 // Don't let fragments change these insets, dispatch a copy
@@ -243,26 +240,26 @@ internal class MainFragment :
             return@setupWindowInsets insets
         }
 
-        bottom_navigation_view.background = createBottomTongue(
+        contentLayout.bottomNavigationView.background = createBottomTongue(
             properties.colorSurface, properties.bottomNavigationCornerRadius)
 
-        sliding_player_layout.clipToOutline = true
-        sliding_player_layout.outlineProvider = playerSheetOutlineProvider
-        sliding_player_layout.setBackgroundColor(properties.colorPrimarySurface)
-        with(BottomSheetBehavior.from(sliding_player_layout)) {
+        contentLayout.slidingPlayerLayout.clipToOutline = true
+        contentLayout.slidingPlayerLayout.outlineProvider = playerSheetOutlineProvider
+        contentLayout.slidingPlayerLayout.setBackgroundColor(properties.colorPrimarySurface)
+        with(BottomSheetBehavior.from(contentLayout.slidingPlayerLayout)) {
             addBottomSheetCallback(bottomSheetCallback)
         }
-        BottomSheetBehaviorSupport.dispatchOnSlide(sliding_player_layout)
+        BottomSheetBehaviorSupport.dispatchOnSlide(contentLayout.slidingPlayerLayout)
 
-        mini_player_container.setOnClickListener {
+        contentLayout.miniPlayerContainer.setOnClickListener {
             expandSlidingPlayer()
         }
 
         // Hide the content layout until fragments are initialized
-        content_layout.visibility = View.INVISIBLE
+        contentLayout.root.visibility = View.INVISIBLE
         progress.show()
 
-        defaultSystemBarsHost?.obtainSystemBarsControl(this)
+        defaultSystemBarsHost?.obtainSystemBarsControl(this@MainFragment)
     }
 
     private fun createBottomTongue(@ColorInt color: Int, cornerRadius: Float): Drawable {
@@ -300,11 +297,12 @@ internal class MainFragment :
 
     override fun onDestroyView() {
         super.onDestroyView()
-        with(BottomSheetBehavior.from(sliding_player_layout)) {
+        with(BottomSheetBehavior.from(binding.contentLayout.slidingPlayerLayout)) {
             removeBottomSheetCallback(bottomSheetCallback)
         }
         resPermissionExplanationDialog?.cancel()
         defaultSystemBarsHost?.abandonSystemBarsControl(this)
+        _binding = null
     }
 
     override fun onDestroy() {
@@ -367,7 +365,7 @@ internal class MainFragment :
             return true
         }
 
-        val behavior = BottomSheetBehavior.from(sliding_player_layout)
+        val behavior = BottomSheetBehavior.from(binding.contentLayout.slidingPlayerLayout)
         if (behavior.state == BottomSheetBehavior.STATE_EXPANDED) {
             behavior.state = BottomSheetBehavior.STATE_COLLAPSED
             return true
@@ -477,12 +475,14 @@ internal class MainFragment :
             initialize(tabIndex, savedInstanceState)
         }
 
-        bottom_navigation_view.setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
-        bottom_navigation_view.setOnNavigationItemReselectedListener(onNavigationItemReselectedListener)
+        binding.contentLayout.bottomNavigationView.apply {
+            setOnNavigationItemSelectedListener(onNavigationItemSelectedListener)
+            setOnNavigationItemReselectedListener(onNavigationItemReselectedListener)
 
-        val targetMenuId = getBottomMenuItemId(tabIndex)
-        if (bottom_navigation_view.selectedItemId != targetMenuId) {
-            bottom_navigation_view.selectedItemId = targetMenuId
+            val targetMenuId = getBottomMenuItemId(tabIndex)
+            if (selectedItemId != targetMenuId) {
+                selectedItemId = targetMenuId
+            }
         }
 
         fragmentManager.beginTransaction()
@@ -493,15 +493,15 @@ internal class MainFragment :
         RatingFragment.install(fragmentManager)
 
         // Finally the content layout can be visible
-        content_layout.visibility = View.VISIBLE
-        progress.hide()
+        binding.contentLayout.root.visibility = View.VISIBLE
+        binding.progress.hide()
 
-        sliding_player_layout.doOnLayout { v ->
+        binding.contentLayout.slidingPlayerLayout.doOnLayout { v ->
             with(BottomSheetBehavior.from(v)) {
                 peekHeight = properties.playerSheetPeekHeight
             }
         }
-        sliding_player_layout.doOnPreDraw {
+        binding.contentLayout.slidingPlayerLayout.doOnPreDraw {
             reportFullyDrawn()
         }
 
@@ -560,7 +560,7 @@ internal class MainFragment :
     internal fun switchToRoot(index: Int) {
         view ?: return
         performNavActon {
-            bottom_navigation_view.selectedItemId = getBottomMenuItemId(index)
+            binding.contentLayout.bottomNavigationView.selectedItemId = getBottomMenuItemId(index)
             clearStack()
         }
     }
@@ -607,7 +607,8 @@ internal class MainFragment :
         val currTabIndex = navController.currentStackIndex
         val tabIndexExtra = intent.getIntExtra(EXTRA_TAB_INDEX, currTabIndex)
         if (tabIndexExtra != currTabIndex) {
-            bottom_navigation_view.selectedItemId = getBottomMenuItemId(tabIndexExtra)
+            binding.contentLayout.bottomNavigationView.selectedItemId =
+                getBottomMenuItemId(tabIndexExtra)
         }
         if (intent.getBooleanExtra(EXTRA_OPEN_PLAYER, false)) {
             expandSlidingPlayer()
@@ -674,13 +675,13 @@ internal class MainFragment :
         isSnowfallEnabled.observe(owner) { isEnabled ->
             val transition = Fade().apply {
                 duration = 150L
-                addTarget(snowfall_view)
+                addTarget(binding.contentLayout.snowfallView)
             }
-            TransitionManager.beginDelayedTransition(content_layout as ViewGroup, transition)
+            TransitionManager.beginDelayedTransition(binding.contentLayout.root as ViewGroup, transition)
             if (isEnabled == true) {
-                snowfall_view.visibility = View.VISIBLE
+                binding.contentLayout.snowfallView.visibility = View.VISIBLE
             } else {
-                snowfall_view.visibility = View.GONE
+                binding.contentLayout.snowfallView.visibility = View.GONE
             }
         }
 
@@ -729,7 +730,7 @@ internal class MainFragment :
         }
 
         isPlayerSheetDraggable.observeNonNull(owner) { draggable ->
-            BottomSheetBehavior.from(sliding_player_layout).apply {
+            BottomSheetBehavior.from(binding.contentLayout.slidingPlayerLayout).apply {
                 isDraggable = draggable
             }
         }
@@ -749,17 +750,17 @@ internal class MainFragment :
         performNavActon {
             clearDialogFragment()
         }
-        BottomSheetBehavior.from(sliding_player_layout).state = BottomSheetBehavior.STATE_EXPANDED
+        BottomSheetBehavior.from(binding.contentLayout.slidingPlayerLayout).state = BottomSheetBehavior.STATE_EXPANDED
     }
 
     private fun collapseSlidingPlayer() {
-        BottomSheetBehavior.from(sliding_player_layout).state = BottomSheetBehavior.STATE_COLLAPSED
+        BottomSheetBehavior.from(binding.contentLayout.slidingPlayerLayout).state = BottomSheetBehavior.STATE_COLLAPSED
     }
 
     private fun handleSlide(slideOffset: Float) {
         val startTimeMillis = System.currentTimeMillis()
 
-        bottom_navigation_view.also { child ->
+        binding.contentLayout.bottomNavigationView.also { child ->
             val overTranslation = 1.2f
             val heightToAnimate = slideOffset * child.height * overTranslation
             child.animate()
@@ -769,29 +770,31 @@ internal class MainFragment :
                 .start()
         }
 
-        view_dim_overlay.alpha = 1 - (1 - slideOffset).pow(2)
+        binding.contentLayout.viewDimOverlay.alpha = 1 - (1 - slideOffset).pow(2)
 
-        mini_player_container.alpha = max(0f, 1f - slideOffset * 4)
-        mini_player_container.touchesDisabled = slideOffset > 0.4
+        binding.contentLayout.miniPlayerContainer.apply {
+            alpha = max(0f, 1f - slideOffset * 4)
+            touchesDisabled = slideOffset > 0.4
+        }
 
         val cornerRadiusFactor: Float = (1f - slideOffset).pow(0.5f).coerceIn(0f, 1f)
         val cornerRadius = properties.playerSheetCornerRadius * cornerRadiusFactor
         val blendRatio = max(0f, 1f - slideOffset * 2)
         val blendedColor = ColorUtils.blendARGB(properties.colorPlayerSurface,
             properties.colorPrimarySurface, blendRatio)
-        sliding_player_layout.setBackgroundColor(blendedColor)
+        binding.contentLayout.slidingPlayerLayout.setBackgroundColor(blendedColor)
         playerSheetOutlineProvider.cornerRadius = cornerRadius
-        sliding_player_layout.invalidateOutline()
+        binding.contentLayout.slidingPlayerLayout.invalidateOutline()
 
-        container_player.alpha = slideOffset
+        binding.contentLayout.containerPlayer.alpha = slideOffset
 
-        val isUnderStatusBar = sliding_player_layout.rootWindowInsets.let { insets ->
+        val isUnderStatusBar = binding.contentLayout.slidingPlayerLayout.rootWindowInsets.let { insets ->
             if (insets == null) {
                 return@let false
             }
             // The sheet is considered to be under the status bar
             // if at least half of the status bar overlaps the sheet layout.
-            sliding_player_layout.top < insets.systemWindowInsetTop / 2f
+            binding.contentLayout.slidingPlayerLayout.top < insets.systemWindowInsetTop / 2f
         }
         mainSheetsStateViewModel.dispatchPlayerSheetSlideOffset(slideOffset, isUnderStatusBar)
 
@@ -858,8 +861,8 @@ internal class MainFragment :
             }
         }
 
-        container.setStatusBarColor(screenStatusBarColor)
-        main.setStatusBarColor(playerStatusBarColor)
+        binding.contentLayout.container.setStatusBarColor(screenStatusBarColor)
+        binding.main.setStatusBarColor(playerStatusBarColor)
 
         systemBarsController?.apply {
             setStatusBarColor(properties.transparentStatusBarColor)

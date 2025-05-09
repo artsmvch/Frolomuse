@@ -5,7 +5,7 @@ import android.view.*
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.frolo.muse.R
+import com.frolo.muse.databinding.FragmentBaseListBinding
 import com.frolo.muse.di.activityComponent
 import com.frolo.music.model.Artist
 import com.frolo.music.model.Song
@@ -16,10 +16,11 @@ import com.frolo.muse.ui.main.addLinearItemMargins
 import com.frolo.muse.ui.main.library.base.AbsSongCollectionFragment
 import com.frolo.muse.ui.main.library.base.SongAdapter
 import com.frolo.muse.ui.smoothScrollToTop
-import kotlinx.android.synthetic.main.fragment_base_list.*
 
 
 class SongsOfArtistFragment: AbsSongCollectionFragment<Song>(), FragmentContentInsetsListener {
+    private var _binding: FragmentBaseListBinding? = null
+    private val binding: FragmentBaseListBinding get() = _binding!!
 
     override val viewModel: SongsOfArtistViewModel by lazy {
         val artist = requireArguments().getSerializable(ARG_ARTIST) as Artist
@@ -34,14 +35,22 @@ class SongsOfArtistFragment: AbsSongCollectionFragment<Song>(), FragmentContentI
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View = inflater.inflate(R.layout.fragment_base_list, container, false)
+    ): View? {
+        _binding = FragmentBaseListBinding.inflate(inflater)
+        return _binding?.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        rv_list.apply {
+        binding.rvList.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = this@SongsOfArtistFragment.adapter
             addLinearItemMargins()
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -50,11 +59,11 @@ class SongsOfArtistFragment: AbsSongCollectionFragment<Song>(), FragmentContentI
     }
 
     override fun onSetLoading(loading: Boolean) {
-        pb_loading.visibility = if (loading) View.VISIBLE else View.GONE
+        binding.pbLoading.root.visibility = if (loading) View.VISIBLE else View.GONE
     }
 
     override fun onSetPlaceholderVisible(visible: Boolean) {
-        layout_list_placeholder.visibility = if (visible) View.VISIBLE else View.GONE
+        binding.layoutListPlaceholder.root.visibility = if (visible) View.VISIBLE else View.GONE
     }
 
     override fun onDisplayError(err: Throwable) {
@@ -67,15 +76,15 @@ class SongsOfArtistFragment: AbsSongCollectionFragment<Song>(), FragmentContentI
     override fun applyContentInsets(left: Int, top: Int, right: Int, bottom: Int) {
         view?.also { safeView ->
             if (safeView is ViewGroup) {
-                rv_list.setPadding(left, top, right, bottom)
-                rv_list.clipToPadding = false
+                binding.rvList.setPadding(left, top, right, bottom)
+                binding.rvList.clipToPadding = false
                 safeView.clipToPadding = false
             }
         }
     }
 
     override fun scrollToTop() {
-        rv_list?.smoothScrollToTop()
+        binding.rvList.smoothScrollToTop()
     }
 
     fun onSortOrderActionSelected() {

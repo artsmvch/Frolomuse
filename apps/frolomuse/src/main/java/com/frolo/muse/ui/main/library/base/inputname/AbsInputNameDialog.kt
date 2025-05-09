@@ -5,20 +5,23 @@ import android.os.Bundle
 import android.view.Window
 import android.view.WindowManager
 import android.widget.Toast
-import com.frolo.muse.R
+import com.frolo.muse.databinding.DialogAbsInputNameBinding
 import com.frolo.muse.ui.base.BaseDialogFragment
 import com.frolo.muse.views.Anim
 import com.frolo.muse.views.getNonNullText
-import kotlinx.android.synthetic.main.dialog_abs_input_name.*
 
 
 abstract class AbsInputNameDialog : BaseDialogFragment() {
+    private var _binding: DialogAbsInputNameBinding? = null
+    private val binding: DialogAbsInputNameBinding get() = _binding!!
 
     final override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return super.onCreateDialog(savedInstanceState).apply {
             requestWindowFeature(Window.FEATURE_NO_TITLE)
 
-            setContentView(R.layout.dialog_abs_input_name)
+            _binding = DialogAbsInputNameBinding.inflate(layoutInflater)
+
+            setContentView(binding.root)
 
             setupDialogSizeByDefault(this)
 
@@ -26,29 +29,34 @@ abstract class AbsInputNameDialog : BaseDialogFragment() {
 
             window?.apply {
                 setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING)
-                edt_name.requestFocus()
+                binding.edtName.requestFocus()
                 // This simulates a click on the edit text
                 setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
             }
         }
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     private fun loadUI(dialog: Dialog) = with(dialog) {
-        tv_title.text = onGetTitle()
+        binding.tvTitle.text = onGetTitle()
 
-        til_name.hint = onGetHint()
+        binding.tilName.hint = onGetHint()
 
-        edt_name.setText(onGetInitialText())
+        binding.edtName.setText(onGetInitialText())
 
         // Intercept any touches on this overlay
-        inc_progress_overlay.setOnClickListener { }
+        binding.incProgressOverlay.root.setOnClickListener { }
 
-        btn_cancel.setOnClickListener {
+        binding.btnCancel.setOnClickListener {
             dismiss()
         }
 
-        btn_add.setOnClickListener {
-            val name = edt_name.getNonNullText()
+        binding.btnAdd.setOnClickListener {
+            val name = binding.edtName.getNonNullText()
             onSaveButtonClick(name)
         }
     }
@@ -59,16 +67,16 @@ abstract class AbsInputNameDialog : BaseDialogFragment() {
 
     protected fun displayInputError(err: Throwable) {
         dialog?.apply {
-            til_name.error = err.message
+            binding.tilName.error = err.message
         }
     }
 
     protected fun setIsLoading(isLoading: Boolean) {
         dialog?.apply {
             if (isLoading) {
-                Anim.fadeIn(inc_progress_overlay)
+                Anim.fadeIn(binding.incProgressOverlay.root)
             } else {
-                Anim.fadeOut(inc_progress_overlay)
+                Anim.fadeOut(binding.incProgressOverlay.root)
             }
         }
     }

@@ -9,11 +9,13 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.frolo.muse.R
 import com.frolo.arch.support.observeNonNull
+import com.frolo.muse.databinding.DialogHiddenFilesBinding
 import com.frolo.muse.ui.base.BaseDialogFragment
-import kotlinx.android.synthetic.main.dialog_hidden_files.*
 
 
 class HiddenFilesDialog : BaseDialogFragment() {
+    private var _binding: DialogHiddenFilesBinding? = null
+    private val binding: DialogHiddenFilesBinding get() = _binding!!
 
     private val viewModel: HiddenFilesViewModel by viewModel()
 
@@ -24,8 +26,9 @@ class HiddenFilesDialog : BaseDialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return super.onCreateDialog(savedInstanceState).apply {
-            setContentView(R.layout.dialog_hidden_files)
-            loadUI(this)
+            _binding = DialogHiddenFilesBinding.inflate(layoutInflater)
+            setContentView(binding.root)
+            loadUi(this)
 
             val metrics = resources.displayMetrics
             val width = metrics.widthPixels
@@ -34,12 +37,17 @@ class HiddenFilesDialog : BaseDialogFragment() {
         }
     }
 
-    private fun loadUI(dialog: Dialog) =  with(dialog) {
-        btn_ok.setOnClickListener {
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun loadUi(dialog: Dialog) = with(binding) {
+        btnOk.setOnClickListener {
             dismiss()
         }
 
-        rv_files.apply {
+        rvFiles.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = HiddenFileAdapter {
                 viewModel.onRemoveClick(it)
@@ -55,19 +63,19 @@ class HiddenFilesDialog : BaseDialogFragment() {
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
         hiddenFiles.observeNonNull(owner) {
             dialog?.apply {
-                (rv_files.adapter as? HiddenFileAdapter)?.submitList(it)
+                (binding.rvFiles.adapter as? HiddenFileAdapter)?.submitList(it)
             }
         }
 
         placeholderVisible.observeNonNull(owner) {
             dialog?.apply {
-                view_placeholder.visibility = if (it) View.VISIBLE else View.GONE
+                binding.viewPlaceholder.visibility = if (it) View.VISIBLE else View.GONE
             }
         }
 
         isLoading.observeNonNull(owner) {
             dialog?.apply {
-                pb_loading.visibility = if (it) View.VISIBLE else View.GONE
+                binding.pbLoading.visibility = if (it) View.VISIBLE else View.GONE
             }
         }
 

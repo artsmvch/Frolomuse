@@ -1,13 +1,15 @@
 package com.frolo.muse.ui.main.library.search.adapter
 
 import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
+import com.frolo.muse.R
 import com.frolo.music.model.Artist
 import com.frolo.muse.thumbnails.ThumbnailLoader
 import com.frolo.muse.ui.getNameString
 import com.frolo.muse.ui.getNumberOfAlbumsString
 import com.frolo.muse.ui.getNumberOfTracksString
-import kotlinx.android.synthetic.main.include_check.view.*
-import kotlinx.android.synthetic.main.item_artist.view.*
+import com.frolo.muse.views.checkable.CheckView
 
 
 class ArtistViewHolder(
@@ -15,7 +17,13 @@ class ArtistViewHolder(
     private val thumbnailLoader: ThumbnailLoader
 ): MediaAdapter.MediaViewHolder(itemView) {
 
-    override val viewOptionsMenu: View? = itemView.view_options_menu
+    override val viewOptionsMenu: View? = itemView.findViewById(R.id.view_options_menu)
+
+    private val tvArtistName: TextView = itemView.findViewById(R.id.tv_artist_name)
+    private val tvNumberOfAlbums: TextView = itemView.findViewById(R.id.tv_number_of_albums)
+    private val tvNumberOfTracks: TextView = itemView.findViewById(R.id.tv_number_of_tracks)
+    private val imvArtistArt: ImageView = itemView.findViewById(R.id.imv_artist_art)
+    private val imvCheck: CheckView = itemView.findViewById(R.id.imv_check)
 
     fun bind(
         item: Artist,
@@ -27,13 +35,13 @@ class ArtistViewHolder(
         with(itemView) {
             val res = resources
 
-            tv_artist_name.text = highlight(text = item.getNameString(resources), part = query)
-            tv_number_of_albums.text = item.getNumberOfAlbumsString(res)
-            tv_number_of_tracks.text = item.getNumberOfTracksString(res)
+            tvArtistName.text = highlight(text = item.getNameString(resources), part = query)
+            tvNumberOfAlbums.text = item.getNumberOfAlbumsString(res)
+            tvNumberOfTracks.text = item.getNumberOfTracksString(res)
 
-            thumbnailLoader.loadArtistThumbnail(item, imv_artist_art)
+            thumbnailLoader.loadArtistThumbnail(item, imvArtistArt)
 
-            imv_check.setChecked(selected, selectionChanged)
+            imvCheck.setChecked(selected, selectionChanged)
 
             isSelected = selected
         }

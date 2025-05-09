@@ -146,6 +146,10 @@ android {
         exclude 'META-INF/api_debug.kotlin_module'
         exclude 'META-INF/api_release.kotlin_module'
     }
+
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 dependencies {

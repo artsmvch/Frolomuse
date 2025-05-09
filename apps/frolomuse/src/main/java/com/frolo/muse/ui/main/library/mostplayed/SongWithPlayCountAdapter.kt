@@ -2,20 +2,14 @@ package com.frolo.muse.ui.main.library.mostplayed
 
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import com.frolo.core.ui.inflateChild
 import com.frolo.muse.R
-import com.frolo.music.model.SongWithPlayCount
 import com.frolo.muse.thumbnails.ThumbnailLoader
-import com.frolo.muse.ui.getArtistString
-import com.frolo.muse.ui.getDurationString
 import com.frolo.muse.ui.getLastTimePlayedString
-import com.frolo.muse.ui.getNameString
 import com.frolo.muse.ui.main.library.base.SongAdapter
-import com.frolo.muse.views.media.MediaConstraintLayout
-import kotlinx.android.synthetic.main.include_check.view.*
-import kotlinx.android.synthetic.main.include_song_art_container.view.*
-import kotlinx.android.synthetic.main.item_song_with_play_count.view.*
+import com.frolo.music.model.SongWithPlayCount
 
 
 class SongWithPlayCountAdapter constructor(
@@ -47,34 +41,18 @@ class SongWithPlayCountAdapter constructor(
         selected: Boolean,
         selectionChanged: Boolean
     ) {
-        val isPlayPosition = position == playPosition
+        super.onBindViewHolder(holder, position, item, selected, selectionChanged)
 
-        with(holder.itemView as MediaConstraintLayout) {
-            val res = resources
-            tv_song_name.text = item.getNameString(res)
-            tv_artist_name.text = item.getArtistString(res)
-            tv_duration.text = item.getDurationString()
-
-            if (item.hasLastPlayTime()) {
-                tv_play_count.text = res.getQuantityString(R.plurals.played_s_times, item.playCount, item.playCount)
-                tv_last_time_played.text = res.getString(R.string.last_time_s, item.getLastTimePlayedString(context))
-            } else {
-                tv_play_count.text = res.getString(R.string.not_played_yet)
-                tv_last_time_played.text = null
-            }
-
-            thumbnailLoader.loadSongThumbnail(item, imv_song_thumbnail)
-
-            imv_check.setChecked(selected, selectionChanged)
-
-            setChecked(selected)
-            setPlaying(isPlayPosition)
+        holder as SongWithPlayCountViewHolder
+        val ctx = holder.itemView.context
+        val res = holder.itemView.resources
+        if (item.hasLastPlayTime()) {
+            holder.tvPlayCount.text = res.getQuantityString(R.plurals.played_s_times, item.playCount, item.playCount)
+            holder.tvLastTimePlayed.text = res.getString(R.string.last_time_s, item.getLastTimePlayedString(ctx))
+        } else {
+            holder.tvPlayCount.text = res.getString(R.string.not_played_yet)
+            holder.tvLastTimePlayed.text = null
         }
-
-        holder.resolvePlayingPosition(
-            isPlayPosition = isPlayPosition,
-            isPlaying = isPlaying
-        )
     }
 
     class SongWithPlayCountViewHolder(
@@ -82,12 +60,14 @@ class SongWithPlayCountAdapter constructor(
         hasLastPlayTime: Boolean
     ): SongViewHolder(itemView) {
 
+        val tvLastTimePlayed: TextView = itemView.findViewById(R.id.tv_last_time_played)
+        val tvPlayCount: TextView = itemView.findViewById(R.id.tv_play_count)
+
         init {
-            itemView.tv_last_time_played.visibility =
-                if (hasLastPlayTime) View.VISIBLE else View.GONE
+            tvLastTimePlayed.visibility = if (hasLastPlayTime) View.VISIBLE else View.GONE
         }
 
-        override val viewOptionsMenu: View? = itemView.view_options_menu
+        override val viewOptionsMenu: View? = itemView.findViewById(R.id.view_options_menu)
     }
 
     private class SongWithPlayCountItemCallback : DiffUtil.ItemCallback<SongWithPlayCount>() {

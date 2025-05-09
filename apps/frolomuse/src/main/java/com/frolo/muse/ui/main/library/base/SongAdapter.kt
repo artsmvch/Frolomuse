@@ -2,22 +2,24 @@ package com.frolo.muse.ui.main.library.base
 
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import com.frolo.core.ui.inflateChild
 import com.frolo.muse.R
-import com.frolo.music.model.Song
 import com.frolo.muse.thumbnails.ThumbnailLoader
 import com.frolo.muse.ui.base.PlayStateAwareAdapter
+import com.frolo.muse.ui.getAlbumString
 import com.frolo.muse.ui.getArtistString
 import com.frolo.muse.ui.getDurationString
 import com.frolo.muse.ui.getNameString
+import com.frolo.muse.ui.getTrackNumberString
 import com.frolo.muse.views.MiniVisualizer
 import com.frolo.muse.views.SongThumbnailView
+import com.frolo.muse.views.checkable.CheckView
 import com.frolo.muse.views.media.MediaConstraintLayout
+import com.frolo.music.model.Song
 import com.l4digital.fastscroll.FastScroller
-import kotlinx.android.synthetic.main.include_check.view.*
-import kotlinx.android.synthetic.main.include_song_art_container.view.*
-import kotlinx.android.synthetic.main.item_song.view.*
 
 
 open class SongAdapter<S: Song> constructor(
@@ -39,23 +41,19 @@ open class SongAdapter<S: Song> constructor(
         selected: Boolean,
         selectionChanged: Boolean
     ) {
-
         val isPlayPosition = position == playPosition
-
-        with((holder.itemView as MediaConstraintLayout)) {
-            val res = resources
-            tv_song_name.text = item.getNameString(res)
-            tv_artist_name.text = item.getArtistString(res)
-            tv_duration.text = item.getDurationString()
-
-            thumbnailLoader.loadSongThumbnail(item, imv_song_thumbnail)
-
-            imv_check.setChecked(selected, selectionChanged)
-
+        val res = holder.itemView.resources
+        holder.tvSongName?.text = item.getNameString(res)
+        holder.tvSongNumber?.text = item.getTrackNumberString(res)
+        holder.tvAlbumName?.text = item.getAlbumString(res)
+        holder.tvArtistName?.text = item.getArtistString(res)
+        holder.tvDuration?.text = item.getDurationString()
+        holder.imvCheck?.setChecked(selected, selectionChanged)
+        holder.imvSongThumbnail?.also { thumbnailLoader.loadSongThumbnail(item, it) }
+        (holder.itemView as? MediaConstraintLayout)?.apply {
             setChecked(selected)
             setPlaying(isPlayPosition)
         }
-
         holder.resolvePlayingPosition(
             isPlaying = isPlaying,
             isPlayPosition = isPlayPosition
@@ -65,12 +63,20 @@ open class SongAdapter<S: Song> constructor(
     override fun getSectionText(position: Int) = sectionIndexAt(position) { title }
 
     open class SongViewHolder(itemView: View): BaseViewHolder(itemView) {
-        override val viewOptionsMenu: View? = itemView.view_options_menu
+        override val viewOptionsMenu: View? = itemView.findViewById(R.id.view_options_menu)
 
         private val songThumbnailView: SongThumbnailView? =
                 itemView.findViewById(R.id.imv_song_thumbnail)
         private val miniVisualizer: MiniVisualizer? =
                 itemView.findViewById(R.id.mini_visualizer)
+
+        val tvSongName: TextView? = itemView.findViewById(R.id.tv_song_name)
+        val tvSongNumber: TextView? = itemView.findViewById(R.id.tv_song_number)
+        val tvAlbumName: TextView? = itemView.findViewById(R.id.tv_album_name)
+        val tvArtistName: TextView? = itemView.findViewById(R.id.tv_artist_name)
+        val tvDuration: TextView? = itemView.findViewById(R.id.tv_duration)
+        val imvCheck: CheckView? = itemView.findViewById(R.id.imv_check)
+        val imvSongThumbnail: ImageView? = itemView.findViewById(R.id.imv_song_thumbnail)
 
         fun resolvePlayingPosition(
             isPlayPosition: Boolean,

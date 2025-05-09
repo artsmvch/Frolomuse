@@ -2,6 +2,8 @@ package com.frolo.muse.ui.main.library.genres
 
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import com.frolo.core.ui.inflateChild
 import com.frolo.muse.R
@@ -10,10 +12,9 @@ import com.frolo.muse.thumbnails.ThumbnailLoader
 import com.frolo.muse.ui.getNameString
 import com.frolo.muse.ui.main.library.base.BaseAdapter
 import com.frolo.muse.ui.main.library.base.sectionIndexAt
+import com.frolo.muse.views.checkable.CheckView
 import com.frolo.muse.views.media.MediaConstraintLayout
 import com.l4digital.fastscroll.FastScroller
-import kotlinx.android.synthetic.main.include_check.view.*
-import kotlinx.android.synthetic.main.item_genre.view.*
 
 
 class GenreAdapter(
@@ -37,21 +38,23 @@ class GenreAdapter(
             selected: Boolean,
             selectionChanged: Boolean
     ) {
-
-        with(holder.itemView as MediaConstraintLayout) {
+        with(holder) {
             val res = holder.itemView.resources
-            tv_genre_name.text = item.getNameString(res)
+            tvGenreName.text = item.getNameString(res)
 
-            thumbnailLoader.loadGenreThumbnail(item, imv_genre_art)
+            thumbnailLoader.loadGenreThumbnail(item, imvGenreArt)
 
-            imv_check.setChecked(selected, selectionChanged)
+            imvCheck.setChecked(selected, selectionChanged)
 
-            setChecked(selected)
+            (itemView as MediaConstraintLayout).setChecked(selected)
         }
     }
 
     class GenreViewHolder(itemView: View): BaseAdapter.BaseViewHolder(itemView) {
         override val viewOptionsMenu: View? = itemView.findViewById(R.id.view_options_menu)
+        val tvGenreName: TextView = itemView.findViewById(R.id.tv_genre_name)
+        val imvGenreArt: ImageView = itemView.findViewById(R.id.imv_genre_art)
+        val imvCheck: CheckView = itemView.findViewById(R.id.imv_check)
     }
 
     object GenreItemCallback: DiffUtil.ItemCallback<Genre>() {

@@ -3,16 +3,17 @@ package com.frolo.muse.ui.main.settings.library.duration
 import android.app.Dialog
 import android.os.Bundle
 import androidx.lifecycle.LifecycleOwner
-import com.frolo.muse.R
 import com.frolo.arch.support.observe
 import com.frolo.arch.support.observeNonNull
+import com.frolo.muse.databinding.DialogMinAudioFileDurationBinding
 import com.frolo.muse.ui.base.BaseDialogFragment
 import com.frolo.muse.ui.main.settings.limitNumberInput
 import com.frolo.muse.ui.main.settings.updateText
-import kotlinx.android.synthetic.main.dialog_min_audio_file_duration.*
 
 
 class MinAudioFileDurationDialog : BaseDialogFragment() {
+    private var _binding: DialogMinAudioFileDurationBinding? = null
+    private val binding: DialogMinAudioFileDurationBinding get() = _binding!!
 
     private val viewModel: MinAudioFileDurationViewModel by viewModel()
 
@@ -23,24 +24,30 @@ class MinAudioFileDurationDialog : BaseDialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return super.onCreateDialog(savedInstanceState).apply {
-            setContentView(R.layout.dialog_min_audio_file_duration)
+            _binding = DialogMinAudioFileDurationBinding.inflate(layoutInflater)
+            setContentView(binding.root)
             setupDialogSizeByDefault(this)
-            loadUI(this)
+            loadUi()
         }
     }
 
-    private fun loadUI(dialog: Dialog) = with(dialog) {
-        edt_minutes.limitNumberInput(9)
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 
-        edt_seconds.limitNumberInput(59)
+    private fun loadUi() = with(binding) {
+        edtMinutes.limitNumberInput(9)
 
-        btn_cancel.setOnClickListener {
+        edtSeconds.limitNumberInput(59)
+
+        btnCancel.setOnClickListener {
             viewModel.onCancelClicked()
         }
 
-        btn_save.setOnClickListener {
-            val typedMinutes = edt_minutes.text?.toString()?.toIntOrNull() ?: 0
-            val typedSeconds = edt_seconds.text?.toString()?.toIntOrNull() ?: 0
+        btnSave.setOnClickListener {
+            val typedMinutes = edtMinutes.text?.toString()?.toIntOrNull() ?: 0
+            val typedSeconds = edtSeconds.text?.toString()?.toIntOrNull() ?: 0
             viewModel.onSaveClicked(
                 typedMinutes = typedMinutes,
                 typedSeconds = typedSeconds
@@ -51,13 +58,13 @@ class MinAudioFileDurationDialog : BaseDialogFragment() {
     private fun observeViewModel(owner: LifecycleOwner) = with(viewModel) {
         minutes.observe(owner) {
             dialog?.apply {
-                edt_minutes.updateText(it?.toString())
+                binding.edtMinutes.updateText(it?.toString())
             }
         }
 
         seconds.observe(owner) {
             dialog?.apply {
-                edt_seconds.updateText(it?.toString())
+                binding.edtSeconds.updateText(it?.toString())
             }
         }
 
