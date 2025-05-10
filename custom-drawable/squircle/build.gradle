@@ -1,6 +1,5 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 
 android {
     namespace = 'com.frolo.customdrawable'
@@ -18,6 +17,16 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+}
+
+kotlin {
+    jvmToolchain(buildtools.versions.java.get().toInteger())
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(buildtools.versions.java.get()))
     }
 }
 

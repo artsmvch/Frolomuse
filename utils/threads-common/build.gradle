@@ -17,9 +17,12 @@ android {
         release {
         }
     }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+}
+
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(buildtools.versions.java.get()))
     }
 }
 

@@ -1,7 +1,6 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
-    id 'kotlin-android-extensions'
 }
 
 def version_code = 11
@@ -78,12 +77,15 @@ android {
         lintConfig file("$projectDir/lint.xml")
         baseline file("lint-baseline.xml")
     }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = '1.8'
+}
+
+kotlin {
+    jvmToolchain(buildtools.versions.java.get().toInteger())
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(buildtools.versions.java.get()))
     }
 }
 

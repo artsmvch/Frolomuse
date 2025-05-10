@@ -4,7 +4,6 @@ import java.nio.file.StandardCopyOption
 
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.frolo.plugin.bundle_check'
 apply plugin: 'com.frolo.plugin.task_utils'
@@ -133,15 +132,6 @@ android {
         }
     }
 
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8.toString()
-    }
-
     packagingOptions {
         exclude 'META-INF/api_debug.kotlin_module'
         exclude 'META-INF/api_release.kotlin_module'
@@ -149,6 +139,16 @@ android {
 
     buildFeatures {
         viewBinding true
+    }
+}
+
+kotlin {
+    jvmToolchain(buildtools.versions.java.get().toInteger())
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(buildtools.versions.java.get()))
     }
 }
 

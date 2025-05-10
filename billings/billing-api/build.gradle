@@ -3,9 +3,14 @@ plugins {
     id 'org.jetbrains.kotlin.jvm'
 }
 
+kotlin {
+    jvmToolchain(buildtools.versions.java.get().toInteger())
+}
+
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(buildtools.versions.java.get()))
+    }
 }
 
 dependencies {
