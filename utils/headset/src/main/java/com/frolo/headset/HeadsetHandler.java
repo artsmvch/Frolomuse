@@ -1,6 +1,9 @@
 package com.frolo.headset;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.IntentFilter;
+import android.os.Build;
 import android.util.Log;
 
 import androidx.annotation.MainThread;
@@ -107,8 +110,17 @@ public final class HeadsetHandler {
     private void _subscribe(Context context) {
         mBluetoothHeadsetState.set(BluetoothHeadsetHandler.getCurrentState());
         mJackState.set(HeadsetJackHandler.getCurrentState(context));
-        context.registerReceiver(mJackHandler, HeadsetJackHandler.createIntentFilter());
-        context.registerReceiver(mBluetoothHeadsetHandler, BluetoothHeadsetHandler.createIntentFilter());
+        registerExportedReceiver(context, mJackHandler, HeadsetJackHandler.createIntentFilter());
+        registerExportedReceiver(context, mBluetoothHeadsetHandler, BluetoothHeadsetHandler.createIntentFilter());
+    }
+
+    private void registerExportedReceiver(
+            Context context, BroadcastReceiver receiver, IntentFilter filter) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            context.registerReceiver(receiver, filter, Context.RECEIVER_EXPORTED);
+        } else {
+            context.registerReceiver(receiver, filter);
+        }
     }
 
     private void _dispose(Context context) {
