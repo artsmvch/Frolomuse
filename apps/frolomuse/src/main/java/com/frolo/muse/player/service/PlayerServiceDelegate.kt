@@ -5,7 +5,6 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
-import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.pm.ServiceInfo
@@ -27,7 +26,7 @@ import com.frolo.muse.player.PlayerHolder
 import com.frolo.muse.player.PlayerStateRestorer
 import com.frolo.muse.interactor.media.favourite.ChangeSongFavStatusUseCase
 import com.frolo.muse.repository.Preferences
-import com.frolo.muse.sleeptimer.PlayerSleepTimer
+import com.frolo.muse.sleeptimer.SleepTimer
 import com.frolo.muse.ui.main.MainActivity
 import com.frolo.music.model.Song
 import com.frolo.player.Player
@@ -43,7 +42,7 @@ import io.reactivex.subjects.BehaviorSubject
 
 internal class PlayerServiceDelegate(
     private val service: Service
-): PlayerNotificationSender {
+): PlayerNotificationSender, SleepTimer.TimerTriggerListener {
 
     private val internalDisposables = CompositeDisposable()
 
@@ -79,8 +78,6 @@ internal class PlayerServiceDelegate(
             // no actions
         }
     )
-
-    private var sleepTimerHandler: BroadcastReceiver? = null
 
     fun onBind(intent: Intent?): IBinder {
         isBound = true
@@ -123,10 +120,7 @@ internal class PlayerServiceDelegate(
         }
         buildPlayerInstanceAsync()
         headsetHandler.subscribe(service)
-        sleepTimerHandler = PlayerSleepTimer.registerHandler(service) {
-            Logger.d(TAG, "Sleep Timer triggered: pausing the playback")
-            playerInstance?.pause()
-        }
+        SleepTimer.getInstance().addListener(this)
         withCrashlytics {
             setCustomKey(CRASHLYTICS_KEY_SERVICE_CREATED_ONCE, true)
             setCustomKey(CRASHLYTICS_KEY_SERVICE_CREATED, true)
@@ -193,7 +187,7 @@ internal class PlayerServiceDelegate(
         playerInstance?.shutdown()
         mediaSession.release()
         headsetHandler.dispose()
-        sleepTimerHandler?.also { PlayerSleepTimer.unregisterHandler(service, it) }
+        SleepTimer.getInstance().removeListener(this)
         internalDisposables.dispose()
         withCrashlytics {
             setCustomKey(CRASHLYTICS_KEY_SERVICE_CREATED, false)
@@ -462,5 +456,10 @@ internal class PlayerServiceDelegate(
                 .putExtra(EXTRA_CMD, cmd)
                 .putExtra(EXTRA_IS_WIDGET_CALL, true)
         }
+    }
+
+    override fun onTimerTriggered() {
+        Logger.d(TAG, "Sleep Timer triggered: pausing the playback")
+        playerInstance?.pause()
     }
 }

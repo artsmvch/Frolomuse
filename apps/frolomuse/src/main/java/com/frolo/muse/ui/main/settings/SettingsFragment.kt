@@ -28,7 +28,7 @@ import com.frolo.muse.repository.AppearancePreferences
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.rx.disposeOnDestroyOf
-import com.frolo.muse.sleeptimer.PlayerSleepTimer
+import com.frolo.muse.sleeptimer.SleepTimer
 import com.frolo.muse.startup.AppDebugController
 import com.frolo.muse.ui.*
 import com.frolo.muse.ui.base.FragmentContentInsetsListener
@@ -346,7 +346,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
 
     override fun onTimeSelected(hours: Int, minutes: Int, seconds: Int) {
         val context = context ?: return
-        if (PlayerSleepTimer.setAlarm(context, hours, minutes, seconds)) {
+        if (SleepTimer.getInstance().setTimer(hours, minutes, seconds)) {
             eventLogger.logSleepTimerSet(hours = hours, minutes = minutes, seconds = seconds)
             activity?.let { Toast.makeText(it, R.string.sleep_timer_is_set, Toast.LENGTH_SHORT).show() }
         }
@@ -355,7 +355,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
     private fun processSleepTimer() {
         val host = activity ?: return
 
-        if (PlayerSleepTimer.isTimerSetUp(host)) {
+        if (SleepTimer.getInstance().isTimerSetUp) {
             val l = DialogInterface.OnClickListener { _, which ->
                 when (which) {
                     DialogInterface.BUTTON_POSITIVE -> showSleepTimer()
@@ -378,8 +378,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
     }
 
     private fun resetCurrentSleepTimer() {
-        val host = context ?: return
-        if (PlayerSleepTimer.resetCurrentSleepTimer(host)) {
+        if (SleepTimer.getInstance().resetCurrentTimer()) {
             Toast.makeText(context, R.string.sleep_timer_is_off, Toast.LENGTH_SHORT).show()
         }
     }
