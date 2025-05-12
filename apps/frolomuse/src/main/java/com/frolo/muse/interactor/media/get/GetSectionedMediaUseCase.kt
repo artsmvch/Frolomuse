@@ -1,5 +1,6 @@
 package com.frolo.muse.interactor.media.get
 
+import com.frolo.collections.reversedCompat
 import com.frolo.muse.model.Library
 import com.frolo.music.model.Media
 import com.frolo.muse.model.menu.SortOrderMenu
@@ -87,7 +88,7 @@ abstract class GetSectionedMediaUseCase <E: Media> constructor(
                     .map { list -> removeDuplicatesIfNecessary(list) }
                     .map { list ->
                         if (isReversed) {
-                            list.reversed()
+                            list.reversedCompat()
                         } else list
                     }
         }

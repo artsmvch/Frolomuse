@@ -37,7 +37,7 @@ object FirebaseRemoteConfigCache {
                 val newProcessor = BehaviorProcessor.create<String>().toSerialized()
                 valueProcessors[key] = newProcessor
                 getSourceImpl(key, true, MIN_FETCH_INTERVAL_IN_SECONDS)
-                    .timeout(3L, TimeUnit.SECONDS)
+                    .timeout(10L, TimeUnit.SECONDS)
                     .doOnSubscribe { disposable -> internalDisposables.add(disposable) }
                     .map { value -> value.asString() }
                     .doOnError { error ->

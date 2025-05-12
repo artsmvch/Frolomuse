@@ -1,5 +1,6 @@
 package com.frolo.muse.interactor.media.get
 
+import com.frolo.collections.reversedCompat
 import com.frolo.muse.model.Library
 import com.frolo.music.model.MyFile
 import com.frolo.music.repository.MyFileRepository
@@ -45,7 +46,7 @@ class GetAllMyFilesUseCase @Inject constructor(
 
                 return@switchMap source.switchMap { list ->
                     preferences.isSortOrderReversedForSection(section).map { reversed ->
-                        if (reversed) list.reversed() else list
+                        if (reversed) list.reversedCompat() else list
                     }
                 }
             }

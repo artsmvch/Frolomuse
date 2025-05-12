@@ -71,6 +71,7 @@ include ':logger:api'
 include ':logger:impl'
 
 // Utils
+include ':utils:collections'
 include ':utils:debug-common'
 include ':utils:threads-common'
 include ':utils:rx'

@@ -1,0 +1,11 @@
+plugins {
+    id 'java'
+    id 'kotlin'
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(buildtools.versions.java.get()))
+    }
+}
+
