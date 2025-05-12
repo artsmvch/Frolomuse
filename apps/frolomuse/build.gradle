@@ -214,6 +214,7 @@ dependencies {
     implementation project(path: ':logger:impl')
 
     // Utils
+    implementation project(path: ':utils:collections')
     implementation project(path: ':utils:debug-common')
     implementation project(path: ':utils:threads-common')
     implementation project(path: ':utils:rx')
