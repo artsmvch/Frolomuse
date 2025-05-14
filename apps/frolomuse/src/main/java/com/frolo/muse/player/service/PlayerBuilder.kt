@@ -54,7 +54,7 @@ class PlayerBuilder @Inject constructor(
             .setDebug(BuildInfo.isDebug())
             .setMediaPlayerHook(MediaPlayerHookImpl(audioFx2Impl))
             .setPlayerJournal(playerJournal)
-            .setUseWakeLocks(preParams.wakeLockEnabled)
+            .setUseWakeLocks(true)
             .setRepeatMode(preParams.repeatMode)
             .setShuffleMode(preParams.shuffleMode)
             .setPlaybackFadingStrategy(preParams.playbackFadingStrategy)
@@ -83,18 +83,10 @@ class PlayerBuilder @Inject constructor(
     private fun loadPreParams(timeoutMillis: Long): PreParams {
         val countDownLatch = CountDownLatch(2)
 
-        val wakeLockEnabledRef = AtomicBoolean(false)
         val playbackFadingParamsRef = AtomicReference<PlaybackFadingParams>(null)
 
         val disposables = CompositeDisposable()
-        remoteConfigRepository.isPlayerWakeLockEnabled()
-            .timeout(timeoutMillis, TimeUnit.MILLISECONDS)
-            .doFinally { countDownLatch.countDown() }
-            .subscribe(
-                { enabled -> wakeLockEnabledRef.set(enabled) },
-                { err -> logOrFail(err) }
-            )
-            .let(disposables::add)
+
         preferences.playbackFadingParams
             .first(PlaybackFadingParams.none())
             .timeout(timeoutMillis, TimeUnit.MILLISECONDS)
@@ -115,7 +107,6 @@ class PlayerBuilder @Inject constructor(
         val playbackFadingParams = playbackFadingParamsRef.get() ?: PlaybackFadingParams.none()
 
         return PreParams(
-            wakeLockEnabled = wakeLockEnabledRef.get(),
             playbackFadingStrategy = PlaybackFadingStrategy
                 .withSmartStaticInterval(playbackFadingParams.interval),
             repeatMode = preferences.loadRepeatMode(),
@@ -129,7 +120,6 @@ class PlayerBuilder @Inject constructor(
     }
 
     private class PreParams(
-        val wakeLockEnabled: Boolean,
         val playbackFadingStrategy: PlaybackFadingStrategy,
         val repeatMode: Int,
         val shuffleMode: Int
