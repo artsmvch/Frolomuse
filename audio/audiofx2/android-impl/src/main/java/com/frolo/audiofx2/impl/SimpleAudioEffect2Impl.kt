@@ -101,7 +101,7 @@ internal abstract class SimpleAudioEffect2Impl<E: android.media.audiofx.AudioEff
         set(value) = synchronized(lock) {
             state.setEnabled(value)
             engine
-                ?.runCatching { this.enabled = value }
+                ?.runCatching { setEnabledOrThrow(value) }
                 ?.onFailure { errorHandler.onAudioEffectError(this, it) }
             enableStatusChangeListenerRegistry.dispatchEnableStatusChange(value)
         }

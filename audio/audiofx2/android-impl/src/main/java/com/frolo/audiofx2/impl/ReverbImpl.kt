@@ -47,7 +47,7 @@ internal class ReverbImpl constructor(
         set(value) = synchronized(lock) {
             state.setEnabled(value)
             engine
-                ?.runCatching { this.enabled = value }
+                ?.runCatching { setEnabledOrThrow(value) }
                 ?.onFailure { errorHandler.onAudioEffectError(this, it) }
             enableStatusChangeListenerRegistry.dispatchEnableStatusChange(enabled = value)
         }
