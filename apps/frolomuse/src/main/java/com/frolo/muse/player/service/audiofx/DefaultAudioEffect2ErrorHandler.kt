@@ -1,7 +1,8 @@
 package com.frolo.muse.player.service.audiofx
 
 import android.widget.Toast
-import com.frolo.audiofx.AudioFxImpl
+import com.frolo.audiofx2.AudioEffect2
+import com.frolo.audiofx2.impl.AudioEffect2ErrorHandler
 import com.frolo.core.ui.ApplicationWatcher
 import com.frolo.muse.BuildInfo
 import com.frolo.muse.rx.newSingleThreadScheduler
@@ -13,16 +14,15 @@ import io.reactivex.Scheduler
 import io.reactivex.disposables.CompositeDisposable
 
 
-class DefaultAudioFxErrorHandler : AudioFxImpl.ErrorHandler {
+internal class DefaultAudioEffect2ErrorHandler : AudioEffect2ErrorHandler {
 
     private val disposables = CompositeDisposable()
 
     private val workerScheduler: Scheduler by lazy {
-        newSingleThreadScheduler("DefaultAudioFxErrorHandler")
+        newSingleThreadScheduler("DefaultAudioEffect2ErrorHandler")
     }
 
-    override fun onError(error: Throwable?) {
-        error ?: return
+    override fun onAudioEffectError(effect: AudioEffect2, error: Throwable) {
         dispatchErrorToFirebaseAsync(error)
         toastError(error)
     }
@@ -41,7 +41,7 @@ class DefaultAudioFxErrorHandler : AudioFxImpl.ErrorHandler {
         ApplicationWatcher.foregroundActivity?.runOnUiThread {
             val activity = ApplicationWatcher.foregroundActivity
             if (activity != null && !ActivityUtils.isFinishingOrDestroyed(activity)) {
-                Toast.makeText(activity, "AudioFx error: $error", Toast.LENGTH_LONG).show()
+                Toast.makeText(activity, "AudioFx2 error: $error", Toast.LENGTH_LONG).show()
             }
         }
     }

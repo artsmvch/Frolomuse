@@ -31,7 +31,7 @@ internal class EqualizerImpl(
         set(value) = synchronized(lock) {
             state.setEnabled(value)
             engine
-                ?.runCatching { this.enabled = value }
+                ?.runCatching { setEnabledOrThrow(value) }
                 ?.onFailure { errorHandler.onAudioEffectError(this, it) }
             enableStatusChangeListenerRegistry.dispatchEnableStatusChange(value)
         }

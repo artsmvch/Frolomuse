@@ -26,7 +26,7 @@ internal class HapticGeneratorApi31Impl(
         }
         set(value) = synchronized(lock) {
             engine
-                ?.runCatching { enabled = value }
+                ?.runCatching { setEnabledOrThrow(value) }
                 ?.onFailure { errorHandler.onAudioEffectError(this, it) }
             enableStatusChangeListenerRegistry.dispatchEnableStatusChange(value)
         }

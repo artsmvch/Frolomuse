@@ -12,6 +12,7 @@ import com.frolo.muse.di.ApplicationScope
 import com.frolo.muse.memory.MemoryWatcherRegistry
 import com.frolo.muse.memory.MemoryWatcherRegistryStub
 import com.frolo.muse.player.PlayerWrapper
+import com.frolo.muse.player.service.audiofx.DefaultAudioEffect2ErrorHandler
 import com.frolo.muse.router.AppRouter
 import dagger.Module
 import dagger.Provides
@@ -49,7 +50,7 @@ class ApplicationModule(private val frolomuseApp: FrolomuseApp) {
     @ApplicationScope
     @Provides
     fun provideAudioFx2Impl(context: Context): AudioFx2Impl {
-        val audioFx2 = AudioFx2Impl.obtain(frolomuseApp)
+        val audioFx2 = AudioFx2Impl.obtain(frolomuseApp, DefaultAudioEffect2ErrorHandler())
         AudioFx2Migrator(context, audioFx2).migrate()
         return audioFx2
     }
