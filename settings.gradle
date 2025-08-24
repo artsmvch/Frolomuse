@@ -33,6 +33,7 @@ include ':feature:visualizer'
 
 // Advertising
 include ':ads:admob'
+include ':ads:onexbet'
 
 // Core
 include ':core'
