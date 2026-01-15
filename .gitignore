@@ -8,6 +8,7 @@
 .idea/misc.xml
 .DS_Store
 /build
+**/build
 /captures
 .externalNativeBuild
 appkeystore.properties

@@ -17,26 +17,31 @@ import java.util.Objects;
  * Encapsulates the data source, media kind, and source-specific identifier.
  */
 public final class MediaId implements Serializable {
-    
-    @IntDef({SOURCE_LOCAL})
+
+    @IntDef({SOURCE_LOCAL, SOURCE_AUDIUS})
     @Retention(RetentionPolicy.SOURCE)
     @interface Source { }
-    
+
     /**
      * Local media storage (device storage)
      */
     public static final int SOURCE_LOCAL = 0;
-    
+
+    /**
+     * Remote Audius service
+     */
+    public static final int SOURCE_AUDIUS = 1;
+
     @IntDef({Media.NONE, Media.SONG, Media.ALBUM, Media.ARTIST, Media.GENRE, Media.PLAYLIST, Media.MY_FILE, Media.MEDIA_FILE})
     @Retention(RetentionPolicy.SOURCE)
     @interface Kind { }
-    
+
     public static final long NO_ID = -1;
-    
+
     private final @Source int source;
     private final @Kind int kind;
     private final long sourceId;
-    
+
     public MediaId(@Source int source, @Kind int kind, long sourceId) {
         if (source < 0) {
             throw new IllegalArgumentException("Source must be non-negative");
@@ -48,28 +53,28 @@ public final class MediaId implements Serializable {
         this.kind = kind;
         this.sourceId = sourceId;
     }
-    
+
     /**
      * @return the data source of this media item
      */
     public @Source int getSource() {
         return source;
     }
-    
+
     /**
      * @return the kind of media
      */
     public @Kind int getKind() {
         return kind;
     }
-    
+
     /**
      * @return the source-specific identifier
      */
     public long getSourceId() {
         return sourceId;
     }
-    
+
     /**
      * @return the uniform resource identifier (URI) for this media item
      */
@@ -103,6 +108,8 @@ public final class MediaId implements Serializable {
                         return "unknown://" + source + "/" + kind + "/" + sourceId;
                 }
                 return uri.toString();
+            case SOURCE_AUDIUS:
+                return "https://api.audius.co/v1/tracks/" + sourceId + "/stream";
             default:
                 return "unknown://" + source + "/" + kind + "/" + sourceId;
         }
@@ -136,10 +143,11 @@ public final class MediaId implements Serializable {
     private static String sourceToString(int source) {
         switch (source) {
             case SOURCE_LOCAL: return "LOCAL";
+            case SOURCE_AUDIUS: return "AUDIUS";
             default: return "UNKNOWN(" + source + ")";
         }
     }
-    
+
     private static String kindToString(int kind) {
         switch (kind) {
             case Media.NONE: return "NONE";
@@ -153,12 +161,18 @@ public final class MediaId implements Serializable {
             default: return "UNKNOWN(" + kind + ")";
         }
     }
-    
+
     /**
      * Creates a MediaId for local media
      */
     public static MediaId createLocal(@Kind int kind, long sourceId) {
         return new MediaId(SOURCE_LOCAL, kind, sourceId);
     }
-    
+
+    /**
+     * Creates a MediaId for Audius media
+     */
+    public static MediaId createAudius(@Kind int kind, long sourceId) {
+        return new MediaId(SOURCE_AUDIUS, kind, sourceId);
+    }
 }

@@ -30,6 +30,7 @@ include ':feature:onboarding'
 include ':feature:audiofx2'
 include ':feature:remote-search'
 include ':feature:visualizer'
+include ':feature:audius'
 
 // Advertising
 include ':ads:admob'

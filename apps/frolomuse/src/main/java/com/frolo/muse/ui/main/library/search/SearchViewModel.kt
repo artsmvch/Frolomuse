@@ -8,6 +8,7 @@ import com.frolo.muse.interactor.media.favourite.ChangeFavouriteUseCase
 import com.frolo.muse.interactor.media.favourite.GetIsFavouriteUseCase
 import com.frolo.muse.interactor.media.get.SearchMediaUseCase
 import com.frolo.muse.interactor.media.shortcut.CreateShortcutUseCase
+import com.frolo.muse.audius.usecase.SearchAudiusTracksUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.logMediaSearchUsed
 import com.frolo.music.model.Media
@@ -15,6 +16,7 @@ import com.frolo.muse.permission.PermissionChecker
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.main.library.base.AbsMediaCollectionViewModel
 import io.reactivex.processors.PublishProcessor
+import io.reactivex.Single
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
@@ -22,6 +24,7 @@ import javax.inject.Inject
 class SearchViewModel @Inject constructor(
     permissionChecker: PermissionChecker,
     searchMediaUseCase: SearchMediaUseCase,
+    searchAudiusTracksUseCase: SearchAudiusTracksUseCase,
     getMediaMenuUseCase: GetMediaMenuUseCase<Media>,
     clickMediaUseCase: ClickMediaUseCase<Media>,
     playMediaUseCase: PlayMediaUseCase<Media>,
@@ -56,10 +59,16 @@ class SearchViewModel @Inject constructor(
             publisher.debounce(200L, TimeUnit.MILLISECONDS)
                 .filter { query -> query.isNotEmpty() }
                 .distinctUntilChanged()
-                .switchMap { query ->
-                    searchMediaUseCase
-                        .search(query)
-                        .map { items -> query to items }
+                .flatMapSingle { query ->
+                    val localSearch = searchMediaUseCase.search(query).firstOrError()
+                    val audiusSearch = searchAudiusTracksUseCase.search(query)
+                    
+                    Single.zip(localSearch, audiusSearch) { localResults, audiusResults ->
+                        val combinedResults = mutableListOf<Media>()
+                        combinedResults.addAll(localResults)
+                        combinedResults.addAll(audiusResults)
+                        query to combinedResults
+                    }
                 }
                 .observeOn(schedulerProvider.main())
                 .subscribeFor { pair ->
