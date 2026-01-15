@@ -168,6 +168,7 @@ dependencies {
     implementation project(path: ':feature:onboarding')
     implementation project(path: ':feature:audiofx2')
     implementation project(path: ':feature:visualizer')
+    implementation project(path: ':feature:audius')
 
     // Core
     implementation project(path: ':core')
@@ -280,6 +281,16 @@ dependencies {
     // RxJava2
     implementation deps.rxJava2.rxJava
     implementation deps.rxJava2.rxAndroid
+
+    // JSON parsing
+    implementation deps.gson.gson
+
+    // Network
+    implementation deps.okhttp.okhttp
+    implementation deps.okhttp.logging
+    implementation deps.retrofit.runtime
+    implementation deps.retrofit.gson
+    implementation deps.retrofit.rxJava2
 
     // DI
     compileOnly deps.javax.annotationApi

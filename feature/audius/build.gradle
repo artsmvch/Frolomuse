@@ -1,0 +1,59 @@
+plugins {
+    id 'com.android.library'
+    id 'org.jetbrains.kotlin.android'
+    id 'kotlin-kapt'
+}
+
+android {
+    namespace = 'com.frolo.muse.audius'
+    compileSdkVersion versions.compileSdk
+
+    defaultConfig {
+        minSdkVersion versions.minSdk
+        targetSdkVersion versions.targetSdk
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+kotlin {
+    jvmToolchain(buildtools.versions.java.get().toInteger())
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(buildtools.versions.java.get()))
+    }
+}
+
+dependencies {
+    implementation project(path: ':core')
+    implementation project(path: ':music-data:model')
+    implementation project(path: ':utils:rx')
+    implementation project(path: ':audio:player:api')
+
+    // Network
+    implementation deps.retrofit.runtime
+    implementation deps.retrofit.gson
+    implementation deps.retrofit.rxJava2
+    implementation deps.okhttp.logging
+
+    // RxJava
+    implementation deps.rxJava2.rxJava
+    implementation deps.rxJava2.rxAndroid
+
+    // JSON parsing
+    implementation deps.gson.gson
+
+    // DI
+    implementation deps.di.dagger
+    kapt deps.di.daggerCompiler
+}

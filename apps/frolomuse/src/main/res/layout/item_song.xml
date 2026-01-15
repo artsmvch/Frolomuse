@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.frolo.muse.views.media.MediaConstraintLayout
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minHeight="@dimen/preferred_item_height"
     android:background="@drawable/bg_item_media">
 
-    <include layout="@layout/include_song_art_container"
+    <include
         android:id="@+id/include_song_art_container"
+        layout="@layout/include_song_art_container"
         android:layout_width="@dimen/media_item_art_size"
         android:layout_height="@dimen/media_item_art_size"
         android:layout_margin="@dimen/media_item_art_margin"
@@ -19,18 +20,18 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/view_options_menu"
+        android:layout_width="@dimen/options_menu_width"
+        android:layout_height="60dp"
         android:paddingTop="7dp"
         android:paddingBottom="7dp"
         android:paddingLeft="11dp"
         android:paddingRight="23dp"
-        android:layout_width="@dimen/options_menu_width"
-        android:layout_height="60dp"
         android:src="@drawable/ic_options_menu"
         android:tint="?attr/iconTintMuted"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:ignore="RtlHardcoded" />
+        tools:ignore="RtlHardcoded"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_duration"
@@ -43,7 +44,7 @@
         app:layout_constraintEnd_toStartOf="@id/view_options_menu"
         app:layout_constraintTop_toTopOf="@id/view_options_menu"
         app:layout_constraintBottom_toBottomOf="@id/view_options_menu"
-        tools:text="3:57:00"/>
+        tools:text="3:57"/>
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_song_name"
@@ -55,8 +56,8 @@
         android:lines="1"
         android:ellipsize="end"
         app:layout_constraintStart_toEndOf="@id/include_song_art_container"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toStartOf="@id/tv_duration"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/tv_artist_name"
         app:layout_constraintVertical_chainStyle="packed"
         tools:text="Song name"/>
@@ -69,12 +70,31 @@
         android:lines="1"
         android:ellipsize="end"
         app:layout_constraintStart_toStartOf="@id/tv_song_name"
+        app:layout_constraintEnd_toStartOf="@id/tv_duration"
         app:layout_constraintTop_toBottomOf="@id/tv_song_name"
-        app:layout_constraintEnd_toEndOf="@id/tv_song_name"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:text="Artist name" />
+        app:layout_constraintBottom_toTopOf="@id/tv_audius_badge"
+        tools:text="Artist name"/>
 
-    <include layout="@layout/include_check"
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv_audius_badge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:paddingStart="6dp"
+        android:paddingEnd="6dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        android:text="Audius"
+        android:textSize="10sp"
+        android:textColor="@android:color/white"
+        android:background="@drawable/bg_audius_badge"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@id/tv_song_name"
+        app:layout_constraintTop_toBottomOf="@id/tv_artist_name"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <include
+        layout="@layout/include_check"
         android:layout_width="@dimen/list_item_check_size"
         android:layout_height="@dimen/list_item_check_size"
         app:layout_constraintEnd_toEndOf="@id/include_song_art_container"

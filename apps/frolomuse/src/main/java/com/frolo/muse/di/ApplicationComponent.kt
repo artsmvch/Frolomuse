@@ -4,7 +4,14 @@ import android.app.Activity
 import android.app.Service
 import android.content.Context
 import com.frolo.audiofx2.AudioFx2
-import com.frolo.muse.di.modules.*
+import com.frolo.muse.di.modules.AudiusIntegrationModule
+import com.frolo.muse.di.modules.ApplicationModule
+import com.frolo.muse.di.modules.BillingModule
+import com.frolo.muse.di.modules.LocalDataModule
+import com.frolo.muse.di.modules.RemoteDataModule
+import com.frolo.muse.di.modules.MiscModule
+import com.frolo.muse.di.modules.ActivityModule
+import com.frolo.muse.di.modules.ServiceModule
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.repository.FirebasePreferences
 import com.frolo.muse.repository.OnboardingPreferences
@@ -23,7 +30,8 @@ import java.lang.IllegalArgumentException
         LocalDataModule::class,
         RemoteDataModule::class,
         BillingModule::class,
-        MiscModule::class
+        MiscModule::class,
+        AudiusIntegrationModule::class
     ]
 )
 interface ApplicationComponent {

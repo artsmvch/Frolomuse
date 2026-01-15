@@ -98,6 +98,21 @@ ext {
             daggerCompiler:         "com.google.dagger:dagger-compiler:2.44.2"
         ],
 
+        retrofit: [
+            runtime:                "com.squareup.retrofit2:retrofit:2.9.0",
+            gson:                   "com.squareup.retrofit2:converter-gson:2.9.0",
+            rxJava2:                "com.squareup.retrofit2:adapter-rxjava2:2.9.0"
+        ],
+
+        okhttp: [
+            okhttp:                 "com.squareup.okhttp3:okhttp:4.10.0",
+            logging:                "com.squareup.okhttp3:logging-interceptor:4.10.0"
+        ],
+
+        gson: [
+            gson:                   "com.google.code.gson:gson:2.10.1"
+        ],
+
         work: [
             runtime:            "androidx.work:work-runtime-ktx:2.7.1"
         ],
