@@ -27,7 +27,7 @@ class ClickMediaUseCase <E: Media> constructor(
         associatedMediaItem: Media?
     ): Completable {
         val currentAudioSource = player.getCurrent()
-        return if (currentAudioSource?.id == target.id) {
+        return if (currentAudioSource?.getURI() == target.getMediaId().getURI()) {
             Completable.fromAction { player.toggle() }
         } else {
             createAudioSourceQueue(songs, associatedMediaItem)
@@ -38,7 +38,7 @@ class ClickMediaUseCase <E: Media> constructor(
         }
     }
 
-    fun click(item: E, fromCollection: Collection<E>, associatedMediaItem: Media? = null): Completable = when(item.kind) {
+    fun click(item: E, fromCollection: Collection<E>, associatedMediaItem: Media? = null): Completable = when(item.getMediaId().getKind()) {
         Media.SONG -> {
             Single.fromCallable { fromCollection.filterIsInstance<Song>() }
                 .subscribeOn(schedulerProvider.computation())

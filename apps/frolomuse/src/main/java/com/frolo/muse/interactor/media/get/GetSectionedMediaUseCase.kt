@@ -25,7 +25,7 @@ abstract class GetSectionedMediaUseCase <E: Media> constructor(
     abstract fun getSortedCollection(sortOrder: String): Flowable<List<E>>
 
     /**
-     * Remove duplicates from [list] if necessary. The default implementation uses [Media.getId] to distinct items,
+     * Remove duplicates from [list] if necessary. The default implementation uses [Media.getMediaId].getURI() to distinct items,
      * but not for sections such as [Library.FOLDERS] and [Library.MIXED].
      * If you don't need to remove duplicates, just return the given list.
      */
@@ -36,7 +36,7 @@ abstract class GetSectionedMediaUseCase <E: Media> constructor(
             // Mixed media list may contain media items with different type but same ID
             // so we cannot distinct them
             Library.MIXED -> list
-            else -> list.distinctBy { item -> item.id }
+            else -> list.distinctBy { item -> item.getMediaId().getURI() }
         }
     }
 

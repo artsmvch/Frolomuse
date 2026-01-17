@@ -1,6 +1,6 @@
 package com.frolo.muse.player.service.observers
 
-import com.frolo.muse.common.toSong
+import com.frolo.muse.common.asSong
 import com.frolo.player.AudioSource
 import com.frolo.player.Player
 import com.frolo.player.SimplePlayerObserver
@@ -51,7 +51,7 @@ class SongPlayCounter constructor(
         if (isPlayed && !wasCurrentItemChecked) {
             wasCurrentItemChecked = true
             currentItem?.also { safeItem ->
-                songRepository.addSongPlayCount(safeItem.toSong(), 1)
+                songRepository.addSongPlayCount(safeItem.asSong(), 1)
                     .observeOn(schedulerProvider.main())
                     .doOnSubscribe { internalDisposables.add(it) }
                     .subscribe()

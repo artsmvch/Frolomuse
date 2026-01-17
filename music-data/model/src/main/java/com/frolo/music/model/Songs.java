@@ -8,7 +8,7 @@ public final class Songs {
 
     private static class SimpleSong implements Song, Serializable {
 
-        final long id;
+        final MediaId mediaId;
         final SongType songType;
         final String source;
         final String title;
@@ -35,7 +35,7 @@ public final class Songs {
             int year,
             int trackNumber
         ) {
-            this.id = id;
+            this.mediaId = MediaId.createLocal(Media.SONG, id);
             this.songType = songType;
             this.source = source;
             this.title = title != null ? title : "";
@@ -64,7 +64,7 @@ public final class Songs {
             if (obj == this) return true;
             if (obj != null && obj instanceof SimpleSong) {
                 SimpleSong another = (SimpleSong) obj;
-                return id == another.id
+                return mediaId.equals(another.mediaId)
                         && Objects.equals(source, another.source)
                         && songType == another.songType
                         && Objects.equals(title, another.title)
@@ -81,7 +81,7 @@ public final class Songs {
 
         @Override
         public int hashCode() {
-            return (int) getId();
+            return mediaId.hashCode();
         }
 
         @Override
@@ -90,13 +90,8 @@ public final class Songs {
         }
 
         @Override
-        public long getId() {
-            return id;
-        }
-
-        @Override
-        public int getKind() {
-            return Media.SONG;
+        public MediaId getMediaId() {
+            return mediaId;
         }
 
         public String getTitle() {
@@ -181,7 +176,7 @@ public final class Songs {
         if (src == null) return null;
 
         return create(
-            src.getId(),
+            src.getMediaId().getSourceId(),
             src.getSongType(),
             src.getSource(),
             src.getTitle(),

@@ -83,12 +83,12 @@ public final class AlbumRepositoryImpl extends BaseMediaRepository<Album> implem
             // Legacy
             return PlaylistHelper.addAlbumToPlaylist(
                     getContext().getContentResolver(),
-                    playlist.getId(),
-                    item.getId());
+                    playlist.getMediaId().getSourceId(),
+                    item.getMediaId().getSourceId());
         } else {
             // New playlist storage
             return collectSongs(item).flatMapCompletable(songs -> PlaylistDatabaseManager.get(getContext())
-                    .addPlaylistMembers(playlist.getId(), songs));
+                    .addPlaylistMembers(playlist.getMediaId().getSourceId(), songs));
         }
     }
 
@@ -98,12 +98,12 @@ public final class AlbumRepositoryImpl extends BaseMediaRepository<Album> implem
             // Legacy
             return PlaylistHelper.addItemsToPlaylist(
                     getContext().getContentResolver(),
-                    playlist.getId(),
+                    playlist.getMediaId().getSourceId(),
                     items);
         } else {
             // New playlist storage
             return collectSongs(items).flatMapCompletable(songs -> PlaylistDatabaseManager.get(getContext())
-                    .addPlaylistMembers(playlist.getId(), songs));
+                    .addPlaylistMembers(playlist.getMediaId().getSourceId(), songs));
         }
     }
 
@@ -132,7 +132,7 @@ public final class AlbumRepositoryImpl extends BaseMediaRepository<Album> implem
     @Override
     public Flowable<List<Album>> getAlbumsOfArtist(final Artist artist) {
         return getSongFilter().switchMap(filter ->
-                AlbumQuery.queryForArtist(getContext().getContentResolver(), filter, artist.getId()));
+                AlbumQuery.queryForArtist(getContext().getContentResolver(), filter, artist.getMediaId().getSourceId()));
     }
 
     @Override

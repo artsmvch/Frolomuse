@@ -633,7 +633,7 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
         val event = _openOptionsMenuEvent.value ?: return
         _closeOptionsMenuEvent.value = event
         val item = event.item
-        when(item.kind) {
+        when(item.getMediaId().getKind()) {
             Media.SONG -> appRouter.editSong(item as Song)
             Media.ALBUM -> appRouter.editAlbum(item as Album)
             Media.PLAYLIST -> appRouter.editPlaylist(item as Playlist)
@@ -686,7 +686,7 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
     fun onCreateShortcutOptionConfirmed(item: E) {
         createShortcutUseCase.createShortcut(item)
                 .observeOn(schedulerProvider.main())
-                .doOnComplete { eventLogger.logShortcutCreated(item.kind) }
+                .doOnComplete { eventLogger.logShortcutCreated(item.getMediaId().getKind()) }
                 .subscribeFor { }
     }
 

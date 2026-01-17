@@ -511,7 +511,7 @@ final class SongQueryHelper {
         }
         return filterImpl(resolver, source,
                 album -> MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                album -> filter.newBuilder().setAlbumId(album.getId()).build());
+                album -> filter.newBuilder().setAlbumId(album.getMediaId().getSourceId()).build());
     }
 
     static Flowable<List<Album>> filterAlbumsOfArtist(
@@ -530,7 +530,7 @@ final class SongQueryHelper {
         }
         return filterImpl(resolver, source,
                 artist -> MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-                artist -> filter.newBuilder().setArtistId(artist.getId()).build());
+                artist -> filter.newBuilder().setArtistId(artist.getMediaId().getSourceId()).build());
     }
 
     static Flowable<List<Genre>> filterGenres(
@@ -542,7 +542,7 @@ final class SongQueryHelper {
             return source;
         }
         return filterImpl(resolver, source,
-                genre -> MediaStore.Audio.Genres.Members.getContentUri("external", genre.getId()),
+                genre -> MediaStore.Audio.Genres.Members.getContentUri("external", genre.getMediaId().getSourceId()),
                 genre -> filter);
     }
 

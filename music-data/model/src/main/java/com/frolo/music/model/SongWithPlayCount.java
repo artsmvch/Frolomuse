@@ -35,13 +35,8 @@ public final class SongWithPlayCount implements Song, Serializable {
     }
 
     @Override
-    public long getId() {
-        return song.getId();
-    }
-
-    @Override
-    public int getKind() {
-        return song.getKind();
+    public MediaId getMediaId() {
+        return song.getMediaId();
     }
 
     @Override

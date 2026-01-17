@@ -199,7 +199,7 @@ public final class AudioSourceQueue implements Tagged<Object, Object>, Cloneable
     }
 
     /**
-     * Replaces all audio sources with the same ID as the given <code>audioSource</code> with this <code>audioSource</code>.
+     * Replaces all audio sources with the same URI as the given <code>audioSource</code> with this <code>audioSource</code>.
      * @param audioSource to replace with
      */
     /* package */ synchronized void replaceAllWithSameId(AudioSource audioSource) {
@@ -208,8 +208,8 @@ public final class AudioSourceQueue implements Tagged<Object, Object>, Cloneable
         boolean atLeastOneReplaced = false;
         for (int i = 0; i < mItems.size(); i++) {
             final AudioSource item = mItems.get(i);
-            if (item.getId() == audioSource.getId()) {
-                // This item has the same ID
+            if (Objects.equals(item.getURI(), audioSource.getURI())) {
+                // This item has the same URI
                 mItems.set(i, audioSource);
                 atLeastOneReplaced = true;
             }

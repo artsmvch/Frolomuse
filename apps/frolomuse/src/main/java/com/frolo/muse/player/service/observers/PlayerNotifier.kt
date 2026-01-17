@@ -2,7 +2,7 @@ package com.frolo.muse.player.service.observers
 
 import android.content.Context
 import android.graphics.Bitmap
-import com.frolo.muse.common.toSong
+import com.frolo.muse.common.asSong
 import com.frolo.player.AudioSource
 import com.frolo.player.Player
 import com.frolo.player.SimplePlayerObserver
@@ -43,14 +43,14 @@ class PlayerNotifier constructor(
     private fun notify(item: AudioSource?, isPlaying: Boolean, forced: Boolean) {
         notificationDisposable?.dispose()
 
-        val song: Song? = item?.toSong()
+        val song: Song? = item?.asSong()
 
         val lastPlayerNtf = lastPlayerNtfRef.get()
 
         val art: Bitmap?
         val isFav: Boolean
 
-        if (lastPlayerNtf != null && item != null && item.source == lastPlayerNtf.item?.source) {
+        if (lastPlayerNtf != null && item != null && item.getURI() == lastPlayerNtf.item?.getURI()) {
             // If the audio source item in the last player notification is equal to the new one,
             // then we assume that its art and favourite flag remain the same.
             art = lastPlayerNtf.art

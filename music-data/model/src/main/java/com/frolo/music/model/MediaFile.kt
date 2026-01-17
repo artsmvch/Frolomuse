@@ -12,10 +12,6 @@ data class MediaFile constructor(
     val mimeType: String?
 ) : Media, Serializable {
 
-    override fun getId(): Long = id
-
-    override fun getKind(): Int {
-        return Media.MEDIA_FILE
-    }
+    override fun getMediaId(): MediaId = MediaId.createLocal(Media.MEDIA_FILE, id)
 
 }

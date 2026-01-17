@@ -14,7 +14,7 @@ public final class SongFilter {
 
     public static final long DURATION_NOT_SET = -1L;
     public static final long TIME_NOT_SET = -1L;
-    public static final long ID_NOT_SET = Media.NO_ID;
+    public static final long ID_NOT_SET = MediaId.NO_ID;
     public static final String NAME_PIECE_NOT_SET = null;
     public static final String FOLDER_PATH_NOT_SET = null;
     public static final String FILEPATH_NOT_SET = null;

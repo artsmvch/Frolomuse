@@ -88,11 +88,11 @@ public class SongRepositoryImpl extends BaseMediaRepository<Song> implements Son
     public final Completable addToPlaylist(Playlist playlist, Song item) {
         if (playlist.isFromSharedStorage()) {
             // Legacy
-            return PlaylistHelper.addSongToPlaylist(getContentResolver(), playlist.getId(), item.getId());
+            return PlaylistHelper.addSongToPlaylist(getContentResolver(), playlist.getMediaId().getSourceId(), item.getMediaId().getSourceId());
         } else {
             // New playlist storage
             return PlaylistDatabaseManager.get(getContext())
-                    .addPlaylistMembers(playlist.getId(), Collections.singleton(item));
+                    .addPlaylistMembers(playlist.getMediaId().getSourceId(), Collections.singleton(item));
         }
     }
 
@@ -100,10 +100,10 @@ public class SongRepositoryImpl extends BaseMediaRepository<Song> implements Son
     public final Completable addToPlaylist(Playlist playlist, Collection<Song> items) {
         if (playlist.isFromSharedStorage()) {
             // Legacy
-            return PlaylistHelper.addItemsToPlaylist(getContext().getContentResolver(), playlist.getId(), items);
+            return PlaylistHelper.addItemsToPlaylist(getContext().getContentResolver(), playlist.getMediaId().getSourceId(), items);
         } else {
             // New playlist storage
-            return PlaylistDatabaseManager.get(getContext()).addPlaylistMembers(playlist.getId(), items);
+            return PlaylistDatabaseManager.get(getContext()).addPlaylistMembers(playlist.getMediaId().getSourceId(), items);
         }
     }
 
@@ -135,7 +135,7 @@ public class SongRepositoryImpl extends BaseMediaRepository<Song> implements Son
     @Override
     public final Single<Song> update(Song song, String newTitle, String newAlbum, String newArtist, String newGenre) {
         return SongQuery.update(getContentResolver(), song, newTitle, newAlbum, newArtist, newGenre)
-            .andThen(getItem(song.getId()))
+            .andThen(getItem(song.getMediaId().getSourceId()))
             .firstOrError();
     }
 
@@ -164,7 +164,7 @@ public class SongRepositoryImpl extends BaseMediaRepository<Song> implements Son
             return SongQuery.queryForPlaylist(getContext().getContentResolver(), playlist, sortOrder);
         } else {
             // New playlist storage
-            return PlaylistDatabaseManager.get(getContext()).queryPlaylistMembers(playlist.getId(), sortOrder);
+            return PlaylistDatabaseManager.get(getContext()).queryPlaylistMembers(playlist.getMediaId().getSourceId(), sortOrder);
         }
     }
 

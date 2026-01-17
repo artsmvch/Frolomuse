@@ -336,7 +336,7 @@ internal class PlayerServiceDelegate(
             newIntent(context, PlayerServiceCmd.CMD_CANCEL_NOTIFICATION))
         // Change fav status
         val changeFavPendingIntent = newIntent(context, PlayerServiceCmd.CMD_CHANGE_FAV_STATUS).let { intent ->
-            intent.putExtra(EXTRA_SONG, item?.toSong())
+            intent.putExtra(EXTRA_SONG, item?.asSong())
             newServicePendingIntent(RC_CHANGE_FAV_STATUS, intent)
         }
         // Skip to previous

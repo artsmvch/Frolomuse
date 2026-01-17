@@ -21,7 +21,7 @@ class AlbumOfArtistAdapter constructor(
     private val requestManager: RequestManager
 ): BaseAdapter<Album, AlbumOfArtistAdapter.AlbumViewHolder>(AlbumOfArtistItemCallback) {
 
-    override fun getItemId(position: Int) = getItemAt(position).id
+    override fun getItemId(position: Int) = getItemAt(position).getMediaId().getSourceId()
 
     override fun onCreateBaseViewHolder(
         parent: ViewGroup,
@@ -46,7 +46,7 @@ class AlbumOfArtistAdapter constructor(
         selectionChanged: Boolean
     ) = with(holder) {
         tvAlbumName.text = item.getNameString(itemView.resources)
-        requestManager.makeAlbumArtRequest(item.id)
+        requestManager.makeAlbumArtRequest(item.getMediaId().getSourceId())
             .placeholder(R.drawable.ic_framed_album)
             .error(R.drawable.ic_framed_album)
             .into(imvAlbumArt)
@@ -62,7 +62,7 @@ class AlbumOfArtistAdapter constructor(
 
     object AlbumOfArtistItemCallback: DiffUtil.ItemCallback<Album>() {
         override fun areItemsTheSame(oldItem: Album, newItem: Album): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.getMediaId().getSourceId() == newItem.getMediaId().getSourceId()
         }
 
         override fun areContentsTheSame(oldItem: Album, newItem: Album): Boolean {

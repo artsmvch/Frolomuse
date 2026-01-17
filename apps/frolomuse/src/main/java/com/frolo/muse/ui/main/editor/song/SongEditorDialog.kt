@@ -128,7 +128,7 @@ class SongEditorDialog: BaseDialogFragment() {
         handleWriteRequestEvent.observeNonNull(owner) { song ->
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 val contentResolver = requireContext().contentResolver
-                val songUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI.let { ContentUris.withAppendedId(it, song.id) }
+                val songUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI.let { ContentUris.withAppendedId(it, song.getMediaId().getSourceId()) }
                 val pendingIntent = MediaStore.createWriteRequest(contentResolver, listOf(songUri))
                 startIntentSenderForResult(pendingIntent.intentSender,
                         RC_REQUEST_WRITE_PERMISSION, null, 0, 0, 0, null)

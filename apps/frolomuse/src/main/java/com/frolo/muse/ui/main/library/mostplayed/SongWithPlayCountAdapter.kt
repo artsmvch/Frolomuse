@@ -72,7 +72,7 @@ class SongWithPlayCountAdapter constructor(
 
     private class SongWithPlayCountItemCallback : DiffUtil.ItemCallback<SongWithPlayCount>() {
         override fun areItemsTheSame(oldItem: SongWithPlayCount, newItem: SongWithPlayCount): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.getMediaId().getSourceId() == newItem.getMediaId().getSourceId()
         }
 
         override fun areContentsTheSame(oldItem: SongWithPlayCount, newItem: SongWithPlayCount): Boolean {

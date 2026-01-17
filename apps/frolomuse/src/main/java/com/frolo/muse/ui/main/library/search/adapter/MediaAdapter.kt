@@ -30,7 +30,7 @@ class MediaAdapter constructor(
 
     var query by Delegates.observable("") { _, _, _ -> notifyDataSetChanged() }
 
-    override fun getItemViewType(position: Int) = getItemAt(position).kind
+    override fun getItemViewType(position: Int) = getItemAt(position).getMediaId().getKind()
 
     override fun onCreateBaseViewHolder(
         parent: ViewGroup,
@@ -137,8 +137,8 @@ class MediaAdapter constructor(
 
     object MediaItemCallback: DiffUtil.ItemCallback<Media>() {
         override fun areItemsTheSame(oldItem: Media, newItem: Media): Boolean {
-            return oldItem.kind == newItem.kind
-                    && oldItem.id == newItem.id
+            return oldItem.getMediaId().getKind() == newItem.getMediaId().getKind()
+                    && oldItem.getMediaId().getSourceId() == newItem.getMediaId().getSourceId()
         }
 
         override fun areContentsTheSame(oldItem: Media, newItem: Media): Boolean {

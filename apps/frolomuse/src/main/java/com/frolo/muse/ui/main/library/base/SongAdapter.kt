@@ -27,7 +27,7 @@ open class SongAdapter<S: Song> constructor(
     private val itemCallback: DiffUtil.ItemCallback<S> = SongItemCallback<S>()
 ): PlayStateAwareAdapter<S, SongAdapter.SongViewHolder>(itemCallback), FastScroller.SectionIndexer {
 
-    override fun getItemId(position: Int) = getItemAt(position).id
+    override fun getItemId(position: Int) = getItemAt(position).getMediaId().getSourceId()
 
     override fun onCreateBaseViewHolder(
         parent: ViewGroup,
@@ -96,7 +96,7 @@ open class SongAdapter<S: Song> constructor(
 
     private class SongItemCallback<S: Song> : DiffUtil.ItemCallback<S>() {
         override fun areItemsTheSame(oldItem: S, newItem: S): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.getMediaId().getSourceId() == newItem.getMediaId().getSourceId()
         }
 
         override fun areContentsTheSame(oldItem: S, newItem: S): Boolean {

@@ -50,7 +50,7 @@ class PlaylistAdapter(
         }
     }
 
-    override fun getItemId(position: Int) = getItemAt(position).id
+    override fun getItemId(position: Int) = getItemAt(position).getMediaId().getSourceId()
 
     class PlaylistViewHolder(itemView: View) : BaseViewHolder(itemView) {
         override val viewOptionsMenu: View? = itemView.findViewById(R.id.view_options_menu)
@@ -62,7 +62,7 @@ class PlaylistAdapter(
 
     object PlaylistItemCallback: DiffUtil.ItemCallback<Playlist>() {
         override fun areItemsTheSame(oldItem: Playlist, newItem: Playlist): Boolean {
-            return oldItem.isFromSharedStorage == newItem.isFromSharedStorage && oldItem.id == newItem.id
+            return oldItem.isFromSharedStorage == newItem.isFromSharedStorage && oldItem.getMediaId().getSourceId() == newItem.getMediaId().getSourceId()
         }
 
         override fun areContentsTheSame(oldItem: Playlist, newItem: Playlist): Boolean {

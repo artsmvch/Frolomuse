@@ -165,7 +165,7 @@ class SongEditorViewModel constructor(
         val context: Context = justApplication
 
         val sourceFile = File(song.source)
-        val songUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI.let { ContentUris.withAppendedId(it, song.id) }
+        val songUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI.let { ContentUris.withAppendedId(it, song.getMediaId().getSourceId()) }
         val songExtension: String = sourceFile.extension
 
         val tmpFilename = StringBuilder()

@@ -1,14 +1,14 @@
 package com.frolo.music.model.test
 
 import com.frolo.music.model.Media
+import com.frolo.music.model.MediaId
 import com.frolo.music.model.Song
 import com.frolo.music.model.SongType
 import com.frolo.music.model.Songs
 import com.frolo.test.*
 
 private class TestMedia constructor(private val _id: Long): Media {
-    override fun getId(): Long = _id
-    override fun getKind(): Int = Media.NONE
+    override fun getMediaId(): MediaId = MediaId.createLocal(Media.NONE, _id)
 }
 
 fun stubMedia(): Media = TestMedia(randomLong())

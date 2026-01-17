@@ -118,24 +118,17 @@ public final class AudioSources {
 
     private static final class SimpleAudioSource implements AudioSource, MediaStoreRow {
 
-        final long id;
-        final String source;
+        final String uri;
         final AudioMetadata metadata;
 
-        SimpleAudioSource(long id, String source, AudioMetadata metadata) {
-            this.id = id;
-            this.source = source;
+        SimpleAudioSource(String uri, AudioMetadata metadata) {
+            this.uri = uri;
             this.metadata = metadata;
         }
 
         @Override
-        public long getId() {
-            return id;
-        }
-
-        @Override
-        public String getSource() {
-            return source;
+        public String getURI() {
+            return uri;
         }
 
         @NonNull
@@ -147,7 +140,7 @@ public final class AudioSources {
         @NonNull
         @Override
         public Uri getUri() {
-            return ContentUris.withAppendedId(CONTENT_URI, id);
+            return Uri.parse(uri);
         }
 
         @Override
@@ -156,21 +149,20 @@ public final class AudioSources {
             if (o == null) return false;
             if (!(o instanceof SimpleAudioSource)) return false;
             SimpleAudioSource that = (SimpleAudioSource) o;
-            return id == that.id &&
-                    Objects.equals(source, that.source) &&
+            return Objects.equals(uri, that.uri) &&
                     Objects.equals(metadata, that.metadata);
         }
 
     }
 
     @NonNull
-    public static AudioSource createAudioSource(long id, @NonNull String source, @NonNull AudioMetadata metadata) {
-        return new SimpleAudioSource(id, source, metadata);
+    public static AudioSource createAudioSource(@NonNull String uri, @NonNull AudioMetadata metadata) {
+        return new SimpleAudioSource(uri, metadata);
     }
 
     @NonNull
     public static AudioSource copyAudioSource(@NonNull AudioSource other) {
-        return createAudioSource(other.getId(), other.getSource(), copyMetadata(other.getMetadata()));
+        return createAudioSource(other.getURI(), copyMetadata(other.getMetadata()));
     }
 
     @NonNull
@@ -207,7 +199,7 @@ public final class AudioSources {
     }
 
     public static boolean areSourcesTheSame(@NonNull AudioSource item1, @NonNull AudioSource item2) {
-        return Objects.equals(item1.getSource(), item2.getSource());
+        return Objects.equals(item1.getURI(), item2.getURI());
     }
 
     private AudioSources() {

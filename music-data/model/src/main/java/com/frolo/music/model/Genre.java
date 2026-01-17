@@ -6,22 +6,17 @@ import java.io.Serializable;
 
 
 public final class Genre implements Media, Serializable {
-    private final long id;
+    private final MediaId mediaId;
     private final String name;
 
     public Genre(long id, String name) {
-        this.id = id;
+        this.mediaId = MediaId.createLocal(Media.GENRE, id);
         this.name = name != null ? name : "";
     }
 
     @Override
-    public long getId() {
-        return id;
-    }
-
-    @Override
-    public int getKind() {
-        return GENRE;
+    public MediaId getMediaId() {
+        return mediaId;
     }
 
     @Override
@@ -29,13 +24,13 @@ public final class Genre implements Media, Serializable {
         if (this == obj) return true;
         if (obj == null || !(obj instanceof Genre)) return false;
         Genre another = (Genre) obj;
-        return id == another.id
+        return mediaId.equals(another.mediaId)
                 && name.equals(another.name);
     }
 
     @Override
     public int hashCode() {
-        return (int) getId();
+        return mediaId.hashCode();
     }
 
     @NonNull

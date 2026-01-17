@@ -82,7 +82,7 @@ final class Shortcuts {
     @NonNull
     private static String getShortcutId(@NonNull Media media) {
         final String prefix;
-        switch (media.getKind()) {
+        switch (media.getMediaId().getKind()) {
             case Media.ALBUM:
                 prefix = "album_";
                 break;
@@ -99,14 +99,7 @@ final class Shortcuts {
                 prefix = "mediafile_";
                 break;
             case Media.PLAYLIST:
-                Playlist playlist = (Playlist) media;
-                if (playlist.isFromSharedStorage()) {
-                    // Legacy
-                    prefix = SHARED_PLAYLIST_PREFIX;
-                } else {
-                    // New playlist storage
-                    prefix = APP_PLAYLIST_PREFIX;
-                }
+                prefix = "playlist_";
                 break;
             case Media.SONG:
                 prefix = "song_";
@@ -116,24 +109,20 @@ final class Shortcuts {
                 break;
         }
 
-        return prefix + media.getId();
+        return prefix + media.getMediaId().getSourceId();
     }
 
     @NonNull
     private static String getShortcutLabel(@NonNull Media media) {
-        switch (media.getKind()) {
+        switch (media.getMediaId().getKind()) {
             case Media.SONG:        return ((Song) media).getTitle();
             case Media.ALBUM:       return ((Album) media).getName();
             case Media.ARTIST:      return ((Artist) media).getName();
             case Media.GENRE:       return ((Genre) media).getName();
             case Media.PLAYLIST:    return ((Playlist) media).getName();
-            case Media.MY_FILE:     return ((MyFile) media).getJavaFile().getAbsolutePath();
-            case Media.MEDIA_FILE: {
-                MediaFile mediaFile = (MediaFile) media;
-                String name = mediaFile.getName();
-                return name != null ? name : "";
-            }
-            default:                throw new UnknownMediaException(media);
+            case Media.MY_FILE:     return ((MyFile) media).getJavaFile().getName();
+            case Media.MEDIA_FILE:  return ((MediaFile) media).getName() != null ? ((MediaFile) media).getName() : "Unknown";
+            default:                return "Unknown";
         }
     }
 
@@ -196,14 +185,14 @@ final class Shortcuts {
     @WorkerThread
     @Nullable
     private static Bitmap tryGetShortcutIcon(@NonNull final Context context, @NonNull Media media) {
-        if (media.getKind() == Media.SONG) {
+        if (media.getMediaId().getKind() == Media.SONG) {
             final Song song = (Song) media;
             return tryGetAlbumIcon(context, song.getAlbumId());
         }
 
-        if (media.getKind() == Media.ALBUM) {
+        if (media.getMediaId().getKind() == Media.ALBUM) {
             final Album album = (Album) media;
-            return tryGetAlbumIcon(context, album.getId());
+            return tryGetAlbumIcon(context, album.getMediaId().getSourceId());
         }
 
         return null;
@@ -267,27 +256,27 @@ final class Shortcuts {
     private static Intent getShortcutIntent(
             @NonNull final Context context, @NonNull final Media media) throws UnknownMediaException {
 
-        if (media.getKind() == Media.SONG) {
+        if (media.getMediaId().getKind() == Media.SONG) {
             return MainActivity.newSongIntent(context, (Song) media);
         }
 
-        if (media.getKind() == Media.ALBUM) {
+        if (media.getMediaId().getKind() == Media.ALBUM) {
             return MainActivity.newAlbumIntent(context, (Album) media);
         }
 
-        if (media.getKind() == Media.ARTIST) {
+        if (media.getMediaId().getKind() == Media.ARTIST) {
             return MainActivity.newArtistIntent(context, (Artist) media);
         }
 
-        if (media.getKind() == Media.GENRE) {
+        if (media.getMediaId().getKind() == Media.GENRE) {
             return MainActivity.newGenreIntent(context, (Genre) media);
         }
 
-        if (media.getKind() == Media.PLAYLIST) {
+        if (media.getMediaId().getKind() == Media.PLAYLIST) {
             return MainActivity.newPlaylistIntent(context, (Playlist) media);
         }
 
-        if (media.getKind() == Media.MY_FILE) {
+        if (media.getMediaId().getKind() == Media.MY_FILE) {
             return MainActivity.newMyFileIntent(context, (MyFile) media);
         }
 
@@ -296,7 +285,7 @@ final class Shortcuts {
 
     static Single<Boolean> isShortcutSupported(@NonNull Context context, @NonNull Media media) {
         return Single.fromCallable(() -> {
-            @Media.Kind int kindOfMedia = media.getKind();
+            @Media.Kind int kindOfMedia = media.getMediaId().getKind();
             if (kindOfMedia == Media.MY_FILE || kindOfMedia == Media.MEDIA_FILE) {
                 // We do not support shortcuts for models with type of MY_FILE and MEDIA_FILE
                 return false;
@@ -409,7 +398,7 @@ final class Shortcuts {
                     // Let's find the corresponding target playlist
                     Playlist targetPlaylist = null;
                     for (PlaylistTransfer.Result transfer : transfers) {
-                        if (transfer.original.getId() == mediaId) {
+                        if (transfer.original.getMediaId().getSourceId() == mediaId) {
                             targetPlaylist = transfer.outcome;
                             break;
                         }

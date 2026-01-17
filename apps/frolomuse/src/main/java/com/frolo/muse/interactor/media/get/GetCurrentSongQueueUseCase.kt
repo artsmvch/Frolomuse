@@ -1,6 +1,6 @@
 package com.frolo.muse.interactor.media.get
 
-import com.frolo.muse.common.toSongs
+import com.frolo.muse.common.asSongs
 import com.frolo.player.Player
 import com.frolo.music.model.Song
 import com.frolo.muse.model.menu.SortOrderMenu
@@ -30,7 +30,7 @@ class GetCurrentSongQueueUseCase @Inject constructor(
     }
 
     override fun getMediaList(): Flowable<List<Song>> {
-        return Single.fromCallable { player.getCurrentQueue()?.snapshot?.toSongs().orEmpty() }
+        return Single.fromCallable { player.getCurrentQueue()?.snapshot?.asSongs().orEmpty() }
                 .subscribeOn(schedulerProvider.computation())
                 .toFlowable()
     }

@@ -35,7 +35,7 @@ public final class LyricsLocalRepositoryImpl implements LyricsLocalRepository {
         return Single.fromCallable(new Callable<Lyrics>() {
             @Override
             public Lyrics call() throws Exception {
-                Uri uri = ContentUris.withAppendedId(AppMediaStore.Lyrics.getContentUri(), song.getId());
+                Uri uri = ContentUris.withAppendedId(AppMediaStore.Lyrics.getContentUri(), song.getMediaId().getSourceId());
                 ContentResolver resolver = context.getContentResolver();
                 Cursor query = resolver.query(uri, PROJECTION, null, null, null);
                 if (query != null) {
@@ -64,7 +64,7 @@ public final class LyricsLocalRepositoryImpl implements LyricsLocalRepository {
                 values.put(AppMediaStore.Lyrics.TEXT, lyrics.getText());
                 values.put(AppMediaStore.Lyrics.TIME_ADDED, System.currentTimeMillis());
                 final boolean entityExists;
-                long itemId = song.getId();
+                long itemId = song.getMediaId().getSourceId();
                 Uri itemUri = ContentUris.withAppendedId(uri, itemId);
                 try (Cursor cursor = resolver.query(itemUri, EMPTY_PROJECTION, null, null, null)) {
                     entityExists = cursor != null && cursor.moveToFirst();

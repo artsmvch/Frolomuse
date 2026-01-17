@@ -20,19 +20,12 @@ public interface Media {
     int MY_FILE = 5;
     int MEDIA_FILE = 6;
 
-    long NO_ID = -1;
-
     /**
-     * Should return an id that identifies the media object
-     * @return non-negative number
+     * Should return a unique identifier that encapsulates all information required
+     * to uniquely identify a media item across different data sources.
+     * @return a MediaId that uniquely identifies this media item
      */
-    long getId();
-
-    /**
-     * Should return one of {@link Kind}
-     * @return type of the media
-     */
-    @Kind int getKind();
+    MediaId getMediaId();
 
     boolean equals(Object other);
 }

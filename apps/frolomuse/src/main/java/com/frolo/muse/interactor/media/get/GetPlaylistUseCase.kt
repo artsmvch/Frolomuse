@@ -57,7 +57,7 @@ class GetPlaylistUseCase @AssistedInject constructor(
 
     override fun removeDuplicatesIfNecessary(list: List<Song>): List<Song> {
         return if (playlist.isFromSharedStorage) {
-            list.distinctBy { item -> item.id }
+            list.distinctBy { item -> item.getMediaId().getSourceId() }
         } else {
             // No need to remove duplicates for playlists from the application storage
             list

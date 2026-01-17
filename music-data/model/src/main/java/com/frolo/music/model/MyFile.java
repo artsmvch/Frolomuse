@@ -11,6 +11,7 @@ import java.io.Serializable;
 public class MyFile implements Media, Serializable {
     private /*non-null*/ final File file;
     private final boolean isSongFile;
+    private final MediaId mediaId;
 
     public MyFile(File javaFile, boolean isSongFile) {
         if (javaFile == null) {
@@ -18,6 +19,7 @@ public class MyFile implements Media, Serializable {
         }
         this.file = javaFile;
         this.isSongFile = isSongFile;
+        this.mediaId = MediaId.createLocal(Media.MY_FILE, file.hashCode());
     }
 
     public @NonNull File getJavaFile() {
@@ -38,13 +40,8 @@ public class MyFile implements Media, Serializable {
     }
 
     @Override
-    public long getId() {
-        return NO_ID;
-    }
-
-    @Override
-    public int getKind() {
-        return MY_FILE;
+    public MediaId getMediaId() {
+        return mediaId;
     }
 
     @Override
@@ -60,7 +57,7 @@ public class MyFile implements Media, Serializable {
 
     @Override
     public int hashCode() {
-        return getJavaFile().hashCode();
+        return mediaId.hashCode();
     }
 
     @Override
