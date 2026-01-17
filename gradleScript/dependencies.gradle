@@ -67,9 +67,9 @@ ext {
         ],
 
         room : [
-            runtime:                "androidx.room:room-runtime:2.3.0",
-            compiler:               "androidx.room:room-compiler:2.3.0",
-            rxJava2:                "androidx.room:room-rxjava2:2.3.0"
+            runtime:                "androidx.room:room-runtime:2.6.1",
+            compiler:               "androidx.room:room-compiler:2.6.1",
+            rxJava2:                "androidx.room:room-rxjava2:2.6.1"
         ],
 
         rxJava2 : [
