@@ -75,11 +75,11 @@ public final class GenreRepositoryImpl extends BaseMediaRepository<Genre> implem
     public Completable addToPlaylist(Playlist playlist, Genre item) {
         if (playlist.isFromSharedStorage()) {
             // Legacy
-            return PlaylistHelper.addGenreToPlaylist(getContext().getContentResolver(), playlist.getId(), item.getId());
+            return PlaylistHelper.addGenreToPlaylist(getContext().getContentResolver(), playlist.getMediaId().getSourceId(), item.getMediaId().getSourceId());
         } else {
             // New playlist storage
             return collectSongs(item).flatMapCompletable(songs -> PlaylistDatabaseManager.get(getContext())
-                    .addPlaylistMembers(playlist.getId(), songs));
+                    .addPlaylistMembers(playlist.getMediaId().getSourceId(), songs));
         }
     }
 
@@ -87,11 +87,11 @@ public final class GenreRepositoryImpl extends BaseMediaRepository<Genre> implem
     public Completable addToPlaylist(Playlist playlist, Collection<Genre> items) {
         if (playlist.isFromSharedStorage()) {
             // Legacy
-            return PlaylistHelper.addItemsToPlaylist(getContext().getContentResolver(), playlist.getId(), items);
+            return PlaylistHelper.addItemsToPlaylist(getContext().getContentResolver(), playlist.getMediaId().getSourceId(), items);
         } else {
             // New playlist storage
             return collectSongs(items).flatMapCompletable(songs -> PlaylistDatabaseManager.get(getContext())
-                    .addPlaylistMembers(playlist.getId(), songs));
+                    .addPlaylistMembers(playlist.getMediaId().getSourceId(), songs));
         }
     }
 

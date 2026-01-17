@@ -26,7 +26,7 @@ class ArtistAdapter(
 
     override fun getSectionText(position: Int) = sectionIndexAt(position) { name }
 
-    override fun getItemId(position: Int) = getItemAt(position).id
+    override fun getItemId(position: Int) = getItemAt(position).getMediaId().getSourceId()
 
     override fun onCreateBaseViewHolder(
         parent: ViewGroup,
@@ -63,7 +63,7 @@ class ArtistAdapter(
 
     object ArtistItemCallback: DiffUtil.ItemCallback<Artist>() {
         override fun areItemsTheSame(oldItem: Artist, newItem: Artist): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.getMediaId().getSourceId() == newItem.getMediaId().getSourceId()
         }
 
         override fun areContentsTheSame(oldItem: Artist, newItem: Artist): Boolean {

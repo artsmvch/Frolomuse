@@ -179,7 +179,7 @@ fun Media.getName(): String {
 }
 
 fun Media.getTypeName(res: Resources): String {
-    return when (kind) {
+    return when (getMediaId().getKind()) {
         Media.SONG -> res.getString(R.string.track)
         Media.ALBUM -> res.getString(R.string.album)
         Media.ARTIST -> res.getString(R.string.artist)
@@ -208,7 +208,7 @@ fun getSectionName(res: Resources, @Library.Section section: Int): String {
 
 // Returns true if the media item may have several related to it songs
 fun Media.mayHaveSeveralRelatedSongs(): Boolean {
-    return when (kind) {
+    return when (getMediaId().getKind()) {
         Media.ALBUM,
         Media.ARTIST,
         Media.GENRE,
@@ -220,7 +220,7 @@ fun Media.mayHaveSeveralRelatedSongs(): Boolean {
 
 fun Context.getDeletionConfirmationMessage(item: Media): String {
     val msgResId = if (item.mayHaveSeveralRelatedSongs()
-            && item.kind != Media.PLAYLIST) // Since we don't delete songs when deleting playlists
+            && item.getMediaId().getKind() != Media.PLAYLIST) // Since we don't delete songs when deleting playlists
         R.string.confirmation_delete_item_and_related_song_files
     else R.string.confirmation_delete_item
 
@@ -231,7 +231,7 @@ fun Context.getDeletionConfirmationMessage(items: List<Media>): String {
     val firstItem = items.firstOrNull() ?: return getString(R.string.confirmation_delete_items)
 
     val msgResId = if (firstItem.mayHaveSeveralRelatedSongs()
-            && firstItem.kind != Media.PLAYLIST) // Since we don't delete songs when deleting playlists
+            && firstItem.getMediaId().getKind() != Media.PLAYLIST) // Since we don't delete songs when deleting playlists
         R.string.confirmation_delete_items_and_related_song_files
     else R.string.confirmation_delete_items
 

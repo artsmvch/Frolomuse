@@ -207,7 +207,7 @@ import io.reactivex.Single;
 
             long existingId = getPlaylistIdByNameInternal(resolver, newName);
 
-            if (existingId == item.getId())
+            if (existingId == item.getMediaId().getSourceId())
                 // we're trying to change the name of the same item so return it
                 return item;
             if (existingId != -1) {
@@ -220,13 +220,13 @@ import io.reactivex.Single;
             values.put(MediaStore.Audio.Playlists.NAME, newName);
 
             int updatedCount = resolver.update(URI,
-                    values, MediaStore.Audio.Playlists._ID + " = " + item.getId(), null);
+                    values, MediaStore.Audio.Playlists._ID + " = " + item.getMediaId().getSourceId(), null);
             if (updatedCount == 0) {
                 throw new Exception("Failed to update item: " + item);
             }
 
             long now = System.currentTimeMillis() / 1000;
-            return new Playlist(item.getId(), IS_FROM_SHARED_STORAGE, newName, item.getSource(), item.getDateAdded(), now);
+            return new Playlist(item.getMediaId().getSourceId(), IS_FROM_SHARED_STORAGE, newName, item.getSource(), item.getDateAdded(), now);
         });
     }
 

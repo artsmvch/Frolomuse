@@ -28,7 +28,7 @@ class ExploreMediaBucketUseCase @AssistedInject constructor(
     fun detectPlayingPosition(list: List<MediaFile>?, audioSource: AudioSource?): Single<Int> {
         return if (list != null && audioSource != null) {
             return Single.fromCallable {
-                list.indexOfFirst { mediaFile -> mediaFile.id == audioSource.id }
+                list.indexOfFirst { mediaFile -> mediaFile.getMediaId().getURI() == audioSource.getURI() }
             }.subscribeOn(schedulerProvider.computation())
         } else {
             Single.just(-1)

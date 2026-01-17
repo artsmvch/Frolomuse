@@ -67,14 +67,14 @@ class PlayerViewModel @Inject constructor(
         }
 
         override fun onAudioSourceChanged(player: Player, item: AudioSource?, positionInQueue: Int) {
-            _song.value = item?.toSong()
+            _song.value = item?.asSong()
             _currPosition.value = positionInQueue
             _playbackProgress.value = 0
             startObservingPlaybackProgress(item)
         }
 
         override fun onAudioSourceUpdated(player: Player, item: AudioSource) {
-            _song.value = item.toSong()
+            _song.value = item.asSong()
         }
 
         override fun onPositionInQueueChanged(player: Player, positionInQueue: Int) {
@@ -258,7 +258,7 @@ class PlayerViewModel @Inject constructor(
     fun onUiCreated() {
         handleQueue(player.getCurrentQueue())
         val currentAudioSource: AudioSource? = player.getCurrent()
-        _song.value = currentAudioSource?.toSong()
+        _song.value = currentAudioSource?.asSong()
         _playbackDuration.value = player.getDuration()
         syncProgress()
         _isPlaying.value = player.isPlaying()

@@ -8,7 +8,6 @@ import com.frolo.test.*
 
 
 fun mockAudioSource(
-    id: Long = randomLong(),
     source: String = randomString(),
     audioType: AudioType = randomEnumValue<AudioType>()!!,
     title: String = randomString(),
@@ -23,7 +22,7 @@ fun mockAudioSource(
 ): AudioSource {
     val metadata = AudioSources.createMetadata(
         audioType, title, albumId, album, artistId, artist, genre, duration, year, trackNumber)
-    return AudioSources.createAudioSource(id, source, metadata)
+    return AudioSources.createAudioSource(source, metadata)
 }
 
 fun mockAudioMetadata(

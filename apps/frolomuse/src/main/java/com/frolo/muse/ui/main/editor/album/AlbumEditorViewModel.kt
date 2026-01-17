@@ -125,7 +125,7 @@ class AlbumEditorViewModel constructor(
     }
 
     private fun doSaveChanges(newFilepath: String?) {
-        repository.updateArt(albumArg.id, newFilepath)
+        repository.updateArt(albumArg.getMediaId().getSourceId(), newFilepath)
                 .subscribeOn(schedulerProvider.worker())
                 .observeOn(schedulerProvider.main())
                 .doOnSubscribe { _isSavingChanges.value = true }
@@ -134,13 +134,13 @@ class AlbumEditorViewModel constructor(
                 .subscribeFor {
                     // This is important to invalidate the key!
                     // Fuckin' glide is not able to do it itself.
-                    GlideAlbumArtHelper.get().invalidate(albumArg.id)
+                    GlideAlbumArtHelper.get().invalidate(albumArg.getMediaId().getSourceId())
                     _artUpdatedEvent.value = albumArg
                 }
     }
 
     private fun createAlbumArtSource(album: Album): Single<BitmapResult> {
-        val request = Glide.with(frolomuseApp).makeAlbumArtRequestAsBitmap(album.id)
+        val request = Glide.with(frolomuseApp).makeAlbumArtRequestAsBitmap(album.getMediaId().getSourceId())
         return Single.fromCallable {
             try {
                 val bitmap = request.submit().get()

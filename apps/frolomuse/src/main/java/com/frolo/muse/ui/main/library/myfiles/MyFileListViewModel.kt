@@ -127,7 +127,7 @@ class MyFileListViewModel @Inject constructor(
     private fun detectPlayingPosition(myFileList: List<MyFile>?, item: AudioSource?) {
         Single.fromCallable {
             myFileList?.indexOfFirst { myFile ->
-                myFile.isSongFile && myFile.javaFile.absolutePath == item?.source
+                myFile.isSongFile && myFile.javaFile.absolutePath == item?.getURI()
             } ?: -1
         }
                 .subscribeOn(schedulerProvider.computation())

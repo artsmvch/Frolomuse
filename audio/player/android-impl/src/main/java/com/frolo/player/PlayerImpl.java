@@ -216,7 +216,7 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
             return "AudioSource[null]";
         }
 
-        return "AudioSource[source=" + audioSource.getSource() + "]";
+        return "AudioSource[source=" + audioSource.getURI() + "]";
     }
 
     /**
@@ -687,7 +687,18 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
                             // TODO: try also to restore the playback position
                             try {
                                 newEngine.reset();
-                                newEngine.setDataSource(currentItem.getSource());
+                                String uriString = currentItem.getURI();
+                                Uri uri = Uri.parse(uriString);
+                                
+                                // Check if it's a content URI and use the appropriate setDataSource variant
+                                if (uriString != null && uriString.startsWith("content://")) {
+                                    mPlayerJournal.logMessage("Set data source from content URI: " + uri.toString());
+                                    newEngine.setDataSource(mContext, uri);
+                                } else {
+                                    // For file URIs or other schemes, use the string-based method
+                                    mPlayerJournal.logMessage("Set data source from path: " + uriString);
+                                    newEngine.setDataSource(uriString);
+                                }
 
                                 try {
                                     // Setting playback params. Must be done before engine preparation,
@@ -880,20 +891,17 @@ public final class PlayerImpl implements Player, AdvancedPlaybackParams {
 
                     try {
                         engine.reset();
-                        try {
-                            // First, try to set the data source by the filepath
-                            String filepath = item.getSource();
-                            mPlayerJournal.logMessage("Set data source from path: " + filepath);
-                            engine.setDataSource(filepath);
-                        } catch (Throwable error) {
-                            // If failed, try to set the data source by the uri
-                            if (item instanceof MediaStoreRow) {
-                                Uri uri = ((MediaStoreRow) item).getUri();
-                                mPlayerJournal.logMessage("Set data source from uri: " + uri.toString());
-                                engine.setDataSource(mContext, uri);
-                            } else {
-                                throw error;
-                            }
+                        String uriString = item.getURI();
+                        Uri uri = Uri.parse(uriString);
+                        
+                        // Check if it's a content URI and use the appropriate setDataSource variant
+                        if (uriString != null && uriString.startsWith("content://")) {
+                            mPlayerJournal.logMessage("Set data source from content URI: " + uri.toString());
+                            engine.setDataSource(mContext, uri);
+                        } else {
+                            // For file URIs or other schemes, use the string-based method
+                            mPlayerJournal.logMessage("Set data source from path: " + uriString);
+                            engine.setDataSource(uriString);
                         }
 
                         try {

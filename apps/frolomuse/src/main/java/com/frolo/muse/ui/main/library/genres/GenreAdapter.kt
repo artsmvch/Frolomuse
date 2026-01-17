@@ -22,7 +22,7 @@ class GenreAdapter(
 ): BaseAdapter<Genre, GenreAdapter.GenreViewHolder>(GenreItemCallback),
         FastScroller.SectionIndexer {
 
-    override fun getItemId(position: Int) = getItemAt(position).id
+    override fun getItemId(position: Int) = getItemAt(position).getMediaId().getSourceId()
 
     override fun getSectionText(position: Int) = sectionIndexAt(position) { name }
 
@@ -59,7 +59,7 @@ class GenreAdapter(
 
     object GenreItemCallback: DiffUtil.ItemCallback<Genre>() {
         override fun areItemsTheSame(oldItem: Genre, newItem: Genre): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.getMediaId().getSourceId() == newItem.getMediaId().getSourceId()
         }
 
         override fun areContentsTheSame(oldItem: Genre, newItem: Genre): Boolean {

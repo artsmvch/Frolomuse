@@ -19,7 +19,7 @@ class SongOfAlbumAdapter(thumbnailLoader: ThumbnailLoader) :
 
     private class SongItemCallback : DiffUtil.ItemCallback<Song>() {
         override fun areItemsTheSame(oldItem: Song, newItem: Song): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.getMediaId().getSourceId() == newItem.getMediaId().getSourceId()
         }
 
         override fun areContentsTheSame(oldItem: Song, newItem: Song): Boolean {

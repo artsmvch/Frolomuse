@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.frolo.arch.support.EventLiveData
 import com.frolo.arch.support.map
-import com.frolo.muse.common.toSongs
+import com.frolo.muse.common.asSongs
 import com.frolo.muse.di.ExecutorQualifier
 import com.frolo.player.AudioSource
 import com.frolo.player.Player
@@ -133,7 +133,7 @@ class CurrSongQueueViewModel @Inject constructor(
             currQueue = queue
             queue?.registerCallback(queueCallback, mainThreadExecutor)
         }
-        Single.fromCallable { queue?.snapshot?.toSongs().orEmpty() }
+        Single.fromCallable { queue?.snapshot?.asSongs().orEmpty() }
             .subscribeOn(schedulerProvider.computation())
             .observeOn(schedulerProvider.main())
             .doOnSubscribe {

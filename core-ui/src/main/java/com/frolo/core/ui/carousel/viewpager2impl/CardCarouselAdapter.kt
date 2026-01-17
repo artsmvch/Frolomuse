@@ -81,7 +81,7 @@ internal class CardCarouselAdapter constructor(
 
     object ItemDiffCallback : DiffUtil.ItemCallback<AudioSource>() {
         override fun areItemsTheSame(oldItem: AudioSource, newItem: AudioSource): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.getURI() == newItem.getURI()
         }
 
         override fun areContentsTheSame(oldItem: AudioSource, newItem: AudioSource): Boolean {

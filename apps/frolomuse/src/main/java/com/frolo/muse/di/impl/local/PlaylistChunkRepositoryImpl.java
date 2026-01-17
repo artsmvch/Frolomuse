@@ -56,12 +56,12 @@ public class PlaylistChunkRepositoryImpl extends SongRepositoryImpl implements P
             // Legacy
             return PlaylistHelper.removeFromPlaylist(
                     getContext().getContentResolver(),
-                    playlist.getId(),
+                    playlist.getMediaId().getSourceId(),
                     item);
         } else {
             // New playlist storage
             return PlaylistDatabaseManager.get(getContext())
-                    .removePlaylistMembers(playlist.getId(), Collections.singleton(item));
+                    .removePlaylistMembers(playlist.getMediaId().getSourceId(), Collections.singleton(item));
         }
     }
 
@@ -71,12 +71,12 @@ public class PlaylistChunkRepositoryImpl extends SongRepositoryImpl implements P
             // Legacy
             return PlaylistHelper.removeFromPlaylist(
                     getContext().getContentResolver(),
-                    playlist.getId(),
+                    playlist.getMediaId().getSourceId(),
                     items);
         } else {
             // New playlist storage
             return PlaylistDatabaseManager.get(getContext())
-                    .removePlaylistMembers(playlist.getId(), items);
+                    .removePlaylistMembers(playlist.getMediaId().getSourceId(), items);
         }
     }
 
@@ -84,7 +84,7 @@ public class PlaylistChunkRepositoryImpl extends SongRepositoryImpl implements P
     public Completable moveItemInPlaylist(Playlist playlist, int fromPos, int toPos) {
         if (playlist.isFromSharedStorage()) {
             // Legacy
-            return PlaylistHelper.moveItemInPlaylist(getContext().getContentResolver(), playlist.getId(), fromPos, toPos);
+            return PlaylistHelper.moveItemInPlaylist(getContext().getContentResolver(), playlist.getMediaId().getSourceId(), fromPos, toPos);
         } else {
             return Completable.error(new UnsupportedOperationException(
                     "Use moveItemInPlaylist(MoveOp) method for playlists from application storage"));

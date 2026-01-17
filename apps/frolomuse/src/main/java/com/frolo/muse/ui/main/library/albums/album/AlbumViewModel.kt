@@ -57,7 +57,7 @@ class AlbumViewModel constructor(
         eventLogger
 ), AssociatedWithMediaItem by AssociatedWithMediaItem(albumArg) {
 
-    private val _albumId: MutableLiveData<Long> = MutableLiveData(albumArg.id)
+    private val _albumId: MutableLiveData<Long> = MutableLiveData(albumArg.getMediaId().getSourceId())
     val albumId: LiveData<Long> get() = _albumId
 
     val albumName: LiveData<String> = liveDataOf(albumArg.name)

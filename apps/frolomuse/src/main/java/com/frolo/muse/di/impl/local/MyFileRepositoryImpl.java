@@ -87,11 +87,11 @@ public final class MyFileRepositoryImpl extends BaseMediaRepository<MyFile> impl
     public Completable addToPlaylist(Playlist playlist, MyFile item) {
         if (playlist.isFromSharedStorage()) {
             // Legacy
-            return PlaylistHelper.addMyFileToPlaylist(getContentResolver(), playlist.getId(), item);
+            return PlaylistHelper.addMyFileToPlaylist(getContentResolver(), playlist.getMediaId().getSourceId(), item);
         } else {
             // New playlist storage
             return collectSongs(item).flatMapCompletable(songs -> PlaylistDatabaseManager.get(getContext())
-                    .addPlaylistMembers(playlist.getId(), songs));
+                    .addPlaylistMembers(playlist.getMediaId().getSourceId(), songs));
         }
     }
 
@@ -99,11 +99,11 @@ public final class MyFileRepositoryImpl extends BaseMediaRepository<MyFile> impl
     public Completable addToPlaylist(Playlist playlist, Collection<MyFile> items) {
         if (playlist.isFromSharedStorage()) {
             // Legacy
-            return PlaylistHelper.addItemsToPlaylist(getContentResolver(), playlist.getId(), items);
+            return PlaylistHelper.addItemsToPlaylist(getContentResolver(), playlist.getMediaId().getSourceId(), items);
         } else {
             // New playlist storage
             return collectSongs(items).flatMapCompletable(songs -> PlaylistDatabaseManager.get(getContext())
-                    .addPlaylistMembers(playlist.getId(), songs));
+                    .addPlaylistMembers(playlist.getMediaId().getSourceId(), songs));
         }
     }
 

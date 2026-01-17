@@ -61,6 +61,7 @@ import com.frolo.muse.ui.main.player.mini.MiniPlayerFragment
 import com.frolo.muse.util.LinkUtils
 import com.frolo.muse.util.ifNaN
 import com.frolo.music.model.Media
+import com.frolo.music.model.MediaId
 import com.frolo.player.Player
 import com.frolo.ui.ColorUtils2
 import com.frolo.ui.FragmentUtils
@@ -638,7 +639,7 @@ internal class MainFragment :
     private fun handleNavigateToMediaIntent(intent: Intent): Boolean {
         if (intent.hasExtra(EXTRA_NAV_KIND_OF_MEDIA) && intent.hasExtra(EXTRA_NAV_MEDIA_ID)) {
             val kindOfMedia = intent.getIntExtra(EXTRA_NAV_KIND_OF_MEDIA, Media.NONE)
-            val mediaId = intent.getLongExtra(EXTRA_NAV_MEDIA_ID, Media.NO_ID)
+            val mediaId = intent.getLongExtra(EXTRA_NAV_MEDIA_ID, MediaId.NO_ID)
             viewModel.onNavigateToMediaIntent(kindOfMedia, mediaId)
             return true
         }

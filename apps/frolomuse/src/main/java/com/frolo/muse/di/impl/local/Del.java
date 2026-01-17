@@ -61,7 +61,7 @@ final class Del {
                     if (firstLooped) {
                         opDeleteSelectionBuilder.append(',');
                     }
-                    opDeleteSelectionBuilder.append(media.getId());
+                    opDeleteSelectionBuilder.append(media.getMediaId().getSourceId());
 
                     firstLooped = true;
                 }
@@ -75,7 +75,7 @@ final class Del {
             } catch (Throwable error) {
                 for (Media item : items) {
                     String selection = BaseColumns._ID + " = ?";
-                    String[] selectionArgs = new String[] { String.valueOf(item.getId()) };
+                    String[] selectionArgs = new String[] { String.valueOf(item.getMediaId().getSourceId()) };
                     int deletedCount = resolver.delete(uri, selection, selectionArgs);
                     resolver.notifyChange(uri, null);
                 }
@@ -88,12 +88,12 @@ final class Del {
             for (Media media : items) {
                 final File file;
 
-                if (media.getKind() == Media.SONG) {
+                if (media.getMediaId().getKind() == Media.SONG) {
                     String src = ((Song) media).getSource();
                     file = new File(src);
-                } else if (media.getKind() == Media.MY_FILE) {
+                } else if (media.getMediaId().getKind() == Media.MY_FILE) {
                     file = ((MyFile) media).getJavaFile();
-                } else if (media.getKind() == Media.PLAYLIST) {
+                } else if (media.getMediaId().getKind() == Media.PLAYLIST) {
                     String filepath = ((Playlist) media).getSource();
                     file = new File(filepath);
                 } else {
@@ -206,7 +206,7 @@ final class Del {
         }
 
         List<Uri> uris = new ArrayList<>(songs.size());
-        for (Song song : songs) uris.add(ContentUris.withAppendedId(URI_SONG, song.getId()));
+        for (Song song : songs) uris.add(ContentUris.withAppendedId(URI_SONG, song.getMediaId().getSourceId()));
         deleteUris_API30(context, uris);
     }
 
@@ -219,7 +219,7 @@ final class Del {
             deleteSongs_API30(context, songs);
         } else {
             for (Song song : songs) {
-                Uri uri = ContentUris.withAppendedId(URI_SONG, song.getId());
+                Uri uri = ContentUris.withAppendedId(URI_SONG, song.getMediaId().getSourceId());
                 deleteSongFilesFromQuery_Internal(context.getContentResolver(), uri, null, null);
             }
         }
@@ -291,7 +291,7 @@ final class Del {
             Uri playlistsUri = MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI;
             List<Uri> uris = new ArrayList<>(playlists.size());
             for (Playlist playlist : playlists) {
-                Uri uri = ContentUris.withAppendedId(playlistsUri, playlist.getId());
+                Uri uri = ContentUris.withAppendedId(playlistsUri, playlist.getMediaId().getSourceId());
                 uris.add(uri);
             }
             deleteUris_API30(context, uris);

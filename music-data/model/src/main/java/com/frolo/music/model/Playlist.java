@@ -28,6 +28,7 @@ public final class Playlist implements Media, Serializable {
         }
     }
 
+    private final MediaId mediaId;
     private final Identifier identifier;
     private final String source;
     private final String name;
@@ -37,7 +38,8 @@ public final class Playlist implements Media, Serializable {
     public Playlist(long id, boolean isFromSharedStorage, String source, String name,
                     /* in seconds */ long dateAdded, /* in seconds */ long dateModified) {
         this.identifier = new Identifier(id, isFromSharedStorage);
-        this.source = name != null ? source : "";
+        this.mediaId = MediaId.createLocal(Media.PLAYLIST, id);
+        this.source = source != null ? source : "";
         this.name = name != null ? name : "";
         this.dateAdded = dateAdded;
         this.dateModified = dateModified;
@@ -45,6 +47,7 @@ public final class Playlist implements Media, Serializable {
 
     public Playlist(Playlist toCopy) {
         this.identifier = toCopy.identifier;
+        this.mediaId = toCopy.mediaId;
         this.source = toCopy.source;
         this.name = toCopy.name;
         this.dateAdded = toCopy.dateAdded;
@@ -78,13 +81,8 @@ public final class Playlist implements Media, Serializable {
     }
 
     @Override
-    public long getId() {
-        return identifier.id;
-    }
-
-    @Override
-    public int getKind() {
-        return PLAYLIST;
+    public MediaId getMediaId() {
+        return mediaId;
     }
 
     @Override
@@ -101,7 +99,7 @@ public final class Playlist implements Media, Serializable {
 
     @Override
     public int hashCode() {
-        return (int) getId();
+        return mediaId.hashCode();
     }
 
     public long getDateAdded() {

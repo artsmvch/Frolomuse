@@ -226,8 +226,8 @@ class MainActivity :
         private fun newNavMediaIntent(context: Context, media: Media): Intent {
             return Intent(context, MainActivity::class.java)
                 .setAction(Intent.ACTION_MAIN)
-                .putExtra(MainFragment.EXTRA_NAV_KIND_OF_MEDIA, media.kind)
-                .putExtra(MainFragment.EXTRA_NAV_MEDIA_ID, media.id)
+                .putExtra(MainFragment.EXTRA_NAV_KIND_OF_MEDIA, media.getMediaId().getKind())
+                .putExtra(MainFragment.EXTRA_NAV_MEDIA_ID, media.getMediaId().getSourceId())
         }
 
         @JvmStatic

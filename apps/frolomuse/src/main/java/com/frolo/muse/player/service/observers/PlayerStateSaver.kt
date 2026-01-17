@@ -17,7 +17,8 @@ import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.Executor
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicReference
-
+import android.content.ContentUris
+import android.net.Uri
 
 /**
  * Observes the state of the player state and saves its changes to the current queue,
@@ -55,9 +56,34 @@ class PlayerStateSaver constructor(
         saveQueueAsync(queue)
     }
 
+    /**
+     * Safely extracts the media ID from a content URI.
+     * Uses MediaStore ContentUris to parse the URI and returns null if the URI is invalid
+     * or not a valid content URI.
+     * 
+     * @param uri the URI string to parse
+     * @return the extracted media ID as Long, or null if the URI is invalid
+     */
+    private fun extractIdFromURI(uri: String): Long? {
+        return try {
+            val parsedUri = Uri.parse(uri)
+            // Only handle content URIs
+            if (parsedUri.scheme != "content") {
+                return null
+            }
+            
+            // Use ContentUris to safely extract the ID
+            ContentUris.parseId(parsedUri)
+        } catch (e: Exception) {
+            // Return null for any parsing errors
+            null
+        }
+    }
+
     private fun saveQueueAsync(queue: AudioSourceQueue) {
-        Single.fromCallable { queue.map { source -> source.id } }
+        Single.fromCallable { queue.map { source -> extractIdFromURI(source.getURI()) } }
             .subscribeOn(computationScheduler)
+            .map { ids -> ids.mapNotNull { it } }
             .flatMapCompletable { preferences.saveLastMediaCollectionItemIds(it) }
             .doOnComplete {
                 preferences.apply {
@@ -72,7 +98,7 @@ class PlayerStateSaver constructor(
     }
 
     override fun onAudioSourceChanged(player: Player, item: AudioSource?, positionInQueue: Int) {
-        Completable.fromAction { preferences.saveLastSongId(item?.id ?: -1L) }
+        Completable.fromAction { preferences.saveLastSongId(item?.let { extractIdFromURI(it.getURI()) } ?: -1L) }
             .subscribeOn(workerScheduler)
             .subscribe()
             .also { newDisposable ->

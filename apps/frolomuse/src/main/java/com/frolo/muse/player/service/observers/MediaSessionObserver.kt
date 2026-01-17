@@ -5,7 +5,7 @@ import android.support.v4.media.session.MediaSessionCompat
 import android.support.v4.media.session.PlaybackStateCompat
 import androidx.annotation.AnyThread
 import androidx.annotation.MainThread
-import com.frolo.muse.common.toSong
+import com.frolo.muse.common.asSong
 import com.frolo.player.AudioSource
 import com.frolo.player.Player
 import com.frolo.player.SimplePlayerObserver
@@ -62,7 +62,7 @@ class MediaSessionObserver private constructor(
     }
 
     private fun updateMetadataAsync(item: AudioSource?) {
-        val song: Song? = item?.toSong()
+        val song: Song? = item?.asSong()
         songDisposable?.dispose()
         songDisposable = Arts.getPlaybackArt(context, song)
             .doOnSubscribe { mediaSession.setMetadata(song , null) }

@@ -74,11 +74,11 @@ public final class ArtistRepositoryImpl extends BaseMediaRepository<Artist> impl
     public Completable addToPlaylist(Playlist playlist, Artist item) {
         if (playlist.isFromSharedStorage()) {
             // Legacy
-            return PlaylistHelper.addArtistToPlaylist(getContentResolver(), playlist.getId(), item.getId());
+            return PlaylistHelper.addArtistToPlaylist(getContentResolver(), playlist.getMediaId().getSourceId(), item.getMediaId().getSourceId());
         } else {
             // New playlist storage
             return collectSongs(item).flatMapCompletable(songs -> PlaylistDatabaseManager.get(getContext())
-                    .addPlaylistMembers(playlist.getId(), songs));
+                    .addPlaylistMembers(playlist.getMediaId().getSourceId(), songs));
         }
     }
 
@@ -86,11 +86,11 @@ public final class ArtistRepositoryImpl extends BaseMediaRepository<Artist> impl
     public Completable addToPlaylist(Playlist playlist, Collection<Artist> items) {
         if (playlist.isFromSharedStorage()) {
             // Legacy
-            return PlaylistHelper.addItemsToPlaylist(getContentResolver(), playlist.getId(), items);
+            return PlaylistHelper.addItemsToPlaylist(getContentResolver(), playlist.getMediaId().getSourceId(), items);
         } else {
             // New playlist storage
             return collectSongs(items).flatMapCompletable(songs -> PlaylistDatabaseManager.get(getContext())
-                    .addPlaylistMembers(playlist.getId(), songs));
+                    .addPlaylistMembers(playlist.getMediaId().getSourceId(), songs));
         }
     }
 

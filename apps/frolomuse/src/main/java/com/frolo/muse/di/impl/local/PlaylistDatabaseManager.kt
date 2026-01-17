@@ -16,6 +16,7 @@ import com.frolo.muse.database.FrolomuseDatabase
 import com.frolo.muse.database.entity.*
 import com.frolo.muse.kotlin.contains
 import com.frolo.muse.model.media.*
+import com.frolo.music.model.MediaId
 import com.frolo.music.model.Playlist
 import com.frolo.music.model.Song
 import com.frolo.music.model.SongType
@@ -157,7 +158,7 @@ internal class PlaylistDatabaseManager private constructor(private val context: 
                         // Adding playlist members
                         val memberEntities: List<PlaylistMemberEntity> = songs.map { song ->
                             PlaylistMemberEntity(
-                                audioId = song.id,
+                                audioId = song.getMediaId().getSourceId(),
                                 source = song.source,
                                 playlistId = playlistId
                             )
@@ -198,7 +199,7 @@ internal class PlaylistDatabaseManager private constructor(private val context: 
         }
 
         val entity = PlaylistEntity(
-            id = playlist.id,
+            id = playlist.getMediaId().getSourceId(),
             name = newName,
             source = playlist.source,
             dateCreated = playlist.dateAdded,
@@ -224,7 +225,7 @@ internal class PlaylistDatabaseManager private constructor(private val context: 
             return Completable.error(err)
         }
 
-        return playlistEntityDao.deletePlaylistEntityById(playlist.id)
+        return playlistEntityDao.deletePlaylistEntityById(playlist.getMediaId().getSourceId())
     }
 
     /**
@@ -237,7 +238,7 @@ internal class PlaylistDatabaseManager private constructor(private val context: 
                 if (playlist.isFromSharedStorage) {
                     throw IllegalArgumentException(getSharedStorageErrorLabel("deletion", playlist))
                 }
-                playlist.id
+                playlist.getMediaId().getSourceId()
             } }
                 .subscribeOn(computationScheduler)
                 .flatMapCompletable { ids ->
@@ -278,7 +279,7 @@ internal class PlaylistDatabaseManager private constructor(private val context: 
         return Completable.fromAction {
             val entities = songs.map { song ->
                 PlaylistMemberEntity(
-                    audioId = song.id,
+                    audioId = song.getMediaId().getSourceId(),
                     source = song.source,
                     playlistId = playlistId
                 )
@@ -436,7 +437,7 @@ internal class PlaylistDatabaseManager private constructor(private val context: 
         // Step 2: find invalid entities and delete them from the dao
         val invalidEntities = orderedEntities.filter { entity ->
             // If it is null, then the desired audio may have been probably deleted from the device
-            songs.find { song -> song.id == entity.audioId } == null
+            songs.find { song -> song.getMediaId().getSourceId() == entity.audioId } == null
         }
         playlistMemberEntityDao.blockingRemoveMembersFromPlaylist(invalidEntities)
 
@@ -466,7 +467,7 @@ internal class PlaylistDatabaseManager private constructor(private val context: 
         // Step 4: transform entities to songs
         val orderedSongs = ArrayList<Song>(orderedEntities.size)
         finalOrderedEntities.mapTo(orderedSongs) { entity ->
-            val song: Song? = songs.find { song -> song.id == entity.audioId }
+            val song: Song? = songs.find { song -> song.getMediaId().getSourceId() == entity.audioId }
             if (song == null && DEBUG) {
                 // Actually, this should not happen. If so,
                 // then something is wrong in steps 2 or 3
@@ -503,7 +504,7 @@ internal class PlaylistDatabaseManager private constructor(private val context: 
         val playlistId: Long,
         val entity: PlaylistMemberEntity
     ) : Song, Serializable {
-        override fun getId(): Long = song.id
+        override fun getMediaId(): MediaId = song.getMediaId()
         override fun getSongType(): SongType = song.songType
         override fun getSource(): String? = song.source
         override fun getTitle(): String? = song.title
@@ -515,7 +516,6 @@ internal class PlaylistDatabaseManager private constructor(private val context: 
         override fun getDuration(): Int = song.duration
         override fun getYear(): Int = song.year
         override fun getTrackNumber(): Int = song.trackNumber
-        override fun getKind(): Int = song.kind
     }
 
     companion object {

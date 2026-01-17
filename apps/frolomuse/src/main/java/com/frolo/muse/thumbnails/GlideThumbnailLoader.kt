@@ -78,14 +78,14 @@ class GlideThumbnailLoader constructor(
     }
 
     override fun loadAlbumThumbnail(album: Album, target: ImageView) {
-        requestManager.makeAlbumArtRequest(album.id)
+        requestManager.makeAlbumArtRequest(album.getMediaId().getSourceId())
             .placeholder(R.drawable.ic_framed_album)
             .error(R.drawable.ic_framed_album)
             .into(target)
     }
 
     override fun loadRawAlbumThumbnail(album: Album, target: ImageView) {
-        requestManager.makeAlbumArtRequest(album.id)
+        requestManager.makeAlbumArtRequest(album.getMediaId().getSourceId())
             .placeholder(R.drawable.ic_framed_album)
             .error(R.drawable.ic_framed_album)
             .transition(DrawableTransitionOptions.withCrossFade(200))

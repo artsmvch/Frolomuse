@@ -37,7 +37,7 @@ class AlbumAdapter constructor(
 
     override fun getItemViewType(position: Int) = itemViewType
 
-    override fun getItemId(position: Int) = getItemAt(position).id
+    override fun getItemId(position: Int) = getItemAt(position).getMediaId().getSourceId()
 
     override fun getSectionText(position: Int) = sectionIndexAt(position) { name }
 
@@ -120,7 +120,7 @@ class AlbumAdapter constructor(
 
     object AlbumItemCallback: DiffUtil.ItemCallback<Album>() {
         override fun areItemsTheSame(oldItem: Album, newItem: Album): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.getMediaId().getSourceId() == newItem.getMediaId().getSourceId()
         }
 
         override fun areContentsTheSame(oldItem: Album, newItem: Album): Boolean {

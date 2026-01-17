@@ -67,7 +67,7 @@ class AudioFileAdapter constructor(
 
     class ItemDiffCallback : DiffUtil.ItemCallback<MediaFile>() {
         override fun areItemsTheSame(oldItem: MediaFile, newItem: MediaFile): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.getMediaId().getSourceId() == newItem.getMediaId().getSourceId()
         }
 
         override fun areContentsTheSame(oldItem: MediaFile, newItem: MediaFile): Boolean {

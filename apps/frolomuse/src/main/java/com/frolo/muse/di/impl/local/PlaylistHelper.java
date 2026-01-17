@@ -397,25 +397,25 @@ final class PlaylistHelper {
     ) {
         return wrap(new Action() {
             @Override public void run() throws Exception {
-                switch (item.getKind()) {
+                switch (item.getMediaId().getKind()) {
                     case Media.SONG:
                     case Media.MEDIA_FILE: {
-                        addAudioToPlaylist_Internal(resolver, playlistId, item.getId());
+                        addAudioToPlaylist_Internal(resolver, playlistId, item.getMediaId().getSourceId());
                         break;
                     }
 
                     case Media.ALBUM: {
-                        addAlbumToPlaylist_Internal(resolver, playlistId, item.getId());
+                        addAlbumToPlaylist_Internal(resolver, playlistId, item.getMediaId().getSourceId());
                         break;
                     }
 
                     case Media.ARTIST: {
-                        addArtistToPlaylist_Internal(resolver, playlistId, item.getId());
+                        addArtistToPlaylist_Internal(resolver, playlistId, item.getMediaId().getSourceId());
                         break;
                     }
 
                     case Media.GENRE: {
-                        addGenreToPlaylist_Internal(resolver, playlistId, item.getId());
+                        addGenreToPlaylist_Internal(resolver, playlistId, item.getMediaId().getSourceId());
                         break;
                     }
 
@@ -460,7 +460,7 @@ final class PlaylistHelper {
                 Uri uri = MediaStore.Audio.Playlists.Members.
                         getContentUri("external", playlistId);
 
-                String where = MediaStore.Audio.Playlists.Members.AUDIO_ID + " = " + song.getId();
+                String where = MediaStore.Audio.Playlists.Members.AUDIO_ID + " = " + song.getMediaId().getSourceId();
                 int deletedCount = resolver.delete(uri, where, null);
 
                 resolver.notifyChange(uri, null);
@@ -490,7 +490,7 @@ final class PlaylistHelper {
                     if (firstLooped) {
                         opRemoveSelectionBuilder.append(',');
                     }
-                    opRemoveSelectionBuilder.append(song.getId());
+                    opRemoveSelectionBuilder.append(song.getMediaId().getSourceId());
 
                     firstLooped = true;
                 }

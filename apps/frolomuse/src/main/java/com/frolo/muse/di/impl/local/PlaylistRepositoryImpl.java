@@ -128,10 +128,10 @@ public final class PlaylistRepositoryImpl extends BaseMediaRepository<Playlist> 
     public Flowable<Playlist> getItem(Playlist item) {
         if (item.isFromSharedStorage()) {
             // Legacy
-            return PlaylistQuery.queryItem(getContext().getContentResolver(), item.getId());
+            return PlaylistQuery.queryItem(getContext().getContentResolver(), item.getMediaId().getSourceId());
         } else {
             // New playlist storage
-            return PlaylistDatabaseManager.get(getContext()).queryPlaylist(item.getId());
+            return PlaylistDatabaseManager.get(getContext()).queryPlaylist(item.getMediaId().getSourceId());
         }
     }
 
@@ -207,7 +207,7 @@ public final class PlaylistRepositoryImpl extends BaseMediaRepository<Playlist> 
         } else {
             // New playlist storage
             return PlaylistDatabaseManager.get(getContext())
-                    .queryPlaylistMembers(item.getId())
+                    .queryPlaylistMembers(item.getMediaId().getSourceId())
                     .firstOrError();
         }
     }

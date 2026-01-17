@@ -99,7 +99,7 @@ internal class MediaFileRepositoryImpl(
     }
 
     override fun collectSongs(item: MediaFile): Single<List<Song>> {
-        return songRepository.getItem(item.id)
+        return songRepository.getItem(item.getMediaId().getSourceId())
             .firstOrError()
             .map { listOf(it) }
     }
@@ -107,7 +107,7 @@ internal class MediaFileRepositoryImpl(
     override fun collectSongs(items: MutableCollection<MediaFile>): Single<List<Song>> {
         return Single.defer {
             val sources = items.map { item ->
-                songRepository.getItem(item.id).firstOrError()
+                songRepository.getItem(item.getMediaId().getSourceId()).firstOrError()
             }
             Single.zip(sources) { array ->
                 array.map { it as Song }

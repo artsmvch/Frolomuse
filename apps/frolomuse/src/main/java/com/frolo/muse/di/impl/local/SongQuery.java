@@ -176,7 +176,7 @@ import io.reactivex.functions.Function;
                         for (Long desiredId : ids) {
                             Song desiredSong = null;
                             for (Song song : songs) {
-                                if (song.getId() == desiredId) {
+                                if (song.getMediaId().getSourceId() == desiredId) {
                                     desiredSong = song;
                                     break;
                                 }
@@ -266,7 +266,7 @@ import io.reactivex.functions.Function;
     }
 
     static Flowable<List<Song>> queryForPlaylist(ContentResolver resolver, Playlist playlist, String sortOrder) {
-        Uri uri = MediaStore.Audio.Playlists.Members.getContentUri("external", playlist.getId());
+        Uri uri = MediaStore.Audio.Playlists.Members.getContentUri("external", playlist.getMediaId().getSourceId());
         String selection = null;
         String[] selectionArgs = null;
         return RxContent.query(resolver, uri, SongQueryHelper.getPlaylistMemberProjection(), selection, selectionArgs,
@@ -314,7 +314,7 @@ import io.reactivex.functions.Function;
     static Flowable<List<Song>> queryForMediaFiles(ContentResolver resolver, Collection<MediaFile> mediaFiles) {
         List<Flowable<List<Song>>> sources = new ArrayList<>(mediaFiles.size());
         for (MediaFile mediaFile : mediaFiles) {
-            Flowable<List<Song>> source = queryItem(resolver, mediaFile.getId())
+            Flowable<List<Song>> source = queryItem(resolver, mediaFile.getMediaId().getSourceId())
                 .map(song -> Collections.singletonList(song));
             sources.add(source);
         }
@@ -326,7 +326,7 @@ import io.reactivex.functions.Function;
         return RxContent.createFlowable(resolver, AppMediaStore.Favourites.getContentUri(), ContentExecutors.workerExecutor(),
             () -> {
                 Uri uri = ContentUris.withAppendedId(
-                        AppMediaStore.Favourites.getContentUri(), item.getId());
+                        AppMediaStore.Favourites.getContentUri(), item.getMediaId().getSourceId());
                 Cursor cursor = resolver.query(uri, emptyProjection, null, null, null);
                 if (cursor != null) {
                     boolean isFavourite = false;
@@ -346,7 +346,7 @@ import io.reactivex.functions.Function;
     static Completable changeFavourite(ContentResolver resolver, Song item) {
         Completable source = Completable.fromCallable((Callable<Boolean>) () -> {
             ThreadStrictMode.assertBackground();
-            Uri uri = ContentUris.withAppendedId(AppMediaStore.Favourites.getContentUri(), item.getId());
+            Uri uri = ContentUris.withAppendedId(AppMediaStore.Favourites.getContentUri(), item.getMediaId().getSourceId());
             Cursor cursor = resolver.query(uri, new String[0], null, null, null);
 
             if (cursor != null) {
@@ -358,7 +358,7 @@ import io.reactivex.functions.Function;
                 }
 
                 if (isFavourite) {
-                    String selection = AppMediaStore.Favourites._ID + " = " + item.getId();
+                    String selection = AppMediaStore.Favourites._ID + " = " + item.getMediaId().getSourceId();
                     String[] selectionArgs = null;
                     int deletedCount = resolver.delete(AppMediaStore.Favourites.getContentUri(), selection, selectionArgs);
 
@@ -368,7 +368,7 @@ import io.reactivex.functions.Function;
                     return false;
                 } else {
                     ContentValues values = new ContentValues();
-                    values.put(AppMediaStore.Favourites._ID, item.getId());
+                    values.put(AppMediaStore.Favourites._ID, item.getMediaId().getSourceId());
                     values.put(AppMediaStore.Favourites.PATH, item.getSource());
                     values.put(AppMediaStore.Favourites.TIME_ADDED, System.currentTimeMillis());
 
@@ -397,7 +397,7 @@ import io.reactivex.functions.Function;
             cv.put(MediaStore.Audio.Media.ARTIST, artist);
 
             final Uri uri = ContentUris.withAppendedId(
-                    MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, item.getId());
+                    MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, item.getMediaId().getSourceId());
 
             int updatedCount = resolver.update(uri, cv, null, null);
 
@@ -616,7 +616,7 @@ import io.reactivex.functions.Function;
     static Flowable<List<Song>> query(final ContentResolver resolver, SongFilter filter,
                                       final String sortOrder, final Album album) {
         filter = filter.newBuilder()
-            .setAlbumId(album.getId())
+            .setAlbumId(album.getMediaId().getSourceId())
             .build();
         Flowable<List<Song>> source = query(resolver, filter, sortOrder);
         if (sortOrder == null || sortOrder.isEmpty()) {
@@ -634,14 +634,14 @@ import io.reactivex.functions.Function;
     static Flowable<List<Song>> query(final ContentResolver resolver, SongFilter filter,
                                       final String sortOrder, final Artist artist) {
         filter = filter.newBuilder()
-            .setArtistId(artist.getId())
+            .setArtistId(artist.getMediaId().getSourceId())
             .build();
         return query(resolver, filter, sortOrder);
     }
 
     static Flowable<List<Song>> query(final ContentResolver resolver, SongFilter filter,
                                       final String sortOrder, final Genre genre) {
-        Uri uri = MediaStore.Audio.Genres.Members.getContentUri("external", genre.getId());
+        Uri uri = MediaStore.Audio.Genres.Members.getContentUri("external", genre.getMediaId().getSourceId());
 //        filter = filter.newBuilder()
 //            .setGenreId(genre.getId())
 //            .build();

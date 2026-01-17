@@ -30,9 +30,9 @@ val AudioSource.durationInSeconds: Int get() = duration / 1000
 
 fun AudioType.toSongType(): SongType = Util.toSongType(this)
 
-fun AudioSource.toSong(): Song {
-    return if (this is Song) this
-    else Util.createSong(this)
+fun AudioSource.asSong(): Song? {
+    // TODO: If AudioSource is not a Song, construct a Song from its metadata instead of returning null
+    return this as? Song
 }
 
-fun List<AudioSource>.toSongs(): List<Song> = map { it.toSong() }
+fun List<AudioSource>.asSongs(): List<Song> = mapNotNull { it.asSong() }

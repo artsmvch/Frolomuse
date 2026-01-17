@@ -11,6 +11,8 @@ import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single
 import javax.inject.Inject
+import android.content.ContentUris
+import androidx.core.net.toUri
 
 
 class PlayerStateRestorer @Inject constructor(
@@ -29,6 +31,22 @@ class PlayerStateRestorer @Inject constructor(
         val startPlaying: Boolean,
         val playbackPosition: Int
     )
+
+    private fun extractIdFromURI(uri: String): Long? {
+        return try {
+            val parsedUri = uri.toUri()
+            // Only handle content URIs
+            if (parsedUri.scheme != "content") {
+                return null
+            }
+            
+            // Use ContentUris to safely extract the ID
+            ContentUris.parseId(parsedUri)
+        } catch (_: Exception) {
+            // Return null for any parsing errors
+            null
+        }
+    }
 
     private fun getDefaultPlayerState(): Single<PlayerState> {
         return songRepository.allItems
@@ -89,7 +107,7 @@ class PlayerStateRestorer @Inject constructor(
             .map { queue ->
 
                 val targetItemId = preferences.lastSongId
-                val targetItem = queue.findFirstOrNull { item -> item.id == targetItemId }
+                val targetItem = queue.findFirstOrNull { item -> extractIdFromURI(item.getURI()) == targetItemId }
                 val playbackProgress = if (targetItem != null) preferences.lastPlaybackPosition else 0
 
                 PlayerState(

@@ -52,12 +52,12 @@ fun Context.share(uris: List<Uri>, title: String) {
 }
 
 fun Context.share(song: Song) {
-    val uri = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, song.id)
+    val uri = ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, song.getMediaId().getSourceId())
     share(uri, getString(R.string.share_track))
 }
 
 fun Context.share(songs: List<Song>) {
-    val uris = songs.map { ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, it.id) }
+    val uris = songs.map { ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, it.getMediaId().getSourceId()) }
     share(uris, getString(R.string.share_tracks))
 }
 

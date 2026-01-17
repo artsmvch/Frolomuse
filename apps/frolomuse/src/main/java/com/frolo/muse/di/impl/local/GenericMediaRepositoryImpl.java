@@ -137,7 +137,7 @@ public class GenericMediaRepositoryImpl implements GenericMediaRepository {
 
     @Override
     public Completable delete(Media item) {
-        switch (item.getKind()) {
+        switch (item.getMediaId().getKind()) {
             case Media.SONG:
                 return mSongRepo.delete((Song) item);
 
@@ -177,12 +177,12 @@ public class GenericMediaRepositoryImpl implements GenericMediaRepository {
             // Legacy
             return PlaylistHelper.addItemToPlaylist(
                     mContext.getContentResolver(),
-                    playlist.getId(),
+                    playlist.getMediaId().getSourceId(),
                     item);
         } else {
             // New playlist storage
             return collectSongs(item).flatMapCompletable(songs -> PlaylistDatabaseManager.get(mContext)
-                    .addPlaylistMembers(playlist.getId(), songs));
+                    .addPlaylistMembers(playlist.getMediaId().getSourceId(), songs));
         }
     }
 
@@ -192,12 +192,12 @@ public class GenericMediaRepositoryImpl implements GenericMediaRepository {
             // Legacy
             return PlaylistHelper.addItemsToPlaylist(
                     mContext.getContentResolver(),
-                    playlist.getId(),
+                    playlist.getMediaId().getSourceId(),
                     items);
         } else {
             // New playlist storage
             return collectSongs(items).flatMapCompletable(songs -> PlaylistDatabaseManager.get(mContext)
-                    .addPlaylistMembers(playlist.getId(), songs));
+                    .addPlaylistMembers(playlist.getMediaId().getSourceId(), songs));
         }
     }
 
@@ -205,7 +205,7 @@ public class GenericMediaRepositoryImpl implements GenericMediaRepository {
     @Override
     public Single<List<Song>> collectSongs(Media item) {
 
-        switch (item.getKind()) {
+        switch (item.getMediaId().getKind()) {
             case Media.SONG: {
                 return mSongRepo.collectSongs((Song) item);
             }
@@ -270,7 +270,7 @@ public class GenericMediaRepositoryImpl implements GenericMediaRepository {
     @SuppressLint("SwitchIntDef")
     @Override
     public Flowable<Boolean> isFavourite(Media item) {
-        switch (item.getKind()) {
+        switch (item.getMediaId().getKind()) {
             case Media.SONG: {
                 return mSongRepo.isFavourite((Song) item);
             }
@@ -300,7 +300,7 @@ public class GenericMediaRepositoryImpl implements GenericMediaRepository {
     @SuppressLint("SwitchIntDef")
     @Override
     public Completable changeFavourite(Media item) {
-        switch (item.getKind()) {
+        switch (item.getMediaId().getKind()) {
             case Media.SONG: {
                 return mSongRepo.changeFavourite((Song) item);
             }
@@ -332,7 +332,7 @@ public class GenericMediaRepositoryImpl implements GenericMediaRepository {
         return Single.defer(new Callable<SingleSource<Boolean>>() {
             @Override
             public SingleSource<Boolean> call() throws Exception {
-                switch (item.getKind()) {
+                switch (item.getMediaId().getKind()) {
                     case Media.SONG: {
                         return mSongRepo.isShortcutSupported((Song) item);
                     }
@@ -374,7 +374,7 @@ public class GenericMediaRepositoryImpl implements GenericMediaRepository {
         return Completable.defer(new Callable<CompletableSource>() {
             @Override
             public CompletableSource call() throws Exception {
-                switch (item.getKind()) {
+                switch (item.getMediaId().getKind()) {
                     case Media.SONG: {
                         return mSongRepo.createShortcut((Song) item);
                     }

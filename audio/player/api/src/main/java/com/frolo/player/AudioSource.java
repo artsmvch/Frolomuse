@@ -7,23 +7,17 @@ import java.io.Serializable;
 
 /**
  * AudioSource represents audio that can be played by {@link Player}.
- * Audio sources are distinguished by {@link AudioSource#getId()}.
+ * Audio sources are distinguished by {@link AudioSource#getURI()}.
  * {@link AudioSource#getMetadata()}} returns metadata that contains information about the AudioSource.
  */
 public interface AudioSource extends Serializable {
 
     /**
-     * Returns unique identifier of the AudioSource.
-     * @return unique identifier of the AudioSource.
-     */
-    long getId();
-
-    /**
-     * Returns the path to the AudioSource.
+     * Returns the uniform resource identifier (URI) of the AudioSource.
      * This can be a local filepath or http(https) URL.
-     * @return the path to the AudioSource.
+     * @return the URI of the AudioSource.
      */
-    String getSource();
+    String getURI();
 
     /**
      * Returns the metadata of the AudioSource.
