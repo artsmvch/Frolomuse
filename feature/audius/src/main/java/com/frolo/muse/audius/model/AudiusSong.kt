@@ -23,9 +23,9 @@ class AudiusSong(
 
     override fun getTitle() = track.title
 
-    override fun getArtistId() = track.user.id.hashCode().toLong()
+    override fun getArtistId() = 0L // Audius tracks don't have artist IDs
 
-    override fun getArtist() = track.user.name
+    override fun getArtist() = "Unknown"
 
     override fun getAlbumId() = 0L // Audius tracks don't have album IDs
 
@@ -52,10 +52,10 @@ class AudiusSong(
     override fun getMetadata(): AudioMetadata = object : AudioMetadata {
         override fun getAudioType() = AudioType.MUSIC
         override fun getTitle() = track.title
-        override fun getArtistId() = track.user.id.hashCode().toLong()
-        override fun getArtist() = track.user.name
+        override fun getArtistId() = 0L // Audius tracks don't have artist IDs
+        override fun getArtist() = "Unknown"
         override fun getAlbumId() = 0L // Audius tracks don't have album IDs
-        override fun getAlbum() = "Audius"
+        override fun getAlbum() = "Unknown"
         override fun getGenre() = track.genre ?: ""
         override fun getDuration() = track.duration * 1000 // Convert to milliseconds
         override fun getYear() = 0 // Audius doesn't provide year in a simple format
