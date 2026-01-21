@@ -62,6 +62,8 @@ class SearchViewModel @Inject constructor(
                 .flatMapSingle { query ->
                     val localSearch = searchMediaUseCase.search(query).firstOrError()
                     val audiusSearch = searchAudiusTracksUseCase.search(query)
+                        .doOnError { eventLogger.log(it) }
+                        .onErrorReturnItem(emptyList())
                     
                     Single.zip(localSearch, audiusSearch) { localResults, audiusResults ->
                         val combinedResults = mutableListOf<Media>()
