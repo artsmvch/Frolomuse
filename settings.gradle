@@ -34,6 +34,7 @@ include ':feature:audius'
 
 // Advertising
 include ':ads:admob'
+include ':ads:onexbet'
 
 // Core
 include ':core'
