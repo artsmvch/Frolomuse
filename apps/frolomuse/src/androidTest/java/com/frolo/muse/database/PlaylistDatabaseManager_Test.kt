@@ -48,7 +48,7 @@ class PlaylistDatabaseManager_Test {
             return false
         }
         for (i in list1.indices) {
-            if (list1[i].id != list2[i].id) {
+            if (list1[i].mediaId.sourceId != list2[i].mediaId.sourceId) {
                 return false
             }
         }
@@ -61,9 +61,9 @@ class PlaylistDatabaseManager_Test {
         val playlist = manager.createPlaylist("Playlist1").blockingGet()
         val originalSongs = getSongList(2)
 
-        manager.addPlaylistMembers(playlist.id, originalSongs).blockingAwait()
+        manager.addPlaylistMembers(playlist.mediaId.sourceId, originalSongs).blockingAwait()
 
-        var resultList = manager.queryPlaylistMembers(playlist.id)
+        var resultList = manager.queryPlaylistMembers(playlist.mediaId.sourceId)
             .blockingFirst()
             .toMutableList()
 
@@ -71,7 +71,7 @@ class PlaylistDatabaseManager_Test {
         manager.movePlaylistMember(resultList[0], resultList[1], null).blockingAwait()
         resultList.moveItem(0, 1)
 
-        manager.queryPlaylistMembers(playlist.id).blockingFirst().also { updatedList ->
+        manager.queryPlaylistMembers(playlist.mediaId.sourceId).blockingFirst().also { updatedList ->
             assertTrue(arePlayOrdersEqual(updatedList, resultList))
             resultList = updatedList.toMutableList()
         }
@@ -80,7 +80,7 @@ class PlaylistDatabaseManager_Test {
         manager.movePlaylistMember(resultList[1], null, resultList[0]).blockingAwait()
         resultList.moveItem(1, 0)
 
-        manager.queryPlaylistMembers(playlist.id).blockingFirst().also { updatedList ->
+        manager.queryPlaylistMembers(playlist.mediaId.sourceId).blockingFirst().also { updatedList ->
             assertTrue(arePlayOrdersEqual(updatedList, resultList))
             resultList = updatedList.toMutableList()
         }
@@ -89,7 +89,7 @@ class PlaylistDatabaseManager_Test {
         manager.movePlaylistMember(resultList[0], resultList[1], null).blockingAwait()
         resultList.moveItem(0, 1)
 
-        manager.queryPlaylistMembers(playlist.id).blockingFirst().also { updatedList ->
+        manager.queryPlaylistMembers(playlist.mediaId.sourceId).blockingFirst().also { updatedList ->
             assertTrue(arePlayOrdersEqual(updatedList, resultList))
             resultList = updatedList.toMutableList()
         }
@@ -101,9 +101,9 @@ class PlaylistDatabaseManager_Test {
         val playlist = manager.createPlaylist("Playlist2").blockingGet()
         val originalSongs = getSongList(10)
 
-        manager.addPlaylistMembers(playlist.id, originalSongs).blockingAwait()
+        manager.addPlaylistMembers(playlist.mediaId.sourceId, originalSongs).blockingAwait()
 
-        var resultList = manager.queryPlaylistMembers(playlist.id)
+        var resultList = manager.queryPlaylistMembers(playlist.mediaId.sourceId)
             .blockingFirst()
             .toMutableList()
 
@@ -111,7 +111,7 @@ class PlaylistDatabaseManager_Test {
         manager.movePlaylistMember(resultList[0], resultList[9], null).blockingAwait()
         resultList.moveItem(0, 9)
 
-        manager.queryPlaylistMembers(playlist.id).blockingFirst().also { updatedList ->
+        manager.queryPlaylistMembers(playlist.mediaId.sourceId).blockingFirst().also { updatedList ->
             assertTrue(arePlayOrdersEqual(updatedList, resultList))
             resultList = updatedList.toMutableList()
         }
@@ -120,16 +120,16 @@ class PlaylistDatabaseManager_Test {
         manager.movePlaylistMember(resultList[0], resultList[8], resultList[9]).blockingAwait()
         resultList.moveItem(0, 8)
 
-        manager.queryPlaylistMembers(playlist.id).blockingFirst().also { updatedList ->
+        manager.queryPlaylistMembers(playlist.mediaId.sourceId).blockingFirst().also { updatedList ->
             assertTrue(arePlayOrdersEqual(updatedList, resultList))
             resultList = updatedList.toMutableList()
         }
 
         // Remove pos 8
-        manager.removePlaylistMember(playlist.id, resultList[8]).blockingAwait()
+        manager.removePlaylistMember(playlist.mediaId.sourceId, resultList[8]).blockingAwait()
         var removed = resultList.removeAt(8)
 
-        manager.queryPlaylistMembers(playlist.id).blockingFirst().also { updatedList ->
+        manager.queryPlaylistMembers(playlist.mediaId.sourceId).blockingFirst().also { updatedList ->
             assertTrue(arePlayOrdersEqual(updatedList, resultList))
             resultList = updatedList.toMutableList()
         }
@@ -138,16 +138,16 @@ class PlaylistDatabaseManager_Test {
         manager.movePlaylistMember(resultList[1], null, resultList[0]).blockingAwait()
         resultList.moveItem(1, 0)
 
-        manager.queryPlaylistMembers(playlist.id).blockingFirst().also { updatedList ->
+        manager.queryPlaylistMembers(playlist.mediaId.sourceId).blockingFirst().also { updatedList ->
             assertTrue(arePlayOrdersEqual(updatedList, resultList))
             resultList = updatedList.toMutableList()
         }
 
         // Add the previously removed
-        manager.addPlaylistMember(playlist.id, removed).blockingAwait()
+        manager.addPlaylistMember(playlist.mediaId.sourceId, removed).blockingAwait()
         resultList.add(removed)
 
-        manager.queryPlaylistMembers(playlist.id).blockingFirst().also { updatedList ->
+        manager.queryPlaylistMembers(playlist.mediaId.sourceId).blockingFirst().also { updatedList ->
             assertTrue(arePlayOrdersEqual(updatedList, resultList))
             resultList = updatedList.toMutableList()
         }
@@ -156,7 +156,7 @@ class PlaylistDatabaseManager_Test {
         manager.movePlaylistMember(resultList[9], resultList[7], resultList[8]).blockingAwait()
         resultList.moveItem(9, 8)
 
-        manager.queryPlaylistMembers(playlist.id).blockingFirst().also { updatedList ->
+        manager.queryPlaylistMembers(playlist.mediaId.sourceId).blockingFirst().also { updatedList ->
             assertTrue(arePlayOrdersEqual(updatedList, resultList))
             resultList = updatedList.toMutableList()
         }

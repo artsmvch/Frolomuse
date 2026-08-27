@@ -25,7 +25,7 @@ internal class NativePresetImpl(
 
     private fun resolveLocalizedName(): String {
         @StringRes
-        val nameResId = when(keyName.toLowerCase()) {
+        val nameResId = when(keyName.lowercase()) {
             "normal" ->         R.string.preset_normal
             "rock" ->           R.string.preset_rock
             "heavy metal" ->    R.string.preset_heavy_metal

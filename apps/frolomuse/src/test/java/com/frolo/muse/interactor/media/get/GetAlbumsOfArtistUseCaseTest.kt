@@ -9,8 +9,8 @@ import com.frolo.muse.model.menu.SortOrderMenu
 import com.frolo.music.repository.AlbumRepository
 import com.frolo.test.stubKT
 import com.frolo.test.stubList
-import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.whenever
+import org.mockito.kotlin.any
+import org.mockito.kotlin.whenever
 import io.reactivex.Flowable
 import io.reactivex.observers.TestObserver
 import io.reactivex.subscribers.TestSubscriber

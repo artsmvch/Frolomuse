@@ -54,7 +54,7 @@ fun <T> Flowable<T>.doOnFirst(consumer: (T) -> Unit): Flowable<T> {
 /**
  * Emits default [item] after the specified [delay] if there are no items emitted by [this] source yet.
  */
-fun <T> Flowable<T>.withDefaultItemDelayed(item: T, delay: Long, unit: TimeUnit, scheduler: Scheduler = Schedulers.computation()): Flowable<T> {
+fun <T : Any> Flowable<T>.withDefaultItemDelayed(item: T, delay: Long, unit: TimeUnit, scheduler: Scheduler = Schedulers.computation()): Flowable<T> {
     return RxJavaPlugins.onAssembly(FlowableWithDefaultItemDelayed(this, item, delay, unit, scheduler))
 }
 

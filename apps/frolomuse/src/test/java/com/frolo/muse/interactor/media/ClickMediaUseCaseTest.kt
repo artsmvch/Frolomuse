@@ -12,7 +12,7 @@ import com.frolo.music.model.test.stubSong
 import com.frolo.music.model.test.stubSongList
 import com.frolo.test.stubKT
 import com.frolo.test.stubList
-import com.nhaarman.mockitokotlin2.*
+import org.mockito.kotlin.*
 import io.reactivex.Single
 import io.reactivex.observers.TestObserver
 import org.junit.Before
@@ -180,8 +180,8 @@ class ClickMediaUseCaseTest {
         val collection = mock<List<MyFile>>()
         val myFile = mock<MyFile>()
 
-        whenever(myFile.kind)
-                .thenReturn(Media.MY_FILE)
+        whenever(myFile.mediaId)
+                .thenReturn(MediaId.createLocal(Media.MY_FILE, 0))
 
         whenever(myFile.isSongFile)
                 .thenReturn(false)
@@ -209,28 +209,28 @@ class ClickMediaUseCaseTest {
         val collection = ArrayList<MyFile>().also { list ->
             // Directory
             mock<MyFile>().also { myFile ->
-                whenever(myFile.kind).thenReturn(Media.MY_FILE)
+                whenever(myFile.mediaId).thenReturn(MediaId.createLocal(Media.MY_FILE, 0))
                 whenever(myFile.isDirectory).thenReturn(true)
                 whenever(myFile.isSongFile).thenReturn(false)
                 list.add(myFile)
             }
             // Song file
             mock<MyFile>().also { myFile ->
-                whenever(myFile.kind).thenReturn(Media.MY_FILE)
+                whenever(myFile.mediaId).thenReturn(MediaId.createLocal(Media.MY_FILE, 0))
                 whenever(myFile.isDirectory).thenReturn(false)
                 whenever(myFile.isSongFile).thenReturn(true)
                 list.add(myFile)
             }
             // Song file
             mock<MyFile>().also { myFile ->
-                whenever(myFile.kind).thenReturn(Media.MY_FILE)
+                whenever(myFile.mediaId).thenReturn(MediaId.createLocal(Media.MY_FILE, 0))
                 whenever(myFile.isDirectory).thenReturn(false)
                 whenever(myFile.isSongFile).thenReturn(true)
                 list.add(myFile)
             }
             // Just a file
             mock<MyFile>().also { myFile ->
-                whenever(myFile.kind).thenReturn(Media.MY_FILE)
+                whenever(myFile.mediaId).thenReturn(MediaId.createLocal(Media.MY_FILE, 0))
                 whenever(myFile.isDirectory).thenReturn(false)
                 whenever(myFile.isSongFile).thenReturn(false)
                 list.add(myFile)
@@ -245,7 +245,7 @@ class ClickMediaUseCaseTest {
         val allSongs = songsFromMyFile + songsFromMyFile
         val songQueue = AudioSourceQueue.create(allSongs.toAudioSources())
 
-        whenever(myFile.kind).thenReturn(Media.MY_FILE)
+        whenever(myFile.mediaId).thenReturn(MediaId.createLocal(Media.MY_FILE, 0))
 
         whenever(myFile.isSongFile).thenReturn(true)
 
@@ -276,7 +276,7 @@ class ClickMediaUseCaseTest {
 
         val testObserver = TestObserver.create<Unit>()
 
-        whenever(myFile.kind).thenReturn(Media.MY_FILE)
+        whenever(myFile.mediaId).thenReturn(MediaId.createLocal(Media.MY_FILE, 0))
 
         whenever(myFile.isSongFile).thenReturn(false)
 
@@ -294,8 +294,10 @@ class ClickMediaUseCaseTest {
         val collection = mock<List<Media>>()
         val media = mock<Media>()
 
-        whenever(media.kind)
-                .thenReturn(Media.NONE)
+        val unknownMediaId = mock<MediaId>()
+        whenever(unknownMediaId.kind).thenReturn(Media.NONE)
+        whenever(media.mediaId)
+                .thenReturn(unknownMediaId)
 
         val testObserver = TestObserver.create<Unit>()
 

@@ -11,9 +11,9 @@ import com.frolo.music.model.Media
 import com.frolo.muse.model.menu.ContextualMenu
 import com.frolo.muse.router.TestAppRouter
 import com.frolo.muse.permission.PermissionChecker
-import com.nhaarman.mockitokotlin2.doReturn
-import com.nhaarman.mockitokotlin2.eq
-import com.nhaarman.mockitokotlin2.whenever
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.eq
+import org.mockito.kotlin.whenever
 import io.reactivex.Flowable
 import io.reactivex.Single
 import org.junit.Before

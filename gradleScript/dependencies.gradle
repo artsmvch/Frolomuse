@@ -11,7 +11,7 @@ ext {
         ],
 
         jetbrains: [
-            kotlinxMetadataJvm:       "org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.5.0"
+            kotlinxMetadataJvm:       "org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.9.0"
         ],
 
         support : [
@@ -67,9 +67,9 @@ ext {
         ],
 
         room : [
-            runtime:                "androidx.room:room-runtime:2.6.1",
-            compiler:               "androidx.room:room-compiler:2.6.1",
-            rxJava2:                "androidx.room:room-rxjava2:2.6.1"
+            runtime:                "androidx.room:room-runtime:2.8.4",
+            compiler:               "androidx.room:room-compiler:2.8.4",
+            rxJava2:                "androidx.room:room-rxjava2:2.8.4"
         ],
 
         rxJava2 : [
@@ -94,8 +94,8 @@ ext {
         ],
 
         di: [
-            dagger:                 "com.google.dagger:dagger:2.44.2",
-            daggerCompiler:         "com.google.dagger:dagger-compiler:2.44.2"
+            dagger:                 "com.google.dagger:dagger:2.60.1",
+            daggerCompiler:         "com.google.dagger:dagger-compiler:2.60.1"
         ],
 
         retrofit: [
