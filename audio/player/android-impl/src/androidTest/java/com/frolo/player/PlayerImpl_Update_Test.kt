@@ -6,7 +6,7 @@ import com.frolo.test.randomInt
 import com.frolo.test.randomLong
 import com.frolo.test.randomString
 import com.frolo.player.data.AudioSources
-import com.nhaarman.mockitokotlin2.*
+import org.mockito.kotlin.*
 import org.junit.Test
 import org.junit.runner.RunWith
 import junit.framework.TestCase.assertTrue
@@ -50,8 +50,7 @@ class PlayerImpl_Update_Test : PlayerImpl_Base_Test() {
             randomInt()
         )
         val updatedSecondItem = AudioSources.createAudioSource(
-            secondItem.id,
-            secondItem.source,
+            secondItem.getURI(),
             newSecondItemMetadata
         )
 
@@ -98,8 +97,7 @@ class PlayerImpl_Update_Test : PlayerImpl_Base_Test() {
             randomInt()
         )
         val updatedItem = AudioSources.createAudioSource(
-            item.id,
-            item.source,
+            item.getURI(),
             newItemMetadata
         )
 

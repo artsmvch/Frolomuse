@@ -1,7 +1,7 @@
 package com.frolo.player
 
 import androidx.test.runner.AndroidJUnit4
-import com.nhaarman.mockitokotlin2.*
+import org.mockito.kotlin.*
 import org.junit.Test
 import org.junit.runner.RunWith
 
