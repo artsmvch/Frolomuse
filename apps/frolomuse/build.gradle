@@ -140,6 +140,12 @@ android {
     buildFeatures {
         viewBinding true
     }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
 }
 
 kotlin {
@@ -248,6 +254,7 @@ dependencies {
     testImplementation "org.mockito.kotlin:mockito-kotlin:$mockito_kotlin_version"
     testImplementation deps.support.coreTesting
     testImplementation project(path: ':test-tools:stubs')
+    testImplementation 'org.robolectric:robolectric:4.14.1'
 
     // Arch
     implementation deps.lifecycle.extensions

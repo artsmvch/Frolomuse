@@ -20,13 +20,15 @@ import io.reactivex.subscribers.TestSubscriber
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.junit.runners.JUnit4
 import org.mockito.Mock
 import org.mockito.MockitoAnnotations
 import com.frolo.test.stubKT
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 
 
-@RunWith(JUnit4::class)
+@RunWith(RobolectricTestRunner::class)
+@Config(application = android.app.Application::class)
 class GetAlbumSongsUseCaseTest {
 
     private val schedulerProvider = TestSchedulerProvider.SHARED
