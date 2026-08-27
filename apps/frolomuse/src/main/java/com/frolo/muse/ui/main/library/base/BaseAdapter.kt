@@ -8,7 +8,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 
-abstract class BaseAdapter<E, VH> constructor(
+abstract class BaseAdapter<E : Any, VH> constructor(
     private val itemCallback: DiffUtil.ItemCallback<E>? = null
 ): RecyclerView.Adapter<VH>() where VH: BaseAdapter.BaseViewHolder {
 
@@ -225,7 +225,7 @@ abstract class BaseAdapter<E, VH> constructor(
         abstract val viewOptionsMenu: View?
     }
 
-    private class NodeItemCallback<E>(
+    private class NodeItemCallback<E : Any>(
         private val backing: DiffUtil.ItemCallback<E>
     ): DiffUtil.ItemCallback<Node<E>>() {
 

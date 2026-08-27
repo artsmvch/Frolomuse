@@ -232,20 +232,20 @@ dependencies {
     implementation project(path: ':audio-libs:soundwaveform')
     implementation project(path: ':audio-libs:ringdroid')
 
-    def mockito_version = "3.10.0" // 2.23.0
-    def mockito_kotlin_version = "2.1.0"
+    def mockito_version = "5.12.0"
+    def mockito_kotlin_version = "5.4.0"
     // Instrumentation tests
     androidTestImplementation deps.test.runner
     androidTestImplementation "org.mockito:mockito-core:$mockito_version"
     androidTestImplementation "org.mockito:mockito-android:$mockito_version"
-    androidTestImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockito_kotlin_version"
+    androidTestImplementation "org.mockito.kotlin:mockito-kotlin:$mockito_kotlin_version"
     androidTestImplementation project(path: ':test-tools:stubs')
     androidTestImplementation project(path: ':test-tools:assets')
 
     // Unit tests
     testImplementation 'junit:junit:4.13.2'
     testImplementation "org.mockito:mockito-core:$mockito_version"
-    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockito_kotlin_version"
+    testImplementation "org.mockito.kotlin:mockito-kotlin:$mockito_kotlin_version"
     testImplementation deps.support.coreTesting
     testImplementation project(path: ':test-tools:stubs')
 

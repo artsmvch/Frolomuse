@@ -15,7 +15,7 @@ import com.frolo.music.repository.*
 import com.frolo.test.stubKT
 import com.frolo.test.stubList
 import com.frolo.test.randomLong
-import com.nhaarman.mockitokotlin2.*
+import org.mockito.kotlin.*
 import io.reactivex.Flowable
 import io.reactivex.Single
 import io.reactivex.observers.TestObserver
@@ -80,7 +80,7 @@ class PlayerStateRestorerTest {
             .thenReturn(id)
 
         whenever(preferences.lastMediaCollectionItemIds)
-            .thenReturn(Flowable.just(songs.map { song -> song.id }))
+            .thenReturn(Flowable.just(songs.map { song -> song.mediaId.sourceId }))
 
         whenever(albumRepository.getItem(eq(id)))
             .thenReturn(Flowable.just(album))
@@ -89,7 +89,7 @@ class PlayerStateRestorerTest {
             .thenReturn(Single.just(songs))
 
         whenever(preferences.lastSongId)
-            .thenReturn(targetSong.id)
+            .thenReturn(targetSong.mediaId.sourceId)
 
         whenever(preferences.lastPlaybackPosition)
             .thenReturn(playbackPosition)
@@ -97,10 +97,10 @@ class PlayerStateRestorerTest {
         whenever(songRepository.allItems)
             .thenReturn(Flowable.just(stubList(size = 100)))
 
-        whenever(songRepository.getSongsOptionally(eq(songs.map { song -> song.id })))
+        whenever(songRepository.getSongsOptionally(eq(songs.map { song -> song.mediaId.sourceId })))
             .thenReturn(Flowable.just(songs))
 
-        whenever(songRepository.getItem(eq(targetSong.id)))
+        whenever(songRepository.getItem(eq(targetSong.mediaId.sourceId)))
             .thenReturn(Flowable.just(targetSong))
 
         val observer = TestObserver.create<Unit>()
@@ -137,7 +137,7 @@ class PlayerStateRestorerTest {
             .thenReturn(albumId)
 
         whenever(preferences.lastMediaCollectionItemIds)
-            .thenReturn(Flowable.just(albumSongs.map { song -> song.id }))
+            .thenReturn(Flowable.just(albumSongs.map { song -> song.mediaId.sourceId }))
 
         whenever(albumRepository.getItem(eq(albumId)))
             .thenReturn(Flowable.just(album))
@@ -146,7 +146,7 @@ class PlayerStateRestorerTest {
             .thenReturn(Single.just(albumSongs))
 
         whenever(preferences.lastSongId)
-            .thenReturn(lastPlayedSong.id)
+            .thenReturn(lastPlayedSong.mediaId.sourceId)
 
         whenever(preferences.lastPlaybackPosition)
             .thenReturn(playbackPosition)
@@ -154,7 +154,7 @@ class PlayerStateRestorerTest {
         whenever(songRepository.allItems)
             .thenReturn(Flowable.just(allSongs))
 
-        whenever(songRepository.getItem(eq(lastPlayedSong.id)))
+        whenever(songRepository.getItem(eq(lastPlayedSong.mediaId.sourceId)))
             .thenReturn(Flowable.just(lastPlayedSong))
 
         val observer = TestObserver.create<Unit>()
@@ -186,7 +186,7 @@ class PlayerStateRestorerTest {
             .thenReturn(id)
 
         whenever(preferences.lastMediaCollectionItemIds)
-            .thenReturn(Flowable.just(songs.map { song -> song.id }))
+            .thenReturn(Flowable.just(songs.map { song -> song.mediaId.sourceId }))
 
         whenever(albumRepository.getItem(eq(id)))
             .thenReturn(Flowable.just(album))
@@ -195,7 +195,7 @@ class PlayerStateRestorerTest {
             .thenReturn(Single.just(songs))
 
         whenever(preferences.lastSongId)
-            .thenReturn(targetSong.id)
+            .thenReturn(targetSong.mediaId.sourceId)
 
         whenever(preferences.lastPlaybackPosition)
             .thenReturn(playbackPosition)
@@ -203,7 +203,7 @@ class PlayerStateRestorerTest {
         whenever(songRepository.allItems)
             .thenReturn(Flowable.just(allSongs))
 
-        whenever(songRepository.getItem(eq(targetSong.id)))
+        whenever(songRepository.getItem(eq(targetSong.mediaId.sourceId)))
             .thenReturn(Flowable.just(targetSong))
 
         val observer = TestObserver.create<Unit>()

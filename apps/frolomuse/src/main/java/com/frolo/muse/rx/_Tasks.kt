@@ -5,7 +5,7 @@ import io.reactivex.Single
 import io.reactivex.disposables.Disposables
 
 
-fun <T> Task<T>.toSingle(): Single<T> {
+fun <T : Any> Task<T>.toSingle(): Single<T> {
     val task: Task<T> = this
     return Single.create { emitter ->
 

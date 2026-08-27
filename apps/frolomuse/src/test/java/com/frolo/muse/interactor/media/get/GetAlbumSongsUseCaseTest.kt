@@ -9,9 +9,9 @@ import com.frolo.music.model.SortOrder
 import com.frolo.music.repository.AlbumChunkRepository
 import com.frolo.muse.repository.Preferences
 import com.frolo.music.model.test.stubSong
-import com.nhaarman.mockitokotlin2.doReturn
-import com.nhaarman.mockitokotlin2.eq
-import com.nhaarman.mockitokotlin2.whenever
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.eq
+import org.mockito.kotlin.whenever
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Single

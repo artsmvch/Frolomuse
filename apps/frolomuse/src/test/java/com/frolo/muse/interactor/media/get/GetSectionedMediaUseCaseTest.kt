@@ -9,9 +9,9 @@ import com.frolo.music.repository.MediaRepository
 import com.frolo.muse.repository.Preferences
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.music.model.test.stubMediaList
-import com.nhaarman.mockitokotlin2.doReturn
-import com.nhaarman.mockitokotlin2.eq
-import com.nhaarman.mockitokotlin2.whenever
+import org.mockito.kotlin.doReturn
+import org.mockito.kotlin.eq
+import org.mockito.kotlin.whenever
 import io.reactivex.*
 import io.reactivex.observers.TestObserver
 import io.reactivex.subscribers.TestSubscriber

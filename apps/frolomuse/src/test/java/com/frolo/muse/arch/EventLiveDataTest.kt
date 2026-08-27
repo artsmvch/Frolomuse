@@ -5,7 +5,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import com.frolo.arch.support.EventLiveData
 import com.frolo.muse.thenDoNothing
-import com.nhaarman.mockitokotlin2.*
+import org.mockito.kotlin.*
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestRule

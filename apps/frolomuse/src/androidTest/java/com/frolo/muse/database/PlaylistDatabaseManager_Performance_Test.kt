@@ -34,7 +34,7 @@ class PlaylistDatabaseManager_Performance_Test {
         val manager = obtainClearedPlaylistDatabaseManager()
         val songs: List<Song> = stubSongList(size = count)
         val playlist = manager.createPlaylist("TestPlaylist").blockingGet()
-        val completable = manager.addPlaylistMembers(playlist.id, songs)
+        val completable = manager.addPlaylistMembers(playlist.mediaId.sourceId, songs)
         val startTime = currentTimestamp()
         completable.blockingAwait()
         val endTime = currentTimestamp()

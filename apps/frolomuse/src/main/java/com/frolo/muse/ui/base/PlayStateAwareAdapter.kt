@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.frolo.muse.ui.main.library.base.BaseAdapter
 
 
-abstract class PlayStateAwareAdapter<E, VH: BaseAdapter.BaseViewHolder>(
+abstract class PlayStateAwareAdapter<E : Any, VH: BaseAdapter.BaseViewHolder>(
     // The diff item callback must be non-null, so that
     // we can correctly determine the play position moves
     itemCallback: DiffUtil.ItemCallback<E>

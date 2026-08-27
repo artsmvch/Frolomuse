@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
+import java.util.Locale
 
 
 internal class VisualizerRendererTypeAdapter constructor(
@@ -21,7 +22,7 @@ internal class VisualizerRendererTypeAdapter constructor(
         }
 
         // TODO: localize names of visualizer renderer types
-        textView.text = getItem(position).name.toUpperCase()
+        textView.text = getItem(position).name.uppercase(Locale.getDefault())
 
         return textView
     }

@@ -11,7 +11,7 @@ import com.frolo.music.repository.MediaRepository
 import com.frolo.muse.repository.Preferences
 import com.frolo.music.model.test.stubMedia
 import com.frolo.music.model.test.stubMediaList
-import com.nhaarman.mockitokotlin2.*
+import org.mockito.kotlin.*
 import io.reactivex.Single
 import org.junit.Before
 import org.junit.Test
