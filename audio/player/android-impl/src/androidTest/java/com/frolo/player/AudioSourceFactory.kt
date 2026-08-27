@@ -21,7 +21,6 @@ internal class AudioSourceFactory(
 
     private fun getAllAudioSources(): List<AudioSource> {
         val dstList = ArrayList<AudioSource>()
-        var index: Int = 0
         // Searching external storage for music files
         val resolver = context.contentResolver
         val audioCursor = resolver.query(URI, PROJECT, null, null, null)
@@ -29,12 +28,11 @@ internal class AudioSourceFactory(
         audioCursor.use { cursor ->
             if (cursor.moveToFirst()) {
                 do {
-                    val id: Long = index++.toLong()
                     val path = cursor.getString(cursor.getColumnIndex(PROJECT[0]))
                     if (path.isNullOrBlank()) {
                         continue
                     }
-                    val audioSource = mockAudioSource(id, path)
+                    val audioSource = mockAudioSource(path)
                     dstList.add(audioSource)
                 } while (cursor.moveToNext())
             }
@@ -42,9 +40,9 @@ internal class AudioSourceFactory(
         return dstList
     }
 
-    private fun mockAudioSource(id: Long, path: String): AudioSource {
+    private fun mockAudioSource(path: String): AudioSource {
         val metadata = stubKT<AudioMetadata>()
-        return AudioSources.createAudioSource(id, path, metadata)
+        return AudioSources.createAudioSource(path, metadata)
     }
 
     companion object {
