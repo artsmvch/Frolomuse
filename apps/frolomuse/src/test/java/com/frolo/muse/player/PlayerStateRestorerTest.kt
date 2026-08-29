@@ -7,12 +7,10 @@ import com.frolo.player.AudioSourceQueue
 import com.frolo.muse.common.toAudioSource
 import com.frolo.muse.common.toAudioSources
 import com.frolo.music.model.Album
-import com.frolo.music.model.Song
 import com.frolo.muse.repository.*
 import com.frolo.music.model.test.stubSong
 import com.frolo.music.model.test.stubSongList
 import com.frolo.music.repository.*
-import com.frolo.test.stubKT
 import com.frolo.test.stubList
 import com.frolo.test.randomLong
 import org.mockito.kotlin.*
@@ -177,7 +175,7 @@ class PlayerStateRestorerTest {
         val id = 1L
         val album = Album(id, "album", "artist", 10)
         val songs = stubSongList(size = 0)
-        val targetSong = stubKT<Song>()
+        val targetSong = stubSong()
         val playbackPosition = 1337
         val allSongs = stubSongList(size = 0)
 
