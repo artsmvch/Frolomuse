@@ -1,22 +1,10 @@
 package com.frolo.core.ui.fragment
 
-import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
 
-
-inline fun Fragment.doOnViewCreated(crossinline action: (View) -> Unit) {
-    val viewLifecycleOwnerObserver = object : Observer<LifecycleOwner> {
-        override fun onChanged(value: LifecycleOwner) {
-            viewLifecycleOwnerLiveData.removeObserver(this)
-            action.invoke(requireView())
-        }
-    }
-    viewLifecycleOwnerLiveData.observe(this, viewLifecycleOwnerObserver)
-}
 
 inline fun Fragment.doOnCreate(crossinline action: () -> Unit) {
     doOnLifecycleEvent(targetEvent = Lifecycle.Event.ON_CREATE, action = action)
