@@ -2,7 +2,7 @@ package com.frolo.muse.ui.main.library.playlists.playlist.addsong
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.map
 import com.frolo.arch.support.combine
 import com.frolo.muse.interactor.media.AddSongToPlaylistUseCase
 import com.frolo.muse.logger.EventLogger
@@ -40,7 +40,7 @@ class AddSongToPlaylistViewModel constructor(
     val selectedItems: LiveData<Set<Song>> get() = _selectedItems
 
     val placeholderVisible: LiveData<Boolean> by lazy {
-        Transformations.map(_selectableSongQuery) { query ->
+        _selectableSongQuery.map { query ->
             query.allItems.isNullOrEmpty()
         }
     }

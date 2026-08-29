@@ -10,7 +10,6 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.frolo.muse.R
-import com.frolo.arch.support.observe
 import com.frolo.arch.support.observeNonNull
 import com.frolo.muse.ui.base.BaseDialogFragment
 

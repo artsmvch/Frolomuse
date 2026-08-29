@@ -12,9 +12,8 @@ import android.view.ViewGroup
 import android.view.Window
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
-import com.frolo.arch.support.observe
 import com.frolo.arch.support.observeNonNull
 import com.frolo.core.ui.glide.makeAlbumArtRequest
 import com.frolo.muse.R
@@ -34,7 +33,7 @@ class SongEditorDialog: BaseDialogFragment() {
 
     private val viewModel: SongEditorViewModel by lazy {
         val vmFactory = SongEditorVMFactory(activityComponent, song)
-        ViewModelProviders.of(this, vmFactory)
+        ViewModelProvider(this, vmFactory)
             .get(SongEditorViewModel::class.java)
     }
 

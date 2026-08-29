@@ -5,7 +5,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import com.frolo.arch.support.SingleLiveEvent
 import com.frolo.arch.support.liveDataOf
-import com.frolo.arch.support.map
+import com.frolo.arch.support.mapWithInitial
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.logFailedToGetLyrics
 import com.frolo.muse.logger.logLyricsSaved
@@ -34,7 +34,7 @@ class LyricsViewModel constructor(
     private val _isLoadingLyrics = MutableLiveData<Boolean>()
     val isLoadingLyrics: LiveData<Boolean> get() = _isLoadingLyrics
 
-    val isLyricsVisible = isLoadingLyrics.map(true) { isLoading -> isLoading != true }
+    val isLyricsVisible = isLoadingLyrics.mapWithInitial(true) { isLoading -> isLoading != true }
 
     private val _lyrics by lazy {
         MutableLiveData<Lyrics>().apply {
@@ -60,7 +60,7 @@ class LyricsViewModel constructor(
     private val _lyricsSavedEvent = SingleLiveEvent<Unit>()
     val lyricsSavedEvent: LiveData<Unit> get() = _lyricsSavedEvent
 
-    val isEditable: LiveData<Boolean> = isLoadingLyrics.map(true) { isLoading ->
+    val isEditable: LiveData<Boolean> = isLoadingLyrics.mapWithInitial(true) { isLoading ->
         isLoading != true
     }
 

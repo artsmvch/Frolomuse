@@ -9,7 +9,7 @@ import com.frolo.muse.FrolomuseApp
 import com.frolo.muse.Features
 import com.frolo.arch.support.SingleLiveEvent
 import com.frolo.arch.support.call
-import com.frolo.arch.support.map
+import com.frolo.arch.support.mapWithInitial
 import com.frolo.core.ui.glide.GlideAlbumArtHelper
 import com.frolo.core.ui.glide.makeAlbumArtRequestAsBitmap
 import com.frolo.muse.logger.EventLogger
@@ -62,20 +62,20 @@ class AlbumEditorViewModel constructor(
     val art: LiveData<Bitmap> get() = _art
 
     val artVisible: LiveData<Boolean> =
-            art.map(true) { art -> art != null }
+            art.mapWithInitial(true) { art -> art != null }
 
     val placeholderVisible: LiveData<Boolean> =
-            art.map(false) { art -> art == null }
+            art.mapWithInitial(false) { art -> art == null }
 
-    val placeholderPickArtOptionVisible: LiveData<Boolean> = placeholderVisible.map(false) { placeholderVisible ->
+    val placeholderPickArtOptionVisible: LiveData<Boolean> = placeholderVisible.mapWithInitial(false) { placeholderVisible ->
         isEditorOptionAvailable && placeholderVisible == true
     }
 
-    val pickArtOptionVisible: LiveData<Boolean> = art.map(false) { art ->
+    val pickArtOptionVisible: LiveData<Boolean> = art.mapWithInitial(false) { art ->
         isEditorOptionAvailable && art != null
     }
 
-    val deleteArtOptionVisible: LiveData<Boolean> = originalArt.map(false) { original ->
+    val deleteArtOptionVisible: LiveData<Boolean> = originalArt.mapWithInitial(false) { original ->
         isEditorOptionAvailable && original != null
     }
 

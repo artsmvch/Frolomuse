@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.frolo.muse.R
-import com.frolo.arch.support.observe
 import com.frolo.arch.support.observeNonNull
 import com.frolo.muse.model.Theme
 import com.frolo.muse.repository.Preferences

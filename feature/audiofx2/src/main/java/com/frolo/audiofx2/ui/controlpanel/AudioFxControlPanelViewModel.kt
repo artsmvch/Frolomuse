@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.map
 import com.frolo.audiofx2.ui.AudioFx2AttachInfo
 import com.frolo.audiofx2.ui.AudioFx2Feature
 import com.frolo.audiofx2.*
@@ -23,21 +23,21 @@ internal class AudioFxControlPanelViewModel(
     val attachInfo: LiveData<AudioFx2AttachInfo> get() =
         AudioFx2Feature.getAttachInfoLiveData()
 
-    val equalizer: LiveData<Equalizer> =
-        Transformations.map(audioFx2) { audioFx2 -> audioFx2?.equalizer}
+    val equalizer: LiveData<Equalizer?> =
+        audioFx2.map { audioFx2 -> audioFx2?.equalizer }
 
-    val bassBoost: LiveData<BassBoost> by lazy {
-        Transformations.map(audioFx2) { audioFx2 -> audioFx2?.bassBoost }
+    val bassBoost: LiveData<BassBoost?> by lazy {
+        audioFx2.map { audioFx2 -> audioFx2?.bassBoost }
     }
-    val virtualizer: LiveData<Virtualizer> by lazy {
-        Transformations.map(audioFx2) { audioFx2 -> audioFx2?.virtualizer }
+    val virtualizer: LiveData<Virtualizer?> by lazy {
+        audioFx2.map { audioFx2 -> audioFx2?.virtualizer }
     }
-    val loudness: LiveData<Loudness> by lazy {
-        Transformations.map(audioFx2) { audioFx2 -> audioFx2?.loudness }
+    val loudness: LiveData<Loudness?> by lazy {
+        audioFx2.map { audioFx2 -> audioFx2?.loudness }
     }
 
-    val reverb: LiveData<Reverb> by lazy {
-        Transformations.map(audioFx2) { audioFx2 -> audioFx2?.reverb }
+    val reverb: LiveData<Reverb?> by lazy {
+        audioFx2.map { audioFx2 -> audioFx2?.reverb }
     }
 
     override fun onCleared() {

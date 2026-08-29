@@ -4,7 +4,7 @@ import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.*
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions
@@ -14,7 +14,6 @@ import com.frolo.core.ui.glide.makeAlbumArtRequestAsBitmap
 import com.frolo.core.ui.glide.observe
 import com.frolo.muse.R
 import com.frolo.ui.StyleUtils
-import com.frolo.arch.support.observe
 import com.frolo.arch.support.observeNonNull
 import com.frolo.muse.databinding.FragmentAlbumBinding
 import com.frolo.muse.di.activityComponent
@@ -58,7 +57,7 @@ open class AlbumFragment: AbsSongCollectionFragment<Song>(), FragmentContentInse
     override val viewModel: AlbumViewModel by lazy {
         val album = requireArguments().getSerializable(ARG_ALBUM) as Album
         val vmFactory = AlbumVMFactory(activityComponent, activityComponent, album)
-        ViewModelProviders.of(this, vmFactory)
+        ViewModelProvider(this, vmFactory)
             .get(AlbumViewModel::class.java)
     }
 

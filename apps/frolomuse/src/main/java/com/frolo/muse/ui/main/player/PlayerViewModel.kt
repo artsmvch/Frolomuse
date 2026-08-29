@@ -2,11 +2,13 @@ package com.frolo.muse.ui.main.player
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.distinctUntilChanged
+import androidx.lifecycle.map
+import androidx.lifecycle.switchMap
 import com.frolo.arch.support.SingleLiveEvent
 import com.frolo.arch.support.combine
 import com.frolo.arch.support.liveDataOf
-import com.frolo.arch.support.map
+import com.frolo.arch.support.mapWithInitial
 import com.frolo.core.graphics.Palette
 import com.frolo.muse.common.*
 import com.frolo.muse.di.ExecutorQualifier
@@ -113,20 +115,20 @@ class PlayerViewModel @Inject constructor(
     private val _audioSourceQueue = MutableLiveData<AudioSourceQueue>()
 
     val audioSourceList: LiveData<List<AudioSource>> =
-        Transformations.map(_audioSourceQueue) { queue -> queue.snapshot }
+        _audioSourceQueue.map { queue -> queue.snapshot }
 
     private val _invalidateAudioSourceQueueEvent = SingleLiveEvent<AudioSourceQueue>()
     val invalidateAudioSourceListEvent: LiveData<List<AudioSource>> =
-        Transformations.map(_invalidateAudioSourceQueueEvent) { queue -> queue.snapshot }
+        _invalidateAudioSourceQueueEvent.map { queue -> queue.snapshot }
 
     private val _song = MutableLiveData<Song>(null)
     val song: LiveData<Song> get() = _song
 
     val playerControllersEnabled: LiveData<Boolean> =
-        song.map(false) { song: Song? -> song != null }
+        song.mapWithInitial(false) { song: Song? -> song != null }
 
     val soundWave: LiveData<SoundWave> =
-        Transformations.switchMap(song) { song ->
+        song.switchMap { song ->
             val source: String? = song?.source
 
             if (source == null) liveDataOf<SoundWave>(null)
@@ -141,7 +143,7 @@ class PlayerViewModel @Inject constructor(
         }
 
     val palette: LiveData<Palette> by lazy {
-        Transformations.switchMap(song) { song ->
+        song.switchMap { song ->
             if (song == null) liveDataOf<Palette>(null)
             else MutableLiveData<Palette>().apply {
                 paletteGenerator.generatePalette(song.toAudioSource())
@@ -155,7 +157,7 @@ class PlayerViewModel @Inject constructor(
     }
 
     private val _currPosition = MutableLiveData<Int>(player.getCurrentPositionInQueue())
-    val currPosition: LiveData<Int> = Transformations.distinctUntilChanged(_currPosition)
+    val currPosition: LiveData<Int> = _currPosition.distinctUntilChanged()
 
     private val _showVolumeControlEvent = SingleLiveEvent<Unit>()
     val showVolumeControlEvent: LiveData<Unit>
@@ -165,7 +167,7 @@ class PlayerViewModel @Inject constructor(
     val animateFavouriteEvent: LiveData<Boolean> get() = _animateFavouriteEvent
 
     val isFavourite: LiveData<Boolean> =
-        Transformations.switchMap(song) { song: Song? ->
+        song.switchMap { song: Song? ->
             if (song != null) {
                 MutableLiveData<Boolean>().apply {
                     getIsFavouriteUseCase.isFavourite(song)

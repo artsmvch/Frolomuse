@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace 'com.frolo.visualizer'
-    compileSdk 33 //versions.compileSdk
+    compileSdk versions.compileSdk
 
     defaultConfig {
         applicationId "com.frolo.visualizer"

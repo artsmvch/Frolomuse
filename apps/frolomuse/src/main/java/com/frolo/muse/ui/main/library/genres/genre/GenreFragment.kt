@@ -4,11 +4,10 @@ import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.*
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.frolo.muse.R
 import com.frolo.ui.StyleUtils
-import com.frolo.arch.support.observe
 import com.frolo.arch.support.observeNonNull
 import com.frolo.muse.databinding.FragmentGenreBinding
 import com.frolo.muse.di.activityComponent
@@ -40,7 +39,7 @@ class GenreFragment: AbsSongCollectionFragment<Song>(), FragmentContentInsetsLis
     override val viewModel: GenreViewModel by lazy {
         val genre = requireArguments().getSerializable(ARG_GENRE) as Genre
         val vmFactory = GenreVMFactory(activityComponent, activityComponent, genre)
-        ViewModelProviders.of(this, vmFactory).get(GenreViewModel::class.java)
+        ViewModelProvider(this, vmFactory).get(GenreViewModel::class.java)
     }
 
     override val adapter by lazy { SongAdapter<Song>(provideThumbnailLoader()) }

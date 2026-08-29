@@ -3,7 +3,7 @@ package com.frolo.muse.ui.main.audiofx2.params
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.frolo.arch.support.liveDataOf
-import com.frolo.arch.support.map
+import com.frolo.arch.support.mapWithInitial
 import com.frolo.muse.billing.TrialStatus
 import com.frolo.player.AdvancedPlaybackParams
 import com.frolo.player.Player
@@ -49,7 +49,7 @@ class PlaybackParamsViewModel @Inject constructor(
             false
         }
     }
-    val doNotPersistPlaybackParams: LiveData<Boolean> = _isPersisted.map(true) { isPersisted ->
+    val doNotPersistPlaybackParams: LiveData<Boolean> = _isPersisted.mapWithInitial(true) { isPersisted ->
         isPersisted != true
     }
 

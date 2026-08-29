@@ -253,7 +253,7 @@ dependencies {
     testImplementation 'org.robolectric:robolectric:4.14.1'
 
     // Arch
-    implementation deps.lifecycle.extensions
+    implementation deps.lifecycle.livedata
     implementation deps.lifecycle.viewmodel
     kapt deps.lifecycle.compiler
     implementation project(path: ':arch-support')

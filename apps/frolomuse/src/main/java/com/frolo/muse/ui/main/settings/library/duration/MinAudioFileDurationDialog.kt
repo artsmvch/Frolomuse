@@ -3,7 +3,6 @@ package com.frolo.muse.ui.main.settings.library.duration
 import android.app.Dialog
 import android.os.Bundle
 import androidx.lifecycle.LifecycleOwner
-import com.frolo.arch.support.observe
 import com.frolo.arch.support.observeNonNull
 import com.frolo.muse.databinding.DialogMinAudioFileDurationBinding
 import com.frolo.muse.ui.base.BaseDialogFragment

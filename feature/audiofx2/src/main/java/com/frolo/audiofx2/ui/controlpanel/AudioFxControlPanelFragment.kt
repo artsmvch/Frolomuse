@@ -8,7 +8,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.transition.AutoTransition
 import androidx.transition.TransitionManager
 import com.frolo.audiofx2.ui.AudioFx2AttachInfo
@@ -19,7 +19,7 @@ internal class AudioFxControlPanelFragment : Fragment() {
     private val binding: FragmentAudiofxControlPanelBinding get() = _binding!!
 
     private val viewModel: AudioFxControlPanelViewModel by lazy {
-        ViewModelProviders.of(this).get(AudioFxControlPanelViewModel::class.java)
+        ViewModelProvider(this).get(AudioFxControlPanelViewModel::class.java)
     }
 
     override fun onCreateView(

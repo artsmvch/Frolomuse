@@ -10,11 +10,9 @@ import androidx.lifecycle.Observer
 
 inline fun Fragment.doOnViewCreated(crossinline action: (View) -> Unit) {
     val viewLifecycleOwnerObserver = object : Observer<LifecycleOwner> {
-        override fun onChanged(value: LifecycleOwner?) {
-            if (value != null) {
-                viewLifecycleOwnerLiveData.removeObserver(this)
-                action.invoke(requireView())
-            }
+        override fun onChanged(value: LifecycleOwner) {
+            viewLifecycleOwnerLiveData.removeObserver(this)
+            action.invoke(requireView())
         }
     }
     viewLifecycleOwnerLiveData.observe(this, viewLifecycleOwnerObserver)

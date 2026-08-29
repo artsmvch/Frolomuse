@@ -5,11 +5,11 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.distinctUntilChanged
 import com.frolo.arch.support.EventLiveData
 import com.frolo.arch.support.call
-import com.frolo.arch.support.distinctUntilChanged
-import com.frolo.arch.support.map
+import com.frolo.arch.support.mapWithInitial
 
 
 internal interface SlideState {
@@ -35,11 +35,11 @@ internal interface MainSheetsStateViewModel {
 }
 
 internal fun Fragment.provideMainSheetStateViewModel(): MainSheetsStateViewModel {
-    return ViewModelProviders.of(requireActivity()).get(MainSheetsStateViewModelImpl::class.java)
+    return ViewModelProvider(requireActivity()).get(MainSheetsStateViewModelImpl::class.java)
 }
 
 internal fun FragmentActivity.provideMainSheetStateViewModel(): MainSheetsStateViewModel {
-    return ViewModelProviders.of(this).get(MainSheetsStateViewModelImpl::class.java)
+    return ViewModelProvider(this).get(MainSheetsStateViewModelImpl::class.java)
 }
 
 // TODO: cannot make it private because of ViewModelProvider$NewInstanceFactory
@@ -61,7 +61,7 @@ internal class MainSheetsStateViewModelImpl: ViewModel(), MainSheetsStateViewMod
     override val slideState: LiveData<SlideState> get() = _slideState
 
     override val isPlayerSheetVisible: LiveData<Boolean> =
-        slideState.map(initialValue = false) { slideState ->
+        slideState.mapWithInitial(initialValue = false) { slideState ->
             slideState != null && slideState.playerSheetSlideOffset > 0.95f
         }
         .distinctUntilChanged()

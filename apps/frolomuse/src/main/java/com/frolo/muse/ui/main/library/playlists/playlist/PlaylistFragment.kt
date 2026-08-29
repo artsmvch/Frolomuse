@@ -4,12 +4,11 @@ import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.*
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.frolo.muse.*
-import com.frolo.arch.support.observe
 import com.frolo.arch.support.observeNonNull
 import com.frolo.core.ui.removeCallbacksSafely
 import com.frolo.muse.databinding.FragmentPlaylistBinding
@@ -44,7 +43,7 @@ class PlaylistFragment: AbsSongCollectionFragment<Song>(), FragmentContentInsets
     override val viewModel: PlaylistViewModel by lazy {
         val playlist = requireArguments().getSerializable(ARG_PLAYLIST) as Playlist
         val vmFactory = PlaylistVMFactory(activityComponent, activityComponent, playlist)
-        ViewModelProviders.of(this, vmFactory).get(PlaylistViewModel::class.java)
+        ViewModelProvider(this, vmFactory).get(PlaylistViewModel::class.java)
     }
 
     private lateinit var itemTouchHelper: ItemTouchHelper

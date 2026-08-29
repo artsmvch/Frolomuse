@@ -9,14 +9,13 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.preference.CheckBoxPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.frolo.muse.BuildConfig
 import com.frolo.muse.Features
 import com.frolo.muse.R
-import com.frolo.arch.support.observe
 import com.frolo.arch.support.observeNonNull
 import com.frolo.core.ui.marker.ScrolledToTop
 import com.frolo.muse.di.activityComponent
@@ -80,7 +79,7 @@ class SettingsFragment : PreferenceFragmentCompat(),
 
     private val settingsViewModel: SettingsViewModel by lazy {
         val viewModelFactory = activityComponent.provideViewModelFactory()
-        ViewModelProviders.of(this, viewModelFactory)[SettingsViewModel::class.java]
+        ViewModelProvider(this, viewModelFactory)[SettingsViewModel::class.java]
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
