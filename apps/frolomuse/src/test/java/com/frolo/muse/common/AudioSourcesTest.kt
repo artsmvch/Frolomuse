@@ -124,9 +124,7 @@ class AudioSourcesTest {
             mockAudioSource(source = "source_$i")
         }
 
-        val songs = audioSources.asSongs()
-
-        val audioSources1 = songs.map { Util.createAudioSource(it) }
+        val audioSources1 = audioSources.map { AudioSources.copyAudioSource(it) }
 
         for (i in audioSources.indices) {
             assertAudioSourcesEqual.invoke(audioSources[i], audioSources1[i])
