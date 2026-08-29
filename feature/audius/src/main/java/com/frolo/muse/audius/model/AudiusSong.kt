@@ -61,4 +61,12 @@ class AudiusSong(
         override fun getYear() = 0 // Audius doesn't provide year in a simple format
         override fun getTrackNumber() = 0
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is AudiusSong) return false
+        return track == other.track
+    }
+
+    override fun hashCode(): Int = track.hashCode()
 }

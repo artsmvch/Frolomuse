@@ -137,10 +137,13 @@ class MediaAdapter constructor(
 
     object MediaItemCallback: DiffUtil.ItemCallback<Media>() {
         override fun areItemsTheSame(oldItem: Media, newItem: Media): Boolean {
-            return oldItem.getMediaId().getKind() == newItem.getMediaId().getKind()
-                    && oldItem.getMediaId().getSourceId() == newItem.getMediaId().getSourceId()
+            return oldItem.getMediaId() == newItem.getMediaId()
         }
 
+        // Every Media implementation (Song, Album, Artist, Genre, Playlist, etc.) overrides
+        // equals() with value semantics; the Media interface itself just can't express that
+        // guarantee for lint's static check.
+        @Suppress("DiffUtilEquals")
         override fun areContentsTheSame(oldItem: Media, newItem: Media): Boolean {
             return oldItem == newItem
         }
