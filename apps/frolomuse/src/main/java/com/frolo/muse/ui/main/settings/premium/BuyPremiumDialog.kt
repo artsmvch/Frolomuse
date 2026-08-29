@@ -8,13 +8,12 @@ import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.transition.Fade
 import androidx.transition.TransitionManager
 import com.frolo.muse.BuildConfig
 import com.frolo.muse.R
-import com.frolo.arch.support.observe
 import com.frolo.arch.support.observeNonNull
 import com.frolo.muse.billing.TrialStatus
 import com.frolo.muse.di.activityComponent
@@ -34,7 +33,7 @@ class BuyPremiumDialog : BaseDialogFragment() {
         val args = requireArguments()
         val allowTrialActivation = args.getBoolean(ARG_ALLOW_TRIAL_ACTIVATION, true)
         val vmFactory = BuyPremiumVMFactory(activityComponent, allowTrialActivation)
-        ViewModelProviders.of(this, vmFactory)[BuyPremiumViewModel::class.java]
+        ViewModelProvider(this, vmFactory)[BuyPremiumViewModel::class.java]
     }
 
     private val listener: OnBuyPremiumClickListener? get() = tryHostAs()

@@ -4,7 +4,7 @@ import androidx.annotation.CallSuper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.map
 import com.frolo.arch.support.*
 import com.frolo.muse.router.AppRouter
 import com.frolo.muse.interactor.media.*
@@ -83,7 +83,7 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
     val mediaList: LiveData<List<E>> get() = _mediaList
 
     val mediaItemCount: LiveData<Int> by lazy {
-        mediaList.map(initialValue = 0) { list -> list?.count() ?: 0 }
+        mediaList.mapWithInitial(initialValue = 0) { list -> list?.count() ?: 0 }
     }
 
     val placeholderVisible: LiveData<Boolean> by lazy {
@@ -135,11 +135,11 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
     }
     val selectedItems: LiveData<Set<E>> get() = _selectedItems
 
-    val selectedItemsCount: LiveData<Int> = Transformations.map(selectedItems) { selectedItems ->
+    val selectedItemsCount: LiveData<Int> = selectedItems.map { selectedItems ->
         selectedItems.count()
     }
 
-    val isInContextualMode: LiveData<Boolean> = Transformations.map(selectedItems) { items ->
+    val isInContextualMode: LiveData<Boolean> = selectedItems.map { items ->
         items != null && items.isNotEmpty()
     }
 

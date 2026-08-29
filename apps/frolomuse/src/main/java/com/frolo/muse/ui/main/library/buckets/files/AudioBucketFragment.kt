@@ -7,9 +7,8 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.frolo.arch.support.observe
 import com.frolo.arch.support.observeNonNull
 import com.frolo.muse.databinding.FragmentMediaFileListBinding
 import com.frolo.muse.di.activityComponent
@@ -36,7 +35,7 @@ class AudioBucketFragment : AbsMediaCollectionFragment<MediaFile>(), FragmentCon
 
     override val viewModel: AudioBucketViewModel by lazy {
         val vmFactory = AudioBucketVMFactory(activityComponent, activityComponent, bucketArg)
-        ViewModelProviders.of(this, vmFactory).get(AudioBucketViewModel::class.java)
+        ViewModelProvider(this, vmFactory).get(AudioBucketViewModel::class.java)
     }
 
     private val adapter: AudioFileAdapter by lazy {

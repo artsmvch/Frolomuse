@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.core.os.postDelayed
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import com.frolo.muse.FrolomuseApp
 import com.frolo.muse.R
 import com.frolo.logger.api.Logger
@@ -73,7 +72,7 @@ abstract class BaseDialogFragment : AppCompatDialogFragment() {
         val factory = vmFactory ?:
         throw IllegalStateException("Failed to inject view model factory")
 
-        ViewModelProviders.of(this, factory)
+        ViewModelProvider(this, factory)
                 .get(T::class.java)
     }
 

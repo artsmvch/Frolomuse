@@ -3,7 +3,7 @@ package com.frolo.muse.ui.main.library.playlists.addmedia
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.frolo.arch.support.combine
-import com.frolo.arch.support.map
+import com.frolo.arch.support.mapWithInitial
 import com.frolo.muse.interactor.media.AddMediaToPlaylistUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.logMediaAddedToPlaylist
@@ -47,7 +47,7 @@ class AddMediaToPlaylistViewModel constructor(
     private val _checkedPlaylists = MutableLiveData<Map<Playlist.Identifier, Playlist>>()
 
     val isAddButtonEnabled: LiveData<Boolean> =
-        _checkedPlaylists.map(initialValue = false) { map -> !map.isNullOrEmpty() }
+        _checkedPlaylists.mapWithInitial(initialValue = false) { map -> !map.isNullOrEmpty() }
 
     fun onCheckedPlaylistsChanged(checkedPlaylists: Map<Playlist.Identifier, Playlist>) {
         _checkedPlaylists.value = checkedPlaylists

@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.LifecycleOwner
 import com.frolo.ui.KeyboardUtils
-import com.frolo.arch.support.observe
 import com.frolo.music.model.Media
 import com.frolo.muse.thumbnails.provideThumbnailLoader
 import com.frolo.muse.ui.base.FragmentContentInsetsListener

@@ -23,10 +23,9 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.transition.Fade
 import androidx.transition.TransitionManager
-import com.frolo.arch.support.observe
 import com.frolo.arch.support.observeNonNull
 import com.frolo.core.ui.fragment.WithCustomStatusBar
 import com.frolo.core.ui.fragment.WithCustomWindowInsets
@@ -92,7 +91,7 @@ internal class MainFragment :
 
     private val viewModel: MainViewModel by lazy {
         val vmFactory = activityComponent.provideViewModelFactory()
-        ViewModelProviders.of(this, vmFactory).get(MainViewModel::class.java)
+        ViewModelProvider(this, vmFactory).get(MainViewModel::class.java)
     }
 
     private val appRouter by lazy {

@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.updatePadding
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.frolo.core.ui.glide.GlideAlbumArtHelper
@@ -28,7 +28,7 @@ class AlbumsOfArtistFragment : AbsMediaCollectionFragment<Album>() {
     override val viewModel: AlbumsOfArtistViewModel by lazy {
         val artist = requireArguments().getSerializable(ARG_ARTIST) as Artist
         val vmFactory = AlbumsOfArtistVMFactory(activityComponent, activityComponent, artist)
-        ViewModelProviders.of(this, vmFactory)
+        ViewModelProvider(this, vmFactory)
                 .get(AlbumsOfArtistViewModel::class.java)
     }
 

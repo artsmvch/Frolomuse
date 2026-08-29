@@ -2,8 +2,8 @@ package com.frolo.muse.ui.main.player.mini
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.frolo.arch.support.distinctUntilChanged
-import com.frolo.arch.support.map
+import androidx.lifecycle.distinctUntilChanged
+import com.frolo.arch.support.mapWithInitial
 import com.frolo.muse.common.asSong
 import com.frolo.player.AudioSource
 import com.frolo.player.Player
@@ -27,7 +27,7 @@ class MiniPlayerViewModel @Inject constructor(
     val currentSong: LiveData<Song> get() = _currentSong
 
     val playerControllersEnabled: LiveData<Boolean> =
-        currentSong.map(false) { song: Song? -> song != null }
+        currentSong.mapWithInitial(false) { song: Song? -> song != null }
 
     private val _isPlaying = MutableLiveData<Boolean>()
     val isPlaying: LiveData<Boolean> get() = _isPlaying

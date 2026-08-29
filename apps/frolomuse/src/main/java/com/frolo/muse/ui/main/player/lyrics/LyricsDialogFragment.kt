@@ -9,9 +9,8 @@ import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.frolo.muse.BuildConfig
-import com.frolo.arch.support.observe
 import com.frolo.arch.support.observeNonNull
 import com.frolo.muse.databinding.DialogLyricsBinding
 import com.frolo.muse.di.activityComponent
@@ -36,7 +35,7 @@ class LyricsDialogFragment: BaseDialogFragment() {
     private val viewModel: LyricsViewModel by lazy {
         val song = requireArguments().getSerializable(ARG_SONG) as Song
         val vmFactory = LyricsVMFactory(activityComponent, song)
-        ViewModelProviders.of(this, vmFactory)
+        ViewModelProvider(this, vmFactory)
             .get(LyricsViewModel::class.java)
     }
 

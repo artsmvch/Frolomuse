@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.Window
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.frolo.muse.R
 import com.frolo.arch.support.observeNonNull
@@ -28,7 +28,7 @@ class AddMediaToPlaylistDialog : BaseDialogFragment() {
         val mediaList = requireArguments()
                 .getSerializable(ARG_MEDIA_LIST) as ArrayList<Media>
         val vmFactory = AddMediaToPlaylistVMFactory(activityComponent, activityComponent, mediaList)
-        ViewModelProviders.of(this, vmFactory)
+        ViewModelProvider(this, vmFactory)
                 .get(AddMediaToPlaylistViewModel::class.java)
     }
 

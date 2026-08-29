@@ -3,7 +3,7 @@ package com.frolo.muse.ui.main.library
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.frolo.arch.support.distinctUntilChanged
+import androidx.lifecycle.distinctUntilChanged
 import com.frolo.logger.api.Logger
 import com.frolo.muse.interactor.ads.FacebookBannerUseCase
 import com.frolo.muse.logger.EventLogger

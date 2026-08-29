@@ -3,7 +3,7 @@ package com.frolo.muse.ui.main.library.base
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.switchMap
 import com.frolo.arch.support.liveDataOf
 import com.frolo.player.AudioSource
 import com.frolo.player.Player
@@ -80,7 +80,7 @@ abstract class AbsSongCollectionViewModel<T: Song> constructor(
     val playingPosition: LiveData<Int> = _playingPosition
 
     val songCountWithTotalDuration: LiveData<SongCountWithTotalDuration> by lazy {
-        Transformations.switchMap(mediaList) { songs: List<Song>? ->
+        mediaList.switchMap { songs: List<Song>? ->
             if (songs == null) {
                 // NULL for NULL
                 return@switchMap liveDataOf<SongCountWithTotalDuration>(null)

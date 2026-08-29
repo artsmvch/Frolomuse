@@ -3,7 +3,7 @@ package com.frolo.muse.ui.main.player.current
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.frolo.arch.support.EventLiveData
-import com.frolo.arch.support.map
+import com.frolo.arch.support.mapWithInitial
 import com.frolo.muse.common.asSongs
 import com.frolo.muse.di.ExecutorQualifier
 import com.frolo.player.AudioSource
@@ -103,7 +103,7 @@ class CurrSongQueueViewModel @Inject constructor(
     val playingPosition: LiveData<Int> get() = _playingPosition
 
     val saveAsPlaylistOptionEnabled: LiveData<Boolean> =
-        mediaList.map(false) { list: List<*>? -> !list.isNullOrEmpty() }
+        mediaList.mapWithInitial(false) { list: List<*>? -> !list.isNullOrEmpty() }
 
     /**
      * This is a flag that indicates whether the scroll-to-position prompt was shown or not.

@@ -14,14 +14,7 @@ fun <T,R,U> combine(first: LiveData<R>, second: LiveData<U>, combiner: (R?, U?) 
 }
 
 /**
- * Convenience method for observing live data.
- */
-fun <T> LiveData<T>.observe(owner: LifecycleOwner, onChanged: ((value: T?) -> Unit)) {
-    observe(owner, Observer(onChanged))
-}
-
-/**
- * Same as [observe] but only calls [onChanged] if the value is not null.
+ * Same as [LiveData.observe] but only calls [onChanged] if the value is not null.
  */
 fun <T> LiveData<T>.observeNonNull(owner: LifecycleOwner, onChanged: ((value: T) -> Unit)) {
     observe(owner) {
@@ -43,35 +36,17 @@ fun EventLiveData<Unit>.call() {
     setValue(Unit)
 }
 
-fun <T> liveDataOf(item: T?) = object : LiveData<T>(item) { }
+fun <T> liveDataOf(item: T?): LiveData<T> = MutableLiveData(item)
 
 /**
- * This function does the same as [androidx.lifecycle.Transformations],
- * except that it allows to set [initialValue] for the returned live data.
+ * Same as the official [androidx.lifecycle.map], except that the returned live data is
+ * seeded with [initialValue] so observers get a value immediately, before this source
+ * has emitted anything.
  */
-fun <X: Any, Y: Any> LiveData<X>.map(initialValue: Y, mapFunction: (x: X?) -> Y?): LiveData<Y> {
-    val result = MediatorLiveData<Y>()
-    result.value = initialValue
-    result.addSource(this) { x -> result.setValue(mapFunction.invoke(x)) }
-    return result
-}
-
-fun <T> LiveData<T>.distinctUntilChanged(): LiveData<T> = Transformations.distinctUntilChanged(this)
-
-fun <T, R> combineMultiple(vararg liveData: LiveData<T>, combiner: (values: List<T?>) -> R?): LiveData<R> {
-    val mediator = MediatorLiveData<R>()
-    liveData.forEach { source ->
-        mediator.addSource(source) { sourceValue ->
-            val values = List<T?>(liveData.size) { index ->
-                val targetLiveData = liveData[index]
-                if (targetLiveData == source) {
-                    sourceValue
-                } else {
-                    targetLiveData.value
-                }
-            }
-            mediator.value = combiner.invoke(values)
-        }
+fun <X: Any, Y: Any> LiveData<X>.mapWithInitial(initialValue: Y, mapFunction: (x: X?) -> Y?): LiveData<Y> {
+    val transformed = map(mapFunction)
+    return MediatorLiveData<Y>().apply {
+        value = initialValue
+        addSource(transformed) { value = it }
     }
-    return mediator
 }

@@ -10,13 +10,12 @@ import android.view.ViewGroup
 import android.view.Window
 import androidx.core.view.isVisible
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.frolo.muse.R
 import com.frolo.muse.UriPathDetector
-import com.frolo.arch.support.observe
 import com.frolo.arch.support.observeNonNull
 import com.frolo.muse.databinding.DialogAlbumEditorBinding
 import com.frolo.muse.di.activityComponent
@@ -34,7 +33,7 @@ class AlbumEditorDialog : BaseDialogFragment() {
     private val viewModel: AlbumEditorViewModel by lazy {
         val album = requireArguments().getSerializable(ARG_ALBUM) as Album
         val vmFactory = AlbumEditorVMFactory(activityComponent, album)
-        ViewModelProviders.of(this, vmFactory)
+        ViewModelProvider(this, vmFactory)
             .get(AlbumEditorViewModel::class.java)
     }
 

@@ -9,18 +9,18 @@ class TestLifecycleOwner constructor(
     initialState: Lifecycle.State = Lifecycle.State.INITIALIZED
 ): LifecycleOwner {
 
-    private val lifecycle by lazy { LifecycleRegistry(this) }
+    private val lifecycleRegistry by lazy { LifecycleRegistry(this) }
 
     init {
-        lifecycle.currentState = initialState
+        lifecycleRegistry.currentState = initialState
     }
 
     var currentState: Lifecycle.State
-        get() = lifecycle.currentState
+        get() = lifecycleRegistry.currentState
         set(value) {
-            lifecycle.currentState = value
+            lifecycleRegistry.currentState = value
         }
 
-    override fun getLifecycle(): Lifecycle = lifecycle
+    override val lifecycle: Lifecycle get() = lifecycleRegistry
 
 }

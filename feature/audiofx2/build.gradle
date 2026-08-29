@@ -42,7 +42,6 @@ dependencies {
 
     implementation deps.lifecycle.viewmodel
     implementation deps.lifecycle.livedata
-    implementation deps.lifecycle.extensions
 
     implementation deps.design.material
     implementation deps.design.flexbox

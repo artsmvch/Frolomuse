@@ -7,7 +7,7 @@ import android.os.Bundle
 import android.view.ViewGroup
 import android.view.Window
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
@@ -34,7 +34,7 @@ class PosterDialog: BaseDialogFragment() {
             .providePosterVMFactoryCreator()
             .create(song)
 
-        ViewModelProviders.of(this, vmFactory)
+        ViewModelProvider(this, vmFactory)
                 .get(PosterViewModel::class.java)
     }
 

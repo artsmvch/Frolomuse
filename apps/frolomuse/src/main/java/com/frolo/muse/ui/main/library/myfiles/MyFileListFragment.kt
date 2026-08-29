@@ -5,7 +5,6 @@ import android.view.*
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.frolo.muse.R
-import com.frolo.arch.support.observe
 import com.frolo.arch.support.observeNonNull
 import com.frolo.mediascan.MediaScanService
 import com.frolo.muse.databinding.FragmentMyFileListBinding

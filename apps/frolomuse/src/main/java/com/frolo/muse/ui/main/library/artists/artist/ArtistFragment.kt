@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.frolo.muse.R
 import com.frolo.ui.StyleUtils
 import com.frolo.arch.support.observeNonNull
@@ -55,7 +55,7 @@ class ArtistFragment: BaseFragment() {
     private val viewModel: ArtistViewModel by lazy {
         val artist = requireArguments().getSerializable(ARG_ARTIST) as Artist
         val vmFactory = ArtistVMFactory(activityComponent, artist)
-        ViewModelProviders.of(this, vmFactory).get(ArtistViewModel::class.java)
+        ViewModelProvider(this, vmFactory).get(ArtistViewModel::class.java)
     }
 
     override fun onCreateView(

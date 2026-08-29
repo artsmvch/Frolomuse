@@ -15,7 +15,6 @@ import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import com.frolo.core.ui.fragment.WithCustomStatusBar
 import com.frolo.core.ui.fragment.WithCustomWindowInsets
 import com.frolo.debug.DebugUtils
@@ -132,7 +131,7 @@ abstract class BaseFragment:
         val factory = vmFactory ?:
         throw IllegalStateException("Failed to inject view model factory")
 
-        ViewModelProviders.of(this, factory)
+        ViewModelProvider(this, factory)
                 .get(T::class.java)
     }
 
