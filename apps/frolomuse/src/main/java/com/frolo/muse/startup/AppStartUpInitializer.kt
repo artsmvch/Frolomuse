@@ -8,6 +8,7 @@ import android.os.Handler
 import android.os.StrictMode
 import android.os.strictmode.Violation
 import androidx.annotation.UiThread
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.frolo.audiofx.AudioFxImpl
@@ -234,11 +235,8 @@ class AppStartUpInitializer @Inject constructor(
             }
         }
         val intentFilter = IntentFilter(targetAction)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            application.registerReceiver(receiver, intentFilter, Context.RECEIVER_EXPORTED)
-        } else {
-            application.registerReceiver(receiver, intentFilter)
-        }
+        // Exported because the pinning callback is delivered by the launcher app, not this app.
+        ContextCompat.registerReceiver(application, receiver, intentFilter, ContextCompat.RECEIVER_EXPORTED)
     }
 
     private fun setupMediaScanWork() {
