@@ -242,7 +242,7 @@ class ClickMediaUseCaseTest {
 
         val testObserver = TestObserver.create<Unit>()
 
-        val song = stubKT<Song>()
+        val song = stubSong()
         val songsFromMyFile = listOf(song)
         val allSongs = songsFromMyFile + songsFromMyFile
         val songQueue = AudioSourceQueue.create(allSongs.toAudioSources())
