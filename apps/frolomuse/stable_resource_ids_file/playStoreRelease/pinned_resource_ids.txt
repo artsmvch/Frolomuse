@@ -1,0 +1,1 @@
+com.frolo.musp:drawable/ic_player_notification_small = 0x7f0800f1

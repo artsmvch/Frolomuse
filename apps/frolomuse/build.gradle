@@ -1,7 +1,3 @@
-import com.android.build.gradle.internal.res.LinkApplicationAndroidResourcesTask
-import java.nio.file.Files
-import java.nio.file.StandardCopyOption
-
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
@@ -360,34 +356,16 @@ if (project.hasProperty('kapt')) {
     }
 }
 
-afterEvaluate {
-    // https://developer.android.com/tools/aapt2
-    tasks.withType(LinkApplicationAndroidResourcesTask).configureEach {
-        // stableIdsOutputFileProperty.orNull?.asFile
-        def variantName = it.variantName
-
-        def stableIdsFileDir = new File(buildDir, "intermediates/stable_resource_ids_file/$variantName")
-        def stableIdsFile = new File(stableIdsFileDir, "stableIds.txt")
-
-        def persistentStableIdsFileDir = new File(projectDir, "stable_resource_ids_file/$variantName")
-        def persistentStableIdsFile = new File(persistentStableIdsFileDir, "stableIds.txt")
-
-        if (!stableIdsFile.exists() && persistentStableIdsFile.exists()) {
-            stableIdsFileDir.mkdirs()
-            Files.copy(
-                    persistentStableIdsFile.toPath(),
-                    stableIdsFile.toPath(),
-                    StandardCopyOption.REPLACE_EXISTING)
-        }
-        doLast {
-            persistentStableIdsFileDir.mkdirs()
-            if (stableIdsFile.exists()) {
-                Files.copy(
-                        stableIdsFile.toPath(),
-                        persistentStableIdsFile.toPath(),
-                        StandardCopyOption.REPLACE_EXISTING)
-            }
-        }
+// Pin select resource IDs (see pinned_resource_ids.txt) so they don't shift across rebuilds,
+// e.g. R.drawable.ic_player_notification_small referenced by CheckPlayStoreReleaseResIdsTest.
+// AAPT2's --stable-ids only constrains the entries listed in the file; every other resource is
+// still assigned freely. Wired through the variant API's additionalParameters (always sent to
+// AAPT2) rather than AGP's own useStableIds/stableIdsOutputFileProperty plumbing, which only
+// takes effect on an incremental re-run of the task and is a no-op on a clean/CI build.
+androidComponents {
+    def pinnedResourceIdsFile = new File(projectDir, "stable_resource_ids_file/playStoreRelease/pinned_resource_ids.txt")
+    onVariants(selector().withName("playStoreRelease")) { variant ->
+        variant.androidResources.aaptAdditionalParameters.addAll("--stable-ids", pinnedResourceIdsFile.absolutePath)
     }
 }
 
