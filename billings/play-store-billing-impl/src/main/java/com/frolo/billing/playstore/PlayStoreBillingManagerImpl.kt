@@ -7,7 +7,6 @@ import androidx.annotation.UiThread
 import com.android.billingclient.api.*
 import com.frolo.billing.*
 import com.frolo.billing.ProductDetails
-import com.frolo.billing.PurchaseHistoryRecord
 import com.frolo.rxpreference.RxPreference
 import io.reactivex.Completable
 import io.reactivex.Flowable
@@ -45,7 +44,11 @@ class PlayStoreBillingManagerImpl(
             purchases?.also(::handlePurchases)
         }
         BillingClient.newBuilder(context)
-            .enablePendingPurchases()
+            .enablePendingPurchases(
+                PendingPurchasesParams.newBuilder()
+                    .enableOneTimeProducts()
+                    .build()
+            )
             .setListener(purchasesUpdatedListener)
             .build()
     }
@@ -154,7 +157,7 @@ class PlayStoreBillingManagerImpl(
         val editor: SharedPreferences.Editor = purchasesPreferences.edit()
         editor.clear()
         purchases.forEach { purchase ->
-            val key = getPurchaseDetailsKey(purchase.skus)
+            val key = getPurchaseDetailsKey(purchase.products)
             val details = PurchaseDetails.from(purchase)
             val value = PurchaseDetails.serializeToJson(details)
             editor.putString(key, value)
@@ -164,7 +167,7 @@ class PlayStoreBillingManagerImpl(
         // Acknowledge each purchase, if needed
         val ackSources = purchases.mapNotNull { purchase ->
             if (purchase.isAcknowledged) {
-                logger.d("Purchase is already acknowledged: skus=${purchase.skus}")
+                logger.d("Purchase is already acknowledged: skus=${purchase.products}")
                 return@mapNotNull null
             }
 
@@ -174,10 +177,10 @@ class PlayStoreBillingManagerImpl(
                     .build()
                 val listener = AcknowledgePurchaseResponseListener { result ->
                     if (result.responseCode == BillingClient.BillingResponseCode.OK) {
-                        logger.d("Purchase has been acknowledged: skus=${purchase.skus}")
+                        logger.d("Purchase has been acknowledged: skus=${purchase.products}")
                         emitter.onComplete()
                     } else {
-                        logger.d("Failed to acknowledge purchase: skus=${purchase.skus}")
+                        logger.d("Failed to acknowledge purchase: skus=${purchase.products}")
                         emitter.onError(BillingClientException(result))
                     }
                 }
@@ -207,19 +210,21 @@ class PlayStoreBillingManagerImpl(
 
     override fun getProductDetails(productId: ProductId): Single<ProductDetails> {
         return requirePreparedClient().flatMap { billingClient ->
-            billingClient.querySkuDetailsSingle(listOf(productId.sku), productId.billingSkyType)
+            billingClient.queryProductDetailsSingle(listOf(productId.sku), productId.billingProductType)
                 .observeOn(computationScheduler)
-                .map { skuDetailsList ->
-                    skuDetailsList.find { it.sku == productId.sku && it.type == productId.billingSkyType }
+                .map { productDetailsList ->
+                    productDetailsList.find { it.productId == productId.sku }
+                        ?: throw NullPointerException("Could not find product details for productId=${productId.sku}")
                 }
-                .map { skuDetails ->
+                .map { billingProductDetails ->
+                    val offerDetails = billingProductDetails.oneTimePurchaseOfferDetails
+                        ?: throw NullPointerException("Missing one-time purchase offer details for productId=${productId.sku}")
                     ProductDetails(
                         productId = productId,
-                        title = skuDetails.title,
-                        description = skuDetails.description,
-                        iconUrl = skuDetails.iconUrl,
-                        price = skuDetails.price,
-                        priceCurrencyCode = skuDetails.priceCurrencyCode
+                        title = billingProductDetails.title,
+                        description = billingProductDetails.description,
+                        price = offerDetails.formattedPrice,
+                        priceCurrencyCode = offerDetails.priceCurrencyCode
                     )
                 }
                 .observeOn(mainThreadScheduler)
@@ -247,13 +252,13 @@ class PlayStoreBillingManagerImpl(
 
             logger.d("Checking purchase state of ${productId.sku} from API")
             requirePreparedClient().flatMap { billingClient ->
-                billingClient.queryPurchasesSingle(productId.billingSkyType)
+                billingClient.queryPurchasesSingle(productId.billingProductType)
                     .doOnSuccess { result ->
                         checkedFromApiRef.set(true)
                         result.purchasesList.also(::handlePurchases)
                     }
                     .map { result ->
-                        val desiredPurchase = result.purchasesList.find { productId.hasTheSameSkus(it.skus) }
+                        val desiredPurchase = result.purchasesList.find { productId.hasTheSameSkus(it.products) }
                         desiredPurchase != null && (desiredPurchase.purchaseState == Purchase.PurchaseState.PURCHASED)
                     }
                     .doOnSuccess { isPurchased ->
@@ -265,11 +270,14 @@ class PlayStoreBillingManagerImpl(
 
     private fun launchBillingFlowImpl(productId: ProductId): Single<BillingResult> {
         return requirePreparedClient().observeOn(mainThreadScheduler).flatMap { billingClient ->
-            billingClient.querySkuDetailsSingle(listOf(productId.sku), productId.billingSkyType).flatMap { skuDetailsList ->
-                val skuDetails = skuDetailsList.find { skuDetails -> skuDetails.sku == productId.sku }
-                        ?: throw NullPointerException("Could not find SKU details for sku=${productId.sku}")
+            billingClient.queryProductDetailsSingle(listOf(productId.sku), productId.billingProductType).flatMap { productDetailsList ->
+                val productDetails = productDetailsList.find { it.productId == productId.sku }
+                        ?: throw NullPointerException("Could not find product details for productId=${productId.sku}")
+                val productDetailsParams = BillingFlowParams.ProductDetailsParams.newBuilder()
+                    .setProductDetails(productDetails)
+                    .build()
                 val params = BillingFlowParams.newBuilder()
-                    .setSkuDetails(skuDetails)
+                    .setProductDetailsParamsList(listOf(productDetailsParams))
                     .build()
 
                 val source: Single<BillingResult> = Single.fromCallable {
@@ -303,11 +311,11 @@ class PlayStoreBillingManagerImpl(
 
     override fun consumeProduct(productId: ProductId): Completable {
         return requirePreparedClient().observeOn(mainThreadScheduler).flatMapCompletable { billingClient ->
-            billingClient.queryPurchasesSingle(productId.billingSkyType)
+            billingClient.queryPurchasesSingle(productId.billingProductType)
                 .observeOn(computationScheduler)
                 .map { purchasesResult ->
                     if (purchasesResult.billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-                        val purchase = purchasesResult.purchasesList.find { productId.hasTheSameSkus(it.skus) }
+                        val purchase = purchasesResult.purchasesList.find { productId.hasTheSameSkus(it.products) }
                         Optional.of(purchase)
                     } else {
                         val msg = "Failed to query purchases: responseCode=${purchasesResult.billingResult.responseCode}"
@@ -334,25 +342,6 @@ class PlayStoreBillingManagerImpl(
                         billingClient.consumeAsync(consumeParams, listener)
                     }
                 }
-        }
-    }
-
-    override fun getPurchaseHistory(skuType: SkuType): Single<List<PurchaseHistoryRecord>> {
-        return requirePreparedClient().observeOn(mainThreadScheduler).flatMap { billingClient ->
-            billingClient.queryPurchaseHistorySingle(skuType.billingSkyType)
-                .observeOn(computationScheduler)
-                .map { result ->
-                    result.purchaseHistoryRecordList.orEmpty().map { record ->
-                        PurchaseHistoryRecord(
-                            skus = record.skus.toList(),
-                            purchaseTime = record.purchaseTime,
-                            purchaseToken = record.purchaseToken,
-                            signature = record.signature,
-                            quantity = record.quantity
-                        )
-                    }
-                }
-                .observeOn(mainThreadScheduler)
         }
     }
 

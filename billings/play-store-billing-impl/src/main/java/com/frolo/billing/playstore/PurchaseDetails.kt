@@ -15,7 +15,7 @@ internal data class PurchaseDetails(
 
         fun from(purchase: Purchase): PurchaseDetails {
             return PurchaseDetails(
-                skus = purchase.skus,
+                skus = purchase.products,
                 state = purchase.purchaseState,
                 isAcknowledged = purchase.isAcknowledged
             )

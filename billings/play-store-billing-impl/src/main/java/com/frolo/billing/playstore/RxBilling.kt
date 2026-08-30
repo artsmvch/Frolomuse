@@ -11,20 +11,23 @@ private fun getMainThreadScheduler(): Scheduler {
     return AndroidSchedulers.mainThread()
 }
 
-internal fun BillingClient.querySkuDetailsSingle(skuList: List<String>, @BillingClient.SkuType type: String): Single<List<SkuDetails>> {
-    val singleSource: Single<List<SkuDetails>> = Single.create { emitter ->
-        val skuDetailsParams = SkuDetailsParams.newBuilder()
-            .setSkusList(skuList)
-            .setType(type)
+internal fun BillingClient.queryProductDetailsSingle(
+    productIds: List<String>,
+    @BillingClient.ProductType type: String
+): Single<List<ProductDetails>> {
+    val singleSource: Single<List<ProductDetails>> = Single.create { emitter ->
+        val products = productIds.map { productId ->
+            QueryProductDetailsParams.Product.newBuilder()
+                .setProductId(productId)
+                .setProductType(type)
+                .build()
+        }
+        val params = QueryProductDetailsParams.newBuilder()
+            .setProductList(products)
             .build()
-        querySkuDetailsAsync(skuDetailsParams) { result: BillingResult, skuDetailsList: List<SkuDetails>? ->
+        queryProductDetailsAsync(params) { result: BillingResult, queryResult: QueryProductDetailsResult ->
             if (result.responseCode == BillingClient.BillingResponseCode.OK) {
-                if (skuDetailsList != null) {
-                    emitter.onSuccess(skuDetailsList.orEmpty())
-                } else {
-                    val cause = NullPointerException("Sku details list is null")
-                    emitter.onError(BillingClientException(cause))
-                }
+                emitter.onSuccess(queryResult.productDetailsList)
             } else {
                 emitter.onError(BillingClientException(result))
             }
@@ -37,16 +40,12 @@ internal fun BillingClient.querySkuDetailsSingle(skuList: List<String>, @Billing
         .observeOn(scheduler)
 }
 
-internal fun BillingClient.queryPurchasesSingle(@BillingClient.SkuType type: String): Single<PurchasesResult> {
-    return coroutineToSingle { queryPurchasesAsync(type) }
-}
-
-internal fun BillingClient.queryPurchaseHistorySingle(@BillingClient.SkuType type: String): Single<PurchaseHistoryResult> {
+internal fun BillingClient.queryPurchasesSingle(@BillingClient.ProductType type: String): Single<PurchasesResult> {
     return coroutineToSingle {
-        val params = QueryPurchaseHistoryParams.newBuilder()
+        val params = QueryPurchasesParams.newBuilder()
             .setProductType(type)
             .build()
-        queryPurchaseHistory(params)
+        queryPurchasesAsync(params)
     }
 }
 
