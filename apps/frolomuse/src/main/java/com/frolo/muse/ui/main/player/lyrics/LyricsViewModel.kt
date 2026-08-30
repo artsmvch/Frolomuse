@@ -46,13 +46,13 @@ class LyricsViewModel constructor(
     private val _isLyricsEdited = MutableLiveData<Boolean>(false)
 
     private val _lyricsText by lazy {
-        MediatorLiveData<String>().apply {
+        MediatorLiveData<String?>().apply {
             addSource(lyrics) { lyrics ->
                 value = lyrics?.text
             }
         }
     }
-    val lyricsText: LiveData<String> get() = _lyricsText
+    val lyricsText: LiveData<String?> get() = _lyricsText
 
     private val _isSavingLyrics = MutableLiveData<Boolean>()
     val isSavingLyrics: LiveData<Boolean> get() = _isSavingLyrics

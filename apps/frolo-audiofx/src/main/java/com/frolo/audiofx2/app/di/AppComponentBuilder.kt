@@ -26,8 +26,8 @@ internal class AppComponentImpl(
         AudioFx2Impl.obtain(application, errorHandler)
     }
 
-    override val audioFx2AttachInfo: MutableLiveData<AudioFx2AttachInfo> by lazy {
-        MutableLiveData<AudioFx2AttachInfo>(AudioFx2AttachInfoHelper.default(application))
+    override val audioFx2AttachInfo: MutableLiveData<AudioFx2AttachInfo?> by lazy {
+        MutableLiveData<AudioFx2AttachInfo?>(AudioFx2AttachInfoHelper.default(application))
     }
 
     override val attachEngine: AudioFx2AttachEngine by lazy {

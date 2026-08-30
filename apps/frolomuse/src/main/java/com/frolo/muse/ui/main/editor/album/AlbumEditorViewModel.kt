@@ -42,7 +42,7 @@ class AlbumEditorViewModel constructor(
 
     private val _pickedArtFilepath = MutableLiveData<String?>(null)
 
-    private val originalArt: LiveData<Bitmap> = MutableLiveData<Bitmap>().apply {
+    private val originalArt: LiveData<Bitmap?> = MutableLiveData<Bitmap?>().apply {
         createAlbumArtSource(albumArg)
                 .doOnSuccess { value = it.bitmap }
                 .doOnError { value = null }
@@ -53,13 +53,13 @@ class AlbumEditorViewModel constructor(
     val pickArtEvent: LiveData<Unit> get() = _pickArtEvent
 
     private val _art by lazy {
-        MediatorLiveData<Bitmap>().apply {
+        MediatorLiveData<Bitmap?>().apply {
             addSource(originalArt) { original ->
                 value = original
             }
         }
     }
-    val art: LiveData<Bitmap> get() = _art
+    val art: LiveData<Bitmap?> get() = _art
 
     val artVisible: LiveData<Boolean> =
             art.mapWithInitial(true) { art -> art != null }

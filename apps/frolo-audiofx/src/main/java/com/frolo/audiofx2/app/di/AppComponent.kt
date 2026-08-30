@@ -15,6 +15,6 @@ fun initAppComponent(instance: AppComponent) {
 
 interface AppComponent {
     val audioFx2: AudioFx2Impl
-    val audioFx2AttachInfo: MutableLiveData<AudioFx2AttachInfo>
+    val audioFx2AttachInfo: MutableLiveData<AudioFx2AttachInfo?>
     val attachEngine: AudioFx2AttachEngine
 }

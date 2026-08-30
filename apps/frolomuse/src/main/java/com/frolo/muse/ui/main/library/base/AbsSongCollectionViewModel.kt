@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.switchMap
-import com.frolo.arch.support.liveDataOf
 import com.frolo.player.AudioSource
 import com.frolo.player.Player
 import com.frolo.player.SimplePlayerObserver
@@ -80,12 +79,7 @@ abstract class AbsSongCollectionViewModel<T: Song> constructor(
     val playingPosition: LiveData<Int> = _playingPosition
 
     val songCountWithTotalDuration: LiveData<SongCountWithTotalDuration> by lazy {
-        mediaList.switchMap { songs: List<Song>? ->
-            if (songs == null) {
-                // NULL for NULL
-                return@switchMap liveDataOf<SongCountWithTotalDuration>(null)
-            }
-
+        mediaList.switchMap { songs ->
             MutableLiveData<SongCountWithTotalDuration>().apply {
                 Single.fromCallable {
                     val totalDuration = songs.sumBy { it.duration }

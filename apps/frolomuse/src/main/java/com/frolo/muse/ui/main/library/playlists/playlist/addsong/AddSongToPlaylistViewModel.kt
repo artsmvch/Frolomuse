@@ -2,17 +2,17 @@ package com.frolo.muse.ui.main.library.playlists.playlist.addsong
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.map
 import com.frolo.arch.support.combine
+import com.frolo.arch.support.mapWithInitial
 import com.frolo.muse.interactor.media.AddSongToPlaylistUseCase
 import com.frolo.muse.logger.EventLogger
 import com.frolo.muse.logger.logSongsAddedToPlaylist
-import com.frolo.music.model.Playlist
 import com.frolo.muse.model.media.SelectableSongQuery
-import com.frolo.music.model.Song
 import com.frolo.muse.router.AppRouter
 import com.frolo.muse.rx.SchedulerProvider
 import com.frolo.muse.ui.base.BaseViewModel
+import com.frolo.music.model.Playlist
+import com.frolo.music.model.Song
 import io.reactivex.Single
 import io.reactivex.processors.PublishProcessor
 import java.util.concurrent.TimeUnit
@@ -33,15 +33,15 @@ class AddSongToPlaylistViewModel constructor(
 
     private val _typedQuery: MutableLiveData<String> = MutableLiveData()
 
-    private val _selectableSongQuery: MutableLiveData<SelectableSongQuery> = MutableLiveData()
-    val selectableSongQuery: LiveData<SelectableSongQuery> get() = _selectableSongQuery
+    private val _selectableSongQuery = MutableLiveData<SelectableSongQuery?>()
+    val selectableSongQuery: LiveData<SelectableSongQuery?> get() = _selectableSongQuery
 
     private val _selectedItems: MutableLiveData<Set<Song>> = MutableLiveData(emptySet())
     val selectedItems: LiveData<Set<Song>> get() = _selectedItems
 
     val placeholderVisible: LiveData<Boolean> by lazy {
-        _selectableSongQuery.map { query ->
-            query.allItems.isNullOrEmpty()
+        _selectableSongQuery.mapWithInitial(false) { query ->
+            query?.allItems.isNullOrEmpty()
         }
     }
 

@@ -43,7 +43,7 @@ class ApplicationImpl : Application() {
         AudioFx2Feature.init(
             input = object : AudioFx2FeatureInput {
                 override val audioFx2: AudioFx2 get() = appComponent.audioFx2
-                override val audioFx2AttachInfo: LiveData<AudioFx2AttachInfo>
+                override val audioFx2AttachInfo: LiveData<AudioFx2AttachInfo?>
                     get() = appComponent.audioFx2AttachInfo
             }
         )

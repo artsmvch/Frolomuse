@@ -112,27 +112,27 @@ class PlayerViewModel @Inject constructor(
     private val _songDeletedEvent = SingleLiveEvent<Song>()
     val songDeletedEvent: LiveData<Song> get() = _songDeletedEvent
 
-    private val _audioSourceQueue = MutableLiveData<AudioSourceQueue>()
+    private val _audioSourceQueue = MutableLiveData<AudioSourceQueue?>()
 
-    val audioSourceList: LiveData<List<AudioSource>> =
-        _audioSourceQueue.map { queue -> queue.snapshot }
+    val audioSourceList: LiveData<List<AudioSource>?> =
+        _audioSourceQueue.map { queue: AudioSourceQueue? -> queue?.snapshot.orEmpty() }
 
     private val _invalidateAudioSourceQueueEvent = SingleLiveEvent<AudioSourceQueue>()
-    val invalidateAudioSourceListEvent: LiveData<List<AudioSource>> =
-        _invalidateAudioSourceQueueEvent.map { queue -> queue.snapshot }
+    val invalidateAudioSourceListEvent: LiveData<List<AudioSource>?> =
+        _invalidateAudioSourceQueueEvent.map { queue -> queue.snapshot.orEmpty() }
 
-    private val _song = MutableLiveData<Song>(null)
-    val song: LiveData<Song> get() = _song
+    private val _song = MutableLiveData<Song?>(null)
+    val song: LiveData<Song?> get() = _song
 
     val playerControllersEnabled: LiveData<Boolean> =
         song.mapWithInitial(false) { song: Song? -> song != null }
 
-    val soundWave: LiveData<SoundWave> =
-        song.switchMap { song ->
+    val soundWave: LiveData<SoundWave?> =
+        song.switchMap { song: Song? ->
             val source: String? = song?.source
 
-            if (source == null) liveDataOf<SoundWave>(null)
-            else MutableLiveData<SoundWave>().apply {
+            if (source == null) MutableLiveData<SoundWave?>(null)
+            else MutableLiveData<SoundWave?>().apply {
                 resolveSoundWaveUseCase.resolveSoundWave(source)
                     .observeOn(schedulerProvider.main())
                     .doOnError { value = null }
@@ -142,10 +142,10 @@ class PlayerViewModel @Inject constructor(
             }
         }
 
-    val palette: LiveData<Palette> by lazy {
+    val palette: LiveData<Palette?> by lazy {
         song.switchMap { song ->
-            if (song == null) liveDataOf<Palette>(null)
-            else MutableLiveData<Palette>().apply {
+            if (song == null) MutableLiveData<Palette?>(null)
+            else MutableLiveData<Palette?>().apply {
                 paletteGenerator.generatePalette(song.toAudioSource())
                     .observeOn(schedulerProvider.main())
                     .doOnError { value = null }
