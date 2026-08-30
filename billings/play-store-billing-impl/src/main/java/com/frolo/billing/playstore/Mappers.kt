@@ -4,19 +4,19 @@ import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingResult
 import com.frolo.billing.*
 
-@BillingClient.SkuType
-internal val SkuType.billingSkyType: String
+@BillingClient.ProductType
+internal val SkuType.billingProductType: String
     get() {
         return when (this) {
-            SkuType.IN_APP -> BillingClient.SkuType.INAPP
-            SkuType.SUBS -> BillingClient.SkuType.SUBS
+            SkuType.IN_APP -> BillingClient.ProductType.INAPP
+            SkuType.SUBS -> BillingClient.ProductType.SUBS
         }
     }
 
-@BillingClient.SkuType
-internal val ProductId.billingSkyType: String
+@BillingClient.ProductType
+internal val ProductId.billingProductType: String
     get() {
-        return type.billingSkyType
+        return type.billingProductType
     }
 
 internal fun getBillingFlowResult(result: BillingResult, productId: ProductId): BillingFlowResult {

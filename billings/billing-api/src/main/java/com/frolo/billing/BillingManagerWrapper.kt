@@ -29,7 +29,4 @@ abstract class BillingManagerWrapper(
     override fun consumeProduct(productId: ProductId): Completable =
         wrapped.consumeProduct(productId)
 
-    override fun getPurchaseHistory(skuType: SkuType): Single<List<PurchaseHistoryRecord>> =
-        wrapped.getPurchaseHistory(skuType)
-
 }
