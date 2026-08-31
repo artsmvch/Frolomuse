@@ -23,8 +23,8 @@ class MiniPlayerViewModel @Inject constructor(
     private val eventLogger: EventLogger
 ): BaseViewModel(eventLogger) {
 
-    private val _currentSong = MutableLiveData<Song>()
-    val currentSong: LiveData<Song> get() = _currentSong
+    private val _currentSong = MutableLiveData<Song?>()
+    val currentSong: LiveData<Song?> get() = _currentSong
 
     val playerControllersEnabled: LiveData<Boolean> =
         currentSong.mapWithInitial(false) { song: Song? -> song != null }

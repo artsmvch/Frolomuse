@@ -246,8 +246,8 @@ class AppStartUpInitializer @Inject constructor(
     private fun setupAudioFx2Feature() {
         AudioFx2Feature.init(
             input = object : AudioFx2FeatureInput {
-                override val audioFx2AttachInfo: LiveData<AudioFx2AttachInfo> =
-                    MutableLiveData(null)
+                override val audioFx2AttachInfo: LiveData<AudioFx2AttachInfo?> =
+                    MutableLiveData<AudioFx2AttachInfo?>(null)
                 override val audioFx2: com.frolo.audiofx2.AudioFx2
                     get() = application.applicationComponent.provideAudioFx2()
             }

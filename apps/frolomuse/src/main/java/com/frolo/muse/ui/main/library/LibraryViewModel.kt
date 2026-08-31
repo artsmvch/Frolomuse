@@ -20,11 +20,11 @@ class LibraryViewModel @Inject constructor(
 ): BaseAndroidViewModel(application, eventLogger) {
 
     private val _bannerConfig by lazy {
-        MutableLiveData<BannerConfig>(null).apply(::loadAdConfigAsync)
+        MutableLiveData<BannerConfig?>(null).apply(::loadAdConfigAsync)
     }
-    val bannerConfig: LiveData<BannerConfig> by lazy { _bannerConfig.distinctUntilChanged() }
+    val bannerConfig: LiveData<BannerConfig?> by lazy { _bannerConfig.distinctUntilChanged() }
 
-    private fun loadAdConfigAsync(liveData: MutableLiveData<BannerConfig>) {
+    private fun loadAdConfigAsync(liveData: MutableLiveData<BannerConfig?>) {
         val startTime = System.currentTimeMillis()
         facebookBannerUseCase.getFacebookBannerState()
             .observeOn(schedulerProvider.main())

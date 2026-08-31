@@ -16,7 +16,7 @@ fun <T,R,U> combine(first: LiveData<R>, second: LiveData<U>, combiner: (R?, U?) 
 /**
  * Same as [LiveData.observe] but only calls [onChanged] if the value is not null.
  */
-fun <T> LiveData<T>.observeNonNull(owner: LifecycleOwner, onChanged: ((value: T) -> Unit)) {
+fun <T> LiveData<T>.observeNonNull(owner: LifecycleOwner, onChanged: ((value: T & Any) -> Unit)) {
     observe(owner) {
         if (it != null) onChanged.invoke(it)
     }
@@ -36,14 +36,14 @@ fun EventLiveData<Unit>.call() {
     setValue(Unit)
 }
 
-fun <T> liveDataOf(item: T?): LiveData<T> = MutableLiveData(item)
+fun <T: Any> liveDataOf(item: T): LiveData<T> = MutableLiveData(item)
 
 /**
  * Same as the official [androidx.lifecycle.map], except that the returned live data is
  * seeded with [initialValue] so observers get a value immediately, before this source
  * has emitted anything.
  */
-fun <X: Any, Y: Any> LiveData<X>.mapWithInitial(initialValue: Y, mapFunction: (x: X?) -> Y?): LiveData<Y> {
+fun <X, Y: Any> LiveData<X>.mapWithInitial(initialValue: Y, mapFunction: (x: X?) -> Y?): LiveData<Y> {
     val transformed = map(mapFunction)
     return MediatorLiveData<Y>().apply {
         value = initialValue

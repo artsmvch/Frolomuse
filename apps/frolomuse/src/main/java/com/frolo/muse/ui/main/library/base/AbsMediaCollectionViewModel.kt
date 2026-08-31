@@ -79,8 +79,8 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
     private val _isLoading: MutableLiveData<Boolean> = MutableLiveData()
     val isLoading: LiveData<Boolean> get() = _isLoading
 
-    private val _mediaList: MutableLiveData<List<E>> = MutableLiveData()
-    val mediaList: LiveData<List<E>> get() = _mediaList
+    private val _mediaList = MutableLiveData<List<E>>(emptyList())
+    val mediaList: LiveData<List<E>> = _mediaList
 
     val mediaItemCount: LiveData<Int> by lazy {
         mediaList.mapWithInitial(initialValue = 0) { list -> list?.count() ?: 0 }
@@ -122,8 +122,8 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
     private val _openContextualMenuEvent: MutableLiveData<ContextualMenu<E>> = SingleLiveEvent()
     val openContextualMenuEvent: LiveData<ContextualMenu<E>> = _openContextualMenuEvent
 
-    private val _selectedItems: MutableLiveData<Set<E>> by lazy {
-        MediatorLiveData<Set<E>>().apply {
+    private val _selectedItems by lazy {
+        MediatorLiveData<Set<E>>(emptySet()).apply {
             addSource(mediaList) { list ->
                 // clean selected items every time the media list updates?
                 value = emptySet()
@@ -140,7 +140,7 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
     }
 
     val isInContextualMode: LiveData<Boolean> = selectedItems.map { items ->
-        items != null && items.isNotEmpty()
+        items.isNotEmpty()
     }
 
     private val _isProcessingContextual: MutableLiveData<Boolean> = MutableLiveData()
@@ -726,7 +726,7 @@ abstract class AbsMediaCollectionViewModel<E: Media> constructor(
     override fun noteLowMemory() {
         if (!mediaList.hasActiveObservers()) {
             cancelSubscription()
-            _mediaList.value = null
+            _mediaList.value = emptyList()
             _mediaListFetched = false
         }
     }

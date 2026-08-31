@@ -45,13 +45,13 @@ class ThemeChooserViewModel @Inject constructor(
     val isLoading: LiveData<Boolean> get() = _isLoading
 
     private val _themeItems by lazy {
-        MutableLiveData<List<ThemePage>>().apply {
+        MutableLiveData<List<ThemePage>?>().apply {
             loadThemes { items ->
                 value = items
             }
         }
     }
-    val themeItems: LiveData<List<ThemePage>> get() = _themeItems
+    val themeItems: LiveData<List<ThemePage>?> get() = _themeItems
 
     private val _applyThemeEvent = SingleLiveEvent<Theme>()
     val applyThemeEvent: LiveData<Theme> get() = _applyThemeEvent

@@ -20,24 +20,24 @@ internal class AudioFxControlPanelViewModel(
         MutableLiveData(AudioFx2Feature.getAudioFx2())
     }
 
-    val attachInfo: LiveData<AudioFx2AttachInfo> get() =
+    val attachInfo: LiveData<AudioFx2AttachInfo?> get() =
         AudioFx2Feature.getAttachInfoLiveData()
 
     val equalizer: LiveData<Equalizer?> =
-        audioFx2.map { audioFx2 -> audioFx2?.equalizer }
+        audioFx2.map { audioFx2 -> audioFx2.equalizer }
 
     val bassBoost: LiveData<BassBoost?> by lazy {
-        audioFx2.map { audioFx2 -> audioFx2?.bassBoost }
+        audioFx2.map { audioFx2 -> audioFx2.bassBoost }
     }
     val virtualizer: LiveData<Virtualizer?> by lazy {
-        audioFx2.map { audioFx2 -> audioFx2?.virtualizer }
+        audioFx2.map { audioFx2 -> audioFx2.virtualizer }
     }
     val loudness: LiveData<Loudness?> by lazy {
-        audioFx2.map { audioFx2 -> audioFx2?.loudness }
+        audioFx2.map { audioFx2 -> audioFx2.loudness }
     }
 
     val reverb: LiveData<Reverb?> by lazy {
-        audioFx2.map { audioFx2 -> audioFx2?.reverb }
+        audioFx2.map { audioFx2 -> audioFx2.reverb }
     }
 
     override fun onCleared() {

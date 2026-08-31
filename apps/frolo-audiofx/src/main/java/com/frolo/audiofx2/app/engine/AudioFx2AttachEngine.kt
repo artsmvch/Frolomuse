@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicReference
 class AudioFx2AttachEngine constructor(
     private val application: Application,
     private val audioFx2: AudioFx2Impl,
-    private val attachInfoLiveData: MutableLiveData<AudioFx2AttachInfo>
+    private val attachInfoLiveData: MutableLiveData<AudioFx2AttachInfo?>
 ) {
     private val prefs: SharedPreferences by lazy {
         application.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
